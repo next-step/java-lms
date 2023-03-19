@@ -3,10 +3,12 @@ package qna.domain;
 import qna.NotFoundException;
 import qna.UnAuthorizedException;
 
+import java.time.LocalDateTime;
+
 public class Answer {
     private Long id;
 
-    private User writer;
+    private NsUser writer;
 
     private Question question;
 
@@ -14,14 +16,18 @@ public class Answer {
 
     private boolean deleted = false;
 
+    private LocalDateTime createdDate = LocalDateTime.now();
+
+    private LocalDateTime updatedDate;
+
     public Answer() {
     }
 
-    public Answer(User writer, Question question, String contents) {
+    public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
-    public Answer(Long id, User writer, Question question, String contents) {
+    public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
@@ -49,11 +55,11 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(User writer) {
+    public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
 
-    public User getWriter() {
+    public NsUser getWriter() {
         return writer;
     }
 
