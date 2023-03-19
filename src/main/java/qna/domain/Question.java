@@ -24,13 +24,13 @@ public class Question {
     public Question() {
     }
 
-    public Question(String title, String contents) {
-        this.title = title;
-        this.contents = contents;
+    public Question(NsUser writer, String title, String contents) {
+        this(0L, writer, title, contents);
     }
 
-    public Question(long id, String title, String contents) {
+    public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
+        this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
@@ -59,11 +59,6 @@ public class Question {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public Question writeBy(NsUser loginUser) {
-        this.writer = loginUser;
-        return this;
     }
 
     public void addAnswer(Answer answer) {
