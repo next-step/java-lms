@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Answer {
     private Long id;
 
-    private NsUser writer;
+    private User writer;
 
     private Question question;
 
@@ -23,11 +23,11 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
+    public Answer(User writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
+    public Answer(Long id, User writer, Question question, String contents) {
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
@@ -55,11 +55,11 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public boolean isOwner(User writer) {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
+    public User getWriter() {
         return writer;
     }
 

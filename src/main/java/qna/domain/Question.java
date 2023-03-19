@@ -11,7 +11,7 @@ public class Question {
 
     private String contents;
 
-    private NsUser writer;
+    private User writer;
 
     private List<Answer> answers = new ArrayList<>();
 
@@ -24,11 +24,11 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
+    public Question(User writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, User writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -57,7 +57,7 @@ public class Question {
         return this;
     }
 
-    public NsUser getWriter() {
+    public User getWriter() {
         return writer;
     }
 
@@ -66,7 +66,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    public boolean isOwner(User loginUser) {
         return writer.equals(loginUser);
     }
 

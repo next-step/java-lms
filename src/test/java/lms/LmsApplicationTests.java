@@ -1,10 +1,10 @@
-package qna;
+package lms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class QnaApplicationTests {
+class LmsApplicationTests {
     @Test
     void contextLoads() {
     }

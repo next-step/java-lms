@@ -1,7 +1,5 @@
 package qna.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import qna.CannotDeleteException;
@@ -15,8 +13,6 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
-    private static final Logger log = LoggerFactory.getLogger(QnAService.class);
-
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
@@ -27,7 +23,7 @@ public class QnAService {
     private DeleteHistoryService deleteHistoryService;
 
     @Transactional
-    public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
+    public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
         if (!question.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
