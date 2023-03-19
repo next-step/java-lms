@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import qna.domain.Question;
 import qna.domain.QuestionRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository("questionRepository")
