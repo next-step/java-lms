@@ -1,5 +1,7 @@
 package qna.domain;
 
+import users.domain.NsUser;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,14 +12,14 @@ public class DeleteHistory {
 
     private Long contentId;
 
-    private User deletedBy;
+    private NsUser deletedBy;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, User deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;

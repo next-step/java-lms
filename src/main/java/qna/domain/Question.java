@@ -1,5 +1,7 @@
 package qna.domain;
 
+import users.domain.NsUser;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Question {
 
     private String contents;
 
-    private User writer;
+    private NsUser writer;
 
     private List<Answer> answers = new ArrayList<>();
 
@@ -24,11 +26,11 @@ public class Question {
     public Question() {
     }
 
-    public Question(User writer, String title, String contents) {
+    public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
 
-    public Question(Long id, User writer, String title, String contents) {
+    public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -57,7 +59,7 @@ public class Question {
         return this;
     }
 
-    public User getWriter() {
+    public NsUser getWriter() {
         return writer;
     }
 
@@ -66,7 +68,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(User loginUser) {
+    public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
