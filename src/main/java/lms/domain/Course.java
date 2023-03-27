@@ -9,20 +9,23 @@ public class Course {
 
     private Long creatorId;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
+
+    public Course() {
+    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
@@ -33,8 +36,8 @@ public class Course {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

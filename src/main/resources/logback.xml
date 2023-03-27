@@ -9,6 +9,8 @@
 
     <logger name="qna" level="DEBUG"/>
 
+    <logger name="lms" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
