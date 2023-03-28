@@ -1,8 +1,8 @@
 package nextstep.qna.infrastructure;
 
 import nextstep.qna.domain.DeleteHistory;
-import org.springframework.stereotype.Repository;
 import nextstep.qna.domain.DeleteHistoryRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
 package nextstep.qna.service;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUserTest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
