@@ -36,8 +36,9 @@ public class QuestionTest {
         question.addAnswer(createAnswer(NsUserTest.JAVAJIGI));
 
         question.delete(NsUserTest.JAVAJIGI);
+        Answers answers = question.getAnswers();
         assertThat(question.isDeleted()).isEqualTo(true);
-        assertThat(question.getAnswers()).extracting("deleted").doesNotContain(false);
+        assertThat(answers.getAnswers()).extracting("deleted").doesNotContain(false);
     }
 
     @Test
