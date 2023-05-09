@@ -72,6 +72,10 @@ public class Answer {
         this.question = question;
     }
 
+    public void delete() {
+        this.deleted = true;
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
