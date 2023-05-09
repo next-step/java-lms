@@ -10,8 +10,11 @@ public class Fixtures {
         return new Question(nsUser, "title1", "contents1");
     }
 
-    public static Answer createAnswer(NsUser nsUser) {
+    public static Answer createAnswer1(NsUser nsUser) {
         return new Answer(nsUser, Fixtures.createQuestion(NsUserTest.JAVAJIGI), "Answers Contents1");
     }
 
+    public static Answer createAnswer2(NsUser nsUser) {
+        return new Answer(nsUser, Fixtures.createQuestion(NsUserTest.JAVAJIGI), "Answers Contents2");
+    }
 }

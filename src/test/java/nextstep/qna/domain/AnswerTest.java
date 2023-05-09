@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.Fixtures.createAnswer;
+import static nextstep.Fixtures.createAnswer1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,7 +15,7 @@ public class AnswerTest {
     @Test
     @DisplayName("answer 를 삭제한다.")
     void test01() {
-        Answer answer = createAnswer(NsUserTest.JAVAJIGI);
+        Answer answer = createAnswer1(NsUserTest.JAVAJIGI);
 
         LocalDateTime now = LocalDateTime.now();
         DeleteHistory deleteHistory = answer.delete(NsUserTest.JAVAJIGI, now);
@@ -27,7 +27,7 @@ public class AnswerTest {
     @Test
     @DisplayName("답변을 입력한 사람이 다르면 에러 발생")
     void test02() {
-        Answer answer = createAnswer(NsUserTest.JAVAJIGI);
+        Answer answer = createAnswer1(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
     }
