@@ -1,8 +1,34 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+
+import static nextstep.Fixtures.createAnswer1;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
-    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    @Test
+    @DisplayName("answer 를 삭제한다.")
+    void test01() {
+        Answer answer = createAnswer1(NsUserTest.JAVAJIGI);
+
+        LocalDateTime now = LocalDateTime.now();
+        DeleteHistory deleteHistory = answer.delete(NsUserTest.JAVAJIGI, now);
+
+        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), now));
+        assertThat(answer.isDeleted()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("답변을 입력한 사람이 다르면 에러 발생")
+    void test02() {
+        Answer answer = createAnswer1(NsUserTest.JAVAJIGI);
+
+        assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
+    }
 }
