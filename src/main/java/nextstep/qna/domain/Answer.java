@@ -75,7 +75,7 @@ public class Answer {
 
     public DeleteHistory delete(NsUser loginUser, LocalDateTime now) {
         if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("답변의 작성자와 삭제하는 작성자가 달라서 삭제할 수 없습니다.");
         }
         this.deleted = true;
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, now);
