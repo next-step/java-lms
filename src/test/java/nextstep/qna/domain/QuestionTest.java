@@ -25,5 +25,4 @@ public class QuestionTest {
             .isInstanceOf(CannotDeleteException.class)
             .hasMessage("질문을 삭제할 권한이 없습니다.");
   }
-
 }
