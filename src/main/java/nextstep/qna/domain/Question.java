@@ -99,4 +99,8 @@ public class Question {
       throw new CannotDeleteException(ILLEGAL_OWNER_MESSAGE);
     }
   }
+
+  public DeleteHistories deleteQuestion(NsUser loginUser) throws CannotDeleteException {
+    return DeleteHistories.createDeleteHistories(this, loginUser);
+  }
 }
