@@ -22,7 +22,7 @@ class AnswersTest {
 
         answers.addAnswer(createAnswer1(NsUserTest.JAVAJIGI));
 
-        assertThat(answers.getAnswers()).hasSize(1);
+        assertThat(answers.value()).hasSize(1);
     }
 
     @Test
@@ -34,7 +34,7 @@ class AnswersTest {
 
         List<DeleteHistory> deleteHistories = answers.deleteAll(NsUserTest.JAVAJIGI);
 
-        assertThat(answers.getAnswers()).extracting("deleted").containsExactly(true, true);
+        assertThat(answers.value()).extracting("deleted").containsExactly(true, true);
         assertThat(deleteHistories).extracting("contentType", "deletedBy")
                                    .containsExactly(tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI),
                                                     tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI));

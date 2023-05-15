@@ -94,7 +94,12 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll(loginUser));
+        try {
+            deleteHistories.addAll(answers.deleteAll(loginUser));
+        } catch (CannotDeleteException e) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
         return deleteHistories;
     }
 
