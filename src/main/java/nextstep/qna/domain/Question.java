@@ -5,9 +5,11 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
+    private static final String OTHERUSER_ANSWER_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+    private static final String ALREADY_DELETED_MESSAGE = "이미 삭제된 질문입니다.";
+    private static final String PERMISSION_DENIED_MESSAGE = "질문을 삭제할 권한이 없습니다.";
     private Long id;
 
     private String title;
@@ -20,7 +22,7 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -48,6 +50,7 @@ public class Question {
 
     public Question setTitle(String title) {
         this.title = title;
+        updatedDate = LocalDateTime.now();
         return this;
     }
 
@@ -57,6 +60,7 @@ public class Question {
 
     public Question setContents(String contents) {
         this.contents = contents;
+        updatedDate = LocalDateTime.now();
         return this;
     }
 
@@ -82,24 +86,38 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers.getAnswers();
+    public DeleteHistories delete(NsUser requestUser) throws CannotDeleteException {
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(deleteQustion(requestUser));
+        deleteHistories.addAll(deleteAnswers(requestUser));
+
+        return deleteHistories;
+    }
+
+    private DeleteHistories deleteAnswers(NsUser requestUser) throws CannotDeleteException {
+        DeleteHistories deleteHistories = new DeleteHistories();
+        try {
+            deleteHistories.addAll(answers.deleteAll(requestUser));
+        } catch (CannotDeleteException e) {
+            setDeleted(false);
+            throw new CannotDeleteException(OTHERUSER_ANSWER_MESSAGE);
+        }
+        return deleteHistories;
+    }
+
+    private DeleteHistory deleteQustion(NsUser requestUser) throws CannotDeleteException {
+        if (isDeleted()) {
+            throw new CannotDeleteException(ALREADY_DELETED_MESSAGE);
+        }
+        if (!isOwner(requestUser)) {
+            throw new CannotDeleteException(PERMISSION_DENIED_MESSAGE);
+        }
+        setDeleted(true);
+        return new DeleteHistory(ContentType.QUESTION, id, requestUser, LocalDateTime.now());
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    public List<DeleteHistory> delete(NsUser requestUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        if (!isOwner(requestUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        setDeleted(true);
-
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, requestUser, LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll(requestUser));
-        return deleteHistories;
     }
 }
