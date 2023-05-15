@@ -30,18 +30,10 @@ public class AnswersTest {
   }
 
   @Test
-  @DisplayName("답변 작성자가 로그인 사용자 다른 경우 CannotDeleteException throw")
-  public void 답변_본인_확인() throws CannotDeleteException {
-    assertThatThrownBy(() -> answers.validateAnswers(NextStepUserTest.SANJIGI))
-            .isInstanceOf(CannotDeleteException.class)
-            .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-  }
-
-  @Test
   @DisplayName("답변 모두 삭제한 경우 deleted 상태 true 확인")
-  public void 답변_삭제_확인() {
+  public void 답변_삭제_확인() throws CannotDeleteException {
     List<DeleteHistory> deleteHistories = new ArrayList<>();
-    answers.deleteAnswers(deleteHistories);
+    answers.deleteAnswers(deleteHistories, NextStepUserTest.JAVAJIGI);
 
     assertAll(
             () -> assertThat(deleteHistories).extracting("deletedBy").containsOnly(NextStepUserTest.JAVAJIGI),

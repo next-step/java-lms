@@ -81,6 +81,13 @@ public class Answer {
     }
   }
 
+  public DeleteHistory delete(NextStepUser loginUser) throws CannotDeleteException {
+    validateIsOwner(loginUser);
+    deleted = true;
+
+    return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+  }
+
   @Override
   public String toString() {
     return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
