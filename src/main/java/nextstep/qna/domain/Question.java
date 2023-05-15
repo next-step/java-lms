@@ -92,6 +92,13 @@ public class Question {
     return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
   }
 
+  public DeleteHistory delete(NextStepUser loginUser) throws CannotDeleteException {
+    validateOwnerQuestion(loginUser);
+    deleted = true;
+
+    return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+  }
+
   public void validateOwnerQuestion(NextStepUser loginUser) throws CannotDeleteException {
     if (!isOwner(loginUser)) {
       throw new CannotDeleteException(ILLEGAL_OWNER_MESSAGE);

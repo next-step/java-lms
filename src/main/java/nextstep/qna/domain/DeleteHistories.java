@@ -25,10 +25,7 @@ public class DeleteHistories {
   }
 
   private void deleteQuestion(Question question, NextStepUser loginUser) throws CannotDeleteException {
-    question.validateOwnerQuestion(loginUser);
-
-    question.setDeleted(true);
-    deleteHistories.add(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()));
+    deleteHistories.add(question.delete(loginUser));
   }
 
   private void deleteAllAnswers(Answers answers, NextStepUser loginUser) throws CannotDeleteException {
