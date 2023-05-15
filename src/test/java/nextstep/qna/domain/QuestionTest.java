@@ -11,6 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
+
+  public static final Question Q1 = new Question(NextStepUserTest.JAVAJIGI, "title1", "content1");
   public Question question;
 
   @BeforeEach
