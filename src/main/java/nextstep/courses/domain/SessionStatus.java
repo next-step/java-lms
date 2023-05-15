@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public enum CourseStatus {
+public enum SessionStatus {
     READY("준비"),
     OPEN("모집"),
     CLOSED("종료")
@@ -8,7 +8,7 @@ public enum CourseStatus {
 
     private final String name;
 
-    CourseStatus(String name) {
+    SessionStatus(String name) {
         this.name = name;
     }
 

@@ -1,6 +1,7 @@
 package nextstep;
 
 import nextstep.courses.domain.CourseBuilder;
+import nextstep.courses.domain.SessionBuilder;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
@@ -25,9 +26,16 @@ public class Fixtures {
     public static CourseBuilder aCourse() {
         return CourseBuilder.aCourse()
                             .withId(1L)
-                            .withUsers(new ArrayList<>())
                             .withSessions(new ArrayList<>())
                             .withCreatorId(1L)
                             .withCreatedAt(LocalDateTime.now());
     }
+
+    public static SessionBuilder aSession() {
+        return SessionBuilder.aSession()
+                             .withId(1L)
+                             .withUsers(new ArrayList<>());
+    }
+
+
 }
