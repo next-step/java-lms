@@ -50,6 +50,7 @@ public class Answer {
 
     public Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
+        updatedDate = LocalDateTime.now();
         return this;
     }
 
@@ -63,6 +64,12 @@ public class Answer {
 
     public String getContents() {
         return contents;
+    }
+
+    public Answer setContents(String contents) {
+        this.contents = contents;
+        updatedDate = LocalDateTime.now();
+        return this;
     }
 
     public DeleteHistory delete(NsUser requestUser) throws CannotDeleteException {
