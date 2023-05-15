@@ -2,7 +2,6 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Session {
@@ -17,22 +16,18 @@ public class Session {
 
     private int maxUserCount;
 
-    private LocalDateTime startedAt;
-
-    private LocalDateTime endedAt;
-
+    private SessionPeriod sessionPeriod;
     public Session() {
     }
 
-    public Session(Long id, List<NsUser> users, SessionType sessionType, SessionStatus sessionStatus, String coverImageUrl, int maxUserCount, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public Session(Long id, List<NsUser> users, SessionType sessionType, SessionStatus sessionStatus, String coverImageUrl, int maxUserCount, SessionPeriod sessionPeriod) {
         this.id = id;
         this.users = users;
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
         this.coverImageUrl = coverImageUrl;
         this.maxUserCount = maxUserCount;
-        this.startedAt = startedAt;
-        this.endedAt = endedAt;
+        this.sessionPeriod = sessionPeriod;
     }
 
     public void register(NsUser user) {
@@ -71,11 +66,7 @@ public class Session {
         return maxUserCount;
     }
 
-    public LocalDateTime getStartedAt() {
-        return startedAt;
-    }
-
-    public LocalDateTime getEndedAt() {
-        return endedAt;
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
     }
 }

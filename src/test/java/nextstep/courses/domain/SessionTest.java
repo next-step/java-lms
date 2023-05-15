@@ -20,10 +20,9 @@ class SessionTest {
         LocalDateTime startedAt = LocalDateTime.now();
         LocalDateTime endedAt = startedAt.plusDays(2);
 
-        Session session = aSession().withStartedAt(startedAt).withEndedAt(endedAt).build();
+        Session session = aSession().withSessionPeriod(new SessionPeriod(startedAt, endedAt)).build();
 
-        assertThat(session.getStartedAt()).isEqualTo(startedAt);
-        assertThat(session.getEndedAt()).isEqualTo(endedAt);
+        assertThat(session.getSessionPeriod()).isEqualTo(new SessionPeriod(startedAt, endedAt));
     }
 
     @Test

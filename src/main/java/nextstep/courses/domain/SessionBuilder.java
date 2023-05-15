@@ -2,7 +2,6 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public final class SessionBuilder {
@@ -12,8 +11,7 @@ public final class SessionBuilder {
     private SessionStatus sessionStatus;
     private String coverImageUrl;
     private int maxUserCount;
-    private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
+    private SessionPeriod sessionPeriod;
 
     private SessionBuilder() {
     }
@@ -52,17 +50,12 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withStartedAt(LocalDateTime startedAt) {
-        this.startedAt = startedAt;
-        return this;
-    }
-
-    public SessionBuilder withEndedAt(LocalDateTime endedAt) {
-        this.endedAt = endedAt;
+    public SessionBuilder withSessionPeriod(SessionPeriod sessionPeriod) {
+        this.sessionPeriod = sessionPeriod;
         return this;
     }
 
     public Session build() {
-        return new Session(id, users, sessionType, sessionStatus, coverImageUrl, maxUserCount, startedAt, endedAt);
+        return new Session(id, users, sessionType, sessionStatus, coverImageUrl, maxUserCount, sessionPeriod);
     }
 }
