@@ -2,17 +2,19 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Session {
     private Long id;
-    private List<NsUser> users;
+    private final List<NsUser> users = new ArrayList<>();
 
-    private SessionType sessionType;
+    private SessionBillType sessionBillType;
 
     private SessionStatus sessionStatus;
 
-    private String coverImageUrl;
+    private SessionCoverImage sessionCoverImage;
 
     private int maxUserCount;
 
@@ -20,12 +22,19 @@ public class Session {
     public Session() {
     }
 
-    public Session(Long id, List<NsUser> users, SessionType sessionType, SessionStatus sessionStatus, String coverImageUrl, int maxUserCount, SessionPeriod sessionPeriod) {
+    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
+        if (sessionBillType == null) {
+            throw new IllegalArgumentException("과금 유형을 선택해주세요");
+        }
+
+        if (sessionPeriod == null) {
+            throw new IllegalArgumentException("강의 기간을 설정해주세요");
+        }
+
         this.id = id;
-        this.users = users;
-        this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
-        this.coverImageUrl = coverImageUrl;
+        this.sessionBillType = sessionBillType;
+        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
+        this.sessionCoverImage = sessionCoverImage;
         this.maxUserCount = maxUserCount;
         this.sessionPeriod = sessionPeriod;
     }
@@ -50,16 +59,16 @@ public class Session {
         return users;
     }
 
-    public SessionType getSessionType() {
-        return sessionType;
+    public SessionBillType getSessionType() {
+        return sessionBillType;
     }
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
     }
 
-    public String getCoverImageUrl() {
-        return coverImageUrl;
+    public SessionCoverImage getCoverImageUrl() {
+        return sessionCoverImage;
     }
 
     public int getMaxUserCount() {
@@ -68,5 +77,22 @@ public class Session {
 
     public SessionPeriod getSessionPeriod() {
         return sessionPeriod;
+    }
+
+    public void addUser(NsUser nsUser) {
+        users.add(nsUser);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

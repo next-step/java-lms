@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static nextstep.Fixtures.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,17 +28,17 @@ class SessionTest {
     @DisplayName("강의는 커버 이미지 정보를 가진다.")
     void test03() {
         String coverImageUrl = "http://edu.nextstep.camp";
-        Session session = aSession().withCoverImageUrl(coverImageUrl).build();
+        Session session = aSession().withSessionCoverImage(new SessionCoverImage(coverImageUrl)).build();
 
-        assertThat(session.getCoverImageUrl()).isEqualTo(coverImageUrl);
+        assertThat(session.getCoverImageUrl()).isEqualTo(new SessionCoverImage(coverImageUrl));
     }
 
     @ParameterizedTest(name = "강의는 {0} 강의가 존재한다.")
-    @EnumSource(value = SessionType.class, names = {"FREE", "PAID"})
-    void test04(SessionType sessionType) {
-        Session session = aSession().withSessionType(sessionType).build();
+    @EnumSource(value = SessionBillType.class, names = {"FREE", "PAID"})
+    void test04(SessionBillType sessionBillType) {
+        Session session = aSession().withSessionBillType(sessionBillType).build();
 
-        assertThat(session.getSessionType()).isEqualTo(sessionType);
+        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의 상태 {0} 존재한다.")
@@ -75,8 +74,9 @@ class SessionTest {
     void test08() {
         Session session = aSession().withSessionStatus(SessionStatus.OPEN)
                                     .withMaxUserCount(1)
-                                    .withUsers(List.of(NsUserTest.SANJIGI))
                                     .build();
+
+        session.addUser(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }

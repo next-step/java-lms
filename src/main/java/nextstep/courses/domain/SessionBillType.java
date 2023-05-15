@@ -1,13 +1,13 @@
 package nextstep.courses.domain;
 
-public enum SessionType {
+public enum SessionBillType {
     FREE("무료"),
     PAID("유료")
     ;
 
     private final String name;
 
-    SessionType(String name) {
+    SessionBillType(String name) {
         this.name = name;
     }
 

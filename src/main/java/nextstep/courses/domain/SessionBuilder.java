@@ -1,15 +1,10 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
-import java.util.List;
-
 public final class SessionBuilder {
     private Long id;
-    private List<NsUser> users;
-    private SessionType sessionType;
+    private SessionBillType sessionBillType;
     private SessionStatus sessionStatus;
-    private String coverImageUrl;
+    private SessionCoverImage sessionCoverImage;
     private int maxUserCount;
     private SessionPeriod sessionPeriod;
 
@@ -25,13 +20,8 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withUsers(List<NsUser> users) {
-        this.users = users;
-        return this;
-    }
-
-    public SessionBuilder withSessionType(SessionType sessionType) {
-        this.sessionType = sessionType;
+    public SessionBuilder withSessionBillType(SessionBillType sessionBillType) {
+        this.sessionBillType = sessionBillType;
         return this;
     }
 
@@ -40,8 +30,8 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withCoverImageUrl(String coverImageUrl) {
-        this.coverImageUrl = coverImageUrl;
+    public SessionBuilder withSessionCoverImage(SessionCoverImage sessionCoverImage) {
+        this.sessionCoverImage = sessionCoverImage;
         return this;
     }
 
@@ -56,6 +46,6 @@ public final class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, users, sessionType, sessionStatus, coverImageUrl, maxUserCount, sessionPeriod);
+        return new Session(id, sessionBillType, sessionStatus, sessionCoverImage, maxUserCount, sessionPeriod);
     }
 }
