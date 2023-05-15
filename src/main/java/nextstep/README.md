@@ -24,16 +24,14 @@
   - [x] 질문을 삭제한다.
   - [x] Answers에 삭제 요청을 보낸다.
   - [x] DeleteHistory를 생성한다.
-  - [x] Answers로부터 List<DeleteHistory> 받는다.
-  - [x] List<DeleteHistory>를 반환한다.
+  - [x] Answers로부터 DeleteHistories 받는다.
+  - [x] DeleteHistories를 반환한다.
 - [x] Answers 일급 컬렉션을 구현한다.
-- [ ] DeleteHistories 일급 컬렉션을 구현한다.
+- [x] DeleteHistories 일급 컬렉션을 구현한다.
 - [x] Answer의 delete(NsUser requester) 메서드를 구현한다.
   - [x] 요청자와 답변자가 다르면 예외를 발생시킨다.
   - [x] 답변을 삭제한다.
   - [x] DeleteHistory를 생성하여 반환한다.
 - [x] Answers의 deleteAll(NsUser requester) 메서드를 구현한다.
   - [x] Answer에 삭제 요청을 보낸다.
-  - [x] 전달 받은 DeleteHistory들을 List로 묶어서 반환한다.
-- [ ] 인스턴스 변수를 줄인다.. (요건 나중에 더 고민해보자)
-  - [ ] dto를 구현한다.
+  - [x] 전달 받은 DeleteHistory를 DeleteHistories로 묶어서 반환한다.

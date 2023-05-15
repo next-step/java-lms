@@ -8,6 +8,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+    private static final String ALREADY_DELETED_MESSAGE = "이미 삭제된 답변입니다.";
+    private static final String PERMISSION_DENIED_MESSAGE = "답변을 삭제할 권한이 없습니다.";
     private Long id;
 
     private NsUser writer;
@@ -18,9 +20,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     public Answer() {
     }
@@ -65,8 +65,15 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
+    public DeleteHistory delete(NsUser requestUser) throws CannotDeleteException {
+        if (isDeleted()) {
+            throw new CannotDeleteException(ALREADY_DELETED_MESSAGE);
+        }
+        if (!isOwner(requestUser)) {
+            throw new CannotDeleteException(PERMISSION_DENIED_MESSAGE);
+        }
+        setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, id, requestUser, LocalDateTime.now());
     }
 
     public void toQuestion(Question question) {
@@ -76,13 +83,5 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
-    }
-
-    public DeleteHistory delete(NsUser requestUser) throws CannotDeleteException {
-        if (!isOwner(requestUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-        setDeleted(true);
-        return new DeleteHistory(ContentType.ANSWER, id, requestUser, LocalDateTime.now());
     }
 }

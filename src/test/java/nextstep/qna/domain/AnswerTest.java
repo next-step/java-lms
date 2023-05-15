@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("답변 삭제 - 요청자와 답변자가 다른 경우")
-    void deleteException2() throws CannotDeleteException {
+    void deleteException2() {
         // then
         assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)

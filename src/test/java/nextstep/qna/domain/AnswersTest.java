@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AnswersTest {
     @AfterEach
@@ -68,7 +67,7 @@ class AnswersTest {
 
     @Test
     @DisplayName("답변 삭제 - 삭제 중 실패")
-    void delete2() throws CannotDeleteException {
+    void delete2() {
         // given
         Answer answer = AnswerTest.A1;
         Answer answer2 = AnswerTest.A2;
