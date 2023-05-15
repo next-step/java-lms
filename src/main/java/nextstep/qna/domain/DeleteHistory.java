@@ -26,6 +26,10 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public LocalDateTime deletedTime() {
+        return createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
