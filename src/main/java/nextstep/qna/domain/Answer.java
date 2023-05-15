@@ -54,21 +54,12 @@ public class Answer {
     return deleted;
   }
 
-  public Answer setDeleted(boolean deleted) {
-    this.deleted = deleted;
-    return this;
-  }
-
-  public boolean isOwner(NextStepUser writer) {
+  private boolean isOwner(NextStepUser writer) {
     return this.writer.equals(writer);
   }
 
   public NextStepUser getWriter() {
     return writer;
-  }
-
-  public String getContents() {
-    return contents;
   }
 
   public void toQuestion(Question question) {
