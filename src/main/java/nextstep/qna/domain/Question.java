@@ -85,6 +85,11 @@ public class Question {
         return answers;
     }
 
+    public DeleteHistory deleteQuestion() {
+        this.deleted = true;
+        return DeleteHistory.crateDeleteHistoryByQuestion(this);
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";

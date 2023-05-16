@@ -16,6 +16,14 @@ public class DeleteHistory {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
+    public static DeleteHistory crateDeleteHistoryByQuestion(Question question) {
+        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
+    }
+
+    public static DeleteHistory crateDeleteHistoryByAnswer(Answer answer) {
+        return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
+    }
+
     public DeleteHistory() {
     }
 
