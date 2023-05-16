@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,10 @@ public class Session {
     private int maxUserCount;
 
     private SessionPeriod sessionPeriod;
+
+    private LocalDateTime createdDate = LocalDateTime.now();
+
+    private LocalDateTime updatedDate;
 
     public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
         if (sessionBillType == null) {
