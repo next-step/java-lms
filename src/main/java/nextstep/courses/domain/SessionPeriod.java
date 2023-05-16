@@ -9,7 +9,8 @@ public class SessionPeriod {
 
     public SessionPeriod(LocalDateTime startedAt, LocalDateTime endedAt) {
         if (startedAt.isAfter(endedAt)) {
-            throw new IllegalArgumentException("시작일이 종료일보다 작을 수 없습니다.");
+            throw new IllegalArgumentException("시작일은 종료일 이전이어야 합니다. startedAt: " + startedAt + " endedAt: " + endedAt
+            );
         }
 
         this.startedAt = startedAt;
