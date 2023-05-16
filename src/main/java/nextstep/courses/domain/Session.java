@@ -19,8 +19,6 @@ public class Session {
     private int maxUserCount;
 
     private SessionPeriod sessionPeriod;
-    public Session() {
-    }
 
     public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
         if (sessionBillType == null) {
