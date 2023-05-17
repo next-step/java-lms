@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
@@ -17,5 +16,12 @@ public class QuestionTest {
     @Test
     void test1() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @DisplayName("다른 사람이 작성한 답변이 있다.")
+    @Test
+    void test2() {
+        Q1.addAnswer(new Answer(NsUserTest.SANJIGI, Q1, "answer1"));
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 }

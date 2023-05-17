@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -82,13 +82,17 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public Answers getAnswers() {
+        return this.answers;
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
         if (this.isOwner(loginUser) == false) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if (this.answers.isOwner(loginUser) == false) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
