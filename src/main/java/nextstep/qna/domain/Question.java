@@ -94,6 +94,8 @@ public class Question {
         if (this.answers.isOwner(loginUser) == false) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+
+        this.setDeleted(true);
     }
 
     @Override

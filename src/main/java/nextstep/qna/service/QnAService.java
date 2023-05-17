@@ -28,11 +28,10 @@ public class QnAService {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
         question.delete(loginUser);
 
-        Answers answers = question.getAnswers();
-
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
+
+        Answers answers = question.getAnswers();
         for (Answer answer : answers.getAnswers()) {
             answer.setDeleted(true);
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
