@@ -47,27 +47,12 @@ public class User {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
     }
 
     public String getEmail() {
