@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class SessionDate {
 
@@ -11,6 +12,14 @@ public class SessionDate {
 
   public SessionDate(LocalDateTime sessionDate) {
     this.sessionDate = sessionDate;
+  }
+
+  public SessionDate changeSessionDate(LocalDateTime sessionDate) {
+    return new SessionDate(sessionDate);
+  }
+
+  public boolean isSameDate(SessionDate otherSessionDate) {
+    return sessionDate.isEqual(otherSessionDate.sessionDate);
   }
 
   public void validateClosedDate(LocalDateTime closedDate) {
