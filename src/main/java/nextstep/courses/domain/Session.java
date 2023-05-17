@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NextStepUser;
 import nextstep.users.domain.NextStepUsers;
 
+import java.time.LocalDateTime;
+
 public class Session {
 
   private final Long id;
@@ -12,16 +14,18 @@ public class Session {
   private final NextStepUsers nextStepUsers = new NextStepUsers();
   private final SessionDate startDate;
   private final SessionDate closedDate;
+  private final SessionCoverUrl sessionCoverUrl;
 
-  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, SessionDate startDate, SessionDate closedDate) {
-    startDate.validateClosedDate(closedDate);
+  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime closedDate, String sessionCoverUrl) {
+    this.startDate = new SessionDate(startDate);
+    this.startDate.validateClosedDate(closedDate);
 
     this.id = id;
     this.sessionPayment = sessionPayment;
     this.sessionStatus = sessionStatus;
     this.maxUserEnrollment = new MaxUserEnrollment(maxUserEnrollment);
-    this.startDate = startDate;
-    this.closedDate = closedDate;
+    this.closedDate = new SessionDate(closedDate);
+    this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
   }
 
   public int currentEnrollmentCount() {

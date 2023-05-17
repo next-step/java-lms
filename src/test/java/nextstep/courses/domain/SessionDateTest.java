@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 public class SessionDateTest {
 
   private SessionDate startDate;
-  private SessionDate closedDate;
+  private LocalDateTime closedDate;
 
   @BeforeEach
   public void setUp() {
     startDate = new SessionDate(LocalDateTime.of(2023, 5, 17, 0, 0, 0));
-    closedDate = new SessionDate(LocalDateTime.of(2023, 5, 15, 0, 0, 0));
+    closedDate = LocalDateTime.of(2023, 5, 15, 0, 0, 0);
   }
 
   @Test

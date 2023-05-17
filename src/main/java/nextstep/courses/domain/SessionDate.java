@@ -13,9 +13,9 @@ public class SessionDate {
     this.sessionDate = sessionDate;
   }
 
-  public void validateClosedDate(SessionDate closedDate) {
-    if (sessionDate.isAfter(closedDate.sessionDate)) {
-      throw new IllegalArgumentException(ILLEGAL_SESSION_DATE_MESSAGE + currentDate(sessionDate) + CLOSED_DATE_MESSAGE + currentDate(closedDate.sessionDate));
+  public void validateClosedDate(LocalDateTime closedDate) {
+    if (sessionDate.isAfter(closedDate)) {
+      throw new IllegalArgumentException(ILLEGAL_SESSION_DATE_MESSAGE + currentDate(sessionDate) + CLOSED_DATE_MESSAGE + currentDate(closedDate));
     }
   }
 
