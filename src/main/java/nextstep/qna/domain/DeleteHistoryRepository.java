@@ -1,8 +1,7 @@
 package nextstep.qna.domain;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface DeleteHistoryRepository {
-
-    void saveAll(List<DeleteHistory> deleteHistories);
+    void saveAll(Collection<DeleteHistory> deleteHistories);
 }
