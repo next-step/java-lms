@@ -21,11 +21,11 @@ public class Session {
 
     private final SessionPeriod sessionPeriod;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
+    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -40,6 +40,8 @@ public class Session {
         this.sessionCoverImage = sessionCoverImage;
         this.maxUserCount = maxUserCount;
         this.sessionPeriod = sessionPeriod;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void register(NsUser user) {
@@ -58,7 +60,7 @@ public class Session {
         return id;
     }
 
-    public List<SessionJoin> getJoinSessions() {
+    public List<SessionJoin> getSessionJoins() {
         return sessionJoins;
     }
 
@@ -86,8 +88,8 @@ public class Session {
         return sessionBillType;
     }
 
-    public SessionCoverImage getSessionCoverImage() {
-        return sessionCoverImage;
+    public String getSessionCoverImageUrl() {
+        return sessionCoverImage.getUrl();
     }
 
     public LocalDateTime getCreatedAt() {

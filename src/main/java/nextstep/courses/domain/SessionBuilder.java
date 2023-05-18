@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.time.LocalDateTime;
+
 public final class SessionBuilder {
     private Long id;
     private SessionBillType sessionBillType;
@@ -7,6 +9,8 @@ public final class SessionBuilder {
     private SessionCoverImage sessionCoverImage;
     private int maxUserCount;
     private SessionPeriod sessionPeriod;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private SessionBuilder() {
     }
@@ -45,7 +49,17 @@ public final class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public SessionBuilder withUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
     public Session build() {
-        return new Session(id, sessionBillType, sessionStatus, sessionCoverImage, maxUserCount, sessionPeriod);
+        return new Session(id, sessionBillType, sessionStatus, sessionCoverImage, maxUserCount, sessionPeriod, createdAt, updatedAt);
     }
 }

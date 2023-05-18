@@ -17,6 +17,14 @@ public class SessionPeriod {
         this.endedAt = endedAt;
     }
 
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public LocalDateTime getEndedAt() {
+        return endedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -32,9 +32,13 @@ public class Fixtures {
 
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
-                             .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))
                              .withSessionBillType(SessionBillType.FREE)
-                             .withId(1L);
+                             .withSessionStatus(SessionStatus.READY)
+                             .withSessionCoverImage(new SessionCoverImage("http://edu.nexystep.camp"))
+                             .withMaxUserCount(100)
+                             .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))
+                             .withCreatedAt(LocalDateTime.now())
+                             .withUpdatedAt(LocalDateTime.now());
     }
 
 }
