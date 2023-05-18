@@ -12,4 +12,7 @@ public class Image extends BaseEntity {
     private Long size;
 
     private ImageType type;
+
+    protected Image() {
+    }
 }
