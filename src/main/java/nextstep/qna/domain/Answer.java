@@ -6,6 +6,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Answer {
@@ -84,6 +85,9 @@ public class Answer {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         setDeleted(true);
-        return null;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+        return deleteHistories;
     }
 }
