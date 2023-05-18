@@ -74,7 +74,7 @@ public class Question {
         return deleted;
     }
 
-    public Question setDeleted(boolean deleted) {
+    private Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -82,19 +82,11 @@ public class Question {
     public DeleteHistories delete(NsUser requestUser) throws CannotDeleteException {
         DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(deleteQuestion(requestUser));
-        deleteHistories.addAll(deleteAnswers(requestUser));
-
-        return deleteHistories;
-    }
-
-    private DeleteHistories deleteAnswers(NsUser requestUser) throws CannotDeleteException {
-        DeleteHistories deleteHistories = new DeleteHistories();
-        try {
-            deleteHistories.addAll(answers.deleteAll(requestUser));
-        } catch (CannotDeleteException e) {
-            setDeleted(false);
+        if (answers.hasOthers(requestUser)) {
             throw new CannotDeleteException(OTHERUSER_ANSWER_MESSAGE);
         }
+        deleteHistories.addAll(answers.deleteAll(requestUser));
+
         return deleteHistories;
     }
 

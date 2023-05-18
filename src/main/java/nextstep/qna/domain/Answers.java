@@ -43,6 +43,11 @@ public class Answers {
                 .collect(Collectors.toList());
     }
 
+    public boolean hasOthers(NsUser requestUser) {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(requestUser));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
