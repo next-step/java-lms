@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -7,18 +8,14 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+    private static final String ALREADY_DELETED_MESSAGE = "이미 삭제된 답변입니다.";
+    private static final String PERMISSION_DENIED_MESSAGE = "답변을 삭제할 권한이 없습니다.";
+    private final LocalDateTime createdDate = LocalDateTime.now();
     private Long id;
-
     private NsUser writer;
-
     private Question question;
-
     private String contents;
-
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
 
     public Answer() {
@@ -30,11 +27,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,13 +44,14 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
+    }
+
+    private Answer setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        updatedDate = LocalDateTime.now();
+        return this;
     }
 
     public boolean isOwner(NsUser writer) {
@@ -66,6 +64,23 @@ public class Answer {
 
     public String getContents() {
         return contents;
+    }
+
+    public Answer modifyContents(String contents) {
+        this.contents = contents;
+        updatedDate = LocalDateTime.now();
+        return this;
+    }
+
+    public DeleteHistory delete(NsUser requestUser) throws CannotDeleteException {
+        if (isDeleted()) {
+            throw new CannotDeleteException(ALREADY_DELETED_MESSAGE);
+        }
+        if (!isOwner(requestUser)) {
+            throw new CannotDeleteException(PERMISSION_DENIED_MESSAGE);
+        }
+        setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, id, requestUser, LocalDateTime.now());
     }
 
     public void toQuestion(Question question) {
