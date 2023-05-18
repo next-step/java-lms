@@ -1,92 +1,81 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Question {
-    private Long id;
 
-    private String title;
+  private Long id;
 
-    private String contents;
+  private String title;
 
-    private NsUser writer;
+  private String contents;
 
-    private List<Answer> answers = new ArrayList<>();
+  private NsUser writer;
 
-    private boolean deleted = false;
+  private Answers answers = new Answers();
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+  private boolean deleted = false;
 
-    private LocalDateTime updatedDate;
+  private LocalDateTime createdDate = LocalDateTime.now();
 
-    public Question() {
+  private LocalDateTime updatedDate;
+
+  public Question() {
+  }
+
+  public Question(NsUser writer, String title, String contents) {
+    this(0L, writer, title, contents);
+  }
+
+  public Question(Long id, NsUser writer, String title, String contents) {
+    this.id = id;
+    this.writer = writer;
+    this.title = title;
+    this.contents = contents;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public NsUser getWriter() {
+    return writer;
+  }
+
+  public void addAnswer(Answer answer) {
+    answer.toQuestion(this);
+    answers.add(answer);
+  }
+
+  public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
+    if (!checkQuestionOwner(loginUser)) {
+      throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
+    DeleteHistories deleteHistories = new DeleteHistories();
+    makeDeleted(deleteHistories);
+    answers.delete(loginUser, deleteHistories);
+    return deleteHistories;
+  }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
+  private boolean checkQuestionOwner(NsUser loginUser) {
+    return writer.equals(loginUser);
+  }
 
-    public Long getId() {
-        return id;
-    }
+  private void makeDeleted(DeleteHistories deleteHistories) {
+    this.deleted = true;
+    deleteHistories.addDeleteHistory(new DeleteHistory(this));
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public boolean isDeleted() {
+    return deleted;
+  }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
+  @Override
+  public String toString() {
+    return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer="
+        + writer + "]";
+  }
 }
