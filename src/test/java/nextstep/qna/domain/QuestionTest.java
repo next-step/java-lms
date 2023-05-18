@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -16,4 +17,11 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
+
+    @Test
+    void 상태값_변경_확인() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI);
+        assertTrue(Q1.isDeleted());
+    }
+
 }
