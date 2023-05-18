@@ -3,6 +3,9 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,14 +27,14 @@ public class QuestionTest {
     @DisplayName("질문 작성자와 삭제시도 유저가 다르다.")
     @Test
     void test1() {
-        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("다른 사람이 작성한 답변이 있다.")
     @Test
     void test2() {
         question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "answer1"));
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("질문/답변 삭제 성공")
@@ -42,10 +45,29 @@ public class QuestionTest {
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        question.delete(NsUserTest.JAVAJIGI);
+        question.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();
+    }
+
+    @DisplayName("삭제 이력 생성")
+    @Test
+    void test4() throws CannotDeleteException {
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+
+        LocalDateTime deleteTime = LocalDateTime.now();
+
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI, deleteTime);
+
+        assertThat(deleteHistories).containsExactly(
+            new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), deleteTime),
+            new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), deleteTime),
+            new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), deleteTime)
+        );
     }
 }
