@@ -42,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -82,10 +64,6 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
@@ -98,7 +76,7 @@ public class Question {
         setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
 
         for (Answer answer : answers) {
             deleteHistories.addAll(answer.delete(nsUser));

@@ -67,10 +67,6 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
@@ -87,7 +83,7 @@ public class Answer {
         setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
         return deleteHistories;
     }
 }
