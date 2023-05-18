@@ -18,13 +18,23 @@ class CourseServiceTest {
     private CourseRepository courseRepository;
 
     @Test
-    @DisplayName("디비 저장")
+    @DisplayName("저장")
     void test01() {
         courseService.save(aCourse().build());
 
         Course findCourse = courseRepository.findById(1L);
 
         assertThat(findCourse.getId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("조회")
+    void test02() {
+        courseRepository.save(aCourse().build());
+
+        Course findCourse = courseService.findById(1L);
+
+        assertThat(findCourse.getId()).isEqualTo(1L);
     }
 
 }

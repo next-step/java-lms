@@ -18,4 +18,9 @@ public class DefaultCourseService implements CourseService{
     public long save(Course course) {
         return courseRepository.save(course);
     }
+
+    @Override
+    public Course findById(long id) {
+        return courseRepository.findById(id);
+    }
 }
