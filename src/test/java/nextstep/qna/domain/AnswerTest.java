@@ -12,7 +12,7 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
 
     @Test
-    void 다른_사람이_쓴_답변이_있어_삭제할수_없습니다_예외() {
+    void delete_다른_사람이_쓴_답변이_있어_삭제할수_없습니다_예외() {
         Q1.addAnswer(A1);
         Q1.addAnswer(A2);
 

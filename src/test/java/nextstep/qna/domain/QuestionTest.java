@@ -15,7 +15,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    void 질문을_삭제할_권한이_없습니다_예외() {
+    void delete_질문을_삭제할_권한이_없습니다_예외() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI, 1))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
