@@ -35,8 +35,24 @@ public class Question {
         this.contents = contents;
     }
 
-    public void delete() {
+    public List<DeleteHistory> delete() {
         this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(this.deleteAnswers());
+
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswers() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        for (Answer answer : this.answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
     }
 
     public Long getId() {
@@ -70,10 +86,6 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override

@@ -31,12 +31,23 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문자와 답변글의 답변자가 다른 경우 exception")
-    void check_answer_to_delete(){
-        final NsUser nsUser = new NsUser(1L,"testId","password","test","test@email.com");
-        final Question question = new Question(nsUser,"testTitle","testContents");
-        question.addAnswer(new Answer(1L,NsUserTest.JAVAJIGI,question,"testContents"));
+    void check_answer_to_delete() {
+        final NsUser nsUser = new NsUser(1L, "testId", "password", "test", "test@email.com");
+        final Question question = new Question(nsUser, "testTitle", "testContents");
+        question.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, question, "testContents"));
 
         assertThatThrownBy(() -> question.checkAnswerToDelete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("질문 삭제 테스트")
+    void delete_question() {
+        Q1.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, Q1, "testContents"));
+
+        assertThat(Q1.delete())
+                .hasSize(2);
+        assertThat(Q1.isDeleted())
+                .isTrue();
     }
 }
