@@ -15,7 +15,6 @@ import nextstep.users.domain.NsUserTest;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     private Question question;
 
@@ -24,20 +23,20 @@ public class QuestionTest {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
     }
 
-    @DisplayName("질문 작성자와 삭제시도 유저가 다르다.")
+    @DisplayName("질문 작성자와 삭제시도 유저가 다른 경우 - 예외 발생")
     @Test
     void test1() {
         assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("다른 사람이 작성한 답변이 있다.")
+    @DisplayName("다른 사람이 작성한 답변이 있는 경우 - 예외 발생")
     @Test
     void test2() {
         question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "answer1"));
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("질문/답변 삭제 성공")
+    @DisplayName("질문/답변 삭제")
     @Test
     void test3() throws CannotDeleteException {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
@@ -52,7 +51,7 @@ public class QuestionTest {
         assertThat(answer2.isDeleted()).isTrue();
     }
 
-    @DisplayName("삭제 이력 생성")
+    @DisplayName("질문/답변 삭제 이력 생성")
     @Test
     void test4() throws CannotDeleteException {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
