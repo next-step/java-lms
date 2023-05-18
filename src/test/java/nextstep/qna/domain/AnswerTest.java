@@ -16,7 +16,7 @@ public class AnswerTest {
         Q1.addAnswer(A1);
         Q1.addAnswer(A2);
 
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI, 1))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
