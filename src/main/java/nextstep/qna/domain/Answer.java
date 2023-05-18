@@ -6,7 +6,6 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Answer {
@@ -82,8 +81,6 @@ public class Answer {
         }
         changeStatusDeleted(true);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
-        return deleteHistories;
+        return List.of(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
     }
 }
