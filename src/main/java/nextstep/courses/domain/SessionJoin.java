@@ -26,6 +26,10 @@ public class SessionJoin {
         this.updatedAt = updatedAt;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Session getSession() {
         return session;
     }
