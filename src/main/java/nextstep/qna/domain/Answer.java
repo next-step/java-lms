@@ -1,79 +1,75 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Answer {
-    private Long id;
 
-    private NsUser writer;
+  private Long id;
 
-    private Question question;
+  private NsUser writer;
 
-    private String contents;
+  private Question question;
 
-    private boolean deleted = false;
+  private String contents;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+  private boolean deleted = false;
 
-    private LocalDateTime updatedDate;
+  private LocalDateTime createdDate = LocalDateTime.now();
 
-    public Answer() {
+  private LocalDateTime updatedDate;
+
+  public Answer() {
+  }
+
+  public Answer(NsUser writer, Question question, String contents) {
+    this(null, writer, question, contents);
+  }
+
+  public Answer(Long id, NsUser writer, Question question, String contents) {
+    this.id = id;
+    if (writer == null) {
+      throw new UnAuthorizedException();
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+    if (question == null) {
+      throw new NotFoundException();
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
+    this.writer = writer;
+    this.question = question;
+    this.contents = contents;
+  }
 
-        if(question == null) {
-            throw new NotFoundException();
-        }
+  public Long getId() {
+    return id;
+  }
 
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
-    }
+  public NsUser getWriter() {
+    return writer;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public boolean isDeleted() {
+    return deleted;
+  }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
+  public void makeDeleted(DeleteHistories deleteHistories) {
+    this.deleted = true;
+    deleteHistories.addDeleteHistory(new DeleteHistory(this));
+  }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
+  public boolean isOwner(NsUser writer) {
+    return this.writer.equals(writer);
+  }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
+  public void toQuestion(Question question) {
+    this.question = question;
+  }
 
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
-    }
-
-    @Override
-    public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
-    }
+  @Override
+  public String toString() {
+    return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + "]";
+  }
 }
