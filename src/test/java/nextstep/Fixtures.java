@@ -24,10 +24,11 @@ public class Fixtures {
 
     public static CourseBuilder aCourse() {
         return CourseBuilder.aCourse()
-                            .withId(1L)
+                            .withTitle("title")
                             .withSessions(new ArrayList<>())
                             .withCreatorId(1L)
-                            .withCreatedAt(LocalDateTime.now());
+                            .withCreatedAt(LocalDateTime.now())
+                            .withUpdatedAt(LocalDateTime.now());
     }
 
     public static SessionBuilder aSession() {
