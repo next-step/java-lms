@@ -13,10 +13,7 @@ public class AnswerTest {
 
     @Test
     void delete_다른_사람이_쓴_답변이_있어_삭제할수_없습니다_예외() {
-        Q1.addAnswer(A1);
-        Q1.addAnswer(A2);
-
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI, 1))
+        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
