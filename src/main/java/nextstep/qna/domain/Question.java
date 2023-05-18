@@ -10,20 +10,13 @@ public class Question {
     private static final String OTHERUSER_ANSWER_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private static final String ALREADY_DELETED_MESSAGE = "이미 삭제된 질문입니다.";
     private static final String PERMISSION_DENIED_MESSAGE = "질문을 삭제할 권한이 없습니다.";
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
-    private Answers answers = new Answers(new ArrayList<>());
-
-    private boolean deleted = false;
-
     private final LocalDateTime createdDate = LocalDateTime.now();
-
+    private Long id;
+    private String title;
+    private String contents;
+    private NsUser writer;
+    private Answers answers = new Answers(new ArrayList<>());
+    private boolean deleted = false;
     private LocalDateTime updatedDate;
 
     public Question() {
@@ -77,18 +70,18 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public DeleteHistories delete(NsUser requestUser) throws CannotDeleteException {
         DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(deleteQustion(requestUser));
+        deleteHistories.add(deleteQuestion(requestUser));
         deleteHistories.addAll(deleteAnswers(requestUser));
 
         return deleteHistories;
@@ -105,7 +98,7 @@ public class Question {
         return deleteHistories;
     }
 
-    private DeleteHistory deleteQustion(NsUser requestUser) throws CannotDeleteException {
+    private DeleteHistory deleteQuestion(NsUser requestUser) throws CannotDeleteException {
         if (isDeleted()) {
             throw new CannotDeleteException(ALREADY_DELETED_MESSAGE);
         }

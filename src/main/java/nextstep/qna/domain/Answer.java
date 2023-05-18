@@ -48,7 +48,7 @@ public class Answer {
         return deleted;
     }
 
-    public Answer setDeleted(boolean deleted) {
+    protected Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         updatedDate = LocalDateTime.now();
         return this;
@@ -66,7 +66,7 @@ public class Answer {
         return contents;
     }
 
-    public Answer setContents(String contents) {
+    public Answer modifyContents(String contents) {
         this.contents = contents;
         updatedDate = LocalDateTime.now();
         return this;
