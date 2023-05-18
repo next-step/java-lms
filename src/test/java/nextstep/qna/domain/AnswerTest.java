@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static nextstep.qna.domain.QuestionTest.Q1;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
@@ -16,5 +17,11 @@ public class AnswerTest {
         assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    void delete_상태값_변경_확인() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
+        assertTrue(A1.isDeleted());
     }
 }
