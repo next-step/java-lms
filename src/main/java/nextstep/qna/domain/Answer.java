@@ -65,10 +65,10 @@ public class Answer {
         return true;
     }
 
-    public void delete(NsUser writer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser writer) throws CannotDeleteException {
         validateOwner(writer);
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
+        return new DeleteHistory(ContentType.ANSWER, id, writer, createdDate);
     }
 
     public NsUser getWriter() {

@@ -5,7 +5,10 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Question {
     private Long id;
@@ -61,14 +64,14 @@ public class Question {
     public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
         validateOwner(nsUser);
 
+        Answers answersCollection = new Answers(answers);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
 
-        for (Answer ans : answers) {
-            ans.delete(nsUser, deleteHistories);
-        }
-        return deleteHistories;
+        return Stream.of(deleteHistories, answersCollection.deleteAll(writer))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public boolean isDeleted() {
