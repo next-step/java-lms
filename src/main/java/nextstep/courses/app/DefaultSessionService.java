@@ -16,4 +16,9 @@ public class DefaultSessionService implements SessionService{
     public long save(Session session) {
         return sessionRepository.save(session);
     }
+
+    @Override
+    public Session findById(long id) {
+        return sessionRepository.findById(id);
+    }
 }

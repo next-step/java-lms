@@ -19,13 +19,24 @@ class SessionServiceTest {
     private SessionRepository sessionRepository;
 
     @Test
-    @DisplayName("DB 저장")
+    @DisplayName("저장")
     void test01() {
         sessionService.save(aSession().build());
 
         Session findSession = sessionRepository.findById(1L);
 
         assertThat(findSession.getId()).isNotNull();
+    }
+
+
+    @Test
+    @DisplayName("조회")
+    void test02() {
+        sessionRepository.save(aSession().build());
+
+        Session findSession = sessionService.findById(1L);
+
+        assertThat(findSession.getId()).isEqualTo(1L);
     }
 
 }
