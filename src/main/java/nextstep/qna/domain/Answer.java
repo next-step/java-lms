@@ -50,7 +50,7 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
+    public Answer changeStatusDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -80,7 +80,7 @@ public class Answer {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        setDeleted(true);
+        changeStatusDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
