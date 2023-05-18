@@ -4,7 +4,10 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static nextstep.qna.domain.QuestionTest.Q1;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,4 +27,11 @@ public class AnswerTest {
         A1.delete(NsUserTest.JAVAJIGI);
         assertTrue(A1.isDeleted());
     }
+
+    @Test
+    void delete_반환값_확인() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = A1.delete(NsUserTest.JAVAJIGI);
+        assertThat(deleteHistories.size()).isEqualTo(1);
+    }
+
 }
