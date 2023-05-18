@@ -58,7 +58,7 @@ class SessionTest {
 
         session.register(NsUserTest.JAVAJIGI);
 
-        assertThat(session.getUsers()).hasSize(1).containsExactly(NsUserTest.JAVAJIGI);
+        assertThat(session.getJoinSessions()).hasSize(1).containsExactly(new SessionJoin(session, NsUserTest.JAVAJIGI));
     }
 
     @Test

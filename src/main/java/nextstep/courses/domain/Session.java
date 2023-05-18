@@ -9,21 +9,21 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
-    private final List<NsUser> users = new ArrayList<>();
+    private final List<SessionJoin> sessionJoins = new ArrayList<>();
 
-    private SessionBillType sessionBillType;
+    private final SessionBillType sessionBillType;
 
-    private SessionStatus sessionStatus;
+    private final SessionStatus sessionStatus;
 
-    private SessionCoverImage sessionCoverImage;
+    private final SessionCoverImage sessionCoverImage;
 
-    private int maxUserCount;
+    private final int maxUserCount;
 
-    private SessionPeriod sessionPeriod;
+    private final SessionPeriod sessionPeriod;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 
     public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
         if (sessionBillType == null) {
@@ -47,19 +47,19 @@ public class Session {
             throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
         }
 
-        if (maxUserCount <= users.size()) {
+        if (maxUserCount <= sessionJoins.size()) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        users.add(user);
+        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), LocalDateTime.now()));
     }
 
     public Long getId() {
         return id;
     }
 
-    public List<NsUser> getUsers() {
-        return users;
+    public List<SessionJoin> getJoinSessions() {
+        return sessionJoins;
     }
 
     public SessionBillType getSessionType() {
@@ -82,8 +82,24 @@ public class Session {
         return sessionPeriod;
     }
 
+    public SessionBillType getSessionBillType() {
+        return sessionBillType;
+    }
+
+    public SessionCoverImage getSessionCoverImage() {
+        return sessionCoverImage;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void addUser(NsUser nsUser) {
-        users.add(nsUser);
+        sessionJoins.add(new SessionJoin(this, nsUser, LocalDateTime.now(), LocalDateTime.now()));
     }
 
     @Override
