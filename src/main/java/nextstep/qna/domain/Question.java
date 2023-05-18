@@ -96,6 +96,7 @@ public class Question {
         }
 
         this.setDeleted(true);
+        answers.delete();
     }
 
     @Override

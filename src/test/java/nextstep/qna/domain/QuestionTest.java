@@ -34,11 +34,18 @@ public class QuestionTest {
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("질문 삭제 성공")
+    @DisplayName("질문/답변 삭제 성공")
     @Test
     void test3() throws CannotDeleteException {
-        question.addAnswer(new Answer(NsUserTest.JAVAJIGI, question, "answer1"));
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+
         question.delete(NsUserTest.JAVAJIGI);
+
         assertThat(question.isDeleted()).isTrue();
+        assertThat(answer1.isDeleted()).isTrue();
+        assertThat(answer2.isDeleted()).isTrue();
     }
 }

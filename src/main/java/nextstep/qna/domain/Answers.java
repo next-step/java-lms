@@ -24,4 +24,8 @@ public class Answers {
 	public boolean isOwner(NsUser loginUser) {
 		return this.answers.stream().allMatch(answer -> answer.isOwner(loginUser));
 	}
+
+	public void delete() {
+		this.answers.forEach(answer -> answer.setDeleted(true));
+	}
 }

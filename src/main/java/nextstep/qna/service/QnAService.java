@@ -33,7 +33,6 @@ public class QnAService {
 
         Answers answers = question.getAnswers();
         for (Answer answer : answers.getAnswers()) {
-            answer.setDeleted(true);
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         deleteHistoryService.saveAll(deleteHistories);
