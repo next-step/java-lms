@@ -19,7 +19,7 @@ public class AnswerTest {
     }
 
     @Test
-    @DisplayName("삭제 시 deleted 필드가 true로 변경되는지 확인하는 테스트")
+    @DisplayName("삭제 시 deleted 필드가 true 변경되는지 확인하는 테스트")
     void testDelete_삭제_확인_테스트() {
         assertThat(answer.isDeleted()).isFalse();
         answer.delete();
