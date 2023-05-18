@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionTest {
 
+    @DisplayName("강의 시작일이 종료일보다 늦으면 에외를 던진다.")
     @Test
-    @DisplayName("강의 시작일이 종요일보다 늦으면 에외를 던진다.")
     void create_session_with_invalid_date_time_should_throw_exception() {
         LocalDateTime openingDateTime = LocalDateTime.of(2023, 5, 1, 0, 0);
         LocalDateTime closingDateTime = LocalDateTime.of(2023, 4, 1, 0, 0);
@@ -44,7 +44,7 @@ class SessionTest {
         LocalDateTime closingDateTime = LocalDateTime.of(2023, 6, 1, 0, 0);
         Session session = Session.create("1st", new Image(), openingDateTime, closingDateTime,
                 SessionType.FREE, SessionStatus.RECRUITING, 0);
-        User user = new User(1L, "username1", "password1", "name1", "email1");
+        User user = new User(1L, "username", "password", "name", "email");
 
 
         assertThrows(SessionEnrollmentException.class, () -> session.enroll(user));
