@@ -91,14 +91,14 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser nsUser, long questionId) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
 
         for (Answer answer : answers) {
             deleteHistories.addAll(answer.delete(nsUser));
