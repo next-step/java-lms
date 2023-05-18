@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Collection;
 
 @Service("deleteHistoryService")
 public class DeleteHistoryService {
@@ -15,7 +15,7 @@ public class DeleteHistoryService {
     private DeleteHistoryRepository deleteHistoryRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveAll(List<DeleteHistory> deleteHistories) {
+    public void saveAll(Collection<DeleteHistory> deleteHistories) {
         deleteHistoryRepository.saveAll(deleteHistories);
     }
 }

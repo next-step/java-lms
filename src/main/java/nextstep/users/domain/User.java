@@ -5,8 +5,8 @@ import nextstep.qna.UnAuthorizedException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class NsUser {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
+public class User {
+    public static final GuestUser GUEST_USER = new GuestUser();
 
     private Long id;
 
@@ -22,14 +22,14 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
-    public NsUser() {
+    public User() {
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email) {
+    public User(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, LocalDateTime.now(), null);
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -47,39 +47,19 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public void update(NsUser loginUser, NsUser target) {
+    public void update(User loginUser, User target) {
         if (!matchUserId(loginUser.getUserId())) {
             throw new UnAuthorizedException();
         }
@@ -92,7 +72,7 @@ public class NsUser {
         this.email = target.email;
     }
 
-    public boolean matchUser(NsUser target) {
+    public boolean matchUser(User target) {
         return matchUserId(target.getUserId());
     }
 
@@ -104,7 +84,7 @@ public class NsUser {
         return password.equals(targetPassword);
     }
 
-    public boolean equalsNameAndEmail(NsUser target) {
+    public boolean equalsNameAndEmail(User target) {
         if (Objects.isNull(target)) {
             return false;
         }
@@ -117,7 +97,7 @@ public class NsUser {
         return false;
     }
 
-    private static class GuestNsUser extends NsUser {
+    private static class GuestUser extends User {
         @Override
         public boolean isGuestUser() {
             return true;
