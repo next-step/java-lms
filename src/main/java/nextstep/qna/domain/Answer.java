@@ -6,6 +6,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Answer {
     private Long id;
@@ -57,19 +58,21 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) throws CannotDeleteException {
+    public boolean validateOwner(NsUser writer) throws CannotDeleteException {
         if (this.writer != writer) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         return true;
     }
 
-    public NsUser getWriter() {
-        return writer;
+    public void delete(NsUser writer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+        validateOwner(writer);
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
     }
 
-    public String getContents() {
-        return contents;
+    public NsUser getWriter() {
+        return writer;
     }
 
     public void toQuestion(Question question) {

@@ -42,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -69,7 +51,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) throws CannotDeleteException {
+    public boolean validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (writer != loginUser) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -77,31 +59,20 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
-        isOwner(nsUser);
+        validateOwner(nsUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
 
         for (Answer ans : answers) {
-            ans.isOwner(nsUser);
-            ans.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, ans.getId(), ans.getWriter(), createdDate));
+            ans.delete(nsUser, deleteHistories);
         }
         return deleteHistories;
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
