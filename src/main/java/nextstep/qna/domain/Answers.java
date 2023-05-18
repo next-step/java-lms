@@ -32,30 +32,15 @@ public class Answers {
         DeleteHistories deleteHistories = new DeleteHistories();
         List<Answer> aliveAnswers = getAliveAnswers();
         for (Answer answer : aliveAnswers) {
-            deleteHistories.add(tryDelete(requestUser, answer, aliveAnswers));
+            deleteHistories.add(answer.delete(requestUser));
         }
         return deleteHistories;
-    }
-
-    private DeleteHistory tryDelete(NsUser requestUser, Answer answer, List<Answer> restoreTarget) throws CannotDeleteException {
-        try {
-            return answer.delete(requestUser);
-        } catch (CannotDeleteException e) {
-            restoreAnswers(restoreTarget);
-            throw new CannotDeleteException(e.getMessage());
-        }
     }
 
     private List<Answer> getAliveAnswers() {
         return answers.stream()
                 .filter(answer -> !answer.isDeleted())
                 .collect(Collectors.toList());
-    }
-
-    private void restoreAnswers(List<Answer> aliveAnswers) {
-        for (Answer aliveAnswer : aliveAnswers) {
-            aliveAnswer.setDeleted(false);
-        }
     }
 
     @Override

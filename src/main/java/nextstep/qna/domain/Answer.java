@@ -48,7 +48,7 @@ public class Answer {
         return deleted;
     }
 
-    protected Answer setDeleted(boolean deleted) {
+    private Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         updatedDate = LocalDateTime.now();
         return this;

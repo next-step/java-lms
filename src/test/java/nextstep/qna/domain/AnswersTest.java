@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class AnswersTest {
     @AfterEach
@@ -63,19 +62,5 @@ class AnswersTest {
         assertThat(answers.deleteAll(answer.getWriter())).isEqualTo(new DeleteHistories(
                 new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), LocalDateTime.now())
         ));
-    }
-
-    @Test
-    @DisplayName("답변 삭제 - 삭제 중 실패")
-    void delete2() {
-        // given
-        Answer answer = AnswerTest.A1;
-        Answer answer2 = AnswerTest.A2;
-        Answers answers = new Answers(answer, answer2);
-
-        // when
-        assertThatThrownBy(() -> answers.deleteAll(answer.getWriter()))
-                .isInstanceOf(CannotDeleteException.class);
-        assertThat(answer.isDeleted()).isFalse();
     }
 }
