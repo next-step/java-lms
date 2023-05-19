@@ -33,13 +33,17 @@ public class Answers implements Iterable<Answer> {
 
     public List<DeleteHistory> deleteAll() throws CannotDeleteException {
         for (Answer answer : answers) {
-            if (!answer.isOwner(question.getWriter())) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            validateDeletion(answer);
         }
 
         return this.answers.stream()
                 .map(Answer::delete)
                 .collect(Collectors.toList());
+    }
+
+    private void validateDeletion(Answer answer) throws CannotDeleteException {
+        if (!answer.isOwner(question.getWriter())) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
