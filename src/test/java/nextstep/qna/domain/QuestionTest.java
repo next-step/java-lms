@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
@@ -34,7 +36,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문 데이터를 삭제하면 질문의 상태를 삭제로 변경")
-    void delete_question_then_set_deleted_to_true() throws CannotDeleteException {
+    void delete_question_then_set_deleted_status_to_true() throws CannotDeleteException {
         // given
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
@@ -43,5 +45,22 @@ public class QuestionTest {
 
         // then
         assertThat(question.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("질문 데이터를 삭제하면, 답변들의 상태를 삭제로 변경")
+    void delete_question_then_set_answers_deleted_status_to_true() throws CannotDeleteException {
+        // given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.addAnswer(AnswerTest.A1);
+
+        // when
+        question.delete(NsUserTest.JAVAJIGI);
+
+        // then
+        Optional<Answer> notDeletedAnswer = question.getAnswers().stream()
+                .filter(answer -> !answer.isDeleted())
+                .findAny();
+        assertThat(notDeletedAnswer).isEmpty();
     }
 }

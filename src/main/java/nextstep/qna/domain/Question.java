@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Question {
     private Long id;
@@ -81,10 +82,17 @@ public class Question {
         validateLoginUser(loginUser);
         validateAnswerUser(loginUser);
         convertStatusToDeleted();
+        convertAnswerStatusToDeleted();
     }
 
     private void convertStatusToDeleted() {
         deleted = true;
+    }
+
+    private void convertAnswerStatusToDeleted() {
+        answers = answers.stream()
+                .map(answer -> answer.setDeleted(true))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private void validateAnswerUser(NsUser loginUser) throws CannotDeleteException {
