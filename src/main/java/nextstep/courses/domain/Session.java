@@ -53,7 +53,7 @@ public class Session {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), LocalDateTime.now()));
+        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
     }
 
     public Long getId() {
@@ -116,5 +116,10 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" + "id=" + id + ", sessionBillType=" + sessionBillType + ", sessionStatus=" + sessionStatus + ", sessionCoverImage=" + sessionCoverImage + ", maxUserCount=" + maxUserCount + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

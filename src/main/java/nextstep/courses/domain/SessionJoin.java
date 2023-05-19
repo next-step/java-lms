@@ -12,18 +12,20 @@ public class SessionJoin {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public SessionJoin(Session session, NsUser nsUser) {
-        this.session = session;
-        this.nsUser = nsUser;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public SessionJoin(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(null, session, nsUser, createdAt, updatedAt);
     }
 
-    public SessionJoin(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SessionJoin(Long id, Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.session = session;
         this.nsUser = nsUser;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isAlreadyJoin(Session session, NsUser nsUser) {
+        return this.session.equals(session) && this.nsUser.equals(nsUser);
     }
 
     public Long getId() {
@@ -57,5 +59,10 @@ public class SessionJoin {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "SessionJoin{" + "id=" + id + ", session=" + session + ", nsUser=" + nsUser + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }
