@@ -5,8 +5,11 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import static nextstep.qna.domain.ContentType.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
@@ -16,7 +19,7 @@ public class QuestionTest {
     @Test
     @DisplayName("질문한 유저가 아닌 유저가 질문을 삭제하려고 시도할 경우, CannotDeleteException 예외 발생")
     void user_who_is_not_the_owner_of_question_try_to_delete_question_then_throw_throw_CannotDeleteException() {
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI, 0L))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
@@ -29,7 +32,7 @@ public class QuestionTest {
         question.addAnswer(AnswerTest.A2);
 
         // when, then
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, 0L))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -39,9 +42,10 @@ public class QuestionTest {
     void delete_question_then_set_deleted_status_to_true() throws CannotDeleteException {
         // given
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        long questionId = 0L;
 
         // when
-        question.delete(NsUserTest.JAVAJIGI);
+        question.delete(NsUserTest.JAVAJIGI, questionId);
 
         // then
         assertThat(question.isDeleted()).isTrue();
@@ -53,14 +57,34 @@ public class QuestionTest {
         // given
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         question.addAnswer(AnswerTest.A1);
+        long questionId = 0L;
 
         // when
-        question.delete(NsUserTest.JAVAJIGI);
+        question.delete(NsUserTest.JAVAJIGI, questionId);
 
         // then
         Optional<Answer> notDeletedAnswer = question.getAnswers().stream()
                 .filter(answer -> !answer.isDeleted())
                 .findAny();
         assertThat(notDeletedAnswer).isEmpty();
+    }
+
+    @Test
+    @DisplayName("질문 삭제 시, 질문과 답변의 삭제 이력 리스트 반환")
+    void delete_question_then_return_delete_history_list_of_question_and_answers() throws CannotDeleteException {
+        // given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer = AnswerTest.A1;
+        question.addAnswer(answer);
+        long questionId = 0L;
+
+        // when
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI, questionId);
+
+        // then
+        assertThat(deleteHistories).containsExactly(
+                new DeleteHistory(QUESTION, questionId, question.getWriter(), LocalDateTime.now()),
+                new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now())
+        );
     }
 }

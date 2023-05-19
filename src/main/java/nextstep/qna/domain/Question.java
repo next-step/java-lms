@@ -5,8 +5,11 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static nextstep.qna.domain.ContentType.*;
 
 public class Question {
     private Long id;
@@ -78,11 +81,33 @@ public class Question {
         return answers;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser, long questionId) throws CannotDeleteException {
         validateLoginUser(loginUser);
         validateAnswerUser(loginUser);
+
         convertStatusToDeleted();
         convertAnswerStatusToDeleted();
+
+        return deleteHistories(questionId);
+    }
+
+    private List<DeleteHistory> deleteHistories(long questionId) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(questionDeleteHistory(questionId));
+        deleteHistories.addAll(answerDeleteHistories());
+
+        return Collections.unmodifiableList(deleteHistories);
+    }
+
+    private DeleteHistory questionDeleteHistory(long questionId) {
+        return new DeleteHistory(QUESTION, questionId, this.writer, LocalDateTime.now());
+    }
+
+    private List<DeleteHistory> answerDeleteHistories() {
+        return answers.stream()
+                .map(answer -> new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private void convertStatusToDeleted() {
