@@ -1,13 +1,11 @@
 package nextstep.qna.domain;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -19,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -49,19 +47,11 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
 
     public String getContents() {
         return contents;
     }
 
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
 
     public NsUser getWriter() {
         return writer;
@@ -76,16 +66,12 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -94,38 +80,25 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
+
+    public List<DeleteHistory> deleteBy(NsUser writer) throws CannotDeleteException {
+        validateOwner(writer);
+        List<DeleteHistory> deletedAnswerHistory = answers.deleteAllBy(writer);
+        DeleteHistory deletedQuestionHistory = deleted();
+
+        return concat(deletedQuestionHistory, deletedAnswerHistory);
+    }
+
     public void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public void validateHasAnswerByOtherUser() throws CannotDeleteException {
-        Optional<Answer> optionalAnswer = findNotAnswerOfWriter();
-        if (optionalAnswer.isPresent()) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
 
-    private Optional<Answer> findNotAnswerOfWriter() {
-        return answers.stream()
-            .filter(answer -> !answer.isOwner(writer))
-            .findFirst();
-    }
-
-    public DeleteHistory deleted() {
+    private DeleteHistory deleted() {
         this.deleted = true;
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
-    }
-
-    public List<DeleteHistory> deleteBy(NsUser loginUser) throws CannotDeleteException {
-        validateOwner(loginUser);
-        validateHasAnswerByOtherUser();
-        DeleteHistory deletedQuestionHistory = deleted();
-        List<DeleteHistory> deletedAnswerHistory = answers.stream().map(Answer::deleted)
-            .collect(Collectors.toList());
-
-        return concat(deletedQuestionHistory, deletedAnswerHistory);
+        return DeleteHistory.ofQuestion(this.id, this.writer);
     }
 
     private List<DeleteHistory> concat(DeleteHistory deletedQuestionHistory, List<DeleteHistory> deletedAnswerHistory) {
