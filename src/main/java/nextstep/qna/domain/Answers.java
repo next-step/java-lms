@@ -31,7 +31,7 @@ public class Answers implements Iterable<Answer> {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll() throws CannotDeleteException {
+    public List<DeleteHistory> deleteAll() {
         for (Answer answer : answers) {
             validateDeletion(answer);
         }
@@ -41,7 +41,7 @@ public class Answers implements Iterable<Answer> {
                 .collect(Collectors.toList());
     }
 
-    private void validateDeletion(Answer answer) throws CannotDeleteException {
+    private void validateDeletion(Answer answer) {
         if (!answer.isOwner(question.getWriter())) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

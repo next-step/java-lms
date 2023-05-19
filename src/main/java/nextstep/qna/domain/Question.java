@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -8,19 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
     private final Answers answers = new Answers(this);
-
-    private boolean deleted = false;
-
     private final LocalDateTime createdDate = LocalDateTime.now();
+    private final Long id;
+    private final String title;
+    private final String contents;
+    private final NsUser writer;
+    private boolean deleted = false;
     private LocalDateTime updatedDate;
 
     public Question(NsUser writer, String title, String contents) {
@@ -67,7 +60,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete() throws CannotDeleteException {
+    public List<DeleteHistory> delete() {
         List<DeleteHistory> histories = new ArrayList<>();
 
         histories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
