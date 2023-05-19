@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -23,9 +24,6 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
-    }
-
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
@@ -37,26 +35,31 @@ public class Question {
         this.contents = contents;
     }
 
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        this.checkAuthorityToDelete(loginUser);
+        this.checkAnswerToDelete(loginUser);
+
+        this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(DeleteHistory.ofQuestion(this.id,this.writer));
+        deleteHistories.addAll(this.deleteAnswers());
+
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswers() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        for (Answer answer : this.answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
+    }
+
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -68,21 +71,24 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    private void checkAuthorityToDelete(NsUser loginUser) throws CannotDeleteException {
+        if (writer.equals(loginUser)) {
+            return;
+        }
+
+        throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private void checkAnswerToDelete(NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            if (!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
+        }
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
