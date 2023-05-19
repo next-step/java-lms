@@ -27,6 +27,6 @@
 ### 리팩터링 요구사항
 
 - [x] QnAService.delete() 메서드의 책임을 도메인 객체인 Question과 Answer로 나눈다.
-- [ ] Question.delete()를 TDD로 구현한다
-- [ ] Answer.delete()를 TDD로 구현한다
-- [ ] QnAService의 테스트가 통과해야 한다
+- [x] Question.delete()를 TDD로 구현한다
+- [x] Answer.delete()를 TDD로 구현한다
+- [x] QnAService의 테스트가 통과해야 한다
