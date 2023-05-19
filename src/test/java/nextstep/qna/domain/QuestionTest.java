@@ -51,6 +51,34 @@ public class QuestionTest {
         assertThat(Q1.isDeleted()).isTrue();
     }
 
+    @Test
+    void 질문_작성자와_로그인한_사람이_같고_다른사람_답변도_없는_경우_삭제_가능_검증() throws CannotDeleteException {
+        Q1.deleteBy(NsUserTest.JAVAJIGI);
+
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
+    @Test
+    void 질문_작성자와_로그인한_사람이_다르고_다른사람_답변은_없는_경우_삭제_불가_검증() {
+        assertThatThrownBy(() -> {
+            Q1.deleteBy(NsUserTest.SANJIGI);
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    void 질문_작성자와_로그인한_사람이_같고_다른사람_답변이_있는_경우_삭제_불가_검증() {
+        assertThatThrownBy(() -> {
+            Q2.deleteBy(NsUserTest.SANJIGI);
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    void 질문_작성자와_로그인한_사람이_다르고_다른사람_답변이_있는_경우_삭제_불가_검증() {
+        assertThatThrownBy(() -> {
+            Q2.deleteBy(NsUserTest.JAVAJIGI);
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
 
 
 }

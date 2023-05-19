@@ -114,4 +114,11 @@ public class Question {
     public void deleted() {
         this.deleted = true;
     }
+
+    public void deleteBy(NsUser loginUser) throws CannotDeleteException {
+        validateOwner(loginUser);
+        validateHasAnswerByOtherUser();
+        deleted();
+        answers.forEach(Answer::deleted);
+    }
 }
