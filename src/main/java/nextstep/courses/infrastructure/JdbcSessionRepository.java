@@ -1,13 +1,16 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.users.domain.NsUserBuilder;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -46,6 +49,36 @@ public class JdbcSessionRepository implements SessionRepository {
                             toLocalDateTime(rs.getTimestamp(9))
                 );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    @Override
+    public int saveSessionJoin(Session session) {
+        if (CollectionUtils.isEmpty(session.getSessionJoins())) {
+            return 0;
+        }
+
+        String sql = "insert into session_join (session_id, user_id, created_at) values (?,?,?)";
+
+        int savedCount = 0;
+        for (SessionJoin sessionJoin : session.getSessionJoins()) {
+            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(), sessionJoin.getCreatedAt());
+        }
+
+        return savedCount;
+    }
+
+    @Override
+    public List<SessionJoin> findAllSessionJoinBySessionId(Long sessionId) {
+        //TODO: 추후에 proxy 객체 활용 일단은 일반 객체 직접 조회로
+        String sql = "select id, session_id, user_id, created_at, updated_at from session_join where session_id = ?";
+        RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
+                new SessionJoin(rs.getLong(1),
+                                findById(rs.getLong(2)),
+                                NsUserBuilder.aNsUser().withId(rs.getLong(3)).build(),
+                                toLocalDateTime(rs.getTimestamp(4)),
+                                toLocalDateTime(rs.getTimestamp(5))
+                );
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

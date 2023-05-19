@@ -9,8 +9,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.Fixtures.aSession;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
     @Test
@@ -52,13 +51,15 @@ class SessionTest {
     @Test
     @DisplayName("모집중일때만 강의 수강신청이 가능하다.")
     void test06() {
-        Session session = aSession().withSessionStatus(SessionStatus.OPEN)
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(SessionStatus.OPEN)
                                     .withMaxUserCount(10)
                                     .build();
 
         session.register(NsUserTest.JAVAJIGI);
 
-        assertThat(session.getSessionJoins()).hasSize(1).containsExactly(new SessionJoin(session, NsUserTest.JAVAJIGI));
+        assertThat(session.getSessionJoins()).hasSize(1).extracting("session.id", "nsUser.id")
+                                             .containsExactly(tuple(1L, 1L));
     }
 
     @Test

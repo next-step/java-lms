@@ -6,35 +6,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static nextstep.Fixtures.aCourse;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 class CourseServiceTest {
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private CourseRepository courseRepository;
 
     @Test
-    @DisplayName("저장")
+    @DisplayName("저장 - 조회")
     void test01() {
-        courseService.save(aCourse().build());
-
-        Course findCourse = courseRepository.findById(1L);
-
-        assertThat(findCourse.getId()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("조회")
-    void test02() {
-        courseRepository.save(aCourse().build());
+        courseService.save(aCourse().withId(1L).build());
 
         Course findCourse = courseService.findById(1L);
 
         assertThat(findCourse.getId()).isEqualTo(1L);
     }
-
 }
