@@ -70,7 +70,7 @@ public class Question {
         answers.add(answer);
     }
 
-    private boolean isOwner(NsUser loginUser) {
+    public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
@@ -111,4 +111,7 @@ public class Question {
             .findFirst();
     }
 
+    public void deleted() {
+        this.deleted = true;
+    }
 }

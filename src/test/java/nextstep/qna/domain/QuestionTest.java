@@ -44,4 +44,13 @@ public class QuestionTest {
         assertThatThrownBy(Q2::validateHasAnswerByOtherUser).isInstanceOf(CannotDeleteException.class);
     }
 
+
+    @Test
+    void 질문_삭제_상태로_변경_후_삭제_상태_확인() {
+        Q1.deleted();
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
+
+
 }
