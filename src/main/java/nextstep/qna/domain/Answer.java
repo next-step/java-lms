@@ -1,7 +1,7 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.NotFoundException;
+import nextstep.qna.exception.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
