@@ -21,9 +21,6 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
-    }
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }

@@ -21,11 +21,7 @@ public class Question {
     private boolean deleted = false;
 
     private final LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
