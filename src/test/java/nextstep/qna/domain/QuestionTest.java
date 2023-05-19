@@ -15,8 +15,8 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문 삭제 요청을 나타내는 필드 표시")
-    void question_delete_mark() {
-        Q1.delete();
+    void question_delete_mark() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(Q1.isDeleted())
                 .isTrue();
@@ -25,7 +25,7 @@ public class QuestionTest {
     @Test
     @DisplayName("질문을 삭제할 권한이 없으면 exception")
     void check_authority_to_delete() {
-        assertThatThrownBy(() -> Q1.checkAuthorityToDelete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
@@ -36,16 +36,16 @@ public class QuestionTest {
         final Question question = new Question(nsUser, "testTitle", "testContents");
         question.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, question, "testContents"));
 
-        assertThatThrownBy(() -> question.checkAnswerToDelete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("질문 삭제 테스트")
-    void delete_question() {
+    void delete_question() throws CannotDeleteException {
         Q1.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, Q1, "testContents"));
 
-        assertThat(Q1.delete())
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI))
                 .hasSize(2);
         assertThat(Q1.isDeleted())
                 .isTrue();
