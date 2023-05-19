@@ -1,6 +1,8 @@
 package nextstep.qna.domain;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -111,14 +113,23 @@ public class Question {
             .findFirst();
     }
 
-    public void deleted() {
+    public DeleteHistory deleted() {
         this.deleted = true;
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
-    public void deleteBy(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         validateHasAnswerByOtherUser();
-        deleted();
-        answers.forEach(Answer::deleted);
+        DeleteHistory deletedQuestionHistory = deleted();
+        List<DeleteHistory> deletedAnswerHistory = answers.stream().map(Answer::deleted)
+            .collect(Collectors.toList());
+
+        return concat(deletedQuestionHistory, deletedAnswerHistory);
     }
+
+    private List<DeleteHistory> concat(DeleteHistory deletedQuestionHistory, List<DeleteHistory> deletedAnswerHistory) {
+        return Stream.concat(Stream.of(deletedQuestionHistory), deletedAnswerHistory.stream()).collect(Collectors.toList());
+    }
+
 }

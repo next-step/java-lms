@@ -25,4 +25,14 @@ public class AnswerTest {
         A1.deleted();
         assertThat(A1.isDeleted()).isTrue();
     }
+
+    @Test
+    void 답변_삭제시_history_생성_검증() {
+        DeleteHistory deleted = A1.deleted();
+
+        DeleteHistory expected = new DeleteHistory(ContentType.ANSWER,null, NsUserTest.JAVAJIGI);
+
+        assertThat(A1.isDeleted()).isTrue();
+        assertThat(deleted).isEqualTo(expected);
+    }
 }

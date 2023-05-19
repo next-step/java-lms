@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,6 +78,16 @@ public class QuestionTest {
         assertThatThrownBy(() -> {
             Q2.deleteBy(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    void 질문을_삭제할_경우_히스토리_생성_확인() {
+        DeleteHistory deleted = Q1.deleted();
+
+        DeleteHistory expected = new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI);
+
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(deleted).isEqualTo(expected);
     }
 
 
