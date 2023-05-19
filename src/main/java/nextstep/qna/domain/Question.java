@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.Optional;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -96,4 +97,18 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
+
+    public void validateHasAnswerByOtherUser() throws CannotDeleteException {
+        Optional<Answer> optionalAnswer = findNotAnswerOfWriter();
+        if (optionalAnswer.isPresent()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private Optional<Answer> findNotAnswerOfWriter() {
+        return answers.stream()
+            .filter(answer -> !answer.isOwner(writer))
+            .findFirst();
+    }
+
 }
