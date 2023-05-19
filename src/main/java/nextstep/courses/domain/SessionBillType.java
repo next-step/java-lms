@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum SessionBillType {
     FREE("무료"),
@@ -17,10 +20,15 @@ public enum SessionBillType {
         return name;
     }
 
+    private static final Map<String, SessionBillType> SESSION_BILL_TYPE_MAP
+            = Collections.unmodifiableMap(Stream.of(values())
+                                                .collect(Collectors.toMap(SessionBillType::name, x -> x)));
+
     public static SessionBillType find(String name) {
-        return Arrays.stream(values())
-                     .filter(v -> v.name().equals(name))
-                     .findFirst()
-                     .orElseThrow(() -> new IllegalArgumentException(name + "을 찾을 수 없습니다."));
+        if (SESSION_BILL_TYPE_MAP.containsKey(name)) {
+            return SESSION_BILL_TYPE_MAP.get(name);
+        }
+
+        throw new IllegalArgumentException(name + "을 찾을 수 없습니다.");
     }
 }

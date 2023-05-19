@@ -3,8 +3,10 @@ package nextstep.courses.app;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class DefaultSessionService implements SessionService{
     private final SessionRepository sessionRepository;
 

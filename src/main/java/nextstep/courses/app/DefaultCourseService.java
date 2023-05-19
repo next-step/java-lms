@@ -20,6 +20,7 @@ public class DefaultCourseService implements CourseService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Course findById(long id) {
         return courseRepository.findById(id);
     }

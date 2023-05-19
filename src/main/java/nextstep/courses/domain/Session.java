@@ -101,7 +101,8 @@ public class Session {
     }
 
     public void addUser(NsUser nsUser) {
-        sessionJoins.add(new SessionJoin(this, nsUser, LocalDateTime.now(), LocalDateTime.now()));
+        LocalDateTime now = LocalDateTime.now();
+        sessionJoins.add(new SessionJoin(this, nsUser, now, now));
     }
 
     @Override
