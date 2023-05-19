@@ -43,6 +43,11 @@ public class Answer {
         this.contents = contents;
     }
 
+    public DeleteHistory delete() {
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,4 +81,5 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
 }
