@@ -31,4 +31,17 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
+
+    @Test
+    @DisplayName("질문 데이터를 삭제하면 질문의 상태를 삭제로 변경")
+    void delete_question_then_set_deleted_to_true() throws CannotDeleteException {
+        // given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+
+        // when
+        question.delete(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(question.isDeleted()).isTrue();
+    }
 }

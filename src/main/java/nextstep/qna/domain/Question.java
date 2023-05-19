@@ -69,11 +69,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -85,6 +80,11 @@ public class Question {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateLoginUser(loginUser);
         validateAnswerUser(loginUser);
+        convertStatusToDeleted();
+    }
+
+    private void convertStatusToDeleted() {
+        deleted = true;
     }
 
     private void validateAnswerUser(NsUser loginUser) throws CannotDeleteException {
