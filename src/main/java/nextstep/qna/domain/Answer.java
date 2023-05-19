@@ -72,6 +72,10 @@ public class Answer {
         this.question = question;
     }
 
+    public DeleteHistory delete(){
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
