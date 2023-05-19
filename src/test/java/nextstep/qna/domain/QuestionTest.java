@@ -18,4 +18,17 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
+
+    @Test
+    @DisplayName("질문자와 답변자가 다른 다를 때 질문을 삭제하려고 시도할 경우, CannotDeleteException 예외 발생")
+    void try_to_delete_question_when_questioner_and_answerer_are_different_then_throw_CannotDeleteException() {
+        // given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.addAnswer(AnswerTest.A2);
+
+        // when, then
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 }

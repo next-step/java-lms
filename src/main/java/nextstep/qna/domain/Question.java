@@ -82,12 +82,23 @@ public class Question {
         return answers;
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateLoginUser(loginUser);
+        validateAnswerUser(loginUser);
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    private void validateAnswerUser(NsUser loginUser) throws CannotDeleteException {
+        if(containsNotOwnedAnswer(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean containsNotOwnedAnswer(NsUser loginUser) {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(loginUser));
+    }
+
+    private void validateLoginUser(NsUser loginUser) throws CannotDeleteException {
         if(!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -95,5 +106,10 @@ public class Question {
 
     private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
