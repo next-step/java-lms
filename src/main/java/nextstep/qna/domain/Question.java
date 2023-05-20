@@ -88,9 +88,11 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
-        List<DeleteHistory> deleteHistories = answers.delete(loginUser);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        List<DeleteHistory> answerHistories = answers.delete(loginUser);
         setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
+        deleteHistories.addAll(answerHistories);
 
         return deleteHistories;
     }
