@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.ImageType;
 import nextstep.courses.exception.InvalidImageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,16 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ImageTest {
 
-
     private static String INVALID_URI = "htttpps://edu.nextstep.camp/";
     private static String VALID_URI = "https://edu.nextstep.camp/";
     private static Long VALID_SIZE = Image.getMaxSize() - 1;
     private static Long INVALID_SIZE = Image.getMaxSize() + 1;
+    private static String VALID_TYPE_STRING = "GIF";
+    private static String INVALID_TYPE = "BMP";
     private Image validImage;
 
     @BeforeEach
     void setUp() throws URISyntaxException, InvalidImageException {
-        validImage = Image.create("test", VALID_URI, VALID_SIZE, ImageType.JPEG);
+        validImage = Image.create("test", VALID_URI, VALID_SIZE, VALID_TYPE_STRING);
     }
 
 
@@ -32,7 +32,7 @@ class ImageTest {
     @Test
     void create_with_invalid_uri_should_throw_exception() {
         assertThrows(InvalidImageException.class, () ->
-                Image.create("test", INVALID_URI, 100L, ImageType.PNG)
+                Image.create("test", INVALID_URI, 100L, VALID_TYPE_STRING)
         );
     }
 
@@ -40,7 +40,7 @@ class ImageTest {
     @Test
     void create_with_exceeding_max_size_should_throw_exception() {
         assertThrows(InvalidImageException.class, () ->
-                Image.create("test", VALID_URI, INVALID_SIZE, ImageType.JPEG)
+                Image.create("test", VALID_URI, INVALID_SIZE, VALID_TYPE_STRING)
         );
     }
 
@@ -71,7 +71,7 @@ class ImageTest {
     @DisplayName("이미지의 형식이 올바로 설정된다.")
     @Test
     void create_with_valid_data_should_set_image_type() {
-        assertThat(validImage.getType()).isEqualTo(ImageType.JPEG);
+        assertThat(validImage.getType().toString()).isEqualTo(VALID_TYPE_STRING);
     }
 
 }
