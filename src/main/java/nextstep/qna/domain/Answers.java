@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
     private List<Answer> answers;
@@ -23,8 +24,9 @@ public class Answers {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
-        return null;
+        return answers.stream().map(answer -> answer.delete(loginUser)).collect(Collectors.toList());
     }
+
     private void validate(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
             answer.validateDelete(loginUser);

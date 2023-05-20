@@ -79,6 +79,11 @@ public class Answer {
         }
     }
 
+    public DeleteHistory delete(NsUser loginUser) {
+        setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, id, loginUser, LocalDateTime.now());
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";

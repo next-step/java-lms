@@ -5,6 +5,11 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.QuestionTest.Q1;
 import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.*;
@@ -17,5 +22,19 @@ public class AnswersTest {
             Q1.addAnswer1(A2);
             Q1.getAnswers1().delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("답변 삭제")
+    void delete() throws CannotDeleteException {
+        A1.toQuestion(Q1);
+        Q1.addAnswer1(A1);
+        Q1.addAnswer1(A1);
+
+        List<DeleteHistory> expected = Arrays.asList(
+                new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+
+        assertThat(Q1.getAnswers1().delete(NsUserTest.JAVAJIGI)).isEqualTo(expected);
     }
 }
