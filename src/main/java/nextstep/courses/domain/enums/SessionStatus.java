@@ -1,5 +1,7 @@
 package nextstep.courses.domain.enums;
 
+import java.util.Objects;
+
 public enum SessionStatus {
     PREPARING("준비중"),
     RECRUITING("모집중"),
@@ -14,4 +16,9 @@ public enum SessionStatus {
     public String getDescription() {
         return this.description;
     }
+
+    public static boolean canEnroll(SessionStatus sessionStatus) {
+        return Objects.equals(RECRUITING, sessionStatus);
+    }
+
 }
