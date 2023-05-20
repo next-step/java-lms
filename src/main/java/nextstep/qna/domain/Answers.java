@@ -23,6 +23,7 @@ public class Answers {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateDelete(loginUser);
         return answers.stream().map(answer -> answer.delete(loginUser)).collect(Collectors.toList());
     }
 
