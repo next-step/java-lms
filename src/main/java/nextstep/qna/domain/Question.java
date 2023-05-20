@@ -52,10 +52,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -99,7 +95,7 @@ public class Question {
     }
 
     private void validateQuestionOwner(NsUser loginUser) {
-        if (isOwner(loginUser)) {
+        if (!writer.matchUser(loginUser)) {
             throw new QuestionDeleteUnauthorizedException();
         }
     }
