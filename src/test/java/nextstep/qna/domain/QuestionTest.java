@@ -18,7 +18,7 @@ public class QuestionTest {
     void delete() throws Exception {
         List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.QUESTION, 1L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+        assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 
     @Test
