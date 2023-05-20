@@ -1,6 +1,11 @@
 package nextstep.qna.service;
 
-import nextstep.qna.domain.*;
+import nextstep.qna.domain.Answer;
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.DeleteHistory;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.domain.QuestionTest;
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUserTest;
