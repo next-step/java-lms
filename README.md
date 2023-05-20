@@ -42,5 +42,4 @@
     - [ ] 답변을 삭제한다.
     - [ ] DeleteHistory를 생성하여 반환한다.
 - [ ] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
-- [ ] Answers 일급 컬렉션을 구현한다.
 - [ ] DeleteHistories 일급 컬렉션을 구현한다.
