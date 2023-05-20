@@ -1,15 +1,11 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -28,12 +24,13 @@ class AnswersTest {
     }
 
     @Test
-    void delete() {
+    @DisplayName("답변 삭제 시, deleted 상태를 true로 변경")
+    void delete_then_set_deleted_status_to_true() throws CannotDeleteException {
         // given
-        Answers answers = new Answers(AnswerTest.A1, AnswerTest.A2);
+        Answers answers = new Answers(AnswerTest.A1);
 
         // when
-        answers.delete();
+        answers.delete(NsUserTest.JAVAJIGI);
 
         // then
         Optional<Answer> notDeletedAnswer = answers.answers().stream()
@@ -42,21 +39,21 @@ class AnswersTest {
         assertThat(notDeletedAnswer).isEmpty();
     }
 
-    @ParameterizedTest(name = "[{index}/2] {displayName}")
-    @MethodSource("loginUserAndContainsNotOwnedAnswer")
-    @DisplayName("로그인 유저 외 답변을 한 유저가 있는지 여부 조회")
-    void contains_not_owned_answer(NsUser loginUser, boolean containsNotOwnedAnswer) {
+    @Test
+    @DisplayName("답변한 유저가 아닌 유저가 답변을 삭제하려고 시도할 경우, CannotDeleteException 예외 발생")
+    void user_who_is_not_the_owner_of_answer_try_to_delete_question_then_throw_throw_CannotDeleteException() {
         // given
-        Answers answers = new Answers(AnswerTest.A1);
+        Answers answers = new Answers(AnswerTest.A1, AnswerTest.A2);
 
         // when, then
-        assertThat(answers.containsNotOwnedAnswer(loginUser)).isEqualTo(containsNotOwnedAnswer);
+        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    static Stream<Arguments> loginUserAndContainsNotOwnedAnswer() {
-        return Stream.of(
-                Arguments.arguments(NsUserTest.JAVAJIGI, false),
-                Arguments.arguments(NsUserTest.SANJIGI, true)
-        );
+    @Test
+    @DisplayName("답변 삭제 시, DeleteHistory 리스트 반환")
+    void delete_then_return_DeleteHistory_list() {
+        fail("not yet implemented");
     }
 }
