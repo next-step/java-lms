@@ -102,8 +102,10 @@ public class Question {
         return deleteHistories;
     }
 
-    public void validateDelete() {
-        extracted();
+    private void validateDelete(NsUser loginUser) {
+        validateQuestionOwner(loginUser);
+        validateAnswers(loginUser);
+    }
 
         List<Answer> answers = question.getAnswers();
         for (Answer answer : answers) {
@@ -114,9 +116,9 @@ public class Question {
 
     }
 
-    private static void extracted() {
-        if (!question.isOwner(loginUser)) {
-            throw new UnauthorizedDeleteException();
+    private void validateQuestionOwner(NsUser loginUser) {
+        if (isOwner(loginUser)) {
+            throw new QuestionDeleteUnauthorizedException();
         }
     }
 }
