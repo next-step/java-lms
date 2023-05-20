@@ -5,8 +5,10 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
@@ -19,8 +21,33 @@ public class AnswersTest {
     void isDeletableTest() {
         Answers multiUserAnswers = new Answers(List.of(A1, A2));
 
-        assertThatThrownBy(() -> multiUserAnswers.isDeletable(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> multiUserAnswers.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("답변 삭제")
+    void deleteAnswersTest() throws CannotDeleteException {
+        Answers answers = new Answers(List.of(A1));
+
+        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(deleteHistories)
+                .hasSize(1);
+    }
+
+    @Test
+    @DisplayName("답변 추가")
+    void addAnswer() {
+
+        Answers answers = new Answers(new ArrayList<>(List.of(A1)));
+
+        Answers newAnswers = answers.add(A2);
+
+        assertThat(newAnswers)
+                .usingRecursiveComparison()
+                .isEqualTo(new Answers(new ArrayList<>(List.of(A1, A2))));
+
     }
 
 }

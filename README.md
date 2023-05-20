@@ -19,8 +19,8 @@
     * QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
 
 * 구현 내용
-- [ ] Question 클래스에 delete 메서드를 추가
+- [X] Question 클래스에 delete 메서드를 추가
     - [X] 질문 삭제 권한 확인 기능
     - [X] 다른 사람이 쓴 답변 확인 기능
-    - [ ] DeleteHistory 생성 후 반환 기능
-- [ ] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
+    - [X] DeleteHistory 생성 후 반환 기능
+- [X] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
