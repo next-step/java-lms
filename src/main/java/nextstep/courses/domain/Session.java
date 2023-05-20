@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class Session {
 
+  private static final String NOT_ACCEPTING_MESSAGE = "수강신청은 강의 상태가 모집중일 때만 가능합니다. 현재 수강 상태 : ";
   private final Long id;
   private final SessionPayment sessionPayment;
   private SessionStatus sessionStatus;
@@ -32,7 +33,9 @@ public class Session {
   }
 
   public void processEnrollment(NextStepUser nextStepUser) {
-    sessionStatus.validateAcceptingStatus();
+    if (!sessionStatus.canEnroll()) {
+      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionStatus.status());
+    }
 
     nextStepUsers.enroll(nextStepUser);
   }
