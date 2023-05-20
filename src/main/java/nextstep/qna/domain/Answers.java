@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +29,11 @@ public class Answers {
 
     public List<Answer> answers() {
         return Collections.unmodifiableList(answers);
+    }
+
+    public boolean containsNotOwnedAnswer(NsUser loginUser) {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(loginUser));
     }
 
     @Override
