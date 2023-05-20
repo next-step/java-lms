@@ -17,6 +17,7 @@ public class Question {
     private NsUser writer;
 
     private List<Answer> answers = new ArrayList<>();
+    private Answers answers2;
 
     private boolean deleted = false;
 
@@ -88,6 +89,13 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         hasAuthorization(loginUser);
+
+        answers2.isDeletable(loginUser);
+//        for (Answer answer : answers) {
+//            if (!answer.isOwner(loginUser)) {
+//                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+//            }
+//        }
 
         return null;
     }

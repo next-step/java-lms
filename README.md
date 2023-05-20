@@ -21,6 +21,6 @@
 * 구현 내용
 - [ ] Question 클래스에 delete 메서드를 추가
     - [X] 질문 삭제 권한 확인 기능
-    - [ ] 다른 사람이 쓴 답변 확인 기능
+    - [X] 다른 사람이 쓴 답변 확인 기능
     - [ ] DeleteHistory 생성 후 반환 기능
 - [ ] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
