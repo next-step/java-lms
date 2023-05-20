@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,18 @@ public class AnswersTest {
                 .usingRecursiveComparison()
                 .isEqualTo(new Answers(new ArrayList<>(List.of(A1, A2))));
 
+    }
+
+    @Test
+    @DisplayName("삭제 테스트")
+    void deleteTest() {
+        DeleteHistory delete = A1.delete();
+
+        assertThat(A1.isDeleted())
+                .isTrue();
+
+        assertThat(delete)
+                .isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 
 }
