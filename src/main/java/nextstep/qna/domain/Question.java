@@ -67,12 +67,16 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) {
         validateDelete(loginUser);
+        deleteQuestion();
         return makeDeleteHistories();
+    }
+
+    private void deleteQuestion() {
+        this.deleted = true;
     }
 
     private List<DeleteHistory> makeDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        this.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.getWriter(), LocalDateTime.now()));
         for (Answer answer : answers) {
             answer.setDeleted(true);
