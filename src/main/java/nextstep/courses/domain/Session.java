@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 
 public class Session {
 
+    private static final String DATE_ERROR_MESSAGE = "시작일은 종료일 보다 늦을 수 없습니다.";
+
     private Long id;
 
-    private Long courseId;
+    private Course course;
 
     private int generation;
 
@@ -25,13 +27,14 @@ public class Session {
 
     private LocalDateTime endAt;
 
-    public Session(Long courseId, int generation, String coverImage, SessionType type, SessionStatus status, int headCount, LocalDateTime startAt, LocalDateTime endAt) {
-        this(0L, courseId, generation, coverImage, type, status, headCount, startAt, endAt);
+    public Session(Course course, int generation, String coverImage, SessionType type, SessionStatus status, int headCount, LocalDateTime startAt, LocalDateTime endAt) {
+        this(0L, course, generation, coverImage, type, status, headCount, startAt, endAt);
     }
 
-    public Session(Long id, Long courseId, int generation, String coverImage, SessionType type, SessionStatus status, int headCount, LocalDateTime startAt, LocalDateTime endAt) {
+    public Session(Long id, Course course, int generation, String coverImage, SessionType type, SessionStatus status, int headCount, LocalDateTime startAt, LocalDateTime endAt) {
+        validDate(startAt, endAt);
         this.id = id;
-        this.courseId = courseId;
+        this.course = course;
         this.generation = generation;
         this.coverImage = coverImage;
         this.type = type;
@@ -41,8 +44,14 @@ public class Session {
         this.endAt = endAt;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    private static void validDate(LocalDateTime startAt, LocalDateTime endAt) {
+        if (startAt.isAfter(endAt)) {
+            throw new IllegalArgumentException(DATE_ERROR_MESSAGE);
+        }
+    }
+
+    public Course getCourse() {
+        return course;
     }
 
     public int getGeneration() {
@@ -77,7 +86,7 @@ public class Session {
     public String toString() {
         return "Session{" +
                 "id=" + id +
-                ", courseId=" + courseId +
+                ", course=" + course +
                 ", generation=" + generation +
                 ", coverImage='" + coverImage + '\'' +
                 ", type=" + type +
