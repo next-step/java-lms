@@ -60,15 +60,14 @@ public class Image extends BaseEntity {
     private static void validateUri(String uri) throws InvalidImageException {
         try {
             new URI(uri).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new InvalidImageException("유효하지 않은 이미지 URI입니다.");
         }
-
     }
 
     private static void validateSize(Long size) throws InvalidImageException {
         if (size > MAX_SIZE) {
-            throw new InvalidImageException("이미지의 크기가 너무 큽니다. 최대 ");
+            throw new InvalidImageException("이미지의 크기가 너무 큽니다. 최대 " + MAX_SIZE + "바이트까지 허용됩니다.");
         }
     }
 
