@@ -7,3 +7,14 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+# 질문 삭제하기
+* QnaService deleteQuestion 개선
+  * Question 도메인으로 비즈니스 로직 이동
+  * Answer 도메인으로 비즈니스 로직 이동
+
+* Question 도메인에 delete 추가
+* delete 후 DeleteHistory 리턴하기
+
+* Answer 도메인에 delete 추가
+* delete 후 DeleteHistory 리턴하기
