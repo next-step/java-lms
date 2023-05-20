@@ -17,8 +17,8 @@ public enum SessionStatus {
         return this.description;
     }
 
-    public static boolean canEnroll(SessionStatus sessionStatus) {
-        return Objects.equals(RECRUITING, sessionStatus);
+    public boolean canEnroll() {
+        return Objects.equals(RECRUITING, this);
     }
 
 }
