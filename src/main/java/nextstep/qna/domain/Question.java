@@ -1,8 +1,10 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.domain.validate.QuestionRemoveValidator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Question extends BaseEntity {
 
@@ -51,16 +53,12 @@ public class Question extends BaseEntity {
         return writer.equals(loginUser);
     }
 
-    public Question display() {
-        this.deleted = false;
-        super.modifyUpdateDate(LocalDateTime.now());
-        return this;
-    }
+    public List<DeleteHistory> remove(NsUser requestUser) {
+        QuestionRemoveValidator.validate(this, requestUser);
 
-    public Question hide() {
         this.deleted = false;
         super.modifyUpdateDate(LocalDateTime.now());
-        return this;
+        return null;
     }
 
     public boolean isDeleted() {
