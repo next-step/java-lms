@@ -79,9 +79,9 @@ public class Answer {
         }
     }
 
-    public DeleteHistory delete(NsUser loginUser) {
+    public DeleteHistory delete() {
         setDeleted(true);
-        return new DeleteHistory(ContentType.ANSWER, id, loginUser, LocalDateTime.now());
+        return DeleteHistory.getDeleteHistory(this);
     }
 
     @Override
