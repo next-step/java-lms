@@ -23,16 +23,16 @@ public class Image extends BaseEntity {
     protected Image() {
     }
 
-    public static Image create(String name, String uri, Long size, ImageType type) throws InvalidImageException, URISyntaxException {
+    public static Image create(String name, String uri, Long size, String typeString) throws InvalidImageException, URISyntaxException {
         validateUri(uri);
         validateSize(size);
-        validateType(type);
+        validateType(typeString);
 
         Image image = new Image();
         image.name = name;
         image.uri = new URI(uri);
         image.size = size;
-        image.type = type;
+        image.type = ImageType.valueOf(typeString.toUpperCase());
 
         return image;
     }
@@ -72,8 +72,8 @@ public class Image extends BaseEntity {
         }
     }
 
-    private static void validateType(ImageType type) throws InvalidImageException {
-        if (!ImageType.canUpload(type)) {
+    private static void validateType(String typeString) throws InvalidImageException {
+        if (!ImageType.isValidType(typeString)) {
             throw new InvalidImageException("지원하지 않는 이미지 형식입니다.");
         }
     }

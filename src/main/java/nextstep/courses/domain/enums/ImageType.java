@@ -13,12 +13,13 @@ public enum ImageType {
         this.value = value;
     }
 
-    public String getMimeType() {
+    public String getValue() {
         return this.value;
     }
 
-    public static boolean canUpload(ImageType type) {
+    public static boolean isValidType(String type) {
         return Arrays.stream(values())
-                .anyMatch(validType -> validType == type);
+                .anyMatch(validType -> validType.getValue().equals(type.toLowerCase()));
     }
+
 }
