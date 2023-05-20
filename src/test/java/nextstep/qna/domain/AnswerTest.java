@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.*;
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static final Answer A3 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents3");
 
     @DisplayName("다른 사람이 쓴 답변이 있으면 삭제할 수 없다.")
     @Test

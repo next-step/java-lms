@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Answer {
+public class Answer extends BaseEntity {
     private Long id;
 
     private NsUser writer;
@@ -19,10 +19,6 @@ public class Answer {
     private String contents;
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -64,10 +60,6 @@ public class Answer {
 
     public String getContents() {
         return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     @Override
