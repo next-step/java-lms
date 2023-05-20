@@ -85,6 +85,10 @@ public class Question {
         return answers;
     }
 
+    public List<DeleteHistory> delete(NsUser nsUser, long questionId) {
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
