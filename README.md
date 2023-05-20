@@ -18,3 +18,6 @@
 
 * Answer 도메인에 delete 추가
 * delete 후 DeleteHistory 리턴하기
+
+* answer는 question 삭제 시 발생하기 때문에 question 도메인에서 answer에 삭제 메시지 전달
+* 
