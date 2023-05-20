@@ -38,8 +38,9 @@
     - [ ] 답변이 존재할 경우 삭제 불가 , 단 답변에 질문자가 작성한 글만 있을 경우 삭제 가능 기능
     - [ ] DeleteHistory 생성 후 반환 기능
 - [ ] Question 클래스에 delete 메서드를 추가
-  - [ ] 요청자와 답변자가 다르면 예외를 발생시킨다.
+    - [ ] 요청자와 답변자가 다르면 예외를 발생시킨다.
     - [ ] 답변을 삭제한다.
     - [ ] DeleteHistory를 생성하여 반환한다.
 - [ ] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
+- [ ] Answers 일급 컬렉션 구현
 - [ ] DeleteHistories 일급 컬렉션을 구현한다.
