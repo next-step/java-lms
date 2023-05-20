@@ -51,15 +51,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question changeStatusDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -82,5 +73,14 @@ public class Question {
             deleteHistories.addAll(answer.delete(nsUser));
         }
         return deleteHistories;
+    }
+
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
+
+    private Question changeStatusDeleted(boolean deleted) {
+        this.deleted = deleted;
+        return this;
     }
 }

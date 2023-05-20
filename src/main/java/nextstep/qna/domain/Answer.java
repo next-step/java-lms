@@ -49,17 +49,8 @@ public class Answer {
         return id;
     }
 
-    public Answer changeStatusDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -82,5 +73,14 @@ public class Answer {
         changeStatusDeleted(true);
 
         return List.of(new DeleteHistory(ContentType.ANSWER, id, writer, createdDate));
+    }
+
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
+    private Answer changeStatusDeleted(boolean deleted) {
+        this.deleted = deleted;
+        return this;
     }
 }
