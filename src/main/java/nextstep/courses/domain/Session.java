@@ -4,10 +4,14 @@ import nextstep.courses.code.SessionStatus;
 import nextstep.courses.code.SessionType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
 
     private static final String DATE_ERROR_MESSAGE = "시작일은 종료일 보다 늦을 수 없습니다.";
+    private static final String SIGN_UP_HISTORIES_SIZE_ERROR_MESSAGE = "최대 수강 인원을 초과할 수 없습니다.";
+    private static final String STATUS_ERROR_MESSAGE = "강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.";
 
     private Long id;
 
@@ -22,6 +26,8 @@ public class Session {
     private SessionStatus status;
 
     private int headCount;
+
+    private List<SignUpHistory> signUpHistories = new ArrayList<>();
 
     private LocalDateTime startAt;
 
@@ -80,6 +86,33 @@ public class Session {
 
     public LocalDateTime getEndAt() {
         return endAt;
+    }
+
+    public List<SignUpHistory> getSignUpHistories() {
+        return signUpHistories;
+    }
+
+    public void addSignUpHistory(SignUpHistory signUpHistory) {
+        validStatus();
+        signUpHistory.toSession(this);
+        signUpHistories.add(signUpHistory);
+        validSignUpHistoriesSize();
+    }
+
+    private void validStatus() {
+        if (SessionStatus.RECRUIT != this.status) {
+            throw new IllegalArgumentException(STATUS_ERROR_MESSAGE);
+        }
+    }
+
+    private void validSignUpHistoriesSize() {
+        if (this.signUpHistories.size() > headCount) {
+            throw new IllegalArgumentException(SIGN_UP_HISTORIES_SIZE_ERROR_MESSAGE);
+        }
+    }
+
+    public void toCourse(Course course) {
+        this.course = course;
     }
 
     @Override
