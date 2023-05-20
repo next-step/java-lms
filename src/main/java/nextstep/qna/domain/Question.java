@@ -60,7 +60,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser nsUser) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -72,7 +72,7 @@ public class Question {
         for (Answer answer : answers) {
             deleteHistories.addAll(answer.delete(nsUser));
         }
-        return deleteHistories;
+        return new DeleteHistories(deleteHistories);
     }
 
     private boolean isOwner(NsUser loginUser) {
