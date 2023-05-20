@@ -5,11 +5,12 @@ import java.util.List;
 public class Answers {
     private final List<Answer> answers;
 
-    private Answers(List<Answer> answers) {
-        this.answers = answers;
+    private Answers(List<Answer> answer) {
+        this.answers = answer;
     }
 
-    public static Answers of(List<Answer> answers) {
-        return new Answers(answers);
+    public static Answers of(List<Answer> answer) {
+        return new Answers(answer);
     }
+
 }
