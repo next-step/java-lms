@@ -26,6 +26,20 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy) {
+        this.contentType = contentType;
+        this.contentId = contentId;
+        this.deletedBy = deletedBy;
+    }
+
+    public static DeleteHistory ofQuestion(Long id, NsUser writer) {
+        return new DeleteHistory(ContentType.QUESTION, id, writer);
+    }
+
+    public static DeleteHistory ofAnswer(Long id, NsUser writer) {
+        return new DeleteHistory(ContentType.ANSWER, id, writer);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
