@@ -100,4 +100,17 @@ public class Question {
             answer.checkDeletability(loginUser);
         }
     }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
+    }
 }
