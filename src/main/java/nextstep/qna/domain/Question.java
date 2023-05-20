@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Question {
@@ -74,8 +73,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Question setDeleted(Deleted deleted) {
+        this.deleted = deleted.getValue();
         return this;
     }
 
@@ -90,7 +89,7 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
 
-        setDeleted(true);
+        setDeleted(Deleted.TRUE);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.getDeleteHistory(this));

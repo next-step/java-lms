@@ -48,8 +48,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Answer setDeleted(Deleted deleted) {
+        this.deleted = deleted.getValue();
         return this;
     }
 
@@ -80,7 +80,7 @@ public class Answer {
     }
 
     public DeleteHistory delete() {
-        setDeleted(true);
+        setDeleted(Deleted.TRUE);
         return DeleteHistory.getDeleteHistory(this);
     }
 
