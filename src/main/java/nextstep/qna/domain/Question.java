@@ -7,24 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
-
+    private final Answers answers = new Answers(this);
+    private final LocalDateTime createdDate = LocalDateTime.now();
+    private final Long id;
+    private final String title;
+    private final String contents;
+    private final NsUser writer;
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -45,48 +35,42 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
         return writer;
     }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> histories = new ArrayList<>();
+
+        histories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        histories.addAll(answers.deleteAll());
+
+        deleted = true;
+        return histories;
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
     }
 }
