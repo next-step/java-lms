@@ -86,11 +86,12 @@ public class Question {
     }
 
     private void validateAnswers(NsUser loginUser) {
-        for (Answer answer : this.answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new QuestionDeleteAnswerExistedException();
-            }
-        }
+        answers.stream()
+                .filter(answer -> !answer.isOwner(loginUser))
+                .findAny().ifPresent(answer -> {
+                            throw new QuestionDeleteAnswerExistedException();
+                        }
+                );
     }
 
     private void validateQuestionOwner(NsUser loginUser) {
