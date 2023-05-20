@@ -1,11 +1,11 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,9 +15,17 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문 삭제")
-    void delete() {
-        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI, 1);
+    void delete() throws Exception {
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.QUESTION, 1L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+    }
+
+    @Test
+    @DisplayName("질문 삭제 - 로그인 사용자 = 질문자")
+    void delete_exception() {
+        assertThatThrownBy(() -> {
+            Q1.delete(NsUserTest.SANJIGI);
+        }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("질문을 삭제할 권한이 없습니다.");
     }
 }

@@ -20,4 +20,4 @@
 * delete 후 DeleteHistory 리턴하기
 
 * answer는 question 삭제 시 발생하기 때문에 question 도메인에서 answer에 삭제 메시지 전달
-* 
+* 음..answers를 삭제할 수 없다면 question도 삭제할 수 없기 때문에 answer 먼저 삭제
