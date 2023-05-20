@@ -11,19 +11,15 @@ public class Session {
   private final SessionPayment sessionPayment;
   private SessionStatus sessionStatus;
   private final NextStepUsers nextStepUsers;
-  private final SessionDate startDate;
-  private final SessionDate closedDate;
+  private final SessionPeriod sessionPeriod;
   private final SessionCoverUrl sessionCoverUrl;
 
-  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime closedDate, String sessionCoverUrl) {
-    this.startDate = new SessionDate(startDate);
-    this.startDate.validateClosedDate(closedDate);
-
+  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl) {
     this.id = id;
     this.sessionPayment = sessionPayment;
     this.sessionStatus = sessionStatus;
     this.nextStepUsers = new NextStepUsers(maxUserEnrollment);
-    this.closedDate = new SessionDate(closedDate);
+    this.sessionPeriod = new SessionPeriod(startDate, endDate);
     this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
   }
 
