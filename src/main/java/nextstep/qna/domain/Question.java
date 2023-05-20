@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
-import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -96,7 +95,7 @@ public class Question {
 
     private void validateQuestionOwner(NsUser loginUser) {
         if (!writer.matchUser(loginUser)) {
-            throw new QuestionDeleteUnauthorizedException();
+            throw new QuestionDeleteAnswerExistedException();
         }
     }
 }
