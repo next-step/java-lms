@@ -19,8 +19,8 @@ public class AnswersTest {
     @DisplayName("로그인 사용자와 답변자가 다를 경우")
     void delete_exception() {
         assertThatThrownBy(() -> {
-            Q1.addAnswer1(A2);
-            Q1.getAnswers1().delete(NsUserTest.JAVAJIGI);
+            Q1.addAnswer(A2);
+            Q1.getAnswers().delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
@@ -28,13 +28,13 @@ public class AnswersTest {
     @DisplayName("답변 삭제")
     void delete() throws CannotDeleteException {
         A1.toQuestion(Q1);
-        Q1.addAnswer1(A1);
-        Q1.addAnswer1(A1);
+        Q1.addAnswer(A1);
+        Q1.addAnswer(A1);
 
         List<DeleteHistory> expected = Arrays.asList(
                 new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()),
                 new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
 
-        assertThat(Q1.getAnswers1().delete(NsUserTest.JAVAJIGI)).isEqualTo(expected);
+        assertThat(Q1.getAnswers().delete(NsUserTest.JAVAJIGI)).isEqualTo(expected);
     }
 }
