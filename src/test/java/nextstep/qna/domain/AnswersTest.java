@@ -5,8 +5,11 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import static nextstep.qna.domain.ContentType.ANSWER;
 import static org.assertj.core.api.Assertions.*;
 
 class AnswersTest {
@@ -53,7 +56,15 @@ class AnswersTest {
 
     @Test
     @DisplayName("답변 삭제 시, DeleteHistory 리스트 반환")
-    void delete_then_return_DeleteHistory_list() {
-        fail("not yet implemented");
+    void delete_then_return_DeleteHistory_list() throws CannotDeleteException {
+        // given
+        Answers answers = new Answers(AnswerTest.A1);
+
+        // when
+        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(deleteHistories)
+                .containsExactly(new DeleteHistory(ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), LocalDateTime.now()));
     }
 }
