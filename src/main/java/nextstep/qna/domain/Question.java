@@ -3,38 +3,36 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Question {
-    private Long id;
+public class Question extends BaseEntity {
+
+    private final long id;
+    private final NsUser writer;
+    private final Answers answers;
 
     private String title;
-
     private String contents;
 
-    private NsUser writer;
+    private boolean deleted;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
-
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(long id, NsUser writer, String title, String contents, Answers answers) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = answers;
+    }
+
+    public Question changeTitle(String title) {
+        this.title = title;
+        super.modifyUpdateDate(LocalDateTime.now());
+        return this;
+    }
+
+    public Question changeContents(String contents) {
+        this.contents = contents;
+        super.modifyUpdateDate(LocalDateTime.now());
+        return this;
     }
 
     public Long getId() {
@@ -45,35 +43,23 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Question display() {
+        this.deleted = false;
+        super.modifyUpdateDate(LocalDateTime.now());
+        return this;
+    }
+
+    public Question hide() {
+        this.deleted = false;
+        super.modifyUpdateDate(LocalDateTime.now());
         return this;
     }
 
@@ -81,7 +67,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
