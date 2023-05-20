@@ -1,6 +1,5 @@
 package nextstep.qna.service;
 
-import nextstep.qna.exception.CannotDeleteException;
 import nextstep.qna.domain.*;
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
@@ -55,12 +54,12 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_다른_사람이_쓴_글() throws Exception {
+    public void delete_다른_사람이_쓴_글과댓글() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
-        }).isInstanceOf(QuestionDeleteUnauthorizedException.class);
+        }).isInstanceOfAny(QuestionDeleteUnauthorizedException.class, QuestionDeleteUnauthorizedException.class);
     }
 
     @Test
