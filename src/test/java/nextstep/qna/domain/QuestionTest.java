@@ -16,7 +16,9 @@ public class QuestionTest {
     @Test
     @DisplayName("질문 삭제")
     void delete() throws Exception {
-        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
+        Question question = new Question(NsUserTest.JAVAJIGI, "delete title", "delete content");
+
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
