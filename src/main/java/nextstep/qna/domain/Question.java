@@ -64,7 +64,7 @@ public class Question {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        changeStatusDeleted(true);
+        deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
@@ -77,10 +77,5 @@ public class Question {
 
     private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    private Question changeStatusDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 }
