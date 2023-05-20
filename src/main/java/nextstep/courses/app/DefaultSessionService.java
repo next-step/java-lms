@@ -1,7 +1,6 @@
 package nextstep.courses.app;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionJoinRepository;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
@@ -13,11 +12,9 @@ import java.util.List;
 @Transactional
 public class DefaultSessionService implements SessionService {
     private final SessionRepository sessionRepository;
-    private final SessionJoinRepository sessionJoinRepository;
 
-    public DefaultSessionService(SessionRepository sessionRepository, SessionJoinRepository sessionJoinRepository) {
+    public DefaultSessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
-        this.sessionJoinRepository = sessionJoinRepository;
     }
 
     @Override
