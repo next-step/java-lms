@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static nextstep.qna.domain.ContentType.*;
 
@@ -20,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -67,58 +66,23 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser, long questionId) throws CannotDeleteException {
         validateLoginUser(loginUser);
-        validateAnswerUser(loginUser);
 
-        convertStatusToDeleted();
-        convertAnswerStatusToDeleted();
-
-        return deleteHistories(questionId);
-    }
-
-    private List<DeleteHistory> deleteHistories(long questionId) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        deleteHistories.add(questionDeleteHistory(questionId));
-        deleteHistories.addAll(answerDeleteHistories());
+        deleteHistories.add(deleteQuestion(questionId));
+        deleteHistories.addAll(deleteAnswer(loginUser));
 
         return Collections.unmodifiableList(deleteHistories);
     }
 
-    private DeleteHistory questionDeleteHistory(long questionId) {
+    private DeleteHistory deleteQuestion(long questionId) {
+        deleted = true;
         return new DeleteHistory(QUESTION, questionId, this.writer, LocalDateTime.now());
     }
 
-    private List<DeleteHistory> answerDeleteHistories() {
-        return answers.stream()
-                .map(answer -> new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private void convertStatusToDeleted() {
-        deleted = true;
-    }
-
-    private void convertAnswerStatusToDeleted() {
-        answers = answers.stream()
-                .map(answer -> answer.setDeleted(true))
-                .collect(Collectors.toUnmodifiableList());
-    }
-
-    private void validateAnswerUser(NsUser loginUser) throws CannotDeleteException {
-        if(containsNotOwnedAnswer(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    private boolean containsNotOwnedAnswer(NsUser loginUser) {
-        return answers.stream()
-                .anyMatch(answer -> !answer.isOwner(loginUser));
+    private List<DeleteHistory> deleteAnswer(NsUser loginUser) throws CannotDeleteException {
+        return answers.delete(loginUser);
     }
 
     private void validateLoginUser(NsUser loginUser) throws CannotDeleteException {

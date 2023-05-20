@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static nextstep.qna.domain.ContentType.*;
 import static org.assertj.core.api.Assertions.*;
@@ -25,19 +24,6 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("질문자와 답변자가 다른 다를 때 질문을 삭제하려고 시도할 경우, CannotDeleteException 예외 발생")
-    void try_to_delete_question_when_questioner_and_answerer_are_different_then_throw_CannotDeleteException() {
-        // given
-        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.addAnswer(AnswerTest.A2);
-
-        // when, then
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, 0L))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
-
-    @Test
     @DisplayName("질문 데이터를 삭제하면 질문의 상태를 삭제로 변경")
     void delete_question_then_set_deleted_status_to_true() throws CannotDeleteException {
         // given
@@ -49,24 +35,6 @@ public class QuestionTest {
 
         // then
         assertThat(question.isDeleted()).isTrue();
-    }
-
-    @Test
-    @DisplayName("질문 데이터를 삭제하면, 답변들의 상태를 삭제로 변경")
-    void delete_question_then_set_answers_deleted_status_to_true() throws CannotDeleteException {
-        // given
-        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.addAnswer(AnswerTest.A1);
-        long questionId = 0L;
-
-        // when
-        question.delete(NsUserTest.JAVAJIGI, questionId);
-
-        // then
-        Optional<Answer> notDeletedAnswer = question.getAnswers().stream()
-                .filter(answer -> !answer.isDeleted())
-                .findAny();
-        assertThat(notDeletedAnswer).isEmpty();
     }
 
     @Test
