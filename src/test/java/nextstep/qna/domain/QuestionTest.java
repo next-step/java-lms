@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.AnswerTest.A1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,7 +14,9 @@ public class QuestionTest {
 
     @Test
     void delete() {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Q1.addAnswer(A1);
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI)).hasSize(2);
+        assertThat(A1.isDeleted()).isTrue();
         assertThat(Q1.isDeleted()).isTrue();
     }
 

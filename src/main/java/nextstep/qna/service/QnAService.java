@@ -32,11 +32,6 @@ public class QnAService {
     public void deleteQuestion(NsUser loginUser, long questionId) {
         Question question = questionRepository.findById(questionId)
             .orElseThrow(NotFoundException::new);
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(question.delete(loginUser));
-        deleteHistories.addAll(question.getAnswers().delete(loginUser));
-
-        deleteHistoryService.saveAll(deleteHistories);
+        deleteHistoryService.saveAll(question.delete(loginUser));
     }
 }
