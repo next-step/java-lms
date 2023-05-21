@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.*;
 
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ class EnrolledUsersTest {
     }
   };
 
- @BeforeEach
+ @AfterEach
   void setUp() {
    TEST_ENROLLED_NO_USERS_YET = new EnrolledUsers(new MaxEnrollment(10));
    TEST_ENROLLED_USERS_LEFT_FEW_SEATS = new EnrolledUsers(new MaxEnrollment(10)){
