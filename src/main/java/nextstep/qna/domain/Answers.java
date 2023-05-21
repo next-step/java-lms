@@ -20,9 +20,9 @@ public class Answers implements Iterable<Answer> {
         this.values = values;
     }
 
-    public List<DeleteHistory> delete(NsUser user) {
+    public List<DeleteHistory> delete(NsUser loginUser) {
         for (Answer answer : values) {
-            if (!answer.isOwner(user)) {
+            if (!answer.isOwner(loginUser)) {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }
