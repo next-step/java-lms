@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class MaxEnrollmentTest {
 
   @Test
-  void 수강_신청자_수가_정원을_초과하지_않으면_정상_테스트() {
+  void 수강_신청자_수가_정원을_초과하지_않으면_false_반환_테스트() {
     MaxEnrollment maxEnrollment = new MaxEnrollment(10);
 
     int beforeFull = 9;
@@ -16,7 +16,7 @@ class MaxEnrollmentTest {
   }
 
   @Test
-  void 수강_신청자_수가_정원을_초과하면_예외_테스트() {
+  void 수강_신청자_수가_정원을_초과하면_true_반환_테스트() {
     MaxEnrollment maxEnrollment = new MaxEnrollment(10);
 
     int afterFull = 10;
