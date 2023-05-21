@@ -7,4 +7,8 @@ public class MaxEnrollment {
   public MaxEnrollment(int maxEnrollmentSize) {
     this.maxEnrollmentSize = maxEnrollmentSize;
   }
+
+  public boolean isFull(int size) {
+    return maxEnrollmentSize <= size;
+  }
 }
