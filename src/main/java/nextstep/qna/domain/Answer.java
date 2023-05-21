@@ -55,12 +55,12 @@ public class Answer {
     return deleted;
   }
 
-  public void makeDeleted(DeleteHistories deleteHistories) {
+  public DeleteHistory makeDeleted() {
     this.deleted = true;
-    deleteHistories.addDeleteHistory(new DeleteHistory(this));
+    return new DeleteHistory(this);
   }
 
-  public boolean isOwner(NsUser writer) {
+  public boolean checkAnswerOwner(NsUser writer) {
     return this.writer.equals(writer);
   }
 
