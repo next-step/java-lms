@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -76,6 +77,8 @@ public class Question {
         if (!loginUser.equals(writer))
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
 
+        answers.checkOwner(loginUser);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
 
@@ -86,10 +89,6 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
