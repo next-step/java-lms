@@ -35,6 +35,7 @@ public class QuestionTest {
     @DisplayName("삭제를 성공하면 올바른 삭제 이력을 반환한다.")
     public void 삭제_성공하면_삭제_이력_반환_테스트() throws CannotDeleteException {
         List<DeleteHistory> delete = Q1.delete(NsUserTest.JAVAJIGI, 0);
+
         assertThat(delete).contains(
                 new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
