@@ -17,22 +17,24 @@ public class QuestionTest {
         TestFixture.fixtureInit();
     }
 
-
     @DisplayName("Answer 가 존재하지 않는 경우 삭제에 성공한다")
     @Test
     public void noAnswerDeleteSuccess() {
         //given
+        NsUser loginUser = TestFixture.BADAJIGI;
         Question question = TestFixture.BADAJIGI_QUESTION;
+        Answer answer = TestFixture.BADAJIGI_ANSWER;
+
         //when
+        question.delete(loginUser);
         //then
-        fail();
         assertAll("삭제성공을 검증한다",
-                () -> assertThat(true)
-                        .as("")
-                        .isTrue(),
                 () -> assertThat(question.isDeleted())
-                        .as("")
-                        .isTrue()
+                        .as("삭제 질의시 True 를 리턴해야한다")
+                        .isTrue(),
+                () -> assertThat(answer.isDeleted())
+                        .as("연관되어있지 않은 Answer 는 삭제되지 않는다")
+                        .isFalse()
         );
     }
 
