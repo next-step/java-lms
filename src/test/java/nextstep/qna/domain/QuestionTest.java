@@ -110,12 +110,12 @@ public class QuestionTest {
         String answerDeleteHistory = answer.toDeleteHistory().toString();
 
         //then
-        assertAll("",
+        assertAll("DeleteHistory 생성에 대하여 검증한다",
                 () -> assertThat(questionDeleteHistory)
-                        .as("PK 가 존재하는지 검증한다")
+                        .as("question PK 가 존재하는지 검증한다")
                         .contains(question.getId().toString()),
                 () -> assertThat(answerDeleteHistory)
-                        .as("PK 가 존재하는지 검증한다")
+                        .as("answer PK 가 존재하는지 검증한다")
                         .contains(answer.getId().toString())
         );
     }
