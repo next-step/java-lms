@@ -31,4 +31,8 @@ public class EnrolledUsers {
   private boolean isFull() {
     return maxEnrollment.isFull(users.size());
   }
+
+  public int size() {
+    return users.size();
+  }
 }
