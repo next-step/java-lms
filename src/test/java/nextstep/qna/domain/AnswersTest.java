@@ -7,22 +7,21 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class AnswersTest {
 
     private Answer A1;
     private Answer A2;
-    private Question Q1;
     private Answers answers;
 
     @BeforeEach
     void setUp() {
         answers = new Answers();
-        this.Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        this.A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
-        this.A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+
+        Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        this.A1 = new Answer(NsUserTest.JAVAJIGI, q1, "Answers Contents1");
+        this.A2 = new Answer(NsUserTest.SANJIGI, q1, "Answers Contents2");
     }
     @DisplayName("답변 목록들을 추가 할 수 있다.")
     @Test
@@ -40,5 +39,12 @@ class AnswersTest {
     void name2() {
         assertThatThrownBy(() -> answers.add(null))
                 .isInstanceOf(NullPointerException.class);
+    }
+
+    @DisplayName("답변이 없는 리스트를 삭제해도 예외가 발생하지 않는다.")
+    @Test
+    void name3() {
+        assertThatNoException()
+                .isThrownBy(() -> answers.deleteAnswers());
     }
 }
