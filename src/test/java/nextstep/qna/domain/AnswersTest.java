@@ -9,10 +9,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static nextstep.qna.domain.AnswerFixture.JAVAJIGI_답변_복수_개;
+import static nextstep.qna.domain.AnswerFixture.SANJIGI_답변_복수_개;
 import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.AnswerTest.A2;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
@@ -22,13 +25,32 @@ public class AnswersTest {
     void testDelete_CannotDeleteException_예외발생(NsUser loginUser, Answers answers) {
         assertThatThrownBy(() -> answers.delete(loginUser))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .hasMessage(Answers.NOT_OWNER_MESSAGE);
     }
 
     static Stream<Arguments> provideNotMatchUserAndAnswer() {
         return Stream.of(
                 Arguments.arguments(JAVAJIGI, new Answers(List.of(A2))),
                 Arguments.arguments(SANJIGI, new Answers(List.of(A1)))
+        );
+    }
+
+    @ParameterizedTest(name = "답변들이 정상적으로 삭제되는지 확인하는 테스트")
+    @MethodSource("provideUserAndAnswer")
+    void testDelete_삭제_테스트(NsUser nsUser, Answers answers) throws CannotDeleteException {
+        answers.getAnswers()
+                .forEach(answer -> assertThat(answer.isDeleted()).isFalse());
+
+        answers.delete(nsUser);
+
+        answers.getAnswers()
+                .forEach(answer -> assertThat(answer.isDeleted()).isTrue());
+    }
+
+    static Stream<Arguments> provideUserAndAnswer() {
+        return Stream.of(
+                Arguments.arguments(JAVAJIGI, JAVAJIGI_답변_복수_개()),
+                Arguments.arguments(SANJIGI, SANJIGI_답변_복수_개())
         );
     }
 }
