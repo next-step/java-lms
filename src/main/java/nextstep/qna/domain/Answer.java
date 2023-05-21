@@ -64,10 +64,6 @@ public class Answer extends BaseTimeDomain {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
