@@ -40,9 +40,21 @@ public class AnswerTest {
     @Test
     public void isOwner() {
         //given
+        Answer answer = TestFixture.SANJIGI_ANSWER;
+        NsUser user = TestFixture.SANJIGI;
+
         //when
+        boolean isOwner = answer.isOwner(user);
+
         //then
-        fail();
+        assertAll("글작성자 판단 로직을 검증한다",
+                () -> assertThat(isOwner)
+                        .as("글 작성자에 대하여 판별시 True 리턴된다")
+                        .isTrue(),
+                () -> assertThat(answer.toString())
+                        .as("글 작성자의 Name 이 동일함을 확인한다")
+                        .contains(user.getName())
+        );
     }
 
     @DisplayName("Answer 에 다른 Question 연관관계를 맺으면 연관관계가 업데이트된다")
