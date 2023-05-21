@@ -44,7 +44,7 @@ public class QuestionTest {
 
     @DisplayName("삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다")
     @Test
-    void test1() throws CannotDeleteException {
+    void test1() {
         Q1.delete(NsUserTest.JAVAJIGI, deleteHistories);
         Q2.delete(NsUserTest.SANJIGI, deleteHistories);
 

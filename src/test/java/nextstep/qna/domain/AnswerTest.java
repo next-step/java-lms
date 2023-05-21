@@ -55,14 +55,14 @@ public class AnswerTest {
 
     @DisplayName("답변 삭제시 deleted 필드 값을 true로 변경한다.")
     @Test
-    void test1() throws CannotDeleteException {
+    void test1() {
         A1.delete(deleteHistories);
         assertThat(A1.isDeleted()).isTrue();
     }
 
     @DisplayName("답변을 삭제하지 않으면 deleted 필드 값을 false로 설정한다.")
     @Test
-    void test2(){
+    void test2() {
         assertThat(A1.isDeleted()).isFalse();
     }
 }
