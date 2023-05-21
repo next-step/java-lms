@@ -42,18 +42,21 @@ public class QuestionTest {
     @Test
     public void selfAnswerDeleteSuccess() {
         //given
+        NsUser user = TestFixture.JAVAJIGI;
         Question question = TestFixture.JAVAJIGI_QUESTION;
         Answer answer = TestFixture.JAVAJIGI_ANSWER;
+        question.addAnswer(answer);
 
         //when
+        question.delete(user);
+
         //then
-        fail();
         assertAll("삭제성공을 검증한다",
-                () -> assertThat(true)
-                        .as("")
-                        .isTrue(),
                 () -> assertThat(question.isDeleted())
-                        .as("")
+                        .as("Question 삭제에 성공해야한다")
+                        .isTrue(),
+                () -> assertThat(answer.isDeleted())
+                        .as("연관된 Answer 도 모두 삭제되어야한다")
                         .isTrue()
         );
     }
