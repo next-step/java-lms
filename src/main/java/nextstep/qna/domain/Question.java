@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.global.domain.BaseTimeDomain;
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;
 
@@ -16,7 +17,7 @@ public class Question extends BaseTimeDomain {
 
     private List<Answer> answers = new ArrayList<>();
 
-    private boolean deleted = false;
+    private DeleteStatus deleteStatus = DeleteStatus.NO;
 
     public static Question of(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         return new Question(id, writer, title, contents ,createdDate);
@@ -46,7 +47,7 @@ public class Question extends BaseTimeDomain {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        this.deleted = true;
+        this.deleteStatus = DeleteStatus.YES;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
@@ -58,8 +59,8 @@ public class Question extends BaseTimeDomain {
         return deleteHistories;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public DeleteStatus getDeleteStatus() {
+        return deleteStatus;
     }
 
     @Override

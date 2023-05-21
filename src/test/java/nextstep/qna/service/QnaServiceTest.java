@@ -2,6 +2,7 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
+import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,10 +46,10 @@ public class QnaServiceTest {
     public void delete_성공() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
-        assertThat(question.isDeleted()).isFalse();
+        assertThat(question.getDeleteStatus()).isEqualTo(DeleteStatus.NO);
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
-        assertThat(question.isDeleted()).isTrue();
+        assertThat(question.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
         verifyDeleteHistories();
     }
 
@@ -67,7 +68,7 @@ public class QnaServiceTest {
 
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
-        assertThat(question.isDeleted()).isTrue();
+        assertThat(question.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
         assertThat(answer.isDeleted()).isTrue();
         verifyDeleteHistories();
     }

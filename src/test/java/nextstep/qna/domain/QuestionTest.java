@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -69,14 +70,14 @@ public class QuestionTest {
         question1.delete(NsUserTest.JAVAJIGI, now);
 
         //then
-        assertThat(question1.isDeleted()).isEqualTo(true);
+        assertThat(question1.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
     }
 
     @DisplayName("질문 삭제 시 삭제 상태(deleted - boolean type)로 변경되는지 확인 (답변이 없는경우)")
     @Test
     void delete_삭제_상태_변경_답변이_없는경우() throws CannotDeleteException {
         question1.delete(NsUserTest.JAVAJIGI, now);
-        assertThat(question1.isDeleted()).isEqualTo(true);
+        assertThat(question1.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
     }
 
     @DisplayName("질문 삭제 시 답변의 삭제 상태(deleted - boolean type)로 변경되는지 확인")
