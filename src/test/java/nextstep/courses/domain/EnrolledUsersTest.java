@@ -8,12 +8,26 @@ import org.junit.jupiter.api.Test;
 
 class EnrolledUsersTest {
 
-  public static EnrolledUsers TEST_ENROLLED_NO_USERS_YET;
-  public static EnrolledUsers TEST_ENROLLED_USERS_LEFT_FEW_SEATS;
+  public static EnrolledUsers TEST_ENROLLED_NO_USERS_YET = new EnrolledUsers(new MaxEnrollment(10));
+  public static EnrolledUsers TEST_ENROLLED_USERS_LEFT_FEW_SEATS = new EnrolledUsers(new MaxEnrollment(10)){
+    {
+      add(NsUserTest.JAVAJIGI);
+      add(NsUserTest.SANJIGI);
+    }
+  };
 
-  public static EnrolledUsers TEST_ENROLLED_FULL_USERS;
+  public static EnrolledUsers TEST_ENROLLED_FULL_USERS = new EnrolledUsers(new MaxEnrollment(2)){
+    {
+      add(NsUserTest.JAVAJIGI);
+      add(NsUserTest.SANJIGI);
+    }
+  };
 
-  public static EnrolledUsers TEST_ENROLLED_LEFT_ONE_SEAT_USERS;
+  public static EnrolledUsers TEST_ENROLLED_LEFT_ONE_SEAT_USERS = new EnrolledUsers(new MaxEnrollment(2)){
+    {
+      add(NsUserTest.JAVAJIGI);
+    }
+  };
 
  @BeforeEach
   void setUp() {
