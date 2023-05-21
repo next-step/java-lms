@@ -43,6 +43,11 @@ public class Answer {
         this.contents = contents;
     }
 
+    public DeleteHistory delete() {
+        deleted = true;
+        return DeleteHistory.ofAnswer(id, writer);
+    }
+
     public Long getId() {
         return id;
     }
