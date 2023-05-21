@@ -65,13 +65,21 @@ public class QuestionTest {
     @Test
     public void validateAnswers() {
         //given
+        NsUser user = TestFixture.JAVAJIGI;
+        Question question = TestFixture.JAVAJIGI_QUESTION;
+        Answer answer1 = TestFixture.JAVAJIGI_ANSWER;
+        question.addAnswer(answer1);
+        Answer answer2 = TestFixture.SANJIGI_ANSWER;
+        question.addAnswer(answer2);
+        Answer answer3 = TestFixture.BADAJIGI_ANSWER;
+        question.addAnswer(answer3);
+
         //when
         //then
         assertThatThrownBy(() -> {
-
-        }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
-                .hasMessageContaining("바꾸셈");
-        fail();
+            question.delete(user);
+        }).isInstanceOf(QuestionDeleteAnswerExistedException.class)
+                .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @DisplayName("작성자가 아닌경우 QuestionDeleteUnauthorizedException 를 던진다")
