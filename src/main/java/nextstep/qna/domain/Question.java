@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.global.domain.BaseTimeDomain;
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.enums.ContentType;
 import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;

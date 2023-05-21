@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.domain.enums.ContentType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
