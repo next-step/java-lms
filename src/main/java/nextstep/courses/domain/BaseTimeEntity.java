@@ -4,5 +4,5 @@ import java.time.LocalDateTime;
 
 public abstract class BaseTimeEntity {
     protected LocalDateTime createdAt = LocalDateTime.now();
-    protected LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt = LocalDateTime.now();
 }

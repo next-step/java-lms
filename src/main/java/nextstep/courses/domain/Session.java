@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 
-public class Session {
+public class Session extends BaseTimeEntity{
 
   private Long id;
 
