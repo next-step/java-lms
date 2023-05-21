@@ -46,4 +46,12 @@ public class Course extends BaseTimeEntity{
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public int getSessionsSize() {
+        return sessions.size();
+    }
 }
