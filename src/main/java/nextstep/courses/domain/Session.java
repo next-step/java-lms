@@ -65,7 +65,7 @@ public class Session extends BaseTimeEntity {
   }
 
   public void enroll(NsUser user) {
-    sessionStatus.canEnroll();
+    sessionStatus.validateEnrollAvailable();
     enrolledUsers.add(user);
   }
 
