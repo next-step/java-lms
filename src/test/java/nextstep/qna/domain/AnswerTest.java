@@ -25,6 +25,9 @@ public class AnswerTest {
     @Test
     @DisplayName("삭제 기록 확인")
     void delete() {
-        assertThat( A1.delete()).isEqualTo(DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+        DeleteHistory deleteHistory = A1.delete();
+
+        assertThat(A1.isDeleted()).isTrue();
+        assertThat(deleteHistory).isEqualTo(DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }
