@@ -69,11 +69,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public Question delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
@@ -82,6 +77,8 @@ public class Question {
         for (Answer answer : this.answers) {
             answer.delete(this.writer);
         }
+
+        this.deleted = true;
 
         return this;
     }
