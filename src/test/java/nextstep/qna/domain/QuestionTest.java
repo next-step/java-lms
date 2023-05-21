@@ -91,7 +91,7 @@ public class QuestionTest {
         question1.delete(NsUserTest.JAVAJIGI, now);
 
         //then
-        assertThat(answer.isDeleted()).isEqualTo(true);
+        assertThat(answer.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
     }
 
     @DisplayName("질문 삭제시 삭제 이력이 반환되는지 확인 (답변이 없는경우)")

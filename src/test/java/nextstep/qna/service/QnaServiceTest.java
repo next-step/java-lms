@@ -69,7 +69,7 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
-        assertThat(answer.isDeleted()).isTrue();
+        assertThat(answer.getDeleteStatus()).isEqualTo(DeleteStatus.YES);
         verifyDeleteHistories();
     }
 

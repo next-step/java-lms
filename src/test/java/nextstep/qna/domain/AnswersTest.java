@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +59,7 @@ public class AnswersTest {
     @Test
     void delete_삭제_상태_변경() throws CannotDeleteException {
         answers2.deleteAnswers(NsUserTest.SANJIGI, now);
-        assertThat(answers2.getAnswers().get(0).isDeleted()).isEqualTo(true);
+        assertThat(answers2.getAnswers().get(0).getDeleteStatus()).isEqualTo(DeleteStatus.YES);
     }
 
     @DisplayName("답변 삭제 시 삭제 이력이 반환되는지 확인")
