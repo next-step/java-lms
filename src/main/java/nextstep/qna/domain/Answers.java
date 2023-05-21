@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 public class Answers {
@@ -21,19 +20,18 @@ public class Answers {
     answers.add(answer);
   }
 
-  public void delete(NsUser loginUser, DeleteHistories deleteHistories)
-      throws CannotDeleteException {
-    if (!checkAnswerOwner(loginUser)) {
-      throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
-
+  public List<DeleteHistory> delete() {
+    List<DeleteHistory> deleteHistories = new ArrayList<>();
     answers.stream()
-        .forEach(ans -> ans.makeDeleted(deleteHistories));
+        .map(Answer::makeDeleted)
+        .forEach(deleteHistories::add);
+
+    return deleteHistories;
   }
 
-  private boolean checkAnswerOwner(NsUser loginUser) {
+  public boolean checkAnswersOwner(NsUser loginUser) {
     Optional<Answer> optionalAnswer = answers.stream()
-        .filter(answer -> !answer.isOwner(loginUser))
+        .filter(answer -> !answer.checkAnswerOwner(loginUser))
         .findAny();
 
     return !optionalAnswer.isPresent();
