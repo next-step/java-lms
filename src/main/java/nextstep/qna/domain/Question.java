@@ -72,7 +72,10 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        if (!loginUser.equals(writer))
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
 
