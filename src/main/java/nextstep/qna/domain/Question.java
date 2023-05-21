@@ -90,9 +90,8 @@ public class Question {
         answers.stream()
                 .filter(answer -> !answer.isOwner(loginUser))
                 .findAny().ifPresent(answer -> {
-                            throw new QuestionDeleteAnswerExistedException();
-                        }
-                );
+                    throw new QuestionDeleteAnswerExistedException();
+                });
     }
 
     private void validateQuestionOwner(NsUser loginUser) {
