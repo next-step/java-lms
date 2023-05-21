@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
 import nextstep.qna.domain.Answers;
 import nextstep.qna.domain.ContentType;
@@ -38,11 +37,6 @@ public class QnAService {
         }
 
         Answers answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         question.setDeleted(true);
@@ -50,7 +44,7 @@ public class QnAService {
             new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(),
                 LocalDateTime.now()));
 
-        answers.forEach(answer -> deleteHistories.add(answer.delete()));
+        deleteHistories.addAll(answers.delete(loginUser));
 
         deleteHistoryService.saveAll(deleteHistories);
     }
