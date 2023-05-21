@@ -88,7 +88,7 @@ public class Answer extends BaseTimeDomain {
     }
 
     private DeleteHistory createDeleteHistory(LocalDateTime now) {
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.detail.getWriter(), now);
+        return DeleteHistory.of(ContentType.ANSWER, this.id, this.detail.getWriter(), now);
     }
 
 }

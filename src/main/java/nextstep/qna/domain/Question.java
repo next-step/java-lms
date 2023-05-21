@@ -51,7 +51,7 @@ public class Question extends BaseTimeDomain {
 
     private List<DeleteHistory> createDeleteHistories(LocalDateTime now, List<DeleteHistory> deleteHistoriesOfAnswers) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
+        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
         deleteHistories.addAll(deleteHistoriesOfAnswers);
         return deleteHistories;
     }

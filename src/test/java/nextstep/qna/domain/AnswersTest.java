@@ -67,7 +67,7 @@ public class AnswersTest {
     @Test
     void delete_삭제_이력() throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = answers2.deleteAnswers(NsUserTest.SANJIGI, now);
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, AnswerTest.A2.getId(), AnswerTest.A2.getWriter(), now);
+        DeleteHistory deleteHistory = DeleteHistory.of(ContentType.ANSWER, AnswerTest.A2.getId(), AnswerTest.A2.getWriter(), now);
 
         assertThat(deleteHistories).containsExactly(deleteHistory);
     }
