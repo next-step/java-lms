@@ -1,7 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
