@@ -28,8 +28,8 @@
 ### DeleteHistory
 - [x] 질문을 삭제 할 때, 질문에 대한 답변까지 삭제를 해야한다.
 - [x] 삭제시 `Question`과 `Answer`의 deleted 상태를 true로 삭제한다.
-- [ ] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
-- [ ] DeleteHistory를 List로 가지는 일급 컬렉션 추가
-  - [ ] question을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다. 
-  - [ ] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
+- [x] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
+- [x] DeleteHistory를 List로 가지는 일급 컬렉션 추가
+  - [x] question을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다. 
+  - [x] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
 
