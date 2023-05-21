@@ -6,8 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
@@ -33,5 +32,11 @@ public class AnswerTest {
         assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @DisplayName("답변 삭제 시 삭제 상태(deleted - boolean type)로 변경되는지 확인")
+    @Test
+    void delete_삭제_상태_변경() throws CannotDeleteException {
+        assertThat(answer.delete(NsUserTest.JAVAJIGI).isDeleted()).isEqualTo(true);
     }
 }

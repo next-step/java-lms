@@ -57,4 +57,17 @@ public class QuestionTest {
     void delete_삭제_상태_변경() throws CannotDeleteException {
         assertThat(question1.delete(NsUserTest.JAVAJIGI).isDeleted()).isEqualTo(true);
     }
+
+    @DisplayName("질문 삭제 시 답변의 삭제 상태(deleted - boolean type)로 변경되는지 확인")
+    @Test
+    void delete_답변_삭제_상태_변경() throws CannotDeleteException {
+        //given
+        Answer answer = AnswerTest.A1;
+        question1.addAnswer(answer);
+
+        //when
+        question1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(answer.isDeleted()).isEqualTo(true);
+    }
 }
