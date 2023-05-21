@@ -1,6 +1,8 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.NotFoundException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,26 @@ public class AnswerTest {
     public void beforeEach() {
         answer = Answer.of(NsUserTest.JAVAJIGI, QuestionTest.Q1, "내용1");
         this.now = LocalDateTime.now();
+    }
+
+    @DisplayName("Answer 객체가 잘 생성되는지 확인")
+    @Test
+    void 객체가_정상적으로_생성되는지_확인() {
+        assertThat(Answer.of(NsUserTest.JAVAJIGI, QuestionTest.Q1, "내용1")).isInstanceOf(Answer.class);
+    }
+
+    @DisplayName("Answer 객체 생성 시 작성자가 유효하지 않을경우 UnAuthorizedException 예외가 발생되는지 확인")
+    @Test
+    void 객체_생성시_작성자_유효하지_않은경우() {
+        assertThatThrownBy(() -> Answer.of(null, QuestionTest.Q1, "내용1"))
+                .isInstanceOf(UnAuthorizedException.class);
+    }
+
+    @DisplayName("Answer 객체 생성 시 질문이 유효하지 않을경우 NotFoundException 예외가 발생되는지 확인")
+    @Test
+    void 객체_생성시_질문_유효하지_않은경우() {
+        assertThatThrownBy(() -> Answer.of(NsUserTest.JAVAJIGI, null, "내용1"))
+                .isInstanceOf(NotFoundException.class);
     }
 
     @DisplayName("로그인 사용자와 답변한 사람이 같은 경우 예외가 발생하지 않는지 확인")
