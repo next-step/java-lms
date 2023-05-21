@@ -42,13 +42,20 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다")
+    @DisplayName("삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다.")
     @Test
-    void test1() {
+    void when_deletingQuestionIfPossible_Expects_returnTrue() {
         Q1.delete(NsUserTest.JAVAJIGI, deleteHistories);
         Q2.delete(NsUserTest.SANJIGI, deleteHistories);
 
         assertThat(Q1.isDeleted()).isTrue();
         assertThat(Q2.isDeleted()).isTrue();
+    }
+
+    @DisplayName("삭제가능 할 경우, 삭제 하지 않으면 deleted 필드 값이 false 이다.")
+    @Test
+    void when_notDeletingQuestion_Expects_returnFalse() {
+        assertThat(Q1.isDeleted()).isFalse();
+        assertThat(Q2.isDeleted()).isFalse();
     }
 }

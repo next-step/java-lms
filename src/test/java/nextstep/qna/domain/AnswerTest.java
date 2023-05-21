@@ -55,14 +55,14 @@ public class AnswerTest {
 
     @DisplayName("답변 삭제시 deleted 필드 값을 true로 변경한다.")
     @Test
-    void test1() {
+    void when_deleteAnswer_Expects_ReturnTrue() {
         A1.delete(deleteHistories);
         assertThat(A1.isDeleted()).isTrue();
     }
 
     @DisplayName("답변을 삭제하지 않으면 deleted 필드 값을 false로 설정한다.")
     @Test
-    void test2() {
+    void when_notDeletingAnswer_Expects_ReturnFalse() {
         assertThat(A1.isDeleted()).isFalse();
     }
 }

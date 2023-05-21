@@ -27,7 +27,7 @@ class AnswersTest {
     }
     @DisplayName("답변 목록들을 추가 할 수 있다.")
     @Test
-    void name() {
+    void when_addAnswers_Expects_ContainExactlyToList() {
         answers.add(A1);
         answers.add(A2);
 
@@ -38,14 +38,14 @@ class AnswersTest {
 
     @DisplayName("컬렉션에 NULL 값을 추가하면 예외가 발생한다.")
     @Test
-    void name2() {
+    void when_addNull_Expects_ThrowException() {
         assertThatThrownBy(() -> answers.add(null))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @DisplayName("답변이 없는 리스트를 삭제해도 예외가 발생하지 않는다.")
     @Test
-    void name3() {
+    void when_deleteAnswersWithNoAnswer_Expects_DoesNotThrowException() {
         assertThatNoException()
                 .isThrownBy(() -> answers.deleteAnswers(deleteHistories));
     }
