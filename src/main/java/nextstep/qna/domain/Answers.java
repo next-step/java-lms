@@ -20,11 +20,14 @@ public class Answers {
         }
     }
 
-    public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            answer.delete(deleteHistories);
+            DeleteHistory deleteAnswerHistory = answer.delete(deleteHistories);
+            deleteHistories.add(deleteAnswerHistory);
         }
+        return deleteHistories;
     }
 
     public int size() {

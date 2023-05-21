@@ -80,9 +80,9 @@ public class Answer {
         }
     }
 
-    public void delete(List<DeleteHistory> deleteHistories) {
+    public DeleteHistory delete(List<DeleteHistory> deleteHistories) {
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
