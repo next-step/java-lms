@@ -21,4 +21,8 @@ public enum SessionStatus {
       throw new IllegalArgumentException("종료된 세션은 수강 신청할 수 없습니다.");
     }
   }
+
+  public boolean isPreparing() {
+    return this == PREPARING;
+  }
 }

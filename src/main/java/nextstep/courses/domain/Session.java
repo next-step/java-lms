@@ -61,7 +61,7 @@ public class Session extends BaseTimeEntity {
   }
 
   private static boolean isPreparing(SessionStatus sessionStatus) {
-    return sessionStatus == SessionStatus.PREPARING;
+    return sessionStatus.isPreparing();
   }
 
   public void enroll(NsUser user) {
