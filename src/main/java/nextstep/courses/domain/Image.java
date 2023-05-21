@@ -26,13 +26,12 @@ public class Image extends BaseEntity {
     public static Image create(String name, String uri, Long size, String typeString) throws InvalidImageException, URISyntaxException {
         validateUri(uri);
         validateSize(size);
-        validateType(typeString);
 
         Image image = new Image();
         image.name = name;
         image.uri = new URI(uri);
         image.size = size;
-        image.type = ImageType.valueOf(typeString.toUpperCase());
+        image.type = ImageType.of(typeString);
 
         return image;
     }
@@ -68,12 +67,6 @@ public class Image extends BaseEntity {
     private static void validateSize(Long size) throws InvalidImageException {
         if (size > MAX_SIZE) {
             throw new InvalidImageException("이미지의 크기가 너무 큽니다. 최대 " + MAX_SIZE + "바이트까지 허용됩니다.");
-        }
-    }
-
-    private static void validateType(String typeString) throws InvalidImageException {
-        if (!ImageType.isValidType(typeString)) {
-            throw new InvalidImageException("지원하지 않는 이미지 형식입니다.");
         }
     }
 

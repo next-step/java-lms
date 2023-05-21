@@ -32,7 +32,7 @@ class ImageTest {
     @Test
     void create_with_invalid_uri_should_throw_exception() {
         assertThrows(InvalidImageException.class, () ->
-                Image.create("test", INVALID_URI, 100L, VALID_TYPE_STRING)
+                Image.create("test", INVALID_URI, VALID_SIZE, VALID_TYPE_STRING)
         );
     }
 
