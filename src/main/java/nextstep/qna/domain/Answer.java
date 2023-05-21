@@ -6,6 +6,8 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
+import static nextstep.qna.domain.ContentType.ANSWER;
+
 public class Answer {
     private Long id;
 
@@ -47,9 +49,9 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public DeleteHistory delete() {
+        this.deleted = true;
+        return new DeleteHistory(ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
