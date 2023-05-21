@@ -14,14 +14,14 @@ public class Answers {
         answers.add(answer);
     }
 
-    private void deletable(NsUser loginUser) throws CannotDeleteException {
+    private void validateDelete(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.answers) {
-            answer.isDeletable(loginUser);
+            answer.validateDelete(loginUser);
         }
     }
 
     public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
-        deletable(loginUser);
+        validateDelete(loginUser);
         for (Answer answer : this.answers) {
             answer.delete(deleteHistories);
         }
