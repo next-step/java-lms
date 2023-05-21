@@ -32,7 +32,8 @@ public class AnswerTest {
 
         List<Answer> answers = Q1.getAnswers();
 
-        assertThatNoException().isThrownBy(() -> answers.forEach(answer -> answer.delete()));
+        assertThat(answers).allSatisfy(answer ->
+                assertThatNoException().isThrownBy(answer::delete));
     }
 
     @DisplayName("답변 삭제시 로그인 사용자와 질문자가 같지 않을 경우 예외를 발생한다.")
@@ -44,7 +45,9 @@ public class AnswerTest {
 
         List<Answer> answers = Q1.getAnswers();
 
-        assertThatThrownBy(() -> answers.forEach(answer -> answer.delete()))
-                .isInstanceOf(CannotDeleteException.class);
+
+        assertThat(answers).anySatisfy(answer ->
+                assertThatThrownBy(answer::delete)
+                        .isInstanceOf(CannotDeleteException.class));
     }
 }
