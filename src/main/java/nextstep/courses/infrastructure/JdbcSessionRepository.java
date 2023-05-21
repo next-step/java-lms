@@ -5,9 +5,13 @@ import nextstep.users.domain.NsUserBuilder;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,17 +25,25 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         String sql = "insert into session (bill_type, session_status, session_cover_image, max_user_count, started_at, ended_at, created_at) " +
                 "values(?, ?, ?, ?, ?, ?, ?)";
 
-        return jdbcTemplate.update(sql, session.getSessionBillType().name(),
-                                   session.getSessionStatus().name(),
-                                   session.getSessionCoverImageUrl(),
-                                   session.getMaxUserCount(),
-                                   Timestamp.valueOf(session.getSessionPeriod().getStartedAt()),
-                                   Timestamp.valueOf(session.getSessionPeriod().getEndedAt()),
-                                   Timestamp.valueOf(session.getCreatedAt()));
+        jdbcTemplate.update(conn -> {
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, session.getSessionBillType().name());
+            ps.setString(2, session.getSessionStatus().name());
+            ps.setString(3, session.getSessionCoverImageUrl());
+            ps.setInt(4, session.getMaxUserCount());
+            ps.setTimestamp(5, Timestamp.valueOf(session.getSessionPeriod().getStartedAt()));
+            ps.setTimestamp(6, Timestamp.valueOf(session.getSessionPeriod().getEndedAt()));
+            ps.setTimestamp(7, Timestamp.valueOf(session.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

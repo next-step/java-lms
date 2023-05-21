@@ -5,7 +5,6 @@ import nextstep.courses.domain.SessionJoin;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -36,31 +35,34 @@ class JdbcSessionRepositoryTest {
     @Test
     @DisplayName("session crud")
     void test01() {
-        Session session = aSession().withId(1L).build();
-        session.addUser(NsUserTest.JAVAJIGI);
-        session.addUser(NsUserTest.SANJIGI);
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
-        Session savedSession = sessionRepository.findById(1L);
-        assertThat(session.getSessionType()).isEqualTo(savedSession.getSessionType());
-        LOGGER.debug("Session: {}", savedSession);
-        sessionRepository.saveSessionJoin(session);
-        List<SessionJoin> sessionJoins = sessionRepository.findAllSessionJoinBySessionId(session.getId());
-        assertThat(sessionJoins).hasSize(2);
+        Session session = aSession().build();
+        long sessionId = sessionRepository.save(session);
+        assertThat(sessionId).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("session 조회")
+    void test02() {
+        Session session = aSession().build();
+        long sessionId = sessionRepository.save(session);
+
+        Session findSession = sessionRepository.findById(sessionId);
+        assertThat(sessionId).isEqualTo(findSession.getId());
+        assertThat(session.getSessionType()).isEqualTo(findSession.getSessionType());
     }
 
     @Test
     @DisplayName("session join crud")
-    @Disabled("session id로 못찾는 이슈가 있음. auto_increase 롤백이 안됨")
-    void test02() {
-        Session session = aSession().withId(1L).build();
-        session.addUser(NsUserTest.JAVAJIGI);
-        session.addUser(NsUserTest.SANJIGI);
-        sessionRepository.save(session);
+    void test03() {
+        Session session = aSession().build();
+        long sessionId = sessionRepository.save(session);
+        Session savedSession = aSession().withId(sessionId).build();
+        savedSession.addUser(NsUserTest.JAVAJIGI);
+        savedSession.addUser(NsUserTest.SANJIGI);
 
-        sessionRepository.saveSessionJoin(session);
+        sessionRepository.saveSessionJoin(savedSession);
 
-        List<SessionJoin> sessionJoins = sessionRepository.findAllSessionJoinBySessionId(1L);
+        List<SessionJoin> sessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSession.getId());
         assertThat(sessionJoins).hasSize(2);
     }
 }
