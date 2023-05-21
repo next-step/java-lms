@@ -1,7 +1,9 @@
 package nextstep.qna.domain;
 
 import nextstep.fixture.TestFixture;
+import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,12 +88,14 @@ public class QuestionTest {
     @Test
     public void validateQuestionOwner() {
         //given
+        Question question = TestFixture.BADAJIGI_QUESTION;
+        NsUser user = TestFixture.SANJIGI;
         //when
         //then
         assertThatThrownBy(() -> {
-
+            question.delete(user);
         }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
-                .hasMessageContaining("바꾸셈");
+                .hasMessageContaining("질문을 삭제할 권한이 없습니다");
         fail();
     }
 
