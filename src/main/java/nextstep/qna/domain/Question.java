@@ -99,4 +99,8 @@ public class Question {
             throw new QuestionDeleteUnauthorizedException();
         }
     }
+
+    public DeleteHistory toDeleteHistory() {
+        return DeleteHistory.of(ContentType.QUESTION, this.getId(), this.writer, LocalDateTime.now());
+    }
 }
