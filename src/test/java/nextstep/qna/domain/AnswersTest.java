@@ -32,8 +32,8 @@ public class AnswersTest {
         Q1.addAnswer(A1);
 
         List<DeleteHistory> expected = Arrays.asList(
-                new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+                DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
 
         assertThat(Q1.getAnswers().delete(NsUserTest.JAVAJIGI)).isEqualTo(expected);
     }

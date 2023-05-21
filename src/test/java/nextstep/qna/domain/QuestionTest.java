@@ -21,7 +21,7 @@ public class QuestionTest {
         List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
-        assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+        assertThat(deleteHistories).containsExactly(DeleteHistory.of(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 
     @Test
