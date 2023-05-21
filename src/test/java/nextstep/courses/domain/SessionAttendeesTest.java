@@ -8,6 +8,15 @@ import static org.assertj.core.api.Assertions.*;
 
 class SessionAttendeesTest {
     @Test
+    @DisplayName("최대 수강 신청자 수가 1명 미만일 경우, IllegalArgumentException 예외 발생")
+    void max_number_of_attendees_is_less_than_1_then_throw_IllegalArgumentException() {
+        int invalidMaxNumberOfAttendees = 0;
+        assertThatThrownBy(() -> new SessionAttendees(invalidMaxNumberOfAttendees))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("최대 수강자 수는 1명 이상이여야 합니다: " + invalidMaxNumberOfAttendees);
+    }
+
+    @Test
     @DisplayName("강의 신청을 한 사람이 다시 신청 할 경우, IllegalArgumentException 예외 발생")
     void duplicate_application_then_throw_IllegalArgumentException() {
         // given
