@@ -1,6 +1,7 @@
 package nextstep.qna;
 
 public class UnAuthenticationException extends Exception {
+
     private static final long serialVersionUID = 1L;
 
     public UnAuthenticationException() {
@@ -8,7 +9,7 @@ public class UnAuthenticationException extends Exception {
     }
 
     public UnAuthenticationException(String message, Throwable cause, boolean enableSuppression,
-                                     boolean writableStackTrace) {
+        boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

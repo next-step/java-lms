@@ -1,12 +1,12 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.users.domain.NsUser;
 
 public class Question {
+
     private Long id;
 
     private String title;
@@ -87,6 +87,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
+            + ", writer=" + writer + "]";
     }
 }
