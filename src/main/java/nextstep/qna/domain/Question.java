@@ -73,8 +73,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(Deleted deleted) {
-        this.deleted = deleted.getValue();
+    public Question setDeleted(boolean deleted) {
+        this.deleted = deleted;
         return this;
     }
 
@@ -89,7 +89,7 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
 
-        setDeleted(Deleted.TRUE);
+        setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.getDeleteHistory(this));
