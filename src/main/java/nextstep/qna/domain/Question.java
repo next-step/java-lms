@@ -27,7 +27,7 @@ public class Question {
     public static Question of(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         return new Question(id, writer, title, contents ,createdDate);
     }
-    
+
     private Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
@@ -38,24 +38,6 @@ public class Question {
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
