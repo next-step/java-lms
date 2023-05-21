@@ -78,6 +78,11 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+
+        for (Answer answer : this.answers) {
+            answer.delete(this.writer);
+        }
+
         return this;
     }
 
