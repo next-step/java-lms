@@ -29,17 +29,8 @@ public class Answer extends BaseTimeDomain {
 
     private Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
-
-        this.question = question;
-
-        this.detail = AnswerDetail.of(contents, writer);
+        this.question = validateQuestion(question);
+        this.detail = AnswerDetail.of(contents, validateWriter(writer));
     }
 
     public Long getId() {
@@ -47,13 +38,9 @@ public class Answer extends BaseTimeDomain {
     }
 
     public DeleteHistory delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
-        if (!detail.isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-
-        this.deleteStatus = DeleteStatus.YES;
-
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.detail.getWriter(), now);
+        checkDeletionAvailability(loginUser);
+        changeStatusToBeDeleted();
+        return createDeleteHistory(now);
     }
 
     public DeleteStatus getDeleteStatus() {
@@ -71,6 +58,36 @@ public class Answer extends BaseTimeDomain {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + detail.getWriter() + ", contents=" + detail.getContents() + "]";
+    }
+
+    private static Question validateQuestion(Question question) {
+        if(question == null) {
+            throw new NotFoundException();
+        }
+
+        return question;
+    }
+
+    private static NsUser validateWriter(NsUser writer) {
+        if(writer == null) {
+            throw new UnAuthorizedException();
+        }
+
+        return writer;
+    }
+
+    private void checkDeletionAvailability(NsUser loginUser) throws CannotDeleteException {
+        if (!detail.isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private void changeStatusToBeDeleted() {
+        this.deleteStatus = DeleteStatus.YES;
+    }
+
+    private DeleteHistory createDeleteHistory(LocalDateTime now) {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.detail.getWriter(), now);
     }
 
 }
