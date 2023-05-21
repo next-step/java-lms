@@ -20,25 +20,15 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    public static Question of(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
+        return new Question(id, writer, title, contents ,createdDate);
     }
-
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
+    
+    private Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;

@@ -14,8 +14,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = Question.of(1L, NsUserTest.JAVAJIGI, "title1", "contents1", LocalDateTime.now());
+    public static final Question Q2 = Question.of(2L, NsUserTest.SANJIGI, "title2", "contents2", LocalDateTime.now());
     private Question question1;
     private Question question2;
     private LocalDateTime now;
@@ -23,8 +23,8 @@ public class QuestionTest {
     @BeforeEach
     public void beforeEach() {
         now = LocalDateTime.now();
-        question1 = new Question(1L, NsUserTest.JAVAJIGI, "제목1", "내용1", now);
-        question2 = new Question(2L, NsUserTest.SANJIGI, "제목2", "내용2", now);
+        question1 = Question.of(1L, NsUserTest.JAVAJIGI, "제목1", "내용1", now);
+        question2 = Question.of(2L, NsUserTest.SANJIGI, "제목2", "내용2", now);
     }
 
     @DisplayName("로그인 사용자와 질문한 사람이 같은 경우 예외가 발생하지 않는지 확인")
