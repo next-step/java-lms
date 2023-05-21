@@ -33,7 +33,6 @@ public class Answer {
         if (question == null) {
             throw new NotFoundException();
         }
-
         this.writer = writer;
         this.question = question;
         this.contents = contents;
