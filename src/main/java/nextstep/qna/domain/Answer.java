@@ -5,6 +5,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.enums.DeleteStatus;
+import nextstep.qna.domain.vo.AnswerDetail;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -12,11 +13,9 @@ import java.time.LocalDateTime;
 public class Answer extends BaseTimeDomain {
     private Long id;
 
-    private NsUser writer;
-
     private Question question;
 
-    private String contents;
+    private AnswerDetail detail;
 
     private DeleteStatus deleteStatus = DeleteStatus.NO;
 
@@ -37,9 +36,9 @@ public class Answer extends BaseTimeDomain {
             throw new NotFoundException();
         }
 
-        this.writer = writer;
         this.question = question;
-        this.contents = contents;
+
+        this.detail = AnswerDetail.of(contents, writer);
     }
 
     public Long getId() {
@@ -47,13 +46,13 @@ public class Answer extends BaseTimeDomain {
     }
 
     public DeleteHistory delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (!detail.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
         this.deleteStatus = DeleteStatus.YES;
 
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, now);
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.detail.getWriter(), now);
     }
 
     public DeleteStatus getDeleteStatus() {
@@ -61,7 +60,7 @@ public class Answer extends BaseTimeDomain {
     }
 
     public NsUser getWriter() {
-        return writer;
+        return detail.getWriter();
     }
 
     public void toQuestion(Question question) {
@@ -70,10 +69,7 @@ public class Answer extends BaseTimeDomain {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + getId() + ", writer=" + detail.getWriter() + ", contents=" + detail.getContents() + "]";
     }
 
-    private boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
 }
