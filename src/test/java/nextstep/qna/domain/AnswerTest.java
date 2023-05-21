@@ -14,14 +14,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class AnswerTest {
-    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static final Answer A1 = Answer.of(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+    public static final Answer A2 = Answer.of(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
     private Answer answer;
     private LocalDateTime now;
 
     @BeforeEach
     public void beforeEach() {
-        answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "내용1");
+        answer = Answer.of(NsUserTest.JAVAJIGI, QuestionTest.Q1, "내용1");
         this.now = LocalDateTime.now();
     }
 
