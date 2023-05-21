@@ -96,21 +96,27 @@ public class QuestionTest {
             question.delete(user);
         }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");
-        fail();
     }
 
     @DisplayName("자신의 정보에 맞게 DeleteHistory 를 생성한다")
     @Test
     public void toDeleteHistory() {
         //given
+        Question question = TestFixture.BADAJIGI_QUESTION;
+        Answer answer = TestFixture.SANJIGI_ANSWER;
+
         //when
+        String questionDeleteHistory = question.toDeleteHistory().toString();
+        String answerDeleteHistory = answer.toDeleteHistory().toString();
+
         //then
-        fail();
         assertAll("",
-                () -> assertThat(true)
-                        .as("")
-                        .isTrue()
+                () -> assertThat(questionDeleteHistory)
+                        .as("PK 가 존재하는지 검증한다")
+                        .contains(question.getId().toString()),
+                () -> assertThat(answerDeleteHistory)
+                        .as("PK 가 존재하는지 검증한다")
+                        .contains(answer.getId().toString())
         );
     }
-
 }
