@@ -1,24 +1,28 @@
 package nextstep.courses.domain;
 
 
-public class Session extends BaseTimeEntity{
+import java.time.LocalDateTime;
 
-  private Long id;
+public class Session extends BaseTimeEntity {
 
-  private SessionInfo sessionInfo;
+  private final Long id;
 
-  private Image coverImage;
+  private final SessionInfo sessionInfo;
 
-  private SessionType sessionType;
+  private final Image coverImage;
 
-  private SessionStatus sessionStatus;
+  private final SessionType sessionType;
 
-  private EnrolledUsers enrolledUsers;
+  private final SessionStatus sessionStatus;
 
-  private SessionPeriod sessionPeriod;
+  private final EnrolledUsers enrolledUsers;
+
+  private final SessionPeriod sessionPeriod;
 
   public Session(Long id, SessionInfo sessionInfo, Image coverImage, SessionType sessionType,
-      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod) {
+      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
     this.id = id;
     this.sessionInfo = sessionInfo;
     this.coverImage = coverImage;
@@ -27,4 +31,6 @@ public class Session extends BaseTimeEntity{
     this.enrolledUsers = enrolledUsers;
     this.sessionPeriod = sessionPeriod;
   }
+
+
 }

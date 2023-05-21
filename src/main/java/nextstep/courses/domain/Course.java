@@ -5,27 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course extends BaseTimeEntity{
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private Long creatorId;
+    private final Long creatorId;
 
     private final List<Session> sessions = new ArrayList<>();
-
-    public Course() {
-    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
