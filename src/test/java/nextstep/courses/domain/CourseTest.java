@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static nextstep.Fixtures.aCourse;
+import static nextstep.Fixtures.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CourseTest {
@@ -15,8 +16,8 @@ class CourseTest {
     void test01() {
         Course course = aCourse().withSessions(new ArrayList<>()).build();
 
-        course.addSession(new Session());
-        course.addSession(new Session());
+        course.addSession(aSession().build());
+        course.addSession(aSession().build());
 
         assertThat(course.getSessions()).hasSize(2);
     }

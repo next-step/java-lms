@@ -41,6 +41,10 @@ public class Course {
         sessions.add(session);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

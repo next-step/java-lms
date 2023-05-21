@@ -24,17 +24,22 @@ public class Fixtures {
 
     public static CourseBuilder aCourse() {
         return CourseBuilder.aCourse()
-                            .withId(1L)
+                            .withTitle("title")
                             .withSessions(new ArrayList<>())
                             .withCreatorId(1L)
-                            .withCreatedAt(LocalDateTime.now());
+                            .withCreatedAt(LocalDateTime.now())
+                            .withUpdatedAt(LocalDateTime.now());
     }
 
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
-                             .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))
                              .withSessionBillType(SessionBillType.FREE)
-                             .withId(1L);
+                             .withSessionStatus(SessionStatus.READY)
+                             .withSessionCoverImage(new SessionCoverImage("http://edu.nexystep.camp"))
+                             .withMaxUserCount(100)
+                             .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))
+                             .withCreatedAt(LocalDateTime.now())
+                             .withUpdatedAt(LocalDateTime.now());
     }
 
 }

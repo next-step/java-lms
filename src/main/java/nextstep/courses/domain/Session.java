@@ -2,27 +2,30 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Session {
     private Long id;
-    private final List<NsUser> users = new ArrayList<>();
+    private final List<SessionJoin> sessionJoins = new ArrayList<>();
 
-    private SessionBillType sessionBillType;
+    private final SessionBillType sessionBillType;
 
-    private SessionStatus sessionStatus;
+    private final SessionStatus sessionStatus;
 
-    private SessionCoverImage sessionCoverImage;
+    private final SessionCoverImage sessionCoverImage;
 
-    private int maxUserCount;
+    private final int maxUserCount;
 
-    private SessionPeriod sessionPeriod;
-    public Session() {
-    }
+    private final SessionPeriod sessionPeriod;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod) {
+    private final LocalDateTime createdAt;
+
+    private final LocalDateTime updatedAt;
+
+    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -37,6 +40,8 @@ public class Session {
         this.sessionCoverImage = sessionCoverImage;
         this.maxUserCount = maxUserCount;
         this.sessionPeriod = sessionPeriod;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void register(NsUser user) {
@@ -44,19 +49,19 @@ public class Session {
             throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
         }
 
-        if (maxUserCount <= users.size()) {
+        if (maxUserCount <= sessionJoins.size()) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        users.add(user);
+        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
     }
 
     public Long getId() {
         return id;
     }
 
-    public List<NsUser> getUsers() {
-        return users;
+    public List<SessionJoin> getSessionJoins() {
+        return sessionJoins;
     }
 
     public SessionBillType getSessionType() {
@@ -79,8 +84,25 @@ public class Session {
         return sessionPeriod;
     }
 
+    public SessionBillType getSessionBillType() {
+        return sessionBillType;
+    }
+
+    public String getSessionCoverImageUrl() {
+        return sessionCoverImage.getUrl();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void addUser(NsUser nsUser) {
-        users.add(nsUser);
+        LocalDateTime now = LocalDateTime.now();
+        sessionJoins.add(new SessionJoin(this, nsUser, now, now));
     }
 
     @Override
@@ -94,5 +116,10 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" + "id=" + id + ", sessionBillType=" + sessionBillType + ", sessionStatus=" + sessionStatus + ", sessionCoverImage=" + sessionCoverImage + ", maxUserCount=" + maxUserCount + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }
