@@ -12,6 +12,7 @@ public class TestFixture {
 
     public static Answer JAVAJIGI_ANSWER;
     public static Answer SANJIGI_ANSWER;
+    public static Answer BADAJIGI_ANSWER;
 
     public static NsUser JAVAJIGI;
     public static NsUser SANJIGI;
@@ -32,5 +33,6 @@ public class TestFixture {
 
         JAVAJIGI_ANSWER = new Answer(11L, JAVAJIGI, JAVAJIGI_QUESTION, "Answers Contents1");
         SANJIGI_ANSWER = new Answer(22L, SANJIGI, SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
+        BADAJIGI_ANSWER = new Answer(33L, BADAJIGI, BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
     }
 }
