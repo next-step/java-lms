@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Question {
     private Long id;
@@ -45,18 +48,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -68,21 +61,63 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser, long questionId) throws CannotDeleteException {
+        validateLoginUser(loginUser);
+        validateAnswerUser(loginUser);
+
+        convertStatusToDeleted();
+        convertAnswerStatusToDeleted();
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(answerDeleteHistories());
+
+        return Collections.unmodifiableList(deleteHistories);
+    }
+
+    private List<DeleteHistory> answerDeleteHistories() {
+        return answers.stream()
+                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private void validateLoginUser(NsUser loginUser) throws CannotDeleteException {
+        if(!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateAnswerUser(NsUser loginUser) throws CannotDeleteException {
+        if(containsNotOwnedAnswer(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private void convertStatusToDeleted() {
+        this.deleted = true;
+    }
+
+    private void convertAnswerStatusToDeleted() {
+        this.answers = this.answers.stream()
+                .map(answer -> answer.setDeleted(true))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private boolean containsNotOwnedAnswer(NsUser loginUser) {
+        return answers.stream()
+                .anyMatch(answer -> !answer.isOwner(loginUser));
     }
 
     @Override
