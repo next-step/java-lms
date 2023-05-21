@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,8 @@ public class AnswerTest {
 
     @Test
     void deleteAnswer() {
-        assertThat(A1.delete()).isInstanceOf(DeleteHistory.class);
+        assertThat(A1.delete()).isEqualTo(
+            new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now()));
         assertThat(A1.isDeleted()).isTrue();
     }
 }

@@ -4,6 +4,8 @@ import static nextstep.qna.domain.AnswerTest.A1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,14 @@ public class QuestionTest {
     @Test
     void delete() {
         Q1.addAnswer(A1);
-        assertThat(Q1.delete(NsUserTest.JAVAJIGI)).hasSize(2);
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI)).isEqualTo(
+            List.of(
+                new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI,
+                    LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI,
+                    LocalDateTime.now())
+            )
+        );
         assertThat(A1.isDeleted()).isTrue();
         assertThat(Q1.isDeleted()).isTrue();
     }

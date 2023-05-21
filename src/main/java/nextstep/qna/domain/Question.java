@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -86,6 +87,26 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Question question = (Question) o;
+        return deleted == question.deleted && Objects.equals(id, question.id)
+            && Objects.equals(title, question.title) && Objects.equals(contents,
+            question.contents) && Objects.equals(writer, question.writer)
+            && Objects.equals(answers, question.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, contents, writer, answers, deleted);
     }
 
     @Override
