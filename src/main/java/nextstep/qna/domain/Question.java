@@ -6,7 +6,9 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Question {
     private Long id;
@@ -48,7 +50,7 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
+        answer.relateToQuestion(this);
         answers.add(answer);
     }
 

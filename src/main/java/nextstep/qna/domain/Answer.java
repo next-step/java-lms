@@ -64,11 +64,7 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
+    public void relateToQuestion(Question question) {
         this.question = question;
     }
 
