@@ -52,9 +52,16 @@ public class QuestionTest {
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    @DisplayName("질문 삭제 시 삭제 상태(deleted - boolean type)로 변경되는지 확인")
+    @DisplayName("질문 삭제 시 삭제 상태(deleted - boolean type)로 변경되는지 확인 (답변이 있는경우)")
     @Test
-    void delete_삭제_상태_변경() throws CannotDeleteException {
+    void delete_삭제_상태_변경_답변이_있는경우() throws CannotDeleteException {
+        question1.addAnswer(AnswerTest.A1);
+        assertThat(question1.delete(NsUserTest.JAVAJIGI).isDeleted()).isEqualTo(true);
+    }
+
+    @DisplayName("질문 삭제 시 삭제 상태(deleted - boolean type)로 변경되는지 확인 (답변이 없는경우)")
+    @Test
+    void delete_삭제_상태_변경_답변이_없는경우() throws CannotDeleteException {
         assertThat(question1.delete(NsUserTest.JAVAJIGI).isDeleted()).isEqualTo(true);
     }
 
