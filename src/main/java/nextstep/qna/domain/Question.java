@@ -70,19 +70,20 @@ public class Question {
         validateLoginUser(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(deleteQuestion(questionId));
-        deleteHistories.addAll(deleteAnswer(loginUser));
+        LocalDateTime deleteHistoryCreatedDate = LocalDateTime.now();
+        deleteHistories.add(deleteQuestion(questionId, deleteHistoryCreatedDate));
+        deleteHistories.addAll(deleteAnswer(loginUser, deleteHistoryCreatedDate));
 
         return Collections.unmodifiableList(deleteHistories);
     }
 
-    private DeleteHistory deleteQuestion(long questionId) {
+    private DeleteHistory deleteQuestion(long questionId, LocalDateTime createdDate) {
         deleted = true;
-        return new DeleteHistory(QUESTION, questionId, this.writer, LocalDateTime.now());
+        return new DeleteHistory(QUESTION, questionId, this.writer, createdDate);
     }
 
-    private List<DeleteHistory> deleteAnswer(NsUser loginUser) throws CannotDeleteException {
-        return answers.delete(loginUser);
+    private List<DeleteHistory> deleteAnswer(NsUser loginUser, LocalDateTime createdDate) throws CannotDeleteException {
+        return answers.delete(loginUser, createdDate);
     }
 
     private void validateLoginUser(NsUser loginUser) throws CannotDeleteException {

@@ -33,7 +33,7 @@ class AnswersTest {
         Answers answers = new Answers(AnswerTest.A1);
 
         // when
-        answers.delete(NsUserTest.JAVAJIGI);
+        answers.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         // then
         Optional<Answer> notDeletedAnswer = answers.answers().stream()
@@ -49,7 +49,7 @@ class AnswersTest {
         Answers answers = new Answers(AnswerTest.A1, AnswerTest.A2);
 
         // when, then
-        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI, LocalDateTime.now()))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -61,7 +61,7 @@ class AnswersTest {
         Answers answers = new Answers(AnswerTest.A1);
 
         // when
-        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         // then
         assertThat(deleteHistories)

@@ -24,3 +24,8 @@
 - [x] `QnaService`의 비즈니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현
 - [x] `QnaService`의 `deleteQuestion()` 메서드에 대한 단위 테스트는 `src/test/java` 폴더 내 `nextstep.qna.service.QnaServiceTest`이다.
   > 도메인 모델로 로직을 이동한 후에도 `QnaServiceTest`의 모든 테스트는 통과해야 한다.
+
+
+# 2단계 - 수강신청(도메인 모델)
+### 1단계 피드백 반영
+- 질문과 답변의 삭제 시간이 동일하도록 로직 수정
