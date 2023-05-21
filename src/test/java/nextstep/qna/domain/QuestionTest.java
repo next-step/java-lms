@@ -6,8 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("질문 관련 기능")
 public class QuestionTest {
@@ -25,6 +24,9 @@ public class QuestionTest {
     void when_LoginUserIsEqualToQuestionWriter_Expects_DoesNotThrowException() {
         assertThatNoException()
                 .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI));
+
+        assertThatNoException()
+                .isThrownBy(() -> Q2.delete(NsUserTest.SANJIGI));
     }
 
     @DisplayName("질문 삭제시 로그인 사용자와 질문한 사람이 같지 않을 경우 예외를 발생한다.")
@@ -33,5 +35,18 @@ public class QuestionTest {
 
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
+
+        assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @DisplayName("삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다")
+    @Test
+    void test1() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI);
+        Q2.delete(NsUserTest.SANJIGI);
+
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(Q2.isDeleted()).isTrue();
     }
 }

@@ -50,4 +50,17 @@ public class AnswerTest {
                 assertThatThrownBy(answer::delete)
                         .isInstanceOf(CannotDeleteException.class));
     }
+
+    @DisplayName("답변 삭제시 deleted 필드 값을 true로 변경한다.")
+    @Test
+    void test1() throws CannotDeleteException {
+        A1.delete();
+        assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @DisplayName("답변을 삭제하지 않으면 deleted 필드 값을 false로 설정한다.")
+    @Test
+    void test2(){
+        assertThat(A1.isDeleted()).isFalse();
+    }
 }
