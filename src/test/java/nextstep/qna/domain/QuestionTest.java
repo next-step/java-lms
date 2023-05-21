@@ -102,10 +102,10 @@ public class QuestionTest {
         DeleteHistory deleteHistory = DeleteHistory.of(ContentType.QUESTION, question1.getId(), question1.getDetail().getWriter(), now);
 
         //when
-        List<DeleteHistory> deleteHistories = question1.delete(NsUserTest.JAVAJIGI, now);
+        DeleteHistories deleteHistories = question1.delete(NsUserTest.JAVAJIGI, now);
 
         //then
-        assertThat(deleteHistories).containsExactly(deleteHistory);
+        assertThat(deleteHistories.getDeleteHistories()).containsExactly(deleteHistory);
     }
 
     @DisplayName("질문 삭제시 삭제 이력이 반환되는지 확인 (답변이 있는경우)")
@@ -117,9 +117,9 @@ public class QuestionTest {
         DeleteHistory deleteHistoryOfAnswer = DeleteHistory.of(ContentType.ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), now);
 
         //when
-        List<DeleteHistory> deleteHistories = question1.delete(NsUserTest.JAVAJIGI, now);
+        DeleteHistories deleteHistories = question1.delete(NsUserTest.JAVAJIGI, now);
 
         //then
-        assertThat(deleteHistories).containsExactly(deleteHistoryOfQuestion, deleteHistoryOfAnswer);
+        assertThat(deleteHistories.getDeleteHistories()).containsExactly(deleteHistoryOfQuestion, deleteHistoryOfAnswer);
     }
 }

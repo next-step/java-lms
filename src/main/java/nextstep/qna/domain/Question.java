@@ -8,8 +8,6 @@ import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question extends BaseTimeDomain {
     private Long id;
@@ -43,20 +41,20 @@ public class Question extends BaseTimeDomain {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
         checkDeletionAvailability(loginUser);
         changeStatusToBeDeleted();
         return createDeleteHistories(now, deleteAnswers(now));
     }
 
-    private List<DeleteHistory> createDeleteHistories(LocalDateTime now, List<DeleteHistory> deleteHistoriesOfAnswers) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    private DeleteHistories createDeleteHistories(LocalDateTime now, DeleteHistories deleteHistoriesOfAnswers) {
+        DeleteHistories deleteHistories = DeleteHistories.create();
         deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
-        deleteHistories.addAll(deleteHistoriesOfAnswers);
+        deleteHistories.concat(deleteHistoriesOfAnswers);
         return deleteHistories;
     }
 
-    private List<DeleteHistory> deleteAnswers(LocalDateTime now) throws CannotDeleteException {
+    private DeleteHistories deleteAnswers(LocalDateTime now) throws CannotDeleteException {
         return this.answers.deleteAnswers(this.detail.getWriter(), now);
     }
 

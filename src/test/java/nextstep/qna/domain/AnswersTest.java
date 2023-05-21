@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
@@ -66,9 +65,9 @@ public class AnswersTest {
     @DisplayName("답변 삭제 시 삭제 이력이 반환되는지 확인")
     @Test
     void delete_삭제_이력() throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = answers2.deleteAnswers(NsUserTest.SANJIGI, now);
+        DeleteHistories deleteHistories = answers2.deleteAnswers(NsUserTest.SANJIGI, now);
         DeleteHistory deleteHistory = DeleteHistory.of(ContentType.ANSWER, AnswerTest.A2.getId(), AnswerTest.A2.getWriter(), now);
 
-        assertThat(deleteHistories).containsExactly(deleteHistory);
+        assertThat(deleteHistories.getDeleteHistories()).containsExactly(deleteHistory);
     }
 }

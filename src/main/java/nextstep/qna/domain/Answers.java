@@ -21,8 +21,8 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAnswers(NsUser writer, LocalDateTime now) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    public DeleteHistories deleteAnswers(NsUser writer, LocalDateTime now) throws CannotDeleteException {
+        DeleteHistories deleteHistories = DeleteHistories.create();
         for (Answer answer : this.answers) {
             deleteHistories.add(answer.delete(writer, now));
         }
