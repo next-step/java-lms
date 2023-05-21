@@ -92,7 +92,7 @@ public class Question {
         setDeleted(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(DeleteHistory.getDeleteHistory(this));
+        deleteHistories.add(DeleteHistory.from(this));
         deleteHistories.addAll(answers.delete(loginUser));
 
         return deleteHistories;

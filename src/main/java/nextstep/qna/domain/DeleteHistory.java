@@ -26,11 +26,11 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
-    public static DeleteHistory getDeleteHistory(Question question) {
+    public static DeleteHistory from(Question question) {
         return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
     }
 
-    public static DeleteHistory getDeleteHistory(Answer answer) {
+    public static DeleteHistory from(Answer answer) {
         return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
     }
 

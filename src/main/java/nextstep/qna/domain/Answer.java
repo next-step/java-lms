@@ -81,7 +81,7 @@ public class Answer {
 
     public DeleteHistory delete() {
         setDeleted(true);
-        return DeleteHistory.getDeleteHistory(this);
+        return DeleteHistory.from(this);
     }
 
     @Override
