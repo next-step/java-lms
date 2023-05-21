@@ -49,11 +49,11 @@ class SessionServiceTest {
     @DisplayName("강의 등록")
     void test03() {
         Session session = aSession().withId(1L).withSessionStatus(SessionStatus.OPEN).build();
-        sessionRepository.save(session);
+        long savedSessionId = sessionRepository.save(session);
 
-        sessionService.register(session, List.of(NsUserTest.JAVAJIGI));
+        sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId()));
 
-        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(session.getId());
+        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
         assertThat(findSessionJoins).hasSize(1);
     }
 
@@ -62,9 +62,10 @@ class SessionServiceTest {
     void test04() {
         Session session = aSession().withId(1L).withSessionStatus(SessionStatus.OPEN)
                                     .withMaxUserCount(1).build();
-        sessionRepository.save(session);
+        long savedSessionId = sessionRepository.save(session);
 
-        assertThatThrownBy(() -> sessionService.register(session, List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI)))
+        assertThatThrownBy(() -> sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId(),
+                                                                                 NsUserTest.SANJIGI.getUserId())))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
