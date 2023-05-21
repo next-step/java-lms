@@ -1,28 +1,22 @@
 package nextstep.qna.domain;
 
+import nextstep.global.domain.BaseTimeDomain;
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question extends BaseTimeDomain {
     private Long id;
 
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
+    private QuestionDetail detail;
 
     private List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime updatedDate;
 
     public static Question of(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         return new Question(id, writer, title, contents ,createdDate);
@@ -30,9 +24,7 @@ public class Question {
 
     private Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.detail = QuestionDetail.of(title, contents, writer);
         this.createdDate = createdDate;
     }
 
@@ -40,8 +32,8 @@ public class Question {
         return id;
     }
 
-    public NsUser getWriter() {
-        return writer;
+    public QuestionDetail getDetail() {
+        return detail;
     }
 
     public void addAnswer(Answer answer) {
@@ -50,17 +42,17 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (!detail.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, now));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
 
         for (Answer answer : this.answers) {
-            deleteHistories.add(answer.delete(this.writer, now));
+            deleteHistories.add(answer.delete(this.getDetail().getWriter(), now));
         }
 
         return deleteHistories;
@@ -72,10 +64,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    private boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+        return "Question [id=" + getId() + ", title=" + detail.getTitle() + ", contents=" + detail.getContents() + ", writer=" + detail.getContents() + "]";
     }
 }

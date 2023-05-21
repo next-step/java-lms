@@ -97,7 +97,7 @@ public class QuestionTest {
     @Test
     void delete_삭제_이력_답변이_없는경우() throws CannotDeleteException {
         //given
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, question1.getId(), question1.getWriter(), now);
+        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, question1.getId(), question1.getDetail().getWriter(), now);
 
         //when
         List<DeleteHistory> deleteHistories = question1.delete(NsUserTest.JAVAJIGI, now);
@@ -111,7 +111,7 @@ public class QuestionTest {
     void delete_삭제_이력_답변이_있는경우() throws CannotDeleteException {
         //given
         question1.addAnswer(AnswerTest.A1);
-        DeleteHistory deleteHistoryOfQuestion = new DeleteHistory(ContentType.QUESTION, question1.getId(), question1.getWriter(), now);
+        DeleteHistory deleteHistoryOfQuestion = new DeleteHistory(ContentType.QUESTION, question1.getId(), question1.getDetail().getWriter(), now);
         DeleteHistory deleteHistoryOfAnswer = new DeleteHistory(ContentType.ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), now);
 
         //when
