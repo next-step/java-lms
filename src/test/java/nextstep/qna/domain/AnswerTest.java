@@ -15,9 +15,11 @@ public class AnswerTest {
     private Answer A1;
     private Answer A2;
     private Question Q1;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
+        this.deleteHistories = new DeleteHistories();
         this.Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         this.A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
         this.A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
@@ -33,7 +35,7 @@ public class AnswerTest {
         List<Answer> answers = Q1.getAnswers();
 
         assertThat(answers).allSatisfy(answer ->
-                assertThatNoException().isThrownBy(answer::delete));
+                assertThatNoException().isThrownBy(() -> answer.delete(deleteHistories)));
     }
 
     @DisplayName("답변 삭제시 로그인 사용자와 질문자가 같지 않을 경우 예외를 발생한다.")
@@ -47,14 +49,14 @@ public class AnswerTest {
 
 
         assertThat(answers).anySatisfy(answer ->
-                assertThatThrownBy(answer::delete)
+                assertThatThrownBy(() -> answer.delete(deleteHistories))
                         .isInstanceOf(CannotDeleteException.class));
     }
 
     @DisplayName("답변 삭제시 deleted 필드 값을 true로 변경한다.")
     @Test
     void test1() throws CannotDeleteException {
-        A1.delete();
+        A1.delete(deleteHistories);
         assertThat(A1.isDeleted()).isTrue();
     }
 

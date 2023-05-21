@@ -14,10 +14,12 @@ class AnswersTest {
     private Answer A1;
     private Answer A2;
     private Answers answers;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
-        answers = new Answers();
+        this.deleteHistories = new DeleteHistories();
+        this.answers = new Answers();
 
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         this.A1 = new Answer(NsUserTest.JAVAJIGI, q1, "Answers Contents1");
@@ -45,6 +47,6 @@ class AnswersTest {
     @Test
     void name3() {
         assertThatNoException()
-                .isThrownBy(() -> answers.deleteAnswers());
+                .isThrownBy(() -> answers.deleteAnswers(deleteHistories));
     }
 }
