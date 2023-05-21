@@ -6,9 +6,8 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Question {
     private Long id;
@@ -30,10 +29,6 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
@@ -43,10 +38,6 @@ public class Question {
 
     public Long getId() {
         return id;
-    }
-
-    public NsUser getWriter() {
-        return writer;
     }
 
     public void addAnswer(Answer answer) {
@@ -74,12 +65,10 @@ public class Question {
     }
 
     private List<DeleteHistory> makeDeleteHistories() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        List<DeleteHistory> deleteHistories = answers.stream()
+                .map(Answer::toDeleteHistory)
+                .collect(Collectors.toList());
+        deleteHistories.add(this.toDeleteHistory());
         return deleteHistories;
     }
 
