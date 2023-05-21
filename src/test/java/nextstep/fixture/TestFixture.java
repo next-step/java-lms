@@ -7,26 +7,27 @@ import nextstep.users.domain.NsUserTest;
 
 public class TestFixture {
 
-    private static Question BADAJIGI_QUESTION;
-    private static Question JAVAJIGI_QUESTION;
-    private static Question SANJIGI_QUESTION;
-    private static Answer JAVAJIGI_ANSWER;
-    private static Answer SANJIGI_ANSWER;
+    public static Question BADAJIGI_QUESTION;
+    public static Question JAVAJIGI_QUESTION;
+    public static Question SANJIGI_QUESTION;
+
+    public static Answer JAVAJIGI_ANSWER;
+    public static Answer SANJIGI_ANSWER;
 
     public static NsUser JAVAJIGI;
     public static NsUser SANJIGI;
     public static NsUser BADAJIGI;
 
     static {
-        init();
+        fixtureInit();
     }
-    public static void init() {
-        JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-        SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
+    public static void fixtureInit() {
+        JAVAJIGI = new NsUser(1L, "javajigi", "password", "king of clean code", "javajigi@slipp.net");
+        SANJIGI = new NsUser(2L, "sanjigi", "password", "sanjigi", "sanjigi@slipp.net");
         BADAJIGI = new NsUser(3L, "badajigi", "pacific", "Poseidon", "Poseidon@marine.io");
 
-        JAVAJIGI_QUESTION = new Question(1L, JAVAJIGI, "title1", "contents1");
-        SANJIGI_QUESTION = new Question(2L, SANJIGI, "title1", "contents1");
+        JAVAJIGI_QUESTION = new Question(1L, JAVAJIGI, "성공하는 프로그래밍 학습법은 뭐가있을까", "제곧내");
+        SANJIGI_QUESTION = new Question(2L, SANJIGI, "관악산 연주대에 오르는 최단경로는 어디인가요", "등산허쉴?");
         BADAJIGI_QUESTION = new Question(2L, BADAJIGI, "deep deep sea", "giant octopus");
 
         JAVAJIGI_ANSWER = new Answer(11L, JAVAJIGI, JAVAJIGI_QUESTION, "Answers Contents1");

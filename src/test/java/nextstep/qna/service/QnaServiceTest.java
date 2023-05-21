@@ -1,5 +1,6 @@
 package nextstep.qna.service;
 
+import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
@@ -38,23 +39,18 @@ public class QnaServiceTest {
     @InjectMocks
     private QnAService qnAService;
 
-    private static Question ba;
-    private static Question JAVAJIGI_QUESTION;
-    private static Question SANJIGI_QUESTION;
-    private static Answer JAVAJIGI_ANSWER;
-    private static Answer SANJIGI_ANSWER;
-
     @BeforeEach
     public void setUp() {
-
+        TestFixture.fixtureInit();
     }
 
     @DisplayName("자신이 작성한 글 & 댓글이 달리지 않은 경우 : 삭제에 성공한다")
     @Test
     public void delete_성공() {
         //given
-        Question question = BADAJIGI_QUESTION;
-        NsUser loginUser = NsUserTest.BADAJIGI
+        Question question = TestFixture.BADAJIGI_QUESTION;
+        Answer answer1 = TestFixture.SANJIGI_ANSWER;
+        NsUser loginUser = TestFixture.BADAJIGI;
         //when
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
         qnAService.deleteQuestion(loginUser, question.getId());
@@ -62,8 +58,7 @@ public class QnaServiceTest {
         //then
         assertAll("",
                 () -> assertThat(question.isDeleted()).isTrue(),
-                () -> assertThat(JAVAJIGI_ANSWER.isDeleted()).isFalse(),
-                () -> assertThat(SANJIGI_ANSWER.isDeleted()).isFalse(),
+                () -> assertThat(answer1.isDeleted()).isFalse(),
                 () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), new ArrayList<>()))
         );
     }
@@ -73,10 +68,10 @@ public class QnaServiceTest {
     @Test
     public void delete_성공_질문자_답변자_같음() {
         //given
-        JAVAJIGI_QUESTION.addAnswer(JAVAJIGI_ANSWER);
-        Question question = JAVAJIGI_QUESTION;
-        Answer answer = JAVAJIGI_ANSWER;
-        NsUser loginUser = NsUserTest.JAVAJIGI;
+        Question question = TestFixture.JAVAJIGI_QUESTION;
+        Answer answer = TestFixture.JAVAJIGI_ANSWER;
+        question.addAnswer(answer);
+        NsUser loginUser = TestFixture.JAVAJIGI;
 
         //when
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
@@ -98,15 +93,17 @@ public class QnaServiceTest {
     @Test
     public void delete_다른_사람이_쓴_글과댓글() throws Exception {
         //given
-        JAVAJIGI_QUESTION.addAnswer(JAVAJIGI_ANSWER);
-        Question question = JAVAJIGI_QUESTION;
+        Question question = TestFixture.JAVAJIGI_QUESTION;
+        Answer answer = TestFixture.JAVAJIGI_ANSWER;
+        question.addAnswer(answer);
+        NsUser loginUser = TestFixture.SANJIGI;
 
         //when
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+            qnAService.deleteQuestion(loginUser, question.getId());
         })
                 .isInstanceOf(QuestionDeleteUnauthorizedException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");
@@ -116,15 +113,17 @@ public class QnaServiceTest {
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() {
         //given
-        JAVAJIGI_QUESTION.addAnswer(SANJIGI_ANSWER);
-        Question question = JAVAJIGI_QUESTION;
+        Question question = TestFixture.JAVAJIGI_QUESTION;
+        Answer answer = TestFixture.SANJIGI_ANSWER;
+        question.addAnswer(answer);
+        NsUser loginUser = TestFixture.SANJIGI;
 
         //when
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+            qnAService.deleteQuestion(loginUser, question.getId());
         }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");
     }
