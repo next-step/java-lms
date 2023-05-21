@@ -43,18 +43,30 @@ public class Question extends BaseTimeDomain {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+        checkDeletionAvailability(loginUser);
+        changeStatusToBeDeleted();
+        return createDeleteHistories(now, deleteAnswers(now));
+    }
+
+    private List<DeleteHistory> createDeleteHistories(LocalDateTime now, List<DeleteHistory> deleteHistoriesOfAnswers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
+        deleteHistories.addAll(deleteHistoriesOfAnswers);
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswers(LocalDateTime now) throws CannotDeleteException {
+        return this.answers.deleteAnswers(this.detail.getWriter(), now);
+    }
+
+    private void changeStatusToBeDeleted() {
+        this.deleteStatus = DeleteStatus.YES;
+    }
+
+    private void checkDeletionAvailability(NsUser loginUser) throws CannotDeleteException {
         if (!detail.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        this.deleteStatus = DeleteStatus.YES;
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
-
-        deleteHistories.addAll(this.answers.deleteAnswers(this.detail.getWriter(), now));
-
-        return deleteHistories;
     }
 
     public DeleteStatus getDeleteStatus() {
