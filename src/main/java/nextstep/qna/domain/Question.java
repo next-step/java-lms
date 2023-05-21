@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -73,9 +73,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -83,7 +82,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
@@ -95,6 +94,7 @@ public class Question {
         if (!this.writer.matchUser(loginUser)) {
             throw new CannotDeleteException("로그인 사용자와 질문한 사람이 같지 않습니다.");
         }
-
+        this.setDeleted(true);
+        answers.deleteAnswers();
     }
 }
