@@ -1,12 +1,10 @@
 package nextstep.qna.service;
 
 import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.ContentType;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
 import nextstep.qna.domain.QuestionRepository;
 import nextstep.qna.domain.QuestionTest;
-import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -18,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static nextstep.qna.domain.DeleteHistory.deleteHistoryHelper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -40,74 +38,98 @@ public class QnaServiceTest {
     @InjectMocks
     private QnAService qnAService;
 
-    private static Question FIXTURE_QUESTION_JAVAJIGI;
-    private static Answer FIXTURE_ANSWER_JAVAJIGI;
-
-    private static Question FIXTURE_QUESTION_BADAJIGI;
-    private static Answer FIXTURE_ANSWER_SANJIGI;
+    private static Question ba;
+    private static Question JAVAJIGI_QUESTION;
+    private static Question SANJIGI_QUESTION;
+    private static Answer JAVAJIGI_ANSWER;
+    private static Answer SANJIGI_ANSWER;
 
     @BeforeEach
-    public void setUp(){
-        FIXTURE_QUESTION_JAVAJIGI = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        FIXTURE_ANSWER_JAVAJIGI = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        FIXTURE_QUESTION_JAVAJIGI.addAnswer(FIXTURE_ANSWER_JAVAJIGI);
+    public void setUp() {
 
-        FIXTURE_QUESTION_BADAJIGI = new Question(2L, NsUserTest.BADAJIGI, "deep deep sea", "giant octopus");
-        FIXTURE_ANSWER_SANJIGI = new Answer(22L, NsUserTest.SANJIGI, FIXTURE_QUESTION_BADAJIGI, "냉무");
-        FIXTURE_QUESTION_BADAJIGI.addAnswer(FIXTURE_ANSWER_SANJIGI);
     }
 
-    @DisplayName("자")
+    @DisplayName("자신이 작성한 글 & 댓글이 달리지 않은 경우 : 삭제에 성공한다")
     @Test
-    public void delete_성공(){
+    public void delete_성공() {
         //given
-        NsUser loginUser = NsUserTest.JAVAJIGI;
+        Question question = BADAJIGI_QUESTION;
+        NsUser loginUser = NsUserTest.BADAJIGI
         //when
-        when(questionRepository.findById(loginUser.getId())).thenReturn(Optional.of(FIXTURE_QUESTION_JAVAJIGI));
-        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, FIXTURE_QUESTION_JAVAJIGI.getId());
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        qnAService.deleteQuestion(loginUser, question.getId());
 
         //then
         assertAll("",
-                () -> assertThat(FIXTURE_QUESTION_JAVAJIGI.isDeleted()).isFalse(),
-                () -> assertThat(FIXTURE_QUESTION_JAVAJIGI.isDeleted()).isTrue(),
-                () -> verifyDeleteHistories()
+                () -> assertThat(question.isDeleted()).isTrue(),
+                () -> assertThat(JAVAJIGI_ANSWER.isDeleted()).isFalse(),
+                () -> assertThat(SANJIGI_ANSWER.isDeleted()).isFalse(),
+                () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), new ArrayList<>()))
         );
     }
 
-    @DisplayName("타인이 작성한 글 & 타인이 작성한 댓글이 달려있는 경우 예외를 던진다")
+
+    @DisplayName("자신이 작성한 글 & 자신의 댓글의 경우 : 삭제에 성공한다")
+    @Test
+    public void delete_성공_질문자_답변자_같음() {
+        //given
+        JAVAJIGI_QUESTION.addAnswer(JAVAJIGI_ANSWER);
+        Question question = JAVAJIGI_QUESTION;
+        Answer answer = JAVAJIGI_ANSWER;
+        NsUser loginUser = NsUserTest.JAVAJIGI;
+
+        //when
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        qnAService.deleteQuestion(loginUser, question.getId());
+
+        //then
+        assertAll("질문글 삭제에 성공했는지 검증한다",
+                () -> assertThat(question.isDeleted())
+                        .as("question 은 삭제 되어야 한다")
+                        .isTrue(),
+                () -> assertThat(answer.isDeleted())
+                        .as("answer 는 삭제 되어야 한다")
+                        .isTrue(),
+                () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), List.of(answer)))
+        );
+    }
+
+    @DisplayName("타인이 작성한 글 & 타인이 작성한 댓글이 달려있는 경우 : QuestionDeleteUnauthorizedException 을 던진다")
     @Test
     public void delete_다른_사람이_쓴_글과댓글() throws Exception {
-        when(questionRepository.findById(FIXTURE_QUESTION_JAVAJIGI.getId())).thenReturn(Optional.of(FIXTURE_QUESTION_JAVAJIGI));
+        //given
+        JAVAJIGI_QUESTION.addAnswer(JAVAJIGI_ANSWER);
+        Question question = JAVAJIGI_QUESTION;
 
+        //when
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+
+        //then
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, FIXTURE_QUESTION_JAVAJIGI.getId());
-        }).isInstanceOf(QuestionDeleteUnauthorizedException.class);
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+        })
+                .isInstanceOf(QuestionDeleteUnauthorizedException.class)
+                .hasMessageContaining("질문을 삭제할 권한이 없습니다");
     }
 
-    @Test
-    public void delete_성공_질문자_답변자_같음() throws Exception {
-        when(questionRepository.findById(FIXTURE_QUESTION_JAVAJIGI.getId())).thenReturn(Optional.of(FIXTURE_QUESTION_JAVAJIGI));
-
-        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, FIXTURE_QUESTION_JAVAJIGI.getId());
-
-        assertThat(FIXTURE_QUESTION_JAVAJIGI.isDeleted()).isTrue();
-        assertThat(FIXTURE_ANSWER_JAVAJIGI.isDeleted()).isTrue();
-        verifyDeleteHistories();
-    }
-
+    @DisplayName("다른사람이 쓴 질문글의 경우 : QuestionDeleteUnauthorizedException 를 던진다 ")
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() {
-        when(questionRepository.findById(FIXTURE_QUESTION_JAVAJIGI.getId())).thenReturn(Optional.of(FIXTURE_QUESTION_JAVAJIGI));
+        //given
+        JAVAJIGI_QUESTION.addAnswer(SANJIGI_ANSWER);
+        Question question = JAVAJIGI_QUESTION;
 
+        //when
+        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+
+        //then
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, FIXTURE_QUESTION_JAVAJIGI.getId());
-        }).isInstanceOf(QuestionDeleteAnswerExistedException.class);
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+        }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
+                .hasMessageContaining("질문을 삭제할 권한이 없습니다");
     }
 
-    private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, FIXTURE_QUESTION_JAVAJIGI.getId(), FIXTURE_QUESTION_JAVAJIGI.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, FIXTURE_ANSWER_JAVAJIGI.getId(), FIXTURE_ANSWER_JAVAJIGI.getWriter(), LocalDateTime.now()));
+    private void verifyDeleteHistories(List<DeleteHistory> deleteHistories) {
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
