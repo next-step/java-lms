@@ -60,4 +60,8 @@ public class Answer {
     public void doDelete() {
         this.deleted = true;
     }
+
+    public String getContent() {
+        return this.contents;
+    }
 }

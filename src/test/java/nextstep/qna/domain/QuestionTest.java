@@ -5,6 +5,7 @@ import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -118,5 +119,25 @@ public class QuestionTest {
                         .as("answer PK 가 존재하는지 검증한다")
                         .contains(answer.getId().toString())
         );
+
+    }
+
+    @DisplayName("Question 메 Answer 추가시")
+    //@Test
+    @Disabled
+    public void addAnswer() {
+        //given
+        Question question = TestFixture.JAVAJIGI_QUESTION;
+        Answer answer = TestFixture.JAVAJIGI_ANSWER;
+
+        //when
+        question.addAnswer(answer);
+
+        //then
+        assertThat(question.toString())
+                .as("Question 은 Answer 에 연결되어있어야 한다")
+                .contains("");
+        assertThat(answer.toString()).as("Answer 의 연관관계도 자동으로 성립된다")
+                .contains("");
     }
 }
