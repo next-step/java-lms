@@ -82,7 +82,7 @@ public class Answer {
 
     public DeleteHistory delete(List<DeleteHistory> deleteHistories) {
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+        return DeleteHistory.ofAnswer(id, writer);
     }
 
     @Override
