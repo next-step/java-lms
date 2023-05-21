@@ -9,10 +9,6 @@ public class Course extends BaseTimeEntity{
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public Course() {
     }
 
