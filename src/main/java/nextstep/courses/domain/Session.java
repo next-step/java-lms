@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 
 import java.time.LocalDateTime;
+import nextstep.users.domain.NsUser;
 
 /**
  * 모집중 일때만 수강 신청 가능
@@ -46,10 +47,10 @@ public class Session extends BaseTimeEntity {
     this.sessionStatus = sessionStatus;
     this.enrolledUsers = enrolledUsers;
     this.sessionPeriod = sessionPeriod;
-    validateSessionStatus(sessionStatus);
+    hasNoUserForPreparingSession(sessionStatus);
   }
 
-  private void validateSessionStatus(SessionStatus sessionStatus) {
+  private void hasNoUserForPreparingSession(SessionStatus sessionStatus) {
     if (isPreparing(sessionStatus) && hasEnrolledUser()) {
       throw new IllegalArgumentException("준비중 상태일때는 수강생이 없어야 합니다.");
     }
@@ -62,4 +63,10 @@ public class Session extends BaseTimeEntity {
   private static boolean isPreparing(SessionStatus sessionStatus) {
     return sessionStatus == SessionStatus.PREPARING;
   }
+
+  public void enroll(NsUser user) {
+    sessionStatus.canEnroll();
+    enrolledUsers.add(user);
+  }
+
 }
