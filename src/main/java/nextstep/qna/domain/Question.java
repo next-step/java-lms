@@ -90,11 +90,12 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser, DeleteHistories deleteHistories) {
         if (!this.writer.matchUser(loginUser)) {
             throw new CannotDeleteException("로그인 사용자와 질문한 사람이 같지 않습니다.");
         }
         this.setDeleted(true);
-        answers.deleteAnswers();
+        deleteHistories.add(this);
+        answers.deleteAnswers(deleteHistories);
     }
 }

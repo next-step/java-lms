@@ -24,12 +24,13 @@ public class Answers {
     public List<Answer> getAnswers() {
         return this.answers;
     }
-    public void deleteAnswers() throws CannotDeleteException {
+
+    public void deleteAnswers(DeleteHistories deleteHistories) {
         if (answers.isEmpty()) {
             return;
         }
         for (Answer answer : this.answers) {
-            answer.delete();
+            answer.delete(deleteHistories);
         }
     }
 }
