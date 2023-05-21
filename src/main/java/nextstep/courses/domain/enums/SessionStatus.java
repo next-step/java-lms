@@ -18,7 +18,7 @@ public enum SessionStatus {
     }
 
     public boolean canEnroll() {
-        return Objects.equals(RECRUITING, this);
+        return this == RECRUITING;
     }
 
 }
