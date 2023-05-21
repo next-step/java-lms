@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseTimeEntity{
     private Long id;
 
     private String title;
