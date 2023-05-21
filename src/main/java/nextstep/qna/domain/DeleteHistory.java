@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.domain.enums.ContentType;
+import nextstep.qna.domain.vo.DeleteHistoryDetail;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -9,22 +10,16 @@ import java.util.Objects;
 public class DeleteHistory {
     private Long id;
 
-    private ContentType contentType;
+    private DeleteHistoryDetail detail;
 
-    private Long contentId;
-
-    private NsUser deletedBy;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
     public static DeleteHistory of (ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         return new DeleteHistory(contentType, contentId, deletedBy, createdDate);
     }
 
     private DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
-        this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
+        this.detail = DeleteHistoryDetail.of(contentId, contentType, deletedBy);
         this.createdDate = createdDate;
     }
 
@@ -33,20 +28,17 @@ public class DeleteHistory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeleteHistory that = (DeleteHistory) o;
-        return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+        return Objects.equals(id, that.id) && Objects.equals(detail, that.detail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, detail);
     }
 
     @Override
     public String toString() {
-        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+        return "DeleteHistory [id=" + id + ", contentType=" + detail.getContentType() + ", contentId=" + detail.getContentId() + ", deletedBy="
+                + detail.getDeletedBy() + ", createdDate=" + createdDate + "]";
     }
 }
