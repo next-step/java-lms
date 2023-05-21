@@ -32,6 +32,17 @@ public class DeleteHistory {
         return new DeleteHistory(contentType, id, writer, dateTime);
     }
 
+    public static List<DeleteHistory> deleteHistoryHelper(List<Question> questions, List<Answer> answers) {
+        List<DeleteHistory> questionDeleteHistories = questions.stream()
+                .map(Question::toDeleteHistory)
+                .collect(Collectors.toList());
+        List<DeleteHistory> answerDeleteHistories = answers.stream()
+                .map(Answer::toDeleteHistory)
+                .collect(Collectors.toList());
+        answerDeleteHistories.addAll(questionDeleteHistories);
+        return answerDeleteHistories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,16 +63,5 @@ public class DeleteHistory {
     public String toString() {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
-    }
-
-    public static List<DeleteHistory> deleteHistoryHelper(List<Question> questions, List<Answer> answers) {
-        List<DeleteHistory> questionDeleteHistories = questions.stream()
-                .map(Question::toDeleteHistory)
-                .collect(Collectors.toList());
-        List<DeleteHistory> answerDeleteHistories = answers.stream()
-                .map(Answer::toDeleteHistory)
-                .collect(Collectors.toList());
-        answerDeleteHistories.addAll(questionDeleteHistories);
-        return answerDeleteHistories;
     }
 }

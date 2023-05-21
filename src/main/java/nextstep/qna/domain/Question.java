@@ -10,20 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Question {
-    private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
     private final List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
     private final LocalDateTime createdDate = LocalDateTime.now();
-
+    private Long id;
+    private String title;
+    private String contents;
+    private NsUser writer;
+    private boolean deleted = false;
     private LocalDateTime updatedDate;
 
     public Question() {

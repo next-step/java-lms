@@ -7,18 +7,12 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
-    private Long id;
-
-    private NsUser writer;
-
-    private Question question;
-
-    private String contents;
-
-    private boolean deleted = false;
-
     private final LocalDateTime createdDate = LocalDateTime.now();
-
+    private Long id;
+    private NsUser writer;
+    private Question question;
+    private String contents;
+    private boolean deleted = false;
     private LocalDateTime updatedDate;
 
     public Answer() {

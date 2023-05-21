@@ -30,7 +30,7 @@ public class QuestionTest {
                 () -> assertThat(true)
                         .as("")
                         .isTrue(),
-                () ->assertThat(question.isDeleted())
+                () -> assertThat(question.isDeleted())
                         .as("")
                         .isTrue()
         );
@@ -50,24 +50,24 @@ public class QuestionTest {
                 () -> assertThat(true)
                         .as("")
                         .isTrue(),
-                () ->assertThat(question.isDeleted())
+                () -> assertThat(question.isDeleted())
                         .as("")
                         .isTrue()
         );
     }
 
-@DisplayName("타인이 작성한 Answer 이 존재하는 경우 QuestionDeleteAnswerExistedException 를 던진다")
-@Test
-public void validateAnswers() {
-    //given
-    //when
-    //then
-    assertThatThrownBy(() -> {
+    @DisplayName("타인이 작성한 Answer 이 존재하는 경우 QuestionDeleteAnswerExistedException 를 던진다")
+    @Test
+    public void validateAnswers() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> {
 
-    }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
-            .hasMessageContaining("바꾸셈");
-    fail();
-}
+        }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
+                .hasMessageContaining("바꾸셈");
+        fail();
+    }
 
     @DisplayName("작성자가 아닌경우 QuestionDeleteUnauthorizedException 를 던진다")
     @Test

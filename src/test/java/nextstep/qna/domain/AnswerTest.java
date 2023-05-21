@@ -45,7 +45,7 @@ public class AnswerTest {
         fail();
     }
 
-    @DisplayName("Answer 에 다른 Question 연관관계를 맺으면 반영되어야 한다")
+    @DisplayName("Answer 에 다른 Question 연관관계를 맺으면 연관관계가 업데이트된다")
     @Test
     public void relateToQuestion() {
         //given
