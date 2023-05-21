@@ -24,10 +24,6 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
-    }
-
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
         if (writer == null) {
@@ -51,17 +47,8 @@ public class Answer {
         return deleted;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
     }
 
     public void relateToQuestion(Question question) {
@@ -75,5 +62,9 @@ public class Answer {
 
     public DeleteHistory toDeleteHistory() {
         return DeleteHistory.of(ContentType.ANSWER, this.getId(), this.writer, LocalDateTime.now());
+    }
+
+    public void doDelete() {
+        this.deleted = true;
     }
 }

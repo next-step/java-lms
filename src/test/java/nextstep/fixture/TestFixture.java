@@ -3,7 +3,6 @@ package nextstep.fixture;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserTest;
 
 public class TestFixture {
 
@@ -21,6 +20,7 @@ public class TestFixture {
     static {
         fixtureInit();
     }
+
     public static void fixtureInit() {
         JAVAJIGI = new NsUser(1L, "javajigi", "password", "king of clean code", "javajigi@slipp.net");
         SANJIGI = new NsUser(2L, "sanjigi", "password", "sanjigi", "sanjigi@slipp.net");

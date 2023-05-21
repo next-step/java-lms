@@ -56,11 +56,16 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) {
         validateDelete(loginUser);
-        deleteQuestion();
+        deleteQuestionAndAnswers();
         return makeDeleteHistories();
     }
 
-    private void deleteQuestion() {
+    private void deleteQuestionAndAnswers() {
+        this.doDelete();
+        answers.forEach(Answer::doDelete);
+    }
+
+    private void doDelete() {
         this.deleted = true;
     }
 
