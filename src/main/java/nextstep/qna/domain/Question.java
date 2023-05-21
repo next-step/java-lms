@@ -15,7 +15,7 @@ public class Question extends BaseTimeDomain {
 
     private QuestionDetail detail;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = Answers.create();
 
     private DeleteStatus deleteStatus = DeleteStatus.NO;
 
@@ -52,9 +52,7 @@ public class Question extends BaseTimeDomain {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
 
-        for (Answer answer : this.answers) {
-            deleteHistories.add(answer.delete(this.getDetail().getWriter(), now));
-        }
+        deleteHistories.addAll(this.answers.deleteAnswers(this.detail.getWriter(), now));
 
         return deleteHistories;
     }
