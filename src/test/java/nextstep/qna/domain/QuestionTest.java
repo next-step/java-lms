@@ -35,9 +35,25 @@ public class QuestionTest {
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("질문/답변 삭제")
+    @DisplayName("질문 삭제")
     @Test
-    void test3() throws CannotDeleteException {
+    void test3() {
+        question.delete(NsUserTest.JAVAJIGI);
+        assertThat(question.isDeleted()).isTrue();
+    }
+
+    @DisplayName("질문 삭제 이력 생성")
+    @Test
+    void test4() {
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+        assertThat(deleteHistories).containsExactly(
+            question.deleteHistory()
+        );
+    }
+
+    @DisplayName("질문,답변 삭제")
+    @Test
+    void test5() {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
         question.addAnswer(answer1);
@@ -50,9 +66,9 @@ public class QuestionTest {
         assertThat(answer2.isDeleted()).isTrue();
     }
 
-    @DisplayName("질문/답변 삭제 이력 생성")
+    @DisplayName("질문,답변 삭제 이력 생성")
     @Test
-    void test4() throws CannotDeleteException {
+    void test6() {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
         question.addAnswer(answer1);
