@@ -84,15 +84,19 @@ public class Question {
 
         this.deleted = true;
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(this.deleteHistory());
-        deleteHistories.addAll(this.answers.delete(loginUser));
-
-        return deleteHistories;
+        return this.deleteHistories(this.deleteHistory(), this.answers.delete(loginUser));
     }
 
     public DeleteHistory deleteHistory() {
         return new DeleteHistory(this.contentBody(), this.writer);
+    }
+
+    private List<DeleteHistory> deleteHistories(DeleteHistory deleteQuestionHistory, List<DeleteHistory> deleteAnswersHistories) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(deleteQuestionHistory);
+        deleteHistories.addAll(deleteAnswersHistories);
+
+        return deleteHistories;
     }
 
     private ContentBody contentBody() {
