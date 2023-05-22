@@ -1,6 +1,6 @@
 package nextstep.users.infrastructure;
 
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NextStepUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,9 +19,9 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findByUserId(String userId) {
+    public Optional<NextStepUser> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+        RowMapper<NextStepUser> rowMapper = (rs, rowNum) -> new NextStepUser(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getString(3),

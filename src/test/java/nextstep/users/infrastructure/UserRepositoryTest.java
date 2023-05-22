@@ -1,6 +1,6 @@
 package nextstep.users.infrastructure;
 
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NextStepUser;
 import nextstep.users.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class UserRepositoryTest {
 
     @Test
     void findByUserId() {
-        Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
+        Optional<NextStepUser> nsUser = userRepository.findByUserId("javajigi");
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
     }

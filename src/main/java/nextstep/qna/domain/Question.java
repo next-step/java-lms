@@ -1,8 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.consumer.ThrowingConsumer;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NextStepUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Question implements Content {
 
     private String contents;
 
-    private NsUser writer;
+    private NextStepUser writer;
 
     private List<Answer> answers = new ArrayList<>();
 
@@ -30,11 +29,11 @@ public class Question implements Content {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
+    public Question(NextStepUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, NextStepUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -63,7 +62,7 @@ public class Question implements Content {
         return this;
     }
 
-    public NsUser getWriter() {
+    public NextStepUser getWriter() {
         return writer;
     }
 
@@ -72,7 +71,7 @@ public class Question implements Content {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    public boolean isOwner(NextStepUser loginUser) {
         return writer.equals(loginUser);
     }
 
@@ -89,7 +88,7 @@ public class Question implements Content {
         return answers;
     }
 
-    public void validPermission(NsUser loginUser) throws CannotDeleteException {
+    public void validPermission(NextStepUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException(DELETE_ERROR_MESSAGE);
         }
