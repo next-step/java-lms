@@ -38,6 +38,11 @@ public class Question {
         this.contents = contents;
     }
 
+    public Question(NsUser writer, String title, String contents, Answers answers) {
+        this(0L, writer, title, contents);
+        this.answers = answers.getAnswers();
+    }
+
     public Long getId() {
         return id;
     }
@@ -87,7 +92,7 @@ public class Question {
 
     private void checkOwner(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 

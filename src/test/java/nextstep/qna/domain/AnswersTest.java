@@ -38,14 +38,14 @@ public class AnswersTest {
     }
 
     @Test
-    void answers_자기_글_삭제() {
+    void answers_남의답변_없을경우_삭제() {
         //assert
         assertThatNoException()
                 .isThrownBy(() -> answersMine.deleteAnswers(NsUserTest.JAVAJIGI));
     }
 
     @Test
-    void answers_남의_글_삭제() {
+    void answers_남의답변_있는경우_삭제() {
         //assert
         assertThatCode(() -> answersOthers.deleteAnswers(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)

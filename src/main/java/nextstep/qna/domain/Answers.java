@@ -37,4 +37,8 @@ public class Answers {
         answers.forEach(answer -> deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now())));
         return deleteHistories;
     }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
 }
