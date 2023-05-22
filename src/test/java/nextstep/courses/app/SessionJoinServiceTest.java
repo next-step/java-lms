@@ -60,6 +60,21 @@ class SessionJoinServiceTest {
                                 .containsExactly(tuple(savedSessionId, JAVAJIGI.getId(), SessionJoinStatus.APPROVAL));
     }
 
+    @Test
+    @DisplayName("수강 신청 거절")
+    void test12() {
+        long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(1));
+        sessionJoinService.register(savedSessionId, List.of(JAVAJIGI.getUserId()));
+
+        sessionJoinService.reject(savedSessionId, List.of(JAVAJIGI.getUserId()));
+
+        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionId(savedSessionId);
+        assertThat(sessionJoins).hasSize(1)
+                                .extracting("session.id", "nsUser.id", "sessionJoinStatus")
+                                .containsExactly(tuple(savedSessionId, JAVAJIGI.getId(), SessionJoinStatus.REJECTION));
+    }
+
+
     private long getSavedSessionId(SessionRegistrationBuilder withMaxUserCount) {
         Session session = aSession().withId(1L).withSessionRegistration(withMaxUserCount.build()).build();
         return sessionRepository.save(session);

@@ -50,6 +50,13 @@ public class DefaultSessionJoinService implements SessionJoinService {
 
     @Override
     public void reject(long sessionId, List<String> userIds) {
+        List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
+        List<Long> findUserIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
+        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionIdAndUserIds(sessionId, findUserIds);
 
+        for (SessionJoin sessionJoin : sessionJoins) {
+            sessionJoin.reject();
+            sessionJoinRepository.updateSessionJoinStatus(sessionJoin);
+        }
     }
 }
