@@ -6,18 +6,22 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer extends BaseEntity {
+public class Answer {
     private final long id;
 
     private final NsUser writer;
 
     private final Question question;
 
+    private final LocalDateTime createdDate;
+
     private String contents;
 
-    private boolean deleted = false;
+    private boolean deleted;
 
-    public Answer(long id, NsUser writer, Question question, String contents) {
+    private LocalDateTime updateAt;
+
+    public Answer(long id, NsUser writer, Question question, String contents, LocalDateTime createdDate) {
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();
@@ -30,6 +34,7 @@ public class Answer extends BaseEntity {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+        this.createdDate = createdDate;
     }
 
     public long getId() {
@@ -38,20 +43,14 @@ public class Answer extends BaseEntity {
 
     public Answer changeContents(String contents) {
         this.contents = contents;
-        super.modifyUpdateDate(LocalDateTime.now());
+        updateAt = LocalDateTime.now();
         return this;
     }
 
-    public Answer display() {
+    public DeleteHistory remove() {
         this.deleted = false;
-        super.modifyUpdateDate(LocalDateTime.now());
-        return this;
-    }
-
-    public Answer hide() {
-        this.deleted = false;
-        super.modifyUpdateDate(LocalDateTime.now());
-        return this;
+        updateAt = LocalDateTime.now();
+        return DeleteHistory.from(ContentType.ANSWER, this.id, this.writer);
     }
 
     public boolean isDeleted() {

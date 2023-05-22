@@ -37,9 +37,9 @@
     - [x] 질문 삭제 권한 확인 기능
     - [x] 답변이 존재할 경우 삭제 불가 , 단 답변에 질문자가 작성한 글만 있을 경우 삭제 가능 기능
     - [x] DeleteHistory 생성 후 반환 기능
-- [ ] Answers 클래스에 remove 메서드를 추가
-    - [ ] 일급 컬렉션으로 구현
-    - [ ] 답변을 삭제한다.
-    - [ ] DeleteHistory를 생성하여 반환한다.
+- [x] Answers 클래스에 remove 메서드를 추가
+    - [x] 일급 컬렉션으로 구현
+    - [x] 답변을 삭제한다.
+    - [x] DeleteHistory를 생성하여 반환한다.
 - [ ] QnAService 클래스 내 deleteQuestion 메서드 비즈니스 로직 코드 삭제
 - [x] DeleteHistories 일급 컬렉션을 구현한다.
