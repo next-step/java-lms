@@ -107,5 +107,17 @@ public class SessionTest {
                 .isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("학생 수강 취소 기능")
+    void cancelTest() {
+        int studentCapacity = 5;
+        setUp(studentCapacity);
+        session.recruitStudents();
+        session.register();
+        session.register();
+
+        assertThat(session.cancel())
+                .isEqualTo(1);
+    }
 
 }

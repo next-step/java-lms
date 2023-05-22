@@ -64,4 +64,8 @@ public class Session {
             throw new IllegalArgumentException("수강 인원이 다 찼습니다.");
         }
     }
+
+    public int cancel() {
+        return --registeredStudent;
+    }
 }
