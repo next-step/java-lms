@@ -30,8 +30,8 @@ public class UserRepositoryTest {
 
     @Test
     void findByUserId() {
-        Optional<User> nsUser = userRepository.findByUserId("javajigi");
-        assertThat(nsUser.isEmpty()).isFalse();
-        LOGGER.debug("NsUser: {}", nsUser.get());
+        Optional<User> nextStepUser = userRepository.findByUserId("javajigi");
+        assertThat(nextStepUser.isEmpty()).isFalse();
+        LOGGER.debug("NextStepUser: {}", nextStepUser.get());
     }
 }

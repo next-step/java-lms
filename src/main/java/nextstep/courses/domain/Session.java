@@ -26,6 +26,17 @@ public class Session extends BaseEntity {
     protected Session() {
     }
 
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, String sessionType, String sessionStatus, Enrollment enrollment, int maximumEnrollment) {
+        this.id = id;
+        this.period = period;
+        this.coverImage = coverImage;
+        this.sessionTime = sessionTime;
+        this.sessionType = SessionType.valueOf(sessionType.toUpperCase());
+        this.sessionStatus = SessionStatus.valueOf(sessionStatus.toUpperCase());
+        this.enrollment = enrollment;
+        this.maximumEnrollment = maximumEnrollment;
+    }
+
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
                                  SessionType sessionType, SessionStatus sessionStatus,
                                  Enrollment enrollment) throws InvalidSessionDateTimeException {
@@ -57,4 +68,35 @@ public class Session extends BaseEntity {
         }
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionTime getSessionTime() {
+        return sessionTime;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public int getMaximumEnrollment() {
+        return maximumEnrollment;
+    }
 }
