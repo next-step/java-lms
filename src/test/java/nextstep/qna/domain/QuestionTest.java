@@ -14,10 +14,22 @@ public class QuestionTest {
 
     @Test
     @DisplayName("로그인 사용자와 질문 작성자가 다른 경우 삭제할 수 없다.")
-    void delete() {
+    void validateWriter() {
         Question question = QuestionFixture.create(NsUserTest.JAVAJIGI);
         assertThatExceptionOfType(CannotDeleteException.class)
                 .isThrownBy(() -> question.validateWriter(NsUserTest.SANJIGI))
                 .withMessageMatching("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("질문자와 답변자가 다른 경우 답변을 삭제할 수 없다.")
+    void validateAnswerWriter() {
+        Question question = QuestionFixture.create(NsUserTest.JAVAJIGI);
+        Answer answer = QuestionFixture.createAnswer(NsUserTest.SANJIGI, question);
+        question.addAnswer(answer);
+
+        assertThatExceptionOfType(CannotDeleteException.class)
+                .isThrownBy(() -> question.validateAnswers(NsUserTest.JAVAJIGI))
+                .withMessageMatching("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }
