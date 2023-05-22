@@ -17,9 +17,6 @@ public class QnAService {
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
-    @Resource(name = "answerRepository")
-    private AnswerRepository answerRepository;
-
     @Resource(name = "deleteHistoryService")
     private DeleteHistoryService deleteHistoryService;
 
