@@ -74,7 +74,6 @@ class SessionJoinServiceTest {
                                 .containsExactly(tuple(savedSessionId, JAVAJIGI.getId(), SessionJoinStatus.REJECTION));
     }
 
-
     private long getSavedSessionId(SessionRegistrationBuilder withMaxUserCount) {
         Session session = aSession().withId(1L).withSessionRegistration(withMaxUserCount.build()).build();
         return sessionRepository.save(session);
