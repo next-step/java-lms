@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,10 @@ public class SessionTest {
     void startAt() {
         LocalDateTime startAt = LocalDateTime.MIN;
         LocalDateTime endAt = LocalDateTime.MAX;
-        Session session = new Session(startAt, endAt);
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage);
+
         assertThat(session.getStartAt()).isEqualTo(startAt);
     }
 
@@ -24,9 +26,23 @@ public class SessionTest {
     void endAt() {
         LocalDateTime startAt = LocalDateTime.MIN;
         LocalDateTime endAt = LocalDateTime.MAX;
-        Session session = new Session(startAt, endAt);
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage);
+
         assertThat(session.getEndAt()).isEqualTo(endAt);
     }
 
+    @Test
+    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
+    void coverImage() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage);
+
+        assertThat(session.getCoverImage()).isEqualTo(coverImage);
+    }
 
 }
