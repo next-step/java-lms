@@ -1,19 +1,19 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Course {
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
+    private List<Session> sessions = new ArrayList<>();
 
-    private LocalDateTime updatedAt;
-
-    public Course() {
+    protected Course() {
     }
 
     public Course(String title, Long creatorId) {
