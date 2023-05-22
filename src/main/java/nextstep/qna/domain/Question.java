@@ -4,13 +4,12 @@ import nextstep.qna.domain.validate.QuestionRemoveValidator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Question {
 
     private final long id;
     private final NsUser writer;
-    private final Answers answers;
+    private Answers answers;
     private final LocalDateTime createdDate;
 
     private String title;
@@ -19,12 +18,11 @@ public class Question {
     private boolean deleted;
     private LocalDateTime updateAt;
 
-    public Question(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
+    public Question(long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers = answers;
         this.createdDate = createdDate;
     }
 
@@ -56,18 +54,25 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> remove(NsUser requestUser) {
+    public Question loadAnswers(Answers answers) {
+        this.answers = answers;
+        return this;
+    }
+
+    public DeleteHistories remove(NsUser requestUser) {
         QuestionRemoveValidator.validate(this, requestUser);
 
-        this.deleted = false;
+        this.deleted = true;
         this.updateAt = LocalDateTime.now();
 
-        List<DeleteHistory> deleteHistories = answers.removeAll();
-
+        DeleteHistories deleteHistories = DeleteHistories.create();
         deleteHistories.add(DeleteHistory.from(ContentType.QUESTION, this.id, this.writer));
+
+        deleteHistories.concat(answers.removeAll());
 
         return deleteHistories;
     }
+
 
     public boolean isDeleted() {
         return deleted;

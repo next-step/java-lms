@@ -19,17 +19,20 @@ public class Answers {
     public boolean hasAnotherOwner(NsUser requestUser) {
         return this.answers
                 .stream()
-                .anyMatch(answer -> answer.isOwner(requestUser));
+                .noneMatch(answer -> answer.isOwner(requestUser));
     }
 
     public boolean hasAnswers() {
         return !answers.isEmpty();
     }
 
-    public List<DeleteHistory> removeAll() {
-        return answers.stream()
+    public DeleteHistories removeAll() {
+
+        List<DeleteHistory> deleteHistories = answers.stream()
                 .map(Answer::remove)
                 .collect(Collectors.toList());
+
+        return DeleteHistories.of(deleteHistories);
     }
 
 }
