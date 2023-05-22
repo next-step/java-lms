@@ -45,12 +45,18 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
+    public Student enroll(NsUser nsUser) throws AlreadyEnrollmentException {
+        Student student = new Student(nsUser.getId(), this.id);
+        enrollment.enroll(student);
+        return student;
+    }
+
     public Student enroll(NsUser nsUser, Students students) throws AlreadyEnrollmentException {
         Student student = new Student(nsUser.getId(), this.id);
         if (students.enrolledUser(student)) {
             throw new AlreadyEnrollmentException(student + "는 이미 수강 신청한 학생입니다.");
         }
-        this.enrollment = enrollment.enroll(students.sizeOfStudents());
+        enrollment.enroll(students.sizeOfStudents());
         return student;
     }
 

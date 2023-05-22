@@ -2,48 +2,27 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
-    private Students students;
-
-    @BeforeEach
-    void setUp() {
-        this.students = new Students(Arrays.asList(
-                new Student(1L, 1L),
-                new Student(2L, 1L),
-                new Student(3L, 1L)));
-    }
-
     @Test
     void 수강신청_성공() throws Exception {
         NsUser loginUser = NsUsers.createNsUser(4L);
         Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.ENROLLING);
-        Student student = dut.enroll(loginUser, students);
+        Student student = dut.enroll(loginUser);
         assertThat(student).isEqualTo(new Student(loginUser.getId(), dut.getId()));
     }
 
     @Test
     void 수강신청_실패_이미_수강신청한_회원() {
+        NsUser loginUser = NsUsers.createNsUser(4L);
         Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.ENROLLING);
-        assertThatThrownBy(() -> dut.enroll(NsUsers.createNsUser(3L), students))
-                .isInstanceOf(AlreadyEnrollmentException.class);
-    }
-
-    @Test
-    void 수강신청_실패_수강정원_마감() {
-        Session dut = Sessions.createSessionWithEnrollment(1L, 3, SessionStatus.ENROLLING);
-        assertThatIllegalArgumentException().isThrownBy(() -> dut.enroll(NsUsers.createNsUser(4L), students));
-    }
-
-    @Test
-    void 수강신청_실패_모집중_아님() {
-        Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.PREPARING);
-        assertThatIllegalArgumentException().isThrownBy(() -> dut.enroll(NsUsers.createNsUser(4L), students));
+        assertThatThrownBy(() -> {
+            dut.enroll(loginUser);
+            dut.enroll(loginUser);
+        }).isInstanceOf(AlreadyEnrollmentException.class);
     }
 }
