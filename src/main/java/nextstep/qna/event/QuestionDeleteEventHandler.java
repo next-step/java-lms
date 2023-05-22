@@ -4,6 +4,8 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.service.DeleteHistoryService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.annotation.Resource;
 
@@ -12,8 +14,8 @@ public class QuestionDeleteEventHandler {
     @Resource(name = "deleteHistoryService")
     private DeleteHistoryService deleteHistoryService;
 
-    @EventListener(QuestionDeleteEvent.class)
-    public void handle(QuestionDeleteEvent event) throws CannotDeleteException {
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handler(QuestionDeleteEvent event) throws CannotDeleteException {
         deleteHistoryService.saveAll(event.deleteHistory());
     }
 }

@@ -23,18 +23,15 @@ public class QnAService {
     @Resource(name = "deleteHistoryService")
     private DeleteHistoryService deleteHistoryService;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
         question.delete(loginUser);
 
-        ApplicationEventPublisher applicationEventPublisher = new ApplicationEventPublisher() {
-            @Override
-            public void publishEvent(Object event) {
-
-            }
-        };
-        applicationEventPublisher.publishEvent(new QuestionDeleteEvent(question, loginUser));
+        eventPublisher.publishEvent(new QuestionDeleteEvent(question, loginUser));
     }
 
 }
