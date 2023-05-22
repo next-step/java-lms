@@ -32,4 +32,14 @@ public class DefaultSessionJoinService implements SessionJoinService {
 
         sessionJoinRepository.save(session);
     }
+
+    @Override
+    public void approve(long sessionId, List<String> userIds) {
+
+    }
+
+    @Override
+    public void reject(long sessionId, List<String> userIds) {
+
+    }
 }

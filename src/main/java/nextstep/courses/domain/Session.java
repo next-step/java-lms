@@ -48,7 +48,7 @@ public class Session {
 
     public void register(NsUser user) {
         sessionRegistration.validate(sessionJoins.size());
-        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
+        sessionJoins.add(SessionJoin.apply(this, user));
     }
 
     public Long getId() {
@@ -97,7 +97,7 @@ public class Session {
 
     public void addUser(NsUser nsUser) {
         LocalDateTime now = LocalDateTime.now();
-        sessionJoins.add(new SessionJoin(this, nsUser, now, now));
+        sessionJoins.add(SessionJoin.apply(this, nsUser));
     }
 
     @Override

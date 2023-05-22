@@ -9,12 +9,13 @@ public class SessionJoin {
     private Long id;
     private final Session session;
     private final NsUser nsUser;
-    private final SessionJoinStatus sessionJoinStatus;
+    private SessionJoinStatus sessionJoinStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public SessionJoin(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, session, nsUser, SessionJoinStatus.APPLICATION, createdAt, updatedAt);
+    public static SessionJoin apply(Session session, NsUser nsUser) {
+        LocalDateTime now = LocalDateTime.now();
+        return new SessionJoin(null, session, nsUser, SessionJoinStatus.APPLICATION, now, null);
     }
 
     public SessionJoin(Long id, Session session, NsUser nsUser, SessionJoinStatus sessionJoinStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -40,6 +41,14 @@ public class SessionJoin {
 
     public SessionJoinStatus getSessionJoinStatus() {
         return sessionJoinStatus;
+    }
+
+    public void approve() {
+        this.sessionJoinStatus = SessionJoinStatus.APPROVAL;
+    }
+
+    public void reject() {
+        this.sessionJoinStatus = SessionJoinStatus.REJECTION;
     }
 
     public LocalDateTime getCreatedAt() {
