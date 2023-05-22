@@ -3,7 +3,9 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DeleteHistory {
     private Long id;
@@ -24,6 +26,18 @@ public class DeleteHistory {
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory createQuestion(Question question){
+        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
+    }
+
+    public static List<DeleteHistory> createAnswers(List<Answer> answers){
+        return answers.stream().map(DeleteHistory::createAnswer).collect(Collectors.toList());
+    }
+
+    public static DeleteHistory createAnswer(Answer answer){
+        return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
     }
 
     @Override
