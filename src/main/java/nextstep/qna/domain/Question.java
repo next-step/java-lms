@@ -95,6 +95,7 @@ public class Question {
         validateQuestionDeletionPermission(nsUser);
         validateExistOtherAnswer(nsUser);
         this.deleted = true;
+        answers.deleteAnswer(nsUser);
     }
 
     private void validateQuestionDeletionPermission(NsUser nsUser) throws CannotDeleteException {

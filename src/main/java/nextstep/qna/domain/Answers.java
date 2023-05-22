@@ -22,4 +22,8 @@ public class Answers {
         return answers.stream()
                 .allMatch(answer -> answer.isOwner(nsUser));
     }
+
+    public void deleteAnswer(NsUser nsUser) {
+        answers.forEach(Answer::deleteAnswer);
+    }
 }
