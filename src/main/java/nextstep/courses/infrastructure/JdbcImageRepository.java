@@ -61,5 +61,5 @@ public class JdbcImageRepository implements ImageRepository {
                 rs.getString("type")
         );
     }
-    
+
 }
