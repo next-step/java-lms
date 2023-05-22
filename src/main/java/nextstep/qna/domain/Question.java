@@ -64,10 +64,10 @@ public class Question {
             throw new CannotDeleteException("로그인 사용자와 질문한 사람이 같지 않습니다.");
         }
         this.setDeleted(true);
-        return documentDeleteHistories();
+        return documentedDeleteHistories();
     }
 
-    private DeleteHistories documentDeleteHistories() {
+    private DeleteHistories documentedDeleteHistories() {
         DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
 
