@@ -34,13 +34,18 @@ public class Fixtures {
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
                              .withSessionBillType(SessionBillType.FREE)
-                             .withSessionStatus(SessionStatus.READY)
-                             .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
+                             .withSessionRegistration(aSessionRegistration().build())
                              .withSessionCoverImage(new SessionCoverImage("http://edu.nexystep.camp"))
-                             .withMaxUserCount(100)
                              .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))
                              .withCreatedAt(LocalDateTime.now())
                              .withUpdatedAt(LocalDateTime.now());
+    }
+
+    public static SessionRegistrationBuilder aSessionRegistration() {
+        return SessionRegistrationBuilder.aSessionRegistration()
+                                         .withSessionStatus(SessionStatus.READY)
+                                         .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
+                                         .withMaxUserCount(100);
     }
 
 }

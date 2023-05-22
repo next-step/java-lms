@@ -15,11 +15,7 @@ public class Session {
 
     private final SessionCoverImage sessionCoverImage;
 
-    private final SessionStatus sessionStatus;
-
-    private final SessionRecruitStatus sessionRecruitStatus;
-
-    private final int maxUserCount;
+    private final SessionRegistration sessionRegistration;
 
     private final SessionPeriod sessionPeriod;
 
@@ -27,7 +23,12 @@ public class Session {
 
     private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, sessionBillType, sessionCoverImage, SessionRegistration.ready(sessionRecruitStatus, maxUserCount),
+             sessionPeriod, createdAt, updatedAt);
+    }
+
+    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -39,27 +40,14 @@ public class Session {
         this.id = id;
         this.sessionBillType = sessionBillType;
         this.sessionCoverImage = sessionCoverImage;
-        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
-        this.sessionRecruitStatus = sessionRecruitStatus;
-        this.maxUserCount = maxUserCount;
+        this.sessionRegistration = sessionRegistration;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public void register(NsUser user) {
-        if (this.sessionRecruitStatus.isNotRecruiting()) {
-            throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
-        }
-
-        if (this.sessionStatus.isClose()) {
-            throw new IllegalArgumentException("강의가 종료되었습니다.");
-        }
-
-        if (maxUserCount <= sessionJoins.size()) {
-            throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
-        }
-
+        sessionRegistration.validate(sessionJoins.size());
         sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
     }
 
@@ -76,15 +64,15 @@ public class Session {
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionRegistration.getSessionStatus();
     }
 
     public SessionRecruitStatus getSessionRecruitStatus() {
-        return sessionRecruitStatus;
+        return sessionRegistration.getSessionRecruitStatus();
     }
 
     public int getMaxUserCount() {
-        return maxUserCount;
+        return sessionRegistration.getMaxUserCount();
     }
 
     public SessionPeriod getSessionPeriod() {
@@ -127,6 +115,6 @@ public class Session {
 
     @Override
     public String toString() {
-        return "Session{" + "id=" + id + ", sessionBillType=" + sessionBillType + ", sessionStatus=" + sessionStatus + ", sessionCoverImage=" + sessionCoverImage + ", maxUserCount=" + maxUserCount + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "Session{" + "id=" + id + ", sessionJoins=" + sessionJoins + ", sessionBillType=" + sessionBillType + ", sessionCoverImage=" + sessionCoverImage + ", sessionRegistration=" + sessionRegistration + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

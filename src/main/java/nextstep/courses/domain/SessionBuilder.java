@@ -6,9 +6,7 @@ public final class SessionBuilder {
     private Long id;
     private SessionBillType sessionBillType;
     private SessionCoverImage sessionCoverImage;
-    private SessionStatus sessionStatus;
-    private SessionRecruitStatus sessionRecruitStatus;
-    private int maxUserCount;
+    private SessionRegistration sessionRegistration;
     private SessionPeriod sessionPeriod;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -35,18 +33,8 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withSessionStatus(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
-        return this;
-    }
-
-    public SessionBuilder withSessionRecruitStatus(SessionRecruitStatus sessionRecruitStatus) {
-        this.sessionRecruitStatus = sessionRecruitStatus;
-        return this;
-    }
-
-    public SessionBuilder withMaxUserCount(int maxUserCount) {
-        this.maxUserCount = maxUserCount;
+    public SessionBuilder withSessionRegistration(SessionRegistration sessionRegistration) {
+        this.sessionRegistration = sessionRegistration;
         return this;
     }
 
@@ -66,7 +54,7 @@ public final class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, sessionBillType, sessionCoverImage, sessionStatus, sessionRecruitStatus, maxUserCount,
-                           sessionPeriod, createdAt, updatedAt);
+        return new Session(id, sessionBillType, sessionCoverImage, sessionRegistration, sessionPeriod, createdAt,
+                           updatedAt);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static nextstep.Fixtures.aSession;
+import static nextstep.Fixtures.aSessionRegistration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,7 +28,9 @@ class SessionJoinServiceTest {
     @Test
     @DisplayName("강의 등록")
     void test01() {
-        Session session = aSession().withId(1L).withSessionStatus(SessionStatus.OPEN).build();
+        Session session = aSession().withId(1L)
+                                    .withSessionRegistration(aSessionRegistration().build())
+                                    .build();
         long savedSessionId = sessionRepository.save(session);
 
         sessionJoinService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId()));
@@ -39,8 +42,9 @@ class SessionJoinServiceTest {
     @Test
     @DisplayName("강의 등록 - 최대 강의 수 초과")
     void test02() {
-        Session session = aSession().withId(1L).withSessionStatus(SessionStatus.OPEN)
-                                    .withMaxUserCount(1).build();
+        Session session = aSession().withId(1L)
+                                    .withSessionRegistration(aSessionRegistration().withMaxUserCount(1).build())
+                                    .build();
         long savedSessionId = sessionRepository.save(session);
 
         assertThatThrownBy(() -> sessionJoinService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId(),
