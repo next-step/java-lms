@@ -24,12 +24,17 @@ public class Answers {
 
     public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        return deleteHistories;
+        deleteAllAnswers();
+        return logDeletedHistories();
     }
 
+    private void deleteAllAnswers() {
+        answers.forEach(Answer::delete);
+    }
+
+    private List<DeleteHistory> logDeletedHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        answers.forEach(answer -> deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now())));
+        return deleteHistories;
+    }
 }
