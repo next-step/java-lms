@@ -1,66 +1,39 @@
 package nextstep.qna.domain;
 
+import nextstep.global.domain.BaseTimeDomain;
+import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.enums.ContentType;
+import nextstep.qna.domain.enums.DeleteStatus;
+import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Question {
+public class Question extends BaseTimeDomain {
     private Long id;
 
-    private String title;
+    private QuestionDetail detail;
 
-    private String contents;
+    private Answers answers = Answers.create();
 
-    private NsUser writer;
+    private DeleteStatus deleteStatus = DeleteStatus.NO;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
+    public static Question of(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
+        return new Question(id, writer, title, contents ,createdDate);
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
+    private Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.detail = QuestionDetail.of(title, contents, writer);
+        this.createdDate = createdDate;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
+    public QuestionDetail getDetail() {
+        return detail;
     }
 
     public void addAnswer(Answer answer) {
@@ -68,25 +41,39 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public DeleteHistories delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+        checkDeletionAvailability(loginUser);
+        changeStatusToBeDeleted();
+        return createDeleteHistories(now, deleteAnswers(now));
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private DeleteHistories createDeleteHistories(LocalDateTime now, DeleteHistories deleteHistoriesOfAnswers) {
+        DeleteHistories deleteHistories = DeleteHistories.create();
+        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
+        deleteHistories.concat(deleteHistoriesOfAnswers);
+        return deleteHistories;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    private DeleteHistories deleteAnswers(LocalDateTime now) throws CannotDeleteException {
+        return this.answers.deleteAnswers(this.detail.getWriter(), now);
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    private void changeStatusToBeDeleted() {
+        this.deleteStatus = DeleteStatus.YES;
+    }
+
+    private void checkDeletionAvailability(NsUser loginUser) throws CannotDeleteException {
+        if (!detail.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public DeleteStatus getDeleteStatus() {
+        return deleteStatus;
     }
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + detail.getTitle() + ", contents=" + detail.getContents() + ", writer=" + detail.getContents() + "]";
     }
 }
