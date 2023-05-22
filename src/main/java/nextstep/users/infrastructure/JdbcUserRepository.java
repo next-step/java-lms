@@ -20,13 +20,13 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
+        String sql = "select id, user_id, password, name, email, created_at, updated_at from next_step_user where user_id = ?";
         RowMapper<User> rowMapper = (rs, rowNum) -> new User(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
+                rs.getLong("id"),
+                rs.getString("user_id"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email"),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
