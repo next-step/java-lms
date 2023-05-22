@@ -13,4 +13,8 @@ public class QuestionFixture {
     public static Answer createAnswer(NsUser nextStepUser, Question question) {
         return new Answer(nextStepUser, question, "Answers Contents1");
     }
+
+    public static Answer createAnswer(NsUser nextStepUser) {
+        return new Answer(nextStepUser, create(NsUserTest.JAVAJIGI), "Answers Contents1");
+    }
 }
