@@ -37,7 +37,7 @@ class SessionTest {
     void test04(SessionBillType sessionBillType) {
         Session session = aSession().withSessionBillType(sessionBillType).build();
 
-        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
+        assertThat(session.getSessionBillType()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의 상태 {0} 존재한다.")

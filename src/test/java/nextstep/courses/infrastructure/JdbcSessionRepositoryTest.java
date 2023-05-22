@@ -44,6 +44,6 @@ class JdbcSessionRepositoryTest {
 
         Session findSession = sessionRepository.findById(sessionId);
         assertThat(sessionId).isEqualTo(findSession.getId());
-        assertThat(session.getSessionType()).isEqualTo(findSession.getSessionType());
+        assertThat(session.getSessionBillType()).isEqualTo(findSession.getSessionBillType());
     }
 }

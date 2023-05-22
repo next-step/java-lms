@@ -71,10 +71,6 @@ public class Session {
         return sessionJoins;
     }
 
-    public SessionBillType getSessionType() {
-        return sessionBillType;
-    }
-
     public SessionCoverImage getCoverImageUrl() {
         return sessionCoverImage;
     }
