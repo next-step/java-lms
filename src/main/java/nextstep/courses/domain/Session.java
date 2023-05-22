@@ -3,20 +3,19 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 public class Session {
-    private final SessionName name;
+    private final SessionInformation information;
     private final SessionStatus status;
+    private final SessionAttendees attendees;
 
-    public Session(String name, SessionStatus status) {
-        this(SessionName.of(name), status);
-    }
-
-    public Session(SessionName name, SessionStatus status) {
-        this.name = name;
+    public Session(SessionInformation information, SessionStatus status, SessionAttendees attendees) {
+        this.information = information;
         this.status = status;
+        this.attendees = attendees;
     }
 
     public void apply(NsUser user) {
         validateStatus();
+        attendees.add(user);
     }
 
     private void validateStatus() {

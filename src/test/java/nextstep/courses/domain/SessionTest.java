@@ -13,7 +13,7 @@ class SessionTest {
     @DisplayName("강의 상태가 모집중이 아닐 경우, IllegalArgumentException 예외 발생")
     void apply_session_when_session_status_is_not_RECRUIT_then_throw_IllegalArgumentException(SessionStatus status) {
         // given
-        Session session = new Session("nextstep_tdd", status);
+        Session session = new Session(SessionInformationTest.TDD_SESSION_INFORMATION, status, SessionAttendeesTest.TDD_SESSION_ATTENDEES);
 
         // when, then
         Assertions.assertThatThrownBy(() -> session.apply(NsUserTest.JAVAJIGI))
