@@ -4,7 +4,7 @@ import nextstep.courses.domain.*;
 
 import java.time.LocalDateTime;
 
-public class Fixture {
+public class SessionFixture {
     public Session getSession1() {
         LocalDateTime fromDate = LocalDateTime.now();
         LocalDateTime toDate = fromDate.plusDays(7);

@@ -19,7 +19,7 @@ public class Answers {
                     try {
                         return s.delete(writer);
                     } catch (CannotDeleteException e) {
-                        throw new RuntimeException(e);
+                        throw new CannotDeleteException(e.getMessage());
                     }
                 }).collect(Collectors.toList());
     }

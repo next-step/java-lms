@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.Fixture;
+import nextstep.courses.SessionFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,13 @@ class CourseTest {
 
     @Test
     void 한_과정에_여러_강의_추가_테스트() {
-        Fixture fixture = new Fixture();
-        sessions.add(fixture.getSession1());
-        sessions.add(fixture.getSession2());
+        SessionFixture sessionFixture = new SessionFixture();
+        sessions.add(sessionFixture.getSession1());
+        sessions.add(sessionFixture.getSession2());
 
         course = new Course(sessions);
 
         Assertions.assertThat(course.getSessions().size()).isEqualTo(2);
+
     }
 }

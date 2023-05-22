@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.Fixture;
+import nextstep.courses.SessionFixture;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +11,8 @@ class SessionTest {
 
     @BeforeEach
     public void before() {
-        Fixture fixture = new Fixture();
-        session = fixture.getSession1();
+        SessionFixture sessionFixture = new SessionFixture();
+        session = sessionFixture.getSession1();
     }
 
     @Test

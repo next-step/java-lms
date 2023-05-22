@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUser;
 
 public class Session {
     private static final String CANNOT_ENROLL_SESSION = "강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.";
+
     private final SessionPeriod sessionPeriod;
     private final SessionCoverImage sessionCoverImage;
     private SessionStatus sessionStatus;
