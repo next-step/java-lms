@@ -29,7 +29,7 @@ public class Answers {
 			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
 
-		this.answers.forEach(answer -> answer.setDeleted(true));
+		this.answers.forEach(answer -> answer.delete(true));
 
 		return this.deleteHistories(deleteTime);
 	}

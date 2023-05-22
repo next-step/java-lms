@@ -47,7 +47,7 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
+    public Answer delete(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
