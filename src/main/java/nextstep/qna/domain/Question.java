@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -42,8 +42,9 @@ public class Question {
         validateWriter(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
+
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
-        deleteHistories.addAll(deleteAnswers(loginUser));
+        deleteHistories.addAll(answers.deleteAll(loginUser));
 
         return deleteHistories;
     }
@@ -52,14 +53,6 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-    }
-
-    public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
-        }
-        return deleteHistories;
     }
 
     public Long getId() {
@@ -90,7 +83,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -106,7 +99,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
