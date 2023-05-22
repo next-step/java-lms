@@ -89,4 +89,8 @@ public class Question {
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
+    public void deleteQuestion() {
+        this.deleted = true;
+    }
 }
