@@ -30,7 +30,7 @@ public class AnswersTest {
 
 	@DisplayName("답변 삭제 성공")
 	@Test
-	void test2() throws CannotDeleteException {
+	void test2() {
 		Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
 		Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
 
@@ -44,7 +44,7 @@ public class AnswersTest {
 
 	@DisplayName("답변 삭제 이력 생성")
 	@Test
-	void test3() throws CannotDeleteException {
+	void test3() {
 		Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
 		Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
 
