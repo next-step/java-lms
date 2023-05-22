@@ -1,10 +1,11 @@
 package nextstep.qna.domain;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class Answers {
+public class Answers implements Iterable<Answer> {
 
     private final List<Answer> answers;
 
@@ -23,12 +24,8 @@ public class Answers {
         return this.answers;
     }
 
-    public void deleteAnswers(DeleteHistories deleteHistories) {
-        if (answers.isEmpty()) {
-            return;
-        }
-        for (Answer answer : this.answers) {
-            answer.delete(deleteHistories);
-        }
+    @Override
+    public Iterator<Answer> iterator() {
+        return answers.iterator();
     }
 }
