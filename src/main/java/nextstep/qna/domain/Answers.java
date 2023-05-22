@@ -22,9 +22,14 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
-        return answers.stream().map(answer -> answer.delete()).collect(Collectors.toList());
+        answers.stream().forEach(answer -> answer.delete());
+    }
+
+    public List<DeleteHistory> createDeleteHistories(NsUser loginUser) throws CannotDeleteException {
+        validateDelete(loginUser);
+        return answers.stream().map(answer -> answer.createDeleteHistory()).collect(Collectors.toList());
     }
 
     public void validateDelete(NsUser loginUser) throws CannotDeleteException {

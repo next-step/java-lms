@@ -79,8 +79,11 @@ public class Answer {
         }
     }
 
-    public DeleteHistory delete() {
+    public void delete() {
         setDeleted(true);
+    }
+
+    public DeleteHistory createDeleteHistory() {
         return DeleteHistory.from(this);
     }
 

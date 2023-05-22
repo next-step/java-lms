@@ -86,14 +86,17 @@ public class Question {
         return answers;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
 
         setDeleted(true);
+        answers.delete(loginUser);
+    }
 
+    public List<DeleteHistory> createDeleteHistories(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.from(this));
-        deleteHistories.addAll(answers.delete(loginUser));
+        deleteHistories.addAll(answers.createDeleteHistories(loginUser));
 
         return deleteHistories;
     }

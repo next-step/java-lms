@@ -23,11 +23,18 @@ public class AnswerTest {
     }
 
     @Test
-    @DisplayName("삭제 기록 확인")
+    @DisplayName("답변 삭제")
     void delete() {
-        DeleteHistory deleteHistory = A1.delete();
+        A1.delete();
 
         assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("삭제 기록 확인")
+    void deleteHistory() {
+        DeleteHistory deleteHistory = A1.createDeleteHistory();
+
         assertThat(deleteHistory).isEqualTo(DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }

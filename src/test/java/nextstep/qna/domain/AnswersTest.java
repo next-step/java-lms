@@ -35,6 +35,6 @@ public class AnswersTest {
                 DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()),
                 DeleteHistory.of(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
 
-        assertThat(Q1.getAnswers().delete(NsUserTest.JAVAJIGI)).isEqualTo(expected);
+        assertThat(Q1.getAnswers().createDeleteHistories(NsUserTest.JAVAJIGI)).isEqualTo(expected);
     }
 }
