@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,23 +23,23 @@ public class Answers {
 		this.answers.add(answer);
 	}
 
-	public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime deleteTime) throws CannotDeleteException {
+	public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
 		if (this.isOwner(loginUser) == false) {
 			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
 
 		this.answers.forEach(answer -> answer.delete(true));
 
-		return this.deleteHistories(deleteTime);
+		return this.deleteHistories();
 	}
 
 	private boolean isOwner(NsUser loginUser) {
 		return this.answers.stream().allMatch(answer -> answer.isOwner(loginUser));
 	}
 
-	private List<DeleteHistory> deleteHistories(LocalDateTime deleteTime) {
-		return answers.stream()
-			.map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), deleteTime))
+	private List<DeleteHistory> deleteHistories() {
+		return this.answers.stream()
+			.map(Answer::deleteHistory)
 			.collect(Collectors.toList());
 	}
 }

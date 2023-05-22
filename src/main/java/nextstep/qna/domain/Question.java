@@ -73,35 +73,34 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    private Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime deleteTime) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (this.isOwner(loginUser) == false) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        this.setDeleted(true);
+        this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(this.deleteHistory(loginUser, deleteTime));
-        deleteHistories.addAll(answers.delete(loginUser, deleteTime));
+        deleteHistories.add(this.deleteHistory());
+        deleteHistories.addAll(this.answers.delete(loginUser));
 
         return deleteHistories;
     }
 
-    private DeleteHistory deleteHistory(NsUser loginUser, LocalDateTime deleteTime) {
-        return new DeleteHistory(ContentType.QUESTION, this.id, loginUser, deleteTime);
+    public DeleteHistory deleteHistory() {
+        return new DeleteHistory(this.contentBody(), this.writer);
+    }
+
+    private ContentBody contentBody() {
+        return new ContentBody(ContentType.QUESTION, this.id);
     }
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

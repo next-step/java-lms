@@ -43,10 +43,6 @@ public class Answer {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Answer delete(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -60,20 +56,20 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
 
+    public DeleteHistory deleteHistory() {
+        return new DeleteHistory(this.contentBody(), this.writer);
+    }
+
+    private ContentBody contentBody() {
+        return new ContentBody(ContentType.ANSWER, this.id);
+    }
+
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + "]";
     }
 }

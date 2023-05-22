@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +25,7 @@ public class AnswersTest {
 	@Test
 	void test1() {
 		Answers answers = new Answers(new Answer(NsUserTest.SANJIGI, question, "answer1"));
-		assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
+		assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
 	}
 
 	@DisplayName("답변 삭제 성공")
@@ -37,7 +36,7 @@ public class AnswersTest {
 
 		Answers answers = new Answers(answer1, answer2);
 
-		answers.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
+		answers.delete(NsUserTest.JAVAJIGI);
 
 		assertThat(answer1.isDeleted()).isTrue();
 		assertThat(answer2.isDeleted()).isTrue();
@@ -51,13 +50,11 @@ public class AnswersTest {
 
 		Answers answers = new Answers(answer1, answer2);
 
-		LocalDateTime deleteTime = LocalDateTime.now();
-
-		List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI, deleteTime);
+		List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
 
 		assertThat(deleteHistories).containsExactly(
-			new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), deleteTime),
-			new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), deleteTime)
+			answer1.deleteHistory(),
+			answer2.deleteHistory()
 		);
 	}
 }

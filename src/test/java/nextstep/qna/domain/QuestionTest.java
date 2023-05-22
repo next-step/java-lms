@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +25,14 @@ public class QuestionTest {
     @DisplayName("질문 작성자와 삭제시도 유저가 다른 경우 - 예외 발생")
     @Test
     void test1() {
-        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("다른 사람이 작성한 답변이 있는 경우 - 예외 발생")
     @Test
     void test2() {
         question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "answer1"));
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("질문/답변 삭제")
@@ -44,7 +43,7 @@ public class QuestionTest {
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        question.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
+        question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
@@ -59,14 +58,12 @@ public class QuestionTest {
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        LocalDateTime deleteTime = LocalDateTime.now();
-
-        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI, deleteTime);
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories).containsExactly(
-            new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), deleteTime),
-            new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), deleteTime),
-            new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), deleteTime)
+            question.deleteHistory(),
+            answer1.deleteHistory(),
+            answer2.deleteHistory()
         );
     }
 }
