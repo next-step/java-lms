@@ -34,7 +34,7 @@ public class SessionTest {
     @ParameterizedTest(name = "현재 수강신청 가능기간이 아니면서 강의 등록이 가능한 상태인 경우 예외를 발생하는지 테스트")
     @MethodSource("provideNotMatchedPeriodSession")
     void testEnableEnrollment_수강신청_기간_예외(Session session) {
-        assertThatThrownBy(() -> session.enrollSession())
+        assertThatThrownBy(session::enrollSession)
                 .isInstanceOf(NotIncludePeriodException.class)
                 .hasMessage(NotIncludePeriodException.MESSAGE);
     }
@@ -49,7 +49,7 @@ public class SessionTest {
     @ParameterizedTest(name = "현재 수강신청 가능기간이면서 강의 등록 불가능한 상태인 경우 예외를 발생하는지 테스트")
     @MethodSource("provideCannotEnrollSession")
     void testEnableEnrollment_등록_불가_상태_예외(Session session) {
-        assertThatThrownBy(() -> session.enrollSession())
+        assertThatThrownBy(session::enrollSession)
                 .isInstanceOf(CannotEnrollStatusException.class)
                 .hasMessage(CannotEnrollStatusException.MESSAGE);
     }
