@@ -40,11 +40,13 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateWriter(loginUser);
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        List<DeleteHistory> answerDeleteHistories = answers.deleteAll(loginUser);
         this.deleted = true;
 
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll(loginUser));
+        deleteHistories.addAll(answerDeleteHistories);
 
         return deleteHistories;
     }
@@ -88,11 +90,6 @@ public class Question {
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
