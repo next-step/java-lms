@@ -1,9 +1,6 @@
 package nextstep.courses.app;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionJoin;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.*;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +19,9 @@ class SessionJoinServiceTest {
     private SessionJoinService sessionJoinService;
 
     @Autowired
+    private SessionJoinRepository sessionJoinRepository;
+
+    @Autowired
     private SessionRepository sessionRepository;
 
     @Test
@@ -32,7 +32,7 @@ class SessionJoinServiceTest {
 
         sessionJoinService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId()));
 
-        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
+        List<SessionJoin> findSessionJoins = sessionJoinRepository.findAllBySessionId(savedSessionId);
         assertThat(findSessionJoins).hasSize(1);
     }
 
