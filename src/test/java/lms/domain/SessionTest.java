@@ -17,7 +17,7 @@ public class SessionTest {
         LocalDate endDate = LocalDate.of(2023, 5, 23);
         Image imageCover = new Image();
 
-        session = new Session(startDate, endDate, imageCover, studentCapacity);
+        session = new Session(startDate, endDate, imageCover, SessionType.FREE, studentCapacity);
     }
 
     @Test
@@ -118,6 +118,25 @@ public class SessionTest {
 
         assertThat(session.cancel())
                 .isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("강의 상태가 준비중이 아닐 때 강의 타입 변경 에러")
+    void notReadySessionTypeErrorTest() {
+        setUp(0);
+        session.recruitStudents();
+
+        assertThatThrownBy(() -> session.changeSessionType(SessionType.PAID))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("강의 타입 변경")
+    void changeSessionTypeTest() {
+        setUp(0);
+
+        assertThat(session.changeSessionType(SessionType.PAID))
+                .isEqualTo(SessionType.PAID);
     }
 
 }
