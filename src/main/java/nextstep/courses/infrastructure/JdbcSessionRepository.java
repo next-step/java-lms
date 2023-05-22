@@ -85,13 +85,14 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public List<SessionJoin> findAllSessionJoinBySessionId(Long sessionId) {
         //TODO: 추후에 proxy 객체 활용 일단은 일반 객체 직접 조회로
-        String sql = "select id, session_id, user_id, created_at, updated_at from session_join where session_id = ?";
+        String sql = "select id, session_id, user_id, session_join_status created_at, updated_at from session_join where session_id = ?";
         RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
                 new SessionJoin(rs.getLong(1),
                                 findById(rs.getLong(2)),
                                 NsUserBuilder.aNsUser().withId(rs.getLong(3)).build(),
-                                toLocalDateTime(rs.getTimestamp(4)),
-                                toLocalDateTime(rs.getTimestamp(5))
+                                SessionJoinStatus.find(rs.getString(4)),
+                                toLocalDateTime(rs.getTimestamp(5)),
+                                toLocalDateTime(rs.getTimestamp(6))
                 );
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
