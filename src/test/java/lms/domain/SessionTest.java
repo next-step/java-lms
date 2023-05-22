@@ -36,4 +36,47 @@ public class SessionTest {
                 .isEqualTo(changeCover);
     }
 
+    @Test
+    @DisplayName("강의 모집중으로 변경")
+    void recruitStudentsTest() {
+        LocalDate startDate = LocalDate.of(2023, 5, 22);
+        LocalDate endDate = LocalDate.of(2023, 5, 23);
+        Image imageCover = new Image();
+
+        Session session = new Session(startDate, endDate, imageCover);
+
+        assertThat(session.recruitStudents())
+                .isEqualTo(SessionState.RECRUITING);
+    }
+
+    @Test
+    @DisplayName("종료일이 지났을 때, 강의 상태 종료로 변경")
+    void finishSessionTest() {
+        LocalDate startDate = LocalDate.of(2023, 5, 22);
+        LocalDate endDate = LocalDate.of(2023, 5, 23);
+        Image imageCover = new Image();
+
+        Session session = new Session(startDate, endDate, imageCover);
+
+        LocalDate now = LocalDate.of(2023, 5, 24);
+
+        assertThat(session.finishSessionState(now))
+                .isEqualTo(SessionState.FINISH);
+    }
+
+    @Test
+    @DisplayName("종료일이 지나지 않았으면 강의 상태가 종료로 바뀌지 않음")
+    void notFinishSessionTest() {
+        LocalDate startDate = LocalDate.of(2023, 5, 22);
+        LocalDate endDate = LocalDate.of(2023, 5, 23);
+        Image imageCover = new Image();
+
+        Session session = new Session(startDate, endDate, imageCover);
+
+        LocalDate now = LocalDate.of(2023, 5, 23);
+
+        assertThat(session.finishSessionState(now))
+                .isEqualTo(SessionState.READY);
+    }
+
 }

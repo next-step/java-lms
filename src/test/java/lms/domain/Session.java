@@ -2,11 +2,14 @@ package lms.domain;
 
 import java.time.LocalDate;
 
+import static lms.domain.SessionState.*;
+
 public class Session {
 
     private LocalDate startDate;
     private LocalDate endDate;
     private Image imageCover;
+    private SessionState sessionState = READY;
 
     public Session(LocalDate startDate, LocalDate endDate, Image imageCover) {
         if (endDate.isBefore(startDate)) {
@@ -24,5 +27,17 @@ public class Session {
     public Image changeImageCover(Image changeCover) {
         this.imageCover = changeCover;
         return imageCover;
+    }
+
+    public SessionState recruitStudents() {
+        sessionState = RECRUITING;
+        return sessionState;
+    }
+
+    public SessionState finishSessionState(LocalDate now) {
+        if (now.isAfter(endDate)) {
+            sessionState = FINISH;
+        }
+        return sessionState;
     }
 }
