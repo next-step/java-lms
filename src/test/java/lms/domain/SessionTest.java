@@ -139,4 +139,20 @@ public class SessionTest {
                 .isEqualTo(SessionType.PAID);
     }
 
+    @Test
+    @DisplayName("강의 개설 기능")
+    void createSessionTest() {
+        LocalDate startDate = LocalDate.of(2023, 5, 22);
+        LocalDate endDate = LocalDate.of(2023, 5, 25);
+        Image image = new Image();
+        SessionType sessionType = SessionType.FREE;
+        int studentCapacity = 5;
+
+
+        Session session = Session.createSession(startDate, endDate, image, sessionType, studentCapacity);
+
+        assertThat(session)
+                .isInstanceOf(Session.class);
+    }
+
 }
