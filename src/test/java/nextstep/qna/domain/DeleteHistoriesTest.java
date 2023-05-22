@@ -25,7 +25,7 @@ class DeleteHistoriesTest {
     @DisplayName("Question을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.")
     @Test
     void when_addQuestionToDeleteHistories_Expects_containsExactlySameDeleteHistory() {
-        deleteHistories.add(Q1);
+        deleteHistories.add(DeleteHistory.createQuestion(Q1.getId(), Q1.getWriter()));
         DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter());
 
         assertThat(deleteHistories.getDeleteHistories())
@@ -36,8 +36,8 @@ class DeleteHistoriesTest {
     @DisplayName("Answer를 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.")
     @Test
     void when_addAnswersToDeleteHistories_Expects_containsExactlySameDeleteHistory() {
-        deleteHistories.add(A1);
-        deleteHistories.add(A2);
+        deleteHistories.add(DeleteHistory.createAnswer(A1.getId(), A1.getWriter()));
+        deleteHistories.add(DeleteHistory.createAnswer(A2.getId(), A2.getWriter()));
 
         DeleteHistory deleteHistoryA1 = new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
         DeleteHistory deleteHistoryA2 = new DeleteHistory(ContentType.ANSWER, A2.getId(), A2.getWriter());
