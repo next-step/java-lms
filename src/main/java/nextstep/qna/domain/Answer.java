@@ -5,6 +5,8 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Answer {
     private Long id;
@@ -47,9 +49,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void delete() {
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
