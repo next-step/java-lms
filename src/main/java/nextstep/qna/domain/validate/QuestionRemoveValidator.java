@@ -8,12 +8,12 @@ import nextstep.users.domain.NsUser;
 public class QuestionRemoveValidator {
 
     public static void validate(Question question, NsUser requestUser) {
-        validateAuthorization(question.getWriter(), requestUser);
+        validateAuthorization(question, requestUser);
         validateHasAnswer(question.getAnswers(), requestUser);
     }
 
-    private static void validateAuthorization(NsUser writer, NsUser requestUser) throws CannotDeleteException {
-        if (!writer.matchUser(requestUser)) {
+    private static void validateAuthorization(Question question, NsUser requestUser) throws CannotDeleteException {
+        if (!question.isOwner(requestUser)) {
             throw new CannotDeleteException("글 작성자만 삭제 가능해요 :(");
         }
     }
@@ -25,7 +25,7 @@ public class QuestionRemoveValidator {
         }
 
         if (answers.hasAnotherOwner(requestUser)) {
-            throw new CannotDeleteException("답변글이 존재해서 삭제 불가능 해요 :(");
+            throw new CannotDeleteException("다른분이 작성한 답변글이 존재해서 삭제 불가능 해요 :(");
         }
     }
 
