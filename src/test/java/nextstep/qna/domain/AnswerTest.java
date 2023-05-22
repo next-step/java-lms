@@ -1,12 +1,11 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,20 +16,20 @@ public class AnswerTest {
     private Answer answer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     }
 
     @Test
-    void 답변을_삭제한다() {
+    void 답변을_삭제한다() throws Exception {
         // given
-        List<DeleteHistory> histories = new ArrayList<>();
+        NsUser loginUser = NsUserTest.JAVAJIGI;
 
         // when
-        answer.delete(histories);
+        DeleteHistory result = answer.delete(loginUser);
 
         // then
-        assertThat(histories.get(0)).isEqualTo(
+        assertThat(result).isEqualTo(
                 new DeleteHistory(ContentType.ANSWER, 11L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }
