@@ -12,7 +12,6 @@ public abstract class BaseTimeEntity {
     }
 
   public BaseTimeEntity() {
-      this.createdAt = LocalDateTime.now();
-      this.updatedAt = LocalDateTime.now();
+      this(LocalDateTime.now(), LocalDateTime.now());
   }
 }
