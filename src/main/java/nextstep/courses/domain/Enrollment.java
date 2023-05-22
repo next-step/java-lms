@@ -6,11 +6,17 @@ import nextstep.users.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Enrollment {
+public class Enrollment extends BaseEntity {
+    private Long id;
     private List<User> users = new ArrayList<>();
     private int maximumEnrollment;
 
     public Enrollment(int maximumEnrollment) {
+        this.maximumEnrollment = maximumEnrollment;
+    }
+
+    public Enrollment(Long id, int maximumEnrollment) {
+        this.id = id;
         this.maximumEnrollment = maximumEnrollment;
     }
 
@@ -22,6 +28,14 @@ public class Enrollment {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getMaximumEnrollment() {
+        return maximumEnrollment;
     }
 
     private void checkEnrollment() throws SessionEnrollmentException {
