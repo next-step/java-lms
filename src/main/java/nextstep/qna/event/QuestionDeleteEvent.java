@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
-import org.springframework.context.ApplicationEvent;
 
 import java.util.List;
 
