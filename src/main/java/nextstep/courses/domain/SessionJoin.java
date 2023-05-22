@@ -38,6 +38,10 @@ public class SessionJoin {
         return nsUser;
     }
 
+    public SessionJoinStatus getSessionJoinStatus() {
+        return sessionJoinStatus;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

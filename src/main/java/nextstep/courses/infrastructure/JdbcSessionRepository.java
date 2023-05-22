@@ -72,11 +72,12 @@ public class JdbcSessionRepository implements SessionRepository {
             return 0;
         }
 
-        String sql = "insert into session_join (session_id, user_id, created_at) values (?,?,?)";
+        String sql = "insert into session_join (session_id, user_id, session_join_status, created_at) values (?,?,?,?)";
 
         int savedCount = 0;
         for (SessionJoin sessionJoin : session.getSessionJoins()) {
-            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(), sessionJoin.getCreatedAt());
+            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(),
+                                              sessionJoin.getSessionJoinStatus().name(), sessionJoin.getCreatedAt());
         }
 
         return savedCount;
@@ -85,7 +86,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public List<SessionJoin> findAllSessionJoinBySessionId(Long sessionId) {
         //TODO: 추후에 proxy 객체 활용 일단은 일반 객체 직접 조회로
-        String sql = "select id, session_id, user_id, session_join_status created_at, updated_at from session_join where session_id = ?";
+        String sql = "select id, session_id, user_id, session_join_status, created_at, updated_at from session_join where session_id = ?";
         RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
                 new SessionJoin(rs.getLong(1),
                                 findById(rs.getLong(2)),
