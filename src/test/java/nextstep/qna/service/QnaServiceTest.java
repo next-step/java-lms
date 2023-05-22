@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.RecordApplicationEvents;
 
 import java.time.LocalDateTime;
@@ -26,9 +28,6 @@ import static org.mockito.Mockito.*;
 public class QnaServiceTest {
     @Mock
     private QuestionRepository questionRepository;
-
-    @Mock
-    private DeleteHistoryService deleteHistoryService;
 
     @Mock
     private QuestionDeletePublisher eventPublisher;
@@ -54,7 +53,6 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        verifyDeleteHistories();
     }
 
     @Test
@@ -74,7 +72,6 @@ public class QnaServiceTest {
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        verifyDeleteHistories();
     }
 
     @Test
@@ -84,12 +81,5 @@ public class QnaServiceTest {
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
         }).isInstanceOf(CannotDeleteException.class);
-    }
-
-    private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
-                DeleteHistory.of(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                DeleteHistory.of(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
