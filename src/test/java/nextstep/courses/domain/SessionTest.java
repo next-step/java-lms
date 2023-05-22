@@ -16,7 +16,7 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
 
         assertThat(session.getStartAt()).isEqualTo(startAt);
     }
@@ -28,7 +28,7 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
 
         assertThat(session.getEndAt()).isEqualTo(endAt);
     }
@@ -40,9 +40,34 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
 
         assertThat(session.getCoverImage()).isEqualTo(coverImage);
     }
+
+    @Test
+    @DisplayName("무료 강의")
+    void freeSession() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
+
+        assertThat(session.isFree()).isTrue();
+    }
+    @Test
+    @DisplayName("유료 강의")
+    void paidSession() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID);
+
+        assertThat(session.isPaid()).isTrue();
+    }
+
+
 
 }
