@@ -17,7 +17,7 @@ public class Course extends BaseEntity {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -26,6 +26,10 @@ public class Course extends BaseEntity {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -38,6 +42,14 @@ public class Course extends BaseEntity {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public void removeSession(Session session) {
+        sessions.remove(session);
     }
 
     @Override
