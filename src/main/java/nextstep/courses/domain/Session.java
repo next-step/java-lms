@@ -11,7 +11,7 @@ public class Session {
 
     private final  Charge charge;
 
-    private final  Enrollment enrollment;
+    private Enrollment enrollment;
 
     private final  SessionPeriod sessionPeriod;
 
@@ -45,7 +45,21 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Enrollment enroll(NsUser student, int paidPrice) {
-        return enrollment.enroll();
+    public Student enroll(NsUser nsUser) {
+        enrollment.enroll();
+        return new Student(nsUser.getId(), this.id);
+    }
+
+    public Student enroll(NsUser nsUser, Students students) throws AlreadyEnrollmentException {
+        Student student = new Student(nsUser.getId(), this.id);
+        if (students.enrolledUser(student)) {
+            throw new AlreadyEnrollmentException(student + "는 이미 수강신청한 학생입니다.");
+        }
+        this.enrollment = enrollment.enroll();
+        return student;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

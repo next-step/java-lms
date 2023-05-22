@@ -31,4 +31,12 @@ public class Student {
     public int hashCode() {
         return Objects.hash(nsUserId, sessionId);
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "nsUserId=" + nsUserId +
+                ", sessionId=" + sessionId +
+                '}';
+    }
 }
