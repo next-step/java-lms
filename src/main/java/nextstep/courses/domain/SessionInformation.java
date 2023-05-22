@@ -12,4 +12,8 @@ public class SessionInformation {
         this.price = price;
         this.date = date;
     }
+
+    public String name() {
+        return name.name();
+    }
 }

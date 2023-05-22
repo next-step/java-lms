@@ -18,6 +18,10 @@ public class Session {
         attendees.add(user);
     }
 
+    public String name() {
+        return information.name();
+    }
+
     private void validateStatus() {
         if(!status.canRecruit()) {
             throw new IllegalArgumentException("강의는 모집중일 때 신청 가능합니다: " + status);

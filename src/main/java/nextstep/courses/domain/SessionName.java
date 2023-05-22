@@ -18,6 +18,10 @@ public class SessionName {
         return sessionNameCache.get(name);
     }
 
+    public String name() {
+        return name;
+    }
+
     private static void validateName(String name) {
         if(name == null || name.isBlank()) {
             throw new IllegalArgumentException("세션 이름은 null이나 공백일 수 없습니다: " + name);

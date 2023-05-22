@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 
 class SessionTest {
+    public static final Session TDD_SESSION = new Session(SessionInformationTest.TDD_SESSION_INFORMATION, SessionStatus.RECRUIT, SessionAttendeesTest.TDD_SESSION_ATTENDEES);
+
     @ParameterizedTest(name = "[{index}/2] {displayName}")
     @EnumSource(value = SessionStatus.class, names = {"READY", "END"})
     @DisplayName("강의 상태가 모집중이 아닐 경우, IllegalArgumentException 예외 발생")
