@@ -14,6 +14,14 @@ public class DeleteHistory {
 
     private NsUser deletedBy;
 
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public NsUser getDeleteUser() {
+        return deletedBy;
+    }
+
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
