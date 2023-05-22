@@ -12,6 +12,7 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private Sessions sessions;
 
     public Course() {
     }
