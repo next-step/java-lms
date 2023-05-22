@@ -17,23 +17,23 @@ public class Session {
 
     public Session(String title, Long creatorId, String coverImage,
                    ChargeStatus chargeStatus, int price,
-                   int capacity, int sizeOfStudents, SessionStatus sessionStatus,
+                   int capacity, SessionStatus sessionStatus,
                    LocalDate startDate, LocalDate endDate) {
         this(0L,
                 new SessionInfo(title, creatorId, coverImage),
                 new Charge(chargeStatus, price),
-                new Enrollment(capacity, sizeOfStudents, sessionStatus),
+                new Enrollment(capacity, sessionStatus),
                 new SessionPeriod(startDate, endDate));
     }
 
     public Session(Long id, String title, Long creatorId, String coverImage,
                    ChargeStatus chargeStatus, int price,
-                   int capacity, int sizeOfStudents, SessionStatus sessionStatus,
+                   int capacity, SessionStatus sessionStatus,
                    LocalDate startDate, LocalDate endDate) {
         this(id,
                 new SessionInfo(title, creatorId, coverImage),
                 new Charge(chargeStatus, price),
-                new Enrollment(capacity, sizeOfStudents, sessionStatus),
+                new Enrollment(capacity, sessionStatus),
                 new SessionPeriod(startDate, endDate));
     }
 
@@ -45,17 +45,12 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Student enroll(NsUser nsUser) {
-        enrollment.enroll();
-        return new Student(nsUser.getId(), this.id);
-    }
-
     public Student enroll(NsUser nsUser, Students students) throws AlreadyEnrollmentException {
         Student student = new Student(nsUser.getId(), this.id);
         if (students.enrolledUser(student)) {
-            throw new AlreadyEnrollmentException(student + "는 이미 수강신청한 학생입니다.");
+            throw new AlreadyEnrollmentException(student + "는 이미 수강 신청한 학생입니다.");
         }
-        this.enrollment = enrollment.enroll();
+        this.enrollment = enrollment.enroll(students.sizeOfStudents());
         return student;
     }
 

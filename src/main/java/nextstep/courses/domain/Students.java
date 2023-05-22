@@ -9,8 +9,11 @@ public class Students {
         this.students = students;
     }
 
-
     public boolean enrolledUser(Student student) {
         return students.contains(student);
+    }
+
+    public int sizeOfStudents() {
+        return students.size();
     }
 }
