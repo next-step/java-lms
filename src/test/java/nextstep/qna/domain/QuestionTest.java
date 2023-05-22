@@ -1,8 +1,23 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
+import nextstep.qna.fixture.QuestionFixture;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+
+    @Test
+    @DisplayName("로그인 사용자와 질문 작성자가 다른 경우 삭제할 수 없다.")
+    void delete() {
+        Question question = QuestionFixture.create(NsUserTest.JAVAJIGI);
+        assertThatExceptionOfType(CannotDeleteException.class)
+                .isThrownBy(() -> question.validateWriter(NsUserTest.SANJIGI))
+                .withMessageMatching("질문을 삭제할 권한이 없습니다.");
+    }
 }
