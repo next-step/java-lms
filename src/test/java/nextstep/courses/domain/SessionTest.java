@@ -18,4 +18,15 @@ public class SessionTest {
         Session session = new Session(startAt, endAt);
         assertThat(session.getStartAt()).isEqualTo(startAt);
     }
+
+    @Test
+    @DisplayName("강의는 종료일을 가진다.")
+    void endAt() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        Session session = new Session(startAt, endAt);
+        assertThat(session.getEndAt()).isEqualTo(endAt);
+    }
+
+
 }

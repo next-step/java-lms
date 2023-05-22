@@ -14,4 +14,8 @@ public class Session {
     public LocalDateTime getStartAt() {
         return startAt;
     }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }
