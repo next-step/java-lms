@@ -13,6 +13,9 @@ public class Students {
     }
 
     public Students(int capacity, List<Student> students) {
+        if (capacity < students.size()) {
+            throw new IllegalArgumentException("최대 수용 인원인 " + capacity + "명을 초과할 수 없습니다.");
+        }
         this.capacity = capacity;
         this.students = students;
     }
