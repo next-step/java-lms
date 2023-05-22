@@ -9,22 +9,19 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Answer {
-    private Long id;
+    private final Long id;
 
-    private NsUser writer;
+    private final NsUser writer;
 
     private Question question;
 
-    private String contents;
+    private final String contents;
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
@@ -49,17 +46,12 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -79,12 +71,12 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete(DeleteHistories deleteHistories) {
+    public DeleteHistory delete() {
         if (!this.writer.matchUser(question.getWriter())) {
             throw new CannotDeleteException("질문자와 답변글의 작성자가 다를 경우 삭제가 불가합니다.");
         }
         this.setDeleted(true);
-        deleteHistories.add(this);
+        return DeleteHistory.createAnswer(this.id, this.writer);
     }
 
     @Override
