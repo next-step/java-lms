@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.domain.*;
 import nextstep.qna.event.QuestionDeleteEvent;
+import nextstep.qna.event.QuestionDeletePublisher;
 import nextstep.users.domain.NsUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,8 +24,8 @@ public class QnAService {
     @Resource(name = "deleteHistoryService")
     private DeleteHistoryService deleteHistoryService;
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    @Resource(name = "eventPublisher")
+    private QuestionDeletePublisher eventPublisher;
 
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {

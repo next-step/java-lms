@@ -14,6 +14,5 @@ public class QuestionDeletePublisher implements ApplicationEventPublisher {
 
     @Override
     public void publishEvent(Object event) {
-
     }
 }
