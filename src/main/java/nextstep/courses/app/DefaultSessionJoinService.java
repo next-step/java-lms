@@ -1,6 +1,7 @@
 package nextstep.courses.app;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionJoin;
 import nextstep.courses.domain.SessionJoinRepository;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
@@ -8,6 +9,7 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultSessionJoinService implements SessionJoinService {
@@ -35,7 +37,15 @@ public class DefaultSessionJoinService implements SessionJoinService {
 
     @Override
     public void approve(long sessionId, List<String> userIds) {
+        // TODO: 세션 있는지 여부 체크는 추후에..
+        List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
+        List<Long> findUserIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
+        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionIdAndUserIds(sessionId, findUserIds);
 
+        for (SessionJoin sessionJoin : sessionJoins) {
+            sessionJoin.approve();
+            sessionJoinRepository.updateSessionJoinStatus(sessionJoin);
+        }
     }
 
     @Override

@@ -11,7 +11,7 @@ public class SessionJoin {
     private final NsUser nsUser;
     private SessionJoinStatus sessionJoinStatus;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     public static SessionJoin apply(Session session, NsUser nsUser) {
         LocalDateTime now = LocalDateTime.now();
@@ -45,6 +45,7 @@ public class SessionJoin {
 
     public void approve() {
         this.sessionJoinStatus = SessionJoinStatus.APPROVAL;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void reject() {

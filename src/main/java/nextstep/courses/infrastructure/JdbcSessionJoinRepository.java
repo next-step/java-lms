@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository("sessionJoinRepository")
 public class JdbcSessionJoinRepository implements SessionJoinRepository {
@@ -52,6 +53,30 @@ public class JdbcSessionJoinRepository implements SessionJoinRepository {
                                 toLocalDateTime(rs.getTimestamp(6))
                 );
         return jdbcTemplate.query(sql, rowMapper, sessionId);
+    }
+
+    @Override
+    public List<SessionJoin> findAllBySessionIdAndUserIds(Long sessionId, List<Long> userIds) {
+        String sql = "select id, session_id, user_id, session_join_status, created_at, updated_at from session_join where session_id = ? and user_id in (%s)";
+        String inParams = userIds.stream().map(id -> id+"").collect(Collectors.joining(","));
+        String formatSql = String.format(sql, inParams);
+
+        RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
+                new SessionJoin(rs.getLong(1),
+                                sessionRepository.findById(rs.getLong(2)),
+                                NsUserBuilder.aNsUser().withId(rs.getLong(3)).build(),
+                                SessionJoinStatus.find(rs.getString(4)),
+                                toLocalDateTime(rs.getTimestamp(5)),
+                                toLocalDateTime(rs.getTimestamp(6))
+                );
+        return jdbcTemplate.query(formatSql, rowMapper, sessionId);
+    }
+
+    @Override
+    public void updateSessionJoinStatus(SessionJoin sessionJoin) {
+        String sql = "update session_join set session_join_status = ?, updated_at = ? where id = ?";
+
+        jdbcTemplate.update(sql, sessionJoin.getSessionJoinStatus().name(), sessionJoin.getUpdatedAt(), sessionJoin.getId());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
