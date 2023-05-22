@@ -1,11 +1,25 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDateTime;
+import nextstep.courses.NotIncludePeriodException;
+
+import java.time.LocalDate;
+
+import static nextstep.courses.NotIncludePeriodException.MESSAGE;
 
 public class SessionPeriod {
 
-    private LocalDateTime startedAt;
+    private LocalDate startedAt;
 
-    private LocalDateTime endedAt;
+    private LocalDate endedAt;
 
+    public SessionPeriod(LocalDate startedAt, LocalDate endedAt) {
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
+    }
+
+    public void includeCurrentDate(LocalDate nowDate) {
+        if (nowDate.isBefore(startedAt) || nowDate.isAfter(endedAt)) {
+            throw new NotIncludePeriodException(MESSAGE);
+        }
+    }
 }
