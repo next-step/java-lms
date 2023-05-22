@@ -9,9 +9,9 @@ public class SessionService {
     private StudentRepository studentRepository;
 
     public void enroll(NsUser loginUser, Long sessionId) throws AlreadyEnrollmentException {
-        Students students = new Students(studentRepository.findBySessionId(sessionId));
-        Session session = sessionRepository.findById(sessionId);
-        Student student = session.enroll(loginUser, students);
-        studentRepository.save(student);
+//        Students students = new Students(studentRepository.findBySessionId(sessionId));
+//        Session session = sessionRepository.findById(sessionId);
+//        Student student = session.enroll(loginUser, students);
+//        studentRepository.save(student);
     }
 }

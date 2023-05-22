@@ -51,15 +51,6 @@ public class Session {
         return student;
     }
 
-    public Student enroll(NsUser nsUser, Students students) throws AlreadyEnrollmentException {
-        Student student = new Student(nsUser.getId(), this.id);
-        if (students.enrolledUser(student)) {
-            throw new AlreadyEnrollmentException(student + "는 이미 수강 신청한 학생입니다.");
-        }
-        enrollment.enroll(students.sizeOfStudents());
-        return student;
-    }
-
     public Long getId() {
         return id;
     }

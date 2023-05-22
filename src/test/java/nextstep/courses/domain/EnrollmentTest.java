@@ -2,16 +2,9 @@ package nextstep.courses.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class EnrollmentTest {
-    @Test
-    void 수강신청_생성() {
-        Enrollment dut = new Enrollment(10, SessionStatus.ENROLLING);
-        assertThat(dut).isEqualTo(new Enrollment(10, SessionStatus.ENROLLING));
-    }
-
     @Test
     void 수강신청_성공() throws AlreadyEnrollmentException {
         Enrollment before = new Enrollment(10, SessionStatus.ENROLLING);

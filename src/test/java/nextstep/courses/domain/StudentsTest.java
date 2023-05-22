@@ -1,30 +1,30 @@
 package nextstep.courses.domain;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class StudentsTest {
     @Test
-    void 수강신청_유무() throws Exception {
-        Students dut = new Students();
+    void 수강신청_성공() throws Exception {
+        Students dut = new Students(2);
         dut.enroll(new Student(1L, 1L));
         assertThat(dut.sizeOfStudents()).isEqualTo(1);
-        assertThatThrownBy(() -> dut.enroll(new Student(1L, 1L)))
-                .isInstanceOf(AlreadyEnrollmentException.class);
     }
 
     @Test
-    void 수강신청마감_유무() throws Exception {
-        Students dut = new Students();
+    void 수강신청_인원_초과() throws Exception {
+        Students dut = new Students(1);
         dut.enroll(new Student(1L, 1L));
-        assertThat(dut.isFullCapacity(2)).isFalse();
-        dut.enroll(new Student(2L, 1L));
-        assertThat(dut.isFullCapacity(2)).isTrue();
+        assertThatIllegalArgumentException().isThrownBy(
+                () -> dut.enroll(new Student(2L, 1L)));
+    }
+
+    @Test
+    void 수강신청_이미_수강신청한_학생() throws Exception {
+        Students dut = new Students(2);
+        dut.enroll(new Student(1L, 1L));
+                assertThatThrownBy(() -> dut.enroll(new Student(1L, 1L)))
+                .isInstanceOf(AlreadyEnrollmentException.class);
     }
 }
