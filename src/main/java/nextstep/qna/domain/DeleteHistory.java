@@ -1,29 +1,33 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class DeleteHistory {
-    private Long id;
+    private final long id;
 
-    private ContentType contentType;
+    private final ContentType contentType;
 
-    private Long contentId;
+    private final long contentId;
 
-    private NsUser deletedBy;
+    private final NsUser deletedBy;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate;
 
-    public DeleteHistory() {
-    }
-
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        this.id = id;
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory from(ContentType contentType, long contentId, NsUser deletedBy) {
+        long id = SimpleIdGenerator.getAndIncrement(DeleteHistory.class);
+        return new DeleteHistory(id, contentType, contentId, deletedBy, LocalDateTime.now());
     }
 
     @Override
