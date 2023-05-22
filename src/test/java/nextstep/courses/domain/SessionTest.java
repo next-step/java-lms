@@ -16,7 +16,7 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
 
         assertThat(session.getStartAt()).isEqualTo(startAt);
     }
@@ -28,7 +28,7 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
 
         assertThat(session.getEndAt()).isEqualTo(endAt);
     }
@@ -40,7 +40,7 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
 
         assertThat(session.getCoverImage()).isEqualTo(coverImage);
     }
@@ -52,10 +52,11 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
 
         assertThat(session.isFree()).isTrue();
     }
+
     @Test
     @DisplayName("유료 강의")
     void paidSession() {
@@ -63,11 +64,42 @@ public class SessionTest {
         LocalDateTime endAt = LocalDateTime.MAX;
         String coverImage = "커버이미정보";
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID);
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.PREPARING);
 
         assertThat(session.isPaid()).isTrue();
     }
 
+    @Test
+    @DisplayName("강의 상태 준비중")
+    void preparingSession() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
 
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.PREPARING);
 
+        assertThat(session.isPreparing()).isTrue();
+    }
+    @Test
+    @DisplayName("강의 상태 모집중")
+    void recruitingSession() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.RECRUITING);
+
+        assertThat(session.isRecruiting()).isTrue();
+    }
+    @Test
+    @DisplayName("강의 상태 종료")
+    void closedSession() {
+        LocalDateTime startAt = LocalDateTime.MIN;
+        LocalDateTime endAt = LocalDateTime.MAX;
+        String coverImage = "커버이미정보";
+
+        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.CLOSED);
+
+        assertThat(session.isClosed()).isTrue();
+    }
 }
