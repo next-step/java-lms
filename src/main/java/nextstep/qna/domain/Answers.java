@@ -24,7 +24,7 @@ public class Answers {
         validateDelete(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            DeleteHistory deleteAnswerHistory = answer.delete(deleteHistories);
+            DeleteHistory deleteAnswerHistory = answer.delete();
             deleteHistories.add(deleteAnswerHistory);
         }
         return deleteHistories;

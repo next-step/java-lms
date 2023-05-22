@@ -76,11 +76,11 @@ public class Answer {
 
     public void validateDelete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
     }
 
-    public DeleteHistory delete(List<DeleteHistory> deleteHistories) {
+    public DeleteHistory delete() {
         this.deleted = true;
         return DeleteHistory.ofAnswer(id, writer);
     }
