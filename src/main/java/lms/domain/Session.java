@@ -17,14 +17,20 @@ public class Session {
 
     public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
                    SessionType sessionType, int studentCapacity) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("종료 날짜가 시작 날짜보다 앞일 수 없습니다.");
-        }
+
+        validateDate(startDate, endDate);
+
         this.startDate = startDate;
         this.endDate = endDate;
         this.imageCover = imageCover;
         this.sessionType = sessionType;
         this.studentCapacity = studentCapacity;
+    }
+
+    private void validateDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("종료 날짜가 시작 날짜보다 앞일 수 없습니다.");
+        }
     }
 
     public Session(LocalDate startDate, LocalDate endDate) {
