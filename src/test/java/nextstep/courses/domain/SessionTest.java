@@ -50,9 +50,10 @@ class SessionTest {
 
     @Test
     @DisplayName("모집중일때만 강의 수강신청이 가능하다.")
-    void test06() {
+    void test11() {
         Session session = aSession().withId(1L)
                                     .withSessionStatus(SessionStatus.OPEN)
+                                    .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
                                     .withMaxUserCount(10)
                                     .build();
 
@@ -63,16 +64,44 @@ class SessionTest {
     }
 
     @Test
-    @DisplayName("모집중이 아니면 수강신청이 불가능하다.")
-    void test07() {
-        Session session = aSession().withSessionStatus(SessionStatus.READY).build();
+    @DisplayName("강의가 진행중인 상태라도 모집상태가 모집중이면 수강신청이 가능하다.")
+    void test12() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(SessionStatus.READY)
+                                    .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
+                                    .build();
+
+        session.register(NsUserTest.JAVAJIGI);
+
+        assertThat(session.getSessionJoins()).hasSize(1).extracting("session.id", "nsUser.id")
+                                             .containsExactly(tuple(1L, 1L));
+    }
+
+    @Test
+    @DisplayName("강의가 모집중이 아니면 수강신청 할 수 없다.")
+    void test13() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(SessionStatus.OPEN)
+                                    .withSessionRecruitStatus(SessionRecruitStatus.NOT_RECRUIT)
+                                    .build();
+
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("강의가 종료되면 수강신청 할 수 없다.")
+    void test14() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(SessionStatus.CLOSED)
+                                    .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
+                                    .build();
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("강의 최대 수강인원이 초과하면 등록할 수 없다.")
-    void test08() {
+    void test21() {
         Session session = aSession().withSessionStatus(SessionStatus.OPEN)
                                     .withMaxUserCount(1)
                                     .build();

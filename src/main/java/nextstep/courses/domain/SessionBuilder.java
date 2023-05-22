@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 public final class SessionBuilder {
     private Long id;
     private SessionBillType sessionBillType;
-    private SessionStatus sessionStatus;
     private SessionCoverImage sessionCoverImage;
+    private SessionStatus sessionStatus;
+    private SessionRecruitStatus sessionRecruitStatus;
     private int maxUserCount;
     private SessionPeriod sessionPeriod;
     private LocalDateTime createdAt;
@@ -29,13 +30,18 @@ public final class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withSessionCoverImage(SessionCoverImage sessionCoverImage) {
+        this.sessionCoverImage = sessionCoverImage;
+        return this;
+    }
+
     public SessionBuilder withSessionStatus(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
         return this;
     }
 
-    public SessionBuilder withSessionCoverImage(SessionCoverImage sessionCoverImage) {
-        this.sessionCoverImage = sessionCoverImage;
+    public SessionBuilder withSessionRecruitStatus(SessionRecruitStatus sessionRecruitStatus) {
+        this.sessionRecruitStatus = sessionRecruitStatus;
         return this;
     }
 
@@ -60,6 +66,7 @@ public final class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, sessionBillType, sessionStatus, sessionCoverImage, maxUserCount, sessionPeriod, createdAt, updatedAt);
+        return new Session(id, sessionBillType, sessionCoverImage, sessionStatus, sessionRecruitStatus, maxUserCount,
+                           sessionPeriod, createdAt, updatedAt);
     }
 }

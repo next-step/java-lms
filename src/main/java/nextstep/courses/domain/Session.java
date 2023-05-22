@@ -13,9 +13,11 @@ public class Session {
 
     private final SessionBillType sessionBillType;
 
+    private final SessionCoverImage sessionCoverImage;
+
     private final SessionStatus sessionStatus;
 
-    private final SessionCoverImage sessionCoverImage;
+    private final SessionRecruitStatus sessionRecruitStatus;
 
     private final int maxUserCount;
 
@@ -25,7 +27,7 @@ public class Session {
 
     private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -36,8 +38,9 @@ public class Session {
 
         this.id = id;
         this.sessionBillType = sessionBillType;
-        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
         this.sessionCoverImage = sessionCoverImage;
+        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
+        this.sessionRecruitStatus = sessionRecruitStatus;
         this.maxUserCount = maxUserCount;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
@@ -45,8 +48,12 @@ public class Session {
     }
 
     public void register(NsUser user) {
-        if (!this.sessionStatus.isOpen()) {
-            throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
+        if (this.sessionRecruitStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
+        }
+
+        if (this.sessionStatus.isClose()) {
+            throw new IllegalArgumentException("강의가 종료되었습니다.");
         }
 
         if (maxUserCount <= sessionJoins.size()) {
@@ -68,12 +75,16 @@ public class Session {
         return sessionBillType;
     }
 
+    public SessionCoverImage getCoverImageUrl() {
+        return sessionCoverImage;
+    }
+
     public SessionStatus getSessionStatus() {
         return sessionStatus;
     }
 
-    public SessionCoverImage getCoverImageUrl() {
-        return sessionCoverImage;
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRecruitStatus;
     }
 
     public int getMaxUserCount() {
