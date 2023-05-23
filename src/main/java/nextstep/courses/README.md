@@ -7,7 +7,7 @@
     - 강의명, 기수, 시작일, 종료일, 타입(무료, 유료), 상태(준비중, 모집중, 종료), 최대 등록 인원, 현재 등록 인원
 - [x] 강의 상태가 모집중인지 확인한다.
     - Session#isRecruiting
-- [ ] 강의를 확인한다.
+- [ ] 제목으로 강의를 확인한다.
     - SessionRepository#findByTitle
 - [ ] 강의 상태가 모집중이면 수강신청한다.
     - SessionRepository#save
