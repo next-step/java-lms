@@ -22,6 +22,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
+
+    private static final Question Q1 = Question.toQuestion(NsUserTest.JAVAJIGI, "title1", "contents1");
+    private static final Question Q2 = Question.toQuestion(NsUserTest.SANJIGI, "title2", "contents2");
+
     @Mock
     private QuestionRepository questionRepository;
 
@@ -36,8 +40,8 @@ public class QnaServiceTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        question = Question.toQuestion(NsUserTest.JAVAJIGI, "title1", "contents1");
+        answer = Answer.toAnswer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
         question.addAnswer(answer);
     }
 
@@ -83,8 +87,8 @@ public class QnaServiceTest {
 
     private void verifyDeleteHistories() {
         List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+                new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
