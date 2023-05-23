@@ -8,7 +8,7 @@ import java.util.Objects;
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
-    private Long id;
+    private NsUserId id;
 
     private String userId;
 
@@ -30,7 +30,7 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+        this.id = new NsUserId(id);
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -39,7 +39,7 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
+    public NsUserId getId() {
         return id;
     }
 

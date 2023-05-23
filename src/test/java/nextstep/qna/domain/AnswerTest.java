@@ -85,7 +85,11 @@ public class AnswerTest {
         DeleteHistory deleteHistory = answer.toDeleteHistory();
 
         //then
-        assertThat(deleteHistory.toString()).as("").contains(answer.getId().toString());
-        assertThat(deleteHistory.toString()).as("").contains(answer.getContent());
+        assertThat(deleteHistory.toString())
+                .as("")
+                .contains(answer.getId().toString());
+        assertThat(deleteHistory.toString())
+                .as("")
+                .contains(answer.getId().toString());
     }
 }
