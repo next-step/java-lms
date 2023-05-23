@@ -50,7 +50,7 @@ public class Answer {
 
     public DeleteHistory delete(NsUser loginUser) {
         if(!isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("자기 자신의 답변만 삭제할 수 있습니다.");
         }
 
         this.deleted = true;
