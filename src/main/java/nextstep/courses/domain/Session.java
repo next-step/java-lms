@@ -15,7 +15,8 @@ public class Session {
     private int maxRegisterNum;
     private int currRegisterNum;
 
-    public Session(int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
+    public Session(String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
+        this.title = title;
         this.generation = generation;
         this.startDate = startDate;
         this.endDate = endDate;

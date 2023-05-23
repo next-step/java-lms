@@ -9,19 +9,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionTest {
 
+    public static final Session S1 = new Session("TDD with JAVA 16", 16, LocalDate.now(), LocalDate.now(),
+            SessionType.FREE, SessionStatus.PREPARING, 50, 12);
+    public static final Session S2 = new Session("TDD with Kotlin 5", 5, LocalDate.now(), LocalDate.now(),
+            SessionType.PAID, SessionStatus.RECRUITING, 50, 2);
+
     @Test
     void create() {
-        Session session = new Session(16, LocalDate.now(), LocalDate.now(),
-                SessionType.FREE, SessionStatus.PREPARING, 50, 12);
-
-        assertThat(session).isNotNull();
+        assertThat(S1).isNotNull();
     }
 
     @Test
     void 강의_상태가_모집중인지_확인() {
-        Session session = new Session(16, LocalDate.now(), LocalDate.now(),
-                SessionType.FREE, SessionStatus.RECRUITING, 50, 12);
-
-        assertTrue(session.isRecruiting());
+        assertTrue(S2.isRecruiting());
     }
 }
