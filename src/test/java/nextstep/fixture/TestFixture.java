@@ -1,5 +1,8 @@
 package nextstep.fixture;
 
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.Enrolment;
+import nextstep.courses.domain.Session;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
@@ -18,6 +21,20 @@ public class TestFixture {
     public static NsUser SANJIGI;
     public static NsUser BADAJIGI;
 
+    public static Course RUST_COURSE;
+    public static Course K8S_COURSE;
+    public static Course KOTLIN_COURSE;
+
+    public static Session MINT_SESSION;
+    public static Session LEMON_SESSION;
+    public static Session LIME_SESSION;
+
+    public static Enrolment MALBEC_ENROL;
+    public static Enrolment SYRAH_ENROL;
+    public static Enrolment CARSO_ENROL;
+    public static Enrolment PINOT_ENROL;
+
+
     static {
         fixtureInit();
     }
@@ -34,5 +51,18 @@ public class TestFixture {
         JAVAJIGI_ANSWER = new Answer(11L, JAVAJIGI, JAVAJIGI_QUESTION, "Answers Contents1");
         SANJIGI_ANSWER = new Answer(22L, SANJIGI, SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
         BADAJIGI_ANSWER = new Answer(33L, BADAJIGI, BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
+
+        Course RUST_COURSE = new Course();
+        Course K8S_COURSE = new Course();
+        Course KOTLIN_COURSE = new Course();
+
+        Session MINT_SESSION = new Session();
+        Session LEMON_SESSION = new Session();
+        Session LIME_SESSION = new Session();
+
+        Enrolment MALBEC_ENROL = new Enrolment();
+        Enrolment SYRAH_ENROL = new Enrolment();
+        Enrolment CARSO_ENROL = new Enrolment();
+        Enrolment PINOT_ENROL = new Enrolment();
     }
 }
