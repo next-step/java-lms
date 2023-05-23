@@ -42,10 +42,6 @@ public class Answers {
         return deleteHistories;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public void add(Answer answer) {
         answers.add(answer);
     }
