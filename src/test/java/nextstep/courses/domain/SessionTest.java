@@ -12,7 +12,7 @@ public class SessionTest {
     @Test
     void create() {
         Session session = new Session(16, LocalDate.now(), LocalDate.now(),
-                SessionType.FREE, SessionStatus.PREPARING, 50);
+                SessionType.FREE, SessionStatus.PREPARING, 50, 12);
 
         assertThat(session).isNotNull();
     }
@@ -20,7 +20,7 @@ public class SessionTest {
     @Test
     void 강의_상태가_모집중인지_확인() {
         Session session = new Session(16, LocalDate.now(), LocalDate.now(),
-                SessionType.FREE, SessionStatus.RECRUITING, 50);
+                SessionType.FREE, SessionStatus.RECRUITING, 50, 12);
 
         assertTrue(session.isRecruiting());
     }

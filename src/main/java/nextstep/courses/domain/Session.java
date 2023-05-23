@@ -11,15 +11,17 @@ public class Session {
     private LocalDate endDate;
     private SessionType type;
     private SessionStatus status;
-    private int maxNumOfStudent;
+    private int maxRegisterNum;
+    private int currRegisterNum;
 
-    public Session(int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxNumOfStudent) {
+    public Session(int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
         this.generation = generation;
         this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
         this.status = status;
-        this.maxNumOfStudent = maxNumOfStudent;
+        this.maxRegisterNum = maxRegisterNum;
+        this.currRegisterNum = currRegisterNum;
     }
 
     boolean isRecruiting() {
