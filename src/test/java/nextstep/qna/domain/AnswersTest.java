@@ -21,24 +21,21 @@ public class AnswersTest {
         answers = new Answers();
 
         answers.add(AnswerTest.A1);
-        answers.add(AnswerTest.A2);
     }
 
     @Test
-    void 답변_모두_삭제() {
+    void 답변_모두_삭제() throws CannotDeleteException {
 
-        List<DeleteHistory> deleteHistories = answers.deleteAll();
+        List<DeleteHistory> deleteHistories = answers.deleteAll(NsUserTest.JAVAJIGI);
 
         Assertions.assertThat(deleteHistories)
                 .contains(new DeleteHistory(ContentType.ANSWER, AnswerTest.A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
-        Assertions.assertThat(deleteHistories)
-                .contains(new DeleteHistory(ContentType.ANSWER, AnswerTest.A2.getId(), NsUserTest.SANJIGI, LocalDateTime.now()));
     }
 
     @Test
     void 로그인_유저와_답변_작성자가_다를_경우_예외() {
 
-        assertThatThrownBy(() -> answers.checkOwner(NsUser.GUEST_USER))
+        assertThatThrownBy(() -> answers.deleteAll(NsUser.GUEST_USER))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }

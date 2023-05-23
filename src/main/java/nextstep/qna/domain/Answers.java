@@ -15,18 +15,19 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll() {
+    public List<DeleteHistory> deleteAll(NsUser user) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        answers.forEach(answer -> {
+        for (Answer answer : answers) {
+            checkOwner(user);
             answer.delete();
             deleteHistories.add((new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now())));
-        });
+        }
 
         return deleteHistories;
     }
 
-    public void checkOwner(NsUser user) throws CannotDeleteException {
+    private void checkOwner(NsUser user) throws CannotDeleteException {
         for (Answer answer : answers) {
             validateAnswerWithUser(user, answer);
         }

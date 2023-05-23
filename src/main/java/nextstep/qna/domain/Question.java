@@ -75,12 +75,11 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         this.checkAuthority(loginUser);
-        answers.checkOwner(loginUser);
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll());
+        deleteHistories.addAll(answers.deleteAll(loginUser));
         return deleteHistories;
     }
 
