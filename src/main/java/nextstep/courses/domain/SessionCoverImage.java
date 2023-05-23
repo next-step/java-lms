@@ -26,4 +26,8 @@ public class SessionCoverImage {
     public int hashCode() {
         return Objects.hash(path);
     }
+
+    public String getPath() {
+        return path;
+    }
 }
