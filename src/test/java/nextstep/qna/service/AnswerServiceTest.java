@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
@@ -49,10 +50,24 @@ class AnswerServiceTest {
     question.addAnswer(answer);
     question.addAnswer(otherUsersAnswer);
 
-    when(answerRepository.findByQuestion(question.getId())).thenReturn(question.getAnswers());
-
     // when & then
-    Assertions.assertThatThrownBy(() -> sut.deleteAnswersOfQuestion(user, question))
+    Assertions.assertThatThrownBy(() -> sut.deleteAnswers(user, question))
         .isInstanceOf(CannotDeleteException.class);
+  }
+
+  @Test
+  @DisplayName("AnswerServiceTest | 질문자와 답변자가 모두 같으면 답글을 삭제할 수 있다.")
+  void delete_내가_쓴_답글() throws CannotDeleteException {
+    // given
+    Answer answer2 = new Answer(12L, user, QuestionTest.Q1, "Answers Contents1");
+    question.addAnswer(answer);
+    question.addAnswer(answer2);
+
+    // when
+    List<Answer> answers = sut.deleteAnswers(user, question);
+
+    // then
+    Assertions.assertThat(answers)
+        .hasSize(2);
   }
 }

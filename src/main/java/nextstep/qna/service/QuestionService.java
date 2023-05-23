@@ -35,7 +35,7 @@ public class QuestionService {
     }
 
     question.setDeleted(true);
-    List<Answer> answers = answerService.deleteAnswersOfQuestion(loginUser, question);
+    List<Answer> answers = answerService.deleteAnswers(loginUser, question);
 
     return new QuestionDeleteHistory(question, answers);
   }

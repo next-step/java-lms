@@ -17,8 +17,8 @@ public class AnswerService {
     this.answerRepository = answerRepository;
   }
 
-  public List<Answer> deleteAnswersOfQuestion(NsUser loginUser, Question question) throws CannotDeleteException {
-    List<Answer> answers = answerRepository.findByQuestion(question.getId());
+  public List<Answer> deleteAnswers(NsUser loginUser, Question question) throws CannotDeleteException {
+    List<Answer> answers = question.getAnswers();
     for (Answer answer : answers) {
       throwIfAnswerNotBelongsToLoginUser(loginUser, answer);
       answer.setDeleted(true);
