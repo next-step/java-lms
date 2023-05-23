@@ -28,7 +28,7 @@ public class QuestionTest {
 
     @DisplayName("답변이 없는 경우 질문을 삭제할 수 있다")
     @Test
-    void deleteQuestion() throws CannotDeleteException {
+    void deleteQuestion() {
         question.deleteQuestion(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
     }
@@ -45,7 +45,7 @@ public class QuestionTest {
 
     @DisplayName("질문자와 답변글의 모든 답변자가 같은 경우 삭제 할수 있다")
     @Test
-    void deleteQuestionWriterEqualsAllAnswer() throws CannotDeleteException {
+    void deleteQuestionWriterEqualsAllAnswer() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
         question.addAnswer(answer1);
@@ -58,7 +58,7 @@ public class QuestionTest {
 
     @DisplayName("질문자와 다른 답변글의 답변자가 있는 경우 삭제 할 수 없다")
     @Test
-    void deleteQuestionWriterNotEqualsAllAnswer() throws CannotDeleteException {
+    void deleteQuestionWriterNotEqualsAllAnswer() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         answer3 = new Answer(NsUserTest.SANJIGI, question, "answer3");
         question.addAnswer(answer1);
@@ -73,7 +73,7 @@ public class QuestionTest {
 
     @DisplayName("질문을 삭제하면 답변도 같이 삭제된다")
     @Test
-    void deleteQuestionWithAnswer() throws CannotDeleteException {
+    void deleteQuestionWithAnswer() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         question.addAnswer(answer1);
 
@@ -85,7 +85,7 @@ public class QuestionTest {
 
     @DisplayName("질문을 삭제하면 답변과 질문 삭제 이력이 모두 저장된다")
     @Test
-    void deleteQuestionHistory() throws CannotDeleteException {
+    void deleteQuestionHistory() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
         answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
         question.addAnswer(answer1);

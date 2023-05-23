@@ -92,7 +92,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> deleteQuestion(NsUser nsUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteQuestion(NsUser nsUser) {
         validateQuestionDeletionPermission(nsUser);
         validateExistOtherAnswer(nsUser);
         this.deleted = true;
@@ -102,13 +102,13 @@ public class Question {
         return deleteHistories;
     }
 
-    private void validateQuestionDeletionPermission(NsUser nsUser) throws CannotDeleteException {
+    private void validateQuestionDeletionPermission(NsUser nsUser) {
         if (!writer.equals(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    private void validateExistOtherAnswer(NsUser nsUser) throws CannotDeleteException {
+    private void validateExistOtherAnswer(NsUser nsUser) {
         if (!answers.isAllOwnerAnswer(nsUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
