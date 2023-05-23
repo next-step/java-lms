@@ -54,7 +54,7 @@ public class Answer {
     return deleted;
   }
 
-  public DeleteHistory delete(NsUser loginUser){
+  public DeleteHistory delete(NsUser loginUser) {
     validateAnswerOwner(loginUser);
     return makeDeleted();
   }

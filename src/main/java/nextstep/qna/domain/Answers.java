@@ -33,7 +33,7 @@ public class Answers {
     answers.forEach(answer -> answer.validateAnswerOwner(loginUser));
   }
 
-  private List<DeleteHistory> makeDeleted(NsUser loginUser){
+  private List<DeleteHistory> makeDeleted(NsUser loginUser) {
     return answers.stream()
         .map(answer -> answer.delete(loginUser))
         .collect(Collectors.toList());
