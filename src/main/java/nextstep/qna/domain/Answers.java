@@ -15,7 +15,7 @@ public class Answers {
         return Collections.unmodifiableList(answers);
     }
 
-    public void add(Answer answer) {
+    public void addAnswer(Answer answer) {
         answers.add(answer);
     }
 
@@ -24,9 +24,13 @@ public class Answers {
                 .allMatch(answer -> answer.isOwner(nsUser));
     }
 
-    public void deleteAnswer(NsUser nsUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAllAnswer(NsUser nsUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            answer.deleteAnswer(nsUser);
+            DeleteHistory deleteHistory = answer.deleteAnswer(nsUser);
+            deleteHistories.add(deleteHistory);
         }
+        return deleteHistories;
+
     }
 }

@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -66,7 +67,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -91,11 +92,14 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void deleteQuestion(NsUser nsUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteQuestion(NsUser nsUser) throws CannotDeleteException {
         validateQuestionDeletionPermission(nsUser);
         validateExistOtherAnswer(nsUser);
         this.deleted = true;
-        answers.deleteAnswer(nsUser);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deleteAllAnswer(nsUser));
+        return deleteHistories;
     }
 
     private void validateQuestionDeletionPermission(NsUser nsUser) throws CannotDeleteException {
