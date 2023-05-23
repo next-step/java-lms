@@ -24,10 +24,10 @@ public class AnswersTest {
         answersMine = new Answers(answerMyList);
 
         List<Answer> answerOtherList = new ArrayList<>();
-        answerOtherList.add(AnswerTest.A2);
-        answerOtherList.add(AnswerTest.A2);
+        answerOtherList.add(AnswerTest.A1);
+        answerOtherList.add(AnswerTest.A1);
 
-        answersOthers = new Answers(answerMyList);
+        answersOthers = new Answers(answerOtherList);
     }
 
 
