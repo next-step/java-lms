@@ -1,6 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.session.domain.Session;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
     private Long id;
@@ -12,6 +16,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private final List<Session> sessions = new ArrayList<>();
 
     public Course() {
     }
