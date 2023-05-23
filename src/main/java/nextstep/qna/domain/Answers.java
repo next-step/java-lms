@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import nextstep.users.domain.NsUser;
 
 public class Answers {
@@ -20,20 +20,22 @@ public class Answers {
     answers.add(answer);
   }
 
-  public List<DeleteHistory> delete() {
+  public List<DeleteHistory> delete(NsUser loginUser) {
+    validateAnswersOwner(loginUser);
+
     List<DeleteHistory> deleteHistories = new ArrayList<>();
-    answers.stream()
-        .map(Answer::makeDeleted)
-        .forEach(deleteHistories::add);
+    deleteHistories.addAll(makeDeleted(loginUser));
 
     return deleteHistories;
   }
 
-  public boolean checkAnswersOwner(NsUser loginUser) {
-    Optional<Answer> optionalAnswer = answers.stream()
-        .filter(answer -> !answer.checkAnswerOwner(loginUser))
-        .findAny();
+  public void validateAnswersOwner(NsUser loginUser) {
+    answers.forEach(answer -> answer.validateAnswerOwner(loginUser));
+  }
 
-    return !optionalAnswer.isPresent();
+  private List<DeleteHistory> makeDeleted(NsUser loginUser){
+    return answers.stream()
+        .map(answer -> answer.delete(loginUser))
+        .collect(Collectors.toList());
   }
 }

@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 public class Question {
@@ -42,12 +43,21 @@ public class Question {
     answers.add(answer);
   }
 
-  public List<DeleteHistory> delete() {
+  public List<DeleteHistory> delete(NsUser loginUser) {
+    validateQuestionOwner(loginUser);
+    answers.validateAnswersOwner(loginUser);
+
     List<DeleteHistory> deleteHistories = new ArrayList<>();
     deleteHistories.add(makeDeleted());
-    deleteHistories.addAll(answers.delete());
+    deleteHistories.addAll(answers.delete(loginUser));
 
     return deleteHistories;
+  }
+
+  private void validateQuestionOwner(NsUser loginUser) {
+    if (!writer.equals(loginUser)) {
+      throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+    }
   }
 
   private DeleteHistory makeDeleted() {
@@ -57,14 +67,6 @@ public class Question {
 
   public DeleteHistory toDeleteHistory() {
     return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
-  }
-
-  public boolean checkQuestionOwner(NsUser loginUser) {
-    return writer.equals(loginUser);
-  }
-
-  public boolean checkAnswersOwner(NsUser loginUser) {
-    return answers.checkAnswersOwner(loginUser);
   }
 
   public boolean isDeleted() {

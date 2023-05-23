@@ -1,9 +1,11 @@
 package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,8 @@ public class QuestionTest {
   @DisplayName("질문을 삭제한다.")
   @Test
   public void delete() {
-    List<DeleteHistory> deleteHistoriesQ1 = Q1.delete();
-    List<DeleteHistory> deleteHistoriesQ2 = Q2.delete();
+    List<DeleteHistory> deleteHistoriesQ1 = Q1.delete(NsUserTest.JAVAJIGI);
+    List<DeleteHistory> deleteHistoriesQ2 = Q2.delete(NsUserTest.SANJIGI);
     assertAll(
         () -> assertThat(deleteHistoriesQ1.get(0)).isEqualTo(Q1.toDeleteHistory()),
         () -> assertThat(Q1.isDeleted()).isTrue(),
@@ -26,14 +28,14 @@ public class QuestionTest {
     );
   }
 
-  @DisplayName("질문의 주인인지 확인한다.")
+  @DisplayName("질문의 주인이 아니면 Exception을 던진다.")
   @Test
-  public void checkQuestionOwner() {
+  public void delete_throwException_ifNotOwner() {
     assertAll(
-        () -> assertThat(Q1.checkQuestionOwner(NsUserTest.JAVAJIGI)).isTrue(),
-        () -> assertThat(Q1.checkQuestionOwner(NsUserTest.SANJIGI)).isFalse(),
-        () -> assertThat(Q2.checkQuestionOwner(NsUserTest.JAVAJIGI)).isFalse(),
-        () -> assertThat(Q2.checkQuestionOwner(NsUserTest.SANJIGI)).isTrue()
+        () -> assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+            .isInstanceOf(CannotDeleteException.class),
+        () -> assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI))
+            .isInstanceOf(CannotDeleteException.class)
     );
   }
 }
