@@ -24,4 +24,5 @@
 - QnaService의 deleteQuestion() 메소드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다. 도메인 모데로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
 
 ## 리팩토링 변경사항
-- refactor question 삭제 권한 확인 로직 -> Question 이관
+- refactor loginUser의 question 삭제 권한 확인 로직 -> Question 이관
+- refactor question 

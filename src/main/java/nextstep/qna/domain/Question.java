@@ -91,9 +91,21 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void hasAuthorityToDelete(NsUser loginUser) throws CannotDeleteException {
+    public void ensureOwnedByUser(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public void ensureAllAnswersOwnedByUser(NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            isAnswerNotByUser(loginUser, answer);
+        }
+    }
+
+    private void isAnswerNotByUser(NsUser loginUser, Answer answer) throws CannotDeleteException {
+        if (!answer.isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 }

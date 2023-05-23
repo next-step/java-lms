@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
@@ -13,12 +14,23 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    public void shouldThrowException_ifOwnerIsNotLoginUser() {
+    public void shouldThrowCannotDeleteException_ifOwnerIsNotLoginUser() {
         //given
-        NsUser wrongUser = NsUserTest.SANJIGI;
+        NsUser loginUser = NsUserTest.SANJIGI;
         //when & then
         assertThatThrownBy(() -> {
-            Q1.hasAuthorityToDelete(wrongUser);
+            Q1.ensureOwnedByUser(loginUser);
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    public void shouldThrowCannotDeleteException_ifAnswerIsNotByLoginUser() {
+        //given
+        NsUser loginUser = NsUserTest.JAVAJIGI;
+        Q1.addAnswer(A2);
+        //when & then
+        assertThatThrownBy(() -> {
+            Q1.ensureAllAnswersOwnedByUser(loginUser);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }
