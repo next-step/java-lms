@@ -33,4 +33,9 @@ public class Answers {
         return deleteHistories;
 
     }
+
+    public int countAnswer() {
+        return answers.size();
+    }
+
 }

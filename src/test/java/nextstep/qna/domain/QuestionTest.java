@@ -83,7 +83,7 @@ public class QuestionTest {
         assertThat(answer1.isDeleted()).isTrue();
     }
 
-    @DisplayName("질문을 삭제하면 삭제 이력이 저장된다")
+    @DisplayName("질문을 삭제하면 답변과 질문 삭제 이력이 모두 저장된다")
     @Test
     void deleteQuestionHistory() throws CannotDeleteException {
         answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
