@@ -17,6 +17,7 @@ public class Session {
     private String image;
     private final SessionStatus status;
     private final Long maxNumberOfStudent;
+    private Boolean isFree;
     private final List<NsUser> students = new ArrayList<>();
 
     public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
