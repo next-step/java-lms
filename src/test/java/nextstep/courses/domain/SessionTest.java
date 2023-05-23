@@ -18,7 +18,7 @@ class SessionTest {
         ImageTest.TEST_IMAGE,
         SessionType.FREE,
         SessionStatus.PREPARING,
-        EnrolledUsersTest.ofNoUsersYet(),
+        StudentsTest.ofNoUsersYet(),
         SessionPeriodTest.TEST_SESSION_PERIOD,
         TEST_GENERATION);
   }
@@ -30,7 +30,7 @@ class SessionTest {
         ImageTest.TEST_IMAGE,
         SessionType.FREE,
         SessionStatus.RECRUITING,
-        EnrolledUsersTest.ofLeftFewSeats(),
+        StudentsTest.ofLeftFewSeats(),
         SessionPeriodTest.TEST_SESSION_PERIOD,
         TEST_GENERATION);
   }
@@ -42,7 +42,7 @@ class SessionTest {
         ImageTest.TEST_IMAGE,
         SessionType.FREE,
         SessionStatus.RECRUITING,
-        EnrolledUsersTest.ofLeftOneSeatUsers(),
+        StudentsTest.ofLeftOneSeatUsers(),
         SessionPeriodTest.TEST_SESSION_PERIOD,
         TEST_GENERATION);
   }
@@ -54,7 +54,7 @@ class SessionTest {
         ImageTest.TEST_IMAGE,
         SessionType.FREE,
         SessionStatus.RECRUITING,
-        EnrolledUsersTest.ofFullUsers(),
+        StudentsTest.ofFullUsers(),
         SessionPeriodTest.TEST_SESSION_PERIOD,
         TEST_GENERATION);
   }
@@ -66,7 +66,7 @@ class SessionTest {
         ImageTest.TEST_IMAGE,
         SessionType.FREE,
         SessionStatus.END,
-        EnrolledUsersTest.ofFullUsers(),
+        StudentsTest.ofFullUsers(),
         SessionPeriodTest.TEST_SESSION_PERIOD,
         TEST_GENERATION);
   }
@@ -82,7 +82,7 @@ class SessionTest {
             ImageTest.TEST_IMAGE,
             SessionType.FREE,
             SessionStatus.PREPARING,
-            EnrolledUsersTest.ofNoUsersYet(),
+            StudentsTest.ofNoUsersYet(),
             SessionPeriodTest.TEST_SESSION_PERIOD,
             TEST_GENERATION
         )
@@ -98,7 +98,7 @@ class SessionTest {
             ImageTest.TEST_IMAGE,
             SessionType.FREE,
             SessionStatus.PREPARING,
-            EnrolledUsersTest.ofLeftOneSeatUsers(),
+            StudentsTest.ofLeftOneSeatUsers(),
             SessionPeriodTest.TEST_SESSION_PERIOD,
             TEST_GENERATION
         )

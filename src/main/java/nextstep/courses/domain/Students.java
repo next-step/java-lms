@@ -7,12 +7,12 @@ import nextstep.users.domain.NsUser;
 /**
  * 최대 인원수를 넘어서 수강 신청할 수 없다.
  */
-public class EnrolledUsers {
+public class Students {
 
   private final List<NsUser> users = new ArrayList<>();
   private final MaxEnrollment maxEnrollment;
 
-  public EnrolledUsers(MaxEnrollment maxEnrollment) {
+  public Students(MaxEnrollment maxEnrollment) {
     this.maxEnrollment = maxEnrollment;
   }
 

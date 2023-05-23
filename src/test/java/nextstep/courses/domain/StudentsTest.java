@@ -5,14 +5,14 @@ import static org.assertj.core.api.Assertions.*;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-class EnrolledUsersTest {
+class StudentsTest {
 
-  public static EnrolledUsers ofNoUsersYet() {
-    return new EnrolledUsers(new MaxEnrollment(10));
+  public static Students ofNoUsersYet() {
+    return new Students(new MaxEnrollment(10));
   }
 
-  public static EnrolledUsers ofLeftFewSeats() {
-    return new EnrolledUsers(new MaxEnrollment(10)){
+  public static Students ofLeftFewSeats() {
+    return new Students(new MaxEnrollment(10)){
       {
         add(NsUserTest.JAVAJIGI);
         add(NsUserTest.SANJIGI);
@@ -20,8 +20,8 @@ class EnrolledUsersTest {
     };
   }
 
-  public static EnrolledUsers ofFullUsers() {
-    return new EnrolledUsers(new MaxEnrollment(2)){
+  public static Students ofFullUsers() {
+    return new Students(new MaxEnrollment(2)){
       {
         add(NsUserTest.JAVAJIGI);
         add(NsUserTest.SANJIGI);
@@ -29,8 +29,8 @@ class EnrolledUsersTest {
     };
   }
 
-  public static EnrolledUsers ofLeftOneSeatUsers() {
-    return new EnrolledUsers(new MaxEnrollment(2)){
+  public static Students ofLeftOneSeatUsers() {
+    return new Students(new MaxEnrollment(2)){
       {
         add(NsUserTest.JAVAJIGI);
       }
@@ -40,46 +40,46 @@ class EnrolledUsersTest {
 
   @Test
   void 수강_인원이_비어있으면_isEmpty_true_반환_테스트() {
-    EnrolledUsers enrolledUsers = ofNoUsersYet();
+    Students students = ofNoUsersYet();
 
-    boolean isEmpty = enrolledUsers.isEmpty();
+    boolean isEmpty = students.isEmpty();
 
     assertThat(isEmpty).isTrue();
   }
 
   @Test
   void 수강_인원이_가득차있으면_isEmpty_false_반환_테스트() {
-    EnrolledUsers enrolledUsers = ofFullUsers();
+    Students students = ofFullUsers();
 
-    boolean isEmpty = enrolledUsers.isEmpty();
+    boolean isEmpty = students.isEmpty();
 
     assertThat(isEmpty).isFalse();
   }
 
   @Test
   void 수강_인원이_가득차_있는_상태에서_수강생을_추가하는_경우_예외_발생(){
-    EnrolledUsers enrolledUsers = ofFullUsers();
+    Students students = ofFullUsers();
 
-    assertThatThrownBy(() -> enrolledUsers.add(NsUserTest.JAVAJIGI))
+    assertThatThrownBy(() -> students.add(NsUserTest.JAVAJIGI))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("최대 인원수를 넘어서 수강 신청할 수 없습니다.");
   }
 
   @Test
   void 수강_인원이_가득차지_않은_상태에서_수강생을_추가하는_경우_예외_발생_안함(){
-    EnrolledUsers enrolledUsers = ofLeftFewSeats();
+    Students students = ofLeftFewSeats();
 
-    assertThatCode(() -> enrolledUsers.add(NsUserTest.JAVAJIGI))
+    assertThatCode(() -> students.add(NsUserTest.JAVAJIGI))
         .doesNotThrowAnyException();
   }
 
   @Test
   void 학생을_목록에_등록하면_학생등록목록_사이즈_1_증가(){
-    EnrolledUsers enrolledUsers = ofNoUsersYet();
+    Students students = ofNoUsersYet();
 
-    enrolledUsers.add(NsUserTest.JAVAJIGI);
+    students.add(NsUserTest.JAVAJIGI);
 
-    assertThat(enrolledUsers.size()).isEqualTo(1);
+    assertThat(students.size()).isEqualTo(1);
   }
 
 

@@ -19,7 +19,7 @@ public class Session extends BaseTimeEntity {
 
   private final SessionStatus sessionStatus;
 
-  private final EnrolledUsers enrolledUsers;
+  private final Students students;
 
   private final SessionPeriod sessionPeriod;
 
@@ -29,7 +29,7 @@ public class Session extends BaseTimeEntity {
    * 주 생성자
    */
   public Session(Long id, SessionInfo sessionInfo, Image coverImage, SessionType sessionType,
-      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod, Generation generation,
+      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod, Generation generation,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -37,7 +37,7 @@ public class Session extends BaseTimeEntity {
     this.coverImage = coverImage;
     this.sessionType = sessionType;
     this.sessionStatus = sessionStatus;
-    this.enrolledUsers = enrolledUsers;
+    this.students = students;
     this.sessionPeriod = sessionPeriod;
     this.generation = generation;
     hasNoUserForPreparingSession(sessionStatus);
@@ -48,8 +48,8 @@ public class Session extends BaseTimeEntity {
    * 부 생성자
    */
   Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
-      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod, Generation generation) {
-    this(id, sessionInfo, image, sessionType, sessionStatus, enrolledUsers, sessionPeriod, generation,
+      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod, Generation generation) {
+    this(id, sessionInfo, image, sessionType, sessionStatus, students, sessionPeriod, generation,
         LocalDateTime.now(), LocalDateTime.now());
   }
 
@@ -60,7 +60,7 @@ public class Session extends BaseTimeEntity {
   }
 
   private boolean hasEnrolledUser() {
-    return !enrolledUsers.isEmpty();
+    return !students.isEmpty();
   }
 
   private static boolean isPreparing(SessionStatus sessionStatus) {
@@ -69,7 +69,7 @@ public class Session extends BaseTimeEntity {
 
   public void enroll(NsUser user) {
     sessionStatus.validateEnrollAvailable();
-    enrolledUsers.add(user);
+    students.add(user);
   }
 
 }
