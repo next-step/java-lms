@@ -43,8 +43,10 @@ create table session (
     generation varchar(255),
     created_at timestamp not null,
     updated_at timestamp,
+    course_id bigint not null,
     primary key (id),
-    foreign key (cover_image_id) references image(id)
+    foreign key (cover_image_id) references image(id),
+    foreign key (course_id) references course(id)
 );
 
 
