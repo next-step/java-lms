@@ -9,8 +9,8 @@ import java.util.List;
 public class DeleteHistories {
     private List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-    public List<DeleteHistory> addDeleteHistory(ContentType contentType, long questionId, NsUser writer) {
-        deleteHistories.add(new DeleteHistory(contentType, questionId, writer, LocalDateTime.now()));
+    public List<DeleteHistory> addDeleteHistory(DeleteHistory deleteHistory) {
+        deleteHistories.add(deleteHistory);
         return deleteHistories;
     }
 

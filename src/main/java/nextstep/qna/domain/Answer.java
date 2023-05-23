@@ -22,9 +22,6 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
-    }
-
     public Answer(NsUser writer, Question question, String contents) {
         this(0L, writer, question, contents);
     }
@@ -71,9 +68,10 @@ public class Answer {
 
 
 
-    public void delete(DeleteHistories deleteHistories) {
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        validateDelete(loginUser);
         this.deleted = true;
-        deleteHistories.addDeleteHistory(ContentType.ANSWER, id, writer);
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public void validateDelete(NsUser loginUser) throws CannotDeleteException {
