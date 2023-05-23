@@ -15,6 +15,9 @@
 - [X] 답변 삭제
   - [X] 질문자와 답변자가 다른 경우 답변 삭제 불가능
   - [X] 질문과 답변 삭제 이력 저장 : DeleteHistory
+- [X] 예외 처리
+  - [X] CannotDeleteException : RuntimeException 상속하도록 변경
+  - [X] 비지니스 예외 상황 각 도메인에서 예외 처리 
 
 ### 리팩터링 요구사항
 - QnaService deleteQuestion()는 질문 삭제 기능을 구현한 코드
