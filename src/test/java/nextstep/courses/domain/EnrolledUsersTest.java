@@ -3,60 +3,44 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.*;
 
 import nextstep.users.domain.NsUserTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class EnrolledUsersTest {
 
-  public static EnrolledUsers TEST_ENROLLED_NO_USERS_YET = new EnrolledUsers(new MaxEnrollment(10));
-  public static EnrolledUsers TEST_ENROLLED_USERS_LEFT_FEW_SEATS = new EnrolledUsers(new MaxEnrollment(10)){
-    {
-      add(NsUserTest.JAVAJIGI);
-      add(NsUserTest.SANJIGI);
-    }
-  };
+  public static EnrolledUsers ofNoUsersYet() {
+    return new EnrolledUsers(new MaxEnrollment(10));
+  }
 
-  public static EnrolledUsers TEST_ENROLLED_FULL_USERS = new EnrolledUsers(new MaxEnrollment(2)){
-    {
-      add(NsUserTest.JAVAJIGI);
-      add(NsUserTest.SANJIGI);
-    }
-  };
+  public static EnrolledUsers ofLeftFewSeats() {
+    return new EnrolledUsers(new MaxEnrollment(10)){
+      {
+        add(NsUserTest.JAVAJIGI);
+        add(NsUserTest.SANJIGI);
+      }
+    };
+  }
 
-  public static EnrolledUsers TEST_ENROLLED_LEFT_ONE_SEAT_USERS = new EnrolledUsers(new MaxEnrollment(2)){
-    {
-      add(NsUserTest.JAVAJIGI);
-    }
-  };
+  public static EnrolledUsers ofFullUsers() {
+    return new EnrolledUsers(new MaxEnrollment(2)){
+      {
+        add(NsUserTest.JAVAJIGI);
+        add(NsUserTest.SANJIGI);
+      }
+    };
+  }
 
- @AfterEach
-  void setUp() {
-   TEST_ENROLLED_NO_USERS_YET = new EnrolledUsers(new MaxEnrollment(10));
-   TEST_ENROLLED_USERS_LEFT_FEW_SEATS = new EnrolledUsers(new MaxEnrollment(10)){
-     {
-       add(NsUserTest.JAVAJIGI);
-       add(NsUserTest.SANJIGI);
-     }
-   };
-
-   TEST_ENROLLED_FULL_USERS = new EnrolledUsers(new MaxEnrollment(2)){
-     {
-       add(NsUserTest.JAVAJIGI);
-       add(NsUserTest.SANJIGI);
-     }
-   };
-
-    TEST_ENROLLED_LEFT_ONE_SEAT_USERS = new EnrolledUsers(new MaxEnrollment(2)){
+  public static EnrolledUsers ofLeftOneSeatUsers() {
+    return new EnrolledUsers(new MaxEnrollment(2)){
       {
         add(NsUserTest.JAVAJIGI);
       }
     };
   }
 
+
   @Test
   void 수강_인원이_비어있으면_isEmpty_true_반환_테스트() {
-    EnrolledUsers enrolledUsers = TEST_ENROLLED_NO_USERS_YET;
+    EnrolledUsers enrolledUsers = ofNoUsersYet();
 
     boolean isEmpty = enrolledUsers.isEmpty();
 
@@ -65,7 +49,7 @@ class EnrolledUsersTest {
 
   @Test
   void 수강_인원이_가득차있으면_isEmpty_false_반환_테스트() {
-    EnrolledUsers enrolledUsers = TEST_ENROLLED_FULL_USERS;
+    EnrolledUsers enrolledUsers = ofFullUsers();
 
     boolean isEmpty = enrolledUsers.isEmpty();
 
@@ -74,7 +58,7 @@ class EnrolledUsersTest {
 
   @Test
   void 수강_인원이_가득차_있는_상태에서_수강생을_추가하는_경우_예외_발생(){
-    EnrolledUsers enrolledUsers = TEST_ENROLLED_FULL_USERS;
+    EnrolledUsers enrolledUsers = ofFullUsers();
 
     assertThatThrownBy(() -> enrolledUsers.add(NsUserTest.JAVAJIGI))
         .isInstanceOf(IllegalArgumentException.class)
@@ -83,7 +67,7 @@ class EnrolledUsersTest {
 
   @Test
   void 수강_인원이_가득차지_않은_상태에서_수강생을_추가하는_경우_예외_발생_안함(){
-    EnrolledUsers enrolledUsers = TEST_ENROLLED_LEFT_ONE_SEAT_USERS;
+    EnrolledUsers enrolledUsers = ofLeftFewSeats();
 
     assertThatCode(() -> enrolledUsers.add(NsUserTest.JAVAJIGI))
         .doesNotThrowAnyException();
@@ -91,7 +75,7 @@ class EnrolledUsersTest {
 
   @Test
   void 학생을_목록에_등록하면_학생등록목록_사이즈_1_증가(){
-    EnrolledUsers enrolledUsers = TEST_ENROLLED_NO_USERS_YET;
+    EnrolledUsers enrolledUsers = ofNoUsersYet();
 
     enrolledUsers.add(NsUserTest.JAVAJIGI);
 

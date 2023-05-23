@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.SessionTest.ofPreparingSessionNoUsersYet;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ class CourseTest {
         LocalDateTime.now()
     );
 
-    course.addSession(SessionTest.PREPARING_SESSION_NO_USERS_YET);
+    course.addSession(ofPreparingSessionNoUsersYet());
 
     assertThat(course.getSessionsSize()).isEqualTo(1);
   }
