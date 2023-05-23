@@ -9,6 +9,7 @@
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
 
 
+## Step1 요구사항
 ## 질문 삭제하기 요구사항
 * 질문 데이터를 완전히 삭제하는 것이 아니라 데이터의 상태를 삭제 상태(deleted - boolean type)로 변경한다.
 * 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.
@@ -24,3 +25,16 @@
 * QnaService의 deleteQuestion() 메서드에 단위 테스트 가능한 코드(핵심 비지니스 로직)를 도메인 모델 객체에 구현한다.
 * QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 * QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+
+
+
+
+## Step2 요구사항
+- [ ] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가질 수 있다.
+- [ ] 강의는 시작일과 종료일을 가진다.
+- [ ] 강의는 강의 커버 이미지 정보를 가진다.
+- [ ] 강의는 무료 강의와 유료 강의로 나뉜다.
+- [ ] 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
+- [ ] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
+- [ ] 강의는 강의 최대 수강 인원을 초과할 수 없다.
+
