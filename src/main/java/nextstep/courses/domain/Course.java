@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
-    private Long id;
+    private CourseId courseId;
 
     private String title;
 
@@ -24,8 +24,8 @@ public class Course {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Course(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.courseId = new CourseId(courseId);
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
@@ -47,7 +47,7 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
+                "courseId=" + courseId +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
                 ", createdAt=" + createdAt +
