@@ -85,8 +85,8 @@ public class Question {
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
 
         Answers answers = new Answers(this.answers);
-        List<DeleteHistory> deleteHistories2 = answers.deleteAnswers(loginUser);
-        deleteHistories.addAll(deleteHistories2);
+        List<DeleteHistory> deleteAnswerHistories = answers.deleteAnswers(loginUser);
+        deleteHistories.addAll(deleteAnswerHistories);
         return deleteHistories;
     }
 
