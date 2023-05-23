@@ -9,8 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", new Answers());
+    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2", new Answers());
 
     public static final Question Q3 = new Question(NsUserTest.SANJIGI, "title3", "contents3",
             new Answers(Lists.newArrayList(AnswerTest.A1, AnswerTest.A1)));
