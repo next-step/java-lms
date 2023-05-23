@@ -21,9 +21,9 @@ public class AnswerTest {
     DeleteHistory deleteHistoryA2 = A2.makeDeleted();
     assertAll(
         () -> assertThat(A1.isDeleted()).isTrue(),
-        () -> assertThat(deleteHistoryA1).isEqualTo(new DeleteHistory(A1)),
+        () -> assertThat(deleteHistoryA1).isEqualTo(A1.toDeleteHistory()),
         () -> assertThat(A2.isDeleted()).isTrue(),
-        () -> assertThat(deleteHistoryA2).isEqualTo(new DeleteHistory(A2))
+        () -> assertThat(deleteHistoryA2).isEqualTo(A2.toDeleteHistory())
     );
   }
 

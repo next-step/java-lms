@@ -19,9 +19,9 @@ public class QuestionTest {
     List<DeleteHistory> deleteHistoriesQ1 = Q1.delete();
     List<DeleteHistory> deleteHistoriesQ2 = Q2.delete();
     assertAll(
-        () -> assertThat(deleteHistoriesQ1.get(0)).isEqualTo(new DeleteHistory(Q1)),
+        () -> assertThat(deleteHistoriesQ1.get(0)).isEqualTo(Q1.toDeleteHistory()),
         () -> assertThat(Q1.isDeleted()).isTrue(),
-        () -> assertThat(deleteHistoriesQ2.get(0)).isEqualTo(new DeleteHistory(Q2)),
+        () -> assertThat(deleteHistoriesQ2.get(0)).isEqualTo(Q2.toDeleteHistory()),
         () -> assertThat(Q2.isDeleted()).isTrue()
     );
   }

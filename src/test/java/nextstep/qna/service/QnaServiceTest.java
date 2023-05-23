@@ -46,10 +46,10 @@ public class QnaServiceTest {
 
   @Test
   public void delete_성공() throws Exception {
-    when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
     assertThat(question.isDeleted()).isFalse();
-    qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
+    qnAService.deleteQuestion(NsUserTest.JAVAJIGI, 1L);
 
     assertThat(question.isDeleted()).isTrue();
     verifyDeleteHistories();
@@ -57,18 +57,18 @@ public class QnaServiceTest {
 
   @Test
   public void delete_다른_사람이_쓴_글() throws Exception {
-    when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
     assertThatThrownBy(() -> {
-      qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+      qnAService.deleteQuestion(NsUserTest.SANJIGI, 1L);
     }).isInstanceOf(CannotDeleteException.class);
   }
 
   @Test
   public void delete_성공_질문자_답변자_같음() throws Exception {
-    when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
-    qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
+    qnAService.deleteQuestion(NsUserTest.JAVAJIGI, 1L);
 
     assertThat(question.isDeleted()).isTrue();
     assertThat(answer.isDeleted()).isTrue();
@@ -77,17 +77,17 @@ public class QnaServiceTest {
 
   @Test
   public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
-    when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+    when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
     assertThatThrownBy(() -> {
-      qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+      qnAService.deleteQuestion(NsUserTest.SANJIGI, 1L);
     }).isInstanceOf(CannotDeleteException.class);
   }
 
   private void verifyDeleteHistories() {
     List<DeleteHistory> deleteHistories = Arrays.asList(
-        new DeleteHistory(question),
-        new DeleteHistory(answer));
+        question.toDeleteHistory(),
+        answer.toDeleteHistory());
     verify(deleteHistoryService).saveAll(deleteHistories);
   }
 }

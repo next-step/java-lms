@@ -37,14 +37,6 @@ public class Question {
     this.contents = contents;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public NsUser getWriter() {
-    return writer;
-  }
-
   public void addAnswer(Answer answer) {
     answer.toQuestion(this);
     answers.add(answer);
@@ -60,7 +52,11 @@ public class Question {
 
   private DeleteHistory makeDeleted() {
     this.deleted = true;
-    return new DeleteHistory(this);
+    return toDeleteHistory();
+  }
+
+  public DeleteHistory toDeleteHistory() {
+    return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
   }
 
   public boolean checkQuestionOwner(NsUser loginUser) {

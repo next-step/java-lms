@@ -49,21 +49,17 @@ public class Answer {
     }
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public NsUser getWriter() {
-    return writer;
-  }
-
   public boolean isDeleted() {
     return deleted;
   }
 
   public DeleteHistory makeDeleted() {
     this.deleted = true;
-    return new DeleteHistory(this);
+    return toDeleteHistory();
+  }
+
+  public DeleteHistory toDeleteHistory() {
+    return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
   }
 
   public boolean checkAnswerOwner(NsUser writer) {
