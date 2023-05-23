@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,97 +10,62 @@ import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
 
-    @Test
-    @DisplayName("강의는 시작일을 가진다.")
-    void startAt() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
+    public static Session S1;
+    public static Session S2;
 
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
+    @BeforeEach
+    void setUp() {
+        S1 = new Session(0L,
+                LocalDateTime.MIN,
+                LocalDateTime.MAX,
+                "커버이미지",
+                PaymentType.FREE,
+                SessionStatus.PREPARING,
+                10);
 
-        assertThat(session.getStartAt()).isEqualTo(startAt);
+        S2 = new Session(1L,
+                LocalDateTime.MIN,
+                LocalDateTime.MAX,
+                "커버이미지",
+                PaymentType.FREE,
+                SessionStatus.RECRUITING,
+                1);
     }
 
     @Test
-    @DisplayName("강의는 종료일을 가진다.")
-    void endAt() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
-
-        assertThat(session.getEndAt()).isEqualTo(endAt);
+    void newSession() {
+        assertThat(S1).isEqualTo(new Session(0L,
+                LocalDateTime.MIN,
+                LocalDateTime.MAX,
+                "커버이미지",
+                PaymentType.FREE,
+                SessionStatus.PREPARING,
+                10));
     }
 
     @Test
-    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
-    void coverImage() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
-
-        assertThat(session.getCoverImage()).isEqualTo(coverImage);
+    @DisplayName("시작일은 종료일을 넘을 수 없다.")
+    void validDate() {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Session(0L,
+                        LocalDateTime.MAX,
+                        LocalDateTime.MIN,
+                        "커버이미지",
+                        PaymentType.FREE,
+                        SessionStatus.PREPARING,
+                        10));
     }
 
     @Test
-    @DisplayName("무료 강의")
-    void freeSession() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.FREE, SessionStatus.PREPARING);
-
-        assertThat(session.isFree()).isTrue();
+    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    void canEnrollSessionIsRecruiting() {
+        assertThatIllegalStateException().isThrownBy(() -> S1.register(new Student()));
     }
 
     @Test
-    @DisplayName("유료 강의")
-    void paidSession() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.PREPARING);
-
-        assertThat(session.isPaid()).isTrue();
-    }
-
-    @Test
-    @DisplayName("강의 상태 준비중")
-    void preparingSession() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.PREPARING);
-
-        assertThat(session.isPreparing()).isTrue();
-    }
-    @Test
-    @DisplayName("강의 상태 모집중")
-    void recruitingSession() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.RECRUITING);
-
-        assertThat(session.isRecruiting()).isTrue();
-    }
-    @Test
-    @DisplayName("강의 상태 종료")
-    void closedSession() {
-        LocalDateTime startAt = LocalDateTime.MIN;
-        LocalDateTime endAt = LocalDateTime.MAX;
-        String coverImage = "커버이미정보";
-
-        Session session = new Session(startAt, endAt, coverImage, PaymentType.PAID, SessionStatus.CLOSED);
-
-        assertThat(session.isClosed()).isTrue();
+    @DisplayName("강의는 최대 수강인원을 초과할 수 없다.")
+    void maxStudentSize() {
+        S2.register(new Student());
+        assertThatIllegalStateException().isThrownBy(() -> S2.register(new Student()));
     }
 }
