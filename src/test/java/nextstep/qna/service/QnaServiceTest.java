@@ -29,9 +29,6 @@ public class QnaServiceTest {
     @Mock
     private QuestionRepository questionRepository;
 
-    @Mock
-    private QuestionDeletePublisher eventPublisher;
-
     @InjectMocks
     private QnAService qnAService;
 
