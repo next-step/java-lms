@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionStatus {
-    READY("준비"), OPEN("모집"), CLOSED("종료");
+    READY("준비"), OPEN("진행"), CLOSED("종료");
 
     private final String description;
 

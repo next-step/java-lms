@@ -50,6 +50,7 @@ public class SessionJoin {
 
     public void reject() {
         this.sessionJoinStatus = SessionJoinStatus.REJECTION;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {

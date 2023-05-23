@@ -7,11 +7,13 @@ import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DefaultSessionJoinService implements SessionJoinService {
     private final SessionJoinRepository sessionJoinRepository;
     private final SessionRepository sessionRepository;
@@ -37,7 +39,6 @@ public class DefaultSessionJoinService implements SessionJoinService {
 
     @Override
     public void approve(long sessionId, List<String> userIds) {
-        // TODO: 세션 있는지 여부 체크는 추후에..
         List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
         List<Long> findUserIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
         List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionIdAndUserIds(sessionId, findUserIds);
