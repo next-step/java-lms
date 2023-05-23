@@ -26,20 +26,16 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, generation, creator_id, created_at, updated_at from course where id = ?";
+        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                toGeneration(rs.getString(4)),
-                toLocalDateTime(rs.getTimestamp(5)),
-                toLocalDateTime(rs.getTimestamp(6)));
+                toLocalDateTime(rs.getTimestamp(4)),
+                toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private Generation toGeneration(String generation) {
-        return new Generation(generation);
-    }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {

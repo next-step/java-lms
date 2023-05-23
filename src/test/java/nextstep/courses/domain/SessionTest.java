@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.GenerationTest.TEST_GENERATION;
 import static org.assertj.core.api.Assertions.*;
 
 import nextstep.users.domain.NsUserTest;
@@ -29,7 +30,8 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.PREPARING,
         EnrolledUsersTest.TEST_ENROLLED_NO_USERS_YET,
-        SessionPeriodTest.TEST_SESSION_PERIOD
+        SessionPeriodTest.TEST_SESSION_PERIOD,
+        TEST_GENERATION
     );
 
     RECRUITING_SESSION_LEFT_FEW_SEATS = new Session(
@@ -39,7 +41,8 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         EnrolledUsersTest.TEST_ENROLLED_USERS_LEFT_FEW_SEATS,
-        SessionPeriodTest.TEST_SESSION_PERIOD
+        SessionPeriodTest.TEST_SESSION_PERIOD,
+        TEST_GENERATION
     );
 
     END_SESSION_FULL_USERS = new Session(
@@ -49,7 +52,8 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.END,
         EnrolledUsersTest.TEST_ENROLLED_FULL_USERS,
-        SessionPeriodTest.TEST_SESSION_PERIOD
+        SessionPeriodTest.TEST_SESSION_PERIOD,
+        TEST_GENERATION
     );
 
     RECRUITING_SESSION_USER_FULL = new Session(
@@ -59,7 +63,8 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         EnrolledUsersTest.TEST_ENROLLED_FULL_USERS,
-        SessionPeriodTest.TEST_SESSION_PERIOD
+        SessionPeriodTest.TEST_SESSION_PERIOD,
+        TEST_GENERATION
     );
 
     RECRUITING_SESSION_LEFT_ONE_SEAT = new Session(
@@ -69,7 +74,8 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         EnrolledUsersTest.TEST_ENROLLED_LEFT_ONE_SEAT_USERS,
-        SessionPeriodTest.TEST_SESSION_PERIOD
+        SessionPeriodTest.TEST_SESSION_PERIOD,
+        TEST_GENERATION
     );
 
 
@@ -85,7 +91,8 @@ class SessionTest {
             SessionType.FREE,
             SessionStatus.PREPARING,
             EnrolledUsersTest.TEST_ENROLLED_NO_USERS_YET,
-            SessionPeriodTest.TEST_SESSION_PERIOD
+            SessionPeriodTest.TEST_SESSION_PERIOD,
+            TEST_GENERATION
         )
     );
   }
@@ -100,7 +107,8 @@ class SessionTest {
             SessionType.FREE,
             SessionStatus.PREPARING,
             EnrolledUsersTest.TEST_ENROLLED_USERS_LEFT_FEW_SEATS,
-            SessionPeriodTest.TEST_SESSION_PERIOD
+            SessionPeriodTest.TEST_SESSION_PERIOD,
+            TEST_GENERATION
         )
     ).isInstanceOf(IllegalArgumentException.class)
         .hasMessage("준비중 상태일때는 수강생이 없어야 합니다.");

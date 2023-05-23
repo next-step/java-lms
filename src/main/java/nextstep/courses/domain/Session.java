@@ -23,11 +23,13 @@ public class Session extends BaseTimeEntity {
 
   private final SessionPeriod sessionPeriod;
 
+  private final Generation generation;
+
   /**
    * 주 생성자
    */
   public Session(Long id, SessionInfo sessionInfo, Image coverImage, SessionType sessionType,
-      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod,
+      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod, Generation generation,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -37,6 +39,7 @@ public class Session extends BaseTimeEntity {
     this.sessionStatus = sessionStatus;
     this.enrolledUsers = enrolledUsers;
     this.sessionPeriod = sessionPeriod;
+    this.generation = generation;
     hasNoUserForPreparingSession(sessionStatus);
   }
 
@@ -45,8 +48,8 @@ public class Session extends BaseTimeEntity {
    * 부 생성자
    */
   Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
-      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod) {
-    this(id, sessionInfo, image, sessionType, sessionStatus, enrolledUsers, sessionPeriod,
+      SessionStatus sessionStatus, EnrolledUsers enrolledUsers, SessionPeriod sessionPeriod, Generation generation) {
+    this(id, sessionInfo, image, sessionType, sessionStatus, enrolledUsers, sessionPeriod, generation,
         LocalDateTime.now(), LocalDateTime.now());
   }
 

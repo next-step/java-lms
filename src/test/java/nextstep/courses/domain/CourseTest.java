@@ -13,7 +13,6 @@ class CourseTest {
         1L,
         "title",
         1L,
-        new Generation("1기"),
         LocalDateTime.now(),
         LocalDateTime.now()
     );
