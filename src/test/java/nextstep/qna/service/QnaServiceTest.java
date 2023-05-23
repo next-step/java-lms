@@ -29,7 +29,7 @@ public class QnaServiceTest {
     private DeleteHistoryService deleteHistoryService;
 
     @InjectMocks
-    private QnAServiceDummy qnAService;
+    private QnAServiceImpl qnAService;
 
     private Question question;
     private Answer answer;
