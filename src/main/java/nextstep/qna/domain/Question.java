@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -28,6 +29,7 @@ public class Question {
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
+        this.answers = new Answers();
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
@@ -35,6 +37,12 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
+    }
+
+    public Question(NsUser writer, String title, String contents, Answers answers) {
+        this(0L, writer, title, contents);
+        this.answers = answers;
     }
 
     public Long getId() {
@@ -72,6 +80,23 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    public List<DeleteHistory> deleteQuestion(NsUser loginUser) throws CannotDeleteException {
+        checkOwner(loginUser);
+        this.deleted = true;
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+
+        List<DeleteHistory> deleteAnswerHistories = answers.deleteAnswers(loginUser);
+        deleteHistories.addAll(deleteAnswerHistories);
+        return deleteHistories;
+    }
+
+    private void checkOwner(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -79,10 +104,6 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
