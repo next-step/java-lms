@@ -7,3 +7,29 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## 기능 목록
+
+### Question
+- [x] 로그인 사용자와 질문한 사람이 같지 않을 경우 `CannotDeleteException`을 발생한다.
+- [x] questionId에 해당하는 question이 없을 경우 `NotFoundException`이 발생한다.
+- [x] 삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다.
+- [x] Question 삭제시 Answer 삭제 되는 기능 추가
+- [x] Question에서 answers list를 일급 컬렉션으로 분리하기. -> answers
+  - 컬렉션에 추가 기능 테스트
+  - 컬렉션에 null 값 입력시 NPE 발생  테스트
+  - answer 삭제하는 메서드 추가
+    - 리스트에 아무 값 없어도 호출 시 예외 발생 x
+### Answer
+- [x] 질문자와 답변글의 모든 답변자 같은 경우 답변을 삭제 가능하다. 
+- [x] 질문자와 답변자가 같지 않을 경우 `CannotDeleteException`을 발생하며 답변을 삭제할 수 없다.
+- [x] 삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다.
+
+### DeleteHistory
+- [x] 질문을 삭제 할 때, 질문에 대한 답변까지 삭제를 해야한다.
+- [x] 삭제시 `Question`과 `Answer`의 deleted 상태를 true로 삭제한다.
+- [x] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
+- [x] DeleteHistory를 List로 가지는 일급 컬렉션 추가
+  - [x] question을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다. 
+  - [x] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
+
