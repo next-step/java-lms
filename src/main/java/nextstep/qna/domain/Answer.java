@@ -30,17 +30,23 @@ public class Answer {
 
   public Answer(Long id, NsUser writer, Question question, String contents) {
     this.id = id;
+    validateWriter(writer);
+    this.writer = writer;
+    validateQuestion(question);
+    this.question = question;
+    this.contents = contents;
+  }
+
+  private void validateWriter(NsUser writer) {
     if (writer == null) {
       throw new UnAuthorizedException();
     }
+  }
 
+  private void validateQuestion(Question question) {
     if (question == null) {
       throw new NotFoundException();
     }
-
-    this.writer = writer;
-    this.question = question;
-    this.contents = contents;
   }
 
   public Long getId() {
