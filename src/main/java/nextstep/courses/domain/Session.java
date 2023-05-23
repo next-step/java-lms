@@ -28,8 +28,8 @@ public class Session {
     return nextStepUsers.currentEnrollment();
   }
 
-  public void changeSessionStatus(SessionStatus sessionStatus) {
-    this.sessionStatus = sessionStatus;
+  public void ending() {
+    this.sessionStatus = SessionStatus.ENDING;
   }
 
   public void processEnrollment(NextStepUser nextStepUser) {
