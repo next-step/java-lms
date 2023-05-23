@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
@@ -15,9 +16,13 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
+    @DisplayName("답변자가 동일하면 delete는 성공해야한다.")
+    void deleteTest1() throws CannotDeleteException {
+        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isExactlyInstanceOf(DeleteHistory.class);
+    }
+    @Test
     @DisplayName("답변자가 다르다면 예외를 throw")
     void deleteTest2() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI, deleteHistories)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 }
