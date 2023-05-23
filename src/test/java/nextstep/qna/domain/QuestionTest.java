@@ -46,10 +46,10 @@ public class QuestionTest {
     @Test
     void test_삭제_다른사람_답변없음() throws CannotDeleteException {
         //act
-        Q4.deleteQuestion(NsUserTest.JAVAJIGI);
+        Q4.deleteQuestion(NsUserTest.SANJIGI);
 
         //assert
-        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(Q4.isDeleted()).isTrue();
     }
 
 }
