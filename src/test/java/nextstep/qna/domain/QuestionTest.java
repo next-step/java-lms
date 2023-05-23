@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,10 +13,16 @@ public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", new Answers());
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2", new Answers());
 
-    public static final Question Q3 = new Question(NsUserTest.SANJIGI, "title3", "contents3",
-            new Answers(Lists.newArrayList(AnswerTest.A1, AnswerTest.A1)));
-    public static final Question Q4 = new Question(NsUserTest.SANJIGI, "title4", "contents4",
-            new Answers(Lists.newArrayList(AnswerTest.A2, AnswerTest.A2)));
+    private Question Q3;
+    private Question Q4;
+
+    @BeforeEach
+    void setUp() {
+        Q3 = new Question(NsUserTest.SANJIGI, "title3", "contents3",
+                new Answers(Lists.newArrayList(AnswerTest.A1, AnswerTest.A1)));
+        Q4 = new Question(NsUserTest.SANJIGI, "title4", "contents4",
+                new Answers(Lists.newArrayList(AnswerTest.A2, AnswerTest.A2)));
+    }
 
     @Test
     void test_삭제_남의글() throws CannotDeleteException {
