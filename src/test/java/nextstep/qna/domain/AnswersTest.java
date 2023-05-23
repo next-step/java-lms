@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static nextstep.qna.domain.AnswerTest.A1;
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class AnswersTest {
@@ -22,13 +25,12 @@ public class AnswersTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws CannotDeleteException {
         //given
-        Answer answer = new Answer();
-        Answers answers = new Answers(Arrays.asList(answer, answer));
+        Answers answers = new Answers(Arrays.asList(A1, A1));
 
         //when
-        List<DeleteHistory> result = answers.delete();
+        List<DeleteHistory> result = answers.delete(JAVAJIGI);
 
         //then
         assertThat(result.size()).isEqualTo(2);

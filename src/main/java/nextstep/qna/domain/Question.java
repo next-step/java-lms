@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -67,12 +67,14 @@ public class Question {
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
+        deleteHistories.add(delete());
+        deleteHistories.addAll(answers.delete(nsUser));
 
-        for (Answer answer : answers) {
-            deleteHistories.addAll(answer.delete(nsUser));
-        }
         return new DeleteHistories(deleteHistories);
+    }
+
+    private DeleteHistory delete() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, createdDate);
     }
 
     private boolean isOwner(NsUser loginUser) {
