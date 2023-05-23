@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import java.time.LocalDate;
 
+import static nextstep.courses.domain.SessionStatus.RECRUITING;
+
 public class Session {
 
     private int generation;
@@ -18,5 +20,9 @@ public class Session {
         this.type = type;
         this.status = status;
         this.maxNumOfStudent = maxNumOfStudent;
+    }
+
+    boolean isRecruiting() {
+        return RECRUITING == status;
     }
 }
