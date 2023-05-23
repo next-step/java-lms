@@ -5,7 +5,7 @@ import nextstep.courses.domain.*;
 import java.time.LocalDateTime;
 
 public class SessionFixture {
-    public Session getSession1() {
+    public Session 강의_과정_1() {
         LocalDateTime fromDate = LocalDateTime.now();
         LocalDateTime toDate = fromDate.plusDays(7);
         int maxEnrollment = 1;
@@ -19,7 +19,7 @@ public class SessionFixture {
         return session;
     }
 
-    public Session getSession2() {
+    public Session 강의_과정_2() {
         LocalDateTime fromDate = LocalDateTime.now();
         LocalDateTime toDate = fromDate.plusDays(3);
         int maxEnrollment = 2;

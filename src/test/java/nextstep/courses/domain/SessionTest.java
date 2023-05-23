@@ -12,7 +12,7 @@ class SessionTest {
     @BeforeEach
     public void before() {
         SessionFixture sessionFixture = new SessionFixture();
-        session = sessionFixture.getSession1();
+        session = sessionFixture.강의_과정_1();
     }
 
     @Test

@@ -14,8 +14,8 @@ class CourseTest {
     @Test
     void 한_과정에_여러_강의_추가_테스트() {
         SessionFixture sessionFixture = new SessionFixture();
-        sessions.add(sessionFixture.getSession1());
-        sessions.add(sessionFixture.getSession2());
+        sessions.add(sessionFixture.강의_과정_1());
+        sessions.add(sessionFixture.강의_과정_2());
 
         course = new Course(sessions);
 
