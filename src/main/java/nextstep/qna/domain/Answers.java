@@ -24,11 +24,11 @@ public class Answers {
 
     public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
-        deleteAllAnswers();
+        deleteAll();
         return logDeletedHistories();
     }
 
-    private void deleteAllAnswers() {
+    private void deleteAll() {
         answers.forEach(Answer::delete);
     }
 
