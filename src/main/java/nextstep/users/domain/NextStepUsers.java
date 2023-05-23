@@ -15,7 +15,9 @@ public class NextStepUsers {
   }
 
   public void enroll(NextStepUser nextStepUser) {
-    canEnrollUser();
+    if (!canEnrollUser()) {
+      throw new IllegalArgumentException(MAX_ENROLLMENT_MESSAGE);
+    }
 
     nextStepUsers.add(nextStepUser);
   }
@@ -24,9 +26,7 @@ public class NextStepUsers {
     return nextStepUsers.size();
   }
 
-  private void canEnrollUser() {
-    if (nextStepUsers.size() >= maxUserEnrollment) {
-      throw new IllegalArgumentException(MAX_ENROLLMENT_MESSAGE);
-    }
+  private boolean canEnrollUser() {
+    return nextStepUsers.size() < maxUserEnrollment;
   }
 }
