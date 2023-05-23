@@ -6,6 +6,7 @@ import static nextstep.courses.domain.SessionStatus.RECRUITING;
 
 public class Session {
 
+    private String title;
     private int generation;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -21,10 +22,16 @@ public class Session {
         this.type = type;
         this.status = status;
         this.maxRegisterNum = maxRegisterNum;
-        this.currRegisterNum = currRegisterNum;
+        this.currRegisterNum = maxRegisterNum;
     }
 
     boolean isRecruiting() {
         return RECRUITING == status;
     }
+
+    public String title() {
+        return title;
+    }
+
+
 }
