@@ -35,6 +35,7 @@ public class Session {
         if (isCurrRegisterExceedMaxRegister()) {
             throw new RuntimeException("등록 인원이 정원 초과 되었습니다.");
         }
+        this.currRegisterNum++;
         return true;
     }
 
@@ -46,8 +47,12 @@ public class Session {
         return currRegisterNum >= maxRegisterNum;
     }
 
-    public Long id() {
+    Long id() {
         return this.id;
+    }
+
+    int currRegisterNum() {
+        return this.currRegisterNum;
     }
 
     @Override
