@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,5 +16,21 @@ public class StudentTest {
         student.enroll(session);
 
         assertThat(session.totalStudentNum()).isEqualTo(1);
+    }
+
+    @DisplayName("최대 수강 인원과 현재 인원이 동일하다면 예외를 발생한다.")
+    @Test
+    void name1() {
+        Student student1 = new Student();
+        Student student2 = new Student();
+        Student student3 = new Student();
+        Session session = new Session();
+        int maxCount = 2;
+        session.setMaxStudent(maxCount);
+
+        student1.enroll(session);
+        student2.enroll(session);
+        Assertions.assertThatThrownBy(() -> student3.enroll(session))
+                .isInstanceOf(CannotEnrollException.class);
     }
 }
