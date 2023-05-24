@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 class AnswersTest {
 
     @Test
-    void deleteAnswers() throws CannotDeleteException {
+    void deleteAnswers() {
         Answers answers = new Answers();
         answers.addAnswer(QuestionTest.Q1, AnswerTest.A1);
         answers.addAnswer(QuestionTest.Q1, AnswerTest.A3);

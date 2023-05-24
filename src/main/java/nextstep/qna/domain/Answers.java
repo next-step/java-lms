@@ -15,7 +15,7 @@ public class Answers {
         answers.add(answer);
     }
 
-    public DeleteHistories deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistories deleteAnswers(NsUser loginUser) {
         DeleteHistories deleteHistories = new DeleteHistories();
 
         for (Answer answer : answers) {
