@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static nextstep.Fixtures.QuestionFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -37,10 +39,11 @@ public class QnaServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        answer = new Answer(11L, NsUserTest.JAVAJIGI,  createQuestion(NsUserTest.JAVAJIGI), "Answers Contents1");
         question.addAnswer(answer);
     }
 
+    @DisplayName("삭제 성공")
     @Test
     public void delete_성공() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
@@ -52,6 +55,7 @@ public class QnaServiceTest {
         verifyDeleteHistories();
     }
 
+    @DisplayName("다른 사람이 쓴 글 삭제 시 오류")
     @Test
     public void delete_다른_사람이_쓴_글() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
@@ -61,6 +65,7 @@ public class QnaServiceTest {
         }).isInstanceOf(CannotDeleteException.class);
     }
 
+    @DisplayName("질문자 답변자 같음 글 삭제 성공")
     @Test
     public void delete_성공_질문자_답변자_같음() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
@@ -72,6 +77,7 @@ public class QnaServiceTest {
         verifyDeleteHistories();
     }
 
+    @DisplayName("답변 중 다른사람이 쓰면 삭제 시 오류")
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
