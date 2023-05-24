@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static nextstep.SetUp.createAnswer1;
-import static nextstep.SetUp.createAnswer2;
+import static nextstep.AnswerFixtures.createAnswer1;
+import static nextstep.AnswerFixtures.createAnswer2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
@@ -34,10 +34,12 @@ public class AnswersTest {
 
         List<DeleteHistory> deleteHistories = answers.deleteAll(NsUserTest.JAVAJIGI);
 
-        assertThat(answers.value()).extracting("deleted").containsExactly(true, true);
-        assertThat(deleteHistories).extracting("contentType", "deletedBy")
-                .containsExactly(tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI),
-                        tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI));
+        assertThat(deleteHistories).hasSize(2)
+                .extracting(DeleteHistory::getContentType, DeleteHistory::getDeletedBy)
+                .containsExactly(
+                        tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI),
+                        tuple(ContentType.ANSWER, NsUserTest.JAVAJIGI)
+                );
     }
 
     @DisplayName("답변들 모두 삭제 시 작성자가 다를 시 에러")

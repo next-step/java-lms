@@ -39,15 +39,24 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser)  {
-        if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        this.deleted = true;
+        reviewDeletePermission(loginUser);
+        List<DeleteHistory> deleteHistories =  makeDeleteHistory(loginUser);
 
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> makeDeleteHistory(NsUser loginUser) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(answers.deleteAll(loginUser));
         return deleteHistories;
+    }
+
+    private void reviewDeletePermission(NsUser loginUser) {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.deleted = true;
     }
 
     public Long getId() {

@@ -73,12 +73,12 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory delete(NsUser loginUser, LocalDateTime now) {
+    public DeleteHistory delete(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException(" 작성자와 삭제하는 유저가 달라 글을 삭제할 수 없습니다.");
         }
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, now);
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
         @Override
