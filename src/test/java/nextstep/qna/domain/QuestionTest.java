@@ -20,8 +20,6 @@ public class QuestionTest {
     @DisplayName(value = "답변이 없을 경우 삭제 상태 변경 가능")
     void test1() throws CannotDeleteException {
         Q1.delete(NsUserTest.JAVAJIGI);
-        Long id = Q1.getId();
-        System.out.println("id = " + id);
 
         assertThat(Q1.isDeleted()).isTrue();
     }
