@@ -8,7 +8,7 @@ import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends BaseDomainImpl {
+public class Answer extends AbstractQnA {
 
     private Long id;
 
@@ -20,7 +20,7 @@ public class Answer extends BaseDomainImpl {
     }
 
     public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+        this(0L, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
@@ -45,9 +45,9 @@ public class Answer extends BaseDomainImpl {
     @Override
     public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
         super.validateWriter(loginUser);
-        super.changeDeleteStatus(YN.Y);
+        super.changeDeleteStatus(true);
 
-        return Collections.singletonList(DeleteHistory.of(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
+        return Collections.singletonList(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
     }
 
     public NsUser getWriter() {

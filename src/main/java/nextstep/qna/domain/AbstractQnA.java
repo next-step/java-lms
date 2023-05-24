@@ -3,9 +3,11 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.exception.QnAExceptionCode;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUser;
 
-public abstract class BaseDomainImpl implements BaseDomain {
+public abstract class AbstractQnA {
 
     protected NsUser writer;
 
@@ -17,23 +19,21 @@ public abstract class BaseDomainImpl implements BaseDomain {
 
     public abstract List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException;
 
-    @Override
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    @Override
     public boolean isDeleted() {
         return deleted;
     }
 
-    @Override
-    public void changeDeleteStatus(YN deleteYN) {
-        this.deleted = deleteYN.toBoolean();
+    public void changeDeleteStatus(boolean deleteYN) {
+        this.deleted = deleteYN;
     }
 
-    @Override
     public void validateWriter(NsUser loginUser) throws UnAuthenticationException {
-        BaseDomain.super.validateWriter(loginUser);
+        if (!isOwner(loginUser)) {
+            throw new QnAException(QnAExceptionCode.NOT_EXIST_AUTHENTICATION);
+        }
     }
 }

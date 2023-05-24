@@ -1,18 +1,15 @@
 package nextstep.qna.domain;
 
-import java.util.Collection;
-import java.util.Collections;
-import nextstep.qna.CannotDeleteException;
-import nextstep.qna.UnAuthenticationException;
-import nextstep.qna.UnAuthorizedException;
-import nextstep.qna.exception.Exceptions;
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.exception.QnAException;
+import nextstep.qna.exception.QnAExceptionCode;
+import nextstep.users.domain.NsUser;
 
-public class Question extends BaseDomainImpl {
+public class Question extends AbstractQnA {
 
     private Long id;
 
@@ -61,22 +58,18 @@ public class Question extends BaseDomainImpl {
         return writer.equals(loginUser);
     }
 
-    public Answers getAnswers() {
-        return answers;
-    }
-
     @Override
     public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
         if (super.isDeleted()) {
-            throw new IllegalStateException(Exceptions.NOT_EXIST_QUESTION.message());
+            throw new QnAException(QnAExceptionCode.NOT_EXIST_QUESTION);
         }
 
         super.validateWriter(loginUser);
-        super.changeDeleteStatus(YN.Y);
+        super.changeDeleteStatus(true);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(this.answers.delete(loginUser));
 
         return Collections.unmodifiableList(deleteHistories);

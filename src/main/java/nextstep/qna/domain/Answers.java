@@ -17,23 +17,18 @@ public class Answers {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
-        validateAnswerWriter(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
+            answer.delete(loginUser);
             deleteHistories.addAll(answer.delete(loginUser));
         }
 
         return deleteHistories;
     }
 
-    private void validateAnswerWriter(NsUser loginUser) throws UnAuthenticationException {
-        if (containAnotherOwner(loginUser)) {
-            throw new UnAuthenticationException("삭제할 권한이 없습니다.");
-        }
+    public List<Answer> getAnswers() {
+        return this.answers;
     }
 
-    private boolean containAnotherOwner(NsUser loginUser) {
-        return answers.stream().anyMatch(answer -> !answer.isOwner(loginUser));
-    }
 }
