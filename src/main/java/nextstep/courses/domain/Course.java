@@ -7,6 +7,8 @@ public class Course {
 
     private String title;
 
+    private Sessions sessions;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
