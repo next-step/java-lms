@@ -5,6 +5,7 @@ import nextstep.qna.domain.validate.QuestionRemoveValidator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Question {
 
@@ -62,6 +63,11 @@ public class Question {
     }
 
     public boolean isOwner(NsUser loginUser) {
+
+        if (Objects.isNull(loginUser)) {
+            throw new IllegalStateException("인가 되지 않은 사용자 에요 :(");
+        }
+
         return writer.equals(loginUser);
     }
 
@@ -79,16 +85,24 @@ public class Question {
         DeleteHistories deleteHistories = DeleteHistories.create();
         deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.writer));
 
-        deleteHistories.concat(answers.removeAll());
-
+        if (hasAnswer()) {
+            deleteHistories.concat(answers.removeAll());
+        }
         return deleteHistories;
     }
-
 
     public boolean isDeleted() {
         return deleted.isDeleted();
     }
 
+    public boolean hasAnswer() {
+
+        if (Objects.nonNull(answers)) {
+            return answers.hasAnswers();
+        }
+
+        return false;
+    }
 
     public Answers getAnswers() {
         return answers;
@@ -97,5 +111,18 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return id == question.id && Objects.equals(writer, question.writer) && Objects.equals(answers, question.answers) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writer, answers, title, contents);
     }
 }
