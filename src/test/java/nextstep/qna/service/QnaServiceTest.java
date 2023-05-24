@@ -37,7 +37,7 @@ public class QnaServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
 
-        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1", null);
+        question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = Answer.of(11L, NsUserTest.JAVAJIGI, question, "Answers Contents1", null);
         Answers answers = Answers.of(List.of(answer));
         question.loadAnswers(answers);
