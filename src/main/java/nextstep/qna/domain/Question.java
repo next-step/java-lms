@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+    private static final String DELETE_OWNER_PERMISSION = "질문을 삭제할 권한이 없습니다.";
+    private static final String DELETE_ANSWER_OWNER_PERMISSION = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     private Long id;
 
     private String title;
@@ -44,7 +47,7 @@ public class Question {
         try {
             answerDeleteHistories = answers.deleteAll(loginUser);
         } catch (CannotDeleteException e) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException(DELETE_ANSWER_OWNER_PERMISSION);
         }
         this.deleted = true;
 
@@ -57,7 +60,7 @@ public class Question {
 
     public void validateWriter(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+            throw new CannotDeleteException(DELETE_OWNER_PERMISSION);
         }
     }
 
