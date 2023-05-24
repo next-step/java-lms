@@ -8,13 +8,15 @@ public class Session {
     private final PaymentType sessionPayment;
     private final SessionStatus sessionStatus;
     private final NextStepUsers nextStepUsers;
+    private final SessionImageUrl sessionImageUrl;
 
-    public Session(Long id, SessionPeriod sessionPeriod, PaymentType sessionPayment, SessionStatus sessionStatus, int maximumUserCount) {
+    public Session(Long id, SessionPeriod sessionPeriod, PaymentType sessionPayment, SessionStatus sessionStatus, int maximumUserCount, SessionImageUrl sessionImageUrl) {
         this.id = id;
         this.sessionPeriod = sessionPeriod;
         this.sessionPayment = sessionPayment;
         this.sessionStatus = sessionStatus;
         this.nextStepUsers = new NextStepUsers(maximumUserCount);
+        this.sessionImageUrl = sessionImageUrl;
     }
 
     public void enroll(NsUser nextStepUser) {
