@@ -1,14 +1,17 @@
-package nextstep.courses.domain;
+package nextstep.courses.service;
+
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SessionRegister {
+public class SessionService {
 
     private final Set<Session> sessions = new HashSet<>();
     private SessionRepository sessionRepository;
 
-    public SessionRegister(SessionRepository sessionRepository) {
+    public SessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
@@ -17,6 +20,7 @@ public class SessionRegister {
         System.out.println("session = " + session);
 
         if (session.isRecruiting()) {
+//            sessionRepository.save(session);
             this.sessions.add(session);
         }
     }

@@ -28,7 +28,7 @@ public class Session {
         this.currRegisterNum = currRegisterNum;
     }
 
-    boolean isRecruiting() {
+    public boolean isRecruiting() {
         return RECRUITING == status;
     }
 
