@@ -18,15 +18,6 @@ public class Answers {
     }
 
     public List<DeleteHistory> deleteAll(NsUser loginUser) {
-        /*
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : this.answers) {
-            answer.delete(loginUser, LocalDateTime.now());
-            deleteHistories.add(answer.delete(loginUser, LocalDateTime.now()));
-        }
-
-        return deleteHistories;
-*/
         return this.answers.stream()
                 .map(answer -> {
                     DeleteHistory deleteHistory = answer.delete(loginUser);
