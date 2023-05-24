@@ -14,18 +14,10 @@ public class Answers {
         answers.add(answer);
     }
 
-    private void validateDelete(NsUser loginUser) throws CannotDeleteException {
-        for (Answer answer : this.answers) {
-            answer.validateDelete(loginUser);
-        }
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        validateDelete(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            DeleteHistory deleteAnswerHistory = answer.delete();
-            deleteHistories.add(deleteAnswerHistory);
+            deleteHistories.add(answer.delete(loginUser));
         }
         return deleteHistories;
     }
