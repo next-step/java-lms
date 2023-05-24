@@ -13,9 +13,9 @@ public class SessionJoin {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static SessionJoin apply(Session session, NsUser nsUser) {
+    public static SessionJoin apply(Session session, NsUser nsUser, SessionJoinStatus status) {
         LocalDateTime now = LocalDateTime.now();
-        return new SessionJoin(null, session, nsUser, SessionJoinStatus.APPLICATION, now, null);
+        return new SessionJoin(null, session, nsUser, status, now, null);
     }
 
     public SessionJoin(Long id, Session session, NsUser nsUser, SessionJoinStatus sessionJoinStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -41,6 +41,10 @@ public class SessionJoin {
 
     public SessionJoinStatus getSessionJoinStatus() {
         return sessionJoinStatus;
+    }
+
+    public boolean isApproveStatus() {
+        return sessionJoinStatus.isApproveStatus();
     }
 
     public void approve() {

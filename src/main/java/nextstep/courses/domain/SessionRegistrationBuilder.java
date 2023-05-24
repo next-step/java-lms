@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 public final class SessionRegistrationBuilder {
     private SessionRecruitStatus sessionRecruitStatus;
-    private int maxUserCount;
+    private long maxUserCount;
 
     private SessionRegistrationBuilder() {
     }
@@ -16,7 +16,7 @@ public final class SessionRegistrationBuilder {
         return this;
     }
 
-    public SessionRegistrationBuilder withMaxUserCount(int maxUserCount) {
+    public SessionRegistrationBuilder withMaxUserCount(long maxUserCount) {
         this.maxUserCount = maxUserCount;
         return this;
     }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionJoinStatus {
-    APPLICATION("신청"), APPROVAL("승인"), REJECTION("거절");
+    APPLICATION("신청"), APPROVAL("승인"), REJECTION("거절"), NONE("없음");
 
     private final String description;
 
@@ -22,7 +22,11 @@ public enum SessionJoinStatus {
             return SESSION_JOIN_STATUS_MAP.get(name);
         }
 
-        throw new IllegalArgumentException(name + "을 찾을 수 없습니다.");
+        return NONE;
+    }
+
+    public boolean isApproveStatus() {
+        return this == APPROVAL || this == NONE;
     }
 
 }

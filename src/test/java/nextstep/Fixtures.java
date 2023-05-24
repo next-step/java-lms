@@ -35,6 +35,7 @@ public class Fixtures {
         return SessionBuilder.aSession()
                              .withSessionStatus(SessionStatus.READY)
                              .withSessionBillType(SessionBillType.FREE)
+                             .withSessionJoins(new SessionJoins(new ArrayList<>()))
                              .withSessionRegistration(aSessionRegistration().build())
                              .withSessionCoverImage(new SessionCoverImage("http://edu.nexystep.camp"))
                              .withSessionPeriod(new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)))

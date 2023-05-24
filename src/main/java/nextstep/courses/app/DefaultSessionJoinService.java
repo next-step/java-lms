@@ -1,9 +1,6 @@
 package nextstep.courses.app;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionJoin;
-import nextstep.courses.domain.SessionJoinRepository;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,10 +25,12 @@ public class DefaultSessionJoinService implements SessionJoinService {
     @Override
     public void register(long sessionId, List<String> userIds) {
         Session session = sessionRepository.findById(sessionId);
+        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionId(sessionId);
+        session.addSessionJoins(sessionJoins);
         List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
 
         for (NsUser nsUser : nsUsers) {
-            session.register(nsUser);
+            session.register(nsUser, SessionJoinStatus.APPLICATION);
         }
 
         sessionJoinRepository.save(session);

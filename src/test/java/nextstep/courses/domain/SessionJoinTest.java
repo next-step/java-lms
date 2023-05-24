@@ -12,7 +12,8 @@ class SessionJoinTest {
     @Test
     @DisplayName("수강 신청 승인")
     void test01() {
-        SessionJoin sessionJoin = SessionJoin.apply(aSession().build(), NsUserTest.JAVAJIGI);
+        SessionJoin sessionJoin = SessionJoin.apply(aSession().build(), NsUserTest.JAVAJIGI,
+                                                    SessionJoinStatus.APPLICATION);
 
         sessionJoin.approve();
 
@@ -22,7 +23,8 @@ class SessionJoinTest {
     @Test
     @DisplayName("수강 신청 거절")
     void test02() {
-        SessionJoin sessionJoin = SessionJoin.apply(aSession().build(), NsUserTest.JAVAJIGI);
+        SessionJoin sessionJoin = SessionJoin.apply(aSession().build(), NsUserTest.JAVAJIGI,
+                                                    SessionJoinStatus.APPLICATION);
 
         sessionJoin.reject();
 

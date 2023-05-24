@@ -60,7 +60,7 @@ class SessionTest {
                                                                                    .build())
                                     .build();
 
-        session.register(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.APPLICATION);
 
         assertThat(session.getSessionJoins()).hasSize(1)
                                              .extracting("session.id", "nsUser.id")
@@ -76,7 +76,7 @@ class SessionTest {
                                                                                    .build())
                                     .build();
 
-        session.register(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.APPLICATION);
 
         assertThat(session.getSessionJoins()).hasSize(1)
                                              .extracting("session.id", "nsUser.id")
@@ -92,7 +92,8 @@ class SessionTest {
                                                                                    .build())
                                     .build();
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -104,7 +105,8 @@ class SessionTest {
                                                                                    .build())
                                     .build();
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -113,8 +115,9 @@ class SessionTest {
         Session session = aSession().withSessionStatus(OPEN).withSessionRegistration(
                 aSessionRegistration().withMaxUserCount(1).build()).build();
 
-        session.addUser(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.NONE);
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
     }
 }

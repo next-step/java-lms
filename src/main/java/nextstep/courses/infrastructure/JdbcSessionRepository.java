@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -34,7 +35,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(2, session.getSessionCoverImageUrl());
             ps.setString(3, session.getSessionStatus().name());
             ps.setString(4, session.getSessionRecruitStatus().name());
-            ps.setInt(5, session.getMaxUserCount());
+            ps.setLong(5, session.getMaxUserCount());
             ps.setTimestamp(6, Timestamp.valueOf(session.getSessionPeriod().getStartedAt()));
             ps.setTimestamp(7, Timestamp.valueOf(session.getSessionPeriod().getEndedAt()));
             ps.setTimestamp(8, Timestamp.valueOf(session.getCreatedAt()));
@@ -54,12 +55,12 @@ public class JdbcSessionRepository implements SessionRepository {
                             SessionBillType.find(rs.getString(3)),
                             new SessionCoverImage(rs.getString(4)),
                             new SessionRegistration(SessionRecruitStatus.find(rs.getString(5)),
-                                                    rs.getInt(6)),
+                                                    rs.getLong(6)),
                             new SessionPeriod(toLocalDateTime(rs.getTimestamp(7)),
                                               toLocalDateTime(rs.getTimestamp(8))),
+                            new SessionJoins(new ArrayList<>()),
                             toLocalDateTime(rs.getTimestamp(9)),
-                            toLocalDateTime(rs.getTimestamp(10))
-                );
+                            toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

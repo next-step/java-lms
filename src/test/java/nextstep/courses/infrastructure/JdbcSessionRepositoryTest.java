@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionJoinRepository;
 import nextstep.courses.domain.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,8 @@ class JdbcSessionRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private SessionJoinRepository sessionJoinRepository;
 
     private SessionRepository sessionRepository;
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@Transactional
 @SpringBootTest
 class SessionJoinServiceTest {
     @Autowired
@@ -40,7 +42,13 @@ class SessionJoinServiceTest {
     @Test
     @DisplayName("강의 등록 - 최대 강의 수 초과")
     void test02() {
-        long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(1));
+        Session session = aSession().withSessionStatus(SessionStatus.PROGRESS)
+                                    .withSessionRegistration(aSessionRegistration().withMaxUserCount(1).build())
+                                    .build();
+        long savedSessionId = sessionRepository.save(session);
+        Session findSession = sessionRepository.findById(savedSessionId);
+        findSession.register(SAERANG, SessionJoinStatus.APPROVAL);
+        sessionJoinRepository.save(findSession);
 
         assertThatThrownBy(() -> sessionJoinService.register(savedSessionId, List.of(JAVAJIGI.getUserId(), SANJIGI.getUserId())))
                 .isInstanceOf(IllegalArgumentException.class);

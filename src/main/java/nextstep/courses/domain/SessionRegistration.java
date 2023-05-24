@@ -5,18 +5,18 @@ import java.util.Objects;
 public class SessionRegistration {
     private final SessionRecruitStatus sessionRecruitStatus;
 
-    private final int maxUserCount;
+    private final long maxUserCount;
 
-    public SessionRegistration(SessionRecruitStatus sessionRecruitStatus, int maxUserCount) {
+    public SessionRegistration(SessionRecruitStatus sessionRecruitStatus, long maxUserCount) {
         this.sessionRecruitStatus = sessionRecruitStatus;
         this.maxUserCount = maxUserCount;
     }
 
-    public static SessionRegistration of(SessionRecruitStatus sessionRecruitStatus, int maxUserCount) {
+    public static SessionRegistration of(SessionRecruitStatus sessionRecruitStatus, long maxUserCount) {
         return new SessionRegistration(sessionRecruitStatus, maxUserCount);
     }
 
-    public void validate(int userCount) {
+    public void validate(long userCount) {
         if (this.sessionRecruitStatus.isNotRecruiting()) {
             throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
         }
@@ -30,7 +30,7 @@ public class SessionRegistration {
         return sessionRecruitStatus;
     }
 
-    public int getMaxUserCount() {
+    public long getMaxUserCount() {
         return maxUserCount;
     }
 

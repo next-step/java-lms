@@ -24,9 +24,9 @@ class SessionJoinRepositoryTest {
     void test03() {
         Session session = aSession().build();
         long sessionId = sessionRepository.save(session);
-        Session savedSession = aSession().withId(sessionId).build();
-        savedSession.addUser(NsUserTest.JAVAJIGI);
-        savedSession.addUser(NsUserTest.SANJIGI);
+        Session savedSession = aSession().withId(sessionId).withSessionStatus(SessionStatus.OPEN).build();
+        savedSession.register(NsUserTest.JAVAJIGI, SessionJoinStatus.APPLICATION);
+        savedSession.register(NsUserTest.SANJIGI, SessionJoinStatus.APPLICATION);
 
         sessionJoinRepository.save(savedSession);
 

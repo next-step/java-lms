@@ -9,6 +9,7 @@ public final class SessionBuilder {
     private SessionCoverImage sessionCoverImage;
     private SessionRegistration sessionRegistration;
     private SessionPeriod sessionPeriod;
+    private SessionJoins sessionJoins;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -49,6 +50,11 @@ public final class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder withSessionJoins(SessionJoins sessionJoins) {
+        this.sessionJoins = sessionJoins;
+        return this;
+    }
+
     public SessionBuilder withCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -61,6 +67,6 @@ public final class SessionBuilder {
 
     public Session build() {
         return new Session(id, sessionStatus, sessionBillType, sessionCoverImage, sessionRegistration, sessionPeriod,
-                           createdAt, updatedAt);
+                           sessionJoins, createdAt, updatedAt);
     }
 }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionRecruitStatus {
-    NOT_RECRUIT("비모집"), RECRUIT("모집"), NONE("찾을 수 없음");
+    NOT_RECRUIT("비모집"), RECRUIT("모집"), NONE("없음");
 
     private final String description;
 
