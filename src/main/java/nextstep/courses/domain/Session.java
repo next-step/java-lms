@@ -52,11 +52,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(sessionInfo, session.sessionInfo) && status == session.status && Objects.equals(sessionTimeLine, session.sessionTimeLine) && Objects.equals(students, session.students) && Objects.equals(maxNumOfStudent, session.maxNumOfStudent);
+        return Objects.equals(sessionInfo, session.sessionInfo) && Objects.equals(sessionTimeLine, session.sessionTimeLine);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionInfo, status, sessionTimeLine, students, maxNumOfStudent);
+        return Objects.hash(sessionInfo, sessionTimeLine);
     }
 }
