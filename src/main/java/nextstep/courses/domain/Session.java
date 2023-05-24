@@ -99,18 +99,4 @@ public class Session {
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
   }
-
-  @Override
-  public String toString() {
-    return "Session{" +
-            "id=" + id +
-            ", sessionPayment=" + sessionPayment +
-            ", sessionUsers=" + sessionUsers +
-            ", sessionPeriod=" + sessionPeriod +
-            ", sessionCoverUrl=" + sessionCoverUrl +
-            ", createdAt=" + createdAt +
-            ", updatedAt=" + updatedAt +
-            ", sessionStatus=" + sessionStatus +
-            '}';
-  }
 }

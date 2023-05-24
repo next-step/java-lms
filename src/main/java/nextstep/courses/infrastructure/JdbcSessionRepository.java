@@ -11,9 +11,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -51,6 +51,13 @@ public class JdbcSessionRepository implements SessionRepository {
     String sql = "select id, session_payment, session_status, max_enrollment, start_date, end_date, session_cover_url, created_at, updated_at from session where id = ?";
 
     return jdbcTemplate.queryForObject(sql, sessionRowMapper(), sessionId);
+  }
+
+  @Override
+  public List<Session> findByCourseId(Long courseId) {
+    String sql = "select id, session_payment, session_status, max_enrollment, start_date, end_date, session_cover_url, created_at, updated_at from session where course_id = ?";
+
+    return jdbcTemplate.query(sql, sessionRowMapper(), courseId);
   }
 
   private RowMapper<Session> sessionRowMapper() {
