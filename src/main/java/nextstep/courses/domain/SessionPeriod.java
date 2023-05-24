@@ -28,4 +28,12 @@ public class SessionPeriod {
   private String currentDate(LocalDateTime localDateTime) {
     return localDateTime.format(DateTimeFormatter.ISO_DATE);
   }
+
+  public LocalDateTime getStartDate() {
+    return startDate;
+  }
+
+  public LocalDateTime getEndDate() {
+    return endDate;
+  }
 }

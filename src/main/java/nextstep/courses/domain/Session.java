@@ -3,11 +3,12 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NextStepUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Session {
 
   private static final String NOT_ACCEPTING_MESSAGE = "수강신청은 강의 상태가 모집중일 때만 가능합니다. 현재 수강 상태 : ";
-  private final Long id;
+  private Long id;
   private final SessionPayment sessionPayment;
   private final SessionUsers sessionUsers;
   private final SessionPeriod sessionPeriod;
@@ -15,6 +16,10 @@ public class Session {
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private SessionStatus sessionStatus;
+
+  public Session(SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(null, sessionPayment, sessionStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
+  }
 
   public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
@@ -44,4 +49,68 @@ public class Session {
     sessionUsers.enroll(new SessionUser(this, nextStepUser, now, now));
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public SessionPayment getSessionPayment() {
+    return sessionPayment;
+  }
+
+  public SessionUsers getSessionUsers() {
+    return sessionUsers;
+  }
+
+  public SessionPeriod getSessionPeriod() {
+    return sessionPeriod;
+  }
+
+  public SessionCoverUrl getSessionCoverUrl() {
+    return sessionCoverUrl;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Session session = (Session) o;
+
+    return Objects.equals(id, session.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
+
+  @Override
+  public String toString() {
+    return "Session{" +
+            "id=" + id +
+            ", sessionPayment=" + sessionPayment +
+            ", sessionUsers=" + sessionUsers +
+            ", sessionPeriod=" + sessionPeriod +
+            ", sessionCoverUrl=" + sessionCoverUrl +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            ", sessionStatus=" + sessionStatus +
+            '}';
+  }
 }

@@ -29,4 +29,8 @@ public class SessionUsers {
   private boolean canEnrollUser() {
     return sessionUsers.size() < maxUserEnrollment;
   }
+
+  public int getMaxUserEnrollment() {
+    return maxUserEnrollment;
+  }
 }
