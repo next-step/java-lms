@@ -1,6 +1,6 @@
 package nextstep.courses.domain.enums;
 
-import java.util.Objects;
+import java.util.Arrays;
 
 public enum SessionStatus {
     PREPARING("준비중"),
@@ -19,6 +19,13 @@ public enum SessionStatus {
 
     public boolean canEnroll() {
         return this == RECRUITING;
+    }
+
+    public static SessionStatus of(String description) {
+        return Arrays.stream(values())
+                .filter(sessionStatus -> sessionStatus.getDescription().equals(description.toLowerCase()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의 상태입니다."));
     }
 
 }
