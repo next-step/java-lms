@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class SessionImageUrl {
+    private static final String INVALID_URL_MESSAGE = "url 형식이 아닙니다.";
+
     private String imageUrl;
 
     public SessionImageUrl(String imageUrl) {
@@ -14,7 +16,7 @@ public class SessionImageUrl {
 
     private void validateUrl(String imageUrl) {
         if (!isValidUrl(imageUrl)) {
-            throw new IllegalArgumentException("url 형식이 아닙니다.");
+            throw new IllegalArgumentException(INVALID_URL_MESSAGE);
         }
     }
 

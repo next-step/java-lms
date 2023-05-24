@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionPeriod {
+    private static final String INVALID_PERIOD_MESSAGE = "강의 시작일은 종료일 이전이어야 합니다.";
+
     private final LocalDateTime startedAt;
     private final LocalDateTime endAt;
 
@@ -15,7 +17,7 @@ public class SessionPeriod {
 
     private void validatePeriod(LocalDateTime startedAt, LocalDateTime endAt) {
         if (endAt.isBefore(startedAt)) {
-            throw new IllegalArgumentException("강의 시작일은 종료일 이전이어야 합니다.");
+            throw new IllegalArgumentException(INVALID_PERIOD_MESSAGE);
         }
     }
 
