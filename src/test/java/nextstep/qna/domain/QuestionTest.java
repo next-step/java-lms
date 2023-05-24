@@ -84,6 +84,17 @@ public class QuestionTest {
     }
 
     @Test
+    @DisplayName("Question 답변글에 질문 작성자외에 다른 답변글 작성자가 존재하는지 확인")
+    void 질문자외_답변자들이_존재하는지_확인() {
+        Answer answerOne = Answer.of(NsUserTest.SANJIGI, question, "Answers Contents1");
+        Answer answerTwo = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+
+        answers = Answers.of(List.of(answerOne, answerTwo));
+        question.loadAnswers(answers);
+        assertThat(question.hasAnotherOwner()).isTrue();
+    }
+
+    @Test
     @DisplayName("Question 삭제시 답글이 없는경우 삭제 상태(deleted - boolean type)로 변경되는지 확인 ")
     void 답변이_없는_경우_삭제() {
 
@@ -96,7 +107,6 @@ public class QuestionTest {
         question.remove(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
     }
-
 
     @Test
     @DisplayName("질문 삭제시 삭제 이력이 반환되는지 확인 (답변이 없는경우)")

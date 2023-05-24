@@ -104,6 +104,10 @@ public class Question {
         return false;
     }
 
+    public boolean hasAnotherOwner() {
+        return answers.hasAnotherOwner(this.writer);
+    }
+
     public Answers getAnswers() {
         return answers;
     }
