@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
     private Long id;
@@ -15,7 +15,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    private final Set<Session> sessions = new HashSet<>();
+    private final List<Session> sessions = new ArrayList<>();
 
     public Course() {
     }
@@ -44,8 +44,26 @@ public class Course {
         return createdAt;
     }
 
-    public Set<Session> getSessions() {
-        return sessions;
+    public Session getNThSession(int generation) {
+        validateGeneration(generation);
+        return sessions.get(generation - 1);
+    }
+
+    private void validateGeneration(int generation) {
+        validateNegative(generation);
+        if (this.sessions.size() < generation) {
+            throw new IllegalArgumentException("해당 기수의 강의는 존재하지 않습니다.");
+        }
+    }
+
+    private static void validateNegative(int generation) {
+        if (generation <= 0) {
+            throw new IllegalArgumentException("기수는 1 기수 이상부터 시작합니다.");
+        }
+    }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
     }
 
     @Override
