@@ -28,8 +28,15 @@ public class Session {
         this.currRegisterNum = currRegisterNum;
     }
 
-    public boolean isRecruiting() {
-        return RECRUITING == status;
+    public boolean isRegistrable() {
+        if (isNotRecruiting()) {
+            throw new RuntimeException("강의 모집기간이 아닙니다.");
+        }
+        return true;
+    }
+
+    private boolean isNotRecruiting() {
+        return RECRUITING != status;
     }
 
     public Long id() {
@@ -49,8 +56,5 @@ public class Session {
                 ", maxRegisterNum=" + maxRegisterNum +
                 ", currRegisterNum=" + currRegisterNum +
                 '}';
-    }
-
-    public void isRegistrable() {
     }
 }
