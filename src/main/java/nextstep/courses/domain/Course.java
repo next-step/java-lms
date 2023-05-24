@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Course {
@@ -14,7 +15,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    private Set<Session> sessions;
+    private final Set<Session> sessions = new HashSet<>();
 
     public Course() {
     }
@@ -43,6 +44,10 @@ public class Course {
         return createdAt;
     }
 
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -51,6 +56,7 @@ public class Course {
                 ", creatorId=" + creatorId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", sessions=" + sessions +
                 '}';
     }
 }
