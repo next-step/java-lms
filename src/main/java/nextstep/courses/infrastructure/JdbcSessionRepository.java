@@ -59,10 +59,10 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   @Override
-  public void saveAllSessionUser(SessionUsers sessionUsers) {
+  public void saveAllSessionUser(Session session) {
     String sql = "insert into session_ns_user (session_id, user_id, created_at, updated_at) values (?, ?, ?, ?)";
 
-    for (SessionUser sessionUser : sessionUsers.getSessionUsers()) {
+    for (SessionUser sessionUser : session.getSessionUsers().getSessionUsers()) {
       jdbcTemplate.update(sql, sessionUser.getSession().getId(), sessionUser.getNextStepUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
     }
   }
@@ -77,8 +77,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     findById(rs.getLong(2)),
                     new NextStepUser(),
                     toLocalDateTime(rs.getTimestamp(4)),
-                    toLocalDateTime(rs.getTimestamp(5))
-            );
+                    toLocalDateTime(rs.getTimestamp(5)));
 
     return jdbcTemplate.query(sql, sessionUserRowMapper, sessionId);
   }
