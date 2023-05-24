@@ -5,8 +5,8 @@ create table session
     session_cover_image varchar(255) not null,
     session_status      varchar(255) not null,
     user_count          int          not null,
-    from_at             timestamp    not null,
-    to_at               timestamp    not null,
+    started_at          timestamp    not null,
+    ended_at            timestamp    not null,
     created_at          timestamp    not null,
     updated_at          timestamp,
     primary key (id)

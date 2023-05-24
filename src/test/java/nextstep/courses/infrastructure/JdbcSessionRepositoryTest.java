@@ -29,12 +29,13 @@ class JdbcSessionRepositoryTest {
     @Test
     void crud() {
         Session session = new SessionFixture().강의_과정_1();
-        int count = sessionRepository.save(session);
+        long count = sessionRepository.save(session);
         LOGGER.debug("Session count: {}", count);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getSessionPayment().getStatus()).isEqualTo(savedSession.getSessionPayment().getStatus());
         LOGGER.debug("Session: {}", savedSession);
+
     }
 
 }
