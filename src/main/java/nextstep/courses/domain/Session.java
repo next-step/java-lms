@@ -111,6 +111,10 @@ public class Session {
         sessionJoins.add(SessionJoin.apply(this, nsUser, sessionJoinStatus));
     }
 
+    public void addSessionJoins(List<SessionJoin> sessionJoins) {
+        this.sessionJoins.addAll(sessionJoins);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,9 +131,5 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" + "id=" + id + ", sessionJoins=" + sessionJoins + ", sessionBillType=" + sessionBillType + ", sessionCoverImage=" + sessionCoverImage + ", sessionRegistration=" + sessionRegistration + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
-    }
-
-    public void addSessionJoins(List<SessionJoin> sessionJoins) {
-        this.sessionJoins.addAll(sessionJoins);
     }
 }
