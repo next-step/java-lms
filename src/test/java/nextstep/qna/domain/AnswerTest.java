@@ -20,7 +20,7 @@ public class AnswerTest {
 
     @BeforeEach
     public void initialize() {
-        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1", null);
+        question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answers answers = Answers.of(List.of(answer));
         question.loadAnswers(answers);
