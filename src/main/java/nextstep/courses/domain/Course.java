@@ -20,6 +20,8 @@ public class Course {
 
     private boolean isFree;
 
+    private Status status;
+
     public Course() {
     }
 
@@ -64,6 +66,13 @@ public class Course {
 
     public boolean isFree() {
         return isFree;
+    }
+
+    public void patchStatus(String status) {
+        this.status = Status.valueOf(status);
+    }
+    public boolean isOpening() {
+        return status == Status.opening;
     }
 
     @Override

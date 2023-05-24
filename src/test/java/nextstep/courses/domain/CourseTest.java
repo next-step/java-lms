@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CourseTest {
 
@@ -40,4 +41,31 @@ class CourseTest {
         assertThat(expected).isEqualTo(actual);
     }
 
+    @Test
+    void statusError() {
+        String input = "sss";
+
+        assertThatThrownBy(() -> course.patchStatus(input))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void isOpening_false() {
+        String input = "preparing";
+        boolean expected = false;
+
+        course.patchStatus(input);
+        boolean actual = course.isOpening();
+        assertThat(expected).isEqualTo(actual);
+    }
+
+    @Test
+    void isOpening_true() {
+        String input = "opening";
+        boolean expected = true;
+
+        course.patchStatus(input);
+        boolean actual = course.isOpening();
+        assertThat(expected).isEqualTo(actual);
+    }
 }
