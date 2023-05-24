@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -14,9 +13,12 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
     private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
+
+    private boolean isFree;
 
     public Course() {
     }
@@ -31,6 +33,9 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.startedAt = null;
+        this.endedAt = null;
+        this.isFree = true;
     }
 
     public String getTitle() {
@@ -45,12 +50,20 @@ public class Course {
         return createdAt;
     }
 
-    public void putTerms(LocalDateTime startedAt, LocalDateTime endedAt){
+    public void patchTerms(LocalDateTime startedAt, LocalDateTime endedAt){
         this.startedAt = startedAt;
         this.endedAt = endedAt;
     }
     public List<LocalDateTime> terms() {
         return List.of(startedAt, endedAt);
+    }
+
+    public void patchIsFree(boolean input) {
+        this.isFree = input;
+    }
+
+    public boolean isFree() {
+        return isFree;
     }
 
     @Override
