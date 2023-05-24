@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 
 class CourseTest {
@@ -18,9 +20,12 @@ class CourseTest {
     @BeforeEach
     void setUp() {
         this.course = new Course();
-        this.firstSession = new Session();
-        this.secondSession = new Session();
-        this.thirdSession = new Session();
+        SessionInfo sessionInfo = new SessionInfo(0L, "titl1", "img", SessionType.FREE);
+        SessionStatus status = SessionStatus.OPENED;
+        SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
+        this.firstSession = new Session(sessionInfo, status, sessionTimeLine, 3L);
+        this.secondSession = new Session(sessionInfo, status, sessionTimeLine,3L);
+        this.thirdSession = new Session(sessionInfo, status, sessionTimeLine, 3L);
         addSessionToCourse();
     }
 
