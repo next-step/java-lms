@@ -47,7 +47,7 @@ public class Answer {
         return id;
     }
 
-    public void convertDeleteStatus() {
+    public void changeStateToTrue() {
         deleted = true;
     }
 

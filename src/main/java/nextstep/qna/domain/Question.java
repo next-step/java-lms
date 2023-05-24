@@ -56,7 +56,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void convertDeleteStatus() {
+    public void changeStateToTrue() {
         this.deleted = true;
     }
 
@@ -68,9 +68,13 @@ public class Question {
         return answers;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        validAuthority(loginUser);
-        convertDeleteStatus();
+    public List<DeleteHistory> delete(NsUser loginUser) {
+
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        changeStateToTrue();
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
@@ -78,13 +82,6 @@ public class Question {
         deleteHistories.addAll(answers.delete(loginUser));
 
         return deleteHistories;
-    }
-
-
-    private void validAuthority(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
     }
 
     @Override
