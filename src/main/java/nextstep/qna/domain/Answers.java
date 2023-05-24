@@ -16,6 +16,10 @@ public class Answers {
         return new Answers(answer);
     }
 
+    public static Answers create() {
+        return new Answers(List.of());
+    }
+
     public boolean hasAnotherOwner(NsUser requestUser) {
         return this.answers
                 .stream()
