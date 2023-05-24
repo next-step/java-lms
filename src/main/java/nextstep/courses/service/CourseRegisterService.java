@@ -6,12 +6,12 @@ import nextstep.courses.domain.SessionRepository;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SessionService {
+public class CourseRegisterService {
 
     private final Set<Session> sessions = new HashSet<>();
     private SessionRepository sessionRepository;
 
-    public SessionService(SessionRepository sessionRepository) {
+    public CourseRegisterService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 

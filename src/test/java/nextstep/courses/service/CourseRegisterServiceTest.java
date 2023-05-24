@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class SessionServiceTest {
+public class CourseRegisterServiceTest {
 
     @Test
     void 강의상태가_모집중일_경우만_저장() {
-        SessionService sessionRegister = new SessionService(new MockSessionRepository());
+        CourseRegisterService sessionRegister = new CourseRegisterService(new MockSessionRepository());
 
         sessionRegister.registerSession(1L);
         sessionRegister.registerSession(2L);
