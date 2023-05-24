@@ -9,7 +9,7 @@ public class Course {
 
     private String title;
 
-    private Long creatorId;
+    private CreatorId creatorId;
 
     private List<Session> sessions = new ArrayList<>();
 
@@ -27,7 +27,7 @@ public class Course {
     public Course(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.courseId = new CourseId(courseId);
         this.title = title;
-        this.creatorId = creatorId;
+        this.creatorId = new CreatorId(creatorId);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -37,7 +37,7 @@ public class Course {
     }
 
     public Long getCreatorId() {
-        return creatorId;
+        return creatorId.getCreatorId();
     }
 
     public LocalDateTime getCreatedAt() {
