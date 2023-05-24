@@ -106,7 +106,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "NsUser{" +
+        return "NextStepUser{" +
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
