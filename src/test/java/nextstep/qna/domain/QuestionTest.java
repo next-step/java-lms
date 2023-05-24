@@ -30,7 +30,8 @@ public class QuestionTest {
         question.addAnswer(answer);
 
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> question.delete(NsUserTest.JAVAJIGI));
+                .isThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
+                .withMessageMatching("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @Test
