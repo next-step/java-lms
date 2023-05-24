@@ -16,7 +16,7 @@ public class AnswerTest {
     @Test
     @DisplayName("답변 삭제 시, DeleteHistory 반환")
     void delete_then_return_DeleteHistory() {
-        assertThat(A1.delete())
+        assertThat(A1.delete(LocalDateTime.now()))
                 .isEqualTo(new DeleteHistory(ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now()));
     }
 }
