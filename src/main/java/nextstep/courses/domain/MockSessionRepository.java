@@ -10,11 +10,12 @@ public class MockSessionRepository implements SessionRepository {
             SessionType.FREE, SessionStatus.PREPARING, 50, 12);
     public static final Session S2 = new Session("TDD with Kotlin 5", 5, LocalDate.now(), LocalDate.now(),
             SessionType.PAID, SessionStatus.RECRUITING, 50, 2);
+    private static final Map<String, Session> sessions = new HashMap<>();
 
-    private static Map<String, Session> sessions = new HashMap<>() {{
+    static {
         sessions.put("Java", S1);
         sessions.put("Kotlin", S2);
-    }};
+    }
 
     @Override
     public Session findByTitle(String title) {

@@ -6,13 +6,16 @@ import java.util.Set;
 public class SessionRegister {
 
     private final Set<Session> sessions = new HashSet<>();
+    private SessionRepository sessionRepository;
 
-    public SessionRegister() {
+    public SessionRegister(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
     }
 
     public void registerSession(Session session) {
+
         if (session.isRecruiting()) {
-            sessions.add(session);
+            this.sessions.add(session);
         }
     }
 

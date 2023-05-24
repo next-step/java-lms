@@ -15,7 +15,8 @@ public class SessionRegisterTest {
 
     @Test
     void 강의상태가_모집중일_경우만_저장() {
-        SessionRegister sessionRegister = new SessionRegister();
+        SessionRegister sessionRegister = new SessionRegister(new MockSessionRepository());
+
         sessionRegister.registerSession(S1);
         sessionRegister.registerSession(S2);
 
