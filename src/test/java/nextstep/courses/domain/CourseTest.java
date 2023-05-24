@@ -68,4 +68,36 @@ class CourseTest {
         boolean actual = course.isOpening();
         assertThat(expected).isEqualTo(actual);
     }
+
+    @Test
+    void enrolement_not_opning() {
+        String input = "ended";
+
+        course.patchStatus(input);
+        assertThatThrownBy(() -> course.enrolement())
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void enrolement_above_max_student() {
+        String input = "preparing";
+
+        course.patchStatus(input);
+        assertThatThrownBy(() -> course.enrolement())
+                .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void enrolement() {
+        String inputStatus = "preparing";
+        int inputMaxStudents = 5;
+
+        course.patchStatus(inputStatus);
+        course.registerMaxStudents(inputMaxStudents);
+
+        int expected = 1;
+        course.enrolement();
+        int actual = course.currentStudents();
+        assertThat(expected).isEqualTo(actual);
+    }
 }
