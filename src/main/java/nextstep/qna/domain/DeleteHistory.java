@@ -25,25 +25,23 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
-    public static DeleteHistory from(ContentType contentType, long contentId, NsUser deletedBy) {
+    public static DeleteHistory of(ContentType contentType, long contentId, NsUser deletedBy) {
         long id = SimpleIdGenerator.getAndIncrement(DeleteHistory.class);
         return new DeleteHistory(id, contentType, contentId, deletedBy, LocalDateTime.now());
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeleteHistory that = (DeleteHistory) o;
-        return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+        return id == that.id && contentId == that.contentId && contentType == that.contentType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, contentType, contentId);
     }
 
     @Override
