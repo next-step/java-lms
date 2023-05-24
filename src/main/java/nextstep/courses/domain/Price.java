@@ -6,8 +6,4 @@ public class Price {
     public Price(int price) {
         this.price = price;
     }
-
-    public PriceType checkPriceType() {
-        return PriceType.checkPriceType(this.price);
-    }
 }
