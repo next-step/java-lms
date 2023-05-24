@@ -11,7 +11,7 @@ public class Student {
     }
 
     public void enroll(Session session) {
-        sessions.add(session);
         session.add(this);
+        sessions.add(session);
     }
 }

@@ -25,8 +25,8 @@ public class StudentTest {
         Student student2 = new Student();
         Student student3 = new Student();
         Session session = new Session();
-        int maxCount = 2;
-        session.setMaxStudent(maxCount);
+        long maxCount = 2L;
+        session.setMaxNumOfStudent(maxCount);
 
         student1.enroll(session);
         student2.enroll(session);
