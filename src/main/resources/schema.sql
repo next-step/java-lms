@@ -12,6 +12,7 @@ create table session (
     session_payment varchar(20) not null,
     session_status varchar(20) not null,
     session_cover_url varchar(255) not null,
+    max_enrollment int not null,
     start_date timestamp not null,
     end_date timestamp not null,
     created_at timestamp not null,
