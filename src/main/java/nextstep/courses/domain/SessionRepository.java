@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 public interface SessionRepository {
 
-    Session findByTitle(String title);
+    Session findById(Long id);
 
     void save(Session session);
 }

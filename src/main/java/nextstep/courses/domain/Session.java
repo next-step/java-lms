@@ -6,6 +6,7 @@ import static nextstep.courses.domain.SessionStatus.RECRUITING;
 
 public class Session {
 
+    private Long id;
     private String title;
     private int generation;
     private LocalDate startDate;
@@ -15,7 +16,8 @@ public class Session {
     private int maxRegisterNum;
     private int currRegisterNum;
 
-    public Session(String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
+    public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
+        this.id = id;
         this.title = title;
         this.generation = generation;
         this.startDate = startDate;
@@ -23,16 +25,29 @@ public class Session {
         this.type = type;
         this.status = status;
         this.maxRegisterNum = maxRegisterNum;
-        this.currRegisterNum = maxRegisterNum;
+        this.currRegisterNum = currRegisterNum;
     }
 
     boolean isRecruiting() {
         return RECRUITING == status;
     }
 
-    public String title() {
-        return title;
+    public Long id() {
+        return this.id;
     }
 
-
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", generation=" + generation +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", type=" + type +
+                ", status=" + status +
+                ", maxRegisterNum=" + maxRegisterNum +
+                ", currRegisterNum=" + currRegisterNum +
+                '}';
+    }
 }

@@ -12,12 +12,15 @@ public class SessionRegister {
         this.sessionRepository = sessionRepository;
     }
 
-    public void registerSession(Session session) {
+    public void registerSession(Long id) {
+        Session session = sessionRepository.findById(id);
+        System.out.println("session = " + session);
 
         if (session.isRecruiting()) {
             this.sessions.add(session);
         }
     }
+
 
     int count() {
         return sessions.size();

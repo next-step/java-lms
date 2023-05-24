@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionTest {
 
-    public static final Session S1 = new Session("TDD with JAVA 16", 16, LocalDate.now(), LocalDate.now(),
+    public static final Session S1 = new Session(1L, "TDD with JAVA 16", 16, LocalDate.now(), LocalDate.now(),
             SessionType.FREE, SessionStatus.PREPARING, 50, 12);
-    public static final Session S2 = new Session("TDD with Kotlin 5", 5, LocalDate.now(), LocalDate.now(),
+    public static final Session S2 = new Session(2L, "TDD with Kotlin 5", 5, LocalDate.now(), LocalDate.now(),
             SessionType.PAID, SessionStatus.RECRUITING, 50, 2);
 
     @Test
