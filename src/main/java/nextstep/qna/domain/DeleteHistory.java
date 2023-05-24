@@ -1,11 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.domain.base.CreatedDate;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DeleteHistory {
+public class DeleteHistory extends CreatedDate {
+
     private Long id;
 
     private ContentType contentType;
@@ -13,8 +15,6 @@ public class DeleteHistory {
     private Long contentId;
 
     private NsUser deletedBy;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
