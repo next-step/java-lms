@@ -16,7 +16,7 @@ public class SessionTest {
   @BeforeEach
   public void setUp() {
     LocalDateTime currentTime = LocalDateTime.now();
-    session = new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com");
+    session = new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
   }
 
   @Test

@@ -20,8 +20,8 @@ public class CourseTest {
   @DisplayName("과정에 여러 강의 추가 확인 테스트")
   public void 과정에_추가된_세션_확인() {
     LocalDateTime currentTime = LocalDateTime.now();
-    course.addSession(new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com"));
-    course.addSession(new Session(2L, SessionPayment.PAID, SessionStatus.PREPARING, 2, currentTime, currentTime.plusDays(1), "https://twony.com"));
+    course.addSession(new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime));
+    course.addSession(new Session(2L, SessionPayment.PAID, SessionStatus.PREPARING, 2, currentTime, currentTime.plusDays(1), "https://twony.com", currentTime, currentTime));
 
     Assertions.assertThat(course.sessions()).hasSize(2);
   }
