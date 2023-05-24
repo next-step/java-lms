@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static nextstep.courses.domain.SessionStatus.OPENED;
@@ -9,6 +10,7 @@ import static nextstep.courses.domain.SessionStatus.OPENED;
 public class Session {
 
     private final Set<Student> students = new HashSet<>();
+    private String title;
     private Long maxNumOfStudent;
     private SessionStatus status;
 
@@ -41,5 +43,18 @@ public class Session {
 
     public void setStatus(SessionStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(students, session.students) && Objects.equals(title, session.title) && Objects.equals(maxNumOfStudent, session.maxNumOfStudent) && status == session.status && Objects.equals(createdAt, session.createdAt) && Objects.equals(closedAt, session.closedAt) && Objects.equals(coverImageInfo, session.coverImageInfo) && type == session.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(students, title, maxNumOfStudent, status, createdAt, closedAt, coverImageInfo, type);
     }
 }
