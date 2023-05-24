@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,11 @@ public class Session {
     private final Set<Student> students = new HashSet<>();
     private Long maxNumOfStudent;
     private SessionStatus status;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime closedAt;
+    private String coverImageInfo;
+    private SessionType type;
 
     public Session() {
 
