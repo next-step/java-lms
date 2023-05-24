@@ -37,7 +37,7 @@ public class SessionTest {
     @DisplayName("강의 객체 생성 case 3 - 강의 종류(무료/유료) 필드 여부")
     void session_has_field_paid_test(){
         assertThat(session)
-                .hasFieldOrProperty("isPaid");
+                .hasFieldOrProperty("paymentType");
     }
 
     @Test
@@ -55,7 +55,6 @@ public class SessionTest {
                 .hasFieldOrProperty("maximumEnrollments");
     }
 
-
     @Test
     @DisplayName("강의 최대 수강 인원을 넘을 수 없다.")
     void impossible_over_maximum_enrollments(){
@@ -67,12 +66,11 @@ public class SessionTest {
                 .hasMessage("해당 강의는 수강인원을 초과 하였습니다.");
     }
 
+    @Test
     @DisplayName("강의 수강신청 가능여부 판단")
-    @ParameterizedTest
-    @CsvSource(value = {"READY:false","RECRUIT:true","CLOSED:false"}, delimiter = ':')
-    void test_course_registration(SessionStatusEnum status, boolean result){
-        session.statusChange(status);
-        assertThat(session.isPossible()).isEqualTo(result);
+    void test_course_registration(){
+        session.recruit();
+        assertThat(session.canPossible()).isEqualTo(true);
     }
 
     @Test
@@ -83,5 +81,14 @@ public class SessionTest {
                 .contains(SessionStatusEnum.RECRUIT)
                 .contains(SessionStatusEnum.CLOSED)
                 ;
+    }
+
+    @Test
+    @DisplayName("강의 지불 유형은 무료, 유료")
+    void session_payment_type_test(){
+        assertThat(PaymentTypeEnum.values())
+                .contains(PaymentTypeEnum.FREE)
+                .contains(PaymentTypeEnum.PAID)
+        ;
     }
 }

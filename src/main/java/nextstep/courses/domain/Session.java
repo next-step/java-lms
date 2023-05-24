@@ -1,26 +1,48 @@
 package nextstep.courses.domain;
 
 import java.util.Date;
-import java.util.function.IntConsumer;
 
 public class Session {
-    private final int maximumEnrollments = 30;
 
     private Date startDate;
     private Date endDate;
     private ThumbnailInfo thumbnailInfo;
-    private boolean isPaid;
+    private PaymentTypeEnum paymentType;
     private int enrollments;
     private SessionStatusEnum status;
+    private int maximumEnrollments;
 
     public Session() {
+        this.maximumEnrollments = 30;
     }
 
-    public void statusChange(SessionStatusEnum status) {
+    public Session(int maximumEnrollments) {
+        this.maximumEnrollments = maximumEnrollments;
+    }
+
+    public void ready(){
+        statusChange(SessionStatusEnum.READY);
+    }
+
+    public void recruit(){
+        statusChange(SessionStatusEnum.RECRUIT);
+    }
+
+    public void closed(){
+        statusChange(SessionStatusEnum.CLOSED);
+    }
+
+    public void registerSession() throws Exception {
+        if(canPossible()){
+            plusEnrollment();
+        }
+    }
+
+    private void statusChange(SessionStatusEnum status) {
         this.status = status;
     }
 
-    public boolean isPossible() {
+    public boolean canPossible() {
         return status == SessionStatusEnum.RECRUIT;
     }
 
