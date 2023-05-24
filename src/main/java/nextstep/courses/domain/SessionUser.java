@@ -23,4 +23,20 @@ public class SessionUser {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
+
+  public Session getSession() {
+    return session;
+  }
+
+  public NextStepUser getNextStepUser() {
+    return nextStepUser;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
 }

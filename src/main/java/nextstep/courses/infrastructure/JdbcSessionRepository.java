@@ -1,9 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionPayment;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.*;
+import nextstep.users.domain.NextStepUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -59,6 +57,32 @@ public class JdbcSessionRepository implements SessionRepository {
 
     return jdbcTemplate.query(sql, sessionRowMapper(), courseId);
   }
+
+  @Override
+  public void saveAllSessionUser(SessionUsers sessionUsers) {
+    String sql = "insert into session_ns_user (session_id, user_id, created_at, updated_at) values (?, ?, ?, ?)";
+
+    for (SessionUser sessionUser : sessionUsers.getSessionUsers()) {
+      jdbcTemplate.update(sql, sessionUser.getSession().getId(), sessionUser.getNextStepUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
+    }
+  }
+
+  @Override
+  public List<SessionUser> findAllSessionUserBySessionId(Long sessionId) {
+    String sql = "select id, session_id, user_id, created_at, updated_at from session_ns_user where session_id = ?";
+
+    RowMapper<SessionUser> sessionUserRowMapper = (rs, rowNum) ->
+            new SessionUser(
+                    rs.getLong(1),
+                    findById(rs.getLong(2)),
+                    new NextStepUser(),
+                    toLocalDateTime(rs.getTimestamp(4)),
+                    toLocalDateTime(rs.getTimestamp(5))
+            );
+
+    return jdbcTemplate.query(sql, sessionUserRowMapper, sessionId);
+  }
+
 
   private RowMapper<Session> sessionRowMapper() {
     return ((rs, rowNum) -> new Session(

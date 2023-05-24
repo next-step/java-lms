@@ -9,4 +9,8 @@ public interface SessionRepository {
   Session findById(Long sessionId);
 
   List<Session> findByCourseId(Long courseId);
+
+  void saveAllSessionUser(SessionUsers sessionUsers);
+
+  List<SessionUser> findAllSessionUserBySessionId(Long sessionId);
 }

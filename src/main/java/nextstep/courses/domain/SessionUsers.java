@@ -33,4 +33,8 @@ public class SessionUsers {
   public int getMaxUserEnrollment() {
     return maxUserEnrollment;
   }
+
+  public List<SessionUser> getSessionUsers() {
+    return sessionUsers;
+  }
 }
