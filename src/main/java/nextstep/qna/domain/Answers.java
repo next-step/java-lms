@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Answers {
@@ -21,9 +22,9 @@ public class Answers {
     }
 
     public boolean hasAnotherOwner(NsUser requestUser) {
-        return this.answers
+        return !this.answers
                 .stream()
-                .noneMatch(answer -> answer.isOwner(requestUser));
+                .allMatch(answer -> answer.isOwner(requestUser));
     }
 
     public boolean hasAnswers() {
@@ -39,4 +40,16 @@ public class Answers {
         return DeleteHistories.of(deleteHistories);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Answers answers1 = (Answers) o;
+        return Objects.equals(answers, answers1.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(answers);
+    }
 }
