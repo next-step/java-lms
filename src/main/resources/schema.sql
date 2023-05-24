@@ -74,8 +74,3 @@ create table session_join (
 
 alter table session add session_recruit_status VARCHAR(20) AFTER session_status;
 alter table session_join add session_join_status VARCHAR(20) AFTER session_id;
-
--- UPDATE session SET session_recruit_status = 'RECRUIT' where session_status = 'OPEN';
--- UPDATE session SET session_recruit_status = 'NOT_RECRUIT' where session_status != 'OPEN';
---
--- alter table session alter column session_recruit_status VARCHAR(20) NOT NULL;
