@@ -6,4 +6,8 @@ public class CoverImage {
     public CoverImage(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
