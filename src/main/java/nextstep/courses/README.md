@@ -22,14 +22,13 @@
 ## 수강신청 기능 요구사항
 
 - [x] 강의 등록 가능 여부를 확인한다.
-    - Session#isRegistrable
+  - Session#isRegistrable
 - [x] 강의 상태가 모집중이 아닐 경우 예외처리
-    - "강의 모집기간이 아닙니다."
+  - "강의 모집기간이 아닙니다."
 - [x] 강의 최대 등록 인원이 초과되면 예외처리
-    - "등록 인원이 정원 초과 되었습니다."
+  - "등록 인원이 정원 초과 되었습니다."
 - [x] 수강 신청 가능시 현재 등록 인원 1증가
-- [ ] 강의 식별 id 로 강의를 확인한다.
-    - SessionRepository#findById
-- [ ] 강의 상태가 모집중이면 수강신청한다.
-    - CartRepository#save
-    - [ ] 현재 등록 인원 증가처리
+- [x] 강의 식별 id 로 강의를 확인한다.
+  - SessionRepository#findById
+- [x] 강의 상태가 모집중이면 수강신청한다.
+  - CartRepository#save
