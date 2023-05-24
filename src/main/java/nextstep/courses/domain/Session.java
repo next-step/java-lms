@@ -10,10 +10,10 @@ public class Session {
   private static final String NOT_ACCEPTING_MESSAGE = "수강신청은 강의 상태가 모집중일 때만 가능합니다. 현재 수강 상태 : ";
   private final Long id;
   private final SessionPayment sessionPayment;
-  private SessionStatus sessionStatus;
   private final NextStepUsers nextStepUsers;
   private final SessionPeriod sessionPeriod;
   private final SessionCoverUrl sessionCoverUrl;
+  private SessionStatus sessionStatus;
 
   public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl) {
     this.id = id;
