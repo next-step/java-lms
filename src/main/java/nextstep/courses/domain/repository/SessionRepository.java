@@ -14,4 +14,6 @@ public interface SessionRepository {
     int delete(Long id);
 
     List<Session> findSessionsByCourseId(Long courseId);
+
+    List<Session> findAll();
 }

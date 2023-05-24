@@ -37,7 +37,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public long save(Session session) {
-        String query = "INSERT INTO session (period, cover_image_id, session_time_id, session_type, session_status, enrollment_id, maximum_enrollment) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO session (period, cover_image_id, session_time_id, session_type, session_status, enrollment_id) VALUES (?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -47,7 +47,6 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(4, session.getSessionType().toString());
             ps.setString(5, session.getSessionStatus().toString());
             ps.setLong(6, enrollmentRepository.save(session.getEnrollment()));
-            ps.setInt(7, session.getMaximumEnrollment());
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
@@ -72,20 +71,19 @@ public class JdbcSessionRepository implements SessionRepository {
                     sessionTime,
                     rs.getString("session_type"),
                     rs.getString("session_status"),
-                    enrollment,
-                    rs.getInt("maximum_enrollment")
+                    enrollment
             );
         };
     }
 
     @Override
     public int update(Session session) {
-        String query = "UPDATE session SET period = ?, cover_image_id = ?, session_time_id = ?, session_type = ?, session_status = ?, enrollment_id = ?, maximum_enrollment = ? WHERE id = ?";
+        String query = "UPDATE session SET period = ?, cover_image_id = ?, session_time_id = ?, session_type = ?, session_status = ?, enrollment_id = ? WHERE id = ?";
         int updatedCount = 0;
         updatedCount += imageRepository.update(session.getCoverImage());
         updatedCount += sessionTimeRepository.update(session.getSessionTime());
         updatedCount += enrollmentRepository.update(session.getEnrollment());
-        updatedCount += jdbcTemplate.update(query, session.getPeriod(), session.getCoverImage().getId(), session.getSessionTime().getId(), session.getSessionType().toString(), session.getSessionStatus().toString(), session.getEnrollment().getId(), session.getMaximumEnrollment(), session.getId());
+        updatedCount += jdbcTemplate.update(query, session.getPeriod(), session.getCoverImage().getId(), session.getSessionTime().getId(), session.getSessionType().toString(), session.getSessionStatus().toString(), session.getEnrollment().getId(), session.getId());
         return updatedCount;
     }
 
@@ -111,4 +109,9 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(sql, sessionRowMapper(), courseId);
     }
 
+    @Override
+    public List<Session> findAll() {
+        String sql = "SELECT * FROM session";
+        return jdbcTemplate.query(sql, sessionRowMapper());
+    }
 }
