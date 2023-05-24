@@ -5,8 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.AnswerFixtures.*;
-import static nextstep.QuestionFixtures.*;
+import static nextstep.Fixtures.AnswerFixtures.*;
+import static nextstep.Fixtures.QuestionFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

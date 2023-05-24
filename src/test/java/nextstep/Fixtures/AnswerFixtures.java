@@ -1,7 +1,6 @@
-package nextstep;
+package nextstep.Fixtures;
 
 import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 

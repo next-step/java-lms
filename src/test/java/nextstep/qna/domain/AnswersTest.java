@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static nextstep.AnswerFixtures.createAnswer1;
-import static nextstep.AnswerFixtures.createAnswer2;
+import static nextstep.Fixtures.AnswerFixtures.createAnswer1;
+import static nextstep.Fixtures.AnswerFixtures.createAnswer2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;

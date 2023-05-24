@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.AnswerFixtures.*;
+import static nextstep.Fixtures.AnswerFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
