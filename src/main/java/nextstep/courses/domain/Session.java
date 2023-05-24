@@ -32,11 +32,18 @@ public class Session {
         if (isNotRecruiting()) {
             throw new RuntimeException("강의 모집기간이 아닙니다.");
         }
+        if (isCurrRegisterExceedMaxRegister()) {
+            throw new RuntimeException("등록 인원이 정원 초과 되었습니다.");
+        }
         return true;
     }
 
     private boolean isNotRecruiting() {
         return RECRUITING != status;
+    }
+
+    private boolean isCurrRegisterExceedMaxRegister() {
+        return currRegisterNum >= maxRegisterNum;
     }
 
     public Long id() {

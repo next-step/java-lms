@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionTest {
 
@@ -28,7 +27,10 @@ public class SessionTest {
     }
 
     @Test
-    void 강의_등록_가능_여부_확인() {
-        assertTrue(S2.isRegistrable());
+    void 등록_인원_정원_초과_예외처리() {
+        assertThatThrownBy(() -> S2.isRegistrable())
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("등록 인원이 정원 초과 되었습니다.");
     }
+
 }
