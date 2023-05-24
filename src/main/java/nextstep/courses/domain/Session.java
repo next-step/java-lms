@@ -5,10 +5,10 @@ import nextstep.users.domain.NsUser;
 public class Session {
     private final Long id;
     private final SessionPeriod sessionPeriod;
-    private final PaymentType sessionPayment;
-    private final SessionStatus sessionStatus;
+    private PaymentType sessionPayment;
+    private SessionStatus sessionStatus;
     private final NextStepUsers nextStepUsers;
-    private final SessionImageUrl sessionImageUrl;
+    private SessionImageUrl sessionImageUrl;
 
     public Session(Long id, SessionPeriod sessionPeriod, PaymentType sessionPayment, SessionStatus sessionStatus, int maximumUserCount, SessionImageUrl sessionImageUrl) {
         this.id = id;
