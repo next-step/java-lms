@@ -17,18 +17,13 @@ public class QuestionTest {
     @Test
     void 질문삭제불가검증() {
         assertThatThrownBy(() -> {
-            Q1.checkDeletability(NsUserTest.SANJIGI);
+            Q1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
-    void 질문삭제가능검증() throws CannotDeleteException {
-        Q1.checkDeletability(NsUserTest.JAVAJIGI);
-    }
-
-    @Test
-    void 질문삭제테스트() {
-        List<DeleteHistory> deleteHistories = Q1.delete();
+    void 질문삭제테스트() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
 
         Assertions.assertThat(Q1.isDeleted()).isTrue();
         Assertions.assertThat(deleteHistories.size()).isEqualTo(1);

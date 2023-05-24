@@ -17,18 +17,13 @@ public class AnswerTest {
     @Test
     void 답변삭제불가검증() {
         assertThatThrownBy(() -> {
-            A1.checkDeletability(NsUserTest.SANJIGI);
+            A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @Test
-    void 답변삭제가능검증() throws CannotDeleteException {
-        A1.checkDeletability(NsUserTest.JAVAJIGI);
-    }
-
-    @Test
-    void 답변삭제테스트() {
-        DeleteHistory deleteHistory = A1.delete();
+    void 답변삭제테스트() throws CannotDeleteException {
+        DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);
 
         Assertions.assertThat(A1.isDeleted()).isTrue();
         Assertions.assertThat(deleteHistory).isEqualTo(
