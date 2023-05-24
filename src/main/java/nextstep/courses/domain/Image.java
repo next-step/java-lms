@@ -28,7 +28,7 @@ public class Image extends BaseEntity {
         this.name = name;
         this.uri = URI.create(uri);
         this.size = size;
-        this.type = ImageType.valueOf(type.toUpperCase());
+        this.type = ImageType.of(type.toUpperCase());
     }
 
     public static Image create(String name, String uri, Long size, String typeString) throws InvalidImageException, URISyntaxException {

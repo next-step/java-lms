@@ -21,20 +21,17 @@ public class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
-    private int maximumEnrollment;
-
     protected Session() {
     }
 
-    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, String sessionType, String sessionStatus, Enrollment enrollment, int maximumEnrollment) {
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, String sessionType, String sessionStatus, Enrollment enrollment) {
         this.id = id;
         this.period = period;
         this.coverImage = coverImage;
         this.sessionTime = sessionTime;
-        this.sessionType = SessionType.valueOf(sessionType.toUpperCase());
-        this.sessionStatus = SessionStatus.valueOf(sessionStatus.toUpperCase());
+        this.sessionType = SessionType.of(sessionType.toUpperCase());
+        this.sessionStatus = SessionStatus.of(sessionStatus.toUpperCase());
         this.enrollment = enrollment;
-        this.maximumEnrollment = maximumEnrollment;
     }
 
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
@@ -94,9 +91,5 @@ public class Session extends BaseEntity {
 
     public Enrollment getEnrollment() {
         return enrollment;
-    }
-
-    public int getMaximumEnrollment() {
-        return maximumEnrollment;
     }
 }
