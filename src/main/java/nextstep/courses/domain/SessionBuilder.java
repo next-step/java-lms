@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public final class SessionBuilder {
     private Long id;
+    private SessionStatus sessionStatus;
     private SessionBillType sessionBillType;
     private SessionCoverImage sessionCoverImage;
     private SessionRegistration sessionRegistration;
@@ -20,6 +21,11 @@ public final class SessionBuilder {
 
     public SessionBuilder withId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public SessionBuilder withSessionStatus(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
         return this;
     }
 
@@ -54,7 +60,7 @@ public final class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, sessionBillType, sessionCoverImage, sessionRegistration, sessionPeriod, createdAt,
-                           updatedAt);
+        return new Session(id, sessionStatus, sessionBillType, sessionCoverImage, sessionRegistration, sessionPeriod,
+                           createdAt, updatedAt);
     }
 }

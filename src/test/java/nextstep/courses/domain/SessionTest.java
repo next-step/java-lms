@@ -46,8 +46,7 @@ class SessionTest {
     @ParameterizedTest(name = "강의 상태 {0} 존재한다.")
     @EnumSource(value = SessionStatus.class, names = {"READY", "OPEN", "CLOSED"})
     void test05(SessionStatus sessionStatus) {
-        Session session = aSession().withSessionRegistration(
-                aSessionRegistration().withSessionStatus(sessionStatus).build()).build();
+        Session session = aSession().withSessionStatus(sessionStatus).build();
 
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatus);
     }
@@ -56,8 +55,8 @@ class SessionTest {
     @DisplayName("모집중일때만 강의 수강신청이 가능하다.")
     void test11() {
         Session session = aSession().withId(1L)
-                                    .withSessionRegistration(aSessionRegistration().withSessionStatus(OPEN)
-                                                                                   .withSessionRecruitStatus(RECRUIT)
+                                    .withSessionStatus(OPEN)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
                                                                                    .build())
                                     .build();
 
@@ -72,8 +71,8 @@ class SessionTest {
     @DisplayName("강의가 진행중인 상태라도 모집상태가 모집중이면 수강신청이 가능하다.")
     void test12() {
         Session session = aSession().withId(1L)
-                                    .withSessionRegistration(aSessionRegistration().withSessionStatus(READY)
-                                                                                   .withSessionRecruitStatus(RECRUIT)
+                                    .withSessionStatus(PROGRESS)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
                                                                                    .build())
                                     .build();
 
@@ -88,8 +87,8 @@ class SessionTest {
     @DisplayName("강의가 모집중이 아니면 수강신청 할 수 없다.")
     void test13() {
         Session session = aSession().withId(1L)
-                                    .withSessionRegistration(aSessionRegistration().withSessionStatus(OPEN)
-                                                                                   .withSessionRecruitStatus(NOT_RECRUIT)
+                                    .withSessionStatus(OPEN)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(NOT_RECRUIT)
                                                                                    .build())
                                     .build();
 
@@ -100,8 +99,8 @@ class SessionTest {
     @DisplayName("강의가 종료되면 수강신청 할 수 없다.")
     void test14() {
         Session session = aSession().withId(1L)
-                                    .withSessionRegistration(aSessionRegistration().withSessionStatus(CLOSED)
-                                                                                   .withSessionRecruitStatus(RECRUIT)
+                                    .withSessionStatus(CLOSED)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
                                                                                    .build())
                                     .build();
 
@@ -111,8 +110,8 @@ class SessionTest {
     @Test
     @DisplayName("강의 최대 수강인원이 초과하면 등록할 수 없다.")
     void test21() {
-        Session session = aSession().withSessionRegistration(
-                aSessionRegistration().withSessionStatus(OPEN).withMaxUserCount(1).build()).build();
+        Session session = aSession().withSessionStatus(OPEN).withSessionRegistration(
+                aSessionRegistration().withMaxUserCount(1).build()).build();
 
         session.addUser(NsUserTest.JAVAJIGI);
 

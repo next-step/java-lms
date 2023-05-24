@@ -75,7 +75,10 @@ class SessionJoinServiceTest {
     }
 
     private long getSavedSessionId(SessionRegistrationBuilder withMaxUserCount) {
-        Session session = aSession().withId(1L).withSessionRegistration(withMaxUserCount.build()).build();
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(SessionStatus.PROGRESS)
+                                    .withSessionRegistration(withMaxUserCount.build())
+                                    .build();
         return sessionRepository.save(session);
     }
 }

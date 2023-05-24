@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionRecruitStatus {
-    NOT_RECRUIT("비모집"), RECRUIT("모집");
+    NOT_RECRUIT("비모집"), RECRUIT("모집"), NONE("찾을 수 없음");
 
     private final String description;
 
@@ -22,10 +22,10 @@ public enum SessionRecruitStatus {
             return SESSION_RECRUIT_STATUS_MAP.get(name);
         }
 
-        throw new IllegalArgumentException(name + "을 찾을 수 없습니다.");
+        return NONE;
     }
 
     public boolean isNotRecruiting() {
-        return this != RECRUIT;
+        return this == NOT_RECRUIT;
     }
 }

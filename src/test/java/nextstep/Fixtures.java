@@ -33,6 +33,7 @@ public class Fixtures {
 
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
+                             .withSessionStatus(SessionStatus.READY)
                              .withSessionBillType(SessionBillType.FREE)
                              .withSessionRegistration(aSessionRegistration().build())
                              .withSessionCoverImage(new SessionCoverImage("http://edu.nexystep.camp"))
@@ -43,7 +44,6 @@ public class Fixtures {
 
     public static SessionRegistrationBuilder aSessionRegistration() {
         return SessionRegistrationBuilder.aSessionRegistration()
-                                         .withSessionStatus(SessionStatus.READY)
                                          .withSessionRecruitStatus(SessionRecruitStatus.RECRUIT)
                                          .withMaxUserCount(100);
     }

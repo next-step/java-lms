@@ -46,14 +46,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, bill_type, session_cover_image, session_status, session_recruit_status, max_user_count, started_at, ended_at, " +
+        String sql = "select id, session_status, bill_type, session_cover_image, session_recruit_status, max_user_count, started_at, ended_at, " +
                 "created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) ->
                 new Session(rs.getLong(1),
-                            SessionBillType.find(rs.getString(2)),
-                            new SessionCoverImage(rs.getString(3)),
-                            new SessionRegistration(SessionStatus.find(rs.getString(4)),
-                                                    SessionRecruitStatus.find(rs.getString(5)),
+                            SessionStatus.find(rs.getString(2)),
+                            SessionBillType.find(rs.getString(3)),
+                            new SessionCoverImage(rs.getString(4)),
+                            new SessionRegistration(SessionRecruitStatus.find(rs.getString(5)),
                                                     rs.getInt(6)),
                             new SessionPeriod(toLocalDateTime(rs.getTimestamp(7)),
                                               toLocalDateTime(rs.getTimestamp(8))),

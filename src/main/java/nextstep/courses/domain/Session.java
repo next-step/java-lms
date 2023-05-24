@@ -11,6 +11,8 @@ public class Session {
     private Long id;
     private final List<SessionJoin> sessionJoins = new ArrayList<>();
 
+    private final SessionStatus sessionStatus;
+
     private final SessionBillType sessionBillType;
 
     private final SessionCoverImage sessionCoverImage;
@@ -23,12 +25,13 @@ public class Session {
 
     private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, sessionBillType, sessionCoverImage, SessionRegistration.ready(sessionRecruitStatus, maxUserCount),
+    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt, SessionStatus sessionStatus) {
+        this(id, sessionStatus, sessionBillType, sessionCoverImage, SessionRegistration.of(sessionRecruitStatus, maxUserCount),
              sessionPeriod, createdAt, updatedAt);
     }
 
-    public Session(Long id, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionStatus sessionStatus, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.sessionStatus = sessionStatus;
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -47,6 +50,10 @@ public class Session {
     }
 
     public void register(NsUser user) {
+        if (!this.sessionStatus.isRegister()) {
+            throw new IllegalArgumentException("강의가 모집중/진행중이 아닙니다. 현재상태:" + sessionStatus);
+        }
+
         sessionRegistration.validate(sessionJoins.size());
         sessionJoins.add(SessionJoin.apply(this, user));
     }
@@ -64,7 +71,7 @@ public class Session {
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionRegistration.getSessionStatus();
+        return sessionStatus;
     }
 
     public SessionRecruitStatus getSessionRecruitStatus() {
