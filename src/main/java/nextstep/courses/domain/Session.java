@@ -50,4 +50,7 @@ public class Session {
                 ", currRegisterNum=" + currRegisterNum +
                 '}';
     }
+
+    public void isRegistrable() {
+    }
 }

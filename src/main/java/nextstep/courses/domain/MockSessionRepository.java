@@ -17,11 +17,6 @@ public class MockSessionRepository implements SessionRepository {
         return sessions.stream()
                 .filter(s -> id == s.id())
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
-    }
-
-    @Override
-    public void save(Session session) {
-        sessions.add(session);
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
     }
 }

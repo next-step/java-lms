@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
-public interface SessionRepository {
+public interface CartRepository {
 
     Session findById(Long id);
+
+    void save(Session session);
 }
