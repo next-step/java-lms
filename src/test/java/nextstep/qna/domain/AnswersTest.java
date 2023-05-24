@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +29,7 @@ public class AnswersTest {
     }
 
     @Test
-    void Answers_답변_삭제() throws UnAuthenticationException {
+    void Answers_답변_삭제() throws QnAException {
         answers.delete(NsUserTest.JAVAJIGI);
 
         Assertions.assertThat(answer1.isDeleted()).isTrue();

@@ -16,7 +16,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    void delete_성공() throws UnAuthenticationException {
+    void delete_성공() throws QnAException {
         List<DeleteHistory> histories = Q1.delete(NsUserTest.JAVAJIGI);
         DeleteHistory history = new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 
@@ -26,7 +26,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_이미_삭제된_질문() throws UnAuthenticationException {
+    void delete_이미_삭제된_질문() throws QnAException {
         Assertions.assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(QnAException.class)
                 .hasMessage(QnAExceptionCode.NOT_EXIST_QUESTION.message());
@@ -41,7 +41,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_답변이_여러개인_글_삭제_성공() throws UnAuthenticationException {
+    void delete_답변이_여러개인_글_삭제_성공() throws QnAException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
@@ -56,7 +56,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_답변이_여러개인_글_중_다른_사용자의_답변이_있는_경우() throws UnAuthenticationException {
+    void delete_답변이_여러개인_글_중_다른_사용자의_답변이_있는_경우() throws QnAException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "Answers Contents2");

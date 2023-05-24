@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUser;
 
 public class Answers {
@@ -16,7 +17,7 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {

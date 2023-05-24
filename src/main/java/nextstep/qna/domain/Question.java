@@ -59,7 +59,7 @@ public class Question extends AbstractQnA {
     }
 
     @Override
-    public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
         if (super.isDeleted()) {
             throw new QnAException(QnAExceptionCode.NOT_EXIST_QUESTION);
         }

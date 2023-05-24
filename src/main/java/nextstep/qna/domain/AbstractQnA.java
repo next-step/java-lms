@@ -31,7 +31,7 @@ public abstract class AbstractQnA {
         this.deleted = deleteYN;
     }
 
-    public void validateWriter(NsUser loginUser) throws UnAuthenticationException {
+    public void validateWriter(NsUser loginUser) throws QnAException {
         if (!isOwner(loginUser)) {
             throw new QnAException(QnAExceptionCode.NOT_EXIST_AUTHENTICATION);
         }

@@ -6,6 +6,7 @@ import java.util.List;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUser;
 
 public class Answer extends AbstractQnA {
@@ -43,7 +44,7 @@ public class Answer extends AbstractQnA {
     }
 
     @Override
-    public List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
         super.validateWriter(loginUser);
         super.changeDeleteStatus(true);
 
