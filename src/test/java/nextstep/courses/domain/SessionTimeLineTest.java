@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionTimeLineTest {
     @DisplayName("강의 시작일이 강의 종료일 보다 빠를 경우 예외를 발생하지 않는다.")
     @Test
-    void name() {
+    void when_CreatedTimeIsEarlierThanClosedTime_Expects_DoesNotThrowException() {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime closedAt = createdAt.plusDays(10);
 
@@ -21,7 +21,7 @@ class SessionTimeLineTest {
 
     @DisplayName("강의 종료일이 강의 시작일 보다 빠른 경우 예외를 발생한다.")
     @Test
-    void name1() {
+    void when_CreatedTimeIsLaterThanClosedTime_Expects_ThrowException() {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime closedAt = createdAt.minusDays(10);
 
