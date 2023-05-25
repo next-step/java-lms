@@ -25,5 +25,5 @@
 ### DeleteHistory
   - [ ] 질문을 삭제할 경우 답변글도 삭제한다.
   - [ ] 삭제할 시 질문, 답변글의 상태값을 모두 변경한다.
-  - [ ] 삭제할 시 DelieteHistory 에 이력을 남긴다.
+  - [ ] 삭제할 시 DeleteHistory 에 이력을 남긴다.
   - [ ] List<DelieteHistory> -> 일급 컬렉션으로 변경한다(사용하는 곳들 모두)
