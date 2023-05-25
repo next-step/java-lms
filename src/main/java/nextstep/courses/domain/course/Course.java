@@ -1,6 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import nextstep.common.BaseEntity;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
 
 import java.time.LocalDateTime;
 import java.util.List;

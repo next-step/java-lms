@@ -1,8 +1,8 @@
 package nextstep.courses.service;
 
 import nextstep.courses.SessionNotFoundException;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
