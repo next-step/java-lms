@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Session {
     private final Long id;
@@ -45,9 +46,9 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Student enroll(NsUser nsUser) throws AlreadyEnrollmentException {
+    public Student enroll(NsUser nsUser, List<Student> students) throws AlreadyEnrollmentException {
         Student student = new Student(nsUser.getId(), this.id);
-        enrollment.enroll(student);
+        enrollment.enroll(student, students);
         return student;
     }
 
