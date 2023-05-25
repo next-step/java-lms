@@ -21,8 +21,8 @@
 
 구현목록
 -----
-- [x] 
-- [x] 
+- [x] SessionPeriod 도메인모델 생성 
+- [X] SessionPeriod 도메인모델 테스트
 - [x] 
 - [x] 
 - [x] 
