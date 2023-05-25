@@ -1,29 +1,51 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class DeleteHistory {
-    private Long id;
+    private final long id;
 
-    private ContentType contentType;
+    private final ContentType contentType;
 
-    private Long contentId;
+    private final long contentId;
 
-    private NsUser deletedBy;
+    private final NsUser deletedBy;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate;
 
-    public DeleteHistory() {
-    }
+    private DeleteHistory(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        if (Objects.isNull(contentType)) {
+            throw new IllegalArgumentException("컨텐츠 타입에 값이 입력되질 않았어요 :(");
+        }
+
+        if (Objects.isNull(deletedBy)) {
+            throw new UnAuthorizedException("삭제자에 값이 입력되질 않았어요 :(");
+        }
+
+        if (contentId == 0L) {
+            throw new IllegalArgumentException("유효하지 않는 컨텐츠 아이디에요 :( [ 입력 값 : " + contentId + "]");
+        }
+
+        this.id = id;
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory of(ContentType contentType, long contentId, NsUser deletedBy) {
+        long id = SimpleIdGenerator.getAndIncrement(DeleteHistory.class);
+        return new DeleteHistory(id, contentType, contentId, deletedBy, LocalDateTime.now());
+    }
+
+    public static DeleteHistory of(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(id, contentType, contentId, deletedBy, createdDate);
     }
 
     @Override
@@ -31,15 +53,12 @@ public class DeleteHistory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeleteHistory that = (DeleteHistory) o;
-        return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+        return id == that.id && contentId == that.contentId && contentType == that.contentType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, contentType, contentId);
     }
 
     @Override
