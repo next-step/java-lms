@@ -87,4 +87,68 @@ public class Session {
     private boolean isExceedingMaximumCapacity() {
         return users.size() >= maximumCapacity;
     }
+
+    public static class Builder {
+        private Long id;
+
+        private LocalDateTime startDate;
+
+        private LocalDateTime endDate;
+
+        private String coverImagePath;
+
+        private PriceType priceType;
+
+        private Status status;
+
+        private Long maximumCapacity;
+
+        private List<NsUser> users;
+
+        public Builder() {}
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder startDate(LocalDateTime startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDateTime endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder coverImagePath(String coverImagePath) {
+            this.coverImagePath = coverImagePath;
+            return this;
+        }
+
+        public Builder priceType(PriceType priceType) {
+            this.priceType = priceType;
+            return this;
+        }
+
+        public Builder status(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder maximumCapacity(Long maximumCapacity) {
+            this.maximumCapacity = maximumCapacity;
+            return this;
+        }
+
+        public Builder users(List<NsUser> users) {
+            this.users = users;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(id, startDate, endDate, coverImagePath, priceType, status, maximumCapacity, users);
+        }
+    }
 }

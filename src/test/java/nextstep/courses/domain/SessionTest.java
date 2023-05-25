@@ -14,13 +14,22 @@ class SessionTest {
     @Test
     void 수강신청_모집중_최대인원초과() {
         Long id = 1L;
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
+        LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         String coverImagePath = "";
         PriceType priceType = PriceType.CHARGED;
         Status status = Status.ENROLLING;
         Long maximumCapacity = 0L;
-        Session actual = Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>());
+        Session actual = new Session.Builder()
+            .id(id)
+            .startDate(start)
+            .endDate(end)
+            .coverImagePath(coverImagePath)
+            .priceType(priceType)
+            .status(status)
+            .maximumCapacity(maximumCapacity)
+            .users(new ArrayList<>())
+            .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(NsUser.GUEST_USER))
@@ -30,13 +39,22 @@ class SessionTest {
     @Test
     void 수강신청_모집중() throws CannotEnrollException {
         Long id = 1L;
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
+        LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         String coverImagePath = "";
         PriceType priceType = PriceType.CHARGED;
         Status status = Status.ENROLLING;
         Long maximumCapacity = 100L;
-        Session actual = Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>());
+        Session actual = new Session.Builder()
+            .id(id)
+            .startDate(start)
+            .endDate(end)
+            .coverImagePath(coverImagePath)
+            .priceType(priceType)
+            .status(status)
+            .maximumCapacity(maximumCapacity)
+            .users(new ArrayList<>())
+            .build();
 
         actual.enroll(NsUser.GUEST_USER);
         assertThat(actual.isEnrolled(NsUser.GUEST_USER)).isTrue();
@@ -45,13 +63,22 @@ class SessionTest {
     @Test
     void 수강신청_종료() {
         Long id = 1L;
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
+        LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         String coverImagePath = "";
         PriceType priceType = PriceType.CHARGED;
         Status status = Status.ENDED;
         Long maximumCapacity = 100L;
-        Session actual = Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>());
+        Session actual = new Session.Builder()
+            .id(id)
+            .startDate(start)
+            .endDate(end)
+            .coverImagePath(coverImagePath)
+            .priceType(priceType)
+            .status(status)
+            .maximumCapacity(maximumCapacity)
+            .users(new ArrayList<>())
+            .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(NsUser.GUEST_USER))
@@ -61,13 +88,22 @@ class SessionTest {
     @Test
     void 수강신청_준비중() {
         Long id = 1L;
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
+        LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         String coverImagePath = "";
         PriceType priceType = PriceType.CHARGED;
         Status status = Status.PREPARING;
         Long maximumCapacity = 100L;
-        Session actual = Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>());
+        Session actual = new Session.Builder()
+            .id(id)
+            .startDate(start)
+            .endDate(end)
+            .coverImagePath(coverImagePath)
+            .priceType(priceType)
+            .status(status)
+            .maximumCapacity(maximumCapacity)
+            .users(new ArrayList<>())
+            .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(NsUser.GUEST_USER))
@@ -77,14 +113,23 @@ class SessionTest {
     @Test
     void 강의생성() {
         Long id = 1L;
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
+        LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         String coverImagePath = "";
         PriceType priceType = PriceType.CHARGED;
         Status status = Status.PREPARING;
         Long maximumCapacity = 100L;
         assertThat(Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>()))
-            .isEqualTo(Session.of(id, start, end, coverImagePath, priceType, status, maximumCapacity, new ArrayList<>()));
+            .isEqualTo(new Session.Builder()
+                .id(id)
+                .startDate(start)
+                .endDate(end)
+                .coverImagePath(coverImagePath)
+                .priceType(priceType)
+                .status(status)
+                .maximumCapacity(maximumCapacity)
+                .users(new ArrayList<>())
+                .build());
     }
 
 }
