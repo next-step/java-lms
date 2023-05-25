@@ -48,7 +48,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    @DisplayName("QnaServiceTest | 질문과 답변 모두 삭제되면 DeleteHistory를 활용해 기록을 남긴다.")
+    @DisplayName("질문과 답변 모두 삭제되면 DeleteHistory를 활용해 기록을 남긴다.")
     public void delete_성공_질문자_답변자_같음() throws Exception {
         when(questionService.getQuestionOrThrowIfNotExist(question.getId())).thenReturn(question);
         when(questionService.delete(질문자, question)).thenReturn(new QuestionDeleteHistory(question, question.getAnswers()));

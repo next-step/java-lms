@@ -44,7 +44,7 @@ class QuestionServiceTest {
   }
 
   @Test
-  @DisplayName("QuestionService | 다른 사람이 작성한 질문은 삭제 할 수 없다.")
+  @DisplayName("다른 사람이 작성한 질문은 삭제 할 수 없다.")
   public void delete_다른_사람이_쓴_글() throws Exception {
     // given
     NsUser 작정자가_아닌_유저 = NsUserTest.SANJIGI;
@@ -56,7 +56,7 @@ class QuestionServiceTest {
   }
 
   @Test
-  @DisplayName("QuestionService | 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.")
+  @DisplayName("로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.")
   public void delete_성공() throws Exception {
     // given
     NsUser 질문_작성자 = NsUserTest.JAVAJIGI;

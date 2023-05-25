@@ -42,7 +42,7 @@ class AnswerServiceTest {
   }
 
   @Test
-  @DisplayName("AnswerServiceTest | 질문자와 답변자가 다른경우 답변을 삭제할수없다.")
+  @DisplayName("질문자와 답변자가 다른경우 답변을 삭제할수없다.")
   void delete_다른_사람이_쓴_글() {
     // given
     NsUser otherUser = NsUserTest.SANJIGI;
@@ -56,7 +56,7 @@ class AnswerServiceTest {
   }
 
   @Test
-  @DisplayName("AnswerServiceTest | 질문자와 답변자가 모두 같으면 답글을 삭제할 수 있다.")
+  @DisplayName("질문자와 답변자가 모두 같으면 답글을 삭제할 수 있다.")
   void delete_내가_쓴_답글() throws CannotDeleteException {
     // given
     Answer answer2 = new Answer(12L, user, QuestionTest.Q1, "Answers Contents1");
