@@ -36,11 +36,28 @@ public class Session {
         return this.coverImage.getImageUrl();
     }
 
-    public void setFreeSession() {
+    public void toFreeSession() {
         this.price = 0L;
     }
 
     public boolean isFreeSession() {
         return this.price == 0L;
     }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public void toPreparingState() {
+        this.status = SessionStatus.PREPARING;
+    }
+
+    public void toRecruitingState() {
+        this.status = SessionStatus.RECRUITING;
+    }
+
+    public void toCloseState() {
+        this.status = SessionStatus.CLOSED;
+    }
+
 }

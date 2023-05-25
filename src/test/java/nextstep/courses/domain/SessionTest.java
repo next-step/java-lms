@@ -53,7 +53,7 @@ class SessionTest {
         Session freeSession = TestFixture.MINT_SESSION;
         Session paidSession = TestFixture.LEMON_SESSION;
         //when
-        freeSession.setFreeSession();
+        freeSession.toFreeSession();
         //then
         assertThat(freeSession.isFreeSession())
                 .as("무료세션을 검증한다")
@@ -68,12 +68,28 @@ class SessionTest {
     @Test
     public void sessionStatus() {
         //given
+        Session session1 = TestFixture.LIME_SESSION;
+        Session session2 = TestFixture.MINT_SESSION;
+        Session session3 = TestFixture.LEMON_SESSION;
         //when
+        session1.toPreparingState();
+        session2.toRecruitingState();
+        session3.toCloseState();
         //then
-        fail();
+        assertThat(session1.getStatus())
+                .as("준비상태를 갖는다")
+                .isEqualTo(SessionStatus.PREPARING);
+
+        assertThat(session1.getStatus())
+                .as("모집중 상태를 갖는다")
+                .isEqualTo(SessionStatus.RECRUITING);
+
+        assertThat(session1.getStatus())
+                .as("종료상태를 갖는다")
+                .isEqualTo(SessionStatus.CLOSED);
     }
 
-    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다")
+    @DisplayName("강의 상태가 모집중일 때 강의 신청에 성공한다")
     @Test
     public void enrollCanOnlyOnRecruit() {
         //given
@@ -82,7 +98,16 @@ class SessionTest {
         fail();
     }
 
-    @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다")
+    @DisplayName("강의 상태가 모집중이 아닐 때 강의 신청에 실패한다")
+    @Test
+    public void enrollCanOnlyOnRecruitFail() {
+        //given
+        //when
+        //then
+        fail();
+    }
+
+    @DisplayName("강의 최대 수강 인원내에서 수강신청이 성공한다")
     @Test
     public void notExceedMaxStudents() {
         //given
@@ -90,4 +115,15 @@ class SessionTest {
         //then
         fail();
     }
+
+    @DisplayName("강의 최대 수강 인원 초과시 수강신청에 실패한다")
+    @Test
+    public void notExceedMaxStudentsFail() {
+        //given
+        //when
+        //then
+        fail();
+    }
+
+
 }
