@@ -21,8 +21,6 @@ public class Answer {
 
     private final LocalDateTime createdDate = LocalDateTime.now();
 
-    private LocalDateTime updatedDate;
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
@@ -52,10 +50,6 @@ public class Answer {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -97,12 +91,11 @@ public class Answer {
                 && Objects.equals(getWriter(), answer.getWriter())
                 && Objects.equals(question, answer.question)
                 && Objects.equals(getContents(), answer.getContents())
-                && Objects.equals(createdDate, answer.createdDate)
-                && Objects.equals(updatedDate, answer.updatedDate);
+                && Objects.equals(createdDate, answer.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getWriter(), question, getContents(), isDeleted(), createdDate, updatedDate);
+        return Objects.hash(getId(), getWriter(), question, getContents(), isDeleted(), createdDate);
     }
 }
