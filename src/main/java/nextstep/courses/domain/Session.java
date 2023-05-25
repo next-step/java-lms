@@ -66,6 +66,11 @@ public class Session {
         this.addUser(user, sessionJoinStatus);
     }
 
+    public List<SessionJoin> approve(List<NsUser> nsUsers) {
+        sessionRegistration.approveValidate(sessionJoins.isApproveStatusCount() + nsUsers.size());
+        return sessionJoins.approve(nsUsers);
+    }
+
     public Long getId() {
         return id;
     }

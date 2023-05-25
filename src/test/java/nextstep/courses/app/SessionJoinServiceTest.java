@@ -57,7 +57,7 @@ class SessionJoinServiceTest {
     @Test
     @DisplayName("수강 신청 승인")
     void test11() {
-        long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(1));
+        long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(2));
         sessionJoinService.register(savedSessionId, List.of(JAVAJIGI.getUserId()));
 
         sessionJoinService.approve(savedSessionId, List.of(JAVAJIGI.getUserId()));
@@ -69,8 +69,18 @@ class SessionJoinServiceTest {
     }
 
     @Test
-    @DisplayName("수강 신청 거절")
+    @DisplayName("수강 신청 승인 - 인원 초과")
     void test12() {
+        long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(1));
+        sessionJoinService.register(savedSessionId, List.of(JAVAJIGI.getUserId()));
+
+        assertThatThrownBy(() -> sessionJoinService.approve(savedSessionId, List.of(JAVAJIGI.getUserId())))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("수강 신청 거절")
+    void test13() {
         long savedSessionId = getSavedSessionId(aSessionRegistration().withMaxUserCount(1));
         sessionJoinService.register(savedSessionId, List.of(JAVAJIGI.getUserId()));
 

@@ -26,6 +26,12 @@ public class SessionRegistration {
         }
     }
 
+    public void approveValidate(long userCount) {
+        if (maxUserCount <= userCount) {
+            throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
+        }
+    }
+
     public SessionRecruitStatus getSessionRecruitStatus() {
         return sessionRecruitStatus;
     }

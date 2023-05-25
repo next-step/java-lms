@@ -37,11 +37,10 @@ public class DefaultSessionJoinService implements SessionJoinService {
     @Override
     public void approve(long sessionId, List<String> userIds) {
         List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
-        List<Long> findUserIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
-        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionIdAndUserIds(sessionId, findUserIds);
+        Session session = sessionRepository.findById(sessionId);
 
-        for (SessionJoin sessionJoin : sessionJoins) {
-            sessionJoin.approve();
+        List<SessionJoin> approveSessionJoins = session.approve(nsUsers);
+        for (SessionJoin sessionJoin : approveSessionJoins) {
             sessionJoinRepository.updateSessionJoinStatus(sessionJoin);
         }
     }
