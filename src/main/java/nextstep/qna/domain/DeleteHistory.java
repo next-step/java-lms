@@ -29,7 +29,7 @@ public class DeleteHistory {
         }
 
         if (contentId == 0L) {
-            throw new IllegalArgumentException("유요하지 않는 컨텐츠 아이디에요 :( [ 입력 값 : " + contentId + "]");
+            throw new IllegalArgumentException("유효하지 않는 컨텐츠 아이디에요 :( [ 입력 값 : " + contentId + "]");
         }
 
         this.id = id;
@@ -47,7 +47,6 @@ public class DeleteHistory {
     public static DeleteHistory of(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         return new DeleteHistory(id, contentType, contentId, deletedBy, createdDate);
     }
-
 
     @Override
     public boolean equals(Object o) {
