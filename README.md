@@ -25,8 +25,8 @@
 ### DeleteHistory  
   - [x] 질문을 삭제할 경우 답변글도 삭제한다.
   - [x] 삭제할 시 Question, Answerdml deleted 상태를 true로 삭제한다.
-  - [ ] 삭제할 시 DeleteHistory 에 이력을 남긴다.
-  - [ ] List<DelieteHistory> -> 일급 컬렉션으로 변경한다(사용하는 곳들 모두)
-    - [ ] question를 add 하면 question에 대한 DeleteHistory 를 만들어 리스트에 추가한다.
-    - [ ] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
+  - [x] 삭제할 시 DeleteHistory 에 이력을 남긴다.
+  - [x] List<DelieteHistory> -> 일급 컬렉션으로 변경한다(사용하는 곳들 모두)
+    - [x] question를 add 하면 question에 대한 DeleteHistory 를 만들어 리스트에 추가한다.
+    - [x] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
 
