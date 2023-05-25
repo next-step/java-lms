@@ -43,4 +43,16 @@ class QuestionTest {
         assertThat(deleteHistories).hasSize(1);
     }
 
+    @Test
+    @DisplayName("질문 삭제시 답변이 존재한다면 질문과 답변에 대한 정보를 DeleteHistory를 활용해 반환한다.")
+    void test04() {
+        Answer javajigiAnswer1 = new Answer(NsUserTest.JAVAJIGI, javajigiQuestion, "Answers Contents1");
+        Answer javajigiAnswer2 = new Answer(NsUserTest.JAVAJIGI, javajigiQuestion, "Answers Contents2");
+        javajigiQuestion.addAnswer(javajigiAnswer1);
+        javajigiQuestion.addAnswer(javajigiAnswer2);
+
+        List<DeleteHistory> deleteHistories = javajigiQuestion.delete((NsUserTest.JAVAJIGI));
+        assertThat(deleteHistories).hasSize(3);
+    }
+
 }
