@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 @DisplayName("질문 기능 관련 테스트")
 public class QuestionTest {
     public Question Q1;
@@ -21,14 +23,14 @@ public class QuestionTest {
     @Test
     @DisplayName("질문 삭제시 로그인 사용자와 질문한 사람이 같을 경우 예외를 던지지 않는다.")
     void delete_LoginUserEqualToQuestionUser_NotThrowException() {
-        Assertions.assertThatNoException()
+        assertThatNoException()
                 .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI));
     }
 
     @Test
     @DisplayName("질문 삭제시 로그인 사용자와 질문한 사람이 다를 경우 예외를 던진다.")
     void delete_LoginUserNotEqualToQuestionUser_ThrowException() {
-        Assertions.assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }

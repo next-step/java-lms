@@ -29,6 +29,10 @@ public class QnAService {
 
         //        List<DeleteHistory> deleteHistories = question.delete(loginUser); // todo
 
+        if (!question.isOwner(loginUser)) {
+            throw new CannotDeleteException("로그인 사용자와 질문한 사람이 달라서 삭제 권한이 없습니다.");
+        }
+
         List<Answer> answers = question.getAnswers();
         for (Answer answer : answers) {
             if (!answer.isOwner(loginUser)) {
