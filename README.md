@@ -10,7 +10,7 @@
 
 ## 수강신청 리팩토링 1단계(레거시 코드 리팩토링)
 ### Question
-  - [ ] 로그인 사용자가 질문한 사람이 아닐 경우에 CannotDeleteException 예외를 던진다.
+  - [x] 로그인 사용자가 질문한 사람이 아닐 경우에 CannotDeleteException 예외를 던진다.
   - [ ] questionId로 조회되는 Question이 없을 경우에 NotFoundException 예외를 던진다.
   - [ ] 삭제가 가능할 경우에는 deleted 필드값을 true으로 변경한다.
   - [ ] List<Answer> answer -> 일급 컬렉션으로 변경한다.

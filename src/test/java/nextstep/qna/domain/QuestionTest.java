@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ public class QuestionTest {
     @Test
     @DisplayName("질문 삭제시 로그인 사용자와 질문한 사람이 다를 경우 예외를 던진다.")
     void delete_LoginUserNotEqualToQuestionUser_ThrowException() {
-        Assertions.assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI));
+        Assertions.assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class);
     }
 }
