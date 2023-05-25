@@ -39,4 +39,15 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
+
+    @Test
+    @DisplayName("삭제 가능할 경우에 isDelete 값을 true로 변경한다.")
+    void delete_DeleteQuestion_ChangeIsDeleteToTrue() {
+        Q1.delete(NsUserTest.JAVAJIGI);
+        Q2.delete(NsUserTest.SANJIGI);
+
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(Q2.isDeleted()).isTrue();
+    }
+
 }
