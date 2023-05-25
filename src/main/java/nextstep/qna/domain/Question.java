@@ -1,27 +1,23 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import nextstep.qna.UnAuthenticationException;
+import nextstep.qna.exception.QnAException;
+import nextstep.qna.exception.QnAExceptionCode;
+import nextstep.users.domain.NsUser;
 
-public class Question {
+public class Question extends AbstractQnA {
+
     private Long id;
 
     private String title;
 
     private String contents;
 
-    private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private Answers answers = new Answers();
 
     public Question() {
     }
@@ -45,18 +41,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -72,17 +58,21 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
+    @Override
+    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
+        if (super.isDeleted()) {
+            throw new QnAException(QnAExceptionCode.NOT_EXIST_QUESTION);
+        }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
+        super.validateWriter(loginUser);
+        super.changeDeleteStatus(true);
 
-    public List<Answer> getAnswers() {
-        return answers;
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(this.answers.delete(loginUser));
+
+        return Collections.unmodifiableList(deleteHistories);
     }
 
     @Override

@@ -1,7 +1,17 @@
 package nextstep.qna.service;
 
-import nextstep.qna.CannotDeleteException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.domain.*;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,18 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
+
     @Mock
     private QuestionRepository questionRepository;
 
@@ -58,7 +59,7 @@ public class QnaServiceTest {
 
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
-        }).isInstanceOf(CannotDeleteException.class);
+        }).isInstanceOf(QnAException.class);
     }
 
     @Test
@@ -78,7 +79,7 @@ public class QnaServiceTest {
 
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
-        }).isInstanceOf(CannotDeleteException.class);
+        }).isInstanceOf(QnAException.class);
     }
 
     private void verifyDeleteHistories() {

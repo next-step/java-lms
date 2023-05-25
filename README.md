@@ -7,3 +7,15 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## LMS
+### 개발 요구사항
+* [x] 질문 삭제를 logical delete 기능으로 구현
+* [x] 로그인 사용자와 질문자의 아이디 비교
+* [x] 답변유무 체크
+* [x] 삭제이력 추가
+
+### 리팩터링 요구사항
+* [x] service -> domain 로직 이동
+* [x] 로직 이동시 TDD로 구현
+* [x] 기존 test code 통과

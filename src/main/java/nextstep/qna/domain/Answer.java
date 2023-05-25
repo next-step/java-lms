@@ -1,40 +1,36 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import nextstep.qna.NotFoundException;
+import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
+public class Answer extends AbstractQnA {
 
-public class Answer {
     private Long id;
-
-    private NsUser writer;
 
     private Question question;
 
     private String contents;
 
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
     public Answer() {
     }
 
     public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+        this(0L, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,17 +43,12 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
+    @Override
+    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
+        super.validateWriter(loginUser);
+        super.changeDeleteStatus(true);
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+        return Collections.singletonList(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
     }
 
     public NsUser getWriter() {
