@@ -70,11 +70,15 @@ public class Answer {
     }
 
     public DeleteHistory delete()  {
+        isSameUser();
+        this.setDeleted(true);
+        return DeleteHistory.createAnswer(this.id, this.writer);
+    }
+
+    private void isSameUser() {
         if (!this.writer.matchUser(this.question.getWriter())) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        this.setDeleted(true);
-        return DeleteHistory.createAnswer(this.id, this.writer);
     }
 
     @Override
