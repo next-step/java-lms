@@ -8,14 +8,12 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 
 class SessionTest {
-    public static final Session TDD_SESSION = new Session(SessionInformationTest.TDD_SESSION_INFORMATION, SessionStatus.RECRUIT, SessionAttendeesTest.TDD_SESSION_ATTENDEES);
-
     @ParameterizedTest(name = "[{index}/2] {displayName}")
     @EnumSource(value = SessionStatus.class, names = {"READY", "END"})
     @DisplayName("강의 상태가 모집중이 아닐 경우, IllegalArgumentException 예외 발생")
     void apply_session_when_session_status_is_not_RECRUIT_then_throw_IllegalArgumentException(SessionStatus status) {
         // given
-        Session session = new Session(SessionInformationTest.TDD_SESSION_INFORMATION, status, SessionAttendeesTest.TDD_SESSION_ATTENDEES);
+        Session session = new Session(SessionInformationFixture.TDD_SESSION_INFORMATION.sessionInformation(), status, SessionAttendeesFixture.TDD_SESSION_ATTENDEES.sessionAttendees());
 
         // when, then
         Assertions.assertThatThrownBy(() -> session.apply(NsUserTest.JAVAJIGI))

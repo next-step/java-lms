@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 class SessionDateTest {
-    public static final SessionDate TDD_SESSION_DATE = new SessionDate(LocalDate.of(2023, 4, 3), LocalDate.of(2023, 6, 1));
-
     @Test
     @DisplayName("수강 시작일이 수강 종료일 이후일 경우, IllegalArgumentException 예외 발생")
     void when_start_session_date_is_after_end_session_date_then_throw_IllegalArgumentException() {

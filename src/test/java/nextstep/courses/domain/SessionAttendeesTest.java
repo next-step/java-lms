@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionAttendeesTest {
-    public static final SessionAttendees TDD_SESSION_ATTENDEES = new SessionAttendees(10);
-
     @Test
     @DisplayName("최대 수강 신청자 수가 1명 미만일 경우, IllegalArgumentException 예외 발생")
     void max_number_of_attendees_is_less_than_1_then_throw_IllegalArgumentException() {

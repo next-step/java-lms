@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionPriceTest {
-    public static final SessionPrice TDD_SESSION_PRICE = new SessionPrice(800_000);
-
     @Test
     @DisplayName("강의 금액이 최소 금액(0원) 미만일 경우, IllegalArgumentException 예외 발생")
     void less_than_minimum_session_price_then_throw_IllegalArgumentException() {

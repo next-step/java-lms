@@ -11,11 +11,13 @@ class SessionsTest {
     void add_duplicate_session_then_throw_IllegalArgumentException() {
         // given
         Sessions sessions = new Sessions();
-        sessions.add(SessionTest.TDD_SESSION);
+        Session session = SessionFixture.TDD_SESSION.session();
 
-        // when
-        assertThatThrownBy(() -> sessions.add(SessionTest.TDD_SESSION))
+        sessions.add(session);
+
+        // when, then
+        assertThatThrownBy(() -> sessions.add(session))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 등록된 강의입니다: " + SessionTest.TDD_SESSION.name());
+                .hasMessage("이미 등록된 강의입니다: " + session.name());
     }
 }
