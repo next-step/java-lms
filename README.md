@@ -25,3 +25,30 @@
 - QnaService 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD 구현
 - QnaService deleteQuestion() 메서드에 대한 단위 테스트는 QnaServiceTest
 - 도메인 모델로 로직을 이동한 후에도 QnaServiceTest 모든 테스트는 통과해야 함
+
+---
+
+### Step2. 수강신청(도메인 모델)
+`도메인 모델 설계`
+- [ ] 과정 - Course  `List<Session`
+  - 강의(Session) 와 1:N 관계 (기수별)
+- [ ] 강의 - Session
+  - [ ] 강의 수강 신청 기능
+  - [ ] 학생은 강의를 신청할 수 있다
+  - [ ] 강의는 최대 수강 인원을 초과 할 수 없다
+  - [ ] 강의 상태가 모집중일때만 수강 신청 가능하다
+- [ ] 강의시간 - SessionDate
+  - startDate - 시작일
+  - endDate - 종료일
+  - [ ] 종료일은 시작일보다 나중이여야 한다
+- [ ] 커버 이미지 - SessionImage 
+  - coverImage
+- [ ] 결제타입 - PaymentType
+  - FREE - 무료강의
+  - PAID - 유료강의
+- [ ] 강의 상태 - SessionStatus  
+  - PREPARING - 준비중
+  - ENROLLING - 모집중
+  - FINISHED - 종료
+- [ ] 수강자 - Student 
+- [ ] 수강자들 일급 컬렉션 - Students `List<Student>`
