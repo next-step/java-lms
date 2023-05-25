@@ -2,6 +2,8 @@ package nextstep.users.infrastructure;
 
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
+import nextstep.users.infrastructure.dao.NsUserEntityRepository;
+import nextstep.users.infrastructure.repository.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,11 +23,14 @@ public class UserRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private NsUserEntityRepository nsUserEntityRepository;
+
     private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userRepository = new JdbcUserRepository(jdbcTemplate);
+        userRepository = new JdbcUserRepository(jdbcTemplate, nsUserEntityRepository);
     }
 
     @Test
