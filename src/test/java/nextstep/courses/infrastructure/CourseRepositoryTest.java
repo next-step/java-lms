@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.infrastructure.persistence.dao.CourseEntityRepository;
 import nextstep.courses.infrastructure.persistence.repository.CourseRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        courseRepository = new CourseRepositoryImpl(jdbcTemplate);
+        courseRepository = new CourseRepositoryImpl(new CourseEntityRepository(jdbcTemplate));
     }
 
     @Test

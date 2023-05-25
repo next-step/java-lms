@@ -51,4 +51,24 @@ public class NsUserEntity extends BaseTimeEntity {
   public NsUser toDomain() {
     return new NsUser(id, userId, password, name, email, createdAt, updatedAt);
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
 }

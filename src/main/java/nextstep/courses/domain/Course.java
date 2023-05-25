@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.courses.infrastructure.persistence.entity.CourseEntity;
 
 public class Course extends BaseTimeEntity{
     private final Long id;
@@ -61,5 +62,9 @@ public class Course extends BaseTimeEntity{
 
     public int getSessionsSize() {
         return sessions.size();
+    }
+
+    public CourseEntity toEntity() {
+        return new CourseEntity(id, title, creatorId, generation, createdAt, updatedAt);
     }
 }

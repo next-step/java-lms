@@ -2,8 +2,7 @@ package nextstep.courses.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseTimeEntity;
-import nextstep.users.domain.NsUser;
-import nextstep.users.infrastructure.entity.NsUserEntity;
+import nextstep.courses.domain.Course;
 
 /**
  * JPA 처럼 ENtity를 구성한다.
@@ -63,5 +62,9 @@ public class CourseEntity extends BaseTimeEntity {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public Course toDomain() {
+    return new Course(id, title, creatorId, generation, createdAt, updatedAt);
   }
 }

@@ -20,9 +20,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findByUserId(String userId) {
+    public NsUser findByUserId(String userId) {
         Optional<NsUserEntity> nsUserEntity = nsUserEntityRepository.findByUserId(userId);
-        return nsUserEntity.map(NsUserEntity::toDomain);
+        return nsUserEntity.map(NsUserEntity::toDomain).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     }
 
 }
