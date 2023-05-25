@@ -11,7 +11,7 @@
 ## 수강신청 리팩토링 1단계(레거시 코드 리팩토링)
 ### Question
   - [x] 로그인 사용자가 질문한 사람이 아닐 경우에 CannotDeleteException 예외를 던진다.
-  - [ ] questionId로 조회되는 Question이 없을 경우에 NotFoundException 예외를 던진다.
+  - [x] questionId로 조회되는 Question이 없을 경우에 NotFoundException 예외를 던진다.
   - [x] 삭제가 가능할 경우에는 deleted 필드값을 true으로 변경한다.
   - [x] List<Answer> answer -> Answers 일급 컬렉션으로 변경한다.
     - Answers 에 Answer 객체를 추가할 수 있다.
@@ -22,8 +22,11 @@
   - [x] 질문자와 답변자가 다를 경우 CannotDeleteException 예외를 던진다. 
   - [x] 삭제가능 할 경우, 삭제시 deleted 필드 값을 true로 변경한다.
 
-### DeleteHistory
-  - [ ] 질문을 삭제할 경우 답변글도 삭제한다.
-  - [ ] 삭제할 시 질문, 답변글의 상태값을 모두 변경한다.
+### DeleteHistory  
+  - [x]질문을 삭제할 경우 답변글도 삭제한다.
+  - [x] 삭제할 시 Question, Answerdml deleted 상태를 true로 삭제한다.
   - [ ] 삭제할 시 DeleteHistory 에 이력을 남긴다.
   - [ ] List<DelieteHistory> -> 일급 컬렉션으로 변경한다(사용하는 곳들 모두)
+    - [ ] question를 add 하면 question에 대한 DeleteHistory 를 만들어 리스트에 추가한다.
+    - [ ] answer을 add 하면 question에 대한 DeleteHistory를 만들어 리스트에 추가한다.
+

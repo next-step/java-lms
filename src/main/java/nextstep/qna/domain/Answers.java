@@ -1,7 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +23,7 @@ public class Answers {
         return this.answers;
     }
 
-    public void deleteAnswers(DeleteHistories deleteHistories) throws CannotDeleteException {
+    public void deleteAnswers(DeleteHistories deleteHistories) {
         if (answers.isEmpty()) {
             return;
         }
