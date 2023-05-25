@@ -99,7 +99,7 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, deleteTime));
+        deleteHistories.add(DeleteHistory.ofQuestion(id, writer, deleteTime));
 
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete(loginUser, deleteTime));
