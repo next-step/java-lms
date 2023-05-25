@@ -5,6 +5,8 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SessionService {
     private final SessionRepository sessionRepository;
@@ -14,12 +16,7 @@ public class SessionService {
     }
 
     public Session findSessionById(long sessionId) {
-        final Session session = sessionRepository.findById(sessionId);
-
-        if (session == null) {
-            throw new SessionNotFoundException("강의 정보를 확인할 수 없습니다.");
-        }
-
-        return session;
+        return Optional.ofNullable(sessionRepository.findById(sessionId))
+                .orElseThrow(() -> new SessionNotFoundException("강의 정보를 확인할 수 없습니다."));
     }
 }
