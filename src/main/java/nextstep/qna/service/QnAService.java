@@ -30,13 +30,10 @@ public class QnAService {
         question.ensureAllAnswersOwnedByUser(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
+        question.deleted();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        Answers answers = question.getAnswers();
+        answers.deleteHistories(deleteHistories);
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

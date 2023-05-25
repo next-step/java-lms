@@ -25,4 +25,4 @@
 
 ## 리팩토링 변경사항
 - refactor loginUser의 question 삭제 권한 확인 로직 -> Question 이관
-- refactor question 
+- refactor question 내 Answer 중 다른 사람이 쓴 글 있는 지 확인 로직 -> Question 이관
