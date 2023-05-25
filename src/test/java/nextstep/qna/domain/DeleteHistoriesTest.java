@@ -36,9 +36,9 @@ public class DeleteHistoriesTest {
                 .hasSize(1);
     }
 
-    @DisplayName("Answer를 추가했을 경우 Add에 대한 DeleteHistory를 만들어 리스트에 추가한다.")
+    @DisplayName("Answer를 추가했을 경우 Answer에 대한 DeleteHistory를 만들어 리스트에 추가한다.")
     @Test
-    void addQuestion_CreateDeleteHistory_And_AddDeleteHistorylist() {
+    void addAnswer_CreateDeleteHistory_And_AddDeleteHistorylist() {
         deleteHistories.add(A1);
         DeleteHistory deleteHistoryA1 =
                 new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now());
