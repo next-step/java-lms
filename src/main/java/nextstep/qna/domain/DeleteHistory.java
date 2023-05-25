@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import nextstep.users.domain.NsUser;
 
-public class DeleteHistory {
+public class DeleteHistory extends BaseEntity {
 
     private Long id;
 
@@ -14,13 +14,15 @@ public class DeleteHistory {
 
     private NsUser deletedBy;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy,
-        LocalDateTime createdDate) {
+    public DeleteHistory(
+        ContentType contentType,
+        Long contentId,
+        NsUser deletedBy,
+        LocalDateTime createdDate
+    ) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;

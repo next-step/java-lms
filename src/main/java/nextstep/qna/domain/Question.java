@@ -6,113 +6,84 @@ import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question {
+public class Question extends BaseEntity {
 
     private Long id;
 
-    private String title;
+    private QuestionBody questionBody;
 
-    private String contents;
-
-    private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+        this(0L, new QuestionBody(writer, title, contents));
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        this(id, new QuestionBody(writer, title, contents));
+    }
+
+    public Question(Long id, QuestionBody questionBody) {
         this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionBody = questionBody;
+    }
+
+    public void addAnswer(Answer answer) {
+        if (answers == null) {
+            this.answers = new Answers();
+        }
+        answer.toQuestion(this);
+        answers.add(answer);
+    }
+
+    public void checkUserOfAnswers(final NsUser loginUser) throws CannotDeleteException {
+        answers.validateUser(loginUser);
+    }
+
+    public void isOwner(NsUser loginUser) throws CannotDeleteException {
+        questionBody.checkOwner(loginUser);
+    }
+
+    public List<DeleteHistory> delete(final LocalDateTime now) {
+        this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(
+            new DeleteHistory(ContentType.QUESTION, id, questionBody.getWriter(), now)
+        );
+
+        deleteAnswers(now, deleteHistories);
+        return deleteHistories;
+    }
+
+    private void deleteAnswers(final LocalDateTime now, final List<DeleteHistory> deleteHistories) {
+        answers.delete(now, deleteHistories);
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public void checkUserOfAnswers(final NsUser loginUser) throws CannotDeleteException {
-        for (final Answer answer : answers) {
-            answer.isOwner(loginUser);
-        }
-    }
-
-    public void isOwner(NsUser loginUser) throws CannotDeleteException {
-        if (writer != loginUser) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        return questionBody.getWriter();
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
-            + ", writer=" + writer + "]";
-    }
-
-    public List<DeleteHistory> delete(final LocalDateTime now) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, now));
-
-        deleteAnswers(LocalDateTime.now(), deleteHistories);
-        return deleteHistories;
-    }
-
-    private void deleteAnswers(final LocalDateTime now, final List<DeleteHistory> deleteHistories) {
-        for (final Answer answer : answers) {
-            DeleteHistory deleteHistory = answer.delete(now);
-            deleteHistories.add(deleteHistory);
-        }
+        return "Question{" +
+            "id=" + id +
+            ", questionBody=" + questionBody +
+            ", answers=" + answers +
+            ", deleted=" + deleted +
+            '}';
     }
 }

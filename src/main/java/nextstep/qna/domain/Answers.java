@@ -6,7 +6,7 @@ import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class AnswerList {
+public class Answers {
 
     private final List<Answer> answers = new ArrayList<>();
 
@@ -17,7 +17,6 @@ public class AnswerList {
     }
 
     public void add(final Answer answer) {
-        System.out.println("sdfsdf");
         answers.add(answer);
     }
 
