@@ -30,10 +30,8 @@ public class QnAService {
         validateAuthorization(question, loginUser);
         validateHavingAnswerFromOthers(question.getAnswers(), loginUser);
 
-        question.delete();
-        question.getAnswers()
-                .stream()
-                .forEach(answer -> answer.delete());
+        question.delete(deleteHistoryService);
+
     }
 
     private void validateAuthorization(Question question, NsUser loginUser) throws CannotDeleteException {

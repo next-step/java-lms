@@ -73,12 +73,9 @@ public class Answer {
         this.question = question;
     }
 
-    public boolean delete() {
+    public boolean delete(DeleteHistoryService deleteHistoryService) {
         this.setDeleted(true);
-
-        final DeleteHistoryService service = new DeleteHistoryService();
-        service.save(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
-
+        deleteHistoryService.save(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
         return this.deleted;
     }
 
