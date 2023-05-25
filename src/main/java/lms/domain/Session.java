@@ -85,10 +85,14 @@ public class Session {
     }
 
     public SessionType changeSessionType(SessionType sessionType) {
+        validateReadyState();
+        this.sessionType = sessionType;
+        return sessionType;
+    }
+
+    private void validateReadyState() {
         if (!sessionState.equals(READY)) {
             throw new IllegalArgumentException("수정 기간이 지났습니다.");
         }
-        this.sessionType = sessionType;
-        return sessionType;
     }
 }
