@@ -23,8 +23,8 @@
 -----
 - [x] SessionPeriod 도메인모델 생성 
 - [X] SessionPeriod 도메인모델 테스트
-- [x] 
-- [x] 
+- [x] SessionCoverImage 도메인모델 생성
+- [x] SessionCoverImage 도메인모델 테스트
 - [x] 
 - [x] 
 - [x] 
