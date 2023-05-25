@@ -30,7 +30,7 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(1L, new SessionInfo(10, 0, SessionStatusType.PREPARE), new CoverImage("imageUrl"), new SessionDate(LocalDateTime.now(), LocalDateTime.now()), new Price(1000));
+        Session session = new Session(1L, new SessionInfo(10, 0, SessionStatusType.PREPARE, SessionRecruitmentType.RECRUITING), new CoverImage("imageUrl"), new SessionDate(LocalDateTime.now(), LocalDateTime.now()), new Price(1000));
         int count = sessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
 

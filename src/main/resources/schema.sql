@@ -69,3 +69,11 @@ create table delete_history
     deleted_by_id bigint,
     primary key (id)
 );
+
+update session
+set session_status_type = 'IN_PROGRESS'
+where session_status_type = 'RECRUITING';
+
+alter table session
+    add session_recruitment_type
+        varchar(20) not null default '';
