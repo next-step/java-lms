@@ -17,7 +17,20 @@ public class DeleteHistory {
 
     private final LocalDateTime createdDate;
 
-    public DeleteHistory(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    private DeleteHistory(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+
+        if (Objects.isNull(contentType)) {
+            throw new IllegalArgumentException("컨텐츠 타입에 값이 입력되질 않았어요 :(");
+        }
+
+        if (Objects.isNull(deletedBy)) {
+            throw new IllegalArgumentException("삭제자가 존재하지 않아요 :(");
+        }
+
+        if (contentId == 0L) {
+            throw new IllegalArgumentException("유요하지 않는 컨텐츠 아이디에요 :(");
+        }
+
         this.id = id;
         this.contentType = contentType;
         this.contentId = contentId;
