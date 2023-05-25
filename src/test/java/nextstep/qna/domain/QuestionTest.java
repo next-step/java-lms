@@ -43,7 +43,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("삭제 가능할 경우에 isDelete 값을 true로 변경한다.")
-    void delete_DeleteQuestion_ChangeIsDeleteToTrue() throws CannotDeleteException{
+    void delete_DeleteQuestion_ChangeIsDeleteToTrue() {
         Q1.delete(NsUserTest.JAVAJIGI, deleteHistories);
         Q2.delete(NsUserTest.SANJIGI, deleteHistories);
 

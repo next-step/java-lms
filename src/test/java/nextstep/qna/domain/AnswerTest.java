@@ -58,7 +58,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("답변 삭제시 isDelete값을 true로 변경한다.")
-    void delete_DeleteAnswer_IsDeleteIsTrue() throws CannotDeleteException {
+    void delete_DeleteAnswer_IsDeleteIsTrue() {
         A1.delete(deleteHistories);
         Assertions.assertThat(A1.isDeleted()).isTrue();
     }
