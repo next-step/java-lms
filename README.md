@@ -46,7 +46,7 @@
 - [X] 강의 구분 - PaymentStrategy (전략 패턴 적용)  
   - FreePaymentStrategy - 무료강의
   - PaidPaymentStrategy - 유료강의
-- [ ] 강의 상태 - LectureStatus  
+- [X] 강의 상태 - LectureStatus  
   - PREPARING - 준비중
   - ENROLLING - 모집중
   - FINISHED - 종료
