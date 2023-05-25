@@ -13,7 +13,7 @@ public class SessionTest {
   public void throwException_ifEndDateBeforeStartDate() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.minusDays(3);
-    assertThatThrownBy(() -> new Session("title", start, end, "img", 10, new Course()))
+    assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 10, new Course()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -22,7 +22,7 @@ public class SessionTest {
   public void throwException_ifLess0MaxRecruitment() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.plusDays(3);
-    assertThatThrownBy(() -> new Session("title", start, end, "img", 0, new Course()))
+    assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 0, new Course()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

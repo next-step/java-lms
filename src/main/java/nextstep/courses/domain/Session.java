@@ -17,6 +17,8 @@ public class Session {
 
   private SessionStatus sessionStatus = SessionStatus.PREPARATION;
 
+  private SessionType sessionType;
+
   private int maxRecruitment;
 
   private Course course;
@@ -25,18 +27,20 @@ public class Session {
   }
 
   public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
-      int maxRecruitment, Course course) {
-    this(null, title, startDate, endDate, img, maxRecruitment, course);
+      SessionType sessionType, int maxRecruitment, Course course) {
+    this(null, title, startDate, endDate, img, sessionType, maxRecruitment, course);
   }
 
   public Session(Long id, String title, LocalDateTime startDate, LocalDateTime endDate,
-      String img, int maxRecruitment, Course course) {
+      String img, SessionType sessionType, int maxRecruitment, Course course) {
     this.id = id;
     this.title = title;
     validateDate(startDate, endDate);
     this.startDate = startDate;
     this.endDate = endDate;
     this.img = img;
+    validateSessionType(sessionType);
+    this.sessionType = sessionType;
     validateMaxRecruitment(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
     validateCourse(course);
@@ -44,7 +48,7 @@ public class Session {
   }
 
   private void validateMaxRecruitment(int maxRecruitment) {
-    if(maxRecruitment < 1){
+    if (maxRecruitment < 1) {
       throw new IllegalArgumentException();
     }
   }
@@ -56,6 +60,12 @@ public class Session {
 
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException();
+    }
+  }
+
+  private void validateSessionType(SessionType sessionType) {
+    if (sessionType == null) {
+      throw new NotFoundException();
     }
   }
 
