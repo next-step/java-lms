@@ -29,7 +29,7 @@ public class DeleteHistoriesTest {
     void addQuestion_CreateDeleteHistory_And_AddDeleteHistorylist() {
         deleteHistories.add(Q1);
         DeleteHistory deleteHistoryQ1 =
-                new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now());
+                new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter());
 
         Assertions.assertThat(deleteHistories.getDeleteHistories())
                 .containsExactly(deleteHistoryQ1)
@@ -41,9 +41,9 @@ public class DeleteHistoriesTest {
     void addAnswer_CreateDeleteHistory_And_AddDeleteHistorylist() {
         deleteHistories.add(A1);
         DeleteHistory deleteHistoryA1 =
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now());
+                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
         DeleteHistory deleteHistoryA2 =
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now());
+                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
 
         Assertions.assertThat(deleteHistories.getDeleteHistories())
                 .containsExactly(deleteHistoryA1, deleteHistoryA2)

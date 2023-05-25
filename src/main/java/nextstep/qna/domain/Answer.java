@@ -79,11 +79,12 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete() throws CannotDeleteException {
+    public void delete(DeleteHistories deleteHistories) throws CannotDeleteException {
         if (!this.writer.matchUser(this.question.getWriter())) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         this.setDeleted(true);
+        deleteHistories.add(this);
     }
 
     @Override

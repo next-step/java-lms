@@ -14,12 +14,12 @@ public class DeleteHistories {
 
     public void add(Question question) {
         this.deleteHistories.add(new DeleteHistory(
-                ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()));
+                ContentType.QUESTION, question.getId(), question.getWriter()));
     }
 
     public void add(Answer answer) {
         this.deleteHistories.add(new DeleteHistory(
-                ContentType.QUESTION, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+                ContentType.QUESTION, answer.getId(), answer.getWriter()));
     }
 
     public List<DeleteHistory> getDeleteHistories() {

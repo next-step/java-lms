@@ -90,13 +90,13 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser, DeleteHistories deleteHistories) {
         isSameUser(loginUser);
         this.setDeleted(true);
-        answers.deleteAnswers();
+        answers.deleteAnswers(deleteHistories);
     }
 
-    private void isSameUser(NsUser loginUser) throws CannotDeleteException{
+    private void isSameUser(NsUser loginUser) {
         if (!this.writer.matchUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
