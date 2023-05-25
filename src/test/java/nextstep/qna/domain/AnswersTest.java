@@ -14,10 +14,12 @@ public class AnswersTest {
     private Answer A1;
     private Answer A2;
     private Answers answers;
+    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
-        answers = new Answers();
+        deleteHistories = new DeleteHistories();
+        this.answers= new Answers();
 
         this.Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         this.A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
@@ -46,6 +48,6 @@ public class AnswersTest {
     @DisplayName("답변이 없는 리스트를 삭제해도 예외가 발생하지 않는다.")
     void delete_EmptyAnswersDelete_NotThrowException() {
         Assertions.assertThatNoException()
-                .isThrownBy(() -> answers.deleteAnswers());
+                .isThrownBy(() -> answers.deleteAnswers(deleteHistories));
     }
 }

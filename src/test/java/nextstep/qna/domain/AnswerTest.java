@@ -17,9 +17,12 @@ public class AnswerTest {
     public Answer A1;
     public Answer A2;
     public Question Q1;
+    private DeleteHistories deleteHistories;
+
 
     @BeforeEach
     void setUp() {
+        this.deleteHistories = new DeleteHistories();
         Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
         A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
@@ -35,7 +38,8 @@ public class AnswerTest {
         List<Answer> answers = Q1.getAnswers();
 
         Assertions.assertThat(answers).allSatisfy(answer ->
-                assertThatNoException().isThrownBy(answer::delete));
+                assertThatNoException().isThrownBy(() ->
+                        answer.delete(deleteHistories)));
     }
 
     @Test
@@ -48,13 +52,14 @@ public class AnswerTest {
         List<Answer> answers = Q1.getAnswers();
 
         Assertions.assertThat(answers).anySatisfy(answer ->
-                assertThatThrownBy(answer::delete).isInstanceOf(CannotDeleteException.class));
+                assertThatThrownBy(() -> answer.delete(deleteHistories))
+                        .isInstanceOf(CannotDeleteException.class));
     }
 
     @Test
     @DisplayName("답변 삭제시 isDelete값을 true로 변경한다.")
     void delete_DeleteAnswer_IsDeleteIsTrue() throws CannotDeleteException {
-        A1.delete();
+        A1.delete(deleteHistories);
         Assertions.assertThat(A1.isDeleted()).isTrue();
     }
 
