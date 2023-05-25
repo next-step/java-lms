@@ -30,23 +30,23 @@
 
 ### Step2. 수강신청(도메인 모델)
 `도메인 모델 설계`
-- [ ] 과정 - Course  `List<Session`
+- [ ] 과정 - Course  `List<Lecture>`
   - 강의(Session) 와 1:N 관계 (기수별)
-- [ ] 강의 - Session
+- [ ] 강의 - Lecture
   - [ ] 강의 수강 신청 기능
   - [ ] 학생은 강의를 신청할 수 있다
   - [ ] 강의는 최대 수강 인원을 초과 할 수 없다
   - [ ] 강의 상태가 모집중일때만 수강 신청 가능하다
-- [ ] 강의시간 - SessionDate
+- [X] 강의시간 - LectureDate
   - startDate - 시작일
   - endDate - 종료일
   - [ ] 종료일은 시작일보다 나중이여야 한다
-- [ ] 커버 이미지 - SessionImage 
+- [ ] 커버 이미지 - LectureImage 
   - coverImage
 - [ ] 결제타입 - PaymentType
   - FREE - 무료강의
   - PAID - 유료강의
-- [ ] 강의 상태 - SessionStatus  
+- [ ] 강의 상태 - LectureStatus  
   - PREPARING - 준비중
   - ENROLLING - 모집중
   - FINISHED - 종료
