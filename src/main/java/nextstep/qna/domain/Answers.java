@@ -28,4 +28,7 @@ public class Answers {
         return deleteHistories;
     }
 
+    public List<Answer> getValues() {
+        return values;
+    }
 }
