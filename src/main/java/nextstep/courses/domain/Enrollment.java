@@ -16,7 +16,7 @@ public class Enrollment {
     }
 
     public void enroll(Student student) throws AlreadyEnrollmentException {
-        if (sessionStatus != SessionStatus.ENROLLING) {
+        if (!sessionStatus.isEnrolling()) {
             throw new IllegalArgumentException("수강신청 상태가 아니라 수강신청할 수 없습니다.");
         }
         students.enroll(student);
