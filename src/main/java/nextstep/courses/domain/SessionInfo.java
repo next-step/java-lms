@@ -33,4 +33,16 @@ public class SessionInfo {
             throw new RegisterCourseException("최대 수강신청 인원을 초과할 수 없습니다.");
         }
     }
+
+    public int getMaxStudents() {
+        return maxStudents;
+    }
+
+    public int getCurrentStudents() {
+        return currentStudents;
+    }
+
+    public SessionStatusType getSessionStatusType() {
+        return sessionStatusType;
+    }
 }

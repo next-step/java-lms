@@ -7,7 +7,7 @@ public class Price {
         this.price = price;
     }
 
-    public PriceType checkPriceType() {
-        return PriceType.checkPriceType(this.price);
+    public int getPrice() {
+        return price;
     }
 }

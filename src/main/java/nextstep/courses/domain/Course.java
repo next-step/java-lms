@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.common.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Course extends BaseEntity {
     private String title;
@@ -33,5 +34,9 @@ public class Course extends BaseEntity {
 
     public LocalDateTime getCreatedAt() {
         return super.getCreatedAt();
+    }
+
+    public void receiveSession(List<Session> sessions) {
+        this.sessions = new Sessions(sessions);
     }
 }
