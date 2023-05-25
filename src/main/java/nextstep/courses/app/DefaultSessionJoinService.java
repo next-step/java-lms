@@ -25,8 +25,6 @@ public class DefaultSessionJoinService implements SessionJoinService {
     @Override
     public void register(long sessionId, List<String> userIds) {
         Session session = sessionRepository.findById(sessionId);
-        List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionId(sessionId);
-        session.addSessionJoins(sessionJoins);
         List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
 
         for (NsUser nsUser : nsUsers) {
