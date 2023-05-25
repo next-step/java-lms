@@ -15,16 +15,12 @@ public class Answers {
     }
 
     public void checkCanDelete(NsUser loginUser) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            answer.checkCanDelete(loginUser);
-        }
+        answers.forEach(answer -> answer.checkCanDelete(loginUser));
     }
 
     public List<DeleteHistory> makeDeleteHistory() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.makeDeleteHistory());
-        }
+        answers.forEach(answer -> deleteHistories.add(answer.makeDeleteHistory()));
         return deleteHistories;
     }
 
