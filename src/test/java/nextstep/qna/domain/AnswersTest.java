@@ -29,19 +29,4 @@ public class AnswersTest {
             .isInstanceOf(CannotDeleteException.class)
     );
   }
-
-  @DisplayName("답변들의 주인이 아니면 Exception을 던져서 주인을 검증한다.")
-  @Test
-  public void validateAnswersOwner_throwsException_ifNotOwner() {
-    Answers answers = new Answers();
-
-    assertAll(
-        () -> answers.add(A1),
-        () -> answers.add(A2),
-        () -> assertThatThrownBy(() -> answers.validateAnswersOwner(NsUserTest.JAVAJIGI))
-            .isInstanceOf(CannotDeleteException.class),
-        () -> assertThatThrownBy(() -> answers.validateAnswersOwner(NsUserTest.SANJIGI))
-            .isInstanceOf(CannotDeleteException.class)
-    );
-  }
 }

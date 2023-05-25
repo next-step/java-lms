@@ -45,7 +45,6 @@ public class Question {
 
   public List<DeleteHistory> delete(NsUser loginUser) {
     validateQuestionOwner(loginUser);
-    answers.validateAnswersOwner(loginUser);
 
     List<DeleteHistory> deleteHistories = new ArrayList<>();
     deleteHistories.add(makeDeleted());
