@@ -1,15 +1,13 @@
 package nextstep.users.domain;
 
+import nextstep.common.BaseEntity;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class NsUser {
+public class NsUser extends BaseEntity {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
-
-    private Long id;
-
     private String userId;
 
     private String password;
@@ -18,29 +16,27 @@ public class NsUser {
 
     private String email;
 
-    private LocalDateTime createdAt;
+    private UserCourseType userCourseType;
 
-    private LocalDateTime updatedAt;
 
     public NsUser() {
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+    public NsUser(Long id, String userId, String password, String name, String email, UserCourseType userCourseType) {
+        this(id, userId, password, name, email, userCourseType, LocalDateTime.now(), null);
     }
 
-    public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public NsUser(Long id, String userId, String password, String name, String email, UserCourseType userCourseType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.userCourseType = userCourseType;
     }
 
     public Long getId() {
-        return id;
+        return super.getId();
     }
 
     public String getUserId() {
@@ -122,30 +118,5 @@ public class NsUser {
         public boolean isGuestUser() {
             return true;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NsUser nsUser = (NsUser) o;
-        return Objects.equals(id, nsUser.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "NsUser{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

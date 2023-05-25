@@ -77,3 +77,7 @@ where session_status_type = 'RECRUITING';
 alter table session
     add session_recruitment_type
         varchar(20) not null default '';
+
+alter table ns_user
+    add user_course_type
+        varchar(20) not null default '';
