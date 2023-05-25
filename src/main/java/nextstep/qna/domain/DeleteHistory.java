@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
@@ -24,11 +25,11 @@ public class DeleteHistory {
         }
 
         if (Objects.isNull(deletedBy)) {
-            throw new IllegalArgumentException("삭제자가 존재하지 않아요 :(");
+            throw new UnAuthorizedException("삭제자에 값이 입력되질 않았어요 :(");
         }
 
         if (contentId == 0L) {
-            throw new IllegalArgumentException("유요하지 않는 컨텐츠 아이디에요 :(");
+            throw new IllegalArgumentException("유요하지 않는 컨텐츠 아이디에요 :( [ 입력 값 : " + contentId + "]");
         }
 
         this.id = id;

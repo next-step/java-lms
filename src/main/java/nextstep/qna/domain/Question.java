@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
@@ -21,6 +22,17 @@ public class Question {
     private LocalDateTime updateAt;
 
     private Question(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
+
+
+        if (Objects.isNull(writer)) {
+            throw new UnAuthorizedException("작성자에 값이 입력되질 않았어요 :(");
+        }
+
+        if (id == 0L) {
+            throw new IllegalArgumentException("유요하지 않는 아이디에요 :( [ 입력 값 : " + id + "]");
+        }
+
+
         this.id = id;
         this.writer = writer;
         this.title = title;

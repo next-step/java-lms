@@ -25,15 +25,20 @@ public class Answer {
     private LocalDateTime updateAt;
 
     private Answer(long id, NsUser writer, Question question, String contents, LocalDateTime createdDate) {
-        this.id = id;
-        if (writer == null) {
-            throw new UnAuthorizedException();
+
+        if (id == 0L) {
+            throw new IllegalArgumentException("유효하지 않는 아이디에요 :( [ 입력 값 : " + id + "]");
         }
 
-        if (question == null) {
+        if (Objects.isNull(writer)) {
+            throw new UnAuthorizedException("작성자에 값이 입력되질 않았어요 :(");
+        }
+
+        if (Objects.isNull(question)) {
             throw new NotFoundException();
         }
 
+        this.id = id;
         this.writer = writer;
         this.question = question;
         this.contents = contents;
