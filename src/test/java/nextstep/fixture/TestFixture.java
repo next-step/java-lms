@@ -3,7 +3,7 @@ package nextstep.fixture;
 import nextstep.common.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Creator;
-import nextstep.courses.domain.Enrolment;
+import nextstep.courses.domain.Enroll;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.Term;
 import nextstep.qna.domain.Answer;
@@ -38,10 +38,10 @@ public class TestFixture {
     public static Session LEMON_SESSION;
     public static Session LIME_SESSION;
 
-    public static Enrolment MALBEC_ENROL;
-    public static Enrolment SYRAH_ENROL;
-    public static Enrolment CARSO_ENROL;
-    public static Enrolment PINOT_ENROL;
+    public static Enroll MALBEC_ENROL;
+    public static Enroll SYRAH_ENROL;
+    public static Enroll CARSO_ENROL;
+    public static Enroll PINOT_ENROL;
 
     public static Image RED_IMAGE;
     public static Image GREEN_IMAGE;
@@ -82,10 +82,10 @@ public class TestFixture {
         LEMON_SESSION = new Session(500L, 50L);
         LIME_SESSION = new Session(3000L, 30L);
 
-        MALBEC_ENROL = new Enrolment(1L,1L);
-        SYRAH_ENROL = new Enrolment(2L,2L);
-        CARSO_ENROL = new Enrolment(3L,3L);
-        PINOT_ENROL = new Enrolment(4L,4L);
+        MALBEC_ENROL = new Enroll(1L,1L);
+        SYRAH_ENROL = new Enroll(2L,2L);
+        CARSO_ENROL = new Enroll(3L,3L);
+        PINOT_ENROL = new Enroll(4L,4L);
 
         RED_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
         GREEN_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");

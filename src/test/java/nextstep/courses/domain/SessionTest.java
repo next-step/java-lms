@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.common.domain.Image;
 import nextstep.fixture.TestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,9 @@ class SessionTest {
     public void sessionImage() {
         //given
         Session session = TestFixture.LEMON_SESSION;
+        Image image = TestFixture.BLUE_IMAGE;
         //when
+        session.registerCoverImage(image);
         //then
         assertThat(session.coverImageUrl())
                 .as("커버 이미지가 존재해야한다")
@@ -60,8 +63,7 @@ class SessionTest {
                 .isTrue();
         assertThat(paidSession.isFreeSession())
                 .as("유료세션을 검증한다")
-                .isTrue();
-
+                .isFalse();
     }
 
     @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다")
@@ -80,11 +82,11 @@ class SessionTest {
                 .as("준비상태를 갖는다")
                 .isEqualTo(SessionStatus.PREPARING);
 
-        assertThat(session1.getStatus())
+        assertThat(session2.getStatus())
                 .as("모집중 상태를 갖는다")
                 .isEqualTo(SessionStatus.RECRUITING);
 
-        assertThat(session1.getStatus())
+        assertThat(session3.getStatus())
                 .as("종료상태를 갖는다")
                 .isEqualTo(SessionStatus.CLOSED);
     }
@@ -93,15 +95,22 @@ class SessionTest {
     @Test
     public void enrollCanOnlyOnRecruit() {
         //given
+        Session session = TestFixture.LIME_SESSION;
+        Enroll enroll = TestFixture.CARSO_ENROL;
         //when
+        session.toRecruitingState();
+        session.enroll(enroll);
         //then
-        fail();
+        assertThat(session.enrollCheck(enroll))
+                .as("강의 신청에 성공함을 검증한다")
+                .isTrue();
     }
 
     @DisplayName("강의 상태가 모집중이 아닐 때 강의 신청에 실패한다")
     @Test
     public void enrollCanOnlyOnRecruitFail() {
         //given
+        Session session2 = TestFixture.MINT_SESSION;
         //when
         //then
         fail();
@@ -111,6 +120,7 @@ class SessionTest {
     @Test
     public void notExceedMaxStudents() {
         //given
+        Session session1 = TestFixture.LIME_SESSION;
         //when
         //then
         fail();
@@ -120,6 +130,7 @@ class SessionTest {
     @Test
     public void notExceedMaxStudentsFail() {
         //given
+        Session session2 = TestFixture.MINT_SESSION;
         //when
         //then
         fail();

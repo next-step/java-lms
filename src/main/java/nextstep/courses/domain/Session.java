@@ -3,6 +3,9 @@ package nextstep.courses.domain;
 import nextstep.common.CommunicationTerm;
 import nextstep.common.domain.Image;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -13,15 +16,17 @@ public class Session {
     private Date endDate;
     private Image coverImage;
     private Long price;
+    @NotNull
     private SessionStatus status;
     private Long maxStudentCount;
-    private List<Enrolment> enrolments;
+    private List<Enroll> enrolls = new ArrayList<>();
 
     public Session(Long price, Long maxStudentCount) {
         this.price = price;
         this.maxStudentCount = maxStudentCount;
         this.startDate = new Date();
         this.endDate = new Date(System.currentTimeMillis() + 100000);
+        this.status = SessionStatus.CLOSED;
     }
 
     public Date getStartDate() {
@@ -60,4 +65,15 @@ public class Session {
         this.status = SessionStatus.CLOSED;
     }
 
+    public void registerCoverImage(Image image) {
+        this.coverImage = image;
+    }
+
+    public void enroll(Enroll... enroll) {
+        this.enrolls.addAll(Arrays.asList(enroll));
+    }
+
+    public boolean enrollCheck(Enroll enroll) {
+        return enrolls.contains(enroll);
+    }
 }
