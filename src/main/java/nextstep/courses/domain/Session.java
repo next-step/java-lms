@@ -7,15 +7,15 @@ public class Session {
 
     private final Long id;
     private final SessionPeriod sessionPeriod;
-    private PaymentType sessionPayment;
+    private PaymentType paymentType;
     private SessionStatus sessionStatus;
     private final NextStepUsers nextStepUsers;
     private SessionImageUrl sessionImageUrl;
 
-    public Session(Long id, SessionPeriod sessionPeriod, PaymentType sessionPayment, SessionStatus sessionStatus, int maximumUserCount, SessionImageUrl sessionImageUrl) {
+    public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, SessionStatus sessionStatus, int maximumUserCount, SessionImageUrl sessionImageUrl) {
         this.id = id;
         this.sessionPeriod = sessionPeriod;
-        this.sessionPayment = sessionPayment;
+        this.paymentType = paymentType;
         this.sessionStatus = sessionStatus;
         this.nextStepUsers = new NextStepUsers(maximumUserCount);
         this.sessionImageUrl = sessionImageUrl;
