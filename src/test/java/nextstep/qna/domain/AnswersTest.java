@@ -1,12 +1,13 @@
 package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class AnswersTest {
 
@@ -28,26 +29,26 @@ public class AnswersTest {
 
     @Test
     @DisplayName("Answers 일급 컬렉션에 답변 객체를 추가할 수 있다.")
-    void enroll_AddAnswer_Success() {
+    void enroll_AddAnswer_ContainExactlyToList() {
         answers.add(A1);
         answers.add(A2);
 
         List<Answer> answerList = answers.getAnswers();
 
-        Assertions.assertThat(answerList).containsExactly(A1, A2).hasSize(2);
+        assertThat(answerList).containsExactly(A1, A2).hasSize(2);
     }
 
     @Test
     @DisplayName("Answers 일급 컬렉션에 null이 추가되면 예외를 던진다.")
     void enroll_AddNull_ThrowException() {
-        Assertions.assertThatThrownBy(() -> answers.add(null))
+        assertThatThrownBy(() -> answers.add(null))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @Test
     @DisplayName("답변이 없는 리스트를 삭제해도 예외가 발생하지 않는다.")
     void delete_EmptyAnswersDelete_NotThrowException() {
-        Assertions.assertThatNoException()
+        assertThatNoException()
                 .isThrownBy(() -> answers.deleteAnswers(deleteHistories));
     }
 }

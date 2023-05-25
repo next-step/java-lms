@@ -2,15 +2,13 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("답변 기능 관련 테스트")
 public class AnswerTest {
@@ -37,7 +35,7 @@ public class AnswerTest {
 
         List<Answer> answers = Q1.getAnswers();
 
-        Assertions.assertThat(answers).allSatisfy(answer ->
+        assertThat(answers).allSatisfy(answer ->
                 assertThatNoException().isThrownBy(() ->
                         answer.delete(deleteHistories)));
     }
@@ -51,7 +49,7 @@ public class AnswerTest {
 
         List<Answer> answers = Q1.getAnswers();
 
-        Assertions.assertThat(answers).anySatisfy(answer ->
+        assertThat(answers).anySatisfy(answer ->
                 assertThatThrownBy(() -> answer.delete(deleteHistories))
                         .isInstanceOf(CannotDeleteException.class));
     }
@@ -60,12 +58,12 @@ public class AnswerTest {
     @DisplayName("답변 삭제시 isDelete값을 true로 변경한다.")
     void delete_DeleteAnswer_IsDeleteIsTrue() {
         A1.delete(deleteHistories);
-        Assertions.assertThat(A1.isDeleted()).isTrue();
+        assertThat(A1.isDeleted()).isTrue();
     }
 
     @Test
     @DisplayName("삭제처리하지 않은 답변은 isDelete값이 false다.")
     void delete_DontDeleteAnswer_IsDeleteIsFalse() {
-        Assertions.assertThat(A1.isDeleted()).isFalse();
+        assertThat(A1.isDeleted()).isFalse();
     }
 }
