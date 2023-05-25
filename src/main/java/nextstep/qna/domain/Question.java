@@ -72,7 +72,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void setDeleted(boolean deleted) {   // todo) 나중에 QnaService 리팩토링하면 private으로 변경하기
+    private void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -89,15 +89,22 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser, DeleteHistories deleteHistories) {
+    public DeleteHistories delete(NsUser loginUser) {
         isSameUser(loginUser);
         this.setDeleted(true);
-        answers.deleteAnswers(deleteHistories);
+        return documentHistories();
     }
 
     private void isSameUser(NsUser loginUser) {
         if (!this.writer.matchUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private DeleteHistories documentHistories() {
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(this);
+        answers.deleteAnswers(deleteHistories);
+        return deleteHistories;
     }
 }
