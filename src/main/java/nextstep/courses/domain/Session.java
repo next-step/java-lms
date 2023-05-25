@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.common.domain.Image;
+import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 
 import java.util.Date;
 import java.util.List;
