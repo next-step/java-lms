@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.common.Communication;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Communication("과정")
 public class Course {
     private CourseId courseId;
 

@@ -1,11 +1,14 @@
 package nextstep.courses.domain;
 
+import nextstep.common.Communication;
 import nextstep.common.domain.Image;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 
+import java.lang.annotation.Documented;
 import java.util.Date;
 import java.util.List;
 
+@Communication("강의")
 public class Session {
     private SessionId sessionId;
     private Date startDate;
