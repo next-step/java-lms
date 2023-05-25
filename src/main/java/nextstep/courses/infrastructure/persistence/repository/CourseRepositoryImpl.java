@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.infrastructure.persistence.repository;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
@@ -10,10 +10,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Repository("courseRepository")
-public class JdbcCourseRepository implements CourseRepository {
+public class CourseRepositoryImpl implements CourseRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public CourseRepositoryImpl(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
