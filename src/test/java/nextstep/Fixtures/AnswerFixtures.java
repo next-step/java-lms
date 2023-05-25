@@ -13,6 +13,4 @@ public class AnswerFixtures {
     public static Answer createAnswer2(NsUser nsUser) {
         return new Answer(nsUser, QuestionFixtures.createQuestion(NsUserTest.JAVAJIGI), "Answers Contents2");
     }
-
-
 }
