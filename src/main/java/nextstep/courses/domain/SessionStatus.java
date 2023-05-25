@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum SessionStatus {
     READY("준비중"),
@@ -8,6 +10,13 @@ public enum SessionStatus {
     CLOSED("종료");
 
     private final String status;
+    private static final Map<String, SessionStatus> sessionStatusMap = new HashMap<>();
+
+    static {
+        for (SessionStatus sessionStatus : SessionStatus.values()) {
+            sessionStatusMap.put(sessionStatus.getStatus(), sessionStatus);
+        }
+    }
 
     SessionStatus(String status) {
         this.status = status;
@@ -22,9 +31,6 @@ public enum SessionStatus {
     }
 
     public static SessionStatus find(String status) {
-        return Arrays.stream(values())
-                .filter(x -> x.status == status)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(status + "는 없는 상태입니다."));
+        return sessionStatusMap.get(status);
     }
 }
