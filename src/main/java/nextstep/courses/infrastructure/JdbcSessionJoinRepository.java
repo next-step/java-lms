@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.support.ProxyUtils;
 import nextstep.users.domain.NsUserBuilder;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,11 +17,9 @@ import java.util.stream.Collectors;
 @Repository("sessionJoinRepository")
 public class JdbcSessionJoinRepository implements SessionJoinRepository {
     private final JdbcOperations jdbcTemplate;
-    private final SessionRepository sessionRepository;
 
-    public JdbcSessionJoinRepository(JdbcTemplate jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcSessionJoinRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class JdbcSessionJoinRepository implements SessionJoinRepository {
         String sql = "select id, session_id, user_id, session_join_status, created_at, updated_at from session_join where session_id = ?";
         RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
                 new SessionJoin(rs.getLong(1),
-                                sessionRepository.findById(rs.getLong(2)),
+                                ProxyUtils.create(Session.class, rs.getLong(2)),
                                 NsUserBuilder.aNsUser().withId(rs.getLong(3)).build(),
                                 SessionJoinStatus.find(rs.getString(4)),
                                 toLocalDateTime(rs.getTimestamp(5)),
@@ -63,7 +62,7 @@ public class JdbcSessionJoinRepository implements SessionJoinRepository {
 
         RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
                 new SessionJoin(rs.getLong(1),
-                                sessionRepository.findById(rs.getLong(2)),
+                                ProxyUtils.create(Session.class, rs.getLong(2)),
                                 NsUserBuilder.aNsUser().withId(rs.getLong(3)).build(),
                                 SessionJoinStatus.find(rs.getString(4)),
                                 toLocalDateTime(rs.getTimestamp(5)),

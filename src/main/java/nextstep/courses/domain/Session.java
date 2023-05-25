@@ -9,21 +9,24 @@ import java.util.Objects;
 public class Session {
     private Long id;
 
-    private final SessionStatus sessionStatus;
+    private SessionStatus sessionStatus;
 
-    private final SessionBillType sessionBillType;
+    private SessionBillType sessionBillType;
 
-    private final SessionCoverImage sessionCoverImage;
+    private SessionCoverImage sessionCoverImage;
 
-    private final SessionRegistration sessionRegistration;
+    private SessionRegistration sessionRegistration;
 
-    private final SessionPeriod sessionPeriod;
+    private SessionPeriod sessionPeriod;
 
-    private final SessionJoins sessionJoins;
+    private SessionJoins sessionJoins;
 
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
+
+    protected Session() {
+    }
 
     public Session(Long id, SessionStatus sessionStatus, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage,
                    SessionRecruitStatus sessionRecruitStatus, long maxUserCount, SessionPeriod sessionPeriod,

@@ -7,11 +7,14 @@ import java.util.Objects;
 
 public class SessionJoin {
     private Long id;
-    private final Session session;
-    private final NsUser nsUser;
+    private Session session;
+    private NsUser nsUser;
     private SessionJoinStatus sessionJoinStatus;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    protected SessionJoin() {
+    }
 
     public static SessionJoin apply(Session session, NsUser nsUser, SessionJoinStatus status) {
         LocalDateTime now = LocalDateTime.now();
