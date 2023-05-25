@@ -25,12 +25,18 @@ public class QuestionTest {
     void delete_LoginUserEqualToQuestionUser_NotThrowException() {
         assertThatNoException()
                 .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI));
+
+        assertThatNoException()
+                .isThrownBy(() -> Q2.delete(NsUserTest.SANJIGI));
     }
 
     @Test
     @DisplayName("질문 삭제시 로그인 사용자와 질문한 사람이 다를 경우 예외를 던진다.")
     void delete_LoginUserNotEqualToQuestionUser_ThrowException() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class);
+
+        assertThatThrownBy(() -> Q2.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }
