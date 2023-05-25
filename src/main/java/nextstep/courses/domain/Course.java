@@ -20,8 +20,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+    public Course(String title, Creator creator) {
+        this(0L, title, creator, LocalDateTime.now(), null);
     }
 
     public Course(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

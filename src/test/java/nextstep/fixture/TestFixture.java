@@ -1,6 +1,8 @@
 package nextstep.fixture;
 
+import nextstep.common.domain.Image;
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.Creator;
 import nextstep.courses.domain.Enrolment;
 import nextstep.courses.domain.Session;
 import nextstep.qna.domain.Answer;
@@ -21,6 +23,10 @@ public class TestFixture {
     public static NsUser SANJIGI;
     public static NsUser BADAJIGI;
 
+    public static Creator pobi;
+    public static Creator watson;
+    public static Creator winter;
+
     public static Course RUST_COURSE;
     public static Course K8S_COURSE;
     public static Course KOTLIN_COURSE;
@@ -33,6 +39,12 @@ public class TestFixture {
     public static Enrolment SYRAH_ENROL;
     public static Enrolment CARSO_ENROL;
     public static Enrolment PINOT_ENROL;
+
+    public static Image RED_IMAGE;
+    public static Image GREEN_IMAGE;
+    public static Image YELLOW_IMAGE;
+    public static Image BLUE_IMAGE;
+
 
 
     static {
@@ -52,17 +64,26 @@ public class TestFixture {
         SANJIGI_ANSWER = new Answer(22L, SANJIGI, SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
         BADAJIGI_ANSWER = new Answer(33L, BADAJIGI, BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
 
-        Course RUST_COURSE = new Course();
-        Course K8S_COURSE = new Course();
-        Course KOTLIN_COURSE = new Course();
+        pobi = new Creator(1L,"pobi");
+        watson = new Creator(2L, "watson");
+        winter = new Creator(3L, "winter");
 
-        Session MINT_SESSION = new Session();
-        Session LEMON_SESSION = new Session();
-        Session LIME_SESSION = new Session();
+        RUST_COURSE = new Course();
+        K8S_COURSE = new Course();
+        KOTLIN_COURSE = new Course();
 
-        Enrolment MALBEC_ENROL = new Enrolment();
-        Enrolment SYRAH_ENROL = new Enrolment();
-        Enrolment CARSO_ENROL = new Enrolment();
-        Enrolment PINOT_ENROL = new Enrolment();
+        MINT_SESSION = new Session();
+        LEMON_SESSION = new Session();
+        LIME_SESSION = new Session();
+
+        MALBEC_ENROL = new Enrolment();
+        SYRAH_ENROL = new Enrolment();
+        CARSO_ENROL = new Enrolment();
+        PINOT_ENROL = new Enrolment();
+
+        RED_IMAGE = new Image();
+        GREEN_IMAGE = new Image();
+        YELLOW_IMAGE = new Image();
+        BLUE_IMAGE = new Image();
     }
 }
