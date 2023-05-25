@@ -63,7 +63,7 @@ public class QuestionTest {
 
 
         Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> Question.of(0, NsUserTest.JAVAJIGI, "title1", "contents1", null));
-        assertEquals("유요하지 않는 아이디에요 :( [ 입력 값 : 0]", exception.getMessage());
+        assertEquals("유효하지 않는 아이디에요 :( [ 입력 값 : 0]", exception.getMessage());
     }
 
     @Test

@@ -29,7 +29,7 @@ public class Question {
         }
 
         if (id == 0L) {
-            throw new IllegalArgumentException("유요하지 않는 아이디에요 :( [ 입력 값 : " + id + "]");
+            throw new IllegalArgumentException("유효하지 않는 아이디에요 :( [ 입력 값 : " + id + "]");
         }
 
 

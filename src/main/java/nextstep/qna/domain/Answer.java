@@ -27,7 +27,7 @@ public class Answer {
     private Answer(long id, NsUser writer, Question question, String contents, LocalDateTime createdDate) {
 
         if (id == 0L) {
-            throw new IllegalArgumentException("유효하지 않는 아이디에요 :( [ 입력 값 : " + id + "]");
+            throw new IllegalArgumentException("유효하지 않는 아이디에요 :( [입력 값 : " + id + "]");
         }
 
         if (Objects.isNull(writer)) {
@@ -52,6 +52,16 @@ public class Answer {
 
     public static Answer of(long id, NsUser writer, Question question, String contents, LocalDateTime createdDate) {
         return new Answer(id, writer, question, contents, createdDate);
+    }
+
+    public static Answer of(long id, NsUser writer, Question question, String contents, LocalDateTime createdDate, DeleteStatus deleted) {
+
+        Answer answer = new Answer(id, writer, question, contents, createdDate);
+
+        if (Objects.nonNull(deleted)) {
+            answer.deleted = deleted;
+        }
+        return answer;
     }
 
     public long getId() {
