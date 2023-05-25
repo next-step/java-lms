@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
@@ -59,6 +60,11 @@ public class Answer {
     }
 
     public DeleteHistory remove() {
+
+        if (deleted.isDeleted()) {
+            throw new CannotDeleteException("이미 삭제된 답변이에요 :(");
+        }
+
         this.deleted = DeleteStatus.DELETED;
         updateAt = LocalDateTime.now();
         return DeleteHistory.of(ContentType.ANSWER, this.id, this.writer);
