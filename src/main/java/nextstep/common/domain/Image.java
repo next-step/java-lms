@@ -11,7 +11,7 @@ public class Image {
         this.imageLink = imageLink;
     }
 
-    public String getImageLink() {
+    public String getImageUrl() {
         return imageLink;
     }
 }

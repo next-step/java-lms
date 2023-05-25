@@ -20,5 +20,27 @@ public class Session {
     public Session(Long price, Long maxStudentCount) {
         this.price = price;
         this.maxStudentCount = maxStudentCount;
+        this.startDate = new Date();
+        this.endDate = new Date(System.currentTimeMillis() + 100000);
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public String coverImageUrl() {
+        return this.coverImage.getImageUrl();
+    }
+
+    public void setFreeSession() {
+        this.price = 0L;
+    }
+
+    public boolean isFreeSession() {
+        return this.price == 0L;
     }
 }
