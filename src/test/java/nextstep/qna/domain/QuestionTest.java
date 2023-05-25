@@ -17,6 +17,12 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
+    void 삭제_상태변경() throws CannotDeleteException {
+        Q1.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
+    @Test
     void 삭제이력() throws CannotDeleteException {
         Question question = new Question(1L, NsUser.GUEST_USER, "title3", "contents3");
         question.addAnswer(new Answer(1L, NsUser.GUEST_USER, question, "question1"));
