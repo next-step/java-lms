@@ -5,6 +5,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Creator;
 import nextstep.courses.domain.Enrolment;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.Term;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
@@ -31,6 +32,8 @@ public class TestFixture {
     public static Course K8S_COURSE;
     public static Course KOTLIN_COURSE;
 
+    public static Term TERM16;
+    public static Term TERM17;
     public static Session MINT_SESSION;
     public static Session LEMON_SESSION;
     public static Session LIME_SESSION;
@@ -71,6 +74,9 @@ public class TestFixture {
         RUST_COURSE = new Course("가볍게 시작하는 RUST",1L);
         K8S_COURSE = new Course("재미있는 쿠버네티스",2L);
         KOTLIN_COURSE = new Course("Hello Kotlin", 3L);
+
+        TERM16 = new Term();
+        TERM17 = new Term();
 
         MINT_SESSION = new Session(10000L,100L);
         LEMON_SESSION = new Session(500L, 50L);
