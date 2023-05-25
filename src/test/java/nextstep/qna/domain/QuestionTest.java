@@ -108,6 +108,18 @@ public class QuestionTest {
     }
 
     @Test
+    @DisplayName("Question 삭제시  질문이_이미_삭제된_경우 예외를 던진다 ")
+    void 질문이_이미_삭제된_경우() {
+
+        question = Question.of(1L, NsUserTest.JAVAJIGI, "title1", "contents1", null, DeleteStatus.DELETED);
+
+        Throwable exception = Assertions.assertThrows(CannotDeleteException.class, () -> question.remove(NsUserTest.JAVAJIGI));
+        assertEquals("이미 삭제된 질문이에요 :(", exception.getMessage());
+
+    }
+
+
+    @Test
     @DisplayName("Question 답변글에 질문 작성자외에 다른 답변글 작성자가 존재하는지 확인")
     void 질문자외_답변자들이_존재하는지_확인() {
         Answer answerOne = Answer.of(NsUserTest.SANJIGI, question, "Answers Contents1");

@@ -50,6 +50,16 @@ public class Question {
         return new Question(id, writer, title, contents, null, createdDate);
     }
 
+    public static Question of(long id, NsUser writer, String title, String contents, LocalDateTime createdDate, DeleteStatus deleted) {
+
+        Question question = new Question(id, writer, title, contents, null, createdDate);
+
+        if (Objects.nonNull(deleted)) {
+            question.deleted = deleted;
+        }
+        return question;
+    }
+
     public static Question of(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
         return new Question(id, writer, title, contents, answers, createdDate);
     }
@@ -156,7 +166,7 @@ public class Question {
 
         private static void validateAlreadyDeleted(Question question) {
             if (question.isDeleted()) {
-                throw new CannotDeleteException("이미 질문이에요 :(");
+                throw new CannotDeleteException("이미 삭제된 질문이에요 :(");
             }
         }
 
