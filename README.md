@@ -13,8 +13,9 @@
   - [x] 로그인 사용자가 질문한 사람이 아닐 경우에 CannotDeleteException 예외를 던진다.
   - [ ] questionId로 조회되는 Question이 없을 경우에 NotFoundException 예외를 던진다.
   - [ ] 삭제가 가능할 경우에는 deleted 필드값을 true으로 변경한다.
-  - [ ] List<Answer> answer -> 일급 컬렉션으로 변경한다.
-    - null 체크 등등 (나중에 다시 추가하기)
+  - [ ] List<Answer> answer -> Answers 일급 컬렉션으로 변경한다.
+    - Answers 에 Answer 객체를 추가할 수 있다.
+    - Answers 일급 컬렉션에 Null이 추가되면 에러가 발생한다. 
 
 ### Answer
   - [x] 질문자와 답변글의 모든 답변자 같은 경우 답변을 삭제 가능하다(예외를 던지지 않는다).
