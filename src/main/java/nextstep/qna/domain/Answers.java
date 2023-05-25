@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Answers {
@@ -21,7 +20,12 @@ public class Answers {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }
-        return Collections.emptyList();
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : values) {
+            deleteHistories.add(answer.deleteAnswer());
+        }
+        return deleteHistories;
     }
 
 }
