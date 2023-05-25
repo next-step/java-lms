@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Optional;
@@ -20,17 +21,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private NsUserEntityRepository nsUserEntityRepository;
+    private JdbcOperations jdbcOperations;
 
     private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userRepository = new JdbcUserRepository(jdbcTemplate, nsUserEntityRepository);
+        userRepository = new JdbcUserRepository(new NsUserEntityRepository(jdbcOperations));
     }
 
     @Test

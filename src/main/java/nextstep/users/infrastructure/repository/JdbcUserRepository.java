@@ -17,11 +17,9 @@ import java.util.Optional;
  */
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {
-    private final JdbcOperations jdbcTemplate;
     private final NsUserEntityRepository nsUserEntityRepository;
 
-    public JdbcUserRepository(JdbcOperations jdbcTemplate, NsUserEntityRepository nsUserEntityRepository) {
-        this.jdbcTemplate = jdbcTemplate;
+    public JdbcUserRepository(NsUserEntityRepository nsUserEntityRepository) {
         this.nsUserEntityRepository = nsUserEntityRepository;
     }
 
