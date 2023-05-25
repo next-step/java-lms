@@ -43,9 +43,9 @@
   - [ ] 종료일은 시작일보다 나중이여야 한다
 - [ ] 커버 이미지 - LectureImage 
   - coverImage
-- [ ] 결제타입 - PaymentType
-  - FREE - 무료강의
-  - PAID - 유료강의
+- [X] 강의 구분 - PaymentStrategy (전략 패턴 적용)  
+  - FreePaymentStrategy - 무료강의
+  - PaidPaymentStrategy - 유료강의
 - [ ] 강의 상태 - LectureStatus  
   - PREPARING - 준비중
   - ENROLLING - 모집중
