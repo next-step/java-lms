@@ -1,5 +1,6 @@
-package nextstep.qna.domain;
+package nextstep.courses;
 
+import nextstep.courses.domain.SessionCoverImage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

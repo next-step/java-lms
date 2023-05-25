@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

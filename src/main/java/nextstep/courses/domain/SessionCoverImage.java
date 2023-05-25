@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.courses.domain;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
