@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.common.CommunicationTerm;
 import nextstep.common.domain.Image;
+import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 
 import javax.validation.constraints.NotNull;
@@ -70,9 +71,16 @@ public class Session {
         this.coverImage = image;
     }
 
-    public void enroll(Enroll... enroll) {
+    public void enroll(Enroll... enrolls) {
         validateState();
-        this.enrolls.addAll(Arrays.asList(enroll));
+        validateStudentCount(enrolls.length);
+        this.enrolls.addAll(Arrays.asList(enrolls));
+    }
+
+    private void validateStudentCount(int count) {
+        if (maxStudentCount < this.enrolls.size() + count) {
+            throw new ExceededStudentCount();
+        }
     }
 
     private void validateState() {
@@ -83,5 +91,9 @@ public class Session {
 
     public boolean enrollCheck(Enroll enroll) {
         return enrolls.contains(enroll);
+    }
+
+    public void adjustStudentCount(Long maxStudentCount) {
+        this.maxStudentCount = maxStudentCount;
     }
 }

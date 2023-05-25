@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.common.domain.Image;
+import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -127,20 +128,39 @@ class SessionTest {
     @Test
     public void notExceedMaxStudents() {
         //given
-        Session session1 = TestFixture.LIME_SESSION;
+        Session session = TestFixture.LIME_SESSION;
+        Enroll enroll1 = TestFixture.PINOT_ENROL;
+        Enroll enroll2 = TestFixture.SYRAH_ENROL;
         //when
+        session.toRecruitingState();
+        session.adjustStudentCount(2L);
+        session.enroll(enroll1, enroll2);
         //then
-        fail();
+        assertThat(session.enrollCheck(enroll1))
+                .as("강의 신청에 성공함을 검증한다")
+                .isTrue();
+        assertThat(session.enrollCheck(enroll2))
+                .as("강의 신청에 성공함을 검증한다")
+                .isTrue();
     }
 
     @DisplayName("강의 최대 수강 인원 초과시 수강신청에 실패한다")
     @Test
     public void notExceedMaxStudentsFail() {
         //given
-        Session session2 = TestFixture.MINT_SESSION;
+        Session session = TestFixture.MINT_SESSION;
+        Enroll enroll1 = TestFixture.PINOT_ENROL;
+        Enroll enroll2 = TestFixture.SYRAH_ENROL;
+        Enroll enroll3 = TestFixture.MALBEC_ENROL;
         //when
+        session.toRecruitingState();
+        session.adjustStudentCount(2L);
+        session.enroll(enroll1, enroll2);
         //then
-        fail();
+        assertThatThrownBy(() -> {
+            session.enroll(enroll3);
+        }).isInstanceOf(ExceededStudentCount.class)
+                .hasMessageContaining("수강 가능한 인원을 초과하였습니다");
     }
 
 

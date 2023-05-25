@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class TermTest {
@@ -18,8 +20,13 @@ class TermTest {
     @Test
     public void term() {
         //given
+        Term term = TestFixture.TERM16;
+        Session session1 = TestFixture.LIME_SESSION;
+        Session session2 = TestFixture.LEMON_SESSION;
         //when
+        term.addSessions(session1, session2);
         //then
-        fail();
+        assertThat(term.includeSession(session1)).isTrue();
+        assertThat(term.includeSession(session2)).isTrue();
     }
 }
