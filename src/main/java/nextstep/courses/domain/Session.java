@@ -14,14 +14,14 @@ import java.util.List;
 @CommunicationTerm("강의")
 public class Session {
     private SessionId sessionId;
-    private Date startDate;
-    private Date endDate;
+    private final Date startDate;
+    private final Date endDate;
     private Image coverImage;
     private Long price;
     @NotNull
     private SessionStatus status;
     private Long maxStudentCount;
-    private List<Enroll> enrolls = new ArrayList<>();
+    private final List<Enroll> enrolls = new ArrayList<>();
 
     public Session(Long price, Long maxStudentCount) {
         this.price = price;
@@ -84,7 +84,7 @@ public class Session {
     }
 
     private void validateState() {
-        if(this.status != SessionStatus.RECRUITING) {
+        if (this.status != SessionStatus.RECRUITING) {
             throw new OutOfRegistrationPeriod();
         }
     }

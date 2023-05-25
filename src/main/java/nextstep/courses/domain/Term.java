@@ -9,7 +9,7 @@ import java.util.List;
 @CommunicationTerm("기수")
 public class Term {
     private Long termId;
-    private List<Session> sessions = new ArrayList<>();
+    private final List<Session> sessions = new ArrayList<>();
 
     public Term() {
     }

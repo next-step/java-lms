@@ -14,7 +14,7 @@ public class Course {
 
     private Long creatorId;
 
-    private Set<Term> terms = new HashSet<>();
+    private final Set<Term> terms = new HashSet<>();
 
     private LocalDateTime createdAt;
 

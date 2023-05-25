@@ -49,7 +49,6 @@ public class TestFixture {
     public static Image BLUE_IMAGE;
 
 
-
     static {
         fixtureInit();
     }
@@ -67,25 +66,25 @@ public class TestFixture {
         SANJIGI_ANSWER = new Answer(22L, SANJIGI, SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
         BADAJIGI_ANSWER = new Answer(33L, BADAJIGI, BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
 
-        pobi = new Creator(1L,"pobi");
+        pobi = new Creator(1L, "pobi");
         watson = new Creator(2L, "watson");
         winter = new Creator(3L, "winter");
 
-        RUST_COURSE = new Course("가볍게 시작하는 RUST",1L);
-        K8S_COURSE = new Course("재미있는 쿠버네티스",2L);
+        RUST_COURSE = new Course("가볍게 시작하는 RUST", 1L);
+        K8S_COURSE = new Course("재미있는 쿠버네티스", 2L);
         KOTLIN_COURSE = new Course("Hello Kotlin", 3L);
 
         TERM16 = new Term();
         TERM17 = new Term();
 
-        MINT_SESSION = new Session(10000L,100L);
+        MINT_SESSION = new Session(10000L, 100L);
         LEMON_SESSION = new Session(500L, 50L);
         LIME_SESSION = new Session(3000L, 30L);
 
-        MALBEC_ENROL = new Enroll(1L,1L);
-        SYRAH_ENROL = new Enroll(2L,2L);
-        CARSO_ENROL = new Enroll(3L,3L);
-        PINOT_ENROL = new Enroll(4L,4L);
+        MALBEC_ENROL = new Enroll(1L, 1L);
+        SYRAH_ENROL = new Enroll(2L, 2L);
+        CARSO_ENROL = new Enroll(3L, 3L);
+        PINOT_ENROL = new Enroll(4L, 4L);
 
         RED_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
         GREEN_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");
