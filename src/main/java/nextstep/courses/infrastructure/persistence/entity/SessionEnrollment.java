@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure.persistence.entity;
 
+import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseTimeEntity;
-import nextstep.users.infrastructure.entity.NsUserEntity;
 
 /**
  * JPA 처럼 구상한다.
@@ -21,9 +21,18 @@ public class SessionEnrollment extends BaseTimeEntity {
 
   private Long id;
 
-  private SessionEntity session;
+  private Long sessionId;
 
-  private NsUserEntity user;
+  private Long userId;
+
+  public SessionEnrollment() {
+  }
+
+  public SessionEnrollment(Long sessionId, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
+    this.sessionId = sessionId;
+    this.userId = userId;
+  }
 
 
 

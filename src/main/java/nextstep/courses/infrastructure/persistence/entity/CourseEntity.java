@@ -26,7 +26,7 @@ public class CourseEntity extends BaseTimeEntity {
 
   private String title;
 
-  private NsUserEntity creator;
+  private Long creatorId;
 
   private String generation;
 
@@ -36,13 +36,32 @@ public class CourseEntity extends BaseTimeEntity {
   /**
    * 주 생성자
    */
-  public CourseEntity(String title, NsUserEntity creator, String generation, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public CourseEntity(long id, String title, Long creatorId, String generation,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
+    this.id = id;
     this.title = title;
-    this.creator = creator;
+    this.creatorId = creatorId;
     this.generation = generation;
   }
 
+  public Long getId() {
+    return id;
+  }
 
+  public String getTitle() {
+    return title;
+  }
 
+  public Long getCreatorId() {
+    return creatorId;
+  }
+
+  public String getGeneration() {
+    return generation;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 }
