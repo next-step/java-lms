@@ -42,6 +42,10 @@ public class Session {
         return student;
     }
 
+    public boolean isOwner(NsUser nsUser) {
+        return sessionInfo.isOwner(nsUser);
+    }
+
     public Long getId() {
         return id;
     }

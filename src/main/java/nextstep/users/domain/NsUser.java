@@ -47,36 +47,16 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
     }
 
     public void update(NsUser loginUser, NsUser target) {
@@ -94,6 +74,10 @@ public class NsUser {
 
     public boolean matchUser(NsUser target) {
         return matchUserId(target.getUserId());
+    }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
     }
 
     private boolean matchUserId(String userId) {

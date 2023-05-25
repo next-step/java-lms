@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.Objects;
 
 public class SessionInfo {
@@ -16,6 +18,10 @@ public class SessionInfo {
         this.creatorId = creatorId;
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
+    }
+
+    public boolean isOwner(NsUser nsUser) {
+        return nsUser.matchId(nsUser.getId());
     }
 
     @Override

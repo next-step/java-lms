@@ -6,9 +6,24 @@ public class Student {
     private final Long nsUserId;
     private final Long sessionId;
 
+    private boolean approved;
+
     public Student(Long nsUserId, Long sessionId) {
+        this(nsUserId, sessionId, true);
+    }
+
+    public Student(Long nsUserId, Long sessionId, boolean approved) {
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
+        this.approved = approved;
+    }
+
+    public void approve() {
+        this.approved = true;
+    }
+
+    public void disApprove() {
+        this.approved = false;
     }
 
     @Override
@@ -16,12 +31,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(nsUserId, student.nsUserId) && Objects.equals(sessionId, student.sessionId);
+        return approved == student.approved && Objects.equals(nsUserId, student.nsUserId) && Objects.equals(sessionId, student.sessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nsUserId, sessionId);
+        return Objects.hash(nsUserId, sessionId, approved);
     }
 
     @Override
@@ -29,6 +44,7 @@ public class Student {
         return "Student{" +
                 "nsUserId=" + nsUserId +
                 ", sessionId=" + sessionId +
+                ", approved=" + approved +
                 '}';
     }
 }
