@@ -9,10 +9,13 @@ public class SessionInfo {
 
     private final String coverImage;
 
-    public SessionInfo(String title, Long creatorId, String coverImage) {
+    private final SessionStatus sessionStatus;
+
+    public SessionInfo(String title, Long creatorId, String coverImage, SessionStatus sessionStatus) {
         this.title = title;
         this.creatorId = creatorId;
         this.coverImage = coverImage;
+        this.sessionStatus = sessionStatus;
     }
 
     @Override

@@ -16,25 +16,15 @@ public class Session {
 
     private final  SessionPeriod sessionPeriod;
 
-    public Session(String title, Long creatorId, String coverImage,
+    public Session(Long id,
+                   String title, Long creatorId, String coverImage, SessionStatus sessionStatus,
                    ChargeStatus chargeStatus, int price,
-                   int capacity, SessionStatus sessionStatus,
-                   LocalDate startDate, LocalDate endDate) {
-        this(0L,
-                new SessionInfo(title, creatorId, coverImage),
-                new Charge(chargeStatus, price),
-                new Enrollment(capacity, sessionStatus),
-                new SessionPeriod(startDate, endDate));
-    }
-
-    public Session(Long id, String title, Long creatorId, String coverImage,
-                   ChargeStatus chargeStatus, int price,
-                   int capacity, SessionStatus sessionStatus,
+                   int capacity, EnrollmentStatus enrollmentStatus,
                    LocalDate startDate, LocalDate endDate) {
         this(id,
-                new SessionInfo(title, creatorId, coverImage),
+                new SessionInfo(title, creatorId, coverImage, sessionStatus),
                 new Charge(chargeStatus, price),
-                new Enrollment(capacity, sessionStatus),
+                new Enrollment(capacity, enrollmentStatus),
                 new SessionPeriod(startDate, endDate));
     }
 

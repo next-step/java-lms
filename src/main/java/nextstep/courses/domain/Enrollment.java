@@ -6,15 +6,15 @@ import java.util.Objects;
 public class Enrollment {
     private final int capacity;
 
-    private final SessionStatus sessionStatus;
+    private final EnrollmentStatus enrollmentStatus;
 
-    public Enrollment(int capacity, SessionStatus sessionStatus) {
+    public Enrollment(int capacity, EnrollmentStatus enrollmentStatus) {
         this.capacity = capacity;
-        this.sessionStatus = sessionStatus;
+        this.enrollmentStatus = enrollmentStatus;
     }
 
     public void enroll(Student student, List<Student> value) throws AlreadyEnrollmentException {
-        if (sessionStatus != SessionStatus.ENROLLING) {
+        if (!enrollmentStatus.isEnrolling()) {
             throw new IllegalArgumentException("수강신청 상태가 아니라 수강신청할 수 없습니다.");
         }
         Students students = new Students(this.capacity, value);
@@ -26,11 +26,11 @@ public class Enrollment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Enrollment that = (Enrollment) o;
-        return capacity == that.capacity && sessionStatus == that.sessionStatus;
+        return capacity == that.capacity && enrollmentStatus == that.enrollmentStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(capacity, sessionStatus);
+        return Objects.hash(capacity, enrollmentStatus);
     }
 }

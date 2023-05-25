@@ -15,7 +15,7 @@ public class SessionTest {
     @Test
     void 수강신청_성공() throws Exception {
         NsUser loginUser = NsUsers.createNsUser(4L);
-        Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.ENROLLING);
+        Session dut = Sessions.createSessionWithEnrollment(1L, 50, EnrollmentStatus.ENABLE);
         Student student = dut.enroll(loginUser, new ArrayList<>());
         assertThat(student).isEqualTo(new Student(loginUser.getId(), dut.getId()));
     }
@@ -24,7 +24,7 @@ public class SessionTest {
     void 수강신청_실패_이미_수강신청한_회원() {
         NsUser loginUser = NsUsers.createNsUser(4L);
         List<Student> students = Arrays.asList(new Student(4L, 1L));
-        Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.ENROLLING);
+        Session dut = Sessions.createSessionWithEnrollment(1L, 50, EnrollmentStatus.ENABLE);
         assertThatThrownBy(() -> {
             dut.enroll(loginUser, students);
         }).isInstanceOf(AlreadyEnrollmentException.class);
