@@ -3,7 +3,9 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Course {
     private CourseId courseId;
@@ -12,7 +14,7 @@ public class Course {
 
     private Long creatorId;
 
-    private List<Term> terms;
+    private Set<Term> terms = new HashSet<>();
 
     private LocalDateTime createdAt;
 

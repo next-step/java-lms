@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.fixture.TestFixture;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -7,10 +9,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionTest {
 
+    @BeforeEach
+    public void setUp() {
+        TestFixture.fixtureInit();
+    }
+
     @DisplayName("강의는 시작일과 종료일을 가진다")
     @Test
     public void startAndEnd() {
         //given
+
         //when
         //then
         fail();

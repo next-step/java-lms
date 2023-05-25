@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.fixture.TestFixture;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class CourseTest {
+
+    @BeforeEach
+    public void setUp() {
+        TestFixture.fixtureInit();
+    }
 
     @DisplayName("과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가질 수 있다")
     @Test
