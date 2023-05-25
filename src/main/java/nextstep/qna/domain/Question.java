@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -73,9 +73,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -83,7 +82,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
@@ -91,9 +90,10 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         isSameUser(loginUser);
-        return null;
+        this.setDeleted(true);
+        answers.deleteAnswers();
     }
 
     private void isSameUser(NsUser loginUser) throws CannotDeleteException{

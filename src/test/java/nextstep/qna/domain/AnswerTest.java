@@ -60,7 +60,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("삭제처리하지 않은 답변은 isDelete값이 false다.")
-    void delete_DontDeleteAnswer_IsDeleteIsFalse() throws CannotDeleteException {
+    void delete_DontDeleteAnswer_IsDeleteIsFalse() {
         Assertions.assertThat(A1.isDeleted()).isFalse();
     }
 }
