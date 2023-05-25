@@ -1,12 +1,11 @@
 package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteHistoriesTest {
 
@@ -31,7 +30,7 @@ public class DeleteHistoriesTest {
         DeleteHistory deleteHistoryQ1 =
                 new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter());
 
-        Assertions.assertThat(deleteHistories.getDeleteHistories())
+        assertThat(deleteHistories.getDeleteHistories())
                 .containsExactly(deleteHistoryQ1)
                 .hasSize(1);
     }
@@ -40,12 +39,12 @@ public class DeleteHistoriesTest {
     @Test
     void addAnswer_CreateDeleteHistory_And_AddDeleteHistorylist() {
         deleteHistories.add(A1);
-        DeleteHistory deleteHistoryA1 =
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
-        DeleteHistory deleteHistoryA2 =
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
+        deleteHistories.add(A2);
 
-        Assertions.assertThat(deleteHistories.getDeleteHistories())
+        DeleteHistory deleteHistoryA1 = new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter());
+        DeleteHistory deleteHistoryA2 = new DeleteHistory(ContentType.ANSWER, A2.getId(), A2.getWriter());
+
+        assertThat(deleteHistories.getDeleteHistories())
                 .containsExactly(deleteHistoryA1, deleteHistoryA2)
                 .hasSize(2);
     }
