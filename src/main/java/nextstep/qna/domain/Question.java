@@ -3,29 +3,20 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Question {
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private String contents;
+    private final String contents;
 
-    private NsUser writer;
+    private final NsUser writer;
 
     private final Answers answers = new Answers();
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
-
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
@@ -41,24 +32,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -66,10 +39,6 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
     }
 
     private void setDeleted(boolean deleted) {
@@ -92,7 +61,7 @@ public class Question {
     public DeleteHistories delete(NsUser loginUser) {
         isSameUser(loginUser);
         this.setDeleted(true);
-        return documentHistories();
+        return documentDeleteHistories();
     }
 
     private void isSameUser(NsUser loginUser) {
@@ -101,10 +70,12 @@ public class Question {
         }
     }
 
-    private DeleteHistories documentHistories() {
+    private DeleteHistories documentDeleteHistories() {
         DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(this);
-        answers.deleteAnswers(deleteHistories);
+        deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
+
+        answers.getAnswers().stream()
+                .forEach(answer -> deleteHistories.add(answer.delete()));
         return deleteHistories;
     }
 }

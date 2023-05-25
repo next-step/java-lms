@@ -15,11 +15,9 @@ public class AnswersTest {
     private Answer A1;
     private Answer A2;
     private Answers answers;
-    private DeleteHistories deleteHistories;
 
     @BeforeEach
     void setUp() {
-        deleteHistories = new DeleteHistories();
         this.answers= new Answers();
 
         this.Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -43,12 +41,5 @@ public class AnswersTest {
     void enroll_AddNull_ThrowException() {
         assertThatThrownBy(() -> answers.add(null))
                 .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    @DisplayName("답변이 없는 리스트를 삭제해도 예외가 발생하지 않는다.")
-    void delete_EmptyAnswersDelete_NotThrowException() {
-        assertThatNoException()
-                .isThrownBy(() -> answers.deleteAnswers(deleteHistories));
     }
 }

@@ -36,8 +36,7 @@ public class AnswerTest {
         List<Answer> answers = Q1.getAnswers();
 
         assertThat(answers).allSatisfy(answer ->
-                assertThatNoException().isThrownBy(() ->
-                        answer.delete(deleteHistories)));
+                assertThatNoException().isThrownBy(answer::delete));
     }
 
     @Test
@@ -50,14 +49,14 @@ public class AnswerTest {
         List<Answer> answers = Q1.getAnswers();
 
         assertThat(answers).anySatisfy(answer ->
-                assertThatThrownBy(() -> answer.delete(deleteHistories))
+                assertThatThrownBy(answer::delete)
                         .isInstanceOf(CannotDeleteException.class));
     }
 
     @Test
     @DisplayName("답변 삭제시 isDelete값을 true로 변경한다.")
     void delete_DeleteAnswer_IsDeleteIsTrue() {
-        A1.delete(deleteHistories);
+        A1.delete();
         assertThat(A1.isDeleted()).isTrue();
     }
 
