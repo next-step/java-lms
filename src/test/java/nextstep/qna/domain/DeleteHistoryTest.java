@@ -1,2 +1,4 @@
-package nextstep.qna.domain;public class DeleteHistoryTest {
+package nextstep.qna.domain;
+
+public class DeleteHistoryTest {
 }
