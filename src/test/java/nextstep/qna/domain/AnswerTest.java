@@ -15,12 +15,9 @@ public class AnswerTest {
     public Answer A1;
     public Answer A2;
     public Question Q1;
-    private DeleteHistories deleteHistories;
-
 
     @BeforeEach
     void setUp() {
-        this.deleteHistories = new DeleteHistories();
         Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
         A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");

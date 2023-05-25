@@ -61,7 +61,7 @@ public class Question {
     public DeleteHistories delete(NsUser loginUser) {
         isSameUser(loginUser);
         this.setDeleted(true);
-        return documentDeleteHistories();
+        return documentedDeleteHistories();
     }
 
     private void isSameUser(NsUser loginUser) {
@@ -70,7 +70,7 @@ public class Question {
         }
     }
 
-    private DeleteHistories documentDeleteHistories() {
+    private DeleteHistories documentedDeleteHistories() {
         DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
 

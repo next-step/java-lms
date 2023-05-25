@@ -75,7 +75,7 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public DeleteHistory delete(DeleteHistories deleteHistories)  {
+    public DeleteHistory delete()  {
         if (!this.writer.matchUser(this.question.getWriter())) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
