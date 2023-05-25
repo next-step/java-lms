@@ -11,7 +11,7 @@ public class Session {
 
     private final  Charge charge;
 
-    private Enrollment enrollment;
+    private final Enrollment enrollment;
 
     private final  SessionPeriod sessionPeriod;
 
