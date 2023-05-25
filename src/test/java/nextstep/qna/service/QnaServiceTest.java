@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import config.MockTest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -17,13 +18,10 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class QnaServiceTest {
+public class QnaServiceTest extends MockTest {
 
     @InjectMocks
     private QnAService qnAService;
