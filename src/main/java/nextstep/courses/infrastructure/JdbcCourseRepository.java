@@ -2,26 +2,33 @@ package nextstep.courses.infrastructure;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import javax.sql.DataSource;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
 
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public JdbcCourseRepository(JdbcOperations jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
+        this.jdbcInsert = new SimpleJdbcInsert(dataSource)
+            .withTableName("COURSE")
+            .usingGeneratedKeyColumns("id");
     }
 
     @Override
-    public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(),
-            course.getCreatedAt());
+    public long save(Course course) {
+        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(course);
+
+        return jdbcInsert.executeAndReturnKey(params).longValue();
     }
 
     @Override

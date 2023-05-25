@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import javax.sql.DataSource;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,18 +19,20 @@ public class CourseRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private DataSource dataSource;
 
     private CourseRepository courseRepository;
 
     @BeforeEach
     void setUp() {
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, dataSource);
     }
 
     @Test
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
-        int count = courseRepository.save(course);
+        long count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
