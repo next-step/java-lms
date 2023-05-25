@@ -3,6 +3,7 @@ package nextstep.qna.domain.generator;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SimpleIdGeneratorTest {
+
+
+    @BeforeEach
+    public void setUp() {
+        SimpleIdGenerator.initialize();
+    }
 
     @Test
     @DisplayName("처음 생성되는 Question ID 확인")

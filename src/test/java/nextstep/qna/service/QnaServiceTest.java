@@ -2,6 +2,7 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ public class QnaServiceTest {
 
 
     @BeforeEach
-    public void setUp() throws Exception {
-
+    public void setUp() {
+        SimpleIdGenerator.initialize();
         question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = Answer.of(11L, NsUserTest.JAVAJIGI, question, "Answers Contents1", null);
         Answers answers = Answers.of(List.of(answer));
@@ -84,7 +85,7 @@ public class QnaServiceTest {
     }
 
     private void verifyDeleteHistories() {
-
+        SimpleIdGenerator.initialize();
         List<DeleteHistory> deleteHistories = Arrays.asList(
                 DeleteHistory.of(ContentType.QUESTION, question.getId(), question.getWriter()),
                 DeleteHistory.of(ContentType.ANSWER, answer.getId(), answer.getWriter()));

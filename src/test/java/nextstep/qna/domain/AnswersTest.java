@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ class AnswersTest {
 
     @BeforeEach
     public void initialize() {
+        SimpleIdGenerator.initialize();
         question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         answers = Answers.of(List.of(answer));
@@ -50,7 +52,7 @@ class AnswersTest {
     @Test
     void 삭제_이력() {
         DeleteHistories deleteHistories = answers.removeAll();
-        DeleteHistory deleteHistory = DeleteHistory.of(ContentType.ANSWER, answer.getId(), answer.getWriter());
+        DeleteHistory deleteHistory = DeleteHistory.of(1L, ContentType.ANSWER, answer.getId(), answer.getWriter(), null);
 
         assertThat(deleteHistories.getDeleteHistories()).containsExactly(deleteHistory);
     }
