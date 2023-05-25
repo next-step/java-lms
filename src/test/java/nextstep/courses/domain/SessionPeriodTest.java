@@ -1,4 +1,4 @@
-package nextstep.courses;
+package nextstep.courses.domain;
 
 import nextstep.courses.domain.SessionPeriod;
 import org.junit.jupiter.api.DisplayName;

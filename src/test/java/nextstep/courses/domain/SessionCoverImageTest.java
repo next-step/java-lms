@@ -1,4 +1,4 @@
-package nextstep.courses;
+package nextstep.courses.domain;
 
 import nextstep.courses.domain.SessionCoverImage;
 import org.junit.jupiter.api.DisplayName;
