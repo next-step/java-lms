@@ -50,4 +50,17 @@ public class AnswerTest {
         Assertions.assertThat(answers).anySatisfy(answer ->
                 assertThatThrownBy(answer::delete).isInstanceOf(CannotDeleteException.class));
     }
+
+    @Test
+    @DisplayName("답변 삭제시 isDelete값을 true로 변경한다.")
+    void delete_DeleteAnswer_IsDeleteIsTrue() throws CannotDeleteException {
+        A1.delete();
+        Assertions.assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("삭제처리하지 않은 답변은 isDelete값이 false다.")
+    void delete_DontDeleteAnswer_IsDeleteIsFalse() throws CannotDeleteException {
+        Assertions.assertThat(A1.isDeleted()).isFalse();
+    }
 }

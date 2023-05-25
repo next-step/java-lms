@@ -13,7 +13,7 @@ public class AnswersTest {
     private Question Q1;
     private Answer A1;
     private Answer A2;
-    private Answers answers = new Answer();
+    private Answers answers = new Answers();
 
     @BeforeEach
     void setUp() {
