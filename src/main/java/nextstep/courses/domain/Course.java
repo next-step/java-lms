@@ -12,7 +12,7 @@ public class Course {
 
     private Long creatorId;
 
-    private List<Session> sessions = new ArrayList<>();
+    private List<Term> terms;
 
     private LocalDateTime createdAt;
 
@@ -56,11 +56,13 @@ public class Course {
                 '}';
     }
 
-    public void addSessions(Session... sessions) {
-        this.sessions.addAll(Arrays.asList(sessions));
+    public boolean includeSession(Session session) {
+        return this.terms
+                .stream()
+                .anyMatch(term -> term.includeSession(session));
     }
 
-    public boolean includeSession(Session session) {
-        return this.sessions.contains(session);
+    public void establishTerm(Term term) {
+        this.terms.add(term);
     }
 }
