@@ -32,7 +32,7 @@ public class DeleteHistoriesTest {
                 new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now());
 
         Assertions.assertThat(deleteHistories.getDeleteHistories())
-                .containsExactly(deleteHistoryQ1`)
+                .containsExactly(deleteHistoryQ1)
                 .hasSize(1);
     }
 
@@ -49,7 +49,5 @@ public class DeleteHistoriesTest {
                 .containsExactly(deleteHistoryA1, deleteHistoryA2)
                 .hasSize(2);
     }
-
-
 
 }
