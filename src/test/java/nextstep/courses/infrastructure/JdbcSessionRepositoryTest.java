@@ -22,13 +22,12 @@ class JdbcSessionRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private SessionJoinRepository sessionJoinRepository;
-
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        SessionJoinRepository sessionJoinRepository = new JdbcSessionJoinRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionJoinRepository);
     }
 
     @Test

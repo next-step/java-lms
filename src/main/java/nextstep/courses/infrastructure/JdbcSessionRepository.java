@@ -13,13 +13,16 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
+    private final SessionJoinRepository sessionJoinRepository;
 
-    public JdbcSessionRepository(JdbcTemplate jdbcTemplate) {
+    public JdbcSessionRepository(JdbcTemplate jdbcTemplate, SessionJoinRepository sessionJoinRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sessionJoinRepository = sessionJoinRepository;
     }
 
     @Override
@@ -61,7 +64,13 @@ public class JdbcSessionRepository implements SessionRepository {
                             new SessionJoins(new ArrayList<>()),
                             toLocalDateTime(rs.getTimestamp(9)),
                             toLocalDateTime(rs.getTimestamp(10)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        Session session = jdbcTemplate.queryForObject(sql, rowMapper, id);
+        if (session != null) {
+            List<SessionJoin> sessionJoins = sessionJoinRepository.findAllBySessionId(id);
+            session.addSessionJoins(sessionJoins);
+        }
+
+        return session;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
