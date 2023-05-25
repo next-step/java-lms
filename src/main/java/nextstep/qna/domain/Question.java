@@ -13,7 +13,7 @@ public class Question {
     private String contents;
     private NsUser writer;
     private boolean deleted = false;
-    private Answers answers = new Answers();
+    private List<Answer> answers = new ArrayList<>();
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
 
@@ -64,10 +64,6 @@ public class Question {
         return deleted;
     }
 
-    public Answers getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) {
 
         if (!isOwner(loginUser)) {
@@ -79,7 +75,10 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete(loginUser));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(loginUser));
+        }
 
         return deleteHistories;
     }
