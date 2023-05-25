@@ -9,11 +9,16 @@ import nextstep.users.domain.NsUser;
  */
 public class Students {
 
-  private final List<NsUser> users = new ArrayList<>();
+  private final List<NsUser> users;
   private final MaxEnrollment maxEnrollment;
 
-  public Students(MaxEnrollment maxEnrollment) {
+  public Students(List<NsUser> users, MaxEnrollment maxEnrollment) {
+    this.users = users;
     this.maxEnrollment = maxEnrollment;
+  }
+
+  public Students(MaxEnrollment maxEnrollment) {
+    this(new ArrayList<>(), maxEnrollment);
   }
 
   public boolean isEmpty() {
