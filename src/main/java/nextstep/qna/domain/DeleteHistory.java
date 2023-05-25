@@ -44,6 +44,10 @@ public class DeleteHistory {
         return new DeleteHistory(id, contentType, contentId, deletedBy, LocalDateTime.now());
     }
 
+    public static DeleteHistory of(long id, ContentType contentType, long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(id, contentType, contentId, deletedBy, createdDate);
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -46,6 +46,10 @@ public class Question {
         return new Question(id, writer, title, contents, Answers.create(), LocalDateTime.now());
     }
 
+    public static Question of(long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
+        return new Question(id, writer, title, contents, null, createdDate);
+    }
+
     public static Question of(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
         return new Question(id, writer, title, contents, answers, createdDate);
     }

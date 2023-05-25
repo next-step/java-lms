@@ -25,4 +25,8 @@ public class SimpleIdGenerator {
     private static long increase(long value) {
         return value + INCREMENTAL_VALUE;
     }
+
+    public static void initialize() {
+        cache.clear();
+    }
 }
