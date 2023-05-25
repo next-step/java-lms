@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.common.CommunicationTerm;
 import nextstep.common.domain.Image;
+import nextstep.courses.exception.OutOfRegistrationPeriod;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -70,7 +71,14 @@ public class Session {
     }
 
     public void enroll(Enroll... enroll) {
+        validateState();
         this.enrolls.addAll(Arrays.asList(enroll));
+    }
+
+    private void validateState() {
+        if(this.status != SessionStatus.RECRUITING) {
+            throw new OutOfRegistrationPeriod();
+        }
     }
 
     public boolean enrollCheck(Enroll enroll) {

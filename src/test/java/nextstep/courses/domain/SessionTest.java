@@ -1,12 +1,14 @@
 package nextstep.courses.domain;
 
 import nextstep.common.domain.Image;
+import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -110,10 +112,15 @@ class SessionTest {
     @Test
     public void enrollCanOnlyOnRecruitFail() {
         //given
-        Session session2 = TestFixture.MINT_SESSION;
+        Session session = TestFixture.MINT_SESSION;
+        Enroll enroll = TestFixture.MALBEC_ENROL;
         //when
+        session.toCloseState();
         //then
-        fail();
+        assertThatThrownBy(() -> {
+            session.enroll(enroll);
+        }).isInstanceOf(OutOfRegistrationPeriod.class)
+                .hasMessageContaining("수강신청 기간이 아닙니다");
     }
 
     @DisplayName("강의 최대 수강 인원내에서 수강신청이 성공한다")
