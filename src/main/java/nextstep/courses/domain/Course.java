@@ -1,11 +1,16 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Course {
     private Long id;
 
     private String title;
+
+    private int generation;
+
+    private List<Session> sessions;
 
     private Long creatorId;
 
@@ -16,8 +21,13 @@ public class Course {
     public Course() {
     }
 
+
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
+    }
+    public Course(String title,Long creatorId, List<Session> sessions){
+        this(title, creatorId);
+        this.sessions = sessions;
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
