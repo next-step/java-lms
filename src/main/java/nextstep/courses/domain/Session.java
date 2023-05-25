@@ -15,5 +15,8 @@ public class Session {
     private Long maxStudentCount;
     private List<Enrolment> enrolments;
 
-
+    public Session(Long price, Long maxStudentCount) {
+        this.price = price;
+        this.maxStudentCount = maxStudentCount;
+    }
 }

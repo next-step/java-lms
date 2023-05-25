@@ -68,22 +68,22 @@ public class TestFixture {
         watson = new Creator(2L, "watson");
         winter = new Creator(3L, "winter");
 
-        RUST_COURSE = new Course();
-        K8S_COURSE = new Course();
-        KOTLIN_COURSE = new Course();
+        RUST_COURSE = new Course("가볍게 시작하는 RUST",1L);
+        K8S_COURSE = new Course("재미있는 쿠버네티스",2L);
+        KOTLIN_COURSE = new Course("Hello Kotlin", 3L);
 
-        MINT_SESSION = new Session();
-        LEMON_SESSION = new Session();
-        LIME_SESSION = new Session();
+        MINT_SESSION = new Session(10000L,100L);
+        LEMON_SESSION = new Session(500L, 50L);
+        LIME_SESSION = new Session(3000L, 30L);
 
-        MALBEC_ENROL = new Enrolment();
-        SYRAH_ENROL = new Enrolment();
-        CARSO_ENROL = new Enrolment();
-        PINOT_ENROL = new Enrolment();
+        MALBEC_ENROL = new Enrolment(1L,1L);
+        SYRAH_ENROL = new Enrolment(2L,2L);
+        CARSO_ENROL = new Enrolment(3L,3L);
+        PINOT_ENROL = new Enrolment(4L,4L);
 
-        RED_IMAGE = new Image();
-        GREEN_IMAGE = new Image();
-        YELLOW_IMAGE = new Image();
-        BLUE_IMAGE = new Image();
+        RED_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
+        GREEN_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");
+        YELLOW_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240916055-f04c5f5e-b1f8-4322-b146-5168fca95026.png");
+        BLUE_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240916270-2345694d-514b-447a-8702-c31677e79648.png");
     }
 }
