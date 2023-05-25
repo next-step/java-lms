@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-import nextstep.common.Communication;
+import nextstep.common.CommunicationTerm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Communication("기수")
+@CommunicationTerm("기수")
 public class Term {
     private Long termId;
     private List<Session> sessions = new ArrayList<>();
