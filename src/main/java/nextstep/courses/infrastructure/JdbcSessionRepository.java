@@ -36,6 +36,25 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
+    public int update(Session session, Long courseId) {
+        String sql = "update session set course_id = ?,max_students = ?,current_students = ?,session_status_type = ?,session_recruitment_type = ?,image_url = ?,start_date = ?,end_date = ?,price = ?,updated_at = ? where id = ?";
+        return jdbcTemplate.update(
+                sql,
+                courseId,
+                session.getSessionInfo().getMaxStudents(),
+                session.getSessionInfo().getCurrentStudents(),
+                session.getSessionInfo().getSessionStatusType().name(),
+                session.getSessionInfo().getSessionRecruitmentType().name(),
+                session.getCoverImage().getImageUrl(),
+                session.getSessionDate().getStartDate(),
+                session.getSessionDate().getEndDate(),
+                session.getPrice().getPrice(),
+                session.getUpdatedAt(),
+                session.getId()
+        );
+    }
+
+    @Override
     public Session findById(Long id) {
         String sql = "select id, max_students, current_students, session_status_type,session_recruitment_type, image_url, start_date, end_date, price, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(

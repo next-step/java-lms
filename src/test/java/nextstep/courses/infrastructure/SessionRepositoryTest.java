@@ -43,7 +43,17 @@ public class SessionRepositoryTest {
         assertThat(session.getId())
                 .isEqualTo(findSessionByCourseId.get(0).getId());
 
+        session.registerSession(1);
+        sessionRepository.update(session, 2L);
+        Session updatedSession = sessionRepository.findById(1L);
+        assertThat(updatedSession.getUpdatedAt())
+                .isNotNull();
+        assertThat(updatedSession.getSessionInfo().getCurrentStudents())
+                .isEqualTo(1);
+
+
         LOGGER.debug("savedSession: {}", savedSession);
         LOGGER.debug("findSessionByCourseId: {}", findSessionByCourseId);
+        LOGGER.debug("updatedSession: {}", updatedSession);
     }
 }

@@ -25,6 +25,7 @@ public class Session extends BaseEntity {
 
     public void registerSession(int studentsCount) {
         this.sessionInfo.registerSession(studentsCount);
+        super.setUpdatedAt();
     }
 
     public boolean isSession(Long sessionId) {
