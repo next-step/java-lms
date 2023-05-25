@@ -73,7 +73,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {   // todo) 나중에 QnaService 리팩토링하면 private으로 변경하기
         this.deleted = deleted;
     }
 
