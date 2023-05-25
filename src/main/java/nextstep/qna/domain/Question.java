@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -83,6 +84,15 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public boolean delete() {
+        this.setDeleted(true);
+
+        final DeleteHistoryService service = new DeleteHistoryService();
+        service.save(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+
+        return this.deleted;
     }
 
     @Override

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("qnaService")
 public class QnAService {
@@ -26,24 +27,28 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
+        validateAuthorization(question, loginUser);
+        validateHavingAnswerFromOthers(question.getAnswers(), loginUser);
+
+        question.delete();
+        question.getAnswers()
+                .stream()
+                .forEach(answer -> answer.delete());
+    }
+
+    private void validateAuthorization(Question question, NsUser loginUser) throws CannotDeleteException {
         if (!question.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
 
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
+    private void validateHavingAnswerFromOthers(List<Answer> answers, NsUser loginUser) throws CannotDeleteException {
+        final Optional<Answer> hasReplayFromOthers = answers.stream()
+                .filter(answer -> !answer.isOwner(loginUser))
+                .findAny();
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        if (hasReplayFromOthers.isPresent()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        deleteHistoryService.saveAll(deleteHistories);
     }
 }

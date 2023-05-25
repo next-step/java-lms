@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -30,11 +31,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -70,6 +71,15 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public boolean delete() {
+        this.setDeleted(true);
+
+        final DeleteHistoryService service = new DeleteHistoryService();
+        service.save(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
+
+        return this.deleted;
     }
 
     @Override
