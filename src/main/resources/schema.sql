@@ -48,3 +48,57 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
+
+create table session
+(
+    id               bigint auto_increment primary key,
+    course_id        bigint                          not null,
+    cover_img_id     bigint,
+    session_pay_type varchar(10)                     not null,
+    session_status   varchar(10) default 'PREPARING' not null,
+    capacity         int         default 1           not null,
+    start_at         DATETIME                        not null,
+    finish_at        DATETIME                        not null
+);
+
+comment on table session is '강의';
+comment on column session.course_id is '과정 id (fk)';
+comment on column session.cover_img_id is '강의 커버 이미지 id (fk)';
+comment on column session.session_pay_type is '강의료 유형';
+comment on column session.capacity is '강의 최대 수강인원';
+comment on column session.start_at is '개강일';
+comment on column session.finish_at is '종강일';
+
+
+create table session_cover_img
+(
+    id         bigint auto_increment  primary key,
+    session_id bigint                 not null,
+    url        varchar(300)           not null,
+    create_at  datetime default now() not null
+);
+
+comment on table session_cover_img is '강좌 커버 이미지';
+comment on column session_cover_img.session_id is '강좌 id (fk)';
+comment on column session_cover_img.url is '이미지 주소';
+comment on column session_cover_img.create_at is '생성 시간';
+
+
+create table session_student
+(
+    id          bigint auto_increment  primary key,
+    session_id  bigint                 not null,
+    ns_user_id  bigint                 not null,
+    cancel_flag tinyint  default false not null,
+    create_at   datetime default now() not null,
+    update_at   datetime default now() not null,
+);
+
+comment on table session_student is '강의_수강생';
+comment on column session_student.session_id is '강의 id (fk)';
+comment on column session_student.ns_user_id is '수강생 id (fk)';
+comment on column session_student.cancel_flag is '수강 취소여부';
+comment on column session_student.create_at is '생성일';
+comment on column session_student.update_at is '수정일';
+
