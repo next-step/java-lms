@@ -47,8 +47,12 @@ public class Course {
     }
 
     public void addSession(LocalDateTime startedAt, LocalDateTime endedAt, boolean isFree, Status status, int currentStudents, int maxStudents) {
-        Session newSession = new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
-        this.sessions.add(newSession);
+        try {
+            this.sessions.add(new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     public List<Session> sessionList(){

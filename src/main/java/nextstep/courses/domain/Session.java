@@ -31,6 +31,14 @@ public class Session {
     }
 
     public Session(LocalDateTime startedAt, LocalDateTime endedAt, boolean isFree, Status status, int currentStudents, int maxStudents) {
+        if (startedAt.isAfter(endedAt)) {
+            throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
+        }
+
+        if (currentStudents > maxStudents) {
+            throw new IllegalArgumentException("현재 수강 인원은 최대 수강 인원을 초과할 수 없습니다.");
+        }
+
         this.startedAt = startedAt;
         this.endedAt = endedAt;
         this.isFree = isFree;
@@ -81,11 +89,15 @@ public class Session {
             throw new RuntimeException("해당 강의는 모집중이 아닙니다.");
         }
 
-        if (currentStudents >= maxStudents) {
+        if (isFullStudents()) {
             throw new RuntimeException("정원이 가득찼습니다.");
         }
 
         currentStudents++;
+    }
+
+    private boolean isFullStudents() {
+        return currentStudents >= maxStudents;
     }
 
     public int currentStudents() {

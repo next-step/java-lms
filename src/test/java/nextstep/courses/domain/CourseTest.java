@@ -21,12 +21,12 @@ class CourseTest {
     }
 
     @Test
-    void add_session() {
+    void add_session_normal() {
         LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
         LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
         boolean isFree = true;
         Status status = Status.preparing;
-        int currentStudents = 0;
+        int currentStudents = 10;
         int maxStudents = 10;
 
         course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
@@ -37,4 +37,29 @@ class CourseTest {
         assertThat(expected).isEqualTo(actual);
     }
 
+    @Test
+    void add_session_late_start() {
+        LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 12:11:11", formatter);
+        LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        boolean isFree = true;
+        Status status = Status.preparing;
+        int currentStudents = 0;
+        int maxStudents = 10;
+
+        assertThatThrownBy(() -> course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void add_session_more_current_student() {
+        LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        boolean isFree = true;
+        Status status = Status.preparing;
+        int currentStudents = 11;
+        int maxStudents = 10;
+
+        assertThatThrownBy(() -> course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
