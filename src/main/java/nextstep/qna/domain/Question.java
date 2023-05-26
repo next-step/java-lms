@@ -19,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -81,16 +81,12 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        final List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        final List<DeleteHistory> answerDeleteHistories = this.answers.stream()
-                .map(answer -> answer.delete(loginUser))
-                .collect(Collectors.toList());
+        final List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, loginUser, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deleteAll(loginUser));
 
         this.deleted = true;
-
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, loginUser, LocalDateTime.now()));
-        deleteHistories.addAll(answerDeleteHistories);
 
         return deleteHistories;
     }
@@ -100,11 +96,36 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public class Answers {
+        private List<Answer> answers = new ArrayList<>();
+        public List<DeleteHistory> deleteAll(NsUser loginUser) {
+            if (!isOwner(loginUser)) {
+                throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+            }
+
+            final List<DeleteHistory> answerDeleteHistories = this.answers.stream()
+                    .map(answer -> answer.delete(loginUser))
+                    .collect(Collectors.toList());
+
+            this.answers.clear();
+
+            return answerDeleteHistories;
+        }
+
+        public List<Answer> getAnswers() {
+            return Collections.unmodifiableList(answers);
+        }
+
+        public void add(Answer answer) {
+            answers.add(answer);
+        }
     }
 }
