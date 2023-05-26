@@ -12,92 +12,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CourseTest {
-
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     private Course course;
+
     @BeforeEach
     void setUp() {
         course = new Course("TDD, 클린 코드 with Java", 1L);
     }
 
     @Test
-    void term() {
-        List<LocalDateTime> expected = Arrays.asList(
-                LocalDateTime.parse("2022-01-01 11:11:11", formatter),
-                LocalDateTime.parse("2022-01-01 11:11:11", formatter)
-        );
-        course.patchTerms(expected.get(0), expected.get(1));
-        List<LocalDateTime> actual = course.terms();
+    void add_session() {
+        LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        boolean isFree = true;
+        Status status = Status.preparing;
+        int currentStudents = 0;
+        int maxStudents = 10;
 
-        assertThat(expected).isEqualTo(actual);
-    }
-
-    @Test
-    void free() {
-        boolean expected = false;
-        course.patchIsFree(expected);
-        boolean actual = course.isFree();
-        assertThat(expected).isEqualTo(actual);
-    }
-
-    @Test
-    void statusError() {
-        String input = "sss";
-
-        assertThatThrownBy(() -> course.patchStatus(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void isOpening_false() {
-        String input = "preparing";
-        boolean expected = false;
-
-        course.patchStatus(input);
-        boolean actual = course.isOpening();
-        assertThat(expected).isEqualTo(actual);
-    }
-
-    @Test
-    void isOpening_true() {
-        String input = "opening";
-        boolean expected = true;
-
-        course.patchStatus(input);
-        boolean actual = course.isOpening();
-        assertThat(expected).isEqualTo(actual);
-    }
-
-    @Test
-    void enrolement_not_opning() {
-        String input = "ended";
-
-        course.patchStatus(input);
-        assertThatThrownBy(() -> course.enrolement())
-                .isInstanceOf(RuntimeException.class);
-    }
-
-    @Test
-    void enrolement_above_max_student() {
-        String input = "preparing";
-
-        course.patchStatus(input);
-        assertThatThrownBy(() -> course.enrolement())
-                .isInstanceOf(RuntimeException.class);
-    }
-
-    @Test
-    void enrolement() {
-        String inputStatus = "preparing";
-        int inputMaxStudents = 5;
-
-        course.patchStatus(inputStatus);
-        course.registerMaxStudents(inputMaxStudents);
+        course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
 
         int expected = 1;
-        course.enrolement();
-        int actual = course.currentStudents();
+        int actual = course.sessionList().size();
+
         assertThat(expected).isEqualTo(actual);
     }
+
 }
