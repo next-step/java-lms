@@ -17,7 +17,7 @@ import nextstep.courses.domain.BaseTimeEntity;
  *     foreign key (user_id) references ns_user(id)
  * );
  */
-public class SessionEnrollment extends BaseTimeEntity {
+public class SessionEnrollmentEntity extends BaseTimeEntity {
 
   private Long id;
 
@@ -25,10 +25,10 @@ public class SessionEnrollment extends BaseTimeEntity {
 
   private Long userId;
 
-  public SessionEnrollment() {
+  public SessionEnrollmentEntity() {
   }
 
-  public SessionEnrollment(Long sessionId, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public SessionEnrollmentEntity(Long sessionId, Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.sessionId = sessionId;
     this.userId = userId;
