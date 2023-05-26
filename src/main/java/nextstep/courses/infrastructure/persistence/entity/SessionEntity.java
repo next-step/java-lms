@@ -87,6 +87,37 @@ public class SessionEntity extends BaseTimeEntity {
         updatedAt);
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public Long getCourseId() {
+    return courseId;
+  }
+
+  public SessionInfo getSessionInfo() {
+    return sessionInfo;
+  }
+
+  public SessionType getSessionType() {
+    return sessionType;
+  }
+
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
+  }
+
+  public int getMaxEnrollmentSize() {
+    return maxEnrollmentSize;
+  }
+
+  public List<Long> getStudents() {
+    return students;
+  }
+
+  public SessionPeriod getSessionPeriod() {
+    return sessionPeriod;
+  }
 
   @Override
   public String toString() {

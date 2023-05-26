@@ -1,8 +1,11 @@
 package nextstep.courses.infrastructure.persistence.dao;
 
+import static nextstep.courses.domain.SessionStatus.RECRUITING;
+import static nextstep.courses.domain.SessionType.FREE;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
+import nextstep.courses.domain.SessionInfo;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
 import nextstep.users.infrastructure.repository.UserRepositoryImplTest;
 import org.junit.jupiter.api.Test;
@@ -23,11 +26,24 @@ class SessionEntityRepositoryTest {
     this.sessionEntityRepository = new SessionEntityRepository(jdbcTemplate);
   }
 
-
   @Test
-  void findById() {
+  void 임시_데이터에_존재하는_Session_100L을_조회_및_값_검증() {
     Optional<SessionEntity> sessionEntity = sessionEntityRepository.findById(100L);
     assertThat(sessionEntity).isNotNull();
-    LOGGER.debug("SessionEntity: {}", sessionEntity);
+
+    sessionEntity.ifPresent(entity -> {
+      assertThat(entity.getId()).isEqualTo(100L);
+      assertThat(entity.getSessionInfo()).isEqualTo(new SessionInfo("Session 1 Belong To Course 1", "Session 1 Description"));
+      assertThat(entity.getCoverImageId()).isEqualTo(100L);
+      assertThat(entity.getSessionType()).isEqualTo(FREE);
+      assertThat(entity.getSessionStatus()).isEqualTo(RECRUITING);
+      assertThat(entity.getMaxEnrollmentSize()).isEqualTo(2);
+    });
+  }
+
+  @Test
+  void 임시_데이터에_존재하지_않는_경우_101L_Session_조회_실패() {
+    Optional<SessionEntity> optionalSessionEntity = sessionEntityRepository.findById(101L);
+    assertThat(optionalSessionEntity).isEmpty();
   }
 }
