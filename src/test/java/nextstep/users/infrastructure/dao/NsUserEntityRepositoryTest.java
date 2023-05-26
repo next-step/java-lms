@@ -45,4 +45,10 @@ class NsUserEntityRepositoryTest {
         }
     );
   }
+
+  @Test
+  void 임시_데이터에_존재하는지_않는_아이디로_조회_실패() {
+    Optional<NsUserEntity> userEntity = nsUserEntityRepository.findByUserId("test");
+    assertThat(userEntity).isEmpty();
+  }
 }
