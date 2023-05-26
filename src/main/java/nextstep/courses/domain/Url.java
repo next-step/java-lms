@@ -8,4 +8,10 @@ public class Url {
     this.url = url;
   }
 
+  @Override
+  public String toString() {
+    return "Url{" +
+        "url='" + url + '\'' +
+        '}';
+  }
 }
