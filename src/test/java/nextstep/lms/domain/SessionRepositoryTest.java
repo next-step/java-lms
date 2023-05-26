@@ -77,4 +77,17 @@ class SessionRepositoryTest {
                 .isEqualTo(SessionState.RECRUITING.toString());
     }
 
+    @Test
+    @DisplayName("학생 강의 수강 신청 테스트")
+    void studentRegisterTest() {
+        Session findSession = sessionRepository.findById(2L);
+        findSession.register();
+        sessionRepository.registerStudent(findSession);
+
+        Session newSession = sessionRepository.findById(2L);
+
+        assertThat(newSession.getRegisteredStudent())
+                .isEqualTo(1);
+    }
+
 }

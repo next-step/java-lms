@@ -110,4 +110,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
         jdbcTemplate.update(sql, session.getSessionState(), session.getId());
     }
+
+    @Override
+    public void registerStudent(Session session) {
+        String sql = "uPDATe session SET registered_student = ? WHERE id = ?";
+
+        jdbcTemplate.update(sql, session.getRegisteredStudent(), session.getId());
+    }
 }

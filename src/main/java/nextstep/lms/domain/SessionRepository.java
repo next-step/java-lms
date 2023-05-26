@@ -8,4 +8,6 @@ public interface SessionRepository {
     Session findById(Long id);
 
     void changeSessionType(Session session);
+
+    void registerStudent(Session session);
 }
