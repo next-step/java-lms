@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure.persistence.dao;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,23 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+
 @JdbcTest
 class SessionEnrollmentEntityRepositoryTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-      SessionEnrollmentEntityRepositoryTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SessionEnrollmentEntityRepositoryTest.class);
 
+  private final SessionEnrollmentEntityRepository sessionEnrollmentEntityRepository;
 
-  @Autowired
-  private JdbcTemplate jdbcTemplate;
-
-
-  private SessionEnrollmentEntityRepository sessionEnrollmentEntityRepository;
-
-  @BeforeEach
-  void setUp() {
-    sessionEnrollmentEntityRepository = new SessionEnrollmentEntityRepository(jdbcTemplate);
+  public SessionEnrollmentEntityRepositoryTest(@Autowired JdbcTemplate jdbcTemplate) {
+    this.sessionEnrollmentEntityRepository = new SessionEnrollmentEntityRepository(jdbcTemplate);
   }
+
+
 
   @Test
   void findUserIdsBySessionId() {

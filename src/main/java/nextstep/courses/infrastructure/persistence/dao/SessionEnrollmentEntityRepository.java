@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure.persistence.dao;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
