@@ -1,12 +1,13 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDate;
+import java.time.Period;
 
-public class LectureDate {
+public class LecturePeriod {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public LectureDate(LocalDate startDate, LocalDate endDate) {
+    public LecturePeriod(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -16,5 +17,10 @@ public class LectureDate {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date must be before end date");
         }
+    }
+
+    public int calculateLectureDuration() {
+        Period period = Period.between(startDate, endDate);
+        return period.getDays();
     }
 }
