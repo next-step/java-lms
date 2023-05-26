@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Answers AS1 = new Answers(Q1);
 
     @Test
     public void deleteAll_success() {
         // given
-        Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
-        Answer A2 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
+        Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents2");
+        Answer A2 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents2");
+        Answers AS1 = new Answers(Q1);
 
         AS1.addAnswer(A1);
         AS1.addAnswer(A2);
@@ -35,8 +35,10 @@ public class AnswersTest {
     @Test
     public void deleteAll_fail() {
         // given
-        Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
-        Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+        Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents2");
+        Answer A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+        Answers AS1 = new Answers(Q1);
 
         AS1.addAnswer(A1);
         AS1.addAnswer(A2);
@@ -51,8 +53,10 @@ public class AnswersTest {
     @Test
     public void getWriters() {
         // given
-        Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
-        Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+        Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents2");
+        Answer A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+        Answers AS1 = new Answers(Q1);
 
         AS1.addAnswer(A1);
         AS1.addAnswer(A2);
