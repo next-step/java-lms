@@ -11,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,13 +30,14 @@ public class QnaServiceTest {
     private QnAService qnAService;
 
     private Question question;
+
     private Answer answer;
 
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        question.addAnswer(answer);
+        question.getAnswers().addAnswer(answer);
     }
 
     @Test
@@ -82,9 +81,9 @@ public class QnaServiceTest {
     }
 
     private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
+        deleteHistoryService.addDeleteHistory(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()));
+        deleteHistoryService.addDeleteHistory(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+
+        verify(deleteHistoryService).saveAll();
     }
 }
