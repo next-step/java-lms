@@ -23,19 +23,32 @@ class SessionEnrollmentEntityRepositoryTest {
   }
 
 
+  /**
+   * VALUES (고유 ID, 세션 ID, 수강생 ID, 생성일시, 수정일시)
+   * VALUES (100, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+   *        (200, 100, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+   *        (300, 200, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+   */
   @Test
-  void findUserIdsBySessionId() {
-    List<Long> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
+  void 임시_데이터에서_수강생이_2명_있는_Session_100L_조회_및_값_검증() {
+    List<Long> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(100L);
     assertThat(userIdsBySessionId).isNotNull();
     assertThat(userIdsBySessionId).hasSize(2);
-    LOGGER.debug("userIdsBySessionId: {}", userIdsBySessionId);
   }
 
 
   @Test
-  void save() {
-    Long id = sessionEnrollmentEntityRepository.save(100L, 1L);
+  void Session_200L에_학생_2L이_수강신청한_내역_저장() {
+    Long id = sessionEnrollmentEntityRepository.save(200L, 2L);
     assertThat(id).isNotNull();
-    LOGGER.debug("id: {}", id);
+
+    int studentSize = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(200L).size();
+    assertThat(studentSize).isEqualTo(2);
+  }
+
+  @Test
+  void 존재하지_않는_Session_500L을_조회하는_경우_빈_리스트_반환() {
+    List<Long> studentKeyIds = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(500L);
+    assertThat(studentKeyIds).isEmpty();
   }
 }
