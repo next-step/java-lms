@@ -13,10 +13,9 @@ public class SessionPeriod {
         validatePeriod();
     }
 
-    private void validatePeriod()
-    {
+    private void validatePeriod() {
         if (startedAt.isAfter(endedAt)) {
-            throw new IllegalArgumentException("시작일 : " + startedAt + ", 종료일 : "  + endedAt +", 종료일이 시작일보다 먼저 올 수 없습니다.");
+            throw new IllegalArgumentException("시작일 : " + startedAt + ", 종료일 : " + endedAt + ", 종료일이 시작일보다 먼저 올 수 없습니다.");
         }
     }
 

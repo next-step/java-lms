@@ -1,16 +1,9 @@
 package nextstep.fixtures;
 
-import nextstep.courses.domain.CourseBuilder;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import nextstep.courses.domain.Course;
 
 public class CourseFixtures {
-    public static CourseBuilder testCourse1() {
-        return CourseBuilder.init()
-                .id(1L)
-                .sessions(new ArrayList<>())
-                .creatorId(1L)
-                .createdAt(LocalDateTime.now());
+    public static Course testCourse1() {
+        return new Course("newCourse",1L);
     }
 }

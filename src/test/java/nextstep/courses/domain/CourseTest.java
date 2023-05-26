@@ -13,9 +13,7 @@ public class CourseTest {
     @DisplayName("Course 생성 후 Session add")
     @Test
     void create() {
-        Course course = testCourse1()
-                .sessions(new ArrayList<>())
-                .build();
+        Course course = testCourse1();
 
         course.addSession(testSession1());
         course.addSession(testSession2());
