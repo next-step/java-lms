@@ -50,7 +50,7 @@ public class QuestionTest {
         // when
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .message().isEqualTo("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .message().isEqualTo("자기 자신의 답변만 삭제할 수 있습니다.");
     }
 
     @Test
