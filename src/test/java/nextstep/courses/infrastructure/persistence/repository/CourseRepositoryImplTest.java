@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.infrastructure.persistence.repository;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
@@ -12,12 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
-public class CourseRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
+public class CourseRepositoryImplTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryImplTest.class);
 
     @Autowired
     private CourseRepository courseRepository;
-
 
     @Test
     void crud() {

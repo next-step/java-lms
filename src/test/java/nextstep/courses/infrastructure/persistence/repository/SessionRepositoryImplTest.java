@@ -7,11 +7,6 @@ import static org.assertj.core.api.Assertions.*;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionInfo;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.infrastructure.persistence.dao.ImageEntityRepository;
-import nextstep.courses.infrastructure.persistence.dao.SessionEnrollmentEntityRepository;
-import nextstep.courses.infrastructure.persistence.dao.SessionEntityRepository;
-import nextstep.users.infrastructure.dao.NsUserEntityRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,27 +19,7 @@ class SessionRepositoryImplTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryImplTest.class);
 
   @Autowired
-  private NsUserEntityRepository nsUserEntityRepository;
-
-  @Autowired
-  private ImageEntityRepository imageEntityRepository;
-
-  @Autowired
-  private SessionEnrollmentEntityRepository sessionEnrollmentEntityRepository;
-
-  @Autowired
-  private SessionEntityRepository sessionEntityRepository;
-
   private SessionRepository sessionRepository;
-
-  @BeforeEach
-  void setUp() {
-    sessionRepository = new SessionRepositoryImpl(
-        sessionEntityRepository,
-        sessionEnrollmentEntityRepository,
-        imageEntityRepository,
-        nsUserEntityRepository);
-  }
 
   @Test
   void findById() {

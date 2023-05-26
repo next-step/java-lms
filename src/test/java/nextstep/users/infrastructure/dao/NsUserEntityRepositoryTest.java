@@ -1,36 +1,27 @@
 package nextstep.users.infrastructure.dao;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
 import nextstep.users.infrastructure.entity.NsUserEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
 class NsUserEntityRepositoryTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NsUserEntityRepositoryTest.class);
+  private final NsUserEntityRepository nsUserEntityRepository;
 
-  @Autowired
-  private JdbcOperations jdbcOperations;
-
-  @Autowired
-  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-  private NsUserEntityRepository nsUserEntityRepository;
-
-  @BeforeEach
-  void setUp() {
-    nsUserEntityRepository = new NsUserEntityRepository(jdbcOperations,namedParameterJdbcTemplate);
+  public NsUserEntityRepositoryTest(@Autowired JdbcTemplate jdbcTemplate) {
+    this.nsUserEntityRepository = new NsUserEntityRepository(jdbcTemplate);
   }
+
 
   @Test
   void findByIds() {

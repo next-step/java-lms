@@ -21,9 +21,9 @@ public class NsUserEntityRepository {
   private final JdbcOperations jdbcTemplate;
   private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-  public NsUserEntityRepository(JdbcOperations jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+  public NsUserEntityRepository(JdbcOperations jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
-    this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
   }
 
   public List<NsUserEntity> findByUserKeyIds(List<Long> userIds) {

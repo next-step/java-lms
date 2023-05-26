@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.ImageEntity;
-import nextstep.users.infrastructure.UserRepositoryTest;
+import nextstep.users.infrastructure.repository.UserRepositoryImplTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @JdbcTest
 class ImageEntityRepositoryTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
-  private ImageEntityRepository imageEntityRepository;
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImplTest.class);
+  private final ImageEntityRepository imageEntityRepository;
 
   public ImageEntityRepositoryTest(@Autowired JdbcTemplate jdbcTemplate) {
     this.imageEntityRepository = new ImageEntityRepository(jdbcTemplate);
