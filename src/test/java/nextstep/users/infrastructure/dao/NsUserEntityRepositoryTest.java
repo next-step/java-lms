@@ -24,16 +24,25 @@ class NsUserEntityRepositoryTest {
 
 
   @Test
-  void findByIds() {
-    List<NsUserEntity> userIds = nsUserEntityRepository.findByUserKeyIds(List.of(1L,2L));
-    assertThat(userIds).isNotNull();
-    LOGGER.debug("NsUserEntity: {}", userIds);
+  void 임시_데이터에_존재하는_1L_2L을_통해서_유저_목록_조회_및_값_검증() {
+    List<NsUserEntity> userEntity = nsUserEntityRepository.findByUserKeyIds(List.of(1L, 2L));
+    assertThat(userEntity).isNotNull();
+
+    assertThat(userEntity.size()).isEqualTo(2);
+    assertThat(userEntity.get(0).getUserId()).isEqualTo("javajigi");
+    assertThat(userEntity.get(1).getUserId()).isEqualTo("sanjigi");
   }
 
   @Test
-  void findByUserId() {
-    Optional<NsUserEntity> nsUserEntity = nsUserEntityRepository.findByUserId("javajigi");
-    assertThat(nsUserEntity).isNotNull();
-    LOGGER.debug("NsUserEntity: {}", nsUserEntity);
+  void 임시_데이터에_존재하는_아이디_javajigi_을_통해서_유저_단건_조회_및_값_검증() {
+    Optional<NsUserEntity> userEntity = nsUserEntityRepository.findByUserId("javajigi");
+    assertThat(userEntity).isNotNull();
+
+    userEntity.ifPresent(
+        user -> {
+          assertThat(user.getUserId()).isEqualTo("javajigi");
+          assertThat(user.getName()).isEqualTo("자바지기");
+        }
+    );
   }
 }
