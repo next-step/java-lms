@@ -23,17 +23,33 @@ class CourseEntityRepositoryTest {
   }
 
   @Test
-  void save() {
+  void CourseEntity_저장하고_나온_rowId로_다시_찾는_경우_성공() {
     CourseEntity courseEntity = new CourseEntity("Course 3", 1L, "Third Generation");
     Long rowId = courseEntityRepository.save(courseEntity);
     assertThat(rowId).isEqualTo(1);
-    LOGGER.debug("CourseEntity: {}", courseEntity);
+
+    assertThat(courseEntityRepository.findById(rowId)).isNotEmpty();
+  }
+
+  /**
+   * VALUES (100, 'Course 1', 1,'First Generation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+   */
+  @Test
+  void 임시_데이터에_존재하는_100L_Course_조회_성공() {
+    Optional<CourseEntity> optionalCourseEntity = courseEntityRepository.findById(100L);
+    assertThat(optionalCourseEntity).isNotNull();
+
+    optionalCourseEntity.ifPresent(courseEntity -> {
+      assertThat(courseEntity.getId()).isEqualTo(100L);
+      assertThat(courseEntity.getTitle()).isEqualTo("Course 1");
+      assertThat(courseEntity.getCreatorId()).isEqualTo(1L);
+      assertThat(courseEntity.getGeneration()).isEqualTo("First Generation");
+    });
   }
 
   @Test
-  void findById() {
-    Optional<CourseEntity> courseEntity = courseEntityRepository.findById(100L);
-    assertThat(courseEntity).isNotNull();
-    LOGGER.debug("CourseEntity: {}", courseEntity);
+  void 임시_데이터에_존재하지_않는_101L_Course_조회_실패() {
+    Optional<CourseEntity> optionalCourseEntity = courseEntityRepository.findById(101L);
+    assertThat(optionalCourseEntity).isEmpty();
   }
 }

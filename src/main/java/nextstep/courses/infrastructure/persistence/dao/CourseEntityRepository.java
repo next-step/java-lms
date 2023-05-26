@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.CourseEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -34,17 +35,21 @@ public class CourseEntityRepository {
   }
   public Optional<CourseEntity> findById(Long id) {
     String sql = "select id, title, creator_id, generation, created_at, updated_at from course where id = ?";
-    return jdbcTemplate.queryForObject(sql, rowMapper(), id);
+    try {
+      return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), id));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
-  private RowMapper<Optional<CourseEntity>> rowMapper() {
-    return (rs, rowNum) -> Optional.of(new CourseEntity(
+  private RowMapper<CourseEntity> rowMapper() {
+    return (rs, rowNum) -> new CourseEntity(
         rs.getLong(1),
         rs.getString(2),
         rs.getLong(3),
         rs.getString(4),
         toLocalDateTime(rs.getTimestamp(5)),
-        toLocalDateTime(rs.getTimestamp(6))));
+        toLocalDateTime(rs.getTimestamp(6)));
   }
 
 
