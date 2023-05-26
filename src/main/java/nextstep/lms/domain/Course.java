@@ -3,6 +3,8 @@ package nextstep.lms.domain;
 import nextstep.lms.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Course {
@@ -14,6 +16,8 @@ public class Course {
 
     private LmsUser creator;
 
+    private List<Session> sessions;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -21,10 +25,11 @@ public class Course {
     private Course() {
     }
 
-    private Course(Long id, String title, LmsUser creator, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Course(Long id, String title, LmsUser creator, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creator = creator;
+        this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -37,14 +42,22 @@ public class Course {
 
     public static Course create(String title, LmsUser creator) {
         valiateCreatorAuthorization(creator);
-        return new Course(idGenerator.getAndIncrement(), title, creator, LocalDateTime.now(), null);
+        return new Course(idGenerator.getAndIncrement(), title, creator, new ArrayList<>(), LocalDateTime.now(), null);
     }
 
-    public Long getId() {
-        return id;
+    public void addSession(Session newSession) {
+        sessions.add(newSession);
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public boolean isSameCreator(LmsUser sessionCreator) {
+        return creator == sessionCreator;
     }
 }

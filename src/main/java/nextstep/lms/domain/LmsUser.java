@@ -59,4 +59,8 @@ public class LmsUser {
     public LmsUserRole getRole() {
         return role;
     }
+
+    public boolean isAdmin() {
+        return role == LmsUserRole.ADMIN;
+    }
 }
