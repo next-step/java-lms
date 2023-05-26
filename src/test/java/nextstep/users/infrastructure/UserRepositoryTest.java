@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import java.util.Optional;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,12 +23,14 @@ public class UserRepositoryTest {
 
     @Autowired
     private JdbcOperations jdbcOperations;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userRepository = new UserRepositoryImpl(new NsUserEntityRepository(jdbcOperations));
+        userRepository = new UserRepositoryImpl(new NsUserEntityRepository(jdbcOperations, namedParameterJdbcTemplate));
     }
 
     @Test

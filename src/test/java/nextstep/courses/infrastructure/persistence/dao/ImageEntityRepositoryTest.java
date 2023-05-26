@@ -31,7 +31,7 @@ class ImageEntityRepositoryTest {
 
   @Test
   void findById() {
-    Optional<ImageEntity> imageEntity = imageEntityRepository.findById(1L);
+    Optional<ImageEntity> imageEntity = imageEntityRepository.findById(100L);
     assertThat(imageEntity).isNotNull();
     LOGGER.debug("ImageEntity: {}", imageEntity);
   }

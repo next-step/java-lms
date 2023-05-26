@@ -31,7 +31,7 @@ class SessionEntityRepositoryTest {
 
   @Test
   void findById() {
-    Optional<SessionEntity> sessionEntity = sessionEntityRepository.findById(1L);
+    Optional<SessionEntity> sessionEntity = sessionEntityRepository.findById(100L);
     assertThat(sessionEntity).isNotNull();
     LOGGER.debug("SessionEntity: {}", sessionEntity);
   }
