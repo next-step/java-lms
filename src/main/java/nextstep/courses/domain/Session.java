@@ -44,7 +44,7 @@ public class Session extends BaseTimeEntity {
   /**
    * 부 생성자
    */
-  Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
+  public Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
       SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod) {
     this(id, sessionInfo, image, sessionType, sessionStatus, students, sessionPeriod,
         LocalDateTime.now(), LocalDateTime.now());
