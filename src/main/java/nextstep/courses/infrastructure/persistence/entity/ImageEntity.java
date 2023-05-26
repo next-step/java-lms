@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseTimeEntity;
+import nextstep.courses.domain.Image;
 import nextstep.courses.domain.ImageType;
 import nextstep.courses.domain.Url;
 
@@ -30,12 +31,32 @@ public class ImageEntity extends BaseTimeEntity {
   /**
    * 주 생성자
    */
-  public ImageEntity(String originalFileName, ImageType imageType, Url coverImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public ImageEntity(Long id, String originalFileName, ImageType imageType, Url coverImgUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
+    this.id = id;
     this.originalFileName = originalFileName;
     this.imageType = imageType;
     this.coverImgUrl = coverImgUrl;
   }
 
 
+  public ImageEntity(Long id, String originalFileName, String imageType, String coverImgUrl,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(id, originalFileName, ImageType.valueOf(imageType), new Url(coverImgUrl), createdAt, updatedAt);
+  }
+
+
+  public Image toDomain() {
+    return new Image(id, originalFileName, imageType, coverImgUrl);
+  }
+
+  @Override
+  public String toString() {
+    return "ImageEntity{" +
+        "id=" + id +
+        ", originalFileName='" + originalFileName + '\'' +
+        ", imageType=" + imageType +
+        ", coverImgUrl=" + coverImgUrl +
+        '}';
+  }
 }

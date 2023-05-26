@@ -69,4 +69,31 @@ public class Session extends BaseTimeEntity {
     students.add(user);
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public SessionInfo getSessionInfo() {
+    return sessionInfo;
+  }
+
+  public Image getCoverImage() {
+    return coverImage;
+  }
+
+  public SessionType getSessionType() {
+    return sessionType;
+  }
+
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
+  }
+
+  public Students getStudents() {
+    return students;
+  }
+
+  public SessionPeriod getSessionPeriod() {
+    return sessionPeriod;
+  }
 }

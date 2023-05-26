@@ -3,11 +3,15 @@ package nextstep.courses.infrastructure.persistence.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.domain.BaseTimeEntity;
+import nextstep.courses.domain.Image;
+import nextstep.courses.domain.MaxEnrollment;
+import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionInfo;
 import nextstep.courses.domain.SessionPeriod;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.SessionType;
 import nextstep.courses.domain.Students;
+import nextstep.users.domain.NsUser;
 
 /**
  * JPA Entity 처럼 구성한다.
@@ -30,7 +34,7 @@ public class SessionEntity extends BaseTimeEntity {
 
   private SessionInfo sessionInfo;
 
-  private ImageEntity coverImage;
+  private Long coverImageId;
 
   private SessionType sessionType;
 
@@ -47,19 +51,55 @@ public class SessionEntity extends BaseTimeEntity {
   /**
    * 주 생성자
    */
-  public SessionEntity(Long courseId, SessionInfo sessionInfo, ImageEntity coverImage,
+  public SessionEntity(Long id, Long courseId, SessionInfo sessionInfo, Long coverImageId,
       SessionType sessionType, SessionStatus sessionStatus, int maxEnrollmentSize,
-      List<Long> students, SessionPeriod sessionPeriod, LocalDateTime createdAt,
-      LocalDateTime updatedAt) {
-    super(createdAt, updatedAt);
+      SessionPeriod sessionPeriod) {
+    this.id = id;
     this.courseId = courseId;
     this.sessionInfo = sessionInfo;
-    this.coverImage = coverImage;
+    this.coverImageId = coverImageId;
     this.sessionType = sessionType;
     this.sessionStatus = sessionStatus;
     this.maxEnrollmentSize = maxEnrollmentSize;
-    this.students = students;
     this.sessionPeriod = sessionPeriod;
   }
 
+  public SessionEntity(Long id, Long courseId, String title, String description, Long coverImageId,
+      String sessionType, String sessionStatus, int maxEnrollmentSize, LocalDateTime startDateTime,
+      LocalDateTime endDateTime) {
+    this.id = id;
+    this.courseId = courseId;
+    this.sessionInfo = new SessionInfo(title, description);
+    this.coverImageId = coverImageId;
+    this.sessionType = SessionType.valueOf(sessionType);
+    this.sessionStatus = SessionStatus.valueOf(sessionStatus);
+    this.maxEnrollmentSize = maxEnrollmentSize;
+    this.sessionPeriod = new SessionPeriod(startDateTime, endDateTime);
+  }
+
+  public Long getCoverImageId() {
+    return coverImageId;
+  }
+
+  public Session toDomain(List<NsUser> students, Image image) {
+    return new Session(id, sessionInfo, image, sessionType, sessionStatus,
+        new Students(students, new MaxEnrollment(maxEnrollmentSize)), sessionPeriod, createdAt,
+        updatedAt);
+  }
+
+
+  @Override
+  public String toString() {
+    return "SessionEntity{" +
+        "id=" + id +
+        ", courseId=" + courseId +
+        ", sessionInfo=" + sessionInfo +
+        ", coverImageId=" + coverImageId +
+        ", sessionType=" + sessionType +
+        ", sessionStatus=" + sessionStatus +
+        ", maxEnrollmentSize=" + maxEnrollmentSize +
+        ", students=" + students +
+        ", sessionPeriod=" + sessionPeriod +
+        '}';
+  }
 }
