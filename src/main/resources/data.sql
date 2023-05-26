@@ -11,3 +11,4 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 iNSERt iNTo session (start_date,end_date,session_state,session_type,registered_student,student_capacity,image_id) VALUES ('2023-05-01', '2023-05-05', 'READY', 'FREE', 0, 4, 1);
 iNSERt iNTo session (start_date,end_date,session_state,session_type,registered_student,student_capacity,image_id) VALUES ('2023-07-01', '2023-10-05', 'RECRUITING', 'PAID', 0, 4, 1);
+iNSERt iNTo session (start_date,end_date,session_state,session_type,registered_student,student_capacity,image_id) VALUES ('2023-07-01', '2023-10-05', 'RECRUITING', 'PAID', 5, 10, 1);

@@ -82,12 +82,25 @@ class SessionRepositoryTest {
     void studentRegisterTest() {
         Session findSession = sessionRepository.findById(2L);
         findSession.register();
-        sessionRepository.registerStudent(findSession);
+        sessionRepository.updateRegisteredStudent(findSession);
 
         Session newSession = sessionRepository.findById(2L);
 
         assertThat(newSession.getRegisteredStudent())
                 .isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("학생 강의 수강 취소 테스트")
+    void studentCancelTest() {
+        Session findSession = sessionRepository.findById(3L);
+        findSession.cancel();
+        sessionRepository.updateRegisteredStudent(findSession);
+
+        Session newSession = sessionRepository.findById(3L);
+
+        assertThat(newSession.getRegisteredStudent())
+                .isEqualTo(4);
     }
 
 }

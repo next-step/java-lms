@@ -9,5 +9,5 @@ public interface SessionRepository {
 
     void changeSessionType(Session session);
 
-    void registerStudent(Session session);
+    void updateRegisteredStudent(Session session);
 }
