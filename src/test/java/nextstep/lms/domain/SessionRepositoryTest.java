@@ -64,4 +64,17 @@ class SessionRepositoryTest {
                 .isEqualTo(2L);
     }
 
+    @Test
+    @DisplayName("강의 상태 모집중으로 변경 테스트")
+    void sessionStateChangeRecruitingTest() {
+        Session findSession = sessionRepository.findById(1L);
+        findSession.recruitStudents();
+        sessionRepository.changeSessionType(findSession);
+
+        Session newSession = sessionRepository.findById(1L);
+
+        assertThat(newSession.getSessionState())
+                .isEqualTo(SessionState.RECRUITING.toString());
+    }
+
 }

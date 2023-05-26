@@ -6,4 +6,6 @@ public interface SessionRepository {
     void changeImage(Session session);
 
     Session findById(Long id);
+
+    void changeSessionType(Session session);
 }

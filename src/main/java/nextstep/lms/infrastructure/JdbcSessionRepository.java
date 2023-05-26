@@ -104,4 +104,10 @@ public class JdbcSessionRepository implements SessionRepository {
         return SessionType.valueOf(sessionType);
     }
 
+    @Override
+    public void changeSessionType(Session session) {
+        String sql = "uPDATe session SET session_state = ? WHERE id = ?";
+
+        jdbcTemplate.update(sql, session.getSessionState(), session.getId());
+    }
 }
