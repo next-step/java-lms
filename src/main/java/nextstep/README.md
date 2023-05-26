@@ -25,8 +25,8 @@
 - [X] SessionPeriod 도메인모델 테스트
 - [x] SessionCoverImage 도메인모델 생성
 - [x] SessionCoverImage 도메인모델 테스트
-- [x] 
-- [x] 
+- [x] Session 도메인모델 생성
+- [x] Session 도메인모델 테스트
 - [x] 
 - [x] 
 - [x] 
