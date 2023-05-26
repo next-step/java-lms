@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -67,5 +66,26 @@ public class QuestionTest {
         // then
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("답변이 모두 질문자의 것일경우 답변전체 삭제를 성공한다")
+    void deleteQuestionWithAllAnswers() {
+        // given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
+        Answer answer3 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents3");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+        question.addAnswer(answer3);
+
+        // when
+        question.getAnswersObj().deleteAll(NsUserTest.JAVAJIGI);
+
+
+        assertThat(answer1.isDeleted()).isTrue();
+        assertThat(answer2.isDeleted()).isTrue();
+        assertThat(answer3.isDeleted()).isTrue();
     }
 }

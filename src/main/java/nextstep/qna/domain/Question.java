@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -95,8 +94,12 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public List<Answer> getAnswersCopy() {
         return answers.getAnswers();
+    }
+
+    public Answers getAnswersObj() {
+        return answers;
     }
 
     @Override
@@ -114,8 +117,6 @@ public class Question {
             final List<DeleteHistory> answerDeleteHistories = this.answers.stream()
                     .map(answer -> answer.delete(loginUser))
                     .collect(Collectors.toList());
-
-            this.answers.clear();
 
             return answerDeleteHistories;
         }
