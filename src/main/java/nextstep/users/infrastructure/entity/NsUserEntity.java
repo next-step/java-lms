@@ -71,4 +71,15 @@ public class NsUserEntity extends BaseTimeEntity {
   public String getEmail() {
     return email;
   }
+
+  @Override
+  public String toString() {
+    return "NsUserEntity{" +
+        "id=" + id +
+        ", userId='" + userId + '\'' +
+        ", password='" + password + '\'' +
+        ", name='" + name + '\'' +
+        ", email='" + email + '\'' +
+        '}';
+  }
 }
