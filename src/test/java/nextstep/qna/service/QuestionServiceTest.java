@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import config.MockTest;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
@@ -13,13 +14,10 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-class QuestionServiceTest {
+class QuestionServiceTest extends MockTest {
 
   @InjectMocks
   private QuestionService sut;
@@ -44,7 +42,7 @@ class QuestionServiceTest {
   }
 
   @Test
-  @DisplayName("QuestionService | 다른 사람이 작성한 질문은 삭제 할 수 없다.")
+  @DisplayName("다른 사람이 작성한 질문은 삭제 할 수 없다.")
   public void delete_다른_사람이_쓴_글() throws Exception {
     // given
     NsUser 작정자가_아닌_유저 = NsUserTest.SANJIGI;
@@ -56,7 +54,7 @@ class QuestionServiceTest {
   }
 
   @Test
-  @DisplayName("QuestionService | 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.")
+  @DisplayName("로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.")
   public void delete_성공() throws Exception {
     // given
     NsUser 질문_작성자 = NsUserTest.JAVAJIGI;
