@@ -69,7 +69,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public void checkCanDelete(NsUser loginUser) throws CannotDeleteException {
+    public void checkCanDelete(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
