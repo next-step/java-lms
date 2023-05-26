@@ -4,24 +4,34 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.CourseEntity;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository("courseEntityRepository")
 public class CourseEntityRepository {
 
-  private JdbcOperations jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
+  private final SimpleJdbcInsert simpleJdbcInsert;
 
-  public CourseEntityRepository(JdbcOperations jdbcTemplate) {
+  public CourseEntityRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
+    this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+        .withTableName("course")
+        .usingGeneratedKeyColumns("id");
   }
 
-  public int save(CourseEntity course) {
-    String sql = "insert into course (title, creator_id, generation, created_at) values(?, ?, ?, ?)";
-    return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getGeneration(),course.getCreatedAt());
-  }
+  public Long save(CourseEntity course) {
+    MapSqlParameterSource parameters = new MapSqlParameterSource()
+        .addValue("title", course.getTitle())
+        .addValue("creator_id", course.getCreatorId())
+        .addValue("generation", course.getGeneration())
+        .addValue("created_at", course.getCreatedAt());
 
+    return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
+  }
   public Optional<CourseEntity> findById(Long id) {
     String sql = "select id, title, creator_id, generation, created_at, updated_at from course where id = ?";
     return jdbcTemplate.queryForObject(sql, rowMapper(), id);

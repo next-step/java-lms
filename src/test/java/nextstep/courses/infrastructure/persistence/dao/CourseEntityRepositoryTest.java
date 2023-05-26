@@ -10,28 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
 class CourseEntityRepositoryTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CourseEntityRepositoryTest.class);
 
-  @Autowired
-  private JdbcOperations jdbcOperations;
+  private final CourseEntityRepository courseEntityRepository;
 
-  private CourseEntityRepository courseEntityRepository;
-
-  @BeforeEach
-  void setUp() {
-    courseEntityRepository = new CourseEntityRepository(jdbcOperations);
+  public CourseEntityRepositoryTest(@Autowired JdbcTemplate jdbcTemplate) {
+    this.courseEntityRepository = new CourseEntityRepository(jdbcTemplate);
   }
 
   @Test
   void save() {
     CourseEntity courseEntity = new CourseEntity("Course 3", 1L, "Third Generation");
-    int count = courseEntityRepository.save(courseEntity);
-    assertThat(count).isEqualTo(1);
+    Long rowId = courseEntityRepository.save(courseEntity);
+    assertThat(rowId).isEqualTo(1);
     LOGGER.debug("CourseEntity: {}", courseEntity);
   }
 
