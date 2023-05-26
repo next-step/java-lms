@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure.persistence.dao;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
