@@ -105,7 +105,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public void changeSessionType(Session session) {
+    public void changeSessionState(Session session) {
         String sql = "uPDATe session SET session_state = ? WHERE id = ?";
 
         jdbcTemplate.update(sql, session.getSessionState(), session.getId());
@@ -116,5 +116,12 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "uPDATe session SET registered_student = ? WHERE id = ?";
 
         jdbcTemplate.update(sql, session.getRegisteredStudent(), session.getId());
+    }
+
+    @Override
+    public void changeSessionType(Session session) {
+        String sql = "uPDATe session SET session_type = ? WHERE id = ?";
+
+        jdbcTemplate.update(sql, session.getSessionType(), session.getId());
     }
 }

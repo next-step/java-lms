@@ -69,7 +69,7 @@ class SessionRepositoryTest {
     void sessionStateChangeRecruitingTest() {
         Session findSession = sessionRepository.findById(1L);
         findSession.recruitStudents();
-        sessionRepository.changeSessionType(findSession);
+        sessionRepository.changeSessionState(findSession);
 
         Session newSession = sessionRepository.findById(1L);
 
@@ -101,6 +101,19 @@ class SessionRepositoryTest {
 
         assertThat(newSession.getRegisteredStudent())
                 .isEqualTo(4);
+    }
+
+    @Test
+    @DisplayName("강의 유료 무료 타입 수정 기능")
+    void studentTypeChangeTest() {
+        Session findSession = sessionRepository.findById(1L);
+        findSession.changeSessionType(SessionType.PAID);
+        sessionRepository.changeSessionType(findSession);
+
+        Session newSession = sessionRepository.findById(1L);
+
+        assertThat(newSession.getSessionType())
+                .isEqualTo(SessionType.PAID.toString());
     }
 
 }

@@ -62,7 +62,7 @@ public class Session {
         return sessionState;
     }
 
-    public SessionState finishSessionState(LocalDate now) {
+    public SessionState changeFinishSessionState(LocalDate now) {
         if (now.isAfter(endDate)) {
             sessionState = SessionState.FINISH;
         }

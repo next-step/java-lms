@@ -7,7 +7,9 @@ public interface SessionRepository {
 
     Session findById(Long id);
 
-    void changeSessionType(Session session);
+    void changeSessionState(Session session);
 
     void updateRegisteredStudent(Session session);
+
+    void changeSessionType(Session session);
 }

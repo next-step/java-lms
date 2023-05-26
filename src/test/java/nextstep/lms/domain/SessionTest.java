@@ -57,7 +57,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 24);
 
-        assertThat(session.finishSessionState(now))
+        assertThat(session.changeFinishSessionState(now))
                 .isEqualTo(SessionState.FINISH);
     }
 
@@ -68,7 +68,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 23);
 
-        assertThat(session.finishSessionState(now))
+        assertThat(session.changeFinishSessionState(now))
                 .isEqualTo(SessionState.READY);
     }
 
