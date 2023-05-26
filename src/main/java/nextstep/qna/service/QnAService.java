@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
@@ -25,25 +23,42 @@ public class QnAService {
 
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-        Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
+        Question question = findQuestionByQuestionId(questionId);
+        validateIfLoginUserHasAuthorityToDeleteQuestion(loginUser, question);
+
+        question.answersCanBeDeleted(loginUser);
+
+        question.delete(true);
+        addQuestionToDeleteHistories(question);
+
+        deleteAnswersAndAddThemToDeleteHistories(question);
+        deleteHistoryService.saveAll();
+    }
+
+    private Question findQuestionByQuestionId(long questionId) {
+        return questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
+    }
+
+    private void validateIfLoginUserHasAuthorityToDeleteQuestion(NsUser loginUser, Question question) throws CannotDeleteException {
         if (!question.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
 
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+    private void deleteAnswersAndAddThemToDeleteHistories(Question question) {
+        for (Answer answer : question.getListOfAnswers()) {
+            answer.delete(true);
+            addAnswerToDeleteHistories(answer);
         }
+    }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        deleteHistoryService.saveAll(deleteHistories);
+    private void addAnswerToDeleteHistories(Answer answer) {
+        DeleteHistory deleteHistoryAnswer = new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
+        deleteHistoryService.addDeleteHistory(deleteHistoryAnswer);
+    }
+
+    private void addQuestionToDeleteHistories(Question question) {
+        DeleteHistory deleteHistoryQuestion = new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
+        deleteHistoryService.addDeleteHistory(deleteHistoryQuestion);
     }
 }
