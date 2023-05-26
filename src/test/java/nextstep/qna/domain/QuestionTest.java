@@ -116,7 +116,7 @@ public class QuestionTest {
                         .contains(question.getId().toString()),
                 () -> assertThat(answerDeleteHistory)
                         .as("answer PK 가 존재하는지 검증한다")
-                        .contains(answer.getId().toString())
+                        .contains(answer.getAnswerId().toString())
         );
 
     }

@@ -1,39 +1,48 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class Answer {
-    private final LocalDateTime createdDate = LocalDateTime.now();
-    private Long id;
+    private Long answerId;
+    @NotNull
     private NsUser writer;
-    private Question question;
+    @NotNull
+    private QuestionId questionId;
+    @NotBlank
     private String contents;
     private boolean deleted = false;
+    private final LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
 
     public Answer() {
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if (writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if (question == null) {
-            throw new NotFoundException();
-        }
+    public Answer(Long answerId, NsUser writer, QuestionId questionId, String contents, boolean deleted, LocalDateTime updatedDate) {
+        this.answerId = answerId;
         this.writer = writer;
-        this.question = question;
+        this.questionId = questionId;
         this.contents = contents;
+        this.deleted = deleted;
+        this.updatedDate = updatedDate;
     }
 
-    public Long getId() {
-        return id;
+    public static Answer of(Long answerId, NsUser writer, Question question, String contents) {
+        return new Answer(
+                answerId,
+                writer,
+                new QuestionId(question.getId()),
+                contents,
+                false,
+                LocalDateTime.now()
+        );
+    }
+
+    public Long getAnswerId() {
+        return answerId;
     }
 
     public boolean isDeleted() {
@@ -45,16 +54,24 @@ public class Answer {
     }
 
     public void relateToQuestion(Question question) {
-        this.question = question;
+        this.questionId = question.getQuestionId();
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" +
+                "createdDate=" + createdDate +
+                ", id=" + answerId +
+                ", writer=" + writer +
+                ", questionId=" + questionId +
+                ", contents='" + contents + '\'' +
+                ", deleted=" + deleted +
+                ", updatedDate=" + updatedDate +
+                '}';
     }
 
     public DeleteHistory toDeleteHistory() {
-        return DeleteHistory.of(ContentType.ANSWER, this.getId(), this.writer, LocalDateTime.now());
+        return DeleteHistory.of(ContentType.ANSWER, this.getAnswerId(), this.writer, LocalDateTime.now());
     }
 
     public void doDelete() {
@@ -63,5 +80,9 @@ public class Answer {
 
     public String getContent() {
         return this.contents;
+    }
+
+    public QuestionId getQuestionId() {
+        return this.questionId;
     }
 }

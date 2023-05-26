@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.fixture.TestFixture;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -58,9 +57,8 @@ public class AnswerTest {
         );
     }
 
-    @DisplayName("Answer 에 다른 Question 연관관계를 맺으면 연관관계가 업데이트된다")
-    //@Test
-    @Disabled
+    @DisplayName("Answer 는 하나의 Question 을 갖는다")
+    @Test
     public void relateToQuestion() {
         //given
         Answer answer = TestFixture.BADAJIGI_ANSWER;
@@ -72,7 +70,7 @@ public class AnswerTest {
         //then
         assertThat(answer.toString())
                 .as("이 부분도 테스트가 되어야할꺼같은데.. 테스트할수 있는 방법이 떠오르지 않습니다!")
-                .contains("");
+                .contains(answer.getQuestionId().toString());
     }
 
     @DisplayName("DeleteHistory 객체를 생성해서 반환해야 한다")
@@ -87,9 +85,9 @@ public class AnswerTest {
         //then
         assertThat(deleteHistory.toString())
                 .as("")
-                .contains(answer.getId().toString());
+                .contains(answer.getAnswerId().toString());
         assertThat(deleteHistory.toString())
                 .as("")
-                .contains(answer.getId().toString());
+                .contains(answer.getAnswerId().toString());
     }
 }

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Question {
     private final List<Answer> answers = new ArrayList<>();
     private final LocalDateTime createdDate = LocalDateTime.now();
-    private Long id;
+    private QuestionId questionId;
     private String title;
     private String contents;
     private NsUser writer;
@@ -22,15 +22,32 @@ public class Question {
     public Question() {
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
+    public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, LocalDateTime updatedDate) {
+        this.questionId = questionId;
         this.title = title;
         this.contents = contents;
+        this.writer = writer;
+        this.deleted = deleted;
+        this.updatedDate = updatedDate;
+    }
+
+    public static Question of(Long questionId, NsUser writer, String title, String contents) {
+        return new Question(
+                new QuestionId(questionId),
+                title,
+                contents,
+                writer,
+                false,
+                LocalDateTime.now()
+        );
     }
 
     public Long getId() {
-        return id;
+        return this.questionId.getQuestionId();
+    }
+
+    public QuestionId getQuestionId() {
+        return questionId;
     }
 
     public void addAnswer(Answer answer) {
