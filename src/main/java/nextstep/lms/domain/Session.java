@@ -13,16 +13,19 @@ public class Session {
     private int studentCapacity;
     private int registeredStudent = 0;
 
-    public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
-                   SessionType sessionType, int studentCapacity) {
-
+    public Session(Long id, LocalDate startDate, LocalDate endDate,
+                   SessionState sessionState, SessionType sessionType, int registeredStudent,
+                   int studentCapacity, Long imageId) {
         validateDate(startDate, endDate);
 
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.imageCover = imageCover;
+        this.sessionState = sessionState;
         this.sessionType = sessionType;
+        this.registeredStudent = registeredStudent;
         this.studentCapacity = studentCapacity;
+        this.imageCover = new Image(imageId);
     }
 
     private void validateDate(LocalDate startDate, LocalDate endDate) {
@@ -31,8 +34,17 @@ public class Session {
         }
     }
 
+    public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
+                   SessionType sessionType, int studentCapacity) {
+        this(null, startDate, endDate,
+                SessionState.READY, sessionType, 0,
+                studentCapacity, imageCover.getId());
+    }
+
     public Session(LocalDate startDate, LocalDate endDate) {
-        this(startDate, endDate, null, SessionType.FREE, 0);
+        this(null, startDate, endDate,
+                SessionState.READY, SessionType.FREE, 0,
+                1, null);
     }
 
     public static Session createSession(LocalDate startDate, LocalDate endDate, Image imageCover,
