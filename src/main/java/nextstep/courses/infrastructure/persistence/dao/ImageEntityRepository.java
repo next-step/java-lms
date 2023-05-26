@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.persistence.dao;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.ImageEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,10 +19,14 @@ public class ImageEntityRepository {
 
   public Optional<ImageEntity> findById(Long coverImageId) {
     String sql = "select id, original_file_name, image_type, cover_img_url, created_at, updated_at from image where id = ?";
-    return jdbcTemplate.queryForObject(sql, rowMapper(), coverImageId);
+    try {
+      return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), coverImageId));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
-  private RowMapper<Optional<ImageEntity>> rowMapper() {
+  private RowMapper<ImageEntity> rowMapper() {
     return (rs, rowNum) -> {
       Long id = rs.getLong("id");
       String originalFileName = rs.getString("original_file_name");
@@ -30,8 +35,7 @@ public class ImageEntityRepository {
       LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
       LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
 
-      return Optional.of(
-          new ImageEntity(id, originalFileName, imageType, coverImgUrl, createdAt, updatedAt));
+      return new ImageEntity(id, originalFileName, imageType, coverImgUrl, createdAt, updatedAt);
     };
   }
 }

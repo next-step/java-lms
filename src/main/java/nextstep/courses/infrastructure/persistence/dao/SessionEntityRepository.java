@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.persistence.dao;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,10 +20,14 @@ public class SessionEntityRepository {
   public Optional<SessionEntity> findById(Long sessionId) {
     String sql = "select id, course_id, title, description, cover_image_id, session_type, session_status,"
         + " max_enrollment_size, start_date_time, end_date_time, created_at, updated_at from session where id = ?";
-    return jdbcTemplate.queryForObject(sql, rowMapper(), sessionId);
+    try {
+      return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), sessionId));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
-  private RowMapper<Optional<SessionEntity>> rowMapper() {
+  private RowMapper<SessionEntity> rowMapper() {
     return (rs, rowNum) -> {
       Long id = rs.getLong("id");
       Long courseId = rs.getLong("course_id");
@@ -35,9 +40,8 @@ public class SessionEntityRepository {
       LocalDateTime startDateTime = rs.getTimestamp("start_date_time").toLocalDateTime();
       LocalDateTime endDateTime = rs.getTimestamp("end_date_time").toLocalDateTime();
 
-      return Optional.of(
-          new SessionEntity(id, courseId, title, description, coverImageId, sessionType,
-              sessionStatus, maxEnrollmentSize, startDateTime, endDateTime));
+      return new SessionEntity(id, courseId, title, description, coverImageId, sessionType,
+              sessionStatus, maxEnrollmentSize, startDateTime, endDateTime);
     };
   }
 }

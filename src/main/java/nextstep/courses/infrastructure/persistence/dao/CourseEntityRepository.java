@@ -33,6 +33,7 @@ public class CourseEntityRepository {
 
     return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
   }
+
   public Optional<CourseEntity> findById(Long id) {
     String sql = "select id, title, creator_id, generation, created_at, updated_at from course where id = ?";
     try {
