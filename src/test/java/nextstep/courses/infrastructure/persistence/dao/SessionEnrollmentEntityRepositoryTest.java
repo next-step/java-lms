@@ -29,7 +29,7 @@ class SessionEnrollmentEntityRepositoryTest {
 
   @Test
   void findUserIdsBySessionId() {
-    List<Long> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
+    List<String> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
     assertThat(userIdsBySessionId).isNotNull();
     assertThat(userIdsBySessionId).hasSize(2);
     LOGGER.debug("userIdsBySessionId: {}", userIdsBySessionId);
