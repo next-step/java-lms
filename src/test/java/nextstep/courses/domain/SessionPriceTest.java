@@ -32,7 +32,7 @@ class SessionPriceTest {
         SessionPrice sessionPrice = new SessionPrice(price);
 
         // when, then
-        assertThat(sessionPrice.chargeType()).isEqualTo(expectedType);
+        assertThat(sessionPrice.type()).isEqualTo(expectedType);
     }
 
     static Stream<Arguments> priceAndExpectedChargeType() {
