@@ -9,6 +9,7 @@ on:
       types:
         - rerequested
         - completed
+        - synchronize
 
 permissions:
   contents: read
