@@ -11,13 +11,11 @@ public class Session {
   private SessionCoverImage coverImage;
   private SessionType sessionType;
   private SessionStatus sessionStatus;
-
   private SessionCapacity sessionCapacity;
-
   private LocalDateTime startAt;
   private LocalDateTime finishAt;
 
-  public Session(Long id, Course course, SessionCoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int maxPersonnelCount,  LocalDateTime startAt, LocalDateTime finishAt) {
+  public Session(Long id, Course course, SessionCoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt) {
     this.id = id;
     this.sessionType = sessionType;
     this.sessionStatus = sessionStatus;
