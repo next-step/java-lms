@@ -34,7 +34,7 @@ class NsUserEntityRepositoryTest {
 
   @Test
   void findByIds() {
-    List<NsUserEntity> userIds = nsUserEntityRepository.findByUserIds(List.of(1L,2L));
+    List<NsUserEntity> userIds = nsUserEntityRepository.findByUserKeyIds(List.of(1L,2L));
     assertThat(userIds).isNotNull();
     LOGGER.debug("NsUserEntity: {}", userIds);
   }
