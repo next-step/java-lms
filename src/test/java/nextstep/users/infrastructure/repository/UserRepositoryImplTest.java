@@ -21,9 +21,12 @@ public class UserRepositoryImplTest {
     private UserRepository userRepository;
 
     @Test
-    void findByUserId() {
+    void 임시_데이터에_존재하는_javajigi_아이디로_조회_및_값_검증() {
         NsUser nsUser = userRepository.findByUserId("javajigi");
         assertThat(nsUser).isNotNull();
-        LOGGER.debug("NsUser: {}", nsUser);
+
+        assertThat(nsUser.getId()).isEqualTo(1L);
+        assertThat(nsUser.getUserId()).isEqualTo("javajigi");
+        assertThat(nsUser.getName()).isEqualTo("자바지기");
     }
 }
