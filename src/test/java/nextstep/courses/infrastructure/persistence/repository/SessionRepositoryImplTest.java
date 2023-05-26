@@ -22,7 +22,7 @@ class SessionRepositoryImplTest {
   private SessionRepository sessionRepository;
 
   @Test
-  void findById() {
+  void 임시_데이터에서_수강생_2명_있는_Session_100L_조회_및_값_검증() {
     Session session = sessionRepository.findById(100L);
     assertThat(session).isNotNull();
 
@@ -32,5 +32,12 @@ class SessionRepositoryImplTest {
     assertThat(session.getSessionType()).isEqualTo(FREE);
     assertThat(session.getSessionStatus()).isEqualTo(RECRUITING);
     assertThat(session.getStudents().size()).isEqualTo(2);
+  }
+
+  @Test
+  void 임시_데이터에_존재하지_않는_경우_101L_Session_조회_실패() {
+    assertThatThrownBy(() -> sessionRepository.findById(101L))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("존재하지 않는 세션입니다.");
   }
 }
