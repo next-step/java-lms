@@ -43,6 +43,11 @@ public class SessionRepositoryImpl implements SessionRepository {
     return sessionEntity.toDomain(students, image);
   }
 
+  @Override
+  public Long saveSignUpHistory(Long sessionId, Long userId) {
+    return sessionEnrollmentEntityRepository.save(sessionId, userId);
+  }
+
   private SessionEntity findSessionEntity(Long sessionId) {
     SessionEntity sessionEntity = sessionEntityRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
@@ -56,8 +61,8 @@ public class SessionRepositoryImpl implements SessionRepository {
   }
 
   private List<NsUser> toSessionStudents(Long sessionId) {
-    List<Long> userIds = sessionEnrollmentEntityRepository.findUserIdsBySessionId(sessionId);
-    List<NsUserEntity> users = nsUserEntityRepository.findByUserKeyIds(userIds);
+    List<Long> userKeyIds = sessionEnrollmentEntityRepository.findUserIdsBySessionId(sessionId);
+    List<NsUserEntity> users = nsUserEntityRepository.findByUserKeyIds(userKeyIds);
     return users.stream().map(NsUserEntity::toDomain)
         .collect(Collectors.toList());
   }
