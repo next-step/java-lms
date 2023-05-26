@@ -16,6 +16,7 @@ public class SessionTest {
     @BeforeEach
     void setUp() {
         S1 = new Session(0L,
+                2L,
                 LocalDateTime.MIN,
                 LocalDateTime.MAX,
                 "커버이미지",
@@ -24,6 +25,7 @@ public class SessionTest {
                 10);
 
         S2 = new Session(1L,
+                2L,
                 LocalDateTime.MIN,
                 LocalDateTime.MAX,
                 "커버이미지",
@@ -35,7 +37,7 @@ public class SessionTest {
     @Test
     void newSession() {
         assertThat(S1).isEqualTo(new Session(0L,
-                LocalDateTime.MIN,
+                2L, LocalDateTime.MIN,
                 LocalDateTime.MAX,
                 "커버이미지",
                 PaymentType.FREE,
@@ -48,7 +50,7 @@ public class SessionTest {
     void validDate() {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Session(0L,
-                        LocalDateTime.MAX,
+                        2L, LocalDateTime.MAX,
                         LocalDateTime.MIN,
                         "커버이미지",
                         PaymentType.FREE,
