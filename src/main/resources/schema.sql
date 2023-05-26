@@ -53,3 +53,10 @@ create table delete_history
     deleted_by_id bigint,
     primary key (id)
 );
+
+create table image
+(
+    image_id        bigint not null,
+    image_link      varchar(255),
+    primary key (image_id)
+);
