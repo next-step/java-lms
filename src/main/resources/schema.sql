@@ -27,6 +27,8 @@ create table image (
     original_file_name varchar(255) not null,
     image_type varchar(20) not null,
     cover_img_url varchar(255) not null,
+    created_at timestamp not null,
+    updated_at timestamp,
     primary key (id)
 );
 
