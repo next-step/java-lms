@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
+import nextstep.qna.NotFoundException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -73,17 +74,12 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public boolean isNotOwner(NsUser loginUser) {
+        return !isOwner(loginUser);
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public Answers getAnswers() {
-        return answers;
     }
 
     @Override
@@ -91,15 +87,35 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+    public List<DeleteHistory> delete(NsUser loginUser) {
+        validateToDelete(loginUser);
 
         deleted = true;
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete(loginUser));
+        deleteHistories.addAll(answers.deleteAll(loginUser));
         return deleteHistories;
+    }
+
+    private void validateToDelete(NsUser loginUser) {
+        if (deleted) {
+            throw new NotFoundException();
+        }
+
+        if (isNotOwner(loginUser)) {
+            throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if (isNotSameWriterOfAnswers()) {
+            throw new UnAuthorizedException("질문자와 답변글의 모든 답변자 다른 경우, 삭제할 수 없습니다.");
+        }
+    }
+
+    public boolean isSameWriterOfAnswers() {
+        return answers.getWriters().size() == 1 && answers.getWriters().contains(writer);
+    }
+
+    public boolean isNotSameWriterOfAnswers() {
+        return !isSameWriterOfAnswers();
     }
 }
