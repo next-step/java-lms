@@ -9,6 +9,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.Fixtures.aSession;
+import static nextstep.Fixtures.aSessionRegistration;
+import static nextstep.courses.domain.SessionRecruitStatus.*;
+import static nextstep.courses.domain.SessionStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
@@ -37,7 +40,7 @@ class SessionTest {
     void test04(SessionBillType sessionBillType) {
         Session session = aSession().withSessionBillType(sessionBillType).build();
 
-        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
+        assertThat(session.getSessionBillType()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의 상태 {0} 존재한다.")
@@ -50,35 +53,71 @@ class SessionTest {
 
     @Test
     @DisplayName("모집중일때만 강의 수강신청이 가능하다.")
-    void test06() {
+    void test11() {
         Session session = aSession().withId(1L)
-                                    .withSessionStatus(SessionStatus.OPEN)
-                                    .withMaxUserCount(10)
+                                    .withSessionStatus(OPEN)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
+                                                                                   .build())
                                     .build();
 
-        session.register(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.APPLICATION);
 
-        assertThat(session.getSessionJoins()).hasSize(1).extracting("session.id", "nsUser.id")
+        assertThat(session.getSessionJoins()).hasSize(1)
+                                             .extracting("session.id", "nsUser.id")
                                              .containsExactly(tuple(1L, 1L));
     }
 
     @Test
-    @DisplayName("모집중이 아니면 수강신청이 불가능하다.")
-    void test07() {
-        Session session = aSession().withSessionStatus(SessionStatus.READY).build();
+    @DisplayName("강의가 진행중인 상태라도 모집상태가 모집중이면 수강신청이 가능하다.")
+    void test12() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(PROGRESS)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
+                                                                                   .build())
+                                    .build();
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.APPLICATION);
+
+        assertThat(session.getSessionJoins()).hasSize(1)
+                                             .extracting("session.id", "nsUser.id")
+                                             .containsExactly(tuple(1L, 1L));
+    }
+
+    @Test
+    @DisplayName("강의가 모집중이 아니면 수강신청 할 수 없다.")
+    void test13() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(OPEN)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(NOT_RECRUIT)
+                                                                                   .build())
+                                    .build();
+
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("강의가 종료되면 수강신청 할 수 없다.")
+    void test14() {
+        Session session = aSession().withId(1L)
+                                    .withSessionStatus(CLOSED)
+                                    .withSessionRegistration(aSessionRegistration().withSessionRecruitStatus(RECRUIT)
+                                                                                   .build())
+                                    .build();
+
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("강의 최대 수강인원이 초과하면 등록할 수 없다.")
-    void test08() {
-        Session session = aSession().withSessionStatus(SessionStatus.OPEN)
-                                    .withMaxUserCount(1)
-                                    .build();
+    void test21() {
+        Session session = aSession().withSessionStatus(OPEN).withSessionRegistration(
+                aSessionRegistration().withMaxUserCount(1).build()).build();
 
-        session.addUser(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.JAVAJIGI, SessionJoinStatus.NONE);
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI,
+                                                  SessionJoinStatus.APPLICATION)).isInstanceOf(IllegalArgumentException.class);
     }
 }

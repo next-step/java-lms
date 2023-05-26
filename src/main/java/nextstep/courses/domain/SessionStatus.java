@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionStatus {
-    READY("준비"), OPEN("모집"), CLOSED("종료");
+    READY("준비"), OPEN("모집"), PROGRESS("진행"), CLOSED("종료");
 
     private final String description;
 
@@ -29,7 +29,11 @@ public enum SessionStatus {
         return description;
     }
 
-    public boolean isOpen() {
-        return this == OPEN;
+    public boolean isRegister() {
+        return this == OPEN || this == PROGRESS;
+    }
+
+    public boolean isClose() {
+        return this == CLOSED;
     }
 }

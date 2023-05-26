@@ -4,11 +4,12 @@ import java.time.LocalDateTime;
 
 public final class SessionBuilder {
     private Long id;
-    private SessionBillType sessionBillType;
     private SessionStatus sessionStatus;
+    private SessionBillType sessionBillType;
     private SessionCoverImage sessionCoverImage;
-    private int maxUserCount;
+    private SessionRegistration sessionRegistration;
     private SessionPeriod sessionPeriod;
+    private SessionJoins sessionJoins;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -24,13 +25,13 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withSessionBillType(SessionBillType sessionBillType) {
-        this.sessionBillType = sessionBillType;
+    public SessionBuilder withSessionStatus(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
         return this;
     }
 
-    public SessionBuilder withSessionStatus(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
+    public SessionBuilder withSessionBillType(SessionBillType sessionBillType) {
+        this.sessionBillType = sessionBillType;
         return this;
     }
 
@@ -39,13 +40,18 @@ public final class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder withMaxUserCount(int maxUserCount) {
-        this.maxUserCount = maxUserCount;
+    public SessionBuilder withSessionRegistration(SessionRegistration sessionRegistration) {
+        this.sessionRegistration = sessionRegistration;
         return this;
     }
 
     public SessionBuilder withSessionPeriod(SessionPeriod sessionPeriod) {
         this.sessionPeriod = sessionPeriod;
+        return this;
+    }
+
+    public SessionBuilder withSessionJoins(SessionJoins sessionJoins) {
+        this.sessionJoins = sessionJoins;
         return this;
     }
 
@@ -60,6 +66,7 @@ public final class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, sessionBillType, sessionStatus, sessionCoverImage, maxUserCount, sessionPeriod, createdAt, updatedAt);
+        return new Session(id, sessionStatus, sessionBillType, sessionCoverImage, sessionRegistration, sessionPeriod,
+                           sessionJoins, createdAt, updatedAt);
     }
 }

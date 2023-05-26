@@ -3,29 +3,43 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Session {
     private Long id;
-    private final List<SessionJoin> sessionJoins = new ArrayList<>();
 
-    private final SessionBillType sessionBillType;
+    private SessionStatus sessionStatus;
 
-    private final SessionStatus sessionStatus;
+    private SessionBillType sessionBillType;
 
-    private final SessionCoverImage sessionCoverImage;
+    private SessionCoverImage sessionCoverImage;
 
-    private final int maxUserCount;
+    private SessionRegistration sessionRegistration;
 
-    private final SessionPeriod sessionPeriod;
+    private SessionPeriod sessionPeriod;
 
-    private final LocalDateTime createdAt;
+    private SessionJoins sessionJoins;
 
-    private final LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
 
-    public Session(Long id, SessionBillType sessionBillType, SessionStatus sessionStatus, SessionCoverImage sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private LocalDateTime updatedAt;
+
+    protected Session() {
+    }
+
+    public Session(Long id, SessionStatus sessionStatus, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage,
+                   SessionRecruitStatus sessionRecruitStatus, long maxUserCount, SessionPeriod sessionPeriod,
+                   SessionJoins sessionJoins, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, sessionStatus, sessionBillType, sessionCoverImage, SessionRegistration.of(sessionRecruitStatus, maxUserCount),
+             sessionPeriod, sessionJoins, createdAt, updatedAt);
+    }
+
+    public Session(Long id, SessionStatus sessionStatus, SessionBillType sessionBillType, SessionCoverImage sessionCoverImage,
+                   SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, SessionJoins sessionJoins,
+                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.sessionStatus = sessionStatus;
+        this.sessionJoins = sessionJoins;
         if (sessionBillType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -36,24 +50,25 @@ public class Session {
 
         this.id = id;
         this.sessionBillType = sessionBillType;
-        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
         this.sessionCoverImage = sessionCoverImage;
-        this.maxUserCount = maxUserCount;
+        this.sessionRegistration = sessionRegistration;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public void register(NsUser user) {
-        if (!this.sessionStatus.isOpen()) {
-            throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
+    public void register(NsUser user, SessionJoinStatus sessionJoinStatus) {
+        if (!this.sessionStatus.isRegister()) {
+            throw new IllegalArgumentException("강의가 모집중/진행중이 아닙니다. 현재상태:" + sessionStatus);
         }
 
-        if (maxUserCount <= sessionJoins.size()) {
-            throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
-        }
+        sessionRegistration.validate(sessionJoins.isApproveStatusCount());
+        this.addUser(user, sessionJoinStatus);
+    }
 
-        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
+    public List<SessionJoin> approve(List<NsUser> nsUsers) {
+        sessionRegistration.approveValidate(sessionJoins.isApproveStatusCount() + nsUsers.size());
+        return sessionJoins.approve(nsUsers);
     }
 
     public Long getId() {
@@ -61,23 +76,23 @@ public class Session {
     }
 
     public List<SessionJoin> getSessionJoins() {
-        return sessionJoins;
-    }
-
-    public SessionBillType getSessionType() {
-        return sessionBillType;
-    }
-
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionJoins.value();
     }
 
     public SessionCoverImage getCoverImageUrl() {
         return sessionCoverImage;
     }
 
-    public int getMaxUserCount() {
-        return maxUserCount;
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRegistration.getSessionRecruitStatus();
+    }
+
+    public long getMaxUserCount() {
+        return sessionRegistration.getMaxUserCount();
     }
 
     public SessionPeriod getSessionPeriod() {
@@ -100,9 +115,12 @@ public class Session {
         return updatedAt;
     }
 
-    public void addUser(NsUser nsUser) {
-        LocalDateTime now = LocalDateTime.now();
-        sessionJoins.add(new SessionJoin(this, nsUser, now, now));
+    private void addUser(NsUser nsUser, SessionJoinStatus sessionJoinStatus) {
+        sessionJoins.add(SessionJoin.apply(this, nsUser, sessionJoinStatus));
+    }
+
+    public void addSessionJoins(List<SessionJoin> sessionJoins) {
+        this.sessionJoins.addAll(sessionJoins);
     }
 
     @Override
@@ -120,6 +138,6 @@ public class Session {
 
     @Override
     public String toString() {
-        return "Session{" + "id=" + id + ", sessionBillType=" + sessionBillType + ", sessionStatus=" + sessionStatus + ", sessionCoverImage=" + sessionCoverImage + ", maxUserCount=" + maxUserCount + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "Session{" + "id=" + id + ", sessionJoins=" + sessionJoins + ", sessionBillType=" + sessionBillType + ", sessionCoverImage=" + sessionCoverImage + ", sessionRegistration=" + sessionRegistration + ", sessionPeriod=" + sessionPeriod + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }
