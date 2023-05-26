@@ -1,4 +1,4 @@
-package lms.domain;
+package nextstep.lms.domain;
 
 import nextstep.lms.domain.Course;
 import nextstep.lms.domain.Image;

@@ -50,14 +50,13 @@ create table delete_history (
 );
 
 create table session (
-    id bigint not null
+    id bigint not null auto_increment
     , start_date timestamp
-    , endDate timestamp
-    , image int
+    , end_date timestamp
     , session_state varchar(50)
     , session_type varchar(50)
     , registered_student int
     , student_capacity int
-    , image_id int
+    , image_id bigint
     , primary key (id)
 )

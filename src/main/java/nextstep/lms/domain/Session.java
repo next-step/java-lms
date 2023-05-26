@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Session {
 
+    private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
     private Image imageCover;
@@ -91,5 +92,37 @@ public class Session {
         if (!sessionState.equals(SessionState.READY)) {
             throw new IllegalArgumentException("수정 기간이 지났습니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public Long getImageCover() {
+        return imageCover.getId();
+    }
+
+    public String getSessionState() {
+        return sessionState.toString();
+    }
+
+    public String getSessionType() {
+        return sessionType.toString();
+    }
+
+    public int getStudentCapacity() {
+        return studentCapacity;
+    }
+
+    public int getRegisteredStudent() {
+        return registeredStudent;
     }
 }
