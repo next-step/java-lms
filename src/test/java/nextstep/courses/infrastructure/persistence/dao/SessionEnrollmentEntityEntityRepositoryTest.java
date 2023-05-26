@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
 class SessionEnrollmentEntityRepositoryTest {
@@ -19,13 +19,14 @@ class SessionEnrollmentEntityRepositoryTest {
 
 
   @Autowired
-  private JdbcOperations jdbcOperations;
+  private JdbcTemplate jdbcTemplate;
+
 
   private SessionEnrollmentEntityRepository sessionEnrollmentEntityRepository;
 
   @BeforeEach
   void setUp() {
-    sessionEnrollmentEntityRepository = new SessionEnrollmentEntityRepository(jdbcOperations);
+    sessionEnrollmentEntityRepository = new SessionEnrollmentEntityRepository(jdbcTemplate);
   }
 
   @Test
@@ -34,5 +35,13 @@ class SessionEnrollmentEntityRepositoryTest {
     assertThat(userIdsBySessionId).isNotNull();
     assertThat(userIdsBySessionId).hasSize(2);
     LOGGER.debug("userIdsBySessionId: {}", userIdsBySessionId);
+  }
+
+
+  @Test
+  void save() {
+    Long id = sessionEnrollmentEntityRepository.save(100L, 1L);
+    assertThat(id).isNotNull();
+    LOGGER.debug("id: {}", id);
   }
 }
