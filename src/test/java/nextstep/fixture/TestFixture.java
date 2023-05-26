@@ -86,9 +86,9 @@ public class TestFixture {
         CARSO_ENROL = new Enroll(3L, 3L);
         PINOT_ENROL = new Enroll(4L, 4L);
 
-        RED_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
-        GREEN_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");
-        YELLOW_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240916055-f04c5f5e-b1f8-4322-b146-5168fca95026.png");
-        BLUE_IMAGE = new Image("https://user-images.githubusercontent.com/31065684/240916270-2345694d-514b-447a-8702-c31677e79648.png");
+        RED_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
+        GREEN_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");
+        YELLOW_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240916055-f04c5f5e-b1f8-4322-b146-5168fca95026.png");
+        BLUE_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240916270-2345694d-514b-447a-8702-c31677e79648.png");
     }
 }
