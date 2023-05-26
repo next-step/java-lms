@@ -35,4 +35,24 @@ public class Session {
     public int enrollmentCount() {
         return this.nextStepUsers.enrollmentCount();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public SessionImageUrl getSessionImageUrl() {
+        return sessionImageUrl;
+    }
 }

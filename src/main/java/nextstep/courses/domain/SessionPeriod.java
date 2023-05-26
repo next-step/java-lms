@@ -38,4 +38,12 @@ public class SessionPeriod {
         result = 31 * result + (endAt != null ? endAt.hashCode() : 0);
         return result;
     }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }

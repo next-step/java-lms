@@ -43,4 +43,8 @@ public class SessionImageUrl {
     public int hashCode() {
         return imageUrl != null ? imageUrl.hashCode() : 0;
     }
+
+    public String value() {
+        return this.imageUrl;
+    }
 }
