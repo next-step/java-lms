@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "d-h-k" ]
+    branches: [ "d-h-k", "d-h-k/main" ]
   pull_request:
-    branches: [ "d-h-k" ]
+    branches: [ "d-h-k", "d-h-k/main" ]
   check_run:
       types: [ rerequested, completed, synchronize ]
 
