@@ -22,7 +22,7 @@ public class SessionEnrollmentEntityRepository {
   }
 
 
-  public List<Long> findUserIdsBySessionId(Long sessionId) {
+  public List<Long> findUserKeyIdsBySessionId(Long sessionId) {
     String sql = "select user_id from session_enrollment where session_id = ?";
     return jdbcTemplate.queryForList(sql, Long.class, sessionId);
   }

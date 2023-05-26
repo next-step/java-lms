@@ -61,7 +61,7 @@ public class SessionRepositoryImpl implements SessionRepository {
   }
 
   private List<NsUser> toSessionStudents(Long sessionId) {
-    List<Long> userKeyIds = sessionEnrollmentEntityRepository.findUserIdsBySessionId(sessionId);
+    List<Long> userKeyIds = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(sessionId);
     List<NsUserEntity> users = nsUserEntityRepository.findByUserKeyIds(userKeyIds);
     return users.stream().map(NsUserEntity::toDomain)
         .collect(Collectors.toList());
