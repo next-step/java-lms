@@ -9,16 +9,16 @@ import java.util.Objects;
 
 public class Session {
     private int maxUserCount;
+    private int currentUserCount;
     private Long id;
-    private final List<NsUser> users = new ArrayList<>();
     private SessionBillingType sessionBillingType;
-    private SessionStatusType sessionStatusType;
-    private SessionCoverImage sessionCoverImage;
+    private SessionStatus sessionStatusType;
+    private String sessionCoverImage;
     private SessionPeriod sessionPeriod;
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
 
-    public Session(int maxUserCount, Long id, SessionBillingType sessionBillingType, SessionStatusType sessionStatusType, SessionCoverImage sessionCoverImage, SessionPeriod sessionPeriod) {
+    public Session(int maxUserCount, Long id, SessionBillingType sessionBillingType, SessionStatus sessionStatusType, String sessionCoverImage, SessionPeriod sessionPeriod) {
         if (sessionBillingType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -33,7 +33,7 @@ public class Session {
         this.sessionStatusType = sessionStatusType;
         if ( sessionStatusType == null )
         {
-            this.sessionStatusType = SessionStatusType.OPEN;
+            this.sessionStatusType = SessionStatus.OPEN;
         }
         this.sessionCoverImage = sessionCoverImage;
         this.sessionPeriod = sessionPeriod;
@@ -44,30 +44,30 @@ public class Session {
             throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
         }
 
-        if (maxUserCount <= users.size()) {
+        if (maxUserCount <= currentUserCount) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        users.add(user);
+        currentUserCount += 1;
     }
 
     public Long getId() {
         return id;
     }
 
-    public List<NsUser> getUsers() {
-        return users;
+    public int getCurrentUserCount() {
+        return currentUserCount;
     }
 
     public SessionBillingType getSessionType() {
         return sessionBillingType;
     }
 
-    public SessionStatusType getSessionStatus() {
+    public SessionStatus getSessionStatus() {
         return sessionStatusType;
     }
 
-    public SessionCoverImage getCoverImageUrl() {
+    public String getCoverImageUrl() {
         return sessionCoverImage;
     }
 
@@ -77,10 +77,6 @@ public class Session {
 
     public SessionPeriod getSessionPeriod() {
         return sessionPeriod;
-    }
-
-    public void addUser(NsUser nsUser) {
-        users.add(nsUser);
     }
 
     @Override

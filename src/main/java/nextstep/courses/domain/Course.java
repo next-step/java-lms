@@ -11,7 +11,7 @@ public class Course {
 
     private Long creatorId;
 
-    private List<Session> sessions;
+    private List<Session> sessions = new ArrayList<>();
 
     private LocalDateTime createdAt;
 

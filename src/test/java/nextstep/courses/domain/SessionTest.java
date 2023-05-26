@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
 
-import static nextstep.Fixtures.SessionFixtures.*;
+import static nextstep.fixtures.SessionFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -18,9 +18,9 @@ public class SessionTest {
     @Test
     void period() {
         LocalDateTime startedAt = LocalDateTime.now();
-        LocalDateTime endedAt = startedAt.plusDays(2);
+        LocalDateTime endedAt = startedAt.plusDays(7);
 
-        Session session = testSession1().sessionPeriod(new SessionPeriod(startedAt, endedAt)).build();
+        Session session = testSession1();
 
         assertThat(session.getSessionPeriod()).isEqualTo(new SessionPeriod(startedAt, endedAt));
     }
@@ -28,24 +28,48 @@ public class SessionTest {
     @Test
     @DisplayName("강의 커버 이미지 정보")
     void coverImage() {
-        String coverImageUrl = "http://nextstep.tdd";
-        Session session = testSession1().sessionCoverImage(new SessionCoverImage(coverImageUrl)).build();
+        String coverImageUrl = "https://nextstep.tdd";
+        Session session = testSession1();
 
-        assertThat(session.getCoverImageUrl()).isEqualTo(new SessionCoverImage(coverImageUrl));
+        assertThat(session.getCoverImageUrl()).isEqualTo(coverImageUrl);
     }
 
     @ParameterizedTest(name = "강의결제 유형 {0}")
-    @EnumSource(value = SessionBillingType.class, names = {"FREE", "PAID"})
+    @EnumSource(value = SessionBillingType.class ,names = {"FREE"})
     void sessionBillingType(SessionBillingType sessionBillType) {
-        Session session = testSession1().sessionBillType(sessionBillType).build();
+        Session session = testSession1();
+
+        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
+    }
+
+    @ParameterizedTest(name = "강의결제 유형 {0}")
+    @EnumSource(value = SessionBillingType.class ,names = {"PAID"})
+    void sessionBillingType2(SessionBillingType sessionBillType) {
+        Session session = testSession2();
 
         assertThat(session.getSessionType()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의 상태 {0}")
-    @EnumSource(value = SessionStatusType.class, names = {"READY", "OPEN", "CLOSED"})
-    void sessionStatusType(SessionStatusType sessionStatusType) {
-        Session session = testSession1().sessionStatus(sessionStatusType).build();
+    @EnumSource(value = SessionStatus.class ,names = {"READY"})
+    void sessionStatusType(SessionStatus sessionStatusType) {
+        Session session = testSession2();
+
+        assertThat(session.getSessionStatus()).isEqualTo(sessionStatusType);
+    }
+
+    @ParameterizedTest(name = "강의 상태 {0}")
+    @EnumSource(value = SessionStatus.class ,names = {"OPEN"})
+    void sessionStatusType2(SessionStatus sessionStatusType) {
+        Session session = testSession1();
+
+        assertThat(session.getSessionStatus()).isEqualTo(sessionStatusType);
+    }
+
+    @ParameterizedTest(name = "강의 상태 {0}")
+    @EnumSource(value = SessionStatus.class ,names = {"CLOSED"})
+    void sessionStatusType3(SessionStatus sessionStatusType) {
+        Session session = testSession3();
 
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatusType);
     }
@@ -53,21 +77,17 @@ public class SessionTest {
     @DisplayName("모집중일시 수강신청 테스트")
     @Test
     void openStatus() {
-        Session session = testSession1().sessionStatus(SessionStatusType.OPEN)
-                .maxUserCount(10)
-                .build();
+        Session session = testSession1();
 
         session.register(NsUserTest.JAVAJIGI);
 
-        assertThat(session.getUsers()).hasSize(1).containsExactly(NsUserTest.JAVAJIGI);
+        assertThat(session.getCurrentUserCount()).isEqualTo(1);
     }
 
     @DisplayName("준비중일 때 수강신청 시 오류")
     @Test
     void readyStatus() {
-        Session session = testSession1().sessionStatus(SessionStatusType.READY)
-                .maxUserCount(10)
-                .build();
+        Session session = testSession2();
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
@@ -75,9 +95,7 @@ public class SessionTest {
     @DisplayName("종료일 때 수강신청 시 오류")
     @Test
     void closedStatus() {
-        Session session = testSession1().sessionStatus(SessionStatusType.CLOSED)
-                .maxUserCount(10)
-                .build();
+        Session session = testSession3();
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
@@ -85,12 +103,7 @@ public class SessionTest {
     @DisplayName("강의 최대 수강인원 달성 후 신청 시 오류")
     @Test
     void maximumUser() {
-        Session session = testSession1().sessionStatus(SessionStatusType.OPEN)
-                .maxUserCount(1)
-                .build();
-
-        session.addUser(NsUserTest.JAVAJIGI);
-
+        Session session = testSession4();
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 }

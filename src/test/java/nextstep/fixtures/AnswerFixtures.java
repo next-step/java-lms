@@ -1,4 +1,4 @@
-package nextstep.Fixtures;
+package nextstep.fixtures;
 
 import nextstep.qna.domain.Answer;
 import nextstep.users.domain.NsUser;
