@@ -59,4 +59,21 @@ public class ImageEntity extends BaseTimeEntity {
         ", coverImgUrl=" + coverImgUrl +
         '}';
   }
+
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getOriginalFileName() {
+    return originalFileName;
+  }
+
+  public ImageType getImageType() {
+    return imageType;
+  }
+
+  public Url getCoverImgUrl() {
+    return coverImgUrl;
+  }
 }
