@@ -1,55 +1,40 @@
 package nextstep.courses.domain;
 
+import nextstep.common.domain.BaseControlField;
+
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseControlField {
     private Long id;
 
     private String title;
 
-    private Sessions sessions;
-
-    private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Course() {
-    }
+    private Sessions sessions = new Sessions();
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(creatorId, createdAt, updatedAt);
         this.id = id;
         this.title = title;
-        this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public boolean registerSession(Session session) {
+        return sessions.addSession(session);
     }
 
     @Override
     public String toString() {
+        String controlField  = super.toString();
         return "Course{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+                '}' + controlField;
     }
 }

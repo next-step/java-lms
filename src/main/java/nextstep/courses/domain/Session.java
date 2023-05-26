@@ -1,47 +1,42 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDateTime;
+import nextstep.common.domain.BaseControlField;
+import nextstep.courses.exception.SessionRegistrationException;
+import nextstep.users.domain.NsUser;
 
-public class Session {
+public class Session extends BaseControlField {
 
     private int id;
     private String title;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private String chargeYN;
-    private String coverImageUrl;
+    private SessionPeriod sessionPeriod;
+    private ChargeType chargeType;
+    private ImageUrl coverImageUrl;
     private SessionStatusType statusType;
-    private int numberOfStudents;
-    private int maximumNumberOfStudents;
-    private Long creatorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private SessionStudents sessionStudents;
 
-    Session() {
+    Session(int id, String title, SessionPeriod sessionPeriod, ChargeType chargeType, ImageUrl coverImageUrl, SessionStudents sessionStudents) {
+        this(id, title, sessionPeriod, chargeType, coverImageUrl, SessionStatusType.PREPARING, sessionStudents);
     }
-
-    Session(int id, String title, SessionStatusType statusType, int maximumNumberOfStudents) {
+    Session(int id, String title, SessionPeriod sessionPeriod, ChargeType chargeType, ImageUrl coverImageUrl, SessionStatusType statusType, SessionStudents sessionStudents) {
+        if (sessionPeriod == null) {
+            throw new IllegalArgumentException("강의 기간을 설정해주세요.");
+        }
+        if (chargeType == null) {
+            throw new IllegalArgumentException("과금 유형을 선택해주세요.");
+        }
         this.id = id;
         this.title = title;
+        this.sessionPeriod = sessionPeriod;
+        this.chargeType = chargeType;
+        this.coverImageUrl = coverImageUrl;
         this.statusType = statusType;
-        this.maximumNumberOfStudents = maximumNumberOfStudents;
+        this.sessionStudents = sessionStudents;
     }
 
-    public int register() {
-        checkRecruiting();
-        checkExceedMaximumNumberOfStudents();
-        return ++numberOfStudents;
-    }
-
-    private void checkExceedMaximumNumberOfStudents() {
-        if (numberOfStudents >= maximumNumberOfStudents) {
-            throw new RuntimeException("정원이 초과되어 신청하실 수 없습니다.");
+    public boolean register(NsUser nsUser) {
+        if (!statusType.canRegister()) {
+            throw new SessionRegistrationException("모집중인 강의가 아닙니다.");
         }
-    }
-
-    private void checkRecruiting() {
-        if (statusType != SessionStatusType.RECRUITING) {
-            throw new RuntimeException("모집중인 강의가 아닙니다.");
-        }
+        return sessionStudents.addStudent(nsUser);
     }
 }

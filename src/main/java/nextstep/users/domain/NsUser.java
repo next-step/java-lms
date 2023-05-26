@@ -1,11 +1,12 @@
 package nextstep.users.domain;
 
+import nextstep.common.domain.BaseControlField;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class NsUser {
+public class NsUser extends BaseControlField {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
@@ -18,10 +19,6 @@ public class NsUser {
 
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public NsUser() {
     }
 
@@ -30,13 +27,12 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(null, createdAt, updatedAt);
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -126,13 +122,12 @@ public class NsUser {
 
     @Override
     public String toString() {
+        String controlField  = super.toString();
         return "NsUser{" +
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+                '}' + controlField;
     }
 }
