@@ -36,12 +36,11 @@
   - [ ] 강의 수강 신청 기능
   - [ ] 학생은 강의를 신청할 수 있다
   - [ ] 강의는 최대 수강 인원을 초과 할 수 없다
-  - [ ] 강의 상태가 모집중일때만 수강 신청 가능하다
-- [X] 강의시간 - LectureDate
+- [X] 강의시간 - LecturePeriod
   - startDate - 시작일
   - endDate - 종료일
-  - [ ] 종료일은 시작일보다 나중이여야 한다
-- [ ] 커버 이미지 - LectureImage 
+  - [X] 종료일은 시작일보다 나중이여야 한다
+- [X] 커버 이미지 - LectureImage 
   - coverImage
 - [X] 강의 구분 - PaymentStrategy (전략 패턴 적용)  
   - FreePaymentStrategy - 무료강의
@@ -50,5 +49,6 @@
   - PREPARING - 준비중
   - ENROLLING - 모집중
   - FINISHED - 종료
-- [ ] 수강자 - Student 
-- [ ] 수강자들 일급 컬렉션 - Students `List<Student>`
+  - [X] 강의 상태가 모집중일때만 수강 신청 가능하다
+- [X] 수강자 - Student 
+- [X] 수강자들 일급 컬렉션 - Students `List<Student>`
