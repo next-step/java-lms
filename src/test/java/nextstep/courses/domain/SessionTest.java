@@ -5,6 +5,8 @@ import nextstep.courses.exception.NotReadySessionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -14,7 +16,8 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        session = new Session("TDD, 클린코드", SessionType.PAY);
+        session = new Session(0L, null, null, new SessionCapacity(0, 10),
+                "TDD, 클린코드", SessionType.PAY, SessionStatus.READY, LocalDateTime.now(), null);
     }
 
     @Test
