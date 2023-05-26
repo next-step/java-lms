@@ -27,7 +27,5 @@
 - [x] SessionCoverImage 도메인모델 테스트
 - [x] Session 도메인모델 생성
 - [x] Session 도메인모델 테스트
-- [x] 
-- [x] 
-- [x] 
-- [x] 
+- [x] Course 도메인모델 리팩토링
+- [x] Course 도메인모델 테스트
