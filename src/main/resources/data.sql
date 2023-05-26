@@ -63,7 +63,7 @@ VALUES (100, 'original_file_name1', 'JPEG', 'cover_img_url1', CURRENT_TIMESTAMP,
 
 -- Insert into session
 INSERT INTO session (id, title, description, cover_image_id, session_type, session_status, max_enrollment_size, start_date_time, course_id, end_date_time, created_at, updated_at)
-VALUES (100, 'Session 1 Belong To Course 1', 'Session 1 Description', 100, 'FREE', 'PREPARING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+VALUES (100, 'Session 1 Belong To Course 1', 'Session 1 Description', 100, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (200, 'Session 2 Belong To Course 1', 'Session 2 Description', 200, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
