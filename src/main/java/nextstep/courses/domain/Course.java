@@ -37,6 +37,10 @@ public class Course extends BaseEntity {
         return createdAt;
     }
 
+    public Session findSession(Long sessionId) {
+        return sessions.findSession(sessionId);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
