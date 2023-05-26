@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
@@ -29,9 +26,9 @@ public class QnAService {
         question.ensureOwnedByUser(loginUser);
         question.ensureAllAnswersOwnedByUser(loginUser);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        DeleteHistories deleteHistories = new DeleteHistories();
         question.deleted();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
+        deleteHistories.addHistory(ContentType.QUESTION, questionId, question.getWriter());
         question.deleteHistoriesFromAnswers(deleteHistories);
         deleteHistoryService.saveAll(deleteHistories);
     }

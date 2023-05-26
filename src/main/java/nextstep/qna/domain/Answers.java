@@ -32,11 +32,10 @@ public class Answers {
         }
     }
 
-    public void deleteHistories(List<DeleteHistory> deleteHistories) {
+    public void deleteHistories(DeleteHistories deleteHistories) {
         for (Answer answer : answers) {
             answer.delete();
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            deleteHistories.addHistory(ContentType.ANSWER, answer.getId(), answer.getWriter());
         }
     }
-
 }
