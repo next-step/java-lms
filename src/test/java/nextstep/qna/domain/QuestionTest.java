@@ -5,7 +5,6 @@ import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,6 @@ public class QuestionTest {
         NsUser loginUser = TestFixture.BADAJIGI;
         Question question = TestFixture.BADAJIGI_QUESTION;
         Answer answer = TestFixture.BADAJIGI_ANSWER;
-
         //when
         question.delete(loginUser);
         //then
@@ -48,10 +46,8 @@ public class QuestionTest {
         Question question = TestFixture.JAVAJIGI_QUESTION;
         Answer answer = TestFixture.JAVAJIGI_ANSWER;
         question.addAnswer(answer);
-
         //when
         question.delete(user);
-
         //then
         assertAll("삭제성공을 검증한다",
                 () -> assertThat(question.isDeleted())
@@ -63,7 +59,7 @@ public class QuestionTest {
         );
     }
 
-    @DisplayName("타인이 작성한 Answer 이 존재하는 경우 QuestionDeleteAnswerExistedException 를 던진다")
+    @DisplayName("타인이 작성한 Answer 이 존재하는 경우 예외를 던진다")
     @Test
     public void validateAnswers() {
         //given
@@ -75,16 +71,16 @@ public class QuestionTest {
         question.addAnswer(answer2);
         Answer answer3 = TestFixture.BADAJIGI_ANSWER;
         question.addAnswer(answer3);
-
         //when
         //then
         assertThatThrownBy(() -> {
             question.delete(user);
         }).isInstanceOf(QuestionDeleteAnswerExistedException.class)
+                .as("QuestionDeleteAnswerExistedException 예외를 던져야한다")
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    @DisplayName("작성자가 아닌경우 QuestionDeleteUnauthorizedException 를 던진다")
+    @DisplayName("작성자가 아닌경우 예외를 던진다")
     @Test
     public void validateQuestionOwner() {
         //given
@@ -95,20 +91,19 @@ public class QuestionTest {
         assertThatThrownBy(() -> {
             question.delete(user);
         }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
+                .as("QuestionDeleteUnauthorizedException 예외를 던져야한다")
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");
     }
 
-    @DisplayName("자신의 정보에 맞게 DeleteHistory 를 생성한다")
+    @DisplayName("Question 정보를 담은 DeleteHistory 가 생성되야한다")
     @Test
     public void toDeleteHistory() {
         //given
         Question question = TestFixture.BADAJIGI_QUESTION;
         Answer answer = TestFixture.SANJIGI_ANSWER;
-
         //when
         String questionDeleteHistory = question.toDeleteHistory().toString();
         String answerDeleteHistory = answer.toDeleteHistory().toString();
-
         //then
         assertAll("DeleteHistory 생성에 대하여 검증한다",
                 () -> assertThat(questionDeleteHistory)
@@ -118,25 +113,22 @@ public class QuestionTest {
                         .as("answer PK 가 존재하는지 검증한다")
                         .contains(answer.getAnswerId().toString())
         );
-
     }
 
-    @DisplayName("Question 메 Answer 추가시")
-    //@Test
-    @Disabled
+    @DisplayName("Question 메 Answer 연관관계 추가시 반영되어야한다")
+    @Test
     public void addAnswer() {
         //given
         Question question = TestFixture.JAVAJIGI_QUESTION;
         Answer answer = TestFixture.JAVAJIGI_ANSWER;
-
         //when
         question.addAnswer(answer);
-
         //then
-        assertThat(question.toString())
+        assertThat(question.isRelated(answer))
                 .as("Question 은 Answer 에 연결되어있어야 한다")
-                .contains("");
-        assertThat(answer.toString()).as("Answer 의 연관관계도 자동으로 성립된다")
-                .contains("");
+                .isTrue();
+        assertThat(answer.isRelated(question))
+                .as("Answer 의 연관관계도 자동으로 성립된다")
+                .isTrue();
     }
 }

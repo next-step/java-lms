@@ -109,4 +109,8 @@ public class Question {
     public DeleteHistory toDeleteHistory() {
         return DeleteHistory.of(ContentType.QUESTION, this.getId(), this.writer, LocalDateTime.now());
     }
+
+    public boolean isRelated(Answer answer) {
+        return this.answers.contains(answer);
+    }
 }

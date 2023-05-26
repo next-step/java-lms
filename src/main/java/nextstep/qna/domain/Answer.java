@@ -85,4 +85,8 @@ public class Answer {
     public QuestionId getQuestionId() {
         return this.questionId;
     }
+
+    public boolean isRelated(Question question) {
+        return this.questionId == question.getQuestionId();
+    }
 }

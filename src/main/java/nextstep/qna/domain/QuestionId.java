@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import java.util.Objects;
+
 public class QuestionId {
     private final Long questionId;
 
@@ -16,5 +18,18 @@ public class QuestionId {
         return "QuestionId{" +
                 "questionId=" + questionId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionId other = (QuestionId) o;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionId);
     }
 }
