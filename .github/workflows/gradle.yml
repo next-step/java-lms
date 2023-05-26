@@ -5,6 +5,10 @@ on:
     branches: [ "d-h-k" ]
   pull_request:
     branches: [ "d-h-k" ]
+  check_run:
+      types:
+        - rerequested
+        - completed
 
 permissions:
   contents: read
