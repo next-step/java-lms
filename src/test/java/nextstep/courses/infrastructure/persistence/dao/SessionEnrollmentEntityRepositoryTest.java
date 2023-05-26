@@ -23,7 +23,6 @@ class SessionEnrollmentEntityRepositoryTest {
   }
 
 
-
   @Test
   void findUserIdsBySessionId() {
     List<Long> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
