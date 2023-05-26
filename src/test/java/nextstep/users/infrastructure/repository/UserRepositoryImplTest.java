@@ -1,17 +1,14 @@
 package nextstep.users.infrastructure.repository;
 
+import static org.assertj.core.api.Assertions.*;
+
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.dao.NsUserEntityRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class UserRepositoryImplTest {
@@ -28,5 +25,12 @@ public class UserRepositoryImplTest {
         assertThat(nsUser.getId()).isEqualTo(1L);
         assertThat(nsUser.getUserId()).isEqualTo("javajigi");
         assertThat(nsUser.getName()).isEqualTo("자바지기");
+    }
+
+    @Test
+    void 임시_데이터에_존재하지_않는_아이디로_조회_실패() {
+        assertThatThrownBy(() -> userRepository.findByUserId("test"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("존재하지 않는 사용자입니다.");
     }
 }

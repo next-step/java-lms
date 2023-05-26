@@ -6,8 +6,6 @@ import nextstep.users.infrastructure.dao.NsUserEntityRepository;
 import nextstep.users.infrastructure.entity.NsUserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 /**
  * root Domain의 Repository 느낌
  */
@@ -21,8 +19,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public NsUser findByUserId(String userId) {
-        Optional<NsUserEntity> nsUserEntity = nsUserEntityRepository.findByUserId(userId);
-        return nsUserEntity.map(NsUserEntity::toDomain).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        NsUserEntity userEntity = nsUserEntityRepository.findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        return userEntity.toDomain();
     }
 
 }
