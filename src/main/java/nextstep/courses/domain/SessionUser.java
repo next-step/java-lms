@@ -2,31 +2,55 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class SessionUser {
-    private static final String ALERT_TEXT = "최대 수강 인원을 초과할 수 없습니다.";
-    private final int maxEnrollment;
-    private final List<NsUser> nsUsers;
+    private final Long id;
+    private final Session session;
+    private final NsUser nsUser;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
-    public SessionUser(int maxEnrollment) {
-        this.maxEnrollment = maxEnrollment;
-        this.nsUsers = new ArrayList<>();
+    public SessionUser(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt){
+        this(null, session, nsUser, createdAt, updatedAt);
     }
 
-    public int getUserCount() {
-        return nsUsers.size();
+    public SessionUser(Long id, Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.session = session;
+        this.nsUser = nsUser;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public void addEnroll(NsUser nsUser) {
-        validateEnrollment();
-        nsUsers.add(nsUser);
+    public long getId() {
+        return id;
     }
 
-    public void validateEnrollment() {
-        if (nsUsers.size() >= maxEnrollment) {
-            throw new IllegalArgumentException(ALERT_TEXT);
-        }
+    public Session getSession() {
+        return session;
+    }
+
+    public NsUser getNsUser() {
+        return nsUser;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionUser{" +
+                "id=" + id +
+                ", session=" + session +
+                ", nsUser=" + nsUser +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

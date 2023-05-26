@@ -19,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -63,13 +63,11 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
         validateOwner(nsUser);
-
-        Answers answersCollection = new Answers(answers);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, createdDate));
 
-        return Stream.of(deleteHistories, answersCollection.deleteAll(writer))
+        return Stream.of(deleteHistories, answers.deleteAll(writer))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

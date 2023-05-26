@@ -3,14 +3,15 @@ package nextstep.courses.domain;
 import java.util.Objects;
 
 public class SessionCoverImage {
-    private final String path;
+    private String path;
 
     public SessionCoverImage(String path) {
         this.path = path;
     }
 
     public SessionCoverImage changeImage(String newPath) {
-        return new SessionCoverImage(newPath);
+        this.path = newPath;
+        return this;
     }
 
     @Override
@@ -24,5 +25,9 @@ public class SessionCoverImage {
     @Override
     public int hashCode() {
         return Objects.hash(path);
+    }
+
+    public String getPath() {
+        return path;
     }
 }

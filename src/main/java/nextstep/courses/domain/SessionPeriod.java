@@ -19,4 +19,11 @@ public class SessionPeriod {
         }
     }
 
+    public LocalDateTime getFromDate() {
+        return fromDate;
+    }
+
+    public LocalDateTime getToDate() {
+        return toDate;
+    }
 }
