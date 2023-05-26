@@ -48,12 +48,12 @@ public class SessionRepositoryTest {
   }
 
   @Test
-  public void saveAllAndFindAllSessionUser() {
+  public void saveSessionAndFindAllSessionUser() {
     LocalDateTime currentTime = LocalDateTime.now();
     Session savedSession = sessionRepository.save(new Session(SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
 
     savedSession.processEnrollment(NextStepUserTest.JAVAJIGI);
-    sessionRepository.saveAllSessionUser(savedSession);
+    sessionRepository.saveSessionUser(savedSession, NextStepUserTest.JAVAJIGI);
 
     List<SessionUser> findAllSessionUser = sessionRepository.findAllSessionUserBySessionId(savedSession.getId());
     assertThat(findAllSessionUser).hasSize(1);

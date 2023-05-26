@@ -4,7 +4,6 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NextStepUser;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,10 +16,13 @@ public class SessionService {
     this.sessionRepository = sessionRepository;
   }
 
-  @Transactional
-  public void enrollUsers(Session session, List<NextStepUser> nextStepUsers) {
-    nextStepUsers.forEach(session::processEnrollment);
+  public void enrollUsers(Long sessionId, List<NextStepUser> nextStepUsers) {
+    Session session = sessionRepository.findById(sessionId);
 
-    sessionRepository.saveAllSessionUser(session);
+    nextStepUsers.forEach(nextStepUser -> {
+      session.processEnrollment(nextStepUser);
+
+      sessionRepository.saveSessionUser(session, nextStepUser);
+    });
   }
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NextStepUser;
+
 import java.util.List;
 
 public interface SessionRepository {
@@ -10,7 +12,7 @@ public interface SessionRepository {
 
   List<Session> findByCourseId(Long courseId);
 
-  void saveAllSessionUser(Session session);
+  void saveSessionUser(Session session, NextStepUser nextStepUser);
 
   List<SessionUser> findAllSessionUserBySessionId(Long sessionId);
 }
