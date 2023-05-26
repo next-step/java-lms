@@ -64,7 +64,9 @@ VALUES (100, 'original_file_name1', 'JPEG', 'cover_img_url1', CURRENT_TIMESTAMP,
 -- Insert into session
 INSERT INTO session (id, title, description, cover_image_id, session_type, session_status, max_enrollment_size, start_date_time, course_id, end_date_time, created_at, updated_at)
 VALUES (100, 'Session 1 Belong To Course 1', 'Session 1 Description', 100, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (200, 'Session 2 Belong To Course 1', 'Session 2 Description', 200, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+       (200, 'Session 2 Belong To Course 1', 'Session 2 Description', 200, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (300, 'PREPARING Session 3 Belong To Course 1', 'PREPARING Session 3 Description', 100, 'FREE', 'PREPARING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (400, 'END Session 4 Belong To Course 1', 'END Session 4 Description', 200, 'FREE', 'END', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 
@@ -84,5 +86,4 @@ VALUES (100, 'Session 1 Belong To Course 1', 'Session 1 Description', 100, 'FREE
 INSERT INTO session_enrollment (id, session_id, user_id, created_at, updated_at)
 VALUES (100, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        (200, 100, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (300, 200, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-       (400, 200, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+       (300, 200, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
