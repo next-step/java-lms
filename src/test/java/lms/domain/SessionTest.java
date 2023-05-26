@@ -1,5 +1,9 @@
 package lms.domain;
 
+import nextstep.lms.domain.Image;
+import nextstep.lms.domain.Session;
+import nextstep.lms.domain.SessionState;
+import nextstep.lms.domain.SessionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

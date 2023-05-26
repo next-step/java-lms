@@ -1,16 +1,13 @@
-package lms.domain;
+package nextstep.lms.domain;
 
 import java.time.LocalDate;
-
-import static lms.domain.SessionState.*;
-import static lms.domain.SessionType.*;
 
 public class Session {
 
     private LocalDate startDate;
     private LocalDate endDate;
     private Image imageCover;
-    private SessionState sessionState = READY;
+    private SessionState sessionState = SessionState.READY;
     private SessionType sessionType;
     private int studentCapacity;
     private int registeredStudent = 0;
@@ -34,7 +31,7 @@ public class Session {
     }
 
     public Session(LocalDate startDate, LocalDate endDate) {
-        this(startDate, endDate, null, FREE, 0);
+        this(startDate, endDate, null, SessionType.FREE, 0);
     }
 
     public static Session createSession(LocalDate startDate, LocalDate endDate, Image imageCover,
@@ -48,13 +45,13 @@ public class Session {
     }
 
     public SessionState recruitStudents() {
-        sessionState = RECRUITING;
+        sessionState = SessionState.RECRUITING;
         return sessionState;
     }
 
     public SessionState finishSessionState(LocalDate now) {
         if (now.isAfter(endDate)) {
-            sessionState = FINISH;
+            sessionState = SessionState.FINISH;
         }
         return sessionState;
     }
@@ -69,7 +66,7 @@ public class Session {
     }
 
     private void validateSessionState() {
-        if (!sessionState.equals(RECRUITING)) {
+        if (!sessionState.equals(SessionState.RECRUITING)) {
             throw new IllegalArgumentException("모집 중이 아닙니다.");
         }
     }
@@ -91,7 +88,7 @@ public class Session {
     }
 
     private void validateReadyState() {
-        if (!sessionState.equals(READY)) {
+        if (!sessionState.equals(SessionState.READY)) {
             throw new IllegalArgumentException("수정 기간이 지났습니다.");
         }
     }
