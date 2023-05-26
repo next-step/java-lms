@@ -3,8 +3,6 @@ package nextstep.lms.domain;
 import nextstep.lms.UnAuthorizedException;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -12,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class CourseTest {
 
     protected static final Course COURSE_A = Course.create("과정A", LmsUserTest.ADMIN_1);
+    protected static final Course COURSE_B = Course.create("과정B", LmsUserTest.ADMIN_2);
 
 
     @Test
@@ -29,12 +28,7 @@ class CourseTest {
 
     @Test
     void 과정에_강의_추가() {
-        COURSE_A.addSession(SessionTest.JAVASESSION);
-        assertThat(COURSE_A.getSessions()).contains(SessionTest.JAVASESSION);
-    }
-
-    @Test
-    void 과정에_강의추가시_다른생성자() {
-
+        COURSE_A.addSession(SessionTest.JAVA_SESSION_1);
+        assertThat(COURSE_A.getSessions()).contains(SessionTest.JAVA_SESSION_1);
     }
 }

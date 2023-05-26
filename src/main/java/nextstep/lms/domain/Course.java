@@ -45,6 +45,10 @@ public class Course {
         return new Course(idGenerator.getAndIncrement(), title, creator, new ArrayList<>(), LocalDateTime.now(), null);
     }
 
+    public boolean isSameCreator(LmsUser sessionCreator) {
+        return creator == sessionCreator;
+    }
+
     public void addSession(Session newSession) {
         sessions.add(newSession);
     }
@@ -55,9 +59,5 @@ public class Course {
 
     public List<Session> getSessions() {
         return sessions;
-    }
-
-    public boolean isSameCreator(LmsUser sessionCreator) {
-        return creator == sessionCreator;
     }
 }

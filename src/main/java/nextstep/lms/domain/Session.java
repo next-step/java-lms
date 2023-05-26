@@ -87,6 +87,27 @@ public class Session {
         updatedAt = LocalDateTime.now();
     }
 
+    public void addApplicant(LmsUser user) {
+        SessionStatus.throwExceptionIfNotOpen(status);
+        checkAlreadyApplicant(user);
+
+        applicants.add(user);
+
+        if(applicants.size() == maxApplicantCount){
+            status = SessionStatus.FULL;
+        }
+    }
+
+    private void checkAlreadyApplicant(LmsUser user) {
+        if(applicants.contains(user)){
+            throw new IllegalStateException("이미 신청한 회원입니다.");
+        }
+    }
+
+    public boolean hasUser(LmsUser user) {
+        return applicants.contains(user);
+    }
+
     public Course getCourse() {
         return course;
     }

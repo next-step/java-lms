@@ -44,6 +44,10 @@ public class LmsUser {
         return new LmsUser(userId, password, name, LmsUserRole.NORMAL);
     }
 
+    public boolean isAdmin() {
+        return role == LmsUserRole.ADMIN;
+    }
+
     public Long getId() {
         return id;
     }
@@ -58,9 +62,5 @@ public class LmsUser {
 
     public LmsUserRole getRole() {
         return role;
-    }
-
-    public boolean isAdmin() {
-        return role == LmsUserRole.ADMIN;
     }
 }
