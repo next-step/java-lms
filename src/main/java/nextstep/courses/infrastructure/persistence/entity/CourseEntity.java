@@ -35,13 +35,17 @@ public class CourseEntity extends BaseTimeEntity {
   /**
    * 주 생성자
    */
-  public CourseEntity(long id, String title, Long creatorId, String generation,
+  public CourseEntity(Long id, String title, Long creatorId, String generation,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
     this.creatorId = creatorId;
     this.generation = generation;
+  }
+
+  public CourseEntity(String title, Long creatorId, String generation) {
+    this(null, title, creatorId, generation, LocalDateTime.now(), LocalDateTime.now());
   }
 
   public Long getId() {
@@ -66,5 +70,15 @@ public class CourseEntity extends BaseTimeEntity {
 
   public Course toDomain() {
     return new Course(id, title, creatorId, generation, createdAt, updatedAt);
+  }
+
+  @Override
+  public String toString() {
+    return "CourseEntity{" +
+        "id=" + id +
+        ", title='" + title + '\'' +
+        ", creatorId=" + creatorId +
+        ", generation='" + generation + '\'' +
+        '}';
   }
 }
