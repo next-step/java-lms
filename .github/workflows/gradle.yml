@@ -6,10 +6,7 @@ on:
   pull_request:
     branches: [ "d-h-k" ]
   check_run:
-      types:
-        - rerequested
-        - completed
-        - synchronize
+      types: [ rerequested, completed, synchronize ]
 
 permissions:
   contents: read
