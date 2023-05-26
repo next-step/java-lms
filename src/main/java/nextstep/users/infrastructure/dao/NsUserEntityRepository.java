@@ -26,9 +26,9 @@ public class NsUserEntityRepository {
     this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
   }
 
-  public List<NsUserEntity> findByUserIds(List<String> userIds) {
-    String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id in (:userIds)";
-    Map<String, List<String>> paramMap = Collections.singletonMap("userIds", userIds);
+  public List<NsUserEntity> findByUserIds(List<Long> userIds) {
+    String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id in (:userIds)";
+    Map<String, List<Long>> paramMap = Collections.singletonMap("userIds", userIds);
     return namedParameterJdbcTemplate.query(sql, paramMap, rowMapperWithoutOptional());
   }
 

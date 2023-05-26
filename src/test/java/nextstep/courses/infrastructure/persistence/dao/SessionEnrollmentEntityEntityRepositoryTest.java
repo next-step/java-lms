@@ -14,7 +14,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 @JdbcTest
 class SessionEnrollmentEntityRepositoryTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SessionEnrollmentEntityRepositoryTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(
+      SessionEnrollmentEntityRepositoryTest.class);
 
 
   @Autowired
@@ -29,7 +30,7 @@ class SessionEnrollmentEntityRepositoryTest {
 
   @Test
   void findUserIdsBySessionId() {
-    List<String> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
+    List<Long> userIdsBySessionId = sessionEnrollmentEntityRepository.findUserIdsBySessionId(100L);
     assertThat(userIdsBySessionId).isNotNull();
     assertThat(userIdsBySessionId).hasSize(2);
     LOGGER.debug("userIdsBySessionId: {}", userIdsBySessionId);
