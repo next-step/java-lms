@@ -1,6 +1,8 @@
 package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserCode;
+import nextstep.utils.DomainId;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -49,7 +51,7 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public boolean isOwner(UserCode writer) {
         return this.writer.equals(writer);
     }
 

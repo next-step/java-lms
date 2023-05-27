@@ -1,9 +1,11 @@
 package nextstep.users.domain;
 
 
+import nextstep.utils.DomainId;
+
 import java.util.Objects;
 
-public class NsUserId {
+public class NsUserId implements DomainId {
     private Long nsUserId = 0L;
 
 
@@ -14,7 +16,8 @@ public class NsUserId {
         this.nsUserId = nsUserId;
     }
 
-    public Long getNsUserId() {
+    @Override
+    public Long value() {
         return nsUserId;
     }
 

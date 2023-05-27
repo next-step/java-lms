@@ -93,9 +93,9 @@ public class Question {
         validateAnswers(userCode);
     }
 
-    private void validateAnswers(NsUser loginUser) {
+    private void validateAnswers(UserCode userCode) {
         answers.stream()
-                .filter(answer -> !answer.isOwner(loginUser))
+                .filter(answer -> !answer.isOwner(userCode))
                 .findAny().ifPresent(answer -> {
                     throw new QuestionDeleteAnswerExistedException();
                 });
