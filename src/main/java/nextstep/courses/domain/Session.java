@@ -124,15 +124,19 @@ public class Session {
     }
 
     public Session changeImage(Image imageCover, NsUser requestUser) {
-        validateOwner(requestUser);
+        validateOwner(requestUser, "이미지 변경");
         this.imageCover = imageCover;
         return this;
     }
 
     public Session changeSessionType(SessionType sessionType, NsUser requestUser) {
-        validateOwner(requestUser);
-        if (sessionState.isAvailableManualChangeSession()) {
+        validateOwner(requestUser, "강의 타입 변경");
+        if (!sessionState.isAvailableManualChangeSession()) {
             throw new IllegalStateException("강의 타입 변경은 강의 준비중일때만 가능해요 :(");
+        }
+
+        if (!recruitmentState.isAvailableManualChangeSession()) {
+            throw new IllegalStateException("수강생 모집중에는 강의 타입을 변경할 수 없어요 :(");
         }
 
         this.sessionType = sessionType;
@@ -154,8 +158,8 @@ public class Session {
         return this;
     }
 
-    public Session changeRecruitmentState(NsUser requestUser, SessionState recruitmentState) {
-        validateOwner(requestUser);
+    public Session changeRecruitmentState(SessionState recruitmentState, NsUser requestUser) {
+        validateOwner(requestUser, "모집 상태 변경");
         validateRecruitmentState(recruitmentState);
 
         this.recruitmentState = recruitmentState;
@@ -171,7 +175,7 @@ public class Session {
 
 
         if (!recruitmentState.isAllowRecruitmentState()) {
-            throw new IllegalArgumentException("모집 상태는 모집중/모집 종료만 가능해요 :(");
+            throw new IllegalArgumentException("모집 상태는 모집중/모집 종료만 가능해요 :( 제공된 모집 상태 [" + recruitmentState + "]");
         }
     }
 
@@ -200,14 +204,14 @@ public class Session {
         return Math.addExact(numberOfStudentsRegistered, INCREMENTAL_VALUE);
     }
 
-    private void validateOwner(NsUser requestUser) {
+    private void validateOwner(NsUser requestUser, String comment) {
 
         if (Objects.isNull(requestUser)) {
-            throw new IllegalArgumentException("요청가 입력되질 않았어요 :( ");
+            throw new IllegalArgumentException("요청자가 입력되질 않았어요 :(");
         }
 
         if (lecturer != requestUser) {
-            throw new IllegalArgumentException("강의를 등록하신분이 아니에요 :(");
+            throw new IllegalArgumentException("강의자만 " + comment + " 가능해요 :( 강의자 [" + lecturer.getUserId() + "]");
         }
     }
 
@@ -241,7 +245,7 @@ public class Session {
         }
 
         if (!sessionState.isAllowSessionState()) {
-            throw new IllegalArgumentException("강의 상태는 모집중/모집 종료를 입력하실수 없어요 :(");
+            throw new IllegalArgumentException("강의 상태는 모집 중/모집 종료를 입력하실수 없어요 :( 제공 된 강의 상태 [" + sessionState + "]");
         }
     }
 

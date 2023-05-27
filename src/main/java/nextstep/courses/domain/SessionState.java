@@ -4,9 +4,9 @@ public enum SessionState {
 
     PREPARING("준비중", false, true, true, false),
     RECRUITING("모집중", true, false, false, true),
-    END_OF_RECRUITMENT("모집종료", false, false, false, true),
+    END_OF_RECRUITMENT("모집종료", false, true, false, true),
     PROGRESSING("진행중", false, false, true, false),
-    FINISH("종료", false, false, false, false);
+    FINISH("종료", false, false, true, false);
 
     private final String desc;
     private final boolean availableRecruitment;

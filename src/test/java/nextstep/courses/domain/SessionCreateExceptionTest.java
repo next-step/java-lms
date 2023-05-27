@@ -91,7 +91,7 @@ class SessionCreateExceptionTest {
         assertEquals("강의 상태가 입력되질 않았어요 :(", exception.getMessage());
     }
 
-    @ParameterizedTest(name = "{index}. 제공된 강의 상태 : [{0}]")
+    @ParameterizedTest(name = "강의 상태에 모집중/모집 완료가 입력될 경우 예외를 던진다 - {index}. 제공된 강의 상태 : [{0}]")
     @DisplayName("강의 상태에 모집중/모집 완료가 입력될 경우 예외를 던진다")
     @EnumSource(value = SessionState.class, names = {"RECRUITING", "END_OF_RECRUITMENT"})
     void 강의_상태가_모집중_모집완료가_입력_인경우(SessionState sessionState) {
@@ -106,7 +106,7 @@ class SessionCreateExceptionTest {
                 SessionState.END_OF_RECRUITMENT,
                 SessionType.FREE
         ));
-        assertEquals("강의 상태는 모집중/모집 종료를 입력하실수 없어요 :(", exception.getMessage());
+        assertEquals("강의 상태는 모집 중/모집 종료를 입력하실수 없어요 :( 제공 된 강의 상태 [" + sessionState + "]", exception.getMessage());
     }
 
     @Test
@@ -126,7 +126,7 @@ class SessionCreateExceptionTest {
         assertEquals("모집 상태에 값이 입력 되지 않았어요 :(", exception.getMessage());
     }
 
-    @ParameterizedTest(name = "{index}. 제공된 모집 상태 : [{0}]")
+    @ParameterizedTest(name = "모집 타입이 상태에 모집중/모집 완료가 아니라면 예외를 던진다 - {index}. 제공된 모집 상태 : [{0}]")
     @DisplayName("모집 타입이 상태에 모집중/모집 완료가 아니라면 예외를 던진다")
     @EnumSource(value = SessionState.class, names = {"PREPARING", "PROGRESSING", "FINISH"})
     void 모집_상태가_모집중_모집완료가_입력이_안될경우(SessionState recruitmentState) {
@@ -141,11 +141,11 @@ class SessionCreateExceptionTest {
                 recruitmentState,
                 SessionType.FREE
         ));
-        assertEquals("모집 상태는 모집중/모집 종료만 가능해요 :(", exception.getMessage());
+        assertEquals("모집 상태는 모집중/모집 종료만 가능해요 :( 제공된 모집 상태 [" + recruitmentState + "]", exception.getMessage());
     }
 
 
-    @ParameterizedTest(name = "{index}. 제공된 수강 인원 : [{0}] , 정원 : [0]")
+    @ParameterizedTest(name = "수강 등록인원이 정원을 초과한다면 예외를 던진다 - {index}. 제공된 수강 인원 : [{0}] , 정원 : [0]")
     @DisplayName("수강 등록인원이 정원을 초과한다면 예외를 던진다")
     @ValueSource(ints = {10, 20, 30, 40})
     void 수강_등록인원이_정원을_초과할_경우(int numberOfStudentsRegistered) {
@@ -166,7 +166,7 @@ class SessionCreateExceptionTest {
         assertEquals("등록인원이 정원을 초과 할 수 없어요 :( [정원 : 1명 ]", exception.getMessage());
     }
 
-    @ParameterizedTest(name = "{index}. {3}")
+    @ParameterizedTest(name = "강의 시작 날짜 케이스별 테스트 - {index}. {3}")
     @DisplayName("강의 시작 날짜 케이스별 테스트")
     @MethodSource("validateDateArgument")
     void 강의_시작_날짜_케이스별_테스트(LocalDate startDate, LocalDate endDate, String expectedExceptionMessage, String testDisplayName) {
