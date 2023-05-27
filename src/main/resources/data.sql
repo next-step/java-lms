@@ -1,8 +1,8 @@
 
 -- NsUser 도메인
-INSERT INTO ns_user (user_id, password, name, email, created_at)
-values ('javajigi-sql', 'test', '자바지기 SQL', 'javajigi@slipp.net', CURRENT_TIMESTAMP()),
-       ('sanjigi-sql', 'test', '산지기 SQL', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
+INSERT INTO ns_user (id, user_id, password, name, email, created_at)
+values (1,'javajigi-sql', 'test', '자바지기 SQL', 'javajigi@slipp.net', CURRENT_TIMESTAMP()),
+       (2,'sanjigi-sql', 'test', '산지기 SQL', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
 
 -- Question 도메인
 INSERT INTO question ( writer_id, title, contents, created_at, deleted)
