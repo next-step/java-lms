@@ -1,8 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -41,5 +44,18 @@ class SessionAttendeesTest {
         assertThatThrownBy(() -> sessionAttendees.add(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강 가능 인원이 다 찼습니다: " + maxNumberOfAttendees);
+    }
+
+    @Test
+    @DisplayName("SessionAttendees 객체 생성 시 수강자 인원 수가 최대 수강자 수를 초과할 경우, IllegalArgumentException 예외 발생")
+    void maximum_number_of_attendees_is_exceeded_when_create_SessionAttendees_object_then_throw_IllegalArgumentException() {
+        // given
+        int maxNumberOfAttendees = 1;
+        Set<NsUser> attendees = Set.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+
+        // when, then
+        assertThatThrownBy(() -> new SessionAttendees(maxNumberOfAttendees, attendees))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강자 수가 최대 수강자 수(" + maxNumberOfAttendees + ")를 초과했습니다: " + attendees.size());
     }
 }
