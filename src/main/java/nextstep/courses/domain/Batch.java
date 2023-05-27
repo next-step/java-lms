@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
+import nextstep.courses.DuplicatedException;
 
 public class Batch {
 
@@ -13,7 +13,7 @@ public class Batch {
 
   private Course course;
 
-  private List<Session> sessions = new ArrayList<>();
+  private Set<Session> sessions = new HashSet<>();
 
   private Long creatorId;
 
@@ -38,11 +38,24 @@ public class Batch {
     this.updatedAt = updatedAt;
   }
 
-  public void addSession(Session session){
+  public void addSession(Session session) {
+    validateSession(session);
     sessions.add(session);
   }
 
-  public boolean checkBatchNo(int batchNo){
+  private void validateSession(Session session) {
+    if (hasSession(session)) {
+      throw new DuplicatedException("중복되는 강의입니다.");
+    }
+  }
+
+  public boolean hasSession(Session session) {
+    return sessions.contains(session);
+  }
+
+  public boolean checkBatchNo(int batchNo) {
     return this.batchNo == batchNo;
   }
+
+
 }

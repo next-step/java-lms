@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import nextstep.qna.NotFoundException;
 
 public class Session {
@@ -21,18 +22,16 @@ public class Session {
 
   private int maxRecruitment;
 
-  private Course course;
-
   public Session() {
   }
 
   public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
-      SessionType sessionType, int maxRecruitment, Course course) {
-    this(null, title, startDate, endDate, img, sessionType, maxRecruitment, course);
+      SessionType sessionType, int maxRecruitment) {
+    this(null, title, startDate, endDate, img, sessionType, maxRecruitment);
   }
 
   public Session(Long id, String title, LocalDateTime startDate, LocalDateTime endDate,
-      String img, SessionType sessionType, int maxRecruitment, Course course) {
+      String img, SessionType sessionType, int maxRecruitment) {
     this.id = id;
     this.title = title;
     validateDate(startDate, endDate);
@@ -43,8 +42,6 @@ public class Session {
     this.sessionType = sessionType;
     validateMaxRecruitment(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
-    validateCourse(course);
-    this.course = course;
   }
 
   private void validateMaxRecruitment(int maxRecruitment) {
@@ -69,13 +66,25 @@ public class Session {
     }
   }
 
-  private void validateCourse(Course course) {
-    if (course == null) {
-      throw new NotFoundException();
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Session session = (Session) o;
+    return maxRecruitment == session.maxRecruitment && Objects.equals(id, session.id)
+        && Objects.equals(title, session.title) && Objects
+        .equals(img, session.img) && Objects.equals(startDate, session.startDate)
+        && Objects.equals(endDate, session.endDate)
+        && sessionStatus == session.sessionStatus && sessionType == session.sessionType;
   }
 
-  public void toCourse(Course course) {
-    this.course = course;
+  @Override
+  public int hashCode() {
+    return Objects
+        .hash(id, title, img, startDate, endDate, sessionStatus, sessionType, maxRecruitment);
   }
 }
