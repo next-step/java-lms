@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserCode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,8 +65,8 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) {
-        validateDelete(loginUser);
+    public List<DeleteHistory> delete(UserCode userCode) {
+        validateDelete(userCode);
         deleteQuestionAndAnswers();
         return makeDeleteHistories();
     }
@@ -87,9 +88,9 @@ public class Question {
         return deleteHistories;
     }
 
-    private void validateDelete(NsUser loginUser) {
-        validateQuestionOwner(loginUser);
-        validateAnswers(loginUser);
+    private void validateDelete(UserCode userCode) {
+        validateQuestionOwner(userCode);
+        validateAnswers(userCode);
     }
 
     private void validateAnswers(NsUser loginUser) {
@@ -100,8 +101,8 @@ public class Question {
                 });
     }
 
-    private void validateQuestionOwner(NsUser loginUser) {
-        if (!writer.matchUser(loginUser)) {
+    private void validateQuestionOwner(UserCode userCode) {
+        if (!writer.matchUser(userCode)) {
             throw new QuestionDeleteUnauthorizedException();
         }
     }
