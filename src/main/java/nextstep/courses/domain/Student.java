@@ -1,22 +1,19 @@
 package nextstep.courses.domain;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class Student {
     private final Long studentId;
 
-    private final Set<Session> sessions;
+    private final Long sessionId;
 
-    public Student(Long studentId) {
+    public Student(Long studentId, Long sessionId) {
         this.studentId = studentId;
-        this.sessions = new HashSet<>();
+        this.sessionId = sessionId;
     }
 
     public void enroll(Session session) {
         session.add(this);
-        sessions.add(session);
     }
 
     @Override
@@ -24,11 +21,11 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(studentId, student.studentId) && Objects.equals(sessions, student.sessions);
+        return Objects.equals(studentId, student.studentId) && Objects.equals(sessionId, student.sessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, sessions);
+        return Objects.hash(studentId, sessionId);
     }
 }

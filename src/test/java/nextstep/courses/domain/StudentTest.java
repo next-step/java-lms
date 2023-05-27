@@ -20,9 +20,9 @@ public class StudentTest {
 
     @BeforeEach
     void setUp() {
-        this.firstStudent = new Student(0L);
-        this.secondStudent = new Student(1L);
-        this.thridStudent = new Student(2L);
+        this.firstStudent = new Student(0L, 1L);
+        this.secondStudent = new Student(1L, 1L);
+        this.thridStudent = new Student(2L, 1L);
         long maxNumOfStudent = 2L;
         this.session = SessionCreator.create(maxNumOfStudent, OPENED);
     }
