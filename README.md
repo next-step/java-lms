@@ -39,12 +39,17 @@
   - startDate - 시작일
   - endDate - 종료일
   - [X] 종료일은 시작일보다 나중이여야 한다
-- [X] 커버 이미지 - LectureImage 
-  - coverImage
-- [X] 강의 구분 - PaymentStrategy (전략 패턴 적용)  
+- [X] 커버 이미지 - Image 
+  - fileName - 파일이름
+  - imageUrl - 이미지 Url
+  - [X] 이미지 객체 생성시 파일 이름과 url 에 대한 유효성 검증
+- [X] 이미지 확장자
+  - jpeg, png
+  - [X] 이미지 확장자에 대한 유효성 검증
+- [X] 강의 구분 - PaymentStrategy (전략 패턴 적용)
   - FreePaymentStrategy - 무료강의
   - PaidPaymentStrategy - 유료강의
-- [X] 강의 상태 - LectureStatus  
+- [X] 강의 상태 - LectureStatus
   - PREPARING - 준비중
   - ENROLLING - 모집중
   - FINISHED - 종료
