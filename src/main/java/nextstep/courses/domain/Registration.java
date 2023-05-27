@@ -8,34 +8,25 @@ public class Registration {
 
   private Long id;
 
-  private Session session;
-
   private NsUser nsUser;
+
+  private Session session;
 
   private LocalDateTime registeredAt;
 
   private boolean canceled = false;
 
-  private Registration() {
+  public Registration(NsUser nsUser, Session session) {
+    this(null, nsUser, session, LocalDateTime.now());
   }
 
-  public Registration(Session session, NsUser nsUser) {
-    this(null, session, nsUser, LocalDateTime.now());
-  }
-
-  public Registration(Long id, Session session, NsUser nsUser, LocalDateTime registeredAt) {
+  public Registration(Long id, NsUser nsUser, Session session, LocalDateTime registeredAt) {
     this.id = id;
-    validateSession(session);
-    this.session = session;
     validateNsUser(nsUser);
     this.nsUser = nsUser;
+    validateSession(session);
+    this.session = session;
     this.registeredAt = registeredAt;
-  }
-
-  private void validateSession(Session session) {
-    if (session == null) {
-      throw new NotFoundException();
-    }
   }
 
   private void validateNsUser(NsUser nsUser) {
@@ -44,14 +35,19 @@ public class Registration {
     }
   }
 
-  public static Registration createRegistration(Session session, NsUser nsUser) {
-    Registration registration = new Registration(session, nsUser);
-    session.register(registration);
-    nsUser.register(session, registration);
+  private void validateSession(Session session) {
+    if (session == null) {
+      throw new NotFoundException();
+    }
+  }
+
+  public static Registration createRegistration(NsUser nsUser, Session session) {
+    Registration registration = new Registration(nsUser, session);
+    session.register(nsUser, registration);
     return registration;
   }
 
-  public void cancel(){
+  public void cancel() {
     canceled = true;
   }
 
@@ -59,7 +55,7 @@ public class Registration {
     return canceled;
   }
 
-  public boolean hasSession(Session session) {
-    return this.session.equals(session);
+  public boolean hasNsUser(NsUser nsUser) {
+    return this.nsUser.matchUser(nsUser);
   }
 }
