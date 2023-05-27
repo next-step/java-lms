@@ -1,4 +1,4 @@
-package nextstep.qna.infrastructure;
+package nextstep.qna.domain;
 
 import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.Answer;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JdbcAnswerRepositoryTest {
+public class AnswerRepositoryTest {
 
     @Autowired private AnswerRepository answerRepository;
     @Autowired private QuestionRepository questionRepository;

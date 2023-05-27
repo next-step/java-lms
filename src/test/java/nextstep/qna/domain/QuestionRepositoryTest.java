@@ -1,4 +1,4 @@
-package nextstep.qna.infrastructure;
+package nextstep.qna.domain;
 
 import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.Question;
@@ -7,17 +7,12 @@ import nextstep.qna.domain.QuestionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
-public class JdbcQuestionRepositoryTest {
+public class QuestionRepositoryTest {
 
     @Autowired QuestionRepository questionRepository;
 

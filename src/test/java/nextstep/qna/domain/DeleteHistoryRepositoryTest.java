@@ -1,13 +1,13 @@
-package nextstep.qna.infrastructure;
+package nextstep.qna.domain;
 
 import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.DeleteHistoryRepository;
 import nextstep.qna.domain.Question;
+import nextstep.qna.infrastructure.JdbcDeleteHistoryRepository;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -16,11 +16,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @JdbcTest
-public class JdbcDeleteHistoryRepositoryTest {
+public class DeleteHistoryRepositoryTest {
 
     private final DeleteHistoryRepository deleteHistoryRepository;
 
-    public JdbcDeleteHistoryRepositoryTest(JdbcTemplate jdbcTemplate) {
+    public DeleteHistoryRepositoryTest(JdbcTemplate jdbcTemplate) {
         this.deleteHistoryRepository = new JdbcDeleteHistoryRepository(jdbcTemplate);
     }
 
