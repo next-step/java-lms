@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+    private static final String DELETE_OWNER_PERMISSION = "질문을 삭제할 권한이 없습니다.";
+    private static final String DELETE_ANSWER_OWNER_PERMISSION = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     private Long id;
 
     private String title;
@@ -40,11 +43,15 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateWriter(loginUser);
-        List<DeleteHistory> answerDeleteHistories = answers.deleteAll(loginUser);
+        List<DeleteHistory> answerDeleteHistories;
+        try {
+            answerDeleteHistories = answers.deleteAll(loginUser);
+        } catch (CannotDeleteException e) {
+            throw new CannotDeleteException(DELETE_ANSWER_OWNER_PERMISSION);
+        }
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
         deleteHistories.addAll(answerDeleteHistories);
 
@@ -53,7 +60,7 @@ public class Question {
 
     public void validateWriter(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+            throw new CannotDeleteException(DELETE_OWNER_PERMISSION);
         }
     }
 
@@ -65,18 +72,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
