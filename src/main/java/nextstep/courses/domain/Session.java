@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 public class Session {
     private final Long id;
     private final SessionInformation information;
@@ -28,5 +31,18 @@ public class Session {
         if(!status.canRecruit()) {
             throw new IllegalArgumentException("강의는 모집중일 때 신청 가능합니다: " + status);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Session)) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(information, session.information) && status == session.status && Objects.equals(attendees, session.attendees);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, information, status, attendees);
     }
 }

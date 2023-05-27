@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 public class SessionInformation {
     private final SessionCoverImage image;
     private final SessionTitle title;
@@ -15,5 +18,18 @@ public class SessionInformation {
 
     public String title() {
         return title.title();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SessionInformation)) return false;
+        SessionInformation that = (SessionInformation) o;
+        return Objects.equals(image, that.image) && Objects.equals(title, that.title) && Objects.equals(price, that.price) && Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(image, title, price, date);
     }
 }

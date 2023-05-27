@@ -3,10 +3,11 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class SessionAttendees {
-    private final int MINIMUM_NUMBER_OF_ATTENDEES = 1;
+    private static final int MINIMUM_NUMBER_OF_ATTENDEES = 1;
 
     private final int maxNumberOfAttendees;
     private final Set<NsUser> attendees;
@@ -44,5 +45,18 @@ public class SessionAttendees {
         if(attendees.contains(user)) {
             throw new IllegalArgumentException("이미 등록된 수강생입니다: " + user.getName());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SessionAttendees)) return false;
+        SessionAttendees that = (SessionAttendees) o;
+        return maxNumberOfAttendees == that.maxNumberOfAttendees && Objects.equals(attendees, that.attendees);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxNumberOfAttendees, attendees);
     }
 }

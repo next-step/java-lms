@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
+
 public class SessionPrice {
     private static final long FREE_SESSION_PRICE = 0L;
 
@@ -20,5 +22,18 @@ public class SessionPrice {
 
     public SessionChargeType type() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SessionPrice)) return false;
+        SessionPrice that = (SessionPrice) o;
+        return price == that.price && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price, type);
     }
 }
