@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.common.CommunicationTerm;
+import nextstep.utils.CommunicationTerm;
 import nextstep.common.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;

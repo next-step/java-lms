@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.common.CommunicationTerm;
+import nextstep.utils.CommunicationTerm;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
