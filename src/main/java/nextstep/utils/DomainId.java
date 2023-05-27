@@ -1,6 +1,6 @@
 package nextstep.utils;
 
-public interface DomainId  {
+public interface DomainId {
     Long value();
 
     boolean equals(Object o);

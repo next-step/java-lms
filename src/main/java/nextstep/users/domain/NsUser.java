@@ -33,7 +33,7 @@ public class NsUser {
     }
 
     public static NsUser of(Long id, String userCode, String password, String name, String email) {
-        return new NsUser(new NsUserId(id), new UserCode( userCode), password, name, email, LocalDateTime.now(), null);
+        return new NsUser(new NsUserId(id), new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
     }
 
     public static NsUser of(Long userId, String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {

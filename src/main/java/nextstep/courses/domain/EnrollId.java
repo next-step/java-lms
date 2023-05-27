@@ -4,7 +4,7 @@ import nextstep.utils.DomainId;
 
 import java.util.Objects;
 
-public class EnrollId  implements DomainId {
+public class EnrollId implements DomainId {
     private Long enrolmentId;
 
     public EnrollId() {
