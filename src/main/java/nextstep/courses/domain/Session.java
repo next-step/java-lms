@@ -219,4 +219,17 @@ public class Session {
             throw new IllegalArgumentException("강의 종료 날짜가 강의 시작 날짜보다 앞일 수 없습니다.");
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return id == session.id && fixedNumberOfStudent == session.fixedNumberOfStudent && numberOfStudentsRegistered == session.numberOfStudentsRegistered && Objects.equals(lecturer, session.lecturer) && sessionState == session.sessionState && recruitmentState == session.recruitmentState && sessionType == session.sessionType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fixedNumberOfStudent, lecturer, sessionState, recruitmentState, sessionType, numberOfStudentsRegistered);
+    }
 }
