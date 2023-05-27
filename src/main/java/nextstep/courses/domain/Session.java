@@ -32,13 +32,17 @@ public class Session {
     }
 
     public void add(Student student) {
-        if (this.maxNumOfStudent <= this.students.size()) {
+        if (isStudentFull()) {
             throw new CannotEnrollException("강의 수강 신청 인원이 다 찼습니다!");
         }
         if (!this.status.canJoin()) {
             throw new CannotEnrollException("모집 중일때만 신청 가능합니다!");
         }
         students.add(student);
+    }
+
+    private boolean isStudentFull() {
+        return this.maxNumOfStudent <= this.students.size();
     }
 
     public int totalStudentNum() {
