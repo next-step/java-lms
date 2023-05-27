@@ -7,21 +7,20 @@ import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("qnaService")
+@Service
 public class QnAService {
-    @Resource(name = "questionRepository")
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
+    private final DeleteHistoryService deleteHistoryService;
 
-    @Resource(name = "answerRepository")
-    private AnswerRepository answerRepository;
-
-    @Resource(name = "deleteHistoryService")
-    private DeleteHistoryService deleteHistoryService;
+    public QnAService(QuestionRepository questionRepository,
+            DeleteHistoryService deleteHistoryService) {
+        this.questionRepository = questionRepository;
+        this.deleteHistoryService = deleteHistoryService;
+    }
 
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
