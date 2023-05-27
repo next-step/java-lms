@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  db-maria:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: nextstep
+      MYSQL_DATABASE: lms
+      MYSQL_USER: dong
+      MYSQL_PASSWORD: dong
+      TZ: Asia/Seoul
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+    ports:
+      - "11010:3306"
+
+  db-h2:
+    image: oscarfonts/h2
+    restart: always
+    environment:
+      H2_OPTIONS: -ifNotExists
+      H2_TCP_PORT: 1521
+      H2_WEB_PORT: 81
+      TZ: Asia/Seoul
+    volumes:
+      - ./h2/data:/data/opt/h2-data
+    ports:
+      - "1521:1521"
+      - "8081:81"
