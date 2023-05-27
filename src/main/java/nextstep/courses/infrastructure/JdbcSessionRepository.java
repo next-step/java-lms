@@ -16,8 +16,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (title, status, price, charge_type, start_at, end_at, max_number_of_attendees, cover_image) " +
-                     "values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (title, status, price, charge_type, start_at, end_at, max_number_of_attendees, course_id, cover_image) " +
+                     "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 session.title(),
@@ -27,6 +27,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.startDate(),
                 session.endDate(),
                 session.maxNumberOfAttendees(),
+                session.courseId(),
                 session.coverImage()
         );
     }
@@ -46,10 +47,18 @@ public class JdbcSessionRepository implements SessionRepository {
 
         return new Session(
                 id,
+                findCourseIdById(id),
                 sessionInformation,
                 foundSessionStatus,
                 foundSessionAttendees
         );
+    }
+
+    private long findCourseIdById(long id) {
+        String sql = "select course_id from session where id = ?";
+        RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     private int findSessionMaxNumberOfAttendeesById(long id) {

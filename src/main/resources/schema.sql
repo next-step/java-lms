@@ -16,6 +16,7 @@ create table session (
     start_at date not null,
     end_at date not null,
     max_number_of_attendees integer not null,
+    course_id bigint not null,
     cover_image blob,
     primary key (id)
 );

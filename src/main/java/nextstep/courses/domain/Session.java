@@ -7,12 +7,14 @@ import java.util.Objects;
 
 public class Session {
     private final Long id;
+    private final Long courseId;
     private final SessionInformation information;
     private final SessionStatus status;
     private final SessionAttendees attendees;
 
-    public Session(Long id, SessionInformation information, SessionStatus status, SessionAttendees attendees) {
+    public Session(Long id, Long courseId, SessionInformation information, SessionStatus status, SessionAttendees attendees) {
         this.id = id;
+        this.courseId = courseId;
         this.information = information;
         this.status = status;
         this.attendees = attendees;
@@ -57,6 +59,10 @@ public class Session {
 
     public long id() {
         return id;
+    }
+
+    public long courseId() {
+        return courseId;
     }
 
     private void validateStatus() {
