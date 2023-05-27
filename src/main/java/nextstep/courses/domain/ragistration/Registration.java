@@ -41,8 +41,11 @@ public class Registration extends BaseEntity {
     }
 
     public void approve(NsUser nsUser, UserCourseType courseType) {
+        super.setUpdatedAt();
+
         if (nsUser.checkIsValid(courseType)) {
             this.registration();
+            return;
         }
 
         this.cancelRegistration();

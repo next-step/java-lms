@@ -26,6 +26,7 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
                 sql,
                 registration.getCourseId(),
                 registration.getSessionId(),
+                registration.getNsUserId(),
                 registration.getRegistrationType().name(),
                 registration.getCreatedAt()
         );
