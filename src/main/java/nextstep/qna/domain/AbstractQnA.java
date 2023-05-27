@@ -2,9 +2,9 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import nextstep.qna.UnAuthenticationException;
-import nextstep.qna.exception.QnAExceptionCode;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.exception.QnAException;
+import nextstep.qna.exception.QnAExceptionCode;
 import nextstep.users.domain.NsUser;
 
 public abstract class AbstractQnA {
@@ -17,7 +17,7 @@ public abstract class AbstractQnA {
 
     private LocalDateTime updatedDate;
 
-    public abstract List<DeleteHistory> delete(NsUser loginUser) throws UnAuthenticationException;
+    public abstract List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException;
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
@@ -31,7 +31,7 @@ public abstract class AbstractQnA {
         this.deleted = deleteYN;
     }
 
-    public void validateWriter(NsUser loginUser) throws QnAException {
+    public void validateWriter(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new QnAException(QnAExceptionCode.NOT_EXIST_AUTHENTICATION);
         }
