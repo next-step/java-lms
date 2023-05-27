@@ -3,11 +3,13 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 public class Session {
+    private final Long id;
     private final SessionInformation information;
     private final SessionStatus status;
     private final SessionAttendees attendees;
 
-    public Session(SessionInformation information, SessionStatus status, SessionAttendees attendees) {
+    public Session(Long id, SessionInformation information, SessionStatus status, SessionAttendees attendees) {
+        this.id = id;
         this.information = information;
         this.status = status;
         this.attendees = attendees;
