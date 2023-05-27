@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-public class ImageRepositoryJdbcImplTest {
+public class JdbcImageRepositoryTest {
     @Autowired ImageRepository imageRepository;
 
     @DisplayName("저장한다")

@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository("ImageRepository")
-public class ImageRepositoryJdbcImpl implements ImageRepository {
+public class JdbcImageRepository implements ImageRepository {
     private final JdbcTemplate jdbc;
 
-    public ImageRepositoryJdbcImpl(DataSource dataSource) {
+    public JdbcImageRepository(DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
     }
 
