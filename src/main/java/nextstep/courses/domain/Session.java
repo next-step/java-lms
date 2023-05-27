@@ -4,14 +4,12 @@ import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 public class Session {
     private static final int INCREMENTAL_VALUE = 1;
     private static final int DEFAULT_NUMBER_OF_STUDENTS_REGISTERED = 0;
     private static final SessionState DEFAULT_SESSION_STATE = SessionState.PREPARING;
-    private static final List<SessionState> ALLOW_RECRUITMENT_STATE = List.of(SessionState.RECRUITING, SessionState.END_OF_RECRUITMENT);
 
     private final long id;
     private final int fixedNumberOfStudent;
@@ -44,8 +42,8 @@ public class Session {
         validateFixedNumberOfStudent(fixedNumberOfStudent);
         validateRegisterLecturer(lecturer);
         validateSessionType(sessionType);
-        validateRecruitmentState(recruitmentState);
         validateSessionState(sessionState);
+        validateRecruitmentState(recruitmentState);
         validateNumberOfStudentsRegistered(numberOfStudentsRegistered, fixedNumberOfStudent);
         validateDate(startDate, endDate);
 
@@ -73,6 +71,10 @@ public class Session {
             recruitmentState = DEFAULT_SESSION_STATE;
         }
 
+        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, recruitmentState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+    }
+
+    public static Session of(int id, int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionState recruitmentState, SessionType sessionType) {
         return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, recruitmentState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
     }
 
@@ -123,7 +125,7 @@ public class Session {
         }
 
 
-        if (!ALLOW_RECRUITMENT_STATE.contains(recruitmentState)) {
+        if (!recruitmentState.isAllowRecruitmentState()) {
             throw new IllegalArgumentException("모집 상태는 모집중/모집 종료만 가능해요 :(");
         }
     }
@@ -171,26 +173,30 @@ public class Session {
     }
 
     private void validateFixedNumberOfStudent(int fixedNumberOfStudent) {
-        if (fixedNumberOfStudent == 0L) {
+        if (fixedNumberOfStudent == 0) {
             throw new IllegalArgumentException("강의의 정원은 0명 이상이여야 해요 :(");
         }
     }
 
     private void validateRegisterLecturer(NsUser lecturer) {
         if (Objects.isNull(lecturer)) {
-            throw new IllegalArgumentException("강의자가 입력되질 않았어요 :( ");
+            throw new IllegalArgumentException("강의자가 입력되질 않았어요 :(");
         }
     }
 
     private void validateSessionType(SessionType sessionType) {
         if (Objects.isNull(sessionType)) {
-            throw new IllegalArgumentException("강의 타입이 입력되질 않았어요 :( ");
+            throw new IllegalArgumentException("강의 타입이 입력되질 않았어요 :(");
         }
     }
 
     private void validateSessionState(SessionState sessionState) {
         if (Objects.isNull(sessionState)) {
-            throw new IllegalArgumentException("강의 상태가 입력되질 않았어요 :( ");
+            throw new IllegalArgumentException("강의 상태가 입력되질 않았어요 :(");
+        }
+
+        if (!sessionState.isAllowSessionState()) {
+            throw new IllegalArgumentException("강의 상태는 모집중/모집 종료를 입력하실수 없어요 :(");
         }
     }
 
@@ -204,19 +210,19 @@ public class Session {
         LocalDate now = LocalDate.now();
 
         if (Objects.isNull(startDate)) {
-            throw new IllegalArgumentException("강의 시작일이 등록되질 않았어요 :( ");
+            throw new IllegalArgumentException("강의 시작일이 등록되질 않았어요 :(");
         }
 
         if (Objects.isNull(endDate)) {
-            throw new IllegalArgumentException("강의 종료일이 등록되질 않았어요 :( ");
+            throw new IllegalArgumentException("강의 종료일이 등록되질 않았어요 :(");
         }
 
         if (now.isBefore(startDate)) {
-            throw new IllegalArgumentException("강의 시작 날짜가 현재 날짜보다 앞일 수 없습니다");
+            throw new IllegalArgumentException("강의 시작 날짜가 현재 날짜보다 앞일 수 없습니다 :(");
         }
 
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("강의 종료 날짜가 강의 시작 날짜보다 앞일 수 없습니다.");
+            throw new IllegalArgumentException("강의 종료 날짜가 강의 시작 날짜보다 앞일 수 없습니다 :(");
         }
     }
 
