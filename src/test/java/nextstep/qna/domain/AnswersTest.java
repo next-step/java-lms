@@ -5,8 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,11 +43,11 @@ class AnswersTest {
             add(AnswerTest.YEAHCHAN_A1);
             add(AnswerTest.YEAHCHAN_A2);
         }};
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        newAnswers.delete(NsUserTest.YEAHCHAN);
+        List<DeleteHistory> deleteHistories = newAnswers.delete(NsUserTest.YEAHCHAN);
         assertAll(
                 () -> assertThat(AnswerTest.YEAHCHAN_A1.isDeleted()).isTrue(),
-                () -> assertThat(AnswerTest.YEAHCHAN_A2.isDeleted()).isTrue()
+                () -> assertThat(AnswerTest.YEAHCHAN_A2.isDeleted()).isTrue(),
+                () -> assertThat(deleteHistories).hasSize(2)
         );
     }
 }
