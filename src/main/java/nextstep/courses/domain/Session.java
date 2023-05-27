@@ -3,18 +3,16 @@ package nextstep.courses.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Session {
+public class Session extends SessionDate {
     private Long id;
     private String title;
     private Long creatorId;
     private Course course;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private String coverImageUrl;
     private SessionPrice price;
     private SessionStatus status;
     private int maxNumberOfUsers;
-    private int numberOfUsers;
+    private int registeredNumberOfUsers;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -47,7 +45,7 @@ public class Session {
         this.price = new SessionPrice(price);
         this.status = status;
         this.maxNumberOfUsers = maxNumberOfUsers;
-        this.numberOfUsers = numberOfUsers;
+        this.registeredNumberOfUsers = numberOfUsers;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -59,6 +57,10 @@ public class Session {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public LocalDate getStartDateTime() {
@@ -79,5 +81,27 @@ public class Session {
 
     public Long getPrice() {
         return price.getPrice();
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public void enroll(int userId) {
+        if (isFull()) {
+            throw new IllegalStateException("수강생이 가득 찼습니다.");
+        }
+        if (!status.isRecruiting()) {
+            throw new IllegalStateException("모집 중인 강의만 수강 신청이 가능합니다.");
+        }
+        this.registeredNumberOfUsers++;
+    }
+
+    private boolean isFull() {
+        return this.registeredNumberOfUsers >= this.maxNumberOfUsers;
+    }
+
+    public int getRegisteredUserCounts() {
+        return this.registeredNumberOfUsers;
     }
 }

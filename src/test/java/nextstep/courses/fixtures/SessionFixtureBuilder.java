@@ -5,8 +5,10 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class SessionFixtureBuilder {
+    public Long id = 0L;
     public String title = "객체지향 프로그래밍";
     public Long creatorId = 1L;
     public Course course = new CourseFixtureBuilder().build();
@@ -16,7 +18,7 @@ public class SessionFixtureBuilder {
     public Long price = 0L;
     public SessionStatus status = SessionStatus.OPENED;
     public int maxNumberOfUsers = 30;
-    public int numberOfUsers = 0;
+    public int registeredNumberOfUsers = 0;
 
     public SessionFixtureBuilder withStartDate(LocalDate startDate) {
         this.startDate = startDate;
@@ -29,8 +31,9 @@ public class SessionFixtureBuilder {
     }
 
     public Session build() {
-        return new Session(title, creatorId, course, startDate, endDate, coverImageUrl, price, status, maxNumberOfUsers,
-                numberOfUsers);
+        return new Session(id, title, creatorId, course, startDate, endDate, coverImageUrl, price, status,
+                maxNumberOfUsers,
+                registeredNumberOfUsers, LocalDateTime.now(), null);
     }
 
     public SessionFixtureBuilder withCoverImageUrl(String coverImageUrl) {
@@ -40,6 +43,16 @@ public class SessionFixtureBuilder {
 
     public SessionFixtureBuilder withPrice(Long price) {
         this.price = price;
+        return this;
+    }
+
+    public SessionFixtureBuilder withStatus(SessionStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    public SessionFixtureBuilder withId(Long id) {
+        this.id = id;
         return this;
     }
 }

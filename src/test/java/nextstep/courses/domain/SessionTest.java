@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import nextstep.courses.fixtures.SessionFixtureBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
 
@@ -60,7 +62,7 @@ class SessionTest {
 
         // when
         assertThatThrownBy(() -> {
-            Session session = new SessionFixtureBuilder()
+            new SessionFixtureBuilder()
                     .withCoverImageUrl(coverImageUrl)
                     .build();
         })
@@ -106,11 +108,58 @@ class SessionTest {
 
         // when
         assertThatThrownBy(() -> {
-            Session session = new SessionFixtureBuilder()
+            new SessionFixtureBuilder()
                     .withPrice(price)
                     .build();
         })
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("가격은 0원 이상이어야 합니다.");
+    }
+
+    @ParameterizedTest(name = "{displayName} - {argumentsWithNames}")
+    @EnumSource(SessionStatus.class)
+    @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.")
+    void status(SessionStatus status) {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withStatus(status)
+                .build();
+
+        // when
+        SessionStatus sessionStatus = session.getStatus();
+
+        // then
+        assertThat(sessionStatus).isEqualTo(status);
+    }
+
+    @Test
+    @DisplayName("모집중일 때 수강신청")
+    void register() {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withStatus(SessionStatus.RECRUITING)
+                .build();
+
+        // when
+        int userId = 0;
+        session.enroll(userId);
+
+        // then
+        assertThat(session.getRegisteredUserCounts()).isEqualTo(1);
+    }
+
+    @ParameterizedTest(name = "{displayName} - {argumentsWithNames}")
+    @EnumSource(value = SessionStatus.class, names = {"OPENED", "CLOSED"})
+    @DisplayName("모집 중이 아닐 때 수강신청 예외")
+    void registerException(SessionStatus status) {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withStatus(status)
+                .build();
+
+        // then
+        assertThatThrownBy(() -> session.enroll(0))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("모집 중인 강의만 수강 신청이 가능합니다.");
     }
 }
