@@ -1,15 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Repository("sessionRepository")
@@ -56,31 +50,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 foundSessionStatus,
                 foundSessionAttendees
         );
-    }
-
-    private Set<NsUser> findSessionAttendeesBySessionId(long sessionId) {
-        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at " +
-                       "from session_attendee inner join ns_user on session_attendee.user_id = ns_user.user_id " +
-                      "where session_attendee.session_id = ?";
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                localDateTimeOf(rs.getTimestamp(6)),
-                localDateTimeOf(rs.getTimestamp(7))
-        );
-
-        return new HashSet<>(jdbcTemplate.query(sql, rowMapper, sessionId));
-    }
-
-    private LocalDateTime localDateTimeOf(Timestamp timestamp) {
-        if(timestamp == null) {
-            return null;
-        }
-
-        return timestamp.toLocalDateTime();
     }
 
     private int findSessionMaxNumberOfAttendeesById(long id) {
