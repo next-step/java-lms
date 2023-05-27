@@ -1,21 +1,42 @@
-package nextstep.users.infrastructure;
+package nextstep.users.domain;
 
 import nextstep.fixture.TestFixture;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
+import nextstep.users.infrastructure.JdbcUserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class JdbcUserRepositoryTest {
+@JdbcTest
+public class UserRepositoryTest {
+    private static final Logger LOG = LoggerFactory.getLogger(UserRepositoryTest.class);
 
     @Autowired
-    UserRepository userRepository;
+    private JdbcTemplate jdbcTemplate;
+
+    private UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository = new JdbcUserRepository(jdbcTemplate);
+    }
+
+    @Test
+    void findByUserId() {
+        Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
+        assertThat(nsUser.isEmpty()).isFalse();
+        LOG.debug("NsUser: {}", nsUser.get());
+    }
 
     @DisplayName("findByUserId/code")
     @Test
