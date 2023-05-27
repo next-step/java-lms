@@ -24,7 +24,9 @@ public class ImageRepositoryJdbcImplTest {
         Image image = TestFixture.BLUE_IMAGE;
         //when
         Image save = imageRepository.save(image);
+        Image find = imageRepository.findByImageId(save.getImageId()).orElseThrow(RuntimeException::new);
         //then
         assertThat(save.getImageId()).as("").isNotNull();
+        assertThat(find.getImageUrl()).as("").isEqualTo(image.getImageUrl());
     }
 }

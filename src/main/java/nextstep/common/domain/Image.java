@@ -1,6 +1,7 @@
 package nextstep.common.domain;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 public class Image {
     private Long imageId;
@@ -22,5 +23,26 @@ public class Image {
 
     public String getImageUrl() {
         return imageLink;
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "imageId=" + imageId +
+                ", imageLink='" + imageLink + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image other = (Image) o;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(imageId, imageLink);
     }
 }

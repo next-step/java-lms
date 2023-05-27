@@ -13,13 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ImageRepositoryJdbcImpl implements ImageRepository {
     private final JdbcTemplate jdbc;
-    private AtomicLong
-
 
     public ImageRepositoryJdbcImpl(DataSource dataSource) {
         this.jdbc = new JdbcTemplate(dataSource);
@@ -31,7 +28,7 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
         jdbcInsert.withTableName("image").usingGeneratedKeyColumns("image_id");
 
         Map<String, Object> params = new HashMap<>() {{
-            this.put("name", image.getImageUrl());
+            this.put("image_link", image.getImageUrl());
         }};
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
@@ -40,7 +37,7 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
 
     @Override
     public Optional<Image> findByImageId(Long imageId) {
-        return jdbc.query("SELECT * FROM IMAGE WHERE ID = ?", rowMapper())
+        return jdbc.query("SELECT * FROM image WHERE image_id = ?", rowMapper(),imageId)
                 .stream()
                 .findAny();
     }
@@ -53,8 +50,8 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
     private RowMapper<Image> rowMapper() {
         return (resultSet, rowNumber) -> {
             return new Image(
-                    resultSet.getLong("imageId"),
-                    resultSet.getString("imageLink")
+                    resultSet.getLong("image_id"),
+                    resultSet.getString("image_link")
             );
         };
     }

@@ -56,7 +56,7 @@ create table delete_history
 
 create table image
 (
-    image_id        bigint not null,
+    image_id        bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
     image_link      varchar(255),
     primary key (image_id)
 );
