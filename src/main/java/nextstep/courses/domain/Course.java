@@ -1,31 +1,32 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Course {
-    private Long id;
+public class Course extends BaseTime {
 
-    private String title;
+    private final Long id;
 
-    private Long creatorId;
+    private final String title;
 
-    private LocalDateTime createdAt;
+    private final Long creatorId;
 
-    private LocalDateTime updatedAt;
+    private final Term term;
 
-    public Course() {
+    private final List<Session> sessions = new ArrayList<>();
+
+    public Course(String title, Term term, Long creatorId) {
+        this(0L, title, term, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Term term, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.title = title;
+        this.term = term;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
@@ -38,6 +39,22 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public int sessionCount() {
+        return sessions.size();
+    }
+
+    public String termValue() {
+        return term.ternValue();
+    }
+
+    public List<Session> fetchSessions() {
+        return Collections.unmodifiableList(sessions);
     }
 
     @Override

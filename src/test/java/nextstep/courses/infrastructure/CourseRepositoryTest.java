@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.Term;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class CourseRepositoryTest {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
@@ -28,7 +30,7 @@ public class CourseRepositoryTest {
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
+        Course course = new Course("TDD, 클린 코드 with Java", new Term(1), 1L);
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
