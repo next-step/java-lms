@@ -4,12 +4,14 @@ import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
     private static final int INCREMENTAL_VALUE = 1;
     private static final int DEFAULT_NUMBER_OF_STUDENTS_REGISTERED = 0;
     private static final SessionState DEFAULT_SESSION_STATE = SessionState.PREPARING;
+    private static final List<SessionState> ALLOW_RECRUITMENT_STATE = List.of(SessionState.RECRUITING, SessionState.END_OF_RECRUITMENT);
 
     private final long id;
     private final int fixedNumberOfStudent;
@@ -38,17 +40,17 @@ public class Session {
             int numberOfStudentsRegistered
     ) {
 
-
         validateId(id);
         validateFixedNumberOfStudent(fixedNumberOfStudent);
         validateRegisterLecturer(lecturer);
         validateSessionType(sessionType);
+        validateRecruitmentState(recruitmentState);
         validateSessionState(sessionState);
         validateNumberOfStudentsRegistered(numberOfStudentsRegistered, fixedNumberOfStudent);
         validateDate(startDate, endDate);
 
         if (Objects.isNull(sessionState)) {
-            sessionState = getCurrentSessionState();
+            sessionState = getCurrentSessionState(startDate, endDate);
         }
 
         this.id = id;
@@ -64,11 +66,14 @@ public class Session {
         this.recruitmentState = recruitmentState;
     }
 
-    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionType sessionType) {
+    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionState recruitmentState, SessionType sessionType) {
         long id = SimpleIdGenerator.getAndIncrement(Session.class);
 
+        if (Objects.isNull(recruitmentState)) {
+            recruitmentState = DEFAULT_SESSION_STATE;
+        }
 
-        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, recruitmentState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
     }
 
     public Session changeImage(Image imageCover, NsUser requestUser) {
@@ -90,7 +95,7 @@ public class Session {
     public Session registerLecture() {
         int register = increaseRegister();
         validateNumberOfStudentsRegistered(register, fixedNumberOfStudent);
-        validateRecruitmentState();
+        validateRegisterRecruitmentState(recruitmentState);
 
         this.numberOfStudentsRegistered = register;
 
@@ -102,11 +107,28 @@ public class Session {
         return this;
     }
 
-    private void validateRecruitmentState() {
+    public Session changeRecruitmentState(NsUser requestUser, SessionState recruitmentState) {
+        validateOwner(requestUser);
+        validateRecruitmentState(recruitmentState);
+
+        this.recruitmentState = recruitmentState;
+
+        return this;
+    }
+
+    private void validateRecruitmentState(SessionState recruitmentState) {
 
         if (Objects.isNull(recruitmentState)) {
-            throw new IllegalStateException("강의 모집중일때만 수강 신청이 가능해요 :(");
+            throw new IllegalStateException("모집 상태에 값이 입력 되지 않았어요 :(");
         }
+
+
+        if (!ALLOW_RECRUITMENT_STATE.contains(recruitmentState)) {
+            throw new IllegalArgumentException("모집 상태는 모집중/모집 종료만 가능해요 :(");
+        }
+    }
+
+    private void validateRegisterRecruitmentState(SessionState recruitmentState) {
 
         if (recruitmentState.isAvailableRecruitment()) {
             throw new IllegalStateException("강의 모집중일때만 수강 신청이 가능해요 :(");
