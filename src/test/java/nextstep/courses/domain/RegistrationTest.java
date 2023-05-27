@@ -52,6 +52,19 @@ public class RegistrationTest {
         DuplicatedException.class);
   }
 
+  @DisplayName("강의 수강신청을 취소한다.")
+  @Test
+  public void cancel() {
+    S1.registerOpen();
+    Registration registration = Registration.createRegistration(JAVAJIGI, S1);
+    registration.cancel();
+
+    assertAll(
+        () -> assertThat(registration.isCanceled()).isTrue(),
+        () -> assertThat(S1.hasNsUser(JAVAJIGI)).isFalse()
+    );
+  }
+
   @DisplayName("사용자는 강의 수강신청 취소 후 다시 신청할 수 있다.")
   @Test
   public void createRegistration_AfterCancel() {
