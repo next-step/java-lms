@@ -1,12 +1,14 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 
 public class Question {
+
     private Long id;
 
     private String title;
@@ -15,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -68,25 +70,48 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
+    public List<DeleteHistory> delete(NsUser loginUser) {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        List<DeleteHistory> delete = answers.delete(loginUser);
+        deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>(
+            List.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
+        deleteHistories.addAll(delete);
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Question question = (Question) o;
+        return deleted == question.deleted && Objects.equals(id, question.id)
+            && Objects.equals(title, question.title) && Objects.equals(contents,
+            question.contents) && Objects.equals(writer, question.writer)
+            && Objects.equals(answers, question.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, contents, writer, answers, deleted);
     }
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
+            + ", writer=" + writer + "]";
     }
 }
