@@ -54,14 +54,14 @@ public class JdbcSessionRepository implements SessionRepository {
         );
     }
 
-    private long findCourseIdById(long id) {
+    private Long findCourseIdById(long id) {
         String sql = "select course_id from session where id = ?";
         RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private int findSessionMaxNumberOfAttendeesById(long id) {
+    private Integer findSessionMaxNumberOfAttendeesById(long id) {
         String sql = "select max_number_of_attendees from session where id = ?";
         RowMapper<Integer> rowMapper = (rs, rowNum) -> rs.getInt(1);
 
