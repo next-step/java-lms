@@ -23,7 +23,7 @@ VALUES (1,1,
         CURRENT_TIMESTAMP(), 1, false);
 
 -- Image
-INSERT INTO IMAGE (IMAGE_ID, IMAGE_URL)
-VALUES (1,'www'),
-       (2,'sdsdf'),
-       (3,'asdfsdf');
+INSERT INTO IMAGE (IMAGE_URL)
+VALUES ('www.naver.com/image.png'),
+       ('www.google.com/image.png'),
+       ('www.kakao.io/banner.jpg');

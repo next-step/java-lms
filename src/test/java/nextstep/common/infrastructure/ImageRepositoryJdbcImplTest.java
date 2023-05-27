@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ImageRepositoryJdbcImplTest {
     @Autowired ImageRepository imageRepository;
 
-    @DisplayName("엔티티 저장한다")
+    @DisplayName("저장한다")
     @Test
     public void 저장한다() {
         //given

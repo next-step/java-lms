@@ -28,6 +28,7 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
         jdbcInsert.withTableName("image").usingGeneratedKeyColumns("image_id");
 
         Map<String, Object> params = new HashMap<>() {{
+            this.put("image_id", image.getImageId());
             this.put("image_url", image.getImageUrl());
         }};
 
@@ -51,7 +52,7 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
         return (resultSet, rowNumber) -> {
             return new Image(
                     resultSet.getLong("image_id"),
-                    resultSet.getString("image_link")
+                    resultSet.getString("image_url")
             );
         };
     }
