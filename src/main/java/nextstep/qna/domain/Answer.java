@@ -73,6 +73,7 @@ public class Answer {
     }
 
     public DeleteHistory delete() {
+        setDeleted(true);
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 

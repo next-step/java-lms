@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswerTest {
@@ -19,6 +20,13 @@ public class AnswerTest {
         Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
         A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "a1-contents");
         A2 = new Answer(NsUserTest.SANJIGI, Q2, "a2-contents");
+    }
+
+    @Test
+    public void create() throws Exception {
+        assertThat(new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"))
+                .isNotNull()
+                .isInstanceOf(Answers.class);
     }
 
     @DisplayName("답변 작성자 일치여부 확인")

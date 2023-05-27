@@ -12,15 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    public static Question Q1;
-    public static Question Q2;
+    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
     public static Answer A1;
     public static Answer A2;
 
     @BeforeEach
     public void 데이터_초기화() {
-        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
         A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "a1-contents");
         A2 = new Answer(NsUserTest.SANJIGI, Q2, "a2-contents");
     }
@@ -58,6 +56,7 @@ public class QuestionTest {
 
     @Test
     public void 질문_삭제후_상태확인() throws Exception {
+        Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
