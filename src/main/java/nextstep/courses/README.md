@@ -32,13 +32,13 @@
 
 #### 강의(Session)
 
-- [ ] 강의는 강의기간(SessionDuration)을 가진다
-- [ ] 강의는 강의커버이미지(SessionCoverImage)를 가진다.
-- [ ] 강의는 강의지불유형(SessionPaymentType)을 가진다.
-- [ ] 강의는 강의상태(SessionStatus)를 가진다.
-- [ ] 강의는 수강인원을 복수개 가진다.
-- [ ] 강의는 강의 최대 수강 인원을 초과할 수 없다.
-- [ ] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
+- [x] 강의는 강의기간(SessionDuration)을 가진다
+- [x] 강의는 강의커버이미지(SessionCoverImage)를 가진다.
+- [x] 강의는 강의지불유형(SessionPaymentType)을 가진다.
+- [x] 강의는 강의상태(SessionStatus)를 가진다.
+- [x] 강의는 수강인원을 복수개 가진다.
+- [x] 강의는 강의 최대 수강 인원을 초과할 수 없다.
+- [x] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
 
 #### 강의기간(SessionDuration)
 
