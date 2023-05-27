@@ -276,11 +276,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return id == session.id && fixedNumberOfStudent == session.fixedNumberOfStudent && numberOfStudentsRegistered == session.numberOfStudentsRegistered && Objects.equals(lecturer, session.lecturer) && sessionState == session.sessionState && recruitmentState == session.recruitmentState && sessionType == session.sessionType;
+        return id == session.id && fixedNumberOfStudent == session.fixedNumberOfStudent && Objects.equals(lecturer, session.lecturer) && sessionState == session.sessionState && recruitmentState == session.recruitmentState && sessionType == session.sessionType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fixedNumberOfStudent, lecturer, sessionState, recruitmentState, sessionType, numberOfStudentsRegistered);
+        return Objects.hash(id, fixedNumberOfStudent, lecturer, sessionState, recruitmentState, sessionType);
     }
 }
