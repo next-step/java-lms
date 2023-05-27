@@ -20,7 +20,8 @@ class CourseTest {
     @BeforeEach
     void setUp() {
         this.course = new Course();
-        SessionInfo sessionInfo = new SessionInfo(0L, "titl1", "img", SessionType.FREE);
+        Long courseId = 1L;
+        SessionInfo sessionInfo = new SessionInfo(courseId, 0L, "titl1", "img", SessionType.FREE);
         SessionStatus status = SessionStatus.OPENED;
         SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
         this.firstSession = new Session(sessionInfo, status, sessionTimeLine, 3L);

@@ -6,18 +6,18 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Session {
-
     private final SessionInfo sessionInfo;
     private final SessionStatus status;
     private final SessionTimeLine sessionTimeLine;
     private final Set<Student> students = new HashSet<>();
     private final Long maxNumOfStudent;
 
-    public Session(Long id, String title, String coverImageInfo,
+    public Session(Long courseId, Long id, String title, String coverImageInfo,
                    SessionType sessionType, SessionStatus sessionStatus,
                    LocalDateTime createdAt, LocalDateTime closedAt, Long maxNumOfStudent) {
+
         this(
-                new SessionInfo(id, title, coverImageInfo, sessionType),
+                new SessionInfo(courseId, id, title, coverImageInfo, sessionType),
                 sessionStatus,
                 new SessionTimeLine(createdAt, closedAt),
                 maxNumOfStudent
@@ -54,11 +54,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(sessionInfo, session.sessionInfo) && Objects.equals(sessionTimeLine, session.sessionTimeLine);
+        return Objects.equals(sessionInfo, session.sessionInfo) && status == session.status && Objects.equals(sessionTimeLine, session.sessionTimeLine) && Objects.equals(students, session.students) && Objects.equals(maxNumOfStudent, session.maxNumOfStudent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionInfo, sessionTimeLine);
+        return Objects.hash(sessionInfo, status, sessionTimeLine, students, maxNumOfStudent);
     }
 }
