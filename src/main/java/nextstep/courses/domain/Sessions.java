@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.DuplicateSessionException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +14,20 @@ public class Sessions {
     }
 
     public void addSession(Session session) {
+        validate(session);
         sessions.add(session);
+    }
+
+    private void validate(Session session) {
+        for(Session s: sessions) {
+            validateDuplicateSession(s, session);
+        }
+    }
+
+    private void validateDuplicateSession(Session session1, Session session2) {
+        if (session1.equals(session2)) {
+            throw new DuplicateSessionException("동일 강의 등록 불가합니다.");
+        }
     }
 
     @Override

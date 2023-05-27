@@ -16,7 +16,7 @@ public class StudentTest {
     @Test
     @DisplayName("수강 신청")
     void addSession() {
-        student1.addSession(SessionTest.s1);
+        student1.addSession(SessionTest.s2);
 
         assertThat(student1.getSessions()).isEqualTo(SessionsTest.ss1);
     }
