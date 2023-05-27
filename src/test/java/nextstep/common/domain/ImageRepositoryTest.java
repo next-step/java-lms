@@ -1,9 +1,6 @@
-package nextstep.common.infrastructure;
+package nextstep.common.domain;
 
-import nextstep.common.domain.Image;
-import nextstep.common.domain.ImageRepository;
 import nextstep.fixture.TestFixture;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-public class JdbcImageRepositoryTest {
+public class ImageRepositoryTest {
     @Autowired ImageRepository imageRepository;
 
     @DisplayName("저장한다")
