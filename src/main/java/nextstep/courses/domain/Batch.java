@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import nextstep.courses.DuplicatedException;
 
 public class Batch {
 
@@ -13,11 +10,11 @@ public class Batch {
 
   private Course course;
 
-  private List<Session> sessions = new ArrayList<>();
+  private Sessions sessions = new Sessions();
 
   private Long creatorId;
 
-  private LocalDateTime createdAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
 
   private LocalDateTime updatedAt;
 
@@ -39,18 +36,11 @@ public class Batch {
   }
 
   public void addSession(Session session) {
-    validateSession(session);
-    sessions.add(session);
-  }
-
-  private void validateSession(Session session) {
-    if (hasSession(session)) {
-      throw new DuplicatedException("해당 기수에 중복되는 강의가 존재합니다.");
-    }
+    sessions.addSession(session);
   }
 
   public boolean hasSession(Session session) {
-    return sessions.contains(session);
+    return sessions.hasSession(session);
   }
 
   public boolean checkBatchNo(int batchNo) {

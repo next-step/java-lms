@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
@@ -28,7 +26,7 @@ public class Session {
 
   private int maxRecruitment;
 
-  private List<Registration> registrations = new ArrayList<>();
+  private Registrations registrations = new Registrations();
 
   public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
       SessionType sessionType, int maxRecruitment) {
@@ -73,7 +71,7 @@ public class Session {
 
   public void register(NsUser nsUser, Registration registration) {
     validateRegister(nsUser);
-    registrations.add(registration);
+    registrations.register(registration);
   }
 
   private void validateRegister(NsUser nsUser) {
@@ -81,31 +79,21 @@ public class Session {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
-    if (isRegistrationFulled()) {
+    if (registrations.isRegistrationFulled(maxRecruitment)) {
       throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
     }
 
-    if (hasNsUser(nsUser)) {
+    if (registrations.hasNsUser(nsUser)) {
       throw new DuplicatedException("강의는 중복으로 신청할 수 없습니다.");
     }
   }
 
+  public boolean hasNsUser(NsUser nsUser) {
+    return registrations.hasNsUser(nsUser);
+  }
+
   private boolean isRegistrationOpened() {
     return !sessionStatus.equals(SessionStatus.RECRUITMENT);
-  }
-
-  private boolean isRegistrationFulled() {
-    int registerCount = (int) registrations.stream()
-        .filter(registration -> !registration.isCanceled())
-        .count();
-
-    return registerCount >= maxRecruitment;
-  }
-
-  public boolean hasNsUser(NsUser nsUser) {
-    return registrations.stream()
-        .filter(registration -> !registration.isCanceled())
-        .anyMatch(registration -> registration.hasNsUser(nsUser));
   }
 
   public void registerOpen() {
