@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("session 생성 예외 발생 테스트")
 class SessionCreateExceptionTest {
-    private final Image image = Image.from("이미지 입니다");
+    private final Image image = Image.createImage("이미지 입니다");
 
     @Test
     @DisplayName("정원이 0명이라면 예외를 던진다")

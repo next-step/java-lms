@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CourseTest {
 
-    private final Image image = Image.from("이미지 입니다");
+    private final Image image = Image.createImage("이미지 입니다");
     private Session sessionOne;
     private Session sessionTwo;
 
@@ -90,7 +90,7 @@ class CourseTest {
 
     @Test
     @DisplayName("과정에 강의가 잘 합성되는지 확인")
-    void 객체_생성_테스트() {
+    void 과정에_강의가_잘_합성되는지_확인() {
         Course course = Course.createCourse(List.of(sessionOne)).concat(List.of(sessionTwo));
 
         assertAll(

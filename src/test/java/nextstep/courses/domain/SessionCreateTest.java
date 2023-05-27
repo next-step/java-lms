@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("session 생성 테스트")
 class SessionCreateTest {
-    private final Image image = Image.from("이미지 입니다");
+    private final Image image = Image.createImage("이미지 입니다");
 
     @BeforeEach
     public void initialize() {

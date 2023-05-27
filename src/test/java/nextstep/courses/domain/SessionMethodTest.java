@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("session 기능 테스트")
 class SessionMethodTest {
-    private final Image image = Image.from("이미지 입니다");
-    private final Image changeImage = Image.from("반갑습니다");
+    private final Image image = Image.createImage("이미지 입니다");
+    private final Image changeImage = Image.createImage("반갑습니다");
 
     @BeforeEach
     public void initialize() {
@@ -308,7 +308,7 @@ class SessionMethodTest {
                         LocalDate.now(),
                         LocalDate.now(),
                         LocalDate.now(),
-                        Image.from("이미지 입니다"),
+                        Image.createImage("이미지 입니다"),
                         SessionState.PREPARING,
                         SessionState.END_OF_RECRUITMENT,
                         SessionType.FREE,
@@ -321,7 +321,7 @@ class SessionMethodTest {
                         LocalDate.now(),
                         LocalDate.now(),
                         LocalDate.now(),
-                        Image.from("이미지 입니다"),
+                        Image.createImage("이미지 입니다"),
                         SessionState.PROGRESSING,
                         SessionState.END_OF_RECRUITMENT,
                         SessionType.FREE,
@@ -334,7 +334,7 @@ class SessionMethodTest {
                         LocalDate.now(),
                         LocalDate.now(),
                         LocalDate.now(),
-                        Image.from("이미지 입니다"),
+                        Image.createImage("이미지 입니다"),
                         SessionState.FINISH,
                         SessionState.END_OF_RECRUITMENT,
                         SessionType.FREE,

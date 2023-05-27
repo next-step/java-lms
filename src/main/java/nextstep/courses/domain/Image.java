@@ -27,7 +27,7 @@ public class Image {
         return new Image(id, path);
     }
 
-    public static Image from(String path) {
+    public static Image createImage(String path) {
         long id = SimpleIdGenerator.getAndIncrement(Image.class);
         return new Image(id, path);
     }
@@ -37,11 +37,11 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return id == image.id && Objects.equals(path, image.path);
+        return id == image.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, path);
+        return Objects.hash(id);
     }
 }
