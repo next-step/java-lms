@@ -38,6 +38,7 @@ public class Session {
             int numberOfStudentsRegistered
     ) {
 
+        LocalDate now = LocalDate.now();
         validateId(id);
         validateFixedNumberOfStudent(fixedNumberOfStudent);
         validateRegisterLecturer(lecturer);
@@ -45,10 +46,10 @@ public class Session {
         validateSessionState(sessionState);
         validateRecruitmentState(recruitmentState);
         validateNumberOfStudentsRegistered(numberOfStudentsRegistered, fixedNumberOfStudent);
-        validateDate(startDate, endDate);
+        validateDate(startDate, endDate, now);
 
         if (Objects.isNull(sessionState)) {
-            sessionState = getCurrentSessionState(startDate, endDate);
+            sessionState = getCurrentSessionState(now, startDate, endDate);
         }
 
         this.id = id;
@@ -153,8 +154,8 @@ public class Session {
         return this;
     }
 
-    public Session syncSession() {
-        this.sessionState = getCurrentSessionState(startDate, endDate);
+    public Session syncSession(LocalDate now) {
+        this.sessionState = getCurrentSessionState(now, startDate, endDate);
         return this;
     }
 
@@ -173,7 +174,6 @@ public class Session {
             throw new IllegalArgumentException("모집 상태에 값이 입력 되지 않았어요 :(");
         }
 
-
         if (!recruitmentState.isAllowRecruitmentState()) {
             throw new IllegalArgumentException("모집 상태는 모집중/모집 종료만 가능해요 :( 제공된 모집 상태 [" + recruitmentState + "]");
         }
@@ -181,23 +181,22 @@ public class Session {
 
     private void validateRegisterRecruitmentState(SessionState recruitmentState) {
 
-        if (recruitmentState.isAvailableRecruitment()) {
-            throw new IllegalStateException("강의 모집중일때만 수강 신청이 가능해요 :(");
+        if (!recruitmentState.isAvailableRecruitment()) {
+            throw new IllegalStateException("모집중인 강의가 아니에요 :(");
         }
     }
 
-    private SessionState getCurrentSessionState(LocalDate startDate, LocalDate endDate) {
-        LocalDate now = LocalDate.now();
+    private SessionState getCurrentSessionState(LocalDate now, LocalDate startDate, LocalDate endDate) {
 
         if (now.isAfter(endDate)) {
             return SessionState.FINISH;
         }
 
-        if (now.isAfter(startDate)) {
-            return SessionState.PROGRESSING;
+        if (now.isBefore(startDate)) {
+            return SessionState.PREPARING;
         }
 
-        return SessionState.PREPARING;
+        return SessionState.PROGRESSING;
     }
 
     private int increaseRegister() {
@@ -251,12 +250,11 @@ public class Session {
 
     private void validateNumberOfStudentsRegistered(int numberOfStudentsRegistered, int fixedNumberOfStudent) {
         if (numberOfStudentsRegistered > fixedNumberOfStudent) {
-            throw new IllegalArgumentException("등록인원이 정원을 초과 할 수 없어요 :( [정원 : " + fixedNumberOfStudent + "명 ]");
+            throw new IllegalStateException("등록인원이 정원을 초과 할 수 없어요 :( [정원 : " + fixedNumberOfStudent + "명 ]");
         }
     }
 
-    private void validateDate(LocalDate startDate, LocalDate endDate) {
-        LocalDate now = LocalDate.now();
+    private void validateDate(LocalDate startDate, LocalDate endDate, LocalDate now) {
 
         if (Objects.isNull(startDate)) {
             throw new IllegalArgumentException("강의 시작일이 등록되질 않았어요 :(");
@@ -286,5 +284,9 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(id, fixedNumberOfStudent, lecturer, sessionState, recruitmentState, sessionType);
+    }
+
+    public int getNumberOfStudentsRegistered() {
+        return numberOfStudentsRegistered;
     }
 }

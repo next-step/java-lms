@@ -71,7 +71,7 @@ class SessionMethodTest {
                 SessionType.FREE
         );
 
-        Session createdSession = Session.of(
+        Session compareSession = Session.of(
                 1,
                 1,
                 NsUserTest.JAVAJIGI,
@@ -87,8 +87,8 @@ class SessionMethodTest {
 
         assertAll(
                 () -> assertThat(session).isNotNull(),
-                () -> assertThat(createdSession).isNotNull(),
-                () -> assertThat(session.changeImage(changeImage, NsUserTest.JAVAJIGI)).isEqualTo(createdSession)
+                () -> assertThat(compareSession).isNotNull(),
+                () -> assertThat(session.changeImage(changeImage, NsUserTest.JAVAJIGI)).isEqualTo(compareSession)
         );
     }
 
@@ -135,7 +135,7 @@ class SessionMethodTest {
                 SessionType.FREE
         );
 
-        Session createdSession = Session.of(
+        Session compareSession = Session.of(
                 1,
                 1,
                 NsUserTest.JAVAJIGI,
@@ -151,8 +151,8 @@ class SessionMethodTest {
 
         assertAll(
                 () -> assertThat(session).isNotNull(),
-                () -> assertThat(createdSession).isNotNull(),
-                () -> assertThat(session.changeSessionType(SessionType.PAID, NsUserTest.JAVAJIGI)).isEqualTo(createdSession)
+                () -> assertThat(compareSession).isNotNull(),
+                () -> assertThat(session.changeSessionType(SessionType.PAID, NsUserTest.JAVAJIGI)).isEqualTo(compareSession)
         );
     }
 
@@ -201,7 +201,7 @@ class SessionMethodTest {
                 SessionType.FREE
         );
 
-        Session createdSession = Session.of(
+        Session compareSession = Session.of(
                 1,
                 1,
                 NsUserTest.JAVAJIGI,
@@ -217,9 +217,131 @@ class SessionMethodTest {
 
         assertAll(
                 () -> assertThat(session).isNotNull(),
-                () -> assertThat(createdSession).isNotNull(),
-                () -> assertThat(session.changeRecruitmentState(SessionState.RECRUITING, NsUserTest.JAVAJIGI)).isEqualTo(createdSession)
+                () -> assertThat(compareSession).isNotNull(),
+                () -> assertThat(session.changeRecruitmentState(SessionState.RECRUITING, NsUserTest.JAVAJIGI)).isEqualTo(compareSession)
         );
     }
+
+
+    @ParameterizedTest(name = "수강 신청 실패 테스트 - {index}. {4} 정원 - [1] 수강생 - [{0}] 모집 상태 - [{2}]")
+    @MethodSource("수강_신청_실패")
+    @DisplayName("수강 신청 실패 테스트")
+    void 수강_신청_실패_테스트(int numberOfStudentRegistered, String expectedExceptionMessage, SessionState recruitmentState, Class<? extends Throwable> expectedType, String testDisplayName) {
+        Session session = Session.of(
+                1,
+                1,
+                NsUserTest.JAVAJIGI,
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                image,
+                SessionState.PREPARING,
+                recruitmentState,
+                SessionType.FREE,
+                numberOfStudentRegistered
+        );
+
+
+        Throwable exception = Assertions.assertThrows(expectedType, () -> session.registerLecture());
+        assertEquals(expectedExceptionMessage, exception.getMessage());
+    }
+
+    static Stream<Arguments> 수강_신청_실패() {
+        return Stream.of(
+                Arguments.arguments(1, "등록인원이 정원을 초과 할 수 없어요 :( [정원 : 1명 ]", SessionState.RECRUITING, IllegalStateException.class, "수강인원이 정원을 초과한다면 예외를 던진다"),
+                Arguments.arguments(0, "모집중인 강의가 아니에요 :(", SessionState.END_OF_RECRUITMENT, IllegalStateException.class, "모집상태가 모집중이 아니라면 예외를 던진다")
+        );
+    }
+
+    @Test
+    @DisplayName("수강 신청 성공")
+    void 수강_신청_성공_테스트() {
+        Session session = Session.createSession(
+                1,
+                NsUserTest.JAVAJIGI,
+                LocalDate.now(),
+                LocalDate.now(),
+                image,
+                SessionState.PREPARING,
+                SessionState.RECRUITING,
+                SessionType.FREE
+        );
+
+        assertAll(
+                () -> assertThat(session).isNotNull(),
+                () -> assertThat(session.registerLecture().getNumberOfStudentsRegistered()).isEqualTo(1)
+        );
+    }
+
+
+    @ParameterizedTest(name = "수강_상태_동기화 - {index}. {4} now - [{0}] startDate - [{0}] endDate - [{2}]")
+    @MethodSource("수강_상태_동기화")
+    @DisplayName("수강 상태 동기화")
+    void 수강_상태_동기화_테스트(LocalDate now, LocalDate startDate, LocalDate endDate, Session compareSession) {
+        Session session = Session.of(
+                1,
+                1,
+                NsUserTest.JAVAJIGI,
+                LocalDate.now(),
+                startDate,
+                endDate,
+                image,
+                SessionState.PREPARING,
+                SessionState.END_OF_RECRUITMENT,
+                SessionType.FREE,
+                0
+        );
+
+
+        assertAll(
+                () -> assertThat(session).isNotNull(),
+                () -> assertThat(session.syncSession(now)).isEqualTo(compareSession)
+        );
+    }
+
+    static Stream<Arguments> 수강_상태_동기화() {
+        return Stream.of(
+                Arguments.arguments(LocalDate.now(), LocalDate.now().plusDays(3), LocalDate.now().plusDays(4), Session.of(
+                        1,
+                        1,
+                        NsUserTest.JAVAJIGI,
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        Image.from("이미지 입니다"),
+                        SessionState.PREPARING,
+                        SessionState.END_OF_RECRUITMENT,
+                        SessionType.FREE,
+                        0
+                )),
+                Arguments.arguments(LocalDate.now().plusDays(1), LocalDate.now(), LocalDate.now().plusDays(3), Session.of(
+                        1,
+                        1,
+                        NsUserTest.JAVAJIGI,
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        Image.from("이미지 입니다"),
+                        SessionState.PROGRESSING,
+                        SessionState.END_OF_RECRUITMENT,
+                        SessionType.FREE,
+                        0
+                )),
+                Arguments.arguments(LocalDate.now().plusDays(3), LocalDate.now(), LocalDate.now(), Session.of(
+                        1,
+                        1,
+                        NsUserTest.JAVAJIGI,
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        Image.from("이미지 입니다"),
+                        SessionState.FINISH,
+                        SessionState.END_OF_RECRUITMENT,
+                        SessionType.FREE,
+                        0
+                ))
+        );
+    }
+
 
 }

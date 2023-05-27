@@ -150,7 +150,7 @@ class SessionCreateExceptionTest {
     @ValueSource(ints = {10, 20, 30, 40})
     void 수강_등록인원이_정원을_초과할_경우(int numberOfStudentsRegistered) {
 
-        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> Session.of(
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> Session.of(
                 1,
                 1,
                 NsUserTest.JAVAJIGI,
