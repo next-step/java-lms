@@ -50,6 +50,10 @@ public class Session {
         this.endAt = endAt;
     }
 
+    public Session(long id, Long course_id, int generation, String cover_image, SessionType type, SessionStatus status, int head_count, LocalDateTime start_at, LocalDateTime end_at) {
+        this(id, new Course(course_id), generation, cover_image, type, status, head_count, start_at, end_at);
+    }
+
     private static void validDate(LocalDateTime startAt, LocalDateTime endAt) {
         if (startAt.isAfter(endAt)) {
             throw new IllegalArgumentException(DATE_ERROR_MESSAGE);
@@ -59,7 +63,6 @@ public class Session {
     public Course getCourse() {
         return course;
     }
-
     public int getGeneration() {
         return generation;
     }
