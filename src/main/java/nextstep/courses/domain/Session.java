@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session {
-
+    private static final int INCREMENTAL_VALUE = 1;
     private static final int DEFAULT_NUMBER_OF_STUDENTS_REGISTERED = 0;
     private static final SessionState DEFAULT_SESSION_STATE = SessionState.PREPARING;
 
@@ -81,6 +81,23 @@ public class Session {
 
         this.sessionType = sessionType;
         return this;
+    }
+
+    public Session registerForALecture() {
+        int register = increaseRegister();
+        validateNumberOfStudentsRegistered(register, fixedNumberOfStudent);
+
+        if (sessionState.isAvailableRecruitment()) {
+            throw new IllegalStateException("강의 준비중일때만 수강 신청이 가능해요 :(");
+        }
+
+        this.numberOfStudentsRegistered = register;
+
+        return this;
+    }
+
+    private int increaseRegister() {
+        return Math.addExact(numberOfStudentsRegistered, INCREMENTAL_VALUE);
     }
 
     private void validateOwner(NsUser requestUser) {
