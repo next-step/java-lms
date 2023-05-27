@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.users.exception.UnAuthorizedUserException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -8,9 +8,9 @@ import java.util.Objects;
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
-    private Long id;
+    private NsUserId userId;
 
-    private String userId;
+    private UserCode userCode;
 
     private String password;
 
@@ -22,16 +22,9 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
-    public NsUser() {
-    }
-
-    public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
-    }
-
-    public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public NsUser(NsUserId userId, UserCode userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
+        this.userCode = userCode;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -39,16 +32,32 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
+    public static NsUser of(Long id, String userCode, String password, String name, String email) {
+        return new NsUser(new NsUserId(id), new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
     }
 
-    public String getUserId() {
-        return userId;
+    public static NsUser of(Long userId, String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new NsUser(
+                new NsUserId(userId),
+                new UserCode(userCode),
+                password,
+                name,
+                email,
+                createdAt,
+                updatedAt
+        );
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
+    public NsUserId getUserId() {
+        return this.userId;
+    }
+
+    public UserCode getUserCode() {
+        return this.userCode;
+    }
+
+    public NsUser updateCode(String userCode) {
+        this.userCode = new UserCode(userCode);
         return this;
     }
 
@@ -79,25 +88,25 @@ public class NsUser {
         return this;
     }
 
-    public void update(NsUser loginUser, NsUser target) {
-        if (!matchUserId(loginUser.getUserId())) {
-            throw new UnAuthorizedException();
+    public void update(UserCode userCode, NsUser target) {
+        if (!matchUserId(userCode)) {
+            throw new UnAuthorizedUserException();
         }
 
         if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedUserException();
         }
 
         this.name = target.name;
         this.email = target.email;
     }
 
-    public boolean matchUser(NsUser target) {
-        return matchUserId(target.getUserId());
+    public boolean matchUser(UserCode userCode) {
+        return this.userCode.equals(userCode);
     }
 
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
+    private boolean matchUserId(UserCode userCode) {
+        return this.userId.equals(userCode.value());
     }
 
     public boolean matchPassword(String targetPassword) {
@@ -120,8 +129,9 @@ public class NsUser {
     @Override
     public String toString() {
         return "NsUser{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
+                "userId=" + userId +
+                ", userCode=" + userCode +
+                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", createdAt=" + createdAt +
@@ -129,7 +139,24 @@ public class NsUser {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NsUser other = (NsUser) o;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId.value());
+    }
+
     private static class GuestNsUser extends NsUser {
+        public GuestNsUser() {
+            super(new NsUserId(0L), new UserCode("GUEST"), "password", "GUEST", "GUEST@GUEST.com", LocalDateTime.now(), LocalDateTime.now());
+        }
+
         @Override
         public boolean isGuestUser() {
             return true;

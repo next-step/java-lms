@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.fixture.TestFixture;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ public class AnswerTest {
         TestFixture.fixtureInit();
     }
 
-    @DisplayName("삭제 메시지 전송 시 : 삭제된다")
+    @DisplayName("Soft-delete 방식으로 삭제가 처리된다")
     @Test
     public void deleteAnswer() {
         //given
@@ -37,30 +36,26 @@ public class AnswerTest {
         );
     }
 
-    @DisplayName("글 작성자를 판별해서 boolean 타입의 값을 반환한다")
+    @DisplayName("글 작성자와 일치여부를 반환해야한다")
     @Test
     public void isOwner() {
         //given
         Answer answer = TestFixture.SANJIGI_ANSWER;
         NsUser user = TestFixture.SANJIGI;
-
         //when
-        boolean isOwner = answer.isOwner(user);
-
         //then
         assertAll("글작성자 판단 로직을 검증한다",
-                () -> assertThat(isOwner)
-                        .as("글 작성자에 대하여 판별시 True 리턴된다")
+                () -> assertThat(answer.isOwner(user.getUserCode()))
+                        .as("글 작성자와 일치함을 검증한다")
                         .isTrue(),
                 () -> assertThat(answer.toString())
-                        .as("글 작성자의 Name 이 동일함을 확인한다")
+                        .as("글 작성자의 Name 데이터가 동일해야한다")
                         .contains(user.getName())
         );
     }
 
-    @DisplayName("Answer 에 다른 Question 연관관계를 맺으면 연관관계가 업데이트된다")
-    //@Test
-    @Disabled
+    @DisplayName("Answer 는 하나의 Question 을 갖는다")
+    @Test
     public void relateToQuestion() {
         //given
         Answer answer = TestFixture.BADAJIGI_ANSWER;
@@ -72,7 +67,7 @@ public class AnswerTest {
         //then
         assertThat(answer.toString())
                 .as("이 부분도 테스트가 되어야할꺼같은데.. 테스트할수 있는 방법이 떠오르지 않습니다!")
-                .contains("");
+                .contains(answer.getQuestionId().toString());
     }
 
     @DisplayName("DeleteHistory 객체를 생성해서 반환해야 한다")
@@ -85,7 +80,11 @@ public class AnswerTest {
         DeleteHistory deleteHistory = answer.toDeleteHistory();
 
         //then
-        assertThat(deleteHistory.toString()).as("").contains(answer.getId().toString());
-        assertThat(deleteHistory.toString()).as("").contains(answer.getContent());
+        assertThat(deleteHistory.toString())
+                .as("")
+                .contains(answer.getAnswerId().toString());
+        assertThat(deleteHistory.toString())
+                .as("")
+                .contains(answer.getAnswerId().toString());
     }
 }

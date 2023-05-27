@@ -1,27 +1,26 @@
 package nextstep.courses.domain;
 
+import nextstep.common.CommunicationTerm;
+
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+@CommunicationTerm("과정")
 public class Course {
-    private Long id;
-
+    private final Set<Term> terms = new HashSet<>();
+    private CourseId courseId;
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
-
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Course(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.courseId = new CourseId(courseId);
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
@@ -33,7 +32,7 @@ public class Course {
     }
 
     public Long getCreatorId() {
-        return creatorId;
+        return this.creatorId;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -43,11 +42,21 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
+                "courseId=" + courseId +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean includeSession(Session session) {
+        return this.terms
+                .stream()
+                .anyMatch(term -> term.includeSession(session));
+    }
+
+    public void establishTerm(Term term) {
+        this.terms.add(term);
     }
 }
