@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Course {
     private Long id;
@@ -8,6 +11,7 @@ public class Course {
     private String title;
 
     private Long creatorId;
+    private Set<Session> sessions = new HashSet<>();
 
     private LocalDateTime createdAt;
 
@@ -49,5 +53,26 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addSession(Session session) {
+        if (isDuplicateSession(session)) {
+            throw new IllegalArgumentException("이미 등록된 강의입니다.");
+        }
+        sessions.add(session);
+    }
+
+    private boolean isDuplicateSession(Session session) {
+        return sessions.stream()
+                .map(Session::getId)
+                .anyMatch(id -> id.equals(session.getId()));
+    }
+
+    public Set<Session> getSessions() {
+        return Collections.unmodifiableSet(sessions);
+    }
+
+    public void deleteSession(Session session) {
+        sessions.remove(session);
     }
 }
