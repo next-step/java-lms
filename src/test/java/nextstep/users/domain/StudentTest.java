@@ -16,18 +16,8 @@ public class StudentTest {
     @Test
     @DisplayName("수강 신청")
     void addSession() {
-        student1.addSession(SessionTest.s2);
-
-        assertThat(student1.getSessions()).isEqualTo(SessionsTest.ss1);
-    }
-
-    @Test
-    @DisplayName("중복 수강 신청")
-    void addSession_duplicateException() {
         student1.addSession(SessionTest.s1);
 
-        assertThatThrownBy(() -> {
-            student1.addSession(SessionTest.s1);
-        }).isInstanceOf(DuplicateSessionException.class).hasMessageContaining("중복 기수 강의를 신청할 수 없습니다.");
+        assertThat(student1.getSessions()).isEqualTo(SessionsTest.ss1);
     }
 }

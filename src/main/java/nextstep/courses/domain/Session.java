@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.SessionCostTypeException;
 import nextstep.courses.SessionStateNotOnException;
 import nextstep.courses.StudentMaxException;
 import nextstep.users.domain.Student;
@@ -32,8 +33,26 @@ public class Session {
         this.students = new Students();
     }
 
-    public static Session of(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        return new Session(title, cover, cardinalNumber, cost, state, maxUser);
+    public static Session ofFreeSession(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        validateFreeCost(cost);
+        return new FreeSession(title, cover, cardinalNumber, cost, state, maxUser);
+    }
+
+    public static Session ofPaySession(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        validatePayCost(cost);
+        return new PaySession(title, cover, cardinalNumber, cost, state, maxUser);
+    }
+
+    private static void validateFreeCost(Cost cost) {
+        if (cost == Cost.PAY) {
+            throw new SessionCostTypeException("무료 강의가 아닙니다.");
+        }
+    }
+
+    private static void validatePayCost(Cost cost) {
+        if (cost == Cost.FREE) {
+            throw new SessionCostTypeException("유료 강의가 아닙니다.");
+        }
     }
 
     public Students addStudent(Student student) {
@@ -43,7 +62,7 @@ public class Session {
         return students;
     }
 
-    public void validateState() {
+    private void validateState() {
         if (state == State.READY) {
             throw new SessionStateNotOnException("준비 중인 강의입니다.");
         }
@@ -52,7 +71,7 @@ public class Session {
         }
     }
 
-    public void validateStudentsNumber() {
+    private void validateStudentsNumber() {
         if (students.size() == maxUser) {
             throw new StudentMaxException("정원 초과하여 신청할 수 없습니다.");
         }

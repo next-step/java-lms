@@ -25,9 +25,9 @@ public class CourseTest {
     @Test
     @DisplayName("동일 강의 등록 불가")
     void addSession_exception() {
-        c1.addSession(SessionTest.s1);
+        c1.addSession(SessionTest.s2);
         assertThatThrownBy(() -> {
-            c1.addSession(SessionTest.s1);
+            c1.addSession(SessionTest.s2);
         }).isInstanceOf(DuplicateSessionException.class).hasMessageContaining("동일 강의 등록 불가합니다.");
     }
 }
