@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS delete_history
 DROP TABLE IF EXISTS image;
 CREATE TABLE IF NOT EXISTS image
 (
-    image_id        BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    image_link      varchar(255),
+    image_id      BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    image_url      varchar(255),
     primary key (image_id)
 );

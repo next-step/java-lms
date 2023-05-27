@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+@Repository("ImageRepository")
 public class ImageRepositoryJdbcImpl implements ImageRepository {
     private final JdbcTemplate jdbc;
 
@@ -28,7 +28,7 @@ public class ImageRepositoryJdbcImpl implements ImageRepository {
         jdbcInsert.withTableName("image").usingGeneratedKeyColumns("image_id");
 
         Map<String, Object> params = new HashMap<>() {{
-            this.put("image_link", image.getImageUrl());
+            this.put("image_url", image.getImageUrl());
         }};
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
