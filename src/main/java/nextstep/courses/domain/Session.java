@@ -64,18 +64,63 @@ public class Session {
         this.recruitmentState = recruitmentState;
     }
 
-    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionState recruitmentState, SessionType sessionType) {
+    public static Session createSession(
+            int fixedNumberOfStudent,
+            NsUser lecturer,
+            LocalDate startDate,
+            LocalDate endDate,
+            Image imageCover,
+            SessionState sessionState,
+            SessionState recruitmentState,
+            SessionType sessionType
+    ) {
         long id = SimpleIdGenerator.getAndIncrement(Session.class);
 
-        if (Objects.isNull(recruitmentState)) {
-            recruitmentState = DEFAULT_SESSION_STATE;
+        if (Objects.isNull(sessionState)) {
+            sessionState = DEFAULT_SESSION_STATE;
         }
 
-        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, recruitmentState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+        return new Session(
+                id,
+                fixedNumberOfStudent,
+                lecturer,
+                LocalDate.now(),
+                startDate,
+                endDate,
+                imageCover,
+                sessionState,
+                recruitmentState,
+                sessionType,
+                DEFAULT_NUMBER_OF_STUDENTS_REGISTERED
+        );
     }
 
-    public static Session of(int id, int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionState recruitmentState, SessionType sessionType) {
-        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, recruitmentState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+    public static Session of(
+            int id,
+            int fixedNumberOfStudent,
+            NsUser lecturer,
+            LocalDate registrationDate,
+            LocalDate startDate,
+            LocalDate endDate,
+            Image imageCover,
+            SessionState sessionState,
+            SessionState recruitmentState,
+            SessionType sessionType,
+            int numberOfStudentsRegistered
+    ) {
+        return new Session(
+                id,
+                fixedNumberOfStudent,
+                lecturer,
+                registrationDate,
+                startDate,
+                endDate,
+                imageCover,
+                sessionState,
+                recruitmentState,
+                sessionType,
+                numberOfStudentsRegistered
+        );
     }
 
     public Session changeImage(Image imageCover, NsUser requestUser) {
@@ -121,7 +166,7 @@ public class Session {
     private void validateRecruitmentState(SessionState recruitmentState) {
 
         if (Objects.isNull(recruitmentState)) {
-            throw new IllegalStateException("모집 상태에 값이 입력 되지 않았어요 :(");
+            throw new IllegalArgumentException("모집 상태에 값이 입력 되지 않았어요 :(");
         }
 
 
@@ -217,7 +262,7 @@ public class Session {
             throw new IllegalArgumentException("강의 종료일이 등록되질 않았어요 :(");
         }
 
-        if (now.isBefore(startDate)) {
+        if (startDate.isBefore(now)) {
             throw new IllegalArgumentException("강의 시작 날짜가 현재 날짜보다 앞일 수 없습니다 :(");
         }
 

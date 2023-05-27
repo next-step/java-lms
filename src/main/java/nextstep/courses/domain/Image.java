@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
 
+import java.util.Objects;
+
 public class Image {
     private final long id;
     private String path;
@@ -30,4 +32,16 @@ public class Image {
         return new Image(id, path);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return id == image.id && Objects.equals(path, image.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, path);
+    }
 }
