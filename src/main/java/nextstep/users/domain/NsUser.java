@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.users.exception.UnAuthorizedUserException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -90,11 +90,11 @@ public class NsUser {
 
     public void update(UserCode userCode, NsUser target) {
         if (!matchUserId(userCode)) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedUserException();
         }
 
         if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedUserException();
         }
 
         this.name = target.name;
