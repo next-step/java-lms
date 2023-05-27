@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class QnaServiceTest {
+public class QnaDeleteServiceTest {
     @Mock
     private QuestionRepository questionRepository;
 
@@ -45,10 +45,10 @@ public class QnaServiceTest {
     public void delete_성공() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
-        assertThat(question.isDeleted()).isFalse();
+        assertThat(question.isQuestionDeleted()).isFalse();
         qnADeleteService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
-        assertThat(question.isDeleted()).isTrue();
+        assertThat(question.isQuestionDeleted()).isTrue();
         verifyDeleteHistories();
     }
 
@@ -67,7 +67,7 @@ public class QnaServiceTest {
 
         qnADeleteService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
-        assertThat(question.isDeleted()).isTrue();
+        assertThat(question.isQuestionDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
         verifyDeleteHistories();
     }

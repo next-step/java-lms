@@ -17,6 +17,7 @@ public class DeleteHistory {
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
+
     }
 
     public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
@@ -35,6 +36,10 @@ public class DeleteHistory {
                 contentType == that.contentType &&
                 Objects.equals(contentId, that.contentId) &&
                 Objects.equals(deletedBy, that.deletedBy);
+    }
+
+    public boolean isEmpty() {
+        return this.equals(new DeleteHistory());
     }
 
     @Override

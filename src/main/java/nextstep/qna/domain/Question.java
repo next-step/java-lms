@@ -1,11 +1,14 @@
 package nextstep.qna.domain;
 
+import static java.time.LocalDateTime.now;
+import static nextstep.qna.domain.ContentType.QUESTION;
+
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
 
@@ -21,11 +24,11 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate = now();
 
     private LocalDateTime updatedDate;
 
@@ -49,22 +52,18 @@ public class Question {
     }
 
     public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
+        this.answers = answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public boolean isNotOwner(NsUser loginUser) {
+    private boolean isNotOwner(NsUser loginUser) {
         return !this.writer.equals(loginUser);
     }
 
     public void deleteQuestion(NsUser loginUser) {
         checkIsNotOwner(loginUser);
         checkHasOthersAnswer(loginUser);
-        this.deleted = true;
+        deleteQuestion();
+        deleteAnswers();
     }
 
     private void checkIsNotOwner(NsUser loginUser) {
@@ -74,25 +73,31 @@ public class Question {
     }
 
     private void checkHasOthersAnswer(NsUser loginUser) {
-        for (Answer answer : this.answers) {
-            if(!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException(OTHER_USER_ANSWER_MSG);
-            }
+        if(this.answers.hasOtherUserAnswer(loginUser)) {
+            throw new CannotDeleteException(OTHER_USER_ANSWER_MSG);
         }
     }
 
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public List<DeleteHistory> deleteHistories() {
+        if(!isQuestionDeleted()) return new ArrayList<>();
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(QUESTION, this.id, this.writer, now()));
+        deleteHistories.addAll(this.answers.deleteHistories());
+        return deleteHistories;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+
+    private void deleteQuestion() {
+        this.deleted = true;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    private void deleteAnswers() {
+        this.answers.deleteAll();
+    }
+
+    public boolean isQuestionDeleted() {
+        return deleted && this.answers.immutableGet()
+                .stream().allMatch(Answer::isDeleted);
     }
 
     @Override
