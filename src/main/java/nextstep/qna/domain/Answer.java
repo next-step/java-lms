@@ -47,11 +47,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -59,6 +54,8 @@ public class Answer {
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
+
+    public boolean isNotOwner(NsUser writer) { return !isOwner(writer); }
 
     public NsUser getWriter() {
         return writer;
@@ -75,5 +72,22 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public DeleteHistory delete(NsUser loginUser) {
+        validateToDelete(loginUser);
+
+        deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
+    private void validateToDelete(NsUser loginUser) {
+        if (deleted) {
+            throw new NotFoundException();
+        }
+
+        if (isNotOwner(loginUser)) {
+            throw new UnAuthorizedException("답변의 작성자가 아닙니다.");
+        }
     }
 }
