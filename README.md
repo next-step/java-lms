@@ -14,7 +14,7 @@
 ## 코드리뷰 빠른이동
 
 - step1 : https://github.com/next-step/java-lms/pull/37
-- step2 : null
+- step2 : https://github.com/next-step/java-lms/pull/81
 - step3 : null
 - step4 : null
 
