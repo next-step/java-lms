@@ -55,13 +55,14 @@ public class JdbcSessionRepository implements SessionRepository {
         sql.append("WHERE id = ? ");
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
-                new SessionPeriod(toLocalDateTime(rs.getTimestamp(6)), toLocalDateTime(rs.getTimestamp(7))),
+                new SessionPeriod(toLocalDateTime(rs.getTimestamp(7)), toLocalDateTime(rs.getTimestamp(8))),
                 new SessionCoverImage(rs.getString(3)),
                 SessionStatus.find(rs.getString(4)),
+                SessionEnrollmentStatus.find(rs.getString(5)),
                 SessionPayment.find(rs.getString(2)),
-                new SessionUsers(rs.getInt(5)),
-                toLocalDateTime(rs.getTimestamp(8)),
-                toLocalDateTime(rs.getTimestamp(9))
+                new SessionUsers(rs.getInt(6)),
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10))
         );
         return jdbcTemplate.queryForObject(sql.toString(), rowMapper, id);
     }
@@ -70,11 +71,11 @@ public class JdbcSessionRepository implements SessionRepository {
     public void saveSessionUser(Session session) {
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO SESSION_NS_USER ");
-        sql.append("(session_id, user_id, created_at, updated_at) ");
-        sql.append("values (?,?,?,?) ");
+        sql.append("(session_id, approval_status, user_id, created_at, updated_at) ");
+        sql.append("values (?,?,?,?,?) ");
 
         for (SessionUser sessionUser : session.getSessionUsers().getSessionUsers()) {
-            jdbcTemplate.update(sql.toString(), sessionUser.getSession().getId(), sessionUser.getNsUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
+            jdbcTemplate.update(sql.toString(), sessionUser.getSession().getId(), sessionUser.getApprovalStatus().getApprovalStatus(), sessionUser.getNsUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
         }
     }
 
@@ -88,12 +89,23 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
                 findById(rs.getLong(2)),
+                ApprovalStatus.find(rs.getString(3)),
                 new NsUser(),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5))
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6))
         );
 
         return jdbcTemplate.query(sql.toString(), rowMapper, sessionId);
+    }
+
+    @Override
+    public void updateSessionApprovalStatus(SessionUser sessionUser) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE SESSION_NS_USER ");
+        sql.append("SET approval_status = ?, updated_at = ? ");
+        sql.append("WHERE id = ? ");
+
+        jdbcTemplate.update(sql.toString(), sessionUser.getApprovalStatus(), sessionUser.getUpdatedAt(), sessionUser.getId());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

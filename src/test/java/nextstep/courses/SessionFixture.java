@@ -18,8 +18,7 @@ public class SessionFixture {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime updatedAt = LocalDateTime.now();
 
-        Session session = new Session(1L, sessionPeriod, sessionCoverImage, SessionStatus.OPEN, SessionPayment.FREE, sessionUsers, createdAt, updatedAt);
-        session.enrollSession(NsUserTest.JAVAJIGI);
+        Session session = new Session(1L, sessionPeriod, sessionCoverImage, SessionStatus.OPEN, SessionEnrollmentStatus.ENROLLMENT, SessionPayment.FREE, sessionUsers, createdAt, updatedAt);
         return session;
     }
 
@@ -35,7 +34,7 @@ public class SessionFixture {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime updatedAt = LocalDateTime.now();
 
-        Session session = new Session(2L, sessionPeriod, sessionCoverImage, SessionStatus.OPEN, SessionPayment.PAID, sessionUser, createdAt, updatedAt);
+        Session session = new Session(2L, sessionPeriod, sessionCoverImage, SessionStatus.OPEN, SessionEnrollmentStatus.ENROLLMENT, SessionPayment.PAID, sessionUser, createdAt, updatedAt);
         session.enrollSession(NsUserTest.JAVAJIGI);
         session.enrollSession(NsUserTest.SANJIGI);
         return session;

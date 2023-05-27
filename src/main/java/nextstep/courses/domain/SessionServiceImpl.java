@@ -34,11 +34,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public long enroll(long id, List<String> users) {
         Session session = findById(id);
-        List<NsUser> nsUsers = users.stream()
-                .map(jdbcUserRepository::findByUserId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+        List<NsUser> nsUsers = jdbcUserRepository.findByUserIds(users);
         nsUsers.forEach(session::enrollSession);
         return sessionRepository.save(session);
     }

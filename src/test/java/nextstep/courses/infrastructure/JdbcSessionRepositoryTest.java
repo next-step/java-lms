@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ class JdbcSessionRepositoryTest {
         long count = sessionRepository.save(session);
         LOGGER.debug("Session count: {}", count);
         assertThat(count).isEqualTo(1);
+        session.enrollSession(NsUserTest.JAVAJIGI);
         sessionRepository.saveSessionUser(session);
         List<SessionUser> sessionUsers = sessionRepository.findAllBySessionId(session.getId());
         LOGGER.debug("sessionUsers: {}", sessionUsers);
