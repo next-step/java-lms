@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
 import nextstep.qna.NotFoundException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -28,9 +30,6 @@ public class Session {
 
   private List<Registration> registrations = new ArrayList<>();
 
-  public Session() {
-  }
-
   public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
       SessionType sessionType, int maxRecruitment) {
     this(null, title, startDate, endDate, img, sessionType, maxRecruitment);
@@ -46,11 +45,11 @@ public class Session {
     this.img = img;
     validateSessionType(sessionType);
     this.sessionType = sessionType;
-    isEnrollmentFull(maxRecruitment);
+    validateMaxRecruitment(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
   }
 
-  private void isEnrollmentFull(int maxRecruitment) {
+  private void validateMaxRecruitment(int maxRecruitment) {
     if (maxRecruitment < 1) {
       throw new IllegalArgumentException();
     }
@@ -72,33 +71,27 @@ public class Session {
     }
   }
 
-  public void register(Registration registration) {
-    validateRegister();
+  public void register(NsUser nsUser, Registration registration) {
+    validateRegister(nsUser);
     registrations.add(registration);
   }
 
-  private void validateRegister() {
+  private void validateRegister(NsUser nsUser) {
     if (isRegistrationOpened()) {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
-    if (isRegistrationBefore()) {
-      registerClose();
-      throw new RegistrationNotOpenedException("강의 신청기간이 아닙니다.");
+    if (isRegistrationFulled()) {
+      throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
     }
 
-    if (isRegistrationFulled()) {
-      registerClose();
-      throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
+    if (hasNsUser(nsUser)) {
+      throw new DuplicatedException("강의는 중복으로 신청할 수 없습니다.");
     }
   }
 
   private boolean isRegistrationOpened() {
     return !sessionStatus.equals(SessionStatus.RECRUITMENT);
-  }
-
-  private boolean isRegistrationBefore() {
-    return LocalDateTime.now().isAfter(endDate);
   }
 
   private boolean isRegistrationFulled() {
@@ -109,6 +102,12 @@ public class Session {
     return registerCount >= maxRecruitment;
   }
 
+  public boolean hasNsUser(NsUser nsUser) {
+    return registrations.stream()
+        .filter(registration -> !registration.isCanceled())
+        .anyMatch(registration -> registration.hasNsUser(nsUser));
+  }
+
   public void registerOpen() {
     sessionStatus = SessionStatus.RECRUITMENT;
   }
@@ -116,7 +115,6 @@ public class Session {
   public void registerClose() {
     sessionStatus = SessionStatus.COMPLETION;
   }
-
 
   @Override
   public boolean equals(Object o) {
