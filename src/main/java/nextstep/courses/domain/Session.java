@@ -20,8 +20,8 @@ public class Session {
         attendees.add(user);
     }
 
-    public String name() {
-        return information.name();
+    public String title() {
+        return information.title();
     }
 
     private void validateStatus() {

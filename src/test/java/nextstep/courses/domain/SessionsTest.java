@@ -18,6 +18,6 @@ class SessionsTest {
         // when, then
         assertThatThrownBy(() -> sessions.add(session))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 등록된 강의입니다: " + session.name());
+                .hasMessage("이미 등록된 강의입니다: " + session.title());
     }
 }

@@ -8,7 +8,7 @@ public class Sessions {
 
     public void add(Session session) {
         if(sessions.contains(session)) {
-            throw new IllegalArgumentException("이미 등록된 강의입니다: " + session.name());
+            throw new IllegalArgumentException("이미 등록된 강의입니다: " + session.title());
         }
         sessions.add(session);
     }
