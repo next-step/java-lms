@@ -44,7 +44,7 @@ public class Course {
         return createdAt;
     }
 
-    public Session getNThSession(int generation) {
+    public Session getSessionOfSession(int generation) {
         validateGeneration(generation);
         return sessions.get(generation - 1);
     }

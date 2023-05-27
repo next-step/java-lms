@@ -38,7 +38,7 @@ class CourseTest {
     @DisplayName("기수에 따른 강의를 조회 할 수 있다.")
     @Test
     void name() {
-        Session firstSession = course.getNThSession(1);
+        Session firstSession = course.getSessionOfSession(1);
 
         assertThat(firstSession).isEqualTo(this.firstSession);
     }
@@ -48,14 +48,14 @@ class CourseTest {
     @ValueSource(ints = {1, 2, 3})
     void name3(int generation) {
         assertThatNoException()
-                .isThrownBy(() -> course.getNThSession(generation));
+                .isThrownBy(() -> course.getSessionOfSession(generation));
     }
 
     @DisplayName("기수에 따른 강의를 조회시 음수나 0으로 조회 하면 예외가 발생한다.")
     @ParameterizedTest
     @ValueSource(ints = {-2, -1, 0})
     void name1(int generation) {
-        assertThatThrownBy(() -> course.getNThSession(generation))
+        assertThatThrownBy(() -> course.getSessionOfSession(generation))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -64,7 +64,7 @@ class CourseTest {
     void name2() {
         int generation = 4;
 
-        assertThatThrownBy(() -> course.getNThSession(generation))
+        assertThatThrownBy(() -> course.getSessionOfSession(generation))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
