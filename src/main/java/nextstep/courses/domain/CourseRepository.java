@@ -9,4 +9,6 @@ public interface CourseRepository {
     Optional<Course> findById(Long id);
 
     List<Course> findAll();
+
+    void deleteAll();
 }

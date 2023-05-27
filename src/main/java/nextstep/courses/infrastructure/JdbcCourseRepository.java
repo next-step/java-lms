@@ -4,6 +4,7 @@ import nextstep.common.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseId;
 import nextstep.courses.domain.CourseRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -37,14 +38,23 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Optional<Course> findById(Long courseId) {
-        String sql = "select course_id, title, creator_id, created_at, updated_at from course where course_id = ?";
-
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), courseId));
+        String sql = "select * from course where course_id = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), courseId));
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Course> findAll() {
         return jdbcTemplate.query("SELECT * from course", rowMapper());
+    }
+
+    @Override
+    public void deleteAll() {
+        //jdbcTemplate.update("delete from course");
+        jdbcTemplate.update("TRUNCATE table course");
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
