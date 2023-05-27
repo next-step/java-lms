@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUserId;
 
 public class Enroll {
-    private EnrolmentId enrolmentId;
+    private EnrollId enrollId;
     private final SessionId sessionId;
     private final NsUserId nsUserId;
 

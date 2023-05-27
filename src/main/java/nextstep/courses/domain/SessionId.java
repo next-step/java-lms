@@ -1,8 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.utils.DomainId;
+
 import java.util.Objects;
 
-public class SessionId {
+public class SessionId implements DomainId {
     private Long sessionId;
 
     public SessionId() {
@@ -12,7 +14,8 @@ public class SessionId {
         this.sessionId = sessionId;
     }
 
-    public Long getSessionId() {
+    @Override
+    public Long value() {
         return sessionId;
     }
 
