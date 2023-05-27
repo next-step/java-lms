@@ -44,7 +44,7 @@ public class Question {
     }
 
     public Long getId() {
-        return this.questionId.getQuestionId();
+        return this.questionId.value();
     }
 
     public QuestionId getQuestionId() {

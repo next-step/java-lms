@@ -1,15 +1,18 @@
 package nextstep.qna.domain;
 
+import nextstep.utils.DomainId;
+
 import java.util.Objects;
 
-public class QuestionId {
+public class QuestionId implements DomainId {
     private final Long questionId;
 
     public QuestionId(Long questionId) {
         this.questionId = questionId;
     }
 
-    public Long getQuestionId() {
+    @Override
+    public Long value() {
         return questionId;
     }
 
