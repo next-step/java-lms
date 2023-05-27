@@ -16,7 +16,7 @@ public class SessionTest {
   @BeforeEach
   public void setUp() {
     LocalDateTime currentTime = LocalDateTime.now();
-    session = new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com");
+    session = new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
   }
 
   @Test
@@ -40,7 +40,7 @@ public class SessionTest {
   @Test
   @DisplayName("수강 신청이 모집중이 아닐 시 IllegalArgumentException throw")
   public void 준비중_시_신청() {
-    session.changeSessionStatus(SessionStatus.ENDING);
+    session.ending();
 
     assertThatThrownBy(() -> session.processEnrollment(NextStepUserTest.JAVAJIGI))
             .isInstanceOf(IllegalArgumentException.class)

@@ -20,6 +20,10 @@ public class SessionCoverUrl {
     return new SessionCoverUrl(coverUrl);
   }
 
+  public String getSessionCoverUrl() {
+    return sessionCoverUrl;
+  }
+
   private void validateUrl(String url) {
     if (!isUrlFormat(url)) {
       throw new IllegalArgumentException(ILLEGAL_URL_MESSAGE + url);
