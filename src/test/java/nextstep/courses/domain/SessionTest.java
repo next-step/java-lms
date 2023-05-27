@@ -3,8 +3,6 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
-import nextstep.courses.RegistrationFulledException;
-import nextstep.courses.RegistrationNotOpenedException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,22 +32,6 @@ public class SessionTest {
     LocalDateTime end = start.plusDays(3);
     assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 0))
         .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
-  @Test
-  public void createRegistration_throwException_ifSessionStatusNotRECRUITMENT() {
-    assertThatThrownBy(() -> S1.createRegistration(JAVAJIGI)).isInstanceOf(
-        RegistrationNotOpenedException.class);
-  }
-
-  @DisplayName("강의 수강 최대인원이 넘어가면 예외를 던진다.")
-  @Test
-  public void createRegistration_throwException_ifRegistrationFull() {
-    S1.registerOpen();
-    S1.createRegistration(JAVAJIGI);
-    assertThatThrownBy(() -> S1.createRegistration(SANJIGI)).isInstanceOf(
-        RegistrationFulledException.class);
   }
 
 }

@@ -7,7 +7,6 @@ import java.util.Objects;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
 import nextstep.qna.NotFoundException;
-import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -73,30 +72,36 @@ public class Session {
     }
   }
 
-  public Registration createRegistration(NsUser nsUser) {
+  public void register(Registration registration) {
     validateRegister();
-
-    Registration registration = new Registration(this, nsUser);
     registrations.add(registration);
-    return registration;
   }
 
   private void validateRegister() {
-    if (isRegisterOpen()) {
+    if (isRegistrationOpened()) {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
-    if (isRecruitmentFull()) {
+    if (isRegistrationBefore()) {
+      registerClose();
+      throw new RegistrationNotOpenedException("강의 신청기간이 아닙니다.");
+    }
+
+    if (isRegistrationFulled()) {
       registerClose();
       throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
     }
   }
 
-  private boolean isRegisterOpen() {
+  private boolean isRegistrationOpened() {
     return !sessionStatus.equals(SessionStatus.RECRUITMENT);
   }
 
-  private boolean isRecruitmentFull() {
+  private boolean isRegistrationBefore() {
+    return LocalDateTime.now().isAfter(endDate);
+  }
+
+  private boolean isRegistrationFulled() {
     int registerCount = (int) registrations.stream()
         .filter(registration -> !registration.isCanceled())
         .count();
