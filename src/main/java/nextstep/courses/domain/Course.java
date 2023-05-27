@@ -2,12 +2,16 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
+import nextstep.sessions.domain.Sessions;
+
 public class Course {
     private Long id;
 
     private String title;
 
     private Long creatorId;
+
+    private final Sessions sessions = new Sessions();
 
     private LocalDateTime createdAt;
 
