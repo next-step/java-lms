@@ -11,18 +11,17 @@ public class Session {
     private static final int DEFAULT_NUMBER_OF_STUDENTS_REGISTERED = 0;
     private static final SessionState DEFAULT_SESSION_STATE = SessionState.PREPARING;
 
-
     private final long id;
     private final int fixedNumberOfStudent;
     private final NsUser lecturer;
     private final LocalDateTime registrationDate;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
 
     private Image imageCover;
     private SessionState sessionState;
     private SessionType sessionType;
     private int numberOfStudentsRegistered;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     private Session(
             long id,
@@ -66,6 +65,33 @@ public class Session {
         }
 
         return new Session(id, fixedNumberOfStudent, lecturer, LocalDateTime.now(), startDate, endDate, imageCover, sessionState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+    }
+
+    public Session changeImage(Image imageCover, NsUser requestUser) {
+        validateOwner(requestUser);
+        this.imageCover = imageCover;
+        return this;
+    }
+
+    public Session changeSessionType(SessionType sessionType, NsUser requestUser) {
+        validateOwner(requestUser);
+        if (sessionState.isAvailableManualChangeSession()) {
+            throw new IllegalStateException("강의 타입 변경은 강의 준비중일때만 가능해요 :(");
+        }
+
+        this.sessionType = sessionType;
+        return this;
+    }
+
+    private void validateOwner(NsUser requestUser) {
+
+        if (Objects.isNull(requestUser)) {
+            throw new IllegalArgumentException("요청가 입력되질 않았어요 :( ");
+        }
+
+        if (lecturer != requestUser) {
+            throw new IllegalArgumentException("강의를 등록하신분이 아니에요 :(");
+        }
     }
 
     private void validateId(long id) {
