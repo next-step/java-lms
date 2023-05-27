@@ -151,4 +151,27 @@
 - 도메인 의사소통 용어 정리를 위해 일부 `@CommunicationTerm` 어노테이션을 추가하였습니다
     - 해당 어노테이션은 기능은 없고 단순히 커뮤니케이션 용어를 소스코드에 주석처럼 달아놓기 위함입니다
     - 단점은 `@CommunicationTerm(도메인 용어 정리)` 와 `Term.claas(과정의 기수 정보를 갖는 도메인 클래스)` 사이에는 연관이 전혀 없지만 키워드가 겹쳐서 이부분을 회피할수 있는
-      방법을 고민하고 있습니다  
+      방법을 고민하고 있습니다
+
+
+
+
+
+## Step3
+
+### DB 연결 정보 정리
+
+
+
+- mariadb
+```
+FQDN : jdbc:mariadb://localhost:11010/lms
+username/password : dong/dong
+```
+
+- h2
+```
+FQDN : jdbc:h2:tcp://localhost:1521/lms
+CONSOLE : http://localhost:8081
+username/password : sa/(공백, 아무것도 넣지않음)
+```
