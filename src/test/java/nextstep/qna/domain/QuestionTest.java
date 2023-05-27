@@ -13,7 +13,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    void delete_성공() throws CannotDeleteException {
+    void delete_성공() {
         assertThat(Q1.isDeleted()).isFalse();
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
@@ -27,7 +27,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_성공_질문자_답변자_같음() throws CannotDeleteException {
+    void delete_성공_질문자_답변자_같음() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
@@ -45,7 +45,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_실패_질문자_답변자_다름() throws CannotDeleteException {
+    void delete_실패_질문자_답변자_다름() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
