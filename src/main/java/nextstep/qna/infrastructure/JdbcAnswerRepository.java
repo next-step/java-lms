@@ -10,6 +10,11 @@ import java.util.List;
 public class JdbcAnswerRepository implements AnswerRepository {
     @Override
     public List<Answer> findByQuestion(Long questionId) {
-        return null;
+        throw new RuntimeException();
+    }
+
+    @Override
+    public Answer save(Answer answer) {
+        throw new RuntimeException();
     }
 }
