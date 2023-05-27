@@ -11,14 +11,21 @@ import org.springframework.stereotype.Repository;
 @Repository("sessionEnrollmentEntityRepository")
 public class SessionEnrollmentEntityRepository {
 
+  private static final String SESSION_ENROLLMENT = "session_enrollment";
+  private static final String ID = "id";
+  private static final String SESSION_ID = "session_id";
+  private static final String USER_ID = "user_id";
+  private static final String CREATED_AT = "created_at";
+  private static final String UPDATED_AT = "updated_at";
+
   private final JdbcTemplate jdbcTemplate;
   private final SimpleJdbcInsert simpleJdbcInsert;
 
   public SessionEnrollmentEntityRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
     this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-        .withTableName("session_enrollment")
-        .usingGeneratedKeyColumns("id");
+        .withTableName(SESSION_ENROLLMENT)
+        .usingGeneratedKeyColumns(ID);
   }
 
 
@@ -29,9 +36,10 @@ public class SessionEnrollmentEntityRepository {
 
   public Long save(Long sessionId, Long userId) {
     SqlParameterSource parameters = new MapSqlParameterSource()
-        .addValue("session_id", sessionId)
-        .addValue("user_id", userId)
-        .addValue("created_at", LocalDateTime.now());
+        .addValue(SESSION_ID, sessionId)
+        .addValue(USER_ID, userId)
+        .addValue(CREATED_AT, LocalDateTime.now())
+        .addValue(UPDATED_AT, LocalDateTime.now());
 
     return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
   }
