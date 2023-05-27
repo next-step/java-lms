@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Session {
@@ -14,24 +14,26 @@ public class Session {
     private final long id;
     private final int fixedNumberOfStudent;
     private final NsUser lecturer;
-    private final LocalDateTime registrationDate;
+    private final LocalDate registrationDate;
 
     private Image imageCover;
     private SessionState sessionState;
+    private SessionState recruitmentState;
     private SessionType sessionType;
     private int numberOfStudentsRegistered;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private Session(
             long id,
             int fixedNumberOfStudent,
             NsUser lecturer,
-            LocalDateTime registrationDate,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            LocalDate registrationDate,
+            LocalDate startDate,
+            LocalDate endDate,
             Image imageCover,
             SessionState sessionState,
+            SessionState recruitmentState,
             SessionType sessionType,
             int numberOfStudentsRegistered
     ) {
@@ -45,6 +47,10 @@ public class Session {
         validateNumberOfStudentsRegistered(numberOfStudentsRegistered, fixedNumberOfStudent);
         validateDate(startDate, endDate);
 
+        if (Objects.isNull(sessionState)) {
+            sessionState = getCurrentSessionState();
+        }
+
         this.id = id;
         this.fixedNumberOfStudent = fixedNumberOfStudent;
         this.lecturer = lecturer;
@@ -55,16 +61,14 @@ public class Session {
         this.sessionState = sessionState;
         this.sessionType = sessionType;
         this.numberOfStudentsRegistered = numberOfStudentsRegistered;
+        this.recruitmentState = recruitmentState;
     }
 
-    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDateTime startDate, LocalDateTime endDate, Image imageCover, SessionState sessionState, SessionType sessionType) {
+    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDate startDate, LocalDate endDate, Image imageCover, SessionState sessionState, SessionType sessionType) {
         long id = SimpleIdGenerator.getAndIncrement(Session.class);
 
-        if (Objects.isNull(sessionState)) {
-            sessionState = DEFAULT_SESSION_STATE;
-        }
 
-        return new Session(id, fixedNumberOfStudent, lecturer, LocalDateTime.now(), startDate, endDate, imageCover, sessionState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
+        return new Session(id, fixedNumberOfStudent, lecturer, LocalDate.now(), startDate, endDate, imageCover, sessionState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
     }
 
     public Session changeImage(Image imageCover, NsUser requestUser) {
@@ -83,17 +87,44 @@ public class Session {
         return this;
     }
 
-    public Session registerForALecture() {
+    public Session registerLecture() {
         int register = increaseRegister();
         validateNumberOfStudentsRegistered(register, fixedNumberOfStudent);
-
-        if (sessionState.isAvailableRecruitment()) {
-            throw new IllegalStateException("강의 준비중일때만 수강 신청이 가능해요 :(");
-        }
+        validateRecruitmentState();
 
         this.numberOfStudentsRegistered = register;
 
         return this;
+    }
+
+    public Session syncSession() {
+        this.sessionState = getCurrentSessionState(startDate, endDate);
+        return this;
+    }
+
+    private void validateRecruitmentState() {
+
+        if (Objects.isNull(recruitmentState)) {
+            throw new IllegalStateException("강의 모집중일때만 수강 신청이 가능해요 :(");
+        }
+
+        if (recruitmentState.isAvailableRecruitment()) {
+            throw new IllegalStateException("강의 모집중일때만 수강 신청이 가능해요 :(");
+        }
+    }
+
+    private SessionState getCurrentSessionState(LocalDate startDate, LocalDate endDate) {
+        LocalDate now = LocalDate.now();
+
+        if (now.isAfter(endDate)) {
+            return SessionState.FINISH;
+        }
+
+        if (now.isAfter(startDate)) {
+            return SessionState.PROGRESSING;
+        }
+
+        return SessionState.PREPARING;
     }
 
     private int increaseRegister() {
@@ -147,8 +178,8 @@ public class Session {
         }
     }
 
-    private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
-        LocalDateTime now = LocalDateTime.now();
+    private void validateDate(LocalDate startDate, LocalDate endDate) {
+        LocalDate now = LocalDate.now();
 
         if (Objects.isNull(startDate)) {
             throw new IllegalArgumentException("강의 시작일이 등록되질 않았어요 :( ");
@@ -158,13 +189,12 @@ public class Session {
             throw new IllegalArgumentException("강의 종료일이 등록되질 않았어요 :( ");
         }
 
-        if (now.toLocalDate().isAfter(startDate.toLocalDate())) {
-            throw new IllegalArgumentException("강의 시작 날짜가 현재 날짜보다 앞일 수 없습니다.");
+        if (now.isBefore(startDate)) {
+            throw new IllegalArgumentException("강의 시작 날짜가 현재 날짜보다 앞일 수 없습니다");
         }
 
-        if (endDate.toLocalDate().isBefore(startDate.toLocalDate())) {
+        if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("강의 종료 날짜가 강의 시작 날짜보다 앞일 수 없습니다.");
         }
     }
-
 }
