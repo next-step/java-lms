@@ -27,7 +27,7 @@ public class SessionInfo {
         return course.getId();
     }
 
-    public void increaseRegisteredUser(int userId) {
+    public void increaseRegisteredUser() {
         if (isFull()) {
             throw new IllegalArgumentException("이미 등록된 강의입니다.");
         }

@@ -79,7 +79,7 @@ public class Session {
         if (!status.isRecruiting()) {
             throw new IllegalStateException("모집 중인 강의만 수강 신청이 가능합니다.");
         }
-        sessionInfo.increaseRegisteredUser(userId);
+        sessionInfo.increaseRegisteredUser();
     }
 
     public int countUsers() {

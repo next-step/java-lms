@@ -21,5 +21,4 @@ public class SessionDate {
     public LocalDate getEndDate() {
         return endDate;
     }
-
 }
