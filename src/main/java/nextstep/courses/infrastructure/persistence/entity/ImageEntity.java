@@ -50,16 +50,6 @@ public class ImageEntity extends BaseTimeEntity {
     return new Image(id, originalFileName, imageType, coverImgUrl);
   }
 
-  @Override
-  public String toString() {
-    return "ImageEntity{" +
-        "id=" + id +
-        ", originalFileName='" + originalFileName + '\'' +
-        ", imageType=" + imageType +
-        ", coverImgUrl=" + coverImgUrl +
-        '}';
-  }
-
 
   public Long getId() {
     return id;

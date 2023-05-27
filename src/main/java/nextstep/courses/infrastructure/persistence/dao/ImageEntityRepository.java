@@ -11,6 +11,13 @@ import org.springframework.stereotype.Repository;
 @Repository("imageEntityRepository")
 public class ImageEntityRepository {
 
+  private static final String ID = "id";
+  private static final String ORIGINAL_FILE_NAME = "original_file_name";
+  private static final String IMAGE_TYPE = "image_type";
+  private static final String COVER_IMG_URL = "cover_img_url";
+  private static final String CREATED_AT = "created_at";
+  private static final String UPDATED_AT = "updated_at";
+
   private final JdbcTemplate jdbcTemplate;
 
   public ImageEntityRepository(JdbcTemplate jdbcTemplate) {
@@ -28,12 +35,12 @@ public class ImageEntityRepository {
 
   private RowMapper<ImageEntity> rowMapper() {
     return (rs, rowNum) -> {
-      Long id = rs.getLong("id");
-      String originalFileName = rs.getString("original_file_name");
-      String imageType = rs.getString("image_type");
-      String coverImgUrl = rs.getString("cover_img_url");
-      LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-      LocalDateTime updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
+      Long id = rs.getLong(ID);
+      String originalFileName = rs.getString(ORIGINAL_FILE_NAME);
+      String imageType = rs.getString(IMAGE_TYPE);
+      String coverImgUrl = rs.getString(COVER_IMG_URL);
+      LocalDateTime createdAt = rs.getTimestamp(CREATED_AT).toLocalDateTime();
+      LocalDateTime updatedAt = rs.getTimestamp(UPDATED_AT).toLocalDateTime();
 
       return new ImageEntity(id, originalFileName, imageType, coverImgUrl, createdAt, updatedAt);
     };
