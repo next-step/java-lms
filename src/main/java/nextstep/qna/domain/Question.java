@@ -11,6 +11,8 @@ public class Question {
 
     private static final String NO_AUTH_MSG = "질문을 삭제할 권한이 없습니다.";
 
+    private static final String OTHER_USER_ANSWER_MSG = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     private Long id;
 
     private String title;
@@ -55,28 +57,29 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public boolean isNotOwner(NsUser nsUser) {
-        return !this.writer.equals(nsUser);
+    public boolean isNotOwner(NsUser loginUser) {
+        return !this.writer.equals(loginUser);
     }
 
-    public void checkIsNotOwner(NsUser nsUser) {
-        if(isNotOwner(nsUser)) {
+    public void deleteQuestion(NsUser loginUser) {
+        checkIsNotOwner(loginUser);
+        checkHasOthersAnswer(loginUser);
+        this.deleted = true;
+    }
+
+    private void checkIsNotOwner(NsUser loginUser) {
+        if(isNotOwner(loginUser)) {
             throw new CannotDeleteException(NO_AUTH_MSG);
         }
     }
 
-    public void deleteQuestion(NsUser nsUser) {
-        checkIsNotOwner(nsUser);
-    }
-
-/*    public boolean hasOtherUserAnswer(NsUser nsUser) {
+    private void checkHasOthersAnswer(NsUser loginUser) {
         for (Answer answer : this.answers) {
-            if (isOwner(nsUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            if(!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException(OTHER_USER_ANSWER_MSG);
             }
         }
-    }*/
-
+    }
 
 
     public Question setDeleted(boolean deleted) {
