@@ -8,15 +8,21 @@ import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+@JdbcTest
 public class JdbcDeleteHistoryRepositoryTest {
 
-    @Autowired
-    private DeleteHistoryRepository deleteHistoryRepository;
+    private final DeleteHistoryRepository deleteHistoryRepository;
+
+    public JdbcDeleteHistoryRepositoryTest(JdbcTemplate jdbcTemplate) {
+        this.deleteHistoryRepository = new JdbcDeleteHistoryRepository(jdbcTemplate);
+    }
 
     @DisplayName("모든 DeleteHistor 를 저장한다")
     @Test
@@ -24,7 +30,7 @@ public class JdbcDeleteHistoryRepositoryTest {
         //given
         Question question = TestFixture.BADAJIGI_QUESTION;
         NsUser user = TestFixture.BADAJIGI;
-        List<DeleteHistory> delete = question.delete(user);
+        List<DeleteHistory> delete = question.delete(user.getUserCode());
         //when
         deleteHistoryRepository.saveAll(delete);
         //then

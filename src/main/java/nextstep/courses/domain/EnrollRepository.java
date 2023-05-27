@@ -5,6 +5,6 @@ import java.util.Optional;
 
 public interface EnrollRepository {
     Enroll save(Enroll enroll);
-    Optional<Enroll> findById(EnrolmentId enrolmentId);
+    Optional<Enroll> findById(EnrollId enrollId);
     List<Enroll> findAll();
 }

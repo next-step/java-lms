@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class UserRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -32,6 +32,6 @@ public class UserRepositoryTest {
     void findByUserId() {
         Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
         assertThat(nsUser.isEmpty()).isFalse();
-        LOGGER.debug("NsUser: {}", nsUser.get());
+        LOG.debug("NsUser: {}", nsUser.get());
     }
 }

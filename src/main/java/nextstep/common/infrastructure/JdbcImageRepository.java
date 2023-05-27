@@ -16,15 +16,15 @@ import java.util.Optional;
 
 @Repository("ImageRepository")
 public class JdbcImageRepository implements ImageRepository {
-    private final JdbcTemplate jdbc;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcImageRepository(DataSource dataSource) {
-        this.jdbc = new JdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public Image save(Image image) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbc);
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("image").usingGeneratedKeyColumns("image_id");
 
         Map<String, Object> params = new HashMap<>() {{
@@ -38,14 +38,14 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public Optional<Image> findByImageId(Long imageId) {
-        return jdbc.query("SELECT * FROM image WHERE image_id = ?", rowMapper(),imageId)
+        return jdbcTemplate.query("SELECT * FROM image WHERE image_id = ?", rowMapper(),imageId)
                 .stream()
                 .findAny();
     }
 
     @Override
     public List<Image> findAll() {
-        return jdbc.query("SELECT * FROM IMAGE", rowMapper());
+        return jdbcTemplate.query("SELECT * FROM IMAGE", rowMapper());
     }
 
     private RowMapper<Image> rowMapper() {
