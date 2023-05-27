@@ -32,4 +32,9 @@ public class SessionFixtureBuilder {
     public Session build() {
         return new Session(title, creatorId, course, startDate, endDate, coverImageUrl, payType, status, maxNumberOfUsers, numberOfUsers);
     }
+
+    public SessionFixtureBuilder withCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
+        return this;
+    }
 }

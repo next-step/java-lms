@@ -51,4 +51,21 @@ class SessionTest {
         assertThat(coverImageUrl).isEqualTo(new SessionFixtureBuilder().coverImageUrl);
     }
 
+    @Test
+    @DisplayName("이미지 정보가 URL 형식이 아닐 때 예외")
+    void coverImageException() {
+        // given
+        String coverImageUrl = "testCover.png";
+
+
+        // when
+        assertThatThrownBy(() -> {
+            Session session = new SessionFixtureBuilder()
+                    .withCoverImageUrl(coverImageUrl)
+                    .build();
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("유효하지 않은 URL 입니다.");
+    }
+
 }
