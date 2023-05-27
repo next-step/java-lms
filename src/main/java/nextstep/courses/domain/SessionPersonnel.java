@@ -14,13 +14,20 @@ public class SessionPersonnel {
     }
 
     public void register(NsUser user) {
+        validRegister(user);
+        users.add(user);
+    }
+
+    private void validRegister(NsUser user) {
         if (capacity <= users.size()) {
             throw new RuntimeException("최대 인원을 초과할 수 없습니다.");
         }
         if (users.contains(user)) {
             throw new RuntimeException("중복 유저가 존재합니다.");
         }
-        users.add(user);
+        if (user.isGuestUser()) {
+            throw new RuntimeException("Guest는 신청을 할 수 없습니다.");
+        }
     }
 
 }

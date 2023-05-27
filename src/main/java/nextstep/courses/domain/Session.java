@@ -41,14 +41,18 @@ public class Session {
     }
 
     public Long register(NsUser user, LocalDateTime registerTime) {
+        validRegister(registerTime);
+        sessionPersonnel.register(user);
+        return id;
+    }
+
+    private void validRegister(LocalDateTime registerTime) {
         if (registerTime.isBefore(startTime) || registerTime.isAfter(endTime)) {
             throw new RuntimeException("강의 신청 기간이 아닙니다.");
         }
         if (!sessionStatus.equals(SessionStatus.Recruiting)) {
             throw new IllegalStateException("모집중이 아닙니다.");
         }
-        sessionPersonnel.register(user);
-        return id;
     }
 
 }
