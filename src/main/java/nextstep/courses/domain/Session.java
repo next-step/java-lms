@@ -27,6 +27,38 @@ public class Session {
         return information.title();
     }
 
+    public SessionStatus status() {
+        return status;
+    }
+
+    public long price() {
+        return information.price();
+    }
+
+    public SessionChargeType chargeType() {
+        return information.chargeType();
+    }
+
+    public LocalDate startDate() {
+        return information.startDate();
+    }
+
+    public LocalDate endDate() {
+        return information.endDate();
+    }
+
+    public int maxNumberOfAttendees() {
+        return attendees.maxNumberOfAttendees();
+    }
+
+    public byte[] coverImage() {
+        return information.coverImage();
+    }
+
+    public long id() {
+        return id;
+    }
+
     private void validateStatus() {
         if(!status.canRecruit()) {
             throw new IllegalArgumentException("강의는 모집중일 때 신청 가능합니다: " + status);

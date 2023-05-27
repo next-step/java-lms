@@ -35,6 +35,10 @@ public class SessionAttendees {
         attendees.add(user);
     }
 
+    public int maxNumberOfAttendees() {
+        return maxNumberOfAttendees;
+    }
+
     private void validateMaxNumberOfAttendees() {
         if(attendees.size() >= maxNumberOfAttendees) {
             throw new IllegalArgumentException("수강 가능 인원이 다 찼습니다: " + maxNumberOfAttendees);

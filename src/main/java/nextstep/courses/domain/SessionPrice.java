@@ -20,6 +20,10 @@ public class SessionPrice {
         this.type = type;
     }
 
+    public long price() {
+        return price;
+    }
+
     public SessionChargeType type() {
         return type;
     }

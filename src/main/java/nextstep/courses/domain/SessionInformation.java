@@ -16,6 +16,26 @@ public class SessionInformation {
         this.date = date;
     }
 
+    public long price() {
+        return price.price();
+    }
+
+    public SessionChargeType chargeType() {
+        return price.type();
+    }
+
+    public LocalDate startDate() {
+        return date.startDate();
+    }
+
+    public LocalDate endDate() {
+        return date.endDate();
+    }
+
+    public byte[] coverImage() {
+        return image.image();
+    }
+
     public String title() {
         return title.title();
     }
