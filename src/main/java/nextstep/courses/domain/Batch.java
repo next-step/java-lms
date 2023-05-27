@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.courses.DuplicatedException;
 
 public class Batch {
@@ -13,7 +13,7 @@ public class Batch {
 
   private Course course;
 
-  private Set<Session> sessions = new HashSet<>();
+  private List<Session> sessions = new ArrayList<>();
 
   private Long creatorId;
 
