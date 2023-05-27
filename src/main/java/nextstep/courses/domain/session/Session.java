@@ -1,20 +1,17 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import nextstep.courses.CannotEnrollException;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.user.User;
 
 public class Session {
 
     private final Long id;
 
-    private final LocalDateTime startDate;
+    private final SessionDuration sessionDuration;
 
-    private final LocalDateTime endDate;
-
-    private final String coverImagePath;
+    private final CoverImage coverImage;
 
     private final PriceType priceType;
 
@@ -22,27 +19,26 @@ public class Session {
 
     private final Long maximumCapacity;
 
-    private final List<NsUser> users;
+    private final List<User> users;
 
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String coverImagePath,
-        PriceType priceType, Status status, Long maximumCapacity, List<NsUser> users) {
+    public Session(Long id, SessionDuration sessionDuration, CoverImage coverImage,
+        PriceType priceType, Status status, Long maximumCapacity, List<User> users) {
         this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImagePath = coverImagePath;
+        this.sessionDuration = sessionDuration;
+        this.coverImage = coverImage;
         this.priceType = priceType;
         this.status = status;
         this.maximumCapacity = maximumCapacity;
         this.users = users;
     }
 
-    public static Session of(Long id, LocalDateTime start, LocalDateTime end, String coverImagePath,
-        PriceType priceType, Status status, Long maximumCapacity, List<NsUser> users) {
-        return new Session(id, start, end, coverImagePath, priceType, status, maximumCapacity,
+    public static Session of(Long id, SessionDuration sessionDuration, CoverImage coverImagePath,
+        PriceType priceType, Status status, Long maximumCapacity, List<User> users) {
+        return new Session(id, sessionDuration, coverImagePath, priceType, status, maximumCapacity,
             users);
     }
 
-    public void enroll(NsUser user) throws CannotEnrollException {
+    public void enroll(User user) throws CannotEnrollException {
         if (isNotCurrentlyEnrolling()) {
             throw new CannotEnrollException("모집중인 강의가 아닙니다 : " + status.description());
         }
@@ -52,7 +48,7 @@ public class Session {
         users.add(user);
     }
 
-    public boolean isEnrolled(NsUser user) {
+    public boolean isEnrolled(User user) {
         return users.contains(user);
     }
 
@@ -65,18 +61,15 @@ public class Session {
             return false;
         }
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(startDate,
-            session.startDate) && Objects.equals(endDate, session.endDate)
-            && Objects.equals(coverImagePath, session.coverImagePath)
-            && Objects.equals(priceType, session.priceType) && Objects.equals(
-            status, session.status) && Objects.equals(maximumCapacity,
-            session.maximumCapacity) && Objects.equals(users, session.users);
+        return Objects.equals(id, session.id) && Objects.equals(sessionDuration,
+            session.sessionDuration) && Objects.equals(coverImage, session.coverImage)
+            && priceType == session.priceType && status == session.status && Objects.equals(
+            maximumCapacity, session.maximumCapacity) && Objects.equals(users, session.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, startDate, endDate, coverImagePath, priceType, status,
-            maximumCapacity,
+        return Objects.hash(id, sessionDuration, coverImage, priceType, status, maximumCapacity,
             users);
     }
 
@@ -91,11 +84,9 @@ public class Session {
     public static class Builder {
         private Long id;
 
-        private LocalDateTime startDate;
+        private SessionDuration sessionDuration;
 
-        private LocalDateTime endDate;
-
-        private String coverImagePath;
+        private CoverImage coverImagePath;
 
         private PriceType priceType;
 
@@ -103,7 +94,7 @@ public class Session {
 
         private Long maximumCapacity;
 
-        private List<NsUser> users;
+        private List<User> users;
 
         public Builder() {}
 
@@ -112,17 +103,12 @@ public class Session {
             return this;
         }
 
-        public Builder startDate(LocalDateTime startDate) {
-            this.startDate = startDate;
+        public Builder sessionDuration(SessionDuration sessionDuration) {
+            this.sessionDuration = sessionDuration;
             return this;
         }
 
-        public Builder endDate(LocalDateTime endDate) {
-            this.endDate = endDate;
-            return this;
-        }
-
-        public Builder coverImagePath(String coverImagePath) {
+        public Builder coverImagePath(CoverImage coverImagePath) {
             this.coverImagePath = coverImagePath;
             return this;
         }
@@ -142,13 +128,13 @@ public class Session {
             return this;
         }
 
-        public Builder users(List<NsUser> users) {
+        public Builder users(List<User> users) {
             this.users = users;
             return this;
         }
 
         public Session build() {
-            return new Session(id, startDate, endDate, coverImagePath, priceType, status, maximumCapacity, users);
+            return new Session(id, sessionDuration, coverImagePath, priceType, status, maximumCapacity, users);
         }
     }
 }
