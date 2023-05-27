@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.common.CommunicationTerm;
+import nextstep.utils.CommunicationTerm;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -8,10 +8,11 @@ import java.util.Set;
 
 @CommunicationTerm("과정")
 public class Course {
-    private final Set<Term> terms = new HashSet<>();
+
     private CourseId courseId;
     private String title;
     private Long creatorId;
+    private Set<Term> terms = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

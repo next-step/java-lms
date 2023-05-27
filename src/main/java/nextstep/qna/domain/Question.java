@@ -5,22 +5,34 @@ import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Question {
-    private final List<Answer> answers = new ArrayList<>();
-    private final LocalDateTime createdDate = LocalDateTime.now();
+
     private QuestionId questionId;
     private String title;
     private String contents;
     private NsUser writer;
     private boolean deleted = false;
+    private List<Answer> answers = new ArrayList<>();
     private LocalDateTime updatedDate;
+    @NotNull
+    private LocalDateTime createdDate;
 
-    public Question() {
+
+    public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, List<Answer> answers, LocalDateTime updatedDate, LocalDateTime createdDate) {
+        this.questionId = questionId;
+        this.title = title;
+        this.contents = contents;
+        this.writer = writer;
+        this.deleted = deleted;
+        this.answers = answers;
+        this.updatedDate = updatedDate;
+        this.createdDate = createdDate;
     }
 
     public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, LocalDateTime updatedDate) {
@@ -30,6 +42,7 @@ public class Question {
         this.writer = writer;
         this.deleted = deleted;
         this.updatedDate = updatedDate;
+        this.createdDate = LocalDateTime.now();
     }
 
     public static Question of(Long questionId, NsUser writer, String title, String contents) {
@@ -113,5 +126,29 @@ public class Question {
 
     public boolean isRelated(Answer answer) {
         return this.answers.contains(answer);
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getContents() {
+        return this.contents;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public NsUser getWriter() {
+        return this.writer;
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
     }
 }

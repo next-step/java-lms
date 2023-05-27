@@ -1,54 +1,60 @@
--- H2 DB
+-- mariadb
+CREATE DATABASE IF NOT EXISTS `lms` DEFAULT CHARACTER SET utf8mb4;
+USE `lms`;
+
 DROP TABLE IF EXISTS course;
 CREATE TABLE IF NOT EXISTS course
 (
-    course_id         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    id         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
     title      varchar(255) not null,
     creator_id bigint       not null,
     created_at timestamp    not null,
     updated_at timestamp,
-    primary key (course_id)
-);
+    primary key (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS ns_user;
 CREATE TABLE IF NOT EXISTS ns_user
 (
-    user_id         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    user_code    varchar(20) not null,
+    id         BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    user_id    varchar(20) not null,
     password   varchar(20) not null,
     name       varchar(20) not null,
     email      varchar(50),
-    created_at timestamp not null default now(),
+    created_at timestamp   not null,
     updated_at timestamp,
-    primary key (user_id)
-);
+    primary key (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS question;
 CREATE TABLE IF NOT EXISTS question
 (
-    question_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    writer_id  bigint,
-    title      varchar(100) not null,
-    contents   clob,
-    deleted    boolean      not null,
-    created_at timestamp not null default now(),
+    id         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    created_at timestamp    not null,
     updated_at timestamp,
-    primary key (question_id)
-);
-
+    contents   LONGTEXT,
+    deleted    boolean      not null,
+    title      varchar(100) not null,
+    writer_id  bigint,
+    primary key (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS answer;
 CREATE TABLE IF NOT EXISTS answer
 (
-    answer_id          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    id          BIGINT    NOT NULL AUTO_INCREMENT COMMENT 'ID',
     created_at  timestamp not null,
     updated_at  timestamp,
-    contents    clob,
+    contents    LONGTEXT,
     deleted     boolean   not null,
     question_id bigint,
     writer_id   bigint,
-    primary key (answer_id)
-);
+    primary key (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS delete_history;
 CREATE TABLE IF NOT EXISTS delete_history
@@ -59,12 +65,14 @@ CREATE TABLE IF NOT EXISTS delete_history
     created_date  timestamp,
     deleted_by_id bigint,
     primary key (id)
-);
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS image;
 CREATE TABLE IF NOT EXISTS image
 (
-    image_id      BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    image_url      varchar(255),
+    image_id   BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    image_link varchar(255),
     primary key (image_id)
-);
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
