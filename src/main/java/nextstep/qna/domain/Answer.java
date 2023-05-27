@@ -71,7 +71,7 @@ public class Answer {
 
     public void delete(NsUser writer) throws CannotDeleteException {
         if (!isOwner(writer)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("Owner가 아닙니다.");
         }
 
         deleted = true;
