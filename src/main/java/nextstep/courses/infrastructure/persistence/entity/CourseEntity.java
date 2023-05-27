@@ -68,17 +68,12 @@ public class CourseEntity extends BaseTimeEntity {
     return createdAt;
   }
 
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
   public Course toDomain() {
     return new Course(id, title, creatorId, generation, createdAt, updatedAt);
   }
 
-  @Override
-  public String toString() {
-    return "CourseEntity{" +
-        "id=" + id +
-        ", title='" + title + '\'' +
-        ", creatorId=" + creatorId +
-        ", generation='" + generation + '\'' +
-        '}';
-  }
 }
