@@ -3,8 +3,9 @@ package nextstep.courses.domain;
 import nextstep.utils.CommunicationTerm;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @CommunicationTerm("과정")
 public class Course {
@@ -12,7 +13,7 @@ public class Course {
     private CourseId courseId;
     private String title;
     private Long creatorId;
-    private Set<Term> terms = new HashSet<>();
+    private List<Session> sessions = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -51,13 +52,13 @@ public class Course {
                 '}';
     }
 
-    public boolean includeSession(Session session) {
-        return this.terms
+    public boolean isIncludeSession(Session session) {
+        return this.sessions
                 .stream()
-                .anyMatch(term -> term.includeSession(session));
+                .anyMatch(target -> target.equals(session));
     }
 
-    public void establishTerm(Term term) {
-        this.terms.add(term);
+    public void addSessions(Session... sessions) {
+        this.sessions.addAll(Arrays.asList(sessions));
     }
 }

@@ -17,6 +17,8 @@ public class Session {
     private final Date startDate;
     private final Date endDate;
     private Image coverImage;
+    @CommunicationTerm("기수")
+    private Long term;
     private Long price;
     @NotNull
     private SessionStatus status;
@@ -95,5 +97,13 @@ public class Session {
 
     public void adjustStudentCount(Long maxStudentCount) {
         this.maxStudentCount = maxStudentCount;
+    }
+
+    public long getTerm() {
+        return this.term;
+    }
+
+    public void setTerm(long term) {
+        this.term = term;
     }
 }

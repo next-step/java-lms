@@ -20,22 +20,20 @@ public class CourseTest {
     public void courseHasSessions() {
         //given
         Course course = TestFixture.K8S_COURSE;
-        Term term = TestFixture.TERM16;
         Session session1 = TestFixture.LEMON_SESSION;
         Session session2 = TestFixture.MINT_SESSION;
         Session session3 = TestFixture.LIME_SESSION;
         //when
-        term.addSessions(session1, session2);
-        course.establishTerm(term);
+        course.addSessions(session1, session2);
         //then
         assertAll("과정(Course) 여러 개의 강의(Session)를 갖는다",
-                () -> assertThat(course.includeSession(session1))
+                () -> assertThat(course.isIncludeSession(session1))
                         .as("")
                         .isTrue(),
-                () -> assertThat(course.includeSession(session2))
+                () -> assertThat(course.isIncludeSession(session2))
                         .as("")
                         .isTrue(),
-                () -> assertThat(course.includeSession(session3))
+                () -> assertThat(course.isIncludeSession(session3))
                         .as("")
                         .isFalse()
         );

@@ -162,5 +162,17 @@ class SessionTest {
                 .hasMessageContaining("수강 가능한 인원을 초과하였습니다");
     }
 
-
+    @DisplayName("Session 은 Term(기수) 정보를 갖는다")
+    @Test
+    public void term() {
+        //given
+        Session session1 = TestFixture.LIME_SESSION;
+        Session session2 = TestFixture.LEMON_SESSION;
+        //when
+        session1.setTerm(7);
+        session2.setTerm(16);
+        //then
+        assertThat(session1.getTerm()).as("지정한 기수 정보가 일치해야한다").isEqualTo(7);
+        assertThat(session2.getTerm()).as("지정한 기수 정보가 일치해야한다").isEqualTo(16);
+    }
 }
