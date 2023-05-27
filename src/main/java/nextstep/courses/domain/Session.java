@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static nextstep.courses.domain.SessionStatus.OPENED;
-
 public class Session {
 
     private final SessionInfo sessionInfo;
@@ -37,7 +35,7 @@ public class Session {
         if (this.maxNumOfStudent <= this.students.size()) {
             throw new CannotEnrollException("강의 수강 신청 인원이 다 찼습니다!");
         }
-        if (this.status != OPENED) {
+        if (!this.status.canJoin()) {
             throw new CannotEnrollException("모집 중일때만 신청 가능합니다!");
         }
         students.add(student);
