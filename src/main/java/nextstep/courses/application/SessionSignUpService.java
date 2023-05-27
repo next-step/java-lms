@@ -21,12 +21,10 @@ public class SessionSignUpService {
   }
 
   public Long signUp(Long sessionId, String userId) {
-    // 우선 DB에서 session 조회
     Session session = sessionRepository.findById(sessionId);
 
     NsUser user = userRepository.findByUserId(userId);
 
-    // session의 enroll 메서드 호출
     session.enroll(user);
 
     return sessionRepository.saveSignUpHistory(sessionId, user.getId());
