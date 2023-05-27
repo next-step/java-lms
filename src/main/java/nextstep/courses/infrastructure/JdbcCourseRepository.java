@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.common.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseId;
 import nextstep.courses.domain.CourseRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("courseRepository")
@@ -36,14 +38,13 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Optional<Course> findById(Long courseId) {
         String sql = "select course_id, title, creator_id, created_at, updated_at from course where course_id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                new CourseId( rs.getLong(1)),
-                rs.getString(2),
-                rs.getLong(3),
-                null,
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, courseId));
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), courseId));
+    }
+
+    @Override
+    public List<Course> findAll() {
+        return jdbcTemplate.query("SELECT * from course", rowMapper());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -51,5 +52,18 @@ public class JdbcCourseRepository implements CourseRepository {
             return null;
         }
         return timestamp.toLocalDateTime();
+    }
+
+    private RowMapper<Course> rowMapper() {
+        return (resultSet, rowNumber) -> {
+            return new Course(
+                    new CourseId(resultSet.getLong("course_id")),
+                    resultSet.getString("title"),
+                    resultSet.getLong("creator_id"),
+                    null,
+                    toLocalDateTime(resultSet.getTimestamp("created_at")),
+                    toLocalDateTime(resultSet.getTimestamp("updated_at"))
+            );
+        };
     }
 }
