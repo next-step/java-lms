@@ -35,6 +35,10 @@ public class NsUser extends BaseEntity {
         this.userCourseType = userCourseType;
     }
 
+    public boolean checkIsValid(UserCourseType courseType) {
+        return this.userCourseType == courseType;
+    }
+
     public Long getId() {
         return super.getId();
     }

@@ -1,6 +1,8 @@
 package nextstep.courses.domain.ragistration;
 
 import nextstep.common.BaseEntity;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserCourseType;
 
 import java.time.LocalDateTime;
 
@@ -38,15 +40,24 @@ public class Registration extends BaseEntity {
         return registrationType;
     }
 
-    public boolean isReceipt() {
-        return this.registrationType == RegistrationType.RECEIPT;
+    public void approve(NsUser nsUser, UserCourseType courseType) {
+        if (nsUser.checkIsValid(courseType)) {
+            this.registration();
+        }
+
+        this.cancelRegistration();
     }
 
-    public void registration() {
+    public boolean isApprove() {
+        return this.registrationType == RegistrationType.APPROVAL;
+    }
+
+
+    private void registration() {
         this.registrationType = RegistrationType.APPROVAL;
     }
 
-    public void cancelRegistration() {
+    private void cancelRegistration() {
         this.registrationType = RegistrationType.REFUSE;
     }
 }
