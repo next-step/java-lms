@@ -1,18 +1,18 @@
 package nextstep.courses.domain;
 
+import nextstep.utils.DomainId;
+
 import java.util.Objects;
 
-public class CourseId {
+public class CourseId implements DomainId {
     private Long courseId;
-
-    public CourseId() {
-    }
 
     public CourseId(Long courseId) {
         this.courseId = courseId;
     }
 
-    public Long getCourseId() {
+    @Override
+    public Long value() {
         return courseId;
     }
 

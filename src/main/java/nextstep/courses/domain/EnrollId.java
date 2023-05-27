@@ -1,18 +1,21 @@
 package nextstep.courses.domain;
 
+import nextstep.utils.DomainId;
+
 import java.util.Objects;
 
-public class EnrolmentId {
+public class EnrollId implements DomainId {
     private Long enrolmentId;
 
-    public EnrolmentId() {
+    public EnrollId() {
     }
 
-    public EnrolmentId(Long enrolmentId) {
+    public EnrollId(Long enrolmentId) {
         this.enrolmentId = enrolmentId;
     }
 
-    public Long getEnrolmentId() {
+    @Override
+    public Long value() {
         return enrolmentId;
     }
 
@@ -20,7 +23,7 @@ public class EnrolmentId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EnrolmentId other = (EnrolmentId) o;
+        EnrollId other = (EnrollId) o;
         return this.hashCode() == other.hashCode();
     }
 

@@ -45,7 +45,7 @@ public class AnswerTest {
         //when
         //then
         assertAll("글작성자 판단 로직을 검증한다",
-                () -> assertThat(answer.isOwner(user))
+                () -> assertThat(answer.isOwner(user.getUserCode()))
                         .as("글 작성자와 일치함을 검증한다")
                         .isTrue(),
                 () -> assertThat(answer.toString())

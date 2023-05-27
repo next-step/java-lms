@@ -1,43 +1,38 @@
 package nextstep.users.domain;
 
-
-import nextstep.utils.DomainId;
+import nextstep.utils.DomainCode;
 
 import java.util.Objects;
 
-public class NsUserId implements DomainId {
-    private Long nsUserId = 0L;
+public class UserCode implements DomainCode {
+    private final String userCode;
 
-
-    public NsUserId() {
-    }
-
-    public NsUserId(Long nsUserId) {
-        this.nsUserId = nsUserId;
+    public UserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     @Override
-    public Long value() {
-        return nsUserId;
+    public String value() {
+        return this.userCode;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NsUserId other = (NsUserId) o;
+        UserCode other = (UserCode) o;
         return this.hashCode() == other.hashCode();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nsUserId);
+        return Objects.hash(userCode);
     }
 
     @Override
     public String toString() {
-        return "NsUserId{" +
-                "nsUserId=" + nsUserId +
+        return "UserCode{" +
+                "userCode='" + userCode + '\'' +
                 '}';
     }
 }

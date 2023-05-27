@@ -8,10 +8,10 @@ import java.util.Set;
 
 @CommunicationTerm("과정")
 public class Course {
+    private final Set<Term> terms = new HashSet<>();
     private CourseId courseId;
     private String title;
     private Long creatorId;
-    private final Set<Term> terms = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

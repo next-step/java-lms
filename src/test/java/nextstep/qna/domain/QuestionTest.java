@@ -26,7 +26,7 @@ public class QuestionTest {
         Question question = TestFixture.BADAJIGI_QUESTION;
         Answer answer = TestFixture.BADAJIGI_ANSWER;
         //when
-        question.delete(loginUser);
+        question.delete(loginUser.getUserCode());
         //then
         assertAll("삭제성공을 검증한다",
                 () -> assertThat(question.isDeleted())
@@ -47,7 +47,7 @@ public class QuestionTest {
         Answer answer = TestFixture.JAVAJIGI_ANSWER;
         question.addAnswer(answer);
         //when
-        question.delete(user);
+        question.delete(user.getUserCode());
         //then
         assertAll("삭제성공을 검증한다",
                 () -> assertThat(question.isDeleted())
@@ -74,7 +74,7 @@ public class QuestionTest {
         //when
         //then
         assertThatThrownBy(() -> {
-            question.delete(user);
+            question.delete(user.getUserCode());
         }).isInstanceOf(QuestionDeleteAnswerExistedException.class)
                 .as("QuestionDeleteAnswerExistedException 예외를 던져야한다")
                 .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
@@ -89,7 +89,7 @@ public class QuestionTest {
         //when
         //then
         assertThatThrownBy(() -> {
-            question.delete(user);
+            question.delete(user.getUserCode());
         }).isInstanceOf(QuestionDeleteUnauthorizedException.class)
                 .as("QuestionDeleteUnauthorizedException 예외를 던져야한다")
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다");

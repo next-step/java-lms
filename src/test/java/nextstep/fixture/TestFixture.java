@@ -54,9 +54,9 @@ public class TestFixture {
     }
 
     public static void fixtureInit() {
-        JAVAJIGI = new NsUser(1L, "javajigi", "password", "king of clean code", "javajigi@slipp.net");
-        SANJIGI = new NsUser(2L, "sanjigi", "password", "sanjigi", "sanjigi@slipp.net");
-        BADAJIGI = new NsUser(3L, "badajigi", "pacific", "Poseidon", "Poseidon@marine.io");
+        JAVAJIGI = NsUser.of(1L, "javajigi", "password", "king of clean code", "javajigi@slipp.net");
+        SANJIGI = NsUser.of(2L, "sanjigi", "password", "sanjigi", "sanjigi@slipp.net");
+        BADAJIGI = NsUser.of(3L, "badajigi", "pacific", "Poseidon", "Poseidon@marine.io");
 
         JAVAJIGI_QUESTION = Question.of(1L, JAVAJIGI, "성공하는 프로그래밍 학습법은 뭐가있을까", "제곧내");
         SANJIGI_QUESTION = Question.of(2L, SANJIGI, "관악산 연주대에 오르는 최단경로는 어디인가요", "등산허쉴?");
