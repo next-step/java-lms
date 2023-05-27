@@ -26,6 +26,38 @@ public class Session {
         this.status = status;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public Long getMaxNumberOfStudent() {
+        return maxNumberOfStudent;
+    }
+
+    public Boolean getFree() {
+        return isFree;
+    }
+
+    public List<NsUser> getStudents() {
+        return students;
+    }
+
     void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
         if (!status.equals(SessionStatus.RECRUITING)) {
             throw new NotRecruitException("모집 기간에만 신청 가능합니다.");
