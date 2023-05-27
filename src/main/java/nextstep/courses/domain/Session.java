@@ -3,16 +3,13 @@ package nextstep.courses.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Session extends SessionDate {
+public class Session {
     private Long id;
-    private String title;
-    private Long creatorId;
-    private Course course;
-    private String coverImageUrl;
+    private SessionInfo sessionInfo;
+    private SessionDate sessionDate;
+    private SessionImage coverImage;
     private SessionPrice price;
     private SessionStatus status;
-    private int maxNumberOfUsers;
-    private int registeredNumberOfUsers;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -20,59 +17,46 @@ public class Session extends SessionDate {
     }
 
     public Session(String title, Long creatorId, Course course, LocalDate startDate, LocalDate endDate,
-                   String coverImageUrl, Long price, SessionStatus status, int maxNumberOfUsers,
+                   String coverImageUrl, Long price, int maxNumberOfUsers,
                    int numberOfUsers) {
-        this(0L, title, creatorId, course, startDate, endDate, coverImageUrl, price, status, maxNumberOfUsers,
+        this(0L, title, creatorId, course, startDate, endDate, coverImageUrl, price, SessionStatus.OPENED, maxNumberOfUsers,
                 numberOfUsers, LocalDateTime.now(), null);
     }
 
     public Session(Long id, String title, Long creatorId, Course course, LocalDate startDate, LocalDate endDate,
                    String coverImageUrl, Long price, SessionStatus status, int maxNumberOfUsers,
                    int numberOfUsers, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
-        }
-        if (!isValidUrl(coverImageUrl)) {
-            throw new IllegalArgumentException("유효하지 않은 URL 입니다.");
-        }
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.course = course;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImageUrl = coverImageUrl;
-        this.price = new SessionPrice(price);
-        this.status = status;
-        this.maxNumberOfUsers = maxNumberOfUsers;
-        this.registeredNumberOfUsers = numberOfUsers;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this(id, new SessionInfo(title, creatorId, course, maxNumberOfUsers, numberOfUsers),
+                new SessionDate(startDate, endDate), new SessionImage(coverImageUrl),
+                new SessionPrice(price), status, createdAt, updatedAt);
     }
 
-    private boolean isValidUrl(String coverImageUrl) {
-        try {
-            new java.net.URL(coverImageUrl).toURI();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public Session(Long id, SessionInfo sessionInfo, SessionDate sessionDate, SessionImage coverImage,
+                   SessionPrice price, SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.sessionInfo = sessionInfo;
+        this.sessionDate = sessionDate;
+        this.coverImage = coverImage;
+        this.price = price;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getCoverImageUrl() {
+        return coverImage.getUrl();
+    }
+
     public LocalDate getStartDateTime() {
-        return startDate;
+        return sessionDate.getStartDate();
     }
 
     public LocalDate getEndDateTime() {
-        return endDate;
-    }
-
-    public String getCoverImageUrl() {
-        return coverImageUrl;
+        return sessionDate.getEndDate();
     }
 
     public SessionPayType getPayType() {
@@ -87,21 +71,35 @@ public class Session extends SessionDate {
         return status;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void enroll(int userId) {
-        if (isFull()) {
-            throw new IllegalStateException("수강생이 가득 찼습니다.");
-        }
         if (!status.isRecruiting()) {
             throw new IllegalStateException("모집 중인 강의만 수강 신청이 가능합니다.");
         }
-        this.registeredNumberOfUsers++;
+        sessionInfo.increaseRegisteredUser(userId);
     }
 
-    private boolean isFull() {
-        return this.registeredNumberOfUsers >= this.maxNumberOfUsers;
+    public int countUsers() {
+        return sessionInfo.countUsers();
     }
 
-    public int getRegisteredUserCounts() {
-        return this.registeredNumberOfUsers;
+    public void open() {
+        changeStatus(SessionStatus.OPENED);
+    }
+
+    public void close() {
+        changeStatus(SessionStatus.CLOSED);
+    }
+
+    public void recruit() {
+        changeStatus(SessionStatus.RECRUITING);
+    }
+
+    private void changeStatus(SessionStatus status) {
+        this.status = status;
+        this.updatedAt = LocalDateTime.now();
     }
 }

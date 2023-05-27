@@ -6,13 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Course {
+    private final Set<Session> sessions = new HashSet<>();
     private Long id;
-
     private String title;
-
     private Long creatorId;
-    private Set<Session> sessions = new HashSet<>();
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -30,6 +27,10 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

@@ -22,7 +22,7 @@ class CourseTest {
         course.addSession(session2);
 
         // then
-        assertThat(course.getSessions()).containsExactly(session1, session2);
+        assertThat(course.getSessions()).containsExactlyInAnyOrder(session1, session2);
     }
 
     @Test

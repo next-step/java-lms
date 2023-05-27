@@ -61,11 +61,9 @@ class SessionTest {
 
 
         // when
-        assertThatThrownBy(() -> {
-            new SessionFixtureBuilder()
-                    .withCoverImageUrl(coverImageUrl)
-                    .build();
-        })
+        assertThatThrownBy(() -> new SessionFixtureBuilder()
+                .withCoverImageUrl(coverImageUrl)
+                .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("유효하지 않은 URL 입니다.");
     }
@@ -83,6 +81,7 @@ class SessionTest {
 
         // then
         assertThat(payType).isEqualTo(SessionPayType.FREE);
+        assertThat(session.getPrice()).isEqualTo(0L);
     }
 
     @Test
@@ -98,6 +97,7 @@ class SessionTest {
 
         // then
         assertThat(payType).isEqualTo(SessionPayType.PAID);
+        assertThat(session.getPrice()).isEqualTo(10000L);
     }
 
     @Test
@@ -107,11 +107,9 @@ class SessionTest {
         Long price = -1L;
 
         // when
-        assertThatThrownBy(() -> {
-            new SessionFixtureBuilder()
-                    .withPrice(price)
-                    .build();
-        })
+        assertThatThrownBy(() -> new SessionFixtureBuilder()
+                .withPrice(price)
+                .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("가격은 0원 이상이어야 합니다.");
     }
@@ -145,7 +143,7 @@ class SessionTest {
         session.enroll(userId);
 
         // then
-        assertThat(session.getRegisteredUserCounts()).isEqualTo(1);
+        assertThat(session.countUsers()).isEqualTo(1);
     }
 
     @ParameterizedTest(name = "{displayName} - {argumentsWithNames}")
@@ -161,5 +159,22 @@ class SessionTest {
         assertThatThrownBy(() -> session.enroll(0))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집 중인 강의만 수강 신청이 가능합니다.");
+    }
+
+    @Test
+    @DisplayName("강의 상태는 변경할 수 있다.")
+    void changeStatus() {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withStatus(SessionStatus.OPENED)
+                .build();
+
+        // when
+        session.open();
+        session.recruit();
+        session.close();
+
+        // then
+        assertThat(session.getStatus()).isEqualTo(SessionStatus.CLOSED);
     }
 }
