@@ -20,10 +20,24 @@ public class Session {
     private Boolean isFree;
     private final List<NsUser> students = new ArrayList<>();
 
+    public Session(Long maxNumberOfStudent, SessionStatus status) {
+        this(0L, maxNumberOfStudent, status);
+    }
+
     public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
         this.id = id;
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.status = status;
+    }
+
+    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String status, Long maxNumberOfStudent, Boolean isFree) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.image = image;
+        this.status = SessionStatus.of(status);
+        this.maxNumberOfStudent = maxNumberOfStudent;
+        this.isFree = isFree;
     }
 
     public Long getId() {
