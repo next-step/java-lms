@@ -68,4 +68,49 @@ class SessionTest {
                 .hasMessage("유효하지 않은 URL 입니다.");
     }
 
+    @Test
+    @DisplayName("무료 강의일 때 가격이 0원인지 확인")
+    void payTypeFree() {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withPrice(0L)
+                .build();
+
+        // when
+        SessionPayType payType = session.getPayType();
+
+        // then
+        assertThat(payType).isEqualTo(SessionPayType.FREE);
+    }
+
+    @Test
+    @DisplayName("유료 강의일 때 가격이 0원이 아닌지 확인")
+    void payTypePaid() {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withPrice(10000L)
+                .build();
+
+        // when
+        SessionPayType payType = session.getPayType();
+
+        // then
+        assertThat(payType).isEqualTo(SessionPayType.PAID);
+    }
+
+    @Test
+    @DisplayName("가격이 0원 이하일 때 예외")
+    void payTypeException() {
+        // given
+        Long price = -1L;
+
+        // when
+        assertThatThrownBy(() -> {
+            Session session = new SessionFixtureBuilder()
+                    .withPrice(price)
+                    .build();
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("가격은 0원 이상이어야 합니다.");
+    }
 }

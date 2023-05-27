@@ -2,7 +2,6 @@ package nextstep.courses.fixtures;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionPayType;
 import nextstep.courses.domain.SessionStatus;
 
 import java.time.LocalDate;
@@ -14,7 +13,7 @@ public class SessionFixtureBuilder {
     public LocalDate startDate = LocalDate.of(2021, 1, 1);
     public LocalDate endDate = LocalDate.of(2021, 2, 1);
     public String coverImageUrl = "http://localhost:8080/images/testCover.png";
-    public SessionPayType payType = SessionPayType.FREE;
+    public Long price = 0L;
     public SessionStatus status = SessionStatus.OPENED;
     public int maxNumberOfUsers = 30;
     public int numberOfUsers = 0;
@@ -30,11 +29,17 @@ public class SessionFixtureBuilder {
     }
 
     public Session build() {
-        return new Session(title, creatorId, course, startDate, endDate, coverImageUrl, payType, status, maxNumberOfUsers, numberOfUsers);
+        return new Session(title, creatorId, course, startDate, endDate, coverImageUrl, price, status, maxNumberOfUsers,
+                numberOfUsers);
     }
 
     public SessionFixtureBuilder withCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+        return this;
+    }
+
+    public SessionFixtureBuilder withPrice(Long price) {
+        this.price = price;
         return this;
     }
 }

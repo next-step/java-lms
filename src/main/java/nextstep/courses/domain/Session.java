@@ -11,7 +11,7 @@ public class Session {
     private LocalDate startDate;
     private LocalDate endDate;
     private String coverImageUrl;
-    private SessionPayType payType;
+    private SessionPrice price;
     private SessionStatus status;
     private int maxNumberOfUsers;
     private int numberOfUsers;
@@ -22,14 +22,14 @@ public class Session {
     }
 
     public Session(String title, Long creatorId, Course course, LocalDate startDate, LocalDate endDate,
-                   String coverImageUrl, SessionPayType payType, SessionStatus status, int maxNumberOfUsers,
+                   String coverImageUrl, Long price, SessionStatus status, int maxNumberOfUsers,
                    int numberOfUsers) {
-        this(0L, title, creatorId, course, startDate, endDate, coverImageUrl, payType, status, maxNumberOfUsers,
+        this(0L, title, creatorId, course, startDate, endDate, coverImageUrl, price, status, maxNumberOfUsers,
                 numberOfUsers, LocalDateTime.now(), null);
     }
 
     public Session(Long id, String title, Long creatorId, Course course, LocalDate startDate, LocalDate endDate,
-                   String coverImageUrl, SessionPayType payType, SessionStatus status, int maxNumberOfUsers,
+                   String coverImageUrl, Long price, SessionStatus status, int maxNumberOfUsers,
                    int numberOfUsers, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
@@ -44,7 +44,7 @@ public class Session {
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImageUrl = coverImageUrl;
-        this.payType = payType;
+        this.price = new SessionPrice(price);
         this.status = status;
         this.maxNumberOfUsers = maxNumberOfUsers;
         this.numberOfUsers = numberOfUsers;
@@ -71,5 +71,13 @@ public class Session {
 
     public String getCoverImageUrl() {
         return coverImageUrl;
+    }
+
+    public SessionPayType getPayType() {
+        return price.getPayType();
+    }
+
+    public Long getPrice() {
+        return price.getPrice();
     }
 }
