@@ -47,7 +47,7 @@
 
 #### 강의커버이미지(SessionCoverImage)
 
-- [ ] 이미지 URL을 가진다.
+- [x] 이미지 URL을 가진다.
 
 #### 강의지불유형(SessionPaymentType)
 
@@ -56,3 +56,7 @@
 #### 강의상태(SessionStatus)
 
 - [x] 강의 상태는 준비중, 모집중, 종료 3가지 종류를 가진다.
+
+#### UrlPattern
+
+- [x] 정상적인 이미지 여부를 판단합니다.
