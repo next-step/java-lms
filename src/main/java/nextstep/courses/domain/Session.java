@@ -1,11 +1,16 @@
 package nextstep.courses.domain;
 
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session {
+
+    private static final int DEFAULT_NUMBER_OF_STUDENTS_REGISTERED = 0;
+    private static final SessionState DEFAULT_SESSION_STATE = SessionState.PREPARING;
+
 
     private final long id;
     private final int fixedNumberOfStudent;
@@ -51,6 +56,16 @@ public class Session {
         this.sessionState = sessionState;
         this.sessionType = sessionType;
         this.numberOfStudentsRegistered = numberOfStudentsRegistered;
+    }
+
+    public static Session createSession(int fixedNumberOfStudent, NsUser lecturer, LocalDateTime startDate, LocalDateTime endDate, Image imageCover, SessionState sessionState, SessionType sessionType) {
+        long id = SimpleIdGenerator.getAndIncrement(Session.class);
+
+        if (Objects.isNull(sessionState)) {
+            sessionState = DEFAULT_SESSION_STATE;
+        }
+
+        return new Session(id, fixedNumberOfStudent, lecturer, LocalDateTime.now(), startDate, endDate, imageCover, sessionState, sessionType, DEFAULT_NUMBER_OF_STUDENTS_REGISTERED);
     }
 
     private void validateId(long id) {
