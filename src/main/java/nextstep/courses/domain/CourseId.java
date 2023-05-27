@@ -7,9 +7,6 @@ import java.util.Objects;
 public class CourseId implements DomainId {
     private Long courseId;
 
-    public CourseId() {
-    }
-
     public CourseId(Long courseId) {
         this.courseId = courseId;
     }

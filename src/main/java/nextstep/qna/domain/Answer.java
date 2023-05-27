@@ -52,7 +52,7 @@ public class Answer {
     }
 
     public boolean isOwner(UserCode writer) {
-        return this.writer.equals(writer);
+        return this.writer.getUserCode().value().equals(writer.value());
     }
 
     public void relateToQuestion(Question question) {
