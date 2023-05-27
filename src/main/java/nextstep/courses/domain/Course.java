@@ -17,16 +17,29 @@ public class Course {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
-    }
+//
 
-    public Course(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.courseId = new CourseId(courseId);
+    public Course(CourseId courseId, String title, Long creatorId, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.courseId = courseId;
         this.title = title;
         this.creatorId = creatorId;
+        this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static Course of(Long courseId, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Course(
+                new CourseId(courseId),
+                title,
+                creatorId,
+                null,
+                createdAt,
+                updatedAt
+        );
+    }
+    public static Course of(Long courseId, String title, Long creatorId) {
+        return Course.of(courseId, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public String getTitle() {
@@ -60,5 +73,13 @@ public class Course {
 
     public void addSessions(Session... sessions) {
         this.sessions.addAll(Arrays.asList(sessions));
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public CourseId getCourseId() {
+        return this.courseId;
     }
 }
