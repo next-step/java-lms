@@ -12,21 +12,25 @@ public class Registration {
 
   private Session session;
 
-  private LocalDateTime registeredAt;
+  private LocalDateTime createdDate = LocalDateTime.now();
+
+  private LocalDateTime updatedDate;
 
   private boolean canceled = false;
 
   public Registration(NsUser nsUser, Session session) {
-    this(null, nsUser, session, LocalDateTime.now());
+    this(null, nsUser, session, LocalDateTime.now(), null);
   }
 
-  public Registration(Long id, NsUser nsUser, Session session, LocalDateTime registeredAt) {
+  public Registration(Long id, NsUser nsUser, Session session, LocalDateTime createdDate,
+      LocalDateTime updatedDate) {
     this.id = id;
     validateNsUser(nsUser);
     this.nsUser = nsUser;
     validateSession(session);
     this.session = session;
-    this.registeredAt = registeredAt;
+    this.createdDate = createdDate;
+    this.updatedDate = updatedDate;
   }
 
   private void validateNsUser(NsUser nsUser) {
@@ -49,6 +53,7 @@ public class Registration {
 
   public void cancel() {
     canceled = true;
+    updatedDate = LocalDateTime.now();
   }
 
   public boolean isCanceled() {
