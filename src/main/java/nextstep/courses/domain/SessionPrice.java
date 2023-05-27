@@ -1,16 +1,16 @@
 package nextstep.courses.domain;
 
 public class SessionPrice {
-    private static final int FREE_SESSION_PRICE = 0;
+    private static final long FREE_SESSION_PRICE = 0L;
 
-    private final int price;
+    private final long price;
     private final SessionChargeType type;
 
-    public SessionPrice(int price) {
+    public SessionPrice(long price) {
         this(price, SessionChargeType.of(price));
     }
 
-    public SessionPrice(int price, SessionChargeType type) {
+    public SessionPrice(long price, SessionChargeType type) {
         if(price < FREE_SESSION_PRICE) {
             throw new IllegalArgumentException("강의 최소 수강료는 " + FREE_SESSION_PRICE + "원입니다: " + price);
         }
