@@ -4,6 +4,8 @@ create table course (
     creator_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,
+    course_status varchar(20) not null,
+    course_type varchar(20) not null,
     primary key (id)
 );
 
