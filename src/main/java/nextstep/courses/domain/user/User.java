@@ -6,14 +6,14 @@ public class User {
 
     private final Long id;
 
-    private final String name;
+    private final Name name;
 
-    public User(long id, String name) {
+    public User(long id, Name name) {
         this.id = id;
         this.name = name;
     }
 
-    public static User of(long id, String name) {
+    public static User of(long id, Name name) {
         return new User(id, name);
     }
 

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.user.UserTest;
+import nextstep.courses.domain.user.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ public class SessionTest {
         .priceType(PriceType.CHARGED)
         .status(Status.ENROLLING)
         .maximumCapacity(10L)
-        .users(new ArrayList<>())
+        .users(Users.of(new ArrayList<>()))
         .build();
 
     private Long id = 1L;
@@ -41,7 +42,7 @@ public class SessionTest {
             .priceType(priceType)
             .status(status)
             .maximumCapacity(0L)
-            .users(new ArrayList<>())
+            .users(Users.of(new ArrayList<>()))
             .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
@@ -59,7 +60,7 @@ public class SessionTest {
             .priceType(priceType)
             .status(status)
             .maximumCapacity(maximumCapacity)
-            .users(new ArrayList<>())
+            .users(Users.of(new ArrayList<>()))
             .build();
 
         actual.enroll(UserTest.TEST_USER);
@@ -76,7 +77,7 @@ public class SessionTest {
             .priceType(priceType)
             .status(Status.ENDED)
             .maximumCapacity(maximumCapacity)
-            .users(new ArrayList<>())
+            .users(Users.of(new ArrayList<>()))
             .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
@@ -94,7 +95,7 @@ public class SessionTest {
             .priceType(priceType)
             .status(Status.PREPARING)
             .maximumCapacity(maximumCapacity)
-            .users(new ArrayList<>())
+            .users(Users.of(new ArrayList<>()))
             .build();
 
         assertThatExceptionOfType(CannotEnrollException.class)
@@ -105,7 +106,7 @@ public class SessionTest {
     @Test
     @DisplayName("동일한 상태를 갖는 두 강의는 같은 강의이다.")
     void 강의생성() {
-        assertThat(Session.of(id, SessionDuration.of(1L, start, end), coverImagePath, priceType, status, maximumCapacity, new ArrayList<>()))
+        assertThat(Session.of(id, SessionDuration.of(1L, start, end), coverImagePath, priceType, status, maximumCapacity, Users.of(new ArrayList<>())))
             .isEqualTo(new Session.Builder()
                 .id(id)
                 .sessionDuration(SessionDuration.of(1L, start, end))
@@ -113,7 +114,7 @@ public class SessionTest {
                 .priceType(priceType)
                 .status(status)
                 .maximumCapacity(maximumCapacity)
-                .users(new ArrayList<>())
+                .users(Users.of(new ArrayList<>()))
                 .build());
     }
 

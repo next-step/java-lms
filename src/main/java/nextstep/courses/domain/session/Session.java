@@ -1,9 +1,9 @@
 package nextstep.courses.domain.session;
 
-import java.util.List;
 import java.util.Objects;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.user.User;
+import nextstep.courses.domain.user.Users;
 
 public class Session {
 
@@ -19,10 +19,10 @@ public class Session {
 
     private final Long maximumCapacity;
 
-    private final List<User> users;
+    private final Users users;
 
     public Session(Long id, SessionDuration sessionDuration, CoverImage coverImage,
-        PriceType priceType, Status status, Long maximumCapacity, List<User> users) {
+        PriceType priceType, Status status, Long maximumCapacity, Users users) {
         this.id = id;
         this.sessionDuration = sessionDuration;
         this.coverImage = coverImage;
@@ -33,7 +33,7 @@ public class Session {
     }
 
     public static Session of(Long id, SessionDuration sessionDuration, CoverImage coverImagePath,
-        PriceType priceType, Status status, Long maximumCapacity, List<User> users) {
+        PriceType priceType, Status status, Long maximumCapacity, Users users) {
         return new Session(id, sessionDuration, coverImagePath, priceType, status, maximumCapacity,
             users);
     }
@@ -49,7 +49,7 @@ public class Session {
     }
 
     public boolean isEnrolled(User user) {
-        return users.contains(user);
+        return users.isContains(user);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Session {
     }
 
     private boolean isExceedingMaximumCapacity() {
-        return users.size() >= maximumCapacity;
+        return users.count() >= maximumCapacity;
     }
 
     public static class Builder {
@@ -94,7 +94,7 @@ public class Session {
 
         private Long maximumCapacity;
 
-        private List<User> users;
+        private Users users;
 
         public Builder() {}
 
@@ -128,7 +128,7 @@ public class Session {
             return this;
         }
 
-        public Builder users(List<User> users) {
+        public Builder users(Users users) {
             this.users = users;
             return this;
         }
