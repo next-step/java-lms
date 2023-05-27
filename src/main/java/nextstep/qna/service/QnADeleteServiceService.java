@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class QnAService {
+public class QnADeleteServiceService {
     private final QuestionRepository questionRepository;
     private final DeleteHistoryService deleteHistoryService;
 
-    public QnAService(QuestionRepository questionRepository,
+    public QnADeleteServiceService(QuestionRepository questionRepository,
             DeleteHistoryService deleteHistoryService) {
         this.questionRepository = questionRepository;
         this.deleteHistoryService = deleteHistoryService;
