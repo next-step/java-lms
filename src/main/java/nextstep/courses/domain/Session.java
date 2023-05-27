@@ -21,6 +21,15 @@ public class Session {
         this.sessionImageUrl = sessionImageUrl;
     }
 
+    public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, SessionStatus sessionStatus, NextStepUsers nextStepUsers, SessionImageUrl sessionImageUrl) {
+        this.id = id;
+        this.sessionPeriod = sessionPeriod;
+        this.paymentType = paymentType;
+        this.sessionStatus = sessionStatus;
+        this.nextStepUsers = nextStepUsers;
+        this.sessionImageUrl = sessionImageUrl;
+    }
+
     public void enroll(NsUser nextStepUser) {
         validateStatus();
         nextStepUsers.enroll(nextStepUser);
@@ -54,5 +63,32 @@ public class Session {
 
     public SessionImageUrl getSessionImageUrl() {
         return sessionImageUrl;
+    }
+
+    public static class Builder {
+        private Long id;
+        private SessionPeriod sessionPeriod;
+        private PaymentType paymentType;
+        private SessionStatus sessionStatus;
+        private NextStepUsers nextStepUsers;
+        private SessionImageUrl sessionImageUrl;
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder with(Session session) {
+            this.sessionPeriod = session.sessionPeriod;
+            this.paymentType = session.paymentType;
+            this.sessionStatus = session.sessionStatus;
+            this.nextStepUsers = session.nextStepUsers;
+            this.sessionImageUrl = session.sessionImageUrl;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(id, sessionPeriod, paymentType, sessionStatus, nextStepUsers, sessionImageUrl);
+        }
     }
 }

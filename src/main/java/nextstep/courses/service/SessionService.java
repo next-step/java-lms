@@ -4,11 +4,14 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class SessionService {
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
@@ -19,7 +22,7 @@ public class SessionService {
     }
 
     @Transactional
-    public long save(Session session, Long courseId) {
+    public Session save(Session session, Long courseId) {
         return sessionRepository.save(session, courseId);
     }
 
@@ -44,7 +47,8 @@ public class SessionService {
         List<String> nextStepUserIds = sessionRepository.findAllUserBySessionId(sessionId);
         return nextStepUserIds.stream()
                 .map(userRepository::findByUserId)
-                .map(user -> user.orElseThrow(() -> new IllegalArgumentException("")))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 }

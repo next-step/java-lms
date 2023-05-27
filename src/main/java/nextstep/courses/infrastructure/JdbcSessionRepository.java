@@ -6,12 +6,14 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
 
@@ -20,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public long save(Session session, Long courseId) {
+    public Session save(Session session, Long courseId) {
         String sql = "insert into session(started_at, end_at, payment_type, status, maximum_user_count, image_url, course_id) values(?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -39,7 +41,12 @@ public class JdbcSessionRepository implements SessionRepository {
         }, keyHolder);
 
         Number key = keyHolder.getKey();
-        return key != null ? key.longValue() : -1;
+        long sessionId = key != null ? key.longValue() : -1;
+
+        return new Session.Builder()
+                .with(session)
+                .withId(sessionId)
+                .build();
     }
 
     @Override
@@ -65,8 +72,8 @@ public class JdbcSessionRepository implements SessionRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, session.getId());
-            ps.setLong(2, nextStepUser.getId());
+            ps.setString(1, nextStepUser.getUserId());
+            ps.setLong(2, session.getId());
 
             return ps;
         }, keyHolder);

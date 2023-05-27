@@ -5,7 +5,7 @@ import nextstep.users.domain.NsUser;
 import java.util.List;
 
 public interface SessionRepository {
-    long save(Session session, Long courseId);
+    Session save(Session session, Long courseId);
 
     Session findById(Long sessionId);
 

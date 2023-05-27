@@ -32,17 +32,17 @@ public class SessionRepositoryTest {
     @Test
     void save() {
         Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
-        long sessionId = sessionRepository.save(session, 1L);
-        assertThat(sessionId).isPositive();
+        Session savedSession = sessionRepository.save(session, 1L);
+        assertThat(savedSession).isNotNull();
     }
 
     @Test
     void findById() {
         Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
-        long sessionId = sessionRepository.save(session, 1L);
+        Session savedSession = sessionRepository.save(session, 1L);
 
-        Session findSession = sessionRepository.findById(sessionId);
-        assertThat(findSession.getId()).isEqualTo(sessionId);
+        Session findSession = sessionRepository.findById(savedSession.getId());
+        assertThat(findSession.getId()).isEqualTo(savedSession.getId());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class SessionRepositoryTest {
     @Test
     void saveSessionUser() {
         NsUser nsUser = NsUserTest.JAVAJIGI;
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
 
         long id = sessionRepository.saveSessionUser(session, nsUser);
         assertThat(id).isPositive();
@@ -65,12 +65,10 @@ public class SessionRepositoryTest {
 
     @Test
     void findAllUserBySessionId() {
-        NsUser nsUser = NsUserTest.JAVAJIGI;
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
-        Long sessionId = sessionRepository.save(session, 1L);
-        sessionRepository.saveSessionUser(session, nsUser);
+        Session savedSession = sessionRepository.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
+        sessionRepository.saveSessionUser(savedSession, NsUserTest.JAVAJIGI);
 
-        List<String> nextStepUsers = sessionRepository.findAllUserBySessionId(sessionId);
+        List<String> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
     }
 }
