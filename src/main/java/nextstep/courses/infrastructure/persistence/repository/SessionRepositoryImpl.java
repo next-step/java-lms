@@ -9,6 +9,7 @@ import nextstep.courses.infrastructure.persistence.dao.ImageEntityRepository;
 import nextstep.courses.infrastructure.persistence.dao.SessionEnrollmentEntityRepository;
 import nextstep.courses.infrastructure.persistence.dao.SessionEntityRepository;
 import nextstep.courses.infrastructure.persistence.entity.ImageEntity;
+import nextstep.courses.infrastructure.persistence.entity.SessionEnrollmentEntity;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.dao.NsUserEntityRepository;
@@ -45,7 +46,8 @@ public class SessionRepositoryImpl implements SessionRepository {
 
   @Override
   public Long saveSignUpHistory(Long sessionId, Long userId) {
-    return sessionEnrollmentEntityRepository.save(sessionId, userId);
+    SessionEnrollmentEntity sessionEnrollmentEntity = new SessionEnrollmentEntity(sessionId, userId);
+    return sessionEnrollmentEntityRepository.save(sessionEnrollmentEntity);
   }
 
   private SessionEntity findSessionEntity(Long sessionId) {

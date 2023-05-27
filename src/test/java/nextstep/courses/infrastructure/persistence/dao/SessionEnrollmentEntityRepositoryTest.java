@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.persistence.dao;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import nextstep.courses.infrastructure.persistence.entity.SessionEnrollmentEntity;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,8 @@ class SessionEnrollmentEntityRepositoryTest {
 
   @Test
   void Session_200L에_학생_2L이_수강신청한_내역_저장() {
-    Long id = sessionEnrollmentEntityRepository.save(200L, 2L);
+    SessionEnrollmentEntity sessionEnrollmentEntity = new SessionEnrollmentEntity(200L, 2L);
+    Long id = sessionEnrollmentEntityRepository.save(sessionEnrollmentEntity);
     assertThat(id).isNotNull();
 
     int studentSize = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(200L).size();

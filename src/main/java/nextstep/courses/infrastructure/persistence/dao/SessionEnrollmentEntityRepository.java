@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure.persistence.dao;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.infrastructure.persistence.entity.SessionEnrollmentEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -34,12 +34,12 @@ public class SessionEnrollmentEntityRepository {
     return jdbcTemplate.queryForList(sql, Long.class, sessionId);
   }
 
-  public Long save(Long sessionId, Long userId) {
+  public Long save(SessionEnrollmentEntity sessionEnrollmentEntity) {
     SqlParameterSource parameters = new MapSqlParameterSource()
-        .addValue(SESSION_ID, sessionId)
-        .addValue(USER_ID, userId)
-        .addValue(CREATED_AT, LocalDateTime.now())
-        .addValue(UPDATED_AT, LocalDateTime.now());
+        .addValue(SESSION_ID, sessionEnrollmentEntity.getSessionId())
+        .addValue(USER_ID, sessionEnrollmentEntity.getUserId())
+        .addValue(CREATED_AT, sessionEnrollmentEntity.getCreatedAt())
+        .addValue(UPDATED_AT, sessionEnrollmentEntity.getUpdatedAt());
 
     return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
   }
