@@ -19,6 +19,16 @@ import org.springframework.stereotype.Repository;
 @Repository("nsUserEntityRepository")
 public class NsUserEntityRepository {
 
+  private static final String USER_IDS = "userIds";
+  private static final String ID = "id";
+  private static final String USER_ID = "user_id";
+  private static final String PASSWORD = "password";
+  private static final String NAME = "name";
+  private static final String EMAIL = "email";
+  private static final String CREATED_AT = "created_at";
+  private static final String UPDATED_AT = "updated_at";
+
+
   private final JdbcOperations jdbcTemplate;
   private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -29,8 +39,8 @@ public class NsUserEntityRepository {
 
   public List<NsUserEntity> findByUserKeyIds(List<Long> userIds) {
     String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id in (:userIds)";
-    Map<String, List<Long>> paramMap = Collections.singletonMap("userIds", userIds);
-    return namedParameterJdbcTemplate.query(sql, paramMap, rowMapperWithoutOptional());
+    Map<String, List<Long>> paramMap = Collections.singletonMap(USER_IDS, userIds);
+    return namedParameterJdbcTemplate.query(sql, paramMap, rowMapper());
   }
 
   public Optional<NsUserEntity> findByUserId(String userId) {
@@ -51,25 +61,16 @@ public class NsUserEntityRepository {
 
 
   private RowMapper<NsUserEntity> rowMapper() {
-    return (rs, rowNum) -> new NsUserEntity(
-        rs.getLong(1),
-        rs.getString(2),
-        rs.getString(3),
-        rs.getString(4),
-        rs.getString(5),
-        toLocalDateTime(rs.getTimestamp(6)),
-        toLocalDateTime(rs.getTimestamp(7)));
-  }
-
-  private RowMapper<NsUserEntity> rowMapperWithoutOptional() {
-    return (rs, rowNum) -> new NsUserEntity(
-        rs.getLong(1),
-        rs.getString(2),
-        rs.getString(3),
-        rs.getString(4),
-        rs.getString(5),
-        toLocalDateTime(rs.getTimestamp(6)),
-        toLocalDateTime(rs.getTimestamp(7)));
+    return (rs, rowNum) -> {
+      Long id = rs.getLong(ID);
+      String userId = rs.getString(USER_ID);
+      String password = rs.getString(PASSWORD);
+      String name = rs.getString(NAME);
+      String email = rs.getString(EMAIL);
+      LocalDateTime createdAt = toLocalDateTime(rs.getTimestamp(CREATED_AT));
+      LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp(UPDATED_AT));
+      return new NsUserEntity(id, userId, password, name, email, createdAt, updatedAt);
+    };
   }
 
 

@@ -23,7 +23,7 @@ public class NsUserEntity extends BaseTimeEntity {
   /**
    * 주 생성자
    */
-  public NsUserEntity(long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public NsUserEntity(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.userId = userId;
@@ -56,14 +56,4 @@ public class NsUserEntity extends BaseTimeEntity {
     return email;
   }
 
-  @Override
-  public String toString() {
-    return "NsUserEntity{" +
-        "id=" + id +
-        ", userId='" + userId + '\'' +
-        ", password='" + password + '\'' +
-        ", name='" + name + '\'' +
-        ", email='" + email + '\'' +
-        '}';
-  }
 }
