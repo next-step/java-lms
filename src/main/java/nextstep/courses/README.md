@@ -28,7 +28,7 @@
 
 #### 과정(Course)
 
-- [ ] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가질 수 있다.
+- [x] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가질 수 있다.
 
 #### 강의(Session)
 
