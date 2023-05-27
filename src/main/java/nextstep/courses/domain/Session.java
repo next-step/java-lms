@@ -47,12 +47,6 @@ public class Session {
     this.maxRecruitment = maxRecruitment;
   }
 
-  private void validateMaxRecruitment(int maxRecruitment) {
-    if (maxRecruitment < 1) {
-      throw new IllegalArgumentException();
-    }
-  }
-
   private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
     if (startDate == null || endDate == null) {
       throw new IllegalArgumentException();
@@ -66,6 +60,12 @@ public class Session {
   private void validateSessionType(SessionType sessionType) {
     if (sessionType == null) {
       throw new NotFoundException();
+    }
+  }
+
+  private void validateMaxRecruitment(int maxRecruitment) {
+    if (maxRecruitment < 1) {
+      throw new IllegalArgumentException();
     }
   }
 
