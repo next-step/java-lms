@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @DisplayName("강의 상태 테스트")
-class LectureStatusTest {
+class SessionStatusTest {
 
     @DisplayName("강의는 3가지의 상태를 가진다")
     @Test
     void test() {
-        List<LectureStatus> lectureStatuses = Arrays.stream(LectureStatus.values()).collect(Collectors.toList());
-        Assertions.assertThat(lectureStatuses.size()).isEqualTo(3);
-        Assertions.assertThat(lectureStatuses)
+        List<SessionStatus> sessionStatuses = Arrays.stream(SessionStatus.values()).collect(Collectors.toList());
+        Assertions.assertThat(sessionStatuses.size()).isEqualTo(3);
+        Assertions.assertThat(sessionStatuses)
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactly(LectureStatus.PREPARING, LectureStatus.ENROLLING, LectureStatus.FINISHED);
+                .containsExactly(SessionStatus.PREPARING, SessionStatus.ENROLLING, SessionStatus.FINISHED);
     }
 
     @DisplayName("강의 상태가 준비중이면 수강 신청 할 수 없다")
     @Test
     void lectureStatusIsPreparing() {
-        LectureStatus preparing = LectureStatus.PREPARING;
+        SessionStatus preparing = SessionStatus.PREPARING;
         boolean enrollmentPossible = preparing.isEnrollmentPossible();
         Assertions.assertThat(enrollmentPossible).isFalse();
     }
@@ -32,7 +32,7 @@ class LectureStatusTest {
     @DisplayName("강의 상태가 종료중이면 수강 신청 할 수 없다")
     @Test
     void lectureStatusIsFinished() {
-        LectureStatus finished = LectureStatus.FINISHED;
+        SessionStatus finished = SessionStatus.FINISHED;
         boolean enrollmentPossible = finished.isEnrollmentPossible();
         Assertions.assertThat(enrollmentPossible).isFalse();
     }
@@ -40,7 +40,7 @@ class LectureStatusTest {
     @DisplayName("강의 상태가 준비중이면 수강 신청 할 수 있다")
     @Test
     void lectureStatusIsEnrolling() {
-        LectureStatus enrolling = LectureStatus.ENROLLING;
+        SessionStatus enrolling = SessionStatus.ENROLLING;
         boolean enrollmentPossible = enrolling.isEnrollmentPossible();
         Assertions.assertThat(enrollmentPossible).isTrue();
     }

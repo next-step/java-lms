@@ -3,11 +3,12 @@ package nextstep.courses.domain;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class LecturePeriod {
+public class SessionPeriod {
+
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public LecturePeriod(LocalDate startDate, LocalDate endDate) {
+    public SessionPeriod(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -19,7 +20,7 @@ public class LecturePeriod {
         }
     }
 
-    public int calculateLectureDuration() {
+    public int sessionDuration() {
         Period period = Period.between(startDate, endDate);
         return period.getDays();
     }

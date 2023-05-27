@@ -16,7 +16,7 @@ public class Students {
         students = new ArrayList<>();
     }
 
-    public int countStudents() {
+    public int countEnrollmentCount() {
         return students.size();
     }
 
@@ -28,7 +28,7 @@ public class Students {
     }
 
     private boolean isOverCapacity() {
-        return countStudents() >= maxEnrollment;
+        return countEnrollmentCount() >= maxEnrollment;
     }
 
     public int maxEnrollmentValue() {
@@ -38,5 +38,8 @@ public class Students {
     public List<NsUser> fetchStudents() {
         return Collections.unmodifiableList(students);
     }
-}
 
+    public boolean isEmpty() {
+        return students.isEmpty();
+    }
+}

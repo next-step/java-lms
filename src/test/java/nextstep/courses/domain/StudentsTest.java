@@ -32,7 +32,7 @@ class StudentsTest {
         students.addStudent(JAVAJIGI);
         students.addStudent(SANJIGI);
 
-        Assertions.assertThat(students.countStudents()).isEqualTo(2);
+        Assertions.assertThat(students.countEnrollmentCount()).isEqualTo(2);
         Assertions.assertThat(students.fetchStudents())
                 .usingDefaultElementComparator()
                 .usingRecursiveFieldByFieldElementComparator()
@@ -51,8 +51,7 @@ class StudentsTest {
         students.addStudent(SANJIGI);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() ->
-                        students.addStudent(WOOK))
+                .isThrownBy(() ->students.addStudent(WOOK))
                 .withMessage("cannot enroll because the maximum capacity has been exceeded");
     }
 }

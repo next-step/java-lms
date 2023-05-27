@@ -38,4 +38,3 @@ class ImageTest {
         assertThat(image.fetchCoverImageUrl()).isEqualTo("http://www.nextstep.com");
     }
 }
-

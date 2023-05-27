@@ -9,7 +9,7 @@ public class PaidPaymentStrategy implements PaymentStrategy {
     }
 
     @Override
-    public int getPrice() {
+    public int priceValue() {
         return price;
     }
 }
