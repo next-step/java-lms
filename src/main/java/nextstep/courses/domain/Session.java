@@ -1,8 +1,13 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import nextstep.courses.RegistrationFulledException;
+import nextstep.courses.RegistrationNotOpenedException;
 import nextstep.qna.NotFoundException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -22,6 +27,8 @@ public class Session {
 
   private int maxRecruitment;
 
+  private List<Registration> registrations = new ArrayList<>();
+
   public Session() {
   }
 
@@ -40,11 +47,11 @@ public class Session {
     this.img = img;
     validateSessionType(sessionType);
     this.sessionType = sessionType;
-    validateMaxRecruitment(maxRecruitment);
+    isEnrollmentFull(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
   }
 
-  private void validateMaxRecruitment(int maxRecruitment) {
+  private void isEnrollmentFull(int maxRecruitment) {
     if (maxRecruitment < 1) {
       throw new IllegalArgumentException();
     }
@@ -65,6 +72,46 @@ public class Session {
       throw new NotFoundException();
     }
   }
+
+  public Registration createRegistration(NsUser nsUser) {
+    validateRegister();
+
+    Registration registration = new Registration(this, nsUser);
+    registrations.add(registration);
+    return registration;
+  }
+
+  private void validateRegister() {
+    if (isRegisterOpen()) {
+      throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
+    }
+
+    if (isRecruitmentFull()) {
+      registerClose();
+      throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
+    }
+  }
+
+  private boolean isRegisterOpen() {
+    return !sessionStatus.equals(SessionStatus.RECRUITMENT);
+  }
+
+  private boolean isRecruitmentFull() {
+    int registerCount = (int) registrations.stream()
+        .filter(registration -> !registration.isCanceled())
+        .count();
+
+    return registerCount >= maxRecruitment;
+  }
+
+  public void registerOpen() {
+    sessionStatus = SessionStatus.RECRUITMENT;
+  }
+
+  public void registerClose() {
+    sessionStatus = SessionStatus.COMPLETION;
+  }
+
 
   @Override
   public boolean equals(Object o) {
