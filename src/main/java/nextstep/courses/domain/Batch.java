@@ -45,7 +45,7 @@ public class Batch {
 
   private void validateSession(Session session) {
     if (hasSession(session)) {
-      throw new DuplicatedException("중복되는 강의입니다.");
+      throw new DuplicatedException("해당 기수에 중복되는 강의가 존재합니다.");
     }
   }
 
