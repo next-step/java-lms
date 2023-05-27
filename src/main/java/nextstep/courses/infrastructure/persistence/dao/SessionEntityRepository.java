@@ -11,6 +11,19 @@ import org.springframework.stereotype.Repository;
 @Repository("sessionEntityRepository")
 public class SessionEntityRepository {
 
+  private static final String ID = "id";
+  private static final String COURSE_ID = "course_id";
+  private static final String TITLE = "title";
+  private static final String DESCRIPTION = "description";
+  private static final String COVER_IMAGE_ID = "cover_image_id";
+  private static final String SESSION_TYPE = "session_type";
+  private static final String SESSION_STATUS = "session_status";
+  private static final String MAX_ENROLLMENT_SIZE = "max_enrollment_size";
+  private static final String START_DATE_TIME = "start_date_time";
+  private static final String END_DATE_TIME = "end_date_time";
+  private static final String CREATED_AT = "created_at";
+  private static final String UPDATED_AT = "updated_at";
+
   private final JdbcTemplate jdbcTemplate;
 
   public SessionEntityRepository(JdbcTemplate jdbcTemplate) {
@@ -29,19 +42,21 @@ public class SessionEntityRepository {
 
   private RowMapper<SessionEntity> rowMapper() {
     return (rs, rowNum) -> {
-      Long id = rs.getLong("id");
-      Long courseId = rs.getLong("course_id");
-      String title = rs.getString("title");
-      String description = rs.getString("description");
-      Long coverImageId = rs.getLong("cover_image_id");
-      String sessionType = rs.getString("session_type");
-      String sessionStatus = rs.getString("session_status");
-      int maxEnrollmentSize = rs.getInt("max_enrollment_size");
-      LocalDateTime startDateTime = rs.getTimestamp("start_date_time").toLocalDateTime();
-      LocalDateTime endDateTime = rs.getTimestamp("end_date_time").toLocalDateTime();
+      Long id = rs.getLong(ID);
+      Long courseId = rs.getLong(COURSE_ID);
+      String title = rs.getString(TITLE);
+      String description = rs.getString(DESCRIPTION);
+      Long coverImageId = rs.getLong(COVER_IMAGE_ID);
+      String sessionType = rs.getString(SESSION_TYPE);
+      String sessionStatus = rs.getString(SESSION_STATUS);
+      int maxEnrollmentSize = rs.getInt(MAX_ENROLLMENT_SIZE);
+      LocalDateTime startDateTime = rs.getTimestamp(START_DATE_TIME).toLocalDateTime();
+      LocalDateTime endDateTime = rs.getTimestamp(END_DATE_TIME).toLocalDateTime();
+      LocalDateTime createAt = rs.getTimestamp(CREATED_AT).toLocalDateTime();
+      LocalDateTime updatedAt = rs.getTimestamp(UPDATED_AT).toLocalDateTime();
 
       return new SessionEntity(id, courseId, title, description, coverImageId, sessionType,
-              sessionStatus, maxEnrollmentSize, startDateTime, endDateTime);
+              sessionStatus, maxEnrollmentSize, startDateTime, endDateTime, createAt, updatedAt);
     };
   }
 }

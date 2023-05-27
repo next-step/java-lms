@@ -41,7 +41,6 @@ public class SessionEntity extends BaseTimeEntity {
   private SessionStatus sessionStatus;
 
   private int maxEnrollmentSize;
-  private List<Long> students;
 
   private SessionPeriod sessionPeriod;
 
@@ -53,7 +52,8 @@ public class SessionEntity extends BaseTimeEntity {
    */
   public SessionEntity(Long id, Long courseId, SessionInfo sessionInfo, Long coverImageId,
       SessionType sessionType, SessionStatus sessionStatus, int maxEnrollmentSize,
-      SessionPeriod sessionPeriod) {
+      SessionPeriod sessionPeriod, LocalDateTime createAd, LocalDateTime updatedAt) {
+    super(createAd, updatedAt);
     this.id = id;
     this.courseId = courseId;
     this.sessionInfo = sessionInfo;
@@ -64,17 +64,15 @@ public class SessionEntity extends BaseTimeEntity {
     this.sessionPeriod = sessionPeriod;
   }
 
+  /**
+   * 부 생성자.
+   */
   public SessionEntity(Long id, Long courseId, String title, String description, Long coverImageId,
       String sessionType, String sessionStatus, int maxEnrollmentSize, LocalDateTime startDateTime,
-      LocalDateTime endDateTime) {
-    this.id = id;
-    this.courseId = courseId;
-    this.sessionInfo = new SessionInfo(title, description);
-    this.coverImageId = coverImageId;
-    this.sessionType = SessionType.valueOf(sessionType);
-    this.sessionStatus = SessionStatus.valueOf(sessionStatus);
-    this.maxEnrollmentSize = maxEnrollmentSize;
-    this.sessionPeriod = new SessionPeriod(startDateTime, endDateTime);
+      LocalDateTime endDateTime, LocalDateTime createAt, LocalDateTime updatedAt) {
+    this(id, courseId, new SessionInfo(title, description), coverImageId, SessionType.valueOf(sessionType),
+        SessionStatus.valueOf(sessionStatus), maxEnrollmentSize, new SessionPeriod(startDateTime, endDateTime),
+        createAt, updatedAt);
   }
 
   public Long getCoverImageId() {
@@ -111,26 +109,8 @@ public class SessionEntity extends BaseTimeEntity {
     return maxEnrollmentSize;
   }
 
-  public List<Long> getStudents() {
-    return students;
-  }
-
   public SessionPeriod getSessionPeriod() {
     return sessionPeriod;
   }
 
-  @Override
-  public String toString() {
-    return "SessionEntity{" +
-        "id=" + id +
-        ", courseId=" + courseId +
-        ", sessionInfo=" + sessionInfo +
-        ", coverImageId=" + coverImageId +
-        ", sessionType=" + sessionType +
-        ", sessionStatus=" + sessionStatus +
-        ", maxEnrollmentSize=" + maxEnrollmentSize +
-        ", students=" + students +
-        ", sessionPeriod=" + sessionPeriod +
-        '}';
-  }
 }
