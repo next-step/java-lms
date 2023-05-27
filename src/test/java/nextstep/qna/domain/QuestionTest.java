@@ -36,7 +36,7 @@ public class QuestionTest {
         JAVAHIGI_QUESTION.addAnswer(JAVAJIGI_ANSWER);
         JAVAHIGI_QUESTION.deleteQuestion(NsUserTest.JAVAJIGI);
 
-        assertThat(JAVAHIGI_QUESTION.isQuestionDeleted()).isTrue();
+        assertThat(JAVAHIGI_QUESTION.deleteHistories()).hasSize(2);
     }
 
     @Test

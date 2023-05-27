@@ -95,7 +95,7 @@ public class Question {
         this.answers.deleteAll();
     }
 
-    public boolean isQuestionDeleted() {
+    private boolean isQuestionDeleted() {
         return deleted && this.answers.immutableGet()
                 .stream().allMatch(Answer::isDeleted);
     }
