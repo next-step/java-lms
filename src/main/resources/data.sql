@@ -21,3 +21,9 @@ VALUES (1,
        (2,
         '언더스코어 강력 추천드려요. 다만 최신 버전을 공부하는 것보다는 0.10.0 버전부터 보는게 더 좋더군요. 코드의 변천사도 알 수 있고, 최적화되지 않은 코드들이 기능은 그대로 두고 최적화되어 가는 걸 보면 재미가 있습니다 :)',
         CURRENT_TIMESTAMP(), 1, false);
+
+-- Image
+INSERT INTO IMAGE (IMAGE_ID, IMAGE_LINK)
+VALUES (1,'www'),
+       (2,'sdsdf'),
+       (3,'asdfsdf');

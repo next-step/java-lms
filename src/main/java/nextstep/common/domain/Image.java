@@ -6,11 +6,11 @@ import java.util.Objects;
 public class Image {
     private Long imageId;
     @NotBlank(message = "이미지링크는 공백이 허용되지 않습니다")
-    private String imageLink;
+    private String imageUrl;
 
-    public Image(Long imageId,String imageLink) {
+    public Image(Long imageId,String imageUrl) {
         this.imageId = imageId;
-        this.imageLink = imageLink;
+        this.imageUrl = imageUrl;
     }
 
     public static Image of(String imageLink) {
@@ -22,14 +22,14 @@ public class Image {
     }
 
     public String getImageUrl() {
-        return imageLink;
+        return imageUrl;
     }
 
     @Override
     public String toString() {
         return "Image{" +
                 "imageId=" + imageId +
-                ", imageLink='" + imageLink + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 
@@ -43,6 +43,6 @@ public class Image {
 
     @Override
     public int hashCode() {
-        return Objects.hash(imageId, imageLink);
+        return Objects.hash(imageId);
     }
 }
