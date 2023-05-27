@@ -76,7 +76,11 @@ public class Question extends BaseEntity {
 
         this.deleted = true;
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, this.writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete(loginUser));
+        try {
+            deleteHistories.addAll(answers.delete(loginUser));
+        } catch (CannotDeleteException e) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
 
         return deleteHistories;
     }

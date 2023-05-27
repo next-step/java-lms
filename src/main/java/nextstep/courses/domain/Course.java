@@ -2,16 +2,13 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Course {
-    private Long id;
+public class Course extends BaseEntity {
 
     private String title;
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private Sessions sessions;
 
     public Course() {
     }
@@ -38,6 +35,10 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Session findSession(Long sessionId) {
+        return sessions.findSession(sessionId);
     }
 
     @Override

@@ -28,4 +28,15 @@ public class QuestionTest {
         assertThat(delete).contains(
                 new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
+
+    @DisplayName("질문과 답변의 작성자가 다르면 질문을 삭제할 수 없다.")
+    @Test
+    public void shouldNotDeleteQuestionWhenAnswerWriterIsNotSameWithQuestionWriter() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "q1", "c1");
+        question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "c2"));
+
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, 0))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessageMatching("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 }
