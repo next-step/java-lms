@@ -3,15 +3,19 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository) {
+    public SessionService(SessionRepository sessionRepository, UserRepository userRepository) {
         this.sessionRepository = sessionRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -37,6 +41,10 @@ public class SessionService {
 
     @Transactional(readOnly = true)
     public List<NsUser> findAllUserBySessionId(Long sessionId) {
-        return sessionRepository.findAllUserBySessionId(sessionId);
+        List<String> nextStepUserIds = sessionRepository.findAllUserBySessionId(sessionId);
+        return nextStepUserIds.stream()
+                .map(userRepository::findByUserId)
+                .map(user -> user.orElseThrow(() -> new IllegalArgumentException("")))
+                .collect(Collectors.toList());
     }
 }

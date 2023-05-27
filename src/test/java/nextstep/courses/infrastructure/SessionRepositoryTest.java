@@ -65,6 +65,12 @@ public class SessionRepositoryTest {
 
     @Test
     void findAllUserBySessionId() {
-        
+        NsUser nsUser = NsUserTest.JAVAJIGI;
+        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Long sessionId = sessionRepository.save(session, 1L);
+        sessionRepository.saveSessionUser(session, nsUser);
+
+        List<String> nextStepUsers = sessionRepository.findAllUserBySessionId(sessionId);
+        assertThat(nextStepUsers).hasSize(1);
     }
 }

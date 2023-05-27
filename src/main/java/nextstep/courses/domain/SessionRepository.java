@@ -13,5 +13,5 @@ public interface SessionRepository {
 
     long saveSessionUser(Session session, NsUser nextStepUser);
 
-    List<NsUser> findAllUserBySessionId(Long sessionId);
+    List<String> findAllUserBySessionId(Long sessionId);
 }
