@@ -23,6 +23,10 @@ public class Session extends BaseEntity {
         this.price = price;
     }
 
+    public void checkIsRegister(int studentsCount) {
+        this.sessionInfo.checkIsRegister(studentsCount);
+    }
+
     public void registerSession(int studentsCount) {
         this.sessionInfo.registerSession(studentsCount);
         super.setUpdatedAt();

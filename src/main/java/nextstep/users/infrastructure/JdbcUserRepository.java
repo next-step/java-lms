@@ -31,7 +31,7 @@ public class JdbcUserRepository implements UserRepository {
                 UserCourseType.valueOf(rs.getString(6)),
                 toLocalDateTime(rs.getTimestamp(7)),
                 toLocalDateTime(rs.getTimestamp(8)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, userId));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

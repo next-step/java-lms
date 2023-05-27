@@ -11,6 +11,14 @@ public class Sessions {
         this.sessions = sessions;
     }
 
+    public void checkIsRegister(Long sessionId, int studentsCount) {
+        this.sessions.stream()
+                .filter(session -> session.isSession(sessionId))
+                .findFirst()
+                .orElseThrow(() -> new RegisterCourseException("해당하는 강의가 존재하지 않습니다."))
+                .checkIsRegister(studentsCount);
+    }
+
     public void registerSession(Long sessionId, int studentsCount) {
         this.sessions.stream()
                 .filter(session -> session.isSession(sessionId))

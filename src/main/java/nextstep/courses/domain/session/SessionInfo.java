@@ -21,6 +21,11 @@ public class SessionInfo {
         this.sessionRecruitmentType = sessionRecruitmentType;
     }
 
+    public void checkIsRegister(int studentsCount) {
+        this.checkStatusToRegister();
+        this.checkMaxStudentsCountToRegister(studentsCount);
+    }
+
     public void registerSession(int studentsCount) {
         this.checkStatusToRegister();
         this.checkMaxStudentsCountToRegister(studentsCount);

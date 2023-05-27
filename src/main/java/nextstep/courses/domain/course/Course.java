@@ -26,6 +26,10 @@ public class Course extends BaseEntity {
         this.sessions.registerSession(sessionId, studentsCount);
     }
 
+    public void checkIsRegisterSession(Long sessionId, int studentsCount) {
+        this.sessions.checkIsRegister(sessionId, studentsCount);
+    }
+
     public String getTitle() {
         return this.title;
     }
