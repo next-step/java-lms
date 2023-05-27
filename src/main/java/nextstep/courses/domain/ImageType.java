@@ -31,4 +31,11 @@ public enum ImageType {
   public String getDescription() {
     return description;
   }
+
+  @Override
+  public String toString() {
+    return "ImageType{" +
+        "description='" + description + '\'' +
+        '}';
+  }
 }

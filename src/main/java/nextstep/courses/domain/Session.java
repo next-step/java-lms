@@ -23,13 +23,11 @@ public class Session extends BaseTimeEntity {
 
   private final SessionPeriod sessionPeriod;
 
-  private final Generation generation;
-
   /**
    * 주 생성자
    */
   public Session(Long id, SessionInfo sessionInfo, Image coverImage, SessionType sessionType,
-      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod, Generation generation,
+      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -39,7 +37,6 @@ public class Session extends BaseTimeEntity {
     this.sessionStatus = sessionStatus;
     this.students = students;
     this.sessionPeriod = sessionPeriod;
-    this.generation = generation;
     hasNoUserForPreparingSession(sessionStatus);
   }
 
@@ -47,9 +44,9 @@ public class Session extends BaseTimeEntity {
   /**
    * 부 생성자
    */
-  Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
-      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod, Generation generation) {
-    this(id, sessionInfo, image, sessionType, sessionStatus, students, sessionPeriod, generation,
+  public Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
+      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod) {
+    this(id, sessionInfo, image, sessionType, sessionStatus, students, sessionPeriod,
         LocalDateTime.now(), LocalDateTime.now());
   }
 
@@ -72,4 +69,31 @@ public class Session extends BaseTimeEntity {
     students.add(user);
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public SessionInfo getSessionInfo() {
+    return sessionInfo;
+  }
+
+  public Image getCoverImage() {
+    return coverImage;
+  }
+
+  public SessionType getSessionType() {
+    return sessionType;
+  }
+
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
+  }
+
+  public Students getStudents() {
+    return students;
+  }
+
+  public SessionPeriod getSessionPeriod() {
+    return sessionPeriod;
+  }
 }
