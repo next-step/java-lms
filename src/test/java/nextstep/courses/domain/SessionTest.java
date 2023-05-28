@@ -10,7 +10,7 @@ public class SessionTest {
     private Session session;
     @BeforeEach
     void setUp() {
-        session = new Session(1L,"2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL,Cost.FREE);
+        session = new Session(1L,"2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL,Cost.FREE, Status.READY);
     }
 
     @Test
@@ -38,5 +38,14 @@ public class SessionTest {
 
         // then
         assertThat(cost).isNotNull();
+    }
+
+    @Test
+    void test_강의는_상태를_갖는다() {
+        // when
+        Status status = session.getStatus();
+
+        // then
+        assertThat(status).isNotNull();
     }
 }
