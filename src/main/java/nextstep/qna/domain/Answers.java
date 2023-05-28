@@ -14,7 +14,7 @@ public class Answers {
     }
 
     public Answers(List<Answer> answers) {
-        this.answers = answers;
+        this.answers = new ArrayList<>(answers);
     }
 
     public boolean hasOtherUserAnswer(NsUser loginUser) {
