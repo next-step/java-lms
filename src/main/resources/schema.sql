@@ -71,3 +71,5 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
+alter table session add session_recruitment_status varchar(20);

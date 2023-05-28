@@ -16,16 +16,16 @@ public class Session {
   private final SessionCoverUrl sessionCoverUrl;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private SessionStatus sessionStatus;
+  private SessionProgressStatus sessionProgressStatus;
 
-  public Session(SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(null, sessionPayment, sessionStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
+  public Session(SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(null, sessionPayment, sessionProgressStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
   }
 
-  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.sessionPayment = sessionPayment;
-    this.sessionStatus = sessionStatus;
+    this.sessionProgressStatus = sessionProgressStatus;
     this.sessionUsers = new SessionUsers(maxUserEnrollment);
     this.sessionPeriod = new SessionPeriod(startDate, endDate);
     this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
@@ -38,12 +38,12 @@ public class Session {
   }
 
   public void ending() {
-    this.sessionStatus = SessionStatus.ENDING;
+    this.sessionProgressStatus = SessionProgressStatus.ENDING;
   }
 
   public void processEnrollment(NextStepUser nextStepUser) {
-    if (!sessionStatus.canEnroll()) {
-      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionStatus.status());
+    if (!sessionProgressStatus.canEnroll()) {
+      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionProgressStatus.status());
     }
 
     LocalDateTime now = LocalDateTime.now();
@@ -86,8 +86,8 @@ public class Session {
     return updatedAt;
   }
 
-  public SessionStatus getSessionStatus() {
-    return sessionStatus;
+  public SessionProgressStatus getSessionStatus() {
+    return sessionProgressStatus;
   }
 
   @Override

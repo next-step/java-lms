@@ -1,32 +1,30 @@
 package nextstep.courses.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class SessionStatusTest {
 
-  private SessionStatus preparingStatus;
-  private SessionStatus acceptingStatus;
-  private SessionStatus endingStatus;
-
-  @BeforeEach
-  public void setUp() {
-    preparingStatus = SessionStatus.PREPARING;
-    acceptingStatus = SessionStatus.ACCEPTING;
-    endingStatus = SessionStatus.ENDING;
+  @ParameterizedTest(name = "수강신청 상태 확인")
+  @MethodSource("generateStatusStatusData")
+  public void check_수강신청(SessionStatus sessionStatus, boolean expected) {
+    assertThat(sessionStatus.canEnroll()).isEqualTo(expected);
   }
 
-  @Test
-  @DisplayName("수강 신청 상태가 아니면 IllegalArgumentException throw")
-  public void 수강_신청_아닌_상태() {
-    assertAll(
-            () -> assertThat(preparingStatus.canEnroll()).isFalse(),
-            () -> assertThat(acceptingStatus.canEnroll()).isTrue(),
-            () -> assertThat(endingStatus.canEnroll()).isFalse()
+  private static Stream<Arguments> generateStatusStatusData() {
+    return Stream.of(
+            Arguments.of(new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING), false),
+            Arguments.of(new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.NOT_RECRUITING), false),
+            Arguments.of(new SessionStatus(SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING), true),
+            Arguments.of(new SessionStatus(SessionProgressStatus.IN_PROGRESSING, SessionRecruitmentStatus.RECRUITING), true),
+            Arguments.of(new SessionStatus(SessionProgressStatus.IN_PROGRESSING, SessionRecruitmentStatus.NOT_RECRUITING), false),
+            Arguments.of(new SessionStatus(SessionProgressStatus.ENDING, SessionRecruitmentStatus.RECRUITING), false),
+            Arguments.of(new SessionStatus(SessionProgressStatus.ENDING, SessionRecruitmentStatus.NOT_RECRUITING), false)
     );
   }
 }

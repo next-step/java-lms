@@ -2,7 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionPayment;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionProgressStatus;
 import nextstep.courses.domain.SessionUser;
 import nextstep.users.domain.NextStepUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ public class SessionServiceTest {
   @BeforeEach
   public void setUp() {
     LocalDateTime currentTime = LocalDateTime.now();
-    session = sessionService.save(new Session(SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
+    session = sessionService.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
     sessionService.enrollUsers(session.getId(), NextStepUserTest.JAVAJIGI.getUserId());
   }
 

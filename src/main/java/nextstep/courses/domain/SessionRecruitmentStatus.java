@@ -38,4 +38,8 @@ public enum SessionRecruitmentStatus {
   private static boolean hasRecruitmentStatus(String recruitmentStatus) {
     return BY_RECRUITMENT_STATUS.containsKey(recruitmentStatus);
   }
+
+  public boolean isRecruitingStatus() {
+    return this == RECRUITING;
+  }
 }
