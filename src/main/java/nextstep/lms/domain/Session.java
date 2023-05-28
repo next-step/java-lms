@@ -64,7 +64,7 @@ public class Session {
         }
     }
 
-    public static Session create(String title, Course course, LmsUser creator, Integer price, Integer maxApplicantCount, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate) {
+    public static Session of(String title, Course course, LmsUser creator, Integer price, Integer maxApplicantCount, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate) {
         validateCreatorAuthorization(course, creator);
         return new Session(idGenerator.getAndIncrement(), title, course, creator, price, SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
     }

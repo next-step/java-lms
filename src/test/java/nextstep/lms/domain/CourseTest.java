@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CourseTest {
 
-    protected static final Course COURSE_A = Course.create("과정A", LmsUserTest.ADMIN_1);
-    protected static final Course COURSE_B = Course.create("과정B", LmsUserTest.ADMIN_2);
+    protected static final Course COURSE_A = Course.of("과정A", LmsUserTest.ADMIN_1);
+    protected static final Course COURSE_B = Course.of("과정B", LmsUserTest.ADMIN_2);
 
 
     @Test
     void 과정추가() {
-        Course courseB = Course.create("과정B", LmsUserTest.ADMIN_1);
+        Course courseB = Course.of("과정B", LmsUserTest.ADMIN_1);
         assertAll(
                 () -> assertThat(courseB.isSameTitle("과정B")).isTrue()
         );
@@ -23,7 +23,7 @@ class CourseTest {
 
     @Test
     void 일반회원이_과정추가_불가능() {
-        assertThatThrownBy(() -> Course.create("과정C", LmsUserTest.USER_1)).isInstanceOf(UnAuthorizedException.class);
+        assertThatThrownBy(() -> Course.of("과정C", LmsUserTest.USER_1)).isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test

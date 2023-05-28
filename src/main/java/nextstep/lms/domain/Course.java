@@ -40,7 +40,7 @@ public class Course {
         }
     }
 
-    public static Course create(String title, LmsUser creator) {
+    public static Course of(String title, LmsUser creator) {
         valiateCreatorAuthorization(creator);
         return new Course(idGenerator.getAndIncrement(), title, creator, new ArrayList<>(), LocalDateTime.now(), null);
     }

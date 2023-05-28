@@ -36,11 +36,11 @@ public class LmsUser {
         this.updatedAt = updatedAt;
     }
 
-    public static LmsUser createAdmin(String userId, String password, String name) {
+    public static LmsUser adminOf(String userId, String password, String name) {
         return new LmsUser(userId, password, name, LmsUserRole.ADMIN);
     }
 
-    public static LmsUser createUser(String userId, String password, String name) {
+    public static LmsUser normalOf(String userId, String password, String name) {
         return new LmsUser(userId, password, name, LmsUserRole.NORMAL);
     }
 

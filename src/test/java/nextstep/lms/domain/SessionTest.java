@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SessionTest {
 
-    protected static final Session JAVA_SESSION_1 = Session.create("자바 기초1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
-    protected static final Session JAVA_SESSION_2 = Session.create("자바 기초2", CourseTest.COURSE_B, LmsUserTest.ADMIN_2, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
+    protected static final Session JAVA_SESSION_1 = Session.of("자바 기초1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
+    protected static final Session JAVA_SESSION_2 = Session.of("자바 기초2", CourseTest.COURSE_B, LmsUserTest.ADMIN_2, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
 
     private Session testSession;
 
     @BeforeEach
     void setUp() {
-        testSession = Session.create("테스트용 강의", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
+        testSession = Session.of("테스트용 강의", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
     }
 
     @AfterEach
@@ -30,7 +30,7 @@ class SessionTest {
 
     @Test
     void 무료강의추가() {
-        Session newSession = Session.create("무료강의1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
+        Session newSession = Session.of("무료강의1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
         assertAll(
                 () -> assertThat(newSession.isPrice(0)).isTrue(),
                 () -> assertThat(newSession.isMaxApplicantCount(100)).isTrue(),
@@ -42,14 +42,14 @@ class SessionTest {
     @Test
     void 일반회원이_강의추가_불가능() {
         assertThatThrownBy(
-                () -> Session.create("파이썬 기초1", CourseTest.COURSE_A, LmsUserTest.USER_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15))
+                () -> Session.of("파이썬 기초1", CourseTest.COURSE_A, LmsUserTest.USER_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15))
         ).isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test
     void 과정생성자와_불일치시_생성불가능() {
         assertThatThrownBy(
-                () -> Session.create("파이썬 기초2", CourseTest.COURSE_A, LmsUserTest.ADMIN_2, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15))
+                () -> Session.of("파이썬 기초2", CourseTest.COURSE_A, LmsUserTest.ADMIN_2, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15))
         ).isInstanceOf(UnAuthorizedException.class);
     }
 
@@ -97,7 +97,7 @@ class SessionTest {
 
     @Test
     void 모집_마감_상태() {
-        Session testSession2 = Session.create("테스트용 강의2", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 1, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
+        Session testSession2 = Session.of("테스트용 강의2", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 1, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
         testSession2.open(LmsUserTest.ADMIN_1);
         testSession2.addApplicant(LmsUserTest.USER_1);
         assertAll(
