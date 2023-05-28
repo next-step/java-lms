@@ -73,4 +73,28 @@ public class SessionTest {
         // then
         assertThat(session.hasStudent(NsUserTest.JAVAJIGI)).isTrue();
     }
+
+    @Test
+    void test_최대수강_인원_초과시_수강신청_실패() {
+        // given
+        session.register(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.SANJIGI);
+        session.register(NsUserTest.BADAJIGI);
+
+        // then
+        assertThatCode(() -> session.register(NsUserTest.GANGJIGI))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("수강 신청 인원이 초과되었습니다.");
+    }
+
+    @Test
+    void test_수강신청_정원내_성공() {
+        // given
+        session.register(NsUserTest.JAVAJIGI);
+        session.register(NsUserTest.SANJIGI);
+
+        // then
+        assertThat(session.hasStudent(NsUserTest.JAVAJIGI)).isTrue();
+        assertThat(session.hasStudent(NsUserTest.SANJIGI)).isTrue();
+    }
 }
