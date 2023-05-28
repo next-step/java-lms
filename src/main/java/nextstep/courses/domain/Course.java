@@ -76,6 +76,7 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
+                ", sessions=" + sessions +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
