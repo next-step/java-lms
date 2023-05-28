@@ -18,6 +18,26 @@ public class SessionInfo {
         this.sessionType = sessionType;
     }
 
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCoverImageInfo() {
+        return coverImageInfo;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

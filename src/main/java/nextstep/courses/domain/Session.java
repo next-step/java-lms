@@ -49,6 +49,23 @@ public class Session {
         return students.size();
     }
 
+    public SessionInfo getSessionInfo() {
+        return sessionInfo;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public SessionTimeLine getSessionTimeLine() {
+        return sessionTimeLine;
+    }
+
+
+    public Long getMaxNumOfStudent() {
+        return maxNumOfStudent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
