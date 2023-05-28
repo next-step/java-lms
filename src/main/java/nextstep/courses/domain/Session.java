@@ -4,8 +4,8 @@ import nextstep.courses.CannotRegisterException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 
@@ -19,7 +19,7 @@ public class Session {
     private final SessionType type;
     private final SessionStatus status;
     private final int maxRegisterNum;
-    private List<NsUser> students = new ArrayList<>();
+    private Set<NsUser> students = new HashSet<>();
 
     public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum) {
         this.id = id;
