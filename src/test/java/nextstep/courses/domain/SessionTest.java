@@ -18,7 +18,13 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        session = new Session();
+        LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
+        boolean isFree = true;
+        Status status = Status.preparing;
+        int currentStudents = 10;
+        int maxStudents = 10;
+        session = new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
     }
 
     @Test
@@ -90,12 +96,12 @@ class SessionTest {
     @Test
     void enrolement() {
         String inputStatus = "preparing";
-        int inputMaxStudents = 5;
+        int inputMaxStudents = 15;
 
         session.patchStatus(inputStatus);
         session.registerMaxStudents(inputMaxStudents);
 
-        int expected = 1;
+        int expected = session.currentStudents() + 1;
         session.enrolement();
         int actual = session.currentStudents();
         assertThat(expected).isEqualTo(actual);
