@@ -59,10 +59,12 @@ public class SessionTest {
     }
 
     @Test
-    void 수강_신청_가능시_학생_추가() {
-        assertThat(S3.currRegisterNum()).isEqualTo(2);
+    void 수강_신청시_학생_추가() {
+        int beforeRegisterCount = S3.currRegisterCount();
         S3.register(new NsUser());
-        assertThat(S3.currRegisterNum()).isEqualTo(3);
+        int currRegisterCount = S3.currRegisterCount();
+
+        assertThat(beforeRegisterCount + 1).isEqualTo(currRegisterCount);
     }
 
 }

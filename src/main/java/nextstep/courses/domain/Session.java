@@ -63,9 +63,8 @@ public class Session {
         return students.size() >= maxRegisterCount;
     }
 
-    int currRegisterNum() {
+    int currRegisterCount() {
         return this.students.size();
     }
-
 
 }
