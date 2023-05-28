@@ -15,7 +15,7 @@ public class SessionTest {
 
     @BeforeEach
     void setup() {
-        session = new Session();
+        session = new Session(PaymentTypeEnum.PAID);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class SessionTest {
     @DisplayName("강의 객체 생성 case 2 - 커버 이미지 정보 필드 여부")
     void session_has_field_thumbnail_info_test(){
         assertThat(session)
-                .hasFieldOrProperty("thumbnailInfo");
+                .hasFieldOrProperty("url");
     }
 
     @Test

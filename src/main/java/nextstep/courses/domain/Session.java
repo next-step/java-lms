@@ -1,22 +1,44 @@
 package nextstep.courses.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Session {
 
-    private Date startDate;
-    private Date endDate;
-    private ThumbnailInfo thumbnailInfo;
-    private PaymentTypeEnum paymentType;
+    private Long id;
     private int enrollments;
-    private SessionStatusEnum status;
     private int maximumEnrollments;
+    private String thumbnailUrl;
+    private PaymentTypeEnum paymentType;
+    private SessionStatusEnum status;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
-    public Session() {
+    public Session(Long id, int enrollments, int maximumEnrollments, String thumbnailUrl, PaymentTypeEnum paymentType, SessionStatusEnum status, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.enrollments = enrollments;
+        this.maximumEnrollments = maximumEnrollments;
+        this.thumbnailUrl = thumbnailUrl;
+        this.paymentType = paymentType;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    private Session(PaymentTypeEnum paymentType, LocalDateTime startDate, LocalDateTime endDate){
+        this.enrollments = 0;
+        this.status = SessionStatusEnum.READY;
+        this.paymentType = paymentType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+    }
+    public Session(PaymentTypeEnum paymentType) {
+        this(paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         this.maximumEnrollments = 30;
     }
 
-    public Session(int maximumEnrollments) {
+    public Session(PaymentTypeEnum paymentType, int maximumEnrollments) {
+        this(paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
         this.maximumEnrollments = maximumEnrollments;
     }
 
@@ -52,5 +74,33 @@ public class Session {
         }
 
         enrollments+=1;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public String getPaymentType() {
+        return paymentType.name();
+    }
+
+    public int getEnrollments() {
+        return enrollments;
+    }
+
+    public String getStatus() {
+        return status.name();
+    }
+
+    public int getMaximumEnrollments() {
+        return maximumEnrollments;
     }
 }
