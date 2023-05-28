@@ -54,7 +54,7 @@ public class Question {
         this.deleted = true;
 
         DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
+        deleteHistories.add(DeleteHistory.createQuestion(this));
 
         return answers.delete(deleteHistories);
     }
