@@ -4,30 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import nextstep.users.domain.NsUser;
-
 public class Students {
 
-	private final List<NsUser> nsUsers;
+	private final List<Student> students;
 
 	public Students() {
 		this(new ArrayList<>());
 	}
 
-	public Students(List<NsUser> nsUsers) {
-		this.nsUsers = nsUsers;
+	public Students(List<Student> students) {
+		this.students = students;
 	}
 
-	public boolean contains(NsUser nsUser) {
-		return this.nsUsers.contains(nsUser);
+	public boolean contains(Student student) {
+		return this.students.contains(student);
 	}
 
-	public void add(NsUser nsUser) {
-		this.nsUsers.add(nsUser);
+	public int add(Student student) {
+		this.students.add(student);
+		return this.students.size();
 	}
 
 	public boolean isFull(int capacity) {
-		return this.nsUsers.size() >= capacity;
+		return this.students.size() >= capacity;
+	}
+
+	public Student last() {
+		return this.students.get(this.students.size() - 1);
 	}
 
 	@Override
@@ -36,12 +39,12 @@ public class Students {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		Students students = (Students)o;
-		return Objects.equals(nsUsers, students.nsUsers);
+		Students students1 = (Students)o;
+		return Objects.equals(students, students1.students);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nsUsers);
+		return Objects.hash(students);
 	}
 }

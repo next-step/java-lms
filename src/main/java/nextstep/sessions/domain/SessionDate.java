@@ -16,4 +16,20 @@ public class SessionDate {
 		this.startAt = startAt;
 		this.endAt = endAt;
 	}
+
+	public LocalDateTime getStartAt() {
+		return startAt;
+	}
+
+	public LocalDateTime getEndAt() {
+		return endAt;
+	}
+
+	@Override
+	public String toString() {
+		return "SessionDate[" +
+			"startAt=" + startAt +
+			", endAt=" + endAt +
+			']';
+	}
 }

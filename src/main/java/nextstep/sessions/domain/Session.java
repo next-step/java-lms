@@ -1,22 +1,23 @@
 package nextstep.sessions.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import nextstep.sessions.exception.AlreadySignUpException;
 import nextstep.sessions.exception.CapacityNumberException;
-import nextstep.sessions.exception.NumberFullException;
 import nextstep.sessions.exception.GuestUserSignUpException;
 import nextstep.sessions.exception.NotRecruitingException;
+import nextstep.sessions.exception.NumberFullException;
 import nextstep.sessions.type.StatusType;
 import nextstep.users.domain.NsUser;
 
 public class Session {
 
-	private Long sessionId;
+	private final Long id;
 
-	private Long courseId;
+	private final long courseId;
 
-	private SessionDate sessionDate;
+	private final SessionDate sessionDate;
 
 	private String coveredImageUrl;
 
@@ -26,16 +27,22 @@ public class Session {
 
 	private final int capacity;
 
-	private final Students students;
+	private Students students;
 
-	public Session(SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
-		this(sessionDate, coveredImageUrl, free, StatusType.PREPARING, capacity, students);
+	private final LocalDateTime createdAt = LocalDateTime.now();
+
+	private LocalDateTime updatedAt;
+
+	public Session(Long id, long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
+		this(id, courseId, sessionDate, coveredImageUrl, free, StatusType.PREPARING, capacity, students);
 	}
 
-	public Session(SessionDate sessionDate, String coveredImageUrl, boolean free, StatusType statusType, int capacity, Students students) {
+	public Session(Long id, long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, StatusType statusType, int capacity, Students students) {
 		if (capacity < 0) {
 			throw new CapacityNumberException("최대 수강 인원은 음수일 수 없습니다.");
 		}
+		this.id = id;
+		this.courseId = courseId;
 		this.sessionDate = sessionDate;
 		this.coveredImageUrl = coveredImageUrl;
 		this.free = free;
@@ -52,13 +59,15 @@ public class Session {
 			throw new NumberFullException("정원이 가득찼습니다.");
 		}
 		if (nsUser.isGuestUser()) {
-			throw new GuestUserSignUpException("게스트 유저는 수강신청 할 수 없습니다.");
-		}
-		if (this.students.contains(nsUser)) {
-			throw new AlreadySignUpException("이미 수강신청이 완료된 계정입니다.");
+			throw new GuestUserSignUpException("게스트 유저는 수강신청을 할 수 없습니다.");
 		}
 
-		this.students.add(nsUser);
+		Student student = new Student(this.id, nsUser.getId());
+		if (this.students.contains(student)) {
+			throw new AlreadySignUpException("이미 수강신청한 유저입니다.");
+		}
+
+		this.students.add(student);
 
 		return this;
 	}
@@ -75,6 +84,46 @@ public class Session {
 		this.statusType = StatusType.of(statusType);
 	}
 
+	public Student lastStudent() {
+		return students.last();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public Long getCourseId() {
+		return courseId;
+	}
+
+	public SessionDate getSessionDate() {
+		return sessionDate;
+	}
+
+	public String getCoveredImageUrl() {
+		return coveredImageUrl;
+	}
+
+	public boolean isFree() {
+		return free;
+	}
+
+	public StatusType getStatusType() {
+		return statusType;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setStudents(Students students) {
+		this.students = students;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -82,12 +131,28 @@ public class Session {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Session session = (Session)o;
-		return free == session.free && Objects.equals(sessionId, session.sessionId) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionDate, session.sessionDate) && Objects.equals(
+		return free == session.free && Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionDate, session.sessionDate) && Objects.equals(
 			coveredImageUrl, session.coveredImageUrl) && statusType == session.statusType && Objects.equals(students, session.students);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(sessionId, courseId, sessionDate, coveredImageUrl, free, statusType, students);
+		return Objects.hash(id, courseId, sessionDate, coveredImageUrl, free, statusType, students);
+	}
+
+	@Override
+	public String toString() {
+		return "Session [" +
+			"id=" + id +
+			", courseId=" + courseId +
+			", sessionDate=" + sessionDate +
+			", coveredImageUrl='" + coveredImageUrl + '\'' +
+			", free=" + free +
+			", statusType=" + statusType +
+			", capacity=" + capacity +
+			", students=" + students +
+			", createdAt=" + createdAt +
+			", updatedAt=" + updatedAt +
+			']';
 	}
 }
