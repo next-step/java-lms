@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import nextstep.courses.DuplicatedException;
 
 public class Sessions {
 
-  private List<Session> sessions = new ArrayList<>();
+  private Set<Session> sessions = new HashSet<>();
 
   public Sessions() {
   }
