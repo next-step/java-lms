@@ -48,13 +48,14 @@ public class Question {
 
         try {
             answersDeleteHistory = answers.deleteAnswers(loginUser);
-            deleteHistories.addAll(answersDeleteHistory);
         } catch (CannotDeleteException e) {
             throw new CannotDeleteException(DELETE_ANSWERS_AUTHORITY);
         }
         
         this.deleted = true;
+
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
+        deleteHistories.addAll(answersDeleteHistory);
 
         return deleteHistories;
     }
