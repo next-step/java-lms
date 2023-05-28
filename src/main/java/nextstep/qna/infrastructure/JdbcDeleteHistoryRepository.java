@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("deleteHistoryRepository")
+@Repository
 public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
     @Override
     public void saveAll(List<DeleteHistory> deleteHistories) {
