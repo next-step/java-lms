@@ -14,12 +14,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
 public class AnswerRepositoryTest {
 
-    @Autowired private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     private AnswerRepository answerRepository;
     private QuestionRepository questionRepository;
 

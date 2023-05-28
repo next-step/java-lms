@@ -2,13 +2,11 @@ package nextstep.qna.domain;
 
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +66,7 @@ public class Question {
                 question.createdDate
         );
     }
+
     public Long getId() {
         return this.questionId.value();
     }
@@ -80,8 +79,9 @@ public class Question {
         answer.relateToQuestion(this);
         answers.add(answer);
     }
+
     public void addAllAnswers(Answer... answers) {
-        for(Answer answer : answers) {
+        for (Answer answer : answers) {
             this.addAnswer(answer);
         }
     }

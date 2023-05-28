@@ -14,7 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 public class ImageRepositoryTest {
-    @Autowired ImageRepository imageRepository;
+    @Autowired
+    ImageRepository imageRepository;
 
     @DisplayName("저장한다")
     @Test
@@ -46,7 +47,7 @@ public class ImageRepositoryTest {
         //when
         List<Image> all = imageRepository.findAll();
         //then
-        for(Image image : all) {
+        for (Image image : all) {
             System.out.println(image);
         }
     }

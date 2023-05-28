@@ -19,8 +19,6 @@ public class Course {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-//
-
     public Course(CourseId courseId, String title, Long creatorId, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.courseId = courseId;
         this.title = title;
@@ -40,6 +38,7 @@ public class Course {
                 updatedAt
         );
     }
+
     public static Course of(Long courseId, String title, Long creatorId) {
         return Course.of(courseId, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }

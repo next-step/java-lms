@@ -1,4 +1,3 @@
-
 -- NsUser 도메인
 INSERT INTO ns_user (user_code, password, name, email, created_at)
 values ('javajigi-sql', 'test', '자바지기 SQL', 'javajigi@slipp.net', CURRENT_TIMESTAMP()),
@@ -15,10 +14,10 @@ VALUES (101, 101, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 
 
 -- Answer 도메인
 INSERT INTO answer (answer_id, writer_user_code, contents, created_at, question_id, deleted)
-VALUES (101,'avajigi-sql',
+VALUES (101, 'avajigi-sql',
         'http://underscorejs.org/docs/underscore.html Underscore.js 강추합니다! 쓸일도 많고, 코드도 길지 않고, 자바스크립트의 언어나 기본 API를 보완하는 기능들이라 자바스크립트 이해에 도움이 됩니다. 무엇보다 라이브러리 자체가 아주 유용합니다.',
         CURRENT_TIMESTAMP(), 101, false),
-       (102,'sanjigi-sql',
+       (102, 'sanjigi-sql',
         '언더스코어 강력 추천드려요. 다만 최신 버전을 공부하는 것보다는 0.10.0 버전부터 보는게 더 좋더군요. 코드의 변천사도 알 수 있고, 최적화되지 않은 코드들이 기능은 그대로 두고 최적화되어 가는 걸 보면 재미가 있습니다 :)',
         CURRENT_TIMESTAMP(), 102, false);
 

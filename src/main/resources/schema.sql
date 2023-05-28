@@ -39,23 +39,23 @@ CREATE TABLE IF NOT EXISTS question
 DROP TABLE IF EXISTS answer;
 CREATE TABLE IF NOT EXISTS answer
 (
-    answer_id   BIGINT    NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    writer_user_code varchar(20) NOT NULL ,
-    question_id bigint,
-    contents    clob,
-    deleted     boolean   not null,
-    created_at  timestamp not null,
-    updated_at  timestamp,
+    answer_id        BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    writer_user_code varchar(20) NOT NULL,
+    question_id      bigint,
+    contents         clob,
+    deleted          boolean     not null,
+    created_at       timestamp   not null,
+    updated_at       timestamp,
     primary key (answer_id)
 );
 
 DROP TABLE IF EXISTS delete_history;
 CREATE TABLE IF NOT EXISTS delete_history
 (
-    delete_history_id            BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    content_type  varchar(20),
-    content_id    bigint,
-    created_At  timestamp,
+    delete_history_id    BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    content_type         varchar(20),
+    content_id           bigint,
+    created_At           timestamp,
     deleted_by_user_code varchar(20),
     primary key (delete_history_id)
 );

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class PrimaryKeyCodeMakerRandom implements PrimaryKeyCodeMaker {
     private static final PrimaryKeyCodeMakerRandom SINGLETON = new PrimaryKeyCodeMakerRandom();
+
     private PrimaryKeyCodeMakerRandom() {
     }
 
@@ -13,6 +14,6 @@ public class PrimaryKeyCodeMakerRandom implements PrimaryKeyCodeMaker {
 
     @Override
     public String generate() {
-        return UUID.randomUUID().toString().substring(0,8);
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 }

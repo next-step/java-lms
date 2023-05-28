@@ -7,7 +7,7 @@ public enum ContentType {
     QUESTION, ANSWER;
 
     private static final Map<String, ContentType> TYPE_MAP = new HashMap<>() {{
-        for(ContentType contentType : ContentType.values()) {
+        for (ContentType contentType : ContentType.values()) {
             put(contentType.name(), contentType);
         }
     }};

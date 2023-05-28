@@ -39,7 +39,7 @@ public class CourseRepositoryTest {
     @DisplayName("저장한다")
     @Test
     void save() {
-        Course course = Course.of(6L,"TDD, 클린 코드 with Java", 1L);
+        Course course = Course.of(6L, "TDD, 클린 코드 with Java", 1L);
         Course save = courseRepository.save(course);
         assertThat(save).isNotNull();
         //Course savedCourse = courseRepository.findById(save.getCourseId().value()).orElseThrow();
@@ -60,31 +60,31 @@ public class CourseRepositoryTest {
 
         //when
         //then
-        System.out.println(savedCourse.toString());
+        System.out.println(savedCourse);
 
     }
 
-  @DisplayName("모든 데이터를 조회한다")
-  @Test
-  public void findAll() {
-      //given
-      courseRepository.save(TestFixture.K8S_COURSE);
-      courseRepository.save(TestFixture.KOTLIN_COURSE);
-      courseRepository.save(TestFixture.RUST_COURSE);
-      //when
-      List<Course> all = courseRepository.findAll();
-      //then
-      for (Course course : all) {
-          System.out.println(course);
-      }
-  }
+    @DisplayName("모든 데이터를 조회한다")
+    @Test
+    public void findAll() {
+        //given
+        courseRepository.save(TestFixture.K8S_COURSE);
+        courseRepository.save(TestFixture.KOTLIN_COURSE);
+        courseRepository.save(TestFixture.RUST_COURSE);
+        //when
+        List<Course> all = courseRepository.findAll();
+        //then
+        for (Course course : all) {
+            System.out.println(course);
+        }
+    }
 
-  @DisplayName("모든 데이터를 삭제한다")
-  @Test
-  public void deleteAll() {
-      //given
-      //when
-      courseRepository.deleteAll();
-      //then
-  }
+    @DisplayName("모든 데이터를 삭제한다")
+    @Test
+    public void deleteAll() {
+        //given
+        //when
+        courseRepository.deleteAll();
+        //then
+    }
 }

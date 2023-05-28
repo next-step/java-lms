@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.utils.CommunicationTerm;
 import nextstep.common.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
+import nextstep.utils.CommunicationTerm;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ public class Session {
     private SessionId sessionId;
     private final Date startDate;
     private final Date endDate;
+    private final List<Enroll> enrolls = new ArrayList<>();
     private Image coverImage;
     @CommunicationTerm("기수")
     private Long term;
@@ -23,7 +24,6 @@ public class Session {
     @NotNull
     private SessionStatus status;
     private Long maxStudentCount;
-    private final List<Enroll> enrolls = new ArrayList<>();
 
     public Session(Long price, Long maxStudentCount) {
         this.price = price;

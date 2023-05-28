@@ -39,6 +39,7 @@ public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
                 ps.setTimestamp(3, Timestamp.valueOf(deleteHistory.getCreatedAt()));
                 ps.setString(4, deleteHistory.getDeletedBy().value());
             }
+
             @Override
             public int getBatchSize() {
                 return deleteHistories.size();

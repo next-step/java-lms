@@ -38,7 +38,7 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public Optional<Image> findByImageId(Long imageId) {
-        return jdbcTemplate.query("SELECT * FROM image WHERE image_id = ?", rowMapper(),imageId)
+        return jdbcTemplate.query("SELECT * FROM image WHERE image_id = ?", rowMapper(), imageId)
                 .stream()
                 .findAny();
     }

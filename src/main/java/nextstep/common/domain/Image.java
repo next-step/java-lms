@@ -8,7 +8,7 @@ public class Image {
     @NotBlank(message = "이미지링크는 공백이 허용되지 않습니다")
     private String imageUrl;
 
-    public Image(Long imageId,String imageUrl) {
+    public Image(Long imageId, String imageUrl) {
         this.imageId = imageId;
         this.imageUrl = imageUrl;
     }
