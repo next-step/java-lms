@@ -1,22 +1,24 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 
 public class Session {
 
-    private Long id;
-    private String title;
-    private int generation;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private SessionType type;
-    private SessionStatus status;
-    private int maxRegisterNum;
-    private int currRegisterNum;
+    private final Long id;
+    private final String title;
+    private final int generation;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final SessionType type;
+    private final SessionStatus status;
+    private final int maxRegisterNum;
+    private List<Student> students = new ArrayList<>();
 
-    public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum, int currRegisterNum) {
+    public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum) {
         this.id = id;
         this.title = title;
         this.generation = generation;
@@ -25,17 +27,21 @@ public class Session {
         this.type = type;
         this.status = status;
         this.maxRegisterNum = maxRegisterNum;
-        this.currRegisterNum = currRegisterNum;
     }
 
-    public boolean isRegistrable() {
+    public void addStudent(Student student) {
+        if (isRegistrable()) {
+            students.add(student);
+        }
+    }
+
+    private boolean isRegistrable() {
         if (isNotRecruiting()) {
             throw new RuntimeException("강의 모집기간이 아닙니다.");
         }
         if (isCurrRegisterExceedMaxRegister()) {
             throw new RuntimeException("등록 인원이 정원 초과 되었습니다.");
         }
-        this.currRegisterNum++;
         return true;
     }
 
@@ -44,7 +50,7 @@ public class Session {
     }
 
     private boolean isCurrRegisterExceedMaxRegister() {
-        return currRegisterNum >= maxRegisterNum;
+        return students.size() >= maxRegisterNum;
     }
 
     Long id() {
@@ -52,7 +58,7 @@ public class Session {
     }
 
     int currRegisterNum() {
-        return this.currRegisterNum;
+        return this.students.size();
     }
 
     @Override
@@ -66,7 +72,7 @@ public class Session {
                 ", type=" + type +
                 ", status=" + status +
                 ", maxRegisterNum=" + maxRegisterNum +
-                ", currRegisterNum=" + currRegisterNum +
+                ", students=" + students +
                 '}';
     }
 }
