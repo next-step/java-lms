@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotRegisterException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -39,10 +40,10 @@ public class Session {
 
     private boolean isRegistrable() {
         if (isNotRecruiting()) {
-            throw new RuntimeException("강의 모집기간이 아닙니다.");
+            throw new CannotRegisterException("강의 모집기간이 아닙니다.");
         }
         if (isCurrRegisterExceedMaxRegister()) {
-            throw new RuntimeException("등록 인원이 정원 초과 되었습니다.");
+            throw new CannotRegisterException("등록 인원이 정원 초과 되었습니다.");
         }
         return true;
     }
