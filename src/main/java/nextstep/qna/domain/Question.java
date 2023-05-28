@@ -8,6 +8,7 @@ import nextstep.users.domain.UserCode;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,11 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.relateToQuestion(this);
         answers.add(answer);
+    }
+    public void addAllAnswers(Answer... answers) {
+        for(Answer answer : answers) {
+            this.addAnswer(answer);
+        }
     }
 
     public boolean isDeleted() {

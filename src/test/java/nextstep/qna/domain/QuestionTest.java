@@ -115,7 +115,7 @@ public class QuestionTest {
         );
     }
 
-    @DisplayName("Question 메 Answer 연관관계 추가시 반영되어야한다")
+    @DisplayName("Question 메 하나의 Answer 연관관계를 맺을때 Question-Answer 사이의 연결정보가 업데이트된다")
     @Test
     public void addAnswer() {
         //given
@@ -124,11 +124,46 @@ public class QuestionTest {
         //when
         question.addAnswer(answer);
         //then
-        assertThat(question.isRelated(answer))
-                .as("Question 은 Answer 에 연결되어있어야 한다")
-                .isTrue();
-        assertThat(answer.isRelated(question))
-                .as("Answer 의 연관관계도 자동으로 성립된다")
-                .isTrue();
+        assertAll("Answer 과 Question 사이의 연결을 검증한다",
+                () -> assertThat(question.isRelated(answer))
+                        .as("Question 은 Answer 에 연결되어있어야 한다")
+                        .isTrue(),
+                () -> assertThat(answer.isRelated(question))
+                        .as("Answer 의 연관관계도 자동으로 성립된다")
+                        .isTrue()
+        );
+    }
+
+    @DisplayName("Question 에 여러개의 Answer 를 연관관계를 맺을때 Question-Answer 사이의 연결정보가 업데이트된다")
+    @Test
+    public void addAllAnswers() {
+        //given
+        //when
+        Question question = TestFixture.BADAJIGI_QUESTION;
+        Answer answer1 = TestFixture.SANJIGI_ANSWER;
+        Answer answer2 = TestFixture.BADAJIGI_ANSWER;
+        Answer answer3 = TestFixture.JAVAJIGI_ANSWER;
+        question.addAllAnswers(answer1, answer2, answer3);
+        //then
+        assertAll("모든 Answers 들과 Question 사이의 연결을 검증한다",
+                () -> assertThat(question.isRelated(answer1))
+                        .as("Question 은 Answer1 에 연결되어있어야 한다")
+                        .isTrue(),
+                () -> assertThat(answer1.isRelated(question))
+                        .as("Answer1 의 연관관계도 자동으로 성립된다")
+                        .isTrue(),
+                () -> assertThat(question.isRelated(answer2))
+                        .as("Question 은 Answer2 에 연결되어있어야 한다")
+                        .isTrue(),
+                () -> assertThat(answer2.isRelated(question))
+                        .as("Answer2 의 연관관계도 자동으로 성립된다")
+                        .isTrue(),
+                () -> assertThat(question.isRelated(answer3))
+                        .as("Question 은 Answer3 에 연결되어있어야 한다")
+                        .isTrue(),
+                () -> assertThat(answer3.isRelated(question))
+                        .as("Answer3 의 연관관계도 자동으로 성립된다")
+                        .isTrue()
+        );
     }
 }
