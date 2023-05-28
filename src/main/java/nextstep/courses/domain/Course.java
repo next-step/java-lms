@@ -54,8 +54,19 @@ public class Course {
     }
 
     private void validateGeneration(int generation) {
+        validateNegative(generation);
+        validateRange(generation);
+    }
+
+    private void validateNegative(int generation) {
         if (generation <= 0) {
-            throw new IllegalArgumentException("기수는 1 기수 이상부터 시작합니다. 현재 기수 = " + generation);
+            throw new IllegalArgumentException("기수는 1 기수 이상부터 시작합니다. 조회한 기수 = " + generation);
+        }
+    }
+
+    private void validateRange(int generation) {
+        if (sessions.size() < generation) {
+            throw new IllegalArgumentException("해당 기수의 강의는 존재하지 않습니다. 조회한 기수 = " + generation);
         }
     }
 

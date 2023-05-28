@@ -52,11 +52,20 @@ public class CourseTest {
     }
 
     @ParameterizedTest
-    @DisplayName("유효하지 않는 기수(음수, 0)를 조회시 예외를 발생한다.")
+    @DisplayName("유효하지 않는 기수(음수, 0)를 조회시 예외를 던진다.")
     @ValueSource(ints = {-2, -1, 0})
     void findSession_ByInvalidValue_ThrowException(int generation) {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> course.getSession(generation))
                 .withMessageContaining("기수는 1 기수 이상부터 시작합니다.");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 기수 강의를 조회시 예의를 던진다.")
+    void findSession_IfNotExists_ThrowException() {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> course.getSession(4))
+                .withMessageContaining("해당 기수의 강의는 존재하지 않습니다.");
+
     }
 }
