@@ -6,6 +6,7 @@ import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Answer {
     private Long id;
@@ -73,10 +74,9 @@ public class Answer {
         this.question = question;
     }
 
-    public boolean delete(DeleteHistoryService deleteHistoryService) {
+    public DeleteHistory delete() {
         this.setDeleted(true);
-        deleteHistoryService.save(new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now()));
-        return this.deleted;
+        return DeleteHistory.answer(this.id, this.writer);
     }
 
     @Override

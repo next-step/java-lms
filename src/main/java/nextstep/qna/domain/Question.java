@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Question {
     private Long id;
@@ -85,17 +88,34 @@ public class Question {
         return answers.getAnswers();
     }
 
-    public boolean delete(DeleteHistoryService deleteHistoryService) {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateAuthorization(loginUser);
+        validateHavingAnswerFromOthers(loginUser);
         this.setDeleted(true);
-        this.getAnswers()
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(DeleteHistory.question(this.id, this.writer));
+
+        deleteHistories.addAll(this.answers.delete());
+
+        return deleteHistories;
+    }
+
+    public void validateAuthorization(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public void validateHavingAnswerFromOthers(NsUser loginUser) throws CannotDeleteException {
+        final Optional<Answer> hasReplayFromOthers = this.answers.getAnswers()
                 .stream()
-                .forEach(answer -> {
-                    answer.delete(deleteHistoryService);
-                });
+                .filter(answer -> !answer.isOwner(loginUser))
+                .findAny();
 
-        deleteHistoryService.save(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-
-        return this.deleted;
+        if (hasReplayFromOthers.isPresent()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 
     @Override

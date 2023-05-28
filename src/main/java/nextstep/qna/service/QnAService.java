@@ -27,26 +27,7 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        validateAuthorization(question, loginUser);
-        validateHavingAnswerFromOthers(question.getAnswers(), loginUser);
-
-        question.delete(deleteHistoryService);
-
-    }
-
-    private void validateAuthorization(Question question, NsUser loginUser) throws CannotDeleteException {
-        if (!question.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    private void validateHavingAnswerFromOthers(List<Answer> answers, NsUser loginUser) throws CannotDeleteException {
-        final Optional<Answer> hasReplayFromOthers = answers.stream()
-                .filter(answer -> !answer.isOwner(loginUser))
-                .findAny();
-
-        if (hasReplayFromOthers.isPresent()) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+        List<DeleteHistory> deleteHistories = question.delete(loginUser);
+        deleteHistoryService.saveAll(deleteHistories);
     }
 }
