@@ -38,7 +38,7 @@ public class Session {
 	}
 
 	public Session signUp(NsUser nsUser) {
-		if (!this.isRecruiting()) {
+		if (!statusType.isRecruiting()) {
 			throw new NotRecruitingException("모집중인 강의가 아닙니다.");
 		}
 		if (this.students.isFull()) {
@@ -54,10 +54,6 @@ public class Session {
 		this.students.add(nsUser);
 
 		return this;
-	}
-
-	private boolean isRecruiting() {
-		return this.statusType == StatusType.RECRUITING;
 	}
 
 	public void open() {
