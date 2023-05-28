@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import org.springframework.cglib.core.Local;
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,12 +61,12 @@ public class Session {
         return this.coverImage;
     }
 
-    public void patchStatus(String status) {
-        this.status = Status.valueOf(status);
+    public void patchStatus(Status status) {
+        this.status = status;
     }
 
     public boolean isOpening() {
-        return status == Status.opening;
+        return status == Status.OPENING;
     }
 
     public void registerMaxStudents(int count) {

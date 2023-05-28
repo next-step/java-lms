@@ -21,7 +21,7 @@ class SessionTest {
         LocalDateTime startedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
         LocalDateTime endedAt = LocalDateTime.parse("2022-01-01 11:11:11", formatter);
         boolean isFree = true;
-        Status status = Status.preparing;
+        Status status = Status.PREPARING;
         int currentStudents = 10;
         int maxStudents = 10;
         session = new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
@@ -48,16 +48,8 @@ class SessionTest {
     }
 
     @Test
-    void statusError() {
-        String input = "sss";
-
-        assertThatThrownBy(() -> session.patchStatus(input))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     void isOpening_false() {
-        String input = "preparing";
+        Status input = Status.PREPARING;
         boolean expected = false;
 
         session.patchStatus(input);
@@ -67,7 +59,7 @@ class SessionTest {
 
     @Test
     void isOpening_true() {
-        String input = "opening";
+        Status input = Status.OPENING;
         boolean expected = true;
 
         session.patchStatus(input);
@@ -77,7 +69,7 @@ class SessionTest {
 
     @Test
     void enrolement_not_opning() {
-        String input = "ended";
+        Status input = Status.ENDED;
 
         session.patchStatus(input);
         assertThatThrownBy(() -> session.enrolement())
@@ -86,7 +78,7 @@ class SessionTest {
 
     @Test
     void enrolement_above_max_student() {
-        String input = "preparing";
+        Status input = Status.PREPARING;
 
         session.patchStatus(input);
         assertThatThrownBy(() -> session.enrolement())
@@ -95,7 +87,7 @@ class SessionTest {
 
     @Test
     void enrolement() {
-        String inputStatus = "preparing";
+        Status inputStatus = Status.PREPARING;
         int inputMaxStudents = 15;
 
         session.patchStatus(inputStatus);
