@@ -22,11 +22,11 @@ public class SessionTest {
         S3 = new Session(3L, "DDD", 1, LocalDate.now(), LocalDate.now(),
                 SessionType.PAID, SessionStatus.RECRUITING, 3);
 
-        S2.addStudent(new NsUser());
-        S2.addStudent(new NsUser());
-        S2.addStudent(new NsUser());
-        S3.addStudent(new NsUser());
-        S3.addStudent(new NsUser());
+        S2.register(new NsUser());
+        S2.register(new NsUser());
+        S2.register(new NsUser());
+        S3.register(new NsUser());
+        S3.register(new NsUser());
     }
 
     @Test
@@ -36,14 +36,14 @@ public class SessionTest {
 
     @Test
     void 강의_모집기간이_아닙니다_예외처리() {
-        assertThatThrownBy(() -> S1.addStudent(new NsUser()))
+        assertThatThrownBy(() -> S1.register(new NsUser()))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("강의 모집기간이 아닙니다.");
     }
 
     @Test
     void 등록_인원_정원_초과_예외처리() {
-        assertThatThrownBy(() -> S2.addStudent(new NsUser()))
+        assertThatThrownBy(() -> S2.register(new NsUser()))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("등록 인원이 정원 초과 되었습니다.");
     }
@@ -51,7 +51,7 @@ public class SessionTest {
     @Test
     void 수강_신청_가능시_학생_추가() {
         assertThat(S3.currRegisterNum()).isEqualTo(2);
-        S3.addStudent(new NsUser());
+        S3.register(new NsUser());
         assertThat(S3.currRegisterNum()).isEqualTo(3);
     }
 

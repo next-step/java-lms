@@ -15,7 +15,7 @@ public class SessionRegisterService {
 
     public void registerSession(Long id, NsUser loginUser) {
         Session session = sessionRepository.findById(id).orElseThrow(() -> new NotFoundException("존재하지 않는 강의입니다."));
-        session.addStudent(loginUser);
+        session.register(loginUser);
     }
 
 }
