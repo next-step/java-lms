@@ -14,13 +14,13 @@ public class Session {
     private LocalDateTime endAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String coverImage;
+    private CoverImage coverImage;
     private PaymentType paymentType;
     private SessionStatus sessionStatus;
     private List<NsUser> nsUsers = new ArrayList<>();
     private int maxUserSize;
 
-    public Session(Long id, long courseId, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt, String coverImage, PaymentType paymentType, SessionStatus sessionStatus, int maxUserSize) {
+    public Session(Long id, long courseId, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, PaymentType paymentType, SessionStatus sessionStatus, int maxUserSize) {
         if (startAt.isAfter(endAt)) {
             throw new IllegalArgumentException("시작일은 종료일을 넘을 수 없습니다.");
         }

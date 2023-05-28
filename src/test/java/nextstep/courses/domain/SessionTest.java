@@ -22,7 +22,7 @@ public class SessionTest {
                 LocalDateTime.MAX,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
-                "커버이미지",
+                CoverImageTest.C1,
                 PaymentType.FREE,
                 SessionStatus.PREPARING,
                 10);
@@ -33,7 +33,7 @@ public class SessionTest {
                 LocalDateTime.MAX,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
-                "커버이미지",
+                CoverImageTest.C1,
                 PaymentType.FREE,
                 SessionStatus.RECRUITING,
                 1);
@@ -47,7 +47,7 @@ public class SessionTest {
                 LocalDateTime.MAX,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
-                "커버이미지",
+                CoverImageTest.C1,
                 PaymentType.FREE,
                 SessionStatus.PREPARING,
                 10));
@@ -63,7 +63,7 @@ public class SessionTest {
                         LocalDateTime.MIN,
                         LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                         null,
-                        "커버이미지",
+                        CoverImageTest.C1,
                         PaymentType.FREE,
                         SessionStatus.PREPARING,
                         10));
