@@ -1,29 +1,19 @@
 package nextstep.qna.domain;
 
-import static java.time.LocalDateTime.now;
 import static nextstep.qna.domain.ContentType.ANSWER;
 
+import nextstep.common.entity.BaseEntity;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
+public class Answer extends BaseEntity {
 
     private Question question;
 
+    private NsUser writer;
+
     private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = now();
-
-    private LocalDateTime updatedDate;
-
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
@@ -52,7 +42,7 @@ public class Answer {
 
     public DeleteHistory deleteHistory() {
         if(isDeleted()) {
-            return new DeleteHistory(ANSWER, this.id, this.writer, now());
+            return new DeleteHistory(ANSWER, this.id, this.writer);
         }
         return new DeleteHistory();
     }

@@ -9,18 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QnADeleteService {
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
     private final DeleteHistoryService deleteHistoryService;
 
-    public QnADeleteService(QuestionRepository questionRepository,
+    public QnADeleteService(QuestionService questionService,
             DeleteHistoryService deleteHistoryService) {
-        this.questionRepository = questionRepository;
+        this.questionService = questionService;
         this.deleteHistoryService = deleteHistoryService;
     }
 
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-        Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
+        Question question = questionService.findById(questionId);
         question.deleteQuestion(loginUser);
         deleteHistoryService.saveAll(question.deleteHistories());
     }
