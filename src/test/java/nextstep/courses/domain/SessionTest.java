@@ -12,9 +12,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 public class SessionTest {
 
     private Session session;
+
     @BeforeEach
     void setUp() {
-        session = new Session(1L,"2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL,Cost.FREE, Status.OPENED);
+        session = new Session(1L, "2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL, Cost.FREE, Status.OPENED);
     }
 
     @Test
@@ -57,7 +58,7 @@ public class SessionTest {
     @EnumSource(value = Status.class, names = {"READY", "CLOSED"})
     void test_수강신청_강의상태_모집중_아닐시_실패(Status status) {
         // given
-        Session session = new Session(1L,"2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL, Cost.FREE, status);
+        Session session = new Session(1L, "2021-01-01", "2021-01-02", Image.DEFAULT_IMAGE_URL, Cost.FREE, status);
 
         // then
         assertThatCode(() -> session.register(NsUserTest.JAVAJIGI))

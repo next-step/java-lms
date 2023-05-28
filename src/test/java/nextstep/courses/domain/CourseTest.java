@@ -16,7 +16,7 @@ public class CourseTest {
     }
 
     @Test
-    void test_과정을_만들면_강의리스트가_생성된다(){
+    void test_과정을_만들면_강의리스트가_생성된다() {
         // when
         Sessions sessions = course.getSessions();
 
@@ -25,7 +25,7 @@ public class CourseTest {
     }
 
     @Test
-    void test_과정을_만들면_강의리스트가_비어있다(){
+    void test_과정을_만들면_강의리스트가_비어있다() {
         // when
         Sessions sessions = course.getSessions();
 
