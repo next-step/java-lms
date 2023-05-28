@@ -15,11 +15,11 @@ class LmsUserTest {
     void 유저생성() {
         LmsUser newUser = LmsUser.createUser("newUser", "password", "구마적");
         assertAll(
-                () -> assertThat(newUser.getUserId()).isEqualTo("newUser"),
-                () -> assertThat(newUser.getName()).isEqualTo("구마적"),
-                () -> assertThat(newUser.getRole()).isEqualTo(LmsUserRole.NORMAL),
-                () -> assertThat(ADMIN_1.getRole()).isEqualTo(LmsUserRole.ADMIN),
-                () -> assertThat(USER_1.getRole()).isEqualTo(LmsUserRole.NORMAL)
+                () -> assertThat(newUser.isUserId("newUser")).isTrue(),
+                () -> assertThat(newUser.isName("구마적")).isTrue(),
+                () -> assertThat(newUser.isAdmin()).isFalse(),
+                () -> assertThat(ADMIN_1.isAdmin()).isTrue(),
+                () -> assertThat(USER_1.isAdmin()).isFalse()
         );
     }
 }

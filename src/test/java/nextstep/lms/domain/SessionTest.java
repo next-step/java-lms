@@ -32,10 +32,10 @@ class SessionTest {
     void 무료강의추가() {
         Session newSession = Session.create("무료강의1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
         assertAll(
-                () -> assertThat(newSession.getPrice()).isEqualTo(0),
-                () -> assertThat(newSession.getMaxApplicantCount()).isEqualTo(100),
-                () -> assertThat(newSession.getCourse()).isEqualTo(CourseTest.COURSE_A),
-                () -> assertThat(newSession.getCreator()).isEqualTo(LmsUserTest.ADMIN_1)
+                () -> assertThat(newSession.isPrice(0)).isTrue(),
+                () -> assertThat(newSession.isMaxApplicantCount(100)).isTrue(),
+                () -> assertThat(newSession.isCourse(CourseTest.COURSE_A)).isTrue(),
+                () -> assertThat(newSession.isCreator(LmsUserTest.ADMIN_1)).isTrue()
         );
     }
 
@@ -57,8 +57,8 @@ class SessionTest {
     void 모집중으로상태변경() {
         testSession.open(LmsUserTest.ADMIN_1);
         assertAll(
-                () -> assertThat(testSession.getStatus()).isEqualTo(SessionStatus.OPEN),
-                () -> assertThat(testSession.getUpdatedAt()).isNotNull()
+                () -> assertThat(testSession.isStatus(SessionStatus.OPEN)).isTrue(),
+                () -> assertThat(testSession.updatedAtIsNull()).isFalse()
         );
     }
 
@@ -101,7 +101,7 @@ class SessionTest {
         testSession2.open(LmsUserTest.ADMIN_1);
         testSession2.addApplicant(LmsUserTest.USER_1);
         assertAll(
-                () -> assertThat(testSession2.getStatus()).isEqualTo(SessionStatus.FULL),
+                () -> assertThat(testSession2.isStatus(SessionStatus.FULL)).isTrue(),
                 () -> assertThatThrownBy(() -> testSession2.addApplicant(LmsUserTest.USER_2)).isInstanceOf(IllegalStateException.class).hasMessage(SessionStatus.FULL.message())
         );
     }

@@ -45,22 +45,18 @@ public class LmsUser {
     }
 
     public boolean isAdmin() {
-        return role == LmsUserRole.ADMIN;
+        return this.role.isAdmin();
     }
 
-    public Long getId() {
-        return id;
+    public boolean isNotAdmin() {
+        return this.role.isNotAdmin();
     }
 
-    public String getUserId() {
-        return userId;
+    public boolean isName(String name) {
+        return this.name.equals(name);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public LmsUserRole getRole() {
-        return role;
+    public boolean isUserId(String userId) {
+        return this.userId.equals(userId);
     }
 }

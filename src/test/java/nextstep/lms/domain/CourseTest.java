@@ -17,7 +17,7 @@ class CourseTest {
     void 과정추가() {
         Course courseB = Course.create("과정B", LmsUserTest.ADMIN_1);
         assertAll(
-                () -> assertThat(courseB.getTitle()).isEqualTo("과정B")
+                () -> assertThat(courseB.isSameTitle("과정B")).isTrue()
         );
     }
 
@@ -29,6 +29,6 @@ class CourseTest {
     @Test
     void 과정에_강의_추가() {
         COURSE_A.addSession(SessionTest.JAVA_SESSION_1);
-        assertThat(COURSE_A.getSessions()).contains(SessionTest.JAVA_SESSION_1);
+        assertThat(COURSE_A.hasSession(SessionTest.JAVA_SESSION_1)).isTrue();
     }
 }

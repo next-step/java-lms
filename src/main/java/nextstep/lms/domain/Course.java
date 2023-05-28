@@ -35,7 +35,7 @@ public class Course {
     }
 
     private static void valiateCreatorAuthorization(LmsUser creator) {
-        if (creator.getRole() != LmsUserRole.ADMIN) {
+        if (creator.isNotAdmin()) {
             throw new UnAuthorizedException("과정 생성 권한이 없는 유저입니다.");
         }
     }
@@ -53,11 +53,11 @@ public class Course {
         sessions.add(newSession);
     }
 
-    public String getTitle() {
-        return title;
+    public boolean isSameTitle(String title) {
+        return this.title.equals(title);
     }
 
-    public List<Session> getSessions() {
-        return sessions;
+    public boolean hasSession(Session session) {
+        return this.sessions.contains(session);
     }
 }

@@ -55,8 +55,8 @@ public class Session {
     private Session() {
     }
 
-    private static void valiateCreatorAuthorization(Course course, LmsUser creator) {
-        if(!creator.isAdmin()){
+    private static void validateCreatorAuthorization(Course course, LmsUser creator) {
+        if(creator.isNotAdmin()){
             throw new UnAuthorizedException("강의 생성 권한이 없는 유저입니다.");
         }
         if(!course.isSameCreator(creator)){
@@ -65,7 +65,7 @@ public class Session {
     }
 
     public static Session create(String title, Course course, LmsUser creator, Integer price, Integer maxApplicantCount, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate) {
-        valiateCreatorAuthorization(course, creator);
+        validateCreatorAuthorization(course, creator);
         return new Session(idGenerator.getAndIncrement(), title, course, creator, price, SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
     }
 
@@ -108,27 +108,27 @@ public class Session {
         return applicants.contains(user);
     }
 
-    public Course getCourse() {
-        return course;
+    public boolean isCourse(Course course) {
+        return this.course == course;
     }
 
-    public LmsUser getCreator() {
-        return creator;
+    public boolean isPrice(Integer price) {
+        return this.price.equals(price);
     }
 
-    public Integer getPrice() {
-        return price;
+    public boolean isMaxApplicantCount(Integer count) {
+        return this.maxApplicantCount.equals(count);
     }
 
-    public Integer getMaxApplicantCount() {
-        return maxApplicantCount;
+    public boolean isStatus(SessionStatus status) {
+        return this.status == status;
+    }
+    public boolean isCreator(LmsUser user) {
+        return this.creator == user;
     }
 
-    public SessionStatus getStatus() {
-        return status;
+    public boolean updatedAtIsNull() {
+        return updatedAt == null;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 }
