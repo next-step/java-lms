@@ -2,16 +2,10 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Course {
-    private Long id;
-
+public class Course extends BaseEntity {
     private String title;
 
     private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public Course() {
     }
@@ -21,33 +15,21 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public Long getCreatorId() {
-        return creatorId;
+        return this.creatorId;
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return super.getCreatedAt();
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
