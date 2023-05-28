@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의에 기간 설정 정상 확인")
     void term() {
         List<LocalDateTime> expected = Arrays.asList(
                 LocalDateTime.parse("2022-01-01 11:11:11", formatter),
@@ -40,6 +42,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의 무료 설정 정상 확인")
     void free() {
         boolean expected = false;
         session.patchIsFree(expected);
@@ -48,6 +51,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의 준비 중일 때 열리지 않음 확인")
     void isOpening_false() {
         Status input = Status.PREPARING;
         boolean expected = false;
@@ -58,6 +62,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의가 열렸을 때 열림 확인")
     void isOpening_true() {
         Status input = Status.OPENING;
         boolean expected = true;
@@ -68,6 +73,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의가 종료되었을 때 열리지 않음 확인")
     void enrolement_not_opning() {
         Status input = Status.ENDED;
 
@@ -77,6 +83,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의가 준비 중일 때 등록 불가 확인")
     void enrolement_above_max_student() {
         Status input = Status.PREPARING;
 
@@ -86,8 +93,9 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("강의가 열렸고 최대 수강 인원보다 현재 인원이 더 적을 시 정상 등록 확인")
     void enrolement() {
-        Status inputStatus = Status.PREPARING;
+        Status inputStatus = Status.OPENING;
         int inputMaxStudents = 15;
 
         session.patchStatus(inputStatus);

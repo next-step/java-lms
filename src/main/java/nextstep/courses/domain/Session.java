@@ -74,7 +74,7 @@ public class Session {
     }
 
     public void enrolement() {
-        if (isOpening()) {
+        if (!isOpening()) {
             throw new RuntimeException("해당 강의는 모집중이 아닙니다.");
         }
 
