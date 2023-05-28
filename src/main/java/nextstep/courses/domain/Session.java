@@ -16,21 +16,21 @@ public class Session {
   private final SessionCoverUrl sessionCoverUrl;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private SessionProgressStatus sessionProgressStatus;
+  private final SessionStatus sessionStatus;
 
-  public Session(SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(null, sessionPayment, sessionProgressStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
+  public Session(SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(null, sessionPayment, sessionProgressStatus, sessionRecruitmentStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
   }
 
-  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.sessionPayment = sessionPayment;
-    this.sessionProgressStatus = sessionProgressStatus;
     this.sessionUsers = new SessionUsers(maxUserEnrollment);
     this.sessionPeriod = new SessionPeriod(startDate, endDate);
     this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitmentStatus);
   }
 
   public int currentEnrollmentCount() {
@@ -38,12 +38,12 @@ public class Session {
   }
 
   public void ending() {
-    this.sessionProgressStatus = SessionProgressStatus.ENDING;
+    sessionStatus.ending();
   }
 
   public void processEnrollment(NextStepUser nextStepUser) {
-    if (!sessionProgressStatus.canEnroll()) {
-      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionProgressStatus.status());
+    if (!sessionStatus.canEnroll()) {
+      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionStatus.getProgressStatus());
     }
 
     LocalDateTime now = LocalDateTime.now();
@@ -86,8 +86,8 @@ public class Session {
     return updatedAt;
   }
 
-  public SessionProgressStatus getSessionStatus() {
-    return sessionProgressStatus;
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
   }
 
   @Override

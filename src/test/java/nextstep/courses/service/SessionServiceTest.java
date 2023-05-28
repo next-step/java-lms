@@ -1,9 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionPayment;
-import nextstep.courses.domain.SessionProgressStatus;
-import nextstep.courses.domain.SessionUser;
+import nextstep.courses.domain.*;
 import nextstep.users.domain.NextStepUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +23,8 @@ public class SessionServiceTest {
   @BeforeEach
   public void setUp() {
     LocalDateTime currentTime = LocalDateTime.now();
-    session = sessionService.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
-    sessionService.enrollUsers(session.getId(), NextStepUserTest.JAVAJIGI.getUserId());
+    session = sessionService.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
+    sessionService.enrollUser(session.getId(), NextStepUserTest.JAVAJIGI.getUserId());
   }
 
   @Test
@@ -38,8 +35,18 @@ public class SessionServiceTest {
 
   @Test
   public void session_만석() {
-    assertThatThrownBy(() -> sessionService.enrollUsers(session.getId(), NextStepUserTest.SANJIGI.getUserId()))
+    assertThatThrownBy(() -> sessionService.enrollUser(session.getId(), NextStepUserTest.SANJIGI.getUserId()))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 세션의 수강 인원이 만석되었습니다.");
+  }
+
+  @Test
+  public void session_비모집_진행중() {
+    LocalDateTime currentTime = LocalDateTime.now();
+    Session endingSession = sessionService.save(new Session(SessionPayment.FREE, SessionProgressStatus.IN_PROGRESSING, SessionRecruitmentStatus.NOT_RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
+
+    assertThatThrownBy(() -> sessionService.enrollUser(endingSession.getId(), NextStepUserTest.SANJIGI.getUserId()))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("수강신청은 강의 상태가 모집중일 때만 가능합니다. 현재 수강 상태 : 진행중");
   }
 }

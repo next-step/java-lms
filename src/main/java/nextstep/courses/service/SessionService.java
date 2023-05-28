@@ -34,7 +34,7 @@ public class SessionService {
     return sessionRepository.findAllSessionUserBySessionId(sessionId);
   }
 
-  public void enrollUsers(Long sessionId, String nextStepUserId) {
+  public void enrollUser(Long sessionId, String nextStepUserId) {
     Session session = sessionRepository.findById(sessionId);
     NextStepUser nextStepUser = userRepository.findByUserId(nextStepUserId).orElseThrow();
     session.setSessionUsers(sessionRepository.findAllSessionUserBySessionId(sessionId));
