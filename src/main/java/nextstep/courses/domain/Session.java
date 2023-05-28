@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Session {
 
@@ -8,7 +10,7 @@ public class Session {
     private final SessionInfo sessionInfo;
     private final SessionStatus sessionStatus;
     private final SessionTimeLine sessionTimeLine;
-    // Set<Student>
+    private final Set<Student> students = new HashSet<>();
     private final Long maxNumberOfStudent;
 
     public Session(Long courseId, Long ownerId, String title, String coverImageInfo,
