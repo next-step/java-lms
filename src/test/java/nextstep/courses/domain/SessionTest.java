@@ -20,6 +20,8 @@ public class SessionTest {
                 2L,
                 LocalDateTime.MIN,
                 LocalDateTime.MAX,
+                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
+                null,
                 "커버이미지",
                 PaymentType.FREE,
                 SessionStatus.PREPARING,
@@ -29,6 +31,8 @@ public class SessionTest {
                 2L,
                 LocalDateTime.MIN,
                 LocalDateTime.MAX,
+                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
+                null,
                 "커버이미지",
                 PaymentType.FREE,
                 SessionStatus.RECRUITING,
@@ -38,8 +42,11 @@ public class SessionTest {
     @Test
     void newSession() {
         assertThat(S1).isEqualTo(new Session(0L,
-                2L, LocalDateTime.MIN,
+                2L,
+                LocalDateTime.MIN,
                 LocalDateTime.MAX,
+                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
+                null,
                 "커버이미지",
                 PaymentType.FREE,
                 SessionStatus.PREPARING,
@@ -51,8 +58,11 @@ public class SessionTest {
     void validDate() {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Session(0L,
-                        2L, LocalDateTime.MAX,
+                        2L,
+                        LocalDateTime.MAX,
                         LocalDateTime.MIN,
+                        LocalDateTime.of(2022, 2, 22, 22, 22, 22),
+                        null,
                         "커버이미지",
                         PaymentType.FREE,
                         SessionStatus.PREPARING,
