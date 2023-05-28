@@ -4,8 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -16,7 +14,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -27,15 +25,17 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+    public Question(NsUser writer, String title, String contents, Answers answers) {
+
+        this(0L, writer, title, contents, answers);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, NsUser writer, String title, String contents, Answers answers) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = answers;
     }
 
     public Long getId() {
@@ -64,11 +64,6 @@ public class Question {
         return writer;
     }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
@@ -82,19 +77,23 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        this.answers.addOne(answer);
+    }
+    public Answers getAnswers() {
+        return this.answers;
     }
 
-    private void checkEnableDelete(NsUser loginUser) throws CannotDeleteException {
+    private void checkEnableDeleteQuestion(NsUser loginUser) throws CannotDeleteException {
         if(!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
     public Question deleteQuestion(NsUser loginUser) throws CannotDeleteException {
-        this.checkEnableDelete(loginUser);
-        for (Answer answer : getAnswers()) {
-            answer.deleteAnswer(loginUser);
+        this.checkEnableDeleteQuestion(loginUser);
+        if(getAnswers().hasAnswers()) {
+            getAnswers().deleteAnswers(loginUser);
         }
         return setDeleted(true);
     }

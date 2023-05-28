@@ -32,9 +32,7 @@ public class QnAService {
                 result.getId(),
                 result.getWriter(),
                 LocalDateTime.now())));
-        deleteHistories.addAll(result.getAnswers().stream()
-                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
-                .collect(Collectors.toList()));
+        deleteHistories.addAll(result.getAnswers().createDeleteHistory());
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

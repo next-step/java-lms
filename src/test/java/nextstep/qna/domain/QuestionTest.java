@@ -11,15 +11,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", new Answers());
+    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2", new Answers());
 
     @Test
     @DisplayName("삭제 완료를 체크하는 테스트")
     public void checkDeleteDone() throws CannotDeleteException {
         Question deleteQuestion = Q1.deleteQuestion(NsUserTest.JAVAJIGI);
         assertThat(deleteQuestion.isDeleted()).isTrue();
-        deleteQuestion.getAnswers().forEach(answer -> assertThat(answer.isDeleted()).isTrue());
+        deleteQuestion.getAnswers().deleteAnswers(NsUserTest.JAVAJIGI);
     }
 
     @Test

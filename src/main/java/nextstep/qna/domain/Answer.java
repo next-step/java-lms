@@ -73,14 +73,14 @@ public class Answer {
         this.question = question;
     }
 
-    public void checkEnableDelete(NsUser loginUser) throws CannotDeleteException {
+    public void checkEnableDeleteAnswer(NsUser loginUser) throws CannotDeleteException {
         if(!this.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
     public void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
-        checkEnableDelete(loginUser);
+        checkEnableDeleteAnswer(loginUser);
         setDeleted(true);
     }
 
