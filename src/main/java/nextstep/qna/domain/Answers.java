@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Answers implements Iterable<Answer> {
-
     private final List<Answer> answers;
 
     public Answers() {
@@ -24,6 +23,10 @@ public class Answers implements Iterable<Answer> {
         return this.answers;
     }
 
+    public void deleteAnswers() {
+        answers.stream()
+                .forEach(answer -> answer.delete());
+    }
     @Override
     public Iterator<Answer> iterator() {
         return answers.iterator();
