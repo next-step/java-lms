@@ -10,9 +10,7 @@ public class Course {
     private Long id;
     private String title;
     private Long creatorId;
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private AuditTimestamp auditTimestamp;
 
     public Course() {
     }
@@ -25,8 +23,7 @@ public class Course {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.auditTimestamp = new AuditTimestamp(createdAt, updatedAt);
     }
 
     public Long getId() {
@@ -42,7 +39,11 @@ public class Course {
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return auditTimestamp.getCreatedAt();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return auditTimestamp.getUpdatedAt();
     }
 
     @Override
@@ -51,8 +52,8 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
                 '}';
     }
 
@@ -61,6 +62,7 @@ public class Course {
             throw new IllegalArgumentException("이미 등록된 강의입니다.");
         }
         sessions.add(session);
+        auditTimestamp.update();
     }
 
     private boolean isDuplicateSession(Session session) {
@@ -75,5 +77,6 @@ public class Course {
 
     public void deleteSession(Session session) {
         sessions.remove(session);
+        auditTimestamp.update();
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -139,11 +140,26 @@ class SessionTest {
                 .build();
 
         // when
-        int userId = 0;
+        Long userId = 0L;
         session.enroll(userId);
 
         // then
         assertThat(session.countUsers()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("모집중일 때 수강신청 - 중복 등록 예외")
+    void register2() {
+        // given
+        Session session = new SessionFixtureBuilder()
+                .withStatus(SessionStatus.RECRUITING)
+                .withRegisterdUsers(List.of(0L))
+                .build();
+
+        // when
+        assertThatThrownBy(() -> session.enroll(0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 등록된 사용자입니다.");
     }
 
     @ParameterizedTest(name = "{displayName} - {argumentsWithNames}")
@@ -156,7 +172,7 @@ class SessionTest {
                 .build();
 
         // then
-        assertThatThrownBy(() -> session.enroll(0))
+        assertThatThrownBy(() -> session.enroll(0L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집 중인 강의만 수강 신청이 가능합니다.");
     }

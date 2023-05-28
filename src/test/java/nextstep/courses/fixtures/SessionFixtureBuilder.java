@@ -3,9 +3,12 @@ package nextstep.courses.fixtures;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionFixtureBuilder {
     public Long id = 0L;
@@ -18,7 +21,7 @@ public class SessionFixtureBuilder {
     public Long price = 0L;
     public SessionStatus status = SessionStatus.OPENED;
     public int maxNumberOfUsers = 30;
-    public int registeredNumberOfUsers = 0;
+    public List<SessionUser> registeredUsers = new ArrayList<>();
 
     public SessionFixtureBuilder withStartDate(LocalDate startDate) {
         this.startDate = startDate;
@@ -33,7 +36,7 @@ public class SessionFixtureBuilder {
     public Session build() {
         return new Session(id, title, creatorId, course, startDate, endDate, coverImageUrl, price, status,
                 maxNumberOfUsers,
-                registeredNumberOfUsers, LocalDateTime.now(), null);
+                registeredUsers, LocalDateTime.now(), null);
     }
 
     public SessionFixtureBuilder withCoverImageUrl(String coverImageUrl) {
@@ -53,6 +56,11 @@ public class SessionFixtureBuilder {
 
     public SessionFixtureBuilder withId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public SessionFixtureBuilder withRegisterdUsers(List<Long> registerdUsers) {
+        registerdUsers.forEach(userId -> this.registeredUsers.add(new SessionUser(userId)));
         return this;
     }
 }
