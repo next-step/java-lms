@@ -63,10 +63,6 @@ public class Session {
         return students.size() >= maxRegisterCount;
     }
 
-    Long id() {
-        return this.id;
-    }
-
     int currRegisterNum() {
         return this.students.size();
     }
