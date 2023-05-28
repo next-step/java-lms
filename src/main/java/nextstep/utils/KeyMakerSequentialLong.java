@@ -2,7 +2,7 @@ package nextstep.utils;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class KeyMakerSequentialLong implements KeyMaker<Long> {
+public class KeyMakerSequentialLong implements KeyMaker {
     private final AtomicLong atomicLong;
 
     public KeyMakerSequentialLong() {
@@ -14,7 +14,7 @@ public class KeyMakerSequentialLong implements KeyMaker<Long> {
     }
 
     @Override
-    public Long generate() {
-        return atomicLong.incrementAndGet();
+    public String generate() {
+        return Long.toString(atomicLong.incrementAndGet());
     }
 }

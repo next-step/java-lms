@@ -1,6 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.users.exception.UnAuthorizedUserException;
+import nextstep.utils.KeyMakerRandomString;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -33,7 +34,11 @@ public class NsUser {
         return new NsUser(new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
     }
 
-    public static NsUser of( String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public static NsUser of(String password, String name, String email) {
+        return new NsUser(UserCode.any(KeyMakerRandomString.of()), password, name, email, LocalDateTime.now(), null);
+    }
+
+    public static NsUser of(String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         return new NsUser(
                 new UserCode(userCode),
                 password,

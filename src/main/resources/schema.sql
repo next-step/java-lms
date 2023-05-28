@@ -13,14 +13,13 @@ CREATE TABLE IF NOT EXISTS course
 DROP TABLE IF EXISTS ns_user;
 CREATE TABLE IF NOT EXISTS ns_user
 (
-    user_id         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    user_code    varchar(20) not null,
+    user_code    varchar(20) NOT NULL COMMENT 'ID',
     password   varchar(20) not null,
     name       varchar(20) not null,
     email      varchar(50),
     created_at timestamp not null default now(),
     updated_at timestamp,
-    primary key (user_id)
+    primary key (user_code)
 );
 
 DROP TABLE IF EXISTS question;

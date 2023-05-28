@@ -1,5 +1,5 @@
 package nextstep.utils;
 
-public interface KeyMaker<T> {
-    T generate();
+public interface KeyMaker {
+    String generate();
 }

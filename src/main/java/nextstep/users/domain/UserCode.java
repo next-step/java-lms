@@ -1,6 +1,8 @@
 package nextstep.users.domain;
 
 import nextstep.utils.DomainCode;
+import nextstep.utils.KeyMaker;
+import nextstep.utils.KeyMakerRandomString;
 
 import java.util.Objects;
 
@@ -13,6 +15,10 @@ public class UserCode implements DomainCode {
 
     public static UserCode of(String userCode) {
         return new UserCode(userCode);
+    }
+
+    public static UserCode any(KeyMaker keyMaker) {
+        return new UserCode(keyMaker.generate());
     }
 
     @Override

@@ -10,11 +10,11 @@ class KeyMakerRandomStringTest {
         //given
         //when
         //then
-        KeyMakerRandomString keyMakerRandomString = new KeyMakerRandomString();
+        //KeyMakerRandomString keyMakerRandomString = new KeyMakerRandomString();
 
-        for (int i=0 ; i<10 ; i++) {
-            System.out.println(keyMakerRandomString.generate());
-        }
+//        for (int i=0 ; i<10 ; i++) {
+//            System.out.println(keyMakerRandomString.generate());
+//        }
 
     }
 }
