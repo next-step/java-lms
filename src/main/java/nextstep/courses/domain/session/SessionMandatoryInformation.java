@@ -1,10 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-import java.time.LocalDateTime;
+import nextstep.courses.domain.student.Student;
 import nextstep.courses.exceptions.NotPeriodSessionException;
 import nextstep.courses.exceptions.OverStudentException;
 
-public class Session {
+public class SessionMandatoryInformation {
 
     private final SessionParticipant sessionParticipant;
 
@@ -12,13 +12,14 @@ public class Session {
 
     private final SessionTerm sessionTerm;
 
-    public Session(SessionParticipant sessionParticipant, SessionCondition sessionsCondition, SessionTerm sessionTerm) {
+    public SessionMandatoryInformation(SessionParticipant sessionParticipant, SessionCondition sessionsCondition,
+            SessionTerm sessionTerm) {
         this.sessionParticipant = sessionParticipant;
         this.sessionsCondition = sessionsCondition;
         this.sessionTerm = sessionTerm;
     }
 
-    public void enroll() {
+    private void validateEnroll() {
         if (!sessionsCondition.participateAvailable()) {
             throw new NotPeriodSessionException();
         }
@@ -27,14 +28,14 @@ public class Session {
             throw new OverStudentException();
         }
 
-        participate();
     }
 
-    private void participate() {
-        sessionParticipant.participateStudent();
+    public void participate(Student student) {
+        validateEnroll();
+        sessionParticipant.participateStudent(student);
     }
 
     public int getStudent() {
-        return sessionParticipant.getStudents();
+        return sessionParticipant.getStudentsCount();
     }
 }
