@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,14 @@ public class SessionTest {
     LocalDateTime end = start.plusDays(3);
     assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 0))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @DisplayName("강의를 생성한다.")
+  @Test
+  public void session() {
+    LocalDateTime start = LocalDateTime.now();
+    LocalDateTime end = start.plusDays(3);
+    Session session = new Session("title", start, end, "img", SessionType.FREE, 100);
   }
 
 }
