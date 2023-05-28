@@ -58,4 +58,10 @@ public class Course {
     public void addSession(Session session) {
         this.sessions.add(session);
     }
+
+    public long getNumberOfStudents() {
+        return sessions.stream()
+                .mapToLong(Session::getNumberOfStudents)
+                .sum();
+    }
 }
