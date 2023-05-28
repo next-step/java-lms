@@ -3,22 +3,28 @@ package nextstep.users.domain;
 import nextstep.users.exception.UnAuthorizedUserException;
 import nextstep.utils.KeyMakerRandomString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
+    @NotEmpty
     private UserCode userCode;
 
+    @NotNull
     private String password;
 
+    @NotNull
     private String name;
 
     private String email;
 
+    @NotNull
     private LocalDateTime createdAt;
-
+    @NotNull
     private LocalDateTime updatedAt;
 
     public NsUser(UserCode userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -31,7 +37,7 @@ public class NsUser {
     }
 
     public static NsUser of(String userCode, String password, String name, String email) {
-        return new NsUser(new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
+        return new NsUser(new UserCode(userCode), password, name, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public static NsUser of(String password, String name, String email) {
@@ -146,6 +152,14 @@ public class NsUser {
     @Override
     public int hashCode() {
         return Objects.hash(userCode.value());
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
     }
 
     private static class GuestNsUser extends NsUser {

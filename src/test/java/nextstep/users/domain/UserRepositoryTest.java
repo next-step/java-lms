@@ -31,9 +31,9 @@ public class UserRepositoryTest {
         userRepository = new JdbcUserRepository(jdbcTemplate);
     }
 
-    @DisplayName("findByUserId/code")
+    @DisplayName("UserCode 로 조회한다")
     @Test
-    public void findByUserIdCode() {
+    public void findByUserCode() {
         //given
         //when
         Optional<NsUser> user = userRepository.findByUserCode(UserCode.of("javajigi-sql"));
@@ -42,7 +42,7 @@ public class UserRepositoryTest {
         LOG.info("NsUser: {}", user.orElseThrow());
     }
 
-    @DisplayName("save")
+    @DisplayName("저장한다")
     @Test
     public void save() {
         //given
@@ -53,10 +53,10 @@ public class UserRepositoryTest {
         assertThat(save).as("").isNotNull();
         assertThat(save.getEmail()).as("").isEqualTo(user.getEmail());
         assertThat(save.getName()).as("").isEqualTo(user.getName());
-        fail();
+        System.out.println(save);
     }
 
-    @DisplayName("findAll")
+    @DisplayName("모든 엔티티를 조회한다")
     @Test
     public void findAll() {
         //given
@@ -70,6 +70,5 @@ public class UserRepositoryTest {
         assertThat(all).as("").contains(save1);
         assertThat(all).as("").contains(save2);
         assertThat(all.size()).as("").isGreaterThan(2);
-        fail();
     }
 }

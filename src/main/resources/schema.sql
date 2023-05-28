@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS course
     title      varchar(255) not null,
     creator_id bigint       not null,
     created_at timestamp    not null,
-    updated_at timestamp,
+    updated_at timestamp not null,
     primary key (course_id)
 );
 
@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS ns_user
     password   varchar(20) not null,
     name       varchar(20) not null,
     email      varchar(50),
-    created_at timestamp not null default now(),
-    updated_at timestamp,
+    created_at timestamp not null,
+    updated_at timestamp not null default now(),
     primary key (user_code)
 );
 

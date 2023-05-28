@@ -4,9 +4,11 @@ import nextstep.utils.DomainCode;
 import nextstep.utils.KeyMaker;
 import nextstep.utils.KeyMakerRandomString;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 public class UserCode implements DomainCode {
+    @NotEmpty
     private final String userCode;
 
     public UserCode(String userCode) {
