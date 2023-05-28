@@ -15,7 +15,7 @@ public class CourseTest {
   private Session s2;
 
   @BeforeEach
-  public void createTestData() {
+  public void setUp() {
     c1 = new Course("ssafy", 1L);
     s1 = new Session("tdd", LocalDateTime.now(),
         LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);

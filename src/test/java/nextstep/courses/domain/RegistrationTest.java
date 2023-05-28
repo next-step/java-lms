@@ -21,7 +21,7 @@ public class RegistrationTest {
   private NsUser sanjigi;
 
   @BeforeEach
-  public void createTestData() {
+  public void setUp() {
     s1 = new Session("tdd", LocalDateTime.now(),
         LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);
     s2 = new Session("atdd", LocalDateTime.now(),

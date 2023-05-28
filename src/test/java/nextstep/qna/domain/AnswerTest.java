@@ -6,26 +6,32 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AnswerTest {
 
-  public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1,
-      "Answers Contents1");
-  public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1,
-      "Answers Contents2");
+  private Answer a1;
+  private Answer a2;
+
+  @BeforeEach
+  public void setUp() {
+    Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    a1 = new Answer(NsUserTest.JAVAJIGI, q1, "Answers Contents1");
+    a2 = new Answer(NsUserTest.SANJIGI, q1, "Answers Contents2");
+  }
 
   @DisplayName("답변을 삭제 한다.")
   @Test
   public void makeDeleted() {
-    DeleteHistory deleteHistoryA1 = A1.delete(NsUserTest.JAVAJIGI);
-    DeleteHistory deleteHistoryA2 = A2.delete(NsUserTest.SANJIGI);
+    DeleteHistory deleteHistoryA1 = a1.delete(NsUserTest.JAVAJIGI);
+    DeleteHistory deleteHistoryA2 = a2.delete(NsUserTest.SANJIGI);
     assertAll(
-        () -> assertThat(A1.isDeleted()).isTrue(),
-        () -> assertThat(deleteHistoryA1).isEqualTo(A1.toDeleteHistory()),
-        () -> assertThat(A2.isDeleted()).isTrue(),
-        () -> assertThat(deleteHistoryA2).isEqualTo(A2.toDeleteHistory())
+        () -> assertThat(a1.isDeleted()).isTrue(),
+        () -> assertThat(deleteHistoryA1).isEqualTo(a1.toDeleteHistory()),
+        () -> assertThat(a2.isDeleted()).isTrue(),
+        () -> assertThat(deleteHistoryA2).isEqualTo(a2.toDeleteHistory())
     );
   }
 
@@ -33,9 +39,9 @@ public class AnswerTest {
   @Test
   public void makeDeleted_throwException_ifNotOwner() {
     assertAll(
-        () -> assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
+        () -> assertThatThrownBy(() -> a1.delete(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class),
-        () -> assertThatThrownBy(() -> A2.delete(NsUserTest.JAVAJIGI))
+        () -> assertThatThrownBy(() -> a2.delete(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class)
     );
   }
@@ -44,9 +50,9 @@ public class AnswerTest {
   @Test
   public void validateAnswerOwner_throwException_ifNotOwner() {
     assertAll(
-        () -> assertThatThrownBy(() -> A1.validateAnswerOwner(NsUserTest.SANJIGI))
+        () -> assertThatThrownBy(() -> a1.validateAnswerOwner(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class),
-        () -> assertThatThrownBy(() -> A2.validateAnswerOwner(NsUserTest.JAVAJIGI))
+        () -> assertThatThrownBy(() -> a2.validateAnswerOwner(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class)
     );
   }
