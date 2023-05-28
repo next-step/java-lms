@@ -4,28 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import nextstep.sessions.exception.CapacityNumberException;
 import nextstep.users.domain.NsUser;
 
 public class Students {
 
-	private Long courseId;
-
-	private Long sessionId;
-
-	private final int capacity;
-
 	private final List<NsUser> nsUsers;
 
-	public Students(int capacity) {
-		this(capacity, new ArrayList<>());
+	public Students() {
+		this(new ArrayList<>());
 	}
 
-	public Students(int capacity, List<NsUser> nsUsers) {
-		if (capacity < 0) {
-			throw new CapacityNumberException("최대 수강 인원은 음수일 수 없습니다.");
-		}
-		this.capacity = capacity;
+	public Students(List<NsUser> nsUsers) {
 		this.nsUsers = nsUsers;
 	}
 
@@ -37,8 +26,8 @@ public class Students {
 		this.nsUsers.add(nsUser);
 	}
 
-	public boolean isFull() {
-		return this.nsUsers.size() >= this.capacity;
+	public boolean isFull(int capacity) {
+		return this.nsUsers.size() >= capacity;
 	}
 
 	@Override
@@ -48,11 +37,11 @@ public class Students {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Students students = (Students)o;
-		return capacity == students.capacity && Objects.equals(courseId, students.courseId) && Objects.equals(sessionId, students.sessionId) && Objects.equals(nsUsers, students.nsUsers);
+		return Objects.equals(nsUsers, students.nsUsers);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(courseId, sessionId, capacity, nsUsers);
+		return Objects.hash(nsUsers);
 	}
 }

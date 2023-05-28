@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nextstep.sessions.exception.AlreadySignUpException;
+import nextstep.sessions.exception.CapacityNumberException;
 import nextstep.sessions.exception.GuestUserSignUpException;
 import nextstep.sessions.exception.NotRecruitingException;
 import nextstep.sessions.exception.NumberFullException;
@@ -27,7 +28,7 @@ public class SessionTest {
 	void setUp() {
 		this.sessionDate = new SessionDate("2023-04-03T00:00:00", "2023-06-01T00:00:00");
 		this.coveredImageUrl = "http://nextstep/coveredImageUrl.png";
-		this.session = new Session(sessionDate, coveredImageUrl, true, new Students(100));
+		this.session = new Session(sessionDate, coveredImageUrl, true, 100, new Students());
 	}
 
 	@DisplayName("강의를 오픈한다.")
@@ -35,7 +36,7 @@ public class SessionTest {
 	void test1() {
 		this.session.open();
 
-		Session expected = new Session(sessionDate, coveredImageUrl, true, StatusType.RECRUITING, new Students(100));
+		Session expected = new Session(sessionDate, coveredImageUrl, true, StatusType.RECRUITING, 100, new Students());
 		assertThat(this.session).isEqualTo(expected);
 	}
 
@@ -44,7 +45,7 @@ public class SessionTest {
 	void test2() {
 		this.session.close();
 
-		Session expected = new Session(sessionDate, coveredImageUrl, true, StatusType.TERMINATION, new Students(100));
+		Session expected = new Session(sessionDate, coveredImageUrl, true, StatusType.TERMINATION, 100, new Students());
 		assertThat(this.session).isEqualTo(expected);
 	}
 
@@ -53,7 +54,7 @@ public class SessionTest {
 	void test3() {
 		this.session.open();
 
-		Session expected = new Session(sessionDate, coveredImageUrl, true, new Students(100, List.of(NsUserTest.JAVAJIGI)));
+		Session expected = new Session(sessionDate, coveredImageUrl, true, 100, new Students(List.of(NsUserTest.JAVAJIGI)));
 		expected.open();
 
 		assertThat(this.session.signUp(NsUserTest.JAVAJIGI)).isEqualTo(expected);
@@ -76,7 +77,7 @@ public class SessionTest {
 	@DisplayName("수강 신청 불가 - 모집인원 초과")
 	@Test
 	void test6() {
-		Session numberFullSession = new Session(sessionDate, coveredImageUrl, true, new Students(1));
+		Session numberFullSession = new Session(sessionDate, coveredImageUrl, true, 1, new Students());
 		numberFullSession.open();
 		numberFullSession.signUp(NsUserTest.JAVAJIGI);
 
@@ -98,5 +99,11 @@ public class SessionTest {
 
 		this.session.signUp(NsUserTest.JAVAJIGI);
 		assertThatThrownBy(() -> this.session.signUp(NsUserTest.JAVAJIGI)).isInstanceOf(AlreadySignUpException.class);
+	}
+
+	@DisplayName("수강 가능 인원 예외 케이스 - 음수")
+	@Test
+	void test9() {
+		assertThatThrownBy(() -> new Session(sessionDate, coveredImageUrl, true, -1, new Students())).isInstanceOf(CapacityNumberException.class);
 	}
 }
