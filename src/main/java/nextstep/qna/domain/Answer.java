@@ -71,7 +71,7 @@ public class Answer {
 
     public DeleteHistory delete()  {
         isSameUser();
-        this.setDeleted(true);
+        this.deleted = true;
         return DeleteHistory.createAnswer(this.id, this.writer);
     }
 

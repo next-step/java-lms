@@ -23,9 +23,10 @@ public class Answers implements Iterable<Answer> {
         return this.answers;
     }
 
-    public void deleteAnswers() {
+    public DeleteHistories delete(DeleteHistories deleteHistories) {
         answers.stream()
-                .forEach(answer -> answer.delete());
+                .forEach(answer -> deleteHistories.add(answer.delete()));
+        return deleteHistories;
     }
     @Override
     public Iterator<Answer> iterator() {

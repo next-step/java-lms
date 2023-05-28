@@ -52,22 +52,17 @@ public class Question {
     public DeleteHistories delete(NsUser loginUser) {
         isSameUser(loginUser);
         this.deleted = true;
-        return documentedDeleteHistories();
+
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
+
+        return answers.delete(deleteHistories);
     }
 
     private void isSameUser(NsUser loginUser) {
         if (!this.writer.matchUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-    }
-
-    private DeleteHistories documentedDeleteHistories() {
-        DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
-
-        answers.getAnswers().stream()
-                .forEach(answer -> deleteHistories.add(answer.delete()));
-        return deleteHistories;
     }
 
     @Override
