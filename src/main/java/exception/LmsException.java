@@ -5,7 +5,7 @@ public class LmsException extends RuntimeException {
   private final ExceptionCode exceptionCode;
 
   public LmsException(ExceptionCode exceptionCode) {
-    super(exceptionCode.getDefaultMessage());
+    super(exceptionCode.getMessage());
     this.exceptionCode = exceptionCode;
   }
 

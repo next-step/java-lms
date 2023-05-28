@@ -5,13 +5,11 @@ import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import utils.LocalDateTimeUtils;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
-@Repository("courseRepository")
+@Repository
 public class JdbcCourseRepository implements CourseRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -30,15 +28,9 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                LocalDateTimeUtils.of(rs.getTimestamp(4)),
+                LocalDateTimeUtils.of(rs.getTimestamp(5))
+        );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
-    }
-
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }
