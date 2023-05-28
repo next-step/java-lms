@@ -13,8 +13,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 public class CourseRepositoryTest {
@@ -34,6 +36,27 @@ public class CourseRepositoryTest {
     @AfterEach
     void wrapUp() {
         courseRepository.deleteAll();
+    }
+
+    @DisplayName("CRUD 전과정을 검증한다")
+    @Test
+    public void crud() {
+        //given
+        Course course1 = TestFixture.KOTLIN_COURSE;
+        Course course2 = TestFixture.K8S_COURSE;
+        Course course3 = TestFixture.RUST_COURSE;
+        //when
+        Course save1 = courseRepository.save(course1);
+        courseRepository.save(course2);
+        courseRepository.save(course3);
+        List<Course> all = courseRepository.findAll();
+        Course findById1 = courseRepository.findById(save1.getCourseId()).orElseThrow(() -> new RuntimeException("방금 저장한 데이터를 읽어옴. 성공해야한다"));
+        //then
+        assertAll("데이터가 잘 읽고 쓰이는지 검증한다",
+                () -> assertThat(save1.getCourseId()).isEqualTo(findById1.getCourseId()),
+                () -> assertThat(all.size()).isGreaterThanOrEqualTo(3)
+        );
+        all.stream().forEach(course -> LOGGER.info(course.toString()));
     }
 
     @DisplayName("저장한다")
