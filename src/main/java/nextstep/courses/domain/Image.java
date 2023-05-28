@@ -6,6 +6,7 @@ import nextstep.courses.exception.InvalidImageException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Image extends BaseEntity {
@@ -30,6 +31,16 @@ public class Image extends BaseEntity {
         this.uri = uri;
         this.size = size;
         this.type = type;
+    }
+
+    public Image(Long id, String name, URI uri, Long size, ImageType type, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.uri = uri;
+        this.size = size;
+        this.type = type;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static Image create(String name, String uri, Long size, String typeString) throws InvalidImageException, URISyntaxException {

@@ -7,6 +7,7 @@ import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Session extends BaseEntity {
@@ -107,4 +108,16 @@ public class Session extends BaseEntity {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(period, session.period) && Objects.equals(coverImage, session.coverImage) && Objects.equals(sessionTime, session.sessionTime) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(enrollment, session.enrollment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, period, coverImage, sessionTime, sessionType, sessionStatus, enrollment);
+    }
 }

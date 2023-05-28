@@ -5,6 +5,7 @@ import nextstep.users.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Enrollment {
     private List<User> users = new ArrayList<>();
@@ -43,4 +44,16 @@ public class Enrollment {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Enrollment that = (Enrollment) o;
+        return maximumEnrollment == that.maximumEnrollment && Objects.equals(users, that.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(users, maximumEnrollment);
+    }
 }
