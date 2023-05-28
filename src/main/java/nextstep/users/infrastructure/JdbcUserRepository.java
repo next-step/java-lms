@@ -3,6 +3,7 @@ package nextstep.users.infrastructure;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 import nextstep.users.domain.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,15 +23,20 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<NsUser> findByUserCode(UserCode userCode) {
-        String sql = "select user_code, password, name, email, created_at, updated_at from ns_user where user_code = ?";
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                new UserCode(rs.getString(2)),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userCode.value()));
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            "select " +
+                                    "user_code, password, name, email, created_at, updated_at " +
+                                    "from ns_user " +
+                                    "where user_code = ?",
+                            rowMapper(),
+                            userCode.value()
+                    )
+            );
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return Optional.empty();
+        }
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -42,11 +48,32 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public NsUser save(NsUser user) {
-        throw new RuntimeException();
+
     }
 
     @Override
     public List<NsUser> findAll() {
         throw new RuntimeException();
     }
+
+    private RowMapper<NsUser> rowMapper() {
+        return (rs, rowNum) -> new NsUser(
+                new UserCode(rs.getString("user_code")),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email"),
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at"))
+        );
+    }
+    /*
+    this.userCode = userCode;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+     */
+
+
 }

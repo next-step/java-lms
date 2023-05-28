@@ -31,21 +31,15 @@ public class UserRepositoryTest {
         userRepository = new JdbcUserRepository(jdbcTemplate);
     }
 
-    @Test
-    void findByUserId() {
-        Optional<NsUser> nsUser = userRepository.findByUserCode(UserCode.of("javajigi"));
-        assertThat(nsUser.isEmpty()).isFalse();
-        LOG.debug("NsUser: {}", nsUser.get());
-    }
-
     @DisplayName("findByUserId/code")
     @Test
     public void findByUserIdCode() {
         //given
         //when
-        userRepository.findByUserCode(UserCode.of("SNA"));
+        Optional<NsUser> user = userRepository.findByUserCode(UserCode.of("javajigi-sql"));
         //then
-        fail();
+        assertThat(user.isEmpty()).isFalse();
+        LOG.info("NsUser: {}", user.orElseThrow());
     }
 
     @DisplayName("save")
