@@ -20,11 +20,11 @@ public class SessionTimeLineTest {
 
     @Test
     @DisplayName("강의 시작일이 강의 종료일보다 느리면 예외를 던진다.")
-    void create_CreateAtBeforeThanClosedAt_NoException() {
+    void create_CreateAtAfterThanClosedAt_NoException() {
         LocalDateTime createAt = LocalDateTime.now();
         LocalDateTime closeAt = createAt.minusDays(5);
 
-        Assertions.assertThatNoException()
+        Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() -> new SessionTimeLine(createAt, closeAt));
     }
 }
