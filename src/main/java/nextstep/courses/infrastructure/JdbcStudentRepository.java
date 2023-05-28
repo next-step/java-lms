@@ -24,6 +24,17 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
+    public Student findById(Long studentId) {
+        String sql = "select id, session_id"+
+                " from student" +
+                " where id = ?";
+
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(rs.getLong(1), rs.getLong(2));
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, studentId);
+    }
+
+    @Override
     public List<Student> findBySessionId(Long sessionId) {
         String sql = "select id, session_id" +
                 " from student" +
