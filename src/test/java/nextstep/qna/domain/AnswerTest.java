@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AnswerTest {
@@ -48,9 +49,9 @@ public class AnswerTest {
                 () -> assertThat(answer.isOwner(user.getUserCode()))
                         .as("글 작성자와 일치함을 검증한다")
                         .isTrue(),
-                () -> assertThat(answer.toString())
+                () -> assertThat(answer.getWriter())
                         .as("글 작성자의 Name 데이터가 동일해야한다")
-                        .contains(user.getName())
+                        .isEqualTo(user.getUserCode())
         );
     }
 

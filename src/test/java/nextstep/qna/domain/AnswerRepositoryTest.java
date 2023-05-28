@@ -1,10 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.fixture.TestFixture;
-import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.AnswerRepository;
-import nextstep.qna.domain.QuestionRepository;
 import nextstep.qna.infrastructure.JdbcAnswerRepository;
 import nextstep.qna.infrastructure.JdbcQuestionRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -55,7 +51,7 @@ public class AnswerRepositoryTest {
     public void findByQuestion() {
         //given
         //when
-        List<Answer> byQuestion = answerRepository.findByQuestion(1L);
+        List<Answer> byQuestion = answerRepository.findAllByQuestion(1L);
         //then
         fail();
     }

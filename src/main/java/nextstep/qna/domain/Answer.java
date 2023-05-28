@@ -51,8 +51,8 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(UserCode writer) {
-        return this.writer.value().equals(writer.value());
+    public boolean isOwner(UserCode userCode) {
+        return this.writer.value().equals(userCode.value());
     }
 
     public void relateToQuestion(Question question) {

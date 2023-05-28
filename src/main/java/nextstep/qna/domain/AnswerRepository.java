@@ -3,7 +3,7 @@ package nextstep.qna.domain;
 import java.util.List;
 
 public interface AnswerRepository {
-    List<Answer> findByQuestion(Long questionId);
+    List<Answer> findAllByQuestion(Long questionId);
 
     Answer save(Answer answer);
 }
