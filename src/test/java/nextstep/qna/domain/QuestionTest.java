@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import nextstep.qna.CannotDeleteException;
@@ -22,12 +23,12 @@ public class QuestionTest {
     @Test
     void 답변삭제와_삭제히스토리생성() {
         List<DeleteHistory> deleteHistory = Q1.delete(Q1.getWriter());
-        assertThat(Q1.isDeleted()).isTrue();
+        assertTrue(Q1.isDeleted());
         assertThat(deleteHistory).isNotNull();
     }
 
     @Test
     void 작성자확인() {
-        assertThat(Q2.isOwner(Q2.getWriter())).isTrue();
+        assertTrue(Q2.isOwner(Q2.getWriter()));
     }
 }
