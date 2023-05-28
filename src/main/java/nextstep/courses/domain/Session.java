@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,6 +16,8 @@ public class Session {
 
     private final Status status;
 
+    private final Students students;
+
 
     public Session(Long id) {
         this.id = id;
@@ -21,6 +25,7 @@ public class Session {
         this.image = new Image();
         this.cost = Cost.FREE;
         this.status = Status.READY;
+        this.students = new Students();
     }
 
     public Session(Long id, String startDate, String endDate, String url, Cost cost, Status status) {
@@ -29,6 +34,7 @@ public class Session {
         this.image = new Image(url);
         this.cost = cost;
         this.status = status;
+        this.students = new Students();
     }
 
     @Override
@@ -59,5 +65,16 @@ public class Session {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void register(NsUser loginUser) {
+        if (status != Status.OPENED) {
+            throw new IllegalStateException("수강신청은 강의 모집 중에만 가능합니다.");
+        }
+        students.add(loginUser);
+    }
+
+    public boolean hasStudent(NsUser student) {
+        return students.hasStudent(student);
     }
 }
