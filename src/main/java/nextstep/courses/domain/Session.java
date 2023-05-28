@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Session {
     private final SessionType type;
     private final SessionStatus status;
     private final int maxRegisterNum;
-    private List<Student> students = new ArrayList<>();
+    private List<NsUser> students = new ArrayList<>();
 
     public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum) {
         this.id = id;
@@ -29,9 +31,9 @@ public class Session {
         this.maxRegisterNum = maxRegisterNum;
     }
 
-    public void addStudent(Student student) {
+    public void addStudent(NsUser nsUser) {
         if (isRegistrable()) {
-            students.add(student);
+            students.add(nsUser);
         }
     }
 

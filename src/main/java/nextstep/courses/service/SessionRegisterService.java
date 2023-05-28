@@ -2,7 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.Student;
+import nextstep.users.domain.NsUser;
 
 public class SessionRegisterService {
 
@@ -14,7 +14,7 @@ public class SessionRegisterService {
 
     public void registerSession(Long id) {
         Session session = sessionRepository.findById(id);
-        session.addStudent(new Student());
+        session.addStudent(new NsUser());
     }
 
 }
