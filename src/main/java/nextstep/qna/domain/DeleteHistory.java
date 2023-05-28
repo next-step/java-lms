@@ -8,22 +8,33 @@ import java.util.Objects;
 public class DeleteHistory {
     private Long id;
 
-    private ContentType contentType;
+    private final ContentType contentType;
 
-    private Long contentId;
+    private final Long contentId;
 
-    private NsUser deletedBy;
+    private final NsUser deletedBy;
 
     private LocalDateTime createdDate = LocalDateTime.now();
-
-    public DeleteHistory() {
-    }
 
     public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy) {
+        this.contentType = contentType;
+        this.contentId = contentId;
+        this.deletedBy = deletedBy;
+    }
+
+    public static DeleteHistory createAnswer(Long id, NsUser writer) {
+        return new DeleteHistory(ContentType.ANSWER, id, writer);
+    }
+
+    public static DeleteHistory createQuestion(Long id, NsUser writer) {
+        return new DeleteHistory(ContentType.QUESTION, id, writer);
     }
 
     @Override
