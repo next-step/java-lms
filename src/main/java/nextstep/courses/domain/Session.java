@@ -33,7 +33,10 @@ public class Session {
     }
 
     public void add(Student student) {
-        // todo - validate
+        if (totalStudentNum() == maxNumberOfStudent) {
+            throw new CannotEnrollException(
+                    "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 " + maxNumberOfStudent);
+        }
         this.students.add(student);
     }
 
