@@ -1,7 +1,16 @@
 package nextstep.courses.domain;
 
-public interface SessionRepository {
-    Session findById(Long id);
 
-    long save(Session session, Long courseId);
+import nextstep.users.domain.User;
+
+import java.util.List;
+
+public interface SessionRepository {
+    Session findBySessionId(long id);
+
+    long save(Session session, long courseId);
+
+    long enrollUser(Session session);
+
+    List<User> findUsersBySessionId(long sessionId);
 }

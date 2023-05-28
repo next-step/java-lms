@@ -14,6 +14,11 @@ public class Enrollment {
         this.maximumEnrollment = maximumEnrollment;
     }
 
+    public Enrollment(List<User> users, int maximumEnrollment) {
+        this.users = users;
+        this.maximumEnrollment = maximumEnrollment;
+    }
+
     public void enroll(User user) throws SessionEnrollmentException {
         checkEnrollment();
 

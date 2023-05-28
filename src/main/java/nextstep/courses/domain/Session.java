@@ -7,6 +7,7 @@ import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Session extends BaseEntity {
     private Long id;
@@ -24,10 +25,6 @@ public class Session extends BaseEntity {
     private Enrollment enrollment;
 
     protected Session() {
-    }
-
-    public Session(Long id) {
-        this.id = id;
     }
 
     public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment) {
@@ -64,12 +61,15 @@ public class Session extends BaseEntity {
         return id;
     }
 
-    public void updateUsers(List<User> users) {
-        this.enrollment.updateUsers(users);
-    }
-
     public int getEnrollmentUserCount() {
         return this.enrollment.getUsers().size();
+    }
+
+    public User getLatestEnrollmentUser(){
+        return Optional.ofNullable(enrollment)
+                .map(Enrollment::getUsers)
+                .flatMap(users -> users.stream().reduce((first, second) -> second))
+                .orElse(null);
     }
 
     public String getPeriod() {

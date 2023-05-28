@@ -1,8 +1,8 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionNextStepUserRepository;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.courses.exception.SessionNotFoundException;
 import nextstep.users.domain.User;
 import nextstep.users.domain.UserRepository;
@@ -17,22 +17,19 @@ import java.util.Objects;
 public class SessionService {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
-    private final SessionNextStepUserRepository sessionNextStepUserRepository;
 
-    public SessionService(UserRepository userRepository, SessionRepository sessionRepository, SessionNextStepUserRepository sessionNextStepUserRepository) {
+    public SessionService(UserRepository userRepository, SessionRepository sessionRepository) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
-        this.sessionNextStepUserRepository = sessionNextStepUserRepository;
     }
 
     public Session findSessionById(long sessionId) {
-        Session session = sessionRepository.findById(sessionId);
+        Session session = sessionRepository.findBySessionId(sessionId);
 
         if (Objects.isNull(session)) {
             throw new SessionNotFoundException("존재하지 않는 강의입니다.");
         }
 
-        session.updateUsers(sessionNextStepUserRepository.findUsersBySessionId(sessionId));
         return session;
     }
 
@@ -42,8 +39,20 @@ public class SessionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
 
-        sessionNextStepUserRepository.save(session.getId(), user.getId());
+        checkUserAlreadyEnrolled(sessionId, userId);
+
         session.enroll(user);
+        sessionRepository.enrollUser(session);
+    }
+
+    private void checkUserAlreadyEnrolled(long sessionId, long userId) {
+        boolean isAlreadyEnrolled = sessionRepository.findUsersBySessionId(sessionId)
+                .stream()
+                .anyMatch(user -> user.getId() == userId);
+
+        if (isAlreadyEnrolled) {
+            throw new SessionEnrollmentException("이미 등록된 유저입니다.");
+        }
     }
 
 }
