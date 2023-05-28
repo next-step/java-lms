@@ -15,8 +15,8 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String image;
-    private final SessionStatus status;
-    private final Long maxNumberOfStudent;
+    private SessionStatus status;
+    private Long maxNumberOfStudent;
     private Boolean isFree;
     private final List<NsUser> students = new ArrayList<>();
 
