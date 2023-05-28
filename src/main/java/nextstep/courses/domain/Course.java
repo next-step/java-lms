@@ -7,6 +7,8 @@ public class Course extends BaseEntity {
 
     private Long creatorId;
 
+    private Sessions sessions;
+
     public Course() {
     }
 
@@ -18,6 +20,14 @@ public class Course extends BaseEntity {
         super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
+    }
+
+    public void registerSession(Long sessionId, int studentsCount) {
+        this.sessions.registerSession(sessionId, studentsCount);
+    }
+
+    public Sessions getSessions() {
+        return this.sessions;
     }
 
     public String getTitle() {
