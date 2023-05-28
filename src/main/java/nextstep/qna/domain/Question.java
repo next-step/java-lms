@@ -70,7 +70,9 @@ public class Question extends BaseEntity {
     }
 
     public List<DeleteHistory> deleteHistories() {
-        if(!isQuestionDeleted()) return new DeleteHistories(new ArrayList<>()).immutableGet();
+        if(!isQuestionDeleted()) {
+            return new DeleteHistories(new ArrayList<>()).immutableGet();
+        }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(QUESTION, this.id, this.writer));
         deleteHistories.addAll(this.answers.deleteHistories());
