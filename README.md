@@ -175,3 +175,29 @@ FQDN : jdbc:h2:tcp://localhost:1521/lms
 CONSOLE : http://localhost:8081
 username/password : sa/(공백, 아무것도 넣지않음)
 ```
+
+
+### JdbcTemplete 트러블 슈팅 : Unique index or primary key violation
+
+- 이슈의 발생과 증상
+  - JdbcTemplete 로 save()기능을 구현하다 해당 에러가 발생하였습니다.  
+  ```text
+  PreparedStatementCallback; Unique index or primary key violation: "PRIMARY KEY ON PUBLIC.~~"
+  ```
+
+- Solution : 제 경우에는 스프링 시작시 자동으로 반영되는 `data.sql` 을 수정했습니다
+  - Before
+  ```text
+  INSERT INTO question (question_id, writer_id, title, contents, created_at, deleted)
+  VALUES (1, 1, ~~~
+  ```
+  - After
+  ```text
+  INSERT INTO question (question_id, writer_id, title, contents, created_at, deleted)
+  VALUES (101, 101, ~~~
+  ```
+  
+- Why : 문제가 발생한 원인은 PK 중복
+
+- 이외
+  - 테스트는 idempotent(멱등성) 
