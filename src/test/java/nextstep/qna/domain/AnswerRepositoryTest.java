@@ -1,9 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
 import nextstep.qna.domain.QuestionRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,18 @@ public class AnswerRepositoryTest {
 
     @Autowired private AnswerRepository answerRepository;
     @Autowired private QuestionRepository questionRepository;
+
+    @BeforeEach
+    void setUp() {
+        TestFixture.fixtureInit();
+        //answerRepository = new JdbcCourseRepository(jdbcTemplate);
+
+    }
+
+    @AfterEach
+    void wrapUp() {
+        //courseRepository.deleteAll();
+    }
 
     @DisplayName("저장한다")
     @Test

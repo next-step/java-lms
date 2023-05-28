@@ -19,12 +19,13 @@ public class QuestionRepositoryTest {
     @DisplayName("id 로 조회한다")
     @Test
     public void findByQuestionId() {
-        //findById << 통합필요
         //given
+        Question q = TestFixture.BADAJIGI_QUESTION;
+        questionRepository.save(q);
         //when
-        Question question = questionRepository.findByQuestionId(new QuestionId(1L)).get();
+        Question save = questionRepository.findByQuestionId(new QuestionId(1L)).get();
         //then
-        System.out.println(question.toString());
+        System.out.println(save.toString());
     }
 
     @DisplayName("findAll")

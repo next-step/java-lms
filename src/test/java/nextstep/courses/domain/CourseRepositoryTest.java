@@ -55,8 +55,8 @@ public class CourseRepositoryTest {
         //todo : 조회만 돌리면 성공하는데 다른 테스트랑 전체 같이 돌리면 깨짐.. 신기하네
         //given
         Course save = courseRepository.save(TestFixture.K8S_COURSE);
-        save.getCourseId().value();
-        Course savedCourse = courseRepository.findById(1L).orElseThrow();
+
+        Course savedCourse = courseRepository.findById(save.getCourseId().value()).orElseThrow();
 
         //when
         //then

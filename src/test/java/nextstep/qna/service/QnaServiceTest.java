@@ -50,7 +50,7 @@ public class QnaServiceTest {
         Answer answer1 = TestFixture.SANJIGI_ANSWER;
         NsUser loginUser = TestFixture.BADAJIGI;
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
         qnAService.deleteQuestion(loginUser, question.getId());
 
         //then
@@ -72,7 +72,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.JAVAJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
         qnAService.deleteQuestion(loginUser, question.getId());
 
         //then
@@ -97,7 +97,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.SANJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {
@@ -117,7 +117,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.SANJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {
