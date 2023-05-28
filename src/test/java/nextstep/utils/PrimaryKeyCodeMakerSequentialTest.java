@@ -3,7 +3,7 @@ package nextstep.utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class KeyMakerSequentialLongTest {
+class PrimaryKeyCodeMakerSequentialTest {
 
     @DisplayName("")
     @Test
@@ -11,7 +11,7 @@ class KeyMakerSequentialLongTest {
         //given
         //when
         //then
-        KeyMakerSequentialLong keyMakerSequentialLong = new KeyMakerSequentialLong();
+        PrimaryKeyCodeMakerSequential keyMakerSequentialLong = new PrimaryKeyCodeMakerSequential();
 
         for(int i=0 ; i<100 ; i++) {
             System.out.println(keyMakerSequentialLong.generate());

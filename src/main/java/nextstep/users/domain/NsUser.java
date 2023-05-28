@@ -1,7 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.users.exception.UnAuthorizedUserException;
-import nextstep.utils.KeyMakerRandomString;
+import nextstep.utils.PrimaryKeyCodeMakerRandom;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -41,7 +41,7 @@ public class NsUser {
     }
 
     public static NsUser of(String password, String name, String email) {
-        return new NsUser(UserCode.any(KeyMakerRandomString.of()), password, name, email, LocalDateTime.now(), null);
+        return new NsUser(UserCode.any(PrimaryKeyCodeMakerRandom.of()), password, name, email, LocalDateTime.now(), null);
     }
 
     public static NsUser of(String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
