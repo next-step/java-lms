@@ -40,8 +40,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 ")";
 
         return jdbcTemplate.update(sql
-                , session.getStartDate()
-                , session.getEndDate()
+                , session.getSessionDate().getStartDate()
+                , session.getSessionDate().getEndDate()
                 , session.getSessionState()
                 , session.getSessionType()
                 , session.getRegisteredStudent()

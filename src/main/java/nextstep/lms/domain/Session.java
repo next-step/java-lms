@@ -5,8 +5,7 @@ import java.time.LocalDate;
 public class Session {
 
     private Long id;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private SessionDate sessionDate;
     private Long imageId;
     private SessionState sessionState = SessionState.READY;
     private SessionType sessionType;
@@ -32,8 +31,7 @@ public class Session {
         validateDate(startDate, endDate);
 
         this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionState = sessionState;
         this.sessionType = sessionType;
         this.registeredStudent = registeredStudent;
@@ -62,8 +60,8 @@ public class Session {
         return sessionState;
     }
 
-    public SessionState changeFinishSessionState(LocalDate now) {
-        if (now.isAfter(endDate)) {
+    public SessionState changeFinishSessionState(LocalDate date) {
+        if (sessionDate.isAfterEndDate(date)) {
             sessionState = SessionState.FINISH;
         }
         return sessionState;
@@ -110,12 +108,8 @@ public class Session {
         return id;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
+    public SessionDate getSessionDate() {
+        return sessionDate;
     }
 
     public Long getImageId() {
