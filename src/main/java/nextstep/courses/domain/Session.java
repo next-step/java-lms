@@ -4,7 +4,7 @@ import nextstep.courses.CannotRegisterException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 
@@ -13,22 +13,22 @@ public class Session {
     private final Long id;
     private final String title;
     private final int generation;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final LocalDateTime startAt;
+    private final LocalDateTime endAt;
     private final SessionType type;
     private final SessionStatus status;
-    private final int maxRegisterNum;
+    private final int maxRegisterCount;
     private final NsUsers students = new NsUsers();
 
-    public Session(Long id, String title, int generation, LocalDate startDate, LocalDate endDate, SessionType type, SessionStatus status, int maxRegisterNum) {
+    public Session(Long id, String title, int generation, LocalDateTime startAt, LocalDateTime endAt, SessionType type, SessionStatus status, int maxRegisterCount) {
         this.id = id;
         this.title = title;
         this.generation = generation;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startAt = startAt;
+        this.endAt = endAt;
         this.type = type;
         this.status = status;
-        this.maxRegisterNum = maxRegisterNum;
+        this.maxRegisterCount = maxRegisterCount;
     }
 
     public void register(NsUser nsUser) {
@@ -41,7 +41,10 @@ public class Session {
         if (isNotRecruiting()) {
             throw new CannotRegisterException("강의 모집기간이 아닙니다.");
         }
-        if (isCurrRegisterExceedMaxRegister()) {
+        if (isOutOfRecruitingDate()) {
+            throw new CannotRegisterException("모집일이 아닙니다.");
+        }
+        if (isExceedMaxRegisterCount()) {
             throw new CannotRegisterException("등록 인원이 정원 초과 되었습니다.");
         }
         return true;
@@ -51,8 +54,13 @@ public class Session {
         return RECRUITING != status;
     }
 
-    private boolean isCurrRegisterExceedMaxRegister() {
-        return students.size() >= maxRegisterNum;
+    private boolean isOutOfRecruitingDate() {
+        LocalDateTime now = LocalDateTime.now();
+        return !(now.isAfter(this.startAt) && now.isBefore(this.endAt));
+    }
+
+    private boolean isExceedMaxRegisterCount() {
+        return students.size() >= maxRegisterCount;
     }
 
     Long id() {
@@ -63,18 +71,5 @@ public class Session {
         return this.students.size();
     }
 
-    @Override
-    public String toString() {
-        return "Session{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", generation=" + generation +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", type=" + type +
-                ", status=" + status +
-                ", maxRegisterNum=" + maxRegisterNum +
-                ", students=" + students +
-                '}';
-    }
+
 }
