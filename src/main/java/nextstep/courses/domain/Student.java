@@ -9,4 +9,8 @@ public class Student {
         this.studentId = studentId;
         this.sessionId = sessionId;
     }
+
+    public void enroll(Session session) {
+        session.add(this);
+    }
 }

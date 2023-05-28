@@ -31,4 +31,13 @@ public class Session {
         this.sessionTimeLine = sessionTimeLine;
         this.maxNumberOfStudent = maxNumberOfStudent;
     }
+
+    public void add(Student student) {
+        // todo - validate
+        this.students.add(student);
+    }
+
+    public int totalStudentNum() {
+        return students.size();
+    }
 }
