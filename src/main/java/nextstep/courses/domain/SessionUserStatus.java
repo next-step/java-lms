@@ -39,4 +39,8 @@ public enum SessionUserStatus {
   private static boolean containsStatus(String status) {
     return BY_STATUS.containsKey(status);
   }
+
+  public String status() {
+    return status;
+  }
 }

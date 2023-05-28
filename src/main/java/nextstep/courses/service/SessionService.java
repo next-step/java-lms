@@ -8,6 +8,7 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,6 +41,25 @@ public class SessionService {
     session.setSessionUsers(sessionRepository.findAllSessionUserBySessionId(sessionId));
 
     session.processEnrollment(nextStepUser);
-    sessionRepository.saveSessionUser(session, nextStepUser);
+    LocalDateTime currentTime = LocalDateTime.now();
+    sessionRepository.saveSessionUser(new SessionUser(session, nextStepUser, currentTime, currentTime));
+  }
+
+  public SessionUser findBySessionIdAndUserId(Long sessionId, Long userId) {
+    return sessionRepository.findBySessionIdAndUserId(sessionId, userId);
+  }
+
+  public void approveEnrollment(Long sessionId, Long userId) {
+    SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(sessionId, userId);
+
+    sessionUser.approve();
+    sessionRepository.updateSessionUserStatus(sessionUser);
+  }
+
+  public void rejectEnrollment(Long sessionId, Long userId) {
+    SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(sessionId, userId);
+
+    sessionUser.reject();
+    sessionRepository.updateSessionUserStatus(sessionUser);
   }
 }

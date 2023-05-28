@@ -47,7 +47,7 @@ public class Session {
     }
 
     LocalDateTime now = LocalDateTime.now();
-    sessionUsers.enroll(new SessionUser(this, nextStepUser, now, now));
+    sessionUsers.enroll(new SessionUser(this, nextStepUser, now, now, SessionUserStatus.REQUEST));
   }
 
   public Long getId() {

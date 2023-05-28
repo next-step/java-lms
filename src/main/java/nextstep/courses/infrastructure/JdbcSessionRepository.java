@@ -60,25 +60,42 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   @Override
-  public void saveSessionUser(Session session, NextStepUser nextStepUser) {
-    String sql = "insert into session_ns_user (session_id, user_id, created_at, updated_at) values (?, ?, ?, ?)";
-
-    jdbcTemplate.update(sql, session.getId(), nextStepUser.getId(), session.getCreatedAt(), session.getUpdatedAt());
+  public SessionUser saveSessionUser(SessionUser sessionUser) {
+    String sql = "insert into session_ns_user (session_id, user_id, created_at, updated_at, session_user_status) values (?, ?, ?, ?, ?)";
+    KeyHolder keyHolder = new GeneratedKeyHolder();
+    jdbcTemplate.update(connection -> {
+      PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"id"});
+      preparedStatement.setLong(1, sessionUser.getSession().getId());
+      preparedStatement.setLong(2, sessionUser.getNextStepUser().getId());
+      preparedStatement.setTimestamp(3, Timestamp.valueOf(sessionUser.getCreatedAt()));
+      preparedStatement.setTimestamp(4, Timestamp.valueOf(sessionUser.getUpdatedAt()));
+      preparedStatement.setString(5, sessionUser.getSessionUserStatus());
+      return preparedStatement;
+    }, keyHolder);
+    long key = keyHolder.getKey().longValue();
+    sessionUser.setId(key);
+    return sessionUser;
   }
 
   @Override
   public List<SessionUser> findAllSessionUserBySessionId(Long sessionId) {
-    String sql = "select id, session_id, user_id, created_at, updated_at from session_ns_user where session_id = ?";
+    String sql = "select id, session_id, user_id, created_at, updated_at, session_user_status from session_ns_user where session_id = ?";
 
-    RowMapper<SessionUser> sessionUserRowMapper = (rs, rowNum) ->
-            new SessionUser(
-                    rs.getLong(1),
-                    findById(rs.getLong(2)),
-                    new NextStepUser(),
-                    toLocalDateTime(rs.getTimestamp(4)),
-                    toLocalDateTime(rs.getTimestamp(5)));
+    return jdbcTemplate.query(sql, sessionUserRowMapper(), sessionId);
+  }
 
-    return jdbcTemplate.query(sql, sessionUserRowMapper, sessionId);
+  @Override
+  public void updateSessionUserStatus(SessionUser sessionUser) {
+    String sql = "update session_ns_user set session_user_status = ? where id = ?";
+
+    jdbcTemplate.update(sql, sessionUser.getSessionUserStatus(), sessionUser.getId());
+  }
+
+  @Override
+  public SessionUser findBySessionIdAndUserId(Long sessionId, Long userId) {
+    String sql = "select id, session_id, user_id, created_at, updated_at, session_user_status from session_ns_user where session_id = ? and user_id = ?";
+
+    return jdbcTemplate.queryForObject(sql, sessionUserRowMapper(), sessionId, userId);
   }
 
 
@@ -95,6 +112,16 @@ public class JdbcSessionRepository implements SessionRepository {
             toLocalDateTime(rs.getTimestamp(9)),
             toLocalDateTime(rs.getTimestamp(10))
     ));
+  }
+
+  private RowMapper<SessionUser> sessionUserRowMapper() {
+    return (rs, rowNum) -> new SessionUser(
+            rs.getLong(1),
+            findById(rs.getLong(2)),
+            new NextStepUser(),
+            toLocalDateTime(rs.getTimestamp(4)),
+            toLocalDateTime(rs.getTimestamp(5)),
+            SessionUserStatus.valueOfSessionUserStatus(rs.getString(6)));
   }
 
   private LocalDateTime toLocalDateTime(Timestamp timestamp) {

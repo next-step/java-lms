@@ -73,3 +73,4 @@ create table delete_history (
 );
 
 alter table session add session_recruitment_status varchar(20);
+alter table session_ns_user add session_user_status varchar(20);

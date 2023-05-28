@@ -12,7 +12,11 @@ public interface SessionRepository {
 
   List<Session> findByCourseId(Long courseId);
 
-  void saveSessionUser(Session session, NextStepUser nextStepUser);
+  SessionUser saveSessionUser(SessionUser sessionUser);
 
   List<SessionUser> findAllSessionUserBySessionId(Long sessionId);
+
+  void updateSessionUserStatus(SessionUser sessionUser);
+
+  SessionUser findBySessionIdAndUserId(Long sessionId, Long userId);
 }

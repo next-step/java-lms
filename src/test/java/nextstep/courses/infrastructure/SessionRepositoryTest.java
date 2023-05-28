@@ -53,8 +53,20 @@ public class SessionRepositoryTest {
     Session savedSession = sessionRepository.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
 
     savedSession.processEnrollment(NextStepUserTest.JAVAJIGI);
-    sessionRepository.saveSessionUser(savedSession, NextStepUserTest.JAVAJIGI);
+    sessionRepository.saveSessionUser(new SessionUser(savedSession, NextStepUserTest.JAVAJIGI, currentTime, currentTime));
 
     assertThat(savedSession.getSessionUsers().getSessionUsers()).hasSize(1);
+  }
+
+  @Test
+  public void findSessionUser() {
+    LocalDateTime currentTime = LocalDateTime.now();
+    Session session = new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
+
+    Session savedSession = sessionRepository.save(session, 1L);
+    sessionRepository.saveSessionUser(new SessionUser(savedSession, NextStepUserTest.JAVAJIGI, currentTime, currentTime));
+
+    SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(savedSession.getId(), NextStepUserTest.JAVAJIGI.getId());
+    assertThat(sessionUser.getSessionUserStatus()).isEqualTo("신청");
   }
 }

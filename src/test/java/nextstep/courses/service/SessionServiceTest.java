@@ -49,4 +49,26 @@ public class SessionServiceTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("수강신청은 강의 상태가 모집중일 때만 가능합니다. 현재 수강 상태 : 진행중");
   }
+
+  @Test
+  public void session_신청_후_상태_확인() {
+    SessionUser sessionUser = sessionService.findBySessionIdAndUserId(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+    assertThat(sessionUser.getSessionUserStatus()).isEqualTo("신청");
+  }
+
+  @Test
+  public void session_승인_후_상태_확인() {
+    sessionService.approveEnrollment(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+
+    SessionUser sessionUser = sessionService.findBySessionIdAndUserId(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+    assertThat(sessionUser.getSessionUserStatus()).isEqualTo("승인");
+  }
+
+  @Test
+  public void session_거절_후_상태_확인() {
+    sessionService.rejectEnrollment(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+
+    SessionUser sessionUser = sessionService.findBySessionIdAndUserId(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+    assertThat(sessionUser.getSessionUserStatus()).isEqualTo("거절");
+  }
 }
