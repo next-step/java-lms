@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.utils.CommunicationTerm;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ public class Course {
     private CourseId courseId;
     private String title;
     private Long creatorId;
+    @NotNull
     private List<Session> sessions = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -33,7 +35,7 @@ public class Course {
                 new CourseId(courseId),
                 title,
                 creatorId,
-                null,
+                new ArrayList<>(),
                 createdAt,
                 updatedAt
         );
