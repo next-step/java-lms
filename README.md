@@ -59,3 +59,20 @@
 - 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
 - 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
 - 강의는 강의 최대 수강 인원을 초과할 수 없다.
+
+## Step 3 기능목록
+
+- 2단계에서 구현한 객체 구조를 가능한 유지하면서 DB 테이블과 매핑한다.
+- 성능 보다 도메인 객체에 로직 구현하는 것을 목표로 연습한다.
+
+- [x] sql 작성
+  - [x] course에 대한 sql 작성
+  - [x] session에 대한 sql 작성
+  - [x] student에 대한 sql 작성
+- [x] JDBC repository 생성
+  - [x] session
+  - [x] student
+- [ ] repository와 domain을 연결하는 service 생성
+  - [ ] course
+  - [ ] session
+  - [ ] student
