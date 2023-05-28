@@ -10,16 +10,20 @@ public class Session {
 
     private final Image image;
 
+    private Cost cost;
+
     public Session(Long id) {
         this.id = id;
         this.period = new Period(LocalDate.now(), LocalDate.now());
         this.image = new Image();
+        this.cost = Cost.FREE;
     }
 
-    public Session(Long id, String startDate, String endDate, String url) {
+    public Session(Long id, String startDate, String endDate, String url, Cost cost) {
         this.id = id;
         this.period = new Period(startDate, endDate);
         this.image = new Image(url);
+        this.cost = cost;
     }
 
     @Override
@@ -42,5 +46,9 @@ public class Session {
 
     public Image getImage() {
         return image;
+    }
+
+    public Cost getCost() {
+        return cost;
     }
 }
