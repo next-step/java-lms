@@ -11,18 +11,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
-    public static Question Q1;
-    public static Question Q2;
+    public static Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+
+    public static Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @BeforeEach
     void setUp() {
-       Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-       Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
     }
 
     @Test
     @DisplayName("작성자가 질문을 삭제하면 deleted 상태는 TRUE")
-    void delete() throws Exception {
+    void delete() {
         Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(Q1.isDeleted()).isTrue();
@@ -44,7 +45,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문자와 답변자의 작성자가 모두 같다면 삭제 가능하다")
-    void deleteAllSameWriter() throws Exception {
+    void deleteAllSameWriter() {
         Q1.addAnswer(AnswerTest.A1);
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
