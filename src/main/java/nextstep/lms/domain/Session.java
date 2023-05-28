@@ -13,6 +13,19 @@ public class Session {
     private int studentCapacity;
     private int registeredStudent = 0;
 
+    public Session(LocalDate startDate, LocalDate endDate) {
+        this(null, startDate, endDate,
+                SessionState.READY, SessionType.FREE, 0,
+                1, null);
+    }
+
+    public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
+                   SessionType sessionType, int studentCapacity) {
+        this(null, startDate, endDate,
+                SessionState.READY, sessionType, 0,
+                studentCapacity, imageCover.getId());
+    }
+
     public Session(Long id, LocalDate startDate, LocalDate endDate,
                    SessionState sessionState, SessionType sessionType, int registeredStudent,
                    int studentCapacity, Long imageId) {
@@ -32,19 +45,6 @@ public class Session {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("종료 날짜가 시작 날짜보다 앞일 수 없습니다.");
         }
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
-                   SessionType sessionType, int studentCapacity) {
-        this(null, startDate, endDate,
-                SessionState.READY, sessionType, 0,
-                studentCapacity, imageCover.getId());
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this(null, startDate, endDate,
-                SessionState.READY, SessionType.FREE, 0,
-                1, null);
     }
 
     public static Session createSession(LocalDate startDate, LocalDate endDate, Image imageCover,
