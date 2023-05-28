@@ -77,7 +77,7 @@ public class Session {
 
     public void open(LmsUser user) {
         validateCreator(user);
-        status = SessionStatus.OPEN;
+        status = status.open();
         updatedAt = LocalDateTime.now();
     }
 
