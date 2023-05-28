@@ -67,7 +67,10 @@ public class SessionTest {
 
     @Test
     void test_수강신청_강의상태_모집중_성공() {
+        // when
+        session.register(NsUserTest.JAVAJIGI);
+
         // then
-        assertThatCode(() -> session.register(NsUserTest.JAVAJIGI)).doesNotThrowAnyException();
+        assertThat(session.hasStudent(NsUserTest.JAVAJIGI)).isTrue();
     }
 }
