@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NextStepUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -53,12 +54,20 @@ public class Session {
     return id;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public SessionPayment getSessionPayment() {
     return sessionPayment;
   }
 
   public SessionUsers getSessionUsers() {
     return sessionUsers;
+  }
+
+  public void setSessionUsers(List<SessionUser> sessionUsers) {
+    this.sessionUsers.setSessionUsers(sessionUsers);
   }
 
   public SessionPeriod getSessionPeriod() {
@@ -79,10 +88,6 @@ public class Session {
 
   public SessionStatus getSessionStatus() {
     return sessionStatus;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   @Override

@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionPayment;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStatus;
 import nextstep.users.domain.NextStepUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +58,6 @@ public class SessionRepositoryTest {
     savedSession.processEnrollment(NextStepUserTest.JAVAJIGI);
     sessionRepository.saveSessionUser(savedSession, NextStepUserTest.JAVAJIGI);
 
-    List<SessionUser> findAllSessionUser = sessionRepository.findAllSessionUserBySessionId(savedSession.getId());
-    assertThat(findAllSessionUser).hasSize(1);
+    assertThat(savedSession.getSessionUsers().getSessionUsers()).hasSize(1);
   }
 }

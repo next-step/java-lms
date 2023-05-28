@@ -7,7 +7,7 @@ public class SessionUsers {
 
   private static final String MAX_ENROLLMENT_MESSAGE = "해당 세션의 수강 인원이 만석되었습니다.";
   private final int maxUserEnrollment;
-  private final List<SessionUser> sessionUsers;
+  private List<SessionUser> sessionUsers;
 
   public SessionUsers(int maxUserEnrollment) {
     this.maxUserEnrollment = maxUserEnrollment;
@@ -20,6 +20,10 @@ public class SessionUsers {
     }
 
     sessionUsers.add(sessionUser);
+  }
+
+  public void setSessionUsers(List<SessionUser> sessionUsers) {
+    this.sessionUsers = sessionUsers;
   }
 
   public int currentEnrollment() {
