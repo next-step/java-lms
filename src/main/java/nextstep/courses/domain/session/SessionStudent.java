@@ -40,6 +40,7 @@ public class SessionStudent {
     this.sessionId = session.getId();
     this.nsUser = nsUser;
     this.nsUserId = nsUser.getId();
+    this.cancelFlag = false;
   }
 
   public SessionStudent(SessionStudent student, NsUser nsUser) {
