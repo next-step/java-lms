@@ -29,4 +29,17 @@ public class CourseTest {
         // then
         assertThat(sessions.isEmpty()).isTrue();
     }
+
+    @Test
+    void test_과정에_강의를_등록할_수_있다() {
+        // given
+        Course course = new Course("객체지향 프로그래밍", 1L);
+        Session session = new Session(1L);
+
+        // when
+        course.addSession(session);
+
+        // then
+        assertThat(course.getSessions().isEmpty()).isFalse();
+    }
 }
