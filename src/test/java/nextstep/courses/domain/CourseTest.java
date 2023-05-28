@@ -42,4 +42,18 @@ public class CourseTest {
         // then
         assertThat(course.getSessions().isEmpty()).isFalse();
     }
+
+    @Test
+    void test_과정에_있는_강의를_확인할_수_있다() {
+        // given
+        Course course = new Course("객체지향 프로그래밍", 1L);
+        Session session = new Session(1L);
+        course.addSession(session);
+
+        // when
+        Session targetSession = course.getSessions().getSession(1L);
+
+        // then
+        assertThat(targetSession).isEqualTo(session);
+    }
 }
