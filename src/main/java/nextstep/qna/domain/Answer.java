@@ -65,10 +65,6 @@ public class Answer {
         return !this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
-    }
-
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";

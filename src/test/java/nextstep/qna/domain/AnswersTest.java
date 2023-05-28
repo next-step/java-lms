@@ -28,7 +28,7 @@ public class AnswersTest {
     @BeforeEach
     void init() {
         singleAnswer = new Answers(
-                List.of(new Answer(JAVAJIGI, QuestionTest.JAVAHIGI_QUESTION, "Answers Contents1")));
+                List.of(new Answer(JAVAJIGI, QuestionTest.JAVAJIGI_QUESTION, "Answers Contents1")));
     }
 
     @Test

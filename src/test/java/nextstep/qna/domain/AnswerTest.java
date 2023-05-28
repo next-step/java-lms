@@ -11,14 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AnswerTest {
-    public static final Answer JAVAJIGI_ANSWER = new Answer(JAVAJIGI, QuestionTest.JAVAHIGI_QUESTION, "Answers Contents1");
-    public static final Answer SANJIGI_ANSWER = new Answer(NsUserTest.SANJIGI, QuestionTest.JAVAHIGI_QUESTION, "Answers Contents2");
+    public static final Answer JAVAJIGI_ANSWER = new Answer(JAVAJIGI, QuestionTest.JAVAJIGI_QUESTION, "Answers Contents1");
+    public static final Answer SANJIGI_ANSWER = new Answer(NsUserTest.SANJIGI, QuestionTest.JAVAJIGI_QUESTION, "Answers Contents2");
 
     private Answer single_answer;
 
     @BeforeEach
     void init() {
-        single_answer = new Answer(JAVAJIGI, QuestionTest.JAVAHIGI_QUESTION, "Answers Contents1");
+        single_answer = new Answer(JAVAJIGI, QuestionTest.JAVAJIGI_QUESTION, "Answers Contents1");
     }
 
     @Test

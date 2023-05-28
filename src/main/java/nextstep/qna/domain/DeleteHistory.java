@@ -27,6 +27,10 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public boolean isEmpty() {
+        return this.equals(new DeleteHistory());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,9 +42,6 @@ public class DeleteHistory {
                 Objects.equals(deletedBy, that.deletedBy);
     }
 
-    public boolean isEmpty() {
-        return this.equals(new DeleteHistory());
-    }
 
     @Override
     public int hashCode() {
