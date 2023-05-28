@@ -47,8 +47,7 @@ public class SessionService {
         List<String> nextStepUserIds = sessionRepository.findAllUserBySessionId(sessionId);
         return nextStepUserIds.stream()
                 .map(userRepository::findByUserId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(user -> user.orElseThrow(() -> new IllegalArgumentException("수강자 정보가 없습니다.")))
                 .collect(Collectors.toList());
     }
 }
