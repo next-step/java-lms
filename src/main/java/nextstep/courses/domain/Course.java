@@ -46,9 +46,9 @@ public class Course {
         return createdAt;
     }
 
-    public void addSession(LocalDateTime startedAt, LocalDateTime endedAt, boolean isFree, Status status, int currentStudents, int maxStudents) {
+    public void addSession(Session session) {
         try {
-            this.sessions.add(new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents));
+            this.sessions.add(session);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             throw e;

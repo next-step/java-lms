@@ -28,8 +28,9 @@ class CourseTest {
         Status status = Status.preparing;
         int currentStudents = 10;
         int maxStudents = 10;
+        Session session = new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
 
-        course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents);
+        course.addSession(session);
 
         int expected = 1;
         int actual = course.sessionList().size();
@@ -46,7 +47,7 @@ class CourseTest {
         int currentStudents = 0;
         int maxStudents = 10;
 
-        assertThatThrownBy(() -> course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents))
+        assertThatThrownBy(() -> course.addSession(new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -59,7 +60,7 @@ class CourseTest {
         int currentStudents = 11;
         int maxStudents = 10;
 
-        assertThatThrownBy(() -> course.addSession(startedAt, endedAt, isFree, status, currentStudents, maxStudents))
+        assertThatThrownBy(() -> course.addSession(new Session(startedAt, endedAt, isFree, status, currentStudents, maxStudents)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
