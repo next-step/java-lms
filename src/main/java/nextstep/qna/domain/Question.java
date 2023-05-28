@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+    public static final String DELETE_ANSWERS_AUTHORITY = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+    public static final String DELETE_QUESTION_AUTHORITY = "질문을 삭제할 권한이 없습니다.";
     private Long id;
 
     private String title;
@@ -15,7 +18,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -37,6 +40,31 @@ public class Question {
         this.contents = contents;
     }
 
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateDeleteAuthority(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        List<DeleteHistory> answersDeleteHistory;
+
+        try {
+            answersDeleteHistory = answers.deleteAnswers(loginUser);
+            deleteHistories.addAll(answersDeleteHistory);
+        } catch (CannotDeleteException e) {
+            throw new CannotDeleteException(DELETE_ANSWERS_AUTHORITY);
+        }
+        
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, loginUser, LocalDateTime.now()));
+
+        return deleteHistories;
+    }
+
+    private void validateDeleteAuthority(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException(DELETE_QUESTION_AUTHORITY);
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -45,18 +73,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -65,24 +83,15 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
