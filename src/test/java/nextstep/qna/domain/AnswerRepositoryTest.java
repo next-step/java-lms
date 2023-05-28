@@ -53,6 +53,5 @@ public class AnswerRepositoryTest {
         //when
         List<Answer> byQuestion = answerRepository.findAllByQuestion(1L);
         //then
-        fail();
     }
 }

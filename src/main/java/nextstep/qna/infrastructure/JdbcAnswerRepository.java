@@ -2,7 +2,10 @@ package nextstep.qna.infrastructure;
 
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
+import nextstep.qna.domain.QuestionId;
+import nextstep.users.domain.UserCode;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -22,8 +25,25 @@ public class JdbcAnswerRepository implements AnswerRepository {
     }
 
     @Override
-    public List<Answer> findByQuestion(Long questionId) {
-        throw new RuntimeException();
+    public List<Answer> findAllByQuestion(Long questionId) {
+        String sql = "SELECT * from answer where question_id=?";
+        return jdbcTemplate.query(sql, rowMapper(), questionId);
+    }
+
+    private RowMapper<Answer> rowMapper() {
+        return ((rs, rowNum) -> {
+            return new Answer(
+                    rs.getLong("answer_id"),
+                    new UserCode(rs.getString("writer_user_code")),
+                    new QuestionId(rs.getLong("question_id")),
+                    rs.getString("contents"),
+                    rs.getBoolean("deleted"),
+                    rs.getTimestamp("").toLocalDateTime(),
+                    rs.getTimestamp("").toLocalDateTime()
+            );
+        });
+
+
     }
 
     @Override
@@ -36,7 +56,7 @@ public class JdbcAnswerRepository implements AnswerRepository {
                 put("contents", answer.getContent());
                 put("deleted", answer.getDeleted());
                 put("question_id", Optional.ofNullable(answer.getQuestionId().value()).orElseGet(null));
-                put("writer", answer.getWriter().value());
+                put("writer_user_code", answer.getWriter().value());
                 put("updated_at", answer.getUpdatedAt());
                 put("created_at", answer.getCreatedAt());
 
