@@ -6,19 +6,20 @@ import java.util.Objects;
 public class Session {
     private final Long id;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final Period period;
+
+    private final Image image;
 
     public Session(Long id) {
         this.id = id;
-        this.startDate = LocalDate.now();
-        this.endDate = LocalDate.now().plusDays(14);
+        this.period = new Period(LocalDate.now(), LocalDate.now());
+        this.image = new Image();
     }
 
-    public Session(Long id, LocalDate startDate, LocalDate endDate) {
+    public Session(Long id, String startDate, String endDate, String url) {
         this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = new Period(startDate, endDate);
+        this.image = new Image(url);
     }
 
     @Override
@@ -35,11 +36,14 @@ public class Session {
     }
 
     public void updatePeriod(String startDate, String endDate) {
-        this.startDate = LocalDate.parse(startDate);
-        this.endDate = LocalDate.parse(endDate);
+        period.updatePeriod(startDate, endDate);
     }
 
-    public LocalDate getStartDate() {
-        return this.startDate;
+    public Period getPeriod() {
+        return period;
+    }
+
+    public Image getImage() {
+        return image;
     }
 }
