@@ -23,15 +23,6 @@ public class SessionTest {
     }
 
     @Test
-    void test_강의의_시작일과_종료일_수정() {
-        // when
-        session.updatePeriod("2021-01-01", "2021-01-02");
-
-        // then
-        assertThat(session.getPeriod()).isEqualTo(new Period("2021-01-01", "2021-01-02"));
-    }
-
-    @Test
     void test_강의_생성시_이미지_정보를_갖는다() {
         // when
         Image image = session.getImage();

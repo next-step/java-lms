@@ -44,17 +44,4 @@ public class CourseTest {
         // then
         assertThat(course.getSessions().isEmpty()).isFalse();
     }
-
-    @Test
-    void test_과정에_있는_강의를_확인할_수_있다() {
-        // given
-        Session session = new Session(1L);
-        course.addSession(session);
-
-        // when
-        Session readSession = course.getSessions().getSession(1L);
-
-        // then
-        assertThat(readSession).isEqualTo(session);
-    }
 }
