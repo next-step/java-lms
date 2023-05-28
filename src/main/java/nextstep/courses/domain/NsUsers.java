@@ -14,14 +14,10 @@ public class NsUsers {
     }
 
     public void enroll(NsUser user) {
-        validateMaxUserCount();
-        nsUsers.add(user);
-    }
-
-    private void validateMaxUserCount() {
-        if (nsUsers.size() == maxUserCount) {
+        if (count() == maxUserCount) {
             throw new IllegalArgumentException("강의 최대 수강 인원이 초과되었습니다.");
         }
+        nsUsers.add(user);
     }
 
     public int count() {
