@@ -4,14 +4,14 @@ import nextstep.qna.domain.Question;
 
 public class QuestionDummy {
 
-    private final Question javajigiQuestion;
+    private final Question a_user_question;
 
     public QuestionDummy() {
-        this.javajigiQuestion = new Question(
-                new NsUserDummy().javajigi, "title1", "contents1");
+        this.a_user_question = new Question(
+                new NsUserDummy().a_user, "title1", "contents1");
     }
 
-    public Question getJavajigiQuestion() {
-        return javajigiQuestion;
+    public Question getA_user_question() {
+        return a_user_question;
     }
 }

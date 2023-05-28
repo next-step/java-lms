@@ -6,18 +6,18 @@ import nextstep.users.domain.NsUser;
 
 public class AnswerDummy {
 
-    public final NsUser javajigi_writer;
-    public final NsUser sanjigi_writer;
-    public final Question javajigi_question;
-    public final Answer javajigi_answer;
-    public final Answer sanjigi_answer;
+    public final Question a_user_question;
+    public final Answer a_answer;
+    public final Answer b_answer;
 
     public AnswerDummy() {
-        this.javajigi_writer = new NsUserDummy().javajigi;
-        this.sanjigi_writer = new NsUserDummy().sanjigi;
-        this.javajigi_question = new Question(javajigi_writer, "title1", "contents1");
-        this.javajigi_answer = new Answer(javajigi_writer, javajigi_question, "Answers Contents1");
-        this.sanjigi_answer = new Answer(sanjigi_writer, javajigi_question, "Answers Contents2");
+
+        NsUser a_user = new NsUserDummy().a_user;
+        NsUser b_user = new NsUserDummy().b_user;
+        this.a_user_question = new Question(a_user, "title1", "contents1");
+        this.a_answer = new Answer(a_user, a_user_question, "Answers Contents1");
+        this.b_answer = new Answer(b_user, a_user_question, "Answers Contents2");
+
     }
 
 }

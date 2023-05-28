@@ -16,29 +16,26 @@ import org.junit.jupiter.api.Test;
 
 public class AnswersTest {
 
-    private AnswerDummy answerDummy;
+    private Answer a_user_answer;
 
-    private Answer javajigiAnswer;
-
-    private NsUser javajigi_writer;
+    private NsUser a_user;
 
     private Answers singleAnswer;
 
-    private NsUser sanjigi;
+    private NsUser b_user;
 
     @BeforeEach
     void init() {
-        answerDummy = new AnswerDummy();
-        javajigiAnswer = answerDummy.javajigi_answer;
-        javajigi_writer = answerDummy.javajigi_writer;
-        singleAnswer = new Answers(List.of(javajigiAnswer));
-        sanjigi = new NsUserDummy().sanjigi;
+        a_user_answer = new AnswerDummy().a_answer;
+        a_user = new NsUserDummy().a_user;
+        b_user = new NsUserDummy().b_user;
+        singleAnswer = new Answers(List.of(a_user_answer));
     }
 
     @Test
     @DisplayName("질문 목록중 로그인 유저와 다른 유저가 배열에 존재할 경우 true 를 리턴한다.")
     void checkHasOtherUser() {
-        assertThat(singleAnswer.hasOtherUserAnswer(sanjigi))
+        assertThat(singleAnswer.hasOtherUserAnswer(b_user))
                 .isTrue();
     }
 
@@ -69,7 +66,7 @@ public class AnswersTest {
         singleAnswer.deleteAll();
         assertThat(singleAnswer.deleteHistories())
                 .isEqualTo(new ArrayList<>(List.of(
-                        new DeleteHistory(ANSWER,null, javajigi_writer, now())
+                        new DeleteHistory(ANSWER,null, a_user, now())
                 )));
     }
 }

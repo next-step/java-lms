@@ -4,14 +4,14 @@ import nextstep.users.domain.NsUser;
 
 public class NsUserDummy {
 
-    public final NsUser javajigi;
+    public final NsUser a_user;
 
-    public final NsUser sanjigi;
+    public final NsUser b_user;
 
 
     public NsUserDummy() {
-        this.javajigi = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-        this.sanjigi = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
+        this.a_user = new NsUser(1L, "a", "password", "name", "a@slipp.net");
+        this.b_user = new NsUser(2L, "b", "password", "name", "b@slipp.net");
     }
 
 }
