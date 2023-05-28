@@ -18,17 +18,7 @@ import java.util.stream.Collectors;
 public class DeleteHistoryService {
     @Resource(name = "deleteHistoryRepository")
     private DeleteHistoryRepository deleteHistoryRepository;
-    @Transactional
-    public void addQuestionDeleteHistory(Question question) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION,
-                question.getId(),
-                question.getWriter(),
-                LocalDateTime.now())));
-        deleteHistories.addAll(question.getAnswers().stream()
-                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
-                .collect(Collectors.toList()));
-        saveAll(deleteHistories);
-    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveAll(List<DeleteHistory> deleteHistories) {
         deleteHistoryRepository.saveAll(deleteHistories);
