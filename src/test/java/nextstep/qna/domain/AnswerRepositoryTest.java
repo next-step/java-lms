@@ -5,27 +5,33 @@ import nextstep.fixture.TestFixture;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
 import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.infrastructure.JdbcAnswerRepository;
+import nextstep.qna.infrastructure.JdbcQuestionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@JdbcTest
 public class AnswerRepositoryTest {
 
-    @Autowired private AnswerRepository answerRepository;
-    @Autowired private QuestionRepository questionRepository;
+    @Autowired private JdbcTemplate jdbcTemplate;
+    private AnswerRepository answerRepository;
+    private QuestionRepository questionRepository;
 
     @BeforeEach
     void setUp() {
         TestFixture.fixtureInit();
-        //answerRepository = new JdbcCourseRepository(jdbcTemplate);
-
+        answerRepository = new JdbcAnswerRepository(jdbcTemplate);
+        questionRepository = new JdbcQuestionRepository(jdbcTemplate);
     }
 
     @AfterEach

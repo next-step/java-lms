@@ -27,10 +27,10 @@ public class AnswerTest {
 
         //then
         assertAll("Answer 삭제 기능을 검증한다",
-                () -> assertThat(answer.isDeleted())
+                () -> assertThat(answer.getDeleted())
                         .as("삭제되어야 한다")
                         .isTrue(),
-                () -> assertThat(aliveAnswer.isDeleted())
+                () -> assertThat(aliveAnswer.getDeleted())
                         .as("다른 Answer 는 삭제되지 않아야 한다")
                         .isFalse()
         );
