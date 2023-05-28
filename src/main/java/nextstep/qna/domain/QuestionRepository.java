@@ -10,5 +10,5 @@ public interface QuestionRepository {
 
     Question save(Question question);
 
-    Optional<Question> findById(long questionId);
+    Optional<Question> findByQuestionId(long questionId);
 }

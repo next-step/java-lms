@@ -134,7 +134,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public Optional<Question> findById(long questionId) {
+    public Optional<Question> findByQuestionId(long questionId) {
         return Optional.ofNullable(
                 jdbcTemplate.queryForObject(
                         "SELECT * FROM questions WHERE id = ?",

@@ -25,7 +25,7 @@ public class QnAService {
 
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) {
-        Question question = questionRepository.findById(questionId).orElseThrow(QuestionNotFoundException::new);
+        Question question = questionRepository.findByQuestionId(questionId).orElseThrow(QuestionNotFoundException::new);
         List<DeleteHistory> deleteHistories = question.delete(loginUser.getUserCode());
         deleteHistoryService.saveAll(deleteHistories);
     }
