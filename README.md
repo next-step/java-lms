@@ -72,7 +72,11 @@
 - [x] JDBC repository 생성
   - [x] session
   - [x] student
-- [ ] repository와 domain을 연결하는 service 생성
-  - [ ] course
-  - [ ] session
-  - [ ] student
+- [x] repository 별 test 작성
+  - [x] session
+  - [x] student
+
+- [x] repository와 domain을 연결하는 service 생성
+  - [x] course
+  - [x] session
+  - [x] student
