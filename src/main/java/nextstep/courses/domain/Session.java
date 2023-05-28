@@ -6,6 +6,8 @@ import nextstep.courses.exception.InvalidSessionDateTimeException;
 import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 
+import java.util.List;
+
 public class Session extends BaseEntity {
     private Long id;
 
@@ -21,9 +23,21 @@ public class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
-    private int maximumEnrollment;
-
     protected Session() {
+    }
+
+    public Session(Long id) {
+        this.id = id;
+    }
+
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment) {
+        this.id = id;
+        this.period = period;
+        this.coverImage = coverImage;
+        this.sessionTime = sessionTime;
+        this.sessionType = sessionType;
+        this.sessionStatus = sessionStatus;
+        this.enrollment = enrollment;
     }
 
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
@@ -46,8 +60,44 @@ public class Session extends BaseEntity {
         this.enrollment.enroll(user);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void updateUsers(List<User> users) {
+        this.enrollment.updateUsers(users);
+    }
+
     public int getEnrollmentUserCount() {
         return this.enrollment.getUsers().size();
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionTime getSessionTime() {
+        return sessionTime;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public List<User> getUsers() {
+        return this.enrollment.getUsers();
     }
 
     private void checkSessionStatus() throws SessionEnrollmentException {

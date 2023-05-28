@@ -24,6 +24,14 @@ public class Enrollment {
         return users;
     }
 
+    public int getMaximumEnrollment() {
+        return maximumEnrollment;
+    }
+
+    public void updateUsers(List<User> users) {
+        this.users = users;
+    }
+
     private void checkEnrollment() throws SessionEnrollmentException {
         if (this.users.size() >= this.maximumEnrollment) {
             throw new SessionEnrollmentException(String.format("최대 수강 인원인 '%d명'을 초과했습니다.", maximumEnrollment));

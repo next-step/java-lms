@@ -14,6 +14,14 @@ public class SessionTime {
         this.closingDateTime = closingDateTime;
     }
 
+    public LocalDateTime getOpeningDateTime() {
+        return openingDateTime;
+    }
+
+    public LocalDateTime getClosingDateTime() {
+        return closingDateTime;
+    }
+
     private static void checkDateTime(LocalDateTime openingDateTime, LocalDateTime closingDateTime) throws InvalidSessionDateTimeException {
         if (openingDateTime.isAfter(closingDateTime)) {
             throw new InvalidSessionDateTimeException("강의 시작 시간은 종료 시간보다 늦을 수 없습니다.");
