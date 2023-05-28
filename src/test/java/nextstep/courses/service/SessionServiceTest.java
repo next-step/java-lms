@@ -1,6 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.exception.UserNotFoundException;
@@ -23,7 +24,7 @@ class SessionServiceTest {
     @Test
     @DisplayName("id를 통해 조회할 수 있다.")
     public void findById_test() {
-        long sessionId = 1;
+        long sessionId = 300;
         Session session = sessionService.findSessionById(sessionId);
 
         Assertions.assertThat(session.getId()).isEqualTo(sessionId);
@@ -32,7 +33,7 @@ class SessionServiceTest {
     @Test
     @DisplayName("유저를 세션에 등록할 수 있다.")
     public void enrollUserToSession_test() {
-        Session beforeSession = sessionService.findSessionById(1L);
+        Session beforeSession = sessionService.findSessionById(300);
         User user = userRepository.findById(1L)
                 .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
 
@@ -40,6 +41,21 @@ class SessionServiceTest {
 
         Session afterSession = sessionService.findSessionById(beforeSession.getId());
         Assertions.assertThat(afterSession.getUsers()).contains(user);
+    }
+
+    @Test
+    @DisplayName("동일한 세션에 유저는 중복으로 등록할 수 없다.")
+    public void userCannotEnrollTwiceInSameSession_test() {
+        Session session = sessionService.findSessionById(300);
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
+
+
+        sessionService.enrollUserToSession(session.getId(), user.getId());
+
+        Assertions.assertThatThrownBy(() ->
+                sessionService.enrollUserToSession(session.getId(), user.getId())
+        ).isInstanceOf(SessionEnrollmentException.class);
     }
 
 }
