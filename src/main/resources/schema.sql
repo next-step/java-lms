@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS question
 DROP TABLE IF EXISTS answer;
 CREATE TABLE IF NOT EXISTS answer
 (
-    answer_id          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    answer_id   BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
     contents    clob,
     deleted     boolean   not null,
     question_id bigint,
