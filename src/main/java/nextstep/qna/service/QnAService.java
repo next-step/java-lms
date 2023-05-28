@@ -1,16 +1,17 @@
 package nextstep.qna.service;
 
-import nextstep.qna.CannotDeleteException;
-import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.*;
-import nextstep.users.domain.NsUser;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.qna.NotFoundException;
+import nextstep.qna.domain.DeleteHistory;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.QuestionRepository;
+import nextstep.users.domain.NsUser;
 
 @Service("qnaService")
 public class QnAService {
