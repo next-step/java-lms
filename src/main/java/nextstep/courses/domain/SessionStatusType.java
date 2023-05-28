@@ -8,6 +8,7 @@ public enum SessionStatusType {
     String status;
 
     SessionStatusType(String status) {
+        this.status = status;
     }
 
     public String getStatus() {
