@@ -30,7 +30,7 @@ public class StudentTest {
     }
 
     @Test
-    @DisplayName("학생은 수강신청시 강의의 최대 수강신청 인원을 넘을 경우 예외를 던진다.")
+    @DisplayName("수강신청시 최대 수강신청 인원을 넘을 경우 예외를 던진다.")
     void enroll_OutOfMaxNumberOfStudent_ThrowException() {
         session.add(june1);
         session.add(june2);
@@ -38,6 +38,16 @@ public class StudentTest {
         assertThatThrownBy(() -> session.add(june3))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessageContaining("현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("수강신청시 최대 수강인원을 넘지 않을 경우 예외를 던지지 않는다.")
+    void enroll_LessThanMaxNumberOfStudent_NoException() {
+        Session session = SessionCreator.create(5L, SessionStatus.READY);
+
+        assertThatNoException().isThrownBy(() -> session.add(june1));
+        assertThatNoException().isThrownBy(() -> session.add(june2));
+        assertThatNoException().isThrownBy(() -> session.add(june3));
     }
 
 }
