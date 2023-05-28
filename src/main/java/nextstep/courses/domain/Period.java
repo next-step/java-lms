@@ -17,11 +17,6 @@ public class Period {
         this.endDate = endDate;
     }
 
-    public void updatePeriod(String startDate, String endDate) {
-        this.startDate = LocalDate.parse(startDate);
-        this.endDate = LocalDate.parse(endDate);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

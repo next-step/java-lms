@@ -35,9 +35,6 @@ public class Session {
         return Objects.hash(id);
     }
 
-    public void updatePeriod(String startDate, String endDate) {
-        period.updatePeriod(startDate, endDate);
-    }
 
     public Period getPeriod() {
         return period;
