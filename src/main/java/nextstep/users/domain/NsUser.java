@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class NsUser {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
 
@@ -47,37 +46,10 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
 
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
@@ -92,10 +64,6 @@ public class NsUser {
         this.email = target.email;
     }
 
-    public boolean matchUser(NsUser target) {
-        return matchUserId(target.getUserId());
-    }
-
     private boolean matchUserId(String userId) {
         return this.userId.equals(userId);
     }
@@ -104,24 +72,23 @@ public class NsUser {
         return password.equals(targetPassword);
     }
 
-    public boolean equalsNameAndEmail(NsUser target) {
-        if (Objects.isNull(target)) {
-            return false;
-        }
-
-        return name.equals(target.name) &&
-                email.equals(target.email);
-    }
-
-    public boolean isGuestUser() {
-        return false;
-    }
-
-    private static class GuestNsUser extends NsUser {
-        @Override
-        public boolean isGuestUser() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(id, nsUser.id) && Objects.equals(userId,
+                nsUser.userId) && Objects.equals(name, nsUser.name)
+                && Objects.equals(email, nsUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, name, email);
     }
 
     @Override

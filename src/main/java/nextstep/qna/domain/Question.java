@@ -38,12 +38,12 @@ public class Question extends BaseEntity {
         this.questionArticle = questionArticle;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void addAnswer(Answer answer) {
         this.answers = answers.add(answer);
+    }
+
+    public Long getId() {
+        return super.id;
     }
 
     private boolean isNotOwner(NsUser loginUser) {
@@ -86,7 +86,7 @@ public class Question extends BaseEntity {
         this.answers.deleteAll();
     }
 
-    private boolean isQuestionDeleted() {
+    public boolean isQuestionDeleted() {
         return deleted && this.answers.immutableGet()
                 .stream().allMatch(Answer::isDeleted);
     }
