@@ -34,19 +34,12 @@ public class Answers {
     public boolean hasAnswers() {
         return !this.answers.isEmpty();
     }
-
-    public List<DeleteHistory> createDeleteHistory() {
-        return answers.stream().map(answer -> new DeleteHistory(ContentType.ANSWER,
-                answer.getId(),
-                answer.getWriter(),
-                LocalDateTime.now()))
-                .collect(Collectors.toList());
-    }
-
-    public void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            answer.deleteAnswer(loginUser);
+            deleteHistories.add(answer.deleteAnswer(loginUser));
         }
+        return deleteHistories;
     }
 
 }

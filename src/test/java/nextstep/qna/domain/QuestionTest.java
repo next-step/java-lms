@@ -17,9 +17,9 @@ public class QuestionTest {
     @Test
     @DisplayName("삭제 완료를 체크하는 테스트")
     public void checkDeleteDone() throws CannotDeleteException {
-        Question deleteQuestion = Q1.deleteQuestion(NsUserTest.JAVAJIGI);
-        assertThat(deleteQuestion.isDeleted()).isTrue();
-        deleteQuestion.getAnswers().deleteAnswers(NsUserTest.JAVAJIGI);
+        Q1.deleteQuestion(NsUserTest.JAVAJIGI);
+        assertThat(Q1.isDeleted()).isTrue();
+        Q1.getAnswers().deleteAnswers(NsUserTest.JAVAJIGI);
     }
 
     @Test
