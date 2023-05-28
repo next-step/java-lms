@@ -8,8 +8,6 @@ import java.util.Objects;
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
-    private NsUserId userId;
-
     private UserCode userCode;
 
     private String password;
@@ -22,8 +20,7 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
-    public NsUser(NsUserId userId, UserCode userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.userId = userId;
+    public NsUser(UserCode userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userCode = userCode;
         this.password = password;
         this.name = name;
@@ -32,13 +29,12 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
-    public static NsUser of(Long id, String userCode, String password, String name, String email) {
-        return new NsUser(new NsUserId(id), new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
+    public static NsUser of(String userCode, String password, String name, String email) {
+        return new NsUser(new UserCode(userCode), password, name, email, LocalDateTime.now(), null);
     }
 
-    public static NsUser of(Long userId, String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public static NsUser of( String userCode, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         return new NsUser(
-                new NsUserId(userId),
                 new UserCode(userCode),
                 password,
                 name,
@@ -46,10 +42,6 @@ public class NsUser {
                 createdAt,
                 updatedAt
         );
-    }
-
-    public NsUserId getUserId() {
-        return this.userId;
     }
 
     public UserCode getUserCode() {
@@ -106,7 +98,7 @@ public class NsUser {
     }
 
     private boolean matchUserId(UserCode userCode) {
-        return this.userId.equals(userCode.value());
+        return this.userCode.value().equals(userCode.value());
     }
 
     public boolean matchPassword(String targetPassword) {
@@ -129,8 +121,7 @@ public class NsUser {
     @Override
     public String toString() {
         return "NsUser{" +
-                "userId=" + userId +
-                ", userCode=" + userCode +
+                "userCode=" + userCode +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
@@ -149,12 +140,12 @@ public class NsUser {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId.value());
+        return Objects.hash(userCode.value());
     }
 
     private static class GuestNsUser extends NsUser {
         public GuestNsUser() {
-            super(new NsUserId(0L), new UserCode("GUEST"), "password", "GUEST", "GUEST@GUEST.com", LocalDateTime.now(), LocalDateTime.now());
+            super(new UserCode("GUEST"), "password", "GUEST", "GUEST@GUEST.com", LocalDateTime.now(), LocalDateTime.now());
         }
 
         @Override

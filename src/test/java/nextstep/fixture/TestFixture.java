@@ -23,6 +23,11 @@ public class TestFixture {
     public static NsUser SANJIGI;
     public static NsUser BADAJIGI;
 
+    public static NsUser MALBEC;
+    public static NsUser SYRAH;
+    public static NsUser CARSO;
+    public static NsUser PINOT;
+
     public static Creator pobi;
     public static Creator watson;
     public static Creator winter;
@@ -51,34 +56,38 @@ public class TestFixture {
     }
 
     public static void fixtureInit() {
-        JAVAJIGI = NsUser.of(1L, "javajigi", "password", "king of clean code", "javajigi@slipp.net");
-        SANJIGI = NsUser.of(2L, "sanjigi", "password", "sanjigi", "sanjigi@slipp.net");
-        BADAJIGI = NsUser.of(3L, "badajigi", "pacific", "Poseidon", "Poseidon@marine.io");
+        JAVAJIGI = NsUser.of("JAVAJIGI", "password", "king of clean code", "javajigi@slipp.net");
+        SANJIGI = NsUser.of("SANJIGI", "password", "sanjigi", "sanjigi@slipp.net");
+        BADAJIGI = NsUser.of("BADAJIGI", "pacific", "Poseidon", "Poseidon@marine.io");
+        MALBEC = NsUser.of("MALBEC", "password", "MALBEC", "MALBEC@grate.io");
+        SYRAH = NsUser.of("SYRAH", "password", "SYRAH", "SYRAH@grate.io");
+        CARSO = NsUser.of("CARSO", "password", "CARSO", "CARSO@grate.io");
+        PINOT = NsUser.of("PINOT", "password", "PINOT", "PINOT@grate.io");
 
-        JAVAJIGI_QUESTION = Question.of(1L, JAVAJIGI, "성공하는 프로그래밍 학습법은 뭐가있을까", "제곧내");
-        SANJIGI_QUESTION = Question.of(2L, SANJIGI, "관악산 연주대에 오르는 최단경로는 어디인가요", "등산허쉴?");
-        BADAJIGI_QUESTION = Question.of(3L, BADAJIGI, "deep deep sea", "giant octopus");
+        JAVAJIGI_QUESTION = Question.of(1L, JAVAJIGI.getUserCode(), "성공하는 프로그래밍 학습법은 뭐가있을까", "제곧내");
+        SANJIGI_QUESTION = Question.of(2L, SANJIGI.getUserCode(), "관악산 연주대에 오르는 최단경로는 어디인가요", "등산허쉴?");
+        BADAJIGI_QUESTION = Question.of(3L, BADAJIGI.getUserCode(), "deep deep sea", "giant octopus");
 
-        JAVAJIGI_ANSWER = Answer.of(1L, JAVAJIGI, JAVAJIGI_QUESTION, "Answers Contents1");
-        SANJIGI_ANSWER = Answer.of(2L, SANJIGI, SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
-        BADAJIGI_ANSWER = Answer.of(3L, BADAJIGI, BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
+        JAVAJIGI_ANSWER = Answer.of(1L, JAVAJIGI.getUserCode(), JAVAJIGI_QUESTION, "Answers Contents1");
+        SANJIGI_ANSWER = Answer.of(2L, SANJIGI.getUserCode(), SANJIGI_QUESTION, "클린코드는 요구사항을 빠르게 추가하기 위한 유일한 방법이다");
+        BADAJIGI_ANSWER = Answer.of(3L, BADAJIGI.getUserCode(), BADAJIGI_QUESTION, "여름에는 바다를 가야한다");
 
         pobi = new Creator(1L, "pobi");
         watson = new Creator(2L, "watson");
         winter = new Creator(3L, "winter");
 
-        RUST_COURSE = Course.of(1L,"가볍게 시작하는 RUST", 1L);
-        K8S_COURSE =  Course.of(2L,"재미있는 쿠버네티스", 2L);
-        KOTLIN_COURSE = Course.of(3L,"Hello Kotlin", 3L);
+        RUST_COURSE = Course.of(1L, "가볍게 시작하는 RUST", 1L);
+        K8S_COURSE = Course.of(2L, "재미있는 쿠버네티스", 2L);
+        KOTLIN_COURSE = Course.of(3L, "Hello Kotlin", 3L);
 
         MINT_SESSION = new Session(10000L, 100L);
         LEMON_SESSION = new Session(500L, 50L);
         LIME_SESSION = new Session(3000L, 30L);
 
-        MALBEC_ENROL = new Enroll(1L, 1L);
-        SYRAH_ENROL = new Enroll(2L, 2L);
-        CARSO_ENROL = new Enroll(3L, 3L);
-        PINOT_ENROL = new Enroll(4L, 4L);
+        MALBEC_ENROL = new Enroll(1L, "MALBEC");
+        SYRAH_ENROL = new Enroll(2L, "SYRAH");
+        CARSO_ENROL = new Enroll(3L, "CARSO");
+        PINOT_ENROL = new Enroll(4L, "PINOT");
 
         RED_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
         GREEN_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");

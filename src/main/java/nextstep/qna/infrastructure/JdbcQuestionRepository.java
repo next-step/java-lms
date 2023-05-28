@@ -26,8 +26,8 @@ import java.util.Optional;
 public class JdbcQuestionRepository implements QuestionRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcQuestionRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public JdbcQuestionRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override

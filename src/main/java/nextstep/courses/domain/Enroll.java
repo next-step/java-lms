@@ -1,14 +1,15 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUserId;
+
+import nextstep.users.domain.UserCode;
 
 public class Enroll {
     private EnrollId enrollId;
     private final SessionId sessionId;
-    private final NsUserId nsUserId;
+    private final UserCode userCode;
 
-    public Enroll(Long sessionId, Long nsUserId) {
+    public Enroll(Long sessionId, String userCode) {
         this.sessionId = new SessionId(sessionId);
-        this.nsUserId = new NsUserId(nsUserId);
+        this.userCode = new UserCode(userCode);
     }
 }

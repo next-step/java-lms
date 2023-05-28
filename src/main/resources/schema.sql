@@ -41,12 +41,12 @@ DROP TABLE IF EXISTS answer;
 CREATE TABLE IF NOT EXISTS answer
 (
     answer_id          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    created_at  timestamp not null,
-    updated_at  timestamp,
     contents    clob,
     deleted     boolean   not null,
     question_id bigint,
     writer_id   bigint,
+    created_at  timestamp not null,
+    updated_at  timestamp,
     primary key (answer_id)
 );
 

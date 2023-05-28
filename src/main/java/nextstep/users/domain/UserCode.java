@@ -11,6 +11,10 @@ public class UserCode implements DomainCode {
         this.userCode = userCode;
     }
 
+    public static UserCode of(String userCode) {
+        return new UserCode(userCode);
+    }
+
     @Override
     public String value() {
         return this.userCode;

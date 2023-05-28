@@ -1,7 +1,6 @@
 package nextstep.users.infrastructure;
 
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserId;
 import nextstep.users.domain.UserCode;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -22,17 +21,16 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
+    public Optional<NsUser> findByUserCode(UserCode userCode) {
+        String sql = "select user_code, password, name, email, created_at, updated_at from ns_user where user_code = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                new NsUserId(rs.getLong(1)),
                 new UserCode(rs.getString(2)),
                 rs.getString(3),
                 rs.getString(4),
                 rs.getString(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userCode.value()));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

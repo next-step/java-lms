@@ -32,7 +32,7 @@ public class QuestionTest {
                 () -> assertThat(question.isDeleted())
                         .as("삭제 질의시 True 를 리턴해야한다")
                         .isTrue(),
-                () -> assertThat(answer.isDeleted())
+                () -> assertThat(answer.getDeleted())
                         .as("연관되어있지 않은 Answer 는 삭제되지 않는다")
                         .isFalse()
         );
@@ -53,7 +53,7 @@ public class QuestionTest {
                 () -> assertThat(question.isDeleted())
                         .as("Question 삭제에 성공해야한다")
                         .isTrue(),
-                () -> assertThat(answer.isDeleted())
+                () -> assertThat(answer.getDeleted())
                         .as("연관된 Answer 도 모두 삭제되어야한다")
                         .isTrue()
         );

@@ -56,7 +56,7 @@ public class QnaServiceTest {
         //then
         assertAll("",
                 () -> assertThat(question.isDeleted()).isTrue(),
-                () -> assertThat(answer1.isDeleted()).isFalse(),
+                () -> assertThat(answer1.getDeleted()).isFalse(),
                 () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), new ArrayList<>()))
         );
     }
@@ -80,7 +80,7 @@ public class QnaServiceTest {
                 () -> assertThat(question.isDeleted())
                         .as("question 은 삭제 되어야 한다")
                         .isTrue(),
-                () -> assertThat(answer.isDeleted())
+                () -> assertThat(answer.getDeleted())
                         .as("answer 는 삭제 되어야 한다")
                         .isTrue(),
                 () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), List.of(answer)))

@@ -16,14 +16,14 @@ public class Question {
     private QuestionId questionId;
     private String title;
     private String contents;
-    private NsUser writer;
+    private UserCode writer;
     private boolean deleted = false;
     private List<Answer> answers = new ArrayList<>();
     private LocalDateTime updatedDate;
     @NotNull
     private LocalDateTime createdDate;
 
-    public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, List<Answer> answers, LocalDateTime updatedDate, LocalDateTime createdDate) {
+    public Question(QuestionId questionId, String title, String contents, UserCode writer, boolean deleted, List<Answer> answers, LocalDateTime updatedDate, LocalDateTime createdDate) {
         this.questionId = questionId;
         this.title = title;
         this.contents = contents;
@@ -34,7 +34,7 @@ public class Question {
         this.createdDate = createdDate;
     }
 
-    public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, LocalDateTime updatedDate) {
+    public Question(QuestionId questionId, String title, String contents, UserCode writer, boolean deleted, LocalDateTime updatedDate) {
         this.questionId = questionId;
         this.title = title;
         this.contents = contents;
@@ -44,7 +44,7 @@ public class Question {
         this.createdDate = LocalDateTime.now();
     }
 
-    public static Question of(Long questionId, NsUser writer, String title, String contents) {
+    public static Question of(Long questionId, UserCode writer, String title, String contents) {
         return new Question(
                 new QuestionId(questionId),
                 title,
@@ -126,7 +126,7 @@ public class Question {
     }
 
     private void validateQuestionOwner(UserCode userCode) {
-        if (!writer.matchUser(userCode)) {
+        if (!writer.equals(userCode)) {
             throw new QuestionDeleteUnauthorizedException();
         }
     }
@@ -155,7 +155,7 @@ public class Question {
         return this.createdDate;
     }
 
-    public NsUser getWriter() {
+    public UserCode getWriter() {
         return this.writer;
     }
 

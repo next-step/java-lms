@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,22 +15,22 @@ public class DeleteHistory {
 
     private Long contentId;
 
-    private NsUser deletedBy;
+    private UserCode deletedBy;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType, Long contentId, UserCode deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
     }
 
-    public static DeleteHistory of(ContentType contentType, Long id, NsUser writer, LocalDateTime dateTime) {
-        return new DeleteHistory(contentType, id, writer, dateTime);
+    public static DeleteHistory of(ContentType contentType, Long id, UserCode deletedBy, LocalDateTime dateTime) {
+        return new DeleteHistory(contentType, id, deletedBy, dateTime);
     }
 
     public static List<DeleteHistory> deleteHistoryHelper(List<Question> questions, List<Answer> answers) {

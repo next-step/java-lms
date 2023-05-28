@@ -33,7 +33,7 @@ public class UserRepositoryTest {
 
     @Test
     void findByUserId() {
-        Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
+        Optional<NsUser> nsUser = userRepository.findByUserCode(UserCode.of("javajigi"));
         assertThat(nsUser.isEmpty()).isFalse();
         LOG.debug("NsUser: {}", nsUser.get());
     }
@@ -43,7 +43,7 @@ public class UserRepositoryTest {
     public void findByUserIdCode() {
         //given
         //when
-        userRepository.findByUserId("");
+        userRepository.findByUserCode(UserCode.of("SNA"));
         //then
         fail();
     }
