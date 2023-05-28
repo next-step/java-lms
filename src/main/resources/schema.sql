@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS answer
 DROP TABLE IF EXISTS delete_history;
 CREATE TABLE IF NOT EXISTS delete_history
 (
-    id            BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    delete_history_id            BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    content_type  varchar(20),
     content_id    bigint,
-    content_type  varchar(255),
-    created_date  timestamp,
-    deleted_by_id bigint,
-    primary key (id)
+    created_At  timestamp,
+    deleted_by_user_code varchar(20),
+    primary key (delete_history_id)
 );
 
 DROP TABLE IF EXISTS image;
