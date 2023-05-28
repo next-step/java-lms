@@ -9,6 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class CourseTest {
 
     private Course course;
@@ -38,16 +40,23 @@ public class CourseTest {
     void findSession_FromCourse_ContainExactly() {
         Session session = course.getSession(1);
 
-        Assertions.assertThat(session).isEqualTo(this.session1);
+        assertThat(session).isEqualTo(this.session1);
     }
 
     @ParameterizedTest
     @DisplayName("기수에 따른 존재하는 강의를 조회시 예외를 던지지 않는다.")
     @ValueSource(ints = {1, 2, 3})
-    void findSession_FromCourseInExists_NoException(int value) {
-        Assertions.assertThatNoException()
-                .isThrownBy(() -> course.getSession(value));
+    void findSession_FromCourseInExists_NoException(int generation) {
+        assertThatNoException()
+                .isThrownBy(() -> course.getSession(generation));
     }
 
-
+    @ParameterizedTest
+    @DisplayName("유효하지 않는 기수(음수, 0)를 조회시 예외를 발생한다.")
+    @ValueSource(ints = {-2, -1, 0})
+    void findSession_ByInvalidValue_ThrowException(int generation) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> course.getSession(generation))
+                .withMessageContaining("기수는 1 기수 이상부터 시작합니다.");
+    }
 }

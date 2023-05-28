@@ -44,12 +44,19 @@ public class Course {
         return createdAt;
     }
 
-    public Session getSession(int index) {
-        return this.sessions.get(index - 1);
+    public Session getSession(int generation) {
+        validateGeneration(generation);
+        return this.sessions.get(generation - 1);
     }
 
     public void addSession(Session session) {
         this.sessions.add(session);
+    }
+
+    private void validateGeneration(int generation) {
+        if (generation <= 0) {
+            throw new IllegalArgumentException("기수는 1 기수 이상부터 시작합니다. 현재 기수 = " + generation);
+        }
     }
 
     @Override
