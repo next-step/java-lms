@@ -6,6 +6,7 @@ import java.util.Map;
 public enum SessionStatus {
   PREPARING("준비중"),
   ACCEPTING("모집중"),
+  IN_PROGRESSING("진행중"),
   ENDING("종료");
 
   private static final String ILLEGAL_STATUS_MESSAGE = "준비중, 모집중, 종료만 가능합니다.";
