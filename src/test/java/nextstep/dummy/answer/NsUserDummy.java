@@ -8,10 +8,9 @@ public class NsUserDummy {
 
     public final NsUser b_user;
 
-
     public NsUserDummy() {
-        this.a_user = new NsUser(1L, "a", "password", "name", "a@slipp.net");
-        this.b_user = new NsUser(2L, "b", "password", "name", "b@slipp.net");
+        this.a_user = new NsUser(1L, "a", "password", "b", "a@slipp.net");
+        this.b_user = new NsUser(2L, "b", "password", "a", "b@slipp.net");
     }
 
 }

@@ -38,40 +38,6 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public void update(NsUser loginUser, NsUser target) {
-        if (!matchUserId(loginUser.getUserId())) {
-            throw new UnAuthorizedException();
-        }
-
-        if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
-        }
-
-        this.name = target.name;
-        this.email = target.email;
-    }
-
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean matchPassword(String targetPassword) {
-        return password.equals(targetPassword);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
