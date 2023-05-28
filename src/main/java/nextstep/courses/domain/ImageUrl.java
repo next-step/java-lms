@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.SessionRegistrationException;
-
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,5 +18,9 @@ public class ImageUrl {
         } catch (URISyntaxException | MalformedURLException e) {
             throw new IllegalArgumentException("잘못된 url 형식 입니다.");
         }
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

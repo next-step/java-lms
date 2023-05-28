@@ -13,7 +13,7 @@ public class SessionStudents {
     SessionStudents() {
     }
 
-    SessionStudents(int maximumNumber) {
+    public SessionStudents(int maximumNumber) {
         this.maximumNumber = maximumNumber;
     }
 
@@ -30,5 +30,9 @@ public class SessionStudents {
         if (countStudents() >= maximumNumber) {
             throw new SessionRegistrationException("정원이 초과되었습니다.");
         }
+    }
+
+    public int getMaximumNumber() {
+        return maximumNumber;
     }
 }

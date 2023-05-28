@@ -7,7 +7,7 @@ public class SessionPeriod {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
         validatePeriod();
@@ -17,5 +17,13 @@ public class SessionPeriod {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일이 종료일 보다 큽니다.");
         }
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 }
