@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.common.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseId;
 import nextstep.courses.domain.CourseRepository;
@@ -24,8 +23,8 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        int courseId = jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        String sql = "insert into course (title, creator_id, created_at,updated_at) values(?, ?, ?, ?)";
+        int courseId = jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(),course.getUpdatedAt());
         return new Course(
                 new CourseId((long) courseId),
                 course.getTitle(),
@@ -37,10 +36,10 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public Optional<Course> findById(Long courseId) {
+    public Optional<Course> findById(CourseId courseId) {
         String sql = "select * from course where course_id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), courseId));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), courseId.value()));
         } catch (EmptyResultDataAccessException ex) {
             return Optional.empty();
         }
