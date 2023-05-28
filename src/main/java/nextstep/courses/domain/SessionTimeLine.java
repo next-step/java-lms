@@ -14,8 +14,8 @@ public class SessionTimeLine {
     }
 
     private void validateInterval(LocalDateTime createAt, LocalDateTime closeAt) {
-        if (closeAt.isBefore(createAt)) {
-            throw new IllegalArgumentException("강의 마감일이 시작일보다 빠를 수 없습니다.");
+        if (createAt.isAfter(closeAt)) {
+            throw new IllegalArgumentException("강의 시작일과 마감일을 잘못 입력하였습니다.");
         }
     }
 }
