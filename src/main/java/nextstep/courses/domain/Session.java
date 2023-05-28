@@ -36,7 +36,7 @@ public class Session extends BaseDate {
                 imageUrl, paid, recruitmentCount);
     }
 
-    public Session(Long id, Course course, SessionDate sessionDate,
+    private Session(Long id, Course course, SessionDate sessionDate,
                    String imageUrl, boolean paid, int recruitmentCount) {
         this.id = id;
         this.course = course;

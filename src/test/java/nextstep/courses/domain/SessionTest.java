@@ -36,9 +36,10 @@ class SessionTest {
     }
 
     private static Session makeSession() {
-        return new Session(0L,
+        return Session.open(0L,
                 makeCourse(),
-                new SessionDate(LocalDate.now(), LocalDate.now()),
+                LocalDate.now(),
+                LocalDate.now(),
                 "imageUrl",
                 true,
                 1);
