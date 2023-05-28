@@ -1,11 +1,14 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.session.domain.Sessions;
 
 public class Course {
     private Long id;
 
     private String title;
+
+    private Sessions sessions;
 
     private Long creatorId;
 
