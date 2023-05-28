@@ -3,9 +3,11 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
