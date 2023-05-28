@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS course
 (
     course_id  BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
     title      varchar(255) not null,
-    creator_id bigint       not null,
+    creator_id bigint       not null COMMENT '과정을 진행하는 크리에이터 고유번호',
     created_at timestamp    not null,
     updated_at timestamp    not null,
     primary key (course_id)
@@ -26,12 +26,12 @@ DROP TABLE IF EXISTS question;
 CREATE TABLE IF NOT EXISTS question
 (
     question_id BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    writer_id   bigint,
+    writer_user_code   varchar(20) NOT NULL COMMENT 'Question 을 생성한 USER_CODE',
     title       varchar(100) not null,
     contents    clob,
     deleted     boolean      not null,
-    created_at  timestamp    not null default now(),
     updated_at  timestamp,
+    created_at  timestamp    not null default now(),
     primary key (question_id)
 );
 
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS answer;
 CREATE TABLE IF NOT EXISTS answer
 (
     answer_id        BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    writer_user_code varchar(20) NOT NULL,
+    writer_user_code varchar(20) NOT NULL COMMENT 'Answer 을 생성한 USER_CODE',
     question_id      bigint,
     contents         clob,
     deleted          boolean     not null,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS delete_history
     content_type         varchar(20),
     content_id           bigint,
     created_At           timestamp,
-    deleted_by_user_code varchar(20),
+    deleted_by_user_code varchar(20) COMMENT '글을 삭제한 USER_CODE',
     primary key (delete_history_id)
 );
 

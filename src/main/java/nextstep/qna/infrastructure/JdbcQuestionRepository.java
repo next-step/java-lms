@@ -52,22 +52,24 @@ public class JdbcQuestionRepository implements QuestionRepository {
     }
 
     public Question saveV3(Question question) {
-        String sql = "INSERT INTO question (" +
+        String sql = "INSERT INTO question " +
+                "(writer_user_code," +
                 "title," +
                 "contents," +
                 "deleted," +
                 "created_at," +
                 "updated_at) " +
-                "values (?,?,?,?,?)";
+                "values (?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"QUESTION_ID"});
-            ps.setString(1, question.getTitle());
-            ps.setString(2, question.getContents());
-            ps.setBoolean(3, question.getDeleted());
-            ps.setTimestamp(4, Timestamp.valueOf(question.getCreatedDate()));
-            ps.setTimestamp(5, Timestamp.valueOf(question.getUpdatedDate()));
+            ps.setString(1, question.getWriter().value());
+            ps.setString(2, question.getTitle());
+            ps.setString(3, question.getContents());
+            ps.setBoolean(4, question.getDeleted());
+            ps.setTimestamp(5, Timestamp.valueOf(question.getCreatedDate()));
+            ps.setTimestamp(6, Timestamp.valueOf(question.getUpdatedDate()));
             return ps;
         }, keyHolder);
 
