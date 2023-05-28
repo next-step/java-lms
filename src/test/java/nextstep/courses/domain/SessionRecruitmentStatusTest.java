@@ -18,9 +18,9 @@ public class SessionRecruitmentStatusTest {
     assertThat(SessionRecruitmentStatus.valueOfSessionRecruitmentStatus(status)).isEqualTo(SessionRecruitmentStatus.RECRUITING);
   }
 
-  @ParameterizedTest(name = "빈 문자열일 경우 IllegalArgumentException throw")
+  @ParameterizedTest(name = "모집중, 비모집중이 아닌 경우 IllegalArgumentException throw")
   @EmptySource
-  public void check_empty(String status) {
+  public void check_not_모집중_비모집중(String status) {
     assertThatThrownBy(() -> SessionRecruitmentStatus.valueOfSessionRecruitmentStatus(status))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("모집중, 비모집중만 가능합니다.");
