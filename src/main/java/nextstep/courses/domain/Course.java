@@ -1,17 +1,19 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.base.BaseDate;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseDate {
+
     private Long id;
 
     private String title;
 
+    private Sessions sessions = new Sessions();
+
     private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public Course() {
     }
@@ -26,6 +28,15 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Session openSession(Long id,
+                               LocalDate sessionStartDate,
+                               LocalDate sessionEndDate,
+                               String imageUrl,
+                               boolean paid,
+                               int recruitmentCount) {
+        return sessions.openSession(id, this, sessionStartDate, sessionEndDate, imageUrl, paid, recruitmentCount);
     }
 
     public String getTitle() {

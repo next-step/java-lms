@@ -4,6 +4,7 @@ import nextstep.courses.domain.base.BaseDate;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Session extends BaseDate {
 
@@ -46,11 +47,11 @@ public class Session extends BaseDate {
         this.recruitmentCount = new RecruitmentCount(recruitmentCount);
     }
 
-    public void apply(NsUser user) {
+    public SessionApply apply(Long id, NsUser user) {
         if (status.isNotRecruiting()) {
             throw new IllegalStateException(NOT_RECRUITING);
         }
-        sessionApplies.apply(this, user);
+        return sessionApplies.apply(id, this, user);
     }
 
     public void recruiting() {
@@ -61,6 +62,16 @@ public class Session extends BaseDate {
         return recruitmentCount.isClosed(currentCount);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Session)) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

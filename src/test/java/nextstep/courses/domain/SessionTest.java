@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionTest {
 
-    private static final Session SESSION = makeSession();
+    private Session SESSION;
+
+    @BeforeEach
+    void setUp() {
+        SESSION = makeSession();
+    }
 
     @DisplayName("강의모집인원 마감시 true를 리턴한다.")
     @Test
@@ -30,9 +36,18 @@ class SessionTest {
     void 강의_모집인원_초과_에러() {
         SESSION.recruiting();
         assertThatThrownBy(() -> {
-            SESSION.apply(NsUserTest.JAVAJIGI);
-            SESSION.apply(NsUserTest.SANJIGI);
+            SESSION.apply(0L, NsUserTest.JAVAJIGI);
+            SESSION.apply(1L, NsUserTest.SANJIGI);
         }).isInstanceOf(IllegalStateException.class);
+    }
+
+    @DisplayName("신청시 생성되는 신청정보에 결과 검증")
+    @Test
+    void 신청정보_생성_결과검증() {
+        SESSION.recruiting();
+        assertThat(SESSION.apply(0L, NsUserTest.SANJIGI)).isEqualTo(
+                new SessionApply(0L, SESSION, NsUserTest.SANJIGI)
+        );
     }
 
     private static Session makeSession() {

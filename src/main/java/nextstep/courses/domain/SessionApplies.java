@@ -18,11 +18,13 @@ public class SessionApplies {
         this.values = values;
     }
 
-    public void apply(Session session, NsUser user) {
+    public SessionApply apply(Long id, Session session, NsUser user) {
         if (session.isClosed(currentCount())) {
             throw new IllegalStateException(CLOSED_RECRUITING);
         }
-        values.add(new SessionApply(0L, session, user));
+        SessionApply sessionApply = new SessionApply(id, session, user);
+        values.add(sessionApply);
+        return sessionApply;
     }
 
     private int currentCount() {
