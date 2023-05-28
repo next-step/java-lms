@@ -7,7 +7,7 @@ public class Session {
     private Long id;
     private SessionDate sessionDate;
     private Long imageId;
-    private SessionState sessionState = SessionState.READY;
+    private SessionState sessionState;
     private SessionType sessionType;
     private StudentCapacity studentCapacity;
 
@@ -27,20 +27,12 @@ public class Session {
     public Session(Long id, LocalDate startDate, LocalDate endDate,
                    SessionState sessionState, SessionType sessionType, int registeredStudent,
                    int studentCapacity, Long imageId) {
-        validateDate(startDate, endDate);
-
         this.id = id;
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionState = sessionState;
         this.sessionType = sessionType;
         this.studentCapacity = new StudentCapacity(studentCapacity, registeredStudent);
         this.imageId = imageId;
-    }
-
-    private void validateDate(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("종료 날짜가 시작 날짜보다 앞일 수 없습니다.");
-        }
     }
 
     public static Session createSession(LocalDate startDate, LocalDate endDate, Long longCover,
