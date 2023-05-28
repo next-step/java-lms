@@ -7,4 +7,13 @@ public class Price {
     public Price(int price) {
         this.price = price;
     }
+
+    public PriceType getPrice() {
+
+        if(this.price == 0){
+            return PriceType.FREE;
+        }
+
+        return PriceType.PAID;
+    }
 }
