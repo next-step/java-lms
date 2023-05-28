@@ -23,7 +23,6 @@ public class Question {
     @NotNull
     private LocalDateTime createdDate;
 
-
     public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, List<Answer> answers, LocalDateTime updatedDate, LocalDateTime createdDate) {
         this.questionId = questionId;
         this.title = title;
@@ -56,6 +55,18 @@ public class Question {
         );
     }
 
+    public static Question of(QuestionId questionId, Question question) {
+        return new Question(
+                questionId,
+                question.title,
+                question.contents,
+                question.writer,
+                question.deleted,
+                new ArrayList<>(question.answers), // Shallow copy of the answers list
+                question.updatedDate,
+                question.createdDate
+        );
+    }
     public Long getId() {
         return this.questionId.value();
     }
@@ -150,5 +161,9 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return this.answers;
+    }
+
+    public boolean getDeleted() {
+        return this.deleted;
     }
 }
