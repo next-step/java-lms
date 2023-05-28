@@ -58,4 +58,8 @@ public class Course {
     public Sessions getSessions() {
         return sessions;
     }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
+    }
 }
