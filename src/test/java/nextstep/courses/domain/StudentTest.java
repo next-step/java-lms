@@ -43,11 +43,39 @@ public class StudentTest {
     @Test
     @DisplayName("수강신청시 최대 수강인원을 넘지 않을 경우 예외를 던지지 않는다.")
     void enroll_LessThanMaxNumberOfStudent_NoException() {
-        Session session = SessionCreator.create(5L, SessionStatus.READY);
+        Session session = SessionCreator.create(3L, SessionStatus.OPENED);
 
         assertThatNoException().isThrownBy(() -> session.add(june1));
         assertThatNoException().isThrownBy(() -> session.add(june2));
         assertThatNoException().isThrownBy(() -> session.add(june3));
     }
+
+    @Test
+    @DisplayName("강의 상태(SessionStatus) '모집중'일 경우에 수강신청이 가능하다(예외를 던지지 않는다.")
+    void enroll_SessionStatus_OPENED_NoException() {
+        Session session = SessionCreator.create(3L, SessionStatus.OPENED);
+
+        assertThatNoException().isThrownBy(() -> session.add(june1));
+    }
+
+    @Test
+    @DisplayName("강의 상태(SessionStatus) '준비중'일 경우에 수깅신청시 예외를 던진다.")
+    void enroll_SessionStatus_READY_ThrowException() {
+        Session session = SessionCreator.create(3L, SessionStatus.READY);
+
+        assertThatThrownBy(() -> session.add(june1))
+                .isInstanceOf(CannotEnrollException.class);
+
+    }
+
+    @Test
+    @DisplayName("강의 상태(SessionStatus) '종료'일 경우에 수깅신청시 예외를 던진다.")
+    void enroll_SessionStatus_CLOSED_ThrowException() {
+        Session session = SessionCreator.create(3L, SessionStatus.CLSOED);
+
+        assertThatThrownBy(() -> session.add(june1))
+                .isInstanceOf(CannotEnrollException.class);
+    }
+
 
 }

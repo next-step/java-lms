@@ -33,6 +33,10 @@ public class Session {
     }
 
     public void add(Student student) {
+        if (!sessionStatus.canJoin()) {
+            throw new CannotEnrollException("현재는 수강신청을 할 수 없는 강의 상태입니다. 현재 강의 상태 = " + sessionStatus.name());
+        }
+
         if (totalStudentNum() == maxNumberOfStudent) {
             throw new CannotEnrollException(
                     "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 " + maxNumberOfStudent);
