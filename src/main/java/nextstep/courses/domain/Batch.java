@@ -46,6 +46,4 @@ public class Batch {
   public boolean checkBatchNo(int batchNo) {
     return this.batchNo == batchNo;
   }
-
-
 }

@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import nextstep.users.domain.NsUser;
 
 public class Registrations {
 
-  private List<Registration> registrations = new ArrayList<>();
+  private Set<Registration> registrations = new HashSet<>();
 
   public Registrations() {
   }
