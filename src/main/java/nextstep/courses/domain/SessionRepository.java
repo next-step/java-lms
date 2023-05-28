@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
+import java.util.Optional;
+
 public interface SessionRepository {
 
-    Session findById(Long id);
+    Optional<Session> findById(Long id);
 }

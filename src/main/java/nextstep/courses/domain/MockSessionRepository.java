@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class MockSessionRepository implements SessionRepository {
 
@@ -13,10 +14,9 @@ public class MockSessionRepository implements SessionRepository {
     private static final List<Session> sessions = Arrays.asList(S1, S2);
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         return sessions.stream()
                 .filter(s -> id == s.id())
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
+                .findFirst();
     }
 }
