@@ -86,7 +86,7 @@ class SessionRepositoryTest {
 
         Session newSession = sessionRepository.findById(2L);
 
-        assertThat(newSession.getRegisteredStudent())
+        assertThat(newSession.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);
     }
 
@@ -99,7 +99,7 @@ class SessionRepositoryTest {
 
         Session newSession = sessionRepository.findById(3L);
 
-        assertThat(newSession.getRegisteredStudent())
+        assertThat(newSession.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(4);
     }
 

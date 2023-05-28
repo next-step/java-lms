@@ -44,8 +44,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 , session.getSessionDate().getEndDate()
                 , session.getSessionState()
                 , session.getSessionType()
-                , session.getRegisteredStudent()
-                , session.getStudentCapacity()
+                , session.getStudentCapacity().getRegisteredStudent()
+                , session.getStudentCapacity().getStudentCapacity()
                 , session.getImageId()
         );
     }
@@ -115,7 +115,7 @@ public class JdbcSessionRepository implements SessionRepository {
     public void updateRegisteredStudent(Session session) {
         String sql = "uPDATe session SET registered_student = ? WHERE id = ?";
 
-        jdbcTemplate.update(sql, session.getRegisteredStudent(), session.getId());
+        jdbcTemplate.update(sql, session.getStudentCapacity().getRegisteredStudent(), session.getId());
     }
 
     @Override

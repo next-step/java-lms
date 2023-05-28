@@ -9,8 +9,7 @@ public class Session {
     private Long imageId;
     private SessionState sessionState = SessionState.READY;
     private SessionType sessionType;
-    private int studentCapacity;
-    private int registeredStudent = 0;
+    private StudentCapacity studentCapacity;
 
     public Session(LocalDate startDate, LocalDate endDate) {
         this(null, startDate, endDate,
@@ -34,8 +33,7 @@ public class Session {
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionState = sessionState;
         this.sessionType = sessionType;
-        this.registeredStudent = registeredStudent;
-        this.studentCapacity = studentCapacity;
+        this.studentCapacity = new StudentCapacity(studentCapacity, registeredStudent);
         this.imageId = imageId;
     }
 
@@ -68,12 +66,9 @@ public class Session {
     }
 
     public int register() {
-        ++registeredStudent;
-
         validateSessionState();
-        validateCapacity();
 
-        return registeredStudent;
+        return studentCapacity.enroll();
     }
 
     private void validateSessionState() {
@@ -82,14 +77,8 @@ public class Session {
         }
     }
 
-    private void validateCapacity() {
-        if (registeredStudent > studentCapacity) {
-            throw new IllegalArgumentException("수강 인원이 다 찼습니다.");
-        }
-    }
-
     public int cancel() {
-        return --registeredStudent;
+        return studentCapacity.cancel();
     }
 
     public SessionType changeSessionType(SessionType sessionType) {
@@ -124,11 +113,7 @@ public class Session {
         return sessionType.toString();
     }
 
-    public int getStudentCapacity() {
+    public StudentCapacity getStudentCapacity() {
         return studentCapacity;
-    }
-
-    public int getRegisteredStudent() {
-        return registeredStudent;
     }
 }
