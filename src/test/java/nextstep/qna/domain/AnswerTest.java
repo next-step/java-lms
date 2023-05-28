@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import static java.time.LocalDateTime.now;
 import static nextstep.qna.domain.ContentType.ANSWER;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,6 +37,6 @@ public class AnswerTest {
         a_user_answer.deleteSelf();
         assertThat(a_user_answer.deleteHistory())
                 .isEqualTo(
-                        new DeleteHistory(ANSWER, null, new NsUserDummy().a_user, now()));
+                        new DeleteHistory(ANSWER, null, new NsUserDummy().a_user));
     }
 }

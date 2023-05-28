@@ -27,7 +27,7 @@ public class QuestionTest {
     void init() {
         b_user = new NsUserDummy().b_user;
         a_user = new NsUserDummy().a_user;
-        a_user_question = new QuestionDummy().getA_user_question();
+        a_user_question = new QuestionDummy().a_user_question;
         a_user_answer = new AnswerDummy().a_answer;
         b_user_answer = new AnswerDummy().b_answer;
     }

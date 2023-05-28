@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class QnaDeleteServiceTest {
     @Mock
-    private QuestionRepository questionRepository;
+    private QuestionService questionService;
 
     @InjectMocks
     private QnADeleteService qnADeleteService;
@@ -40,7 +40,7 @@ public class QnaDeleteServiceTest {
 
     @BeforeEach
     public void setUp() {
-        question = new QuestionDummy().getA_user_question();
+        question = new QuestionDummy().a_user_question;
         question.addAnswer(new AnswerDummy().a_answer);
         NsUserDummy nsUserDummy = new NsUserDummy();
         a_user = nsUserDummy.a_user;
@@ -49,7 +49,7 @@ public class QnaDeleteServiceTest {
 
     @Test
     public void delete_성공() {
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionService.findById(question.getId())).thenReturn(question);
 
         assertThat(question.isQuestionDeleted()).isFalse();
         qnADeleteService.deleteQuestion(a_user, question.getId());
@@ -60,7 +60,7 @@ public class QnaDeleteServiceTest {
 
     @Test
     public void delete_다른_사람이_쓴_글() {
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionService.findById(question.getId())).thenReturn(question);
 
         assertThatThrownBy(() -> {
             qnADeleteService.deleteQuestion(b_user, question.getId());
@@ -69,7 +69,7 @@ public class QnaDeleteServiceTest {
 
     @Test
     public void delete_성공_질문자_답변자_같음() {
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionService.findById(question.getId())).thenReturn(question);
 
         qnADeleteService.deleteQuestion(a_user, question.getId());
 
@@ -79,7 +79,7 @@ public class QnaDeleteServiceTest {
 
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() {
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionService.findById(question.getId())).thenReturn(question);
 
         assertThatThrownBy(() -> {
             qnADeleteService.deleteQuestion(b_user, question.getId());

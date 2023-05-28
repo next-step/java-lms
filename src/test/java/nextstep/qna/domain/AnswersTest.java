@@ -66,7 +66,7 @@ public class AnswersTest {
         singleAnswer.deleteAll();
         assertThat(singleAnswer.deleteHistories())
                 .isEqualTo(new ArrayList<>(List.of(
-                        new DeleteHistory(ANSWER,null, a_user, now())
+                        new DeleteHistory(ANSWER,null, a_user)
                 )));
     }
 }
