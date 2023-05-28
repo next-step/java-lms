@@ -93,13 +93,9 @@ public class Question {
     }
     public Question deleteQuestion(NsUser loginUser) throws CannotDeleteException {
         this.checkEnableDelete(loginUser);
-        getAnswers().forEach(answer -> {
-            try {
-                answer.deleteAnswer(loginUser);
-            } catch (CannotDeleteException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        for (Answer answer : getAnswers()) {
+            answer.deleteAnswer(loginUser);
+        }
         return setDeleted(true);
     }
 
