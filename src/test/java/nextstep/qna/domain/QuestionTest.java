@@ -14,29 +14,28 @@ import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
 
-    private NsUser sanjigi;
+    private NsUser a_user;
+    private NsUser b_user;
 
-    private NsUser javajigi;
+    private Question a_user_question;
 
-    private Question javajigi_question;
+    private Answer a_user_answer;
 
-    private Answer javajigi_answer;
-
-    private Answer sanjigi_answer;
+    private Answer b_user_answer;
 
     @BeforeEach
     void init() {
-        sanjigi = new NsUserDummy().b_user;
-        javajigi = new NsUserDummy().a_user;
-        javajigi_question = new QuestionDummy().getA_user_question();
-        javajigi_answer = new AnswerDummy().a_answer;
-        sanjigi_answer = new AnswerDummy().b_answer;
+        b_user = new NsUserDummy().b_user;
+        a_user = new NsUserDummy().a_user;
+        a_user_question = new QuestionDummy().getA_user_question();
+        a_user_answer = new AnswerDummy().a_answer;
+        b_user_answer = new AnswerDummy().b_answer;
     }
 
     @Test
     @DisplayName("질문을 삭제할 권한이 없는경우 예외를 발생한다.")
     void checkIsOwnerTest() {
-        assertThatThrownBy(() -> javajigi_question.deleteQuestion(sanjigi))
+        assertThatThrownBy(() -> a_user_question.deleteQuestion(b_user))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
@@ -44,8 +43,8 @@ public class QuestionTest {
     @Test
     @DisplayName("질문에 대해 다른사람의 답변이 있는경우 익셉션을 발생한다.")
     void checkHasOtherUserAnswerTest() {
-        javajigi_question.addAnswer(sanjigi_answer);
-        assertThatThrownBy(() -> javajigi_question.deleteQuestion(javajigi))
+        a_user_question.addAnswer(b_user_answer);
+        assertThatThrownBy(() -> a_user_question.deleteQuestion(a_user))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -53,27 +52,27 @@ public class QuestionTest {
     @Test
     @DisplayName("질문이 삭제될 경우 그 하위 등록된 답변또한 전체 삭제가 이뤄진다.")
     void deleteQuestionTest() {
-        javajigi_question.addAnswer(javajigi_answer);
-        javajigi_question.deleteQuestion(javajigi);
+        a_user_question.addAnswer(a_user_answer);
+        a_user_question.deleteQuestion(a_user);
 
-        assertThat(javajigi_question.deleteHistories()).hasSize(2);
+        assertThat(a_user_question.deleteHistories()).hasSize(2);
     }
 
     @Test
     @DisplayName("질문이 삭제상태가 아니거나 답변중 삭제상태가 아닌 답변이 있는 경우 빈 배열을 리턴한다.")
     void emptyHistoryTest() {
-        assertThat(javajigi_question.deleteHistories())
+        assertThat(a_user_question.deleteHistories())
                 .hasSize(0);
     }
 
     @Test
     @DisplayName("질문 삭제 내역을 반환한다.")
     void deleteHistoriesTest() {
-        javajigi_question.addAnswer(javajigi_answer);
+        a_user_question.addAnswer(a_user_answer);
         // 삭제
-        javajigi_question.deleteQuestion(javajigi);
+        a_user_question.deleteQuestion(a_user);
 
-        assertThat(javajigi_question.deleteHistories()).hasSize(2);
+        assertThat(a_user_question.deleteHistories()).hasSize(2);
     }
 
 }
