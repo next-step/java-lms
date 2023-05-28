@@ -10,7 +10,7 @@ public interface SessionRepository {
 
     long save(Session session, long courseId);
 
-    long enrollUser(Session session);
+    void enrollUser(Session session);
 
     List<User> findUsersBySessionId(long sessionId);
 }
