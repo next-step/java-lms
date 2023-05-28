@@ -15,9 +15,9 @@ public class SessionTest {
     void setUp(int studentCapacity) {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 23);
-        Image imageCover = new Image();
+        Long longCover = 0L;
 
-        session = new Session(startDate, endDate, imageCover, SessionType.FREE, studentCapacity);
+        session = new Session(startDate, endDate, longCover, SessionType.FREE, studentCapacity);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SessionTest {
     @DisplayName("강의 이미지 커버 수정 기능")
     void changeImageCoverTest() {
         setUp(0);
-        Image changeCover = new Image();
+        Long changeCover = 1L;
 
         assertThat(session.changeImageCover(changeCover))
                 .isEqualTo(changeCover);
@@ -144,12 +144,12 @@ public class SessionTest {
     void createSessionTest() {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
-        Image image = new Image();
+        Long aLong = 0L;
         SessionType sessionType = SessionType.FREE;
         int studentCapacity = 5;
 
 
-        Session session = Session.createSession(startDate, endDate, image, sessionType, studentCapacity);
+        Session session = Session.createSession(startDate, endDate, aLong, sessionType, studentCapacity);
 
         assertThat(session)
                 .isInstanceOf(Session.class);

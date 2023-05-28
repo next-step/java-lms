@@ -7,7 +7,7 @@ public class Session {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Image imageCover;
+    private Long imageId;
     private SessionState sessionState = SessionState.READY;
     private SessionType sessionType;
     private int studentCapacity;
@@ -19,11 +19,11 @@ public class Session {
                 1, null);
     }
 
-    public Session(LocalDate startDate, LocalDate endDate, Image imageCover,
+    public Session(LocalDate startDate, LocalDate endDate, Long imageId,
                    SessionType sessionType, int studentCapacity) {
         this(null, startDate, endDate,
                 SessionState.READY, sessionType, 0,
-                studentCapacity, imageCover.getId());
+                studentCapacity, imageId);
     }
 
     public Session(Long id, LocalDate startDate, LocalDate endDate,
@@ -38,7 +38,7 @@ public class Session {
         this.sessionType = sessionType;
         this.registeredStudent = registeredStudent;
         this.studentCapacity = studentCapacity;
-        this.imageCover = new Image(imageId);
+        this.imageId = imageId;
     }
 
     private void validateDate(LocalDate startDate, LocalDate endDate) {
@@ -47,14 +47,14 @@ public class Session {
         }
     }
 
-    public static Session createSession(LocalDate startDate, LocalDate endDate, Image imageCover,
+    public static Session createSession(LocalDate startDate, LocalDate endDate, Long longCover,
                                         SessionType sessionType, int studentCapacity) {
-        return new Session(startDate, endDate, imageCover, sessionType, studentCapacity);
+        return new Session(startDate, endDate, longCover, sessionType, studentCapacity);
     }
 
-    public Image changeImageCover(Image changeCover) {
-        this.imageCover = changeCover;
-        return imageCover;
+    public Long changeImageCover(Long changeCover) {
+        this.imageId = changeCover;
+        return imageId;
     }
 
     public SessionState recruitStudents() {
@@ -118,8 +118,8 @@ public class Session {
         return endDate;
     }
 
-    public Long getImageCover() {
-        return imageCover.getId();
+    public Long getImageId() {
+        return imageId;
     }
 
     public String getSessionState() {

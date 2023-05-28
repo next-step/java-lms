@@ -34,11 +34,11 @@ class SessionRepositoryTest {
     private Session sessionSetUp() {
         LocalDate startDate = LocalDate.of(2023, 5, 20);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
-        Image imageCover = new Image(1L);
+        Long longCover = new Long(1L);
         SessionType sessionType = SessionType.FREE;
         int studentCapacity = 5;
 
-        return Session.createSession(startDate, endDate, imageCover, sessionType, studentCapacity);
+        return Session.createSession(startDate, endDate, longCover, sessionType, studentCapacity);
     }
 
     @Test
@@ -54,13 +54,13 @@ class SessionRepositoryTest {
     void changeImageCoverTest() {
         Session findSession = sessionRepository.findById(1L);
 
-        Image newImage = new Image(2L);
-        findSession.changeImageCover(newImage);
+        Long newLong = new Long(2L);
+        findSession.changeImageCover(newLong);
         sessionRepository.changeImage(findSession);
 
         Session newSession = sessionRepository.findById(1L);
 
-        assertThat(newSession.getImageCover())
+        assertThat(newSession.getImageId())
                 .isEqualTo(2L);
     }
 
