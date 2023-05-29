@@ -1,4 +1,4 @@
-package lms.domain;
+package nextstep.lms.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ public class CourseTest {
         Session session1 = Session.createSession(
                 LocalDate.of(2023, 5, 3),
                 LocalDate.of(2023, 5, 5),
-                new Image(),
+                0L,
                 SessionType.PAID,
                 5
         );
@@ -24,7 +24,7 @@ public class CourseTest {
         Session session2 = Session.createSession(
                 LocalDate.of(2023, 5, 6),
                 LocalDate.of(2023, 5, 10),
-                new Image(),
+                1L,
                 SessionType.FREE,
                 10
         );

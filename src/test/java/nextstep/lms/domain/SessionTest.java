@@ -1,5 +1,6 @@
-package lms.domain;
+package nextstep.lms.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +10,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
+    public static final Session CLASS_ONE = new Session(
+            1L, LocalDate.of(2023, 5, 22), LocalDate.of(2023, 5, 22),
+            SessionState.RECRUITING, SessionType.FREE, 0, 5, 0L);
 
     private Session session;
 
     void setUp(int studentCapacity) {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 23);
-        Image imageCover = new Image();
+        Long imageCover = 0L;
 
         session = new Session(startDate, endDate, imageCover, SessionType.FREE, studentCapacity);
     }
@@ -35,7 +39,7 @@ public class SessionTest {
     @DisplayName("강의 이미지 커버 수정 기능")
     void changeImageCoverTest() {
         setUp(0);
-        Image changeCover = new Image();
+        Long changeCover = 1L;
 
         assertThat(session.changeImageCover(changeCover))
                 .isEqualTo(changeCover);
@@ -57,7 +61,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 24);
 
-        assertThat(session.finishSessionState(now))
+        assertThat(session.changeFinishSessionState(now))
                 .isEqualTo(SessionState.FINISH);
     }
 
@@ -68,7 +72,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 23);
 
-        assertThat(session.finishSessionState(now))
+        assertThat(session.changeFinishSessionState(now))
                 .isEqualTo(SessionState.READY);
     }
 
@@ -78,7 +82,7 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
 
-        assertThatThrownBy(() -> session.register())
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -89,10 +93,10 @@ public class SessionTest {
         setUp(studentCapacity);
 
         session.recruitStudents();
-        session.register();
-        session.register();
+        session.enroll(NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.SANJIGI);
 
-        assertThatThrownBy(() -> session.register())
+        assertThatThrownBy(() -> session.enroll(NsUserTest.BADAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -102,8 +106,9 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
         session.recruitStudents();
+        session.enroll(NsUserTest.JAVAJIGI);
 
-        assertThat(session.register())
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);
     }
 
@@ -113,10 +118,12 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
         session.recruitStudents();
-        session.register();
-        session.register();
+        Student javajigiStudent = session.enroll(NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.SANJIGI);
 
-        assertThat(session.cancel())
+        session.cancel(javajigiStudent);
+
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);
     }
 
@@ -144,12 +151,12 @@ public class SessionTest {
     void createSessionTest() {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
-        Image image = new Image();
+        Long aLong = 0L;
         SessionType sessionType = SessionType.FREE;
         int studentCapacity = 5;
 
 
-        Session session = Session.createSession(startDate, endDate, image, sessionType, studentCapacity);
+        Session session = Session.createSession(startDate, endDate, aLong, sessionType, studentCapacity);
 
         assertThat(session)
                 .isInstanceOf(Session.class);
