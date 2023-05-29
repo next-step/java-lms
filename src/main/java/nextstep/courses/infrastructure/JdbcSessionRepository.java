@@ -1,12 +1,13 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.PaymentTypeEnum;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStatusEnum;
+import nextstep.courses.util.LocalDateTimeUtil;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 
 @Repository("sessionRepository")
@@ -50,15 +51,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString(4),
                 PaymentTypeEnum.valueOf(rs.getString(5)),
                 SessionStatusEnum.valueOf(rs.getString(6)),
-                toLocalDateTime(rs.getTimestamp(7)),
-                toLocalDateTime(rs.getTimestamp(8)));
+                LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp(7)),
+                LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp(8)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }
