@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
+import nextstep.images.domain.Image;
 
 import java.time.LocalDateTime;
 
@@ -13,24 +14,35 @@ public class Session {
 
     private LocalDateTime to;
 
+    private Image coverImage;
+
     public static Session of(Long id, Course course) {
-        return new Session(id, course, LocalDateTime.MIN, LocalDateTime.MAX);
+        return new Session(id, course, LocalDateTime.MIN, LocalDateTime.MAX, Image.ofDefault());
+    }
+
+    public static Session of(Long id, Course course, Image coverImage) {
+        return new Session(id, course, LocalDateTime.MIN, LocalDateTime.MAX, coverImage);
     }
 
     public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to) {
-        return new Session(id, course, from, to);
+        return new Session(id, course, from, to, Image.ofDefault());
     }
 
-    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to) {
+    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
         validatePeriod(from, to);
         this.id = id;
         this.course = course;
         this.from = from;
         this.to = to;
+        this.coverImage = coverImage;
     }
 
     public void toCourse(Course course) {
         this.course = course;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
     }
 
     private static void validatePeriod(LocalDateTime from, LocalDateTime to) {

@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.images.domain.ImageTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,5 +49,12 @@ public class SessionTest {
         assertThatThrownBy(() -> Session.of(1L, CourseTest.C, now, now))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("시작일이 종료일과 같거나 이후일 수 없습니다.");
+    }
+
+    @DisplayName("강의 생성 시 커버 이미지가 없는경우 default 커버 이미지로 적용되는지 확인")
+    @Test
+    void 강의_생성_시_커버_이미지가_없는경우_default_커버_이미지로_적용되는지_확인() {
+        Session session = Session.of(1L, CourseTest.C);
+        assertThat(session.getCoverImage()).isEqualTo(ImageTest.DEFAULT_IMAGE);
     }
 }
