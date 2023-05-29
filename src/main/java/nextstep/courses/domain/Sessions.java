@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Sessions {
 
-    private Long period;
+    private Long courseSessionNumber;
 
     private List<Session> sessions;
 

@@ -4,10 +4,8 @@ public class CoverImage {
 
     private String url;
 
-    private int size;
-
-    private int width;
-
-    private int length;
+    public CoverImage(String url) {
+        this.url = url;
+    }
 
 }

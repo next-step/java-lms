@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public enum FeeType {
+public enum SessionFeeType {
     FREE,
     PAY;
 }
