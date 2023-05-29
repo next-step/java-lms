@@ -30,4 +30,16 @@ public class SessionRegistrationTest {
         assertThatThrownBy(() -> sessionRegistration.register(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @DisplayName("수강신청 시 최대 인원을 초과하면 에러를 응답한다.")
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3})
+    public void 수강신청_정상_테스트(int currentStudentCount) {
+        int maxStudentCount = 5;
+
+        SessionRegistration sessionRegistration = new SessionRegistration(maxStudentCount, currentStudentCount, SessionStatusType.RECRUITING);
+
+        sessionRegistration.register(NsUserTest.JAVAJIGI);
+        sessionRegistration.register(NsUserTest.SANJIGI);
+    }
 }
