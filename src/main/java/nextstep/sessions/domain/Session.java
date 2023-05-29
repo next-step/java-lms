@@ -15,7 +15,7 @@ public class Session {
 
 	private final Long id;
 
-	private final long courseId;
+	private final Long courseId;
 
 	private final SessionDate sessionDate;
 
@@ -33,11 +33,11 @@ public class Session {
 
 	private LocalDateTime updatedAt;
 
-	public Session(Long id, long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
 		this(id, courseId, sessionDate, coveredImageUrl, free, StatusType.PREPARING, capacity, students);
 	}
 
-	public Session(Long id, long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, StatusType statusType, int capacity, Students students) {
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, StatusType statusType, int capacity, Students students) {
 		if (capacity < 0) {
 			throw new CapacityNumberException("최대 수강 인원은 음수일 수 없습니다.");
 		}
