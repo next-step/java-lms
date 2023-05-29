@@ -201,3 +201,87 @@ username/password : sa/(공백, 아무것도 넣지않음)
 
 - 이외
   - 테스트는 idempotent(멱등성) 
+
+
+### JdbcTemplete 트러블 슈팅 : 
+
+- 이슈의 발생과 증상
+  - 아래의 테스트코드를 `단독으로 실행할때는 성공`하고, `전체테스트를 돌리면 실패`하는 증상이 있었습니다
+  ```text
+  @DisplayName("조회기능 검증한다")
+  @Test
+  public void findById() {
+        //given
+        Course savedCourse = courseRepository.save(TestFixture.K8S_COURSE);
+        //when
+        Course findByIdCourse = courseRepository.findById(savedCourse.getCourseId()).orElseThrow();
+        //then
+        LOG.info(savedCourse.toString());
+        LOG.info(findByIdCourse.toString());
+  }
+  ```
+- 원인
+  - 위와 같은 증상이 발생한 원인은 `save()` 의 잘못된 구현이였습니다. 
+  - 잘못구현된 save메서드
+  ```text
+  @Deprecated(since = "이유는 모르겠지만 뭔가 문제가있음 증상은 id 가 이상한값이 반환됨")
+    public Course saveV0(Course course) {
+        String sql = "insert into course (title, creator_id, created_at,updated_at) values(?, ?, ?, ?)";
+        // 사실 id 가 리턴되는게 아니라 rowsAffectedCount 가 리턴되는것 이였습니다.
+        int courseId = jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(), course.getUpdatedAt());
+        //
+        return new Course(
+                new CourseId((long) courseId),
+                course.getTitle(),
+                course.getCreatorId(),
+                null,
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
+    }
+  ```
+
+- 해결 : jdbc Templete 문서를 보고 시키는데로 구현했습니다. 
+  - jdbcTemplate.update() 를 사용하지는 않았는데 그 이유는 저는 `T save(T t)` 형식의 메서드 시그니쳐, 그러니까 저장된 객체를 그대로 리턴해서 DB 가 발급해준 PK 가 할당되어 돌아오는 형태로요
+  - jdbc Templete 해결한 save() 코드입니다
+  ```text
+  public Course saveV1(Course course) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("course").usingGeneratedKeyColumns("course_id");
+
+        Map<String,Object> sqlParameters = new HashMap<>() {{
+            put("title",course.getTitle());
+            put("creator_id",course.getCreatorId());
+            put("created_at",course.getCreatedAt());
+            put("updated_at", course.getUpdatedAt());
+        }};
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(sqlParameters));
+        return new Course(
+                new CourseId(key.longValue()),
+                course.getTitle(),
+                course.getCreatorId(),
+                null,
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
+    }
+  ```
+  
+
+- 결론
+  - 사실은 Sava() 메서드를 잘못 구현해놨는데, 문제가 findById() 에서 발생하는것 처럼 보였습니다.
+  - jdbcTemplate.update() 메서드의 리턴은 `Primary Key` 가 아니라 `Affected Rows Count` 의 의미였습니다.
+
+
+- 참고
+  - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
+  - https://docs.spring.io/spring-framework/reference/data-access/jdbc.html
+  - 그런데 말입니다.. 이상한점이 하나 남아있습니다. 왜 메서드 하나만 테스트를 돌릴때는 왜 성공했던걸까요??
+  ```text
+  메서드 하나만 테스트를 돌릴때 성공했던 이유는 저장하는 Data 가 우연히 PK 가 항상 1이 되는 상황이고
+  Primary Key 인줄 알았던.. 사실은 Affected Rows Count 는 항상 1이 되기 때문이였습니다
+  test코드가 없었더라면 발견하지 못했을 구현오류인데, 만약에 어찌저찌해서 Product 로 올라갔다고 가정을 해보겠습니다.
+  일단 에러로그는 문제가 발생하는 save() 에서 찍히는게 아니라 findById() 에서 발생을 할수도 있고 매번 발생하지는 않을수 있습니다. 
+  더해서 PK 1번인 row 가 매번 고초를 겪고 데이터가 엉키는 증상이 발생할수 있습니다. 
+  save() 에서 리턴받은 Entity 객체를 신뢰해서 들고 돌아다니면서 여러가지 side-effect 를 발생시킵니다
+  ```

@@ -13,14 +13,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 public class CourseRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,6 +30,7 @@ public class CourseRepositoryTest {
     void setUp() {
         TestFixture.fixtureInit();
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        courseRepository.deleteAll();
     }
 
     @AfterEach
@@ -56,7 +56,7 @@ public class CourseRepositoryTest {
                 () -> assertThat(save1.getCourseId()).isEqualTo(findById1.getCourseId()),
                 () -> assertThat(all.size()).isGreaterThanOrEqualTo(3)
         );
-        all.stream().forEach(course -> LOGGER.info(course.toString()));
+        all.stream().forEach(course -> LOG.info(course.toString()));
     }
 
     @DisplayName("저장한다")
@@ -68,23 +68,19 @@ public class CourseRepositoryTest {
         //Course savedCourse = courseRepository.findById(save.getCourseId().value()).orElseThrow();
 
         assertThat(course.getTitle()).isEqualTo(save.getTitle());
-        LOGGER.debug("Course: {}", save);
+        LOG.debug("Course: {}", save);
     }
 
-    @DisplayName("조회한다")
+    @DisplayName("조회기능 검증한다")
     @Test
     public void findById() {
-
-        //todo : 조회만 돌리면 성공하는데 다른 테스트랑 전체 같이 돌리면 깨짐.. 신기하네
         //given
-        Course save = courseRepository.save(TestFixture.K8S_COURSE);
-        System.out.println(save);
-        Course savedCourse = courseRepository.findById(save.getCourseId()).orElseThrow();
-
+        Course savedCourse = courseRepository.save(TestFixture.K8S_COURSE);
         //when
+        Course findByIdCourse = courseRepository.findById(savedCourse.getCourseId()).orElseThrow();
         //then
-        System.out.println(savedCourse);
-
+        LOG.info(savedCourse.toString());
+        LOG.info(findByIdCourse.toString());
     }
 
     @DisplayName("모든 데이터를 조회한다")
