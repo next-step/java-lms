@@ -5,7 +5,6 @@ public enum UserType {
     INSTRUCTOR("강사"),
     ADMIN("관리자");
 
-
     private String description;
 
     UserType(String description) {
