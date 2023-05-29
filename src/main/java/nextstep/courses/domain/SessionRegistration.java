@@ -38,13 +38,13 @@ public class SessionRegistration {
     }
 
     private void validateMaxUser() {
-        if(students.size() >= maxUser) {
+        if (students.size() >= maxUser) {
             throw new StudentMaxException("정원 초과하여 신청할 수 없습니다.");
         }
     }
 
     private void validateDuplicateStudent(Student student) {
-        if(students.isDuplicate(student)) {
+        if (students.isDuplicate(student)) {
             throw new DuplicateStudentRegisterException("중복 강의 수강은 불가합니다.");
         }
     }
