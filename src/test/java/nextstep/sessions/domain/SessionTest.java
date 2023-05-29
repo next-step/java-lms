@@ -3,17 +3,20 @@ package nextstep.sessions.domain;
 import nextstep.courses.domain.CourseTest;
 import nextstep.images.domain.ImageTest;
 import nextstep.sessions.domain.enums.ProgressStatus;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class SessionTest {
@@ -87,5 +90,27 @@ public class SessionTest {
     void 강의상태가_종료로_변경되는지_확인() {
         session.toClose();
         assertThat(session.getStatus()).isEqualTo(ProgressStatus.CLOSED);
+    }
+
+    @DisplayName("수강신청시 모집중 이외의 상태인 경우 RuntimeException 발생하는지 확인")
+    @ParameterizedTest
+    @EnumSource(ProgressStatus.class)
+    void 수강신청시_모집중_이외의_상태인_경우_RuntimeException_발생하는지_확인(ProgressStatus status) {
+        if (ProgressStatus.OPEN == status) {
+            return;
+        }
+
+        Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, status);
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("모집중 이외의 상태에서는 수강신청이 불가합니다.");
+    }
+
+    @DisplayName("수강신청시 모집중 상태인 경우 통과하는지 확인")
+    @Test
+    void 수강신청시_모집중_상태인_경우_통과하는지_확인() {
+        session.toOpen();
+        assertThatCode(() -> session.enroll(NsUserTest.JAVAJIGI))
+                .doesNotThrowAnyException();
     }
 }

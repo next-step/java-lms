@@ -3,6 +3,7 @@ package nextstep.sessions.domain;
 import nextstep.courses.domain.Course;
 import nextstep.images.domain.Image;
 import nextstep.sessions.domain.enums.ProgressStatus;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +34,10 @@ public class Session {
         return new Session(id, course, from, to, Image.ofDefault(), isFree);
     }
 
+    public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status) {
+        return new Session(id, course, from, to, coverImage, isFree, status);
+    }
+
     private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree) {
         validatePeriod(from, to);
         this.id = id;
@@ -42,6 +47,17 @@ public class Session {
         this.coverImage = coverImage;
         this.isFree = isFree;
         this.status = ProgressStatus.READY;
+    }
+
+    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status) {
+        validatePeriod(from, to);
+        this.id = id;
+        this.course = course;
+        this.from = from;
+        this.to = to;
+        this.coverImage = coverImage;
+        this.isFree = isFree;
+        this.status = status;
     }
 
     public void toCourse(Course course) {
@@ -75,6 +91,12 @@ public class Session {
 
         if (from.isEqual(to) || from.isAfter(to)) {
             throw new IllegalArgumentException("시작일이 종료일과 같거나 이후일 수 없습니다.");
+        }
+    }
+
+    public void enroll(NsUser student) {
+        if (ProgressStatus.OPEN != status) {
+            throw new RuntimeException("모집중 이외의 상태에서는 수강신청이 불가합니다.");
         }
     }
 }
