@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NsUsers {
-    List<NsUser> nsUsers = new ArrayList<>();
+    private List<NsUser> nsUsers = new ArrayList<>();
     int maxUserCount;
 
     public NsUsers(int maxUserCount) {
@@ -14,7 +14,7 @@ public class NsUsers {
     }
 
     public void enroll(NsUser user) {
-        if (count() == maxUserCount) {
+        if (count() >= maxUserCount) {
             throw new IllegalArgumentException("강의 최대 수강 인원이 초과되었습니다.");
         }
         nsUsers.add(user);

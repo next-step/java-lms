@@ -23,15 +23,11 @@ public class Session {
     }
 
     public Session enrollNsUser(NsUser nsUser) {
-        validateSessionStatus();
-        nsUsers.enroll(nsUser);
-        return this;
-    }
-
-    private void validateSessionStatus() {
         if (sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalArgumentException("강의가 모집중 일때만 등록 가능합니다.");
         }
+        nsUsers.enroll(nsUser);
+        return this;
     }
 
 
