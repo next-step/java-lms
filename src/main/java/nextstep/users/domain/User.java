@@ -1,86 +1,81 @@
 package nextstep.users.domain;
 
+import nextstep.qna.domain.generator.SimpleIdGenerator;
 import nextstep.users.application.model.req.ReqChangeUserProfile;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class User {
-    public static final GuestUser GUEST_USER = new GuestUser();
 
-    private long id;
-
-    private String userId;
+    private final long id;
+    private final UserType userType;
+    private final String userId;
+    private final LocalDate createdAt;
 
     private String password;
+    private LocalDate updatedAt;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public User() {
-    }
-
-    public User(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
-    }
-
-    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private User(long id, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
         this.id = id;
+        this.userType = userType;
         this.userId = userId;
         this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
+    public static User of(UserType userType, String userId, String password) {
+        long id = SimpleIdGenerator.getAndIncrement(User.class);
+        return new User(id, userType, userId, password, LocalDate.now(), LocalDate.now());
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public boolean matchUser(User target) {
-        return matchUserId(target.getUserId());
-    }
-
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean matchPassword(String targetPassword) {
-        return password.equals(targetPassword);
+    public static User of(long id, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
+        return new User(id, userType, userId, password, createdAt, updatedAt);
     }
 
     public boolean isUser(User requestor) {
         return equals(requestor);
     }
 
+    public User changePassword(String password) {
+        if (password == null) {
+            throw new IllegalArgumentException("비밀번호는 빈값이 허용되질 않아요 :(");
+        }
+
+        if (password.isEmpty()) {
+            throw new IllegalArgumentException("비밀번호는 빈값이 허용되질 않아요 :(");
+        }
+
+        if (this.password.equals(password)) {
+            throw new IllegalArgumentException("동일한 비밀번호 입니다 :(");
+        }
+
+        this.password = password;
+        this.updatedAt = LocalDate.now();
+        return this;
+    }
+
     public Student updateStudent(Student student, ReqChangeUserProfile reqChangeUserProfile) {
-        return student.update(reqChangeUserProfile);
+        student = student.update(reqChangeUserProfile);
+        this.updatedAt = LocalDate.now();
+        return student;
     }
 
     public Instructor updateInstructor(Instructor instructor, ReqChangeUserProfile reqChangeUserProfile) {
-        return instructor.update(reqChangeUserProfile);
+        instructor = instructor.update(reqChangeUserProfile);
+        this.updatedAt = LocalDate.now();
+
+        return instructor;
     }
 
     public boolean isGuestUser() {
-        return false;
+        return userType.isGuest();
     }
 
-    private static class GuestUser extends User {
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
+    public boolean isAllowOpenSession() {
+        return userType.isAllowOpenSession();
     }
-
 
     @Override
     public boolean equals(Object o) {

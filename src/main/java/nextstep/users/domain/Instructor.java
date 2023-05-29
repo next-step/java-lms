@@ -6,13 +6,12 @@ import java.util.Objects;
 
 public class Instructor {
 
-    private final long userNo;
+    private final String userId;
     private String name;
     private String email;
 
-
-    public Instructor(long userNo, String name, String email) {
-        this.userNo = userNo;
+    public Instructor(String userId, String name, String email) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
     }
@@ -45,12 +44,12 @@ public class Instructor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instructor that = (Instructor) o;
-        return userNo == that.userNo && Objects.equals(name, that.name) && Objects.equals(email, that.email);
+        return Objects.equals(userId, that.userId) && Objects.equals(name, that.name) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userNo, name, email);
+        return Objects.hash(userId, name, email);
     }
 
     public boolean equalsNameAndEmail(Instructor target) {

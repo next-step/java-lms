@@ -6,13 +6,12 @@ import java.util.Objects;
 
 public class Student {
 
-    private final long userNo;
+    private final String userId;
     private String name;
-
     private String email;
 
-    public Student(long userNo, String name, String email) {
-        this.userNo = userNo;
+    public Student(String userId, String name, String email) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
     }
@@ -22,12 +21,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return userNo == student.userNo && Objects.equals(name, student.name) && Objects.equals(email, student.email);
+        return Objects.equals(userId, student.userId) && Objects.equals(name, student.name) && Objects.equals(email, student.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userNo, name, email);
+        return Objects.hash(userId, name, email);
     }
 
     public Student update(ReqChangeUserProfile reqChangeUserProfile) {
