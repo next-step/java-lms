@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
 import nextstep.users.domain.NsUser;
+import nextstep.users.infrastructure.JdbcUserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -33,9 +34,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = conn.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, session.getSessionPayment().getStatus());
+            ps.setString(1, session.getSessionPayment().name());
             ps.setString(2, session.getSessionCoverImage().getPath());
-            ps.setString(3, session.getSessionStatus().getStatus());
+            ps.setString(3, session.getSessionStatus().name());
             ps.setInt(4, session.getSessionUsers().getUserCount());
             ps.setTimestamp(5, Timestamp.valueOf(session.getSessionPeriod().getFromDate()));
             ps.setTimestamp(6, Timestamp.valueOf(session.getSessionPeriod().getToDate()));
@@ -75,12 +76,13 @@ public class JdbcSessionRepository implements SessionRepository {
         sql.append("values (?,?,?,?,?) ");
 
         for (SessionUser sessionUser : session.getSessionUsers().getSessionUsers()) {
-            jdbcTemplate.update(sql.toString(), sessionUser.getSession().getId(), sessionUser.getApprovalStatus().getApprovalStatus(), sessionUser.getNsUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
+            jdbcTemplate.update(sql.toString(), sessionUser.getSession().getId(), sessionUser.getApprovalStatus().name(), sessionUser.getNsUser().getId(), sessionUser.getCreatedAt(), sessionUser.getUpdatedAt());
         }
     }
 
     @Override
     public List<SessionUser> findAllBySessionId(Long sessionId) {
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate);
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * ");
         sql.append("FROM SESSION_NS_USER ");
@@ -90,7 +92,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 findById(rs.getLong(2)),
                 ApprovalStatus.find(rs.getString(3)),
-                new NsUser(),
+                jdbcUserRepository.findById(rs.getInt(4)).orElse(new NsUser()),
                 toLocalDateTime(rs.getTimestamp(5)),
                 toLocalDateTime(rs.getTimestamp(6))
         );
@@ -105,7 +107,7 @@ public class JdbcSessionRepository implements SessionRepository {
         sql.append("SET approval_status = ?, updated_at = ? ");
         sql.append("WHERE id = ? ");
 
-        jdbcTemplate.update(sql.toString(), sessionUser.getApprovalStatus(), sessionUser.getUpdatedAt(), sessionUser.getId());
+        jdbcTemplate.update(sql.toString(), sessionUser.getApprovalStatus().name(), sessionUser.getUpdatedAt(), sessionUser.getId());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

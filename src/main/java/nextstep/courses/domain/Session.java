@@ -1,14 +1,13 @@
 package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
 public class Session {
-    private static final String CANNOT_ENROLL_SESSION1 = "강의 수강신청은 강의 상태가 진행중일 때만 가능합니다.";
-    private static final String CANNOT_ENROLL_SESSION2 = "강의 수강신청은 강의 상태가 진행중이며 모집중 때만 가능합니다.";
-    private static final String NOT_FOUND_SESSION_PAYMENT = "우아한테크코스(무료), 우아한테크캠프 Pro(유료)와 같이 선발된 인원만 수강 가능합니다.";
+    private static final String SESSION_STATUS_NOT_IN_PROGRESS = "강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.";
+    private static final String CANNOT_ENROLL_SESSION_STATUS = "강의 수강신청은 강의 상태가 진행중이며 모집중 때만 가능합니다.";
+    private static final String NOT_FOUND_SESSION_PAYMENT = "지불상태를 찾을 수 없습니다. (유료/무료)를 선택해주세요.";
 
     private Long id;
     private final SessionPeriod sessionPeriod;
@@ -50,16 +49,21 @@ public class Session {
 
     public void enrollSession(NsUser nsUser) {
         if (!sessionStatus.canEnrollment()) {
-            throw new IllegalArgumentException(CANNOT_ENROLL_SESSION1);
+            throw new IllegalArgumentException(SESSION_STATUS_NOT_IN_PROGRESS);
         }
         if (!sessionEnrollmentStatus.canEnrollment()) {
-            throw new IllegalArgumentException(CANNOT_ENROLL_SESSION2);
+            throw new IllegalArgumentException(CANNOT_ENROLL_SESSION_STATUS);
         }
         LocalDateTime now = LocalDateTime.now();
-        sessionUsers.addEnroll(new SessionUser(this, ApprovalStatus.REQUEST, nsUser, now, now));
+        ApprovalStatus approvalStatus = ApprovalStatus.REQUEST;
+        if (sessionUsers.getSessionUsers().size() >= sessionUsers.getMaxEnrollment()) {
+            approvalStatus = ApprovalStatus.REJECTION;
+        }
+        sessionUsers.addEnroll(new SessionUser(this, approvalStatus, nsUser, now, now));
     }
 
-    public void enroll() {
+
+    public void startEnroll() {
         this.sessionEnrollmentStatus = SessionEnrollmentStatus.ENROLLMENT;
     }
 

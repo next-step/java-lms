@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SessionUsers {
     private static final String ALERT_TEXT = "최대 수강 인원을 초과할 수 없습니다.";

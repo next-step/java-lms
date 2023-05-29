@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
+    Optional<NsUser> findById(int id);
     Optional<NsUser> findByUserId(String userId);
     List<NsUser> findByUserIds(List<String> userIds);
 }

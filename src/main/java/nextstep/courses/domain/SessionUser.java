@@ -17,13 +17,20 @@ public class SessionUser {
     }
 
     public SessionUser(Long id, Session session, ApprovalStatus approvalStatus, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
-
         this.id = id;
         this.session = session;
         this.approvalStatus = approvalStatus;
         this.nsUser = nsUser;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isApproved(){
+        return approvalStatus != ApprovalStatus.REJECTION;
+    }
+
+    public boolean isIncludeNsUserId(NsUser nsUser) {
+        return this.nsUser.getId() == nsUser.getId();
     }
 
     public long getId() {
