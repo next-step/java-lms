@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Enrollment {
-    private List<User> users = new ArrayList<>();
+    private List<User> users = new LinkedList<>();
     private int maximumEnrollment;
 
     public Enrollment(int maximumEnrollment) {
