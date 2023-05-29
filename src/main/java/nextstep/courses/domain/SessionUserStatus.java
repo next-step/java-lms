@@ -11,6 +11,10 @@ public enum SessionUserStatus implements EnumModel {
         this.status = status;
     }
 
+    public boolean isApproved() {
+        return this == APPROVAL;
+    }
+
     @Override
     public String getKey() {
         return name();
