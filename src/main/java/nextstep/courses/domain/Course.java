@@ -2,12 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Course extends BaseEntity {
-
-    private String title;
-
-    private Long creatorId;
-
+public class Course extends AbstractCourse {
     private Sessions sessions;
 
     public Course() {

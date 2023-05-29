@@ -3,9 +3,6 @@ package nextstep.courses.domain;
 import java.util.List;
 
 public class Sessions {
-
-    private Long courseSessionNumber;
-
     private List<Session> sessions;
 
     public Session findSession(Long sessionId) {
@@ -14,5 +11,4 @@ public class Sessions {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 강의를 찾을 수 없습니다."));
     }
-
 }

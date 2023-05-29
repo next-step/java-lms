@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Session extends BaseEntity {
+public class Session extends AbstractCourse {
+    private Long sessionNumber;
 
     private SessionPeriod sessionPeriod;
 
@@ -23,49 +24,15 @@ public class Session extends BaseEntity {
     private final List<NsUser> users = new ArrayList<>();
 
     public Session(
-            LocalDate startDate,
-            LocalDate endDate,
-            SessionFeeType sessionFeeType,
-            int maxNumberOfStudent
-    ) {
-        this(
-                null,
-                new SessionPeriod(startDate, endDate),
-                null,
-                sessionFeeType,
-                SessionStatus.PREPARING,
-                maxNumberOfStudent,
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
-    }
-
-    public Session(
-            LocalDate startDate,
-            LocalDate endDate,
-            String coverImageUrl,
-            SessionFeeType sessionFeeType,
-            int maxNumberOfStudent
-    ) {
-        this(
-            null,
-            new SessionPeriod(startDate, endDate),
-            new CoverImage(coverImageUrl),
-            sessionFeeType,
-            SessionStatus.PREPARING,
-            maxNumberOfStudent,
-            LocalDateTime.now(),
-            LocalDateTime.now()
-        );
-    }
-
-    public Session(
             Long id,
+            String title,
+            Long sessionNumber,
             SessionPeriod sessionPeriod,
             CoverImage coverImage,
             SessionFeeType sessionFeeType,
             SessionStatus sessionStatus,
             int maxNumberOfStudent,
+            Long creatorId,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
@@ -73,13 +40,38 @@ public class Session extends BaseEntity {
         Objects.requireNonNull(sessionStatus);
         validateNumberOfStudent(maxNumberOfStudent);
         this.id = id;
+        this.title = title;
+        this.sessionNumber = sessionNumber;
         this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
         this.sessionFeeType = sessionFeeType;
         this.sessionStatus = sessionStatus;
         this.maxNumberOfStudent = maxNumberOfStudent;
+        this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Session(
+            String title,
+            LocalDate startDate,
+            LocalDate endDate,
+            SessionFeeType sessionFeeType,
+            int maxNumberOfStudent
+    ) {
+        this(
+                null,
+                title,
+                null,
+                new SessionPeriod(startDate, endDate),
+                null,
+                sessionFeeType,
+                SessionStatus.PREPARING,
+                maxNumberOfStudent,
+                null,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
     }
 
     private void validateNumberOfStudent(int maxNumberOfStudent) {
