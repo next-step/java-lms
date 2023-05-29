@@ -22,8 +22,10 @@ class CourseTest {
         endedAt = LocalDateTime.of(2023, 6, 1, 0, 0);
         SessionDuration duration = SessionDuration.create(startedAt, endedAt);
         SessionCoverImage coverImage = SessionCoverImage.create("http://test.com/image01");
-        aSession = new Session(duration, coverImage, SessionPaymentType.FREE, SessionStatus.PREPARING, 5);
-        bSession = new Session(duration, coverImage, SessionPaymentType.PAID, SessionStatus.PREPARING, 5);
+        aSession = new Session(duration, coverImage, SessionPaymentType.FREE,
+                new SessionRegistration(SessionStatus.PREPARING, 5));
+        bSession = new Session(duration, coverImage, SessionPaymentType.PAID,
+                new SessionRegistration(SessionStatus.PREPARING, 5));
     }
 
     @Test
