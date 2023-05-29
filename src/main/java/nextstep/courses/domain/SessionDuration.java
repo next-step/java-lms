@@ -9,14 +9,10 @@ public class SessionDuration {
     private final LocalDateTime startedAt;
     private final LocalDateTime endedAt;
 
-    private SessionDuration(LocalDateTime startedAt, LocalDateTime endedAt) {
+    public SessionDuration(LocalDateTime startedAt, LocalDateTime endedAt) {
+        validate(startedAt, endedAt);
         this.startedAt = startedAt;
         this.endedAt = endedAt;
-    }
-
-    public static SessionDuration create(LocalDateTime startedAt, LocalDateTime endedAt) {
-        validate(startedAt, endedAt);
-        return new SessionDuration(startedAt, endedAt);
     }
 
     private static void validate(LocalDateTime startedAt, LocalDateTime endedAt) {

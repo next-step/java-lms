@@ -20,7 +20,7 @@ class CourseTest {
     void setUp() {
         startedAt = LocalDateTime.of(2023, 4, 3, 0, 0);
         endedAt = LocalDateTime.of(2023, 6, 1, 0, 0);
-        SessionDuration duration = SessionDuration.create(startedAt, endedAt);
+        SessionDuration duration = new SessionDuration(startedAt, endedAt);
         SessionCoverImage coverImage = SessionCoverImage.create("http://test.com/image01");
         aSession = new Session(duration, coverImage, SessionPaymentType.FREE,
                 new SessionRegistration(SessionStatus.PREPARING, 5));

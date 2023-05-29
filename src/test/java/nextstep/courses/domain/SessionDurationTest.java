@@ -24,13 +24,13 @@ class SessionDurationTest {
     @Test
     @DisplayName("시작일은 종료일보다 앞에 있어야 한다.")
     void test01() {
-        assertThatNoException().isThrownBy(() -> SessionDuration.create(startedAt, endedAt));
+        assertThatNoException().isThrownBy(() -> new SessionDuration(startedAt, endedAt));
     }
 
     @Test
     @DisplayName("시작일은 종료일보다 앞에 있지 않으면 예외가 발생한다.")
     void test02() {
-        assertThatThrownBy(() -> SessionDuration.create(endedAt, startedAt))
+        assertThatThrownBy(() -> new SessionDuration(endedAt, startedAt))
                 .isInstanceOf(IncorrectDurationException.class);
     }
 
