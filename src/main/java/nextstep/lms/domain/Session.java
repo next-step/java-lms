@@ -36,8 +36,25 @@ public class Session {
         return new Session(id, course, from, to, Image.ofDefault(), isFree, maxEnrollmentCount);
     }
 
+    public static Session of(Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, int maxEnrollmentCount) {
+        return new Session(course, from, to, coverImage, isFree, maxEnrollmentCount);
+    }
+
     public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status, int maxEnrollmentCount) {
         return new Session(id, course, from, to, coverImage, isFree, status, maxEnrollmentCount);
+    }
+
+    private Session(Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, int maxEnrollmentCount) {
+        validatePeriod(from, to);
+        validateMaxEnrollmentCount(maxEnrollmentCount);
+        this.course = course;
+        this.from = from;
+        this.to = to;
+        this.coverImage = coverImage;
+        this.isFree = isFree;
+        this.status = ProgressStatus.READY;
+        this.maxEnrollmentCount = maxEnrollmentCount;
+        this.enrollmentCount = 0;
     }
 
     private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, int maxEnrollmentCount) {

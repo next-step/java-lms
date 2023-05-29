@@ -12,4 +12,9 @@ public class JdbcSessionRepository implements SessionRepository {
     public Optional<Session> findById(Long id) {
         return Optional.empty();
     }
+
+    @Override
+    public void save(Session session) {
+
+    }
 }

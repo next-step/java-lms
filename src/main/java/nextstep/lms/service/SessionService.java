@@ -3,6 +3,7 @@ package nextstep.lms.service;
 import nextstep.lms.domain.Session;
 import nextstep.lms.domain.SessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -16,5 +17,10 @@ public class SessionService {
     @Transactional(readOnly = true)
     public Optional<Session> findById(Long sessionId) {
         return sessionRepository.findById(sessionId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void save(Session session) {
+        sessionRepository.save(session);
     }
 }
