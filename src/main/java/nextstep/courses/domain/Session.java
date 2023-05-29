@@ -8,8 +8,6 @@ import java.util.Objects;
 
 public class Session extends BaseDate {
 
-    private static final String NOT_RECRUITING = "수강 모집상태가 아닙니다.";
-
     private Long id;
 
     private Course course;
@@ -20,11 +18,7 @@ public class Session extends BaseDate {
 
     private boolean paid;
 
-    private SessionStatus status = SessionStatus.PREPARING;
-
-    private SessionApplies sessionApplies = new SessionApplies();
-
-    private RecruitmentCount recruitmentCount;
+    private SessionApply sessionApply;
 
     public static Session open(Long id, Course course,
                                LocalDate sessionStartDate,
@@ -32,34 +26,30 @@ public class Session extends BaseDate {
                                String imageUrl,
                                boolean paid,
                                int recruitmentCount) {
-        return new Session(id, course,
+        return new Session(id,
+                course,
                 new SessionDate(sessionStartDate, sessionEndDate),
-                imageUrl, paid, recruitmentCount);
+                imageUrl,
+                paid,
+                new SessionApply(recruitmentCount));
     }
 
     private Session(Long id, Course course, SessionDate sessionDate,
-                   String imageUrl, boolean paid, int recruitmentCount) {
+                   String imageUrl, boolean paid, SessionApply sessionApply) {
         this.id = id;
         this.course = course;
         this.sessionDate = sessionDate;
         this.imageUrl = imageUrl;
         this.paid = paid;
-        this.recruitmentCount = new RecruitmentCount(recruitmentCount);
+        this.sessionApply = sessionApply;
     }
 
-    public SessionApply apply(Long id, NsUser user) {
-        if (status.isNotRecruiting()) {
-            throw new IllegalStateException(NOT_RECRUITING);
-        }
-        return sessionApplies.apply(id, this, user);
+    public SessionUser apply(Long id, NsUser user) {
+        return sessionApply.apply(id, this, user);
     }
 
     public void recruiting() {
-        status = SessionStatus.RECRUITING;
-    }
-
-    public boolean isClosed(int currentCount) {
-        return recruitmentCount.isClosed(currentCount);
+        sessionApply.recruiting();
     }
 
     @Override

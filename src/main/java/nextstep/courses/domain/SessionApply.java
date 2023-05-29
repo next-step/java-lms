@@ -1,32 +1,34 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.base.CreatedDate;
 import nextstep.users.domain.NsUser;
 
-import java.util.Objects;
+public class SessionApply {
 
-public class SessionApply extends CreatedDate {
+    private static final String NOT_RECRUITING = "수강 모집상태가 아닙니다.";
+    private static final String CLOSED_RECRUITING = "수강 인원이 마감되었습니다.";
 
-    private Long id;
-    private Session session;
-    private NsUser user;
+    private SessionStatus status = SessionStatus.PREPARING;
 
-    public SessionApply(Long id, Session session, NsUser user) {
-        this.id = id;
-        this.session = session;
-        this.user = user;
+    private SessionUsers sessionUsers = new SessionUsers();
+
+    private RecruitmentCount recruitmentCount;
+
+    public SessionApply(int recruitmentCount) {
+        this.recruitmentCount = new RecruitmentCount(recruitmentCount);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SessionApply)) return false;
-        SessionApply that = (SessionApply) o;
-        return Objects.equals(id, that.id);
+    public void recruiting() {
+        status = SessionStatus.RECRUITING;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public SessionUser apply(Long id, Session session, NsUser user) {
+        if (status.isNotRecruiting()) {
+            throw new IllegalStateException(NOT_RECRUITING);
+        }
+        if (sessionUsers.isClosed(recruitmentCount)) {
+            throw new IllegalStateException(CLOSED_RECRUITING);
+        }
+        return sessionUsers.apply(id, session, user);
     }
+
 }

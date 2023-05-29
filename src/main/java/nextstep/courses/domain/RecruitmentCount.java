@@ -18,8 +18,8 @@ public class RecruitmentCount {
         }
     }
 
-    public boolean isClosed(int currentCount) {
-        return count <= currentCount;
+    public int count() {
+        return count;
     }
 
 }

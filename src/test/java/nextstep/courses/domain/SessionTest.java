@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.data.CourseMaker;
+import nextstep.courses.data.SessionMaker;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,17 +19,15 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        SESSION = makeSession();
+        SESSION = SessionMaker.makeSession(CourseMaker.makeCourse());
     }
 
-    @DisplayName("강의모집인원 마감시 true를 리턴한다.")
+    @DisplayName("강의 상태가 모집중이 아닐경우 신청 시 에러를 던진다.")
     @Test
-    void 강의_모집마감_검증() {
-        assertAll(
-                () -> assertThat(SESSION.isClosed(10)).isTrue(),
-                () -> assertThat(SESSION.isClosed(15)).isTrue(),
-                () -> assertThat(SESSION.isClosed(0)).isFalse()
-        );
+    void 강의_비모집_에러() {
+        assertThatThrownBy(() -> {
+            SESSION.apply(0L, NsUserTest.JAVAJIGI);
+        }).isInstanceOf(IllegalStateException.class);
     }
 
     @DisplayName("강의모집인원 마감시 true를 리턴한다.")
@@ -46,22 +45,8 @@ class SessionTest {
     void 신청정보_생성_결과검증() {
         SESSION.recruiting();
         assertThat(SESSION.apply(0L, NsUserTest.SANJIGI)).isEqualTo(
-                new SessionApply(0L, SESSION, NsUserTest.SANJIGI)
+                new SessionUser(0L, SESSION, NsUserTest.SANJIGI)
         );
-    }
-
-    private static Session makeSession() {
-        return Session.open(0L,
-                makeCourse(),
-                LocalDate.now(),
-                LocalDate.now(),
-                "imageUrl",
-                true,
-                1);
-    }
-
-    private static Course makeCourse() {
-        return new Course("title", 1L);
     }
 
 }
