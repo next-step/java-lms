@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.enrollment.domain.Enrollment;
 import nextstep.images.domain.ImageTest;
 import nextstep.sessions.domain.enums.ProgressStatus;
 import nextstep.users.domain.NsUserTest;
@@ -22,11 +23,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class SessionTest {
     public static final Session S1 = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
     public static final Session S2 = Session.ofDefaultCoverImage(2L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
-    private Session session;
+    private Session readySession;
+    private Session openSession;
+    private LocalDateTime now;
 
     @BeforeEach
     public void beforeEach() {
-        session = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
+        readySession = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
+        openSession = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, ProgressStatus.OPEN, 10);
+        now = LocalDateTime.now();
     }
 
     @DisplayName("Session 객체가 잘 생성되는지 확인")
@@ -65,7 +70,7 @@ public class SessionTest {
     @DisplayName("강의 생성 시 커버 이미지가 없는경우 default 커버 이미지로 적용되는지 확인")
     @Test
     void 강의_생성_시_커버_이미지가_없는경우_default_커버_이미지로_적용되는지_확인() {
-        assertThat(session.getCoverImage()).isEqualTo(ImageTest.DEFAULT_IMAGE);
+        assertThat(readySession.getCoverImage()).isEqualTo(ImageTest.DEFAULT_IMAGE);
     }
 
     @DisplayName("무료 강의 유료 강의 객체가 정상적으로 생성되는지 확인")
@@ -81,15 +86,15 @@ public class SessionTest {
     @DisplayName("강의상태가 모집중으로 변경되는지 확인")
     @Test
     void 강의상태가_모집중으로_변경되는지_확인() {
-        session.toOpen();
-        assertThat(session.getStatus()).isEqualTo(ProgressStatus.OPEN);
+        readySession.toOpen();
+        assertThat(readySession.getStatus()).isEqualTo(ProgressStatus.OPEN);
     }
 
     @DisplayName("강의상태가 종료로 변경되는지 확인")
     @Test
     void 강의상태가_종료로_변경되는지_확인() {
-        session.toClose();
-        assertThat(session.getStatus()).isEqualTo(ProgressStatus.CLOSED);
+        readySession.toClose();
+        assertThat(readySession.getStatus()).isEqualTo(ProgressStatus.CLOSED);
     }
 
     @DisplayName("수강신청시 모집중 이외의 상태인 경우 RuntimeException 발생하는지 확인")
@@ -101,7 +106,7 @@ public class SessionTest {
         }
 
         Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, status, 10);
-        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, now))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("모집중 이외의 상태에서는 수강신청이 불가합니다.");
     }
@@ -109,8 +114,8 @@ public class SessionTest {
     @DisplayName("수강신청시 모집중 상태인 경우 통과하는지 확인")
     @Test
     void 수강신청시_모집중_상태인_경우_통과하는지_확인() {
-        session.toOpen();
-        assertThatCode(() -> session.enroll(NsUserTest.JAVAJIGI))
+        readySession.toOpen();
+        assertThatCode(() -> readySession.enroll(NsUserTest.JAVAJIGI, now))
                 .doesNotThrowAnyException();
     }
 
@@ -126,10 +131,26 @@ public class SessionTest {
     @Test
     void 수강신청시_최대_수강신청_인원을_초과하는_경우_RuntimeException_발생하는지_확인() {
         Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, ProgressStatus.OPEN, 1);
-        session.enroll(NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.JAVAJIGI, now);
 
-        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, now))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("최대 수강신청 인원을 초과하여 수강 신청을 할 수 없습니다.");
+    }
+
+    @DisplayName("수강신청시 수강신청인원이 1증가하는지 확인")
+    @Test
+    void 수강신청시_수강신청인원이_1증가하는지_확인() {
+        int enrollmentCount = openSession.getEnrollmentCount();
+
+        openSession.enroll(NsUserTest.JAVAJIGI, now);
+
+        assertThat(openSession.getEnrollmentCount()).isEqualTo(enrollmentCount + 1);
+    }
+
+    @DisplayName("수강신청시 수강신청내역 객체가 반한되는지 확인")
+    @Test
+    void 수강신청시_수강신청내역_객체가_반한되는지_확인() {
+        assertThat(openSession.enroll(NsUserTest.JAVAJIGI, now)).isEqualTo(Enrollment.of(openSession, NsUserTest.JAVAJIGI, now));
     }
 }

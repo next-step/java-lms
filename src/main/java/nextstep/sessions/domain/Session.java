@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
+import nextstep.enrollment.domain.Enrollment;
 import nextstep.images.domain.Image;
 import nextstep.sessions.domain.enums.ProgressStatus;
 import nextstep.users.domain.NsUser;
@@ -94,6 +95,10 @@ public class Session {
         return status;
     }
 
+    public int getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
     private static void validatePeriod(LocalDateTime from, LocalDateTime to) {
         if(from == null || to == null) {
             throw new IllegalArgumentException("시작일 또는 종료일은 null 일 수 없습니다.");
@@ -110,7 +115,7 @@ public class Session {
         }
     }
 
-    public void enroll(NsUser student) {
+    public Enrollment enroll(NsUser student, LocalDateTime createdDate) {
         if (ProgressStatus.OPEN != status) {
             throw new RuntimeException("모집중 이외의 상태에서는 수강신청이 불가합니다.");
         }
@@ -120,5 +125,7 @@ public class Session {
         }
 
         enrollmentCount++;
+
+        return Enrollment.of(this, student, createdDate);
     }
 }
