@@ -22,9 +22,11 @@ public class QuestionTest {
 
     @Test
     void deleteTest() throws CannotDeleteException {
+        QUESTION_1.addAnswer(answer1);
         var deleteHistories = QUESTION_1.delete(NsUserTest.JAVAJIGI);
 
-        System.out.println(deleteHistories);
+        assertThat(deleteHistories).hasSize(1);
+        assertThat(deleteHistories.get(0)).isInstanceOf(DeleteHistory.class);
     }
 
     @Test
