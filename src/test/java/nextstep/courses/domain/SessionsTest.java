@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class SessionsTest {
 
         Sessions sessions = new Sessions(List.of(session, session2));
 
-        assertThatThrownBy(() -> sessions.registerSession(3L, 3))
+        assertThatThrownBy(() -> sessions.registerSession(3L, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.List;
 
 public class Sessions {
@@ -12,11 +14,11 @@ public class Sessions {
         this.sessions = sessions;
     }
 
-    public void registerSession(Long sessionId, int studentCount) {
+    public void registerSession(Long sessionId, NsUser nsUser) {
         this.sessions.stream()
                 .filter(session -> session.isSession(sessionId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(NO_SESSION_ERROR_MESSAGE))
-                .registerSession(studentCount);
+                .registerSession(nsUser);
     }
 }

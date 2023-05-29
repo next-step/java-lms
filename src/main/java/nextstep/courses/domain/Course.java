@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Course extends BaseEntity {
@@ -22,8 +24,8 @@ public class Course extends BaseEntity {
         this.creatorId = creatorId;
     }
 
-    public void registerSession(Long sessionId, int studentsCount) {
-        this.sessions.registerSession(sessionId, studentsCount);
+    public void registerSession(Long sessionId, NsUser nsUser) {
+        this.sessions.registerSession(sessionId, nsUser);
     }
 
     public Sessions getSessions() {

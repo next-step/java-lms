@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
@@ -17,8 +19,8 @@ public class Session extends BaseEntity {
         this.price = price;
     }
 
-    public void registerSession(int studentCount) {
-        this.sessionRegistration.register(studentCount);
+    public void registerSession(NsUser nsUser) {
+        this.sessionRegistration.register(nsUser);
     }
 
     public boolean isSession(Long sessionId) {

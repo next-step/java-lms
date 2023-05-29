@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 public class SessionRegistration {
 
     private static final String REGISTER_ERROR_MESSAGE = "수강 신청은 모집중 일때만 신청 가능합니다.";
@@ -15,11 +17,11 @@ public class SessionRegistration {
         this.sessionStatusType = sessionStatusType;
     }
 
-    public void register(int studentCount) {
+    public void register(NsUser nsUser) {
         this.validationSessionStatus();
-        this.validationSessionMaxStudentCount(studentCount);
+        this.validationSessionMaxStudentCount(1);
 
-        this.currentStudentCount += studentCount;
+        this.currentStudentCount += 1;
     }
 
     private void validationSessionStatus() {
