@@ -34,8 +34,8 @@ public class User {
         return new User(no, userType, userId, password, createdAt, updatedAt);
     }
 
-    public boolean isUser(User requestor) {
-        return equals(requestor);
+    public boolean isUser(String userId) {
+        return this.userId.equals(userId);
     }
 
     public User changePassword(String password) {
@@ -75,6 +75,10 @@ public class User {
 
     public boolean isAllowOpenSession() {
         return userType.isAllowOpenSession();
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     @Override

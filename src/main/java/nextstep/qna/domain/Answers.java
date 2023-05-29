@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.User;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +21,7 @@ public class Answers {
         return new Answers(List.of());
     }
 
-    public boolean hasAnotherOwner(NsUser requestUser) {
+    public boolean hasAnotherOwner(String requestUser) {
         return !this.answers
                 .stream()
                 .allMatch(answer -> answer.isOwner(requestUser));

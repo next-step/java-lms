@@ -3,7 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.generator.SimpleIdGenerator;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,8 +11,7 @@ import java.util.Objects;
 public class Question {
 
     private final long id;
-    private final NsUser writer;
-    private Answers answers;
+    private final String writerId;
     private final LocalDateTime createdDate;
 
     private String title;
@@ -21,10 +20,14 @@ public class Question {
     private DeleteStatus deleted = DeleteStatus.NOT_DELETED;
     private LocalDateTime updateAt;
 
-    private Question(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
+    private Question(long id, String writerId, String title, String contents, LocalDateTime createdDate) {
 
 
-        if (Objects.isNull(writer)) {
+        if (Objects.isNull(writerId)) {
+            throw new UnAuthorizedException("작성자에 값이 입력되질 않았어요 :(");
+        }
+
+        if (writerId.isEmpty()) {
             throw new UnAuthorizedException("작성자에 값이 입력되질 않았어요 :(");
         }
 
@@ -34,25 +37,20 @@ public class Question {
 
 
         this.id = id;
-        this.writer = writer;
+        this.writerId = writerId;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-        this.answers = answers;
     }
 
-    public static Question of(NsUser writer, String title, String contents) {
+    public static Question of(String writerId, String title, String contents) {
         long id = SimpleIdGenerator.getAndIncrement(Question.class);
-        return new Question(id, writer, title, contents, Answers.create(), LocalDateTime.now());
+        return new Question(id, writerId, title, contents, LocalDateTime.now());
     }
 
-    public static Question of(long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
-        return new Question(id, writer, title, contents, null, createdDate);
-    }
+    public static Question of(long id, String writerId, String title, String contents, LocalDateTime createdDate, DeleteStatus deleted) {
 
-    public static Question of(long id, NsUser writer, String title, String contents, LocalDateTime createdDate, DeleteStatus deleted) {
-
-        Question question = new Question(id, writer, title, contents, null, createdDate);
+        Question question = new Question(id, writerId, title, contents, createdDate);
 
         if (Objects.nonNull(deleted)) {
             question.deleted = deleted;
@@ -60,8 +58,8 @@ public class Question {
         return question;
     }
 
-    public static Question of(long id, NsUser writer, String title, String contents, Answers answers, LocalDateTime createdDate) {
-        return new Question(id, writer, title, contents, answers, createdDate);
+    public static Question of(long id, String writerId, String title, String contents, LocalDateTime createdDate) {
+        return new Question(id, writerId, title, contents, createdDate);
     }
 
     public Question changeTitle(String title) {
@@ -84,34 +82,29 @@ public class Question {
         return title;
     }
 
-    public NsUser getWriter() {
-        return writer;
+    public String getWriter() {
+        return writerId;
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    public boolean isOwner(User loginUser) {
 
         if (Objects.isNull(loginUser)) {
             throw new IllegalStateException("인가 되지 않은 사용자 에요 :(");
         }
 
-        return writer.equals(loginUser);
+        return loginUser.isUser(writerId);
     }
 
-    public Question loadAnswers(Answers answers) {
-        this.answers = answers;
-        return this;
-    }
-
-    public DeleteHistories remove(NsUser requestUser) {
-        QuestionRemoveValidator.validate(this, requestUser);
+    public DeleteHistories remove(User requestUser, Answers answers) {
+        QuestionRemoveValidator.validate(this, requestUser, answers);
 
         this.deleted = DeleteStatus.DELETED;
         this.updateAt = LocalDateTime.now();
 
         DeleteHistories deleteHistories = DeleteHistories.create();
-        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.writer));
+        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.writerId));
 
-        if (hasAnswer()) {
+        if (hasAnswer(answers)) {
             deleteHistories.concat(answers.removeAll());
         }
         return deleteHistories;
@@ -121,7 +114,7 @@ public class Question {
         return deleted.isDeleted();
     }
 
-    public boolean hasAnswer() {
+    public boolean hasAnswer(Answers answers) {
 
         if (Objects.nonNull(answers)) {
             return answers.hasAnswers();
@@ -130,17 +123,8 @@ public class Question {
         return false;
     }
 
-    public boolean hasAnotherOwner() {
-        return answers.hasAnotherOwner(this.writer);
-    }
-
-    public Answers getAnswers() {
-        return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    public boolean hasAnotherOwner(Answers answers) {
+        return answers.hasAnotherOwner(this.writerId);
     }
 
     @Override
@@ -148,20 +132,20 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return id == question.id && Objects.equals(writer, question.writer) && Objects.equals(answers, question.answers) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents);
+        return id == question.id && Objects.equals(writerId, question.writerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, answers, title, contents);
+        return Objects.hash(id, writerId);
     }
 
     private static class QuestionRemoveValidator {
 
-        public static void validate(Question question, NsUser requestUser) {
+        public static void validate(Question question, User requestUser, Answers answers) {
             validateAlreadyDeleted(question);
             validateAuthorization(question, requestUser);
-            validateAboutAnswer(question);
+            validateAboutAnswer(question, answers);
         }
 
         private static void validateAlreadyDeleted(Question question) {
@@ -170,19 +154,19 @@ public class Question {
             }
         }
 
-        private static void validateAuthorization(Question question, NsUser requestUser) throws CannotDeleteException {
+        private static void validateAuthorization(Question question, User requestUser) throws CannotDeleteException {
             if (!question.isOwner(requestUser)) {
                 throw new CannotDeleteException("글 작성자만 삭제 가능해요 :( (요청 사용자 : " + requestUser.getUserId() + ")");
             }
         }
 
-        private static void validateAboutAnswer(Question question) {
+        private static void validateAboutAnswer(Question question, Answers answers) {
 
-            if (!question.hasAnswer()) {
+            if (!question.hasAnswer(answers)) {
                 return;
             }
 
-            if (question.hasAnotherOwner()) {
+            if (question.hasAnotherOwner(answers)) {
                 throw new CannotDeleteException("다른분이 작성한 답변글이 존재해서 삭제 불가능 해요 :(");
             }
         }
