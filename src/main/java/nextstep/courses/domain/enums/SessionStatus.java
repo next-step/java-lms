@@ -1,10 +1,9 @@
 package nextstep.courses.domain.enums;
 
-import java.util.Objects;
-
 public enum SessionStatus {
     PREPARING("준비중"),
     RECRUITING("모집중"),
+    IN_PROGRESS("진행중"),
     ENDED("종료");
 
     private String description;
