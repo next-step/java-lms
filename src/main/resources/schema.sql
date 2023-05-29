@@ -94,3 +94,4 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
