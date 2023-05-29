@@ -20,4 +20,8 @@ public enum StatusType {
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상태 타입입니다."));
 	}
+
+	public boolean isRecruiting() {
+		return this == StatusType.RECRUITING;
+	}
 }

@@ -1,40 +1,30 @@
 package nextstep.sessions.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nextstep.sessions.exception.CapacityNumberException;
-import nextstep.users.domain.NsUserTest;
-
 public class StudentsTest {
-
-	@DisplayName("수강 인원 예외 케이스 - 음수")
-	@Test
-	void test1() {
-		assertThatThrownBy(() -> new Students(-1)).isInstanceOf(CapacityNumberException.class);
-	}
 
 	@DisplayName("학생 등록")
 	@Test
-	void test2() {
-		Students students = new Students(100);
-		students.add(NsUserTest.JAVAJIGI);
+	void test1() {
+		Students students = new Students();
+		students.add(new Student(1L, 1L));
 
-		assertThat(students).isEqualTo(new Students(100, List.of(NsUserTest.JAVAJIGI)));
+		assertThat(students).isEqualTo(new Students(List.of(new Student(1L, 1L))));
 	}
 
 	@DisplayName("특정 학생에 대한 등록 유무 확인")
 	@Test
-	void test3() {
-		Students students = new Students(100);
-		students.add(NsUserTest.JAVAJIGI);
+	void test2() {
+		Students students = new Students();
+		students.add(new Student(1L, 1L));
 
-		assertThat(students.contains(NsUserTest.JAVAJIGI)).isTrue();
-		assertThat(students.contains(NsUserTest.SANJIGI)).isFalse();
+		assertThat(students.contains(new Student(1L, 1L))).isTrue();
+		assertThat(students.contains(new Student(1L, 2L))).isFalse();
 	}
 }
