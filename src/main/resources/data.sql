@@ -8,3 +8,22 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUES (2, '언더스코어 강력 추천드려요. 다만 최신 버전을 공부하는 것보다는 0.10.0 버전부터 보는게 더 좋더군요. 코드의 변천사도 알 수 있고, 최적화되지 않은 코드들이 기능은 그대로 두고 최적화되어 가는 걸 보면 재미가 있습니다 :)', CURRENT_TIMESTAMP(), 1, false);
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
+
+INSERT INTO course (id, title, creator_id, generation, created_at, updated_at)
+VALUES (100, 'Course 1', 1,'First Generation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (200, 'Course 2', 2,'Second Generation', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO image (id, original_file_name, image_type, cover_img_url, created_at, updated_at)
+VALUES (100, 'original_file_name1', 'JPEG', 'cover_img_url1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (200, 'original_file_name2', 'JPEG', 'cover_img_url2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO session (id, title, description, cover_image_id, session_type, session_status, max_enrollment_size, start_date_time, course_id, end_date_time, created_at, updated_at)
+VALUES (100, 'Session 1 Belong To Course 1', 'Session 1 Description', 100, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (200, 'Session 2 Belong To Course 1', 'Session 2 Description', 200, 'FREE', 'RECRUITING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (300, 'PREPARING Session 3 Belong To Course 1', 'PREPARING Session 3 Description', 100, 'FREE', 'PREPARING', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (400, 'END Session 4 Belong To Course 1', 'END Session 4 Description', 200, 'FREE', 'END', 2, CURRENT_TIMESTAMP, 100, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO session_enrollment (id, session_id, user_id, created_at, updated_at)
+VALUES (100, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (200, 100, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (300, 200, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

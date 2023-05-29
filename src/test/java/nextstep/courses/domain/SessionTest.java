@@ -19,8 +19,7 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.PREPARING,
         StudentsTest.ofNoUsersYet(),
-        SessionPeriodTest.TEST_SESSION_PERIOD,
-        TEST_GENERATION);
+        SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
   public static Session ofRecruitingSessionLeftFewSeats() {
@@ -31,8 +30,7 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         StudentsTest.ofLeftFewSeats(),
-        SessionPeriodTest.TEST_SESSION_PERIOD,
-        TEST_GENERATION);
+        SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
   public static Session ofRecruitingSessionLeftOneSeat() {
@@ -43,8 +41,7 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         StudentsTest.ofLeftOneSeatUsers(),
-        SessionPeriodTest.TEST_SESSION_PERIOD,
-        TEST_GENERATION);
+        SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
   public static Session ofRecruitingSessionUserFull() {
@@ -55,8 +52,7 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.RECRUITING,
         StudentsTest.ofFullUsers(),
-        SessionPeriodTest.TEST_SESSION_PERIOD,
-        TEST_GENERATION);
+        SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
   public static Session ofEndSessionFullUsers() {
@@ -67,8 +63,7 @@ class SessionTest {
         SessionType.FREE,
         SessionStatus.END,
         StudentsTest.ofFullUsers(),
-        SessionPeriodTest.TEST_SESSION_PERIOD,
-        TEST_GENERATION);
+        SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
 
@@ -83,8 +78,7 @@ class SessionTest {
             SessionType.FREE,
             SessionStatus.PREPARING,
             StudentsTest.ofNoUsersYet(),
-            SessionPeriodTest.TEST_SESSION_PERIOD,
-            TEST_GENERATION
+            SessionPeriodTest.TEST_SESSION_PERIOD
         )
     );
   }
@@ -99,8 +93,7 @@ class SessionTest {
             SessionType.FREE,
             SessionStatus.PREPARING,
             StudentsTest.ofLeftOneSeatUsers(),
-            SessionPeriodTest.TEST_SESSION_PERIOD,
-            TEST_GENERATION
+            SessionPeriodTest.TEST_SESSION_PERIOD
         )
     ).isInstanceOf(IllegalArgumentException.class)
         .hasMessage("준비중 상태일때는 수강생이 없어야 합니다.");

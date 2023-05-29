@@ -14,6 +14,7 @@ class CourseTest {
         1L,
         "title",
         1L,
+        "1기",
         LocalDateTime.now(),
         LocalDateTime.now()
     );
