@@ -1,35 +1,35 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserCode;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DeleteHistory {
-    private Long id;
-
+    @NotNull
+    private Long deleteHistoryId;
+    @NotNull
     private ContentType contentType;
-
+    @NotNull
     private Long contentId;
+    @NotNull
+    private UserCode deletedBy;
+    @NotNull
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private NsUser deletedBy;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    public DeleteHistory() {
-    }
-
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(Long deleteHistoryId, ContentType contentType, Long contentId, UserCode deletedBy, LocalDateTime createdAt) {
+        this.deleteHistoryId = deleteHistoryId;
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
+        this.createdAt = createdAt;
     }
 
-    public static DeleteHistory of(ContentType contentType, Long id, NsUser writer, LocalDateTime dateTime) {
-        return new DeleteHistory(contentType, id, writer, dateTime);
+    public static DeleteHistory of(ContentType contentType, Long contentId, UserCode deletedBy, LocalDateTime dateTime) {
+        return new DeleteHistory(null, contentType, contentId, deletedBy, dateTime);
     }
 
     public static List<DeleteHistory> deleteHistoryHelper(List<Question> questions, List<Answer> answers) {
@@ -47,21 +47,43 @@ public class DeleteHistory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DeleteHistory that = (DeleteHistory) o;
-        return Objects.equals(id, that.id) &&
-                contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+        DeleteHistory other = (DeleteHistory) o;
+        return this.hashCode() == other.hashCode();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(deleteHistoryId);
     }
 
     @Override
     public String toString() {
-        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+        return "DeleteHistory{" +
+                "deleteHistoryId=" + deleteHistoryId +
+                ", contentType=" + contentType +
+                ", contentId=" + contentId +
+                ", deletedBy=" + deletedBy +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
+    public ContentType getContentType() {
+        return this.contentType;
+    }
+
+    public long getContentId() {
+        return this.contentId;
+    }
+
+    public Long getDeleteHistoryId() {
+        return deleteHistoryId;
+    }
+
+    public UserCode getDeletedBy() {
+        return deletedBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

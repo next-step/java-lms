@@ -2,37 +2,48 @@ package nextstep.qna.domain;
 
 import nextstep.qna.exception.QuestionDeleteAnswerExistedException;
 import nextstep.qna.exception.QuestionDeleteUnauthorizedException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Question {
-    private final List<Answer> answers = new ArrayList<>();
-    private final LocalDateTime createdDate = LocalDateTime.now();
+
     private QuestionId questionId;
     private String title;
     private String contents;
-    private NsUser writer;
+    private UserCode writer;
     private boolean deleted = false;
+    private List<Answer> answers = new ArrayList<>();
     private LocalDateTime updatedDate;
+    @NotNull
+    private LocalDateTime createdDate;
 
-    public Question() {
+    public Question(QuestionId questionId, String title, String contents, UserCode writer, boolean deleted, List<Answer> answers, LocalDateTime updatedDate, LocalDateTime createdDate) {
+        this.questionId = questionId;
+        this.title = title;
+        this.contents = contents;
+        this.writer = writer;
+        this.deleted = deleted;
+        this.answers = answers;
+        this.updatedDate = updatedDate;
+        this.createdDate = createdDate;
     }
 
-    public Question(QuestionId questionId, String title, String contents, NsUser writer, boolean deleted, LocalDateTime updatedDate) {
+    public Question(QuestionId questionId, String title, String contents, UserCode writer, boolean deleted, LocalDateTime updatedDate) {
         this.questionId = questionId;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.deleted = deleted;
         this.updatedDate = updatedDate;
+        this.createdDate = LocalDateTime.now();
     }
 
-    public static Question of(Long questionId, NsUser writer, String title, String contents) {
+    public static Question of(Long questionId, UserCode writer, String title, String contents) {
         return new Question(
                 new QuestionId(questionId),
                 title,
@@ -40,6 +51,19 @@ public class Question {
                 writer,
                 false,
                 LocalDateTime.now()
+        );
+    }
+
+    public static Question of(QuestionId questionId, Question question) {
+        return new Question(
+                questionId,
+                question.title,
+                question.contents,
+                question.writer,
+                question.deleted,
+                new ArrayList<>(question.answers), // Shallow copy of the answers list
+                question.updatedDate,
+                question.createdDate
         );
     }
 
@@ -54,6 +78,12 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.relateToQuestion(this);
         answers.add(answer);
+    }
+
+    public void addAllAnswers(Answer... answers) {
+        for (Answer answer : answers) {
+            this.addAnswer(answer);
+        }
     }
 
     public boolean isDeleted() {
@@ -102,7 +132,7 @@ public class Question {
     }
 
     private void validateQuestionOwner(UserCode userCode) {
-        if (!writer.matchUser(userCode)) {
+        if (!writer.equals(userCode)) {
             throw new QuestionDeleteUnauthorizedException();
         }
     }
@@ -113,5 +143,33 @@ public class Question {
 
     public boolean isRelated(Answer answer) {
         return this.answers.contains(answer);
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getContents() {
+        return this.contents;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public UserCode getWriter() {
+        return this.writer;
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
+    }
+
+    public boolean getDeleted() {
+        return this.deleted;
     }
 }

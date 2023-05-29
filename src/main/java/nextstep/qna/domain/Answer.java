@@ -1,8 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
-import nextstep.utils.DomainId;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,34 +9,36 @@ import java.time.LocalDateTime;
 public class Answer {
     private Long answerId;
     @NotNull
-    private NsUser writer;
+    private UserCode writer;
     @NotNull
     private QuestionId questionId;
     @NotBlank
     private String contents;
     private boolean deleted = false;
-    private final LocalDateTime createdDate = LocalDateTime.now();
-    private LocalDateTime updatedDate;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     public Answer() {
     }
 
-    public Answer(Long answerId, NsUser writer, QuestionId questionId, String contents, boolean deleted, LocalDateTime updatedDate) {
+    public Answer(Long answerId, UserCode writer, QuestionId questionId, String contents, boolean deleted, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.answerId = answerId;
         this.writer = writer;
         this.questionId = questionId;
         this.contents = contents;
         this.deleted = deleted;
-        this.updatedDate = updatedDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public static Answer of(Long answerId, NsUser writer, Question question, String contents) {
+    public static Answer of(Long answerId, UserCode writer, Question question, String contents) {
         return new Answer(
                 answerId,
                 writer,
                 new QuestionId(question.getId()),
                 contents,
                 false,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
     }
@@ -47,12 +47,12 @@ public class Answer {
         return answerId;
     }
 
-    public boolean isDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(UserCode writer) {
-        return this.writer.getUserCode().value().equals(writer.value());
+    public boolean isOwner(UserCode userCode) {
+        return this.writer.value().equals(userCode.value());
     }
 
     public void relateToQuestion(Question question) {
@@ -62,13 +62,13 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer{" +
-                "createdDate=" + createdDate +
+                "createdDate=" + createdAt +
                 ", id=" + answerId +
                 ", writer=" + writer +
                 ", questionId=" + questionId +
                 ", contents='" + contents + '\'' +
                 ", deleted=" + deleted +
-                ", updatedDate=" + updatedDate +
+                ", updatedDate=" + updatedAt +
                 '}';
     }
 
@@ -90,5 +90,21 @@ public class Answer {
 
     public boolean isRelated(Question question) {
         return this.questionId == question.getQuestionId();
+    }
+
+    public UserCode getWriter() {
+        return this.writer;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

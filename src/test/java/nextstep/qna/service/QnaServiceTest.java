@@ -50,13 +50,13 @@ public class QnaServiceTest {
         Answer answer1 = TestFixture.SANJIGI_ANSWER;
         NsUser loginUser = TestFixture.BADAJIGI;
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
         qnAService.deleteQuestion(loginUser, question.getId());
 
         //then
         assertAll("",
                 () -> assertThat(question.isDeleted()).isTrue(),
-                () -> assertThat(answer1.isDeleted()).isFalse(),
+                () -> assertThat(answer1.getDeleted()).isFalse(),
                 () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), new ArrayList<>()))
         );
     }
@@ -72,7 +72,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.JAVAJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
         qnAService.deleteQuestion(loginUser, question.getId());
 
         //then
@@ -80,7 +80,7 @@ public class QnaServiceTest {
                 () -> assertThat(question.isDeleted())
                         .as("question 은 삭제 되어야 한다")
                         .isTrue(),
-                () -> assertThat(answer.isDeleted())
+                () -> assertThat(answer.getDeleted())
                         .as("answer 는 삭제 되어야 한다")
                         .isTrue(),
                 () -> verifyDeleteHistories(deleteHistoryHelper(List.of(question), List.of(answer)))
@@ -97,7 +97,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.SANJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {
@@ -117,7 +117,7 @@ public class QnaServiceTest {
         NsUser loginUser = TestFixture.SANJIGI;
 
         //when
-        when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
+        when(questionRepository.findByQuestionId(question.getId())).thenReturn(Optional.of(question));
 
         //then
         assertThatThrownBy(() -> {

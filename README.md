@@ -14,8 +14,8 @@
 ## 코드리뷰 빠른이동
 
 - step1 : https://github.com/next-step/java-lms/pull/37
-- step2 : null
-- step3 : null
+- step2 : https://github.com/next-step/java-lms/pull/81
+- step3 : https://github.com/next-step/java-lms/pull/132
 - step4 : null
 
 ## Step1
@@ -151,4 +151,171 @@
 - 도메인 의사소통 용어 정리를 위해 일부 `@CommunicationTerm` 어노테이션을 추가하였습니다
     - 해당 어노테이션은 기능은 없고 단순히 커뮤니케이션 용어를 소스코드에 주석처럼 달아놓기 위함입니다
     - 단점은 `@CommunicationTerm(도메인 용어 정리)` 와 `Term.claas(과정의 기수 정보를 갖는 도메인 클래스)` 사이에는 연관이 전혀 없지만 키워드가 겹쳐서 이부분을 회피할수 있는
-      방법을 고민하고 있습니다  
+      방법을 고민하고 있습니다
+
+
+
+
+
+## Step3
+
+### PR 글쓰기
+```text
+
+안녕하세요 리뷰어님 이번 PR 에서 다룬 내용들은 아래와 같습니다
+
+### 비기능적 요구사항
+
+- [x] 학습목표 달성하기 : 도메인 구조 유지하면서 DB 테이블과 매핑
+- [x] 도메인 객체에 로직 구현에 집중하자. DB 조회성능은 후순위이다
+- [x] 도메인 구조를 유지하는게 관건이다. DB 쿼리가 성능이 하락하는 trade-off 를 감수하더라도
+
+### 기능적 요구사항
+
+- [x] 과정(Course) 관련 CRUD Repository method 구현
+- [x] 강의(Session) 관련 CRUD Repository method 구현
+- [x] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가지는 Repository method 구현
+- [x] 이외 Domain Class 에 대한  CRUD Repository method 구현
+
+### step 을 진행하며 생각한것들
+
+- Test 작성 클래스 : `Interface @@Repository` VS `Class Jdbc@@RepositoryImpl` 고민
+  - 제 생각에는 `Interface @@Repository`  클래스를 기준으로 Test 를 작성하는것이 맞다고 판단하고 진행했습니다.
+  - 왜냐하면 CRUD 기능이 잘 동작하는지를 검증해야지,  Jdbc로 구현하는지 혹은 다른 DB 접근기술로 구현하는지에 대해서 테스트가 의존적이면 안된다고 생각했기 때문입니다.
+  
+- Course > Term > Session 3 depth 연관관계를 2단계로 간소화
+  - 도메인의 기능요구사항 정도로 봤을때 3 depth 연관관계 는 필요이상으로 복잡하다는 생각이 들었고, 피드백으로 2 depth 로 충분하다는 리뷰가 있어서 해당 부분을 수정하였습니다.
+
+- NsUser 클래스에서 Identifier 를 Long type Id 가 아닌 String type Code (`UserCode`) 로 변경 하였습니다.
+  - DB에서 할당받는 Sequantial 한 Long 가 아니라, 사용자 혹은 로직에서 지정하는 String 타입의 고유 식별자를 사용해서 인프라 의존성을 줄인다고 생각했습니다. 
+  - 약간의 보안 (예를들어서 id auto-increment 상황이라면, id=33 인 사용자가 id=34 로 파라미터를 조작해서 타인의 개인정보를 조회할수 있는 가능성이 있지만 UUID 랜덤 문자열을 기반으로 사용하는 Code의 경우 비교적 안전
+
+```
+
+
+### DB 연결 정보 정리
+
+
+
+- mariadb
+```
+FQDN : jdbc:mariadb://localhost:11010/lms
+username/password : dong/dong
+```
+
+- h2
+```
+FQDN : jdbc:h2:tcp://localhost:1521/lms
+CONSOLE : http://localhost:8081
+username/password : sa/(공백, 아무것도 넣지않음)
+```
+
+
+### JdbcTemplete 트러블 슈팅 : Unique index or primary key violation
+
+- 이슈의 발생과 증상
+  - JdbcTemplete 로 save()기능을 구현하다 해당 에러가 발생하였습니다.  
+  ```text
+  PreparedStatementCallback; Unique index or primary key violation: "PRIMARY KEY ON PUBLIC.~~"
+  ```
+
+- Solution : 제 경우에는 스프링 시작시 자동으로 반영되는 `data.sql` 을 수정했습니다
+  - Before
+  ```text
+  INSERT INTO question (question_id, writer_id, title, contents, created_at, deleted)
+  VALUES (1, 1, ~~~
+  ```
+  - After
+  ```text
+  INSERT INTO question (question_id, writer_id, title, contents, created_at, deleted)
+  VALUES (101, 101, ~~~
+  ```
+  
+- Why : 문제가 발생한 원인은 PK 중복
+
+- 이외
+  - 테스트는 idempotent(멱등성) 
+
+
+### JdbcTemplete 트러블 슈팅 : save() 를 잘못 구현해서 벌어진 건에 관하여.. 
+
+- 이슈의 발생과 증상
+  - 아래의 테스트코드를 `단독으로 실행할때는 성공`하고, `전체테스트를 돌리면 실패`하는 증상이 있었습니다
+  ```text
+  @DisplayName("조회기능 검증한다")
+  @Test
+  public void findById() {
+        //given
+        Course savedCourse = courseRepository.save(TestFixture.K8S_COURSE);
+        //when
+        Course findByIdCourse = courseRepository.findById(savedCourse.getCourseId()).orElseThrow();
+        //then
+        LOG.info(savedCourse.toString());
+        LOG.info(findByIdCourse.toString());
+  }
+  ```
+- 원인
+  - 위와 같은 증상이 발생한 원인은 `save()` 의 잘못된 구현이였습니다. 
+  - 잘못구현된 save메서드
+  ```text
+  @Deprecated(since = "이유는 모르겠지만 뭔가 문제가있음 증상은 id 가 이상한값이 반환됨")
+    public Course saveV0(Course course) {
+        String sql = "insert into course (title, creator_id, created_at,updated_at) values(?, ?, ?, ?)";
+        // 사실 id 가 리턴되는게 아니라 rowsAffectedCount 가 리턴되는것 이였습니다.
+        int courseId = jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(), course.getUpdatedAt());
+        //
+        return new Course(
+                new CourseId((long) courseId),
+                course.getTitle(),
+                course.getCreatorId(),
+                null,
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
+    }
+  ```
+
+- 해결 : jdbc Templete 문서를 보고 시키는데로 구현했습니다. 
+  - jdbcTemplate.update() 를 사용하지는 않았는데 그 이유는 저는 `T save(T t)` 형식의 메서드 시그니쳐, 그러니까 저장된 객체를 그대로 리턴해서 DB 가 발급해준 PK 가 할당되어 돌아오는 형태로요
+  - jdbc Templete 해결한 save() 코드입니다
+  ```text
+  public Course saveV1(Course course) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("course").usingGeneratedKeyColumns("course_id");
+
+        Map<String,Object> sqlParameters = new HashMap<>() {{
+            put("title",course.getTitle());
+            put("creator_id",course.getCreatorId());
+            put("created_at",course.getCreatedAt());
+            put("updated_at", course.getUpdatedAt());
+        }};
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(sqlParameters));
+        return new Course(
+                new CourseId(key.longValue()),
+                course.getTitle(),
+                course.getCreatorId(),
+                null,
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
+    }
+  ```
+  
+
+- 결론
+  - 사실은 Sava() 메서드를 잘못 구현해놨는데, 문제가 findById() 에서 발생하는것 처럼 보였습니다.
+  - jdbcTemplate.update() 메서드의 리턴은 `Primary Key` 가 아니라 `Affected Rows Count` 의 의미였습니다.
+
+
+- 참고
+  - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/JdbcTemplate.html
+  - https://docs.spring.io/spring-framework/reference/data-access/jdbc.html
+  - 그런데 말입니다.. 이상한점이 하나 남아있습니다. 왜 메서드 하나만 테스트를 돌릴때는 왜 성공했던걸까요??
+  ```text
+  메서드 하나만 테스트를 돌릴때 성공했던 이유는 저장하는 Data 가 우연히 PK 가 항상 1이 되는 상황이고
+  Primary Key 인줄 알았던.. 사실은 Affected Rows Count 는 항상 1이 되기 때문이였습니다
+  test코드가 없었더라면 발견하지 못했을 구현오류인데, 만약에 어찌저찌해서 Product 로 올라갔다고 가정을 해보겠습니다.
+  일단 에러로그는 문제가 발생하는 save() 에서 찍히는게 아니라 findById() 에서 발생을 할수도 있고 매번 발생하지는 않을수 있습니다. 
+  더해서 PK 1번인 row 가 매번 고초를 겪고 데이터가 엉키는 증상이 발생할수 있습니다. 
+  save() 에서 리턴받은 Entity 객체를 신뢰해서 들고 돌아다니면서 여러가지 side-effect 를 발생시킵니다
+  ```

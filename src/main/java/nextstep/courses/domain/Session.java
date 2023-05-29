@@ -1,34 +1,57 @@
 package nextstep.courses.domain;
 
-import nextstep.common.CommunicationTerm;
-import nextstep.common.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
+import nextstep.image.domain.Image;
+import nextstep.users.domain.UserCode;
+import nextstep.utils.CommunicationTerm;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @CommunicationTerm("강의")
 public class Session {
     private SessionId sessionId;
-    private final Date startDate;
-    private final Date endDate;
     private Image coverImage;
+    @CommunicationTerm("기수")
+    private Long term;
+    @NotNull
     private Long price;
     @NotNull
     private SessionStatus status;
+    @NotNull
     private Long maxStudentCount;
-    private final List<Enroll> enrolls = new ArrayList<>();
+    @NotNull
+    private Date startDate;
+    @NotNull
+    private Date endDate;
 
-    public Session(Long price, Long maxStudentCount) {
+    public Session(SessionId sessionId, Image coverImage, Long term, Long price, SessionStatus status, Long maxStudentCount, Date startDate, Date endDate) {
+        this.sessionId = sessionId;
+        this.coverImage = coverImage;
+        this.term = term;
         this.price = price;
+        this.status = status;
         this.maxStudentCount = maxStudentCount;
-        this.startDate = new Date();
-        this.endDate = new Date(System.currentTimeMillis() + 100000);
-        this.status = SessionStatus.CLOSED;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public static Session of(Long price, Long term, Long maxStudentCount) {
+        return new Session(
+                null,
+                null,
+                term,
+                price,
+                SessionStatus.PREPARING,
+                maxStudentCount,
+                new Date(),
+                new Date(System.currentTimeMillis() + 1000000)
+        );
+    }
+
+    public SessionId getSessionId() {
+        return sessionId;
     }
 
     public Date getStartDate() {
@@ -71,14 +94,14 @@ public class Session {
         this.coverImage = image;
     }
 
-    public void enroll(Enroll... enrolls) {
+    public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
-        validateStudentCount(enrolls.length);
-        this.enrolls.addAll(Arrays.asList(enrolls));
+        validateStudentCount(alreadyEnrolledCount);
+        return new Enroll(null, this.sessionId, userCode); //Enroll.of(this.sessionId.value(), userCode.value());
     }
 
-    private void validateStudentCount(int count) {
-        if (maxStudentCount < this.enrolls.size() + count) {
+    private void validateStudentCount(long count) {
+        if (maxStudentCount < count + 1) {
             throw new ExceededStudentCount();
         }
     }
@@ -89,11 +112,23 @@ public class Session {
         }
     }
 
-    public boolean enrollCheck(Enroll enroll) {
-        return enrolls.contains(enroll);
-    }
-
     public void adjustStudentCount(Long maxStudentCount) {
         this.maxStudentCount = maxStudentCount;
+    }
+
+    public long getTerm() {
+        return this.term;
+    }
+
+    public void setTerm(long term) {
+        this.term = term;
+    }
+
+    public boolean isEnrolledSession(Enroll enroll) {
+        return enroll.isEnrolledSession(this.sessionId);
+    }
+
+    public void setSessionId(SessionId sessionId) {
+        this.sessionId = sessionId;
     }
 }

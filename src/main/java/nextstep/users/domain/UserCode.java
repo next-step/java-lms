@@ -1,14 +1,25 @@
 package nextstep.users.domain;
 
 import nextstep.utils.DomainCode;
+import nextstep.utils.PrimaryKeyCodeMaker;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 public class UserCode implements DomainCode {
+    @NotEmpty
     private final String userCode;
 
     public UserCode(String userCode) {
         this.userCode = userCode;
+    }
+
+    public static UserCode of(String userCode) {
+        return new UserCode(userCode);
+    }
+
+    public static UserCode any(PrimaryKeyCodeMaker primaryKeyCodeMaker) {
+        return new UserCode(primaryKeyCodeMaker.generate());
     }
 
     @Override
