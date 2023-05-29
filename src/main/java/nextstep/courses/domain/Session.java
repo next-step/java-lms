@@ -6,6 +6,9 @@ import nextstep.courses.exception.InvalidSessionDateTimeException;
 import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Session extends BaseEntity {
     private Long id;
 
@@ -21,9 +24,17 @@ public class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
-    private int maximumEnrollment;
-
     protected Session() {
+    }
+
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment) {
+        this.id = id;
+        this.period = period;
+        this.coverImage = coverImage;
+        this.sessionTime = sessionTime;
+        this.sessionType = sessionType;
+        this.sessionStatus = sessionStatus;
+        this.enrollment = enrollment;
     }
 
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
@@ -46,8 +57,40 @@ public class Session extends BaseEntity {
         this.enrollment.enroll(user);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public int getEnrollmentUserCount() {
         return this.enrollment.getUsers().size();
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionTime getSessionTime() {
+        return sessionTime;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public List<User> getUsers() {
+        return this.enrollment.getUsers();
     }
 
     private void checkSessionStatus() throws SessionEnrollmentException {
@@ -57,4 +100,16 @@ public class Session extends BaseEntity {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(period, session.period) && Objects.equals(coverImage, session.coverImage) && Objects.equals(sessionTime, session.sessionTime) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(enrollment, session.enrollment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, period, coverImage, sessionTime, sessionType, sessionStatus, enrollment);
+    }
 }

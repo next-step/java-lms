@@ -6,4 +6,12 @@ public class BaseEntity {
     public LocalDateTime createdAt = LocalDateTime.now();
 
     public LocalDateTime updatedAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
