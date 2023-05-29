@@ -15,7 +15,6 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-
     public Course(String title, Long creatorId) {
         this(0L, title, new Sessions(), creatorId, LocalDateTime.now(), null);
     }
