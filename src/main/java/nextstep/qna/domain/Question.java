@@ -71,7 +71,9 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void deleted() {
+    public void deleted(NsUser loginUser) throws CannotDeleteException {
+        ensureOwnedByUser(loginUser);
+        ensureAllAnswersOwnedByUser(loginUser);
         this.deleted = true;
     }
 
