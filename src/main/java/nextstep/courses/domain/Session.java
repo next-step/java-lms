@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.SessionCostTypeException;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 
@@ -29,18 +28,6 @@ public class Session {
 
     public static Session of(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
         return new Session(title, cover, cardinalNumber, cost, state, maxUser);
-    }
-
-    private static void validateFreeCost(Cost cost) {
-        if (cost == Cost.PAID) {
-            throw new SessionCostTypeException("무료 강의가 아닙니다.");
-        }
-    }
-
-    private static void validatePayCost(Cost cost) {
-        if (cost == Cost.FREE) {
-            throw new SessionCostTypeException("유료 강의가 아닙니다.");
-        }
     }
 
     public Students enroll(Student student) {

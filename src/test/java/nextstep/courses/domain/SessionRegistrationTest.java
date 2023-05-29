@@ -26,7 +26,7 @@ public class SessionRegistrationTest {
     void registerSession() {
         SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 30);
 
-        assertThatNoException().isThrownBy(() -> {sessionRegistration.validateState();});
+        assertThatNoException().isThrownBy(() -> {sessionRegistration.register(new Student(NsUserTest.SANJIGI));});
     }
 
     @Test
