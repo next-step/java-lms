@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import nextstep.courses.domain.Course;
 import nextstep.images.domain.Image;
+import nextstep.sessions.domain.enums.ProgressStatus;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,8 @@ public class Session {
     private Image coverImage;
 
     private boolean isFree;
+
+    private ProgressStatus status;
 
     public static Session ofFreeSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
         return new Session(id, course, from, to, coverImage, true);
@@ -38,6 +41,7 @@ public class Session {
         this.to = to;
         this.coverImage = coverImage;
         this.isFree = isFree;
+        this.status = ProgressStatus.READY;
     }
 
     public void toCourse(Course course) {
@@ -50,6 +54,18 @@ public class Session {
 
     public boolean isFree() {
         return isFree;
+    }
+
+    public void toOpen() {
+        this.status = ProgressStatus.OPEN;
+    }
+
+    public void toClose() {
+        this.status = ProgressStatus.CLOSED;
+    }
+
+    public ProgressStatus getStatus() {
+        return status;
     }
 
     private static void validatePeriod(LocalDateTime from, LocalDateTime to) {
