@@ -12,9 +12,9 @@ public class PriceTest {
     @Test
     public void 가격_테스트() {
         assertAll(
-                () -> assertThat(new Price(0).getPrice())
+                () -> assertThat(new Price(0).getType())
                         .isEqualTo(PriceType.FREE),
-                () -> assertThat(new Price(2).getPrice())
+                () -> assertThat(new Price(2).getType())
                         .isEqualTo(PriceType.PAID)
         );
     }

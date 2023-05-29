@@ -8,7 +8,7 @@ public class Price {
         this.price = price;
     }
 
-    public PriceType getPrice() {
+    public PriceType getType() {
 
         if(this.price == 0){
             return PriceType.FREE;
