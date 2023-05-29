@@ -21,16 +21,10 @@ public class Answers {
   }
 
   public List<DeleteHistory> delete(NsUser loginUser) {
-    validateAnswersOwner(loginUser);
-
     List<DeleteHistory> deleteHistories = new ArrayList<>();
     deleteHistories.addAll(makeDeleted(loginUser));
 
     return deleteHistories;
-  }
-
-  public void validateAnswersOwner(NsUser loginUser) {
-    answers.forEach(answer -> answer.validateAnswerOwner(loginUser));
   }
 
   private List<DeleteHistory> makeDeleted(NsUser loginUser) {
