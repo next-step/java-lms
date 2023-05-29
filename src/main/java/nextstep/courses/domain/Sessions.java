@@ -14,18 +14,12 @@ public class Sessions {
     }
 
     public void addSession(Session session) {
-        validate(session);
+        validateDuplicateSession(session);
         sessions.add(session);
     }
 
-    private void validate(Session session) {
-        for(Session s: sessions) {
-            validateDuplicateSession(s, session);
-        }
-    }
-
-    private void validateDuplicateSession(Session session1, Session session2) {
-        if (session1.equals(session2)) {
+    private void validateDuplicateSession(Session session) {
+        if (sessions.contains(session)) {
             throw new DuplicateSessionException("동일 강의 등록 불가합니다.");
         }
     }

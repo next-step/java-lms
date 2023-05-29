@@ -21,6 +21,14 @@ public class SessionRegistration {
         this.students = students;
     }
 
+    public Students register(Student student) {
+        validateState();
+        validateMaxUser();
+        validateDuplicateStudent(student);
+
+        return students.addStudent(student);
+    }
+
     private void validateState() {
         if (state != State.RECRUIT_START) {
             throw new SessionStateNotRecruitStartException(state.getDescription() + "인 강의입니다.");
@@ -37,13 +45,5 @@ public class SessionRegistration {
         if(students.isDuplicate(student)) {
             throw new DuplicateStudentRegisterException("중복 강의 수강은 불가합니다.");
         }
-    }
-
-    public Students register(Student student) {
-        validateState();
-        validateMaxUser();
-        validateDuplicateStudent(student);
-
-        return students.addStudent(student);
     }
 }

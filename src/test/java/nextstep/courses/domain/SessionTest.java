@@ -15,7 +15,7 @@ public class SessionTest {
     public static Session s3 = createSession(Cost.FREE, State.RECRUIT_END, 30);
     public static Session s4 = createSession(Cost.FREE, State.SESSION_START, 30);
     public static Session s5 = createSession(Cost.FREE, State.SESSION_END, 30);
-    
+
     @Test
     @DisplayName("학생 등록")
     void addStudent() {
