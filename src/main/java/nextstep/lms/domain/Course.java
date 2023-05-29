@@ -1,8 +1,10 @@
 package nextstep.lms.domain;
 
+import nextstep.global.domain.BaseTimeDomain;
+
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseTimeDomain {
     private Long id;
 
     private Sessions sessions = Sessions.create();
@@ -13,17 +15,13 @@ public class Course {
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private Course(Long id, int generation, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Course(Long id, int generation, String title, Long creatorId, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.generation = generation;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 
 
@@ -56,18 +54,18 @@ public class Course {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
+                ", sessions=" + sessions +
+                ", generation=" + generation +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
