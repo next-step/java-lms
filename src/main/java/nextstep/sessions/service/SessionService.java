@@ -9,7 +9,6 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
-import nextstep.sessions.domain.Students;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 
@@ -32,11 +31,9 @@ public class SessionService {
 	@Transactional
 	public void enroll(long sessionId, String userId) {
 		Session session = sessionRepository.findById(sessionId);
-		Students students = new Students(studentRepository.findBySessionId(sessionId));
-
 		NsUser nsUser = userRepository.findByUserId(userId).orElse(NsUser.GUEST_USER);
 
-		Student student = session.enroll(nsUser, students);
+		Student student = session.enroll(nsUser);
 		studentRepository.save(student);
 	}
 }

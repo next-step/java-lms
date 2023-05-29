@@ -47,4 +47,11 @@ public class Students {
 	public int hashCode() {
 		return Objects.hash(students);
 	}
+
+	@Override
+	public String toString() {
+		return "Students[" +
+			"students=" + students +
+			']';
+	}
 }

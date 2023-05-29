@@ -44,4 +44,14 @@ public class Student {
 	public int hashCode() {
 		return Objects.hash(sessionId, nsUserId);
 	}
+
+	@Override
+	public String toString() {
+		return "Student[" +
+			"sessionId=" + sessionId +
+			", nsUserId=" + nsUserId +
+			", createdAt=" + createdAt +
+			", updatedAt=" + updatedAt +
+			']';
+	}
 }

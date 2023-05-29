@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
+import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.Students;
 
 @JdbcTest
@@ -27,13 +29,19 @@ public class SessionRepositoryTest {
 
 	private SessionRepository sessionRepository;
 
+	private StudentRepository studentRepository;
+
 	private Session session;
+
+	private Student student;
 
 	@BeforeEach
 	void setUp() {
 		sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+		studentRepository = new JdbcStudentRepository(jdbcTemplate);
 		session = new Session(null,1L, new SessionDate("2023-04-03T00:00:00", "2023-06-01T00:00:00"),
 			"http://nextstep/coveredImageUrl.png", true, 100, new Students());
+		student = new Student(1L, 1L);
 	}
 
 	@Test
@@ -43,6 +51,7 @@ public class SessionRepositoryTest {
 
 	@Test
 	void findById() {
+		studentRepository.save(student);
 		sessionRepository.save(session);
 		Session session = sessionRepository.findById(1L);
 		assertThat(session).isNotNull();

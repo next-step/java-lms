@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.StudentRepository;
+import nextstep.sessions.domain.Students;
 import nextstep.sessions.type.StatusType;
 
 @Repository("sessionRepository")
@@ -17,8 +19,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
 	private final JdbcOperations jdbcTemplate;
 
+	private final StudentRepository studentRepository;
+
 	public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+		this.studentRepository = new JdbcStudentRepository(jdbcTemplate);
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public class JdbcSessionRepository implements SessionRepository {
 			rs.getBoolean("free"),
 			StatusType.valueOf(rs.getString("status_type")),
 			rs.getInt("capacity"),
-			null
+			new Students(studentRepository.findBySessionId(id))
 		);
 		return jdbcTemplate.queryForObject(sql, rowMapper, id);
 	}

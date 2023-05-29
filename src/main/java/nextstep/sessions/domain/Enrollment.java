@@ -14,7 +14,7 @@ public class Enrollment {
 
 	private final int capacity;
 
-	private Students students;
+	private final Students students;
 
 	public Enrollment(StatusType statusType, int capacity, Students students) {
 		if (capacity < 0) {
@@ -25,7 +25,7 @@ public class Enrollment {
 		this.students = students;
 	}
 
-	public Student enroll(Student student, Students students) {
+	public Student enroll(Student student) {
 		if (!this.statusType.isRecruiting()) {
 			throw new NotRecruitingException("모집중인 강의가 아닙니다.");
 		}
@@ -36,7 +36,6 @@ public class Enrollment {
 			throw new AlreadySignUpException("이미 수강신청한 유저입니다.");
 		}
 
-		this.students = students;
 		this.students.add(student);
 
 		return student;

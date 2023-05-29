@@ -47,14 +47,10 @@ public class Session {
 	}
 
 	public Student enroll(NsUser nsUser) {
-		return this.enroll(nsUser, new Students());
-	}
-
-	public Student enroll(NsUser nsUser, Students students) {
 		if (nsUser.isGuestUser()) {
 			throw new GuestUserSignUpException("게스트 유저는 수강신청을 할 수 없습니다.");
 		}
-		return this.enrollment.enroll(new Student(this.id, nsUser.getId()), students);
+		return this.enrollment.enroll(new Student(this.id, nsUser.getId()));
 	}
 
 	public long getId() {
