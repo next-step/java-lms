@@ -27,10 +27,11 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session course = new Session("Test", PaymentTypeEnum.PAID);
-        int count = sessionRepository.save(course);
+        Session session = new Session("Test", PaymentTypeEnum.PAID);
+        int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(savedSession.getStatus()).isEqualTo(SessionStatusEnum.READY.name());
+        LOGGER.debug("Session: {}", savedSession);
     }
 }

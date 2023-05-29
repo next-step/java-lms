@@ -114,4 +114,19 @@ public class Session {
     public int getMaximumEnrollments() {
         return maximumEnrollments;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", title='" + title +
+                ", enrollments=" + enrollments +
+                ", maximumEnrollments=" + maximumEnrollments +
+                ", thumbnailUrl=" + thumbnailUrl +
+                ", paymentType=" + paymentType.name() +
+                ", status=" + status.name() +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }
