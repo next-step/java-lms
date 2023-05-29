@@ -128,8 +128,7 @@ public class Session {
         return enroll.isEnrolledSession(this.sessionId);
     }
 
-    public Session setSessionId(SessionId sessionId) {
+    public void setSessionId(SessionId sessionId) {
         this.sessionId = sessionId;
-        return this;
     }
 }

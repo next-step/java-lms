@@ -98,10 +98,11 @@ class SessionTest {
     @Test
     public void enrollCanOnlyOnRecruit() {
         //given
-        Session session = TestFixture.LIME_SESSION.setSessionId(new SessionId(22L));
+        Session session = TestFixture.LIME_SESSION;
+        session.setSessionId(new SessionId(22L));
+        session.toRecruitingState();
         NsUser user = TestFixture.BADAJIGI;
         //when
-        session.toRecruitingState();
         Enroll enroll = session.register(user.getUserCode(), 0);
         //then
         //assertThat(enroll.isEnrolledSession(session.getSessionId()))
@@ -129,11 +130,11 @@ class SessionTest {
     @Test
     public void notExceedMaxStudents() {
         //given
-        Session session = TestFixture.LIME_SESSION.setSessionId(new SessionId(111L));
-
+        Session session = TestFixture.LIME_SESSION;
+        session.setSessionId(new SessionId(111L));
+        session.toRecruitingState();
         NsUser user = TestFixture.SANJIGI;
         //when
-        session.toRecruitingState();
         session.adjustStudentCount(2L);
         Enroll enroll = session.register(user.getUserCode(), 0L);
         //then
