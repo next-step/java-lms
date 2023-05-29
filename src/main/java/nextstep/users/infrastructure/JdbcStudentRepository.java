@@ -4,7 +4,9 @@ import nextstep.users.domain.Student;
 import nextstep.users.domain.StudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcStudentRepository implements StudentRepository {
 
     private JdbcOperations jdbcTemplate;

@@ -1,9 +1,5 @@
 package nextstep.users.infrastructure;
 
-import nextstep.courses.domain.Cost;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.State;
-import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;

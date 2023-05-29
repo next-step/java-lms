@@ -33,7 +33,7 @@ public class SessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(1L).orElseThrow();
         assertThat(savedSession.getTitle()).isEqualTo(session.getTitle());
     }
 
