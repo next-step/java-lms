@@ -44,14 +44,14 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser loginUser) {
         validateDeleteAuthority(loginUser);
         this.deleted = true;
         return new DeleteHistory(ContentType.ANSWER, id, loginUser, LocalDateTime.now());
     }
 
-    private void validateDeleteAuthority(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+    private void validateDeleteAuthority(NsUser loginUser) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("삭제할 권한이 없습니다.");
         }
     }
@@ -64,8 +64,8 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public boolean isNotOwner(NsUser writer) {
+        return !this.writer.equals(writer);
     }
 
     public NsUser getWriter() {

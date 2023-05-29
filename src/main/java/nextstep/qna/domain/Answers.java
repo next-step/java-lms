@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> answers = new ArrayList<>();
@@ -16,12 +17,10 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
-        }
-        return deleteHistories;
+    public List<DeleteHistory> deleteAnswers(NsUser loginUser) {
+        return answers.stream()
+                .map(answer -> answer.delete(loginUser))
+                .collect(Collectors.toList());
     }
 
     public int count() {
