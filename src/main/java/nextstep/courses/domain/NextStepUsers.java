@@ -29,4 +29,8 @@ public class NextStepUsers {
     public int enrollmentCount() {
         return this.nextStepUsers.size();
     }
+
+    public int getMaximumUserCount() {
+        return this.maximumUserCount;
+    }
 }

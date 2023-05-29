@@ -32,7 +32,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(2, toTimeStamp(session.getSessionPeriod().getEndAt()));
             ps.setString(3, session.getPaymentType().getKey());
             ps.setString(4, session.getSessionStatus().getKey());
-            ps.setInt(5, session.enrollmentCount());
+            ps.setInt(5, session.getMaximumEnrollmentCount());
             ps.setString(6, session.getSessionImageUrl().value());
             ps.setLong(7, courseId);
             return ps;
