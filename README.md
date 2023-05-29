@@ -8,11 +8,13 @@
 - [X] 불필요한 래핑 클래스 제거 - Image 클래스
 - [X] 날짜 변수 클래스 분리
 - [X] 수강인원 변수 클래스 분리
-- [ ] 수강신청을 완료한 경우 필요하게 될 Student 클래스 생성
+- [X] 수강신청을 완료한 경우 필요하게 될 Student 클래스 생성
   - session id와 nsUser id를 가지는 Student와 같은 객체
-- [ ] 수강신청 메서드 수정
+- [X] 수강신청 메서드 수정
   - session.enroll(nsUser)과 같은 형태
   - ession 객체에게 수강 신청이 가능한지 여부를 확인하고, 수강 신청이 가능할 경우 수강 신청할 수 있도록 하는 로직
+- [ ] 수강취소 메서드 수정
+  - session.cancel(nsUser)과 같은 형태
 - [ ] Service Layer를 담당하는 Service 클래스도 추가
   - Service Layer의 역할은 무엇인지 고민
 

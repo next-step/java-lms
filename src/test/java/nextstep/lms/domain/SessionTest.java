@@ -1,5 +1,6 @@
 package nextstep.lms.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,15 +10,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
+    public static final Session CLASS_ONE = new Session(
+            1L, LocalDate.of(2023, 5, 22), LocalDate.of(2023, 5, 22),
+            SessionState.RECRUITING, SessionType.FREE, 0, 5, 0L);
 
     private Session session;
 
     void setUp(int studentCapacity) {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 23);
-        Long longCover = 0L;
+        Long imageCover = 0L;
 
-        session = new Session(startDate, endDate, longCover, SessionType.FREE, studentCapacity);
+        session = new Session(startDate, endDate, imageCover, SessionType.FREE, studentCapacity);
     }
 
     @Test
@@ -78,7 +82,7 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
 
-        assertThatThrownBy(() -> session.register())
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -89,10 +93,10 @@ public class SessionTest {
         setUp(studentCapacity);
 
         session.recruitStudents();
-        session.register();
-        session.register();
+        session.enroll(NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.SANJIGI);
 
-        assertThatThrownBy(() -> session.register())
+        assertThatThrownBy(() -> session.enroll(NsUserTest.BADAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -102,8 +106,9 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
         session.recruitStudents();
+        session.enroll(NsUserTest.JAVAJIGI);
 
-        assertThat(session.register())
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);
     }
 
@@ -113,10 +118,12 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
         session.recruitStudents();
-        session.register();
-        session.register();
+        session.enroll(NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.SANJIGI);
 
-        assertThat(session.cancel())
+        session.cancel();
+
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);
     }
 

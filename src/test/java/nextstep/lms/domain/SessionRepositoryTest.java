@@ -1,6 +1,7 @@
 package nextstep.lms.domain;
 
 import nextstep.lms.infrastructure.JdbcSessionRepository;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,11 +35,11 @@ class SessionRepositoryTest {
     private Session sessionSetUp() {
         LocalDate startDate = LocalDate.of(2023, 5, 20);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
-        Long longCover = new Long(1L);
+        Long imageCover = 1L;
         SessionType sessionType = SessionType.FREE;
         int studentCapacity = 5;
 
-        return Session.createSession(startDate, endDate, longCover, sessionType, studentCapacity);
+        return Session.createSession(startDate, endDate, imageCover, sessionType, studentCapacity);
     }
 
     @Test
@@ -54,8 +55,8 @@ class SessionRepositoryTest {
     void changeImageCoverTest() {
         Session findSession = sessionRepository.findById(1L);
 
-        Long newLong = new Long(2L);
-        findSession.changeImageCover(newLong);
+        Long imageCover = 2L;
+        findSession.changeImageCover(imageCover);
         sessionRepository.changeImage(findSession);
 
         Session newSession = sessionRepository.findById(1L);
@@ -81,7 +82,7 @@ class SessionRepositoryTest {
     @DisplayName("학생 강의 수강 신청 테스트")
     void studentRegisterTest() {
         Session findSession = sessionRepository.findById(2L);
-        findSession.register();
+        findSession.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.updateRegisteredStudent(findSession);
 
         Session newSession = sessionRepository.findById(2L);

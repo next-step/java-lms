@@ -59,4 +59,13 @@ create table session (
     , student_capacity int
     , image_id bigint
     , primary key (id)
-)
+);
+
+create table student (
+    ns_user_id bigint not null
+    , session_id bigint not null
+    , register_type varchar(50) not null
+    , created_at timestamp default current_timestamp
+    , updated_at timestamp default current_timestamp on update current_timestamp
+    , primary key (ns_user_id, session_id)
+);

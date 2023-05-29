@@ -1,5 +1,7 @@
 package nextstep.lms.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
 
 public class Session {
@@ -57,10 +59,11 @@ public class Session {
         return sessionState;
     }
 
-    public int register() {
+    public Student enroll(NsUser nsUser) {
         validateSessionState();
+        studentCapacity.enroll();
 
-        return studentCapacity.enroll();
+        return Student.init(nsUser, this);
     }
 
     private void validateSessionState() {
@@ -70,6 +73,7 @@ public class Session {
     }
 
     public int cancel() {
+
         return studentCapacity.cancel();
     }
 
@@ -83,6 +87,10 @@ public class Session {
         if (!sessionState.equals(SessionState.READY)) {
             throw new IllegalArgumentException("수정 기간이 지났습니다.");
         }
+    }
+
+    public boolean isFree() {
+        return sessionType.equals(SessionType.FREE);
     }
 
     public Long getId() {
