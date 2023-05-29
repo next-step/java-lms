@@ -45,6 +45,10 @@ public class Session {
         return this.nextStepUsers.enrollmentCount();
     }
 
+    public int getMaximumEnrollmentCount() {
+        return nextStepUsers.enrollmentCount();
+    }
+
     public Long getId() {
         return id;
     }
@@ -59,6 +63,10 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public NextStepUsers getNextStepUsers() {
+        return this.nextStepUsers;
     }
 
     public SessionImageUrl getSessionImageUrl() {
