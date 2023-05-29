@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 import nextstep.courses.domain.session.SessionStudent;
 import nextstep.courses.domain.session.SessionStudentRepository;

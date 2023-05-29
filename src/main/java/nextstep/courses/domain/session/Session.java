@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import exception.LmsException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import nextstep.courses.domain.Course;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
@@ -28,13 +27,8 @@ public class Session {
     this.sessionPeriod = new SessionPeriod(startAt, finishAt);
   }
 
-  public Session(Long id, Course course, SessionPayType sessionPayType, SessionStatus sessionStatus, int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt) {
-    this.id = id;
-    this.sessionPayType = sessionPayType;
-    this.sessionStatus = sessionStatus;
-    this.capacity = new SessionCapacity(maxPersonnelCount);
-    this.courseId = course.getId();
-    this.sessionPeriod = new SessionPeriod(startAt, finishAt);
+  public Session(Long id, Course course, SessionPayType payType, SessionStatus sessionStatus, int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt) {
+    this(id, course.getId(), payType, sessionStatus, maxPersonnelCount, startAt, finishAt);
     this.course = course;
   }
 

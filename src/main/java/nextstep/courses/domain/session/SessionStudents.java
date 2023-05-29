@@ -8,6 +8,7 @@ import nextstep.users.domain.NsUser;
 public class SessionStudents {
 
   private final List<SessionStudent> students;
+
   public SessionStudents(List<SessionStudent> students) {
     this.students = students;
   }
