@@ -26,4 +26,12 @@ public class SessionUser {
     public boolean isApproved() {
         return this.sessionUserStatus.isApproved();
     }
+
+    public NsUser getNextStepUser() {
+        return this.nextStepUser;
+    }
+
+    public SessionUserStatus getSessionUserStatus() {
+        return this.sessionUserStatus;
+    }
 }

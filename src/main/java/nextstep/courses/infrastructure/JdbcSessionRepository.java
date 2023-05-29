@@ -65,14 +65,15 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public long saveSessionUser(Session session, NsUser nextStepUser) {
-        String sql = "insert into session_users(user_id, session_id) values(?, ?)";
+    public long saveSessionUser(Session session, SessionUser sessionUser) {
+        String sql = "insert into session_users(user_id, session_id, status) values(?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, nextStepUser.getId());
+            ps.setLong(1, sessionUser.getNextStepUser().getId());
             ps.setLong(2, session.getId());
+            ps.setString(3, sessionUser.getSessionUserStatus().getKey());
             return ps;
         }, keyHolder);
 
@@ -81,12 +82,12 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public List<NsUser> findAllUserBySessionId(Long sessionId) {
-        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at from session_users su " +
-                "inner join ns_user u on (su.user_id = u.id) " +
+    public List<SessionUser> findAllUserBySessionId(Long sessionId) {
+        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at, su.status " +
+                "from session_users su inner join ns_user u on (su.user_id = u.id) " +
                 "where su.session_id = ?";
 
-        RowMapper<NsUser> rowMapper = userRowMapper();
+        RowMapper<SessionUser> rowMapper = userRowMapper();
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
@@ -104,15 +105,18 @@ public class JdbcSessionRepository implements SessionRepository {
         );
     }
 
-    private RowMapper<NsUser> userRowMapper() {
-        return (rs, rowNum) -> new NsUser(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7))
+    private RowMapper<SessionUser> userRowMapper() {
+        return (rs, rowNum) -> new SessionUser(
+                new NsUser(
+                        rs.getLong(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        toLocalDateTime(rs.getTimestamp(6)),
+                        toLocalDateTime(rs.getTimestamp(7))
+                ),
+                SessionUserStatus.valueOf(rs.getString(8))
         );
     }
 

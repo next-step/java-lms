@@ -15,12 +15,14 @@ create table session
     end_at             timestamp   not null,
     payment_type       varchar(20) not null,
     status             varchar(20) not null,
-    recruitment_status varchar(20) not null,
     maximum_user_count int,
     image_url          varchar(255),
     course_id          bigint,
     primary key (id)
 );
+
+alter table session
+    add recruitment_status varchar(20) not null;
 
 create table session_users
 (
@@ -29,6 +31,9 @@ create table session_users
     session_id bigint not null,
     primary key (id)
 );
+
+alter table session_users
+    add status varchar(20) not null;
 
 create table ns_user
 (

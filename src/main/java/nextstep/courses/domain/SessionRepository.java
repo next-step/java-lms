@@ -11,7 +11,7 @@ public interface SessionRepository {
 
     List<Session> findByCourseId(Long courseId);
 
-    long saveSessionUser(Session session, NsUser nextStepUser);
+    long saveSessionUser(Session session, SessionUser sessionUser);
 
-    List<NsUser> findAllUserBySessionId(Long sessionId);
+    List<SessionUser> findAllUserBySessionId(Long sessionId);
 }

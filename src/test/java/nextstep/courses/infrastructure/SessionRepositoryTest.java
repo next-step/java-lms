@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionUser;
 import nextstep.courses.fixture.SessionFixture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -59,16 +60,16 @@ public class SessionRepositoryTest {
         NsUser nsUser = NsUserTest.JAVAJIGI;
         Session session = SessionFixture.createRecruitingSession();
 
-        long id = sessionRepository.saveSessionUser(session, nsUser);
+        long id = sessionRepository.saveSessionUser(session, new SessionUser(nsUser));
         assertThat(id).isPositive();
     }
 
     @Test
     void findAllUserBySessionId() {
         Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
-        sessionRepository.saveSessionUser(savedSession, NsUserTest.JAVAJIGI);
+        sessionRepository.saveSessionUser(savedSession, new SessionUser(NsUserTest.JAVAJIGI));
 
-        List<NsUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
+        List<SessionUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
     }
 }

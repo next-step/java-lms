@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionUser;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -37,13 +38,13 @@ public class SessionService {
     }
 
     @Transactional
-    public long enroll(Session session, NsUser nextStepUser) {
-        session.enroll(nextStepUser);
-        return sessionRepository.saveSessionUser(session, nextStepUser);
+    public long enroll(Session session, SessionUser sessionUser) {
+        session.enroll(sessionUser);
+        return sessionRepository.saveSessionUser(session, sessionUser);
     }
 
     @Transactional(readOnly = true)
-    public List<NsUser> findAllUserBySessionId(Long sessionId) {
+    public List<SessionUser> findAllUserBySessionId(Long sessionId) {
         return sessionRepository.findAllUserBySessionId(sessionId);
     }
 }
