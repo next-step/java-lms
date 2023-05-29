@@ -16,25 +16,28 @@ public class Session {
 
     private Image coverImage;
 
-    public static Session of(Long id, Course course) {
-        return new Session(id, course, LocalDateTime.MIN, LocalDateTime.MAX, Image.ofDefault());
+    private boolean isFree;
+
+    public static Session ofFreeSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
+        return new Session(id, course, from, to, coverImage, true);
     }
 
-    public static Session of(Long id, Course course, Image coverImage) {
-        return new Session(id, course, LocalDateTime.MIN, LocalDateTime.MAX, coverImage);
+    public static Session ofChargedSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
+        return new Session(id, course, from, to, coverImage, false);
     }
 
-    public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to) {
-        return new Session(id, course, from, to, Image.ofDefault());
+    public static Session ofDefaultCoverImage(Long id, Course course, LocalDateTime from, LocalDateTime to, boolean isFree) {
+        return new Session(id, course, from, to, Image.ofDefault(), isFree);
     }
 
-    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
+    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree) {
         validatePeriod(from, to);
         this.id = id;
         this.course = course;
         this.from = from;
         this.to = to;
         this.coverImage = coverImage;
+        this.isFree = isFree;
     }
 
     public void toCourse(Course course) {
@@ -43,6 +46,10 @@ public class Session {
 
     public Image getCoverImage() {
         return coverImage;
+    }
+
+    public boolean isFree() {
+        return isFree;
     }
 
     private static void validatePeriod(LocalDateTime from, LocalDateTime to) {
