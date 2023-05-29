@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.Students;
 import nextstep.users.domain.NsUser;
@@ -29,15 +30,13 @@ public class SessionService {
 	}
 
 	@Transactional
-	public void signUp(long sessionId, String userId) {
+	public void enroll(long sessionId, String userId) {
 		Session session = sessionRepository.findById(sessionId);
 		Students students = new Students(studentRepository.findBySessionId(sessionId));
-		session.setStudents(students);
 
 		NsUser nsUser = userRepository.findByUserId(userId).orElse(NsUser.GUEST_USER);
 
-		session.signUp(nsUser);
-
-		studentRepository.save(session.lastStudent());
+		Student student = session.enroll(nsUser, students);
+		studentRepository.save(student);
 	}
 }

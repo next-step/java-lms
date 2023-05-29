@@ -26,7 +26,7 @@ public class JdbcSessionRepository implements SessionRepository {
 		String sql = "INSERT INTO session (course_id, start_at, end_at, covered_image_url, free, status_type, capacity, created_at) "
 			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 		return jdbcTemplate.update(sql, session.getCourseId(), session.getSessionDate().getStartAt(), session.getSessionDate().getEndAt(),
-			session.getCoveredImageUrl(), session.isFree(), session.getStatusType().toString(), session.getCapacity(), session.getCreatedAt());
+			session.getCoveredImageUrl(), session.isFree(), session.getEnrollment().getStatusType().toString(), session.getEnrollment().getCapacity(), session.getCreatedAt());
 	}
 
 	@Override

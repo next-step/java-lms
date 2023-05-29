@@ -53,18 +53,19 @@ public class SessionTest {
 	@Test
 	void test3() {
 		this.session.open();
+		this.session.enroll(NsUserTest.JAVAJIGI);
 
 		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, 100,
 			new Students(List.of(new Student(1L, NsUserTest.JAVAJIGI.getId()))));
 		expected.open();
 
-		assertThat(this.session.signUp(NsUserTest.JAVAJIGI)).isEqualTo(expected);
+		assertThat(this.session).isEqualTo(expected);
 	}
 
 	@DisplayName("수강 신청 불가 - 준비중")
 	@Test
 	void test4() {
-		assertThatThrownBy(() -> this.session.signUp(NsUserTest.JAVAJIGI)).isInstanceOf(NotRecruitingException.class);
+		assertThatThrownBy(() -> this.session.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(NotRecruitingException.class);
 	}
 
 	@DisplayName("수강 신청 불가 - 종료")
@@ -72,7 +73,7 @@ public class SessionTest {
 	void test5() {
 		this.session.close();
 
-		assertThatThrownBy(() -> this.session.signUp(NsUserTest.JAVAJIGI)).isInstanceOf(NotRecruitingException.class);
+		assertThatThrownBy(() -> this.session.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(NotRecruitingException.class);
 	}
 
 	@DisplayName("수강 신청 불가 - 모집인원 초과")
@@ -80,9 +81,9 @@ public class SessionTest {
 	void test6() {
 		Session numberFullSession = new Session(1L, 1L, sessionDate, coveredImageUrl, true, 1, new Students());
 		numberFullSession.open();
-		numberFullSession.signUp(NsUserTest.JAVAJIGI);
+		numberFullSession.enroll(NsUserTest.JAVAJIGI);
 
-		assertThatThrownBy(() -> numberFullSession.signUp(NsUserTest.SANJIGI)).isInstanceOf(NumberFullException.class);
+		assertThatThrownBy(() -> numberFullSession.enroll(NsUserTest.SANJIGI)).isInstanceOf(NumberFullException.class);
 	}
 
 	@DisplayName("수강 신청 불가 - 게스트 유저")
@@ -90,7 +91,7 @@ public class SessionTest {
 	void test7() {
 		this.session.open();
 
-		assertThatThrownBy(() -> this.session.signUp(NsUser.GUEST_USER)).isInstanceOf(GuestUserSignUpException.class);
+		assertThatThrownBy(() -> this.session.enroll(NsUser.GUEST_USER)).isInstanceOf(GuestUserSignUpException.class);
 	}
 
 	@DisplayName("수강 신청 불가 - 해당 유저로 이미 수강 신청 완료")
@@ -98,8 +99,8 @@ public class SessionTest {
 	void test8() {
 		this.session.open();
 
-		this.session.signUp(NsUserTest.JAVAJIGI);
-		assertThatThrownBy(() -> this.session.signUp(NsUserTest.JAVAJIGI)).isInstanceOf(AlreadySignUpException.class);
+		this.session.enroll(NsUserTest.JAVAJIGI);
+		assertThatThrownBy(() -> this.session.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(AlreadySignUpException.class);
 	}
 
 	@DisplayName("수강 가능 인원 예외 케이스 - 음수")
