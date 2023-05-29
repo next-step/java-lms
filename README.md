@@ -15,7 +15,7 @@
   - ession 객체에게 수강 신청이 가능한지 여부를 확인하고, 수강 신청이 가능할 경우 수강 신청할 수 있도록 하는 로직
 - [X] 수강취소 메서드 수정
   - session.cancel(nsUser)과 같은 형태
-- [ ] Service Layer를 담당하는 Service 클래스도 추가
+- [X] Service Layer를 담당하는 Service 클래스도 추가
   - Service Layer의 역할은 무엇인지 고민
 
 ### 1차 피드백 수정

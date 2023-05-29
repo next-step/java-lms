@@ -7,10 +7,9 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
@@ -40,7 +39,7 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Student findByNsUserIdAndSessionId(Long nsUserId, Long sessionId) {
+    public Optional<Student> findByNsUserIdAndSessionId(Long nsUserId, Long sessionId) {
         String sql = "sELECt ns_user_id" +
                 ", session_id" +
                 ", register_type" +
@@ -57,7 +56,7 @@ public class JdbcStudentRepository implements StudentRepository {
                 toLocalDateTime(rs.getTimestamp(5))
         ));
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
     }
 
     private RegisterType toRegisterType(String registerType) {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -58,7 +59,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         String sql = "sELECt id" +
                 ", start_date" +
                 ", end_date" +
@@ -80,7 +81,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getInt(7),
                 rs.getLong(8));
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
     private LocalDate toLocalDateTime(Date date) {

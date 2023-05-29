@@ -72,10 +72,11 @@ public class Session {
         }
     }
 
-    public int cancel(Student student) {
+    public Student cancel(Student student) {
         student.sessionCancel();
+        studentCapacity.cancel();
 
-        return studentCapacity.cancel();
+        return student;
     }
 
     public SessionType changeSessionType(SessionType sessionType) {

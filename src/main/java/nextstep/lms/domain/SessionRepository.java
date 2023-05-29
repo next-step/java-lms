@@ -1,11 +1,13 @@
 package nextstep.lms.domain;
 
+import java.util.Optional;
+
 public interface SessionRepository {
     int save(Session session);
 
     void changeImage(Session session);
 
-    Session findById(Long id);
+    Optional<Session> findById(Long id);
 
     void changeSessionState(Session session);
 

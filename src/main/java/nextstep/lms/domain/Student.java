@@ -56,4 +56,15 @@ public class Student {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "nsUserId=" + nsUserId +
+                ", sessionId=" + sessionId +
+                ", registerType=" + registerType +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
