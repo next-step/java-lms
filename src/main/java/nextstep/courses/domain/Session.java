@@ -24,11 +24,6 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(String name, SessionType type) {
-        this(0L, null, null, new SessionCapacity(0, 10), name, type,
-                SessionStatus.READY, LocalDateTime.now(), null);
-    }
-
     public Session(Long id, Course course, SessionImage image, SessionCapacity capacity, String name, SessionType type,
                    SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -62,11 +57,39 @@ public class Session {
         capacity.changeNumberMax(numberMax);
     }
 
-    public SessionStatus getStatus() {
-        return status;
+    public Long getId() {
+        return id;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public SessionImage getImage() {
+        return image;
     }
 
     public SessionCapacity getCapacity() {
         return capacity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
