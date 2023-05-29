@@ -15,7 +15,7 @@
 
 - step1 : https://github.com/next-step/java-lms/pull/37
 - step2 : https://github.com/next-step/java-lms/pull/81
-- step3 : null
+- step3 : https://github.com/next-step/java-lms/pull/132
 - step4 : null
 
 ## Step1
@@ -158,6 +158,30 @@
 
 
 ## Step3
+
+### PR 글쓰기
+```text
+
+안녕하세요 리뷰어님 이번 PR 에서 다룬 내용들은 아래와 같습니다
+
+### 비기능적 요구사항
+
+- [x] 학습목표 달성하기 : 도메인 구조 유지하면서 DB 테이블과 매핑
+- [x] 도메인 객체에 로직 구현에 집중하자. DB 조회성능은 후순위이다
+- [x] 도메인 구조를 유지하는게 관건이다. DB 쿼리가 성능이 하락하는 trade-off 를 감수하더라도
+
+### 기능적 요구사항
+
+- [x] 과정(Course) 관련 CRUD Repository method 구현
+- [x] 강의(Session) 관련 CRUD Repository method 구현
+- [x] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가지는 Repository method 구현
+- [x] 이외 Domain Class 에 대한  CRUD Repository method 구현
+
+### 이외 추가사항
+
+
+```
+
 
 ### DB 연결 정보 정리
 
