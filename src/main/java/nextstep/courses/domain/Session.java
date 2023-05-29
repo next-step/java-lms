@@ -48,10 +48,8 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Student enroll(NsUser nsUser) throws AlreadyEnrollmentException {
-        Student student = new Student(nsUser.getId(), this.id);
-        enrollment.enroll(student);
-        return student;
+    public void enroll(NsUser nsUser) throws AlreadyEnrollmentException {
+        enrollment.enroll(nsUser);
     }
 
     public Long getId() {

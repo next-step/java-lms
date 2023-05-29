@@ -4,7 +4,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
@@ -12,8 +11,7 @@ public class SessionTest {
     void 수강신청_성공() throws Exception {
         NsUser loginUser = NsUsers.createNsUser(4L);
         Session dut = Sessions.createSessionWithEnrollment(1L, 50, SessionStatus.ENROLLING);
-        Student student = dut.enroll(loginUser);
-        assertThat(student).isEqualTo(new Student(loginUser.getId(), dut.getId()));
+        dut.enroll(loginUser);
     }
 
     @Test
