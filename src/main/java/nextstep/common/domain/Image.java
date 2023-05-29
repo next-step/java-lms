@@ -1,7 +1,10 @@
 package nextstep.common.domain;
 
+import nextstep.common.InvalidImageUrlException;
+
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Image {
     private Long imageId;
@@ -9,8 +12,15 @@ public class Image {
     private String imageUrl;
 
     public Image(Long imageId, String imageUrl) {
+        validateImageUrl(imageUrl);
         this.imageId = imageId;
         this.imageUrl = imageUrl;
+    }
+
+    private void validateImageUrl(String imageUrl) {
+        if(imageUrl==null || imageUrl.isBlank()) {
+            throw new InvalidImageUrlException();
+        }
     }
 
     public static Image of(String imageLink) {
