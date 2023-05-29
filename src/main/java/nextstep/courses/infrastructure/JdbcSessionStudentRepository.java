@@ -18,6 +18,15 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private static final RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent (
+        rs.getLong("id"),
+        rs.getLong("session_id"),
+        rs.getLong("ns_user_id"),
+        rs.getBoolean("cancel_flag"),
+        LocalDateTimeUtils.of(rs.getTimestamp("create_at")),
+        LocalDateTimeUtils.of(rs.getTimestamp("update_at"))
+    );
+
     @Override
     public Long takeSession(Long sessionId, Long nsUserId) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -46,14 +55,6 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
     public List<SessionStudent> getStudents(Long sessionId) {
         final String sql = "SELECT id, session_id, ns_user_id, cancel_flag, create_at, update_at FROM session_student WHERE session_id = ?";
 
-        RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent (
-            rs.getLong("id"),
-            rs.getLong("session_id"),
-            rs.getLong("ns_user_id"),
-            rs.getBoolean("cancel_flag"),
-            LocalDateTimeUtils.of(rs.getTimestamp("create_at")),
-            LocalDateTimeUtils.of(rs.getTimestamp("update_at"))
-        );
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }

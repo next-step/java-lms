@@ -5,6 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-public abstract class RollackableIntegrationTest extends BaseTest {
+public abstract class RollackableIntegrationTest {
 
 }

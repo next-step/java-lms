@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import utils.AssertionUtils;
 
 class SessionServiceTest extends RollackableIntegrationTest {
 
@@ -35,7 +36,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
   @DisplayName("존재하지 않는 강의는 수강 할 수 없다.")
   void 존재_하지_않는_강의_수강_불가() {
     Long 존재하지_않는_강의_번호 = 999999999L;
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> sut.takeSession(유저, 존재하지_않는_강의_번호),
         SessionExceptionCode.SESSION_NOT_FOUND
     );
@@ -49,7 +50,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
     sut.takeSession(유저, 강의_모집중_정원_3명.getId());
 
     // when && then
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> sut.takeSession(유저, 강의_모집중_정원_3명.getId()),
         SessionExceptionCode.STUDENT_ALREADY_REGISTERED
     );
@@ -61,7 +62,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
     // given
 
     // when && then
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> sut.takeSession(유저, 강의_준비중.getId()),
         SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED
     );
@@ -77,7 +78,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
     sut.takeSession(유저, 최대_수강인원_1명인_강의.getId());
 
     // when && then
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> sut.takeSession(user, 최대_수강인원_1명인_강의.getId()),
         SessionExceptionCode.EXCEED_MAX_PERSONNEL_COUNT
     );

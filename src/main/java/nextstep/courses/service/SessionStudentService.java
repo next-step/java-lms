@@ -29,11 +29,7 @@ public class SessionStudentService {
   }
 
   public SessionStudents getStudentsOfSession(Session session) {
-    List<SessionStudent> students = sessionStudentRepository.getStudents(session.getId())
-        .stream()
-        .map(student -> new SessionStudent(student, nsUserService.getUser(student.getNsUserId())))
-        .collect(Collectors.toList());
-
+    List<SessionStudent> students = sessionStudentRepository.getStudents(session.getId());
     return new SessionStudents(students);
   }
 }

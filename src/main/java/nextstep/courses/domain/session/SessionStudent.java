@@ -12,20 +12,6 @@ public class SessionStudent {
   private LocalDateTime createAt;
   private LocalDateTime updateAt;
 
-  private NsUser nsUser;
-  private Session session;
-
-  public SessionStudent(SessionStudent student) {
-    this.id = student.id;
-    this.nsUserId = student.nsUserId;
-    this.sessionId = student.sessionId;
-    this.cancelFlag = student.cancelFlag;
-    this.createAt = student.createAt;
-    this.updateAt = student.updateAt;
-    this.nsUser = student.nsUser;
-    this.session = student.session;
-  }
-
   public SessionStudent(Long id, Long sessionId, Long nsUserId, boolean cancelFlag, LocalDateTime createAt, LocalDateTime updateAt) {
     this.id = id;
     this.nsUserId = nsUserId;
@@ -35,18 +21,10 @@ public class SessionStudent {
     this.updateAt = updateAt;
   }
 
-  public SessionStudent(Session session, NsUser nsUser) {
-    this.session = session;
+  public SessionStudent(Session session, Long nsUserId) {
     this.sessionId = session.getId();
-    this.nsUser = nsUser;
-    this.nsUserId = nsUser.getId();
+    this.nsUserId = nsUserId;
     this.cancelFlag = false;
-  }
-
-  public SessionStudent(SessionStudent student, NsUser nsUser) {
-    this(student);
-    this.nsUser = nsUser;
-    this.nsUserId = nsUser.getId();
   }
 
   public boolean isNotCancelled() {
@@ -57,16 +35,8 @@ public class SessionStudent {
     return nsUserId;
   }
 
-  public boolean isUserOf(NsUser nsUser) {
-    return this.nsUser.matchUser(nsUser);
-  }
-
   public boolean isUserOf(Long nsUserId) {
-    return this.nsUserId.equals(nsUser.getId());
-  }
-
-  public NsUser getNsUser() {
-    return nsUser;
+    return this.nsUserId.equals(nsUserId);
   }
 
   public Long getSessionId() {

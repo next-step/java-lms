@@ -18,7 +18,10 @@ public class Session {
   private Course course;
   private SessionStudents students = new SessionStudents(new ArrayList<>());
 
-  public Session(Long id, Long courseId, SessionPayType sessionPayType, SessionStatus sessionStatus, int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt) {
+  public Session(
+      Long id, Long courseId, SessionPayType sessionPayType, SessionStatus sessionStatus,
+      int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
+  ) {
     this.id = id;
     this.sessionPayType = sessionPayType;
     this.sessionStatus = sessionStatus;
@@ -27,7 +30,10 @@ public class Session {
     this.sessionPeriod = new SessionPeriod(startAt, finishAt);
   }
 
-  public Session(Long id, Course course, SessionPayType payType, SessionStatus sessionStatus, int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt) {
+  public Session(
+      Long id, Course course, SessionPayType payType, SessionStatus sessionStatus,
+      int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
+  ) {
     this(id, course.getId(), payType, sessionStatus, maxPersonnelCount, startAt, finishAt);
     this.course = course;
   }
@@ -47,11 +53,11 @@ public class Session {
       throw new LmsException(SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED);
     }
 
-    if (this.cannotAcceptMoeStudent()) {
+    if (this.cannotAcceptMoreStudent()) {
       throw new LmsException(SessionExceptionCode.EXCEED_MAX_PERSONNEL_COUNT);
     }
 
-    SessionStudent student = new SessionStudent(this, nsUser);
+    SessionStudent student = new SessionStudent(this, nsUser.getId());
     students.addStudent(student);
     return student;
   }
@@ -85,14 +91,14 @@ public class Session {
   }
 
   public long getCurrentStudentSize() {
-    return students.getCurrentStudentCnt();
+    return students.getCurrentStudentCount();
   }
 
   public boolean canAcceptMoreStudent() {
     return this.getMaxCapacity() > this.getCurrentStudentSize();
   }
 
-  public boolean cannotAcceptMoeStudent() {
+  public boolean cannotAcceptMoreStudent() {
     return !this.canAcceptMoreStudent();
   }
 }

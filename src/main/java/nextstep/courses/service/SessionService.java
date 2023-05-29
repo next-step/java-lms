@@ -8,6 +8,7 @@ import nextstep.courses.domain.session.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SessionService {
@@ -20,12 +21,9 @@ public class SessionService {
     this.sessionStudentService = sessionStudentService;
   }
 
+  @Transactional
   public void takeSession (NsUser nsUser, Long sessionId) {
     Session session = this.getSessionWithStudents(sessionId);
-    if (session.getSessionStatus() != SessionStatus.RECRUITING) {
-      throw new LmsException(SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED);
-    }
-
     sessionStudentService.enrollStudent(session, nsUser);
   }
 

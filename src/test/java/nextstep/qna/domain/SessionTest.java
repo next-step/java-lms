@@ -1,12 +1,10 @@
 package nextstep.qna.domain;
 
-import config.BaseTest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.SessionPayType;
-import nextstep.courses.domain.session.SessionStudent;
 import nextstep.courses.domain.session.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
@@ -15,8 +13,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.AssertionUtils;
 
-public class SessionTest extends BaseTest {
+public class SessionTest {
 
   public static final Session S1 = new Session(1L, CourseTest.C1,
       SessionPayType.PAID,
@@ -62,7 +61,7 @@ public class SessionTest extends BaseTest {
     session1.addPersonnel(user1);
 
     // when & then
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> session1.addPersonnel(user2),
         SessionExceptionCode.EXCEED_MAX_PERSONNEL_COUNT
     );
@@ -75,7 +74,7 @@ public class SessionTest extends BaseTest {
     final Session 준비중인_강의 = new Session(S2, getEmptyStudents());
 
     // when & then
-    super.assertThatThrowsLmsException(
+    AssertionUtils.assertThatThrowsLmsException(
         () -> 준비중인_강의.addPersonnel(user2),
         SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED
     );

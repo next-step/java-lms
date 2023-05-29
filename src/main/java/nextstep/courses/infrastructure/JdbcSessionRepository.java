@@ -20,6 +20,16 @@ public class JdbcSessionRepository implements SessionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private static final RowMapper<Session> singleSessionRowMapper = (rs, rowNum) -> new Session (
+        rs.getLong("id"),
+        rs.getLong("course_id"),
+        SessionPayType.valueOf(rs.getString("session_pay_type")),
+        SessionStatus.valueOf(rs.getString("session_status")),
+        rs.getInt("capacity"),
+        LocalDateTimeUtils.of(rs.getTimestamp("start_at")),
+        LocalDateTimeUtils.of(rs.getTimestamp("finish_at"))
+    );
+
     @Override
     public int save(Session session) {
         final String sql = "INSERT INTO session(course_id, session_pay_type, session_status, capacity, start_at, finish_at ) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -38,18 +48,8 @@ public class JdbcSessionRepository implements SessionRepository {
     public Optional<Session> findById(Long id) {
         final String sql = "SELECT id, course_id, session_pay_type, session_status, capacity, start_at, finish_at FROM session WHERE id = ?";
 
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session (
-                rs.getLong("id"),
-                rs.getLong("course_id"),
-                SessionPayType.valueOf(rs.getString("session_pay_type")),
-                SessionStatus.valueOf(rs.getString("session_status")),
-                rs.getInt("capacity"),
-                LocalDateTimeUtils.of(rs.getTimestamp("start_at")),
-                LocalDateTimeUtils.of(rs.getTimestamp("finish_at"))
-        );
-
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, singleSessionRowMapper, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
