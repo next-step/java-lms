@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.SessionStateNotOnException;
+import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
 import nextstep.users.domain.StudentTest;
 import nextstep.users.domain.StudentsTest;
@@ -35,7 +35,7 @@ public class SessionTest {
     void addStudent_stateOnException() {
         assertThatThrownBy(() -> {
             s1.enroll(StudentTest.student1);
-        }).isInstanceOf(SessionStateNotOnException.class).hasMessageContaining("준비 중인 강의입니다.");
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("준비 중인 강의입니다.");
     }
 
     @Test
@@ -43,7 +43,7 @@ public class SessionTest {
     void addStudent_stateOffException() {
         assertThatThrownBy(() -> {
             s3.enroll(StudentTest.student1);
-        }).isInstanceOf(SessionStateNotOnException.class).hasMessageContaining("모집 종료된 강의입니다.");
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("모집 종료된 강의입니다.");
     }
 
     static Session createSession(Cost cost, State state, int maxUser) {

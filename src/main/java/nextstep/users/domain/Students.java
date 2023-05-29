@@ -11,8 +11,13 @@ public class Students {
         this.students = new ArrayList<>();
     }
 
-    public void addStudent(Student student) {
+    public Students addStudent(Student student) {
         students.add(student);
+        return this;
+    }
+
+    public boolean isDuplicate(Student student) {
+        return students.contains(student);
     }
 
     public int size() {
