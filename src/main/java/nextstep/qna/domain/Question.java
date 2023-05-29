@@ -71,10 +71,11 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void deleted(NsUser loginUser) throws CannotDeleteException {
+    public void deleted(NsUser loginUser, DeleteHistories deleteHistories) throws CannotDeleteException {
         ensureOwnedByUser(loginUser);
         ensureAllAnswersOwnedByUser(loginUser);
         this.deleted = true;
+        deleteHistoriesFromAnswers(deleteHistories);
     }
 
     public boolean isDeleted() {
@@ -90,17 +91,17 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void ensureOwnedByUser(NsUser loginUser) throws CannotDeleteException {
+    void ensureOwnedByUser(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public void deleteHistoriesFromAnswers(DeleteHistories deleteHistories) {
+    private void deleteHistoriesFromAnswers(DeleteHistories deleteHistories) {
         answers.deleteHistories(deleteHistories);
     }
 
-    public void ensureAllAnswersOwnedByUser(NsUser loginUser) throws CannotDeleteException {
+    void ensureAllAnswersOwnedByUser(NsUser loginUser) throws CannotDeleteException {
         answers.ensureAllAnswersOwnedByUser(loginUser);
     }
 }
