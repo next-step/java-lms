@@ -177,8 +177,18 @@
 - [x] 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가지는 Repository method 구현
 - [x] 이외 Domain Class 에 대한  CRUD Repository method 구현
 
-### 이외 추가사항
+### step 을 진행하며 생각한것들
 
+- Test 작성 클래스 : `Interface @@Repository` VS `Class Jdbc@@RepositoryImpl` 고민
+  - 제 생각에는 `Interface @@Repository`  클래스를 기준으로 Test 를 작성하는것이 맞다고 판단하고 진행했습니다.
+  - 왜냐하면 CRUD 기능이 잘 동작하는지를 검증해야지,  Jdbc로 구현하는지 혹은 다른 DB 접근기술로 구현하는지에 대해서 테스트가 의존적이면 안된다고 생각했기 때문입니다.
+  
+- Course > Term > Session 3 depth 연관관계를 2단계로 간소화
+  - 도메인의 기능요구사항 정도로 봤을때 3 depth 연관관계 는 필요이상으로 복잡하다는 생각이 들었고, 피드백으로 2 depth 로 충분하다는 리뷰가 있어서 해당 부분을 수정하였습니다.
+
+- NsUser 클래스에서 Identifier 를 Long type Id 가 아닌 String type Code (`UserCode`) 로 변경 하였습니다.
+  - DB에서 할당받는 Sequantial 한 Long 가 아니라, 사용자 혹은 로직에서 지정하는 String 타입의 고유 식별자를 사용해서 인프라 의존성을 줄인다고 생각했습니다. 
+  - 약간의 보안 (예를들어서 id auto-increment 상황이라면, id=33 인 사용자가 id=34 로 파라미터를 조작해서 타인의 개인정보를 조회할수 있는 가능성이 있지만 UUID 랜덤 문자열을 기반으로 사용하는 Code의 경우 비교적 안전
 
 ```
 
