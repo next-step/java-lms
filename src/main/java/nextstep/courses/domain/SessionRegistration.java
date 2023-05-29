@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public class SessionInfo {
+public class SessionRegistration {
 
     private static final String REGISTER_ERROR_MESSAGE = "수강 신청은 모집중 일때만 신청 가능합니다.";
     private static final String MAX_STUDENTS_COUNT_ERROR_MESSAGE = "최대 수강 신청 인원을 초과할 수 없습니다.";
@@ -9,13 +9,13 @@ public class SessionInfo {
     private int currentStudentCount;
     private SessionStatusType sessionStatusType;
 
-    public SessionInfo(int maxStudentCount, int currentStudentCount, SessionStatusType sessionStatusType) {
+    public SessionRegistration(int maxStudentCount, int currentStudentCount, SessionStatusType sessionStatusType) {
         this.maxStudentCount = maxStudentCount;
         this.currentStudentCount = currentStudentCount;
         this.sessionStatusType = sessionStatusType;
     }
 
-    public void registerSession(int studentCount) {
+    public void register(int studentCount) {
         this.validationSessionStatus();
         this.validationSessionMaxStudentCount(studentCount);
 

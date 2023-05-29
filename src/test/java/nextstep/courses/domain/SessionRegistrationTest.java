@@ -7,15 +7,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SessionInfoTest {
+public class SessionRegistrationTest {
 
     @DisplayName("수강신청 시 모집중이 아닌 경우 에러를 응답한다.")
     @ParameterizedTest
     @ValueSource(strings = {"PREPARE", "END"})
     public void 수강신청_모집중_이외_테스트(SessionStatusType statusType) {
-        SessionInfo sessionInfo = new SessionInfo(5, 1, statusType);
+        SessionRegistration sessionRegistration = new SessionRegistration(5, 1, statusType);
 
-        assertThatThrownBy(() -> sessionInfo.registerSession(1))
+        assertThatThrownBy(() -> sessionRegistration.register(1))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -25,9 +25,9 @@ public class SessionInfoTest {
     public void 수강신청_최대_인원_테스트(int currentStudentCount, int registerStudentCount) {
         int maxStudentCount = 5;
 
-        SessionInfo sessionInfo = new SessionInfo(maxStudentCount, currentStudentCount, SessionStatusType.RECRUITING);
+        SessionRegistration sessionRegistration = new SessionRegistration(maxStudentCount, currentStudentCount, SessionStatusType.RECRUITING);
 
-        assertThatThrownBy(() -> sessionInfo.registerSession(registerStudentCount))
+        assertThatThrownBy(() -> sessionRegistration.register(registerStudentCount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

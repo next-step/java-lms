@@ -4,21 +4,21 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
 
-    private SessionInfo sessionInfo;
+    private SessionRegistration sessionRegistration;
     private CoverImage imageUrl;
     private SessionDate sessionDate;
     private Price price;
 
-    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, SessionInfo sessionInfo, CoverImage imageUrl, SessionDate sessionDate, Price price) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, SessionRegistration sessionRegistration, CoverImage imageUrl, SessionDate sessionDate, Price price) {
         super(id, createdAt, updatedAt);
-        this.sessionInfo = sessionInfo;
+        this.sessionRegistration = sessionRegistration;
         this.imageUrl = imageUrl;
         this.sessionDate = sessionDate;
         this.price = price;
     }
 
     public void registerSession(int studentCount) {
-        this.sessionInfo.registerSession(studentCount);
+        this.sessionRegistration.register(studentCount);
     }
 
     public boolean isSession(Long sessionId) {
