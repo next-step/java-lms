@@ -18,7 +18,20 @@ public class StudentTest {
         Student student = Student.init(javajigi, classOne);
 
         assertThat(student.getRegisterType())
-                .isEqualTo(RegisterType.REGISTERED);
+                .isEqualTo(RegisterType.REGISTERED.toString());
+    }
+
+    @Test
+    @DisplayName("학생 취소 테스트")
+    void cancelTest() {
+        NsUser javajigi = NsUserTest.JAVAJIGI;
+        Session classOne = SessionTest.CLASS_ONE;
+
+        Student student = Student.init(javajigi, classOne);
+        student.sessionCancel();
+
+        assertThat(student.getRegisterType())
+                .isEqualTo(RegisterType.CANCELED.toString());
     }
 
 }

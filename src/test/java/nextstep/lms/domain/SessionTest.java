@@ -118,10 +118,10 @@ public class SessionTest {
         int studentCapacity = 5;
         setUp(studentCapacity);
         session.recruitStudents();
-        session.enroll(NsUserTest.JAVAJIGI);
+        Student javajigiStudent = session.enroll(NsUserTest.JAVAJIGI);
         session.enroll(NsUserTest.SANJIGI);
 
-        session.cancel();
+        session.cancel(javajigiStudent);
 
         assertThat(session.getStudentCapacity().getRegisteredStudent())
                 .isEqualTo(1);

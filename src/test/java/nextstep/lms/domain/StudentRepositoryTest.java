@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static nextstep.lms.domain.RegisterType.CANCELED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -40,5 +41,19 @@ class StudentRepositoryTest {
 
         assertThat(count)
                 .isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("강의 취소 테스트")
+    void sessionCancelTest() {
+        Student student = studentRepository.findByNsUserIdAndSessionId(1L, 1L);
+
+        student.sessionCancel();
+        studentRepository.sessionCancel(student);
+
+        Student canceledStudent = studentRepository.findByNsUserIdAndSessionId(1L, 1L);
+
+        assertThat(canceledStudent.getRegisterType())
+                .isEqualTo(CANCELED.toString());
     }
 }

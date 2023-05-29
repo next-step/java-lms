@@ -95,7 +95,8 @@ class SessionRepositoryTest {
     @DisplayName("학생 강의 수강 취소 테스트")
     void studentCancelTest() {
         Session findSession = sessionRepository.findById(3L);
-        findSession.cancel();
+        Student student = Student.init(NsUserTest.JAVAJIGI, findSession);
+        findSession.cancel(student);
         sessionRepository.updateRegisteredStudent(findSession);
 
         Session newSession = sessionRepository.findById(3L);

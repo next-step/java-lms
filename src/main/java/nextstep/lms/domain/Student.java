@@ -13,9 +13,15 @@ public class Student {
     private LocalDateTime updatedAt;
 
     public Student(Long nsUserId, Long sessionId, RegisterType registerType) {
+        this(nsUserId, sessionId, registerType, null, null);
+    }
+
+    public Student(Long nsUserId, Long sessionId, RegisterType registerType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
         this.registerType = registerType;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static Student init(NsUser nsUser, Session session) {
@@ -25,6 +31,10 @@ public class Student {
         }
 
         return new Student(nsUser.getId(), session.getId(), registerType);
+    }
+
+    public void sessionCancel() {
+        this.registerType = RegisterType.CANCELED;
     }
 
     public Long getNsUserId() {

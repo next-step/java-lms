@@ -72,7 +72,8 @@ public class Session {
         }
     }
 
-    public int cancel() {
+    public int cancel(Student student) {
+        student.sessionCancel();
 
         return studentCapacity.cancel();
     }

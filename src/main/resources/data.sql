@@ -14,3 +14,4 @@ iNSERt iNTo session (start_date, end_date, session_state, session_type, register
 iNSERt iNTo session (start_date, end_date, session_state, session_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'RECRUITING', 'PAID', 5, 10, 1);
 
 iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 1, 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 3, 'REGISTERED');
