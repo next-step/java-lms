@@ -28,7 +28,6 @@ public class JdbcSessionRepository implements SessionRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-
             ps.setTimestamp(1, toTimeStamp(session.getSessionPeriod().getStartedAt()));
             ps.setTimestamp(2, toTimeStamp(session.getSessionPeriod().getEndAt()));
             ps.setString(3, session.getPaymentType().getKey());
@@ -36,7 +35,6 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setInt(5, session.enrollmentCount());
             ps.setString(6, session.getSessionImageUrl().value());
             ps.setLong(7, courseId);
-
             return ps;
         }, keyHolder);
 
@@ -74,7 +72,6 @@ public class JdbcSessionRepository implements SessionRepository {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
             ps.setLong(1, nextStepUser.getId());
             ps.setLong(2, session.getId());
-
             return ps;
         }, keyHolder);
 
@@ -84,7 +81,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public List<NsUser> findAllUserBySessionId(Long sessionId) {
-
         String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at from session_users su " +
                 "inner join ns_user u on (su.user_id = u.id) " +
                 "where su.session_id = ?";
