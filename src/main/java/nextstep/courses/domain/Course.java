@@ -45,6 +45,10 @@ public class Course {
         return sessions;
     }
 
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
     public Long getCreatorId() {
         return creatorId;
     }
