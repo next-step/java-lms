@@ -20,6 +20,14 @@ public class Session {
                    SessionCoverImage coverImage,
                    SessionPaymentType paymentType,
                    SessionStatus status,
+                   int maximumStudent) {
+        this(duration, coverImage, paymentType, status, new ArrayList<>(), maximumStudent);
+    }
+
+    public Session(SessionDuration duration,
+                   SessionCoverImage coverImage,
+                   SessionPaymentType paymentType,
+                   SessionStatus status,
                    List<NsUser> students,
                    int maximumStudent) {
         this.duration = duration;
@@ -28,14 +36,6 @@ public class Session {
         this.status = status;
         this.students = students;
         this.maximumStudent = maximumStudent;
-    }
-
-    public Session(SessionDuration duration,
-                   SessionCoverImage coverImage,
-                   SessionPaymentType paymentType,
-                   SessionStatus status,
-                   int maximumStudent) {
-        this(duration, coverImage, paymentType, status, new ArrayList<>(), maximumStudent);
     }
 
     public void register(NsUser student) {
