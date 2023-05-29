@@ -1,20 +1,28 @@
 package nextstep.courses.domain;
 
+import java.time.LocalDateTime;
+
 public class SessionBuilder {
 
+    private Long id;
     private SessionDuration duration;
     private SessionCoverImage coverImage;
     private SessionPaymentType paymentType;
     private SessionRegistration registration;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private SessionBuilder() {
     }
 
     private SessionBuilder(SessionBuilder copy) {
+        this.id = copy.id;
         this.duration = copy.duration;
         this.coverImage = copy.coverImage;
         this.paymentType = copy.paymentType;
         this.registration = copy.registration;
+        this.createdAt = copy.createdAt;
+        this.updatedAt = copy.updatedAt;
     }
 
     public static SessionBuilder aSession() {
@@ -23,6 +31,11 @@ public class SessionBuilder {
 
     public SessionBuilder but() {
         return new SessionBuilder(this);
+    }
+
+    public SessionBuilder setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public SessionBuilder withDuration(SessionDuration duration) {
@@ -47,6 +60,16 @@ public class SessionBuilder {
 
     public SessionBuilder with(SessionRegistrationBuilder sessionRegistrationBuilder) {
         this.registration = sessionRegistrationBuilder.build();
+        return this;
+    }
+
+    public SessionBuilder withCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public SessionBuilder withUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
         return this;
     }
 

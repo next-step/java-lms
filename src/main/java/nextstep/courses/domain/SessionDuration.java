@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.IncorrectDurationException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SessionDuration {
 
@@ -29,4 +30,26 @@ public class SessionDuration {
     public LocalDateTime getEndedAt() {
         return endedAt;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionDuration that = (SessionDuration) o;
+        return Objects.equals(startedAt, that.startedAt) && Objects.equals(endedAt, that.endedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startedAt, endedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "SessionDuration{" +
+                "startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                '}';
+    }
+
 }

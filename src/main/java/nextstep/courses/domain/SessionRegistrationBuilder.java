@@ -56,7 +56,10 @@ public class SessionRegistrationBuilder {
     }
 
     public SessionRegistration build() {
-        return new SessionRegistration(status, students, studentCapacity);
+        if (students != null) {
+            return new SessionRegistration(status, students, studentCapacity);
+        }
+        return new SessionRegistration(status, studentCapacity);
     }
 
 }
