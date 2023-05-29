@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Session extends BaseEntity {
 
@@ -24,13 +25,14 @@ public class Session extends BaseEntity {
     public Session(
             LocalDate startDate,
             LocalDate endDate,
+            SessionFeeType sessionFeeType,
             int maxNumberOfStudent
     ) {
         this(
                 null,
                 new SessionPeriod(startDate, endDate),
                 null,
-                SessionFeeType.FREE,
+                sessionFeeType,
                 SessionStatus.PREPARING,
                 maxNumberOfStudent,
                 LocalDateTime.now(),
@@ -67,6 +69,9 @@ public class Session extends BaseEntity {
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
+        Objects.requireNonNull(sessionFeeType);
+        Objects.requireNonNull(sessionStatus);
+        validateNumberOfStudent(maxNumberOfStudent);
         this.id = id;
         this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
@@ -75,6 +80,12 @@ public class Session extends BaseEntity {
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    private void validateNumberOfStudent(int maxNumberOfStudent) {
+        if (maxNumberOfStudent < 1) {
+            throw new IllegalArgumentException("강의 최대 수강인원은 1보다 커야 합니다.");
+        }
     }
 
     public void register(NsUser nsUser) {
