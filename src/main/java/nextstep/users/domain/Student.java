@@ -1,29 +1,16 @@
 package nextstep.users.domain;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.Sessions;
 
 import java.util.Objects;
 
 public class Student {
     private NsUser nsUser;
-    private Sessions sessions;
+    private Session session;
 
-    public Student(NsUser nsUser) {
-        this(nsUser, new Sessions());
-    }
-
-    public Student(NsUser nsUser, Sessions sessions) {
+    public Student(NsUser nsUser, Session session) {
         this.nsUser = nsUser;
-        this.sessions = sessions;
-    }
-
-    public void addSession(Session session) {
-        sessions.addSession(session);
-    }
-
-    public Sessions getSessions() {
-        return sessions;
+        this.session = session;
     }
 
     @Override
@@ -31,11 +18,11 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(nsUser, student.nsUser) && Objects.equals(sessions, student.sessions);
+        return Objects.equals(nsUser, student.nsUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nsUser, sessions);
+        return Objects.hash(nsUser, session);
     }
 }

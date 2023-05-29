@@ -6,6 +6,8 @@ import nextstep.courses.StudentMaxException;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 
+import java.util.Objects;
+
 public class SessionRegistration {
     private State state;
     private int maxUser;
@@ -45,5 +47,18 @@ public class SessionRegistration {
         if(students.isDuplicate(student)) {
             throw new DuplicateStudentRegisterException("중복 강의 수강은 불가합니다.");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionRegistration that = (SessionRegistration) o;
+        return maxUser == that.maxUser && state == that.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(state, maxUser, students);
     }
 }
