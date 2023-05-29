@@ -1,12 +1,17 @@
 package nextstep.qna.domain;
 
+import lombok.Getter;
+import lombok.SneakyThrows;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class Answer {
+
     private Long id;
 
     private NsUser writer;
@@ -21,20 +26,17 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
-    }
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -43,29 +45,12 @@ public class Answer {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public boolean hasWriter(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
@@ -76,4 +61,16 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    @SneakyThrows
+    public DeleteHistory delete(final NsUser loginUser) {
+        if (!hasWriter(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+        this.deleted = true;
+
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
 }
