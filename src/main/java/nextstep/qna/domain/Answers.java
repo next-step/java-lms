@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Answers {
@@ -31,6 +32,6 @@ public class Answers {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return Collections.unmodifiableList(answers);
     }
 }
