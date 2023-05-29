@@ -58,8 +58,8 @@ public class CourseEntityRepository {
       String title = rs.getString(TITLE);
       Long creatorId = rs.getLong(CREATOR_ID);
       String generation = rs.getString(GENERATION);
-      LocalDateTime createdAt = rs.getTimestamp(CREATED_AT).toLocalDateTime();
-      LocalDateTime updatedAt = rs.getTimestamp(UPDATED_AT).toLocalDateTime();
+      LocalDateTime createdAt = toLocalDateTime(rs.getTimestamp(CREATED_AT));
+      LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp(UPDATED_AT));
 
       return new CourseEntity(id, title, creatorId, generation, createdAt, updatedAt);
     };

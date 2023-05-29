@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure.persistence.dao;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
@@ -50,13 +51,20 @@ public class SessionEntityRepository {
       String sessionType = rs.getString(SESSION_TYPE);
       String sessionStatus = rs.getString(SESSION_STATUS);
       int maxEnrollmentSize = rs.getInt(MAX_ENROLLMENT_SIZE);
-      LocalDateTime startDateTime = rs.getTimestamp(START_DATE_TIME).toLocalDateTime();
-      LocalDateTime endDateTime = rs.getTimestamp(END_DATE_TIME).toLocalDateTime();
-      LocalDateTime createAt = rs.getTimestamp(CREATED_AT).toLocalDateTime();
-      LocalDateTime updatedAt = rs.getTimestamp(UPDATED_AT).toLocalDateTime();
+      LocalDateTime startDateTime = toLocalDateTime(rs.getTimestamp(START_DATE_TIME));
+      LocalDateTime endDateTime = toLocalDateTime(rs.getTimestamp(END_DATE_TIME));
+      LocalDateTime createAt = toLocalDateTime(rs.getTimestamp(CREATED_AT));
+      LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp(UPDATED_AT));
 
       return new SessionEntity(id, courseId, title, description, coverImageId, sessionType,
               sessionStatus, maxEnrollmentSize, startDateTime, endDateTime, createAt, updatedAt);
     };
+  }
+
+  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    return timestamp.toLocalDateTime();
   }
 }

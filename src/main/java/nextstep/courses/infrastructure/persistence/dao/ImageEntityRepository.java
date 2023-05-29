@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure.persistence.dao;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import nextstep.courses.infrastructure.persistence.entity.ImageEntity;
@@ -39,10 +40,17 @@ public class ImageEntityRepository {
       String originalFileName = rs.getString(ORIGINAL_FILE_NAME);
       String imageType = rs.getString(IMAGE_TYPE);
       String coverImgUrl = rs.getString(COVER_IMG_URL);
-      LocalDateTime createdAt = rs.getTimestamp(CREATED_AT).toLocalDateTime();
-      LocalDateTime updatedAt = rs.getTimestamp(UPDATED_AT).toLocalDateTime();
+      LocalDateTime createdAt = toLocalDateTime(rs.getTimestamp(CREATED_AT));
+      LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp(UPDATED_AT));
 
       return new ImageEntity(id, originalFileName, imageType, coverImgUrl, createdAt, updatedAt);
     };
+  }
+
+  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    return timestamp.toLocalDateTime();
   }
 }
