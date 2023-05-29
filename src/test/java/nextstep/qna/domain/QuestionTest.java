@@ -20,7 +20,7 @@ public class QuestionTest {
     void 질문_삭제_불가능() {
         assertThatExceptionOfType(CannotDeleteException.class)
                 .isThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
-                .withMessageMatching("질문을 삭제할 권한이 없습니다.");
+                .withMessageMatching(Question.DELETE_QUESTION_AUTHORITY);
     }
 
     @DisplayName("로그인 사용자와 질문한 사람이 같은 경우 삭제 가능")

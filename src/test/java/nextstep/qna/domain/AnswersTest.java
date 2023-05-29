@@ -42,7 +42,7 @@ class AnswersTest {
 
         assertThatExceptionOfType(CannotDeleteException.class)
                 .isThrownBy(() -> answers.deleteAnswers(NsUserTest.JAVAJIGI))
-                .withMessageMatching("삭제할 권한이 없습니다.");
+                .withMessageMatching(Answer.DELETE_ANSWER_AUTHORITY);
     }
 }
 

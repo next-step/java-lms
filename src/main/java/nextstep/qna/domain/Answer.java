@@ -8,6 +8,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+    public static final String DELETE_ANSWER_AUTHORITY= "삭제할 권한이 없습니다.";
     private Long id;
 
     private NsUser writer;
@@ -52,7 +53,7 @@ public class Answer {
 
     private void validateDeleteAuthority(NsUser loginUser) {
         if (isNotOwner(loginUser)) {
-            throw new CannotDeleteException("삭제할 권한이 없습니다.");
+            throw new CannotDeleteException(DELETE_ANSWER_AUTHORITY);
         }
     }
 

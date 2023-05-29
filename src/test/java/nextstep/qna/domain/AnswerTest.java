@@ -17,6 +17,6 @@ public class AnswerTest {
     void 답변_삭제_권한_테스트() {
         Assertions.assertThatExceptionOfType(CannotDeleteException.class)
                 .isThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
-                .withMessageMatching("삭제할 권한이 없습니다.");
+                .withMessageMatching(Answer.DELETE_ANSWER_AUTHORITY);
     }
 }
