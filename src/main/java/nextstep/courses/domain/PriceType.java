@@ -4,7 +4,7 @@ public enum PriceType {
     PAID("유료"),
     FREE("무료");
 
-    private String type;
+    private final String type;
 
     PriceType(String type) {
         this.type = type;

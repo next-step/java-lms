@@ -5,7 +5,7 @@ public enum SessionStatusType {
     RECRUITING("모집중"),
     END("종료");
 
-    String status;
+    private final String status;
 
     SessionStatusType(String status) {
         this.status = status;
