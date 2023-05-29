@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SessionRegistration {
 
     private static final String REGISTER_ERROR_MESSAGE = "수강 신청은 모집중 일때만 신청 가능합니다.";
@@ -10,18 +13,25 @@ public class SessionRegistration {
     private final int maxStudentCount;
     private int currentStudentCount;
     private SessionStatusType sessionStatusType;
+    private List<NsUser> nsUsers = new ArrayList<>();
 
-    public SessionRegistration(int maxStudentCount, int currentStudentCount, SessionStatusType sessionStatusType) {
+    public SessionRegistration(int maxStudentCount, int currentStudentCount, SessionStatusType sessionStatusType, List<NsUser> nsUsers) {
         this.maxStudentCount = maxStudentCount;
         this.currentStudentCount = currentStudentCount;
         this.sessionStatusType = sessionStatusType;
+        this.nsUsers = nsUsers;
     }
 
     public void register(NsUser nsUser) {
         this.validationSessionStatus();
         this.validationSessionMaxStudentCount(1);
 
+        this.nsUsers.add(nsUser);
         this.currentStudentCount += 1;
+    }
+
+    public List<NsUser> getNsUsers() {
+        return this.nsUsers;
     }
 
     private void validationSessionStatus() {
