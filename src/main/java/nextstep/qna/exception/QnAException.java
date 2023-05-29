@@ -1,6 +1,8 @@
 package nextstep.qna.exception;
 
-public class QnAException extends RuntimeException{
+import nextstep.qna.CannotDeleteException;
+
+public class QnAException extends CannotDeleteException {
 
     protected Enum<?> code;
     public <E extends Enum<E>> QnAException(QnAExceptionCode code) {

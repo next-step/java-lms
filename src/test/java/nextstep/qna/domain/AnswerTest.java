@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.exception.QnAException;
 import nextstep.qna.exception.QnAExceptionCode;
 import nextstep.users.domain.NsUser;
@@ -22,7 +23,7 @@ public class AnswerTest {
     }
 
     @Test
-    void delete_성공_삭제이력_반환() throws QnAException {
+    void delete_성공_삭제이력_반환() throws CannotDeleteException {
         List<DeleteHistory> delete = A1.delete(NsUserTest.JAVAJIGI);
         DeleteHistory history = new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 

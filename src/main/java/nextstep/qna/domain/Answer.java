@@ -3,10 +3,9 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.UnAuthorizedException;
-import nextstep.qna.exception.QnAException;
 import nextstep.users.domain.NsUser;
 
 public class Answer extends AbstractQnA {
@@ -44,7 +43,7 @@ public class Answer extends AbstractQnA {
     }
 
     @Override
-    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         super.validateWriter(loginUser);
         super.changeDeleteStatus(true);
 

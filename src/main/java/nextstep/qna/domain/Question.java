@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.exception.QnAException;
 import nextstep.qna.exception.QnAExceptionCode;
@@ -59,7 +60,7 @@ public class Question extends AbstractQnA {
     }
 
     @Override
-    public List<DeleteHistory> delete(NsUser loginUser) throws QnAException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (super.isDeleted()) {
             throw new QnAException(QnAExceptionCode.NOT_EXIST_QUESTION);
         }

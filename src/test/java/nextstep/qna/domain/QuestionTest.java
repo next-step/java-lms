@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.UnAuthenticationException;
 import nextstep.qna.exception.QnAException;
 import nextstep.qna.exception.QnAExceptionCode;
@@ -16,7 +17,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    void delete_성공() throws QnAException {
+    void delete_성공() throws CannotDeleteException {
         List<DeleteHistory> histories = Q1.delete(NsUserTest.JAVAJIGI);
         DeleteHistory history = new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 
@@ -41,7 +42,7 @@ public class QuestionTest {
     }
 
     @Test
-    void delete_답변이_여러개인_글_삭제_성공() throws QnAException {
+    void delete_답변이_여러개인_글_삭제_성공() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
