@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeleteHistoryList {
-    List<DeleteHistory> deleteHistoryList = new ArrayList<>();
+    private final List<DeleteHistory> deleteHistoryList = new ArrayList<>();
 
     public DeleteHistoryList() {
 
@@ -15,6 +15,10 @@ public class DeleteHistoryList {
     }
 
     public void add(DeleteHistory deleteHistory) {
-        deleteHistoryList.add(deleteHistory);
+        this.deleteHistoryList.add(deleteHistory);
+    }
+
+    public void addAll(DeleteHistoryList deleteHistoryList) {
+        this.deleteHistoryList.addAll(deleteHistoryList.getDeleteHistoryList());
     }
 }
