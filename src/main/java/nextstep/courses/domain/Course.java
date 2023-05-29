@@ -13,14 +13,15 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public static Course of(String title, Long creatorId) {
+        return new Course(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+    public static Course of(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Course(id, title, creatorId, createdAt, updatedAt);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
