@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
-import nextstep.courses.domain.SessionUser;
+import nextstep.courses.domain.*;
 import nextstep.courses.fixture.SessionFixture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -71,5 +68,18 @@ public class SessionRepositoryTest {
 
         List<SessionUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
+    }
+
+    @Test
+    void updateSessionUserStatus() {
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI, SessionUserStatus.WAIT);
+        sessionRepository.saveSessionUser(savedSession, sessionUser);
+
+        sessionUser.approve();
+        sessionRepository.updateSessionUserStatus(savedSession.getId(), sessionUser);
+
+        List<SessionUser> sessionUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
+        assertThat(sessionUsers.get(0)).extracting("sessionUserStatus").isEqualTo(SessionUserStatus.APPROVAL);
     }
 }

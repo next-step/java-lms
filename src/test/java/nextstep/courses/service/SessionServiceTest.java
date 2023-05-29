@@ -69,4 +69,17 @@ public class SessionServiceTest {
                 .isThrownBy(() -> sessionService.enroll(session, new SessionUser(NsUserTest.JAVAJIGI)))
                 .withMessageMatching("모집중인 강의가 아닙니다.");
     }
+
+    @Test
+    void updateSessionUserStatus() {
+        Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI, SessionUserStatus.WAIT);
+        sessionService.enroll(session, sessionUser);
+
+        sessionUser.reject();
+        sessionService.updateSessionUserStatus(session.getId(), sessionUser);
+
+        List<SessionUser> sessionUsers = sessionService.findAllUserBySessionId(session.getId());
+        assertThat(sessionUsers.get(0)).extracting("sessionUserStatus").isEqualTo(SessionUserStatus.REJECT);
+    }
 }

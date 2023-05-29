@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 @Service
 public class SessionService {
     private final SessionRepository sessionRepository;
-    private final UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, UserRepository userRepository) {
+    public SessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -46,5 +44,10 @@ public class SessionService {
     @Transactional(readOnly = true)
     public List<SessionUser> findAllUserBySessionId(Long sessionId) {
         return sessionRepository.findAllUserBySessionId(sessionId);
+    }
+
+    @Transactional
+    public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
+        sessionRepository.updateSessionUserStatus(sessionId, sessionUser);
     }
 }

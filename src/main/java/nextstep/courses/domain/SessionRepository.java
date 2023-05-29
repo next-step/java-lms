@@ -14,4 +14,6 @@ public interface SessionRepository {
     long saveSessionUser(Session session, SessionUser sessionUser);
 
     List<SessionUser> findAllUserBySessionId(Long sessionId);
+    
+    void updateSessionUserStatus(Long sessionId, SessionUser sessionUser);
 }
