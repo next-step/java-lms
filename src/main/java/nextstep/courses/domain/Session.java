@@ -31,8 +31,12 @@ public class Session {
     }
 
     public void enroll(NsUser nextStepUser) {
+        enroll(new SessionUser(nextStepUser));
+    }
+
+    public void enroll(SessionUser sessionUser) {
         validateStatus();
-        nextStepUsers.enroll(nextStepUser);
+        nextStepUsers.enroll(sessionUser);
     }
 
     public void validateStatus() {
