@@ -64,7 +64,12 @@ public class Course extends BaseTimeEntity{
         return sessions.size();
     }
 
-    public CourseEntity toEntity() {
-        return new CourseEntity(id, title, creatorId, generation, createdAt, updatedAt);
+    public Long getId() {
+        return id;
     }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
 }

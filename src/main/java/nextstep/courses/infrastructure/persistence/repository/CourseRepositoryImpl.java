@@ -18,7 +18,8 @@ public class CourseRepositoryImpl implements CourseRepository {
 
   @Override
   public Long save(Course course) {
-    return courseEntityRepository.save(course.toEntity());
+    CourseEntity courseEntity = new CourseEntity(course);
+    return courseEntityRepository.save(courseEntity);
   }
 
   @Override

@@ -30,7 +30,4 @@ public class SessionSignUpService {
     return sessionRepository.saveSignUpHistory(sessionId, user.getId());
   }
 
-
-
-
 }

@@ -33,6 +33,10 @@ public class CourseEntity extends BaseTimeEntity {
     this(null, title, creatorId, generation, LocalDateTime.now(), LocalDateTime.now());
   }
 
+  public CourseEntity(Course courseDomain) {
+    this(courseDomain.getId(), courseDomain.getTitle(), courseDomain.getCreatorId(), courseDomain.getGeneration(), courseDomain.getCreatedAt(), courseDomain.getUpdatedAt());
+  }
+
   public Long getId() {
     return id;
   }
