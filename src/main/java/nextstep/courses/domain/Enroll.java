@@ -19,4 +19,8 @@ public class Enroll {
     public static Enroll of(Long sessionId, String userCode) {
         return new Enroll(null, new SessionId(sessionId), new UserCode(userCode));
     }
+
+    public boolean isEnrolledSession(SessionId sessionId) {
+        return sessionId.equals(this.sessionId);
+    }
 }

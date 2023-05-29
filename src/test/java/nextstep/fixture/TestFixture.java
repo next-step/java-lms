@@ -40,10 +40,10 @@ public class TestFixture {
     public static Session LEMON_SESSION;
     public static Session LIME_SESSION;
 
-    public static Enroll MALBEC_ENROL;
-    public static Enroll SYRAH_ENROL;
-    public static Enroll CARSO_ENROL;
-    public static Enroll PINOT_ENROL;
+//    public static Enroll MALBEC_ENROL;
+//    public static Enroll SYRAH_ENROL;
+//    public static Enroll CARSO_ENROL;
+//    public static Enroll PINOT_ENROL;
 
     public static Image RED_IMAGE;
     public static Image GREEN_IMAGE;
@@ -84,10 +84,10 @@ public class TestFixture {
         LEMON_SESSION =  Session.of(500L, 2L,50L);
         LIME_SESSION =  Session.of(3000L, 3L,30L);
 
-        MALBEC_ENROL = Enroll.of(1L, "MALBEC");
-        SYRAH_ENROL = Enroll.of(2L, "SYRAH");
-        CARSO_ENROL = Enroll.of(3L, "CARSO");
-        PINOT_ENROL = Enroll.of(4L, "PINOT");
+//        MALBEC_ENROL = Enroll.of(1L, "MALBEC");
+//        SYRAH_ENROL = Enroll.of(2L, "SYRAH");
+//        CARSO_ENROL = Enroll.of(3L, "CARSO");
+//        PINOT_ENROL = Enroll.of(4L, "PINOT");
 
         RED_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915569-18af82dc-abd3-4e5c-ad13-a085ff4b926c.png");
         GREEN_IMAGE = Image.of("https://user-images.githubusercontent.com/31065684/240915721-3052254f-f17d-477e-8203-45297b2b5471.png");

@@ -50,6 +50,9 @@ public class Session {
         );
     }
 
+    public SessionId getSessionId() {
+        return sessionId;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -94,7 +97,7 @@ public class Session {
     public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
         validateStudentCount(alreadyEnrolledCount);
-        return Enroll.of(this.sessionId.value(), userCode.value());
+        return new Enroll(null, this.sessionId, userCode); //Enroll.of(this.sessionId.value(), userCode.value());
     }
 
     private void validateStudentCount(long count) {
@@ -119,5 +122,14 @@ public class Session {
 
     public void setTerm(long term) {
         this.term = term;
+    }
+
+    public boolean isEnrolledSession(Enroll enroll) {
+        return enroll.isEnrolledSession(this.sessionId);
+    }
+
+    public Session setSessionId(SessionId sessionId) {
+        this.sessionId = sessionId;
+        return this;
     }
 }

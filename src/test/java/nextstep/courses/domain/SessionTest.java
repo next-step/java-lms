@@ -4,6 +4,7 @@ import nextstep.image.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -97,13 +98,14 @@ class SessionTest {
     @Test
     public void enrollCanOnlyOnRecruit() {
         //given
-        Session session = TestFixture.LIME_SESSION;
-        Enroll enroll = TestFixture.CARSO_ENROL;
+        Session session = TestFixture.LIME_SESSION.setSessionId(new SessionId(22L));
+        NsUser user = TestFixture.BADAJIGI;
         //when
         session.toRecruitingState();
-        session.enroll(enroll);
+        Enroll enroll = session.register(user.getUserCode(), 0);
         //then
-        assertThat(session.enrollCheck(enroll))
+        //assertThat(enroll.isEnrolledSession(session.getSessionId()))
+        assertThat(session.isEnrolledSession(enroll))
                 .as("강의 신청에 성공함을 검증한다")
                 .isTrue();
     }
@@ -113,12 +115,12 @@ class SessionTest {
     public void enrollCanOnlyOnRecruitFail() {
         //given
         Session session = TestFixture.MINT_SESSION;
-        Enroll enroll = TestFixture.MALBEC_ENROL;
+        NsUser user = TestFixture.BADAJIGI;
         //when
         session.toCloseState();
         //then
         assertThatThrownBy(() -> {
-            session.enroll(enroll);
+            session.register(user.getUserCode(), 0);
         }).isInstanceOf(OutOfRegistrationPeriod.class)
                 .hasMessageContaining("수강신청 기간이 아닙니다");
     }
@@ -127,18 +129,18 @@ class SessionTest {
     @Test
     public void notExceedMaxStudents() {
         //given
-        Session session = TestFixture.LIME_SESSION;
-        Enroll enroll1 = TestFixture.PINOT_ENROL;
-        Enroll enroll2 = TestFixture.SYRAH_ENROL;
+        Session session = TestFixture.LIME_SESSION.setSessionId(new SessionId(111L));
+
+        NsUser user = TestFixture.SANJIGI;
         //when
         session.toRecruitingState();
         session.adjustStudentCount(2L);
-        session.enroll(enroll1, enroll2);
+        Enroll enroll = session.register(user.getUserCode(), 0L);
         //then
-        assertThat(session.enrollCheck(enroll1))
+        assertThat(session.isEnrolledSession(enroll))
                 .as("강의 신청에 성공함을 검증한다")
                 .isTrue();
-        assertThat(session.enrollCheck(enroll2))
+        assertThat(session.isEnrolledSession(enroll))
                 .as("강의 신청에 성공함을 검증한다")
                 .isTrue();
     }
@@ -148,16 +150,13 @@ class SessionTest {
     public void notExceedMaxStudentsFail() {
         //given
         Session session = TestFixture.MINT_SESSION;
-        Enroll enroll1 = TestFixture.PINOT_ENROL;
-        Enroll enroll2 = TestFixture.SYRAH_ENROL;
-        Enroll enroll3 = TestFixture.MALBEC_ENROL;
+        NsUser user = TestFixture.CARSO;
         //when
         session.toRecruitingState();
         session.adjustStudentCount(2L);
-        session.enroll(enroll1, enroll2);
         //then
         assertThatThrownBy(() -> {
-            session.enroll(enroll3);
+            session.register(user.getUserCode(), 2);
         }).isInstanceOf(ExceededStudentCount.class)
                 .hasMessageContaining("수강 가능한 인원을 초과하였습니다");
     }
