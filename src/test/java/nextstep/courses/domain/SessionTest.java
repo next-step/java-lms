@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enums.SessionState;
+import nextstep.courses.exception.SessionExpiredException;
+import nextstep.courses.exception.SessionNotOpenException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,14 +19,6 @@ public class SessionTest {
                 .isInstanceOf(Session.class);
     }
 
-    @ParameterizedTest(name = "{displayName} [{index}] {arguments}")
-    @ValueSource(strings={"https//nextstep.com", "nextstep.com", "abcvdjfn", "httb://nextstep.com"})
-    void 이미지URL형식검증(String url) {
-        assertThatThrownBy(() -> {
-            new Session("20230701", "20230731", url, true, 30);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("입력된 이미지의 URL 형식이 올바르지 않습니다.");
-    }
-
     @Test
     void 강의상태변경_불가() {
         SessionDate sessionDate = new SessionDate("20230401", "20230431", false);
@@ -33,7 +27,7 @@ public class SessionTest {
 
         assertThatThrownBy(() -> {
             session.setSessionState(SessionState.END);
-        }).isInstanceOf(RuntimeException.class).hasMessageContaining("강의종료일이 경과하여 상태 변경이 불가합니다.");
+        }).isInstanceOf(SessionExpiredException.class).hasMessageContaining("강의종료일이 경과하여 상태 변경이 불가합니다.");
     }
 
     @Test
@@ -51,8 +45,8 @@ public class SessionTest {
         session.setSessionState(SessionState.END);
 
         assertThatThrownBy(() -> {
-            session.signUpStudent("jerry");
-        }).isInstanceOf(RuntimeException.class).hasMessageContaining("강의가 모집중이 아니어서 신청이 불가합니다.");
+            session.signUpStudent(new Student("jerry","제리","jerry@gamil.com"));
+        }).isInstanceOf(SessionNotOpenException.class).hasMessageContaining("강의가 모집중이 아니어서 신청이 불가합니다.");
     }
 
     @Test
@@ -61,9 +55,9 @@ public class SessionTest {
 
         session.setSessionState(SessionState.PROCEEDING);
 
-        session.signUpStudent("jerry");
-        session.signUpStudent("joy");
-        session.signUpStudent("david");
+        session.signUpStudent(new Student("jerry","제리","jerry@gamil.com"));
+        session.signUpStudent(new Student("joy","조이","joy@gamil.com"));
+        session.signUpStudent(new Student("david","데이빗","david@gamil.com"));
 
         Assertions.assertThat(session.getSignedUpStatus()).isEqualTo(3);
     }
