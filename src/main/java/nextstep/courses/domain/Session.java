@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.EnrollmentStatus;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.courses.exception.InvalidSessionDateTimeException;
@@ -37,6 +38,7 @@ public class Session extends BaseEntity {
         this.enrollment = enrollment;
     }
 
+
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
                                  SessionType sessionType, SessionStatus sessionStatus,
                                  Enrollment enrollment) throws InvalidSessionDateTimeException {
@@ -52,7 +54,9 @@ public class Session extends BaseEntity {
     }
 
     public void enroll(User user) throws SessionEnrollmentException {
-        checkSessionStatus();
+        if (this.enrollment.getEnrollmentStatus() != null) {
+            checkEnrollmentStatus();
+        }
 
         this.enrollment.enroll(user);
     }
@@ -95,8 +99,15 @@ public class Session extends BaseEntity {
 
     private void checkSessionStatus() throws SessionEnrollmentException {
         if (!this.sessionStatus.canEnroll()) {
-            throw new SessionEnrollmentException(String.format("현재 강의 상태는 '%s'이며, '%s' 상태에서만 수강 신청이 가능합니다.",
+            throw new SessionEnrollmentException(String.format("현재 강의 진행 상태는 '%s'이며, '%s' 상태에서만 수강 신청이 가능합니다.",
                     this.sessionStatus, SessionStatus.RECRUITING));
+        }
+    }
+
+    private void checkEnrollmentStatus() throws SessionEnrollmentException {
+        if (!this.enrollment.getEnrollmentStatus().canEnroll()) {
+            throw new SessionEnrollmentException(String.format("현재 강의 모집 상태는 '%s'이며, '%s' 상태에서만 수강 신청이 가능합니다.",
+                    this.sessionStatus, EnrollmentStatus.ENROLLING));
         }
     }
 
@@ -111,5 +122,19 @@ public class Session extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, period, coverImage, sessionTime, sessionType, sessionStatus, enrollment);
+    }
+
+    public void approveUser(User user) {
+        this.getEnrollment().getUserEnrollments().stream()
+                .filter(userEnrollment -> userEnrollment.getUser().equals(user))
+                .findFirst()
+                .ifPresent(UserEnrollment::approved);
+    }
+
+    public void disApproveUser(User user) {
+        this.getEnrollment().getUserEnrollments().stream()
+                .filter(userEnrollment -> userEnrollment.getUser().equals(user))
+                .findFirst()
+                .ifPresent(UserEnrollment::disApproved);
     }
 }
