@@ -33,14 +33,8 @@ public class Session {
         this.students = new Students();
     }
 
-    public static Session ofFreeSession(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        validateFreeCost(cost);
-        return new FreeSession(title, cover, cardinalNumber, cost, state, maxUser);
-    }
-
-    public static Session ofPaySession(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        validatePayCost(cost);
-        return new PaySession(title, cover, cardinalNumber, cost, state, maxUser);
+    public static Session of(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        return new Session(title, cover, cardinalNumber, cost, state, maxUser);
     }
 
     private static void validateFreeCost(Cost cost) {
