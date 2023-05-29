@@ -5,10 +5,15 @@ import nextstep.courses.domain.Image;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionTime;
+import nextstep.courses.domain.UserEnrollment;
+import nextstep.courses.domain.enums.ApprovalStatus;
+import nextstep.courses.domain.enums.EnrollmentStatus;
 import nextstep.courses.domain.enums.ImageType;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.users.domain.User;
+import nextstep.users.domain.enums.UserStatus;
+import nextstep.users.domain.enums.UserType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -56,8 +61,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void enrollUser(Session session) {
-        String sql = "INSERT INTO session_next_step_user (session_id, user_id, created_at) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, session.getId(), session.getEnrollment().getLatestEnrollmentUser().getId(), LocalDateTime.now());
+        String sql = "INSERT INTO session_next_step_user (session_id, user_id, approval_status, created_at) VALUES(?, ?, ?, ?)";
+        jdbcTemplate.update(sql, session.getId(), session.getEnrollment().getLatestEnrollmentUser().getId(), ApprovalStatus.PENDING.toString(), LocalDateTime.now());
     }
 
     @Override
@@ -71,13 +76,42 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("name"),
                 rs.getString("email"),
                 rs.getTimestamp("created_at").toLocalDateTime(),
-                rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
-        );
+                rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
+                rs.getString("user_status") != null ? UserStatus.valueOf(rs.getString("user_status")) : null,
+                rs.getString("user_type") != null ? UserType.valueOf(rs.getString("user_type")) : null);
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
-    public Image findImageByImageId(long imageId) {
+    public List<UserEnrollment> findAllUserEnrollmentsBySessionId(long sessionId) {
+        String sql = "SELECT u.*, su.approval_status FROM next_step_user u INNER JOIN session_next_step_user su ON u.id = su.user_id WHERE su.session_id = ?";
+
+        RowMapper<UserEnrollment> rowMapper = (rs, rowNum) -> {
+            User user = new User(
+                    rs.getLong("id"),
+                    rs.getString("user_id"),
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getTimestamp("created_at").toLocalDateTime(),
+                    rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
+                    rs.getString("user_status") != null ? UserStatus.valueOf(rs.getString("user_status")) : null,
+                    rs.getString("user_type") != null ? UserType.valueOf(rs.getString("user_type")) : null);
+            ApprovalStatus approvalStatus = ApprovalStatus.valueOf(rs.getString("approval_status"));
+
+            return new UserEnrollment(user, approvalStatus);
+        };
+
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
+    }
+
+    @Override
+    public void updateApprovalStatus(long sessionId, long userId, ApprovalStatus approvalStatus) {
+        String sql = "UPDATE session_next_step_user SET approval_status = ? WHERE session_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, approvalStatus.toString(), sessionId, userId);
+    }
+
+    private Image findImageByImageId(long imageId) {
         String sql = "SELECT * FROM image WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, imageRowMapper(), imageId);
     }
@@ -97,7 +131,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionTime(toLocalDateTime(rs.getTimestamp("opening_date_time")), toLocalDateTime(rs.getTimestamp("closing_date_time"))),
                 SessionType.valueOf(rs.getString("session_type")),
                 SessionStatus.valueOf(rs.getString("session_status")),
-                new Enrollment(findUsersBySessionId(rs.getLong("id")), rs.getInt("maximum_enrollment"))
+                new Enrollment(findAllUserEnrollmentsBySessionId(rs.getLong("id")),
+                        rs.getString("enrollment_status") != null ? EnrollmentStatus.valueOf(rs.getString("enrollment_status")) : null,
+                        rs.getInt("maximum_enrollment"))
         );
     }
 
@@ -109,7 +145,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getString("name"),
                         new URI(rs.getString("uri")),
                         rs.getLong("size"),
-                        ImageType.of(rs.getString("image_type"))
+                        ImageType.valueOf(rs.getString("image_type"))
                 );
             } catch (URISyntaxException e) {
                 e.printStackTrace();
