@@ -5,40 +5,36 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CourseTest {
 
-    private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
-    private Session aSession;
-    private Session bSession;
+    private SessionBuilder preparingSession;
 
     @BeforeEach
     void setUp() {
-        startedAt = LocalDateTime.of(2023, 4, 3, 0, 0);
-        endedAt = LocalDateTime.of(2023, 6, 1, 0, 0);
-        SessionDuration duration = new SessionDuration(startedAt, endedAt);
-        SessionCoverImage coverImage = SessionCoverImage.create("http://test.com/image01");
-        aSession = new Session(duration, coverImage, SessionPaymentType.FREE,
-                new SessionRegistration(SessionStatus.PREPARING, 5));
-        bSession = new Session(duration, coverImage, SessionPaymentType.PAID,
-                new SessionRegistration(SessionStatus.PREPARING, 5));
+        LocalDateTime startedAt = LocalDateTime.of(2023, 4, 3, 0, 0);
+        LocalDateTime endedAt = LocalDateTime.of(2023, 6, 1, 0, 0);
+        preparingSession = SessionBuilder.aSession()
+                .withDuration(new SessionDuration(startedAt, endedAt))
+                .withCoverImage(SessionCoverImage.create("http://test.com/image01"))
+                .with(SessionRegistrationBuilder.aRegistration()
+                        .withStatus(SessionStatus.PREPARING)
+                        .withStudentCapacity(5));
     }
 
     @Test
     @DisplayName("여러개의 강의를 가질 수 있다.")
     void test01() {
-        Course course = new Course(
-                1L,
-                "테스트강의",
-                Arrays.asList(aSession, bSession),
-                1L,
-                startedAt,
-                endedAt
-        );
+        Course course = CourseBuilder.aCourse()
+                .withId(1L)
+                .withTitle("테스트강의")
+                .with(preparingSession.but().withPaymentType(SessionPaymentType.FREE))
+                .with(preparingSession.but().withPaymentType(SessionPaymentType.PAID))
+                .withCreatorId(1L)
+                .withCreatedAt(LocalDateTime.of(2023, 4, 2, 0, 0))
+                .build();
         assertThat(course.getSessions()).hasSize(2);
     }
 
