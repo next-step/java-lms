@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class User {
 
-    private final long id;
+    private final long no;
     private final UserType userType;
     private final String userId;
     private final LocalDate createdAt;
@@ -16,8 +16,8 @@ public class User {
     private String password;
     private LocalDate updatedAt;
 
-    private User(long id, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
-        this.id = id;
+    private User(long no, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
+        this.no = no;
         this.userType = userType;
         this.userId = userId;
         this.password = password;
@@ -26,12 +26,12 @@ public class User {
     }
 
     public static User of(UserType userType, String userId, String password) {
-        long id = SimpleIdGenerator.getAndIncrement(User.class);
-        return new User(id, userType, userId, password, LocalDate.now(), LocalDate.now());
+        long no = SimpleIdGenerator.getAndIncrement(User.class);
+        return new User(no, userType, userId, password, LocalDate.now(), LocalDate.now());
     }
 
-    public static User of(long id, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
-        return new User(id, userType, userId, password, createdAt, updatedAt);
+    public static User of(long no, UserType userType, String userId, String password, LocalDate createdAt, LocalDate updatedAt) {
+        return new User(no, userType, userId, password, createdAt, updatedAt);
     }
 
     public boolean isUser(User requestor) {
@@ -82,11 +82,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(userId, user.userId) && Objects.equals(password, user.password);
+        return no == user.no && Objects.equals(userId, user.userId) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, password);
+        return Objects.hash(no, userId, password);
     }
 }
