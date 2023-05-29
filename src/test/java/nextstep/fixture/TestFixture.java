@@ -80,9 +80,9 @@ public class TestFixture {
         K8S_COURSE = Course.of(2L, "재미있는 쿠버네티스", 2L);
         KOTLIN_COURSE = Course.of(3L, "Hello Kotlin", 3L);
 
-        MINT_SESSION = new Session(10000L, 100L);
-        LEMON_SESSION = new Session(500L, 50L);
-        LIME_SESSION = new Session(3000L, 30L);
+        MINT_SESSION =  Session.of(10000L, 100L);
+        LEMON_SESSION =  Session.of(500L, 50L);
+        LIME_SESSION =  Session.of(3000L, 30L);
 
         MALBEC_ENROL = new Enroll(1L, "MALBEC");
         SYRAH_ENROL = new Enroll(2L, "SYRAH");

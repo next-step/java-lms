@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.image.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
+import nextstep.image.domain.Image;
 import nextstep.utils.CommunicationTerm;
 
 import javax.validation.constraints.NotNull;
@@ -14,24 +14,48 @@ import java.util.List;
 @CommunicationTerm("강의")
 public class Session {
     private SessionId sessionId;
-    private final Date startDate;
-    private final Date endDate;
-    private final List<Enroll> enrolls = new ArrayList<>();
+    @NotNull
+    private List<Enroll> enrolls = new ArrayList<>();
     private Image coverImage;
     @CommunicationTerm("기수")
     private Long term;
+    @NotNull
     private Long price;
     @NotNull
     private SessionStatus status;
+    @NotNull
     private Long maxStudentCount;
+    @NotNull
+    private Date startDate;
+    @NotNull
+    private Date endDate;
 
-    public Session(Long price, Long maxStudentCount) {
+    public Session(SessionId sessionId, List<Enroll> enrolls, Image coverImage, Long term, Long price, SessionStatus status, Long maxStudentCount, Date startDate, Date endDate) {
+        this.sessionId = sessionId;
+        this.enrolls = enrolls;
+        this.coverImage = coverImage;
+        this.term = term;
         this.price = price;
+        this.status = status;
         this.maxStudentCount = maxStudentCount;
-        this.startDate = new Date();
-        this.endDate = new Date(System.currentTimeMillis() + 100000);
-        this.status = SessionStatus.CLOSED;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
+
+    public static Session of(Long price, Long maxStudentCount) {
+        return new Session(
+                null,
+                new ArrayList<>(),
+                null,
+                1L,
+                price,
+                SessionStatus.RECRUITING,
+                maxStudentCount,
+                new Date(),
+                new Date(System.currentTimeMillis() + 1000000)
+        );
+    }
+
 
     public Date getStartDate() {
         return startDate;
