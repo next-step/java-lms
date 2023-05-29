@@ -1,0 +1,93 @@
+package nextstep.qna.service;
+
+import java.util.List;
+import nextstep.dummy.answer.AnswerDummy;
+import nextstep.dummy.answer.NsUserDummy;
+import nextstep.dummy.answer.QuestionDummy;
+import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.*;
+import nextstep.users.domain.NsUser;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class QnaDeleteServiceTest {
+    @Mock
+    private QuestionService questionService;
+
+    @InjectMocks
+    private QnADeleteService qnADeleteService;
+
+    @Mock
+    private DeleteHistoryService deleteHistoryService;
+
+    private Question question;
+
+    private NsUser a_user;
+
+    private NsUser b_user;
+
+    @BeforeEach
+    public void setUp() {
+        question = new QuestionDummy().a_user_question;
+        question.addAnswer(new AnswerDummy().a_answer);
+        NsUserDummy nsUserDummy = new NsUserDummy();
+        a_user = nsUserDummy.a_user;
+        b_user = nsUserDummy.b_user;
+    }
+
+    @Test
+    public void delete_성공() {
+        when(questionService.findById(question.getId())).thenReturn(question);
+
+        assertThat(question.isQuestionDeleted()).isFalse();
+        qnADeleteService.deleteQuestion(a_user, question.getId());
+
+        assertThat(question.isQuestionDeleted()).isTrue();
+        verifyDeleteHistories();
+    }
+
+    @Test
+    public void delete_다른_사람이_쓴_글() {
+        when(questionService.findById(question.getId())).thenReturn(question);
+
+        assertThatThrownBy(() -> {
+            qnADeleteService.deleteQuestion(b_user, question.getId());
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    public void delete_성공_질문자_답변자_같음() {
+        when(questionService.findById(question.getId())).thenReturn(question);
+
+        qnADeleteService.deleteQuestion(a_user, question.getId());
+
+        assertThat(question.isQuestionDeleted()).isTrue();
+        verifyDeleteHistories();
+    }
+
+    @Test
+    public void delete_답변_중_다른_사람이_쓴_글() {
+        when(questionService.findById(question.getId())).thenReturn(question);
+
+        assertThatThrownBy(() -> {
+            qnADeleteService.deleteQuestion(b_user, question.getId());
+        }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    private void verifyDeleteHistories() {
+        List<DeleteHistory> deleteHistories = question.deleteHistories();
+        verify(deleteHistoryService).saveAll(deleteHistories);
+    }
+}

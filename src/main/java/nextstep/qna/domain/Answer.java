@@ -1,43 +1,32 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.ContentType.ANSWER;
+
+import nextstep.common.entity.BaseEntity;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
+public class Answer extends BaseEntity {
 
     private Question question;
 
+    private NsUser writer;
+
     private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
         }
-
         if(question == null) {
             throw new NotFoundException();
         }
-
+        this.id = id;
         this.writer = writer;
         this.question = question;
         this.contents = contents;
@@ -47,29 +36,23 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void deleteSelf() {
+        this.deleted = true;
+    }
+
+    public DeleteHistory deleteHistory() {
+        if(isDeleted()) {
+            return new DeleteHistory(ANSWER, this.id, this.writer);
+        }
+        return new DeleteHistory();
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
+    public boolean isNotOwner(NsUser writer) {
+        return !this.writer.equals(writer);
     }
 
     @Override
