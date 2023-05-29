@@ -3,19 +3,15 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.image.domain.Image;
+import nextstep.users.domain.UserCode;
 import nextstep.utils.CommunicationTerm;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @CommunicationTerm("강의")
 public class Session {
     private SessionId sessionId;
-    @NotNull
-    private List<Enroll> enrolls = new ArrayList<>();
     private Image coverImage;
     @CommunicationTerm("기수")
     private Long term;
@@ -30,9 +26,8 @@ public class Session {
     @NotNull
     private Date endDate;
 
-    public Session(SessionId sessionId, List<Enroll> enrolls, Image coverImage, Long term, Long price, SessionStatus status, Long maxStudentCount, Date startDate, Date endDate) {
+    public Session(SessionId sessionId, Image coverImage, Long term, Long price, SessionStatus status, Long maxStudentCount, Date startDate, Date endDate) {
         this.sessionId = sessionId;
-        this.enrolls = enrolls;
         this.coverImage = coverImage;
         this.term = term;
         this.price = price;
@@ -42,14 +37,13 @@ public class Session {
         this.endDate = endDate;
     }
 
-    public static Session of(Long price,Long term, Long maxStudentCount) {
+    public static Session of(Long price, Long term, Long maxStudentCount) {
         return new Session(
                 null,
-                new ArrayList<>(),
                 null,
                 term,
                 price,
-                SessionStatus.RECRUITING,
+                SessionStatus.PREPARING,
                 maxStudentCount,
                 new Date(),
                 new Date(System.currentTimeMillis() + 1000000)
@@ -97,14 +91,14 @@ public class Session {
         this.coverImage = image;
     }
 
-    public void enroll(Enroll... enrolls) {
+    public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
-        validateStudentCount(enrolls.length);
-        this.enrolls.addAll(Arrays.asList(enrolls));
+        validateStudentCount(alreadyEnrolledCount);
+        return Enroll.of(this.sessionId.value(), userCode.value());
     }
 
-    private void validateStudentCount(int count) {
-        if (maxStudentCount < this.enrolls.size() + count) {
+    private void validateStudentCount(long count) {
+        if (maxStudentCount < count + 1) {
             throw new ExceededStudentCount();
         }
     }
@@ -113,10 +107,6 @@ public class Session {
         if (this.status != SessionStatus.RECRUITING) {
             throw new OutOfRegistrationPeriod();
         }
-    }
-
-    public boolean enrollCheck(Enroll enroll) {
-        return enrolls.contains(enroll);
     }
 
     public void adjustStudentCount(Long maxStudentCount) {
