@@ -43,7 +43,7 @@ public class SessionServiceTest {
     void enroll() {
         Session session = sessionService.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
 
-        sessionService.saveSessionUser(session, NsUserTest.JAVAJIGI);
+        sessionService.enroll(session, NsUserTest.JAVAJIGI);
         List<NsUser> sessionUsers = sessionService.findAllUserBySessionId(session.getId());
 
         assertThat(sessionUsers).hasSize(1);
@@ -54,10 +54,10 @@ public class SessionServiceTest {
     @DisplayName("강의 최대 인원이 초과된 경우 수강신청할 수 없다")
     void saveSessionUser_Fail1() {
         Session session = sessionService.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
-        sessionService.saveSessionUser(session, NsUserTest.JAVAJIGI);
+        sessionService.enroll(session, NsUserTest.JAVAJIGI);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> sessionService.saveSessionUser(session, NsUserTest.SANJIGI))
+                .isThrownBy(() -> sessionService.enroll(session, NsUserTest.SANJIGI))
                 .withMessageMatching("강의 최대 수강 인원이 초과되었습니다.");
     }
 
@@ -66,7 +66,7 @@ public class SessionServiceTest {
     void saveSessionUser_Fail2() {
         Session session = sessionService.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> sessionService.saveSessionUser(session, NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> sessionService.enroll(session, NsUserTest.JAVAJIGI))
                 .withMessageMatching("모집중인 강의가 아닙니다.");
     }
 }

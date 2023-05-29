@@ -37,7 +37,7 @@ public class SessionService {
     }
 
     @Transactional
-    public long saveSessionUser(Session session, NsUser nextStepUser) {
+    public long enroll(Session session, NsUser nextStepUser) {
         session.enroll(nextStepUser);
         return sessionRepository.saveSessionUser(session, nextStepUser);
     }
