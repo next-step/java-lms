@@ -13,7 +13,9 @@ public class SessionTest {
     public static Session s1 = createSession(Cost.FREE, State.READY, 30);
     public static Session s2 = createSession(Cost.FREE, State.RECRUIT_START, 1);
     public static Session s3 = createSession(Cost.FREE, State.RECRUIT_END, 30);
-
+    public static Session s4 = createSession(Cost.FREE, State.SESSION_START, 30);
+    public static Session s5 = createSession(Cost.FREE, State.SESSION_END, 30);
+    
     @Test
     @DisplayName("학생 등록")
     void addStudent() {
@@ -32,18 +34,34 @@ public class SessionTest {
 
     @Test
     @DisplayName("모집중이 아닌 경우 - 준비중")
-    void addStudent_stateOnException() {
+    void addStudent_stateREADYException() {
         assertThatThrownBy(() -> {
             s1.enroll(StudentTest.student1);
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("준비 중인 강의입니다.");
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("준비중인 강의입니다.");
     }
 
     @Test
     @DisplayName("모집중이 아닌 경우 - 종료")
-    void addStudent_stateOffException() {
+    void addStudent_stateRECRUIT_ENDException() {
         assertThatThrownBy(() -> {
             s3.enroll(StudentTest.student1);
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("모집 종료된 강의입니다.");
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("모집종료인 강의입니다.");
+    }
+
+    @Test
+    @DisplayName("모집중이 아닌 경우 - 강의 시작")
+    void addStudent_stateSESSION_STARTException() {
+        assertThatThrownBy(() -> {
+            s4.enroll(StudentTest.student1);
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의중인 강의입니다.");
+    }
+
+    @Test
+    @DisplayName("모집중이 아닌 경우 - 종료")
+    void addStudent_stateSESSION_ENDException() {
+        assertThatThrownBy(() -> {
+            s5.enroll(StudentTest.student1);
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의종료인 강의입니다.");
     }
 
     static Session createSession(Cost cost, State state, int maxUser) {
