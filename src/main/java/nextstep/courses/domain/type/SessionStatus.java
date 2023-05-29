@@ -1,6 +1,6 @@
 package nextstep.courses.domain.type;
 
-public enum CourseStatus {
+public enum SessionStatus {
     READY,
     RECRUIT,
     QUIT

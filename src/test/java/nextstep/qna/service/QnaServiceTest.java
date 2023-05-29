@@ -1,6 +1,5 @@
 package nextstep.qna.service;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.*;
 import nextstep.users.domain.NsUserTest;

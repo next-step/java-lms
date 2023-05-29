@@ -1,28 +1,26 @@
 package nextstep.courses.domain;
 
-import java.util.List;
+import java.util.Set;
 
 public class Students {
-    private final Session session;
-    private final List<Student> students;
+    private final Set<Long> studentIds;
 
-    public Students(Session session, List<Student> students) {
-        this.session = session;
-        this.students = students;
+    public Students(Set<Long> studentIds) {
+        this.studentIds = studentIds;
     }
 
-    public void add(Student student) {
-        validateToAdd(student);
+    public void add(Long studentId) {
+        validateToAdd(studentId);
 
-        students.add(student);
+        studentIds.add(studentId);
     }
 
     public int size() {
-        return students.size();
+        return studentIds.size();
     }
 
-    public void validateToAdd(Student student) {
-        if (students.contains(student)) {
+    public void validateToAdd(Long studentId) {
+        if (studentIds.contains(studentId)) {
             throw new IllegalArgumentException("이미 등록된 학생입니다.");
         }
     }

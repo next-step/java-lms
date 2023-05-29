@@ -1,6 +1,6 @@
 package nextstep.courses.domain.type;
 
-public enum CourseType {
+public enum SessionType {
     FREE,
     PAID
 }

@@ -1,9 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.type.CourseStatus;
-import nextstep.courses.domain.type.CourseType;
-
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public class Course {
     private final Long id;
@@ -15,24 +14,20 @@ public class Course {
     private final LocalDateTime createdAt;
 
     private final LocalDateTime updatedAt;
-    private final CourseStatus courseStatus;
-    private final CourseType courseType;
+    private final List<Session> sessions;
 
     public Course(String title,
-                  Long creatorId,
-                  CourseType courseType) {
-        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now(), CourseStatus.READY, courseType);
+                  Long creatorId) {
+        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now(),Collections.emptyList());
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
-                  LocalDateTime updatedAt, CourseStatus courseStatus, CourseType courseType) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, List<Session> sessions) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.courseStatus = courseStatus;
-        this.courseType = courseType;
+        this.sessions = sessions;
     }
 
     public String getTitle() {
@@ -47,10 +42,6 @@ public class Course {
         return createdAt;
     }
 
-    public CourseStatus getCourseStatus() { return courseStatus; }
-
-    public CourseType getCourseType() { return courseType; }
-
     @Override
     public String toString() {
         return "Course{" +
@@ -60,9 +51,5 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public boolean isNotRecruiting() {
-        return this.courseStatus != CourseStatus.RECRUIT;
     }
 }

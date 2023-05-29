@@ -1,10 +1,12 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.type.CourseStatus;
-import nextstep.courses.domain.type.CourseType;
+import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionType;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -13,17 +15,18 @@ class SessionTest {
     @Test
     public void register_success() {
         // given
-        Course course = new Course(1L,
-                "Nextstep 강의",
-                1L, LocalDateTime.now(),
-                LocalDateTime.now(),
-                CourseStatus.RECRUIT,
-                CourseType.PAID);
-
-        Session session = new Session(course, 1);
+        Session session = new Session(
+                new Students(new HashSet<>()),
+                2,
+                SessionStatus.RECRUIT,
+                SessionType.FREE,
+                LocalDate.now(),
+                LocalDate.now(),
+                ""
+        );
 
         // when
-        session.register(new Student(1));
+        session.register(1L);
 
         // then
         assertThat(session.getStudentsSize()).isEqualTo(1);
@@ -32,20 +35,22 @@ class SessionTest {
     @Test
     public void register_failed_by_duplication() {
         // given
-        Course course = new Course(1L,
-                "Nextstep 강의",
-                1L, LocalDateTime.now(),
-                LocalDateTime.now(),
-                CourseStatus.RECRUIT,
-                CourseType.PAID);
+        Session session = new Session(
+                new Students(new HashSet<>()),
+                2,
+                SessionStatus.RECRUIT,
+                SessionType.FREE,
+                LocalDate.now(),
+                LocalDate.now(),
+                ""
+        );
 
-        Session session = new Session(course, 2);
 
         // when
-        session.register(new Student(1));
+        session.register(1L);
 
         // then
-        assertThatThrownBy(() -> session.register(new Student(1)))
+        assertThatThrownBy(() -> session.register(1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 등록된 학생입니다.");
     }
@@ -53,16 +58,18 @@ class SessionTest {
     @Test
     public void register_failed_by_not_recuriting() {
         // given
-        Course course = new Course(1L,
-                "Nextstep 강의",
-                1L, LocalDateTime.now(),
-                LocalDateTime.now(),
-                CourseStatus.READY,
-                CourseType.PAID);
-        Session session = new Session(course, 2);
+        Session session = new Session(
+                new Students(new HashSet<>()),
+                2,
+                SessionStatus.READY,
+                SessionType.FREE,
+                LocalDate.now(),
+                LocalDate.now(),
+                ""
+        );
 
         // then
-        assertThatThrownBy(() -> session.register(new Student(1)))
+        assertThatThrownBy(() -> session.register(1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("아직 모집중인 강의가 아닙니다.");
     }
@@ -70,16 +77,18 @@ class SessionTest {
     @Test
     public void register_failed_by_capacity() {
         // given
-        Course course = new Course(1L,
-                "Nextstep 강의",
-                1L, LocalDateTime.now(),
-                LocalDateTime.now(),
-                CourseStatus.RECRUIT,
-                CourseType.PAID);
-        Session session = new Session(course, 0);
+        Session session = new Session(
+                new Students(new HashSet<>()),
+                0,
+                SessionStatus.RECRUIT,
+                SessionType.FREE,
+                LocalDate.now(),
+                LocalDate.now(),
+                ""
+        );
 
         // then
-        assertThatThrownBy(() -> session.register(new Student(1)))
+        assertThatThrownBy(() -> session.register(1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("더 이상 학생을 등록할 수 없습니다.");
     }
