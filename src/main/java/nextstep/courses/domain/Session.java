@@ -42,12 +42,12 @@ public class Session {
         this.endDate = endDate;
     }
 
-    public static Session of(Long price, Long maxStudentCount) {
+    public static Session of(Long price,Long term, Long maxStudentCount) {
         return new Session(
                 null,
                 new ArrayList<>(),
                 null,
-                1L,
+                term,
                 price,
                 SessionStatus.RECRUITING,
                 maxStudentCount,
