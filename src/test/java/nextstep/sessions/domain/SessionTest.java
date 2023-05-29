@@ -20,19 +20,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class SessionTest {
-    public static final Session S1 = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true);
-    public static final Session S2 = Session.ofDefaultCoverImage(2L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true);
+    public static final Session S1 = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
+    public static final Session S2 = Session.ofDefaultCoverImage(2L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
     private Session session;
 
     @BeforeEach
     public void beforeEach() {
-        session = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true);
+        session = Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10);
     }
 
     @DisplayName("Session 객체가 잘 생성되는지 확인")
     @Test
     void Session_객체가_정상적으로_생성되는지_확인() {
-        assertThat(Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true)).isInstanceOf(Session.class);
+        assertThat(Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 10)).isInstanceOf(Session.class);
     }
 
     static Stream<Arguments> provideArguments() {
@@ -47,7 +47,7 @@ public class SessionTest {
     @ParameterizedTest(name = "from : {0}, to : {1}")
     @MethodSource("provideArguments")
     void 시작일_또는_종료일의_값이_유효하지_않은경우_IllegalArgumentException(LocalDateTime from, LocalDateTime to) {
-        assertThatThrownBy(() -> Session.ofDefaultCoverImage(1L, CourseTest.C, from, to, true))
+        assertThatThrownBy(() -> Session.ofDefaultCoverImage(1L, CourseTest.C, from, to, true, 10))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("시작일 또는 종료일은 null 일 수 없습니다.");
     }
@@ -57,7 +57,7 @@ public class SessionTest {
     void 시작일이_종료일과_같거나_늦는_경우_IllegalArgumentException() {
         LocalDateTime now = LocalDateTime.now();
 
-        assertThatThrownBy(() -> Session.ofDefaultCoverImage(1L, CourseTest.C, now, now, true))
+        assertThatThrownBy(() -> Session.ofDefaultCoverImage(1L, CourseTest.C, now, now, true, 10))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("시작일이 종료일과 같거나 이후일 수 없습니다.");
     }
@@ -71,8 +71,8 @@ public class SessionTest {
     @DisplayName("무료 강의 유료 강의 객체가 정상적으로 생성되는지 확인")
     @Test
     void 무료_강의_유료_강의_객체가_정상적으로_생성되는지_확인() {
-        Session freeSession = Session.ofFreeSession(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE);
-        Session chargedSession = Session.ofChargedSession(2L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE);
+        Session freeSession = Session.ofFreeSession(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, 10);
+        Session chargedSession = Session.ofChargedSession(2L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, 10);
 
         assertThat(freeSession.isFree()).isTrue();
         assertThat(chargedSession.isFree()).isFalse();
@@ -100,7 +100,7 @@ public class SessionTest {
             return;
         }
 
-        Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, status);
+        Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, status, 10);
         assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("모집중 이외의 상태에서는 수강신청이 불가합니다.");
@@ -112,5 +112,24 @@ public class SessionTest {
         session.toOpen();
         assertThatCode(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("최대 수강신청 인원이 1보다 작은 경우 IllegalArgumentException 발생하는지 확인")
+    @Test
+    void 최대_수강신청_인원이_1보다_작은_경우_IllegalArgumentException_발생하는지_확인() {
+        assertThatThrownBy(() -> Session.ofDefaultCoverImage(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, true, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("최대 수강신청 인원 수가 1보다 작을 수 없습니다.");
+    }
+
+    @DisplayName("수강신청시 최대 수강신청 인원을 초과하는 경우 RuntimeException 발생하는지 확인")
+    @Test
+    void 수강신청시_최대_수강신청_인원을_초과하는_경우_RuntimeException_발생하는지_확인() {
+        Session session = Session.of(1L, CourseTest.C, LocalDateTime.MIN, LocalDateTime.MAX, ImageTest.DEFAULT_IMAGE, true, ProgressStatus.OPEN, 1);
+        session.enroll(NsUserTest.JAVAJIGI);
+
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("최대 수강신청 인원을 초과하여 수강 신청을 할 수 없습니다.");
     }
 }

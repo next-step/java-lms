@@ -22,24 +22,29 @@ public class Session {
 
     private ProgressStatus status;
 
-    public static Session ofFreeSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
-        return new Session(id, course, from, to, coverImage, true);
+    private int maxEnrollmentCount;
+
+    private int enrollmentCount;
+
+    public static Session ofFreeSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, int maxEnrollmentCount) {
+        return new Session(id, course, from, to, coverImage, true, maxEnrollmentCount);
     }
 
-    public static Session ofChargedSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage) {
-        return new Session(id, course, from, to, coverImage, false);
+    public static Session ofChargedSession(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, int maxEnrollmentCount) {
+        return new Session(id, course, from, to, coverImage, false, maxEnrollmentCount);
     }
 
-    public static Session ofDefaultCoverImage(Long id, Course course, LocalDateTime from, LocalDateTime to, boolean isFree) {
-        return new Session(id, course, from, to, Image.ofDefault(), isFree);
+    public static Session ofDefaultCoverImage(Long id, Course course, LocalDateTime from, LocalDateTime to, boolean isFree, int maxEnrollmentCount) {
+        return new Session(id, course, from, to, Image.ofDefault(), isFree, maxEnrollmentCount);
     }
 
-    public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status) {
-        return new Session(id, course, from, to, coverImage, isFree, status);
+    public static Session of(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status, int maxEnrollmentCount) {
+        return new Session(id, course, from, to, coverImage, isFree, status, maxEnrollmentCount);
     }
 
-    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree) {
+    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, int maxEnrollmentCount) {
         validatePeriod(from, to);
+        validateMaxEnrollmentCount(maxEnrollmentCount);
         this.id = id;
         this.course = course;
         this.from = from;
@@ -47,10 +52,13 @@ public class Session {
         this.coverImage = coverImage;
         this.isFree = isFree;
         this.status = ProgressStatus.READY;
+        this.maxEnrollmentCount = maxEnrollmentCount;
+        this.enrollmentCount = 0;
     }
 
-    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status) {
+    private Session(Long id, Course course, LocalDateTime from, LocalDateTime to, Image coverImage, boolean isFree, ProgressStatus status, int maxEnrollmentCount) {
         validatePeriod(from, to);
+        validateMaxEnrollmentCount(maxEnrollmentCount);
         this.id = id;
         this.course = course;
         this.from = from;
@@ -58,6 +66,8 @@ public class Session {
         this.coverImage = coverImage;
         this.isFree = isFree;
         this.status = status;
+        this.maxEnrollmentCount = maxEnrollmentCount;
+        this.enrollmentCount = 0;
     }
 
     public void toCourse(Course course) {
@@ -94,9 +104,21 @@ public class Session {
         }
     }
 
+    private static void validateMaxEnrollmentCount(int maxEnrollmentCount) {
+        if (maxEnrollmentCount < 1) {
+            throw new IllegalArgumentException("최대 수강신청 인원 수가 1보다 작을 수 없습니다.");
+        }
+    }
+
     public void enroll(NsUser student) {
         if (ProgressStatus.OPEN != status) {
             throw new RuntimeException("모집중 이외의 상태에서는 수강신청이 불가합니다.");
         }
+
+        if (maxEnrollmentCount == enrollmentCount) {
+            throw new RuntimeException("최대 수강신청 인원을 초과하여 수강 신청을 할 수 없습니다.");
+        }
+
+        enrollmentCount++;
     }
 }
