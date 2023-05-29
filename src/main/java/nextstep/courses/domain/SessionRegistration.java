@@ -49,6 +49,14 @@ public class SessionRegistration {
         }
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public int getMaxUser() {
+        return maxUser;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
