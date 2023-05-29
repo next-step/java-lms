@@ -55,7 +55,7 @@ public class Session {
         }
     }
 
-    public Students addStudent(Student student) {
+    public Students enroll(Student student) {
         validateState();
         validateStudentsNumber();
         students.addStudent(student);
