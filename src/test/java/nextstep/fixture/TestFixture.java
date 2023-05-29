@@ -1,6 +1,6 @@
 package nextstep.fixture;
 
-import nextstep.common.domain.Image;
+import nextstep.image.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Creator;
 import nextstep.courses.domain.Enroll;

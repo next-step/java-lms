@@ -1,10 +1,9 @@
-package nextstep.common.domain;
+package nextstep.image.domain;
 
-import nextstep.common.InvalidImageUrlException;
+import nextstep.image.exception.InvalidImageUrlException;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Image {
     private Long imageId;

@@ -1,4 +1,4 @@
-package nextstep.common.domain;
+package nextstep.image.domain;
 
 import nextstep.fixture.TestFixture;
 import org.junit.jupiter.api.DisplayName;

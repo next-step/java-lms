@@ -1,4 +1,4 @@
-package nextstep.common.domain;
+package nextstep.image.domain;
 
 import java.util.List;
 import java.util.Optional;

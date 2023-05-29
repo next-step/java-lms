@@ -1,4 +1,4 @@
-package nextstep.common;
+package nextstep.image.exception;
 
 public class InvalidImageUrlException extends IllegalArgumentException {
     public InvalidImageUrlException() {
