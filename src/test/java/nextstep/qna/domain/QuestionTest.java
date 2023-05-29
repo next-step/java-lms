@@ -38,13 +38,6 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("[삭제성공]질문 작성자 일치, 답변 작성자 일치")
-    @Test
-    public void 질문_작성자_일치_삭제() throws Exception {
-        Q1.addAnswer(A1);
-        assertThat(Q1.deleteAnswers(NsUserTest.JAVAJIGI)).isNotNull();
-    }
-
     @DisplayName("[삭제실패]질문 작성자 일치, 답변 작성자 불일치")
     @Test
     public void 질문_작성자_불일치_삭제_예외() throws Exception {

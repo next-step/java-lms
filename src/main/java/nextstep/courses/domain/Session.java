@@ -17,11 +17,11 @@ public class Session {
     private LocalDate endDate;
     private List<NsUser> students = new ArrayList<>();
 
-    public Session(int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
+    private Session(int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
         this(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, startDate, endDate);
     }
 
-    public Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
+    private Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
         this.coverImage = coverImage;
         this.paymentType = paymentType;
         this.state = state;
@@ -30,16 +30,36 @@ public class Session {
         this.endDate = endDate;
     }
 
+    public static Session createFreeSession(int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
+        return new Session(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, startDate, endDate);
+    }
+
+    public static Session createSession(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
+        return new Session(coverImage, paymentType, state, maxCapacityOfStudents, startDate, endDate);
+    }
+
+
     public void registerSession(NsUser student) throws CannotRegisterSessionException {
-        validStatus();
-        validCapacity(1);
+        valid(1);
         this.students.add(student);
     }
 
-    public void registerSession(List<NsUser> students) throws CannotRegisterSessionException {
-        validStatus();
-        validCapacity(students.size());
+    public void registerSessionAll(List<NsUser> students) throws CannotRegisterSessionException {
+        valid(students.size());
         this.students.addAll(students);
+    }
+
+    private void valid(int countOfPerson) throws CannotRegisterSessionException {
+        validStartDate();
+        validStatus();
+        validCapacity(countOfPerson);
+    }
+
+    private void validStartDate() throws CannotRegisterSessionException {
+        LocalDate now = LocalDate.now();
+        if (now.isAfter(this.startDate)) {
+            throw new CannotRegisterSessionException("이미 시작한 강의입니다.");
+        }
     }
 
     private void validStatus() throws CannotRegisterSessionException {
@@ -54,15 +74,8 @@ public class Session {
         }
     }
 
-    public void preparing() {
-        state = SessionState.PREPARING;
+    public void nextState() {
+        this.state = state.updateState();
     }
 
-    public void recruiting() {
-        state = SessionState.RECRUITING;
-    }
-
-    public void close() {
-        state = SessionState.CLOSED;
-    }
 }

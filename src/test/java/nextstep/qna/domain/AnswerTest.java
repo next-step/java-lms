@@ -26,7 +26,7 @@ public class AnswerTest {
     public void create() throws Exception {
         assertThat(new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"))
                 .isNotNull()
-                .isInstanceOf(Answers.class);
+                .isInstanceOf(Answer.class);
     }
 
     @DisplayName("답변 작성자 일치여부 확인")
