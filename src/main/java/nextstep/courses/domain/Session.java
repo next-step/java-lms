@@ -1,22 +1,47 @@
 package nextstep.courses.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Session {
 
-    private Date startDate;
-    private Date endDate;
-    private ThumbnailInfo thumbnailInfo;
-    private PaymentTypeEnum paymentType;
+    private Long id;
+    private String title;
     private int enrollments;
-    private SessionStatusEnum status;
     private int maximumEnrollments;
+    private String thumbnailUrl;
+    private PaymentTypeEnum paymentType;
+    private SessionStatusEnum status;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
-    public Session() {
+    public Session(Long id, String title, int enrollments, int maximumEnrollments, String thumbnailUrl, PaymentTypeEnum paymentType, SessionStatusEnum status, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.title = title;
+        this.enrollments = enrollments;
+        this.maximumEnrollments = maximumEnrollments;
+        this.thumbnailUrl = thumbnailUrl;
+        this.paymentType = paymentType;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    private Session(String title, PaymentTypeEnum paymentType, LocalDateTime startDate, LocalDateTime endDate){
+        this.title = title;
+        this.enrollments = 0;
+        this.status = SessionStatusEnum.READY;
+        this.paymentType = paymentType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+    }
+    public Session(String title, PaymentTypeEnum paymentType) {
+        this(title, paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(30));
         this.maximumEnrollments = 30;
     }
 
-    public Session(int maximumEnrollments) {
+    public Session(String title, PaymentTypeEnum paymentType, int maximumEnrollments) {
+        this(title, paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(30));
         this.maximumEnrollments = maximumEnrollments;
     }
 
@@ -52,5 +77,56 @@ public class Session {
         }
 
         enrollments+=1;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public String getPaymentType() {
+        return paymentType.name();
+    }
+
+    public int getEnrollments() {
+        return enrollments;
+    }
+
+    public String getStatus() {
+        return status.name();
+    }
+
+    public int getMaximumEnrollments() {
+        return maximumEnrollments;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", title='" + title +
+                ", enrollments=" + enrollments +
+                ", maximumEnrollments=" + maximumEnrollments +
+                ", thumbnailUrl=" + thumbnailUrl +
+                ", paymentType=" + paymentType.name() +
+                ", status=" + status.name() +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

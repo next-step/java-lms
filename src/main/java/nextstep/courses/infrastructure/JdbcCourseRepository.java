@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.util.LocalDateTimeUtil;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,15 +31,9 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp(4)),
+                LocalDateTimeUtil.toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }
