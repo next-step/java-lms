@@ -1,7 +1,6 @@
-package nextstep.enrollment.domain;
+package nextstep.lms.domain;
 
 import nextstep.global.domain.BaseTimeDomain;
-import nextstep.sessions.domain.Session;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

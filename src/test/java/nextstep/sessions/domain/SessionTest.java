@@ -1,9 +1,10 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.CourseTest;
-import nextstep.enrollment.domain.Enrollment;
+import nextstep.lms.domain.Enrollment;
 import nextstep.images.domain.ImageTest;
-import nextstep.sessions.domain.enums.ProgressStatus;
+import nextstep.lms.domain.Session;
+import nextstep.lms.domain.enums.ProgressStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

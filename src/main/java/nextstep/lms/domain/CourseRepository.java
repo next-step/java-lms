@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.lms.domain;
 
 public interface CourseRepository {
     int save(Course course);

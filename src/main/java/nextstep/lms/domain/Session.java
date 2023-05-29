@@ -1,9 +1,6 @@
-package nextstep.sessions.domain;
+package nextstep.lms.domain;
 
-import nextstep.courses.domain.Course;
-import nextstep.enrollment.domain.Enrollment;
-import nextstep.images.domain.Image;
-import nextstep.sessions.domain.enums.ProgressStatus;
+import nextstep.lms.domain.enums.ProgressStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

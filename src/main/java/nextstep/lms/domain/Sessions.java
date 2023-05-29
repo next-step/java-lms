@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.lms.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;

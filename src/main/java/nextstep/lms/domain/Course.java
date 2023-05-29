@@ -1,7 +1,4 @@
-package nextstep.courses.domain;
-
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.Sessions;
+package nextstep.lms.domain;
 
 import java.time.LocalDateTime;
 

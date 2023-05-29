@@ -1,4 +1,4 @@
-package nextstep.sessions.domain.enums;
+package nextstep.lms.domain.enums;
 
 public enum ProgressStatus {
     READY,

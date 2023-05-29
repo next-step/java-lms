@@ -1,7 +1,7 @@
-package nextstep.courses.infrastructure;
+package nextstep.lms.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.lms.domain.Course;
+import nextstep.lms.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

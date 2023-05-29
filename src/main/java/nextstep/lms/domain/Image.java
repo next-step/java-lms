@@ -1,4 +1,4 @@
-package nextstep.images.domain;
+package nextstep.lms.domain;
 
 import java.util.Objects;
 
