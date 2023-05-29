@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -19,8 +20,10 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        String sql = "insert into course (title, creator_id, created_at, updated_at) " +
+                "values(?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(),
+                LocalDateTime.now());
     }
 
     @Override
@@ -31,7 +34,8 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                toLocalDateTime(rs.getTimestamp(5)),
+                Collections.emptyList());
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
