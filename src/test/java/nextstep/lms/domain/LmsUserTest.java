@@ -3,6 +3,7 @@ package nextstep.lms.domain;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LmsUserTest {
@@ -20,6 +21,19 @@ class LmsUserTest {
                 () -> assertThat(newUser.isAdmin()).isFalse(),
                 () -> assertThat(ADMIN_1.isAdmin()).isTrue(),
                 () -> assertThat(USER_1.isAdmin()).isFalse()
+        );
+    }
+
+    @Test
+    void 유저_필수값_미입력시() {
+        assertAll(
+                () -> assertThatThrownBy(() -> LmsUser.adminOf(null, "password", "구마적")).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("newUser", null, "구마적")).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("newUser", "password", null)).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("", "password", "구마적")).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("   ", "password", "구마적")).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("newUser", "", "구마적")).isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> LmsUser.adminOf("newUser", "password", "")).isInstanceOf(IllegalArgumentException.class)
         );
     }
 }

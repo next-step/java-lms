@@ -32,7 +32,7 @@ class SessionTest {
     void 무료강의추가() {
         Session newSession = Session.of("무료강의1", CourseTest.COURSE_A, LmsUserTest.ADMIN_1, 0, 100, null, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 15));
         assertAll(
-                () -> assertThat(newSession.isPrice(0)).isTrue(),
+                () -> assertThat(newSession.isFree()).isTrue(),
                 () -> assertThat(newSession.isMaxApplicantCount(100)).isTrue(),
                 () -> assertThat(newSession.isCourse(CourseTest.COURSE_A)).isTrue(),
                 () -> assertThat(newSession.isCreator(LmsUserTest.ADMIN_1)).isTrue()

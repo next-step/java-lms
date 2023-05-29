@@ -23,7 +23,7 @@ public enum SessionStatus {
     }
 
     public SessionStatus open() {
-        if (this != SessionStatus.PREPARING){
+        if (this != SessionStatus.PREPARING) {
             throw new IllegalStateException("현재 준비중인 강의만 모집중으로 변경 가능합니다.");
         }
         return SessionStatus.OPEN;

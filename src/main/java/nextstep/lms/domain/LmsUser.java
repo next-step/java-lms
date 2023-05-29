@@ -37,11 +37,19 @@ public class LmsUser {
     }
 
     public static LmsUser adminOf(String userId, String password, String name) {
+        validateIfPresent(userId, password, name);
         return new LmsUser(userId, password, name, LmsUserRole.ADMIN);
     }
 
     public static LmsUser normalOf(String userId, String password, String name) {
+        validateIfPresent(userId, password, name);
         return new LmsUser(userId, password, name, LmsUserRole.NORMAL);
+    }
+
+    private static void validateIfPresent(String userId, String password, String name) {
+        if (Utils.isNullOrBlank(userId, password, name)) {
+            throw new IllegalArgumentException("아이디 / 비밀번호 / 이름 은 필수값입니다.");
+        }
     }
 
     public boolean isAdmin() {

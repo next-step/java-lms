@@ -41,6 +41,7 @@ public class Course {
     }
 
     public static Course of(String title, LmsUser creator) {
+        Utils.validateTile(title);
         valiateCreatorAuthorization(creator);
         return new Course(idGenerator.getAndIncrement(), title, creator, new ArrayList<>(), LocalDateTime.now(), null);
     }

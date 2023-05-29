@@ -18,7 +18,7 @@ public class Session {
 
     private LmsUser creator;
 
-    private Integer price;  // 0 : 무료강의
+    private SessionPrice price;
 
     private SessionStatus status;
 
@@ -36,7 +36,7 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(Long id, String title, Course course, LmsUser creator, Integer price, SessionStatus status, Integer maxApplicantCount, List<LmsUser> applicants, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Session(Long id, String title, Course course, LmsUser creator, SessionPrice price, SessionStatus status, Integer maxApplicantCount, List<LmsUser> applicants, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.course = course;
@@ -56,17 +56,18 @@ public class Session {
     }
 
     private static void validateCreatorAuthorization(Course course, LmsUser creator) {
-        if(creator.isNotAdmin()){
+        if (creator.isNotAdmin()) {
             throw new UnAuthorizedException("강의 생성 권한이 없는 유저입니다.");
         }
-        if(!course.isSameCreator(creator)){
+        if (!course.isSameCreator(creator)) {
             throw new UnAuthorizedException("강의 생성자와 과정 생성자가 일치하지 않습니다.");
         }
     }
 
     public static Session of(String title, Course course, LmsUser creator, Integer price, Integer maxApplicantCount, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate) {
+        Utils.validateTile(title);
         validateCreatorAuthorization(course, creator);
-        return new Session(idGenerator.getAndIncrement(), title, course, creator, price, SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
+        return new Session(idGenerator.getAndIncrement(), title, course, creator, new SessionPrice(price), SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
     }
 
     private void validateCreator(LmsUser user) {
@@ -93,13 +94,13 @@ public class Session {
 
         applicants.add(user);
 
-        if(applicants.size() == maxApplicantCount){
+        if (applicants.size() == maxApplicantCount) {
             status = SessionStatus.FULL;
         }
     }
 
     private void checkAlreadyApplicant(LmsUser user) {
-        if(applicants.contains(user)){
+        if (applicants.contains(user)) {
             throw new IllegalStateException("이미 신청한 회원입니다.");
         }
     }
@@ -112,8 +113,12 @@ public class Session {
         return this.course == course;
     }
 
-    public boolean isPrice(Integer price) {
-        return this.price.equals(price);
+    public boolean isFree() {
+        return this.price.isFree();
+    }
+
+    public boolean isPaid() {
+        return this.price.isPaid();
     }
 
     public boolean isMaxApplicantCount(Integer count) {
@@ -123,6 +128,7 @@ public class Session {
     public boolean isStatus(SessionStatus status) {
         return this.status == status;
     }
+
     public boolean isCreator(LmsUser user) {
         return this.creator == user;
     }
