@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.RegisterCourseException;
 
@@ -6,11 +6,24 @@ public class SessionInfo {
     private final int maxStudents;
     private int currentStudents;
     private SessionStatusType sessionStatusType;
+    private SessionRecruitmentType sessionRecruitmentType;
 
     public SessionInfo(int maxStudents, int currentStudents, SessionStatusType sessionStatusType) {
         this.maxStudents = maxStudents;
         this.currentStudents = currentStudents;
         this.sessionStatusType = sessionStatusType;
+    }
+
+    public SessionInfo(int maxStudents, int currentStudents, SessionStatusType sessionStatusType, SessionRecruitmentType sessionRecruitmentType) {
+        this.maxStudents = maxStudents;
+        this.currentStudents = currentStudents;
+        this.sessionStatusType = sessionStatusType;
+        this.sessionRecruitmentType = sessionRecruitmentType;
+    }
+
+    public void checkIsRegister(int studentsCount) {
+        this.checkStatusToRegister();
+        this.checkMaxStudentsCountToRegister(studentsCount);
     }
 
     public void registerSession(int studentsCount) {
@@ -21,7 +34,7 @@ public class SessionInfo {
     }
 
     private void checkStatusToRegister() {
-        if (this.sessionStatusType == SessionStatusType.RECRUITING) {
+        if (this.sessionRecruitmentType == SessionRecruitmentType.RECRUITING) {
             return;
         }
 
@@ -44,5 +57,9 @@ public class SessionInfo {
 
     public SessionStatusType getSessionStatusType() {
         return sessionStatusType;
+    }
+
+    public SessionRecruitmentType getSessionRecruitmentType() {
+        return sessionRecruitmentType;
     }
 }

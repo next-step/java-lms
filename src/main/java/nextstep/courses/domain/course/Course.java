@@ -1,6 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import nextstep.common.BaseEntity;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,10 @@ public class Course extends BaseEntity {
 
     public void registerSession(Long sessionId, int studentsCount) {
         this.sessions.registerSession(sessionId, studentsCount);
+    }
+
+    public void checkIsRegisterSession(Long sessionId, int studentsCount) {
+        this.sessions.checkIsRegister(sessionId, studentsCount);
     }
 
     public String getTitle() {

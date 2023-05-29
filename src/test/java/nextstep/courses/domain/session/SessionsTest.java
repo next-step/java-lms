@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.RegisterCourseException;
 import org.assertj.core.api.Assertions;
@@ -15,7 +15,7 @@ public class SessionsTest {
         final Sessions sessions = new Sessions(
                 List.of(
                         new Session(1L, LocalDateTime.now(), null,
-                                new SessionInfo(10, 0, SessionStatusType.RECRUITING),
+                                new SessionInfo(10, 0, SessionStatusType.IN_PROGRESS),
                                 new CoverImage("url"),
                                 new SessionDate(LocalDateTime.now(), LocalDateTime.now()),
                                 new Price(1000))));

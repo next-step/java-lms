@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.common.BaseEntity;
+import nextstep.courses.domain.ragistration.Registration;
 
 import java.time.LocalDateTime;
 
@@ -23,8 +24,19 @@ public class Session extends BaseEntity {
         this.price = price;
     }
 
+    public void checkIsRegister(int studentsCount) {
+        this.sessionInfo.checkIsRegister(studentsCount);
+    }
+
+    public void registerSession(Registration registration) {
+        if (registration.isApprove()) {
+            this.registerSession(1);
+        }
+    }
+
     public void registerSession(int studentsCount) {
         this.sessionInfo.registerSession(studentsCount);
+        super.setUpdatedAt();
     }
 
     public boolean isSession(Long sessionId) {

@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(1L, new SessionInfo(10, 0, SessionStatusType.PREPARE), new CoverImage("imageUrl"), new SessionDate(LocalDateTime.now(), LocalDateTime.now()), new Price(1000));
+        Session session = new Session(1L, new SessionInfo(10, 0, SessionStatusType.PREPARE, SessionRecruitmentType.RECRUITING), new CoverImage("imageUrl"), new SessionDate(LocalDateTime.now(), LocalDateTime.now()), new Price(1000));
         int count = sessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
 
@@ -43,7 +43,17 @@ public class SessionRepositoryTest {
         assertThat(session.getId())
                 .isEqualTo(findSessionByCourseId.get(0).getId());
 
+        session.registerSession(1);
+        sessionRepository.update(session, 2L);
+        Session updatedSession = sessionRepository.findById(1L);
+        assertThat(updatedSession.getUpdatedAt())
+                .isNotNull();
+        assertThat(updatedSession.getSessionInfo().getCurrentStudents())
+                .isEqualTo(1);
+
+
         LOGGER.debug("savedSession: {}", savedSession);
         LOGGER.debug("findSessionByCourseId: {}", findSessionByCourseId);
+        LOGGER.debug("updatedSession: {}", updatedSession);
     }
 }
