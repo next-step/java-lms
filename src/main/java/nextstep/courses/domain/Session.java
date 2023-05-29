@@ -7,18 +7,20 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
+    private Long courseId;
     private String title;
     private String cover;
     private int cardinalNumber;
     private Cost cost;
     private SessionRegistration sessionRegistration;
 
-    Session(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        this(0L, title, cover, cardinalNumber, cost, state, maxUser);
+    Session(Long courseId, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        this(0L, courseId, title, cover, cardinalNumber, cost, state, maxUser);
     }
 
-    Session(Long id, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
         this.id = id;
+        this.courseId = courseId;
         this.title = title;
         this.cover = cover;
         this.cardinalNumber = cardinalNumber;
@@ -26,12 +28,12 @@ public class Session {
         this.sessionRegistration = new SessionRegistration(state, maxUser);
     }
 
-    public static Session of(Long id, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        return new Session(id, title, cover, cardinalNumber, cost, state, maxUser);
+    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        return new Session(id, courseId, title, cover, cardinalNumber, cost, state, maxUser);
     }
 
-    public static Session of(String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
-        return new Session(title, cover, cardinalNumber, cost, state, maxUser);
+    public static Session of(Long courseId, String title, String cover, int cardinalNumber, Cost cost, State state, int maxUser) {
+        return new Session(courseId, title, cover, cardinalNumber, cost, state, maxUser);
     }
 
     public Students enroll(Student student) {
@@ -40,6 +42,10 @@ public class Session {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 
     public String getTitle() {

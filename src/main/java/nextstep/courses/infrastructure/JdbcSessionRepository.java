@@ -21,15 +21,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(long id) {
-        String sql = "select id, title, cover, cardinal_number, cost, state, max_user from session where id = ?";
+        String sql = "select id, course_id, title, cover, cardinal_number, cost, state, max_user from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
-                rs.getString(2),
+                rs.getLong(2),
                 rs.getString(3),
-                rs.getInt(4),
-                Cost.valueOf(rs.getString(5)),
-                State.valueOf(rs.getString(6)),
-                rs.getInt(7));
+                rs.getString(4),
+                rs.getInt(5),
+                Cost.valueOf(rs.getString(6)),
+                State.valueOf(rs.getString(7)),
+                rs.getInt(8));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }

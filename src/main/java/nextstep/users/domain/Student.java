@@ -3,12 +3,26 @@ package nextstep.users.domain;
 import java.util.Objects;
 
 public class Student {
+    private Long id;
     private Long nsUserId;
     private Long sessionId;
 
     public Student(Long nsUserId, Long sessionId) {
+        this(0L, nsUserId, sessionId);
+    }
+
+    public Student(Long id, Long nsUserId, Long sessionId) {
+        this.id = id;
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     @Override
