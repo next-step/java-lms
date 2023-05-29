@@ -40,7 +40,7 @@ public class SessionServiceTest {
     }
 
     @Test
-    void saveSessionUser() {
+    void enroll() {
         Session session = sessionService.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
 
         sessionService.saveSessionUser(session, NsUserTest.JAVAJIGI);

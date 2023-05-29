@@ -68,7 +68,7 @@ public class SessionRepositoryTest {
         Session savedSession = sessionRepository.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
         sessionRepository.saveSessionUser(savedSession, NsUserTest.JAVAJIGI);
 
-        List<String> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
+        List<NsUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
     }
 }

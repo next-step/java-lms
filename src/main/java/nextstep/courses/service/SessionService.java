@@ -44,10 +44,6 @@ public class SessionService {
 
     @Transactional(readOnly = true)
     public List<NsUser> findAllUserBySessionId(Long sessionId) {
-        List<String> nextStepUserIds = sessionRepository.findAllUserBySessionId(sessionId);
-        return nextStepUserIds.stream()
-                .map(userRepository::findByUserId)
-                .map(user -> user.orElseThrow(() -> new IllegalArgumentException("수강자 정보가 없습니다.")))
-                .collect(Collectors.toList());
+        return sessionRepository.findAllUserBySessionId(sessionId);
     }
 }

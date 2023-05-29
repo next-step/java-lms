@@ -72,7 +72,7 @@ public class JdbcSessionRepository implements SessionRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, nextStepUser.getUserId());
+            ps.setLong(1, nextStepUser.getId());
             ps.setLong(2, session.getId());
 
             return ps;
@@ -83,10 +83,13 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public List<String> findAllUserBySessionId(Long sessionId) {
-        String sql = "select user_id from session_users where session_id = ?";
+    public List<NsUser> findAllUserBySessionId(Long sessionId) {
 
-        RowMapper<String> rowMapper = (rs, rowNum) -> rs.getString(1);
+        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at from session_users su " +
+                "inner join ns_user u on (su.user_id = u.id) " +
+                "where su.session_id = ?";
+
+        RowMapper<NsUser> rowMapper = userRowMapper();
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
@@ -98,6 +101,18 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionStatus.valueOf(rs.getString(5)),
                 rs.getInt(6),
                 new SessionImageUrl(rs.getString(7))
+        );
+    }
+
+    private RowMapper<NsUser> userRowMapper() {
+        return (rs, rowNum) -> new NsUser(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5),
+                toLocalDateTime(rs.getTimestamp(6)),
+                toLocalDateTime(rs.getTimestamp(7))
         );
     }
 
