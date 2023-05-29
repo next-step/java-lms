@@ -1,8 +1,8 @@
-package nextstep.sessions.domain;
+package nextstep.lms.domain;
 
-import nextstep.courses.domain.CourseTest;
+import nextstep.lms.domain.CourseTest;
 import nextstep.lms.domain.Enrollment;
-import nextstep.images.domain.ImageTest;
+import nextstep.lms.domain.ImageTest;
 import nextstep.lms.domain.Session;
 import nextstep.lms.domain.enums.ProgressStatus;
 import nextstep.users.domain.NsUserTest;

@@ -1,7 +1,5 @@
-package nextstep.courses.domain;
+package nextstep.lms.domain;
 
-import nextstep.lms.domain.Course;
-import nextstep.sessions.domain.SessionTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

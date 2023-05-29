@@ -1,4 +1,4 @@
-package nextstep.images.domain;
+package nextstep.lms.domain;
 
 import nextstep.lms.domain.Image;
 import org.junit.jupiter.api.DisplayName;

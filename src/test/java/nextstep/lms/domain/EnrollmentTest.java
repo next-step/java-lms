@@ -1,7 +1,5 @@
-package nextstep.enrollment.domain;
+package nextstep.lms.domain;
 
-import nextstep.lms.domain.Enrollment;
-import nextstep.sessions.domain.SessionTest;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
