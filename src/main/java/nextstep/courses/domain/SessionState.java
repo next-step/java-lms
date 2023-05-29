@@ -2,45 +2,31 @@ package nextstep.courses.domain;
 
 public enum SessionState {
 
-    PREPARING("준비중", false, true, true, false),
-    RECRUITING("모집중", true, false, false, true),
-    END_OF_RECRUITMENT("모집종료", false, true, false, true),
-    PROGRESSING("진행중", false, false, true, false),
-    FINISH("종료", false, false, true, false);
+    PREPARING("준비중", true),
+    PROGRESSING("진행중", false),
+    FINISH("종료", false);
 
     private final String desc;
-    private final boolean availableRecruitment;
     private final boolean availableManualChangeSession;
-    private final boolean allowSessionState;
-    private final boolean allowRecruitmentState;
+
 
     SessionState(
             String desc,
-            boolean availableRecruitment,
-            boolean availableManualChangeSession,
-            boolean allowSessionState,
-            boolean allowRecruitmentState
+            boolean availableManualChangeSession
     ) {
         this.desc = desc;
-        this.availableRecruitment = availableRecruitment;
         this.availableManualChangeSession = availableManualChangeSession;
-        this.allowSessionState = allowSessionState;
-        this.allowRecruitmentState = allowRecruitmentState;
     }
 
-    public boolean isAvailableRecruitment() {
-        return this.availableRecruitment;
-    }
+    // 추가모집 상태변경 가능 -> 모집상태가 종료이면서, 강의 시작후 7일
+//    public boolean isAllowAdditionalRecruitment(RecruitmentState recruitmentState,  LocalDate now) {
+//
+//
+//    }
+
 
     public boolean isAvailableManualChangeSession() {
         return availableManualChangeSession;
     }
 
-    public boolean isAllowSessionState() {
-        return allowSessionState;
-    }
-
-    public boolean isAllowRecruitmentState() {
-        return allowRecruitmentState;
-    }
 }
