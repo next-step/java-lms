@@ -73,6 +73,6 @@ public class AnswerTest {
     @DisplayName("답변 삭제 시 삭제 이력이 반환되는지 확인")
     @Test
     void delete_삭제_이력() throws CannotDeleteException {
-        assertThat(answer.delete(NsUserTest.JAVAJIGI, now)).isEqualTo(DeleteHistory.of(ContentType.ANSWER, answer.getId(), answer.getWriter(), now));
+        assertThat(answer.delete(NsUserTest.JAVAJIGI, now)).isEqualTo(DeleteHistory.ofAnswer(answer.getId(), answer.getWriter(), now));
     }
 }

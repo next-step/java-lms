@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.global.domain.BaseTimeDomain;
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.enums.ContentType;
 import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.qna.domain.vo.QuestionDetail;
 import nextstep.users.domain.NsUser;
@@ -49,7 +48,7 @@ public class Question extends BaseTimeDomain {
 
     private DeleteHistories createDeleteHistories(LocalDateTime now, DeleteHistories deleteHistoriesOfAnswers) {
         DeleteHistories deleteHistories = DeleteHistories.create();
-        deleteHistories.add(DeleteHistory.of(ContentType.QUESTION, this.id, this.detail.getWriter(), now));
+        deleteHistories.add(DeleteHistory.ofQuestion(this.id, this.detail.getWriter(), now));
         deleteHistories.concat(deleteHistoriesOfAnswers);
         return deleteHistories;
     }
