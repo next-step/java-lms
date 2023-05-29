@@ -57,7 +57,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public void enrollUser(Session session) {
         String sql = "INSERT INTO session_next_step_user (session_id, user_id, created_at) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, session.getId(), session.getLatestEnrollmentUser().getId(), LocalDateTime.now());
+        jdbcTemplate.update(sql, session.getId(), session.getEnrollment().getLatestEnrollmentUser().getId(), LocalDateTime.now());
     }
 
     @Override

@@ -8,7 +8,6 @@ import nextstep.users.domain.User;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Session extends BaseEntity {
     private Long id;
@@ -64,13 +63,6 @@ public class Session extends BaseEntity {
 
     public int getEnrollmentUserCount() {
         return this.enrollment.getUsers().size();
-    }
-
-    public User getLatestEnrollmentUser(){
-        return Optional.ofNullable(enrollment)
-                .map(Enrollment::getUsers)
-                .flatMap(users -> users.stream().reduce((first, second) -> second))
-                .orElse(null);
     }
 
     public String getPeriod() {

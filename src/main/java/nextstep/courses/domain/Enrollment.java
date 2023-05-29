@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +36,15 @@ public class Enrollment {
 
     public void updateUsers(List<User> users) {
         this.users = users;
+    }
+
+    public User getLatestEnrollmentUser() {
+        if (this.users.isEmpty()) {
+            return null;
+        }
+
+        int lastIndex = this.users.size();
+        return this.users.get(lastIndex - 1);
     }
 
     private void checkEnrollment() throws SessionEnrollmentException {
