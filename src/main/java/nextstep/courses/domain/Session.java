@@ -44,7 +44,7 @@ public class Session {
     }
 
     private static void validateFreeCost(Cost cost) {
-        if (cost == Cost.PAY) {
+        if (cost == Cost.PAID) {
             throw new SessionCostTypeException("무료 강의가 아닙니다.");
         }
     }
@@ -66,7 +66,7 @@ public class Session {
         if (state == State.READY) {
             throw new SessionStateNotOnException("준비 중인 강의입니다.");
         }
-        if (state == State.OFF) {
+        if (state == State.RECRUIT_END) {
             throw new SessionStateNotOnException("모집 종료된 강의입니다.");
         }
     }
