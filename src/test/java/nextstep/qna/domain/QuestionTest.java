@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q3 = new Question(NsUserTest.JAVAJIGI, "title3", "contents3");
 
     @DisplayName("로그인 사용자와 질문한 사람이 다른 경우 삭제 불가능")
     @Test
@@ -38,11 +39,10 @@ public class QuestionTest {
     @DisplayName("질문자와 답변자가 다른 경우, 답변 삭제 불가능")
     @Test
     void 질문_삭제_답변삭제불가능() {
-        Q1.addAnswer(A1);
-        Q1.addAnswer(A2);
+        Q3.addAnswer(A2);
 
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> Q3.delete(NsUserTest.JAVAJIGI))
                 .withMessageMatching(Question.DELETE_ANSWERS_AUTHORITY);
     }
 
