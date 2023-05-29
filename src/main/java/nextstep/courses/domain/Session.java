@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Session {
 
     private Long id;
+    private String title;
     private int enrollments;
     private int maximumEnrollments;
     private String thumbnailUrl;
@@ -13,8 +14,9 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    public Session(Long id, int enrollments, int maximumEnrollments, String thumbnailUrl, PaymentTypeEnum paymentType, SessionStatusEnum status, LocalDateTime startDate, LocalDateTime endDate) {
+    public Session(Long id, String title, int enrollments, int maximumEnrollments, String thumbnailUrl, PaymentTypeEnum paymentType, SessionStatusEnum status, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
+        this.title = title;
         this.enrollments = enrollments;
         this.maximumEnrollments = maximumEnrollments;
         this.thumbnailUrl = thumbnailUrl;
@@ -24,7 +26,8 @@ public class Session {
         this.endDate = endDate;
     }
 
-    private Session(PaymentTypeEnum paymentType, LocalDateTime startDate, LocalDateTime endDate){
+    private Session(String title, PaymentTypeEnum paymentType, LocalDateTime startDate, LocalDateTime endDate){
+        this.title = title;
         this.enrollments = 0;
         this.status = SessionStatusEnum.READY;
         this.paymentType = paymentType;
@@ -32,13 +35,13 @@ public class Session {
         this.endDate = endDate;
 
     }
-    public Session(PaymentTypeEnum paymentType) {
-        this(paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+    public Session(String title, PaymentTypeEnum paymentType) {
+        this(title, paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(30));
         this.maximumEnrollments = 30;
     }
 
-    public Session(PaymentTypeEnum paymentType, int maximumEnrollments) {
-        this(paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+    public Session(String title, PaymentTypeEnum paymentType, int maximumEnrollments) {
+        this(title, paymentType, LocalDateTime.now(), LocalDateTime.now().plusDays(30));
         this.maximumEnrollments = maximumEnrollments;
     }
 
@@ -74,6 +77,14 @@ public class Session {
         }
 
         enrollments+=1;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public LocalDateTime getStartDate() {

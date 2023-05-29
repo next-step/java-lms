@@ -27,7 +27,7 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session course = new Session(PaymentTypeEnum.PAID);
+        Session course = new Session("Test", PaymentTypeEnum.PAID);
         int count = sessionRepository.save(course);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);

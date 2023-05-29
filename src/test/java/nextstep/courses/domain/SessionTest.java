@@ -11,16 +11,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
-    private  Session session ;
+    private Session session;
 
     @BeforeEach
     void setup() {
-        session = new Session(PaymentTypeEnum.PAID);
+        session = new Session("Test", PaymentTypeEnum.PAID);
     }
 
     @Test
     @DisplayName("강의 객체 생성 case 1 - 시작일 종료일 필드 여부")
-    void session_has_field_startDate_endDate_test(){
+    void session_has_field_startDate_endDate_test() {
         assertThat(session)
                 .hasFieldOrProperty("startDate")
                 .hasFieldOrProperty("endDate");
@@ -28,21 +28,21 @@ public class SessionTest {
 
     @Test
     @DisplayName("강의 객체 생성 case 2 - 커버 이미지 정보 필드 여부")
-    void session_has_field_thumbnail_info_test(){
+    void session_has_field_thumbnail_info_test() {
         assertThat(session)
-                .hasFieldOrProperty("url");
+                .hasFieldOrProperty("thumbnailUrl");
     }
 
     @Test
     @DisplayName("강의 객체 생성 case 3 - 강의 종류(무료/유료) 필드 여부")
-    void session_has_field_paid_test(){
+    void session_has_field_paid_test() {
         assertThat(session)
                 .hasFieldOrProperty("paymentType");
     }
 
     @Test
     @DisplayName("강의 객체 생성 case 4 - 강의 상태 필드 여부")
-    void session_has_field_status_test(){
+    void session_has_field_status_test() {
         assertThat(session)
                 .hasFieldOrProperty("status");
     }
@@ -50,14 +50,14 @@ public class SessionTest {
 
     @Test
     @DisplayName("강의 객체 생성 case 5 - 강의 최대 수강 인원 필드 여부")
-    void session_has_field_maxium_test(){
+    void session_has_field_maxium_test() {
         assertThat(session)
                 .hasFieldOrProperty("maximumEnrollments");
     }
 
     @Test
     @DisplayName("강의 최대 수강 인원을 넘을 수 없다.")
-    void impossible_over_maximum_enrollments(){
+    void impossible_over_maximum_enrollments() {
         assertThatThrownBy(() -> {
             for (int i = 0; i < 31; i++) {
                 session.plusEnrollment();
@@ -68,24 +68,24 @@ public class SessionTest {
 
     @Test
     @DisplayName("강의 수강신청 가능여부 판단")
-    void test_course_registration(){
+    void test_course_registration() {
         session.recruit();
         assertThat(session.canPossible()).isEqualTo(true);
     }
 
     @Test
     @DisplayName("강의 상태는 준비중, 모집중, 종료")
-    void session_status_test(){
+    void session_status_test() {
         assertThat(SessionStatusEnum.values())
                 .contains(SessionStatusEnum.READY)
                 .contains(SessionStatusEnum.RECRUIT)
                 .contains(SessionStatusEnum.CLOSED)
-                ;
+        ;
     }
 
     @Test
     @DisplayName("강의 지불 유형은 무료, 유료")
-    void session_payment_type_test(){
+    void session_payment_type_test() {
         assertThat(PaymentTypeEnum.values())
                 .contains(PaymentTypeEnum.FREE)
                 .contains(PaymentTypeEnum.PAID)
