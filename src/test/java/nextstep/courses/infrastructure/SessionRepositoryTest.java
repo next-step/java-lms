@@ -31,14 +31,14 @@ public class SessionRepositoryTest {
 
     @Test
     void save() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.createRecruitingSession();
         Session savedSession = sessionRepository.save(session, 1L);
         assertThat(savedSession).isNotNull();
     }
 
     @Test
     void findById() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.createRecruitingSession();
         Session savedSession = sessionRepository.save(session, 1L);
 
         Session findSession = sessionRepository.findById(savedSession.getId());
@@ -47,8 +47,8 @@ public class SessionRepositoryTest {
 
     @Test
     void findByCourseId() {
-        sessionRepository.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
-        sessionRepository.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
+        sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
 
         List<Session> findSessions = sessionRepository.findByCourseId(1L);
         assertThat(findSessions).hasSize(2);
@@ -57,7 +57,7 @@ public class SessionRepositoryTest {
     @Test
     void saveSessionUser() {
         NsUser nsUser = NsUserTest.JAVAJIGI;
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
+        Session session = SessionFixture.createRecruitingSession();
 
         long id = sessionRepository.saveSessionUser(session, nsUser);
         assertThat(id).isPositive();
@@ -65,7 +65,7 @@ public class SessionRepositoryTest {
 
     @Test
     void findAllUserBySessionId() {
-        Session savedSession = sessionRepository.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
         sessionRepository.saveSessionUser(savedSession, NsUserTest.JAVAJIGI);
 
         List<NsUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());

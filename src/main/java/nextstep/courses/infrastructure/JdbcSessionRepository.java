@@ -23,7 +23,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session save(Session session, Long courseId) {
-        String sql = "insert into session(started_at, end_at, payment_type, status, maximum_user_count, image_url, course_id) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session(started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url, course_id) values(?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
@@ -31,10 +31,11 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(1, toTimeStamp(session.getSessionPeriod().getStartedAt()));
             ps.setTimestamp(2, toTimeStamp(session.getSessionPeriod().getEndAt()));
             ps.setString(3, session.getPaymentType().getKey());
-            ps.setString(4, session.getSessionStatus().getKey());
-            ps.setInt(5, session.getMaximumEnrollmentCount());
-            ps.setString(6, session.getSessionImageUrl().value());
-            ps.setLong(7, courseId);
+            ps.setString(4, session.getSessionStatus().getProgressStatus());
+            ps.setString(5, session.getSessionStatus().getRecruitmentStatus());
+            ps.setInt(6, session.getMaximumEnrollmentCount());
+            ps.setString(7, session.getSessionImageUrl().value());
+            ps.setLong(8, courseId);
             return ps;
         }, keyHolder);
 
@@ -49,7 +50,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long sessionId) {
-        String sql = "select id, started_at, end_at, payment_type, status, maximum_user_count, image_url from session where id = ?";
+        String sql = "select id, started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url from session where id = ?";
 
         RowMapper<Session> rowMapper = sessionRowMapper();
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
@@ -57,7 +58,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public List<Session> findByCourseId(Long courseId) {
-        String sql = "select id, started_at, end_at, payment_type, status, maximum_user_count, image_url from session where course_id = ?";
+        String sql = "select id, started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url from session where course_id = ?";
 
         RowMapper<Session> rowMapper = sessionRowMapper();
         return jdbcTemplate.query(sql, rowMapper, courseId);
@@ -94,9 +95,12 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 new SessionPeriod(toLocalDateTime(rs.getTimestamp(2)), toLocalDateTime(rs.getTimestamp(3))),
                 PaymentType.valueOf(rs.getString(4)),
-                SessionStatus.valueOf(rs.getString(5)),
-                rs.getInt(6),
-                new SessionImageUrl(rs.getString(7))
+                new SessionStatus(
+                        SessionProgressStatus.valueOf(rs.getString(5)),
+                        SessionRecruitmentStatus.valueOf(rs.getString(6))
+                ),
+                rs.getInt(7),
+                new SessionImageUrl(rs.getString(8))
         );
     }
 

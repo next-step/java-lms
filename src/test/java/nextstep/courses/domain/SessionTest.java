@@ -12,7 +12,7 @@ public class SessionTest {
     @Test
     @DisplayName("강의 수강 신청 시 수강인원이 1 증가한다")
     void enroll() {
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
+        Session session = SessionFixture.createRecruitingSession();
         session.enroll(NsUserTest.JAVAJIGI);
         assertThat(session.enrollmentCount()).isEqualTo(1);
     }
@@ -20,7 +20,7 @@ public class SessionTest {
     @Test
     @DisplayName("강의 최대 수강 인원을 초과할 수 없다")
     void enrollFail() {
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
+        Session session = SessionFixture.create(SessionProgressStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, 1);
         session.enroll(NsUserTest.SANJIGI);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
@@ -30,7 +30,7 @@ public class SessionTest {
     @Test
     @DisplayName("강의가 모집중이 아닌 경우 신청할 수 없다")
     void enrollFail2() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.create(SessionProgressStatus.END, SessionRecruitmentStatus.NOT_RECRUITING, 1);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .withMessageMatching(Session.RECRUITMENT_STATUS_MESSAGE);

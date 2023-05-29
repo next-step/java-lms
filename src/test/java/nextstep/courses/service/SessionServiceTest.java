@@ -1,6 +1,8 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionProgressStatus;
+import nextstep.courses.domain.SessionRecruitmentStatus;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.fixture.SessionFixture;
 import nextstep.users.domain.NsUser;
@@ -22,7 +24,7 @@ public class SessionServiceTest {
 
     @Test
     void save() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.createRecruitingSession();
 
         Session savedSession = sessionService.save(session, 1L);
         Session findSession = sessionService.findById(savedSession.getId());
@@ -32,8 +34,8 @@ public class SessionServiceTest {
 
     @Test
     void findByCourseId() {
-        sessionService.save(SessionFixture.create(SessionStatus.PREPARING, 1), 2L);
-        sessionService.save(SessionFixture.create(SessionStatus.PREPARING, 1), 2L);
+        sessionService.save(SessionFixture.createRecruitingSession(), 2L);
+        sessionService.save(SessionFixture.createRecruitingSession(), 2L);
         List<Session> findSession = sessionService.findByCourseId(2L);
 
         assertThat(findSession).hasSize(2);
@@ -41,7 +43,7 @@ public class SessionServiceTest {
 
     @Test
     void enroll() {
-        Session session = sessionService.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
+        Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
 
         sessionService.enroll(session, NsUserTest.JAVAJIGI);
         List<NsUser> sessionUsers = sessionService.findAllUserBySessionId(session.getId());
@@ -53,7 +55,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("강의 최대 인원이 초과된 경우 수강신청할 수 없다")
     void saveSessionUser_Fail1() {
-        Session session = sessionService.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
+        Session session = sessionService.save(SessionFixture.create(SessionProgressStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, 1), 1L);
         sessionService.enroll(session, NsUserTest.JAVAJIGI);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -64,7 +66,7 @@ public class SessionServiceTest {
     @Test
     @DisplayName("강의가 모집중이 아닌 경우 수강신청할 수 없다")
     void saveSessionUser_Fail2() {
-        Session session = sessionService.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
+        Session session = sessionService.save(SessionFixture.create(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.NOT_RECRUITING, 1), 1L);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> sessionService.enroll(session, NsUserTest.JAVAJIGI))
                 .withMessageMatching("모집중인 강의가 아닙니다.");
