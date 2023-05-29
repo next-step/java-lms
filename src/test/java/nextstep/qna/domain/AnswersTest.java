@@ -8,16 +8,22 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class AnswerTest {
+class AnswersTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+    public static final Answer A3 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents3");
 
     @Test
-    @DisplayName("Answer 정상 삭제")
+    @DisplayName("Answers 정상 삭제")
     void deleteNormal() {
-        //given when
+        //given
+        Answers answers = new Answers();
+        answers.add(A1);
+        answers.add(A3);
+
+        // when
         Assertions.assertDoesNotThrow(() -> {
-            A1.delete(NsUserTest.JAVAJIGI);
+            answers.delete(NsUserTest.JAVAJIGI);
         });
 
         //then
@@ -25,10 +31,16 @@ public class AnswerTest {
     }
 
     @Test
-    @DisplayName("Answer 삭제 테스트 에러 발생")
+    @DisplayName("Answers 삭제 테스트 에러 발생")
     void deleteError() {
+        //given
+        Answers answers = new Answers();
+        answers.add(A1);
+        answers.add(A2);
+
+        //when //then
         Assertions.assertThrows(CannotDeleteException.class, () -> {
-            A1.delete(NsUserTest.SANJIGI);
+            answers.delete(NsUserTest.SANJIGI);
         });
     }
 }
