@@ -37,7 +37,7 @@ public class JdbcStudentRepository implements StudentRepository {
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
                 userRepository.findByUserId(rs.getString(2)).orElseThrow(IllegalStateException::new),
-                sessionRepository.findById(rs.getLong(3)),
+                sessionRepository.findById(rs.getLong(3)).orElseThrow(IllegalStateException::new),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5))
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -40,7 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         String sql = "select id, " +
                 "started_at, ended_at, cover_image, payment_type, status, student_capacity, created_at, updated_at " +
                 "from session where id = ?";
@@ -57,7 +58,8 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getInt(7)),
                 toLocalDateTime(rs.getTimestamp(8)),
                 toLocalDateTime(rs.getTimestamp(9)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        Session savedSession = jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return Optional.ofNullable(savedSession);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -53,7 +53,7 @@ class SessionRepositoryTest {
         log.debug("SESSION SAVE: {}", session);
         int count = sessionRepository.save(session);
 
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(1L).get();
         log.debug("SESSION READ: {}", savedSession);
 
         assertAll(
