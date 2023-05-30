@@ -11,11 +11,9 @@ public class Question extends BaseEntity {
 
     private Long id;
 
-    private String title;
-
-    private String contents;
-
     private NsUser writer;
+
+    private QuestionContent questionContent;
 
     private Answers answers = new Answers(this);
 
@@ -32,8 +30,7 @@ public class Question extends BaseEntity {
         super();
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionContent = new QuestionContent(title, contents);
     }
 
     public Long getId() {
@@ -55,7 +52,7 @@ public class Question extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", " + questionContent + "]";
     }
 
     public Optional<DeleteHistory> deleteHistory() {
