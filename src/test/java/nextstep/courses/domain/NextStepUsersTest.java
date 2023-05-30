@@ -22,6 +22,6 @@ public class NextStepUsersTest {
         NextStepUsers nextStepUsers = new NextStepUsers(0);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> nextStepUsers.enroll(NsUserTest.JAVAJIGI))
-                .withMessageMatching("강의 최대 수강 인원이 초과되었습니다.");
+                .withMessageMatching(NextStepUsers.MAXIMUM_ENROLLMENT_MESSAGE);
     }
 }

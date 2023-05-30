@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class SessionImageUrl {
-    private static final String INVALID_URL_MESSAGE = "url 형식이 아닙니다.";
+    public static final String INVALID_URL_MESSAGE = "url 형식이 아닙니다.";
 
     private String imageUrl;
 
@@ -42,5 +42,9 @@ public class SessionImageUrl {
     @Override
     public int hashCode() {
         return imageUrl != null ? imageUrl.hashCode() : 0;
+    }
+
+    public String value() {
+        return this.imageUrl;
     }
 }

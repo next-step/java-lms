@@ -24,7 +24,7 @@ public class SessionTest {
         session.enroll(NsUserTest.SANJIGI);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
-                .withMessageMatching("강의 최대 수강 인원이 초과되었습니다.");
+                .withMessageMatching(NextStepUsers.MAXIMUM_ENROLLMENT_MESSAGE);
     }
 
     @Test
@@ -33,6 +33,6 @@ public class SessionTest {
         Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
-                .withMessageMatching("모집중인 강의가 아닙니다.");
+                .withMessageMatching(Session.RECRUITMENT_STATUS_MESSAGE);
     }
 }

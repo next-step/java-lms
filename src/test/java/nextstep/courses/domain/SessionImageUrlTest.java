@@ -11,6 +11,6 @@ public class SessionImageUrlTest {
     void validUrl() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new SessionImageUrl("test"))
-                .withMessageMatching("url 형식이 아닙니다.");
+                .withMessageMatching(SessionImageUrl.INVALID_URL_MESSAGE);
     }
 }

@@ -26,6 +26,14 @@ public class SessionPeriodTest {
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new SessionPeriod(startedAt, endAt))
-                .withMessageMatching("강의 시작일은 종료일 이전이어야 합니다.");
+                .withMessageMatching(SessionPeriod.INVALID_PERIOD_MESSAGE);
+    }
+
+    @Test
+    @DisplayName("강의 시작일, 종료일이 null인 경우 예외 발생")
+    void validateNull() {
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new SessionPeriod(null, null))
+                .withMessageMatching(SessionPeriod.INVALID_DATE_MESSAGE);
     }
 }
