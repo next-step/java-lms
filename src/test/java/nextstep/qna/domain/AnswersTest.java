@@ -14,9 +14,7 @@ public class AnswersTest {
 
 	@BeforeEach
 	void setUp() {
-		DeleteHistories deleteHistories = new DeleteHistories();
-
-		Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, Q1, "contents", deleteHistories);
+		Answer answer = new Answer(NsUserTest.JAVAJIGI, Q1, "contents");
 
 		this.answers = new Answers(Q1);
 
@@ -29,15 +27,8 @@ public class AnswersTest {
 	}
 
 	@Test
-	public void 삭제_성공_답변이_없는_경우() throws CannotDeleteException {
-		answers.delete();
-
-		assertThat(answers.isAllDeleted()).isTrue();
-	}
-
-	@Test
-	public void 삭제_성공_답변이_있는_경우() throws CannotDeleteException {
-		answers.delete();
+	public void 삭제_성공() throws CannotDeleteException {
+		answers.deleteAll();
 
 		assertThat(answers.isAllDeleted()).isTrue();
 	}
@@ -45,13 +36,12 @@ public class AnswersTest {
 	@Test
 	public void 삭제_실패_질문자와_답변자가_다른_경우() {
 		Answers answers = new Answers(Q1);
-		DeleteHistories deleteHistories = new DeleteHistories();
 
-		Answer answer = new Answer(1L, NsUserTest.SANJIGI, Q1, "contents", deleteHistories);
+		Answer answer = new Answer(NsUserTest.SANJIGI, Q1, "contents");
 
 		answers.add(answer);
 
-		assertThatThrownBy(() -> answers.delete())
+		assertThatThrownBy(() -> answers.deleteAll())
 			.isInstanceOf(CannotDeleteException.class);
 	}
 }

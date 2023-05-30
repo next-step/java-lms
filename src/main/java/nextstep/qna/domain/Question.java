@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Question {
     private Long id;
@@ -19,8 +20,6 @@ public class Question {
     private List<Answer> answers = new ArrayList<>();
 
     private Answers answers2;
-
-    private DeleteHistories deleteHistories;
 
     private boolean deleted = false;
 
@@ -40,14 +39,6 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents, DeleteHistories deleteHistories) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.deleteHistories = deleteHistories;
         this.answers2 = new Answers(this);
     }
 
@@ -109,8 +100,31 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        answers2.delete();
+        deleteAnswers();
+
         deleteQuestion(loginUser);
+    }
+
+    public Optional<DeleteHistory> deleteHistory() {
+        if (this.isDeleted()) {
+            return Optional.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        }
+
+        return Optional.empty();
+    }
+
+    public DeleteHistories deleteHistoriesWithQnA() {
+        DeleteHistories deleteHistories = new DeleteHistories();
+
+        deleteHistory().ifPresent(deleteHistories::add);
+
+        deleteHistories.addAll(answers2.deleteHistories());
+
+        return deleteHistories;
+    }
+
+    private void deleteAnswers() throws CannotDeleteException {
+        answers2.deleteAll();
     }
 
     private void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
@@ -119,6 +133,5 @@ public class Question {
         }
 
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
     }
 }

@@ -6,6 +6,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Answer {
     private Long id;
@@ -17,8 +18,6 @@ public class Answer {
     private String contents;
 
     private boolean deleted = false;
-
-    private DeleteHistories deleteHistories;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
@@ -44,22 +43,6 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
-    }
-
-    public Answer(Long id, NsUser writer, Question question, String contents, DeleteHistories deleteHistories) {
-        this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
-
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
-        this.deleteHistories = deleteHistories;
     }
 
     public Long getId() {
@@ -102,6 +85,13 @@ public class Answer {
         }
 
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    }
+
+    public Optional<DeleteHistory> deleteHistory() {
+        if (!isDeleted()) {
+            return null;
+        }
+
+        return Optional.of(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
     }
 }

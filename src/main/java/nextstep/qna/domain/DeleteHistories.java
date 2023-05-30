@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class DeleteHistories {
-
 	private final List<DeleteHistory> deleteHistories = new ArrayList<>();
 
 	public DeleteHistories() {
@@ -18,5 +17,13 @@ public class DeleteHistories {
 
 	public int size() {
 		return deleteHistories.size();
+	}
+
+	public void addAll(List<DeleteHistory> deleteHistories) {
+		this.deleteHistories.addAll(deleteHistories);
+	}
+
+	public List<DeleteHistory> toList() {
+		return deleteHistories;
 	}
 }

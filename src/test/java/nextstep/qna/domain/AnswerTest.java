@@ -14,13 +14,9 @@ public class AnswerTest {
 
     private Answer answer;
 
-    private DeleteHistories deleteHistories;
-
     @BeforeEach
     void setUp() {
-        deleteHistories = new DeleteHistories();
-
-        answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents", deleteHistories);
+        answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
     }
 
     @Test
@@ -33,7 +29,7 @@ public class AnswerTest {
         answer.delete();
 
         assertThat(answer.isDeleted()).isTrue();
-        assertThat(deleteHistories.size()).isEqualTo(1);
+        assertThat(answer.deleteHistory()).isPresent();
     }
 
     @Test
