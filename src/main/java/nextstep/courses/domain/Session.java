@@ -9,18 +9,16 @@ public class Session {
 
     private Long id;
     private Course course;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private DateRange dateRange;
     private String coverImage;
     private SessionType sessionType;
     private SessionStatus sessionStatus;
     private SessionCapacity sessionCapacity;
 
-    public Session(Long id, Course course, LocalDateTime startDate, LocalDateTime endDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
+    public Session(Long id, Course course, LocalDateTime startDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
         this.id = id;
         this.course = course;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dateRange = new DateRange(startDate);
         this.coverImage = coverImage;
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
@@ -34,17 +32,8 @@ public class Session {
         sessionCapacity.addUser(student);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(course, session.course) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(coverImage, session.coverImage) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionCapacity, session.sessionCapacity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, course, startDate, endDate, coverImage, sessionType, sessionStatus, sessionCapacity);
+    public int getCurrentUserSize() {
+        return sessionCapacity.getCurrentUserSize();
     }
 
     @Override
@@ -52,8 +41,7 @@ public class Session {
         return "Session{" +
                 "id=" + id +
                 ", course=" + course +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", dateRange=" + dateRange +
                 ", coverImage='" + coverImage + '\'' +
                 ", sessionType=" + sessionType +
                 ", sessionStatus=" + sessionStatus +
@@ -61,7 +49,16 @@ public class Session {
                 '}';
     }
 
-    public int getCurrentUserSize() {
-        return sessionCapacity.getCurrentUserSize();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(course, session.course) && Objects.equals(dateRange, session.dateRange) && Objects.equals(coverImage, session.coverImage) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionCapacity, session.sessionCapacity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, course, dateRange, coverImage, sessionType, sessionStatus, sessionCapacity);
     }
 }

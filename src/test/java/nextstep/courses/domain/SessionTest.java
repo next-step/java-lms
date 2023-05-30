@@ -16,7 +16,7 @@ public class SessionTest {
     void test1() {
         Session session = new Session(
                 0L, CourseTest.C1,
-                LocalDateTime.now(), LocalDateTime.now(),
+                LocalDateTime.now(),
                 "coverImage",
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
@@ -33,7 +33,7 @@ public class SessionTest {
     void test2() {
         Session session = new Session(
                 1L, CourseTest.C1,
-                LocalDateTime.now(), LocalDateTime.now(),
+                LocalDateTime.now(),
                 "coverImage",
                 SessionType.FREE,
                 SessionStatus.PREPARING, 1);
@@ -48,7 +48,7 @@ public class SessionTest {
     void test3() {
         Session session = new Session(
                 2L, CourseTest.C1,
-                LocalDateTime.now(), LocalDateTime.now(),
+                LocalDateTime.now(),
                 "coverImage",
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
