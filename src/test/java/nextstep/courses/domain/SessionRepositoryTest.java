@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.fixture.TestFixture;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,10 @@ class SessionRepositoryTest {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     }
 
+    @AfterEach
+    void wrapUp() {
+        sessionRepository.deleteAll();
+    }
 
     @DisplayName("저장 기능을 검증한다")
     @Test

@@ -9,4 +9,6 @@ public interface SessionRepository {
     Optional<Session> findById(SessionId sessionId);
 
     List<Session> findAll();
+
+    void deleteAll();
 }

@@ -32,4 +32,9 @@ public class JdbcSessionRepository implements SessionRepository {
     public List<Session> findAll() {
         throw new RuntimeException("Not Yet Implemented");
     }
+
+    @Override
+    public void deleteAll() {
+
+    }
 }

@@ -4,6 +4,7 @@ import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcEnrollRepository;
 import nextstep.fixture.TestFixture;
 import nextstep.users.domain.NsUser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,11 @@ class EnrollRepositoryTest {
     void setUp() {
         TestFixture.fixtureInit();
         enrollRepository = new JdbcEnrollRepository(jdbcTemplate);
+    }
+
+    @AfterEach
+    void wrapUp() {
+        enrollRepository.deleteAll();
     }
 
     @DisplayName("저장한다")

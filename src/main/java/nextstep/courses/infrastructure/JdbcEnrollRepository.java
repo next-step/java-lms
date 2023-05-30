@@ -32,4 +32,9 @@ public class JdbcEnrollRepository implements EnrollRepository {
     public List<Enroll> findAll() {
         throw new RuntimeException("Not Yet Implemented");
     }
+
+    @Override
+    public void deleteAll() {
+
+    }
 }
