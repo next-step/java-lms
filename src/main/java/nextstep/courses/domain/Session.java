@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
+
 public class Session {
 
     private Long id;
@@ -19,5 +22,9 @@ public class Session {
         this.dateTime = dateTime;
         this.type = type;
         this.register = register;
+    }
+
+    public NsUsers register(NsUser loginUser) {
+        return register.add(loginUser);
     }
 }
