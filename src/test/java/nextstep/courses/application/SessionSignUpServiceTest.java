@@ -2,12 +2,16 @@ package nextstep.courses.application;
 
 import static org.assertj.core.api.Assertions.*;
 
+import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.Student;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class SessionSignUpServiceTest {
 
   @Autowired
@@ -31,7 +35,7 @@ class SessionSignUpServiceTest {
 
     int studentSize = sessionRepository.findById(200L).getStudents().size();
 
-    assertThat(studentSize).isEqualTo(2);
+    assertThat(studentSize).isEqualTo(3);
   }
 
   @Test
@@ -54,6 +58,61 @@ class SessionSignUpServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("존재하지 않는 세션입니다.");
   }
+
+  /**
+   *   public void approve(Long sessionId, String userId) {
+   *     Session session = sessionRepository.findById(sessionId);
+   *
+   *     NsUser user = userRepository.findByUserId(userId);
+   *
+   *     session.approve(user);
+   *
+   *     sessionRepository.saveApproved(sessionId, user.getId());
+   *   }
+   *
+   *   public void reject(Long sessionId, String userId) {
+   *     Session session = sessionRepository.findById(sessionId);
+   *
+   *     NsUser user = userRepository.findByUserId(userId);
+   *
+   *     session.reject(user);
+   *
+   *     sessionRepository.saveRejected(sessionId, user.getId());
+   *   }
+   */
+  @Test
+  void soochan_학생이_모집중이고_수강자리_2자리_남은_Session_200L곳에_수강신청후_승인시_성공() {
+    sessionSignUpService.signUp(200L, "soochan");
+
+    sessionSignUpService.approve(200L, "soochan");
+
+    Session session = sessionRepository.findById(200L);
+
+    int approvedCount = (int) session.getStudents().listOfStudents()
+        .stream()
+        .filter(Student::isApproved).count();
+
+    assertThat(session.getStudents().size()).isEqualTo(3);
+    assertThat(approvedCount).isEqualTo(2);
+  }
+
+  @Test
+  void soochan_학생이_모집중이고_수강자리_2자리_남은_Session_200L곳에_수강신청후_거절시_성공() {
+    sessionSignUpService.signUp(200L, "soochan");
+
+    sessionSignUpService.reject(200L, "soochan");
+
+    Session session = sessionRepository.findById(200L);
+
+    int rejectedCount = (int) session.getStudents().listOfStudents()
+        .stream()
+        .filter(Student::isRejected).count();
+
+    assertThat(session.getStudents().size()).isEqualTo(3);
+    assertThat(rejectedCount).isEqualTo(1);
+  }
+
+
 
 
 

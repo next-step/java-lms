@@ -35,4 +35,24 @@ public enum SessionStatus {
   public boolean isEnd() {
     return this == END;
   }
+
+  public void validateApproveAvailable() {
+    if (this == PREPARING) {
+      throw new IllegalArgumentException("준비중인 세션은 대기 상태의 학생을 수강 승인할 수 없습니다.");
+    }
+
+    if (this == END) {
+      throw new IllegalArgumentException("종료된 세션은 대기 상태의 학생을 수강 승인할 수 없습니다.");
+    }
+  }
+
+  public void validateRejectAvailable() {
+    if (this == PREPARING) {
+      throw new IllegalArgumentException("준비중인 세션은 대기 상태의 학생을 수강 거절할 수 없습니다.");
+    }
+
+    if (this == END) {
+      throw new IllegalArgumentException("종료된 세션은 대기 상태의 학생을 수강 거절할 수 없습니다.");
+    }
+  }
 }

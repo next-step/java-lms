@@ -30,4 +30,24 @@ public class SessionSignUpService {
     return sessionRepository.saveSignUpHistory(sessionId, user.getId());
   }
 
+  public void approve(Long sessionId, String userId) {
+    Session session = sessionRepository.findById(sessionId);
+
+    NsUser user = userRepository.findByUserId(userId);
+
+    session.approve(user);
+
+    sessionRepository.saveApproved(sessionId, user.getId());
+  }
+
+  public void reject(Long sessionId, String userId) {
+    Session session = sessionRepository.findById(sessionId);
+
+    NsUser user = userRepository.findByUserId(userId);
+
+    session.reject(user);
+
+    sessionRepository.saveRejected(sessionId, user.getId());
+  }
+
 }

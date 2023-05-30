@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.users.domain.NsUser;
 
 /**
  * 최대 인원수를 넘어서 수강 신청할 수 없다.
@@ -51,7 +52,29 @@ public class Students {
     return students.size();
   }
 
-  public List<Student> getStudents() {
+  public List<Student> listOfStudents() {
     return students;
+  }
+
+  public void approve(NsUser user) {
+    if (isFull()) {
+      throw new IllegalArgumentException("최대 인원수를 넘어서 더 이상 수강 승인을 할 수 없습니다.");
+    }
+
+    for(int index = 0; index < students.size(); index++) {
+      if (students.get(index).isWaiting() && students.get(index).equals(new Student(user))) {
+        students.set(index, students.get(index).approved(ApproveStatus.APPROVED));
+        return;
+      }
+    }
+  }
+
+  public void reject(NsUser user) {
+    for(int index = 0; index < students.size(); index++) {
+      if (students.get(index).isWaiting() && students.get(index).equals(new Student(user))) {
+        students.set(index, students.get(index).rejected(ApproveStatus.REJECTED));
+        return;
+      }
+    }
   }
 }

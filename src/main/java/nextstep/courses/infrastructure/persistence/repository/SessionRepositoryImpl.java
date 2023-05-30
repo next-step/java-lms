@@ -52,6 +52,24 @@ public class SessionRepositoryImpl implements SessionRepository {
     return sessionEnrollmentEntityRepository.save(sessionEnrollmentEntity);
   }
 
+  @Override
+  public void saveApproved(Long sessionId, Long userId) {
+    SessionEnrollmentEntity sessionEnrollmentEntity = sessionEnrollmentEntityRepository
+        .findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청 내역입니다."));
+    sessionEnrollmentEntity.approved();
+    sessionEnrollmentEntityRepository.update(sessionEnrollmentEntity);
+  }
+
+  @Override
+  public void saveRejected(Long sessionId, Long userId) {
+    SessionEnrollmentEntity sessionEnrollmentEntity = sessionEnrollmentEntityRepository
+        .findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청 내역입니다."));
+    sessionEnrollmentEntity.rejected();
+    sessionEnrollmentEntityRepository.update(sessionEnrollmentEntity);
+  }
+
   private SessionEntity findSessionEntity(Long sessionId) {
     return sessionEntityRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));

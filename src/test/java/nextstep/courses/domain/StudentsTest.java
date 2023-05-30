@@ -29,6 +29,16 @@ class StudentsTest {
     };
   }
 
+  public static Students ofLeftOneSeatWithOneWaiting() {
+    return new Students(new MaxEnrollment(3)){
+      {
+        add(new Student(NsUserTest.JAVAJIGI, ApproveStatus.APPROVED));
+        add(new Student(NsUserTest.SANJIGI,  ApproveStatus.APPROVED));
+        add(new Student(NsUserTest.SOOCHAN,  ApproveStatus.WAITING));
+      }
+    };
+  }
+
   public static Students ofLeftOneSeatUsers() {
     return new Students(new MaxEnrollment(2)){
       {
@@ -88,7 +98,7 @@ class StudentsTest {
 
     students.add(new Student(NsUserTest.JAVAJIGI, ApproveStatus.WAITING));
 
-    int waitingStudents = (int) students.getStudents()
+    int waitingStudents = (int) students.listOfStudents()
         .stream()
         .filter(Student::isWaiting).count();
 
@@ -104,7 +114,43 @@ class StudentsTest {
         .hasMessage("최대 인원수를 넘어서 수강 신청할 수 없습니다.");
   }
 
+  @Test
+  void 수강승인으로_가득찬_강의에_대해_더_이상_수강신청_불가() {
+    Students students = ofFullUsers();
 
+    assertThatThrownBy(() -> students.approve(NsUserTest.SOOCHAN))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("최대 인원수를 넘어서 더 이상 수강 승인을 할 수 없습니다.");
+  }
+
+
+  @Test
+  void 마지막_남은_한자리에_대해_수강승인을_할_경우_대기상태_학생이_수강승인_상태로_변경() {
+    Students students = ofLeftOneSeatWithOneWaiting();
+
+    students.approve(NsUserTest.SOOCHAN);
+
+    int approvedStudents = (int) students.listOfStudents()
+        .stream()
+        .filter(Student::isApproved).count();
+
+    assertThat(approvedStudents).isEqualTo(3);
+    assertThat(students.listOfStudents().get(2).isApproved()).isTrue();
+  }
+
+  @Test
+  void 마지막_남은_한자리가_있지만_선발되지_못한_대기학생을_수강거절_상태로_변경() {
+    Students students = ofLeftOneSeatWithOneWaiting();
+
+    students.reject(NsUserTest.SOOCHAN);
+
+    int rejectedStudents = (int) students.listOfStudents()
+        .stream()
+        .filter(Student::isRejected).count();
+
+    assertThat(rejectedStudents).isEqualTo(1);
+    assertThat(students.listOfStudents().get(2).isRejected()).isTrue();
+  }
 
 
 }

@@ -64,4 +64,20 @@ public class SessionEnrollmentEntity extends BaseTimeEntity {
   public ApproveStatus getApproveStatus() {
     return approveStatus;
   }
+
+  public void approved() {
+    this.approveStatus = ApproveStatus.APPROVED;
+  }
+
+  public void rejected() {
+    this.approveStatus = ApproveStatus.REJECTED;
+  }
+
+  public ApproveStatus approveStatus() {
+    return approveStatus;
+  }
+
+  public Long getId() {
+    return id;
+  }
 }

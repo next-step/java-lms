@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.persistence.dao;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import nextstep.courses.domain.ApproveStatus;
 import nextstep.courses.infrastructure.persistence.entity.SessionEnrollmentEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,6 +44,7 @@ public class SessionEnrollmentEntityRepository {
     SqlParameterSource parameters = new MapSqlParameterSource()
         .addValue(SESSION_ID, sessionEnrollmentEntity.getSessionId())
         .addValue(USER_ID, sessionEnrollmentEntity.getUserId())
+        .addValue(APPROVE_STATUS, sessionEnrollmentEntity.getApproveStatus().name())
         .addValue(CREATED_AT, sessionEnrollmentEntity.getCreatedAt())
         .addValue(UPDATED_AT, sessionEnrollmentEntity.getUpdatedAt());
 
@@ -72,5 +74,15 @@ public class SessionEnrollmentEntityRepository {
       return null;
     }
     return timestamp.toLocalDateTime();
+  }
+
+  public Optional<SessionEnrollmentEntity> findBySessionIdAndUserId(Long sessionId, Long userId) {
+    String sql = "select id, session_id, user_id, approve_status, created_at, updated_at from session_enrollment where session_id = ? and user_id = ?";
+    return jdbcTemplate.query(sql, rowMapper(), sessionId, userId).stream().findFirst();
+  }
+
+  public void update(SessionEnrollmentEntity sessionEnrollmentEntity) {
+    String sql = "update session_enrollment set approve_status = ?, updated_at = ? where session_id = ? and user_id = ?";
+    jdbcTemplate.update(sql, sessionEnrollmentEntity.getApproveStatus().name(), sessionEnrollmentEntity.getUpdatedAt(), sessionEnrollmentEntity.getSessionId(), sessionEnrollmentEntity.getUserId());
   }
 }

@@ -70,6 +70,16 @@ public class Session extends BaseTimeEntity {
     students.add(new Student(user));
   }
 
+  public void approve(NsUser user) {
+    sessionStatus.validateApproveAvailable();
+    students.approve(user);
+  }
+
+  public void reject(NsUser user) {
+    sessionStatus.validateRejectAvailable();
+    students.reject(user);
+  }
+
   public Long getId() {
     return id;
   }
