@@ -1,7 +1,7 @@
 package nextstep.image.domain;
 
 import nextstep.fixture.TestFixture;
-import nextstep.image.exception.InvalidImageUrlException;
+import nextstep.image.exception.EmptyImageUrlException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ public class ImageTest {
                 .isNotEmpty();
         assertThatThrownBy(() -> {
             Image.of(null);
-        }).isInstanceOf(InvalidImageUrlException.class)
+        }).isInstanceOf(EmptyImageUrlException.class)
                 .as("이미지 도메인에서 URL 이 유효하지 않은경우 예외 던져야함을 검증한다")
                 .hasMessageContaining("ImageUrl 이 유효하지 않습니다");
     }
