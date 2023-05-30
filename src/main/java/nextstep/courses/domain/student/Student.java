@@ -1,7 +1,5 @@
 package nextstep.courses.domain.student;
 
-import nextstep.courses.domain.session.Session;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,20 +9,20 @@ public class Student {
 
     private String userId;
 
-    private Session session;
+    private Long sessionId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public Student(String userId, Session session) {
-        this(null, userId, session, LocalDateTime.now(), null);
+    public Student(String userId, Long sessionId) {
+        this(null, userId, sessionId, LocalDateTime.now(), null);
     }
 
-    public Student(Long id, String userId, Session session, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Student(Long id, String userId, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
-        this.session = session;
+        this.sessionId = sessionId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -40,12 +38,8 @@ public class Student {
         return userId;
     }
 
-    public Session getSession() {
-        return session;
-    }
-
     public Long getSessionId() {
-        return session.getId();
+        return sessionId;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -74,7 +68,7 @@ public class Student {
         return "Student{" +
                 "id=" + id +
                 ", userId=" + userId +
-                ", session=" + session +
+                ", sessionId=" + sessionId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

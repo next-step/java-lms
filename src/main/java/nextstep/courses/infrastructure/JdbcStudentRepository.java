@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.StudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -16,11 +15,9 @@ import java.util.Optional;
 public class JdbcStudentRepository implements StudentRepository {
 
     private final JdbcOperations jdbcTemplate;
-    private final SessionRepository sessionRepository;
 
-    public JdbcStudentRepository(JdbcOperations jdbcTemplate, SessionRepository sessionRepository) {
+    public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class JdbcStudentRepository implements StudentRepository {
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
                 rs.getString(2),
-                sessionRepository.findById(rs.getLong(3)).orElseThrow(IllegalStateException::new),
+                rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5))
 
@@ -51,7 +48,7 @@ public class JdbcStudentRepository implements StudentRepository {
                 new Student(
                         rs.getLong(1),
                         rs.getString(2),
-                        sessionRepository.findById(rs.getLong(3)).orElseThrow(IllegalStateException::new),
+                        rs.getLong(3),
                         toLocalDateTime(rs.getTimestamp(4)),
                         toLocalDateTime(rs.getTimestamp(5))
 

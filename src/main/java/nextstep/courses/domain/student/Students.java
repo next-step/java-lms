@@ -20,7 +20,7 @@ public class Students {
     }
 
     public void add(NsUser student, Session session) {
-        values.add(new Student(student.getUserId(), session));
+        values.add(new Student(student.getUserId(), session.getId()));
 
     }
 

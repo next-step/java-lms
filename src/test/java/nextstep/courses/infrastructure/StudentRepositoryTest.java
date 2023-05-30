@@ -1,7 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.SessionBuilder;
-import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.StudentRepository;
 import nextstep.users.domain.NsUserTest;
@@ -31,14 +29,13 @@ class StudentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        final SessionRepository sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate, sessionRepository);
+        studentRepository = new JdbcStudentRepository(jdbcTemplate);
     }
 
     @Test
     @DisplayName("Student 정보를 테이블에 저장하고 조회합니다.")
     void crud() {
-        Student student = new Student(NsUserTest.JAVAJIGI.getUserId(), SessionBuilder.aSession().withId(1L).build());
+        Student student = new Student(NsUserTest.JAVAJIGI.getUserId(), 1L);
 
         log.debug("STUDENT SAVE: {}", student);
         int count = studentRepository.save(student);
