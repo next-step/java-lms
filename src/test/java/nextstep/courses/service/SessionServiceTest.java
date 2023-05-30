@@ -20,12 +20,9 @@ class SessionServiceTest extends RollackableIntegrationTest {
 
   NsUser 유저;
 
-  Session 강의_준비중;
-
   @BeforeEach
   void setup() {
     유저 = NsUserTest.SIGHT;
-    강의_준비중 = new Session(SessionTest.S2);
   }
 
   @Test
@@ -42,25 +39,13 @@ class SessionServiceTest extends RollackableIntegrationTest {
   @DisplayName("수강중인 강의는 다시 수강신청 할 수 없다.")
   void 이미_수강한_강의는_다시_수강_불가() {
     // given
-    Session 강의_모집중_정원_3명 = new Session(SessionTest.S4);
-    sut.takeSession(유저, 강의_모집중_정원_3명.getId());
+    Session 강의 = new Session(SessionTest.S4);
+    sut.takeSession(유저, 강의.getId());
 
     // when && then
     AssertionUtils.assertThatThrowsLmsException(
-        () -> sut.takeSession(유저, 강의_모집중_정원_3명.getId()),
+        () -> sut.takeSession(유저, 강의.getId()),
         SessionExceptionCode.STUDENT_ALREADY_REGISTERED
-    );
-  }
-
-  @Test
-  @DisplayName("모집중 상태가 아닌 강의는 수강 할 수 없다")
-  void 모집중인_강의만_수강_가능() {
-    // given
-
-    // when && then
-    AssertionUtils.assertThatThrowsLmsException(
-        () -> sut.takeSession(유저, 강의_준비중.getId()),
-        SessionExceptionCode.CANNOT_ENROLL_SESSION
     );
   }
 
@@ -81,7 +66,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
   }
 
   @Test
-  @DisplayName("강의의 강사가 아니면 수강신청자를 승인 할 수 없다.")
+  @DisplayName("강사가 아니면 수강신청자를 승인 할 수 없다.")
   void 강사가_아닌_인원이_승인신청_안됨() {
     // given
     // S5의 강사는 = NsUserTest.JAVAJIGI;
@@ -99,7 +84,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
   }
 
   @Test
-  @DisplayName("강의의 강사면 수강신청자를 승인 할 수 있다.")
+  @DisplayName("강의강사면 수강신청자를 승인 할 수 있다.")
   void 강의의_강사는_승인_가능() {
     // given
     Session 강의 = new Session(SessionTest.S5);
@@ -116,7 +101,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
   }
 
   @Test
-  @DisplayName("강의의 강사면 수강신청자를 승인 거절 할 수 있다.")
+  @DisplayName("강의강사면 수강신청자를 승인 거절 할 수 있다.")
   void 강의의_강사는_승인_거절_가능() {
     // given
     Session 강의 = new Session(SessionTest.S5);

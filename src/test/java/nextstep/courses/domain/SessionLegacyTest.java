@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
-import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionProgressStatus;
-import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -23,7 +20,7 @@ public class SessionLegacyTest {
   void setup() {
     user1 = NsUserTest.JAVAJIGI;
     user2 = NsUserTest.SANJIGI;
-    session1 = new Session(SessionTest.S1, getEmptyStudents());
+    session1 = new Session(SessionTest.S1);
   }
 
   @Test
@@ -45,7 +42,8 @@ public class SessionLegacyTest {
   @Deprecated
   void 강의가_모집중이_아니면_수강신청을_할_수_없다_성공() {
     // given
-    final Session 모집중인_강의 = new Session(SessionTest.S1, getEmptyStudents());
+    final Session 모집중인_강의 = new Session(SessionTest.S1);
+
     // when
     모집중인_강의.addPersonnel(user2);
 
@@ -53,8 +51,16 @@ public class SessionLegacyTest {
     Assertions.assertThat(모집중인_강의.getMaxCapacity())
         .isEqualTo(1);
   }
+  @Test
+  @DisplayName("강의 수강신청 | 강의 수강신청은 강의 상태가 모집중일 때만 가능하다. (모집중 아닐때)")
+  void 강의가_모집중이_아니면_수강신청을_할_수_없다_실패() {
+    // given
+    final Session 준비중인_강의_LEGACY = new Session(SessionTest.S2);
 
-  private SessionStudents getEmptyStudents() {
-    return new SessionStudents(new ArrayList<>());
+    // when & then
+    AssertionUtils.assertThatThrowsLmsException(
+        () -> 준비중인_강의_LEGACY.addPersonnel(user2),
+        SessionExceptionCode.CANNOT_ENROLL_SESSION
+    );
   }
 }
