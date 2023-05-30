@@ -1,12 +1,12 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class Answer {
     private Long id;
@@ -49,11 +49,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -64,10 +59,6 @@ public class Answer {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {

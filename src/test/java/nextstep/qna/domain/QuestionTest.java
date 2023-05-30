@@ -39,7 +39,7 @@ public class QuestionTest {
     public void 삭제_실패_질문자와_답변자가_다른_경우() {
         Answer answer = new Answer(NsUserTest.SANJIGI, Q1, "contents");
 
-        question.addAnswer2(answer);
+        question.addAnswer(answer);
 
         assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class);
@@ -57,7 +57,7 @@ public class QuestionTest {
     public void 질문과_답변_삭제_이력() throws CannotDeleteException {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, Q1, "contents");
 
-        question.addAnswer2(answer);
+        question.addAnswer(answer);
         question.delete(NsUserTest.JAVAJIGI);
 
         assertThat(question.deleteHistoriesWithQnA().size()).isEqualTo(2);
