@@ -7,9 +7,7 @@ public class Session {
 
     private Long id;
 
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
+    private SessionPeriod sessionPeriod;
 
     private String coverImage;
 
@@ -23,17 +21,16 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String coverImage,
+    public Session(Long id, SessionPeriod sessionPeriod, String coverImage,
         boolean isFree, SessionStatus sessionStatus, int capacity) {
-        this(id, startTime, endTime, coverImage, isFree, sessionStatus,
+        this(id, sessionPeriod, coverImage, isFree, sessionStatus,
             new SessionPersonnel(capacity));
     }
 
-    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String coverImage,
+    public Session(Long id, SessionPeriod sessionPeriod, String coverImage,
         boolean isFree, SessionStatus sessionStatus, SessionPersonnel sessionPersonnel) {
         this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
         this.isFree = isFree;
         this.sessionStatus = sessionStatus;
@@ -47,7 +44,7 @@ public class Session {
     }
 
     private void validRegister(LocalDateTime registerTime) {
-        if (registerTime.isBefore(startTime) || registerTime.isAfter(endTime)) {
+        if (sessionPeriod.isNotBetween(registerTime)) {
             throw new RuntimeException("강의 신청 기간이 아닙니다.");
         }
         if (!sessionStatus.equals(SessionStatus.Recruiting)) {
