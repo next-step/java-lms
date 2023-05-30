@@ -23,8 +23,8 @@ public class SessionTest {
                 null,
                 CoverImageTest.C1,
                 PaymentType.FREE,
-                SessionStatus.PREPARING,
-                10);
+                SessionEnrollmentTest.SE1
+                );
 
         S2 = new Session(1L,
                 2L,
@@ -33,8 +33,8 @@ public class SessionTest {
                 null,
                 CoverImageTest.C1,
                 PaymentType.FREE,
-                SessionStatus.RECRUITING,
-                0);
+                SessionEnrollmentTest.SE2
+        );
     }
 
     @Test
@@ -46,8 +46,7 @@ public class SessionTest {
                 null,
                 CoverImageTest.C1,
                 PaymentType.FREE,
-                SessionStatus.PREPARING,
-                10));
+                SessionEnrollmentTest.SE1));
     }
 
     @Test
