@@ -331,7 +331,12 @@ username/password : sa/(공백, 아무것도 넣지않음)
   - 원인 : 각각의 테스트가 자원을 공유할때 이런 문제가 발생함 대표적으로 TestDataSet, Database 등의 공유자원이 문제를 일으킨다
   - WrapUp(혹은 tearDown) 코드를 매번 호출해주거나, JPA deleteAllInBatch() 사용
 
-  
+### 피드백중 clear 하지 못한 부분 
+- DomainId 인터페이스의 구현체들이 크게 다를 부분이 없던데요. 추상화를 한 이유가 있을까요?
+  - 원문링크 : https://github.com/next-step/java-lms/pull/81#discussion_r1208045556
+  - 인터페이스 추출 시점에 관한 링크 : https://techblog.woowahan.com/2561/
+- createdDate, updateDate 등은 공통 로직인데, 이런 중복을 제거하려면 어떻게 하는게 좋을까요?
+  - Audit 기능을 사용하거나 근본적으로 Domain Class 에서 상속을 하면 될꺼같은데.. 좀더 찾아봐야함 
 <br>
 <br>
 <br>
