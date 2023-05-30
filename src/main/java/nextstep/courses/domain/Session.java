@@ -7,6 +7,12 @@ public class Session {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    private Image image;
+
+    public Session() {
+        this.image = new Image();
+    }
+
     public Session(int cardinalNumber) {
         this.cardinalNumber = new CardinalNumber(cardinalNumber);
     }
@@ -22,5 +28,13 @@ public class Session {
 
     boolean isEndDateSame(LocalDate localDate) {
         return endDate == localDate;
+    }
+
+    public void updateImageWithUrl(String imgUrl) {
+        image.updateUrl(imgUrl);
+    }
+
+    public boolean isSameCoverImage(String imgUrl) {
+        return image.isSameImage(imgUrl);
     }
 }

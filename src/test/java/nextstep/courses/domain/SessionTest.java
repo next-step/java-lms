@@ -24,6 +24,10 @@ public class SessionTest {
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     @Test
     void shouldHaveCoverImageInfo() {
+        String imgUrl = "img/url.jpg";
+        Session session = new Session();
+        session.updateImageWithUrl(imgUrl);
 
+        assertThat(session.isSameCoverImage(imgUrl)).isTrue();
     }
 }
