@@ -20,6 +20,8 @@ public class Question {
 
     private Answers answers2;
 
+    private DeleteHistories deleteHistories;
+
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -38,6 +40,14 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Question(Long id, NsUser writer, String title, String contents, DeleteHistories deleteHistories) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.deleteHistories = deleteHistories;
         this.answers2 = new Answers(this);
     }
 
@@ -99,11 +109,16 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
+        answers2.delete();
+        deleteQuestion(loginUser);
+    }
+
+    private void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        answers2.delete();
         this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
     }
 }
