@@ -69,6 +69,15 @@ class EnrollRepositoryTest {
         enrollRepository.findAll();
     }
 
+    @DisplayName("전체 데이터를 삭제한다")
+    @Test
+    public void deleteAll() {
+        //given
+        //when
+        //then
+        enrollRepository.deleteAll();
+    }
+
     @DisplayName("CRUD 전 과정을 검증한다")
     @Test
     public void crud() {

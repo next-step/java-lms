@@ -62,6 +62,14 @@ class SessionRepositoryTest {
         sessionRepository.findAll();
     }
 
+    @DisplayName("전체 데이터를 삭제한다")
+    @Test
+    public void deleteAll() {
+        //given
+        //when
+        //then
+        sessionRepository.deleteAll();
+    }
     @DisplayName("CRUD 전 과정을 통합해서 검증한다")
     @Test
     public void crud() {

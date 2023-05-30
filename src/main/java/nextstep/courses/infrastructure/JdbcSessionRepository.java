@@ -35,6 +35,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void deleteAll() {
-
+        throw new RuntimeException("Not Yet Implemented");
     }
 }
