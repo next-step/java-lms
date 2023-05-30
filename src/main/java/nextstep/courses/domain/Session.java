@@ -10,7 +10,7 @@ public class Session {
     private List<NsUser> users;
     private SessionPeriod sessionPeriod;
     private String sessionCoverImage;
-    private String sessionCostType;
+    private SessionCostType sessionCostType;
     private String sessionStatus;
 
     private int maxUserCount;
@@ -20,7 +20,7 @@ public class Session {
         this.users = users;
         this.sessionPeriod = sessionPeriod;
         this.sessionCoverImage = sessionCoverImage;
-        this.sessionCostType = sessionCostType;
+        this.sessionCostType = SessionCostType.of(sessionCostType);
         this.sessionStatus = sessionStatus;
         this.maxUserCount = maxUserCount;
     }
@@ -41,8 +41,8 @@ public class Session {
         return sessionCoverImage;
     }
 
-    public String getSessionCostType() {
-        return sessionCostType;
+    public SessionCostType getSessionCostType() {
+        return this.sessionCostType;
     }
 
     public String getSessionStatus() {

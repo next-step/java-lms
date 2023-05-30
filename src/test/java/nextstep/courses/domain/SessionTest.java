@@ -38,10 +38,10 @@ class SessionTest {
 
     @DisplayName("강의는 무료 강의와 유료 강의로 나뉜다.")
     @ParameterizedTest
-    @ValueSource(strings = {"FREE", "PAID"})
+    @ValueSource(strings = {"무료", "유료"})
     void 강의_타입_확인(String type) {
         Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, type, "RECRUITING", maxUserCount);
-        assertThat(session.getSessionCostType()).isEqualTo(type);
+        assertThat(session.getSessionCostType()).isEqualTo(SessionCostType.of(type));
     }
 
     @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.")
