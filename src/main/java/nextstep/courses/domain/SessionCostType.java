@@ -1,11 +1,11 @@
 package nextstep.courses.domain;
 
-public enum Cost {
+public enum SessionCostType {
     FREE("FREE"), PAID("PAID");
 
     private final String code;
 
-    Cost(String code) {
+    SessionCostType(String code) {
         this.code = code;
     }
 

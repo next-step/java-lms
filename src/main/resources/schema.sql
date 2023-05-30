@@ -55,7 +55,7 @@ create table session (
     title varchar(20) not null,
     cover varchar(255) not null,
     cardinal_number int,
-    cost varchar(10),
+    session_cost_type varchar(10),
     state varchar(15),
     max_user int,
     primary key (id)

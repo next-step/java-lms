@@ -5,7 +5,6 @@ import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.Student;
-import nextstep.users.domain.StudentTest;
 import nextstep.users.domain.Students;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,7 +44,7 @@ public class SessionRegistrationTest {
     @Test
     @DisplayName("중복 수강 신청 시도")
     void duplicateRegister() {
-        Session session = createSession(2L, Cost.FREE, State.RECRUIT_START, 30);
+        Session session = createSession(2L, SessionCostType.FREE, State.RECRUIT_START, 30);
         session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
 
         assertThatThrownBy(() -> {
