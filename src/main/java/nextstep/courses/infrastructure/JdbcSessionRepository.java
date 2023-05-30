@@ -43,7 +43,7 @@ public class JdbcSessionRepository implements SessionRepository {
     public Session findById(int id) {
         String sql = "select id, title, start_date, end_date, charge_type, image_url" +
                 ", status_type, max_student_number, creator_id, created_at, updated_at" +
-                " from Session" +
+                " from session" +
                 " where id = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(

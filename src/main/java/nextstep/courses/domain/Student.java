@@ -9,7 +9,11 @@ public class Student extends BaseControlField {
     private Long userId;
 
     public Student(int sessionId, Long userId) {
-        super(userId, LocalDateTime.now(), null);
+        this(sessionId, userId, userId, LocalDateTime.now(), null);
+    }
+
+    public Student(int sessionId, Long userId, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(creatorId, createdAt, updatedAt);
         this.sessionId = sessionId;
         this.userId = userId;
     }
