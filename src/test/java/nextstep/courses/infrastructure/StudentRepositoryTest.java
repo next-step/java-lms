@@ -5,8 +5,6 @@ import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.StudentRepository;
 import nextstep.users.domain.NsUserTest;
-import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,15 +31,14 @@ class StudentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        final UserRepository userRepository = new JdbcUserRepository(jdbcTemplate);
         final SessionRepository sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate, userRepository, sessionRepository);
+        studentRepository = new JdbcStudentRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test
     @DisplayName("Student 정보를 테이블에 저장하고 조회합니다.")
     void crud() {
-        Student student = new Student(NsUserTest.JAVAJIGI, SessionBuilder.aSession().withId(1L).build());
+        Student student = new Student(NsUserTest.JAVAJIGI.getUserId(), SessionBuilder.aSession().withId(1L).build());
 
         log.debug("STUDENT SAVE: {}", student);
         int count = studentRepository.save(student);
@@ -54,7 +51,7 @@ class StudentRepositoryTest {
         assertAll(
                 () -> assertThat(count).isOne(),
                 () -> assertThat(savedStudent.getSessionId()).isEqualTo(student.getSessionId()),
-                () -> assertThat(savedStudent.getNsUserId()).isEqualTo(student.getNsUserId()),
+                () -> assertThat(savedStudent.getUserId()).isEqualTo(student.getUserId()),
                 () -> assertThat(savedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt())
         );
     }
