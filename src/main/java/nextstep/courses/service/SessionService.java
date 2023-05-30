@@ -3,7 +3,6 @@ package nextstep.courses.service;
 import exception.LmsException;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;

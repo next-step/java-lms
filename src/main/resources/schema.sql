@@ -99,3 +99,8 @@ comment on column session_student.ns_user_id is '수강생 id (fk)';
 comment on column session_student.cancel_flag is '수강 취소여부';
 comment on column session_student.create_at is '생성일';
 comment on column session_student.update_at is '수정일';
+
+
+-- STEP 4 추가사항
+alter table session add recruit_status VARCHAR(10);
+comment on column session.recruit_status is '모집 상태';

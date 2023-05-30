@@ -3,7 +3,7 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionPayType;
 import nextstep.courses.domain.session.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
@@ -19,7 +19,8 @@ public class SessionTest {
 
   public static final Session S1 = new Session(1L, CourseTest.C1,
       SessionPayType.PAID,
-      SessionStatus.RECRUITING,
+      SessionProgressStatus.RECRUITING,
+      null,
       1,
       LocalDateTime.of(2023, 5, 26, 13, 0),
       LocalDateTime.of(2023, 5, 28, 13, 0)
@@ -27,7 +28,8 @@ public class SessionTest {
 
   public static final Session S2 = new Session(2L, CourseTest.C1,
       SessionPayType.PAID,
-      SessionStatus.PREPARING,
+      SessionProgressStatus.PREPARING,
+      null,
       1,
       LocalDateTime.of(2023, 5, 26, 13, 0),
       LocalDateTime.of(2023, 5, 28, 13, 0)
@@ -35,7 +37,8 @@ public class SessionTest {
 
   public static final Session S3 = new Session(3L, CourseTest.C1,
       SessionPayType.PAID,
-      SessionStatus.RECRUITING,
+      SessionProgressStatus.RECRUITING,
+      null,
       3,
       LocalDateTime.of(2023, 5, 26, 13, 0),
       LocalDateTime.of(2023, 5, 28, 13, 0)
@@ -67,15 +70,19 @@ public class SessionTest {
     );
   }
 
+  /**
+   * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
+   * @see SessionProgressStatus
+   */
   @Test
   @DisplayName("강의 수강신청 | 강의 수강신청은 강의 상태가 모집중일 때만 가능하다. (모집중 아닐때)")
   void 강의가_모집중이_아니면_수강신청을_할_수_없다_실패() {
     // given
-    final Session 준비중인_강의 = new Session(S2, getEmptyStudents());
+    final Session 준비중인_강의_LEGACY = new Session(S2, getEmptyStudents());
 
     // when & then
     AssertionUtils.assertThatThrowsLmsException(
-        () -> 준비중인_강의.addPersonnel(user2),
+        () -> 준비중인_강의_LEGACY.addPersonnel(user2),
         SessionExceptionCode.CANNOT_ENROLL_SESSION
     );
   }

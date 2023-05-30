@@ -18,32 +18,33 @@ public class Session {
   private SessionStudents students = new SessionStudents(new ArrayList<>());
 
   public Session(
-      Long id, Long courseId, SessionPayType sessionPayType, SessionStatus sessionStatus,
+      Long id, Long courseId, SessionPayType sessionPayType,
+      SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus,
       int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
   ) {
     this.id = id;
     this.sessionPayType = sessionPayType;
-    this.sessionStatus = sessionStatus;
     this.capacity = new SessionCapacity(maxPersonnelCount);
     this.courseId = courseId;
     this.sessionPeriod = new SessionPeriod(startAt, finishAt);
+    this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitStatus);
   }
 
   public Session(
-      Long id, Course course, SessionPayType payType, SessionStatus sessionStatus,
+      Long id, Course course, SessionPayType payType, SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus,
       int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
   ) {
-    this(id, course.getId(), payType, sessionStatus, maxPersonnelCount, startAt, finishAt);
+    this(id, course.getId(), payType, sessionProgressStatus, sessionRecruitStatus, maxPersonnelCount, startAt, finishAt);
   }
 
   public Session (Session session, SessionStudents students) {
     this.id = session.id;
     this.sessionPayType = session.sessionPayType;
-    this.sessionStatus = session.sessionStatus;
     this.capacity = session.capacity;
     this.courseId = session.courseId;
     this.sessionPeriod = session.sessionPeriod;
     this.students = students;
+    this.sessionStatus = session.sessionStatus;
   }
 
   public SessionStudent addPersonnel(NsUser nsUser) {
@@ -72,20 +73,20 @@ public class Session {
     return courseId;
   }
 
-  public SessionPayType getSessionPayType() {
-    return sessionPayType;
+  public String getSessionPayTypeName() {
+    return sessionPayType.name();
   }
 
-  public SessionStatus getSessionStatus() {
-    return sessionStatus;
+  public String getProgressStatusName() {
+    return sessionStatus.getProgressStatusName();
+  }
+
+  public String getRecruitStatusName() {
+    return sessionStatus.getProgressStatusName();
   }
 
   public SessionPeriod getSessionPeriod() {
     return sessionPeriod;
-  }
-
-  public SessionStudents getStudents() {
-    return students;
   }
 
   public long getCurrentStudentSize() {

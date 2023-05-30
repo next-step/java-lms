@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import config.RollackableIntegrationTest;
 import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.courses.service.SessionService;
@@ -58,7 +59,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
 
   /**
    * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
-   * @see nextstep.courses.domain.session.SessionStatus
+   * @see SessionProgressStatus
    */
   @Test
   @DisplayName("모집중 상태가 아닌 강의는 수강 할 수 없다")
@@ -74,7 +75,7 @@ class SessionServiceTest extends RollackableIntegrationTest {
 
   /**
    * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
-   * @see nextstep.courses.domain.session.SessionStatus
+   * @see SessionProgressStatus
    */
   @Test
   @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
