@@ -1,5 +1,6 @@
 package nextstep.courses.domain.user;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,4 +44,9 @@ public class Users {
     public long count() {
         return users.size();
     }
+
+    public List<User> users() {
+        return Collections.unmodifiableList(users);
+    }
+
 }

@@ -9,7 +9,7 @@ public class Session {
 
     private final Long id;
 
-    private final SessionDuration sessionDuration;
+    private final Duration duration;
 
     private final CoverImage coverImage;
 
@@ -21,10 +21,10 @@ public class Session {
 
     private final Users users;
 
-    public Session(Long id, SessionDuration sessionDuration, CoverImage coverImage,
+    public Session(Long id, Duration duration, CoverImage coverImage,
         PriceType priceType, Status status, Long maximumCapacity, Users users) {
         this.id = id;
-        this.sessionDuration = sessionDuration;
+        this.duration = duration;
         this.coverImage = coverImage;
         this.priceType = priceType;
         this.status = status;
@@ -32,9 +32,9 @@ public class Session {
         this.users = users;
     }
 
-    public static Session of(Long id, SessionDuration sessionDuration, CoverImage coverImagePath,
+    public static Session of(Long id, Duration duration, CoverImage coverImagePath,
         PriceType priceType, Status status, Long maximumCapacity, Users users) {
-        return new Session(id, sessionDuration, coverImagePath, priceType, status, maximumCapacity,
+        return new Session(id, duration, coverImagePath, priceType, status, maximumCapacity,
             users);
     }
 
@@ -61,15 +61,15 @@ public class Session {
             return false;
         }
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(sessionDuration,
-            session.sessionDuration) && Objects.equals(coverImage, session.coverImage)
+        return Objects.equals(id, session.id) && Objects.equals(duration,
+            session.duration) && Objects.equals(coverImage, session.coverImage)
             && priceType == session.priceType && status == session.status && Objects.equals(
             maximumCapacity, session.maximumCapacity) && Objects.equals(users, session.users);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sessionDuration, coverImage, priceType, status, maximumCapacity,
+        return Objects.hash(id, duration, coverImage, priceType, status, maximumCapacity,
             users);
     }
 
@@ -81,12 +81,53 @@ public class Session {
         return users.count() >= maximumCapacity;
     }
 
+    public Duration duration() {
+        return duration;
+    }
+
+    public CoverImage coverImage() {
+        return coverImage;
+    }
+
+    public PriceType priceType() {
+        return priceType;
+    }
+
+    public Status status() {
+        return status;
+    }
+
+    public Long maximumCapacity() {
+        return maximumCapacity;
+    }
+
+    public Users users() {
+        return users;
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+            "id=" + id +
+            ", duration=" + duration +
+            ", coverImage=" + coverImage +
+            ", priceType=" + priceType +
+            ", status=" + status +
+            ", maximumCapacity=" + maximumCapacity +
+            ", users=" + users +
+            '}';
+    }
+
     public static class Builder {
         private Long id;
 
-        private SessionDuration sessionDuration;
+        private Duration duration;
 
-        private CoverImage coverImagePath;
+        private CoverImage coverImage;
 
         private PriceType priceType;
 
@@ -103,13 +144,13 @@ public class Session {
             return this;
         }
 
-        public Builder sessionDuration(SessionDuration sessionDuration) {
-            this.sessionDuration = sessionDuration;
+        public Builder duration(Duration duration) {
+            this.duration = duration;
             return this;
         }
 
-        public Builder coverImagePath(CoverImage coverImagePath) {
-            this.coverImagePath = coverImagePath;
+        public Builder coverImage(CoverImage coverImage) {
+            this.coverImage = coverImage;
             return this;
         }
 
@@ -134,7 +175,7 @@ public class Session {
         }
 
         public Session build() {
-            return new Session(id, sessionDuration, coverImagePath, priceType, status, maximumCapacity, users);
+            return new Session(id, duration, coverImage, priceType, status, maximumCapacity, users);
         }
     }
 }
