@@ -80,7 +80,7 @@ public class EnrollTest {
         assertAll("수강신청을 했지만 (운영진 혹은 강사가)취소 기능을 검증한다",
                 () -> assertThat(enroll.getEnrollStatus())
                         .as("수강취소 상태를 검증한다")
-                        .isEqualTo(EnrollStatus.CANCELED),
+                        .isEqualTo(EnrollStatus.REJECTED),
                 () -> assertThat(enroll.isEnrolledSession(session.getSessionId()))
                         .as("세션 등록 여부를 검증한다")
                         .isTrue()

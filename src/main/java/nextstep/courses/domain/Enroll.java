@@ -34,7 +34,7 @@ public class Enroll {
     }
 
     public void cancel() {
-        this.enrollStatus = EnrollStatus.CANCELED;
+        this.enrollStatus = EnrollStatus.REJECTED;
     }
 
     public EnrollStatus getEnrollStatus() {
