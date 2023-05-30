@@ -1,11 +1,15 @@
 package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 
 public class SessionTest {
 
@@ -63,5 +67,20 @@ public class SessionTest {
         assertThat(openSession.isEnrolmentPossible()).isTrue();
         assertThat(readySession.isEnrolmentPossible()).isFalse();
         assertThat(closedSession.isEnrolmentPossible()).isFalse();
+    }
+
+    @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
+    @Test
+    void shouldEnrollPossible_whenSessionStatusIsOpen() {
+        NsUser user1 = NsUserTest.JAVAJIGI;
+        NsUser user2 = NsUserTest.SANJIGI;
+        MaximumClassSize size = new MaximumClassSize(1);
+        Session openSession = new Session(SessionStatus.OPEN, size);
+        openSession.enroll(user1);
+
+        assertThatThrownBy(() -> {
+            openSession.enroll(user2);
+        }).isInstanceOf(IllegalStateException.class);
+
     }
 }

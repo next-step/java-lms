@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import java.time.LocalDate;
 
+import nextstep.users.domain.NsUser;
+
 public class Session {
     private CardinalNumber cardinalNumber;
     private SessionType sessionType;
@@ -12,6 +14,12 @@ public class Session {
     private MaximumClassSize maximumClassSize;
 
     private Image image;
+
+    public Session(SessionStatus sessionStatus, MaximumClassSize maximumClassSize) {
+        this.sessionStatus = sessionStatus;
+        this.maximumClassSize = maximumClassSize;
+        this.enrolment = new Enrolment();
+    }
 
     public Session() {
         this.image = new Image();
@@ -67,11 +75,18 @@ public class Session {
     }
 
     public boolean isEnrolmentPossible() {
-        return isOpen() && !isExceedMaximumClassSize();
+        return isOpen() && !isMoreThanMaximumClassSize();
     }
 
-    private boolean isExceedMaximumClassSize() {
-        return enrolment.count() > maximumClassSize.maxSize();
+    private boolean isMoreThanMaximumClassSize() {
+        return enrolment.count() >= maximumClassSize.maxSize();
+    }
+
+    public void enroll(NsUser user) {
+        if (!isEnrolmentPossible()) {
+            throw new IllegalStateException("수강 인원이 초과되었습니다.");
+        }
+        enrolment.enroll(user);
     }
 
 }
