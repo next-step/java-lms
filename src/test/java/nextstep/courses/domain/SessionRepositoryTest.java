@@ -13,11 +13,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 public class SessionRepositoryTest {
@@ -76,6 +75,7 @@ public class SessionRepositoryTest {
         //then
         sessionRepository.deleteAll();
     }
+
     @DisplayName("CRUD 전 과정을 통합해서 검증한다")
     @Test
     public void crud() {

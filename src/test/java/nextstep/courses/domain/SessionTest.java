@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.image.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
+import nextstep.image.domain.Image;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -180,7 +180,7 @@ class SessionTest {
     @Test
     public void register() {
         //given
-        Session session  = TestFixture.MINT_SESSION;
+        Session session = TestFixture.MINT_SESSION;
         session.setSessionId(new SessionId(3L));
         session.toProgressState();
         NsUser user = TestFixture.SYRAH;

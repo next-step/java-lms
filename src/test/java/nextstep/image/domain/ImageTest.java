@@ -1,7 +1,7 @@
 package nextstep.image.domain;
 
-import nextstep.image.exception.InvalidImageUrlException;
 import nextstep.fixture.TestFixture;
+import nextstep.image.exception.InvalidImageUrlException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

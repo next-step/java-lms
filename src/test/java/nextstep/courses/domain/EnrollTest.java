@@ -32,11 +32,11 @@ public class EnrollTest {
         //then
         assertAll("Session 에 Enroll 등록하기 기능을 검증한다",
                 () -> assertThat(enroll.isEnrolledSession(session.getSessionId()))
-                .as("세션 등록 여부를 검증한다")
-                .isTrue(),
+                        .as("세션 등록 여부를 검증한다")
+                        .isTrue(),
                 () -> assertThat(enroll.isEnrolledSession(otherSession.getSessionId()))
-                .as("관계없는 세선에 대하여 거짓을 반환한다")
-                .isFalse()
+                        .as("관계없는 세선에 대하여 거짓을 반환한다")
+                        .isFalse()
         );
     }
 
@@ -54,11 +54,11 @@ public class EnrollTest {
         //then
         assertAll("수강신청 후 (운영진 혹은 강사가)승인 기능을 검증한다",
                 () -> assertThat(enroll.getEnrollStatus())
-                .as("승인 상태를 검증한다")
-                .isEqualTo(EnrollStatus.APPROVED),
+                        .as("승인 상태를 검증한다")
+                        .isEqualTo(EnrollStatus.APPROVED),
                 () -> assertThat(enroll.isEnrolledSession(session.getSessionId()))
-                .as("세션 등록 여부를 검증한다")
-                .isTrue()
+                        .as("세션 등록 여부를 검증한다")
+                        .isTrue()
         );
 
     }
