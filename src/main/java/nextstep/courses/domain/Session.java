@@ -134,4 +134,16 @@ public class Session {
     public void setSessionId(SessionId sessionId) {
         this.sessionId = sessionId;
     }
+
+    public Image getImage() {
+        return this.coverImage;
+    }
+
+    public Long getPrice() {
+        return this.price;
+    }
+
+    public Long getMaxStudentCount() {
+        return maxStudentCount;
+    }
 }

@@ -7,9 +7,13 @@ import nextstep.courses.domain.SessionStatus;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository("sessionRepository")
@@ -23,7 +27,22 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session save(Session session) {
-        throw new RuntimeException("Not Yet Implemented");
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("session").usingGeneratedKeyColumns("session_id");
+
+        Map<String, Object> sqlParameters = new HashMap<>() {{
+//            put("session_id", Optional.ofNullable(session.getSessionId().value()).orElseGet(null));
+            //put("image_id", Optional.ofNullable(session.getImage()).orElseGet(null));
+            put("term", session.getTerm());
+            put("price", session.getPrice());
+            put("session_status", session.getSessionStatus().name());
+            put("max_student_count", session.getMaxStudentCount().longValue());
+            put("start_date", session.getStartDate());
+            put("end_date", session.getEndDate());
+        }};
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(sqlParameters));
+        session.setSessionId(new SessionId(key.longValue()));
+        return session;
     }
 
     @Override
