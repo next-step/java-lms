@@ -15,6 +15,10 @@ public class Session {
     private PaymentType paymentType;
     private SessionEnrollment sessionEnrollment;
 
+    public Session(Long courseId, CoverImage coverImage) {
+        this(courseId, coverImage, SessionEnrollment.newInstance());
+    }
+
     public Session(Long id, Long courseId, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, PaymentType paymentType, SessionEnrollment sessionEnrollment) {
         this.id = id;
         this.courseId = courseId;
@@ -24,6 +28,10 @@ public class Session {
         this.coverImage = coverImage;
         this.paymentType = paymentType;
         this.sessionEnrollment = sessionEnrollment;
+    }
+
+    public Session(Long courseId, CoverImage coverImage, SessionEnrollment sessionEnrollment) {
+        this(0L, courseId, SessionPeriod.newInstance(), LocalDateTime.now(), null, coverImage, PaymentType.FREE, sessionEnrollment);
     }
 
     public void register(NsUser user) {

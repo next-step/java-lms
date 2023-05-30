@@ -16,6 +16,14 @@ public class SessionEnrollment {
         this.maxUserSize = maxUserSize;
     }
 
+    public SessionEnrollment() {
+        this(SessionStatus.PREPARING, 0);
+    }
+
+    public static SessionEnrollment newInstance() {
+        return new SessionEnrollment();
+    }
+
 
     public void enroll(NsUser user) {
         validate();

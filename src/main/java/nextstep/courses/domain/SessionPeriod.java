@@ -14,7 +14,15 @@ public class SessionPeriod {
         this.endAt = endAt;
     }
 
+    private SessionPeriod() {
+        this(LocalDateTime.now(), LocalDateTime.MAX);
+    }
+
     public static SessionPeriod between(LocalDateTime startAt, LocalDateTime endAt) {
         return new SessionPeriod(startAt, endAt);
+    }
+
+    public static SessionPeriod newInstance() {
+        return new SessionPeriod();
     }
 }

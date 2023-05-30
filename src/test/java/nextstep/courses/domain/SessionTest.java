@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
@@ -16,37 +14,8 @@ public class SessionTest {
 
     @BeforeEach
     void setUp() {
-        S1 = new Session(0L,
-                2L,
-                SessionPeriodTest.SP1,
-                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
-                null,
-                CoverImageTest.C1,
-                PaymentType.FREE,
-                SessionEnrollmentTest.SE1
-                );
-
-        S2 = new Session(1L,
-                2L,
-                SessionPeriodTest.SP1,
-                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
-                null,
-                CoverImageTest.C1,
-                PaymentType.FREE,
-                SessionEnrollmentTest.SE2
-        );
-    }
-
-    @Test
-    void newSession() {
-        assertThat(S1).isEqualTo(new Session(0L,
-                2L,
-                SessionPeriodTest.SP1,
-                LocalDateTime.of(2022, 2, 22, 22, 22, 22),
-                null,
-                CoverImageTest.C1,
-                PaymentType.FREE,
-                SessionEnrollmentTest.SE1));
+        S1 = new Session(1L, CoverImageTest.C1);
+        S2 = new Session(2L, CoverImageTest.C1, SessionEnrollmentTest.SE2);
     }
 
     @Test
