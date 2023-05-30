@@ -15,7 +15,7 @@ public class NsUsers {
         this(new HashSet<>());
     }
 
-    public void register(NsUser nsUser) {
+    public void add(NsUser nsUser) {
         students.add(nsUser);
     }
 
