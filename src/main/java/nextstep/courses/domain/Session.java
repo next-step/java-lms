@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class Session {
     private CardinalNumber cardinalNumber;
     private SessionType sessionType;
+    private SessionStatus sessionStatus;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -12,6 +13,10 @@ public class Session {
 
     public Session() {
         this.image = new Image();
+    }
+
+    public Session(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
     }
 
     public Session(SessionType sessionType) {
@@ -45,5 +50,17 @@ public class Session {
 
     public boolean isFree() {
         return sessionType.isFree();
+    }
+
+    public boolean isReady() {
+        return sessionStatus.isReady();
+    }
+
+    public boolean isOpen() {
+        return sessionStatus.isOpen();
+    }
+
+    public boolean isClosed() {
+        return sessionStatus.isClosed();
     }
 }

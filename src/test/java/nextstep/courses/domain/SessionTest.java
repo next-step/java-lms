@@ -40,4 +40,16 @@ public class SessionTest {
         assertThat(freeSession.isFree()).isTrue();
         assertThat(paidSession.isFree()).isFalse();
     }
+
+    @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.")
+    @Test
+    void shouldHaveThreeStatus() {
+        Session readySession = new Session(SessionStatus.READY);
+        Session openSession = new Session(SessionStatus.OPEN);
+        Session closedSession = new Session(SessionStatus.CLOSED);
+
+        assertThat(readySession.isReady()).isTrue();
+        assertThat(openSession.isOpen()).isTrue();
+        assertThat(closedSession.isClosed()).isTrue();
+    }
 }
