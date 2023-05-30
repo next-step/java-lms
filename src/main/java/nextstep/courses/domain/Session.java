@@ -86,6 +86,9 @@ public class Session {
         this.status = SessionStatus.RECRUITING;
     }
 
+    public void toProgressState() {
+        this.status = SessionStatus.IN_PROGRESS;
+    }
     public void toCloseState() {
         this.status = SessionStatus.CLOSED;
     }
