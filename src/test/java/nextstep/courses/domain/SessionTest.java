@@ -30,4 +30,14 @@ public class SessionTest {
 
         assertThat(session.isSameCoverImage(imgUrl)).isTrue();
     }
+
+    @DisplayName("강의는 무료 강의와 유료 강의로 나뉜다.")
+    @Test
+    void shouldDistinguishByFreeOrPaid() {
+        Session freeSession = new Session(SessionType.FREE);
+        Session paidSession = new Session(SessionType.PAID);
+
+        assertThat(freeSession.isFree()).isTrue();
+        assertThat(paidSession.isFree()).isFalse();
+    }
 }

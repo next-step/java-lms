@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Session {
     private CardinalNumber cardinalNumber;
+    private SessionType sessionType;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -11,6 +12,10 @@ public class Session {
 
     public Session() {
         this.image = new Image();
+    }
+
+    public Session(SessionType sessionType) {
+        this.sessionType = sessionType;
     }
 
     public Session(int cardinalNumber) {
@@ -36,5 +41,9 @@ public class Session {
 
     public boolean isSameCoverImage(String imgUrl) {
         return image.isSameImage(imgUrl);
+    }
+
+    public boolean isFree() {
+        return sessionType.isFree();
     }
 }
