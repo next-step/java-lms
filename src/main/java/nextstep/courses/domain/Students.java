@@ -8,31 +8,18 @@ import java.util.List;
 
 public class Students {
 
-    private final int maxEnrollment;
     private final List<NsUser> students;
 
-    public Students(int maxEnrollment) {
-        this.maxEnrollment = maxEnrollment;
+    public Students() {
         students = new ArrayList<>();
     }
 
-    public int countEnrollmentCount() {
+    public int countEnrollment() {
         return students.size();
     }
 
     public void addStudent(NsUser user) {
-        if (isOverCapacity()) {
-            throw new IllegalArgumentException("cannot enroll because the maximum capacity has been exceeded");
-        }
         students.add(user);
-    }
-
-    private boolean isOverCapacity() {
-        return countEnrollmentCount() >= maxEnrollment;
-    }
-
-    public int maxEnrollmentValue() {
-        return maxEnrollment;
     }
 
     public List<NsUser> fetchStudents() {

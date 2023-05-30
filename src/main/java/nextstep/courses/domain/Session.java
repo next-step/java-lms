@@ -6,25 +6,25 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseTime {
 
+    private final String sessionName;
     private final SessionPeriod sessionPeriod;
-    private final String name;
     private final SessionStatus sessionStatus;
     private final Image coverImage;
-    private final Students students;
     private final PaymentStrategy paymentStrategy;
+    private final Enrollment enrollment;
 
-    public Session(SessionPeriod sessionPeriod, String name, SessionStatus sessionStatus, Image coverImage, Students students, PaymentStrategy paymentStrategy) {
-        this(sessionPeriod, name, sessionStatus, coverImage, students, paymentStrategy, LocalDateTime.now(), null);
+    public Session(String sessionName, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment) {
+        this(sessionName, sessionPeriod, sessionStatus, coverImage, paymentStrategy, enrollment, LocalDateTime.now(), null);
     }
 
-    public Session(SessionPeriod sessionPeriod, String name, SessionStatus sessionStatus, Image coverImage, Students students, PaymentStrategy paymentStrategy, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(String sessionName, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
+        this.sessionName = sessionName;
         this.sessionPeriod = sessionPeriod;
-        this.name = name;
         this.sessionStatus = sessionStatus;
         this.coverImage = coverImage;
-        this.students = students;
         this.paymentStrategy = paymentStrategy;
+        this.enrollment = enrollment;
         validateSessionStatusAndEnrolledStudents();
     }
 
@@ -35,16 +35,16 @@ public class Session extends BaseTime {
     }
 
     public int currentEnrolmentCount() {
-        return students.countEnrollmentCount();
+        return enrollment.currentEnrolmentCount();
     }
 
     public boolean hasEnrolledStudent() {
-        return !students.isEmpty();
+        return enrollment.hasEnrolledStudent();
     }
 
     public void enrollInSession(NsUser nsUser) {
         if (sessionStatus.isEnrollmentPossible()) {
-            students.addStudent(nsUser);
+            enrollment.enroll(nsUser);
         }
     }
 
@@ -57,6 +57,6 @@ public class Session extends BaseTime {
     }
 
     public String fetchName() {
-        return name;
+        return sessionName;
     }
 }

@@ -17,10 +17,10 @@ class SessionTest {
     NsUser SANJIGI;
     NsUser WOOK;
     SessionPeriod sessionPeriod;
-
     String name;
     Image coverImage;
     Students students;
+    Enrollment enrollment;
 
     @BeforeEach
     void init() {
@@ -31,7 +31,8 @@ class SessionTest {
         sessionPeriod = new SessionPeriod(LocalDate.now(), LocalDate.now().plusDays(60));
         name = "수강신청(도메인모델)";
         coverImage = new Image("test.jpeg", "http://nextstep.com");
-        students = new Students(100);
+        students = new Students();
+        enrollment = new Enrollment(50, students);
     }
 
     @DisplayName("준비상태의 세션을 생성할때 참여중인 학생이 있으면 예외가 발생한다")
@@ -40,14 +41,14 @@ class SessionTest {
         students.addStudent(WOOK);
         Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() ->
-                        new Session(sessionPeriod, name, SessionStatus.PREPARING, coverImage, students, new FreePaymentStrategy()))
+                        new Session(name, sessionPeriod, SessionStatus.PREPARING, coverImage,  new FreePaymentStrategy(), enrollment))
                 .withMessage("there should be no students when the session is in preparation");
     }
 
     @DisplayName("현재 세션에 참가한 학생의 숫자를 구할수 있다")
     @Test
     void currentEnrolmentCount() {
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new FreePaymentStrategy());
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage,  new FreePaymentStrategy(), enrollment);
         session.enrollInSession(JAVAJIGI);
         session.enrollInSession(SANJIGI);
         session.enrollInSession(WOOK);
@@ -60,7 +61,7 @@ class SessionTest {
     @DisplayName("현재 세션에 참가한 학생이 있는지 확인할수 있다(참가자가 없으면 false)")
     @Test
     void currentEnrolmentIsEmpty() {
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new FreePaymentStrategy());
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage,  new FreePaymentStrategy(), enrollment);
 
         boolean hasEnrolledStudent = session.hasEnrolledStudent();
 
@@ -72,7 +73,7 @@ class SessionTest {
     @Test
     void currentEnrolmentIsNotEmpty() {
         students.addStudent(WOOK);
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new FreePaymentStrategy());
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage, new FreePaymentStrategy(), enrollment);
 
         boolean hasEnrolledStudent = session.hasEnrolledStudent();
 
@@ -83,21 +84,21 @@ class SessionTest {
     @Test
     void sessionDuration() {
         sessionPeriod = new SessionPeriod(LocalDate.now(), LocalDate.now().plusDays(20));
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new FreePaymentStrategy());
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage, new FreePaymentStrategy(), enrollment);
         Assertions.assertThat(session.sessionDuration()).isEqualTo(20);
     }
 
     @DisplayName("무료 세션의 금액은 0원이다")
     @Test
     void freeSessionPrice() {
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new FreePaymentStrategy());
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage, new FreePaymentStrategy(), enrollment);
         Assertions.assertThat(session.sessionPrice()).isEqualTo(0);
     }
 
     @DisplayName("유료 세션의 금액은 생정할때 등록한 금액에 해당한다")
     @Test
     void paidSessionPrice() {
-        Session session = new Session(sessionPeriod, name, SessionStatus.ENROLLING, coverImage, students, new PaidPaymentStrategy(800000));
+        Session session = new Session(name, sessionPeriod, SessionStatus.ENROLLING, coverImage, new PaidPaymentStrategy(800000), enrollment);
         Assertions.assertThat(session.sessionPrice()).isEqualTo(800000);
     }
 }
