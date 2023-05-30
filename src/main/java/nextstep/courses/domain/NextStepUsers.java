@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NextStepUsers {
-    private static final String MAXIMUM_ENROLLMENT_MESSAGE = "강의 최대 수강 인원이 초과되었습니다.";
+    public static final String MAXIMUM_ENROLLMENT_MESSAGE = "강의 최대 수강 인원이 초과되었습니다.";
 
     private final List<NsUser> nextStepUsers = new ArrayList<>();
     private final int maximumUserCount;

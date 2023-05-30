@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionPeriod {
-    private static final String INVALID_PERIOD_MESSAGE = "강의 시작일은 종료일 이전이어야 합니다.";
+    public static final String INVALID_PERIOD_MESSAGE = "강의 시작일은 종료일 이전이어야 합니다.";
 
     private final LocalDateTime startedAt;
     private final LocalDateTime endAt;

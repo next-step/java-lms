@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 public class Session {
-    private static final String RECRUITMENT_STATUS_MESSAGE = "모집중인 강의가 아닙니다.";
+    public static final String RECRUITMENT_STATUS_MESSAGE = "모집중인 강의가 아닙니다.";
 
     private final Long id;
     private final SessionPeriod sessionPeriod;
