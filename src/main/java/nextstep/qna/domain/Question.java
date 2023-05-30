@@ -18,6 +18,7 @@ public class Question {
     private UserCode writer;
     private boolean deleted = false;
     private List<Answer> answers = new ArrayList<>();
+    @NotNull
     private LocalDateTime updatedDate;
     @NotNull
     private LocalDateTime createdDate;
@@ -33,16 +34,6 @@ public class Question {
         this.createdDate = createdDate;
     }
 
-    public Question(QuestionId questionId, String title, String contents, UserCode writer, boolean deleted, LocalDateTime updatedDate) {
-        this.questionId = questionId;
-        this.title = title;
-        this.contents = contents;
-        this.writer = writer;
-        this.deleted = deleted;
-        this.updatedDate = updatedDate;
-        this.createdDate = LocalDateTime.now();
-    }
-
     public static Question of(Long questionId, UserCode writer, String title, String contents) {
         return new Question(
                 new QuestionId(questionId),
@@ -50,6 +41,8 @@ public class Question {
                 contents,
                 writer,
                 false,
+                new ArrayList<>(),
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
     }

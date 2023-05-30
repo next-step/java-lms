@@ -27,11 +27,11 @@ CREATE TABLE IF NOT EXISTS question
 (
     question_id      BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
     writer_user_code varchar(20)  NOT NULL COMMENT 'Question 을 생성한 USER_CODE',
-    title            varchar(100) not null,
+    title            varchar(100) NOT NULL ,
     contents         clob,
-    deleted          boolean      not null,
-    updated_at       timestamp,
-    created_at       timestamp    not null default now(),
+    deleted          boolean      NOT NULL ,
+    updated_at       timestamp NOT NULL ,
+    created_at       timestamp    NOT NULL ,
     primary key (question_id)
 );
 
