@@ -4,37 +4,31 @@ import nextstep.courses.exception.ExceedingMaximumStudentException;
 import nextstep.courses.exception.NotEligibleRegistrationStatusException;
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class SessionRegistration {
 
     private final SessionStatus status;
-    private final List<NsUser> students;
+    private final Students students;
     private final int studentCapacity;
 
-    public SessionRegistration(SessionStatus status, int studentCapacity) {
-        this(status, new ArrayList<>(), studentCapacity);
-    }
-
-    public SessionRegistration(SessionStatus status, List<NsUser> students, int studentCapacity) {
+    public SessionRegistration(SessionStatus status, Students students, int studentCapacity) {
         this.status = status;
         this.students = students;
         this.studentCapacity = studentCapacity;
     }
 
-    public void register(NsUser student) {
+    public void register(NsUser student, Session session) {
         validate();
-        students.add(student);
+        students.add(student, session);
     }
 
     private void validate() {
-        if (students.size() >= studentCapacity) {
-            throw new ExceedingMaximumStudentException();
-        }
         if (!status.isRecruiting()) {
             throw new NotEligibleRegistrationStatusException();
+        }
+        if (students.size() >= studentCapacity) {
+            throw new ExceedingMaximumStudentException();
         }
     }
 
@@ -44,10 +38,6 @@ public class SessionRegistration {
 
     public String getStatusName() {
         return status.getName();
-    }
-
-    public List<NsUser> getStudents() {
-        return students;
     }
 
     public int getStudentCapacity() {

@@ -7,6 +7,7 @@ import nextstep.courses.domain.SessionPaymentType;
 import nextstep.courses.domain.SessionRegistration;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -52,6 +53,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionPaymentType.find(rs.getString(5)),
                 new SessionRegistration(
                         SessionStatus.find(rs.getString(6)),
+                        new Students(),
                         rs.getInt(7)),
                 toLocalDateTime(rs.getTimestamp(8)),
                 toLocalDateTime(rs.getTimestamp(9)));

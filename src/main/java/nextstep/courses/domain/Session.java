@@ -48,7 +48,7 @@ public class Session {
     }
 
     public void register(NsUser student) {
-        registration.register(student);
+        registration.register(student, this);
     }
 
     public Long getId() {

@@ -45,6 +45,7 @@ class SessionRepositoryTest {
                 .withPaymentType(SessionPaymentType.PAID)
                 .with(SessionRegistrationBuilder.aRegistration()
                         .withStatus(SessionStatus.RECRUITING)
+                        .withStudents(new Students())
                         .withStudentCapacity(5))
                 .withCreatedAt(LocalDateTime.now())
                 .build();
@@ -63,9 +64,9 @@ class SessionRepositoryTest {
                 () -> assertThat(savedSession.getRegistration())
                         .isEqualTo(SessionRegistrationBuilder.aRegistration()
                                 .withStatus(SessionStatus.RECRUITING)
+                                .withStudents(new Students())
                                 .withStudentCapacity(5).build())
         );
-
-
     }
+
 }

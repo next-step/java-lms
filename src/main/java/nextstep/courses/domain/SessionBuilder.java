@@ -33,7 +33,7 @@ public class SessionBuilder {
         return new SessionBuilder(this);
     }
 
-    public SessionBuilder setId(Long id) {
+    public SessionBuilder withId(Long id) {
         this.id = id;
         return this;
     }
@@ -74,7 +74,7 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(duration, coverImage, paymentType, registration);
+        return new Session(id, duration, coverImage, paymentType, registration, createdAt, updatedAt);
     }
 
 }
