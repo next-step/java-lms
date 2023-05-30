@@ -10,11 +10,6 @@ public class SessionTeacher {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public SessionTeacher(Long sessionId, Long nsUserId) {
-        this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
-    }
-
     public SessionTeacher (
         Long id, Long sessionId, Long nsUserId, boolean isActive,
         LocalDateTime createAt, LocalDateTime updateAt
@@ -25,6 +20,10 @@ public class SessionTeacher {
         this.isActive = isActive;
         this.createAt = createAt;
         this.updateAt = updateAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getNsUserId() {

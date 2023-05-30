@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.domain.session.teacher.SessionTeacher;
 import nextstep.courses.domain.session.teacher.SessionTeachers;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
@@ -34,10 +35,6 @@ public class Session {
     this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitStatus);
   }
 
-  public Session(Long id) {
-    this.id = id;
-  }
-
   public Session(
       Long id, Course course, SessionPayType payType, SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus,
       int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
@@ -45,13 +42,17 @@ public class Session {
     this(id, course.getId(), payType, sessionProgressStatus, sessionRecruitStatus, maxPersonnelCount, startAt, finishAt);
   }
 
-  public Session (Session session, SessionStudents students) {
+  public Session (Session session) {
     this.id = session.id;
     this.sessionPayType = session.sessionPayType;
     this.capacity = session.capacity;
     this.courseId = session.courseId;
     this.sessionPeriod = session.sessionPeriod;
     this.sessionStatus = session.sessionStatus;
+  }
+
+  public Session (Session session, SessionStudents students) {
+    this(session);
     this.students = students;
   }
 
@@ -116,5 +117,22 @@ public class Session {
 
   public boolean cannotAcceptMoreStudent() {
     return !this.canAcceptMoreStudent();
+  }
+
+  public SessionStudent getStudent(Long nsUserId) {
+    return this.students.getStudent(nsUserId);
+  }
+
+  public SessionTeacher getTeacher(Long nsUserId) {
+    return this.teachers.getTeacher(nsUserId);
+  }
+
+  public SessionStudent cancelStudent(Long nsUserId) {
+    SessionStudent student = this.students.getStudent(nsUserId);
+    if (student == null) {
+      throw new LmsException(SessionExceptionCode.STUDENT_NOT_FOUND);
+    }
+
+    return student;
   }
 }

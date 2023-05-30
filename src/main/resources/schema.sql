@@ -122,3 +122,11 @@ comment on column session_teacher.ns_user_id is '강사 id (fk)';
 comment on column session_teacher.is_active is '강사 활성여부';
 comment on column session_teacher.create_at is '생성일';
 comment on column session_teacher.update_at is '수정일';
+
+
+alter table session_student add student_status VARCHAR(10);
+alter table session_student add update_teacher_id INTEGER;
+
+comment on column session_student.student_status is '수강생 승인 상태';
+comment on column session_student.update_teacher_id is '수강생 승인 상태를 변경한 강사 id';
+

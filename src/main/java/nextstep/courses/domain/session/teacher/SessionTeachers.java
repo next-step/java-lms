@@ -1,10 +1,14 @@
 package nextstep.courses.domain.session.teacher;
 
+import exception.LmsException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
+import org.springframework.util.CollectionUtils;
 
 public class SessionTeachers {
   private final List<SessionTeacher> teachers;
@@ -12,8 +16,7 @@ public class SessionTeachers {
 
   public SessionTeachers(List<SessionTeacher> teachers) {
     this.teachers = teachers;
-    this.teacherMap = teachers.stream()
-        .collect(Collectors.toMap(SessionTeacher::getNsUserId, Function.identity()));
+    this.teacherMap = getAsMap(teachers);
   }
 
   public boolean contains(NsUser nsUser) {
@@ -23,5 +26,22 @@ public class SessionTeachers {
     }
 
     return sessionTeacher.isActive();
+  }
+
+  public SessionTeacher getTeacher(Long nsUserId) {
+    SessionTeacher teacher = teacherMap.get(nsUserId);
+    if (teacher == null) {
+      throw new LmsException(SessionExceptionCode.TEACHER_NOT_FOUND);
+    }
+    return teacher;
+  }
+
+  private Map<Long, SessionTeacher> getAsMap(List<SessionTeacher> teachers) {
+    if (CollectionUtils.isEmpty(teachers)) {
+      return Collections.emptyMap();
+    }
+
+    return teachers.stream()
+        .collect(Collectors.toMap(SessionTeacher::getNsUserId, Function.identity()));
   }
 }

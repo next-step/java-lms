@@ -2,7 +2,6 @@ package nextstep.courses.domain.session.student;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.session.Session;
-import nextstep.users.domain.NsUser;
 
 public class SessionStudent {
 
@@ -10,22 +9,33 @@ public class SessionStudent {
   private Long nsUserId;
   private Long sessionId;
   private boolean cancelFlag;
+
+  private SessionStudentStatus studentStatus;
+
   private LocalDateTime createAt;
   private LocalDateTime updateAt;
 
-  public SessionStudent(Long id, Long sessionId, Long nsUserId, boolean cancelFlag, LocalDateTime createAt, LocalDateTime updateAt) {
+  public SessionStudent(
+      Long id, Long sessionId, Long nsUserId, SessionStudentStatus studentStatus,
+      boolean cancelFlag, LocalDateTime createAt, LocalDateTime updateAt
+  ) {
     this.id = id;
     this.nsUserId = nsUserId;
     this.sessionId = sessionId;
     this.cancelFlag = cancelFlag;
     this.createAt = createAt;
     this.updateAt = updateAt;
+    this.studentStatus = studentStatus;
   }
 
   public SessionStudent(Session session, Long nsUserId) {
     this.sessionId = session.getId();
     this.nsUserId = nsUserId;
     this.cancelFlag = false;
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public boolean isNotCancelled() {
@@ -36,11 +46,8 @@ public class SessionStudent {
     return nsUserId;
   }
 
-  public boolean isUserOf(Long nsUserId) {
-    return this.nsUserId.equals(nsUserId);
-  }
-
   public Long getSessionId() {
     return sessionId;
   }
+
 }

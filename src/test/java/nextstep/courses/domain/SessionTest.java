@@ -1,12 +1,14 @@
-package nextstep.qna.domain;
+package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.domain.session.SessionPayType;
+import nextstep.courses.domain.session.SessionRecruitStatus;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
+import nextstep.qna.domain.CourseTest;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -17,6 +19,7 @@ import utils.AssertionUtils;
 
 public class SessionTest {
 
+  @Deprecated
   public static final Session S1 = new Session(1L, CourseTest.C1,
       SessionPayType.PAID,
       SessionProgressStatus.RECRUITING,
@@ -35,11 +38,30 @@ public class SessionTest {
       LocalDateTime.of(2023, 5, 28, 13, 0)
   );
 
+  @Deprecated
   public static final Session S3 = new Session(3L, CourseTest.C1,
       SessionPayType.PAID,
       SessionProgressStatus.RECRUITING,
       null,
       3,
+      LocalDateTime.of(2023, 5, 26, 13, 0),
+      LocalDateTime.of(2023, 5, 28, 13, 0)
+  );
+
+  public static final Session S4 = new Session(4L, CourseTest.C1,
+      SessionPayType.PAID,
+      SessionProgressStatus.PREPARING,
+      SessionRecruitStatus.RECRUIT,
+      5,
+      LocalDateTime.of(2023, 5, 26, 13, 0),
+      LocalDateTime.of(2023, 5, 28, 13, 0)
+  );
+
+  public static final Session S5 = new Session(5L, CourseTest.C1,
+      SessionPayType.PAID,
+      SessionProgressStatus.PREPARING,
+      SessionRecruitStatus.RECRUIT,
+      1,
       LocalDateTime.of(2023, 5, 26, 13, 0),
       LocalDateTime.of(2023, 5, 28, 13, 0)
   );
@@ -53,7 +75,7 @@ public class SessionTest {
   void setup() {
     user1 = NsUserTest.JAVAJIGI;
     user2 = NsUserTest.SANJIGI;
-    session1 = new Session(S1, getEmptyStudents());
+    session1 = new Session(S5, getEmptyStudents());
     session2 = new Session(S2, getEmptyStudents());
   }
 
@@ -70,10 +92,6 @@ public class SessionTest {
     );
   }
 
-  /**
-   * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
-   * @see SessionProgressStatus
-   */
   @Test
   @DisplayName("강의 수강신청 | 강의 수강신청은 강의 상태가 모집중일 때만 가능하다. (모집중 아닐때)")
   void 강의가_모집중이_아니면_수강신청을_할_수_없다_실패() {
@@ -91,7 +109,7 @@ public class SessionTest {
   @DisplayName("강의 수강신청 | 강의 수강신청은 강의 상태가 모집중일 때만 가능하다. (모집중 일때)")
   void 강의가_모집중이_아니면_수강신청을_할_수_없다_성공() {
     // given
-    final Session 모집중인_강의 = new Session(S1, getEmptyStudents());
+    final Session 모집중인_강의 = new Session(S5, getEmptyStudents());
     // when
     모집중인_강의.addPersonnel(user2);
 

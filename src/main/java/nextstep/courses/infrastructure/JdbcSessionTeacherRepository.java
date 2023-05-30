@@ -45,7 +45,11 @@ public class JdbcSessionTeacherRepository implements SessionTeacherRepository {
 
   @Override
   public List<SessionTeacher> getTeachers (Long sessionId) {
-    final String sql = "SELECT id, session_id, ns_user_id, is_active, create_at, update_at FROM session_teacher WHERE session_id = ?";
+    final String sql =
+          " SELECT id, session_id, ns_user_id, is_active, create_at, update_at"
+        + " FROM session_teacher"
+        + " WHERE session_id = ? AND is_active = 1";
+
     return jdbcTemplate.query(sql, rowMapper, sessionId);
   }
 }

@@ -3,7 +3,9 @@ package nextstep.courses.service;
 import exception.LmsException;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.domain.session.teacher.SessionTeacher;
 import nextstep.courses.domain.session.teacher.SessionTeachers;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
@@ -26,9 +28,34 @@ public class SessionService {
   }
 
   @Transactional
-  public void takeSession (NsUser nsUser, Long sessionId) {
+  public void takeSession (NsUser studentUser, Long sessionId) {
     Session session = this.getSessionWithStudents(sessionId);
-    sessionStudentService.enrollStudent(session, nsUser);
+    sessionStudentService.enrollStudent(session, studentUser);
+  }
+
+  @Transactional
+  public void cancelSession(NsUser studentUser, Long sessionId) {
+    Session session = this.getSessionWithStudents(sessionId);
+    SessionStudent student = session.cancelStudent(studentUser.getId());
+    sessionStudentService.cancelSession(student);
+  }
+
+  @Transactional
+  public int approveSession (NsUser studentUser, Long sessionId, NsUser teacherUser) {
+    Session session = this.getSessionWithStudents(sessionId);
+    SessionTeacher teacher = session.getTeacher(teacherUser.getId());
+    SessionStudent student = session.getStudent(studentUser.getId());
+
+    return sessionStudentService.approveSession(session, teacher, student);
+  }
+
+  @Transactional
+  public int refuseSession (NsUser studentUser, Long sessionId, NsUser teacherUser) {
+    Session session = this.getSessionWithStudents(sessionId);
+    SessionTeacher teacher = session.getTeacher(teacherUser.getId());
+    SessionStudent student = session.getStudent(studentUser.getId());
+
+    return sessionStudentService.refuseSession(session, teacher, student);
   }
 
   public Session getSessionWithStudents(Long sessionId) {
