@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NsUsers {
     private List<NsUser> nsUsers = new ArrayList<>();
-    int maxUserCount;
+    private int maxUserCount;
 
     public NsUsers(int maxUserCount) {
         this.maxUserCount = maxUserCount;
