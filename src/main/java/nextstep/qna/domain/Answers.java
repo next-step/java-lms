@@ -7,7 +7,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 public class Answers {
-	private List<Answer> answers = new ArrayList<>();
+	private final List<Answer> answers = new ArrayList<>();
 
 	private final Question question;
 
@@ -21,13 +21,9 @@ public class Answers {
 	}
 
 	public void delete() throws CannotDeleteException {
-		try {
-			validateDeletable(question.getWriter());
+		validateDeletable(question.getWriter());
 
-			deleteAnswers();
-		} catch(CannotDeleteException e) {
-			throw e;
-		}
+		deleteAnswers();
 	}
 
 	private void deleteAnswers() throws CannotDeleteException {
@@ -42,7 +38,7 @@ public class Answers {
 		}
 
 		if (!isAllSameWriter(writer)) {
-			throw new CannotDeleteException("질문자와 답변자가 다르면 삭제할 수 없습니다.");
+			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
 
 		return true;
@@ -53,9 +49,9 @@ public class Answers {
 			.allMatch(Answer::isDeleted);
 	}
 
-	private boolean isAllSameWriter(NsUser user) {
+	private boolean isAllSameWriter(NsUser writer) {
 		return answers.stream()
-			.allMatch(answer -> answer.isOwner(user));
+			.allMatch(answer -> answer.isOwner(writer));
 	}
 
 	private boolean isEmpty() {
