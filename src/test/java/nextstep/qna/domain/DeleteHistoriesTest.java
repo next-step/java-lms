@@ -17,7 +17,7 @@ public class DeleteHistoriesTest {
     public void beforeEach() {
         deleteHistories1 = DeleteHistories.create();
         deleteHistories2 = DeleteHistories.create();
-        deleteHistories2.add(DeleteHistory.of(ContentType.ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), LocalDateTime.now()));
+        deleteHistories2.add(DeleteHistory.ofAnswer(AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), LocalDateTime.now()));
     }
 
     @DisplayName("DeleteHistories 객체가 잘 생성되는지 확인")
@@ -29,7 +29,7 @@ public class DeleteHistoriesTest {
     @DisplayName("DeleteHistory 객체가 한건이 잘 추가되는지 확인")
     @Test
     void DeleteHistory_객체_한건이_정상적으로_추가되는지_확인() {
-        deleteHistories1.add(DeleteHistory.of(ContentType.ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), LocalDateTime.now()));
+        deleteHistories1.add(DeleteHistory.ofAnswer(AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), LocalDateTime.now()));
         assertThat(deleteHistories1.getDeleteHistories()).hasSize(1);
     }
 

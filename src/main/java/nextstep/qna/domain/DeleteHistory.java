@@ -14,8 +14,12 @@ public class DeleteHistory {
 
     private LocalDateTime createdDate;
 
-    public static DeleteHistory of (ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
-        return new DeleteHistory(contentType, contentId, deletedBy, createdDate);
+    public static DeleteHistory ofAnswer (Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.ANSWER, contentId, deletedBy, createdDate);
+    }
+
+    public static DeleteHistory ofQuestion (Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.QUESTION, contentId, deletedBy, createdDate);
     }
 
     private DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {

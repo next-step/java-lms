@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.enums.ContentType;
 import nextstep.qna.domain.enums.DeleteStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +65,7 @@ public class AnswersTest {
     @Test
     void delete_삭제_이력() throws CannotDeleteException {
         DeleteHistories deleteHistories = answers2.deleteAnswers(NsUserTest.SANJIGI, now);
-        DeleteHistory deleteHistory = DeleteHistory.of(ContentType.ANSWER, AnswerTest.A2.getId(), AnswerTest.A2.getWriter(), now);
+        DeleteHistory deleteHistory = DeleteHistory.ofAnswer(AnswerTest.A2.getId(), AnswerTest.A2.getWriter(), now);
 
         assertThat(deleteHistories.getDeleteHistories()).containsExactly(deleteHistory);
     }
