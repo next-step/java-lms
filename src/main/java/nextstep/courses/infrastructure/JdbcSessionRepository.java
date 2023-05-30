@@ -75,10 +75,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"),
-                rs.getTimestamp("created_at").toLocalDateTime(),
-                rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
-                rs.getString("user_status") != null ? UserStatus.valueOf(rs.getString("user_status")) : null,
-                rs.getString("user_type") != null ? UserType.valueOf(rs.getString("user_type")) : null);
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at")),
+                UserStatus.of(rs.getString("user_status")));
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
@@ -93,11 +92,10 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getString("password"),
                     rs.getString("name"),
                     rs.getString("email"),
-                    rs.getTimestamp("created_at").toLocalDateTime(),
-                    rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null,
-                    rs.getString("user_status") != null ? UserStatus.valueOf(rs.getString("user_status")) : null,
-                    rs.getString("user_type") != null ? UserType.valueOf(rs.getString("user_type")) : null);
-            ApprovalStatus approvalStatus = ApprovalStatus.valueOf(rs.getString("approval_status"));
+                    toLocalDateTime(rs.getTimestamp("created_at")),
+                    toLocalDateTime(rs.getTimestamp("updated_at")),
+                    UserStatus.of(rs.getString("user_status")));
+            ApprovalStatus approvalStatus = ApprovalStatus.of(rs.getString("approval_status"));
 
             return new UserEnrollment(user, approvalStatus);
         };
@@ -116,25 +114,18 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, imageRowMapper(), imageId);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp time) {
-        if (time == null) {
-            return null;
-        }
-        return time.toLocalDateTime();
-    }
-
     private RowMapper<Session> sessionRowMapper() {
         return (rs, rowNum) -> new Session(
                 rs.getLong("id"),
                 rs.getString("period"),
                 findImageByImageId(rs.getLong("image_id")),
                 new SessionTime(toLocalDateTime(rs.getTimestamp("opening_date_time")), toLocalDateTime(rs.getTimestamp("closing_date_time"))),
-                SessionType.valueOf(rs.getString("session_type")),
-                SessionStatus.valueOf(rs.getString("session_status")),
+                SessionType.of(rs.getString("session_type")),
+                SessionStatus.of(rs.getString("session_status")),
                 new Enrollment(findAllUserEnrollmentsBySessionId(rs.getLong("id")),
-                        rs.getString("enrollment_status") != null ? EnrollmentStatus.valueOf(rs.getString("enrollment_status")) : null,
-                        rs.getInt("maximum_enrollment"))
-        );
+                        EnrollmentStatus.of(rs.getString("enrollment_status")),
+                        rs.getInt("maximum_enrollment")),
+                userRepository.findById(rs.getLong("instructor_id")).orElse(null));
     }
 
     private RowMapper<Image> imageRowMapper() {
@@ -145,13 +136,19 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getString("name"),
                         new URI(rs.getString("uri")),
                         rs.getLong("size"),
-                        ImageType.valueOf(rs.getString("image_type"))
+                        ImageType.of(rs.getString("image_type"))
                 );
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             return null;
         };
+    }
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        return Optional.ofNullable(timestamp)
+                .map(Timestamp::toLocalDateTime)
+                .orElse(null);
     }
 
 }

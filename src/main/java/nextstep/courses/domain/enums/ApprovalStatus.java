@@ -1,5 +1,7 @@
 package nextstep.courses.domain.enums;
 
+거import java.util.Arrays;
+
 public enum ApprovalStatus {
     APPROVED("승인"),
     CANCELED("취소"),
@@ -11,7 +13,14 @@ public enum ApprovalStatus {
         this.description = description;
     }
 
-    public String getDescription() {
-        return description;
+    public static ApprovalStatus of(String approvalStatus) {
+        return Arrays.stream(values())
+                .filter(a -> a.toString().equals(approvalStatus))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean isApproved() {
+        return this == ApprovalStatus.APPROVED;
     }
 }

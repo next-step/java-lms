@@ -1,5 +1,7 @@
 package nextstep.courses.domain.enums;
 
+import java.util.Arrays;
+
 public enum SessionStatus {
     PREPARING("준비중"),
     RECRUITING("모집중"),
@@ -20,4 +22,10 @@ public enum SessionStatus {
         return this == RECRUITING;
     }
 
+    public static SessionStatus of(String sessionStatus) {
+        return Arrays.stream(values())
+                .filter(s -> s.toString().equals(sessionStatus))
+                .findFirst()
+                .orElse(null);
+    }
 }
