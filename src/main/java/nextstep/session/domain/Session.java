@@ -23,7 +23,6 @@ public class Session {
     public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
         this.id = id;
         this.signUpInformation = new SignUpInformation(status, maxNumberOfStudent);
-
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String status, Long maxNumberOfStudent, Boolean isFree) {
