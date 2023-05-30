@@ -91,11 +91,11 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         for (Answer answer : answers) {
             answer.delete(loginUser, deleteHistories);
         }
         deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
     }
 
     @Override
