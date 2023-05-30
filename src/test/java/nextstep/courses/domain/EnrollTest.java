@@ -47,9 +47,6 @@ public class EnrollTest {
         Session session = TestFixture.LIME_SESSION;
         session.setSessionId(new SessionId(22L));
         session.toRecruitingState();
-        Session otherSession = TestFixture.LEMON_SESSION;
-        otherSession.setSessionId(new SessionId(33L));
-        otherSession.toRecruitingState();
         NsUser user = TestFixture.BADAJIGI;
         //when
         Enroll enroll = session.register(user.getUserCode(), 0);
@@ -75,9 +72,6 @@ public class EnrollTest {
         Session session = TestFixture.LIME_SESSION;
         session.setSessionId(new SessionId(22L));
         session.toRecruitingState();
-        Session otherSession = TestFixture.LEMON_SESSION;
-        otherSession.setSessionId(new SessionId(33L));
-        otherSession.toRecruitingState();
         NsUser user = TestFixture.BADAJIGI;
         //when
         Enroll enroll = session.register(user.getUserCode(), 0);

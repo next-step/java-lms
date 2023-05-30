@@ -100,7 +100,7 @@ public class Session {
     public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
         validateStudentCount(alreadyEnrolledCount);
-        return new Enroll(null, this.sessionId, userCode); //Enroll.of(this.sessionId.value(), userCode.value());
+        return new Enroll(null, this.sessionId, userCode,EnrollStatus.SUBMITTED); //Enroll.of(this.sessionId.value(), userCode.value());
     }
 
     private void validateStudentCount(long count) {
