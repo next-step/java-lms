@@ -4,6 +4,7 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionId;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findBySessionId(SessionId sessionId) {
-        throw new RuntimeException("Not Yet Implemented");
+        String sql = "select * from session where session_id =" + sessionId.value().toString();
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper()));
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
