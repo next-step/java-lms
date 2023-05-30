@@ -51,4 +51,9 @@ public class SessionStatus {
     return ENROLL_ALLOWED_PROGRESS_STATUS.contains(progressStatus)
         && recruitStatus == SessionRecruitStatus.RECRUIT;
   }
+
+  @Deprecated
+  public boolean isLegacy() {
+    return this.recruitStatus == null;
+  }
 }

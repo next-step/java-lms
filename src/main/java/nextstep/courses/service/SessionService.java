@@ -43,6 +43,10 @@ public class SessionService {
   @Transactional
   public int approveSession (NsUser studentUser, Long sessionId, NsUser teacherUser) {
     Session session = this.getSessionWithStudents(sessionId);
+    if (session.isLegacy()) {
+      return 0;
+    }
+
     SessionTeacher teacher = session.getTeacher(teacherUser.getId());
     SessionStudent student = session.getStudent(studentUser.getId());
 
@@ -52,6 +56,10 @@ public class SessionService {
   @Transactional
   public int refuseSession (NsUser studentUser, Long sessionId, NsUser teacherUser) {
     Session session = this.getSessionWithStudents(sessionId);
+    if (session.isLegacy()) {
+      return 0;
+    }
+
     SessionTeacher teacher = session.getTeacher(teacherUser.getId());
     SessionStudent student = session.getStudent(studentUser.getId());
 

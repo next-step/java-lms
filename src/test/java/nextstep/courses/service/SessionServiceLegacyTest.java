@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.SessionProgressStatus;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,5 +90,23 @@ public class SessionServiceLegacyTest extends RollackableIntegrationTest {
         () -> sut.takeSession(유저, 강의_준비중_LEGACY.getId()),
         SessionExceptionCode.CANNOT_ENROLL_SESSION
     );
+  }
+
+  @Test
+  @DisplayName("레거시인 강의는 승인/승인거절을 할 수 없다.")
+  @Deprecated
+  void 레거시_강의는_승인_또는_거절_불가() {
+    // given
+    Session 강의 = new Session(SessionTest.S1);
+    NsUser 강사 = NsUserTest.JAVAJIGI;
+    NsUser 수강생 = NsUserTest.SIGHT;
+
+    sut.takeSession(수강생, 강의.getId());
+
+    // when
+    int 승인된_수강생_수 = sut.refuseSession(수강생, 강의.getId(), 강사);
+
+    // then
+    Assertions.assertThat(승인된_수강생_수).isEqualTo(0);
   }
 }

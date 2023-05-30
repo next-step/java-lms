@@ -135,4 +135,9 @@ public class Session {
 
     return student;
   }
+
+  @Deprecated
+  public boolean isLegacy() {
+    return this.sessionStatus.isLegacy();
+  }
 }

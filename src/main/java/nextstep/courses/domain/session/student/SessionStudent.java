@@ -50,4 +50,7 @@ public class SessionStudent {
     return sessionId;
   }
 
+  public SessionStudentStatus getStudentStatus() {
+    return studentStatus;
+  }
 }
