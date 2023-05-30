@@ -12,7 +12,7 @@ class DateTimeTest {
     void 시작일이_종료일보다_클경우_예외() {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new DateTime(LocalDateTime.now().plusDays(1), LocalDateTime.now()))
-                .withMessageContaining("시작일은 종료일보다 이후일 수 없습니다.");
+                .withMessageContaining("시작일은 종료일 이후일 수 없습니다.");
     }
 
 }
