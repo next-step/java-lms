@@ -1,7 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.infrastructure;
 
-import nextstep.courses.infrastructure.JdbcSessionRepository;
-import nextstep.courses.infrastructure.JdbcStudentRepository;
+import nextstep.courses.domain.session.SessionBuilder;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.student.Student;
+import nextstep.courses.domain.student.StudentRepository;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;

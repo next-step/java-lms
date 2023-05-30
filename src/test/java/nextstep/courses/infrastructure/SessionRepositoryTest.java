@@ -1,6 +1,14 @@
-package nextstep.courses.domain;
+package nextstep.courses.infrastructure;
 
-import nextstep.courses.infrastructure.JdbcSessionRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionBuilder;
+import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.SessionDuration;
+import nextstep.courses.domain.session.SessionPaymentType;
+import nextstep.courses.domain.session.SessionRegistrationBuilder;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.student.Students;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

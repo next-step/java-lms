@@ -1,13 +1,13 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionCoverImage;
-import nextstep.courses.domain.SessionDuration;
-import nextstep.courses.domain.SessionPaymentType;
-import nextstep.courses.domain.SessionRegistration;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
-import nextstep.courses.domain.Students;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.SessionDuration;
+import nextstep.courses.domain.session.SessionPaymentType;
+import nextstep.courses.domain.session.SessionRegistration;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.student.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

@@ -1,5 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.student;
 
+import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

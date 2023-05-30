@@ -1,5 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
+import nextstep.courses.domain.session.SessionBuilder;
+import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.SessionDuration;
+import nextstep.courses.domain.session.SessionPaymentType;
+import nextstep.courses.domain.session.SessionRegistrationBuilder;
+import nextstep.courses.domain.session.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

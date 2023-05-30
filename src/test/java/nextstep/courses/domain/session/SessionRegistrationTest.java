@@ -1,5 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.student.Students;
 import nextstep.courses.exception.ExceedingMaximumStudentException;
 import nextstep.courses.exception.NotEligibleRegistrationStatusException;
 import nextstep.users.domain.NsUserTest;
