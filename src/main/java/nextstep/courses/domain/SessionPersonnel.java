@@ -7,10 +7,15 @@ public class SessionPersonnel {
 
     private final int capacity;
 
-    private final CopyOnWriteArrayList<NsUser> users = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<NsUser> users;
 
     public SessionPersonnel(int capacity) {
+        this(capacity, new CopyOnWriteArrayList<>());
+    }
+
+    public SessionPersonnel(int capacity, CopyOnWriteArrayList<NsUser> users) {
         this.capacity = capacity;
+        this.users = users;
     }
 
     public void register(NsUser user) {
