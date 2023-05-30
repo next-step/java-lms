@@ -25,13 +25,13 @@ CREATE TABLE IF NOT EXISTS ns_user
 DROP TABLE IF EXISTS question;
 CREATE TABLE IF NOT EXISTS question
 (
-    question_id BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    writer_user_code   varchar(20) NOT NULL COMMENT 'Question 을 생성한 USER_CODE',
-    title       varchar(100) not null,
-    contents    clob,
-    deleted     boolean      not null,
-    updated_at  timestamp,
-    created_at  timestamp    not null default now(),
+    question_id      BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    writer_user_code varchar(20)  NOT NULL COMMENT 'Question 을 생성한 USER_CODE',
+    title            varchar(100) not null,
+    contents         clob,
+    deleted          boolean      not null,
+    updated_at       timestamp,
+    created_at       timestamp    not null default now(),
     primary key (question_id)
 );
 
@@ -71,14 +71,14 @@ CREATE TABLE IF NOT EXISTS image
 DROP TABLE IF EXISTS session;
 CREATE TABLE IF NOT EXISTS session
 (
-    session_id  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    image_id BIGINT NULL,
-    term BIGINT NULL,
-    price BIGINT NULL,
-    session_status VARCHAR(20),
-    max_student_count BIGINT NOT NULL,
-    start_date TIMESTAMP NOT NULL,
-    end_date TIMESTAMP NOT NULL,
+    session_id        BIGINT    NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    image_id          BIGINT    NULL,
+    term              BIGINT    NULL,
+    price             BIGINT    NULL,
+    session_status    VARCHAR(20),
+    max_student_count BIGINT    NOT NULL,
+    start_date        TIMESTAMP NOT NULL,
+    end_date          TIMESTAMP NOT NULL,
     primary key (session_id)
 );
 

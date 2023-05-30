@@ -54,6 +54,10 @@ public class Session {
         return sessionId;
     }
 
+    public void setSessionId(SessionId sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -89,6 +93,7 @@ public class Session {
     public void toProgressState() {
         this.sessionStatus = SessionStatus.IN_PROGRESS;
     }
+
     public void toCloseState() {
         this.sessionStatus = SessionStatus.CLOSED;
     }
@@ -100,7 +105,7 @@ public class Session {
     public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
         validateStudentCount(alreadyEnrolledCount);
-        return new Enroll(null, this.sessionId, userCode,EnrollStatus.SUBMITTED); //Enroll.of(this.sessionId.value(), userCode.value());
+        return new Enroll(null, this.sessionId, userCode, EnrollStatus.SUBMITTED); //Enroll.of(this.sessionId.value(), userCode.value());
     }
 
     private void validateStudentCount(long count) {
@@ -129,10 +134,6 @@ public class Session {
 
     public boolean isEnrolledSession(Enroll enroll) {
         return enroll.isEnrolledSession(this.sessionId);
-    }
-
-    public void setSessionId(SessionId sessionId) {
-        this.sessionId = sessionId;
     }
 
     public Image getImage() {

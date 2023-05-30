@@ -4,7 +4,6 @@ import nextstep.qna.domain.Question;
 import nextstep.qna.domain.QuestionId;
 import nextstep.qna.domain.QuestionRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -46,12 +45,6 @@ public class JdbcQuestionRepository implements QuestionRepository {
     }
 
     public Question save(Question question) {
-        //return saveV1(question);
-        //return saveV2(question);
-        return saveV3(question);
-    }
-
-    public Question saveV3(Question question) {
         String sql = "INSERT INTO question " +
                 "(writer_user_code," +
                 "title," +
@@ -74,64 +67,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
         }, keyHolder);
 
         long savedQuestionId = keyHolder.getKey().longValue();
-
         QuestionId questionId = new QuestionId(savedQuestionId);
-        //Question savedQuestion = Question.of(questionId, question.getTitle(), question.getContents(), question.getWriter(), question.getDeleted(), question.getAnswers(), question.getUpdatedDate(), question.getCreatedDate());
-
         return Question.of(questionId, question);
-    }
-
-    public Question saveV2(Question question) {
-        String sql = "INSERT INTO question (" +
-                //"writer_id," +
-                "title," +
-                "contents," +
-                "deleted," +
-                "created_at," +
-                "updated_at) " +
-                "values (?,?,?,?,?)";
-        int savedQuestionId = jdbcTemplate.update(
-                sql,
-                //question.getWriter().getUserId(),
-                question.getTitle(),
-                question.getContents(),
-                question.getDeleted(),
-                question.getCreatedDate(),
-                question.getUpdatedDate()
-        );
-        return Question.of(
-                new QuestionId((long) savedQuestionId),
-                question
-        );
-    }
-
-    public Question saveV1(Question question) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("question").usingGeneratedKeyColumns("question_id");
-
-        Map<String, Object> params = new HashMap<>() {{
-            put("question_id", Optional.ofNullable(question.getQuestionId().value()).orElseGet(null));
-            put("title", question.getTitle());
-            put("contents", question.getContents());
-            put("deleted", question.isDeleted());
-            put("updated_at", question.getUpdatedDate());
-            put("created_at", question.getCreatedDate());
-
-        }};
-
-        //put("writer_id", question.getWriter().getUserId().value());
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-
-        return new Question(
-                new QuestionId(key.longValue()),
-                question.getTitle(),
-                question.getContents(),
-                question.getWriter(),
-                question.isDeleted(),
-                question.getAnswers(),
-                question.getUpdatedDate(),
-                question.getCreatedDate()
-        );
     }
 
     @Override
@@ -146,7 +83,6 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     private RowMapper<Question> rowMapper() {
         return (resultSet, rowNumber) -> {
-//            NsUser writer = retrieveNsUser(resultSet.getLong("writer_id")); // Assuming writer_id is the column name for the writer's ID in the result set
             return new Question(
                     new QuestionId(resultSet.getLong("question_id")),
                     resultSet.getString("contents"),
@@ -155,8 +91,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
                     resultSet.getBoolean("deleted"),
                     new ArrayList<>(),
                     resultSet.getTimestamp("created_at").toLocalDateTime(),
-                    //resultSet.getTimestamp("updated_at").toLocalDateTime()
-                    LocalDateTime.now()
+                    resultSet.getTimestamp("updated_at").toLocalDateTime()
             );
         };
     }

@@ -22,7 +22,7 @@ public class Enroll {
     }
 
     public static Enroll of(Long sessionId, String userCode) {
-        return new Enroll(null, new SessionId(sessionId), new UserCode(userCode),EnrollStatus.SUBMITTED);
+        return new Enroll(null, new SessionId(sessionId), new UserCode(userCode), EnrollStatus.SUBMITTED);
     }
 
     public boolean isEnrolledSession(SessionId sessionId) {

@@ -16,14 +16,14 @@ public class Image {
         this.imageUrl = imageUrl;
     }
 
-    private void validateImageUrl(String imageUrl) {
-        if(imageUrl==null || imageUrl.isBlank()) {
-            throw new InvalidImageUrlException();
-        }
-    }
-
     public static Image of(String imageLink) {
         return new Image(null, imageLink);
+    }
+
+    private void validateImageUrl(String imageUrl) {
+        if (imageUrl == null || imageUrl.isBlank()) {
+            throw new InvalidImageUrlException();
+        }
     }
 
     public Long getImageId() {
