@@ -1,14 +1,13 @@
 package nextstep.courses.domain;
 
 
-import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.users.domain.UserCode;
 
 public class Enroll {
     private EnrollId enrollId;
     private final SessionId sessionId;
     private final UserCode userCode;
-
+    private EnrollStatus enrollStatus;
 
     public Enroll(EnrollId enrollId, SessionId sessionId, UserCode userCode) {
         this.enrollId = enrollId;
@@ -22,5 +21,16 @@ public class Enroll {
 
     public boolean isEnrolledSession(SessionId sessionId) {
         return sessionId.equals(this.sessionId);
+    }
+
+    public void approve() {
+    }
+
+
+    public void cancel() {
+    }
+
+    public EnrollStatus getEnrollStatus() {
+        return enrollStatus;
     }
 }
