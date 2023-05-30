@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,26 +9,32 @@ import java.util.List;
 
 public class Course extends BaseTime {
 
+    public static final String REGISTER_MESSAGE = "기 과정 등록에 성공하였습니다";
+    public static final String BLANK = " ";
+
     private final Long id;
-
     private final String title;
-
     private final Long creatorId;
-
-    private final Term term;
-
+    private final int term;
     private final List<Session> sessions = new ArrayList<>();
 
-    public Course(String title, Term term, Long creatorId) {
+    public Course(String title, int term, Long creatorId) {
         this(0L, title, term, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Term term, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, int term, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
+        validateTermNumber(term);
         this.id = id;
         this.title = title;
         this.term = term;
         this.creatorId = creatorId;
+    }
+
+    private void validateTermNumber(Integer term) {
+        if (term <= 0) {
+            throw new IllegalArgumentException("the term is must be greater than zero");
+        }
     }
 
     public String getTitle() {
@@ -49,8 +57,13 @@ public class Course extends BaseTime {
         return sessions.size();
     }
 
-    public String termValue() {
-        return term.ternValue();
+    public int fetchTerm() {
+        return term;
+    }
+
+    public String registerCourse(NsUser user) {
+        sessions.forEach(session -> session.enrollInSession(user));
+        return String.format("%s%s%d%s", title, BLANK, term, REGISTER_MESSAGE);
     }
 
     public List<Session> fetchSessions() {
