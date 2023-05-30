@@ -67,3 +67,14 @@ CREATE TABLE IF NOT EXISTS image
     image_url varchar(255),
     primary key (image_id)
 );
+
+
+DROP TABLE IF EXISTS session;
+CREATE TABLE IF NOT EXISTS session
+(
+    session_id  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    image_url varchar(255),
+    primary key (session_id)
+);
+
+

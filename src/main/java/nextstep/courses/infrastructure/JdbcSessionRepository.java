@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("SessionRepository")
+@Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -35,6 +35,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void deleteAll() {
-        throw new RuntimeException("Not Yet Implemented");
+        jdbcTemplate.update("delete from session");
     }
 }

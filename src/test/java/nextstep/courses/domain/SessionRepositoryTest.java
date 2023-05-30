@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SessionRepositoryTest {
+@JdbcTest
+public class SessionRepositoryTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(SessionRepositoryTest.class);
 
@@ -62,7 +64,7 @@ class SessionRepositoryTest {
         sessionRepository.findAll();
     }
 
-    @DisplayName("전체 데이터를 삭제한다")
+    @DisplayName("전체 데이터를 삭제기능을 검증한다")
     @Test
     public void deleteAll() {
         //given
