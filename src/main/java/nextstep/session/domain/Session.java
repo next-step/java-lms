@@ -1,13 +1,11 @@
 package nextstep.session.domain;
 
 import nextstep.session.NotRecruitException;
+import nextstep.session.StudentNumberExceededException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-
-import nextstep.session.StudentNumberExceededException;
 
 public class Session {
 
@@ -15,10 +13,8 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String image;
-    private SessionStatus status;
-    private Long maxNumberOfStudent;
     private Boolean isFree;
-    private final List<NsUser> students = new ArrayList<>();
+    private SignUpInformation signUpInformation;
 
     public Session(Long maxNumberOfStudent, SessionStatus status) {
         this(0L, maxNumberOfStudent, status);
@@ -26,8 +22,8 @@ public class Session {
 
     public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
         this.id = id;
-        this.maxNumberOfStudent = maxNumberOfStudent;
-        this.status = status;
+        this.signUpInformation = new SignUpInformation(status, maxNumberOfStudent);
+
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String status, Long maxNumberOfStudent, Boolean isFree) {
@@ -35,9 +31,8 @@ public class Session {
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
-        this.status = SessionStatus.of(status);
-        this.maxNumberOfStudent = maxNumberOfStudent;
         this.isFree = isFree;
+        this.signUpInformation = new SignUpInformation(SessionStatus.of(status), maxNumberOfStudent);
     }
 
     public Long getId() {
@@ -57,11 +52,11 @@ public class Session {
     }
 
     public SessionStatus getStatus() {
-        return status;
+        return signUpInformation.getStatus();
     }
 
     public Long getMaxNumberOfStudent() {
-        return maxNumberOfStudent;
+        return signUpInformation.getMaxNumberOfStudent();
     }
 
     public Boolean getFree() {
@@ -69,19 +64,10 @@ public class Session {
     }
 
     public List<NsUser> getStudents() {
-        return students;
+        return signUpInformation.getStudents();
     }
 
     void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
-        if (!status.equals(SessionStatus.RECRUITING)) {
-            throw new NotRecruitException("모집 기간에만 신청 가능합니다.");
-        }
-
-        if (students.size() == maxNumberOfStudent) {
-            throw new StudentNumberExceededException("최대 수강 인원 수를 초과했습니다.");
-        }
-
-        this.students.add(user);
+        signUpInformation.signUp(user);
     }
-
 }
