@@ -1,7 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.student;
 
 import java.util.List;
-import nextstep.users.domain.NsUser;
 
 public interface SessionStudentRepository {
   Long takeSession(Long sessionId, Long nsUserId);

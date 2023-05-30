@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import java.util.List;
-import nextstep.courses.domain.session.SessionStudent;
-import nextstep.courses.domain.session.SessionStudentRepository;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -54,8 +54,6 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
     @Override
     public List<SessionStudent> getStudents(Long sessionId) {
         final String sql = "SELECT id, session_id, ns_user_id, cancel_flag, create_at, update_at FROM session_student WHERE session_id = ?";
-
-
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 

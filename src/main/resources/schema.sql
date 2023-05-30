@@ -104,3 +104,21 @@ comment on column session_student.update_at is '수정일';
 -- STEP 4 추가사항
 alter table session add recruit_status VARCHAR(10);
 comment on column session.recruit_status is '모집 상태';
+
+-- 이렇게 설계하면 한 강의에 여러명의 강사가 있어도 됨
+create table session_teacher
+(
+    id          bigint auto_increment  primary key,
+    session_id  bigint                 not null,
+    ns_user_id  bigint                 not null,
+    is_active   tinyint  default true not null,
+    create_at   datetime default now() not null,
+    update_at   datetime default now() not null
+);
+
+comment on table session_teacher is '강의_강사';
+comment on column session_teacher.session_id is '강의 id (fk)';
+comment on column session_teacher.ns_user_id is '강사 id (fk)';
+comment on column session_teacher.is_active is '강사 활성여부';
+comment on column session_teacher.create_at is '생성일';
+comment on column session_teacher.update_at is '수정일';

@@ -1,11 +1,10 @@
 package nextstep.courses.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStudent;
-import nextstep.courses.domain.session.SessionStudentRepository;
-import nextstep.courses.domain.session.SessionStudents;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudentRepository;
+import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.users.domain.NsUser;
 import nextstep.users.service.NsUserService;
 import org.springframework.stereotype.Service;

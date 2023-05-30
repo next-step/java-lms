@@ -4,18 +4,22 @@ import exception.LmsException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.domain.session.teacher.SessionTeachers;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
 
 public class Session {
   private final Long id;
-  private final Long courseId;
+  private Long courseId;
   private SessionPayType sessionPayType;
   private SessionStatus sessionStatus;
   private SessionCapacity capacity;
-  private final SessionPeriod sessionPeriod;
+  private SessionPeriod sessionPeriod;
 
   private SessionStudents students = new SessionStudents(new ArrayList<>());
+  private SessionTeachers teachers = new SessionTeachers(new ArrayList<>());
 
   public Session(
       Long id, Long courseId, SessionPayType sessionPayType,
@@ -28,6 +32,10 @@ public class Session {
     this.courseId = courseId;
     this.sessionPeriod = new SessionPeriod(startAt, finishAt);
     this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitStatus);
+  }
+
+  public Session(Long id) {
+    this.id = id;
   }
 
   public Session(
@@ -43,11 +51,20 @@ public class Session {
     this.capacity = session.capacity;
     this.courseId = session.courseId;
     this.sessionPeriod = session.sessionPeriod;
-    this.students = students;
     this.sessionStatus = session.sessionStatus;
+    this.students = students;
+  }
+
+  public Session (Session session, SessionStudents students, SessionTeachers teachers) {
+    this(session, students);
+    this.teachers = teachers;
   }
 
   public SessionStudent addPersonnel(NsUser nsUser) {
+    if (this.teachers.contains(nsUser)) {
+      throw new LmsException(SessionExceptionCode.TEACHER_CANNOT_ENROLL_SESSION);
+    }
+
     if (this.sessionStatus.isNotEnrollable()) {
       throw new LmsException(SessionExceptionCode.CANNOT_ENROLL_SESSION);
     }

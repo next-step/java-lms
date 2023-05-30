@@ -18,3 +18,7 @@ VALUES (1, 'PAID', 'PREPARING', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-M
 
 INSERT INTO session(course_id, session_pay_type, session_status, capacity, start_at, finish_at)
 VALUES (1, 'PAID', 'RECRUITING', 3, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+
+-- STEP 4
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (1, 1);
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (2, 2);

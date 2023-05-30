@@ -4,7 +4,7 @@ import config.RollackableIntegrationTest;
 import java.util.ArrayList;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionProgressStatus;
-import nextstep.courses.domain.session.SessionStudents;
+import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.courses.service.SessionService;
 import nextstep.qna.domain.SessionTest;

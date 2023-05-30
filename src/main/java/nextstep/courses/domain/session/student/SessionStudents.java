@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.student;
 
 import exception.LmsException;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import nextstep.courses.exception.SessionExceptionCode;
-import nextstep.users.domain.NsUser;
 
 public class SessionStudents {
 
