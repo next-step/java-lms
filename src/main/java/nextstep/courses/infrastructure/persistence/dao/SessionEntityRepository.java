@@ -19,6 +19,7 @@ public class SessionEntityRepository {
   private static final String COVER_IMAGE_ID = "cover_image_id";
   private static final String SESSION_TYPE = "session_type";
   private static final String SESSION_STATUS = "session_status";
+  private static final String SESSION_RECRUITMENT_STATUS = "session_recruitment_status";
   private static final String MAX_ENROLLMENT_SIZE = "max_enrollment_size";
   private static final String START_DATE_TIME = "start_date_time";
   private static final String END_DATE_TIME = "end_date_time";
@@ -31,8 +32,15 @@ public class SessionEntityRepository {
     this.jdbcTemplate = jdbcTemplate;
   }
 
+  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    return timestamp.toLocalDateTime();
+  }
+
   public Optional<SessionEntity> findById(Long sessionId) {
-    String sql = "select id, course_id, title, description, cover_image_id, session_type, session_status,"
+    String sql = "select id, course_id, title, description, cover_image_id, session_type, session_status, session_recruitment_status,"
         + " max_enrollment_size, start_date_time, end_date_time, created_at, updated_at from session where id = ?";
     try {
       return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), sessionId));
@@ -50,6 +58,7 @@ public class SessionEntityRepository {
       Long coverImageId = rs.getLong(COVER_IMAGE_ID);
       String sessionType = rs.getString(SESSION_TYPE);
       String sessionStatus = rs.getString(SESSION_STATUS);
+      String sessionRecruitmentStatus = rs.getString(SESSION_RECRUITMENT_STATUS);
       int maxEnrollmentSize = rs.getInt(MAX_ENROLLMENT_SIZE);
       LocalDateTime startDateTime = toLocalDateTime(rs.getTimestamp(START_DATE_TIME));
       LocalDateTime endDateTime = toLocalDateTime(rs.getTimestamp(END_DATE_TIME));
@@ -57,14 +66,7 @@ public class SessionEntityRepository {
       LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp(UPDATED_AT));
 
       return new SessionEntity(id, courseId, title, description, coverImageId, sessionType,
-              sessionStatus, maxEnrollmentSize, startDateTime, endDateTime, createAt, updatedAt);
+          sessionStatus, sessionRecruitmentStatus, maxEnrollmentSize, startDateTime, endDateTime, createAt, updatedAt);
     };
-  }
-
-  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-    if (timestamp == null) {
-      return null;
-    }
-    return timestamp.toLocalDateTime();
   }
 }

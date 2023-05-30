@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure.persistence.repository;
 
+import static nextstep.courses.domain.SessionStatus.IN_PROGRESS;
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 import static nextstep.courses.domain.SessionType.FREE;
 import static org.assertj.core.api.Assertions.*;
@@ -30,7 +31,7 @@ class SessionRepositoryImplTest {
     assertThat(session.getSessionInfo()).isEqualTo(
         new SessionInfo("Session 1 Belong To Course 1", "Session 1 Description"));
     assertThat(session.getSessionType()).isEqualTo(FREE);
-    assertThat(session.getSessionStatus()).isEqualTo(RECRUITING);
+    assertThat(session.getSessionStatus()).isEqualTo(IN_PROGRESS);
     assertThat(session.getStudents().size()).isEqualTo(2);
   }
 

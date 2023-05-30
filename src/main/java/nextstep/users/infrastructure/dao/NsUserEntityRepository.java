@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.entity.NsUserEntity;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -74,4 +75,14 @@ public class NsUserEntityRepository {
   }
 
 
+
+
+  public Optional<NsUserEntity> findByUserKeyId(Long userKeyId) {
+    String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id = ?";
+    try {
+      return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), userKeyId));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
 }
