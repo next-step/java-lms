@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.student.Students;
-import nextstep.users.domain.NsUser;
 
 public class SessionRegistrationBuilder {
 
@@ -36,8 +35,8 @@ public class SessionRegistrationBuilder {
         return this;
     }
 
-    public SessionRegistrationBuilder withStudent(NsUser student, Session session) {
-        students.add(student, session);
+    public SessionRegistrationBuilder withStudent(String userId, Long sessionId) {
+        students.add(userId, sessionId);
         return this;
     }
 

@@ -21,7 +21,7 @@ public class SessionRegistration {
 
     public void register(NsUser student, Session session) {
         validate();
-        students.add(student, session);
+        students.add(student.getUserId(), session.getId());
     }
 
     private void validate() {

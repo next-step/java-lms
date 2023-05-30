@@ -1,8 +1,5 @@
 package nextstep.courses.domain.student;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.users.domain.NsUser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +16,8 @@ public class Students {
         this.values = values;
     }
 
-    public void add(NsUser student, Session session) {
-        values.add(new Student(student.getUserId(), session.getId()));
-
+    public void add(String userId, Long sessionId) {
+        values.add(new Student(userId, sessionId));
     }
 
     public List<Student> getValues() {
