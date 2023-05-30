@@ -16,18 +16,18 @@ public class UserCode implements DomainCode {
         this.userCode = userCode;
     }
 
-    private void validateCode(String userCode) {
-        if (userCode.isBlank() || userCode.isEmpty()) {
-            throw new UserCodeException();
-        }
-    }
-
     public static UserCode of(String userCode) {
         return new UserCode(userCode);
     }
 
     public static UserCode any(PrimaryKeyCodeMaker primaryKeyCodeMaker) {
         return new UserCode(primaryKeyCodeMaker.generate());
+    }
+
+    private void validateCode(String userCode) {
+        if (userCode.isBlank() || userCode.isEmpty()) {
+            throw new UserCodeException();
+        }
     }
 
     @Override

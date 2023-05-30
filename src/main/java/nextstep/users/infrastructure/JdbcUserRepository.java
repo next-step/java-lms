@@ -3,7 +3,6 @@ package nextstep.users.infrastructure;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 import nextstep.users.domain.UserRepository;
-import nextstep.users.exception.UserCodeException;
 import nextstep.utils.PrimaryKeyCodeMakerRandom;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -101,7 +100,7 @@ public class JdbcUserRepository implements UserRepository {
             }
         };
         jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-        return this.findByUserCode(userCode).orElseThrow(()-> new RuntimeException("저장에 실패하였습니다"));
+        return this.findByUserCode(userCode).orElseThrow(() -> new RuntimeException("저장에 실패하였습니다"));
     }
 
     @Override

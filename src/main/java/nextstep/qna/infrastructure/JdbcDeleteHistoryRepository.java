@@ -7,9 +7,6 @@ import nextstep.users.domain.UserCode;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -38,6 +35,7 @@ public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
                 ps.setTimestamp(3, Timestamp.valueOf(deleteHistory.getCreatedAt()));
                 ps.setString(4, deleteHistory.getDeletedBy().value());
             }
+
             @Override
             public int getBatchSize() {
                 return deleteHistories.size();
