@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.SessionFixture.강의_과정_1;
+import static nextstep.courses.SessionFixture.강의_과정_3;
 
 class SessionTest {
     private Session session;
@@ -13,6 +14,13 @@ class SessionTest {
     @BeforeEach
     public void before() {
         session = 강의_과정_1();
+    }
+
+
+    @Test
+    void 수강신청_모집_비모집_상태가_없는경우() {
+        Session session = 강의_과정_3();
+        Assertions.assertThat(session.getSessionEnrollmentStatus()).isEqualTo(SessionEnrollmentStatus.NO_INFO);
     }
 
     @Test

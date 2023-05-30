@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -37,7 +38,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(1, session.getSessionPayment().name());
             ps.setString(2, session.getSessionCoverImage().getPath());
             ps.setString(3, session.getSessionStatus().name());
-            ps.setInt(4, session.getSessionUsers().getUserCount());
+            ps.setInt(4, session.getUserCount());
             ps.setTimestamp(5, Timestamp.valueOf(session.getSessionPeriod().getFromDate()));
             ps.setTimestamp(6, Timestamp.valueOf(session.getSessionPeriod().getToDate()));
             ps.setTimestamp(7, Timestamp.valueOf(session.getCreatedAt()));
@@ -54,17 +55,19 @@ public class JdbcSessionRepository implements SessionRepository {
         sql.append("SELECT * ");
         sql.append("FROM SESSION ");
         sql.append("WHERE id = ? ");
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
-                rs.getLong(1),
-                new SessionPeriod(toLocalDateTime(rs.getTimestamp(7)), toLocalDateTime(rs.getTimestamp(8))),
-                new SessionCoverImage(rs.getString(3)),
-                SessionStatus.find(rs.getString(4)),
-                SessionEnrollmentStatus.find(rs.getString(5)),
-                SessionPayment.find(rs.getString(2)),
-                new SessionUsers(rs.getInt(6)),
-                toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10))
-        );
+        RowMapper<Session> rowMapper = (rs, rowNum) -> {
+            return new Session(
+                    rs.getLong(1),
+                    new SessionPeriod(toLocalDateTime(rs.getTimestamp(7)), toLocalDateTime(rs.getTimestamp(8))),
+                    new SessionCoverImage(rs.getString(3)),
+                    SessionStatus.find(rs.getString(4)),
+                    SessionEnrollmentStatus.find(rs.getString(5)),
+                    SessionPayment.find(rs.getString(2)),
+                    new SessionUsers(rs.getInt(6)),
+                    toLocalDateTime(rs.getTimestamp(9)),
+                    toLocalDateTime(rs.getTimestamp(10))
+            );
+        };
         return jdbcTemplate.queryForObject(sql.toString(), rowMapper, id);
     }
 
@@ -98,6 +101,30 @@ public class JdbcSessionRepository implements SessionRepository {
         );
 
         return jdbcTemplate.query(sql.toString(), rowMapper, sessionId);
+    }
+
+    @Override
+    public List<SessionUser> findAllBySessionIdAndUserIds (Long sessionId, List<Long> userIds) {
+        String userIdIn = userIds.stream()
+                .map(u -> "?")
+                .collect(Collectors.joining(", "));
+        JdbcUserRepository jdbcUserRepository = new JdbcUserRepository(jdbcTemplate);
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * ");
+        sql.append("FROM SESSION_NS_USER ");
+        sql.append("WHERE session_id = ? ");
+        sql.append("AND user_id IN (" + userIdIn + ")");
+
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
+                rs.getLong(1),
+                findById(rs.getLong(2)),
+                ApprovalStatus.find(rs.getString(3)),
+                jdbcUserRepository.findById(rs.getInt(4)).orElse(new NsUser()),
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6))
+        );
+
+        return jdbcTemplate.query(sql.toString(), rowMapper, sessionId, userIds.toArray());
     }
 
     @Override

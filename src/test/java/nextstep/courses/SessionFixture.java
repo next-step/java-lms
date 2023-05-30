@@ -39,4 +39,20 @@ public class SessionFixture {
         session.enrollSession(NsUserTest.SANJIGI);
         return session;
     }
+
+    public static Session 강의_과정_3() {
+        LocalDateTime fromDate = LocalDateTime.now();
+        LocalDateTime toDate = fromDate.plusDays(7);
+        int maxEnrollment = 1;
+        String sessionCoverImagePath = "/course/math/main.png";
+
+        SessionPeriod sessionPeriod = new SessionPeriod(fromDate, toDate);
+        SessionCoverImage sessionCoverImage = new SessionCoverImage(sessionCoverImagePath);
+        SessionUsers sessionUsers = new SessionUsers(maxEnrollment);
+        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime updatedAt = LocalDateTime.now();
+
+        Session session = new Session(1L, sessionPeriod, sessionCoverImage, SessionStatus.OPEN, null, SessionPayment.FREE, sessionUsers, createdAt, updatedAt);
+        return session;
+    }
 }

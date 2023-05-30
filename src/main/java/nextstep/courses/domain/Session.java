@@ -28,6 +28,9 @@ public class Session {
         if (sessionPayment == null) {
             throw new IllegalArgumentException(NOT_FOUND_SESSION_PAYMENT);
         }
+        if (sessionEnrollmentStatus == null) {
+            sessionEnrollmentStatus = SessionEnrollmentStatus.NO_INFO;
+        }
         this.id = id;
         this.sessionPeriod = sessionPeriod;
         this.sessionCoverImage = sessionCoverImage;
@@ -56,9 +59,6 @@ public class Session {
         }
         LocalDateTime now = LocalDateTime.now();
         ApprovalStatus approvalStatus = ApprovalStatus.REQUEST;
-        if (sessionUsers.getSessionUsers().size() >= sessionUsers.getMaxEnrollment()) {
-            approvalStatus = ApprovalStatus.REJECTION;
-        }
         sessionUsers.addEnroll(new SessionUser(this, approvalStatus, nsUser, now, now));
     }
 

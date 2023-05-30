@@ -10,6 +10,12 @@ public class SessionUsers {
     private final int maxEnrollment;
     private final List<SessionUser> sessionUsers;
 
+    public SessionUsers(List<SessionUser> sessionUsers, int maxEnrollment) {
+        validateMaxUserCount(sessionUsers, maxEnrollment);
+        this.maxEnrollment = maxEnrollment;
+        this.sessionUsers = sessionUsers;
+    }
+
     public SessionUsers(int maxEnrollment) {
         this.maxEnrollment = maxEnrollment;
         this.sessionUsers = new ArrayList<>();
@@ -24,8 +30,14 @@ public class SessionUsers {
         sessionUsers.add(sessionUser);
     }
 
-    private void validateEnrollment() {
+    public void validateEnrollment() {
         if (sessionUsers.size() >= maxEnrollment) {
+            throw new IllegalArgumentException(ALERT_TEXT);
+        }
+    }
+
+    private void validateMaxUserCount(List<SessionUser> sessionUsers, int maxEnrollment) {
+        if (sessionUsers.size() > maxEnrollment) {
             throw new IllegalArgumentException(ALERT_TEXT);
         }
     }

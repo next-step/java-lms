@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.domain.SessionEnrollmentStatus.ENROLLMENT;
+import static nextstep.courses.domain.SessionEnrollmentStatus.NON_ENROLLMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionEnrollmentStatusTest {
@@ -9,7 +11,7 @@ class SessionEnrollmentStatusTest {
     void find() {
         String enrollmentStatus1 = "모집";
         String enrollmentStatus2 = "비모집";
-        assertThat(SessionEnrollmentStatus.find(enrollmentStatus1)).isEqualTo(SessionEnrollmentStatus.ENROLLMENT);
-        assertThat(SessionEnrollmentStatus.find(enrollmentStatus2)).isEqualTo(SessionEnrollmentStatus.NON_ENROLLMENT);
+        assertThat(SessionEnrollmentStatus.find(ENROLLMENT.name())).isEqualTo(ENROLLMENT);
+        assertThat(SessionEnrollmentStatus.find(NON_ENROLLMENT.name())).isEqualTo(SessionEnrollmentStatus.NON_ENROLLMENT);
     }
 }

@@ -27,7 +27,7 @@ public class SessionUserServiceImpl implements SessionUserService {
         NsUser nsUser = jdbcUserRepository.findByUserId(user).orElse(NsUser.GUEST_USER);
         boolean isEnrolledUser = sessionUsers.stream().allMatch(sessionUser -> sessionUser.isIncludeNsUserId(nsUser));
         if (isEnrolledUser) {
-            System.out.println(ALREADY_ENROLLED_USER);
+            throw new IllegalArgumentException(ALREADY_ENROLLED_USER);
         } else {
             session.enrollSession(nsUser);
             sessionRepository.save(session);
@@ -37,24 +37,31 @@ public class SessionUserServiceImpl implements SessionUserService {
     @Override
     public void approve(long sessionId, List<String> users) {
         Session session = sessionRepository.findById(sessionId);
-        List<SessionUser> sessionUsers = sessionRepository.findAllBySessionId(session.getId()).stream()
-                .filter(SessionUser::isApproved)
-                .collect(Collectors.toList());
+        int maxEnrollment = session.getSessionUsers().getMaxEnrollment();
+        List<NsUser> nsUsers = jdbcUserRepository.findByUserIds(users);
+        List<Long> userIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
+        List<SessionUser> sessionUserList = sessionRepository.findAllBySessionIdAndUserIds(sessionId, userIds);
+        SessionUsers sessionUsers = new SessionUsers(sessionUserList, maxEnrollment);
 
-        for (SessionUser sessionUser : sessionUsers) {
-            sessionUser.approve();
-            sessionRepository.updateSessionApprovalStatus(sessionUser);
-        }
+        sessionUsers.getSessionUsers()
+                .stream()
+                .filter(SessionUser::isApproved)
+                .collect(Collectors.toList())
+                .forEach(sessionUser -> {
+                    sessionUser.approve();
+                    sessionRepository.updateSessionApprovalStatus(sessionUser);
+                });
     }
 
     @Override
     public void reject(long sessionId, List<String> users) {
-        Session session = sessionRepository.findById(sessionId);
-        SessionUsers sessionUsers = session.getSessionUsers();
-        sessionUsers.getSessionUsers().forEach(SessionUser::approve);
-        for (SessionUser sessionUser : sessionUsers.getSessionUsers()) {
+        List<NsUser> nsUsers = jdbcUserRepository.findByUserIds(users);
+        List<Long> userIds = nsUsers.stream().map(NsUser::getId).collect(Collectors.toList());
+        List<SessionUser> sessionUsers = sessionRepository.findAllBySessionIdAndUserIds(sessionId, userIds);
+
+        sessionUsers.forEach(sessionUser -> {
             sessionUser.reject();
             sessionRepository.updateSessionApprovalStatus(sessionUser);
-        }
+        });
     }
 }

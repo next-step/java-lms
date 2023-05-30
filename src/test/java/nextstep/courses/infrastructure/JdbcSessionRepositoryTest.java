@@ -34,21 +34,31 @@ class JdbcSessionRepositoryTest {
     void crud() {
         SessionUserService sessionUserService = new SessionUserServiceImpl(sessionRepository, new JdbcUserRepository(jdbcTemplate));
         Session session = 강의_과정_1();
+        session.enrollSession(NsUserTest.JAVAJIGI);
+
         long count = sessionRepository.save(session);
         LOGGER.debug("Session count: {}", count);
         assertThat(count).isEqualTo(1);
 
-        session.enrollSession(NsUserTest.JAVAJIGI);
         sessionRepository.saveSessionUser(session);
         List<SessionUser> sessionUsers = sessionRepository.findAllBySessionId(session.getId());
         LOGGER.debug("sessionUsers: {}", sessionUsers);
         assertThat(sessionUsers.size()).isEqualTo(1);
 
         List<String> users = sessionUsers.stream().map(sessionUser -> sessionUser.getNsUser().getUserId()).collect(Collectors.toList());
+
         sessionUserService.approve(session.getId(), users);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getSessionPayment().name()).isEqualTo(savedSession.getSessionPayment().name());
         LOGGER.debug("Session: {}", savedSession);
+
+        List<SessionUser> sessionUsersForApprove = sessionRepository.findAllBySessionId(session.getId());
+        LOGGER.debug("[approve] sessionUsers case: {}", sessionUsersForApprove);
+
+        sessionUserService.reject(session.getId(), users);
+        List<SessionUser> sessionUsersForReject = sessionRepository.findAllBySessionId(session.getId());
+        LOGGER.debug("[reject] sessionUsers case: {}", sessionUsersForReject);
+
     }
 
 }
