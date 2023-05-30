@@ -31,8 +31,8 @@ public class JdbcSessionRepository implements SessionRepository {
         jdbcInsert.withTableName("session").usingGeneratedKeyColumns("session_id");
 
         Map<String, Object> sqlParameters = new HashMap<>() {{
-//            put("session_id", Optional.ofNullable(session.getSessionId().value()).orElseGet(null));
-            //put("image_id", Optional.ofNullable(session.getImage()).orElseGet(null));
+            put("session_id", session.getSessionId() == null ? null : session.getSessionId().value());
+            put("image_id", session.getImage() == null ? null : session.getImage().getImageId());
             put("term", session.getTerm());
             put("price", session.getPrice());
             put("session_status", session.getSessionStatus().name());
