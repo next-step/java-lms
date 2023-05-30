@@ -18,8 +18,7 @@ public class SessionTest {
     void setUp() {
         S1 = new Session(0L,
                 2L,
-                LocalDateTime.MIN,
-                LocalDateTime.MAX,
+                SessionPeriodTest.SP1,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
                 CoverImageTest.C1,
@@ -29,44 +28,26 @@ public class SessionTest {
 
         S2 = new Session(1L,
                 2L,
-                LocalDateTime.MIN,
-                LocalDateTime.MAX,
+                SessionPeriodTest.SP1,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
                 CoverImageTest.C1,
                 PaymentType.FREE,
                 SessionStatus.RECRUITING,
-                1);
+                0);
     }
 
     @Test
     void newSession() {
         assertThat(S1).isEqualTo(new Session(0L,
                 2L,
-                LocalDateTime.MIN,
-                LocalDateTime.MAX,
+                SessionPeriodTest.SP1,
                 LocalDateTime.of(2022, 2, 22, 22, 22, 22),
                 null,
                 CoverImageTest.C1,
                 PaymentType.FREE,
                 SessionStatus.PREPARING,
                 10));
-    }
-
-    @Test
-    @DisplayName("시작일은 종료일을 넘을 수 없다.")
-    void validDate() {
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Session(0L,
-                        2L,
-                        LocalDateTime.MAX,
-                        LocalDateTime.MIN,
-                        LocalDateTime.of(2022, 2, 22, 22, 22, 22),
-                        null,
-                        CoverImageTest.C1,
-                        PaymentType.FREE,
-                        SessionStatus.PREPARING,
-                        10));
     }
 
     @Test
@@ -78,7 +59,6 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 최대 수강인원을 초과할 수 없다.")
     void maxStudentSize() {
-        S2.register(new NsUser());
         assertThatIllegalStateException().isThrownBy(() -> S2.register(new NsUser()));
     }
 }
