@@ -40,6 +40,6 @@ public class SessionTest {
     }
 
     public static Session create(SessionStatus sessionStatus, int maxNsUserCount) {
-        return new Session(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), "https://test.png", true, sessionStatus, new NsUsers(maxNsUserCount));
+        return new Session(1L, 1L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), "https://test.png", true, sessionStatus, new NsUsers(maxNsUserCount));
     }
 }

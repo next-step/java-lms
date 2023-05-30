@@ -6,32 +6,33 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Session {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Long id;
+    private Long courseId;
+    private SessionPeriod period;
     private String coverImage;
     private boolean isFree;
-    private SessionStatus sessionStatus;
-    private NsUsers nsUsers;
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, String coverImage, boolean isFree, SessionStatus sessionStatus, NsUsers nsUsers) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    private Enrollment enrollment;
+
+    public Session(Long id, Long courseId, SessionPeriod period, String coverImage, boolean isFree, Enrollment enrollment) {
+        this.period = period;
         this.coverImage = coverImage;
         this.isFree = isFree;
-        this.sessionStatus = sessionStatus;
-        this.nsUsers = nsUsers;
+        this.enrollment = enrollment;
     }
 
+    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, String coverImage, boolean isFree, SessionStatus sessionStatus, NsUsers nsUsers) {
+        this(id, courseId, new SessionPeriod(startDate, endDate), coverImage, isFree, new Enrollment(sessionStatus, nsUsers));
+    }
+
+
     public Session enrollNsUser(NsUser nsUser) {
-        if (sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalArgumentException("강의가 모집중 일때만 등록 가능합니다.");
-        }
-        nsUsers.enroll(nsUser);
+        enrollment.enrollNsUser(nsUser);
         return this;
     }
 
 
     public int countNsUsers() {
-        return nsUsers.count();
+        return enrollment.countNsUsers();
     }
 }
