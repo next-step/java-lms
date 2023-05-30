@@ -11,7 +11,7 @@ public class Session {
 
     private LocalDateTime endTime;
 
-    private CoverImage coverImage;
+    private String coverImage;
 
     private boolean isFree;
 
@@ -23,13 +23,13 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, CoverImage coverImage,
+    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String coverImage,
         boolean isFree, SessionStatus sessionStatus, int capacity) {
         this(id, startTime, endTime, coverImage, isFree, sessionStatus,
             new SessionPersonnel(capacity));
     }
 
-    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, CoverImage coverImage,
+    public Session(Long id, LocalDateTime startTime, LocalDateTime endTime, String coverImage,
         boolean isFree, SessionStatus sessionStatus, SessionPersonnel sessionPersonnel) {
         this.id = id;
         this.startTime = startTime;
