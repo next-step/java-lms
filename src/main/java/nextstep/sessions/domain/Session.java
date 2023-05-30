@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import nextstep.sessions.exception.GuestUserSignUpException;
-import nextstep.sessions.type.StatusType;
+import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.RecruitStatusType;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -26,24 +27,32 @@ public class Session {
 	private LocalDateTime updatedAt;
 
 	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
-		this(id, courseId, sessionDate, coveredImageUrl, free, StatusType.PREPARING, capacity, students);
+		this(id, courseId, sessionDate, coveredImageUrl, free, ProgressStatusType.PREPARING, capacity, students);
 	}
 
-	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, StatusType statusType, int capacity, Students students) {
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressStatusType progressStatusType, int capacity, Students students) {
+		this(id, courseId, sessionDate, coveredImageUrl, free, progressStatusType, RecruitStatusType.NOT_RECRUITING, capacity, students);
+	}
+
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressStatusType progressStatusType, RecruitStatusType recruitStatusType, int capacity, Students students) {
 		this.id = id;
 		this.courseId = courseId;
 		this.sessionDate = sessionDate;
 		this.coveredImageUrl = coveredImageUrl;
 		this.free = free;
-		this.enrollment = new Enrollment(statusType, capacity, students);
+		this.enrollment = new Enrollment(progressStatusType, recruitStatusType, capacity, students);
+	}
+
+	public void start() {
+		this.enrollment.changeProgressStatusType(ProgressStatusType.IN_PROGRESS);
+	}
+
+	public void end() {
+		this.enrollment.changeProgressStatusType(ProgressStatusType.TERMINATION);
 	}
 
 	public void open() {
-		this.enrollment.changeStatusType(StatusType.RECRUITING);
-	}
-
-	public void close() {
-		this.enrollment.changeStatusType(StatusType.TERMINATION);
+		this.enrollment.changeRecruitingStatusType(RecruitStatusType.RECRUITING);
 	}
 
 	public Student enroll(NsUser nsUser) {
