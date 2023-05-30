@@ -33,4 +33,12 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
+    public Name name() {
+        return name;
+    }
+
+    public long id() {
+        return id;
+    }
 }

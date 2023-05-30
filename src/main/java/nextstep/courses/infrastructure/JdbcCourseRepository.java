@@ -44,4 +44,14 @@ public class JdbcCourseRepository implements CourseRepository {
         }
         return timestamp.toLocalDateTime();
     }
+
+    @Override
+    public int update(Course course) {
+        return 0;
+    }
+
+    @Override
+    public int delete(Course course) {
+        return 0;
+    }
 }
