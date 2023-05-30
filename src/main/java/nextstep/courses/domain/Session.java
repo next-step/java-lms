@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import javax.swing.plaf.IconUIResource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,8 +10,8 @@ public class Session {
     private LocalDate startDate;
     private LocalDate endDate;
     private String coverImage;
-    private Type type;
-    private Status status;
+    private SessionType sessionType;
+    private SessionStatus sessionStatus;
     private int numberOfRegisteredStudent = 0;
     private int maxNumberOfStudents;
     private Long courseId;
@@ -20,29 +19,29 @@ public class Session {
     private LocalDateTime updatedAt;
 
     public Session(LocalDate startDate, LocalDate endDate, Long courseId) {
-        this("test", startDate, endDate, "cover", Type.FREE, Status.READY, 30, courseId);
+        this("test", startDate, endDate, "cover", SessionType.FREE, SessionStatus.READY, 30, courseId);
     }
 
-    public Session(Status status) {
-        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "cover", Type.FREE, status, 30, 1L);
+    public Session(SessionStatus sessionStatus) {
+        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "cover", SessionType.FREE, sessionStatus, 30, 1L);
     }
 
     public Session(int maxNumberOfStudents) {
-        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "image", Type.FREE, Status.RECRUIT, maxNumberOfStudents, 1L);
+        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "image", SessionType.FREE, SessionStatus.RECRUIT, maxNumberOfStudents, 1L);
     }
 
-    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, Type type, Status status, int maxNumberOfStudents, Long courseId) {
-        this(name, startDate, endDate, coverImage, type, status, 0, maxNumberOfStudents, courseId, LocalDateTime.now(), LocalDateTime.now());
+    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int maxNumberOfStudents, Long courseId) {
+        this(name, startDate, endDate, coverImage, sessionType, sessionStatus, 0, maxNumberOfStudents, courseId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, Type type, Status status, int numberOfRegisteredStudent, int maxNumberOfStudents, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int numberOfRegisteredStudent, int maxNumberOfStudents, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         validateDate(startDate, endDate);
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
-        this.type = type;
-        this.status = status;
+        this.sessionType = sessionType;
+        this.sessionStatus = sessionStatus;
         this.numberOfRegisteredStudent = numberOfRegisteredStudent;
         this.maxNumberOfStudents = maxNumberOfStudents;
         this.courseId = courseId;
@@ -63,7 +62,7 @@ public class Session {
     }
 
     private void validateStatusOfSession() {
-        if (Status.isNotRecruit(status)) {
+        if (SessionStatus.isNotRecruit(sessionStatus)) {
             throw new IllegalStateException("현재 강의 모집 중이 아닙니다.");
         }
     }
@@ -102,16 +101,16 @@ public class Session {
         return updatedAt;
     }
 
-    public Status getStatus() {
-        return status;
+    public SessionStatus getStatus() {
+        return sessionStatus;
     }
 
     public String getCoverImage() {
         return coverImage;
     }
 
-    public Type getType() {
-        return type;
+    public SessionType getType() {
+        return sessionType;
     }
 
     public Long getCourseId() {
@@ -123,12 +122,12 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return type == session.type && maxNumberOfStudents == session.maxNumberOfStudents && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(coverImage, session.coverImage) && status == session.status;
+        return sessionType == session.sessionType && maxNumberOfStudents == session.maxNumberOfStudents && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(coverImage, session.coverImage) && sessionStatus == session.sessionStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startDate, endDate, coverImage, type, status, maxNumberOfStudents);
+        return Objects.hash(startDate, endDate, coverImage, sessionType, sessionStatus, maxNumberOfStudents);
     }
 
     @Override
@@ -138,8 +137,8 @@ public class Session {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", coverImage='" + coverImage + '\'' +
-                ", type=" + type +
-                ", status=" + status +
+                ", type=" + sessionType +
+                ", status=" + sessionStatus +
                 ", numberOfRegisteredStudent=" + numberOfRegisteredStudent +
                 ", maxNumberOfStudents=" + maxNumberOfStudents +
                 ", courseId=" + courseId +

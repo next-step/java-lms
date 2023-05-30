@@ -1,8 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.Status;
-import nextstep.courses.domain.Type;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +16,11 @@ public class SessionTest {
         LocalDate startedAt = LocalDate.now();
         LocalDate endedAt = LocalDate.now();
         String coverImage = "image";
-        Type type = Type.FREE;
-        Status status = Status.READY;
+        SessionType sessionType = SessionType.FREE;
+        SessionStatus sessionStatus = SessionStatus.READY;
         int maximumNumberOfStudents = 30;
 
-        assertThat(new Session(name, startedAt, endedAt, coverImage, type, status, maximumNumberOfStudents, 1L)).isEqualTo(new Session(name, startedAt, endedAt, coverImage, type, status, maximumNumberOfStudents, 1L));
+        assertThat(new Session(name, startedAt, endedAt, coverImage, sessionType, sessionStatus, maximumNumberOfStudents, 1L)).isEqualTo(new Session(name, startedAt, endedAt, coverImage, sessionType, sessionStatus, maximumNumberOfStudents, 1L));
     }
 
     @Test
@@ -41,7 +38,7 @@ public class SessionTest {
     @Test
     @DisplayName("register_method_test")
     public void register_method_test() {
-        Session session = new Session(Status.RECRUIT);
+        Session session = new Session(SessionStatus.RECRUIT);
         session.register();
 
         assertThat(session.getNumberOfRegisteredStudent()).isEqualTo(1);
@@ -61,7 +58,7 @@ public class SessionTest {
     @Test
     @DisplayName("validate_Status_test")
     public void validate_Status_test() {
-        Session session = new Session(Status.READY);
+        Session session = new Session(SessionStatus.READY);
         assertThatIllegalStateException()
                 .isThrownBy(session::register);
     }

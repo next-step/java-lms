@@ -1,10 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.Status;
-import nextstep.courses.domain.Type;
+import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -39,8 +38,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDate(rs.getDate(3)),
                 toLocalDate(rs.getDate(4)),
                 rs.getString(5),
-                Type.find(rs.getString(6)),
-                Status.find(rs.getString(7)),
+                SessionType.find(rs.getString(6)),
+                SessionStatus.find(rs.getString(7)),
                 rs.getInt(8),
                 rs.getInt(9),
                 rs.getLong(10),
