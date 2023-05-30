@@ -10,10 +10,6 @@ public enum EnrollmentStatus {
         this.description = description;
     }
 
-    public String getDescription() {
-        return this.description;
-    }
-
     public boolean canEnroll() {
         return this == ENROLLING;
     }
