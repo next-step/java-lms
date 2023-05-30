@@ -12,7 +12,7 @@ public class Answers {
     private List<Answer> answers;
 
     public Answers() {
-        answers = new ArrayList<>();
+        this(new ArrayList<>());
     }
 
     public Answers(List<Answer> answers) {
