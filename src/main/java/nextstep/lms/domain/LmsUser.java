@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LmsUser {
-    private static final AtomicLong idGenerator = new AtomicLong(1);
-
     private Long id;
 
     private String userId;
@@ -23,10 +21,10 @@ public class LmsUser {
     }
 
     private LmsUser(String userId, String password, String name, LmsUserRole role) {
-        this(idGenerator.getAndIncrement(), userId, password, name, role, LocalDateTime.now(), null);
+        this(null, userId, password, name, role, LocalDateTime.now(), null);
     }
 
-    private LmsUser(Long id, String userId, String password, String name, LmsUserRole role, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public LmsUser(Long id, String userId, String password, String name, LmsUserRole role, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -66,5 +64,45 @@ public class LmsUser {
 
     public boolean isUserId(String userId) {
         return this.userId.equals(userId);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRole() {
+        return role.name();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "LmsUser{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
