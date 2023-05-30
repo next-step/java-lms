@@ -146,7 +146,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName("강의가 진행 중인 상태에서도 유저는 등록할 수 있다.")
-    public void test_3() {
+    public void userCanEnrollWhenSessionInProgress_test() {
         Session beforeSession = sessionService.findSessionById(400);
         User user = UserTest.JAVAJIGI;
 
@@ -158,7 +158,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName("강사는 수강신청한 사람 중 선발되지 않은 인원은 수강 승인할 수 없다.")
-    public void test_2() {
+    public void instructorCannotApproveUnselectedUser_test() {
         User admin = UserTest.INSTRUCTOR;
         User unSelectedUser = UserTest.SANJIGI;
         Session session = sessionService.findSessionById(300);
@@ -170,7 +170,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName("강사는 수강신청한 사람 중 선발된 인원을 수강 승인 할 수 있다.")
-    public void test() {
+    public void instructorCanApproveSelectedUser_test() {
         User admin = UserTest.INSTRUCTOR;
         User selectedUser = UserTest.JAVAJIGI;
         Session session = sessionService.findSessionById(300);
@@ -190,7 +190,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName("강사는 수강신청한 사람 중 선발되지 않은 사람은 수강 취소할 수 있다.")
-    public void test4() {
+    public void instructorCanCancelUnselectedUserEnrollment_test() {
         User admin = UserTest.INSTRUCTOR;
         User unSelectedUser = UserTest.SANJIGI;
         Session session = sessionService.findSessionById(300);
@@ -206,4 +206,21 @@ class SessionServiceTest {
         Assertions.assertThat(selectedEnrollment.getApprovalStatus()).isEqualTo(ApprovalStatus.CANCELED);
     }
 
+
+    @Test
+    @DisplayName("수강 승인 시킬 수강자는 최대 수강자를 넘을 수 없다.")
+    public void shouldThrowExceptionWhenApprovalExceedsMaximumEnrollment_test() {
+        Session session = sessionService.findSessionById(400);
+        User user1 = UserTest.DKSWNKK;
+        User user2 = UserTest.DKSWNZZ;
+        User instructor = UserTest.INSTRUCTOR;
+
+        sessionService.enrollUserToSession(session.getId(), user1.getId());
+        sessionService.enrollUserToSession(session.getId(), user2.getId());
+        sessionService.approveUserToSession(instructor.getId(), user1.getId(), session.getId());
+
+        Assertions.assertThatThrownBy(() ->
+                sessionService.approveUserToSession(instructor.getId(), user2.getId(), session.getId())
+        ).isInstanceOf(SessionEnrollmentException.class);
+    }
 }
