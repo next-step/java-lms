@@ -52,4 +52,16 @@ public class SessionTest {
         assertThat(openSession.isOpen()).isTrue();
         assertThat(closedSession.isClosed()).isTrue();
     }
+
+    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    @Test
+    void shouldBePossible_whenSessionStatusIsOpen() {
+        Session openSession = new Session(SessionStatus.OPEN);
+        Session readySession = new Session(SessionStatus.READY);
+        Session closedSession = new Session(SessionStatus.CLOSED);
+
+        assertThat(openSession.isEnrolmentPossible()).isTrue();
+        assertThat(readySession.isEnrolmentPossible()).isFalse();
+        assertThat(closedSession.isEnrolmentPossible()).isFalse();
+    }
 }

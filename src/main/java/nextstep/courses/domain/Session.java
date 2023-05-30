@@ -8,6 +8,8 @@ public class Session {
     private SessionStatus sessionStatus;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Enrolment enrolment;
+    private MaximumClassSize maximumClassSize;
 
     private Image image;
 
@@ -63,4 +65,13 @@ public class Session {
     public boolean isClosed() {
         return sessionStatus.isClosed();
     }
+
+    public boolean isEnrolmentPossible() {
+        return isOpen() && !isExceedMaximumClassSize();
+    }
+
+    private boolean isExceedMaximumClassSize() {
+        return enrolment.count() > maximumClassSize.maxSize();
+    }
+
 }
