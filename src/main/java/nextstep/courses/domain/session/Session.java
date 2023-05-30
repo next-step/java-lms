@@ -109,6 +109,19 @@ public class Session {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Session{" +
+            "id=" + id +
+            ", duration=" + duration +
+            ", coverImage=" + coverImage +
+            ", priceType=" + priceType +
+            ", status=" + status +
+            ", maximumCapacity=" + maximumCapacity +
+            ", users=" + users +
+            '}';
+    }
+
     public static class Builder {
         private Long id;
 

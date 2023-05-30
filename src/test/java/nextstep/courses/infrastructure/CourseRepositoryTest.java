@@ -1,16 +1,17 @@
 package nextstep.courses.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class CourseRepositoryTest {
@@ -24,6 +25,12 @@ public class CourseRepositoryTest {
     @BeforeEach
     void setUp() {
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
+    }
+
+    @Test
+    @DisplayName("코스 정보를 수정합니다.")
+    void 코스_수정() {
+
     }
 
     @Test

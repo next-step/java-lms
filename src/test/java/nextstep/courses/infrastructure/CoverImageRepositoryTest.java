@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.CoverImageRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,12 +29,8 @@ class CoverImageRepositoryTest {
 
     @BeforeEach
     void 초기화() {
+        jdbcTemplate.execute("alter table cover_image alter column id restart with 1");
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-    }
-
-    @AfterEach
-    void 리셋() {
-        jdbcTemplate.update("alter table cover_image alter column id restart with 1");
     }
 
     @Test

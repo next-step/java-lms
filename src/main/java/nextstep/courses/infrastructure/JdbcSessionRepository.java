@@ -1,7 +1,9 @@
 package nextstep.courses.infrastructure;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import nextstep.courses.domain.user.User;
 import nextstep.courses.domain.user.Users;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 public class JdbcSessionRepository implements SessionRepository {
 
@@ -34,14 +38,21 @@ public class JdbcSessionRepository implements SessionRepository {
     public int save(Session session) {
         String sql = "insert into sessions(start_date, end_date, cover_image_id, price_type, status, maximum_capacity) "
             + "values(?, ?, ?, ?, ?, ?)";
-        int update = jdbcTemplate.update(sql, session.duration().startDate(),
-            session.duration().endDate(),
-            session.coverImage().id(), session.priceType().name(), session.status().name(),
-            session.maximumCapacity());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int update = jdbcTemplate.update(con -> {
+            PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setTimestamp(1, Timestamp.valueOf(session.duration().startDate()));
+            stmt.setTimestamp(2, Timestamp.valueOf(session.duration().endDate()));
+            stmt.setLong(3, session.coverImage().id());
+            stmt.setString(4, session.priceType().name());
+            stmt.setString(5, session.status().name());
+            stmt.setLong(6, session.maximumCapacity());
+            return stmt;
+        }, keyHolder);
 
         String mapSql = "insert into sessions_users(sessions_id, users_id) values(?, ?)";
         int[] batchUpdate = jdbcTemplate.batchUpdate(mapSql, session.users().users().stream()
-            .map(user -> List.of(session.id(), user.id()).toArray())
+            .map(user -> List.of(keyHolder.getKey().longValue(), user.id()).toArray())
             .collect(Collectors.toList())
         );
 

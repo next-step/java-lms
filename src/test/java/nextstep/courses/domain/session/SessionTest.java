@@ -19,9 +19,12 @@ public class SessionTest {
 
     public static final Session TEST_SESSION_CHARGED;
 
+    public static final Session TEST_SESSION_SECOND;
+
     static {
         try {
-            TEST_SESSION_CHARGED = buildSession(Status.ENROLLING, 10L);
+            TEST_SESSION_CHARGED = buildSession(1L, Status.ENROLLING, 10L);
+            TEST_SESSION_SECOND = buildSession(2L, Status.PREPARING, 100L);
         } catch (InvalidTimeRangeException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +42,7 @@ public class SessionTest {
     @Test
     @DisplayName("최대 수강 인원을 초과한 강의는 수강신청을 할 수 없다.")
     void 수강신청_모집중_최대인원초과() throws InvalidTimeRangeException {
-        Session actual = buildSession(statusEnrolling, 0L);
+        Session actual = buildSession(id, statusEnrolling, 0L);
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(UserTest.TEST_USER))
@@ -49,7 +52,7 @@ public class SessionTest {
     @Test
     @DisplayName("모집중 상태의 강의는 수강신청이 가능하다.")
     void 수강신청_모집중() throws CannotEnrollException, InvalidTimeRangeException {
-        Session actual = buildSession(statusEnrolling, maximumCapacity);
+        Session actual = buildSession(id, statusEnrolling, maximumCapacity);
 
         actual.enroll(UserTest.TEST_USER);
         assertThat(actual.isEnrolled(UserTest.TEST_USER)).isTrue();
@@ -58,7 +61,7 @@ public class SessionTest {
     @Test
     @DisplayName("종료 상태의 강의는 수강신청을 할 수 없다.")
     void 수강신청_종료() throws InvalidTimeRangeException {
-        Session actual = buildSession(Status.ENDED, maximumCapacity);
+        Session actual = buildSession(id, Status.ENDED, maximumCapacity);
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(UserTest.TEST_USER))
@@ -68,7 +71,7 @@ public class SessionTest {
     @Test
     @DisplayName("준비중 상태의 강의는 수강신청을 할 수 없다.")
     void 수강신청_준비중() throws InvalidTimeRangeException {
-        Session actual = buildSession(Status.PREPARING, maximumCapacity);
+        Session actual = buildSession(id, Status.PREPARING, maximumCapacity);
 
         assertThatExceptionOfType(CannotEnrollException.class)
             .isThrownBy(() -> actual.enroll(UserTest.TEST_USER))
@@ -80,12 +83,11 @@ public class SessionTest {
     void 강의생성() throws InvalidTimeRangeException {
         assertThat(Session.of(id, Duration.of(start, end), coverImagePath, priceType,
             statusEnrolling, maximumCapacity, users))
-            .isEqualTo(buildSession(Status.ENROLLING, maximumCapacity));
+            .isEqualTo(buildSession(id, Status.ENROLLING, maximumCapacity));
     }
 
-    private static Session buildSession(Status status, Long maximumCapacity)
+    private static Session buildSession(Long id, Status status, Long maximumCapacity)
         throws InvalidTimeRangeException {
-        Long id = 1L;
         LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
         LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
         CoverImage coverImagePath = CoverImage.of(1L, "/resources/image/test");
