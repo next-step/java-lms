@@ -65,8 +65,6 @@ public class CourseRepositoryTest {
         Course course = Course.of(6L, "TDD, 클린 코드 with Java", 1L);
         Course save = courseRepository.save(course);
         assertThat(save).isNotNull();
-        //Course savedCourse = courseRepository.findById(save.getCourseId().value()).orElseThrow();
-
         assertThat(course.getTitle()).isEqualTo(save.getTitle());
         LOG.debug("Course: {}", save);
     }

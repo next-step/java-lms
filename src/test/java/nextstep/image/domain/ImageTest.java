@@ -23,6 +23,6 @@ public class ImageTest {
             Image.of(null);
         }).isInstanceOf(EmptyImageUrlException.class)
                 .as("이미지 도메인에서 URL 이 유효하지 않은경우 예외 던져야함을 검증한다")
-                .hasMessageContaining("ImageUrl 이 유효하지 않습니다");
+                .hasMessageContaining("ImageUrl 은 비어있을수 없습니다");
     }
 }

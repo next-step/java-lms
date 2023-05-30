@@ -54,7 +54,7 @@ public class Question {
                 question.contents,
                 question.writer,
                 question.deleted,
-                new ArrayList<>(question.answers), // Shallow copy of the answers list
+                new ArrayList<>(question.answers),
                 question.updatedDate,
                 question.createdDate
         );

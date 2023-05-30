@@ -26,10 +26,9 @@ public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //@Override
-    public void saveAllV1(List<DeleteHistory> deleteHistories) {
+    @Override
+    public void saveAll(List<DeleteHistory> deleteHistories) {
         String sql = "INSERT INTO delete_history (content_type, content_id, created_at, deleted_by_user_code) VALUES (?, ?, ?, ?)";
-
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -39,27 +38,11 @@ public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
                 ps.setTimestamp(3, Timestamp.valueOf(deleteHistory.getCreatedAt()));
                 ps.setString(4, deleteHistory.getDeletedBy().value());
             }
-
             @Override
             public int getBatchSize() {
                 return deleteHistories.size();
             }
         });
-    }
-
-    @Override
-    public void saveAll(List<DeleteHistory> deleteHistories) {
-        saveAllV1(deleteHistories);
-        //saveAllV2(deleteHistories);
-    }
-
-    @Deprecated(since = "좀더 효율적일꺼같은데..")
-    public void saveAllV2(List<DeleteHistory> deleteHistories) {
-        String sql = "INSERT INTO delete_history (content_type, content_id, created_at, deleted_by_user_code) " +
-                "VALUES (:contentType, :contentId, :createdAt, :deletedBy)";
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-        SqlParameterSource[] batchParams = SqlParameterSourceUtils.createBatch(deleteHistories.toArray());
-        namedParameterJdbcTemplate.batchUpdate(sql, batchParams);
     }
 
     private RowMapper<DeleteHistory> rowMapper() {

@@ -61,8 +61,7 @@ public class JdbcUserRepository implements UserRepository {
                 "created_at," +
                 "updated_at) " +
                 "values (?,?,?,?,?,?)";
-
-        int update = jdbcTemplate.update(
+        jdbcTemplate.update(
                 sql,
                 user.getUserCode().value(),
                 user.getPassword(),
@@ -71,7 +70,6 @@ public class JdbcUserRepository implements UserRepository {
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
-
         return new NsUser(
                 user.getUserCode(),
                 user.getPassword(),
@@ -82,37 +80,12 @@ public class JdbcUserRepository implements UserRepository {
         );
     }
 
-    /*
-    String sql = "INSERT INTO question (" +
-                //"writer_id," +
-                "title," +
-                "contents," +
-                "deleted," +
-                "created_at," +
-                "updated_at) " +
-                "values (?,?,?,?,?)";
-        int savedQuestionId = jdbcTemplate.update(
-                sql,
-                //question.getWriter().getUserId(),
-                question.getTitle(),
-                question.getContents(),
-                question.getDeleted(),
-                question.getCreatedDate(),
-                question.getUpdatedDate()
-        );
-        return Question.of(
-                new QuestionId((long) savedQuestionId),
-                question
-        );
-     */
-
     @Deprecated(since = "이게 왜 실패하는지 알수 없음..")
     public NsUser saveV0(NsUser user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("ns_user").usingGeneratedKeyColumns("user_code");
         String userCode = Optional.ofNullable(user.getUserCode().value())
                 .orElseThrow(UserCodeException::new);
-
         Map<String, Object> params = new HashMap<>() {
             {
                 put("user_code", userCode);
@@ -122,7 +95,6 @@ public class JdbcUserRepository implements UserRepository {
                 put("updated_at", user.getUpdatedAt());
             }
         };
-
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
         return new NsUser(
                 new UserCode(key.toString()),
@@ -133,7 +105,6 @@ public class JdbcUserRepository implements UserRepository {
                 user.getUpdatedAt()
         );
     }
-
 
     @Override
     public List<NsUser> findAll() {
@@ -150,14 +121,4 @@ public class JdbcUserRepository implements UserRepository {
                 toLocalDateTime(rs.getTimestamp("updated_at"))
         );
     }
-    /*
-    this.userCode = userCode;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-     */
-
-
 }
