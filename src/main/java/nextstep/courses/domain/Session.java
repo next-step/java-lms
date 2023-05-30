@@ -8,31 +8,29 @@ import java.util.List;
 public class Session {
     private Long id;
     private List<NsUser> users;
-    private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
+    private SessionPeriod sessionPeriod;
     private String sessionCoverImage;
     private String sessionCostType;
     private String sessionStatus;
 
     private int maxUserCount;
 
-    public Session(Long id, List<NsUser> users,LocalDateTime startedAt, LocalDateTime endedAt, String sessionCoverImage, String sessionCostType, String sessionStatus, int maxUserCount) {
+    public Session(Long id, List<NsUser> users, SessionPeriod sessionPeriod, String sessionCoverImage, String sessionCostType, String sessionStatus, int maxUserCount) {
         this.id = id;
         this.users = users;
-        this.startedAt = startedAt;
-        this.endedAt = endedAt;
+        this.sessionPeriod = sessionPeriod;
         this.sessionCoverImage = sessionCoverImage;
         this.sessionCostType = sessionCostType;
         this.sessionStatus = sessionStatus;
         this.maxUserCount = maxUserCount;
     }
 
-    public LocalDateTime getStartedAt() {
-        return startedAt;
+    public LocalDateTime startedAt() {
+        return this.sessionPeriod.getStartedAt();
     }
 
-    public LocalDateTime getEndedAt() {
-        return endedAt;
+    public LocalDateTime endedAt() {
+        return this.sessionPeriod.getEndedAt();
     }
 
     public List<NsUser> getUsers() {

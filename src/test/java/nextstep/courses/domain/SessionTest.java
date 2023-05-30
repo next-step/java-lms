@@ -17,22 +17,22 @@ class SessionTest {
     private final LocalDateTime endedAt = LocalDateTime.now().plusDays(30);
     private final String sessionCoverImage = "https://edu.nextstep.camp/images/covers/basic/008.jpg";
     private final String sessionCostType = "PAID";
-
     private final int maxUserCount = 30;
 
 
     @DisplayName("강의는 시작일과 종료일을 가진다.")
     @Test
     void 시작일_종료일_확인() {
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
-        assertThat(session.getStartedAt()).isEqualTo(startedAt);
-        assertThat(session.getEndedAt()).isEqualTo(endedAt);
+
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
+        assertThat(session.startedAt()).isEqualTo(startedAt);
+        assertThat(session.endedAt()).isEqualTo(endedAt);
     }
 
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     @Test
     void 강의_커버_이미지경로_확인() {
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
         assertThat(session.getSessionCoverImage()).isEqualTo(sessionCoverImage);
     }
 
@@ -40,7 +40,7 @@ class SessionTest {
     @ParameterizedTest
     @ValueSource(strings = {"FREE", "PAID"})
     void 강의_타입_확인(String type) {
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, type, "RECRUITING", maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, type, "RECRUITING", maxUserCount);
         assertThat(session.getSessionCostType()).isEqualTo(type);
     }
 
@@ -48,7 +48,7 @@ class SessionTest {
     @ParameterizedTest
     @ValueSource(strings = {"PREPARING, RECRUITING, CLOSED"})
     void 강의_상태_확인(String sessionStatus) {
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatus);
     }
 
@@ -56,7 +56,7 @@ class SessionTest {
     @ParameterizedTest
     @ValueSource(strings = {"PREPARING, CLOSED"})
     void 수강신청_모집중아닌경우_불가능(String sessionStatus) {
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
                 .withMessageMatching("");
@@ -66,7 +66,7 @@ class SessionTest {
     @ParameterizedTest
     @ValueSource(strings = {"RECRUITING"})
     void 수강신청_모집중_가능(String sessionStatus){
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
         session.register(NsUserTest.JAVAJIGI);
         assertThat(session.getUsers()).hasSize(1).containsOnly(NsUserTest.JAVAJIGI);
     }
@@ -75,7 +75,7 @@ class SessionTest {
     @Test
     void 수강신청_수강인원초과_불가능() {
         int maxUserCount = 1;
-        Session session = new Session(1L, new ArrayList<>(), startedAt, endedAt, sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
+        Session session = new Session(1L, new ArrayList<>(),new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, "RECRUITING", maxUserCount);
         session.register(NsUserTest.JAVAJIGI);
 
         assertThatIllegalArgumentException()
