@@ -26,7 +26,7 @@ public class Session {
     }
 
     public void enrollSession(NsUser student) {
-        if (sessionStatus != SessionStatus.RECRUITING) {
+        if (!sessionStatus.isRecruitable()) {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
         }
         sessionCapacity.addUser(student);
