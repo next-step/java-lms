@@ -4,17 +4,14 @@ import java.util.Objects;
 
 public class Cohort {
 
-    private final Long id;
-
     private final Long number;
 
-    public Cohort(Long id, Long number) {
-        this.id = id;
+    public Cohort(Long number) {
         this.number = number;
     }
 
-    public static Cohort of(Long id, Long number) {
-        return new Cohort(id, number);
+    public static Cohort of(Long number) {
+        return new Cohort(number);
     }
 
     @Override

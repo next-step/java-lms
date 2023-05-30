@@ -4,17 +4,14 @@ import java.util.Objects;
 
 public class Name {
 
-    private final Long id;
-
     private final String name;
 
-    public Name(Long id, String name) {
-        this.id = id;
+    public Name(String name) {
         this.name = name;
     }
 
-    public static Name of(Long id, String name) {
-        return new Name(id, name);
+    public static Name of(String name) {
+        return new Name(name);
     }
 
     @Override
@@ -26,11 +23,11 @@ public class Name {
             return false;
         }
         Name name1 = (Name) o;
-        return Objects.equals(id, name1.id) && Objects.equals(name, name1.name);
+        return Objects.equals(name, name1.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 }
