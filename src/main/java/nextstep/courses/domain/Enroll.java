@@ -33,6 +33,18 @@ public class Enroll {
         this.enrollStatus = EnrollStatus.APPROVED;
     }
 
+    public EnrollId getEnrollId() {
+        return enrollId;
+    }
+
+    public SessionId getSessionId() {
+        return sessionId;
+    }
+
+    public UserCode getUserCode() {
+        return userCode;
+    }
+
     public void cancel() {
         this.enrollStatus = EnrollStatus.REJECTED;
     }
