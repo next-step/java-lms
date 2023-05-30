@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.Students;
 import nextstep.courses.exception.ExceedingMaximumStudentException;
 import nextstep.courses.exception.NotEligibleRegistrationStatusException;
@@ -22,6 +23,10 @@ public class SessionRegistration {
     public void register(NsUser student, Session session) {
         validate();
         students.add(student.getUserId(), session.getId());
+    }
+
+    public Student enrolledStudent(NsUser student) {
+        return students.find(student.getUserId());
     }
 
     private void validate() {
@@ -66,5 +71,4 @@ public class SessionRegistration {
                 ", studentCapacity=" + studentCapacity +
                 '}';
     }
-
 }

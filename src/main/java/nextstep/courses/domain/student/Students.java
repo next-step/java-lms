@@ -1,5 +1,7 @@
 package nextstep.courses.domain.student;
 
+import nextstep.courses.exception.EnrolledStudentNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +20,13 @@ public class Students {
 
     public void add(String userId, Long sessionId) {
         values.add(new Student(userId, sessionId));
+    }
+
+    public Student find(String userId) {
+        return values.stream()
+                .filter(student -> student.equalUserId(userId))
+                .findAny()
+                .orElseThrow(EnrolledStudentNotFoundException::new);
     }
 
     public List<Student> getValues() {
@@ -47,5 +56,4 @@ public class Students {
                 "values=" + values +
                 '}';
     }
-
 }

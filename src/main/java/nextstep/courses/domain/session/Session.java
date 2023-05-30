@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.student.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,10 @@ public class Session {
 
     public void register(NsUser student) {
         registration.register(student, this);
+    }
+
+    public Student enrolledStudent(NsUser student) {
+        return registration.enrolledStudent(student);
     }
 
     public Long getId() {
@@ -132,5 +137,4 @@ public class Session {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
 }

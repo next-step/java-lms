@@ -30,6 +30,10 @@ public class Student {
     public Student() {
     }
 
+    public boolean equalUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
     public Long getId() {
         return id;
     }
@@ -73,5 +77,4 @@ public class Student {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
 }

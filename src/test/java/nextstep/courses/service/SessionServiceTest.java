@@ -8,6 +8,7 @@ import nextstep.courses.domain.session.SessionPaymentType;
 import nextstep.courses.domain.session.SessionRegistrationBuilder;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.student.Students;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Transactional
@@ -33,7 +35,7 @@ class SessionServiceTest {
         SessionDuration expectedDuration
                 = new SessionDuration(expectedCreatedAt.plusDays(10L), expectedCreatedAt.plusDays(30L));
         SessionCoverImage expectedCoverImage = SessionCoverImage.create("http://test.com/image");
-        
+
         sessionService.save(
                 SessionBuilder.aSession()
                         .withDuration(expectedDuration)
@@ -52,6 +54,14 @@ class SessionServiceTest {
                 () -> assertThat(savedSession.getDuration()).isEqualTo(expectedDuration),
                 () -> assertThat(savedSession.getCoverImage()).isEqualTo(expectedCoverImage)
         );
+    }
+
+    @Test
+    @DisplayName("수강등록을 정상 수행합니다.")
+    void test02() {
+        assertThatNoException()
+                .isThrownBy(() -> sessionService.register(NsUserTest.SANJIGI.getUserId(), 1L));
+
     }
 
 }
