@@ -6,6 +6,7 @@ import nextstep.courses.domain.EnrollRepository;
 import nextstep.courses.domain.EnrollStatus;
 import nextstep.courses.domain.SessionId;
 import nextstep.users.domain.UserCode;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,7 +31,12 @@ public class JdbcEnrollRepository implements EnrollRepository {
 
     @Override
     public Optional<Enroll> findById(EnrollId enrollId) {
-        throw new RuntimeException("Not Yet Implemented");
+        String sql = "select * from enroll where enroll_id =" + enrollId.value().toString();
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper()));
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
