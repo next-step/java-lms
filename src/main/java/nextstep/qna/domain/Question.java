@@ -3,10 +3,12 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import nextstep.common.BaseEntity;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question {
+public class Question extends BaseEntity {
+
     private Long id;
 
     private String title;
@@ -15,13 +17,9 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers;
+    private Answers answers = new Answers(this);
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }
@@ -31,11 +29,11 @@ public class Question {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        super();
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers = new Answers(this);
     }
 
     public Long getId() {
@@ -60,16 +58,6 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void addAnswer(Answer answer) {
-        answers.add(answer);
-    }
-
-    public void delete(NsUser loginUser) throws CannotDeleteException {
-        deleteAnswers();
-
-        deleteQuestion(loginUser);
-    }
-
     public Optional<DeleteHistory> deleteHistory() {
         if (this.isDeleted()) {
             return Optional.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
@@ -86,6 +74,16 @@ public class Question {
         deleteHistories.addAll(answers.deleteHistories());
 
         return deleteHistories;
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
+    }
+
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        deleteAnswers();
+
+        deleteQuestion(loginUser);
     }
 
     private void deleteAnswers() throws CannotDeleteException {

@@ -17,6 +17,14 @@ public class Answers {
 		this.question = question;
 	}
 
+	public List<DeleteHistory> deleteHistories() {
+		return answers.stream()
+			.map(Answer::deleteHistory)
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.collect(Collectors.toList());
+	}
+
 	public void add(Answer answer) {
 		answer.toQuestion(question);
 		answers.add(answer);
@@ -58,13 +66,5 @@ public class Answers {
 
 	private boolean isEmpty() {
 		return answers.isEmpty();
-	}
-
-	public List<DeleteHistory> deleteHistories() {
-		return answers.stream()
-			.map(Answer::deleteHistory)
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.collect(Collectors.toList());
 	}
 }
