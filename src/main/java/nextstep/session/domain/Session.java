@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.courses.domain.Course;
 import nextstep.session.CannotApplySession;
 import nextstep.users.domain.NsUser;
 
@@ -17,6 +18,8 @@ private SessionApply sessionApply;
 
 private List<NsUser> enrollmentUsers;
 
+private List<Long> courcesIds;
+
   public Session(SessionDate sessionDate) {
     this.sessionDate = sessionDate;
   }
@@ -24,6 +27,7 @@ private List<NsUser> enrollmentUsers;
   public Session(SessionApply sessionApply) {
     this.sessionApply = sessionApply;
     enrollmentUsers = new ArrayList<>();
+    courcesIds = new ArrayList<>();
   }
 
   void apply(NsUser user) {
@@ -45,5 +49,9 @@ private List<NsUser> enrollmentUsers;
 
   private boolean isApply(NsUser user) {
     return enrollmentUsers.contains(user);
+  }
+
+  public void mapping(Long courseId) {
+    courcesIds.add(courseId);
   }
 }

@@ -38,6 +38,7 @@ public class Course {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.sessions = sessions;
+        sessions.mapping(id);
     }
 
     public String getTitle() {

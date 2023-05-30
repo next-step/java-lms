@@ -10,4 +10,7 @@ public class Sessions {
     this.sessions = sessions;
   }
 
+  public void mapping(Long courseId) {
+    sessions.forEach(session -> session.mapping(courseId));
+  }
 }
