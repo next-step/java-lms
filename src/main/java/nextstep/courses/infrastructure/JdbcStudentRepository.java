@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("studentRepository")
@@ -44,6 +45,21 @@ public class JdbcStudentRepository implements StudentRepository {
         );
         Student savedStudent = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return Optional.ofNullable(savedStudent);
+    }
+
+    @Override
+    public List<Student> findAllBySessionId(Long sessionId) {
+        String sql = "select id, ns_user_id, session_id, created_at, updated_at from student where session_id = ?";
+        RowMapper<Student> rowMapper = (rs, rowNum) ->
+                new Student(
+                        rs.getLong(1),
+                        userRepository.findByUserId(rs.getString(2)).orElseThrow(IllegalStateException::new),
+                        sessionRepository.findById(rs.getLong(3)).orElseThrow(IllegalStateException::new),
+                        toLocalDateTime(rs.getTimestamp(4)),
+                        toLocalDateTime(rs.getTimestamp(5))
+
+                );
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

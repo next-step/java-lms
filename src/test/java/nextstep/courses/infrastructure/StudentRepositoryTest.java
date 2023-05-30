@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -46,6 +48,8 @@ class StudentRepositoryTest {
 
         Student savedStudent = studentRepository.findById(1L).get();
         log.debug("STUDENT READ: {}", savedStudent);
+        List<Student> savedStudents = studentRepository.findAllBySessionId(student.getSessionId());
+        log.debug("STUDENTS READ(SESSION_ID): {}", savedStudents);
 
         assertAll(
                 () -> assertThat(count).isOne(),
