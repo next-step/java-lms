@@ -7,15 +7,11 @@ import java.util.List;
 
 public class SessionEnrollment {
 
-    private Long id;
-    private Long sessionId;
     private SessionStatus sessionStatus;
     private List<NsUser> users = new ArrayList<>();
     private int maxUserSize;
 
-    public SessionEnrollment(Long id, Long sessionId, SessionStatus sessionStatus, int maxUserSize) {
-        this.id = id;
-        this.sessionId = sessionId;
+    public SessionEnrollment(SessionStatus sessionStatus, int maxUserSize) {
         this.sessionStatus = sessionStatus;
         this.maxUserSize = maxUserSize;
     }

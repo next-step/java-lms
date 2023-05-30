@@ -7,8 +7,8 @@ import static org.assertj.core.api.Assertions.*;
 
 public class SessionEnrollmentTest {
 
-    public static SessionEnrollment SE1 = new SessionEnrollment(0L, 0L, SessionStatus.PREPARING, 1);
-    public static SessionEnrollment SE2 = new SessionEnrollment(0L, 0L, SessionStatus.RECRUITING, 0);
+    public static SessionEnrollment SE1 = new SessionEnrollment(SessionStatus.PREPARING, 1);
+    public static SessionEnrollment SE2 = new SessionEnrollment(SessionStatus.RECRUITING, 0);
 
     @Test
     void 모집중에만_수강신청가능() {
