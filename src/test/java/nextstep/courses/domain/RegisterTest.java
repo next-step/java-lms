@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CannotRegisterException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,8 +58,9 @@ class RegisterTest {
     @Test
     void 수강_신청시_학생_추가() {
         int beforeRegisterCount = r2.students().size();
-        r2.add(new NsUser());
-        int currRegisterCount = r2.students().size();
+
+        NsUsers nsUsers = r2.add(new NsUser());
+        int currRegisterCount = nsUsers.size();
 
         assertThat(beforeRegisterCount + 1).isEqualTo(currRegisterCount);
     }
