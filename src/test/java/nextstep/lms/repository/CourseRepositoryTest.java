@@ -1,7 +1,9 @@
-package nextstep.courses.infrastructure;
+package nextstep.lms.repository;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.lms.domain.Course;
+import nextstep.lms.domain.LmsUser;
+import nextstep.lms.infrastructure.JdbcCourseRepository;
+import nextstep.lms.infrastructure.JdbcLmsUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -9,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,19 +24,22 @@ public class CourseRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private CourseRepository courseRepository;
+    private LmsUserRepository lmsUserRepository;
 
     @BeforeEach
     void setUp() {
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        lmsUserRepository = new JdbcLmsUserRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, lmsUserRepository);
     }
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
+        Optional<LmsUser> user = lmsUserRepository.findByUserId("javajigi");
+        Course course = Course.of("new과정", user.orElse(null));
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
-        assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+        assertThat("new과정").isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }
 }

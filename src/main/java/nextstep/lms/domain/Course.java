@@ -25,7 +25,7 @@ public class Course {
     private Course() {
     }
 
-    private Course(Long id, String title, LmsUser creator, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, LmsUser creator, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creator = creator;
@@ -60,5 +60,29 @@ public class Course {
 
     public boolean hasSession(Session session) {
         return this.sessions.contains(session);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Long getCreatorId() {
+        return creator.getId();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", creator=" + creator +
+                ", sessions=" + sessions +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

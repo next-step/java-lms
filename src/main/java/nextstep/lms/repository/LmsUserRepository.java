@@ -8,4 +8,6 @@ public interface LmsUserRepository {
     Optional<LmsUser> findByUserId(String userId);
 
     int save(LmsUser lmsUser);
+
+    LmsUser findById(Long creatorId);
 }
