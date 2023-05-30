@@ -1,12 +1,15 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import nextstep.common.BaseEntity;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
+public class Answer extends BaseEntity {
     private Long id;
 
     private NsUser writer;
@@ -17,10 +20,6 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
     public Answer() {
     }
 
@@ -29,7 +28,16 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+        super();
+
+        validate(writer, question);
         this.id = id;
+        this.writer = writer;
+        this.question = question;
+        this.contents = contents;
+    }
+
+    private void validate(NsUser writer, Question question) {
         if(writer == null) {
             throw new UnAuthorizedException();
         }
@@ -37,19 +45,10 @@ public class Answer {
         if(question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -64,10 +63,6 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
@@ -75,5 +70,21 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public Optional<DeleteHistory> deleteHistory() {
+        if (!isDeleted()) {
+            return null;
+        }
+
+        return Optional.of(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    }
+
+    public void delete() throws CannotDeleteException {
+        if (!isOwner(question.getWriter())) {
+            throw new CannotDeleteException("질문자와 답변자가 다르면 삭제할 수 없습니다.");
+        }
+
+        this.deleted = true;
     }
 }
