@@ -62,6 +62,10 @@ public class Session {
 		return this.enrollment.enroll(new Student(this.id, nsUser.getId()));
 	}
 
+	public Student enrollCancel(Student student) {
+		return student.enrollCancel();
+	}
+
 	public long getId() {
 		return id;
 	}

@@ -36,4 +36,12 @@ public class SessionService {
 		Student student = session.enroll(nsUser);
 		studentRepository.save(student);
 	}
+
+	@Transactional
+	public void enrollCancel(long sessionId, long nsUserId) {
+		Session session = sessionRepository.findById(sessionId);
+		Student student = studentRepository.findBySessionIdAndNsUserId(sessionId, nsUserId);
+
+		studentRepository.save(session.enrollCancel(student));
+	}
 }

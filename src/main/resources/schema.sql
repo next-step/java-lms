@@ -67,6 +67,7 @@ create table session (
 create table student (
     session_id bigint not null,
     ns_user_id bigint not null,
+    deleted boolean not null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (session_id, ns_user_id)

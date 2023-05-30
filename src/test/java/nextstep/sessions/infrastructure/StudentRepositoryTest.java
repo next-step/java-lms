@@ -41,4 +41,11 @@ public class StudentRepositoryTest {
 		assertThat(students).hasSize(2);
 		assertThat(students).containsExactly(new Student(1L, 1L), new Student(1L, 2L));
 	}
+
+	@Test
+	void findBySessionIdAndNsUserId() {
+		studentRepository.save(new Student(1L, 1L));
+		Student student = studentRepository.findBySessionIdAndNsUserId(1L, 1L);
+		assertThat(student).isEqualTo(new Student(1L, 1L));
+	}
 }
