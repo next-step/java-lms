@@ -1,5 +1,7 @@
 package nextstep.courses.infrastructure;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +12,8 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.session.CohortRepository;
 import nextstep.courses.domain.session.Session;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 public class JdbcCohortRepository implements CohortRepository {
 
@@ -21,14 +25,20 @@ public class JdbcCohortRepository implements CohortRepository {
 
     @Override
     public int save(Cohort cohort) {
-        String cohortInsertSql = "insert into cohort(id, course_id, title) values(?, ?, ?)";
-        int cohortInsertCount = jdbcTemplate.update(cohortInsertSql, cohort.id(), cohort.course().id(),
-            cohort.title());
+        String cohortInsertSql = "insert into cohort(course_id, title) values(?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int cohortInsertCount = jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(cohortInsertSql, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, cohort.course().id());
+            ps.setString(2, cohort.title());
+            return ps;
+        }, keyHolder);
 
         String cohortSessionsInsertSql = "insert into cohort_sessions(cohort_id, sessions_id) values(?, ?)";
         List<Session> sessions = cohort.sessions();
         int cohortSessionsInsertCount = IntStream.of(jdbcTemplate.batchUpdate(cohortSessionsInsertSql, sessions.stream()
-            .map(session -> List.of(cohort.id(), session.id()).toArray())
+            .map(session -> List.of(keyHolder.getKey().longValue(), session.id()).toArray())
             .collect(Collectors.toList()))).sum();
         return cohortInsertCount + cohortSessionsInsertCount;
     }

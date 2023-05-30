@@ -52,6 +52,7 @@ public class CohortRepositoryTest {
         jdbcTemplate.execute("alter table sessions alter column id restart with 1");
         jdbcTemplate.execute("alter table cover_image alter column id restart with 1");
         jdbcTemplate.execute("alter table users alter column id restart with 1");
+        jdbcTemplate.execute("alter table cohort alter column id restart with 1");
     }
 
     @Test
@@ -60,7 +61,6 @@ public class CohortRepositoryTest {
         cohortRepository.save(cohort);
 
         Cohort saved = cohortRepository.findById(1L);
-        logger.info("************************" + saved);
         assertAll(
             () -> assertThat(cohortRepository.delete(saved)).isEqualTo(2),
             () -> assertThat(cohortRepository.findById(1L)).isEqualTo(null)
