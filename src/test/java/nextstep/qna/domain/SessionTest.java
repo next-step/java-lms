@@ -76,7 +76,7 @@ public class SessionTest {
     // when & then
     AssertionUtils.assertThatThrowsLmsException(
         () -> 준비중인_강의.addPersonnel(user2),
-        SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED
+        SessionExceptionCode.CANNOT_ENROLL_SESSION
     );
   }
 

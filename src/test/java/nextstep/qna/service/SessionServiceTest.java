@@ -56,6 +56,10 @@ class SessionServiceTest extends RollackableIntegrationTest {
     );
   }
 
+  /**
+   * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
+   * @see nextstep.courses.domain.session.SessionStatus
+   */
   @Test
   @DisplayName("모집중 상태가 아닌 강의는 수강 할 수 없다")
   void 모집중인_강의만_수강_가능() {
@@ -64,10 +68,14 @@ class SessionServiceTest extends RollackableIntegrationTest {
     // when && then
     AssertionUtils.assertThatThrowsLmsException(
         () -> sut.takeSession(유저, 강의_준비중.getId()),
-        SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED
+        SessionExceptionCode.CANNOT_ENROLL_SESSION
     );
   }
 
+  /**
+   * TODO: SessionStatus.RECRUITING 마이그레이션 이후 수정 필요
+   * @see nextstep.courses.domain.session.SessionStatus
+   */
   @Test
   @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
   void 최대_수강_인원을_초과해서_등록_할_수_없음() {

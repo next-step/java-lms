@@ -15,7 +15,6 @@ public class Session {
   private SessionCapacity capacity;
   private final SessionPeriod sessionPeriod;
 
-  private Course course;
   private SessionStudents students = new SessionStudents(new ArrayList<>());
 
   public Session(
@@ -35,7 +34,6 @@ public class Session {
       int maxPersonnelCount, LocalDateTime startAt, LocalDateTime finishAt
   ) {
     this(id, course.getId(), payType, sessionStatus, maxPersonnelCount, startAt, finishAt);
-    this.course = course;
   }
 
   public Session (Session session, SessionStudents students) {
@@ -49,8 +47,8 @@ public class Session {
   }
 
   public SessionStudent addPersonnel(NsUser nsUser) {
-    if (this.sessionStatus != SessionStatus.RECRUITING) {
-      throw new LmsException(SessionExceptionCode.ONLY_RECRUITING_STATUS_ALLOWED);
+    if (this.sessionStatus.isNotEnrollable()) {
+      throw new LmsException(SessionExceptionCode.CANNOT_ENROLL_SESSION);
     }
 
     if (this.cannotAcceptMoreStudent()) {
