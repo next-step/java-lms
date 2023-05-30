@@ -4,14 +4,14 @@ values (1, 'javajigi', 'password', 'name', 'javajigi@slipp.net', 'SELECTED_FOR_F
 INSERT INTO next_step_user (id, user_id, password, name, email, user_status, created_at)
 values (2, 'sanjigi', 'password', 'name', 'sanjigi@slipp.net', 'NOT_SELECTED', '2023-05-29 12:34:56');
 
-INSERT INTO next_step_user (id, user_id, password, name, email, user_type, created_at)
-values (3, 'instructor', 'password', 'name', 'instructor@slipp.net', 'INSTRUCTOR', '2023-05-29 12:34:56');
+INSERT INTO next_step_user (id, user_id, password, name, email, created_at)
+values (3, 'instructor', 'password', 'name', 'instructor@slipp.net', '2023-05-29 12:34:56');
 
 INSERT INTO next_step_user (id, user_id, password, name, email, user_status, created_at)
 values (4, 'dkswnkk', 'password', 'name', 'dkswnkk@slipp.net', 'SELECTED_FOR_FREE', '2023-05-29 12:34:56');
 
-INSERT INTO next_step_user (id, user_id, password, name, email, user_status, created_at)
-values (5, 'dkswnzz', 'password', 'name', 'dkswnzz@slipp.net', 'SELECTED_FOR_FREE', '2023-05-29 12:34:56');
+INSERT INTO next_step_user (id, user_id, password, name, email, created_at)
+values (5, 'dkswnzz', 'password', 'name', 'dkswnzz@slipp.net', '2023-05-29 12:34:56');
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted)
 VALUES (1, 1, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?',
@@ -39,14 +39,16 @@ VALUES (100, '과정', 1, CURRENT_TIMESTAMP());
 INSERT INTO image (id, name, uri, size, image_type, created_at, updated_at)
 VALUES (200, '사진', 'https://edu.nextstep.camp/', 100, 'JPEG', '2023-05-29 12:34:56', '2023-05-30 12:34:56');
 
-INSERT INTO session (id, course_id, maximum_enrollment, period, image_id, opening_date_time, closing_date_time,
+INSERT INTO session (id, course_id, instructor_id, maximum_enrollment, period, image_id, opening_date_time,
+                     closing_date_time,
                      session_status, session_type, enrollment_status, created_at, updated_at)
-VALUES (300, 100, 10, '강의', 200, '2023-05-29 12:34:56', '2023-05-30 12:34:56', 'RECRUITING', 'FREE', 'ENROLLING',
+VALUES (300, 100, 3, 10, '강의', 200, '2023-05-29 12:34:56', '2023-05-30 12:34:56', 'RECRUITING', 'FREE', 'ENROLLING',
         CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, maximum_enrollment, period, image_id, opening_date_time, closing_date_time,
+INSERT INTO session (id, course_id, instructor_id, maximum_enrollment, period, image_id, opening_date_time,
+                     closing_date_time,
                      session_status, session_type, enrollment_status, created_at, updated_at)
-VALUES (400, 100, 10, '강의', 200, '2023-05-29 12:34:56', '2023-05-30 12:34:56', 'IN_PROGRESS', 'FREE', 'ENROLLING',
+VALUES (400, 100, 3, 1, '강의', 200, '2023-05-29 12:34:56', '2023-05-30 12:34:56', 'IN_PROGRESS', 'FREE', 'ENROLLING',
         CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
 INSERT INTO session_next_step_user (id, session_id, user_id, approval_status, created_at)
