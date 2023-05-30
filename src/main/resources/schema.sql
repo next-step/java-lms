@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS image
     primary key (image_id)
 );
 
-
 DROP TABLE IF EXISTS session;
 CREATE TABLE IF NOT EXISTS session
 (
@@ -83,4 +82,12 @@ CREATE TABLE IF NOT EXISTS session
     primary key (session_id)
 );
 
-
+DROP TABLE IF EXISTS enroll;
+CREATE TABLE IF NOT EXISTS enroll
+(
+    enroll_id     BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'ID',
+    session_id    BIGINT      NOT NULL,
+    user_code     varchar(20) NOT NULL,
+    enroll_status varchar(20) NOT NULL,
+    primary key (enroll_id)
+);

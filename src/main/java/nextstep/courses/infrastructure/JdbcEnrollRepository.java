@@ -35,6 +35,6 @@ public class JdbcEnrollRepository implements EnrollRepository {
 
     @Override
     public void deleteAll() {
-        throw new RuntimeException();
+        jdbcTemplate.update("delete from enroll");
     }
 }
