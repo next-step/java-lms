@@ -22,4 +22,11 @@ public class NsUsers {
     public int size() {
         return students.size();
     }
+
+    @Override
+    public String toString() {
+        return "NsUsers{" +
+                "students=" + students +
+                '}';
+    }
 }

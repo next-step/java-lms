@@ -18,10 +18,6 @@ public class Register {
         this.students = students;
     }
 
-    public Register(SessionStatus status, int maxRegisterCount) {
-        this(status, maxRegisterCount, new NsUsers());
-    }
-
     public NsUsers add(NsUser nsUser) {
         if (isAddable()) {
             students.add(nsUser);
@@ -49,5 +45,14 @@ public class Register {
 
     public NsUsers students() {
         return this.students;
+    }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "status=" + status +
+                ", maxRegisterCount=" + maxRegisterCount +
+                ", students=" + students +
+                '}';
     }
 }

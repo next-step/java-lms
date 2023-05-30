@@ -1,12 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 public class RegisterBuilder {
 
     private SessionStatus status;
     private int maxRegisterCount;
-    private NsUsers students;
+    private NsUsers students = new NsUsers();
 
     public RegisterBuilder withStatus(SessionStatus status) {
         this.status = status;
@@ -18,8 +19,8 @@ public class RegisterBuilder {
         return this;
     }
 
-    public RegisterBuilder withStudents(NsUsers students) {
-        this.students = students;
+    public RegisterBuilder withStudent(NsUser student) {
+        this.students.add(student);
         return this;
     }
 
