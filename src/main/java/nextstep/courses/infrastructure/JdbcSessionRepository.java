@@ -26,7 +26,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<Session> findById(SessionId sessionId) {
+    public Optional<Session> findBySessionId(SessionId sessionId) {
         throw new RuntimeException("Not Yet Implemented");
     }
 

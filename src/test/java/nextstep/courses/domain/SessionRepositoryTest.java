@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.fixture.TestFixture;
 import org.junit.jupiter.api.AfterEach;
@@ -52,7 +51,7 @@ public class SessionRepositoryTest {
         //given
         //when
         //then
-        sessionRepository.findById(new SessionId(1L));
+        sessionRepository.findBySessionId(new SessionId(1L));
     }
 
     @DisplayName("전체 데이터 조회 기능을 검증한다")

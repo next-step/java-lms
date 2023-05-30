@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface SessionRepository {
     Session save(Session session);
 
-    Optional<Session> findById(SessionId sessionId);
+    Optional<Session> findBySessionId(SessionId sessionId);
 
     List<Session> findAll();
 
