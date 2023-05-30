@@ -73,7 +73,13 @@ DROP TABLE IF EXISTS session;
 CREATE TABLE IF NOT EXISTS session
 (
     session_id  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    image_url varchar(255),
+    image_id BIGINT NULL,
+    term BIGINT NULL,
+    price BIGINT NULL,
+    session_status VARCHAR(20),
+    max_student_count BIGINT NOT NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
     primary key (session_id)
 );
 

@@ -5,7 +5,6 @@ import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,15 +81,15 @@ class SessionTest {
         session2.toRecruitingState();
         session3.toCloseState();
         //then
-        assertThat(session1.getStatus())
+        assertThat(session1.getSessionStatus())
                 .as("준비상태를 갖는다")
                 .isEqualTo(SessionStatus.PREPARING);
 
-        assertThat(session2.getStatus())
+        assertThat(session2.getSessionStatus())
                 .as("모집중 상태를 갖는다")
                 .isEqualTo(SessionStatus.RECRUITING);
 
-        assertThat(session3.getStatus())
+        assertThat(session3.getSessionStatus())
                 .as("종료상태를 갖는다")
                 .isEqualTo(SessionStatus.CLOSED);
     }
