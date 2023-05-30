@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.InvalidTimeRangeException;
+import nextstep.courses.domain.user.Name;
+import nextstep.courses.domain.user.User;
 import nextstep.courses.domain.user.UserTest;
 import nextstep.courses.domain.user.Users;
 import org.junit.jupiter.api.DisplayName;
@@ -27,10 +30,11 @@ public class SessionTest {
     private Long id = 1L;
     private LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
     private LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
-    private CoverImage coverImagePath = CoverImage.of(1L, "");
+    private CoverImage coverImagePath = CoverImage.of(1L, "/resources/image/test");
     private PriceType priceType = PriceType.CHARGED;
     private Status statusEnrolling = Status.ENROLLING;
     private Long maximumCapacity = 100L;
+    private Users users = Users.of(new ArrayList<>(List.of(User.of(1L, Name.of("유저1")))));
 
     @Test
     @DisplayName("최대 수강 인원을 초과한 강의는 수강신청을 할 수 없다.")
@@ -75,7 +79,7 @@ public class SessionTest {
     @DisplayName("동일한 상태를 갖는 두 강의는 같은 강의이다.")
     void 강의생성() throws InvalidTimeRangeException {
         assertThat(Session.of(id, Duration.of(start, end), coverImagePath, priceType,
-            statusEnrolling, maximumCapacity, Users.of(new ArrayList<>())))
+            statusEnrolling, maximumCapacity, users))
             .isEqualTo(buildSession(Status.ENROLLING, maximumCapacity));
     }
 
@@ -84,16 +88,16 @@ public class SessionTest {
         Long id = 1L;
         LocalDateTime start = LocalDateTime.parse("2023-05-01T00:00:00");
         LocalDateTime end = LocalDateTime.parse("2023-05-31T00:00:00");
-        CoverImage coverImagePath = CoverImage.of(1L, "");
+        CoverImage coverImagePath = CoverImage.of(1L, "/resources/image/test");
         PriceType priceType = PriceType.CHARGED;
         return new Session.Builder()
             .id(id)
-            .sessionDuration(Duration.of(start, end))
-            .coverImagePath(coverImagePath)
+            .duration(Duration.of(start, end))
+            .coverImage(coverImagePath)
             .priceType(priceType)
             .status(status)
             .maximumCapacity(maximumCapacity)
-            .users(Users.of(new ArrayList<>()))
+            .users(Users.of(new ArrayList<>(List.of(User.of(1L, Name.of("유저1"))))))
             .build();
     }
 }

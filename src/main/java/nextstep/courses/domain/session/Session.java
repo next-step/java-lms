@@ -81,12 +81,40 @@ public class Session {
         return users.count() >= maximumCapacity;
     }
 
+    public Duration duration() {
+        return duration;
+    }
+
+    public CoverImage coverImage() {
+        return coverImage;
+    }
+
+    public PriceType priceType() {
+        return priceType;
+    }
+
+    public Status status() {
+        return status;
+    }
+
+    public Long maximumCapacity() {
+        return maximumCapacity;
+    }
+
+    public Users users() {
+        return users;
+    }
+
+    public Long id() {
+        return id;
+    }
+
     public static class Builder {
         private Long id;
 
         private Duration duration;
 
-        private CoverImage coverImagePath;
+        private CoverImage coverImage;
 
         private PriceType priceType;
 
@@ -103,13 +131,13 @@ public class Session {
             return this;
         }
 
-        public Builder sessionDuration(Duration duration) {
+        public Builder duration(Duration duration) {
             this.duration = duration;
             return this;
         }
 
-        public Builder coverImagePath(CoverImage coverImagePath) {
-            this.coverImagePath = coverImagePath;
+        public Builder coverImage(CoverImage coverImage) {
+            this.coverImage = coverImage;
             return this;
         }
 
@@ -134,7 +162,7 @@ public class Session {
         }
 
         public Session build() {
-            return new Session(id, duration, coverImagePath, priceType, status, maximumCapacity, users);
+            return new Session(id, duration, coverImage, priceType, status, maximumCapacity, users);
         }
     }
 }

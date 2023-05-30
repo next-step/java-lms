@@ -44,4 +44,12 @@ public class Duration {
     public int hashCode() {
         return Objects.hash(startDate, endDate);
     }
+
+    public LocalDateTime startDate() {
+        return startDate;
+    }
+
+    public LocalDateTime endDate() {
+        return endDate;
+    }
 }
