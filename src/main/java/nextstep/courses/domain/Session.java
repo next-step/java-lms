@@ -25,10 +25,12 @@ public class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
+    private User instructor;
+
     protected Session() {
     }
 
-    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment) {
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment, User instructor) {
         this.id = id;
         this.period = period;
         this.coverImage = coverImage;
@@ -36,8 +38,8 @@ public class Session extends BaseEntity {
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
         this.enrollment = enrollment;
+        this.instructor = instructor;
     }
-
 
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
                                  SessionType sessionType, SessionStatus sessionStatus,
@@ -75,6 +77,10 @@ public class Session extends BaseEntity {
 
     public Image getCoverImage() {
         return coverImage;
+    }
+
+    public User getInstructor() {
+        return instructor;
     }
 
     public SessionTime getSessionTime() {

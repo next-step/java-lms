@@ -1,7 +1,6 @@
 package nextstep.users.domain;
 
 import nextstep.users.domain.enums.UserStatus;
-import nextstep.users.domain.enums.UserType;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -22,7 +21,6 @@ public class User {
     private LocalDateTime updatedAt;
 
     private UserStatus userStatus;
-    private UserType userType;
 
     public User() {
     }
@@ -41,7 +39,7 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, UserStatus userStatus, UserType userType) {
+    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, UserStatus userStatus) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -50,18 +48,6 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.userStatus = userStatus;
-        this.userType = userType;
-    }
-
-    public User(Long id, String userId, String password, String name, String email, UserType userType, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.userType = userType;
-        this.updatedAt = updatedAt;
     }
 
     public User(Long id, String userId, String password, String name, String email, UserStatus userStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -79,15 +65,12 @@ public class User {
         return id;
     }
 
-    public Boolean isSelected() {
+    public boolean isSelected() {
         if (this.userStatus == null) {
-            return null;
+            return true;
         }
-        return !UserStatus.NOT_SELECTED.equals(this.userStatus);
-    }
 
-    public boolean isInstructor() {
-        return UserType.INSTRUCTOR.equals(this.userType);
+        return !userStatus.isNotSelected();
     }
 
     @Override
@@ -107,11 +90,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userId, user.userId) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && userStatus == user.userStatus && userType == user.userType;
+        return Objects.equals(id, user.id) && Objects.equals(userId, user.userId) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && userStatus == user.userStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, password, name, email, createdAt, updatedAt, userStatus, userType);
+        return Objects.hash(id, userId, password, name, email, createdAt, updatedAt, userStatus);
     }
 }

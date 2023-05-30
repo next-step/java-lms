@@ -12,8 +12,8 @@ import nextstep.courses.domain.enums.ImageType;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.users.domain.User;
+import nextstep.users.domain.UserRepository;
 import nextstep.users.domain.enums.UserStatus;
-import nextstep.users.domain.enums.UserType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,14 +23,17 @@ import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("jdbcSessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
+    private final UserRepository userRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepository = userRepository;
     }
 
     @Override
