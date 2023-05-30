@@ -104,9 +104,8 @@ public class Session extends BaseEntity {
     }
 
     private void checkEnrollmentStatus() throws SessionEnrollmentException {
-        if (!this.enrollment.getEnrollmentStatus().canEnroll()) {
-            throw new SessionEnrollmentException(String.format("현재 강의 모집 상태는 '%s'이며, '%s' 상태에서만 수강 신청이 가능합니다.",
-                    this.sessionStatus, EnrollmentStatus.ENROLLING));
+        if (!this.enrollment.canEnroll()) {
+            throw new SessionEnrollmentException(this.sessionStatus, EnrollmentStatus.ENROLLING);
         }
     }
 
