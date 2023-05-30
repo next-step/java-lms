@@ -38,7 +38,6 @@ public class SessionService {
   public void enrollUser(Long sessionId, String nextStepUserId) {
     Session session = sessionRepository.findById(sessionId);
     NextStepUser nextStepUser = userRepository.findByUserId(nextStepUserId).orElseThrow();
-    session.setSessionUsers(sessionRepository.findAllSessionUserBySessionId(sessionId));
 
     session.processEnrollment(nextStepUser);
     LocalDateTime currentTime = LocalDateTime.now();

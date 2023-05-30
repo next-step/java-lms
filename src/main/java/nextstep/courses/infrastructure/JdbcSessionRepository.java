@@ -79,7 +79,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public List<SessionUser> findAllSessionUserBySessionId(Long sessionId) {
-    String sql = "select id, session_id, user_id, created_at, updated_at, session_user_status from session_ns_user where session_id = ?";
+    String sql = "select u.id, u.session_id, s.session_payment, s.session_status, s.session_recruitment_status, s.max_enrollment, s.start_date, s.end_date, s.session_cover_url, s.created_at, s.updated_at, u.created_at, u.updated_at, u.session_user_status" +
+            " from session_ns_user u join session s on u.session_id = s.id where u.session_id = ?";
 
     return jdbcTemplate.query(sql, sessionUserRowMapper(), sessionId);
   }
@@ -93,11 +94,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public SessionUser findBySessionIdAndUserId(Long sessionId, Long userId) {
-    String sql = "select id, session_id, user_id, created_at, updated_at, session_user_status from session_ns_user where session_id = ? and user_id = ?";
+    String sql = "select u.id, u.session_id, s.session_payment, s.session_status, s.session_recruitment_status, s.max_enrollment, s.start_date, s.end_date, s.session_cover_url, s.created_at, s.updated_at, u.created_at, u.updated_at, u.session_user_status" +
+            " from session_ns_user u join session s on u.session_id = s.id where session_id = ? and user_id = ?";
 
     return jdbcTemplate.queryForObject(sql, sessionUserRowMapper(), sessionId, userId);
   }
-
 
   private RowMapper<Session> sessionRowMapper() {
     return ((rs, rowNum) -> new Session(
@@ -106,6 +107,7 @@ public class JdbcSessionRepository implements SessionRepository {
             SessionProgressStatus.valueOfSessionStatus(rs.getString(3)),
             SessionRecruitmentStatus.valueOfSessionRecruitmentStatus(rs.getString(4)),
             rs.getInt(5),
+            findAllSessionUserBySessionId(rs.getLong(1)),
             toLocalDateTime(rs.getTimestamp(6)),
             toLocalDateTime(rs.getTimestamp(7)),
             rs.getString(8),
@@ -117,11 +119,22 @@ public class JdbcSessionRepository implements SessionRepository {
   private RowMapper<SessionUser> sessionUserRowMapper() {
     return (rs, rowNum) -> new SessionUser(
             rs.getLong(1),
-            findById(rs.getLong(2)),
+            new Session(
+                    rs.getLong(2),
+                    SessionPayment.valueOfPaymentType(rs.getString(3)),
+                    SessionProgressStatus.valueOfSessionStatus(rs.getString(4)),
+                    SessionRecruitmentStatus.valueOfSessionRecruitmentStatus(rs.getString(5)),
+                    rs.getInt(6),
+                    toLocalDateTime(rs.getTimestamp(7)),
+                    toLocalDateTime(rs.getTimestamp(8)),
+                    rs.getString(9),
+                    toLocalDateTime(rs.getTimestamp(10)),
+                    toLocalDateTime(rs.getTimestamp(11))
+            ),
             new NextStepUser(),
-            toLocalDateTime(rs.getTimestamp(4)),
-            toLocalDateTime(rs.getTimestamp(5)),
-            SessionUserStatus.valueOfSessionUserStatus(rs.getString(6)));
+            toLocalDateTime(rs.getTimestamp(12)),
+            toLocalDateTime(rs.getTimestamp(13)),
+            SessionUserStatus.valueOfSessionUserStatus(rs.getString(14)));
   }
 
   private LocalDateTime toLocalDateTime(Timestamp timestamp) {

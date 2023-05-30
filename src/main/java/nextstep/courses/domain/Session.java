@@ -22,6 +22,17 @@ public class Session {
     this(null, sessionPayment, sessionProgressStatus, sessionRecruitmentStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
   }
 
+  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, List<SessionUser> sessionUsers, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.id = id;
+    this.sessionPayment = sessionPayment;
+    this.sessionUsers = new SessionUsers(maxUserEnrollment, sessionUsers);
+    this.sessionPeriod = new SessionPeriod(startDate, endDate);
+    this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitmentStatus);
+  }
+
   public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.sessionPayment = sessionPayment;
@@ -64,10 +75,6 @@ public class Session {
 
   public SessionUsers getSessionUsers() {
     return sessionUsers;
-  }
-
-  public void setSessionUsers(List<SessionUser> sessionUsers) {
-    this.sessionUsers.setSessionUsers(sessionUsers);
   }
 
   public SessionPeriod getSessionPeriod() {
