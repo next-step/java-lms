@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -89,6 +88,7 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateAlreadyDeleted();
         validateAuthorization(loginUser);
         validateHavingAnswerFromOthers(loginUser);
         this.setDeleted(true);
@@ -99,6 +99,12 @@ public class Question {
         deleteHistories.addAll(this.answers.delete());
 
         return deleteHistories;
+    }
+
+    public void validateAlreadyDeleted() throws CannotDeleteException {
+        if(this.isDeleted()){
+            throw new CannotDeleteException("이미 삭제된 질문입니다.");
+        }
     }
 
     public void validateAuthorization(NsUser loginUser) throws CannotDeleteException {

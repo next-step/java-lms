@@ -49,7 +49,7 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        //verifyDeleteHistories();
+        verifyDeleteHistories();
     }
 
     @Test
