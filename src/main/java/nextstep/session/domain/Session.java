@@ -1,13 +1,10 @@
 package nextstep.session.domain;
 
-import java.time.LocalDateTime;
 import nextstep.session.CannotApplySession;
 
 public class Session {
 
-  private LocalDateTime startDate;
-
-  private LocalDateTime endDate;
+  private SessionDate sessionDate;
 
   private String imageUrl;
 
@@ -18,6 +15,10 @@ public class Session {
   private int maxEnrollment;
 
   private int enrollment;
+
+  public Session(SessionDate sessionDate) {
+    this.sessionDate = sessionDate;
+  }
 
   public Session(Status status, int maxEnrollment, int enrollment) {
     this.status = status;
