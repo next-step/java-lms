@@ -22,6 +22,10 @@ public class UserEnrollment {
         return approvalStatus;
     }
 
+    public boolean isApproved(){
+        return this.approvalStatus.isApproved();
+    }
+
     public void approved() {
         this.approvalStatus = ApprovalStatus.APPROVED;
     }
@@ -41,5 +45,9 @@ public class UserEnrollment {
     @Override
     public int hashCode() {
         return Objects.hash(user, approvalStatus);
+    }
+
+    public boolean isSameUser(User user) {
+        return this.equals(user);
     }
 }

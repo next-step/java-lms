@@ -71,6 +71,10 @@ public class Session extends BaseEntity {
         return this.enrollment.getUsers().size();
     }
 
+    public int getMaxEnrollmentCount(){
+        return this.enrollment.getMaximumEnrollment();
+    }
+
     public String getPeriod() {
         return period;
     }
@@ -123,16 +127,14 @@ public class Session extends BaseEntity {
     }
 
     public void approveUser(User user) {
-        this.getEnrollment().getUserEnrollments().stream()
-                .filter(userEnrollment -> userEnrollment.getUser().equals(user))
-                .findFirst()
-                .ifPresent(UserEnrollment::approved);
+        this.enrollment.approveUser(user);
     }
 
     public void disApproveUser(User user) {
-        this.getEnrollment().getUserEnrollments().stream()
-                .filter(userEnrollment -> userEnrollment.getUser().equals(user))
-                .findFirst()
-                .ifPresent(UserEnrollment::disApproved);
+        this.enrollment.disApproveUser(user);
+    }
+
+    public boolean canApproved() {
+        return this.getEnrollment().canApproved();
     }
 }

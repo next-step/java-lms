@@ -8,6 +8,7 @@ import nextstep.users.domain.User;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Enrollment {
@@ -19,11 +20,6 @@ public class Enrollment {
         this.maximumEnrollment = maximumEnrollment;
     }
 
-    public Enrollment(List<UserEnrollment> users, int maximumEnrollment) {
-        this.users = users;
-        this.maximumEnrollment = maximumEnrollment;
-    }
-
     public Enrollment(List<UserEnrollment> users, EnrollmentStatus enrollmentStatus, int maximumEnrollment) {
         this.users = users;
         this.enrollmentStatus = enrollmentStatus;
@@ -31,9 +27,27 @@ public class Enrollment {
     }
 
     public void enroll(User user) throws SessionEnrollmentException {
-        checkEnrollment();
-
         this.users.add(new UserEnrollment(user, ApprovalStatus.PENDING));
+    }
+
+    public boolean canEnroll() {
+        return this.getEnrollmentStatus().canEnroll();
+    }
+
+    public void approveUser(User user) {
+        this.getUserEnrollment(user)
+                .ifPresent(UserEnrollment::approved);
+    }
+
+    public void disApproveUser(User user) {
+        this.getUserEnrollment(user)
+                .ifPresent(UserEnrollment::disApproved);
+    }
+
+    private Optional<UserEnrollment> getUserEnrollment(User user) {
+        return this.users.stream()
+                .filter(userEnrollment -> userEnrollment.isSameUser(user))
+                .findFirst();
     }
 
     public List<User> getUsers() {
@@ -63,10 +77,12 @@ public class Enrollment {
         return enrollmentStatus;
     }
 
-    private void checkEnrollment() throws SessionEnrollmentException {
-        if (this.users.size() >= this.maximumEnrollment) {
-            throw new SessionEnrollmentException(String.format("최대 수강 인원인 '%d명'을 초과했습니다.", maximumEnrollment));
-        }
+    public boolean canApproved() throws SessionEnrollmentException {
+        long count = this.users.stream()
+                .filter(UserEnrollment::isApproved)
+                .count();
+
+        return count < this.maximumEnrollment;
     }
 
     @Override

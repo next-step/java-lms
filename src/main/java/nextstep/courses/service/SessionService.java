@@ -49,12 +49,16 @@ public class SessionService {
 
     @Transactional
     public void approveUserToSession(long adminId, long userId, long sessionId) {
-        validateInstructor(adminId);
+        validateInstructor(sessionId, adminId);
         Session session = findSessionById(sessionId);
         User user = findUserById(userId);
 
         if (!user.isSelected()) {
             throw new UserNotSelectedException("선발되지 않은 인원입니다.");
+        }
+
+        if (!session.canApproved()) {
+            throw new SessionEnrollmentException(session.getMaxEnrollmentCount());
         }
 
         session.approveUser(user);
@@ -63,7 +67,7 @@ public class SessionService {
 
     @Transactional
     public void disApproveUserToSession(long adminId, long userId, long sessionId) {
-        validateInstructor(adminId);
+        validateInstructor(sessionId, adminId);
         Session session = findSessionById(sessionId);
         User user = findUserById(userId);
 
@@ -80,9 +84,9 @@ public class SessionService {
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
     }
 
-    private void validateInstructor(long adminId) {
-        User admin = findUserById(adminId);
-        if (!admin.isInstructor()) {
+    private void validateInstructor(long sessionId, long adminId) {
+        Session session = sessionRepository.findBySessionId(sessionId);
+        if (!session.getInstructor().getId().equals(adminId)) {
             throw new NotInstructorException("강사가 아닙니다");
         }
     }
