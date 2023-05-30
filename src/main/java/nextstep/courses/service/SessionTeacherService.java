@@ -2,8 +2,6 @@ package nextstep.courses.service;
 
 import java.util.List;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.domain.session.teacher.SessionTeacher;
 import nextstep.courses.domain.session.teacher.SessionTeacherRepository;
 import nextstep.courses.domain.session.teacher.SessionTeachers;
