@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.SessionPeriodTest.*;
+import static nextstep.courses.domain.SessionPersonnelTest.sessionPersonalMax;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
@@ -13,8 +15,11 @@ class SessionTest {
     @ParameterizedTest
     @EnumSource(value = SessionStatus.class, names = {"Preparing", "Closed"})
     void 모집중_제외_register_불가(SessionStatus status) {
-        Session session = new Session(1L, SessionPeriodTest.sessionPeriodMinMax, null, true, status,
-            30);
+        Session session = SessionBuilder.aSession()
+            .withSessionPeriod(sessionPeriodMinMax)
+            .withSessionStatus(status)
+            .withSessionPersonnel(sessionPersonalMax)
+            .build();
 
         assertThatThrownBy(() -> session.register(userA(), LocalDateTime.now()))
             .isInstanceOf(IllegalStateException.class)
@@ -23,9 +28,13 @@ class SessionTest {
 
     @Test
     void 강의_신청_기간_예외() {
-        Session session = new Session(1L,
-            new SessionPeriod(LocalDateTime.of(2022, 10, 19, 0, 0), LocalDateTime.MAX), null, true,
-            SessionStatus.Recruiting, 30);
+        Session session =
+            SessionBuilder.aSession()
+                .withSessionPeriod(
+                    new SessionPeriod(LocalDateTime.of(2022, 10, 19, 0, 0), LocalDateTime.MAX))
+                .withSessionStatus(SessionStatus.Recruiting)
+                .withSessionPersonnel(sessionPersonalMax)
+                .build();
 
         assertThatThrownBy(() -> session.register(userA(), LocalDateTime.of(2022, 10, 18, 0, 0)))
             .isInstanceOf(RuntimeException.class)

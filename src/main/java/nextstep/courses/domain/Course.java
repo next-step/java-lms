@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import nextstep.users.domain.NsUser;
 
 public class Course {
 
@@ -40,10 +38,12 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
-    public List<Long> register(NsUser user, LocalDateTime registerTime) {
-        return sessions.stream()
-            .map(session -> session.register(user, registerTime))
-            .collect(Collectors.toList());
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
     }
 
     public String getTitle() {

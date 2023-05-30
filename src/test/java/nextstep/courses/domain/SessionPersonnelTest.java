@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 class SessionPersonnelTest {
 
+    public static SessionPersonnel sessionPersonalMax = new SessionPersonnel(Integer.MAX_VALUE);
+
     @Test
     void 최대_인원_초과() {
         SessionPersonnel sessionPersonnel = new SessionPersonnel(1);
