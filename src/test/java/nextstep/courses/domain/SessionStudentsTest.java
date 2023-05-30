@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.SessionRegistrationException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +14,8 @@ class SessionStudentsTest {
 
     @BeforeEach
     void setUp() {
-        sessionStudentsMaxTwo.addStudent(NsUserTest.SANJIGI);
-        sessionStudentsMaxTwo.addStudent(NsUserTest.JAVAJIGI);
+        sessionStudentsMaxTwo.addStudent(StudentTest.SESSION1_STUDENT1);
+        sessionStudentsMaxTwo.addStudent(StudentTest.SESSION1_STUDENT2);
     }
 
     @Test

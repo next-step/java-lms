@@ -1,13 +1,12 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.SessionRegistrationException;
-import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SessionStudents {
-    private List<NsUser> nsUsers = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
     private int maximumNumber;
 
     SessionStudents() {
@@ -18,12 +17,12 @@ public class SessionStudents {
     }
 
     public int countStudents() {
-        return nsUsers.size();
+        return students.size();
     }
 
-    public boolean addStudent(NsUser nsUser) {
+    public boolean addStudent(Student student) {
         checkExceedLimit();
-        return nsUsers.add(nsUser);
+        return students.add(student);
     }
 
     public void checkExceedLimit() {

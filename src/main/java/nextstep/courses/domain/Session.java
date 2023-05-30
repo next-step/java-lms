@@ -37,11 +37,11 @@ public class Session extends BaseControlField {
         this.sessionStudents = sessionStudents;
     }
 
-    public boolean register(NsUser nsUser) {
+    public boolean register(Student student) {
         if (!statusType.canRegister()) {
             throw new SessionRegistrationException("모집중인 강의가 아닙니다.");
         }
-        return sessionStudents.addStudent(nsUser);
+        return sessionStudents.addStudent(student);
     }
 
     public int getId() {
