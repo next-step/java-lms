@@ -22,6 +22,10 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
+    private Long session;
+
+    private Long sessionKey;
+
     public NsUser() {
     }
 
