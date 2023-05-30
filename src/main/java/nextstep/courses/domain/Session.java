@@ -7,74 +7,48 @@ import java.util.Objects;
 public class Session {
 
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private SessionPeriod sessionPeriod;
     private String coverImage;
-    private SessionType sessionType;
-    private SessionStatus sessionStatus;
-    private int numberOfRegisteredStudent = 0;
-    private int maxNumberOfStudents;
+    private SessionOption sessionOption;
+    private SessionStudent sessionStudent;
     private Long courseId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public Session(LocalDate startDate, LocalDate endDate, Long courseId) {
-        this("test", startDate, endDate, "cover", SessionType.FREE, SessionStatus.READY, 30, courseId);
+        this("test", new SessionPeriod(startDate, endDate), "cover", new SessionOption(), new SessionStudent(), courseId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Session(SessionStatus sessionStatus) {
-        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "cover", SessionType.FREE, sessionStatus, 30, 1L);
+    public Session(SessionEnrollment sessionEnrollment) {
+        this("test", new SessionPeriod(LocalDate.now()), "cover", new SessionOption(sessionEnrollment), new SessionStudent(), 1L);
     }
 
     public Session(int maxNumberOfStudents) {
-        this("test", LocalDate.now(), LocalDate.now().plusDays(30), "image", SessionType.FREE, SessionStatus.RECRUIT, maxNumberOfStudents, 1L);
+        this("test", new SessionPeriod(LocalDate.now()), "image", new SessionOption(), new SessionStudent(maxNumberOfStudents), 1L);
     }
 
-    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int maxNumberOfStudents, Long courseId) {
-        this(name, startDate, endDate, coverImage, sessionType, sessionStatus, 0, maxNumberOfStudents, courseId, LocalDateTime.now(), LocalDateTime.now());
+    public Session(String name, SessionPeriod sessionPeriod, String coverImage, SessionOption sessionOption, SessionStudent sessionStudent, Long courseId) {
+        this(name, sessionPeriod, coverImage, sessionOption, sessionStudent, courseId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Session(String name, LocalDate startDate, LocalDate endDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int numberOfRegisteredStudent, int maxNumberOfStudents, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        validateDate(startDate, endDate);
+    public Session(String name, SessionPeriod sessionPeriod, String coverImage, SessionOption sessionOption, SessionStudent sessionStudent, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
-        this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
-        this.numberOfRegisteredStudent = numberOfRegisteredStudent;
-        this.maxNumberOfStudents = maxNumberOfStudents;
+        this.sessionOption = sessionOption;
+        this.sessionStudent = sessionStudent;
         this.courseId = courseId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public void register() {
-        validateCapacityOfStudent();
-        validateStatusOfSession();
-        numberOfRegisteredStudent++;
-    }
-
-    private void validateDate(LocalDate startedAt, LocalDate endedAt) {
-        if (startedAt.isAfter(endedAt)) {
-            throw new IllegalArgumentException("강의 시작일은 강의 종료일 보다 빨라야 합니다.");
-        }
-    }
-
-    private void validateStatusOfSession() {
-        if (SessionStatus.isNotRecruit(sessionStatus)) {
-            throw new IllegalStateException("현재 강의 모집 중이 아닙니다.");
-        }
-    }
-
-    private void validateCapacityOfStudent() {
-        if (numberOfRegisteredStudent + 1 > maxNumberOfStudents) {
-            throw new IllegalStateException("현재 최대 수강 인원이 초과 되었습니다.");
-        }
+        sessionOption.validateStatusOfSession();
+        sessionStudent.register();
     }
 
     public int getNumberOfRegisteredStudent() {
-        return numberOfRegisteredStudent;
+        return sessionStudent.getNumberOfRegisteredStudent();
     }
 
     public String getName() {
@@ -82,15 +56,15 @@ public class Session {
     }
 
     public int getMaxNumberOfStudents() {
-        return maxNumberOfStudents;
+        return sessionStudent.getMaxNumberOfStudents();
     }
 
     public LocalDate getEndDate() {
-        return endDate;
+        return sessionPeriod.getEndDate();
     }
 
     public LocalDate getStartDate() {
-        return startDate;
+        return sessionPeriod.getStartDate();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -101,16 +75,8 @@ public class Session {
         return updatedAt;
     }
 
-    public SessionStatus getStatus() {
-        return sessionStatus;
-    }
-
     public String getCoverImage() {
         return coverImage;
-    }
-
-    public SessionType getType() {
-        return sessionType;
     }
 
     public Long getCourseId() {
@@ -122,25 +88,22 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return sessionType == session.sessionType && maxNumberOfStudents == session.maxNumberOfStudents && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(coverImage, session.coverImage) && sessionStatus == session.sessionStatus;
+        return Objects.equals(name, session.name) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(coverImage, session.coverImage) && Objects.equals(sessionOption, session.sessionOption) && Objects.equals(sessionStudent, session.sessionStudent) && Objects.equals(courseId, session.courseId) && Objects.equals(createdAt, session.createdAt) && Objects.equals(updatedAt, session.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startDate, endDate, coverImage, sessionType, sessionStatus, maxNumberOfStudents);
+        return Objects.hash(name, sessionPeriod, coverImage, sessionOption, sessionStudent, courseId, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         return "Session{" +
                 "name='" + name + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", sessionPeriod=" + sessionPeriod +
                 ", coverImage='" + coverImage + '\'' +
-                ", type=" + sessionType +
-                ", status=" + sessionStatus +
-                ", numberOfRegisteredStudent=" + numberOfRegisteredStudent +
-                ", maxNumberOfStudents=" + maxNumberOfStudents +
+                ", sessionOption=" + sessionOption +
+                ", sessionStudent=" + sessionStudent +
                 ", courseId=" + courseId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

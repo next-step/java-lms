@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
-import nextstep.courses.domain.SessionType;
+import nextstep.courses.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,10 +21,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (name, created_at, updated_at, start_date, end_date, cover_image, payment_type, status, registered_student, max_student, course_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into session (name, created_at, updated_at, start_date, end_date, course_id) values(?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, session.getName(), session.getCreatedAt(), session.getUpdatedAt(), session.getStartDate()
-                , session.getEndDate(), session.getCoverImage(), session.getType().toString(), session.getStatus().toString()
-                , session.getNumberOfRegisteredStudent(), session.getMaxNumberOfStudents(), session.getCourseId());
+                , session.getEndDate(), session.getCourseId());
     }
 
     @Override
@@ -35,16 +31,16 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "select * from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getString(2),
-                toLocalDate(rs.getDate(3)),
-                toLocalDate(rs.getDate(4)),
+                new SessionPeriod(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
                 rs.getString(5),
-                SessionType.find(rs.getString(6)),
-                SessionStatus.find(rs.getString(7)),
-                rs.getInt(8),
-                rs.getInt(9),
-                rs.getLong(10),
-                toLocalDateTime(rs.getTimestamp(11)),
-                toLocalDateTime(rs.getTimestamp(12))
+                new SessionOption(SessionType.find(rs.getString(6)),
+                        SessionStatus.find(rs.getString(7)),
+                        SessionEnrollment.find(rs.getString(8))),
+                new SessionStudent(rs.getInt(9),
+                        rs.getInt(10)),
+                rs.getLong(11),
+                toLocalDateTime(rs.getTimestamp(12)),
+                toLocalDateTime(rs.getTimestamp(13))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

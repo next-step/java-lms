@@ -39,8 +39,6 @@ public class SessionRepositoryTest {
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L, 1);
         courseRepository.save(course);
-
-
         Session session = new Session(LocalDate.now(), LocalDate.now().plusDays(30), 1L);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);

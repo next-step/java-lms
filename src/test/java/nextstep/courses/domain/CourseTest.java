@@ -12,8 +12,8 @@ public class CourseTest {
     @DisplayName("Course_생성_테스트")
     public void Course_생성_테스트(){
         List<Session> sessionList = new ArrayList<>();
-        sessionList.add(new Session(SessionStatus.READY));
-        sessionList.add(new Session(SessionStatus.RECRUIT));
+        sessionList.add(new Session(SessionEnrollment.ENROLLMENT));
+        sessionList.add(new Session(SessionEnrollment.NON_ENROLLMENT));
 //        assertThat(new Course(sessionList)).isEqualTo(new Course(sessionList));
     }
 }

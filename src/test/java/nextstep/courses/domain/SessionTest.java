@@ -10,20 +10,6 @@ import static org.assertj.core.api.Assertions.*;
 public class SessionTest {
 
     @Test
-    @DisplayName("Session_생성_test")
-    public void Session_생성_test() {
-        String name = "test";
-        LocalDate startedAt = LocalDate.now();
-        LocalDate endedAt = LocalDate.now();
-        String coverImage = "image";
-        SessionType sessionType = SessionType.FREE;
-        SessionStatus sessionStatus = SessionStatus.READY;
-        int maximumNumberOfStudents = 30;
-
-        assertThat(new Session(name, startedAt, endedAt, coverImage, sessionType, sessionStatus, maximumNumberOfStudents, 1L)).isEqualTo(new Session(name, startedAt, endedAt, coverImage, sessionType, sessionStatus, maximumNumberOfStudents, 1L));
-    }
-
-    @Test
     @DisplayName("Validate_date_test")
     public void Validate_date_test() {
         LocalDate startedAt = LocalDate.of(2022, 11, 10);
@@ -38,7 +24,7 @@ public class SessionTest {
     @Test
     @DisplayName("register_method_test")
     public void register_method_test() {
-        Session session = new Session(SessionStatus.RECRUIT);
+        Session session = new Session(SessionEnrollment.ENROLLMENT);
         session.register();
 
         assertThat(session.getNumberOfRegisteredStudent()).isEqualTo(1);
@@ -58,7 +44,7 @@ public class SessionTest {
     @Test
     @DisplayName("validate_Status_test")
     public void validate_Status_test() {
-        Session session = new Session(SessionStatus.READY);
+        Session session = new Session(SessionEnrollment.NON_ENROLLMENT);
         assertThatIllegalStateException()
                 .isThrownBy(session::register);
     }

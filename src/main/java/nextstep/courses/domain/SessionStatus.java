@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SessionStatus {
-    READY("READY"), RECRUIT("RECRUIT"), END("END");
+    READY("READY"), ONGOING("ONGOING"), END("END");
 
     private final String name;
 
@@ -19,9 +19,7 @@ public enum SessionStatus {
         this.name = name;
     }
 
-    public static boolean isNotRecruit(SessionStatus sessionStatus) {
-        return RECRUIT != sessionStatus;
-    }
+
 
     public static SessionStatus find(String status) {
         return STATUS_MAP.get(status);
