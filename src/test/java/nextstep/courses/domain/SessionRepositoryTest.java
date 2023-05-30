@@ -100,7 +100,7 @@ public class SessionRepositoryTest {
                         .as("저장과 조회의 데이터가 동일함을 검증한다")
                         .isEqualTo(save2.getSessionId()),
                 () -> assertThat(findAll)
-                        .as("findAll 조회 메서드의 동작을 검증한다")
+                        .as("저장과 조회의 데이터가 동일함을 검증한다")
                         .contains(find1.getSessionId(), find2.getSessionId())
         );
 
