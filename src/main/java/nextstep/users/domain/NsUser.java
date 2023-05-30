@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class NsUser {
-    public static final GuestNsUser GUEST_USER = new GuestNsUser();
-
     @NotEmpty
     private UserCode userCode;
 
@@ -160,16 +158,5 @@ public class NsUser {
 
     public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
-    }
-
-    private static class GuestNsUser extends NsUser {
-        public GuestNsUser() {
-            super(new UserCode("GUEST"), "password", "GUEST", "GUEST@GUEST.com", LocalDateTime.now(), LocalDateTime.now());
-        }
-
-        @Override
-        public boolean isGuestUser() {
-            return true;
-        }
     }
 }
