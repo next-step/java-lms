@@ -64,7 +64,7 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public void deleteAll() {
-        jdbcTemplate.update("delete table course");
+        jdbcTemplate.update("delete from course");
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
