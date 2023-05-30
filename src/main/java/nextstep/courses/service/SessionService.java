@@ -31,10 +31,6 @@ public class SessionService {
     return sessionRepository.findById(sessionId);
   }
 
-  public List<SessionUser> findSessionUsersBySessionId(Long sessionId) {
-    return sessionRepository.findAllSessionUserBySessionId(sessionId);
-  }
-
   public void enrollUser(Long sessionId, String nextStepUserId) {
     Session session = sessionRepository.findById(sessionId);
     NextStepUser nextStepUser = userRepository.findByUserId(nextStepUserId).orElseThrow();

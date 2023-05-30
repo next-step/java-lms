@@ -29,8 +29,8 @@ public class SessionServiceTest {
 
   @Test
   public void session_enrollment_count() {
-    List<SessionUser> sessionUsers = sessionService.findSessionUsersBySessionId(session.getId());
-    assertThat(sessionUsers).hasSize(1);
+    Session findSession = sessionService.findById(session.getId());
+    assertThat(findSession.getSessionUsers().getSessionUsers()).hasSize(1);
   }
 
   @Test
