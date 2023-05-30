@@ -110,7 +110,7 @@ public class Session {
     }
 
     private void validateState() {
-        if (this.status != SessionStatus.RECRUITING) {
+        if (!this.status.isRecruitStatus()) {
             throw new OutOfRegistrationPeriod();
         }
     }

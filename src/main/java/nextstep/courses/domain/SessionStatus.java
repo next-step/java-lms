@@ -7,9 +7,13 @@ public enum SessionStatus {
     IN_PROGRESS(SessionRecruitStatus.OPEN),
     CLOSED(SessionRecruitStatus.CLOSED);
 
-    private final SessionRecruitStatus sessionProgressStatus;
+    private final SessionRecruitStatus sessionRecruitStatus;
 
     SessionStatus(SessionRecruitStatus sessionProgressStatus) {
-        this.sessionProgressStatus = sessionProgressStatus;
+        this.sessionRecruitStatus = sessionProgressStatus;
+    }
+
+    public boolean isRecruitStatus() {
+        return this.sessionRecruitStatus == SessionRecruitStatus.OPEN;
     }
 }
