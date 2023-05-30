@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,20 +15,12 @@ class ChargeTypeTest {
         assertThat(ChargeType.find("charged")).isEqualTo(ChargeType.CHARGED);
     }
 
-    @Test
-    void testFindChargeType_실패() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"unknown"})
+    void testFindChargeType_실패(String chargeType) {
         assertThatThrownBy(() -> {
-            ChargeType.find("unknown");
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 요금 유형 입니다.");
-
-        assertThatThrownBy(() -> {
-            ChargeType.find("");
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("유효하지 않은 요금 유형 입니다.");
-
-        assertThatThrownBy(() -> {
-            ChargeType.find(null);
+            ChargeType.find(chargeType);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유효하지 않은 요금 유형 입니다.");
     }

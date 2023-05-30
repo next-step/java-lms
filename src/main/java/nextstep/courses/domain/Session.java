@@ -61,12 +61,11 @@ public class Session extends BaseControlField {
     }
 
     public String getCoverImageUrl() {
-        String imageUrl = null;
-
-        if (coverImageUrl != null) {
-            imageUrl = coverImageUrl.getImageUrl();
+        if (coverImageUrl == null) {
+            return null;
         }
-        return imageUrl;
+
+        return coverImageUrl.getImageUrl();
     }
 
     public SessionStatusType getStatusType() {
