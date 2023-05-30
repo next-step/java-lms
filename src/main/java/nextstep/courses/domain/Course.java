@@ -8,6 +8,7 @@ public class Course {
     private String title;
 
     private Long creatorId;
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 
@@ -49,5 +50,17 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void updateSessions(Sessions sessions) {
+        this.sessions = sessions;
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public boolean hasSession(Session session) {
+        return sessions.hasSession(session);
     }
 }
