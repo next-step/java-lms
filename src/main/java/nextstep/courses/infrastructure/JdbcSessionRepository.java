@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -71,7 +70,7 @@ public class JdbcSessionRepository implements SessionRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, sessionUser.getNextStepUser().getId());
+            ps.setLong(1, sessionUser.getUserId());
             ps.setLong(2, session.getId());
             ps.setString(3, sessionUser.getSessionUserStatus().getKey());
             return ps;
@@ -83,9 +82,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public List<SessionUser> findAllUserBySessionId(Long sessionId) {
-        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at, su.status " +
-                "from session_users su inner join ns_user u on (su.user_id = u.id) " +
-                "where su.session_id = ?";
+        String sql = "select user_id, status from session_users where session_id = ?";
 
         RowMapper<SessionUser> rowMapper = userRowMapper();
         return jdbcTemplate.query(sql, rowMapper, sessionId);
@@ -94,7 +91,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
         String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
-        jdbcTemplate.update(sql, sessionUser.getSessionUserStatus().getKey(), sessionId, sessionUser.getNextStepUser().getId());
+        jdbcTemplate.update(sql, sessionUser.getSessionUserStatus().getKey(), sessionId, sessionUser.getUserId());
     }
 
     private RowMapper<Session> sessionRowMapper() {
@@ -113,16 +110,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private RowMapper<SessionUser> userRowMapper() {
         return (rs, rowNum) -> new SessionUser(
-                new NsUser(
-                        rs.getLong(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        toLocalDateTime(rs.getTimestamp(6)),
-                        toLocalDateTime(rs.getTimestamp(7))
-                ),
-                SessionUserStatus.valueOf(rs.getString(8))
+                rs.getLong(1),
+                SessionUserStatus.valueOf(rs.getString(2))
         );
     }
 

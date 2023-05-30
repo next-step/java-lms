@@ -42,22 +42,22 @@ public class SessionServiceTest {
     void enroll() {
         Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
 
-        sessionService.enroll(session, new SessionUser(NsUserTest.JAVAJIGI));
+        sessionService.enroll(session, new SessionUser(NsUserTest.JAVAJIGI.getId()));
         List<SessionUser> sessionUsers = sessionService.findAllUserBySessionId(session.getId());
 
         assertThat(sessionUsers).hasSize(1);
-        assertThat(sessionUsers.get(0).getNextStepUser().getUserId()).isEqualTo(NsUserTest.JAVAJIGI.getUserId());
+        assertThat(sessionUsers.get(0).getUserId()).isEqualTo(NsUserTest.JAVAJIGI.getId());
     }
 
     @Test
     @DisplayName("강의 최대 인원이 초과된 경우 수강신청할 수 없다")
     void saveSessionUser_Fail1() {
         Session session = sessionService.save(SessionFixture.create(SessionProgressStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, 1), 1L);
-        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI, SessionUserStatus.APPROVAL);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.APPROVAL);
         sessionService.enroll(session, sessionUser);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> sessionService.enroll(session, new SessionUser(NsUserTest.SANJIGI)))
+                .isThrownBy(() -> sessionService.enroll(session, new SessionUser(NsUserTest.SANJIGI.getId())))
                 .withMessageMatching("강의 최대 수강 인원이 초과되었습니다.");
     }
 
@@ -66,14 +66,14 @@ public class SessionServiceTest {
     void saveSessionUser_Fail2() {
         Session session = sessionService.save(SessionFixture.create(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.NOT_RECRUITING, 1), 1L);
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> sessionService.enroll(session, new SessionUser(NsUserTest.JAVAJIGI)))
+                .isThrownBy(() -> sessionService.enroll(session, new SessionUser(NsUserTest.JAVAJIGI.getId())))
                 .withMessageMatching("모집중인 강의가 아닙니다.");
     }
 
     @Test
     void updateSessionUserStatus() {
         Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
-        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI, SessionUserStatus.WAIT);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.WAIT);
         sessionService.enroll(session, sessionUser);
 
         sessionUser.reject();

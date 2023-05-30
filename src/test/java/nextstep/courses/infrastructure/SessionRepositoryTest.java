@@ -57,14 +57,14 @@ public class SessionRepositoryTest {
         NsUser nsUser = NsUserTest.JAVAJIGI;
         Session session = SessionFixture.createRecruitingSession();
 
-        long id = sessionRepository.saveSessionUser(session, new SessionUser(nsUser));
+        long id = sessionRepository.saveSessionUser(session, new SessionUser(nsUser.getId()));
         assertThat(id).isPositive();
     }
 
     @Test
     void findAllUserBySessionId() {
         Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
-        sessionRepository.saveSessionUser(savedSession, new SessionUser(NsUserTest.JAVAJIGI));
+        sessionRepository.saveSessionUser(savedSession, new SessionUser(NsUserTest.JAVAJIGI.getId()));
 
         List<SessionUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
@@ -73,7 +73,7 @@ public class SessionRepositoryTest {
     @Test
     void updateSessionUserStatus() {
         Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
-        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI, SessionUserStatus.WAIT);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.WAIT);
         sessionRepository.saveSessionUser(savedSession, sessionUser);
 
         sessionUser.approve();

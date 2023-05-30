@@ -1,19 +1,17 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.Objects;
 
 public class SessionUser {
-    private final NsUser nextStepUser;
+    private final Long userId;
     private SessionUserStatus sessionUserStatus;
 
-    public SessionUser(NsUser nextStepUser) {
-        this(nextStepUser, SessionUserStatus.WAIT);
+    public SessionUser(Long userId) {
+        this(userId, SessionUserStatus.WAIT);
     }
 
-    public SessionUser(NsUser nextStepUser, SessionUserStatus sessionUserStatus) {
-        this.nextStepUser = nextStepUser;
+    public SessionUser(Long userId, SessionUserStatus sessionUserStatus) {
+        this.userId = userId;
         this.sessionUserStatus = sessionUserStatus;
     }
 
@@ -29,8 +27,8 @@ public class SessionUser {
         return this.sessionUserStatus.isApproved();
     }
 
-    public NsUser getNextStepUser() {
-        return this.nextStepUser;
+    public Long getUserId() {
+        return this.userId;
     }
 
     public SessionUserStatus getSessionUserStatus() {
@@ -41,12 +39,14 @@ public class SessionUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SessionUser that = (SessionUser) o;
-        return Objects.equals(nextStepUser, that.nextStepUser);
+
+        return Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nextStepUser);
+        return userId != null ? userId.hashCode() : 0;
     }
 }

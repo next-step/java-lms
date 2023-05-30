@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,6 @@ public class NextStepUsers {
 
     public NextStepUsers(int maximumUserCount) {
         this.maximumUserCount = maximumUserCount;
-    }
-
-    public void enroll(NsUser nextStepUser) {
-        enroll(new SessionUser(nextStepUser));
     }
 
     public void enroll(SessionUser sessionUser) {

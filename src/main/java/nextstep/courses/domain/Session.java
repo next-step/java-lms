@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 public class Session {
     public static final String RECRUITMENT_STATUS_MESSAGE = "모집중인 강의가 아닙니다.";
 
@@ -28,10 +26,6 @@ public class Session {
         this.sessionStatus = sessionStatus;
         this.nextStepUsers = nextStepUsers;
         this.sessionImageUrl = sessionImageUrl;
-    }
-
-    public void enroll(NsUser nextStepUser) {
-        enroll(new SessionUser(nextStepUser));
     }
 
     public void enroll(SessionUser sessionUser) {
