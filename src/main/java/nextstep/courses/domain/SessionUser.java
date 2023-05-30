@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.Objects;
+
 public class SessionUser {
     private final NsUser nextStepUser;
     private SessionUserStatus sessionUserStatus;
@@ -33,5 +35,18 @@ public class SessionUser {
 
     public SessionUserStatus getSessionUserStatus() {
         return this.sessionUserStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionUser that = (SessionUser) o;
+        return Objects.equals(nextStepUser, that.nextStepUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nextStepUser);
     }
 }
