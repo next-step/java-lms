@@ -32,12 +32,13 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
     @Override
     public Long takeSession(Long sessionId, Long nsUserId) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        final String sql = "INSERT INTO session_student(session_id, ns_user_id) VALUES (?, ?)";
+        final String sql = "INSERT INTO session_student(session_id, ns_user_id, student_status) VALUES (?, ?, ?)";
 
          jdbcTemplate.update(connection -> {
             var pstmt = connection.prepareStatement(sql, new String[]{"id"});
             pstmt.setLong(1, sessionId);
             pstmt.setLong(2, nsUserId);
+            pstmt.setString(3, SessionStudentStatus.REQUEST.name());
             return pstmt;
         }, keyHolder);
 
