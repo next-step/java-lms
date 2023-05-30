@@ -1,6 +1,9 @@
 package nextstep.session.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.session.CannotApplySession;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -10,44 +13,37 @@ public class Session {
 
   private boolean isBilling;
 
-  private Status status;
+private SessionApply sessionApply;
 
-  private int maxEnrollment;
-
-  private int enrollment;
+private List<NsUser> enrollmentUsers;
 
   public Session(SessionDate sessionDate) {
     this.sessionDate = sessionDate;
   }
 
-  public Session(Status status, int maxEnrollment, int enrollment) {
-    this.status = status;
-    this.maxEnrollment = maxEnrollment;
-    this.enrollment = enrollment;
+  public Session(SessionApply sessionApply) {
+    this.sessionApply = sessionApply;
+    enrollmentUsers = new ArrayList<>();
   }
 
-  void apply() {
-    if (isMaxEnrollment()) {
-      throw new CannotApplySession("수강 가능한 인원이 다 찼습니다.");
+  void apply(NsUser user) {
+    if(isApply(user)) {
+      throw new CannotApplySession("이미 수강신청이 완료된 강의입니다.");
     }
 
-    if (!isRecruiting()) {
+    if (!sessionApply.isRecruiting()) {
       throw new CannotApplySession("강의 모집 중에만 수강 신청이 가능합니다.");
     }
 
-    enrollment();
+    if (sessionApply.isMaxEnrollment()) {
+      throw new CannotApplySession("수강 가능한 인원이 다 찼습니다.");
+    }
+
+    enrollmentUsers.add(user);
+    sessionApply.enrollment();
   }
 
-  private boolean isRecruiting() {
-    return status == Status.RECRUITING;
+  private boolean isApply(NsUser user) {
+    return enrollmentUsers.contains(user);
   }
-
-  private void enrollment() {
-    enrollment++;
-  }
-
-  private boolean isMaxEnrollment() {
-    return enrollment >= maxEnrollment;
-  }
-
 }
