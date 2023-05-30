@@ -22,10 +22,10 @@ VALUES (1, 'PAID', 'RECRUITING', 3, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-
 -- STEP 4
 -- id: 4, 수강인원 5명인 강의, 강사: 'javajigi'
 INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
-VALUES (1, 'PAID', 'PREPARING', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+VALUES (1, 'PAID', 'ONGOING', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
 INSERT INTO session_teacher (session_id, ns_user_id) VALUES (4, 1);
 
 -- id: 5, 수강인원 1명인 강의, 강사: 'javajigi'
 INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
-VALUES (1, 'PAID', 'PREPARING', 'RECRUIT', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+VALUES (1, 'PAID', 'ONGOING', 'RECRUIT', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
 INSERT INTO session_teacher (session_id, ns_user_id) VALUES (5, 1);

@@ -50,7 +50,7 @@ public class SessionTest {
 
   public static final Session S4 = new Session(4L, CourseTest.C1,
       SessionPayType.PAID,
-      SessionProgressStatus.PREPARING,
+      SessionProgressStatus.ONGOING,
       SessionRecruitStatus.RECRUIT,
       5,
       LocalDateTime.of(2023, 5, 26, 13, 0),
@@ -59,7 +59,7 @@ public class SessionTest {
 
   public static final Session S5 = new Session(5L, CourseTest.C1,
       SessionPayType.PAID,
-      SessionProgressStatus.PREPARING,
+      SessionProgressStatus.ONGOING,
       SessionRecruitStatus.RECRUIT,
       1,
       LocalDateTime.of(2023, 5, 26, 13, 0),

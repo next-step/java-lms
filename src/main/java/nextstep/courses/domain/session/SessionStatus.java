@@ -1,8 +1,13 @@
 package nextstep.courses.domain.session;
 
+import java.util.List;
+
 public class SessionStatus {
   private final SessionProgressStatus progressStatus;
   private final SessionRecruitStatus recruitStatus;
+
+  private static final List<SessionProgressStatus> ENROLL_ALLOWED_PROGRESS_STATUS
+      = List.of(SessionProgressStatus.RECRUITING, SessionProgressStatus.ONGOING);
 
   public SessionStatus(SessionProgressStatus progressStatus, SessionRecruitStatus recruitStatus) {
     this.progressStatus = progressStatus;
@@ -10,15 +15,11 @@ public class SessionStatus {
   }
 
   public boolean isEnrollable() {
-    if(isLegacyProgress() && progressStatus == SessionProgressStatus.RECRUITING) {
+    if (isNewlyEnrollable()) {
       return true;
     }
 
-    if (isLegacyProgress()) {
-      return false;
-    }
-
-    return recruitStatus == SessionRecruitStatus.RECRUIT;
+    return isLegacyEnrollable();
   }
 
   public boolean isNotEnrollable() {
@@ -33,7 +34,21 @@ public class SessionStatus {
     return recruitStatus.getRecruitStatusName();
   }
 
-  private boolean isLegacyProgress() {
-    return recruitStatus == null;
+  @Deprecated
+  private boolean isLegacyEnrollable() {
+    if (recruitStatus != null) {
+      return false;
+    }
+
+    return ENROLL_ALLOWED_PROGRESS_STATUS.contains(progressStatus);
+  }
+
+  private boolean isNewlyEnrollable() {
+    if(recruitStatus == null) {
+      return false;
+    }
+
+    return ENROLL_ALLOWED_PROGRESS_STATUS.contains(progressStatus)
+        && recruitStatus == SessionRecruitStatus.RECRUIT;
   }
 }

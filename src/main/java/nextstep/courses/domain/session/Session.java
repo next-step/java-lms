@@ -100,7 +100,7 @@ public class Session {
   }
 
   public String getRecruitStatusName() {
-    return sessionStatus.getProgressStatusName();
+    return sessionStatus.getRecruitStatusName();
   }
 
   public SessionPeriod getSessionPeriod() {
