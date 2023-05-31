@@ -13,30 +13,18 @@ public class Session {
 
     private Boolean isFree;
 
-    private SessionStatus sessionStatus;
+    private Registration registration;
 
-    private Students students;
-
-    private Long capacity;
-
-    public Session(Long id, String title, Period period, String coverImageUrl, Boolean isFree, SessionStatus sessionStatus, Students students, Long capacity) {
+    public Session(Long id, String title, Period period, String coverImageUrl, Boolean isFree, Registration registration) {
         this.id = id;
         this.title = title;
         this.period = period;
         this.coverImageUrl = coverImageUrl;
         this.isFree = isFree;
-        this.sessionStatus = sessionStatus;
-        this.students = students;
-        this.capacity = capacity;
+        this.registration = registration;
     }
 
     public void add(NsUser user) {
-        if (this.sessionStatus != SessionStatus.OPEN) {
-            throw new IllegalStateException("강의 모집 중이 아닙니다.");
-        }
-        if (this.students.isGreaterEqualThan(this.capacity)) {
-            throw new IllegalStateException("강의가 현재 만석입니다.");
-        }
-        this.students.add(user);
+        registration.register(user);
     }
 }

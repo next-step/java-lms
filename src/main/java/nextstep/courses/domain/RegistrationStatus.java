@@ -1,5 +1,5 @@
 package nextstep.courses.domain;
 
-public enum SessionStatus {
+public enum RegistrationStatus {
     READY, OPEN, CLOSED
 }
