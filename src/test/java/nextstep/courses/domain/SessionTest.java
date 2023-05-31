@@ -28,16 +28,6 @@ public class SessionTest {
   }
 
   @Test
-  @DisplayName("수강 신청 만석 시 IllegalArgumentException throw")
-  public void 수강_신청_만석() {
-    session.processEnrollment(NextStepUserTest.JAVAJIGI);
-
-    assertThatThrownBy(() -> session.processEnrollment(NextStepUserTest.SANJIGI))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("해당 세션의 수강 인원이 만석되었습니다.");
-  }
-
-  @Test
   @DisplayName("수강 신청이 모집중이 아닐 시 IllegalArgumentException throw")
   public void 준비중_시_신청() {
     session.ending();

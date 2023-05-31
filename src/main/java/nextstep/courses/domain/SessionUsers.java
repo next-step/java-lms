@@ -19,7 +19,7 @@ public class SessionUsers {
     this.sessionUsers = sessionUsers;
   }
 
-  public void processUserEnrollment(SessionUser sessionUser) {
+  public void approveUserEnrollment(SessionUser sessionUser) {
     if (!canEnrollUser()) {
       throw new IllegalArgumentException(MAX_ENROLLMENT_MESSAGE);
     }
@@ -45,5 +45,13 @@ public class SessionUsers {
 
   public List<SessionUser> getSessionUsers() {
     return sessionUsers;
+  }
+
+  @Override
+  public String toString() {
+    return "SessionUsers{" +
+            "maxUserEnrollment=" + maxUserEnrollment +
+            ", sessionUsers=" + sessionUsers +
+            '}';
   }
 }

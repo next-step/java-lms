@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.*;
 import nextstep.users.domain.NextStepUserTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class SessionServiceTest {
 
   @Autowired
   private SessionService sessionService;
+
+  @Autowired
+  private SessionRepository sessionRepository;
+
   private Session session;
 
   @BeforeEach
@@ -28,16 +33,10 @@ public class SessionServiceTest {
   }
 
   @Test
-  public void session_enrollment_count() {
+  public void approve_enrollment_count() {
     Session findSession = sessionService.findById(session.getId());
-    assertThat(findSession.getSessionUsers().getSessionUsers()).hasSize(1);
-  }
 
-  @Test
-  public void session_만석() {
-    assertThatThrownBy(() -> sessionService.enrollUser(session.getId(), NextStepUserTest.SANJIGI.getUserId()))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("해당 세션의 수강 인원이 만석되었습니다.");
+    assertThat(findSession.getSessionUsers().getSessionUsers()).hasSize(0);
   }
 
   @Test
@@ -62,6 +61,16 @@ public class SessionServiceTest {
 
     SessionUser sessionUser = sessionService.findBySessionIdAndUserId(session.getId(), NextStepUserTest.JAVAJIGI.getId());
     assertThat(sessionUser.getSessionUserStatus()).isEqualTo("승인");
+  }
+
+  @Test
+  public void session_승인_만석() {
+    sessionService.enrollUser(session.getId(), NextStepUserTest.SANJIGI.getUserId());
+    sessionService.approveEnrollment(session.getId(), NextStepUserTest.JAVAJIGI.getId());
+
+    assertThatThrownBy(() -> sessionService.approveEnrollment(session.getId(), NextStepUserTest.SANJIGI.getId()))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("해당 세션의 수강 인원이 만석되었습니다.");
   }
 
   @Test

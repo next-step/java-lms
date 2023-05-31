@@ -59,6 +59,8 @@ public class SessionUser {
   }
 
   public void approve() {
+    session.getSessionUsers().approveUserEnrollment(this);
+
     this.sessionUserStatus = SessionUserStatus.APPROVAL;
   }
 
