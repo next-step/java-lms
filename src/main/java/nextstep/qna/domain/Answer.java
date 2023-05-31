@@ -4,22 +4,8 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
-
+public class Answer extends Document {
     private Question question;
-
-    private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -41,31 +27,7 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
+        this.contentType = ContentType.ANSWER;
     }
 
     public void toQuestion(Question question) {
@@ -75,5 +37,13 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public void deleteAnswer() {
+        setDeleted(true);
+    }
+
+    public DeleteHistory deleteHistory() {
+        return DeleteHistory.from(this);
     }
 }

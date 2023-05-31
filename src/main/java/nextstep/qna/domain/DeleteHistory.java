@@ -5,25 +5,22 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DeleteHistory {
-    private Long id;
-
-    private ContentType contentType;
-
+public class DeleteHistory extends Document {
     private Long contentId;
-
     private NsUser deletedBy;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
-        this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
+    private DeleteHistory(Document document) {
+        this.contentType = document.contentType;
+        this.contentId = document.getId();
+        this.deletedBy = document.getWriter();
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public static DeleteHistory from(Document document) {
+        return new DeleteHistory(document);
     }
 
     @Override
