@@ -31,13 +31,11 @@ public class StudentRepositoryTest {
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
         userRepository = new JdbcUserRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-
-        sessionRepository.save(new Session(1L, 100L, SessionStatus.RECRUITING));
     }
 
     @Test
     void crud() {
-        Students students = new Students(1L, 1L);
+        Students students = new Students(2L, 1L);
         int count = studentRepository.save(students);
         Assertions.assertThat(count).isEqualTo(1);
     }
