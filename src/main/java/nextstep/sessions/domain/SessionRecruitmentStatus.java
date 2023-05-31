@@ -22,7 +22,7 @@ public enum SessionRecruitmentStatus {
         if (VALUE_MAP.containsKey(name)) {
             return VALUE_MAP.get(name);
         }
-        throw new IllegalArgumentException("유요하지 않은 강의상태입니다.(" + name + ")");
+        throw new IllegalArgumentException("유효하지 않은 강의 모집상태입니다.(" + name + ")");
     }
 
     public String getName() {
