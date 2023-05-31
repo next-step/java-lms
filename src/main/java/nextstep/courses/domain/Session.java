@@ -2,16 +2,12 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Session {
     private Long id;
 
     private String title;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
+    private Period period;
 
     private String coverImageUrl;
 
@@ -23,11 +19,10 @@ public class Session {
 
     private Long capacity;
 
-    public Session(Long id, String title, LocalDateTime startDate, LocalDateTime endDate, String coverImageUrl, Boolean isFree, SessionStatus sessionStatus, Students students, Long capacity) {
+    public Session(Long id, String title, Period period, String coverImageUrl, Boolean isFree, SessionStatus sessionStatus, Students students, Long capacity) {
         this.id = id;
         this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = period;
         this.coverImageUrl = coverImageUrl;
         this.isFree = isFree;
         this.sessionStatus = sessionStatus;
