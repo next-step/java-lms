@@ -1,8 +1,8 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.course.CourseBuilder;
-import nextstep.courses.domain.session.SessionBuilder;
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.CourseBuilder;
+import nextstep.sessions.domain.SessionBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
