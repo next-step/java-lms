@@ -1,36 +1,29 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.DuplicateStudentException;
-import nextstep.courses.exception.SignUpFullException;
-
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.courses.exception.EnrollFullException;
+import nextstep.users.domain.NsUser;
 
 public class SessionStatus {
     private int maxCapacity;
-    private Students students = new Students();
+    private Enrollments enrollments = new Enrollments();
 
     public SessionStatus(int maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
 
-    public int getStudentsSize() {
-        return students.getSize();
+    public int getEnrollmentSize() {
+        return enrollments.getSize();
     }
 
-    public void signUp(Student student) {
-        if (students.getSize() >= maxCapacity) {
-            throw new SignUpFullException("최대 수강 인원을 초과하여 신청이 불가합니다.");
+    public void enroll(NsUser student, long sessionId) {
+        if (enrollments.getSize() >= maxCapacity) {
+            throw new EnrollFullException("최대 수강 인원을 초과하여 신청이 불가합니다.");
         }
 
-        students.add(student);
+        enrollments.enroll(student, sessionId);
     }
 
     public int getMaxCapacity() {
         return maxCapacity;
-    }
-
-    public int getStudentCount() {
-        return students.getSize();
     }
 }

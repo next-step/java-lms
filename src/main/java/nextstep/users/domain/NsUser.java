@@ -113,6 +113,11 @@ public class NsUser {
                 email.equals(target.email);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return this.id == ((NsUser) other).id;
+    }
+
     public boolean isGuestUser() {
         return false;
     }

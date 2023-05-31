@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.SessionState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -47,12 +48,12 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
-    public void signUpStudent(Student student) {
+    public void enroll(NsUser student) {
         if (!state.equals(SessionState.PROCEEDING)) {
             throw new SessionNotOpenException("강의가 모집중이 아니어서 신청이 불가합니다.");
         }
 
-        status.signUp(student);
+        status.enroll(student, this.id);
     }
 
 
@@ -82,7 +83,7 @@ public class Session {
     }
 
     public int getSignedUpStatus() {
-        return status.getStudentsSize();
+        return status.getEnrollmentSize();
     }
 
     public String getStartDate() {
@@ -103,10 +104,6 @@ public class Session {
 
     public int getMaxCapacity() {
         return status.getMaxCapacity();
-    }
-
-    public int getStudentCount() {
-        return status.getStudentCount();
     }
 
     public int getState() {

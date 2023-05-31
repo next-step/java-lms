@@ -3,16 +3,18 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.SessionState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
+import nextstep.users.domain.NsUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class SessionTest {
+    private static final NsUser jerry = new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com");
+    private static final NsUser joy = new NsUser(2L, "joy", "password", "조이", "joy@nextstep.com");
+    private static final NsUser david = new NsUser(3L, "david","password","데이빗","david@gamil.com");
 
     @Test
     void 생성자검증() {
@@ -46,7 +48,7 @@ public class SessionTest {
         session.setSessionState(SessionState.END);
 
         assertThatThrownBy(() -> {
-            session.signUpStudent(new Student("jerry","제리","jerry@gamil.com"));
+            session.enroll(new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com"));
         }).isInstanceOf(SessionNotOpenException.class).hasMessageContaining("강의가 모집중이 아니어서 신청이 불가합니다.");
     }
 
@@ -56,9 +58,9 @@ public class SessionTest {
 
         session.setSessionState(SessionState.PROCEEDING);
 
-        session.signUpStudent(new Student("jerry","제리","jerry@gamil.com"));
-        session.signUpStudent(new Student("joy","조이","joy@gamil.com"));
-        session.signUpStudent(new Student("david","데이빗","david@gamil.com"));
+        session.enroll(jerry);
+        session.enroll(joy);
+        session.enroll(david);
 
         Assertions.assertThat(session.getSignedUpStatus()).isEqualTo(3);
     }
