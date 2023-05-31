@@ -48,4 +48,4 @@
 * [x] 강의(Session) 도메인에 수강신청 기능 구현
 * [x] 도메인 모델을 DB 테이블과 매핑 (LmsUser)
 * [x] 도메인 모델을 DB 테이블과 매핑 (Course)
-* [ ] 도메인 모델을 DB 테이블과 매핑 (Session)
+* [x] 도메인 모델을 DB 테이블과 매핑 (Session)

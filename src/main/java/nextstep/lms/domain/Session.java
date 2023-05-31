@@ -6,10 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Session {
-    private static final AtomicLong idGenerator = new AtomicLong(1);
     private Long id;
 
     private String title;
@@ -36,7 +34,7 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(Long id, String title, Course course, LmsUser creator, SessionPrice price, SessionStatus status, Integer maxApplicantCount, List<LmsUser> applicants, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, String title, Course course, LmsUser creator, SessionPrice price, SessionStatus status, Integer maxApplicantCount, List<LmsUser> applicants, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.course = course;
@@ -67,7 +65,7 @@ public class Session {
     public static Session of(String title, Course course, LmsUser creator, Integer price, Integer maxApplicantCount, SessionCoverImg coverImg, LocalDate startDate, LocalDate endDate) {
         Utils.validateTile(title);
         validateCreatorAuthorization(course, creator);
-        return new Session(idGenerator.getAndIncrement(), title, course, creator, new SessionPrice(price), SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
+        return new Session(null, title, course, creator, new SessionPrice(price), SessionStatus.PREPARING, maxApplicantCount, new ArrayList<>(), coverImg, startDate, endDate, LocalDateTime.now(), null);
     }
 
     private void validateCreator(LmsUser user) {
@@ -110,7 +108,7 @@ public class Session {
     }
 
     public boolean isCourse(Course course) {
-        return this.course == course;
+        return this.course.equals(course);
     }
 
     public boolean isFree() {
@@ -130,11 +128,81 @@ public class Session {
     }
 
     public boolean isCreator(LmsUser user) {
-        return this.creator == user;
+        return this.creator.equals(user);
     }
 
     public boolean updatedAtIsNull() {
         return updatedAt == null;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Long getCourseId() {
+        return course.getId();
+    }
+
+    public Long getCreatorId() {
+        return creator.getId();
+    }
+
+    public Integer getPriceValue() {
+        return price.getPrice();
+    }
+
+    public String getStatus() {
+        return status.name();
+    }
+
+    public Integer getMaxApplicantCount() {
+        return maxApplicantCount;
+    }
+
+    public List<LmsUser> getApplicants() {
+        return applicants;
+    }
+
+    public String getCoverImgURL() {
+        return coverImg.getUrl();
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", course=" + course +
+                ", creator=" + creator +
+                ", price=" + price +
+                ", status=" + status +
+                ", maxApplicantCount=" + maxApplicantCount +
+                ", applicants=" + applicants +
+                ", coverImg=" + coverImg +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

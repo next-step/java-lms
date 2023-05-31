@@ -45,6 +45,24 @@ public class JdbcCourseRepository implements CourseRepository {
         return course;
     }
 
+    @Override
+    public Course findByTitle(String courseTitle) {
+        String sql = "SELECT * FROM course WHERE title = ?";
+        Course course = jdbcTemplate.queryForObject(sql, new Object[]{courseTitle}, (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            String title = rs.getString("title");
+            Long creatorId = rs.getLong("creator_id");
+            LocalDateTime createdAt = toLocalDateTime(rs.getTimestamp("created_at"));
+            LocalDateTime updatedAt = toLocalDateTime(rs.getTimestamp("updated_at"));
+
+            LmsUser creator = lmsUserRepository.findById(creatorId);
+
+            Course loadedCourse = new Course(id, title, creator, new ArrayList<>(), createdAt, updatedAt);
+            return loadedCourse;
+        });
+        return course;
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

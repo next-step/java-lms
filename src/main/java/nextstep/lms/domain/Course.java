@@ -5,11 +5,10 @@ import nextstep.lms.UnAuthorizedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Course {
-    private static final AtomicLong idGenerator = new AtomicLong(1);
-
     private Long id;
 
     private String title;
@@ -43,11 +42,11 @@ public class Course {
     public static Course of(String title, LmsUser creator) {
         Utils.validateTile(title);
         valiateCreatorAuthorization(creator);
-        return new Course(idGenerator.getAndIncrement(), title, creator, new ArrayList<>(), LocalDateTime.now(), null);
+        return new Course(null, title, creator, new ArrayList<>(), LocalDateTime.now(), null);
     }
 
     public boolean isSameCreator(LmsUser sessionCreator) {
-        return creator == sessionCreator;
+        return creator.equals(sessionCreator);
     }
 
     public void addSession(Session newSession) {
@@ -60,6 +59,10 @@ public class Course {
 
     public boolean hasSession(Session session) {
         return this.sessions.contains(session);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -84,5 +87,18 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id) && Objects.equals(title, course.title) && Objects.equals(creator, course.creator) && Objects.equals(sessions, course.sessions) && Objects.equals(createdAt, course.createdAt) && Objects.equals(updatedAt, course.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, creator, sessions, createdAt, updatedAt);
     }
 }

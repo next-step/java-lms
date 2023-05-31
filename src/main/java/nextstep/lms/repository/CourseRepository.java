@@ -6,4 +6,6 @@ public interface CourseRepository {
     int save(Course course);
 
     Course findById(Long id);
+
+    Course findByTitle(String title);
 }

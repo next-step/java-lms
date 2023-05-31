@@ -1,6 +1,7 @@
 package nextstep.lms.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LmsUser {
@@ -104,5 +105,18 @@ public class LmsUser {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LmsUser lmsUser = (LmsUser) o;
+        return Objects.equals(id, lmsUser.id) && Objects.equals(userId, lmsUser.userId) && Objects.equals(password, lmsUser.password) && Objects.equals(name, lmsUser.name) && role == lmsUser.role && Objects.equals(createdAt, lmsUser.createdAt) && Objects.equals(updatedAt, lmsUser.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, password, name, role, createdAt, updatedAt);
     }
 }

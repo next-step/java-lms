@@ -20,7 +20,7 @@ public class JdbcLmsUserRepository implements LmsUserRepository {
     }
 
     @Override
-    public Optional<LmsUser> findByUserId(String userId) {
+    public LmsUser findByUserId(String userId) {
         String sql = "select id, user_id, password, name, role, created_at, updated_at from lms_user where user_id = ?";
         RowMapper<LmsUser> rowMapper = (rs, rowNum) -> new LmsUser(
                 rs.getLong(1),
@@ -30,7 +30,7 @@ public class JdbcLmsUserRepository implements LmsUserRepository {
                 LmsUserRole.valueOf(rs.getString(5)),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId)).orElse(null);
     }
 
     @Override

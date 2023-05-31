@@ -24,4 +24,8 @@ public class SessionPrice {
     public boolean isPaid() {
         return price > 0;
     }
+
+    public Integer getPrice() {
+        return price;
+    }
 }
