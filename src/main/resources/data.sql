@@ -34,3 +34,11 @@ INSERT INTO session_teacher (session_id, ns_user_id) VALUES (5, 1);
 INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
 VALUES (1, 'PAID', 'END', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
 INSERT INTO session_teacher (session_id, ns_user_id) VALUES (6, 1);
+
+-- id: 6, 수강인원 5명인 강의, 강사: '없음', 신청 불가능한 강의
+INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
+VALUES (1, 'PAID', 'END', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (6, 1);
+
+-- 레거시(Step 3) 수강 취소 테스트를 위해 강사추가
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (1, 1);

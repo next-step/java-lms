@@ -20,7 +20,8 @@ public class SessionService {
   private final SessionTeacherService sessionTeacherService;
 
   public SessionService(
-      SessionRepository jdbcSessionRepository, SessionStudentService sessionStudentService, SessionTeacherService sessionTeacherService
+      SessionRepository jdbcSessionRepository, SessionStudentService sessionStudentService,
+      SessionTeacherService sessionTeacherService
   ) {
     this.sessionRepository = jdbcSessionRepository;
     this.sessionStudentService = sessionStudentService;
@@ -28,9 +29,9 @@ public class SessionService {
   }
 
   @Transactional
-  public void takeSession (NsUser studentUser, Long sessionId) {
+  public Long takeSession(NsUser studentUser, Long sessionId) {
     Session session = this.getSessionWithStudents(sessionId);
-    sessionStudentService.enrollStudent(session, studentUser);
+    return sessionStudentService.enrollStudent(session, studentUser);
   }
 
   @Transactional

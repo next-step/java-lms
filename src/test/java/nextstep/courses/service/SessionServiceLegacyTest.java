@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import utils.AssertionUtils;
 
+@Deprecated
 public class SessionServiceLegacyTest extends RollackableIntegrationTest {
   @Autowired
   SessionService sut;

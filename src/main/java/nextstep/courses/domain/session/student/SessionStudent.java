@@ -34,6 +34,11 @@ public class SessionStudent {
     this.cancelFlag = false;
   }
 
+  public SessionStudent(Long id, Session session, Long nsUserId) {
+    this(session, nsUserId);
+    this.id = id;
+  }
+
   public Long getId() {
     return id;
   }

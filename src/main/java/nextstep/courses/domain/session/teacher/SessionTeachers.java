@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session.teacher;
 
 import exception.LmsException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.CollectionUtils;
 
 public class SessionTeachers {
+
   private final Map<Long, SessionTeacher> teacherMap;
 
   public SessionTeachers(List<SessionTeacher> teachers) {
@@ -20,7 +20,7 @@ public class SessionTeachers {
 
   public boolean contains(NsUser nsUser) {
     SessionTeacher sessionTeacher = teacherMap.get(nsUser.getId());
-    if(sessionTeacher == null) {
+    if (sessionTeacher == null) {
       return false;
     }
 
@@ -33,6 +33,10 @@ public class SessionTeachers {
       throw new LmsException(SessionExceptionCode.TEACHER_NOT_FOUND);
     }
     return teacher;
+  }
+
+  public int getNumberOfTeacher() {
+    return teacherMap.size();
   }
 
   private Map<Long, SessionTeacher> getAsMap(List<SessionTeacher> teachers) {

@@ -27,6 +27,7 @@ public class SessionTest {
       LocalDateTime.of(2023, 5, 28, 13, 0)
   );
 
+  @Deprecated
   public static final Session S2 = new Session(2L, CourseTest.C1,
       SessionPayType.PAID,
       SessionProgressStatus.PREPARING,
@@ -65,6 +66,16 @@ public class SessionTest {
   );
 
   public static final Session S6 = new Session(6L, CourseTest.C1,
+      SessionPayType.PAID,
+      SessionProgressStatus.END,
+      SessionRecruitStatus.RECRUIT,
+      5,
+      LocalDateTime.of(2023, 5, 26, 13, 0),
+      LocalDateTime.of(2023, 5, 28, 13, 0)
+  );
+
+  // 강사가 없는 강의
+  public static final Session S7 = new Session(7L, CourseTest.C1,
       SessionPayType.PAID,
       SessionProgressStatus.END,
       SessionRecruitStatus.RECRUIT,

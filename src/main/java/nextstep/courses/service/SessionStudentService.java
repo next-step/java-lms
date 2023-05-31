@@ -1,5 +1,6 @@
 package nextstep.courses.service;
 
+import exception.LmsException;
 import java.util.List;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.student.SessionStudent;
@@ -7,6 +8,7 @@ import nextstep.courses.domain.session.student.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudentStatus;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.domain.session.teacher.SessionTeacher;
+import nextstep.courses.exception.SessionExceptionCode;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +23,13 @@ public class SessionStudentService {
   }
 
   @Transactional
-  public void enrollStudent (Session session, NsUser nsUser) {
+  public Long enrollStudent(Session session, NsUser nsUser) {
     SessionStudent student = session.addPersonnel(nsUser);
-    sessionStudentRepository.takeSession(student.getSessionId(), student.getNsUserId());
+    return sessionStudentRepository.takeSession(student.getSessionId(), student.getNsUserId());
   }
 
   @Transactional
-  public void cancelSession (SessionStudent student) {
+  public void cancelSession(SessionStudent student) {
     sessionStudentRepository.cancelSession(student.getId());
   }
 
@@ -38,11 +40,21 @@ public class SessionStudentService {
 
   @Transactional
   public int approveSession(Session session, SessionTeacher teacher, SessionStudent student) {
-    return sessionStudentRepository.changeStudentStatus(session.getId(), teacher.getId(), student.getId(), SessionStudentStatus.APPROVE);
+    if (session.isLegacy()) {
+      throw new LmsException(SessionExceptionCode.UNSUPPORTED_OPERATION);
+    }
+
+    return sessionStudentRepository.changeStudentStatus(session.getId(), teacher.getId(),
+        student.getId(), SessionStudentStatus.APPROVE);
   }
 
   @Transactional
   public int refuseSession(Session session, SessionTeacher teacher, SessionStudent student) {
-    return sessionStudentRepository.changeStudentStatus(session.getId(), teacher.getId(), student.getId(), SessionStudentStatus.REFUSAL);
+    if (session.isLegacy()) {
+      throw new LmsException(SessionExceptionCode.UNSUPPORTED_OPERATION);
+    }
+
+    return sessionStudentRepository.changeStudentStatus(session.getId(), teacher.getId(),
+        student.getId(), SessionStudentStatus.REFUSAL);
   }
 }
