@@ -1,10 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Students {
-    private final List<Student> students;
+    private final List<NsUser> students;
 
     public Students() {
         this.students = new ArrayList<>();
@@ -14,15 +16,15 @@ public class Students {
         return this.students.size() >= capacity;
     }
 
-    public void add(Student student) {
-        if (this.contains(student)) {
+    public void add(NsUser user) {
+        if (this.contains(user)) {
             throw new IllegalStateException("이미 강의를 신청하였습니다.");
         }
-        this.students.add(student);
+        this.students.add(user);
     }
 
-    private boolean contains(Student student) {
+    private boolean contains(NsUser user) {
         return this.students.stream()
-                .anyMatch(currentStudent -> currentStudent.equals(student));
+                .anyMatch(currentUser -> currentUser.matchUser(user));
     }
 }

@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Session {
@@ -33,13 +35,13 @@ public class Session {
         this.capacity = capacity;
     }
 
-    public void add(Student student) {
+    public void add(NsUser user) {
         if (this.sessionStatus != SessionStatus.OPEN) {
             throw new IllegalStateException("강의 모집 중이 아닙니다.");
         }
         if (this.students.isGreaterEqualThan(this.capacity)) {
             throw new IllegalStateException("강의가 현재 만석입니다.");
         }
-        this.students.add(student);
+        this.students.add(user);
     }
 }
