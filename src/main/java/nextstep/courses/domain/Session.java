@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.SessionEnrollmentContext.Status;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -8,35 +9,23 @@ import java.util.List;
 
 public class Session {
     private Long id;
-
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
+    private DateTray dateTray;
     private String coverUrl;
-
-    private Status progressStatus;
-
     private BillType billType;
-
     private Price price;
+    private SessionEnrollmentContext enrollmentContext;
 
-    private long maxEnrollment;
+
 
     private Course course;
 
-    private final List<Student> students = new ArrayList<>();
-
     public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Course course) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dateTray = new DateTray(startDate, endDate);
         this.coverUrl = coverUrl;
-        this.progressStatus = Status.NOT_STARTED;
         this.billType = billType;
         this.price = price;
-        this.maxEnrollment = maxEnrollment;
         this.course = course;
-
+        this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment);
         checkPriceValidate();
     }
 
@@ -49,24 +38,15 @@ public class Session {
     }
 
     public boolean statusEquals(Status status) {
-        return this.progressStatus == status;
+        return this.enrollmentContext.statusEquals(status);
     }
 
     public BillType getBillType() {
         return billType;
     }
 
-    public long getNumberOfStudents() {
-        return this.students.size();
-    }
-
     public boolean isEnrollable() {
-        return this.progressStatus == Status.IN_PROGRESS &&
-                this.maxEnrollment > students.size();
-    }
-
-    public enum Status {
-        NOT_STARTED, IN_PROGRESS, FINISHED
+        return enrollmentContext.isEnrollable();
     }
 
     public enum BillType {
@@ -74,32 +54,16 @@ public class Session {
     }
 
     public void start() {
-        this.progressStatus = Status.IN_PROGRESS;
+        enrollmentContext.start();
     }
 
     public void end() {
-        this.progressStatus = Status.FINISHED;
+        enrollmentContext.end();
     }
 
     public Student enroll(NsUser user) {
-        checkEnrollmentValidate();
         Student student = new Student(this, user);
-        this.students.add(student);
-        return student;
-    }
-
-    private void checkEnrollmentValidate() {
-        if (this.progressStatus == Status.FINISHED) {
-            throw new IllegalArgumentException("강의가 종료되었습니다.");
-        }
-
-        if (this.progressStatus == Status.NOT_STARTED) {
-            throw new IllegalArgumentException("아직 모집중이 아닙니다.");
-        }
-
-        if (this.maxEnrollment <= this.course.getNumberOfStudents()) {
-            throw new IllegalArgumentException("수강생이 가득 찼습니다.");
-        }
+        return enrollmentContext.enroll(student);
     }
 
     public Price getPrice() {

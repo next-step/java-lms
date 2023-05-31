@@ -45,7 +45,7 @@ class SessionTest {
         );
 
         // when&then
-        Assertions.assertThat(session.statusEquals(Session.Status.NOT_STARTED)).isTrue();
+        Assertions.assertThat(session.statusEquals(SessionEnrollmentContext.Status.NOT_STARTED)).isTrue();
     }
 
     @ParameterizedTest
