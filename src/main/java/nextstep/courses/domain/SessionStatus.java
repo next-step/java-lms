@@ -24,4 +24,8 @@ public enum SessionStatus {
         return this.sessionStatus.equals(sessionStatus);
     }
 
+    public boolean isNotRecruiting() {
+        return this != RECRUITING;
+    }
+
 }

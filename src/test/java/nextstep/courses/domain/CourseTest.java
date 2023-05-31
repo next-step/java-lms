@@ -11,8 +11,8 @@ class CourseTest {
     @DisplayName("과정은 여러개의 강의를 가질 수 있다.")
     void 과정_강의_일대다관계() {
         Course course = new Course(1L, "Course1", 1L, LocalDateTime.now(), LocalDateTime.now());
-        course.addSession(SessionTest.sessionTest1);
-        course.addSession(SessionTest.sessionTest1);
+        course.addSession(SessionBuilder.aSession().build());
+        course.addSession(SessionBuilder.aSession().build());
 
         Assertions.assertThat(course.getSessions()).hasSize(2);
     }
