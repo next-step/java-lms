@@ -2,6 +2,7 @@ package nextstep.courses.domain.session.teacher;
 
 import exception.LmsException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -11,11 +12,9 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.CollectionUtils;
 
 public class SessionTeachers {
-  private final List<SessionTeacher> teachers;
   private final Map<Long, SessionTeacher> teacherMap;
 
   public SessionTeachers(List<SessionTeacher> teachers) {
-    this.teachers = teachers;
     this.teacherMap = getAsMap(teachers);
   }
 
@@ -38,7 +37,7 @@ public class SessionTeachers {
 
   private Map<Long, SessionTeacher> getAsMap(List<SessionTeacher> teachers) {
     if (CollectionUtils.isEmpty(teachers)) {
-      return Collections.emptyMap();
+      return new HashMap<>();
     }
 
     return teachers.stream()

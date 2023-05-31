@@ -2,6 +2,7 @@ package nextstep.courses.domain.session.student;
 
 import exception.LmsException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -11,11 +12,9 @@ import org.springframework.util.CollectionUtils;
 
 public class SessionStudents {
 
-  private final List<SessionStudent> students;
   private final Map<Long, SessionStudent> studentMap;
 
   public SessionStudents(List<SessionStudent> students) {
-    this.students = students;
     this.studentMap = getAsMap(students);
   }
 
@@ -25,7 +24,7 @@ public class SessionStudents {
   }
 
   public int getCurrentStudentCount() {
-    return students.size();
+    return studentMap.size();
   }
 
   public void addStudent(SessionStudent student) {
@@ -33,7 +32,7 @@ public class SessionStudents {
       throw new LmsException(SessionExceptionCode.STUDENT_ALREADY_REGISTERED);
     }
 
-    students.add(student);
+    studentMap.put(student.getNsUserId(), student);
   }
 
   public SessionStudent getStudent(Long nsUserId) {
@@ -44,13 +43,12 @@ public class SessionStudents {
     return sessionStudent;
   }
 
-
-  private Map<Long, SessionStudent> getAsMap(List<SessionStudent> teachers) {
-    if (CollectionUtils.isEmpty(teachers)) {
-      return Collections.emptyMap();
+  private Map<Long, SessionStudent> getAsMap(List<SessionStudent> students) {
+    if (CollectionUtils.isEmpty(students)) {
+      return new HashMap<>();
     }
 
-    return teachers.stream()
+    return students.stream()
         .collect(Collectors.toMap(SessionStudent::getNsUserId, Function.identity()));
   }
 }
