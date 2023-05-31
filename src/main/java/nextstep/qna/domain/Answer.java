@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.service.DeleteHistoryService;
@@ -74,9 +75,16 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory delete() {
+    public DeleteHistory delete() throws CannotDeleteException {
+        validateAlreadyDeleted();
         this.setDeleted(true);
         return DeleteHistory.answer(this.id, this.writer);
+    }
+
+    public void validateAlreadyDeleted() throws CannotDeleteException {
+        if(this.isDeleted()){
+            throw new CannotDeleteException("이미 삭제된 댓글입니다.");
+        }
     }
 
     @Override
