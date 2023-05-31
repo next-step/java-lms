@@ -34,8 +34,8 @@ public class Session {
         sessionCapacity.addUser(student);
     }
 
-    public int getCurrentUserSize() {
-        return sessionCapacity.getCurrentUserSize();
+    public int getStudentsNumbers() {
+        return sessionCapacity.getStudentsNumbers();
     }
 
     @Override

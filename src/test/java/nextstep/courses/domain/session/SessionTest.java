@@ -55,6 +55,24 @@ public class SessionTest {
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
 
-        assertThat(session.getCurrentUserSize()).isEqualTo(1);
+        assertThat(session.getStudentsNumbers()).isEqualTo(1);
+    }
+
+    @Test//월수금 오전 열시
+    @DisplayName(value = "이미 수강신청한 학생이 중복 수강신청했을 경우")
+    void test4() {
+        Session session = new Session(
+                3L, CourseTest.C1,
+                LocalDateTime.now(),
+                SessionCoverImageTest.image1,
+                SessionType.FREE,
+                SessionStatus.RECRUITING, 1);
+        session.enrollSession(NsUserTest.JAVAJIGI);
+
+        assertThatThrownBy(() -> {
+            session.enrollSession(NsUserTest.JAVAJIGI);
+        }).isInstanceOf(IllegalArgumentException.class);
+
+
     }
 }
