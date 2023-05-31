@@ -57,6 +57,10 @@ public class Enrollment {
 		this.recruitStatusType = RecruitStatusType.of(recruitStatusType);
 	}
 
+	public boolean contains(Student student) {
+		return this.students.contains(student);
+	}
+
 	public ProgressType getProgressType() {
 		return progressType;
 	}

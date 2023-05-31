@@ -15,7 +15,7 @@ public class Student {
 
 	private boolean deleted;
 
-	private SelectStatusType selectStatusType = SelectStatusType.UNDER_REVIEW;
+	private SelectStatusType selectStatusType;
 
 	private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -26,9 +26,14 @@ public class Student {
 	}
 
 	public Student(long sessionId, long nsUserId, boolean deleted) {
+		this(sessionId, nsUserId, deleted, SelectStatusType.UNDER_REVIEW);
+	}
+
+	public Student(long sessionId, long nsUserId, boolean deleted, SelectStatusType selectStatusType) {
 		this.sessionId = sessionId;
 		this.nsUserId = nsUserId;
 		this.deleted = deleted;
+		this.selectStatusType = selectStatusType;
 	}
 
 	public Student enrollCancel() {
