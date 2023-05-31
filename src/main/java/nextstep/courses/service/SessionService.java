@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionUser;
+import nextstep.courses.exception.SessionUserNotFoundException;
 import nextstep.users.domain.NextStepUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 @Transactional
 public class SessionService {
 
+  private static final String ILLEGAL_SESSION_USER_MESSAGE = "유저가 신청한 세션이 없습니다.";
   private final SessionRepository sessionRepository;
   private final UserRepository userRepository;
 
@@ -43,12 +45,20 @@ public class SessionService {
   public void approveEnrollment(Long sessionId, Long userId) {
     SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(sessionId, userId);
 
+    if (sessionUser == null) {
+      throw new SessionUserNotFoundException(ILLEGAL_SESSION_USER_MESSAGE);
+    }
+
     sessionUser.approve();
     sessionRepository.updateSessionUserStatus(sessionUser);
   }
 
   public void rejectEnrollment(Long sessionId, Long userId) {
     SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(sessionId, userId);
+
+    if (sessionUser == null) {
+      throw new SessionUserNotFoundException(ILLEGAL_SESSION_USER_MESSAGE);
+    }
 
     sessionUser.reject();
     sessionRepository.updateSessionUserStatus(sessionUser);
