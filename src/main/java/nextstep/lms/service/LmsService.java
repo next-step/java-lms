@@ -1,16 +1,14 @@
 package nextstep.lms.service;
 
 import nextstep.lms.AlreadyEnrolledException;
-import nextstep.lms.domain.Session;
-import nextstep.lms.domain.SessionRepository;
-import nextstep.lms.domain.Student;
-import nextstep.lms.domain.StudentRepository;
+import nextstep.lms.domain.*;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("lmsService")
 public class LmsService {
@@ -44,5 +42,15 @@ public class LmsService {
         sessionRepository.updateRegisteredStudent(session);
 
         return student;
+    }
+
+    @Transactional
+    public void dropNonSelectedStudents(Session session) {
+        List<Student> nonSelectedStudents = studentRepository.
+                findBySelectedTypeAndSessionId(StudentSelectedType.NON_SELECTED, session.getId());
+
+        List<Student> canceledStudents = session.dropNonSelectedStudent(nonSelectedStudents);
+        studentRepository.updateCanceledStudents(canceledStudents);
+        sessionRepository.updateRegisteredStudent(session);
     }
 }

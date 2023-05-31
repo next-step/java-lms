@@ -62,6 +62,10 @@ public class Student {
         }
     }
 
+    public boolean isNonSelected() {
+        return this.studentSelectedType.equals(StudentSelectedType.NON_SELECTED);
+    }
+
     public Long getNsUserId() {
         return nsUserId;
     }

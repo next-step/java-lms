@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("studentRepository")
@@ -40,6 +41,23 @@ public class JdbcStudentRepository implements StudentRepository {
                 , student.getStudentApprovedType()
                 , student.getStudentRegisterType()
         );
+    }
+
+    @Override
+    public List<Student> findBySelectedTypeAndSessionId(StudentSelectedType selectedType, Long sessionId) {
+        String sql = "sELECt * FROM student WHERE selected_type = ? AND session_id = ?";
+
+        RowMapper<Student> rowMapper = ((rs, rowNum) -> new Student(
+                rs.getLong(1),
+                rs.getLong(2),
+                toSelectedType(rs.getString(3)),
+                toApprovedType(rs.getString(4)),
+                toRegisterType(rs.getString(5)),
+                toLocalDateTime(rs.getTimestamp(6)),
+                toLocalDateTime(rs.getTimestamp(7))
+        ));
+
+        return jdbcTemplate.query(sql, rowMapper, selectedType.toString(), sessionId);
     }
 
     @Override
@@ -100,6 +118,13 @@ public class JdbcStudentRepository implements StudentRepository {
         String sql = "uPDATe student SET register_type = ? WHERE ns_user_id = ? AND session_id = ?";
 
         jdbcTemplate.update(sql, student.getStudentRegisterType(), student.getNsUserId(), student.getSessionId());
+    }
+
+    @Override
+    public void updateCanceledStudents(List<Student> students) {
+        for (Student student : students) {
+            sessionCancel(student);
+        }
     }
 
     @Override

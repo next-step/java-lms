@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -219,6 +220,25 @@ public class SessionTest {
 
         assertThatThrownBy(() -> session.changeRecruitingState())
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("선발되지 않은 학생은 강사가 취소 테스트")
+    void nonSelectedStudentDropTest() {
+        setUp(5);
+        Student javajigiStudent = session.enroll(NsUserTest.JAVAJIGI);
+        javajigiStudent.changeStudentSelect();
+        javajigiStudent.getStudentApprovedType();
+        Student sanjigiStudent = session.enroll(NsUserTest.SANJIGI);
+        Student badajigiStudent = session.enroll(NsUserTest.BADAJIGI);
+        List<Student> students = List.of(javajigiStudent, sanjigiStudent, badajigiStudent);
+
+        List<Student> canceledStudents = session.dropNonSelectedStudent(students);
+
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
+                .isEqualTo(1);
+        assertThat(canceledStudents)
+                .hasSize(2);
     }
 
 }

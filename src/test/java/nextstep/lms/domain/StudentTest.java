@@ -18,8 +18,12 @@ public class StudentTest {
 
         Student student = Student.init(javajigi, classOne);
 
+        assertThat(student.getStudentSelectedType())
+                .isEqualTo(StudentSelectedType.NON_SELECTED.toString());
+        assertThat(student.getStudentApprovedType())
+                .isEqualTo(StudentApprovedType.NON_APPROVED.toString());
         assertThat(student.getStudentRegisterType())
-                .isEqualTo(StudentRegisterType.REGISTERED.toString());
+                .isEqualTo(StudentRegisterType.NOT_PAID.toString());
     }
 
     @Test

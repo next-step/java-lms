@@ -3,6 +3,9 @@ package nextstep.lms.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Session {
 
@@ -98,10 +101,6 @@ public class Session {
         }
     }
 
-    public boolean isFree() {
-        return sessionPaidType.equals(SessionPaidType.FREE);
-    }
-
     public SessionRecruitingState changeStoppedState() {
         this.sessionRecruitingState = SessionRecruitingState.STOPPED;
         return sessionRecruitingState;
@@ -117,6 +116,13 @@ public class Session {
         if (sessionState.equals(SessionState.FINISH)) {
             throw new IllegalArgumentException("강의가 종료되었습니다.");
         }
+    }
+
+    public List<Student> dropNonSelectedStudent(List<Student> students) {
+        return students.stream()
+                .filter(Student::isNonSelected)
+                .peek(this::cancel)
+                .collect(Collectors.toList());
     }
 
     public Long getId() {

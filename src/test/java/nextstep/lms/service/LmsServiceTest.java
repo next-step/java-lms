@@ -5,7 +5,6 @@ import nextstep.lms.domain.*;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
+import static nextstep.lms.domain.StudentSelectedType.NON_SELECTED;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -82,6 +82,17 @@ class LmsServiceTest {
     void cancelNotFoundTest() {
         assertThatThrownBy(() -> lmsService.cancelStudent(nsUser, session))
                 .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("미선발 학생 수강취소 테스트")
+    void dropNonSelectedStudentsTest() {
+        when(studentRepository.findBySelectedTypeAndSessionId(NON_SELECTED, session.getId()))
+                .thenReturn(List.of(student));
+
+        lmsService.dropNonSelectedStudents(session);
+        verify(studentRepository).updateCanceledStudents(List.of(student));
+        verify(sessionRepository).updateRegisteredStudent(session);
     }
 
 }
