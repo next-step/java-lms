@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.registration;
 
 import nextstep.courses.DuplicateStudentRegisterException;
 import nextstep.courses.SessionStateNotRecruitStartException;
@@ -15,7 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.session.SessionTest.createSession;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionRegistrationTest {
 

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.registration;
 
 import nextstep.courses.DuplicateStudentRegisterException;
 import nextstep.courses.SessionStateNotRecruitStartException;
