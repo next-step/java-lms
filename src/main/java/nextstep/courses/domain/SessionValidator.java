@@ -4,26 +4,30 @@ import java.util.HashSet;
 import java.util.Set;
 import nextstep.users.domain.NsUser;
 
-public class SessionHeadCount {
+public class SessionValidator {
 
     private final int maxCount;
     private final Set<NsUser> nsUsers;
+    private SessionState sessionState;
 
-    public SessionHeadCount(int maxCount) {
+    public SessionValidator(int maxCount, SessionState sessionState) {
         this.maxCount = maxCount;
+        this.sessionState = sessionState;
         nsUsers = new HashSet<>();
     }
 
     public void addPerson(NsUser nsUser) {
-        int curCount = nsUsers.size();
-        nsUsers.add(nsUser);
+        if (!SessionState.isRecruitable(sessionState)) {
+            throw new IllegalArgumentException("해당 강의는 수강신청중이 아닙니다.");
+        }
 
-        if (nsUsers.size() > maxCount) {
+        if (nsUsers.size() >= maxCount) {
             throw new IllegalArgumentException("수강신청 정원을 넘었습니다.");
         }
 
-        if (nsUsers.size() == curCount) {
+        if (nsUsers.contains(nsUser)) {
             throw new IllegalArgumentException("중복 신청입니다.");
         }
+        nsUsers.add(nsUser);
     }
 }
