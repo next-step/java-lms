@@ -20,7 +20,7 @@ public class SessionRegistrationTest {
     @BeforeEach
     void setUp() {
         students = new Students();
-        students.addStudent(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.RECRUIT_START, 30)));
+        students.addStudent(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.recruitStartSession.getId()));
     }
     @Test
     @DisplayName("수강 신청 가능 체크")
@@ -28,7 +28,7 @@ public class SessionRegistrationTest {
         SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 30);
 
         assertThatNoException().isThrownBy(() -> {
-            sessionRegistration.register(new Student(NsUserTest.SANJIGI, createSession(Cost.FREE, State.RECRUIT_START, 30)));
+            sessionRegistration.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
         });
     }
 
@@ -37,16 +37,18 @@ public class SessionRegistrationTest {
     void excessMaxUser() {
         SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 1, students);
         assertThatThrownBy(() -> {
-            sessionRegistration.register(new Student(NsUserTest.SANJIGI, createSession(Cost.FREE, State.RECRUIT_START, 1)));
+            sessionRegistration.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
         }).isInstanceOf(StudentMaxException.class).hasMessageContaining("정원 초과하여 신청할 수 없습니다.");
     }
 
     @Test
     @DisplayName("중복 수강 신청 시도")
     void duplicateRegister() {
-        SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 30, students);
+        Session session = createSession(2L, SessionCostType.FREE, State.RECRUIT_START, 30);
+        session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
+
         assertThatThrownBy(() -> {
-            sessionRegistration.register(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.RECRUIT_START, 30)));
+            session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
         }).isInstanceOf(DuplicateStudentRegisterException.class).hasMessageContaining("중복 강의 수강은 불가합니다.");
     }
 
@@ -59,19 +61,19 @@ public class SessionRegistrationTest {
         SessionRegistration sessionRegistration4 = new SessionRegistration(State.SESSION_END, 30);
 
         assertThatThrownBy(() -> {
-            sessionRegistration1.register(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.READY, 30)));
+            sessionRegistration1.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.readySession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("준비중인 강의입니다.");
         
         assertThatThrownBy(() -> {
-            sessionRegistration2.register(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.RECRUIT_END, 30)));
+            sessionRegistration2.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.recruitEndSession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("모집종료인 강의입니다."); 
         
         assertThatThrownBy(() -> {
-            sessionRegistration3.register(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.SESSION_START, 30)));
+            sessionRegistration3.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionStartSession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의중인 강의입니다."); 
         
         assertThatThrownBy(() -> {
-            sessionRegistration4.register(new Student(NsUserTest.JAVAJIGI, createSession(Cost.FREE, State.SESSION_END, 30)));
+            sessionRegistration4.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionEndSession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의종료인 강의입니다.");
     }
 

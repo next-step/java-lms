@@ -7,19 +7,21 @@ import nextstep.users.domain.StudentsTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
-    public static Session readySession = createSession(Cost.FREE, State.READY, 30);
-    public static Session recruitStartSession = createSession(Cost.FREE, State.RECRUIT_START, 1);
-    public static Session recruitEndSession = createSession(Cost.FREE, State.RECRUIT_END, 30);
-    public static Session sessionStartSession = createSession(Cost.FREE, State.SESSION_START, 30);
-    public static Session sessionEndSession = createSession(Cost.FREE, State.SESSION_END, 30);
+    public static Session readySession = createSession(1L, SessionCostType.FREE, State.READY, 30);
+    public static Session recruitStartSession = createSession(2L, SessionCostType.FREE, State.RECRUIT_START, 1);
+    public static Session recruitEndSession = createSession(3L, SessionCostType.FREE, State.RECRUIT_END, 30);
+    public static Session sessionStartSession = createSession(4L, SessionCostType.FREE, State.SESSION_START, 30);
+    public static Session sessionEndSession = createSession(5L, SessionCostType.FREE, State.SESSION_END, 30);
 
     @Test
     @DisplayName("학생 등록")
     void addStudent() {
-        Session session = createSession(Cost.FREE, State.RECRUIT_START, 30);
+        Session session = createSession(6L, SessionCostType.FREE, State.RECRUIT_START, 30);
         assertThat(session.enroll(StudentTest.student1)).isEqualTo(StudentsTest.students);
     }
 
@@ -64,7 +66,9 @@ public class SessionTest {
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의종료인 강의입니다.");
     }
 
-    public static Session createSession(Cost cost, State state, int maxUser) {
-        return Session.of("title", "cover", 1, cost, state, maxUser);
+    public static Session createSession(Long id, SessionCostType sessionCostType, State state, int maxUser) {
+        return Session.of(id, 1L, "title", "cover", 1, sessionCostType, state, maxUser
+                , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
+                , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
     }
 }
