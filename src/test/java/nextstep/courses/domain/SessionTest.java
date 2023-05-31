@@ -70,6 +70,18 @@ class SessionTest {
         SessionPeriodTest.TEST_SESSION_PERIOD);
   }
 
+  public Session ofInProgressSessionNotRecruiting() {
+    return new Session(
+        1L,
+        SessionInfoTest.TEST_SESSION_INFO,
+        ImageTest.TEST_IMAGE,
+        SessionType.FREE,
+        SessionStatus.IN_PROGRESS,
+        SessionRecruitStatus.NOT_RECRUITING,
+        StudentsTest.ofFullUsers(),
+        SessionPeriodTest.TEST_SESSION_PERIOD);
+  }
+
 
 
   @Test
@@ -89,7 +101,7 @@ class SessionTest {
   }
 
   @Test
-  void Session이_진행중_비모집중_초기상태일때_수강신청자가_있으면_Session_생성_성공_테스트() {
+  void Session이_진행중_비모집중_초기상태일때_수강신청자가_있으면_Session_생성_실패_테스트() {
     assertThatThrownBy(() ->
         new Session(
             1L,
@@ -143,6 +155,28 @@ class SessionTest {
         ofRecruitingSessionUserFull().enroll(NsUserTest.JAVAJIGI)
     ).isInstanceOf(IllegalArgumentException.class)
         .hasMessage("최대 인원수를 넘어서 수강 신청할 수 없습니다.");
+  }
+
+
+  @Test
+  void Session이_진행중_비모집중인_강의에_수강신청을_하면_예외가_발생한다() {
+    assertThatThrownBy(() ->
+        ofInProgressSessionNotRecruiting().enroll(NsUserTest.JAVAJIGI)
+    ).isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("비모집중인 세션은 수강 신청할 수 없습니다.");
+  }
+
+
+  @Test
+  void Session이_진행중_모집중이고_수강신청을_하면_수강대기상태로_생성된다() {
+    Session session = ofRecruitingSessionLeftFewSeats();
+
+    session.enroll(NsUserTest.JAVAJIGI);
+
+    int waitingStudentsSize = (int) session.getStudents().listOfStudents().stream()
+        .filter(Student::isWaiting).count();
+
+    assertThat(waitingStudentsSize).isEqualTo(1);
   }
 
 

@@ -20,4 +20,9 @@ public enum SessionRecruitStatus {
   }
 
 
+  public void validateEnrollAvailable() {
+    if (isNotRecruiting()) {
+      throw new IllegalArgumentException("비모집중인 세션은 수강 신청할 수 없습니다.");
+    }
+  }
 }
