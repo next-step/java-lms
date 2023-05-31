@@ -65,6 +65,8 @@ create table session (
 create table student (
     ns_user_id bigint not null
     , session_id bigint not null
+    , selected_type varchar(50) not null
+    , approved_type varchar(50) not null
     , register_type varchar(50) not null
     , created_at timestamp default current_timestamp
     , updated_at timestamp default current_timestamp on update current_timestamp

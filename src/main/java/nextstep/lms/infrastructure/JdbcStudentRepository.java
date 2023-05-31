@@ -1,8 +1,6 @@
 package nextstep.lms.infrastructure;
 
-import nextstep.lms.domain.RegisterType;
-import nextstep.lms.domain.Student;
-import nextstep.lms.domain.StudentRepository;
+import nextstep.lms.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,9 +22,13 @@ public class JdbcStudentRepository implements StudentRepository {
         String sql = "iNSERt iNTo student(" +
                 "ns_user_id" +
                 ", session_id" +
+                ", selected_type" +
+                ", approved_type" +
                 ", register_type" +
                 ") values(" +
                 "?" +
+                ", ?" +
+                ", ?" +
                 ", ?" +
                 ", ?" +
                 ");";
@@ -34,7 +36,9 @@ public class JdbcStudentRepository implements StudentRepository {
         return jdbcTemplate.update(sql
                 , student.getNsUserId()
                 , student.getSessionId()
-                , student.getRegisterType()
+                , student.getStudentSelectedType()
+                , student.getStudentApprovedType()
+                , student.getStudentRegisterType()
         );
     }
 
@@ -42,6 +46,8 @@ public class JdbcStudentRepository implements StudentRepository {
     public Optional<Student> findByNsUserIdAndSessionId(Long nsUserId, Long sessionId) {
         String sql = "sELECt ns_user_id" +
                 ", session_id" +
+                ", selected_type" +
+                ", approved_type" +
                 ", register_type" +
                 ", created_at" +
                 ", updated_at " +
@@ -51,19 +57,35 @@ public class JdbcStudentRepository implements StudentRepository {
         RowMapper<Student> rowMapper = ((rs, rowNum) -> new Student(
                 rs.getLong(1),
                 rs.getLong(2),
-                toRegisterType(rs.getString(3)),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5))
+                toSelectedType(rs.getString(3)),
+                toApprovedType(rs.getString(4)),
+                toRegisterType(rs.getString(5)),
+                toLocalDateTime(rs.getTimestamp(6)),
+                toLocalDateTime(rs.getTimestamp(7))
         ));
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
     }
 
-    private RegisterType toRegisterType(String registerType) {
+    private StudentSelectedType toSelectedType(String selectedType) {
+        if (selectedType == null) {
+            return null;
+        }
+        return StudentSelectedType.valueOf(selectedType);
+    }
+
+    private StudentApprovedType toApprovedType(String approvedType) {
+        if (approvedType == null) {
+            return null;
+        }
+        return StudentApprovedType.valueOf(approvedType);
+    }
+
+    private StudentRegisterType toRegisterType(String registerType) {
         if (registerType == null) {
             return null;
         }
-        return RegisterType.valueOf(registerType);
+        return StudentRegisterType.valueOf(registerType);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -77,6 +99,20 @@ public class JdbcStudentRepository implements StudentRepository {
     public void sessionCancel(Student student) {
         String sql = "uPDATe student SET register_type = ? WHERE ns_user_id = ? AND session_id = ?";
 
-        jdbcTemplate.update(sql, student.getRegisterType(), student.getNsUserId(), student.getSessionId());
+        jdbcTemplate.update(sql, student.getStudentRegisterType(), student.getNsUserId(), student.getSessionId());
+    }
+
+    @Override
+    public void changeStudentSelectedType(Student student) {
+        String sql = "uPDATe student SET selected_type = ? WHERE ns_user_id = ? AND session_id = ?";
+
+        jdbcTemplate.update(sql, student.getStudentSelectedType(), student.getNsUserId(), student.getSessionId());
+    }
+
+    @Override
+    public void changeStudentApprovedType(Student student) {
+        String sql = "uPDATe student SET approved_type = ? WHERE ns_user_id = ? AND session_id = ?";
+
+        jdbcTemplate.update(sql, student.getStudentApprovedType(), student.getNsUserId(), student.getSessionId());
     }
 }

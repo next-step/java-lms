@@ -13,5 +13,6 @@ iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_sta
 iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_state, session_paid_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'PROGRESS', 'RECRUITING', 'PAID', 0, 4, 1);
 iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_state, session_paid_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'PROGRESS', 'RECRUITING', 'PAID', 5, 10, 1);
 
-iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 1, 'REGISTERED');
-iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 3, 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 1, 'SELECTED', 'APPROVED', 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 2, 'NON_SELECTED', 'NON_APPROVED', 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 3, 'SELECTED', 'APPROVED', 'REGISTERED');

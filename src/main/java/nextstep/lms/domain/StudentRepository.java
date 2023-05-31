@@ -9,4 +9,7 @@ public interface StudentRepository {
 
     void sessionCancel(Student student);
 
+    void changeStudentSelectedType(Student student);
+
+    void changeStudentApprovedType(Student student);
 }
