@@ -10,14 +10,11 @@ public class SessionApply {
 
   private int maxEnrollment;
 
-  private int enrollment;
-
   private List<NsUser> enrollmentUsers;
 
-  public SessionApply(Status status, int maxEnrollment, int enrollment) {
+  public SessionApply(Status status, int maxEnrollment) {
     this.status = status;
     this.maxEnrollment = maxEnrollment;
-    this.enrollment = enrollment;
     enrollmentUsers = new ArrayList<>();
   }
 
@@ -26,12 +23,11 @@ public class SessionApply {
   }
 
   public void enrollment(NsUser user) {
-    enrollment++;
     enrollmentUsers.add(user);
   }
 
   public boolean isMaxEnrollment() {
-    return enrollment >= maxEnrollment;
+    return enrollmentUsers.size() >= maxEnrollment;
   }
 
   public boolean isApply(NsUser user) {

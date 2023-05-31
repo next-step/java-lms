@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 class SessionTest {
 
-  Session s1 = new Session(new SessionApply(Status.RECRUITING, 5, 0));
-  Session s2 = new Session(new SessionApply(Status.RECRUITING, 5, 5));
-  Session s3 = new Session(new SessionApply(Status.END, 5, 0));
+  Session s1 = new Session(new SessionApply(Status.RECRUITING, 5));
+  Session s2 = new Session(new SessionApply(Status.RECRUITING, 1));
+  Session s3 = new Session(new SessionApply(Status.END, 5));
 
   @Test
   void 강의_시작일은_강의_종료일보다_늦을_수_없다() {
@@ -30,6 +30,7 @@ class SessionTest {
 
   @Test
   void 강의는_최대_수강_인원을_초과할_수_없다(){
+      s2.apply(NsUserTest.SANJIGI);
     assertThatThrownBy(() -> {
       s2.apply(NsUserTest.JAVAJIGI);
     }).isInstanceOf(CannotApplySession.class);
