@@ -4,12 +4,16 @@ import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.Image;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionTime;
+import nextstep.courses.domain.UserEnrollment;
+import nextstep.courses.domain.enums.ApprovalStatus;
+import nextstep.courses.domain.enums.EnrollmentStatus;
 import nextstep.courses.domain.enums.ImageType;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.courses.exception.SessionEnrollmentException;
 import nextstep.users.domain.User;
 import nextstep.users.domain.UserTest;
+import nextstep.users.exception.UserNotSelectedException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -86,10 +91,17 @@ class SessionServiceTest {
     }
 
     @Test
-    @DisplayName("sessionId를 통해 Enrollemt을 얻을 수 있다.")
+    @DisplayName("sessionId를 통해 Enrollment을 얻을 수 있다.")
     public void findEnrollmentBySessionId_test() {
         long sessionId = 300;
-        Enrollment enrollment = new Enrollment(10);
+        Enrollment enrollment = new Enrollment(
+                List.of(
+                        new UserEnrollment(UserTest.JAVAJIGI, ApprovalStatus.PENDING),
+                        new UserEnrollment(UserTest.SANJIGI, ApprovalStatus.PENDING),
+                        new UserEnrollment(UserTest.INSTRUCTOR, ApprovalStatus.PENDING)
+                )
+                , EnrollmentStatus.ENROLLING,
+                10);
 
         Session session = sessionService.findSessionById(sessionId);
 
@@ -97,10 +109,21 @@ class SessionServiceTest {
     }
 
     @Test
+    @DisplayName("sessionId를 통해 UserEnrollment을 얻을 수 있다.")
+    public void findUserEnrollmentBySessionId_test() {
+        long sessionId = 300;
+        UserEnrollment userEnrollment = new UserEnrollment(UserTest.SANJIGI, ApprovalStatus.PENDING);
+
+        Session session = sessionService.findSessionById(sessionId);
+
+        Assertions.assertThat(session.getEnrollment().getUserEnrollments()).contains(userEnrollment);
+    }
+
+    @Test
     @DisplayName("유저를 세션에 등록할 수 있다.")
     public void enrollUserToSession_test() {
         Session beforeSession = sessionService.findSessionById(300);
-        User user = UserTest.JAVAJIGI;
+        User user = UserTest.DKSWNKK;
 
         sessionService.enrollUserToSession(beforeSession.getId(), user.getId());
 
@@ -112,7 +135,7 @@ class SessionServiceTest {
     @DisplayName("동일한 세션에 유저는 중복으로 등록할 수 없다.")
     public void userCannotEnrollTwiceInSameSession_test() {
         Session session = sessionService.findSessionById(300);
-        User user = UserTest.JAVAJIGI;
+        User user = UserTest.DKSWNKK;
 
         sessionService.enrollUserToSession(session.getId(), user.getId());
 
@@ -121,4 +144,83 @@ class SessionServiceTest {
         ).isInstanceOf(SessionEnrollmentException.class);
     }
 
+    @Test
+    @DisplayName("강의가 진행 중인 상태에서도 유저는 등록할 수 있다.")
+    public void userCanEnrollWhenSessionInProgress_test() {
+        Session beforeSession = sessionService.findSessionById(400);
+        User user = UserTest.JAVAJIGI;
+
+        sessionService.enrollUserToSession(beforeSession.getId(), user.getId());
+
+        Session afterSession = sessionService.findSessionById(beforeSession.getId());
+        Assertions.assertThat(afterSession.getUsers()).contains(user);
+    }
+
+    @Test
+    @DisplayName("강사는 수강신청한 사람 중 선발되지 않은 인원은 수강 승인할 수 없다.")
+    public void instructorCannotApproveUnselectedUser_test() {
+        User admin = UserTest.INSTRUCTOR;
+        User unSelectedUser = UserTest.SANJIGI;
+        Session session = sessionService.findSessionById(300);
+
+        Assertions.assertThatThrownBy(() ->
+                sessionService.approveUserToSession(admin.getId(), unSelectedUser.getId(), session.getId())
+        ).isInstanceOf(UserNotSelectedException.class);
+    }
+
+    @Test
+    @DisplayName("강사는 수강신청한 사람 중 선발된 인원을 수강 승인 할 수 있다.")
+    public void instructorCanApproveSelectedUser_test() {
+        User admin = UserTest.INSTRUCTOR;
+        User selectedUser = UserTest.JAVAJIGI;
+        Session session = sessionService.findSessionById(300);
+
+        sessionService.approveUserToSession(admin.getId(), selectedUser.getId(), session.getId());
+
+        Session afterSession = sessionService.findSessionById(session.getId());
+
+        UserEnrollment selectedEnrollment = afterSession.getEnrollment().getUserEnrollments()
+                .stream()
+                .filter(userEnrollment -> userEnrollment.getUser().equals(selectedUser))
+                .findFirst()
+                .orElse(null);
+
+        Assertions.assertThat(selectedEnrollment.getApprovalStatus()).isEqualTo(ApprovalStatus.APPROVED);
+    }
+
+    @Test
+    @DisplayName("강사는 수강신청한 사람 중 선발되지 않은 사람은 수강 취소할 수 있다.")
+    public void instructorCanCancelUnselectedUserEnrollment_test() {
+        User admin = UserTest.INSTRUCTOR;
+        User unSelectedUser = UserTest.SANJIGI;
+        Session session = sessionService.findSessionById(300);
+
+        sessionService.disApproveUserToSession(admin.getId(), unSelectedUser.getId(), session.getId());
+
+        Session afterSession = sessionService.findSessionById(session.getId());
+        UserEnrollment selectedEnrollment = afterSession.getEnrollment().getUserEnrollments()
+                .stream()
+                .filter(userEnrollment -> userEnrollment.getUser().equals(unSelectedUser))
+                .findFirst()
+                .orElse(null);
+        Assertions.assertThat(selectedEnrollment.getApprovalStatus()).isEqualTo(ApprovalStatus.CANCELED);
+    }
+
+
+    @Test
+    @DisplayName("수강 승인 시킬 수강자는 최대 수강자를 넘을 수 없다.")
+    public void shouldThrowExceptionWhenApprovalExceedsMaximumEnrollment_test() {
+        Session session = sessionService.findSessionById(400);
+        User user1 = UserTest.DKSWNKK;
+        User user2 = UserTest.DKSWNZZ;
+        User instructor = UserTest.INSTRUCTOR;
+
+        sessionService.enrollUserToSession(session.getId(), user1.getId());
+        sessionService.enrollUserToSession(session.getId(), user2.getId());
+        sessionService.approveUserToSession(instructor.getId(), user1.getId(), session.getId());
+
+        Assertions.assertThatThrownBy(() ->
+                sessionService.approveUserToSession(instructor.getId(), user2.getId(), session.getId())
+        ).isInstanceOf(SessionEnrollmentException.class);
+    }
 }

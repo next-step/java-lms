@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.EnrollmentStatus;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.courses.exception.InvalidSessionDateTimeException;
@@ -24,10 +25,12 @@ public class Session extends BaseEntity {
 
     private Enrollment enrollment;
 
+    private User instructor;
+
     protected Session() {
     }
 
-    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment) {
+    public Session(Long id, String period, Image coverImage, SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Enrollment enrollment, User instructor) {
         this.id = id;
         this.period = period;
         this.coverImage = coverImage;
@@ -35,6 +38,7 @@ public class Session extends BaseEntity {
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
         this.enrollment = enrollment;
+        this.instructor = instructor;
     }
 
     public static Session create(String period, Image coverImage, SessionTime sessionTime,
@@ -52,7 +56,9 @@ public class Session extends BaseEntity {
     }
 
     public void enroll(User user) throws SessionEnrollmentException {
-        checkSessionStatus();
+        if (this.enrollment.getEnrollmentStatus() != null) {
+            checkEnrollmentStatus();
+        }
 
         this.enrollment.enroll(user);
     }
@@ -65,12 +71,20 @@ public class Session extends BaseEntity {
         return this.enrollment.getUsers().size();
     }
 
+    public int getMaxEnrollmentCount(){
+        return this.enrollment.getMaximumEnrollment();
+    }
+
     public String getPeriod() {
         return period;
     }
 
     public Image getCoverImage() {
         return coverImage;
+    }
+
+    public User getInstructor() {
+        return instructor;
     }
 
     public SessionTime getSessionTime() {
@@ -93,10 +107,9 @@ public class Session extends BaseEntity {
         return this.enrollment.getUsers();
     }
 
-    private void checkSessionStatus() throws SessionEnrollmentException {
-        if (!this.sessionStatus.canEnroll()) {
-            throw new SessionEnrollmentException(String.format("현재 강의 상태는 '%s'이며, '%s' 상태에서만 수강 신청이 가능합니다.",
-                    this.sessionStatus, SessionStatus.RECRUITING));
+    private void checkEnrollmentStatus() throws SessionEnrollmentException {
+        if (!this.enrollment.canEnroll()) {
+            throw new SessionEnrollmentException(this.sessionStatus, EnrollmentStatus.ENROLLING);
         }
     }
 
@@ -111,5 +124,17 @@ public class Session extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, period, coverImage, sessionTime, sessionType, sessionStatus, enrollment);
+    }
+
+    public void approveUser(User user) {
+        this.enrollment.approveUser(user);
+    }
+
+    public void disApproveUser(User user) {
+        this.enrollment.disApproveUser(user);
+    }
+
+    public boolean canApproved() {
+        return this.getEnrollment().canApproved();
     }
 }

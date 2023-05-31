@@ -5,10 +5,15 @@ import nextstep.courses.domain.Image;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionTime;
+import nextstep.courses.domain.UserEnrollment;
+import nextstep.courses.domain.enums.ApprovalStatus;
+import nextstep.courses.domain.enums.EnrollmentStatus;
 import nextstep.courses.domain.enums.ImageType;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.users.domain.User;
+import nextstep.users.domain.UserRepository;
+import nextstep.users.domain.enums.UserStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,14 +23,17 @@ import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("jdbcSessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
+    private final UserRepository userRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -56,8 +64,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void enrollUser(Session session) {
-        String sql = "INSERT INTO session_next_step_user (session_id, user_id, created_at) VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, session.getId(), session.getEnrollment().getLatestEnrollmentUser().getId(), LocalDateTime.now());
+        String sql = "INSERT INTO session_next_step_user (session_id, user_id, approval_status, created_at) VALUES(?, ?, ?, ?)";
+        jdbcTemplate.update(sql, session.getId(), session.getEnrollment().getLatestEnrollmentUser().getId(), ApprovalStatus.PENDING.toString(), LocalDateTime.now());
     }
 
     @Override
@@ -70,23 +78,43 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"),
-                rs.getTimestamp("created_at").toLocalDateTime(),
-                rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null
-        );
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at")),
+                UserStatus.of(rs.getString("user_status")));
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
-    public Image findImageByImageId(long imageId) {
-        String sql = "SELECT * FROM image WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, imageRowMapper(), imageId);
+    public List<UserEnrollment> findAllUserEnrollmentsBySessionId(long sessionId) {
+        String sql = "SELECT u.*, su.approval_status FROM next_step_user u INNER JOIN session_next_step_user su ON u.id = su.user_id WHERE su.session_id = ?";
+
+        RowMapper<UserEnrollment> rowMapper = (rs, rowNum) -> {
+            User user = new User(
+                    rs.getLong("id"),
+                    rs.getString("user_id"),
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    toLocalDateTime(rs.getTimestamp("created_at")),
+                    toLocalDateTime(rs.getTimestamp("updated_at")),
+                    UserStatus.of(rs.getString("user_status")));
+            ApprovalStatus approvalStatus = ApprovalStatus.of(rs.getString("approval_status"));
+
+            return new UserEnrollment(user, approvalStatus);
+        };
+
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp time) {
-        if (time == null) {
-            return null;
-        }
-        return time.toLocalDateTime();
+    @Override
+    public void updateApprovalStatus(long sessionId, long userId, ApprovalStatus approvalStatus) {
+        String sql = "UPDATE session_next_step_user SET approval_status = ? WHERE session_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, approvalStatus.toString(), sessionId, userId);
+    }
+
+    private Image findImageByImageId(long imageId) {
+        String sql = "SELECT * FROM image WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, imageRowMapper(), imageId);
     }
 
     private RowMapper<Session> sessionRowMapper() {
@@ -95,10 +123,12 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("period"),
                 findImageByImageId(rs.getLong("image_id")),
                 new SessionTime(toLocalDateTime(rs.getTimestamp("opening_date_time")), toLocalDateTime(rs.getTimestamp("closing_date_time"))),
-                SessionType.valueOf(rs.getString("session_type")),
-                SessionStatus.valueOf(rs.getString("session_status")),
-                new Enrollment(findUsersBySessionId(rs.getLong("id")), rs.getInt("maximum_enrollment"))
-        );
+                SessionType.of(rs.getString("session_type")),
+                SessionStatus.of(rs.getString("session_status")),
+                new Enrollment(findAllUserEnrollmentsBySessionId(rs.getLong("id")),
+                        EnrollmentStatus.of(rs.getString("enrollment_status")),
+                        rs.getInt("maximum_enrollment")),
+                userRepository.findById(rs.getLong("instructor_id")).orElse(null));
     }
 
     private RowMapper<Image> imageRowMapper() {
@@ -116,6 +146,12 @@ public class JdbcSessionRepository implements SessionRepository {
             }
             return null;
         };
+    }
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        return Optional.ofNullable(timestamp)
+                .map(Timestamp::toLocalDateTime)
+                .orElse(null);
     }
 
 }

@@ -32,21 +32,6 @@ class SessionTest {
         );
     }
 
-    @DisplayName("강의가 모집중이 아닌데 수강 등록을 하면 예외를 던진다.")
-    @Test
-    void enroll_when_session_is_not_recruiting_should_throw_exception() {
-        SessionTime validSessionTime = new SessionTime(VALID_OPENING_DATE_TIME, VALID_CLOSING_DATE_TIME);
-        Session endedSession = Session.create("1st", new Image(), validSessionTime, SessionType.FREE, SessionStatus.ENDED, MAXIMUM_100_PEOPLE_ENROLLMENT);
-        Session preparingSession = Session.create("1st", new Image(), validSessionTime, SessionType.FREE, SessionStatus.PREPARING, MAXIMUM_100_PEOPLE_ENROLLMENT);
-
-        assertThrows(SessionEnrollmentException.class, () ->
-                endedSession.enroll(SAMPLE_USER));
-
-        assertThrows(
-                SessionEnrollmentException.class, () ->
-                        preparingSession.enroll(SAMPLE_USER));
-    }
-
     @DisplayName("강의 최대 수강 인원을 넘어선 수강신청을 하면 예외를 던진다.")
     @Test
     void enroll_when_session_is_full_should_throw_exception() {

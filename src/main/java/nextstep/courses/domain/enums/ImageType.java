@@ -5,7 +5,8 @@ import java.util.Arrays;
 public enum ImageType {
     JPEG("jpeg"),
     PNG("png"),
-    GIF("gif");
+    GIF("gif"),
+    ETC("etc");
 
     private String value;
 
@@ -21,7 +22,7 @@ public enum ImageType {
         return Arrays.stream(values())
                 .filter(imageType -> imageType.getValue().equals(value.toLowerCase()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 형식입니다."));
+                .orElse(ImageType.ETC);
     }
 
     public static boolean isValidType(String type) {

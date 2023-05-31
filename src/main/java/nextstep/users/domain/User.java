@@ -1,13 +1,11 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.users.domain.enums.UserStatus;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class User {
-    public static final GuestUser GUEST_USER = new GuestUser();
-
     private Long id;
 
     private String userId;
@@ -21,6 +19,8 @@ public class User {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private UserStatus userStatus;
 
     public User() {
     }
@@ -39,69 +39,38 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public User(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, UserStatus userStatus) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.userStatus = userStatus;
+    }
+
+    public User(Long id, String userId, String password, String name, String email, UserStatus userStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.userStatus = userStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public Long getId() {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void update(User loginUser, User target) {
-        if (!matchUserId(loginUser.getUserId())) {
-            throw new UnAuthorizedException();
-        }
-
-        if (!matchPassword(target.getPassword())) {
-            throw new UnAuthorizedException();
-        }
-
-        this.name = target.name;
-        this.email = target.email;
-    }
-
-    public boolean matchUser(User target) {
-        return matchUserId(target.getUserId());
-    }
-
-    private boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean matchPassword(String targetPassword) {
-        return password.equals(targetPassword);
-    }
-
-    public boolean equalsNameAndEmail(User target) {
-        if (Objects.isNull(target)) {
-            return false;
-        }
-
-        return name.equals(target.name) &&
-                email.equals(target.email);
-    }
-
-    public boolean isGuestUser() {
-        return false;
-    }
-
-    private static class GuestUser extends User {
-        @Override
-        public boolean isGuestUser() {
+    public boolean isSelected() {
+        if (this.userStatus == null) {
             return true;
         }
+
+        return !userStatus.isNotSelected();
     }
 
     @Override
@@ -121,11 +90,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userId, user.userId) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
+        return Objects.equals(id, user.id) && Objects.equals(userId, user.userId) && Objects.equals(password, user.password) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && userStatus == user.userStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, password, name, email, createdAt, updatedAt);
+        return Objects.hash(id, userId, password, name, email, createdAt, updatedAt, userStatus);
     }
 }
