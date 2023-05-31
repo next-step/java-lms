@@ -5,7 +5,8 @@ import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.student.Student;
 import nextstep.courses.domain.student.StudentRepository;
 import nextstep.courses.exception.SessionNotFoundException;
-import nextstep.courses.exception.SessionRegisterException;
+import nextstep.courses.exception.UserNotFoundException;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,19 +38,14 @@ public class SessionService {
     }
 
     public void register(String userId, Long sessionId) {
-        userRepository.findByUserId(userId)
-                .ifPresentOrElse(
-                        user -> {
-                            Session savedSession = findById(sessionId);
-                            savedSession.register(user);
+        NsUser user = userRepository.findByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
 
-                            Student student = savedSession.enrolledStudent(user);
-                            studentRepository.save(student);
-                        },
-                        () -> {
-                            throw new SessionRegisterException();
-                        }
-                );
+        Session savedSession = findById(sessionId);
+        savedSession.register(user);
+
+        Student student = savedSession.enrolledStudent(user);
+        studentRepository.save(student);
     }
 
 }
