@@ -89,6 +89,14 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
+    public SessionUser findUserByUserIdAndSessionId(Long sessionId, Long userId) {
+        String sql = "select user_id, status from session_users where session_id = ? and user_id = ?";
+
+        RowMapper<SessionUser> rowMapper = userRowMapper();
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
+    }
+
+    @Override
     public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
         String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
         jdbcTemplate.update(sql, sessionUser.getSessionUserStatus().getKey(), sessionId, sessionUser.getUserId());

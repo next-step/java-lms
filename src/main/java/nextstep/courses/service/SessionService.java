@@ -3,14 +3,10 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionUser;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SessionService {
@@ -46,8 +42,24 @@ public class SessionService {
         return sessionRepository.findAllUserBySessionId(sessionId);
     }
 
+    @Transactional(readOnly = true)
+    public SessionUser findUserByUserIdAndSessionId(Long sessionId, Long userId) {
+        return sessionRepository.findUserByUserIdAndSessionId(sessionId, userId);
+    }
+
     @Transactional
-    public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
+    public void approveEnrollment(Long sessionId, Long userId) {
+        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(sessionId, userId);
+
+        sessionUser.approve();
+        sessionRepository.updateSessionUserStatus(sessionId, sessionUser);
+    }
+
+    @Transactional
+    public void rejectEnrollment(Long sessionId, Long userId) {
+        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(sessionId, userId);
+
+        sessionUser.reject();
         sessionRepository.updateSessionUserStatus(sessionId, sessionUser);
     }
 }

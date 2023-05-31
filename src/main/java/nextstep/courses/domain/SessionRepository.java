@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.List;
 
 public interface SessionRepository {
@@ -14,6 +12,8 @@ public interface SessionRepository {
     long saveSessionUser(Session session, SessionUser sessionUser);
 
     List<SessionUser> findAllUserBySessionId(Long sessionId);
-    
+
+    SessionUser findUserByUserIdAndSessionId(Long sessionId, Long userId);
+
     void updateSessionUserStatus(Long sessionId, SessionUser sessionUser);
 }

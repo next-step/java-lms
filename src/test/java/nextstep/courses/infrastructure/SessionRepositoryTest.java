@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionUser;
+import nextstep.courses.domain.SessionUserStatus;
 import nextstep.courses.fixture.SessionFixture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -68,6 +71,17 @@ public class SessionRepositoryTest {
 
         List<SessionUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
+    }
+
+    @Test
+    void findUserByUserIdAndSessionId() {
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+        sessionRepository.saveSessionUser(savedSession, sessionUser);
+
+        SessionUser findSessionUser = sessionRepository.findUserByUserIdAndSessionId(savedSession.getId(), sessionUser.getUserId());
+        assertThat(findSessionUser.getUserId()).isEqualTo(sessionUser.getUserId());
+        assertThat(findSessionUser.getSessionUserStatus()).isEqualTo(sessionUser.getSessionUserStatus());
     }
 
     @Test

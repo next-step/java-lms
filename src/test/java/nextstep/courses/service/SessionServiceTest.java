@@ -2,7 +2,6 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.*;
 import nextstep.courses.fixture.SessionFixture;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,15 +70,41 @@ public class SessionServiceTest {
     }
 
     @Test
-    void updateSessionUserStatus() {
+    @DisplayName("사용자, 강의 정보로 수강신청 사용자조회")
+    void findUserByUserIdAndSessionId() {
         Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
-        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.WAIT);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+
+        sessionService.enroll(session, sessionUser);
+        SessionUser findSessionUser = sessionService.findUserByUserIdAndSessionId(session.getId(), sessionUser.getUserId());
+
+        assertThat(findSessionUser.getUserId()).isEqualTo(sessionUser.getUserId());
+        assertThat(findSessionUser.getSessionUserStatus()).isEqualTo(sessionUser.getSessionUserStatus());
+    }
+
+    @Test
+    @DisplayName("승인된 사용자의 강의 수강신청 승인")
+    void approve_enrollment() {
+        Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
         sessionService.enroll(session, sessionUser);
 
-        sessionUser.reject();
-        sessionService.updateSessionUserStatus(session.getId(), sessionUser);
+        sessionService.approveEnrollment(session.getId(), sessionUser.getUserId());
 
-        List<SessionUser> sessionUsers = sessionService.findAllUserBySessionId(session.getId());
-        assertThat(sessionUsers.get(0)).extracting("sessionUserStatus").isEqualTo(SessionUserStatus.REJECT);
+        SessionUser approvedUser = sessionService.findUserByUserIdAndSessionId(session.getId(), sessionUser.getUserId());
+        assertThat(approvedUser.isApproved()).isTrue();
+    }
+
+    @Test
+    @DisplayName("거절된 사용자의 강의 수강신청 거절")
+    void reject_enrollment() {
+        Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+        sessionService.enroll(session, sessionUser);
+
+        sessionService.rejectEnrollment(session.getId(), sessionUser.getUserId());
+
+        SessionUser rejectedUser = sessionService.findUserByUserIdAndSessionId(session.getId(), sessionUser.getUserId());
+        assertThat(rejectedUser.isApproved()).isFalse();
     }
 }
