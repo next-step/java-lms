@@ -22,7 +22,7 @@ create table session
 );
 
 alter table session
-    add recruitment_status varchar(20) not null;
+    add recruitment_status varchar(20);
 
 create table session_users
 (
@@ -33,7 +33,7 @@ create table session_users
 );
 
 alter table session_users
-    add status varchar(20) not null;
+    add status varchar(20);
 
 create table ns_user
 (
