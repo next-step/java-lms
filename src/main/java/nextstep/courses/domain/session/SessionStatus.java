@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.NoSuchSessionException;
 
@@ -17,5 +17,9 @@ public enum SessionStatus {
 
     public boolean isReady() {
         return this.equals(SessionStatus.READY);
+    }
+
+    public boolean isSame(SessionStatus status) {
+        return this == status;
     }
 }
