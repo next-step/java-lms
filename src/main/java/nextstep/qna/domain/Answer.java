@@ -31,11 +31,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,26 +47,30 @@ public class Answer {
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         validIsOwner(loginUser);
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, this.getId(), this.getWriter(), LocalDateTime.now());
+        return createDeleteHistory();
     }
 
     private void validIsOwner(NsUser loginUser) throws CannotDeleteException {
-        if (!this.writer.matchUser(loginUser)) {
+        if (!isOwner(loginUser)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     public Long getId() {
         return id;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public boolean isOwner(NsUser writer) {
