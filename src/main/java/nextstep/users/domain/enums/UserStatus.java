@@ -21,6 +21,6 @@ public enum UserStatus {
         return Arrays.stream(values())
                 .filter(u -> u.toString().equals(userStatus))
                 .findFirst()
-                .orElse(null);
+                .orElse(NOT_SELECTED);
     }
 }

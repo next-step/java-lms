@@ -26,6 +26,6 @@ public enum SessionStatus {
         return Arrays.stream(values())
                 .filter(s -> s.toString().equals(sessionStatus))
                 .findFirst()
-                .orElse(null);
+                .orElse(PREPARING);
     }
 }

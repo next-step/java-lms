@@ -20,6 +20,6 @@ public enum EnrollmentStatus {
         return Arrays.stream(values())
                 .filter(e -> e.toString().equals(enrollmentStatus))
                 .findFirst()
-                .orElse(null);
+                .orElse(NOT_ENROLLING);
     }
 }

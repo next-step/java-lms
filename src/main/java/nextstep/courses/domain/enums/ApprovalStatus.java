@@ -1,6 +1,6 @@
 package nextstep.courses.domain.enums;
 
-거import java.util.Arrays;
+import java.util.Arrays;
 
 public enum ApprovalStatus {
     APPROVED("승인"),
@@ -17,7 +17,7 @@ public enum ApprovalStatus {
         return Arrays.stream(values())
                 .filter(a -> a.toString().equals(approvalStatus))
                 .findFirst()
-                .orElse(null);
+                .orElse(PENDING);
     }
 
     public boolean isApproved() {
