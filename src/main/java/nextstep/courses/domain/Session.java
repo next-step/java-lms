@@ -41,11 +41,7 @@ public class Session {
     }
 
     private void checkPriceValidate() {
-        if (this.billType == BillType.FREE && this.price.isFree()) {
-            return;
-        }
-
-        if (this.billType == BillType.PAID && this.price.isNotFree()) {
+        if (price.valid(billType)) {
             return;
         }
 

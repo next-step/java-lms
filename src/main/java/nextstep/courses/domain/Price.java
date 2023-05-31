@@ -33,4 +33,16 @@ public class Price {
     public int hashCode() {
         return Long.hashCode(this.value);
     }
+
+    public boolean valid(Session.BillType billType) {
+        if (billType == Session.BillType.FREE && this.isFree()) {
+            return true;
+        }
+
+        if (billType == Session.BillType.PAID && this.isNotFree()) {
+            return true;
+        }
+
+        return false;
+    }
 }
