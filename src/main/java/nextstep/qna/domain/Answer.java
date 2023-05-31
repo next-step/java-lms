@@ -76,4 +76,12 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    public void deleteAnswer() {
+        setDeleted(true);
+    }
+
+    public DeleteHistory deleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, this);
+    }
 }
