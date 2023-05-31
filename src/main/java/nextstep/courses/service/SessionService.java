@@ -40,10 +40,6 @@ public class SessionService {
     sessionRepository.saveSessionUser(new SessionUser(session, nextStepUser, currentTime, currentTime));
   }
 
-  public SessionUser findBySessionIdAndUserId(Long sessionId, Long userId) {
-    return sessionRepository.findBySessionIdAndUserId(sessionId, userId);
-  }
-
   public void approveEnrollment(Long sessionId, Long userId) {
     SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(sessionId, userId);
 
