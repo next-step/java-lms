@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,41 @@ public class Question {
         this.contents = contents;
     }
 
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validIsOwner(loginUser);
+        this.deleted = true;
+        DeleteHistory questionDeleteHistory = new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), LocalDateTime.now());
+        List<DeleteHistory> answerDeleteHistories = deleteAnswers(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(questionDeleteHistory);
+        deleteHistories.addAll(answerDeleteHistories);
+        return deleteHistories;
+    }
+
+    private void validIsOwner(NsUser loginUser) throws CannotDeleteException {
+        if (!this.writer.matchUser(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : this.answers) {
+            DeleteHistory answerDeleteHistory = deleteAnswer(answer, loginUser);
+            deleteHistories.add(answerDeleteHistory);
+        }
+        return deleteHistories;
+    }
+
+    private DeleteHistory deleteAnswer(Answer answer, NsUser loginUser) throws CannotDeleteException {
+        try {
+            return answer.delete(loginUser);
+        } catch (CannotDeleteException e) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -72,13 +108,13 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public List<Answer> getAnswers() {
