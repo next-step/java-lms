@@ -100,6 +100,14 @@ public class Session {
         return registration.getStatusName();
     }
 
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return registration.getRecruitmentStatus();
+    }
+
+    public String geRecruitmentStatusName() {
+        return registration.getRecruitmentStatusName();
+    }
+
     public int getStudentCapacity() {
         return registration.getStudentCapacity();
     }
@@ -137,5 +145,4 @@ public class Session {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
 }

@@ -71,3 +71,5 @@ create table student (
     primary key (id),
     unique (ns_user_id, session_id)
 );
+
+alter table session add recruitment_status VARCHAR(20) AFTER status;

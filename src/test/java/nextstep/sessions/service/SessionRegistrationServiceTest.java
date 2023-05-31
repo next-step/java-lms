@@ -5,6 +5,7 @@ import nextstep.sessions.domain.SessionBuilder;
 import nextstep.sessions.domain.SessionCoverImage;
 import nextstep.sessions.domain.SessionDuration;
 import nextstep.sessions.domain.SessionPaymentType;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRegistrationBuilder;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.students.domain.Students;
@@ -43,6 +44,7 @@ class SessionRegistrationServiceTest {
                         .withPaymentType(SessionPaymentType.PAID)
                         .with(SessionRegistrationBuilder.aRegistration()
                                 .withStatus(SessionStatus.PREPARING)
+                                .withRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                                 .withStudents(new Students())
                                 .withStudentCapacity(10))
                         .withCreatedAt(expectedCreatedAt)

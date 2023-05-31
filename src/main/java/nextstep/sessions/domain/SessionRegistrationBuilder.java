@@ -5,6 +5,7 @@ import nextstep.students.domain.Students;
 public class SessionRegistrationBuilder {
 
     private SessionStatus status;
+    private SessionRecruitmentStatus recruitmentStatus;
     private Students students;
     private int studentCapacity;
 
@@ -13,6 +14,7 @@ public class SessionRegistrationBuilder {
 
     private SessionRegistrationBuilder(SessionRegistrationBuilder copy) {
         this.status = copy.status;
+        this.recruitmentStatus = copy.recruitmentStatus;
         this.students = copy.students;
         this.studentCapacity = copy.studentCapacity;
     }
@@ -27,6 +29,11 @@ public class SessionRegistrationBuilder {
 
     public SessionRegistrationBuilder withStatus(SessionStatus status) {
         this.status = status;
+        return this;
+    }
+
+    public SessionRegistrationBuilder withRecruitmentStatus(SessionRecruitmentStatus recruitmentStatus) {
+        this.recruitmentStatus = recruitmentStatus;
         return this;
     }
 
@@ -46,7 +53,7 @@ public class SessionRegistrationBuilder {
     }
 
     public SessionRegistration build() {
-        return new SessionRegistration(status, students, studentCapacity);
+        return new SessionRegistration(status, recruitmentStatus, students, studentCapacity);
     }
 
 }

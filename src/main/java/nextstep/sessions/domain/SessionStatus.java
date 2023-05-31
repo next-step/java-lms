@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public enum SessionStatus {
     PREPARING("준비중"),
-    RECRUITING("모집중"),
+    PROGRESSING("진행중"),
     ENDED("종료");
 
     private static final Map<String, SessionStatus> VALUE_MAP
@@ -30,8 +30,8 @@ public enum SessionStatus {
         return name;
     }
 
-    public boolean isRecruiting() {
-        return this == RECRUITING;
+    public boolean isRegistrable() {
+        return this != ENDED;
     }
 
 }

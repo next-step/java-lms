@@ -11,11 +11,13 @@ import java.util.Objects;
 public class SessionRegistration {
 
     private final SessionStatus status;
+    private final SessionRecruitmentStatus recruitmentStatus;
     private final Students students;
     private final int studentCapacity;
 
-    public SessionRegistration(SessionStatus status, Students students, int studentCapacity) {
+    public SessionRegistration(SessionStatus status, SessionRecruitmentStatus recruitmentStatus, Students students, int studentCapacity) {
         this.status = status;
+        this.recruitmentStatus = recruitmentStatus;
         this.students = students;
         this.studentCapacity = studentCapacity;
     }
@@ -30,7 +32,7 @@ public class SessionRegistration {
     }
 
     private void validate() {
-        if (!status.isRecruiting()) {
+        if (!status.isRegistrable() || !recruitmentStatus.isRecruiting()) {
             throw new NotEligibleRegistrationStatusException();
         }
         if (students.size() >= studentCapacity) {
@@ -46,6 +48,14 @@ public class SessionRegistration {
         return status.getName();
     }
 
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
+    }
+
+    public String getRecruitmentStatusName() {
+        return recruitmentStatus.getName();
+    }
+
     public int getStudentCapacity() {
         return studentCapacity;
     }
@@ -55,18 +65,22 @@ public class SessionRegistration {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionRegistration that = (SessionRegistration) o;
-        return studentCapacity == that.studentCapacity && status == that.status && Objects.equals(students, that.students);
+        return studentCapacity == that.studentCapacity
+                && status == that.status
+                && recruitmentStatus == that.recruitmentStatus
+                && Objects.equals(students, that.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, students, studentCapacity);
+        return Objects.hash(status, recruitmentStatus, students, studentCapacity);
     }
 
     @Override
     public String toString() {
         return "SessionRegistration{" +
                 "status=" + status +
+                ", recruitmentStatus=" + recruitmentStatus +
                 ", students=" + students +
                 ", studentCapacity=" + studentCapacity +
                 '}';

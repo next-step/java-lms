@@ -4,6 +4,7 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionCoverImage;
 import nextstep.sessions.domain.SessionDuration;
 import nextstep.sessions.domain.SessionPaymentType;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
@@ -28,14 +29,15 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into " +
-                "session (started_at, ended_at, cover_image, payment_type, status, student_capacity, created_at) " +
-                "values(?, ?, ?, ?, ? ,? ,?)";
+                "session (started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at) " +
+                "values(?, ?, ?, ?, ? ,? ,?, ?)";
         return jdbcTemplate.update(sql,
                 session.getStartedAt(),
                 session.getEndedAt(),
                 session.getCoverImageUrl(),
                 session.getPaymentTypeName(),
                 session.getStatusName(),
+                session.geRecruitmentStatusName(),
                 session.getStudentCapacity(),
                 session.getCreatedAt());
     }
@@ -43,7 +45,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         String sql = "select id, " +
-                "started_at, ended_at, cover_image, payment_type, status, student_capacity, created_at, updated_at " +
+                "started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at, updated_at " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
@@ -54,10 +56,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionPaymentType.find(rs.getString(5)),
                 new SessionRegistration(
                         SessionStatus.find(rs.getString(6)),
+                        SessionRecruitmentStatus.find(rs.getString(7)),
                         new Students(),
-                        rs.getInt(7)),
-                toLocalDateTime(rs.getTimestamp(8)),
-                toLocalDateTime(rs.getTimestamp(9)));
+                        rs.getInt(8)),
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10)));
         Session savedSession = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return Optional.ofNullable(savedSession);
     }

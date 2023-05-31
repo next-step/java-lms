@@ -5,6 +5,7 @@ import nextstep.sessions.domain.SessionBuilder;
 import nextstep.sessions.domain.SessionCoverImage;
 import nextstep.sessions.domain.SessionDuration;
 import nextstep.sessions.domain.SessionPaymentType;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRegistrationBuilder;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
@@ -52,7 +53,8 @@ class SessionRepositoryTest {
                 .withCoverImage(coverImageMock)
                 .withPaymentType(SessionPaymentType.PAID)
                 .with(SessionRegistrationBuilder.aRegistration()
-                        .withStatus(SessionStatus.RECRUITING)
+                        .withStatus(SessionStatus.PREPARING)
+                        .withRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .withStudents(new Students())
                         .withStudentCapacity(5))
                 .withCreatedAt(LocalDateTime.now())
@@ -71,7 +73,8 @@ class SessionRepositoryTest {
                 () -> assertThat(savedSession.getPaymentType()).isEqualTo(SessionPaymentType.PAID),
                 () -> assertThat(savedSession.getRegistration())
                         .isEqualTo(SessionRegistrationBuilder.aRegistration()
-                                .withStatus(SessionStatus.RECRUITING)
+                                .withStatus(SessionStatus.PREPARING)
+                                .withRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                                 .withStudents(new Students())
                                 .withStudentCapacity(5).build())
         );
