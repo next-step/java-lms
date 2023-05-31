@@ -77,7 +77,12 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        return deleteAnswers(loginUser);
+        List<DeleteHistory> deleteHistory = new ArrayList<>(
+                List.of(new DeleteHistory(ContentType.QUESTION, this.id, this.writer,
+                        LocalDateTime.now())));
+        deleteHistory.addAll(deleteAnswers(loginUser));
+
+        return deleteHistory;
     }
 
     public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
