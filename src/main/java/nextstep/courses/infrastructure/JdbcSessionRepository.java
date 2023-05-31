@@ -5,9 +5,9 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static nextstep.courses.util.LocalDateTimeUtil.toLocalDateTime;
 
 @Repository
 public class JdbcSessionRepository implements SessionRepository {
@@ -42,10 +42,4 @@ public class JdbcSessionRepository implements SessionRepository {
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
 }
