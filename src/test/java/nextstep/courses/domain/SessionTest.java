@@ -16,7 +16,7 @@ public class SessionTest {
   @BeforeEach
   public void setUp() {
     LocalDateTime currentTime = LocalDateTime.now();
-    session = new Session(1L, SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
+    session = new Session(1L, SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
   }
 
   @Test
@@ -25,16 +25,6 @@ public class SessionTest {
     session.processEnrollment(NextStepUserTest.JAVAJIGI);
 
     assertThat(session.currentEnrollmentCount()).isEqualTo(1);
-  }
-
-  @Test
-  @DisplayName("수강 신청 만석 시 IllegalArgumentException throw")
-  public void 수강_신청_만석() {
-    session.processEnrollment(NextStepUserTest.JAVAJIGI);
-
-    assertThatThrownBy(() -> session.processEnrollment(NextStepUserTest.SANJIGI))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("해당 세션의 수강 인원이 만석되었습니다.");
   }
 
   @Test

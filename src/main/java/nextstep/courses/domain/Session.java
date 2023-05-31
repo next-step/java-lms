@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NextStepUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -15,21 +16,32 @@ public class Session {
   private final SessionCoverUrl sessionCoverUrl;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private SessionStatus sessionStatus;
+  private final SessionStatus sessionStatus;
 
-  public Session(SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(null, sessionPayment, sessionStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
+  public Session(SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(null, sessionPayment, sessionProgressStatus, sessionRecruitmentStatus, maxUserEnrollment, startDate, endDate, sessionCoverUrl, createdAt, updatedAt);
   }
 
-  public Session(Long id, SessionPayment sessionPayment, SessionStatus sessionStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, List<SessionUser> sessionUsers, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.sessionPayment = sessionPayment;
-    this.sessionStatus = sessionStatus;
+    this.sessionUsers = new SessionUsers(maxUserEnrollment, sessionUsers);
+    this.sessionPeriod = new SessionPeriod(startDate, endDate);
+    this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitmentStatus);
+  }
+
+  public Session(Long id, SessionPayment sessionPayment, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus, int maxUserEnrollment, LocalDateTime startDate, LocalDateTime endDate, String sessionCoverUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.id = id;
+    this.sessionPayment = sessionPayment;
     this.sessionUsers = new SessionUsers(maxUserEnrollment);
     this.sessionPeriod = new SessionPeriod(startDate, endDate);
     this.sessionCoverUrl = new SessionCoverUrl(sessionCoverUrl);
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.sessionStatus = new SessionStatus(sessionProgressStatus, sessionRecruitmentStatus);
   }
 
   public int currentEnrollmentCount() {
@@ -37,20 +49,24 @@ public class Session {
   }
 
   public void ending() {
-    this.sessionStatus = SessionStatus.ENDING;
+    sessionStatus.ending();
   }
 
   public void processEnrollment(NextStepUser nextStepUser) {
     if (!sessionStatus.canEnroll()) {
-      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionStatus.status());
+      throw new IllegalArgumentException(NOT_ACCEPTING_MESSAGE + sessionStatus.getProgressStatus());
     }
 
     LocalDateTime now = LocalDateTime.now();
-    sessionUsers.enroll(new SessionUser(this, nextStepUser, now, now));
+    sessionUsers.enroll(new SessionUser(this, nextStepUser, now, now, SessionUserStatus.REQUEST));
   }
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public SessionPayment getSessionPayment() {
@@ -79,10 +95,6 @@ public class Session {
 
   public SessionStatus getSessionStatus() {
     return sessionStatus;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   @Override

@@ -29,7 +29,7 @@ public class SessionRepositoryTest {
   @Test
   public void saveAndFindById() {
     LocalDateTime currentTime = LocalDateTime.now();
-    Session session = new Session(SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
+    Session session = new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
 
     Session savedSession = sessionRepository.save(session, 1L);
     Session findSession = sessionRepository.findById(savedSession.getId());
@@ -40,8 +40,8 @@ public class SessionRepositoryTest {
   @Test
   public void findByCourseId() {
     LocalDateTime currentTime = LocalDateTime.now();
-    sessionRepository.save(new Session(SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
-    sessionRepository.save(new Session(SessionPayment.PAID, SessionStatus.PREPARING, 2, currentTime, currentTime.plusDays(1), "https://twony.com", currentTime, currentTime), 1L);
+    sessionRepository.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
+    sessionRepository.save(new Session(SessionPayment.PAID, SessionProgressStatus.PREPARING, SessionRecruitmentStatus.NOT_RECRUITING, 2, currentTime, currentTime.plusDays(1), "https://twony.com", currentTime, currentTime), 1L);
 
     List<Session> sessions = sessionRepository.findByCourseId(1L);
     assertThat(sessions).hasSize(2);
@@ -50,12 +50,23 @@ public class SessionRepositoryTest {
   @Test
   public void saveSessionAndFindAllSessionUser() {
     LocalDateTime currentTime = LocalDateTime.now();
-    Session savedSession = sessionRepository.save(new Session(SessionPayment.FREE, SessionStatus.ACCEPTING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
+    Session savedSession = sessionRepository.save(new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime), 1L);
 
     savedSession.processEnrollment(NextStepUserTest.JAVAJIGI);
-    sessionRepository.saveSessionUser(savedSession, NextStepUserTest.JAVAJIGI);
+    sessionRepository.saveSessionUser(new SessionUser(savedSession, NextStepUserTest.JAVAJIGI, currentTime, currentTime));
 
-    List<SessionUser> findAllSessionUser = sessionRepository.findAllSessionUserBySessionId(savedSession.getId());
-    assertThat(findAllSessionUser).hasSize(1);
+    assertThat(savedSession.getSessionUsers().getSessionUsers()).hasSize(1);
+  }
+
+  @Test
+  public void findSessionUser() {
+    LocalDateTime currentTime = LocalDateTime.now();
+    Session session = new Session(SessionPayment.FREE, SessionProgressStatus.ACCEPTING, SessionRecruitmentStatus.RECRUITING, 1, currentTime, currentTime.plusDays(1), "https://oneny.com", currentTime, currentTime);
+
+    Session savedSession = sessionRepository.save(session, 1L);
+    sessionRepository.saveSessionUser(new SessionUser(savedSession, NextStepUserTest.JAVAJIGI, currentTime, currentTime));
+
+    SessionUser sessionUser = sessionRepository.findBySessionIdAndUserId(savedSession.getId(), NextStepUserTest.JAVAJIGI.getId());
+    assertThat(sessionUser.getSessionUserStatus()).isEqualTo("신청");
   }
 }

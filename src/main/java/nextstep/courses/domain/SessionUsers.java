@@ -14,11 +14,20 @@ public class SessionUsers {
     this.sessionUsers = new ArrayList<>();
   }
 
-  public void enroll(SessionUser sessionUser) {
+  public SessionUsers(int maxUserEnrollment, List<SessionUser> sessionUsers) {
+    this.maxUserEnrollment = maxUserEnrollment;
+    this.sessionUsers = sessionUsers;
+  }
+
+  public void approveUserEnrollment(SessionUser sessionUser) {
     if (!canEnrollUser()) {
       throw new IllegalArgumentException(MAX_ENROLLMENT_MESSAGE);
     }
 
+    sessionUsers.add(sessionUser);
+  }
+
+  public void enroll(SessionUser sessionUser) {
     sessionUsers.add(sessionUser);
   }
 
@@ -36,5 +45,13 @@ public class SessionUsers {
 
   public List<SessionUser> getSessionUsers() {
     return sessionUsers;
+  }
+
+  @Override
+  public String toString() {
+    return "SessionUsers{" +
+            "maxUserEnrollment=" + maxUserEnrollment +
+            ", sessionUsers=" + sessionUsers +
+            '}';
   }
 }
