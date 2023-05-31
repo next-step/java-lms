@@ -45,12 +45,4 @@ public class SessionOption {
         return Objects.hash(sessionStatus, sessionType, sessionEnrollment);
     }
 
-    @Override
-    public String toString() {
-        return "SessionOption{" +
-                "sessionStatus=" + sessionStatus +
-                ", sessionType=" + sessionType +
-                ", sessionEnrollment=" + sessionEnrollment +
-                '}';
-    }
 }

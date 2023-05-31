@@ -45,12 +45,4 @@ public class SessionPeriod {
     public int hashCode() {
         return Objects.hash(startDate, endDate);
     }
-
-    @Override
-    public String toString() {
-        return "SessionPeriod{" +
-                "startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
 }

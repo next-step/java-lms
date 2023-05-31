@@ -31,7 +31,7 @@ public class UserRepositoryTest {
 
     @Test
     public void save(){
-        Long saved = userRepository.save(new NsUser(null,"test", "test", "test", "test@test.net"));
+        int saved = userRepository.save(new NsUser(null,"test", "test", "test", "test@test.net"));
         System.out.println(saved);
     }
 

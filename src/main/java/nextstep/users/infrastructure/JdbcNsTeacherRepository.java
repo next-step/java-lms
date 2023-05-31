@@ -2,8 +2,6 @@ package nextstep.users.infrastructure;
 
 import nextstep.users.domain.NsTeacher;
 import nextstep.users.domain.NsTeacherRepository;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.StudentStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +9,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Repository("nsTeacherRepository")

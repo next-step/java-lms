@@ -19,12 +19,6 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
-
-    public Course(Course course, List<Session> sessions){
-
-    }
     public Course(String title, Long creatorId, int cohort) {
         this(0L, title, creatorId, cohort, LocalDateTime.now(), null);
     }

@@ -7,6 +7,4 @@ import java.util.Optional;
 public interface NsStudentRepository {
 
     int[] save(NsStudent nsStudent);
-
-//    Optional<NsStudent> findByUserId(String userId);
 }

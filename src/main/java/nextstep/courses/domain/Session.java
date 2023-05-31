@@ -97,10 +97,6 @@ public class Session {
         return name;
     }
 
-    public int getMaxNumberOfStudents() {
-        return sessionCapacity.getMaxNumberOfStudents();
-    }
-
     public LocalDate getEndDate() {
         return sessionPeriod.getEndDate();
     }
@@ -121,10 +117,6 @@ public class Session {
         return courseId;
     }
 
-    public NsTeacher getNsTeacher() {
-        return nsTeacher;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,19 +128,5 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(name, sessionPeriod, coverImage, sessionOption, sessionCapacity, courseId, createdAt, updatedAt);
-    }
-
-    @Override
-    public String toString() {
-        return "Session{" +
-                "name='" + name + '\'' +
-                ", sessionPeriod=" + sessionPeriod +
-                ", coverImage='" + coverImage + '\'' +
-                ", sessionOption=" + sessionOption +
-                ", sessionStudent=" + sessionCapacity +
-                ", courseId=" + courseId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

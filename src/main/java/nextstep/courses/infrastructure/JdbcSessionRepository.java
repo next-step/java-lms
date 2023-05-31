@@ -1,16 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.users.domain.NsStudent;
-import nextstep.users.domain.NsStudentRepository;
 import nextstep.users.domain.NsTeacher;
-import nextstep.users.domain.NsTeacherRepository;
-import nextstep.users.infrastructure.JdbcNsStudentRepository;
-import nextstep.users.infrastructure.JdbcNsTeacherRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -22,18 +15,15 @@ import java.time.LocalDateTime;
 public class JdbcSessionRepository implements SessionRepository {
 
     private JdbcOperations jdbcTemplate;
-    private NsTeacherRepository nsTeacherRepository;
-    private NsStudentRepository nsStudentRepository;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.nsTeacherRepository = new JdbcNsTeacherRepository(jdbcTemplate);
     }
 
     @Override
     public int save(Session session) {
         String sql = "insert into session (name, created_at, updated_at, start_date, end_date, course_id) values(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getName(), session.getCreatedAt(), session.getUpdatedAt(), session.getStartDate(), session.getEndDate(), session.getCourseId());;
+        return jdbcTemplate.update(sql, session.getName(), session.getCreatedAt(), session.getUpdatedAt(), session.getStartDate(), session.getEndDate(), session.getCourseId());
     }
 
     @Override

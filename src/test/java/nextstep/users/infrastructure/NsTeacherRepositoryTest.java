@@ -31,7 +31,7 @@ public class NsTeacherRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void save() {
         NsTeacher nsTeacher = new NsTeacher(null, "javajigi", "password", "name", "javajigi@slipp.net");
         nsTeacher.chargeSession(1L);
         nsTeacher.chargeSession(2L);

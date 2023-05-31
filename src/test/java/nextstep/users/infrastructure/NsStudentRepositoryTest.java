@@ -31,7 +31,7 @@ public class NsStudentRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void save() {
         NsStudent nsStudent = new NsStudent(null, "javajigi", "password", "name", "javajigi@slipp.net");
         nsStudent.register(1L);
         nsStudent.register(2L);

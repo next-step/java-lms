@@ -33,10 +33,6 @@ public class SessionCapacity {
         }
     }
 
-    public int getMaxNumberOfStudents() {
-        return maxNumberOfStudents;
-    }
-
     public int getNumberOfRegisteredStudent() {
         return numberOfRegisteredStudent;
     }
@@ -53,15 +49,5 @@ public class SessionCapacity {
     public int hashCode() {
         return Objects.hash(numberOfRegisteredStudent, maxNumberOfStudents);
     }
-
-    @Override
-    public String toString() {
-        return "SessionStudent{" +
-                "numberOfRegisteredStudent=" + numberOfRegisteredStudent +
-                ", maxNumberOfStudents=" + maxNumberOfStudents +
-                '}';
-    }
-
-
 
 }
