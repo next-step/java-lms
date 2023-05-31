@@ -20,7 +20,7 @@ public class QuestionTest {
     @Test
     public void delete_성공() throws Exception {
         assertThat(Q1.isDeleted()).isFalse();
-        Q1.deleteQuestion(NsUserTest.JAVAJIGI);
+        Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(Q1.isDeleted()).isTrue();
     }

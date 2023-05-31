@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question extends Post{
+public class Question extends Post {
     private String title;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     public Question() {
     }
@@ -27,21 +27,12 @@ public class Question extends Post{
         this.contentType = ContentType.QUESTION;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -50,26 +41,24 @@ public class Question extends Post{
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        boolean hasOtherUsersAnswer = getAnswers().stream()
-                .anyMatch(a -> !isOwner(loginUser));
-        if (hasOtherUsersAnswer) {
+        if (answers.hasOtherUsersAnswer(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         setDeleted(true);
     }
 
     public void deleteAnswers() {
-        getAnswers().forEach(Answer::deleteAnswer);
+        answers.delete();
     }
 
     public List<DeleteHistory> deletedHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.from(this));
-        getAnswers().forEach(a -> deleteHistories.add(a.deleteHistory()));
+        deleteHistories.addAll(answers.getDeletedHistories());
         return deleteHistories;
     }
 }
