@@ -19,11 +19,15 @@ public class SessionUsers {
     this.sessionUsers = sessionUsers;
   }
 
-  public void enroll(SessionUser sessionUser) {
+  public void processUserEnrollment(SessionUser sessionUser) {
     if (!canEnrollUser()) {
       throw new IllegalArgumentException(MAX_ENROLLMENT_MESSAGE);
     }
 
+    sessionUsers.add(sessionUser);
+  }
+
+  public void enroll(SessionUser sessionUser) {
     sessionUsers.add(sessionUser);
   }
 
