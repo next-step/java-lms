@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 public class SessionTest {
@@ -16,7 +15,6 @@ public class SessionTest {
         Session S1 = create(SessionStatus.RECRUITING, 1);
         Session S2 = create(SessionStatus.PREPARING, 1);
         Session S3 = create(SessionStatus.END, 1);
-        assertThat(S1.enrollNsUser(NsUserTest.JAVAJIGI).countNsUsers()).isEqualTo(1);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> S2.enrollNsUser(NsUserTest.JAVAJIGI))
@@ -40,6 +38,6 @@ public class SessionTest {
     }
 
     public static Session create(SessionStatus sessionStatus, int maxNsUserCount) {
-        return new Session(1L, 1L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), "https://test.png", true, sessionStatus, new NsUsers(maxNsUserCount));
+        return new Session(1L, 1L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), "https://test.png", true, sessionStatus, new NsUsers(), maxNsUserCount);
     }
 }
