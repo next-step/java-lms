@@ -13,28 +13,27 @@ import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
 
-    private final LocalDateTime startedAt = LocalDateTime.now();
-    private final LocalDateTime endedAt = LocalDateTime.now().plusDays(30);
-    private final String sessionCoverImage = "https://edu.nextstep.camp/images/covers/basic/008.jpg";
-    private final SessionCostType sessionCostType = SessionCostType.PAID;
-    private final SessionStatus sessionStatus = SessionStatus.RECRUITING;
-    private final int maxUserCount = 30;
+    private static final LocalDateTime startedAt = LocalDateTime.now();
+    private static final LocalDateTime endedAt = LocalDateTime.now().plusDays(30);
+    private static final String sessionCoverImage = "https://edu.nextstep.camp/images/covers/basic/008.jpg";
+    private static final SessionCostType sessionCostType = SessionCostType.PAID;
+    private static final SessionStatus sessionStatus = SessionStatus.RECRUITING;
+    private static final int maxUserCount = 30;
+
+    public static final Session sessionTest1 = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
 
 
     @DisplayName("강의는 시작일과 종료일을 가진다.")
     @Test
     void 시작일_종료일_확인() {
-
-        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
-        assertThat(session.startedAt()).isEqualTo(startedAt);
-        assertThat(session.endedAt()).isEqualTo(endedAt);
+        assertThat(sessionTest1.startedAt()).isEqualTo(startedAt);
+        assertThat(sessionTest1.endedAt()).isEqualTo(endedAt);
     }
 
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     @Test
     void 강의_커버_이미지경로_확인() {
-        Session session = new Session(1L, new ArrayList<>(), new SessionPeriod(startedAt, endedAt), sessionCoverImage, sessionCostType, sessionStatus, maxUserCount);
-        assertThat(session.getSessionCoverImage()).isEqualTo(sessionCoverImage);
+        assertThat(sessionTest1.getSessionCoverImage()).isEqualTo(sessionCoverImage);
     }
 
     @DisplayName("강의는 무료 강의와 유료 강의로 나뉜다.")
