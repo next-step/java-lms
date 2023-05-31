@@ -1,10 +1,9 @@
 package nextstep.fixture;
 
-import nextstep.image.domain.Image;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Creator;
-import nextstep.courses.domain.Enroll;
 import nextstep.courses.domain.Session;
+import nextstep.image.domain.Image;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
@@ -80,9 +79,9 @@ public class TestFixture {
         K8S_COURSE = Course.of(2L, "재미있는 쿠버네티스", 2L);
         KOTLIN_COURSE = Course.of(3L, "Hello Kotlin", 3L);
 
-        MINT_SESSION =  Session.of(10000L, 1L,100L);
-        LEMON_SESSION =  Session.of(500L, 2L,50L);
-        LIME_SESSION =  Session.of(3000L, 3L,30L);
+        MINT_SESSION = Session.of(10000L, 1L, 100L);
+        LEMON_SESSION = Session.of(500L, 2L, 50L);
+        LIME_SESSION = Session.of(3000L, 3L, 30L);
 
 //        MALBEC_ENROL = Enroll.of(1L, "MALBEC");
 //        SYRAH_ENROL = Enroll.of(2L, "SYRAH");

@@ -1,5 +1,6 @@
 package nextstep.users.domain;
 
+import nextstep.users.exception.UserCodeException;
 import nextstep.utils.DomainCode;
 import nextstep.utils.PrimaryKeyCodeMaker;
 
@@ -11,6 +12,7 @@ public class UserCode implements DomainCode {
     private final String userCode;
 
     public UserCode(String userCode) {
+        validateCode(userCode);
         this.userCode = userCode;
     }
 
@@ -20,6 +22,12 @@ public class UserCode implements DomainCode {
 
     public static UserCode any(PrimaryKeyCodeMaker primaryKeyCodeMaker) {
         return new UserCode(primaryKeyCodeMaker.generate());
+    }
+
+    private void validateCode(String userCode) {
+        if (userCode.isBlank() || userCode.isEmpty()) {
+            throw new UserCodeException();
+        }
     }
 
     @Override

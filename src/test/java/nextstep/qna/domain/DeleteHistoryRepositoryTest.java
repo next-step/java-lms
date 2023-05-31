@@ -24,18 +24,16 @@ public class DeleteHistoryRepositoryTest {
     @DisplayName("모든 DeleteHistor 를 저장한다")
     @Test
     public void saveAll() {
+        //given
         Question question = TestFixture.BADAJIGI_QUESTION;
         Answer answer = TestFixture.JAVAJIGI_ANSWER;
         List<DeleteHistory> deleteHistories = List.of(
                 question.toDeleteHistory(),
                 answer.toDeleteHistory()
         );
-
         //when
         deleteHistoryRepository.saveAll(deleteHistories);
-        //List<DeleteHistory> deleteHistoriesAfterSave = deleteHistoryRepository.findAll();
         //then
-        //assertThat(deleteHistoriesAfterSave.size()).as("").isGreaterThan(5);
     }
 
     @DisplayName("모든 DeleteHistor 를 조회한다")
@@ -64,7 +62,6 @@ public class DeleteHistoryRepositoryTest {
                 answer2.toDeleteHistory(),
                 answer3.toDeleteHistory()
         );
-        //deleteHistoryRepository.saveAll(deleteHistories);
         //when
         Long count = deleteHistoryRepository.count();
         //then

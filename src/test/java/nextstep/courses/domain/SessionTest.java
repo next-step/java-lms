@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.image.domain.Image;
 import nextstep.courses.exception.ExceededStudentCount;
 import nextstep.courses.exception.OutOfRegistrationPeriod;
 import nextstep.fixture.TestFixture;
+import nextstep.image.domain.Image;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -81,15 +81,15 @@ class SessionTest {
         session2.toRecruitingState();
         session3.toCloseState();
         //then
-        assertThat(session1.getStatus())
+        assertThat(session1.getSessionStatus())
                 .as("준비상태를 갖는다")
                 .isEqualTo(SessionStatus.PREPARING);
 
-        assertThat(session2.getStatus())
+        assertThat(session2.getSessionStatus())
                 .as("모집중 상태를 갖는다")
                 .isEqualTo(SessionStatus.RECRUITING);
 
-        assertThat(session3.getStatus())
+        assertThat(session3.getSessionStatus())
                 .as("종료상태를 갖는다")
                 .isEqualTo(SessionStatus.CLOSED);
     }
@@ -174,5 +174,24 @@ class SessionTest {
         //then
         assertThat(session1.getTerm()).as("지정한 기수 정보가 일치해야한다").isEqualTo(7);
         assertThat(session2.getTerm()).as("지정한 기수 정보가 일치해야한다").isEqualTo(16);
+    }
+
+    @DisplayName("강의가 진행 중인 상태에서도 수강신청이 가능해야 한다")
+    @Test
+    public void register() {
+        //given
+        Session session = TestFixture.MINT_SESSION;
+        session.setSessionId(new SessionId(3L));
+        session.toProgressState();
+        NsUser user = TestFixture.SYRAH;
+        //when
+        Enroll enroll = session.register(user.getUserCode(), 0);
+        //then
+        assertThat(enroll)
+                .as("수강신청의 결과가 잘 반영되었는지 검증한다")
+                .isNotNull();
+        assertThat(enroll.isEnrolledSession(session.getSessionId()))
+                .as("세션에 등록되었는지 검증한다")
+                .isTrue();
     }
 }

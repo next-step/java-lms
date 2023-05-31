@@ -9,4 +9,6 @@ public interface EnrollRepository {
     Optional<Enroll> findById(EnrollId enrollId);
 
     List<Enroll> findAll();
+
+    void deleteAll();
 }

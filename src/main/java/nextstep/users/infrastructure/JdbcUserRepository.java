@@ -3,7 +3,7 @@ package nextstep.users.infrastructure;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserCode;
 import nextstep.users.domain.UserRepository;
-import nextstep.users.exception.UserCodeException;
+import nextstep.utils.PrimaryKeyCodeMakerRandom;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -53,6 +53,10 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public NsUser save(NsUser user) {
+        return saveV1(user);
+    }
+
+    private NsUser saveV1(NsUser user) {
         String sql = "INSERT INTO ns_user " +
                 "(user_code," +
                 "password," +
@@ -61,8 +65,7 @@ public class JdbcUserRepository implements UserRepository {
                 "created_at," +
                 "updated_at) " +
                 "values (?,?,?,?,?,?)";
-
-        int update = jdbcTemplate.update(
+        jdbcTemplate.update(
                 sql,
                 user.getUserCode().value(),
                 user.getPassword(),
@@ -71,7 +74,6 @@ public class JdbcUserRepository implements UserRepository {
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
-
         return new NsUser(
                 user.getUserCode(),
                 user.getPassword(),
@@ -82,58 +84,24 @@ public class JdbcUserRepository implements UserRepository {
         );
     }
 
-    /*
-    String sql = "INSERT INTO question (" +
-                //"writer_id," +
-                "title," +
-                "contents," +
-                "deleted," +
-                "created_at," +
-                "updated_at) " +
-                "values (?,?,?,?,?)";
-        int savedQuestionId = jdbcTemplate.update(
-                sql,
-                //question.getWriter().getUserId(),
-                question.getTitle(),
-                question.getContents(),
-                question.getDeleted(),
-                question.getCreatedDate(),
-                question.getUpdatedDate()
-        );
-        return Question.of(
-                new QuestionId((long) savedQuestionId),
-                question
-        );
-     */
-
-    @Deprecated(since = "이게 왜 실패하는지 알수 없음..")
+    @Deprecated(since = "NULL not allowed for column \"USER_CODE\" 라는 메시지가 계속 뜨는데 이게 아무래도 PK id 가 auto generated 될 때 사용하는 방식이라서 그런듯 하다. 나중에 수정하겠습니다..")
     public NsUser saveV0(NsUser user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("ns_user").usingGeneratedKeyColumns("user_code");
-        String userCode = Optional.ofNullable(user.getUserCode().value())
-                .orElseThrow(UserCodeException::new);
-
+        UserCode userCode = user.getUserCode() == null ? UserCode.any(PrimaryKeyCodeMakerRandom.of()) : user.getUserCode();
         Map<String, Object> params = new HashMap<>() {
             {
-                put("user_code", userCode);
+                put("user_code", userCode.value());
+                put("password", user.getPassword());
                 put("name", user.getName());
                 put("email", user.getEmail());
                 put("created_at", user.getCreatedAt());
                 put("updated_at", user.getUpdatedAt());
             }
         };
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-        return new NsUser(
-                new UserCode(key.toString()),
-                user.getPassword(),
-                user.getName(),
-                user.getEmail(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
+        jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
+        return this.findByUserCode(userCode).orElseThrow(() -> new RuntimeException("저장에 실패하였습니다"));
     }
-
 
     @Override
     public List<NsUser> findAll() {
@@ -150,14 +118,4 @@ public class JdbcUserRepository implements UserRepository {
                 toLocalDateTime(rs.getTimestamp("updated_at"))
         );
     }
-    /*
-    this.userCode = userCode;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-     */
-
-
 }

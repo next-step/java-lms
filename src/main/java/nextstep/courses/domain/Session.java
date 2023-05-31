@@ -18,7 +18,7 @@ public class Session {
     @NotNull
     private Long price;
     @NotNull
-    private SessionStatus status;
+    private SessionStatus sessionStatus;
     @NotNull
     private Long maxStudentCount;
     @NotNull
@@ -26,12 +26,12 @@ public class Session {
     @NotNull
     private Date endDate;
 
-    public Session(SessionId sessionId, Image coverImage, Long term, Long price, SessionStatus status, Long maxStudentCount, Date startDate, Date endDate) {
+    public Session(SessionId sessionId, Image coverImage, Long term, Long price, SessionStatus sessionStatus, Long maxStudentCount, Date startDate, Date endDate) {
         this.sessionId = sessionId;
         this.coverImage = coverImage;
         this.term = term;
         this.price = price;
-        this.status = status;
+        this.sessionStatus = sessionStatus;
         this.maxStudentCount = maxStudentCount;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -54,6 +54,10 @@ public class Session {
         return sessionId;
     }
 
+    public void setSessionId(SessionId sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -74,20 +78,24 @@ public class Session {
         return this.price == 0L;
     }
 
-    public SessionStatus getStatus() {
-        return status;
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
 
     public void toPreparingState() {
-        this.status = SessionStatus.PREPARING;
+        this.sessionStatus = SessionStatus.PREPARING;
     }
 
     public void toRecruitingState() {
-        this.status = SessionStatus.RECRUITING;
+        this.sessionStatus = SessionStatus.RECRUITING;
+    }
+
+    public void toProgressState() {
+        this.sessionStatus = SessionStatus.IN_PROGRESS;
     }
 
     public void toCloseState() {
-        this.status = SessionStatus.CLOSED;
+        this.sessionStatus = SessionStatus.CLOSED;
     }
 
     public void registerCoverImage(Image image) {
@@ -97,7 +105,7 @@ public class Session {
     public Enroll register(UserCode userCode, long alreadyEnrolledCount) {
         validateState();
         validateStudentCount(alreadyEnrolledCount);
-        return new Enroll(null, this.sessionId, userCode); //Enroll.of(this.sessionId.value(), userCode.value());
+        return new Enroll(null, this.sessionId, userCode, EnrollStatus.SUBMITTED); //Enroll.of(this.sessionId.value(), userCode.value());
     }
 
     private void validateStudentCount(long count) {
@@ -107,7 +115,7 @@ public class Session {
     }
 
     private void validateState() {
-        if (this.status != SessionStatus.RECRUITING) {
+        if (!this.sessionStatus.isRecruitStatus()) {
             throw new OutOfRegistrationPeriod();
         }
     }
@@ -128,7 +136,15 @@ public class Session {
         return enroll.isEnrolledSession(this.sessionId);
     }
 
-    public void setSessionId(SessionId sessionId) {
-        this.sessionId = sessionId;
+    public Image getImage() {
+        return this.coverImage;
+    }
+
+    public Long getPrice() {
+        return this.price;
+    }
+
+    public Long getMaxStudentCount() {
+        return maxStudentCount;
     }
 }

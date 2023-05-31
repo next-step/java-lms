@@ -1,6 +1,6 @@
 package nextstep.image.domain;
 
-import nextstep.image.exception.InvalidImageUrlException;
+import nextstep.image.exception.EmptyImageUrlException;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
@@ -16,14 +16,14 @@ public class Image {
         this.imageUrl = imageUrl;
     }
 
-    private void validateImageUrl(String imageUrl) {
-        if(imageUrl==null || imageUrl.isBlank()) {
-            throw new InvalidImageUrlException();
-        }
-    }
-
     public static Image of(String imageLink) {
         return new Image(null, imageLink);
+    }
+
+    private void validateImageUrl(String imageUrl) {
+        if (imageUrl == null || imageUrl.isBlank()) {
+            throw new EmptyImageUrlException();
+        }
     }
 
     public Long getImageId() {
