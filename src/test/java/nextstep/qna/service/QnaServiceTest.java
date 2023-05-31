@@ -69,7 +69,7 @@ public class QnaServiceTest {
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        //verifyDeleteHistories();
+        verifyDeleteHistories();
     }
 
     @Test

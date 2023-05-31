@@ -8,6 +8,8 @@ public class Course {
 
     private String title;
 
+    private List<Session> sessions;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
