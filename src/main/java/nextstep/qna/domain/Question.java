@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -41,7 +41,7 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validIsOwner(loginUser);
         this.deleted = true;
-        DeleteHistory questionDeleteHistory = new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), LocalDateTime.now());
+        DeleteHistory questionDeleteHistory = createDeleteHistory();
         List<DeleteHistory> answerDeleteHistories = deleteAnswers(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -51,26 +51,17 @@ public class Question {
     }
 
     private void validIsOwner(NsUser loginUser) throws CannotDeleteException {
-        if (!this.writer.matchUser(loginUser)) {
+        if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    private List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : this.answers) {
-            DeleteHistory answerDeleteHistory = deleteAnswer(answer, loginUser);
-            deleteHistories.add(answerDeleteHistory);
-        }
-        return deleteHistories;
+    private DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
-    private DeleteHistory deleteAnswer(Answer answer, NsUser loginUser) throws CannotDeleteException {
-        try {
-            return answer.delete(loginUser);
-        } catch (CannotDeleteException e) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+    private List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        return this.answers.deleteAll(loginUser);
     }
 
     public Long getId() {
@@ -118,7 +109,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.answers();
     }
 
     @Override
