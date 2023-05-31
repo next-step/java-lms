@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-class SessionHeadCountTest {
+class SessionValidatorTest {
 
     @Test
     void createTest_수강신청_정원초과() {
-        SessionHeadCount sessionHeadCount = new SessionHeadCount(1);
+        SessionValidator sessionHeadCount = new SessionValidator(1, SessionState.RECRUITING);
         sessionHeadCount.addPerson(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> sessionHeadCount.addPerson(NsUserTest.SANJIGI))
@@ -19,12 +19,21 @@ class SessionHeadCountTest {
 
     @Test
     void createTest_수강신청_중복요청() {
-        SessionHeadCount sessionHeadCount = new SessionHeadCount(3);
+        SessionValidator sessionHeadCount = new SessionValidator(3, SessionState.RECRUITING);
         sessionHeadCount.addPerson(NsUserTest.JAVAJIGI);
         sessionHeadCount.addPerson(NsUserTest.SANJIGI);
 
         assertThatThrownBy(() -> sessionHeadCount.addPerson(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("중복 신청입니다.");
+    }
+
+    @Test
+    void createTest_수강신청_모집중이아님() {
+        SessionValidator sessionHeadCount = new SessionValidator(3, SessionState.CLOSE);
+
+        assertThatThrownBy(() -> sessionHeadCount.addPerson(NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 강의는 수강신청중이 아닙니다.");
     }
 }
