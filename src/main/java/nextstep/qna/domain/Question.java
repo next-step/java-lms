@@ -69,7 +69,7 @@ public class Question {
         answers.add(answer);
     }
 
-    public void checkCanDelete(NsUser loginUser) throws CannotDeleteException {
+    private void checkCanDelete(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -80,7 +80,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> makeDeleteHistory() {
+    private List<DeleteHistory> makeDeleteHistory() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
