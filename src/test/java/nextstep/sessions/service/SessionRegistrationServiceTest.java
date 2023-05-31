@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Transactional
 @SpringBootTest
-class SessionServiceTest {
+class SessionRegistrationServiceTest {
 
     @Autowired
-    private SessionService sessionService;
+    private SessionRegistrationService sessionRegistrationService;
 
     @Test
     @DisplayName("세션 저장 및 조회")
@@ -36,7 +36,7 @@ class SessionServiceTest {
                 = new SessionDuration(expectedCreatedAt.plusDays(10L), expectedCreatedAt.plusDays(30L));
         SessionCoverImage expectedCoverImage = SessionCoverImage.create("http://test.com/image");
 
-        sessionService.save(
+        sessionRegistrationService.save(
                 SessionBuilder.aSession()
                         .withDuration(expectedDuration)
                         .withCoverImage(expectedCoverImage)
@@ -48,7 +48,7 @@ class SessionServiceTest {
                         .withCreatedAt(expectedCreatedAt)
                         .build());
 
-        Session savedSession = sessionService.findById(2L);
+        Session savedSession = sessionRegistrationService.findById(2L);
 
         assertAll(
                 () -> assertThat(savedSession.getDuration()).isEqualTo(expectedDuration),
@@ -60,7 +60,7 @@ class SessionServiceTest {
     @DisplayName("수강등록을 정상 수행합니다.")
     void test02() {
         assertThatNoException()
-                .isThrownBy(() -> sessionService.register(NsUserTest.SANJIGI.getUserId(), 1L));
+                .isThrownBy(() -> sessionRegistrationService.register(NsUserTest.SANJIGI.getUserId(), 1L));
 
     }
 

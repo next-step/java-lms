@@ -13,15 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class SessionService {
+public class SessionRegistrationService {
 
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
 
-    public SessionService(SessionRepository sessionRepository,
-                          UserRepository userRepository,
-                          StudentRepository studentRepository) {
+    public SessionRegistrationService(SessionRepository sessionRepository,
+                                      UserRepository userRepository,
+                                      StudentRepository studentRepository) {
         this.sessionRepository = sessionRepository;
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
