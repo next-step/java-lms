@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -134,8 +135,10 @@ class StudentsTest {
         .stream()
         .filter(Student::isApproved).count();
 
-    assertThat(approvedStudents).isEqualTo(3);
-    assertThat(students.listOfStudents().get(2).isApproved()).isTrue();
+    assertAll(
+        () -> assertThat(approvedStudents).isEqualTo(3),
+        () -> assertThat(students.listOfStudents().get(2).isApproved()).isTrue()
+    );
   }
 
   @Test
@@ -148,8 +151,10 @@ class StudentsTest {
         .stream()
         .filter(Student::isRejected).count();
 
-    assertThat(rejectedStudents).isEqualTo(1);
-    assertThat(students.listOfStudents().get(2).isRejected()).isTrue();
+    assertAll(
+        () -> assertThat(rejectedStudents).isEqualTo(1),
+        () -> assertThat(students.listOfStudents().get(2).isRejected()).isTrue()
+    );
   }
 
 

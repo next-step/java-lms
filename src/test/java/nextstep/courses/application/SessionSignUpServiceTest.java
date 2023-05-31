@@ -59,27 +59,7 @@ class SessionSignUpServiceTest {
         .hasMessage("존재하지 않는 세션입니다.");
   }
 
-  /**
-   *   public void approve(Long sessionId, String userId) {
-   *     Session session = sessionRepository.findById(sessionId);
-   *
-   *     NsUser user = userRepository.findByUserId(userId);
-   *
-   *     session.approve(user);
-   *
-   *     sessionRepository.saveApproved(sessionId, user.getId());
-   *   }
-   *
-   *   public void reject(Long sessionId, String userId) {
-   *     Session session = sessionRepository.findById(sessionId);
-   *
-   *     NsUser user = userRepository.findByUserId(userId);
-   *
-   *     session.reject(user);
-   *
-   *     sessionRepository.saveRejected(sessionId, user.getId());
-   *   }
-   */
+
   @Test
   void soochan_학생이_모집중이고_수강자리_2자리_남은_Session_200L곳에_수강신청후_승인시_성공() {
     sessionSignUpService.signUp(200L, "soochan");
