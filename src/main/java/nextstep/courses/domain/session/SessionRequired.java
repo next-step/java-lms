@@ -4,7 +4,7 @@ import nextstep.courses.domain.student.Student;
 import nextstep.courses.exceptions.NotPeriodSessionException;
 import nextstep.courses.exceptions.OverStudentException;
 
-public class SessionMandatoryInformation {
+public class SessionRequired {
 
     private final SessionParticipant sessionParticipant;
 
@@ -12,7 +12,7 @@ public class SessionMandatoryInformation {
 
     private final SessionTerm sessionTerm;
 
-    public SessionMandatoryInformation(SessionParticipant sessionParticipant, SessionCondition sessionsCondition,
+    public SessionRequired(SessionParticipant sessionParticipant, SessionCondition sessionsCondition,
             SessionTerm sessionTerm) {
         this.sessionParticipant = sessionParticipant;
         this.sessionsCondition = sessionsCondition;

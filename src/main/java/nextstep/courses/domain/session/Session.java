@@ -1,25 +1,17 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.student.Student;
-import nextstep.courses.exceptions.NotPeriodSessionException;
-import nextstep.courses.exceptions.OverStudentException;
 
 public class Session {
 
-    private final SessionMandatoryInformation mandatoryInformation;
+    private final SessionRequired mandatoryInformation;
 
-    private final SessionAdditionalInformation additionalInformation;
+    private final SessionOptional additionalInformation;
 
-    public Session(SessionMandatoryInformation mandatoryInformation, SessionAdditionalInformation additionalInformation) {
+    public Session(SessionRequired mandatoryInformation, SessionOptional additionalInformation) {
         this.mandatoryInformation = mandatoryInformation;
         this.additionalInformation = additionalInformation;
     }
-
-    //    public Session(SessionParticipant sessionParticipant, SessionCondition sessionsCondition, SessionTerm sessionTerm) {
-//        this.sessionParticipant = sessionParticipant;
-//        this.sessionsCondition = sessionsCondition;
-//        this.sessionTerm = sessionTerm;
-//    }
 
     public void apply(Student student) {
         mandatoryInformation.participate(student);

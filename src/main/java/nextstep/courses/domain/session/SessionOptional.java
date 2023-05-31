@@ -2,13 +2,13 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 
-public class SessionAdditionalInformation {
+public class SessionOptional {
 
     private final LocalDateTime created;
 
     private LocalDateTime updated;
 
-    public SessionAdditionalInformation(LocalDateTime created) {
+    public SessionOptional(LocalDateTime created) {
         this.created = created;
     }
 }
