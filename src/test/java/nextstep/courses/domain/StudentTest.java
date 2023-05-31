@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +31,10 @@ public class StudentTest {
     @Test
     @DisplayName("수강신청시 최대 수강신청 인원을 넘을 경우 예외를 던진다.")
     void enroll_OutOfMaxNumberOfStudent_ThrowException() {
-        session.add(june1);
-        session.add(june2);
+        session.enroll(june1);
+        session.enroll(june2);
 
-        assertThatThrownBy(() -> session.add(june3))
+        assertThatThrownBy(() -> session.enroll(june3))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessageContaining("현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다.");
     }
@@ -45,9 +44,9 @@ public class StudentTest {
     void enroll_LessThanMaxNumberOfStudent_NoException() {
         Session session = SessionCreator.create(3L, SessionStatus.OPENED);
 
-        assertThatNoException().isThrownBy(() -> session.add(june1));
-        assertThatNoException().isThrownBy(() -> session.add(june2));
-        assertThatNoException().isThrownBy(() -> session.add(june3));
+        assertThatNoException().isThrownBy(() -> session.enroll(june1));
+        assertThatNoException().isThrownBy(() -> session.enroll(june2));
+        assertThatNoException().isThrownBy(() -> session.enroll(june3));
     }
 
     @Test
@@ -55,7 +54,7 @@ public class StudentTest {
     void enroll_SessionStatus_OPENED_NoException() {
         Session session = SessionCreator.create(3L, SessionStatus.OPENED);
 
-        assertThatNoException().isThrownBy(() -> session.add(june1));
+        assertThatNoException().isThrownBy(() -> session.enroll(june1));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class StudentTest {
     void enroll_SessionStatus_READY_ThrowException() {
         Session session = SessionCreator.create(3L, SessionStatus.READY);
 
-        assertThatThrownBy(() -> session.add(june1))
+        assertThatThrownBy(() -> session.enroll(june1))
                 .isInstanceOf(CannotEnrollException.class);
 
     }
@@ -73,7 +72,7 @@ public class StudentTest {
     void enroll_SessionStatus_CLOSED_ThrowException() {
         Session session = SessionCreator.create(3L, SessionStatus.CLSOED);
 
-        assertThatThrownBy(() -> session.add(june1))
+        assertThatThrownBy(() -> session.enroll(june1))
                 .isInstanceOf(CannotEnrollException.class);
     }
 

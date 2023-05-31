@@ -32,7 +32,7 @@ public class Session {
         this.maxNumberOfStudent = maxNumberOfStudent;
     }
 
-    public void add(Student student) {
+    public void enroll(Student student) {
         if (!sessionStatus.canJoin()) {
             throw new CannotEnrollException("현재는 수강신청을 할 수 없는 강의 상태입니다. 현재 강의 상태 = " + sessionStatus.name());
         }
