@@ -11,6 +11,7 @@ import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
+import nextstep.users.exception.NotExistUserException;
 
 @Service("sessionService")
 public class SessionService {
@@ -31,7 +32,7 @@ public class SessionService {
 	@Transactional
 	public void enroll(long sessionId, String userId) {
 		Session session = sessionRepository.findById(sessionId);
-		NsUser nsUser = userRepository.findByUserId(userId).orElse(NsUser.GUEST_USER);
+		NsUser nsUser = userRepository.findByUserId(userId).orElseThrow(() -> new NotExistUserException("없는 유저입니다."));
 
 		Student student = session.enroll(nsUser);
 		studentRepository.save(student);
