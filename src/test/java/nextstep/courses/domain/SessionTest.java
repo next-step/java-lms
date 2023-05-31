@@ -1,42 +1,62 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.enums.SessionStatus;
+import nextstep.courses.enums.SessionType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SessionTest {
+
+    private final static String APPLY_ERROR_MESSAGE = "모집 중일때만 수강신청이 가능합니다.";
+
     @Test
-    @DisplayName("강의는 시작일과 종료일을 가진다")
+    @DisplayName("모집중일때 수강신청 가능")
     void test01() {
+        //given
+        Capacity capacity = new Capacity(9, 10);
+        CoverImage coverImage = new CoverImage(1L, "강의1사진", "http://");
+        SessionStatus sessionStatus = SessionStatus.RECRUTING;
+        Session session = new Session(1L, "강의1", "20230531", "20230605", capacity, coverImage, SessionType.FREE, sessionStatus, 1L);
+
+        //when
+        session.apply();
+
+        //then
+        Assertions.assertThat(session.getCapacity().getCurCapacity()).isEqualTo(10);
 
     }
 
     @Test
-    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
+    @DisplayName("준비중일때 수강신청 불가능")
     void test02() {
+        //given
+        Capacity capacity = new Capacity(9, 10);
+        CoverImage coverImage = new CoverImage(1L, "강의1사진", "http://");
+        SessionStatus sessionStatus = SessionStatus.PREPARING;
+        Session session = new Session(1L, "강의1", "20230531", "20230605", capacity, coverImage, SessionType.FREE, sessionStatus, 1L);
+
+        //when //then
+        Assertions.assertThatThrownBy(session::apply)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(APPLY_ERROR_MESSAGE);
 
     }
 
     @Test
-    @DisplayName("강의는 무료 강의와 유료 강의로 나뉜다.")
+    @DisplayName("종료중일때 수강신청 불가능")
     void test03() {
+        //given
+        Capacity capacity = new Capacity(9, 10);
+        CoverImage coverImage = new CoverImage(1L, "강의1사진", "http://");
+        SessionStatus sessionStatus = SessionStatus.COMPLETED;
+        Session session = new Session(1L, "강의1", "20230531", "20230605", capacity, coverImage, SessionType.FREE, sessionStatus, 1L);
+
+        //when //then
+        Assertions.assertThatThrownBy(session::apply)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(APPLY_ERROR_MESSAGE);
 
     }
 
-    @Test
-    @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.")
-    void test04() {
-
-    }
-
-    @Test
-    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
-    void test05() {
-
-    }
-
-    @Test
-    @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
-    void test06() {
-
-    }
 }
