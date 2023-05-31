@@ -14,7 +14,7 @@ import nextstep.sessions.exception.CapacityNumberException;
 import nextstep.sessions.exception.GuestUserSignUpException;
 import nextstep.sessions.exception.NotRecruitingException;
 import nextstep.sessions.exception.NumberFullException;
-import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.ProgressType;
 import nextstep.sessions.type.RecruitStatusType;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -37,7 +37,7 @@ public class SessionTest {
 	void test1() {
 		this.session.start();
 
-		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressStatusType.IN_PROGRESS, 100, new Students());
+		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressType.IN_PROGRESS, 100, new Students());
 		assertThat(this.session).isEqualTo(expected);
 	}
 
@@ -46,7 +46,7 @@ public class SessionTest {
 	void test2() {
 		this.session.end();
 
-		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressStatusType.TERMINATION, 100, new Students());
+		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressType.TERMINATION, 100, new Students());
 		assertThat(this.session).isEqualTo(expected);
 	}
 
@@ -55,7 +55,7 @@ public class SessionTest {
 	void test3() {
 		this.session.open();
 
-		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressStatusType.PREPARING, RecruitStatusType.RECRUITING, 100, new Students());
+		Session expected = new Session(1L, 1L, sessionDate, coveredImageUrl, true, ProgressType.PREPARING, RecruitStatusType.RECRUITING, 100, new Students());
 		assertThat(this.session).isEqualTo(expected);
 	}
 

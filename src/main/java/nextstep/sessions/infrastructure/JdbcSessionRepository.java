@@ -12,7 +12,7 @@ import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.StudentRepository;
 import nextstep.sessions.domain.Students;
-import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.ProgressType;
 import nextstep.sessions.type.RecruitStatusType;
 
 @Repository("sessionRepository")
@@ -29,23 +29,23 @@ public class JdbcSessionRepository implements SessionRepository {
 
 	@Override
 	public int save(Session session) {
-		String sql = "INSERT INTO session (course_id, start_at, end_at, covered_image_url, free, progress_status_type, recruit_status_type, capacity, created_at) "
+		String sql = "INSERT INTO session (course_id, start_at, end_at, covered_image_url, free, progress_type, recruit_status_type, capacity, created_at) "
 			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		return jdbcTemplate.update(sql, session.getCourseId(), session.getSessionDate().getStartAt(), session.getSessionDate().getEndAt(),
-			session.getCoveredImageUrl(), session.isFree(), session.getEnrollment().getProgressStatusType().toString(),
+			session.getCoveredImageUrl(), session.isFree(), session.getEnrollment().getProgressType().toString(),
 			session.getEnrollment().getRecruitingStatusType().toString(), session.getEnrollment().getCapacity(), session.getCreatedAt());
 	}
 
 	@Override
 	public Session findById(long id) {
-		String sql = "SELECT id, course_id, start_at, end_at, covered_image_url, free, progress_status_type, recruit_status_type, capacity FROM session WHERE id = ?";
+		String sql = "SELECT id, course_id, start_at, end_at, covered_image_url, free, progress_type, recruit_status_type, capacity FROM session WHERE id = ?";
 		RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
 			rs.getLong("id"),
 			rs.getLong("course_id"),
 			new SessionDate(toLocalDateTime(rs.getTimestamp("start_at")), toLocalDateTime(rs.getTimestamp("end_at"))),
 			rs.getString("covered_image_url"),
 			rs.getBoolean("free"),
-			ProgressStatusType.valueOf(rs.getString("progress_status_type")),
+			ProgressType.valueOf(rs.getString("progress_type")),
 			RecruitStatusType.valueOf(rs.getString("recruit_status_type")),
 			rs.getInt("capacity"),
 			new Students(studentRepository.findBySessionId(id))

@@ -56,7 +56,7 @@ create table session (
     end_at timestamp not null,
     covered_image_url varchar(100),
     free boolean not null,
-    progress_status_type varchar(20) not null,
+    progress_type varchar(20) not null,
     recruit_status_type varchar(20) not null,
     capacity int not null,
     created_at timestamp not null,

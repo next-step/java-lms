@@ -7,12 +7,12 @@ import nextstep.sessions.exception.CapacityNumberException;
 import nextstep.sessions.exception.NotRecruitingException;
 import nextstep.sessions.exception.NumberFullException;
 import nextstep.sessions.exception.ProgressStatusException;
-import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.ProgressType;
 import nextstep.sessions.type.RecruitStatusType;
 
 public class Enrollment {
 
-	private ProgressStatusType progressStatusType;
+	private ProgressType progressType;
 
 	private RecruitStatusType recruitStatusType;
 
@@ -20,11 +20,11 @@ public class Enrollment {
 
 	private final Students students;
 
-	public Enrollment(ProgressStatusType progressStatusType, RecruitStatusType recruitStatusType, int capacity, Students students) {
+	public Enrollment(ProgressType progressType, RecruitStatusType recruitStatusType, int capacity, Students students) {
 		if (capacity < 0) {
 			throw new CapacityNumberException("최대 수강 인원은 음수일 수 없습니다.");
 		}
-		this.progressStatusType = progressStatusType;
+		this.progressType = progressType;
 		this.recruitStatusType = recruitStatusType;
 		this.capacity = capacity;
 		this.students = students;
@@ -34,7 +34,7 @@ public class Enrollment {
 		if (!this.recruitStatusType.isRecruiting()) {
 			throw new NotRecruitingException("모집중인 강의가 아닙니다.");
 		}
-		if (!this.progressStatusType.isProgressing()) {
+		if (!this.progressType.isProgressing()) {
 			throw new ProgressStatusException("준비중이거나 이미 종료된 강의입니다.");
 		}
 		if (this.students.isFull(this.capacity)) {
@@ -49,16 +49,16 @@ public class Enrollment {
 		return student;
 	}
 
-	public void changeProgressStatusType(ProgressStatusType progressStatusType) {
-		this.progressStatusType = ProgressStatusType.of(progressStatusType);
+	public void changeProgressStatusType(ProgressType progressType) {
+		this.progressType = ProgressType.of(progressType);
 	}
 
 	public void changeRecruitingStatusType(RecruitStatusType recruitStatusType) {
 		this.recruitStatusType = RecruitStatusType.of(recruitStatusType);
 	}
 
-	public ProgressStatusType getProgressStatusType() {
-		return progressStatusType;
+	public ProgressType getProgressType() {
+		return progressType;
 	}
 
 	public RecruitStatusType getRecruitingStatusType() {
@@ -76,18 +76,18 @@ public class Enrollment {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Enrollment that = (Enrollment)o;
-		return capacity == that.capacity && progressStatusType == that.progressStatusType && recruitStatusType == that.recruitStatusType && Objects.equals(students, that.students);
+		return capacity == that.capacity && progressType == that.progressType && recruitStatusType == that.recruitStatusType && Objects.equals(students, that.students);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(progressStatusType, recruitStatusType, capacity, students);
+		return Objects.hash(progressType, recruitStatusType, capacity, students);
 	}
 
 	@Override
 	public String toString() {
 		return "Enrollment[" +
-			"progressStatusType=" + progressStatusType +
+			"progressType=" + progressType +
 			", recruitingStatusType=" + recruitStatusType +
 			", capacity=" + capacity +
 			", students=" + students +

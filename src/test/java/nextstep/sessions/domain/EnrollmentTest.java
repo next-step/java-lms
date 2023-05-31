@@ -17,7 +17,7 @@ import nextstep.sessions.exception.CapacityNumberException;
 import nextstep.sessions.exception.NotRecruitingException;
 import nextstep.sessions.exception.NumberFullException;
 import nextstep.sessions.exception.ProgressStatusException;
-import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.ProgressType;
 import nextstep.sessions.type.RecruitStatusType;
 
 public class EnrollmentTest {
@@ -32,20 +32,20 @@ public class EnrollmentTest {
 	@DisplayName("최대 수강인원 예외 케이스 - 음수")
 	@Test
 	void test1() {
-		assertThatThrownBy(() -> new Enrollment(ProgressStatusType.PREPARING, RecruitStatusType.RECRUITING, -1, new Students())).isInstanceOf(CapacityNumberException.class);
+		assertThatThrownBy(() -> new Enrollment(ProgressType.PREPARING, RecruitStatusType.RECRUITING, -1, new Students())).isInstanceOf(CapacityNumberException.class);
 	}
 
 	@DisplayName("수강 신청 예외 케이스 - 모집중이 아님")
 	@Test
 	void test2() {
-		Enrollment enrollment = new Enrollment(ProgressStatusType.IN_PROGRESS, RecruitStatusType.NOT_RECRUITING, 100, new Students());
+		Enrollment enrollment = new Enrollment(ProgressType.IN_PROGRESS, RecruitStatusType.NOT_RECRUITING, 100, new Students());
 		assertThatThrownBy(() -> enrollment.enroll(student)).isInstanceOf(NotRecruitingException.class);
 	}
 
 	@DisplayName("수강 신청 예외 케이스 - 준비중이거나 이미 종료된 강의")
-	@EnumSource(value = ProgressStatusType.class, names = {"PREPARING", "TERMINATION"})
+	@EnumSource(value = ProgressType.class, names = {"PREPARING", "TERMINATION"})
 	@ParameterizedTest
-	void test3(ProgressStatusType input) {
+	void test3(ProgressType input) {
 		Enrollment enrollment = new Enrollment(input, RecruitStatusType.RECRUITING, 100, new Students());
 		assertThatThrownBy(() -> enrollment.enroll(student)).isInstanceOf(ProgressStatusException.class);
 	}
@@ -53,21 +53,21 @@ public class EnrollmentTest {
 	@DisplayName("수강 신청 예외 케이스 - 정원이 가득참")
 	@Test
 	void test4() {
-		Enrollment enrollment = new Enrollment(ProgressStatusType.IN_PROGRESS, RecruitStatusType.RECRUITING, 1, new Students(new ArrayList<>(List.of(student))));
+		Enrollment enrollment = new Enrollment(ProgressType.IN_PROGRESS, RecruitStatusType.RECRUITING, 1, new Students(new ArrayList<>(List.of(student))));
 		assertThatThrownBy(() -> enrollment.enroll(new Student(1L, 2L))).isInstanceOf(NumberFullException.class);
 	}
 
 	@DisplayName("수강 신청 예외 케이스 - 동일 계정으로 이미 신청함")
 	@Test
 	void test5() {
-		Enrollment enrollment = new Enrollment(ProgressStatusType.IN_PROGRESS, RecruitStatusType.RECRUITING, 2, new Students(new ArrayList<>(List.of(student))));
+		Enrollment enrollment = new Enrollment(ProgressType.IN_PROGRESS, RecruitStatusType.RECRUITING, 2, new Students(new ArrayList<>(List.of(student))));
 		assertThatThrownBy(() -> enrollment.enroll(student)).isInstanceOf(AlreadySignUpException.class);
 	}
 
 	@DisplayName("수강 신청을 한다.")
 	@Test
 	void test6() {
-		Enrollment enrollment = new Enrollment(ProgressStatusType.IN_PROGRESS, RecruitStatusType.RECRUITING, 2, new Students(new ArrayList<>(List.of(student))));
+		Enrollment enrollment = new Enrollment(ProgressType.IN_PROGRESS, RecruitStatusType.RECRUITING, 2, new Students(new ArrayList<>(List.of(student))));
 		assertThat(enrollment.enroll(new Student(1L, 2L))).isEqualTo(new Student(1L, 2L));
 	}
 }

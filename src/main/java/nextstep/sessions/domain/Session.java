@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import nextstep.sessions.exception.GuestUserSignUpException;
-import nextstep.sessions.type.ProgressStatusType;
+import nextstep.sessions.type.ProgressType;
 import nextstep.sessions.type.RecruitStatusType;
 import nextstep.users.domain.NsUser;
 
@@ -27,28 +27,28 @@ public class Session {
 	private LocalDateTime updatedAt;
 
 	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, int capacity, Students students) {
-		this(id, courseId, sessionDate, coveredImageUrl, free, ProgressStatusType.PREPARING, capacity, students);
+		this(id, courseId, sessionDate, coveredImageUrl, free, ProgressType.PREPARING, capacity, students);
 	}
 
-	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressStatusType progressStatusType, int capacity, Students students) {
-		this(id, courseId, sessionDate, coveredImageUrl, free, progressStatusType, RecruitStatusType.NOT_RECRUITING, capacity, students);
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressType progressType, int capacity, Students students) {
+		this(id, courseId, sessionDate, coveredImageUrl, free, progressType, RecruitStatusType.NOT_RECRUITING, capacity, students);
 	}
 
-	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressStatusType progressStatusType, RecruitStatusType recruitStatusType, int capacity, Students students) {
+	public Session(Long id, Long courseId, SessionDate sessionDate, String coveredImageUrl, boolean free, ProgressType progressType, RecruitStatusType recruitStatusType, int capacity, Students students) {
 		this.id = id;
 		this.courseId = courseId;
 		this.sessionDate = sessionDate;
 		this.coveredImageUrl = coveredImageUrl;
 		this.free = free;
-		this.enrollment = new Enrollment(progressStatusType, recruitStatusType, capacity, students);
+		this.enrollment = new Enrollment(progressType, recruitStatusType, capacity, students);
 	}
 
 	public void start() {
-		this.enrollment.changeProgressStatusType(ProgressStatusType.IN_PROGRESS);
+		this.enrollment.changeProgressStatusType(ProgressType.IN_PROGRESS);
 	}
 
 	public void end() {
-		this.enrollment.changeProgressStatusType(ProgressStatusType.TERMINATION);
+		this.enrollment.changeProgressStatusType(ProgressType.TERMINATION);
 	}
 
 	public void open() {
