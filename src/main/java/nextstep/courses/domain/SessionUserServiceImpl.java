@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class SessionUserServiceImpl implements SessionUserService {
-    private static final String ALREADY_ENROLLED_USER = "이미 등록한 사용자 입니다.";
     private final SessionRepository sessionRepository;
     private final JdbcUserRepository jdbcUserRepository;
 
@@ -23,15 +22,10 @@ public class SessionUserServiceImpl implements SessionUserService {
     @Override
     public void enroll(long sessionId, String user) {
         Session session = sessionRepository.findById(sessionId);
-        List<SessionUser> sessionUsers = session.getSessionUsers().getSessionUsers();
         NsUser nsUser = jdbcUserRepository.findByUserId(user).orElse(NsUser.GUEST_USER);
-        boolean isEnrolledUser = sessionUsers.stream().allMatch(sessionUser -> sessionUser.isIncludeNsUserId(nsUser));
-        if (isEnrolledUser) {
-            throw new IllegalArgumentException(ALREADY_ENROLLED_USER);
-        } else {
-            session.enrollSession(nsUser);
-            sessionRepository.save(session);
-        }
+        session.enrollSession(nsUser);
+        sessionRepository.saveSessionUser(session);
+        sessionRepository.save(session);
     }
 
     @Override
@@ -45,7 +39,7 @@ public class SessionUserServiceImpl implements SessionUserService {
 
         sessionUsers.getSessionUsers()
                 .stream()
-                .filter(SessionUser::isApproved)
+                .filter(SessionUser::isRequested)
                 .collect(Collectors.toList())
                 .forEach(sessionUser -> {
                     sessionUser.approve();

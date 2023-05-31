@@ -25,8 +25,12 @@ public class SessionUser {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isApproved(){
-        return approvalStatus != ApprovalStatus.REJECTION;
+    public boolean isApproved() {
+        return approvalStatus == ApprovalStatus.APPROVAL || approvalStatus == ApprovalStatus.NO_INFO;
+    }
+
+    public boolean isRequested() {
+        return approvalStatus == ApprovalStatus.REQUEST  || approvalStatus == ApprovalStatus.NO_INFO;
     }
 
     public boolean isIncludeNsUserId(NsUser nsUser) {
