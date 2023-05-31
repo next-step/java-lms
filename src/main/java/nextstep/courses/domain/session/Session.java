@@ -1,5 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.DateRange;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -10,12 +12,12 @@ public class Session {
     private Long id;
     private Course course;
     private DateRange dateRange;
-    private String coverImage;
+    private SessionCoverImage coverImage;
     private SessionType sessionType;
     private SessionStatus sessionStatus;
     private SessionCapacity sessionCapacity;
 
-    public Session(Long id, Course course, LocalDateTime startDate, String coverImage, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
+    public Session(Long id, Course course, LocalDateTime startDate, SessionCoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
         this.id = id;
         this.course = course;
         this.dateRange = new DateRange(startDate);

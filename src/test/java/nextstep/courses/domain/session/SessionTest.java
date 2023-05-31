@@ -1,5 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.CourseTest;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class SessionTest {
         Session session = new Session(
                 0L, CourseTest.C1,
                 LocalDateTime.now(),
-                "coverImage",
+                SessionCoverImageTest.image1,
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
 
@@ -34,7 +35,7 @@ public class SessionTest {
         Session session = new Session(
                 1L, CourseTest.C1,
                 LocalDateTime.now(),
-                "coverImage",
+                SessionCoverImageTest.image1,
                 SessionType.FREE,
                 SessionStatus.PREPARING, 1);
 
@@ -49,7 +50,7 @@ public class SessionTest {
         Session session = new Session(
                 2L, CourseTest.C1,
                 LocalDateTime.now(),
-                "coverImage",
+                SessionCoverImageTest.image1,
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
