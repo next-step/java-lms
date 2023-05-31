@@ -43,18 +43,18 @@ public class Student {
     return Objects.hash(user, approveStatus);
   }
 
-  public Student approved(ApproveStatus approveStatus) {
-    if (this.approveStatus.isApproved()) {
+  public Student approved() {
+    if (isApproved()) {
       throw new IllegalArgumentException("이미 승인된 상태입니다.");
     }
-    return new Student(user, approveStatus);
+    return new Student(user, ApproveStatus.APPROVED);
   }
 
-  public Student rejected(ApproveStatus rejected) {
-    if (this.approveStatus.isRejected()) {
+  public Student rejected() {
+    if (isRejected()) {
       throw new IllegalArgumentException("이미 거절된 상태입니다.");
     }
-    return new Student(user, rejected);
+    return new Student(user, ApproveStatus.REJECTED);
   }
 
   public boolean isRejected() {

@@ -2,6 +2,9 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 import nextstep.users.domain.NsUser;
 
 /**
@@ -60,21 +63,27 @@ public class Students {
     if (isFull()) {
       throw new IllegalArgumentException("최대 인원수를 넘어서 더 이상 수강 승인을 할 수 없습니다.");
     }
-
-    for(int index = 0; index < students.size(); index++) {
-      if (students.get(index).isWaiting() && students.get(index).equals(new Student(user))) {
-        students.set(index, students.get(index).approved(ApproveStatus.APPROVED));
-        return;
-      }
-    }
+    findAndChangeStatus(user, Student::approved);
   }
 
   public void reject(NsUser user) {
-    for(int index = 0; index < students.size(); index++) {
-      if (students.get(index).isWaiting() && students.get(index).equals(new Student(user))) {
-        students.set(index, students.get(index).rejected(ApproveStatus.REJECTED));
-        return;
-      }
-    }
+    findAndChangeStatus(user, Student::rejected);
   }
+
+  private void findAndChangeStatus(NsUser user, Function<Student, Student> statusChanger) {
+    IntStream.range(0, students.size())
+        .filter(index -> findWaitingUserFromIndex(user, index))
+        .findFirst()
+        .ifPresent(index -> changeStatusFromIndex(statusChanger, index));
+  }
+
+  private Student changeStatusFromIndex(Function<Student, Student> statusChanger, int index) {
+    return students.set(index, statusChanger.apply(students.get(index)));
+  }
+
+  private boolean findWaitingUserFromIndex(NsUser user, int index) {
+    return students.get(index).isWaiting() && students.get(index).equals(new Student(user));
+  }
+
+
 }
