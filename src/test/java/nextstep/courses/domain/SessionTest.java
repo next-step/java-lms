@@ -4,19 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
     Session session;
-    List<Student> students;
+    Students students;
 
     @BeforeEach
     void setUp() {
-        students = new ArrayList<>();
+        students = Students.from();
         session = Session.of(LocalDateTime.now(), LocalDateTime.now().plusYears(1), "https://ianUrl",
                 SessionType.FREE, SessionStatus.READY, students);
     }
@@ -69,7 +67,7 @@ public class SessionTest {
     void enrollMaximumStudentFailed() {
         session = Session.of(LocalDateTime.now(), LocalDateTime.now().plusYears(1), "https://ianUrl",
                 SessionType.FREE, SessionStatus.OPENED,
-                makeStudents(50));
+                Students.fromStudentNumber(50));
         assertThatThrownBy(() -> session.enroll()).isInstanceOf(SessionMaxStudentsExceedException.class);
     }
 
@@ -77,15 +75,7 @@ public class SessionTest {
     void enrollMaximumStudentSuccess() throws SessionMaxStudentsExceedException, SessionNotOpenedException {
         session = Session.of(LocalDateTime.now(), LocalDateTime.now().plusYears(1), "https://ianUrl",
                 SessionType.FREE, SessionStatus.OPENED,
-                makeStudents(49));
+                Students.fromStudentNumber(49));
         assertThat(session.enroll()).isTrue();
-    }
-
-    List<Student> makeStudents(int number) {
-        List<Student> students = new ArrayList<>();
-        for(int i = 0; i < number; i++){
-            students.add(new Student());
-        }
-        return students;
     }
 }

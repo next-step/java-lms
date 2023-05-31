@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Session {
     private final LocalDateTime startDate;
@@ -9,10 +8,10 @@ public class Session {
     private final String coverImageUrl;
     private final SessionType type;
     private final SessionStatus status;
-    private final List<Student> students;
+    private final Students students;
 
     private Session(LocalDateTime startDate, LocalDateTime endDate, String coverImageUrl,
-                    SessionType type, SessionStatus status, List<Student> students) {
+                    SessionType type, SessionStatus status, Students students) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImageUrl = coverImageUrl;
@@ -22,7 +21,7 @@ public class Session {
     }
 
     public static Session of(LocalDateTime startDate, LocalDateTime endDate, String coverImageUrl,
-                             SessionType type, SessionStatus status, List<Student> students) {
+                             SessionType type, SessionStatus status, Students students) {
         return new Session(startDate, endDate, coverImageUrl, type, status, students);
     }
 
@@ -50,10 +49,10 @@ public class Session {
         if (status != SessionStatus.OPENED) {
             throw new SessionNotOpenedException("모집중인 강의가 아닙니다.");
         }
-        if (students.size() >= 50) {
+        if (students.number() >= 50) {
             throw new SessionMaxStudentsExceedException("수강 최대 인원을 초과했습니다.");
         }
-        students.add(new Student());
+        students.add(Student.from());
         return true;
     }
 }

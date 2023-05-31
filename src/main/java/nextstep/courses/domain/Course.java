@@ -5,18 +5,12 @@ import java.util.List;
 
 public class Course {
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private Integer period;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
-
-    private List<Session> sessions;
+    private Sessions sessions;
 
     public Course() {
     }
@@ -29,7 +23,7 @@ public class Course {
         this(0L, title, creatorId, period, LocalDateTime.now(), null, null);
     }
 
-    public Course(String title, Long creatorId, Integer period, List<Session> sessions) {
+    public Course(String title, Long creatorId, Integer period, Sessions sessions) {
         this(0L, title, creatorId, period, LocalDateTime.now(), null, sessions);
     }
 
@@ -42,7 +36,7 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, Integer period,
-                  LocalDateTime createdAt, LocalDateTime updatedAt, List<Session> sessions) {
+                  LocalDateTime createdAt, LocalDateTime updatedAt, Sessions sessions) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
@@ -68,7 +62,7 @@ public class Course {
         return period;
     }
 
-    public List<Session> getSessions() {
+    public Sessions getSessions() {
         return sessions;
     }
 
