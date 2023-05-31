@@ -22,26 +22,14 @@ public class SessionOption {
         this.sessionEnrollment = sessionEnrollment;
     }
 
-    public SessionOption(SessionType sessionType, SessionStatus sessionStatus) {
-        this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
-    }
     public void validateStatusOfSession() {
+        if(SessionStatus.isEnd(sessionStatus)){
+            throw new IllegalStateException("현재 강의는 종료 되었습니다.");
+        }
+
         if (SessionEnrollment.isNotEnrollment(sessionEnrollment)) {
             throw new IllegalStateException("현재 강의 모집 중이 아닙니다.");
         }
-    }
-
-    public SessionEnrollment getSessionEnrollment() {
-        return sessionEnrollment;
-    }
-
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
-    }
-
-    public SessionType getSessionType() {
-        return sessionType;
     }
 
     @Override

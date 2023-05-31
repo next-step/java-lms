@@ -3,6 +3,7 @@ package nextstep.users.infrastructure;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,12 @@ public class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
+    }
+
+    @Test
+    public void save(){
+        Long saved = userRepository.save(new NsUser(null,"test", "test", "test", "test@test.net"));
+        System.out.println(saved);
     }
 
     @Test

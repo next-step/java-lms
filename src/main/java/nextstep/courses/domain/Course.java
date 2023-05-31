@@ -22,6 +22,9 @@ public class Course {
     public Course() {
     }
 
+    public Course(Course course, List<Session> sessions){
+
+    }
     public Course(String title, Long creatorId, int cohort) {
         this(0L, title, creatorId, cohort, LocalDateTime.now(), null);
     }
@@ -33,6 +36,10 @@ public class Course {
         this.cohort = cohort;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 
     public String getTitle() {

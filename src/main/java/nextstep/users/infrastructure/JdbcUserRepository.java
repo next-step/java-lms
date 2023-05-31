@@ -19,6 +19,12 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public int save(NsUser nsUser) {
+        String sql = "insert into ns_user (user_id, password, name, email, created_at, updated_at) values (?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, nsUser.getUserId(), nsUser.getPassword(), nsUser.getName(), nsUser.getEmail(), LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    @Override
     public Optional<NsUser> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(

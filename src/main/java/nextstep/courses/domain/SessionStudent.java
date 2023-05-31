@@ -1,62 +1,36 @@
 package nextstep.courses.domain;
 
-import java.util.Objects;
+import nextstep.users.domain.NsStudent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SessionStudent {
 
-    private int numberOfRegisteredStudent;
-    private final int maxNumberOfStudents;
+    private Map<String, NsStudent> nsStudents;
 
     public SessionStudent() {
-        this(0, 30);
+        this.nsStudents = new HashMap<>();
     }
 
-    public SessionStudent(final int maxNumberOfStudents) {
-        this(0, maxNumberOfStudents);
+    public void register(NsStudent nsStudent, Long sessionId) {
+        nsStudents.put(nsStudent.getEmail(), nsStudent);
+        nsStudent.register(sessionId);
     }
 
-    public SessionStudent(final int numberOfRegisteredStudent, final int maxNumberOfStudents) {
-        this.numberOfRegisteredStudent = numberOfRegisteredStudent;
-        this.maxNumberOfStudents = maxNumberOfStudents;
+    public void approve(NsStudent nsStudent, Long sessionId) {
+        NsStudent student = nsStudents.get(nsStudent.getEmail());
+        student.approveToSession(sessionId);
+        nsStudents.put(nsStudent.getEmail(), student);
     }
 
-    public void register() {
-        validateCapacityOfStudent();
-        numberOfRegisteredStudent++;
+    public void refuse(NsStudent nsStudent, Long sessionId) {
+        NsStudent student = nsStudents.get(nsStudent.getEmail());
+        student.refusedToSession(sessionId);
+        nsStudents.remove(nsStudent.getEmail());
     }
 
-    private void validateCapacityOfStudent() {
-        if (numberOfRegisteredStudent + 1 > maxNumberOfStudents) {
-            throw new IllegalStateException("현재 최대 수강 인원이 초과 되었습니다.");
-        }
-    }
-
-    public int getMaxNumberOfStudents() {
-        return maxNumberOfStudents;
-    }
-
-    public int getNumberOfRegisteredStudent() {
-        return numberOfRegisteredStudent;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SessionStudent that = (SessionStudent) o;
-        return numberOfRegisteredStudent == that.numberOfRegisteredStudent && maxNumberOfStudents == that.maxNumberOfStudents;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(numberOfRegisteredStudent, maxNumberOfStudents);
-    }
-
-    @Override
-    public String toString() {
-        return "SessionStudent{" +
-                "numberOfRegisteredStudent=" + numberOfRegisteredStudent +
-                ", maxNumberOfStudents=" + maxNumberOfStudents +
-                '}';
+    public boolean hasStudent(NsStudent student) {
+        return nsStudents.containsValue(student);
     }
 }

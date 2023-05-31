@@ -26,4 +26,7 @@ public enum SessionStatus {
     }
 
 
+    public static boolean isEnd(SessionStatus sessionStatus) {
+        return END == sessionStatus;
+    }
 }
