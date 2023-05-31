@@ -59,6 +59,10 @@ public class Course {
         return sessions;
     }
 
+    public long id() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Course{" +

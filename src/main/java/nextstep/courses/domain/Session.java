@@ -1,15 +1,18 @@
 package nextstep.courses.domain;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Session {
+    private int id;
+
+    private int courseId;
+
     private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
 
-    private File coverImage;
+    private String coverImageUrl;
 
     private boolean isFree;
 
@@ -36,6 +39,18 @@ public class Session {
         this.maxStudents = maxStudents;
     }
 
+    public Session(int id, int courseId, String coverImageUrl, boolean isFree, Status status, int currentStudents, int maxStudents, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.id = id;
+        this.courseId = courseId;
+        this.coverImageUrl = coverImageUrl;
+        this.isFree = isFree;
+        this.status = status;
+        this.currentStudents = currentStudents;
+        this.maxStudents = maxStudents;
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
+    }
+
     public void patchTerms(LocalDateTime startedAt, LocalDateTime endedAt) {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
@@ -53,12 +68,12 @@ public class Session {
         return isFree;
     }
 
-    public void registerCoverImage(File file) {
-        this.coverImage = file;
+    public void registerCoverImage(String url) {
+        this.coverImageUrl = url;
     }
 
-    public File coverImage() {
-        return this.coverImage;
+    public String coverImageUrl() {
+        return this.coverImageUrl;
     }
 
     public void patchStatus(Status status) {
@@ -67,6 +82,10 @@ public class Session {
 
     public boolean isOpening() {
         return status == Status.OPENING;
+    }
+
+    public String statusToString() {
+        return status.toString();
     }
 
     public void registerMaxStudents(int count) {
@@ -91,5 +110,24 @@ public class Session {
 
     public int currentStudents() {
         return currentStudents;
+    }
+
+    public int maxStudents() {
+        return maxStudents;
+    }
+
+    @Override
+    public String toString() {
+        return "Session {" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", coverImageUrl=" + coverImageUrl +
+                ", isFree=" + isFree +
+                ", status=" + status +
+                ", currentStudents=" + currentStudents +
+                ", maxStudents=" + maxStudents +
+                ", startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                '}';
     }
 }
