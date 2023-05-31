@@ -19,6 +19,14 @@ public class SessionTimeLine {
         }
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getClosedAt() {
+        return closedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
