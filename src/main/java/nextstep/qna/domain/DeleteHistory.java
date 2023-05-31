@@ -19,18 +19,15 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Question question) {
-        this.contentType = contentType;
-        this.contentId = question.getId();
-        this.deletedBy = question.getWriter();
+    private DeleteHistory(Post post) {
+        this.contentType = post.contentType;
+        this.contentId = post.getId();
+        this.deletedBy = post.getWriter();
         this.createdDate = LocalDateTime.now();
     }
 
-    public DeleteHistory(ContentType contentType, Answer answer) {
-        this.contentType = contentType;
-        this.contentId = answer.getId();
-        this.deletedBy = answer.getWriter();
-        this.createdDate = LocalDateTime.now();
+    public static DeleteHistory from(Post post) {
+        return new DeleteHistory(post);
     }
 
     @Override
