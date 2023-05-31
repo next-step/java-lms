@@ -11,18 +11,21 @@ public class Student {
 
     private Long sessionId;
 
+    private StudentApprovalType approvalType;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     public Student(String userId, Long sessionId) {
-        this(null, userId, sessionId, LocalDateTime.now(), null);
+        this(null, userId, sessionId, StudentApprovalType.APPLICATION, LocalDateTime.now(), null);
     }
 
-    public Student(Long id, String userId, Long sessionId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Student(Long id, String userId, Long sessionId, StudentApprovalType approvalType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.sessionId = sessionId;
+        this.approvalType = approvalType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -44,6 +47,14 @@ public class Student {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    public StudentApprovalType getApprovalType() {
+        return approvalType;
+    }
+
+    public String getApprovalTypeName() {
+        return approvalType.getName();
     }
 
     public LocalDateTime getCreatedAt() {
@@ -71,8 +82,9 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userId='" + userId + '\'' +
                 ", sessionId=" + sessionId +
+                ", approvalType=" + approvalType +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

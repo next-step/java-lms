@@ -73,3 +73,4 @@ create table student (
 );
 
 alter table session add recruitment_status VARCHAR(20) AFTER status;
+alter table student add approval_type VARCHAR(20) AFTER session_id;
