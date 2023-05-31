@@ -4,19 +4,13 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Post {
+public class Document {
     Long id;
-
     ContentType contentType;
-
     String contents;
-
     NsUser writer;
-
     boolean deleted = false;
-
     LocalDateTime createdDate = LocalDateTime.now();
-
     LocalDateTime updatedDate;
 
     public Long getId() {
@@ -27,7 +21,7 @@ public class Post {
         return writer;
     }
 
-    public Post setDeleted(boolean deleted) {
+    public Document setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }

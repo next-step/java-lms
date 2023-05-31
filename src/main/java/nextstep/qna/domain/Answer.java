@@ -4,8 +4,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends Post{
-
+public class Answer extends Document {
     private Question question;
 
     public Answer() {

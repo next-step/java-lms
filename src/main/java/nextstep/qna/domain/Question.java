@@ -3,11 +3,10 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question extends Post {
+public class Question extends Document {
     private String title;
 
     private Answers answers = new Answers();
@@ -58,7 +57,7 @@ public class Question extends Post {
     public List<DeleteHistory> deletedHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.from(this));
-        deleteHistories.addAll(answers.getDeletedHistories());
+        deleteHistories.addAll(answers.deletedHistories());
         return deleteHistories;
     }
 }

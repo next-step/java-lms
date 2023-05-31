@@ -21,7 +21,7 @@ public class Answers {
         answers.forEach(Answer::deleteAnswer);
     }
 
-    public List<DeleteHistory> getDeletedHistories() {
+    public List<DeleteHistory> deletedHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         answers.forEach(a -> deleteHistories.add(a.deleteHistory()));
         return deleteHistories;
