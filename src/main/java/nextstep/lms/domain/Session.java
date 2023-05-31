@@ -10,36 +10,38 @@ public class Session {
     private SessionDate sessionDate;
     private Long imageId;
     private SessionState sessionState;
-    private SessionType sessionType;
+    private SessionRecruitingState sessionRecruitingState;
+    private SessionPaidType sessionPaidType;
     private StudentCapacity studentCapacity;
 
     public Session(LocalDate startDate, LocalDate endDate) {
         this(null, startDate, endDate,
-                SessionState.READY, SessionType.FREE, 0,
+                SessionState.READY, SessionRecruitingState.STOPPED, SessionPaidType.FREE, 0,
                 1, null);
     }
 
     public Session(LocalDate startDate, LocalDate endDate, Long imageId,
-                   SessionType sessionType, int studentCapacity) {
+                   SessionPaidType sessionPaidType, int studentCapacity) {
         this(null, startDate, endDate,
-                SessionState.READY, sessionType, 0,
+                SessionState.READY, SessionRecruitingState.STOPPED, sessionPaidType, 0,
                 studentCapacity, imageId);
     }
 
     public Session(Long id, LocalDate startDate, LocalDate endDate,
-                   SessionState sessionState, SessionType sessionType, int registeredStudent,
-                   int studentCapacity, Long imageId) {
+                   SessionState sessionState, SessionRecruitingState sessionRecruitingState, SessionPaidType sessionPaidType,
+                   int registeredStudent, int studentCapacity, Long imageId) {
         this.id = id;
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionState = sessionState;
-        this.sessionType = sessionType;
+        this.sessionRecruitingState = sessionRecruitingState;
+        this.sessionPaidType = sessionPaidType;
         this.studentCapacity = new StudentCapacity(studentCapacity, registeredStudent);
         this.imageId = imageId;
     }
 
-    public static Session createSession(LocalDate startDate, LocalDate endDate, Long longCover,
-                                        SessionType sessionType, int studentCapacity) {
-        return new Session(startDate, endDate, longCover, sessionType, studentCapacity);
+    public static Session createSession(LocalDate startDate, LocalDate endDate, Long imageId,
+                                        SessionPaidType sessionPaidType, int studentCapacity) {
+        return new Session(startDate, endDate, imageId, sessionPaidType, studentCapacity);
     }
 
     public Long changeImageCover(Long changeCover) {
@@ -47,12 +49,17 @@ public class Session {
         return imageId;
     }
 
-    public SessionState recruitStudents() {
-        sessionState = SessionState.RECRUITING;
+    public SessionState changeProgressState() {
+        sessionState = SessionState.PROGRESS;
         return sessionState;
     }
 
-    public SessionState changeFinishSessionState(LocalDate date) {
+    public SessionState changeFinishSessionState() {
+        sessionState = SessionState.FINISH;
+        return sessionState;
+    }
+
+    public SessionState changeFinishSessionStateByDate(LocalDate date) {
         if (sessionDate.isAfterEndDate(date)) {
             sessionState = SessionState.FINISH;
         }
@@ -60,14 +67,14 @@ public class Session {
     }
 
     public Student enroll(NsUser nsUser) {
-        validateSessionState();
+        validateSessionRecruitingState();
         studentCapacity.enroll();
 
         return Student.init(nsUser, this);
     }
 
-    private void validateSessionState() {
-        if (!sessionState.equals(SessionState.RECRUITING)) {
+    private void validateSessionRecruitingState() {
+        if (!sessionRecruitingState.equals(SessionRecruitingState.RECRUITING)) {
             throw new IllegalArgumentException("모집 중이 아닙니다.");
         }
     }
@@ -79,10 +86,10 @@ public class Session {
         return student;
     }
 
-    public SessionType changeSessionType(SessionType sessionType) {
+    public SessionPaidType changeSessionType(SessionPaidType sessionPaidType) {
         validateReadyState();
-        this.sessionType = sessionType;
-        return sessionType;
+        this.sessionPaidType = sessionPaidType;
+        return sessionPaidType;
     }
 
     private void validateReadyState() {
@@ -92,7 +99,24 @@ public class Session {
     }
 
     public boolean isFree() {
-        return sessionType.equals(SessionType.FREE);
+        return sessionPaidType.equals(SessionPaidType.FREE);
+    }
+
+    public SessionRecruitingState changeStoppedState() {
+        this.sessionRecruitingState = SessionRecruitingState.STOPPED;
+        return sessionRecruitingState;
+    }
+
+    public SessionRecruitingState changeRecruitingState() {
+        validateSessionStateIsNotFinished();
+        this.sessionRecruitingState = SessionRecruitingState.RECRUITING;
+        return sessionRecruitingState;
+    }
+
+    private void validateSessionStateIsNotFinished() {
+        if (sessionState.equals(SessionState.FINISH)) {
+            throw new IllegalArgumentException("강의가 종료되었습니다.");
+        }
     }
 
     public Long getId() {
@@ -111,8 +135,12 @@ public class Session {
         return sessionState.toString();
     }
 
-    public String getSessionType() {
-        return sessionType.toString();
+    public String getSessionRecruitingState() {
+        return sessionRecruitingState.toString();
+    }
+
+    public String getSessionPaidType() {
+        return sessionPaidType.toString();
     }
 
     public StudentCapacity getStudentCapacity() {

@@ -1,5 +1,5 @@
 package nextstep.lms.domain;
 
 public enum SessionState {
-    READY, FINISH, RECRUITING
+    READY, FINISH, PROGRESS
 }

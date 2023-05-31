@@ -33,10 +33,10 @@ class SessionRepositoryTest {
         LocalDate startDate = LocalDate.of(2023, 5, 20);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
         Long imageCover = 1L;
-        SessionType sessionType = SessionType.FREE;
+        SessionPaidType sessionPaidType = SessionPaidType.FREE;
         int studentCapacity = 5;
 
-        return Session.createSession(startDate, endDate, imageCover, sessionType, studentCapacity);
+        return Session.createSession(startDate, endDate, imageCover, sessionPaidType, studentCapacity);
     }
 
     @Test
@@ -73,7 +73,7 @@ class SessionRepositoryTest {
                 .findById(1L)
                 .orElseThrow(NotFoundException::new);
 
-        findSession.recruitStudents();
+        findSession.changeProgressState();
         sessionRepository.changeSessionState(findSession);
 
         Session newSession = sessionRepository
@@ -81,7 +81,7 @@ class SessionRepositoryTest {
                 .orElseThrow(NotFoundException::new);
 
         assertThat(newSession.getSessionState())
-                .isEqualTo(SessionState.RECRUITING.toString());
+                .isEqualTo(SessionState.PROGRESS.toString());
     }
 
     @Test
@@ -128,15 +128,33 @@ class SessionRepositoryTest {
                 .findById(1L)
                 .orElseThrow(NotFoundException::new);
 
-        findSession.changeSessionType(SessionType.PAID);
-        sessionRepository.changeSessionType(findSession);
+        findSession.changeSessionType(SessionPaidType.PAID);
+        sessionRepository.changeSessionPaidType(findSession);
 
         Session newSession = sessionRepository
                 .findById(1L)
                 .orElseThrow(NotFoundException::new);
 
-        assertThat(newSession.getSessionType())
-                .isEqualTo(SessionType.PAID.toString());
+        assertThat(newSession.getSessionPaidType())
+                .isEqualTo(SessionPaidType.PAID.toString());
+    }
+
+    @Test
+    @DisplayName("강의 모집 상태 변경 기능")
+    void sessionRecruitingTypeChangeTest() {
+        Session findSession = sessionRepository
+                .findById(1L)
+                .orElseThrow(NotFoundException::new);
+
+        findSession.changeStoppedState();
+        sessionRepository.changeSessionRecruitingState(findSession);
+
+        Session newSession = sessionRepository
+                .findById(1L)
+                .orElseThrow(NotFoundException::new);
+
+        assertThat(newSession.getSessionRecruitingState())
+                .isEqualTo(SessionRecruitingState.STOPPED.toString());
     }
 
 }

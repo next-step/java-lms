@@ -54,7 +54,8 @@ create table session (
     , start_date date
     , end_date date
     , session_state varchar(50)
-    , session_type varchar(50)
+    , session_recruiting_state varchar(50)
+    , session_paid_type varchar(50)
     , registered_student int
     , student_capacity int
     , image_id bigint
