@@ -1,18 +1,59 @@
 package nextstep.courses.domain.session;
 
-public enum SessionStatus {
-  PREPARING("준비중"),
-  RECRUITING("모집중"),
-  END("종료")
-  ;
+import java.util.List;
 
-  private final String statusName;
+public class SessionStatus {
+  private final SessionProgressStatus progressStatus;
+  private final SessionRecruitStatus recruitStatus;
 
-  SessionStatus(String statusName) {
-    this.statusName = statusName;
+  private static final List<SessionProgressStatus> ENROLL_ALLOWED_PROGRESS_STATUS
+      = List.of(SessionProgressStatus.RECRUITING, SessionProgressStatus.ONGOING);
+
+  public SessionStatus(SessionProgressStatus progressStatus, SessionRecruitStatus recruitStatus) {
+    this.progressStatus = progressStatus;
+    this.recruitStatus = recruitStatus;
   }
 
-  public String getStatusName() {
-    return statusName;
+  public boolean isEnrollable() {
+    if (isNewlyEnrollable()) {
+      return true;
+    }
+
+    return isLegacyEnrollable();
+  }
+
+  public boolean isNotEnrollable() {
+    return !this.isEnrollable();
+  }
+
+  public String getProgressStatusName() {
+    return progressStatus.getProgressStatusName();
+  }
+
+  public String getRecruitStatusName() {
+    return recruitStatus.getRecruitStatusName();
+  }
+
+  @Deprecated
+  private boolean isLegacyEnrollable() {
+    if (recruitStatus != null) {
+      return false;
+    }
+
+    return ENROLL_ALLOWED_PROGRESS_STATUS.contains(progressStatus);
+  }
+
+  private boolean isNewlyEnrollable() {
+    if(recruitStatus == null) {
+      return false;
+    }
+
+    return ENROLL_ALLOWED_PROGRESS_STATUS.contains(progressStatus)
+        && recruitStatus == SessionRecruitStatus.RECRUIT;
+  }
+
+  @Deprecated
+  public boolean isLegacy() {
+    return this.recruitStatus == null;
   }
 }

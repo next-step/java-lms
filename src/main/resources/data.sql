@@ -10,8 +10,6 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
 
 
--- INSERT INTO course (title, creator_id, created_at, updated_at) values ('TDD 강의', 1, now(), now());
-
 INSERT INTO session(course_id, session_pay_type, session_status, capacity, start_at, finish_at)
 VALUES (1, 'PAID', 'RECRUITING', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
 
@@ -20,3 +18,27 @@ VALUES (1, 'PAID', 'PREPARING', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-M
 
 INSERT INTO session(course_id, session_pay_type, session_status, capacity, start_at, finish_at)
 VALUES (1, 'PAID', 'RECRUITING', 3, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+
+-- STEP 4
+-- id: 4, 수강인원 5명인 강의, 강사: 'javajigi'
+INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
+VALUES (1, 'PAID', 'ONGOING', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (4, 1);
+
+-- id: 5, 수강인원 1명인 강의, 강사: 'javajigi'
+INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
+VALUES (1, 'PAID', 'ONGOING', 'RECRUIT', 1, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (5, 1);
+
+-- id: 6, 수강인원 5명인 강의, 강사: 'javajigi', 신청 불가능한 강의
+INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
+VALUES (1, 'PAID', 'END', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (6, 1);
+
+-- id: 6, 수강인원 5명인 강의, 강사: '없음', 신청 불가능한 강의
+INSERT INTO session(course_id, session_pay_type, session_status, recruit_status, capacity, start_at, finish_at)
+VALUES (1, 'PAID', 'END', 'RECRUIT', 5, FORMATDATETIME('2023-05-26 13:00:00', 'yyyy-MM-dd'), FORMATDATETIME('2023-05-28 13:00:00', 'yyyy-MM-dd'));
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (6, 1);
+
+-- 레거시(Step 3) 수강 취소 테스트를 위해 강사추가
+INSERT INTO session_teacher (session_id, ns_user_id) VALUES (1, 1);
