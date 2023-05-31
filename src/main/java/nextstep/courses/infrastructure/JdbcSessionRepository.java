@@ -30,7 +30,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         String sql = "select id, start_date, end_date, cover_image_path, is_free, state, max_capacity, course_id, " +
-                "created_at, updated_at from session ";
+                "created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 new SessionDate(rs.getString(2), rs.getString(3)),
@@ -41,7 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(8),
                 toLocalDateTime(rs.getTimestamp(9)),
                 toLocalDateTime(rs.getTimestamp(10)));
-        return jdbcTemplate.queryForObject(sql, rowMapper);
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

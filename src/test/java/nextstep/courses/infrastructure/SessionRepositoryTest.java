@@ -36,7 +36,6 @@ public class SessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
-        System.out.println(">>> session : " + savedSession);
         assertThat(savedSession.getCourseId()).isEqualTo(session.getCourseId());
         assertThat(savedSession.getStartDate()).isEqualTo(session.getStartDate());
         assertThat(savedSession.getEndDate()).isEqualTo(session.getEndDate());

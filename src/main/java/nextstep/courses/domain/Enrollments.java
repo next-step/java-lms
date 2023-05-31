@@ -10,7 +10,7 @@ public class Enrollments {
     List<Enrollment> enrollments = new ArrayList<>();
 
     public void enroll(NsUser student, long sessionId) {
-        Enrollment enrollment = new Enrollment(student, sessionId);
+        Enrollment enrollment = new Enrollment(sessionId, student);
 
         if (enrollments.contains(enrollment)) {
             throw new DuplicateStudentException("이미 강의에 등록된 유저입니다.");

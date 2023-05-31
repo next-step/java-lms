@@ -1,5 +1,6 @@
 package nextstep.users.infrastructure;
 
+import nextstep.courses.domain.Session;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -16,6 +17,13 @@ public class JdbcUserRepository implements UserRepository {
 
     public JdbcUserRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public int save(NsUser nsUser) {
+        String sql = "insert into ns_user (user_id, password, name, email, created_at) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, nsUser.getUserId(), nsUser.getPassword(), nsUser.getName(),
+                nsUser.getEmail(), nsUser.getCreatedAt());
     }
 
     @Override

@@ -79,6 +79,10 @@ public class NsUser {
         return this;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
             throw new UnAuthorizedException();

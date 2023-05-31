@@ -21,13 +21,13 @@ create table session (
     primary key (id)
 );
 
-create table session_enrollment (
-     session_id bigint,
-     ns_user_id bigint,
+create table enrollment (
+     session_id bigint not null,
+     user_id varchar(20) not null,
      enroll_date varchar(8) not null,
      created_at timestamp not null,
      updated_at timestamp,
-     primary key (session_id, ns_user_id)
+     primary key (session_id, user_id)
 );
 
 create table ns_user (

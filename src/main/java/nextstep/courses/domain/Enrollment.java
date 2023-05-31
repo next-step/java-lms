@@ -4,22 +4,23 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class Enrollment {
-    private final NsUser student;
     private final long sessionId;
+    private final NsUser student;
     private String enrollDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Enrollment(NsUser nsUser, long sessionId) {
-        this(nsUser, sessionId, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")),
+    public Enrollment(long sessionId, NsUser nsUser) {
+        this(sessionId, nsUser, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")),
                 LocalDateTime.now(), null);
     }
 
-    public Enrollment(NsUser nsUser, long sessionId, String enrollDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.student = nsUser;
+    public Enrollment(long sessionId, NsUser nsUser, String enrollDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.sessionId = sessionId;
+        this.student = nsUser;
         this.enrollDate = enrollDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

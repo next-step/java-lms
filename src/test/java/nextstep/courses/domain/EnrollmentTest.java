@@ -11,6 +11,6 @@ public class EnrollmentTest {
     @Test
     void 생성자테스트() {
         NsUser jerry = new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com");
-        Assertions.assertThat(new Enrollment(jerry,1L)).isInstanceOf(Enrollment.class);
+        Assertions.assertThat(new Enrollment(1L, jerry)).isInstanceOf(Enrollment.class);
     }
 }
