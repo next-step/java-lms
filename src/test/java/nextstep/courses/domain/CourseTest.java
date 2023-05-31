@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,11 +23,12 @@ public class CourseTest {
         Long courseId = 1L;
         SessionInfo sessionInfo = new SessionInfo(courseId, 1L, "title1", "coverImageInfo", SessionType.FREE);
         SessionStatus sessionStatus = SessionStatus.OPENED;
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(sessionStatus, 3L);
         SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
 
-        session1 = new Session(sessionInfo, sessionStatus, sessionTimeLine, 3L);
-        session2 = new Session(sessionInfo, sessionStatus, sessionTimeLine, 3L);
-        session3 = new Session(sessionInfo, sessionStatus, sessionTimeLine, 3L);
+        session1 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
+        session2 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
+        session3 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
 
         course.addSession(session1);
         course.addSession(session2);
