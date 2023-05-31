@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session {
@@ -13,12 +14,14 @@ public class Session {
     private int cardinalNumber;
     private SessionCostType sessionCostType;
     private SessionRegistration sessionRegistration;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
-    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser) {
-        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser);
+    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser, startDate, endDate);
     }
 
-    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser) {
+    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
@@ -26,14 +29,16 @@ public class Session {
         this.cardinalNumber = cardinalNumber;
         this.sessionCostType = sessionCostType;
         this.sessionRegistration = new SessionRegistration(state, maxUser);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser) {
-        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser);
+    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser, startDate, endDate);
     }
 
-    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser) {
-        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser);
+    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, state, maxUser, startDate, endDate);
     }
 
     public Students enroll(Student student) {
@@ -66,6 +71,14 @@ public class Session {
 
     public SessionRegistration getSessionRegistration() {
         return sessionRegistration;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
     @Override

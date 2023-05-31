@@ -7,6 +7,8 @@ import nextstep.users.domain.StudentsTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
@@ -65,6 +67,8 @@ public class SessionTest {
     }
 
     public static Session createSession(Long id, SessionCostType sessionCostType, State state, int maxUser) {
-        return Session.of(id, 1L, "title", "cover", 1, sessionCostType, state, maxUser);
+        return Session.of(id, 1L, "title", "cover", 1, sessionCostType, state, maxUser
+                , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
+                , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
     }
 }

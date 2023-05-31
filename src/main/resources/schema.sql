@@ -58,6 +58,8 @@ create table session (
     session_cost_type varchar(10),
     state varchar(15),
     max_user int,
+    start_date timestamp,
+    end_date timestamp,
     primary key (id)
 );
 
