@@ -45,6 +45,6 @@ public class JdbcStudentRepository implements StudentRepository {
                 rs.getLong(2)
         );
 
-        return jdbcTemplate.queryForList(sql, Student.class, rowMapper, sessionId);
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }

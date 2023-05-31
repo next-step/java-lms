@@ -39,7 +39,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at, closed_at, max_student" +
-                " from course" +
+                " from session" +
                 " where id = ?";
 
         return jdbcTemplate.queryForObject(sql, generateRowMapper(), id);
@@ -50,10 +50,10 @@ public class JdbcSessionRepository implements SessionRepository {
     public List<Session> findByCourseId(Long courseId) {
 
         String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at, closed_at, max_student" +
-                " from course" +
+                " from session" +
                 " where course_id = ?";
 
-        return jdbcTemplate.queryForList(sql, Session.class, generateRowMapper(), courseId);
+        return jdbcTemplate.query(sql, generateRowMapper(), courseId);
     }
 
     private RowMapper<Session> generateRowMapper() {
