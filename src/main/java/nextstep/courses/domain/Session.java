@@ -7,20 +7,20 @@ import java.util.List;
 
 public class Session {
     private Long id;
-    private List<NsUser> users;
-    private SessionPeriod sessionPeriod;
-    private String sessionCoverImage;
-    private SessionCostType sessionCostType;
-    private String sessionStatus;
+    private final List<NsUser> users;
+    private final SessionPeriod sessionPeriod;
+    private final String sessionCoverImage;
+    private final SessionCostType sessionCostType;
+    private final SessionStatus sessionStatus;
 
-    private int maxUserCount;
+    private final int maxUserCount;
 
-    public Session(Long id, List<NsUser> users, SessionPeriod sessionPeriod, String sessionCoverImage, String sessionCostType, String sessionStatus, int maxUserCount) {
+    public Session(Long id, List<NsUser> users, SessionPeriod sessionPeriod, String sessionCoverImage, SessionCostType sessionCostType, SessionStatus sessionStatus, int maxUserCount) {
         this.id = id;
         this.users = users;
         this.sessionPeriod = sessionPeriod;
         this.sessionCoverImage = sessionCoverImage;
-        this.sessionCostType = SessionCostType.of(sessionCostType);
+        this.sessionCostType = sessionCostType;
         this.sessionStatus = sessionStatus;
         this.maxUserCount = maxUserCount;
     }
@@ -45,8 +45,8 @@ public class Session {
         return this.sessionCostType;
     }
 
-    public String getSessionStatus() {
-        return sessionStatus;
+    public SessionStatus getSessionStatus() {
+        return this.sessionStatus;
     }
 
     public int getMaxUserCount() {
@@ -54,7 +54,7 @@ public class Session {
     }
 
     public void register(NsUser user) {
-        if (!"RECRUITING".equals(this.sessionStatus)) {
+        if (!SessionStatus.RECRUITING.equals(this.sessionStatus)) {
             throw  new IllegalArgumentException("해당 강의는 모집중이 아닙니다.");
         }
 
