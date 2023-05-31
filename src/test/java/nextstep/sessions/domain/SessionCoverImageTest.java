@@ -1,6 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.sessions.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+import nextstep.sessions.domain.SessionCoverImage;
 
 class SessionCoverImageTest {
     public static final SessionCoverImage image1 = new SessionCoverImage(

@@ -1,6 +1,9 @@
-package nextstep.courses.domain.session;
+package nextstep.sessions.domain;
 
 import nextstep.courses.domain.CourseTest;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.SessionType;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +21,7 @@ public class SessionTest {
         Session session = new Session(
                 0L, CourseTest.C1,
                 LocalDateTime.now(),
-                SessionCoverImageTest.image1,
+                LocalDateTime.now(),
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
 
@@ -35,7 +38,7 @@ public class SessionTest {
         Session session = new Session(
                 1L, CourseTest.C1,
                 LocalDateTime.now(),
-                SessionCoverImageTest.image1,
+                LocalDateTime.now(),
                 SessionType.FREE,
                 SessionStatus.PREPARING, 1);
 
@@ -50,21 +53,21 @@ public class SessionTest {
         Session session = new Session(
                 2L, CourseTest.C1,
                 LocalDateTime.now(),
-                SessionCoverImageTest.image1,
+                LocalDateTime.now(),
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
-
+        System.out.println("session = " + session);
         assertThat(session.getStudentsNumbers()).isEqualTo(1);
     }
 
-    @Test//월수금 오전 열시
+    @Test
     @DisplayName(value = "이미 수강신청한 학생이 중복 수강신청했을 경우")
     void test4() {
         Session session = new Session(
                 3L, CourseTest.C1,
                 LocalDateTime.now(),
-                SessionCoverImageTest.image1,
+                LocalDateTime.now(),
                 SessionType.FREE,
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);

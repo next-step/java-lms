@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.sessions.domain;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,13 +9,14 @@ import java.net.URL;
 
 public class SessionCoverImage {
 
+    private Long id;
     private String fileName;
-    private ImageType fileType;
+    private SessionImageType fileType;
     private URL url;
 
     public SessionCoverImage(String fileName, String urlString, int maxWidth, int maxHeight) {
         this.fileName = fileName;
-        this.fileType = ImageType.of(urlString);
+        this.fileType = SessionImageType.of(urlString);
         this.url = createURL(urlString);
         isValidSize(maxWidth, maxHeight);
     }

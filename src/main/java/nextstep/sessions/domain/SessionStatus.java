@@ -1,9 +1,9 @@
-package nextstep.courses.domain.session;
+package nextstep.sessions.domain;
 
 public enum SessionStatus {
     PREPARING, RECRUITING, CLOSE;
 
-    public boolean isRecruitable(){
+    public boolean isRecruitable() {
         return this.equals(RECRUITING);
     }
 }
