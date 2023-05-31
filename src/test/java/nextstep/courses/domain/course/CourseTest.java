@@ -1,13 +1,17 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import nextstep.courses.DuplicateSessionException;
+import nextstep.courses.domain.session.SessionTest;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.SessionsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CourseTest {
     private Course c1;

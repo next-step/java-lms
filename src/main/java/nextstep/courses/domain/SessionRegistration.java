@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.DuplicateStudentRegisterException;
 import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
+import nextstep.courses.domain.session.State;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 

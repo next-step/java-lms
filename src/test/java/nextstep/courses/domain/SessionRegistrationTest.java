@@ -3,6 +3,10 @@ package nextstep.courses.domain;
 import nextstep.courses.DuplicateStudentRegisterException;
 import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionCostType;
+import nextstep.courses.domain.session.SessionTest;
+import nextstep.courses.domain.session.State;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
@@ -10,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.SessionTest.createSession;
+import static nextstep.courses.domain.session.SessionTest.createSession;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionRegistrationTest {

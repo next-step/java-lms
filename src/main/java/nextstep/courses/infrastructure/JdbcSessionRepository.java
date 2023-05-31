@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionCostType;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.State;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
