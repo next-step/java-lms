@@ -7,9 +7,11 @@ public class Course {
 
     private String title;
 
+    private Sessions sessions;
+
     private Long creatorId;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;
 
@@ -30,6 +32,14 @@ public class Course {
 
     public String getTitle() {
         return title;
+    }
+
+    public Sessions getSessions() {
+        return sessions;
+    }
+
+    public void addSessions(Sessions sessions) {
+        this.sessions = sessions;
     }
 
     public Long getCreatorId() {
