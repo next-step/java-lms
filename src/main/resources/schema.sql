@@ -59,3 +59,11 @@ create table session (
     is_free boolean,
     primary key (id)
 );
+
+create table students (
+    session_id bigint not null,
+    ns_user_id bigint not null,
+    primary key (session_id, ns_user_id),
+    foreign key (session_id) references session(id) on update cascade,
+    foreign key (ns_user_id) references ns_user(id) on update cascade
+);
