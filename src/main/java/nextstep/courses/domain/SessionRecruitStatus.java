@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 public enum SessionRecruitStatus {
 
   RECRUITING("모집중"),
@@ -9,6 +12,17 @@ public enum SessionRecruitStatus {
 
   SessionRecruitStatus(String description) {
     this.description = description;
+  }
+
+  /**
+   * 혹여나 session_recuit_status가 null이 들어올 경우를 대비해 null-safe하게 구현
+   * table의 기본값에 맞게 NOT_RECRUITING으로 초기화
+   */
+  public static SessionRecruitStatus of(String sessionRecruitStatus) {
+    return Stream.of(values())
+        .filter(it -> it.name().equals(sessionRecruitStatus))
+        .findFirst()
+        .orElse(NOT_RECRUITING);
   }
 
   public boolean isRecruiting() {

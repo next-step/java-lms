@@ -1,6 +1,7 @@
 package nextstep.courses.application;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
@@ -23,6 +24,9 @@ class SessionSignUpServiceTest {
 
   @Test
   void sanjigi_학생이_모집중이고_수강인원_다찬_Session_100L곳에_수강신청시_실패() {
+    sessionSignUpService.approve(100L, "javajigi");
+    sessionSignUpService.approve(100L, "sanjigi");
+
     assertThatThrownBy(() -> sessionSignUpService.signUp(100L, "sanjigi"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("최대 인원수를 넘어서 수강 신청할 수 없습니다.");
@@ -61,7 +65,7 @@ class SessionSignUpServiceTest {
 
 
   @Test
-  void soochan_학생이_모집중이고_수강자리_2자리_남은_Session_200L곳에_수강신청후_승인시_성공() {
+  void soochan_학생이_모집중이고_수강자리_3자리_남은_Session_200L곳에_수강신청후_승인시_성공() {
     sessionSignUpService.signUp(200L, "soochan");
 
     sessionSignUpService.approve(200L, "soochan");
@@ -72,8 +76,10 @@ class SessionSignUpServiceTest {
         .stream()
         .filter(Student::isApproved).count();
 
-    assertThat(session.getStudents().size()).isEqualTo(3);
-    assertThat(approvedCount).isEqualTo(2);
+    assertAll(
+        () -> assertThat(session.getStudents().size()).isEqualTo(3),
+        () -> assertThat(approvedCount).isEqualTo(1)
+    );
   }
 
   @Test

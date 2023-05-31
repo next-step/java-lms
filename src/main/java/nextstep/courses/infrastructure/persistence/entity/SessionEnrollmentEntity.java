@@ -36,12 +36,11 @@ public class SessionEnrollmentEntity extends BaseTimeEntity {
   /**
    * 아직 데이터 마이그레이션 전, 수강 신청을 먼저 한 사람은 approveStatus가 null이다.
    * 그래서 해당 회원들은 APPROVED로 변경해준다.
+   *
+   * 변경사항 : DEFAULT -> WAITING 으로 변경함 , 기존 수강 신청한 사람이라도 강사에 의해 합격한 사람만 수강 신청이 완료된 상태로 변경함
    */
   private static ApproveStatus convertApproveStatus(String approveStatus) {
-    if (approveStatus == null) {
-      return ApproveStatus.APPROVED;
-    }
-    return ApproveStatus.valueOf(approveStatus);
+    return ApproveStatus.of(approveStatus);
   }
 
 

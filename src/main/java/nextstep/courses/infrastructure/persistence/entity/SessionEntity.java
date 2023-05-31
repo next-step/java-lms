@@ -84,20 +84,23 @@ public class SessionEntity extends BaseTimeEntity {
   }
 
   /**
+   * [리뷰 전]
    * 데이터 마이그레이션 전에는, SessionRecruitStatus 상태가 없는 경우는 SessionStatus 상태를 보고 판단
    * SessionRecruitStatus == null && SessionStatus 가 모집중이면 => SessionRecruitStatus == 모집중
    * SessionRecruitStatus == null && SessionStatus 가 준비중, 끝남이면 => SessionRecruitStatus == 비모집중
+   *
+   * [리뷰 후]
+   * 데이터 마이그레이션 전에는, SessionRecruitStatus 상태가 없는 경우 Table Default 에 의해 NOT_RECRUITING 상태로 저장
+   * 따라서, 기존 SessionStatus에 (준비중,종료)를 갖는 데이터는 SessionRecruitStatus에 NOT_RECRUITING 상태로 관리하고자 함
+   * 만약, 기존 SessionStatus가 (old_모집중)이라면 SessionRecruitStatus에는 RECRUITING 상태로 관리하고자 함
+   * 새로운 SessionRecruitStatus column 추가 후로 새롭게 저장된 데이터는 그에 맞는 SessionRecruitStatus 상태로 관리하고자 함
    */
   private static SessionRecruitStatus convertSessionRecruitStatus(String sessionStatus, String sessionRecruitStatus) {
-    if (sessionRecruitStatus == null && SessionStatus.valueOf(sessionStatus).isRecruiting()) {
+    if (SessionStatus.valueOf(sessionStatus).isRecruiting()) {
       return SessionRecruitStatus.RECRUITING;
     }
 
-    if (sessionRecruitStatus == null && (SessionStatus.valueOf(sessionStatus).isEnd() || SessionStatus.valueOf(sessionStatus).isPreparing())) {
-      return SessionRecruitStatus.NOT_RECRUITING;
-    }
-
-    return SessionRecruitStatus.valueOf(sessionRecruitStatus);
+    return SessionRecruitStatus.of(sessionRecruitStatus);
   }
 
   public Long getCoverImageId() {

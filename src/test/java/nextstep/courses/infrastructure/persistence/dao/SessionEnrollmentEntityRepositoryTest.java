@@ -62,7 +62,7 @@ class SessionEnrollmentEntityRepositoryTest {
         100L, 1L);
 
     assertThat(alreadyApprovedHistory).isPresent();
-    assertThat(alreadyApprovedHistory.get().approveStatus()).isEqualTo(ApproveStatus.APPROVED);
+    assertThat(alreadyApprovedHistory.get().approveStatus()).isEqualTo(ApproveStatus.WAITING);
   }
 
   @Test
