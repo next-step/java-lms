@@ -56,13 +56,19 @@ create table session (
     end_at timestamp not null,
     covered_image_url varchar(100),
     free boolean not null,
-    progress_type varchar(20) not null,
-    recruit_status_type varchar(20) not null,
+    status_type varchar(20) not null,
     capacity int not null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id)
 );
+
+alter table session
+rename column status_type to progress_type;
+
+alter table session
+add column recruit_status_type varchar(20);
+
 
 create table student (
     session_id bigint not null,
