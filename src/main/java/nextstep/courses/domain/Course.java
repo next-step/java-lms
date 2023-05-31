@@ -13,11 +13,10 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
+    private Sessions sessions;
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, LocalDateTime.now(), null, new Sessions());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -26,6 +25,20 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sessions = new Sessions();
+    }
+
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, Sessions sessions) {
+        this.id = id;
+        this.title = title;
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.sessions = sessions;
+    }
+
+    public void addSession(Session session){
+        sessions.add(session);
     }
 
     public String getTitle() {
@@ -40,14 +53,7 @@ public class Course {
         return createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public int sessionsSize(){
+        return sessions.size();
     }
 }
