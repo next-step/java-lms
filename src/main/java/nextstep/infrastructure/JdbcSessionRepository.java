@@ -25,7 +25,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.update(
                 sql,
                 session.getCourseId(),
-                session.getSessionType().name(),
+                session.getSessionPaymentType().name(),
                 session.getSessionStatus().name(),
                 session.getSessionStudents().getMaximumCapacity(),
                 session.getSessionPeriod().getStartDate(),
@@ -41,8 +41,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong("course_id"),
                 toLocalDateTime(rs.getTimestamp("start_date")),
                 toLocalDateTime(rs.getTimestamp("end_date")),
-                SessionPaymentType.valueOf(rs.getString("session_type")),
-                SessionStatus.valueOf(rs.getString("session_status")),
+                SessionPaymentType.of(rs.getString("session_type")),
+                SessionStatus.of(rs.getString("session_status")),
                 rs.getInt("session_capacity"));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
