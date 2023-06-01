@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EnrollmentTest {
     @Test
@@ -30,5 +31,13 @@ public class EnrollmentTest {
         assertThatIllegalArgumentException().isThrownBy(() -> {
             enrollment.enroll(NsUserTest.SANJIGI);
         });
+    }
+
+    @Test
+    void 수강신청_이미_수강신청한_학생() throws Exception {
+        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI);
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 2, students);
+        assertThatThrownBy(() -> enrollment.enroll(NsUserTest.JAVAJIGI))
+                .isInstanceOf(AlreadyEnrollmentException.class);
     }
 }
