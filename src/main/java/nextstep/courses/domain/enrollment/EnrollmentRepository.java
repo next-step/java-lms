@@ -2,7 +2,6 @@ package nextstep.courses.domain.enrollment;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface EnrollmentRepository {
 
     int save(Enrollment enrollment);
