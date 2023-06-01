@@ -19,13 +19,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (max_number_of_student, status) values(?, ?)";
-        return jdbcTemplate.update(sql, session.getMaxNumberOfStudent(), session.getStatus().getStatus());
+        String sql = "insert into session (max_number_of_student, progress_status, recruit_status) values(?, ?, ?)";
+        return jdbcTemplate.update(sql,
+                session.getMaxNumberOfStudent(),
+                session.getProgressStatus().getStatus(),
+                session.getRecruitmentStatus().getStatus());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, start_date, end_date, image, status, max_number_of_student, is_free from session where id = ?";
+        String sql = "select id, start_date, end_date, image, progress_status, max_number_of_student, is_free, recruit_status from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 toLocalDateTime(rs.getTimestamp(2)),
@@ -33,7 +36,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString(4),
                 rs.getString(5),
                 rs.getLong(6),
-                rs.getBoolean(7)
+                rs.getBoolean(7),
+                rs.getString(8)
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

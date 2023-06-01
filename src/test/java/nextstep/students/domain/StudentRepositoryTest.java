@@ -1,8 +1,6 @@
 package nextstep.students.domain;
 
-import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.domain.SessionStatus;
 import nextstep.session.infrastructure.JdbcSessionRepository;
 import nextstep.students.infrastructure.JdbcStudentRepository;
 import nextstep.users.domain.UserRepository;

@@ -1,45 +1,30 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotFoundStatusException;
-import nextstep.session.NotRecruitException;
-import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
+import nextstep.session.NotProceedingException;
+import nextstep.session.NotRecruitingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
-public class SessionStatusTest {
+class SessionStatusTest {
 
     @ParameterizedTest
-    @MethodSource("provideStringAndEnum")
-    void 상태에_따른_객체_반환(String input, SessionStatus status) throws NotFoundStatusException {
+    @EnumSource(value = ProgressStatus.class, names = {"END", "READY"})
+    void 강의_진행중이_아닐_경우_예외_발생(ProgressStatus progressStatus) {
 
-        // when
-        SessionStatus result = SessionStatus.of(input);
+        SessionStatus status = new SessionStatus(progressStatus, RecruitmentStatus.RECRUITING);
 
-        // then
-        Assertions.assertThat(result).isEqualTo(status);
+        assertThatThrownBy(status::checkSessionStatus)
+                .isInstanceOf(NotProceedingException.class);
     }
 
     @Test
-    void 상태에_따른_객체가_존재하지_않으면_예외_발생() {
+    void 모집중이_아닐_경우_예외_발생() {
+        SessionStatus status = new SessionStatus(ProgressStatus.PROCEEDING, RecruitmentStatus.NOT_RECRUITING);
 
-        assertThatThrownBy(
-                () -> SessionStatus.of("none"))
-                .isInstanceOf(NotFoundStatusException.class);
-    }
-
-    private static Stream<Arguments> provideStringAndEnum() {
-        return Stream.of(
-                Arguments.of("ready", SessionStatus.READY),
-                Arguments.of("recruiting", SessionStatus.RECRUITING),
-                Arguments.of("end", SessionStatus.END)
-        );
+        assertThatThrownBy(status::checkSessionStatus)
+                .isInstanceOf(NotRecruitingException.class);
     }
 }

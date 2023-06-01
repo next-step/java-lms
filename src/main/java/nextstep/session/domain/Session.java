@@ -1,9 +1,6 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotFoundStatusException;
-import nextstep.session.NotRecruitException;
-import nextstep.session.StudentNumberExceededException;
-import nextstep.users.domain.NsUser;
+import nextstep.students.domain.Students;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,22 +14,24 @@ public class Session {
     private Boolean isFree;
     private SignUpInformation signUpInformation;
 
-    public Session(Long maxNumberOfStudent, SessionStatus status) {
-        this(0L, maxNumberOfStudent, status);
+    public Session(Long maxNumberOfStudent, ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
+        this(0L, maxNumberOfStudent, progressStatus, recruitmentStatus);
     }
 
-    public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
+    public Session(Long id, Long maxNumberOfStudent, ProgressStatus status, RecruitmentStatus recruitmentStatus) {
         this.id = id;
-        this.signUpInformation = new SignUpInformation(status, maxNumberOfStudent);
+        this.signUpInformation = new SignUpInformation(status, recruitmentStatus, maxNumberOfStudent);
     }
 
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String status, Long maxNumberOfStudent, Boolean isFree) {
+    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String progressStatus,
+                   Long maxNumberOfStudent, Boolean isFree, String recruitStatus) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
         this.isFree = isFree;
-        makeSignupInformation(status, maxNumberOfStudent);
+        this.signUpInformation = new SignUpInformation(
+                ProgressStatus.of(progressStatus), RecruitmentStatus.of(recruitStatus), maxNumberOfStudent);
     }
 
     public Long getId() {
@@ -51,8 +50,12 @@ public class Session {
         return image;
     }
 
-    public SessionStatus getStatus() {
-        return signUpInformation.getStatus();
+    public ProgressStatus getProgressStatus() {
+        return signUpInformation.getProgressStatus();
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return signUpInformation.getRecruitmentStatus();
     }
 
     public Long getMaxNumberOfStudent() {
@@ -63,19 +66,11 @@ public class Session {
         return isFree;
     }
 
-    public List<NsUser> getStudents() {
+    public List<Students> getStudents() {
         return signUpInformation.getStudents();
     }
 
-    private void makeSignupInformation(String status, Long maxNumberOfStudent) {
-        try {
-            this.signUpInformation = new SignUpInformation(SessionStatus.of(status), maxNumberOfStudent);
-        } catch (NotFoundStatusException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
-        signUpInformation.signUp(user);
+    void signUp(Students students) {
+        signUpInformation.signUp(students);
     }
 }

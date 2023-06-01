@@ -1,28 +1,33 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotFoundStatusException;
+import nextstep.session.NotProceedingException;
+import nextstep.session.NotRecruitingException;
 
-import java.util.Arrays;
+public class SessionStatus {
 
-public enum SessionStatus {
-    READY("ready"),
-    RECRUITING("recruiting"),
-    END("end");
+    private ProgressStatus progressStatus;
+    private RecruitmentStatus recruitmentStatus;
 
-    private String status;
-
-    SessionStatus(String status) {
-        this.status = status;
+    public SessionStatus(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
     }
 
-    public static SessionStatus of(String status) throws NotFoundStatusException {
-        return Arrays.stream(values())
-                .filter(value -> value.status.equals(status))
-                .findAny()
-                .orElseThrow(() -> new NotFoundStatusException("상태가 존재하지 않습니다."));
+    public void checkSessionStatus() throws NotProceedingException {
+        if (!progressStatus.equals(ProgressStatus.PROCEEDING)) {
+            throw new NotProceedingException("강의 진행 중에만 신청 가능합니다.");
+        }
+
+        if (!recruitmentStatus.equals(RecruitmentStatus.RECRUITING)) {
+            throw new NotRecruitingException("모집 중에만 신청 가능합니다.");
+        }
     }
 
-    public String getStatus() {
-        return status;
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 }
