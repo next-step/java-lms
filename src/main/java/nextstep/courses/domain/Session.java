@@ -81,7 +81,7 @@ public class Session {
     }
 
     public boolean isOpening() {
-        return status == Status.OPENING;
+        return status.isOpening(status);
     }
 
     public String statusToString() {
