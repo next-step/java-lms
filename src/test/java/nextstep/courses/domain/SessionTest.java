@@ -1,13 +1,14 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.fixtures.SessionFixtureBuilder;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -140,8 +141,8 @@ class SessionTest {
                 .build();
 
         // when
-        Long userId = 0L;
-        session.enroll(userId);
+        NsUser user = NsUserTest.JAVAJIGI;
+        session.enroll(user);
 
         // then
         assertThat(session.countUsers()).isEqualTo(1);
@@ -151,13 +152,14 @@ class SessionTest {
     @DisplayName("모집중일 때 수강신청 - 중복 등록 예외")
     void register2() {
         // given
+        NsUser user = NsUserTest.JAVAJIGI;
         Session session = new SessionFixtureBuilder()
                 .withStatus(SessionStatus.RECRUITING)
-                .withRegisterdUsers(List.of(0L))
                 .build();
 
         // when
-        assertThatThrownBy(() -> session.enroll(0L))
+        session.enroll(user);
+        assertThatThrownBy(() -> session.enroll(user))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 등록된 사용자입니다.");
     }
@@ -170,9 +172,10 @@ class SessionTest {
         Session session = new SessionFixtureBuilder()
                 .withStatus(status)
                 .build();
+        NsUser user = NsUserTest.JAVAJIGI;
 
         // then
-        assertThatThrownBy(() -> session.enroll(0L))
+        assertThatThrownBy(() -> session.enroll(user))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("모집 중인 강의만 수강 신청이 가능합니다.");
     }

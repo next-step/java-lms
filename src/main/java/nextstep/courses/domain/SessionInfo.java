@@ -22,4 +22,13 @@ public class SessionInfo {
     public Long getCourseId() {
         return course.getId();
     }
+
+    @Override
+    public String toString() {
+        return "SessionInfo{" +
+                "title='" + title + '\'' +
+                ", creatorId=" + creatorId +
+                ", course=" + course +
+                '}';
+    }
 }

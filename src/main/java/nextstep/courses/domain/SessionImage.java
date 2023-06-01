@@ -22,4 +22,11 @@ public class SessionImage {
     public String getUrl() {
         return imageUrl;
     }
+
+    @Override
+    public String toString() {
+        return "SessionImage{" +
+                "imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
 }
