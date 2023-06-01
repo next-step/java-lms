@@ -1,15 +1,15 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Course {
-    private final Set<Session> sessions = new HashSet<>();
     private Long id;
     private String title;
     private Long creatorId;
+    private List<Session> sessions = new ArrayList<>();
     private AuditTimestamp auditTimestamp;
 
     public Course() {
@@ -19,7 +19,8 @@ public class Course {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
+                  LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
@@ -71,8 +72,8 @@ public class Course {
                 .anyMatch(id -> id.equals(session.getId()));
     }
 
-    public Set<Session> getSessions() {
-        return Collections.unmodifiableSet(sessions);
+    public List<Session> getSessions() {
+        return Collections.unmodifiableList(sessions);
     }
 
     public void deleteSession(Session session) {
