@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.ExceedMaxEnrollmentException;
+import nextstep.courses.domain.enrollment.Students;
 import nextstep.users.domain.NsUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,15 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Students;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.payment.FreePaymentStrategy;
+import nextstep.courses.domain.payment.PaidPaymentStrategy;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionInformation;
+import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.users.domain.NsUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

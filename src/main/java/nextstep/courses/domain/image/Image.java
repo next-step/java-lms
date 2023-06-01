@@ -1,10 +1,12 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
+
+import nextstep.courses.domain.BaseTime;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static nextstep.courses.domain.ImageExtension.*;
+import static nextstep.courses.domain.image.ImageExtension.*;
 
 public class Image extends BaseTime {
 

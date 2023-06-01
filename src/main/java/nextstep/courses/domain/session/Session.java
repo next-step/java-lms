@@ -1,6 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.BaseTime;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.payment.PaymentStrategy;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
