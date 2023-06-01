@@ -41,10 +41,6 @@ public class Question {
         answers.add(answer);
     }
 
-    private void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -53,15 +49,14 @@ public class Question {
         return answers.getAnswers();
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
     public DeleteHistories delete(NsUser loginUser) {
         isSameUser(loginUser);
-        this.setDeleted(true);
-        return documentedDeleteHistories();
+        this.deleted = true;
+
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(DeleteHistory.createQuestion(this));
+
+        return answers.delete(deleteHistories);
     }
 
     private void isSameUser(NsUser loginUser) {
@@ -70,12 +65,8 @@ public class Question {
         }
     }
 
-    private DeleteHistories documentedDeleteHistories() {
-        DeleteHistories deleteHistories = new DeleteHistories();
-        deleteHistories.add(DeleteHistory.createQuestion(this.id, this.writer));
-
-        answers.getAnswers().stream()
-                .forEach(answer -> deleteHistories.add(answer.delete()));
-        return deleteHistories;
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

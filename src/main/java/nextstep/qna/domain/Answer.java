@@ -71,35 +71,13 @@ public class Answer {
 
     public DeleteHistory delete()  {
         isSameUser();
-        this.setDeleted(true);
-        return DeleteHistory.createAnswer(this.id, this.writer);
+        this.deleted = true;
+        return DeleteHistory.createAnswer(this);
     }
 
     private void isSameUser() {
         if (!this.writer.matchUser(this.question.getWriter())) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Answer answer = (Answer) o;
-        return isDeleted() == answer.isDeleted()
-                && Objects.equals(getId(), answer.getId())
-                && Objects.equals(getWriter(), answer.getWriter())
-                && Objects.equals(question, answer.question)
-                && Objects.equals(getContents(), answer.getContents())
-                && Objects.equals(createdDate, answer.createdDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getWriter(), question, getContents(), isDeleted(), createdDate);
     }
 }
