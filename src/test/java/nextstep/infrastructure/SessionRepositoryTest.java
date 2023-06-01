@@ -31,11 +31,16 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(1L, LocalDateTime.now(), LocalDateTime.now(), SessionType.FREE, SessionStatus.PREPARING, 3);
+        Session session = new Session(1L,
+                LocalDateTime.of(2023, 06, 01, 10, 00),
+                LocalDateTime.of(2023, 06, 15, 10, 00),
+                SessionPaymentType.FREE,
+                SessionStatus.PREPARING, 3);
         System.out.println("session = " + session);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
+        System.out.println("savedSession = " + savedSession);
         assertThat(session.getCourseId()).isEqualTo(savedSession.getCourseId());
         LOGGER.debug("Session: {}", savedSession);
     }

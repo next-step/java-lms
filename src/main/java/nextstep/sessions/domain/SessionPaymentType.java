@@ -1,5 +1,5 @@
 package nextstep.sessions.domain;
 
-public enum SessionType {
+public enum SessionPaymentType {
     FREE, PAID;
 }

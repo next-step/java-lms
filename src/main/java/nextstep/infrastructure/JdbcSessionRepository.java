@@ -3,7 +3,7 @@ package nextstep.infrastructure;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
-import nextstep.sessions.domain.SessionType;
+import nextstep.sessions.domain.SessionPaymentType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,8 +21,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (course_id, session_type, session_status, session_capacity, start_date, end_date) values(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getCourseId(), session.getSessionType().name(), session.getSessionStatus().name(), session.getSessionCapacity().getMaximumCapacity(), session.getSessionPeriod().getStartDate(), session.getSessionPeriod().getEndDate());
+        String sql = "insert into session (course_id, session_type, session_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(
+                sql,
+                session.getCourseId(),
+                session.getSessionType().name(),
+                session.getSessionStatus().name(),
+                session.getSessionCapacity().getMaximumCapacity(),
+                session.getSessionPeriod().getStartDate(),
+                session.getSessionPeriod().getEndDate(),
+                session.getBaseTime().getCreatedDate());
     }
 
     @Override
@@ -33,7 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong("course_id"),
                 toLocalDateTime(rs.getTimestamp("start_date")),
                 toLocalDateTime(rs.getTimestamp("end_date")),
-                SessionType.valueOf(rs.getString("session_type")),
+                SessionPaymentType.valueOf(rs.getString("session_type")),
                 SessionStatus.valueOf(rs.getString("session_status")),
                 rs.getInt("session_capacity"));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);

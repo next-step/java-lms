@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.BaseTime;
 import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 
@@ -12,23 +13,24 @@ public class Session {
     private Long id;
     private Long courseId;
     private SessionPeriod sessionPeriod;
-    private SessionType sessionType;
+    private SessionPaymentType sessionType;
     private SessionStatus sessionStatus;
     private SessionCapacity sessionCapacity;
     private SessionStudents sessionStudents;
+    private BaseTime baseTime;
 
     private Course course;
 
-    public Session(Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
+    public Session(Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
         this(0L, courseId, startDate, endDate, sessionType, sessionStatus, maximumCapacity);
     }
 
-    public Session(Long id, Course course, LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
+    public Session(Long id, Course course, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
         this(id, course.getId(), startDate, endDate, sessionType, sessionStatus, maximumCapacity);
         this.course = course;
     }
 
-    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
+    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionType, SessionStatus sessionStatus, int maximumCapacity) {
         this.id = id;
         this.courseId = courseId;
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
@@ -36,6 +38,7 @@ public class Session {
         this.sessionStatus = sessionStatus;
         this.sessionCapacity = new SessionCapacity(maximumCapacity);
         this.sessionStudents = new SessionStudents(new ArrayList<>());
+        this.baseTime = new BaseTime();
     }
 
     public void enrollSession(NsUser student) {
@@ -62,7 +65,7 @@ public class Session {
         return courseId;
     }
 
-    public SessionType getSessionType() {
+    public SessionPaymentType getSessionType() {
         return sessionType;
     }
 
@@ -78,17 +81,8 @@ public class Session {
         return sessionPeriod;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionCapacity, session.sessionCapacity) && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(course, session.course);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, courseId, sessionPeriod, sessionType, sessionStatus, sessionCapacity, sessionStudents, course);
+    public BaseTime getBaseTime() {
+        return baseTime;
     }
 
     @Override
@@ -101,7 +95,21 @@ public class Session {
                 ", sessionStatus=" + sessionStatus +
                 ", sessionCapacity=" + sessionCapacity +
                 ", sessionStudents=" + sessionStudents +
+                ", baseTime=" + baseTime +
                 ", course=" + course +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionCapacity, session.sessionCapacity) && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseId, sessionPeriod, sessionType, sessionStatus, sessionCapacity, sessionStudents, baseTime, course);
     }
 }

@@ -1,9 +1,6 @@
 package nextstep.sessions.domain;
 
 import nextstep.courses.domain.CourseTest;
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStatus;
-import nextstep.sessions.domain.SessionType;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +19,7 @@ public class SessionTest {
                 0L, CourseTest.C1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                SessionType.FREE,
+                SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
 
         session.enrollSession(NsUserTest.JAVAJIGI);
@@ -39,7 +36,7 @@ public class SessionTest {
                 1L, CourseTest.C1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                SessionType.FREE,
+                SessionPaymentType.FREE,
                 SessionStatus.PREPARING, 1);
 
         assertThatThrownBy(() -> {
@@ -54,7 +51,7 @@ public class SessionTest {
                 2L, CourseTest.C1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                SessionType.FREE,
+                SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
         System.out.println("session = " + session);
@@ -68,14 +65,12 @@ public class SessionTest {
                 3L, CourseTest.C1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                SessionType.FREE,
+                SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> {
             session.enrollSession(NsUserTest.JAVAJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
-
-
     }
 }
