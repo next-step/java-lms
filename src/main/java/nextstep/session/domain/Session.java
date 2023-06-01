@@ -52,7 +52,7 @@ public class Session {
     }
 
     public ProgressStatus getStatus() {
-        return signUpInformation.getStatus();
+        return signUpInformation.getProgressStatus();
     }
 
     public Long getMaxNumberOfStudent() {

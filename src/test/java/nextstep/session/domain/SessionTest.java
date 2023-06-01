@@ -29,7 +29,7 @@ public class SessionTest {
     void 강의는_강의_최대_수강_인원을_초과할_수_없다() {
 
         // given
-        Session session = new Session(1L, 0L, ProgressStatus.RECRUITING);
+        Session session = new Session(1L, 0L, ProgressStatus.PROCEEDING);
 
         // when
         assertThatThrownBy(
@@ -41,7 +41,7 @@ public class SessionTest {
     void 수강신청_성공() throws StudentNumberExceededException, NotRecruitException {
 
         // given
-        Session session = new Session(1L, 2L, ProgressStatus.RECRUITING);
+        Session session = new Session(1L, 2L, ProgressStatus.PROCEEDING);
 
         // when
         session.signUp(NsUserTest.JAVAJIGI);

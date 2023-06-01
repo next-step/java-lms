@@ -7,6 +7,7 @@ import java.util.Arrays;
 public enum ProgressStatus {
     READY("ready"),
     RECRUITING("recruiting"),
+    PROCEEDING("proceeding"),
     END("end");
 
     private String status;

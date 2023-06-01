@@ -9,17 +9,18 @@ import java.util.List;
 
 public class SignUpInformation {
 
-    private ProgressStatus status;
+    private ProgressStatus progressStatus;
+    private RecruitmentStatus recruitmentStatus;
     private Long maxNumberOfStudent;
     private final List<NsUser> students = new ArrayList<>();
 
-    public SignUpInformation(ProgressStatus status, Long maxNumberOfStudent) {
-        this.status = status;
+    public SignUpInformation(ProgressStatus progressStatus, Long maxNumberOfStudent) {
+        this.progressStatus = progressStatus;
         this.maxNumberOfStudent = maxNumberOfStudent;
     }
 
-    public ProgressStatus getStatus() {
-        return status;
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
     }
 
     public Long getMaxNumberOfStudent() {
@@ -31,7 +32,7 @@ public class SignUpInformation {
     }
 
     public void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
-        if (!status.equals(ProgressStatus.RECRUITING)) {
+        if (!progressStatus.equals(ProgressStatus.PROCEEDING)) {
             throw new NotRecruitException("모집 기간에만 신청 가능합니다.");
         }
 
