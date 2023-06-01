@@ -31,15 +31,13 @@ public class QuestionTest {
     @Test
     void delete_성공_질문자_답변자_같음() throws CannotDeleteException {
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        q1.addAnswer(new Answer(
-                NsUserTest.JAVAJIGI,
-                q1,
-                "답변"
-        ));
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, q1, "답변");
+        q1.addAnswer(answer);
 
         q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(q1.isDeleted()).isTrue();
+        assertThat(answer.isDeleted()).isTrue();
     }
 
     @Test
