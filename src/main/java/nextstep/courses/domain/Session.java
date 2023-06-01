@@ -1,14 +1,14 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.CannotRegisterException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
-    private final int capacity;
     private ImageInfo imageInfo;
     private SessionPeriod period;
     private SessionStatus status;
     private SessionType type;
-    private int currentUsers;
+    private SessionUsers users;
 
     public Session(ImageInfo imageInfo, SessionPeriod period, SessionType type, SessionStatus status, int capacity) {
         if (capacity <= 0) {
@@ -19,16 +19,13 @@ public class Session {
         this.period = period;
         this.type = type;
         this.status = status;
-        this.capacity = capacity;
+        this.users = new SessionUsers(capacity);
     }
 
-    public void register() {
         if (status != SessionStatus.RECRUITING) {
+    public void register(NsUser user) {
             throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
         }
-        if (currentUsers >= capacity) {
-            throw new CannotRegisterException("강의 최대 수강 인원을 초과했습니다");
-        }
-        currentUsers++;
+        users.add(user);
     }
 }
