@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.ExceedMaxEnrollmentException;
 import nextstep.users.domain.NsUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.courses.domain.SampleUser.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("학생들 객체 테스트")
 class StudentsTest {
@@ -37,7 +39,7 @@ class StudentsTest {
         students.add(JAVAJIGI);
         students.add(SANJIGI);
         students.add(WOOK);
-        Assertions.assertThatIllegalArgumentException()
+        assertThatExceptionOfType(ExceedMaxEnrollmentException.class)
                 .isThrownBy(() -> new Students(2, students))
                 .withMessage("can not exceed the maximum enrollment");
     }
@@ -48,7 +50,7 @@ class StudentsTest {
         Students students = new Students(2);
         students.enroll(JAVAJIGI);
         students.enroll(SANJIGI);
-        Assertions.assertThatIllegalArgumentException()
+        assertThatExceptionOfType(ExceedMaxEnrollmentException.class)
                 .isThrownBy(() -> students.enroll(WOOK))
                 .withMessage("can not exceed the maximum enrollment");
     }

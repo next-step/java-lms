@@ -27,8 +27,4 @@ public class Enrollment {
     public void enroll(NsUser nsUser) {
         students.enroll(nsUser);
     }
-
-    public boolean isNotExceededMaxEnrollment(Students students) {
-        return maxEnrollment >= students.countEnrollment();
-    }
 }

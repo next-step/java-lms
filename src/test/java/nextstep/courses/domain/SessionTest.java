@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.users.domain.NsUser;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -108,7 +109,7 @@ class SessionTest {
     void preparingSessionEnroll() {
         SessionStatus status = SessionStatus.PREPARING;
         Session session = new Session(sessionInformation, sessionPeriod, status, coverImage, new PaidPaymentStrategy(800000), enrollment);
-        Assertions.assertThatIllegalArgumentException()
+        Assertions.assertThatExceptionOfType(CannotEnrollException.class)
                 .isThrownBy(() -> session.enrollInSession(WOOK))
                 .withMessage("the current session is not in the enrolling status");
     }
@@ -118,7 +119,7 @@ class SessionTest {
     void finishedSessionEnroll() {
         SessionStatus status = SessionStatus.FINISHED;
         Session session = new Session(sessionInformation, sessionPeriod, status, coverImage, new PaidPaymentStrategy(800000), enrollment);
-        Assertions.assertThatIllegalArgumentException()
+        Assertions.assertThatExceptionOfType(CannotEnrollException.class)
                 .isThrownBy(() -> session.enrollInSession(WOOK))
                 .withMessage("the current session is not in the enrolling status");
     }

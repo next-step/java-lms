@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.AlreadyEnrolledException;
+import nextstep.courses.ExceedMaxEnrollmentException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Students {
 
     public Students(int maxEnrollment, List<NsUser> students) {
         if (maxEnrollment < students.size()) {
-            throw new IllegalArgumentException("can not exceed the maximum enrollment");
+            throw new ExceedMaxEnrollmentException();
         }
         this.maxEnrollment = maxEnrollment;
         this.students = students;
@@ -28,11 +30,18 @@ public class Students {
     }
 
     public void enroll(NsUser user) {
+        if (isAlreadyEnrolled(user)) {
+            throw new AlreadyEnrolledException();
+        }
         students.add(user);
         if (isExceededMaxEnrollment()) {
             students.remove(user);
-            throw new IllegalArgumentException("can not exceed the maximum enrollment");
+            throw new ExceedMaxEnrollmentException();
         }
+    }
+
+    private boolean isAlreadyEnrolled(NsUser user) {
+        return students.contains(user);
     }
 
     public List<NsUser> fetchStudents() {

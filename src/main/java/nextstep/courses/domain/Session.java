@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotEnrollException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public class Session extends BaseTime {
 
     public void enrollInSession(NsUser nsUser) {
         if (!sessionStatus.isEnrolling()) {
-            throw new IllegalArgumentException("the current session is not in the enrolling status");
+            throw new CannotEnrollException();
         }
         enrollment.enroll(nsUser);
     }
@@ -60,6 +61,4 @@ public class Session extends BaseTime {
     public String sessionTitle() {
         return sessionInformation.fetchTitle();
     }
-
-
 }
