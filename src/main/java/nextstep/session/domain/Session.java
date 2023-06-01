@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import nextstep.students.domain.Students;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -60,11 +61,11 @@ public class Session {
         return isFree;
     }
 
-    public List<NsUser> getStudents() {
+    public List<Students> getStudents() {
         return signUpInformation.getStudents();
     }
 
-    void signUp(NsUser user) {
-        signUpInformation.signUp(user);
+    void signUp(Students students) {
+        signUpInformation.signUp(students);
     }
 }

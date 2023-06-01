@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.session.NotProceedingException;
 import nextstep.session.StudentNumberExceededException;
+import nextstep.students.domain.Students;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -30,12 +31,12 @@ public class SignUpInformation {
         return student.getMaxNumberOfStudent();
     }
 
-    public List<NsUser> getStudents() {
+    public List<Students> getStudents() {
         return student.getStudents();
     }
 
-    public void signUp(NsUser user) throws StudentNumberExceededException, NotProceedingException {
+    public void signUp(Students students) throws StudentNumberExceededException, NotProceedingException {
         status.checkSessionStatus();
-        student.signUp(user);
+        student.signUp(students);
     }
 }

@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.session.NotProceedingException;
 import nextstep.session.StudentNumberExceededException;
+import nextstep.students.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,10 +19,11 @@ public class SessionTest {
 
         // given
         Session session = new Session(1L, 1L, status);
+        Students students = new Students(1L, 1L);
 
         // when
         assertThatThrownBy(
-                () -> session.signUp(NsUserTest.JAVAJIGI))
+                () -> session.signUp(students))
                 .isInstanceOf(NotProceedingException.class);
     }
 
@@ -30,10 +32,11 @@ public class SessionTest {
 
         // given
         Session session = new Session(1L, 0L, ProgressStatus.PROCEEDING);
+        Students students = new Students(1L, 1L);
 
         // when
         assertThatThrownBy(
-                () -> session.signUp(NsUserTest.JAVAJIGI))
+                () -> session.signUp(students))
                 .isInstanceOf(StudentNumberExceededException.class);
     }
 
@@ -42,11 +45,12 @@ public class SessionTest {
 
         // given
         Session session = new Session(1L, 2L, ProgressStatus.PROCEEDING);
+        Students students = new Students(1L, 1L);
 
         // when
-        session.signUp(NsUserTest.JAVAJIGI);
+        session.signUp(students);
 
         // then
-        assertThat(session.getStudents()).contains(NsUserTest.JAVAJIGI);
+        assertThat(session.getStudents()).contains(students);
     }
 }
