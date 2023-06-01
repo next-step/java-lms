@@ -26,11 +26,11 @@ class SessionPeriodTest {
     void lectureDuration() {
         SessionPeriod sessionPeriod = new SessionPeriod(
                 LocalDate.now(),
-                LocalDate.now().plusDays(30)
+                LocalDate.now().plusDays(20)
         );
 
         int lectureDuration = sessionPeriod.sessionDuration();
 
-        Assertions.assertThat(lectureDuration).isEqualTo(30);
+        Assertions.assertThat(lectureDuration).isEqualTo(20);
     }
 }

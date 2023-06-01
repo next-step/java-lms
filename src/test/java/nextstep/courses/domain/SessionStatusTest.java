@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 @DisplayName("강의 상태 테스트")
 class SessionStatusTest {
@@ -23,29 +22,24 @@ class SessionStatusTest {
                 .containsExactly(SessionStatus.PREPARING, SessionStatus.ENROLLING, SessionStatus.FINISHED);
     }
 
-    @DisplayName("강의 상태가 준비중이면 수강 신청 할 수 없다")
+    @DisplayName("강의 상태가 준비증인지 확인 할 수 있다")
     @Test
     void lectureStatusIsPreparing() {
         SessionStatus preparing = SessionStatus.PREPARING;
-        assertThatIllegalArgumentException()
-                .isThrownBy(preparing::isEnrollmentPossible)
-                .withMessage("the current session is not in the enrolling status");
+        assertThat(preparing.isPreparing()).isTrue();
     }
 
-    @DisplayName("강의 상태가 종료중이면 수강 신청 할 수 없다")
+    @DisplayName("강의 상태가 모집중인지 확인 할 수 있다")
     @Test
     void lectureStatusIsFinished() {
-        SessionStatus finished = SessionStatus.FINISHED;
-        assertThatIllegalArgumentException()
-                .isThrownBy(finished::isEnrollmentPossible)
-                .withMessage("the current session is not in the enrolling status");
+        SessionStatus enrolling = SessionStatus.ENROLLING;
+        assertThat(enrolling.isEnrolling()).isTrue();
     }
 
-    @DisplayName("강의 상태가 준비중이면 수강 신청 할 수 있다")
+    @DisplayName("강의 상태가 종료인지 확인 할 수 있다")
     @Test
     void lectureStatusIsEnrolling() {
-        SessionStatus enrolling = SessionStatus.ENROLLING;
-        boolean enrollmentPossible = enrolling.isEnrollmentPossible();
-        assertThat(enrollmentPossible).isTrue();
+        SessionStatus finished = SessionStatus.FINISHED;
+        assertThat(finished.isFinished()).isTrue();
     }
 }

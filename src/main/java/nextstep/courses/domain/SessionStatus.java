@@ -12,18 +12,15 @@ public enum SessionStatus {
         this.status = status;
     }
 
-    public String statusValue() {
-        return status;
-    }
-
-    public boolean isEnrollmentPossible() {
-        if (this != ENROLLING) {
-            throw new IllegalArgumentException("the current session is not in the enrolling status");
-        }
-        return true;
+    public boolean isEnrolling() {
+        return this == ENROLLING;
     }
 
     public boolean isPreparing() {
         return this == PREPARING;
+    }
+
+    public boolean isFinished() {
+        return this == FINISHED;
     }
 }
