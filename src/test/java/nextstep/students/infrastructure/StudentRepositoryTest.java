@@ -1,6 +1,7 @@
 package nextstep.students.infrastructure;
 
 import nextstep.students.domain.Student;
+import nextstep.students.domain.StudentApprovalType;
 import nextstep.students.domain.StudentRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,11 +46,16 @@ class StudentRepositoryTest {
         List<Student> savedStudents = studentRepository.findAllBySessionId(student.getSessionId());
         log.debug("STUDENTS READ(SESSION_ID): {}", savedStudents);
 
+        savedStudent.approved();
+        studentRepository.update(savedStudent);
+        Student updatedStudent = studentRepository.findById(1L).get();
+
         assertAll(
                 () -> assertThat(count).isOne(),
                 () -> assertThat(savedStudent.getSessionId()).isEqualTo(student.getSessionId()),
                 () -> assertThat(savedStudent.getUserId()).isEqualTo(student.getUserId()),
-                () -> assertThat(savedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt())
+                () -> assertThat(savedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt()),
+                () -> assertThat(updatedStudent.getApprovalType()).isEqualTo(StudentApprovalType.APPROVED)
         );
     }
 

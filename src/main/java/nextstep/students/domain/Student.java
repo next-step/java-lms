@@ -33,6 +33,20 @@ public class Student {
     public Student() {
     }
 
+    public void approved() {
+        approvalType = StudentApprovalType.APPROVED;
+        updatedAt = LocalDateTime.now();
+    }
+
+    public void rejected() {
+        approvalType = StudentApprovalType.REJECTED;
+        updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isApproved() {
+        return approvalType.isApproved();
+    }
+
     public boolean equalUserId(String userId) {
         return this.userId.equals(userId);
     }
@@ -89,5 +103,4 @@ public class Student {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
 }

@@ -67,4 +67,10 @@ public class JdbcStudentRepository implements StudentRepository {
         return timestamp.toLocalDateTime();
     }
 
+    @Override
+    public void update(Student student) {
+        String sql = "update student set approval_type = ?, updated_at = ? where id = ?";
+        jdbcTemplate.update(sql, student.getApprovalTypeName(), student.getUpdatedAt(), student.getId());
+    }
+
 }

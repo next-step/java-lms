@@ -37,6 +37,10 @@ public class Students {
         return values.size();
     }
 
+    public void addAll(List<Student> appliedStudents) {
+        values.addAll(appliedStudents);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

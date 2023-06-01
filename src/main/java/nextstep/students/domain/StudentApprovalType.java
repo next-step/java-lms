@@ -30,4 +30,8 @@ public enum StudentApprovalType {
         return name;
     }
 
+    public boolean isApproved() {
+        return this == APPROVED;
+    }
+
 }

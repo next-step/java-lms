@@ -29,9 +29,10 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into " +
-                "session (started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at) " +
-                "values(?, ?, ?, ?, ? ,? ,?, ?)";
+                "session (id, started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at) " +
+                "values(?, ?, ?, ?, ?, ? ,? ,?, ?)";
         return jdbcTemplate.update(sql,
+                session.getId(),
                 session.getStartedAt(),
                 session.getEndedAt(),
                 session.getCoverImageUrl(),

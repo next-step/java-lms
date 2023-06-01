@@ -48,7 +48,9 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 정보를 테이블에 저장하고 조회합니다.")
     void crud() {
+        long testID = 1L;
         Session session = SessionBuilder.aSession()
+                .withId(testID)
                 .withDuration(durationMock)
                 .withCoverImage(coverImageMock)
                 .withPaymentType(SessionPaymentType.PAID)
@@ -63,7 +65,7 @@ class SessionRepositoryTest {
         log.debug("SESSION SAVE: {}", session);
         int count = sessionRepository.save(session);
 
-        Session savedSession = sessionRepository.findById(1L).get();
+        Session savedSession = sessionRepository.findById(testID).get();
         log.debug("SESSION READ: {}", savedSession);
 
         assertAll(

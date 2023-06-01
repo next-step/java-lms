@@ -11,4 +11,6 @@ public interface StudentRepository {
 
     List<Student> findAllBySessionId(Long sessionId);
 
+    void update(Student student);
+
 }
