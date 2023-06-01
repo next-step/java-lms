@@ -38,7 +38,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getInt(2),
                 rs.getString(3),
                 rs.getBoolean(4),
-                toStatus(rs.getString(5)),
+                Status.toStatus(rs.getString(5)),
                 rs.getInt(6),
                 rs.getInt(7),
                 toLocalDateTime(rs.getTimestamp(8)),
@@ -54,7 +54,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getInt(2),
                 rs.getString(3),
                 rs.getBoolean(4),
-                toStatus(rs.getString(5)),
+                Status.toStatus(rs.getString(5)),
                 rs.getInt(6),
                 rs.getInt(7),
                 toLocalDateTime(rs.getTimestamp(8)),
@@ -67,12 +67,5 @@ public class JdbcSessionRepository implements SessionRepository {
             return null;
         }
         return timestamp.toLocalDateTime();
-    }
-
-    private Status toStatus(String statusString) {
-        if (statusString == null) {
-            return null;
-        }
-        return Status.valueOf(statusString);
     }
 }
