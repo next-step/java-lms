@@ -16,7 +16,6 @@ public class Question {
 
     private NsUser writer;
 
-    //    private List<Answer> answers = new ArrayList<>();
     private Answers answers = new Answers();
 
     private boolean deleted = false;
@@ -94,7 +93,6 @@ public class Question {
 
     public List<DeleteHistory> deleteQuestion(NsUser nsUser) {
         validateQuestionDeletionPermission(nsUser);
-        validateExistOtherAnswer(nsUser);
         this.deleted = true;
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
@@ -105,12 +103,6 @@ public class Question {
     private void validateQuestionDeletionPermission(NsUser nsUser) {
         if (!writer.equals(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    private void validateExistOtherAnswer(NsUser nsUser) {
-        if (!answers.isAllOwnerAnswer(nsUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 }

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
+
     private JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
@@ -26,12 +27,15 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+        RowMapper<Course> rowMapper = (rs, rowNum) -> {
+            return new Course(
+                    rs.getLong(1),
+                    rs.getString(2),
+                    rs.getLong(3),
+                    toLocalDateTime(rs.getTimestamp(4)),
+                    toLocalDateTime(rs.getTimestamp(5)));
+        };
+
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

@@ -14,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class CourseRepositoryTest {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
