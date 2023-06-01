@@ -16,8 +16,7 @@ public class Question {
     private String contents;
 
     private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -43,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -74,17 +55,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
@@ -92,21 +64,16 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
         deleteValidation(loginUser);
         deleted = true;
-        answers.forEach(Answer::delete);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        answers.delete(loginUser, deleteHistories);
     }
 
     private void deleteValidation(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        Optional<Answer> any = answers.stream()
-                .filter(answer -> !answer.isOwner(loginUser))
-                .findAny();
-        if (any.isPresent()) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 }
