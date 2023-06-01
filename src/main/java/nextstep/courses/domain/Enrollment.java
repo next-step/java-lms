@@ -7,9 +7,9 @@ public class Enrollment {
     private final int maxEnrollment;
     private final Students students;
 
-    public Enrollment(int maxEnrollment, Students students) {
+    public Enrollment(int maxEnrollment) {
         this.maxEnrollment = maxEnrollment;
-        this.students = students;
+        this.students = new Students(maxEnrollment);
     }
 
     public int maxEnrollmentValue() {
@@ -25,9 +25,7 @@ public class Enrollment {
     }
 
     public void enroll(NsUser nsUser) {
-        if (isNotExceededMaxEnrollment(students)) {
-            students.addStudent(nsUser);
-        }
+        students.enroll(nsUser);
     }
 
     public boolean isNotExceededMaxEnrollment(Students students) {
