@@ -12,4 +12,8 @@ public interface SessionRepository {
     void saveSessionUser(Session session);
 
     List<SessionUser> findAllBySessionId(Long sessionId);
+
+    List<SessionUser> findAllBySessionIdAndUserIds(Long sessionId, List<Long> userIds);
+
+    public void updateSessionApprovalStatus(SessionUser session);
 }

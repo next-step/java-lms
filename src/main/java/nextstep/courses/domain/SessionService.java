@@ -7,5 +7,4 @@ public interface SessionService {
 
     Session findById(long id);
 
-    long enroll(long id, List<String> users);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,5 +34,12 @@ public class UserRepositoryTest {
         Optional<NsUser> nsUser = userRepository.findByUserId("javajigi");
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
+    }
+
+    @Test
+    void findByUserIds() {
+        List<String> ids = List.of("javajigi", "sanjigi");
+        List<NsUser> nsUsers = userRepository.findByUserIds(ids);
+        assertThat(nsUsers.size()).isEqualTo(ids.size());
     }
 }

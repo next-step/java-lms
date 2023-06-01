@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public enum SessionPayment {
@@ -8,20 +7,10 @@ public enum SessionPayment {
     PAID("유료");
 
     private final String status;
-    private static final Map<String, SessionPayment> sessionPaymentMap = new HashMap<>();
-
-    static {
-        for (SessionPayment sessionPayment : SessionPayment.values()) {
-            sessionPaymentMap.put(sessionPayment.getStatus(), sessionPayment);
-        }
-    }
+    private static final Map<String, SessionPayment> sessionPaymentMap = Map.of(FREE.name(), FREE, PAID.name(), PAID);
 
     SessionPayment(String status) {
         this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public static SessionPayment find(String payment) {
