@@ -6,4 +6,8 @@ public class SessionCoverImg {
     public SessionCoverImg(String imgUrl) {
         this.url = imgUrl;
     }
+
+    public String getUrl() {
+        return url;
+    }
 }
