@@ -2,19 +2,25 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Enrollment {
-    private final int capacity;
-
     private final SessionStatus sessionStatus;
+
+    private final int capacity;
 
     private final Students students;
 
-    public Enrollment(int capacity, SessionStatus sessionStatus) {
-        this.capacity = capacity;
+    public Enrollment(SessionStatus sessionStatus, int capacity) {
+        this(sessionStatus, capacity, new ArrayList<>());
+    }
+
+    public Enrollment(SessionStatus sessionStatus, int capacity, List<NsUser> students) {
         this.sessionStatus = sessionStatus;
-        this.students = new Students(capacity);
+        this.capacity = capacity;
+        this.students = new Students(capacity, students);
     }
 
     public void enroll(NsUser student) throws AlreadyEnrollmentException {

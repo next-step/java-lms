@@ -19,7 +19,7 @@ public class Session {
                    LocalDate startDate, LocalDate endDate) {
         this(new SessionInfo(title, creatorId, coverImage),
                 new Charge(chargeStatus, price),
-                new Enrollment(capacity, sessionStatus),
+                new Enrollment(sessionStatus, capacity),
                 new SessionPeriod(startDate, endDate));
     }
 
