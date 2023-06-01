@@ -22,8 +22,8 @@ public class Session {
         this.users = new SessionUsers(capacity);
     }
 
-        if (status != SessionStatus.RECRUITING) {
     public void register(NsUser user) {
+        if (status.isRecruiting()) {
             throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
         }
         users.add(user);
