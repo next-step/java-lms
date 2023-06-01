@@ -14,4 +14,8 @@ public class Sessions {
 	public Sessions(List<Session> sessions) {
 		this.sessions = sessions;
 	}
+
+	public boolean contains(Session session) {
+		return this.sessions.contains(session);
+	}
 }

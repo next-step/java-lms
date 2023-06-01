@@ -7,4 +7,6 @@ public interface StudentRepository {
 	int save(Student student);
 
 	List<Student> findBySessionId(long sessionId);
+
+	Student findBySessionIdAndNsUserId(long sessionId, long nsUserId);
 }
