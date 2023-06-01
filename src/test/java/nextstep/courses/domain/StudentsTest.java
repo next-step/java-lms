@@ -5,17 +5,20 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static nextstep.courses.domain.SampleUser.*;
 
-@DisplayName("수강자들 객체 테스트")
+@DisplayName("학생들 객체 테스트")
 class StudentsTest {
 
-    @DisplayName("수강자들 객체에 유저(학생)를 추가 할 수 있다")
+    @DisplayName("학생들 객체에 수강생를 추가 할 수 있다")
     @Test
     void addUser() {
-        Students students = new Students();
-        students.addStudent(JAVAJIGI);
-        students.addStudent(SANJIGI);
+        Students students = new Students(3);
+        students.enroll(JAVAJIGI);
+        students.enroll(SANJIGI);
 
         Assertions.assertThat(students.countEnrollment()).isEqualTo(2);
         Assertions.assertThat(students.fetchStudents())
@@ -25,5 +28,28 @@ class StudentsTest {
                         new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", createDate, null),
                         new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net", createDate, null)
                 );
+    }
+
+    @DisplayName("학생들 객체를 생성할때 최대 학생수를 초과하면 예외가 발생한다")
+    @Test
+    void exceedMaxEnrollmentStudent() {
+        List<NsUser> students = new ArrayList<>();
+        students.add(JAVAJIGI);
+        students.add(SANJIGI);
+        students.add(WOOK);
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> new Students(2, students))
+                .withMessage("can not exceed the maximum enrollment");
+    }
+
+    @DisplayName("학생을 추가할때 최대 학생수를 초과하면 예외가 발생한다")
+    @Test
+    void exceedMaxEnrollmentStudentWhenAddStudent() {
+        Students students = new Students(2);
+        students.enroll(JAVAJIGI);
+        students.enroll(SANJIGI);
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> students.enroll(WOOK))
+                .withMessage("can not exceed the maximum enrollment");
     }
 }
