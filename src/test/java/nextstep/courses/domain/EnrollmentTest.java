@@ -1,11 +1,10 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.SampleUser.JAVAJIGI;
-import static nextstep.courses.domain.SampleUser.WOOK;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("수강신청 객체 테스트")
@@ -22,9 +21,10 @@ class EnrollmentTest {
     @Test
     void enroll() {
         Enrollment enrollment = new Enrollment(3);
-
-        enrollment.enroll(WOOK);
-        enrollment.enroll(JAVAJIGI);
+        Student student1 = new Student(1L, 1L);
+        Student student2 = new Student(2L, 1L);
+        enrollment.enroll(student1);
+        enrollment.enroll(student2);
 
         assertThat(enrollment.hasEnrolledStudent()).isTrue();
         assertThat(enrollment.currentEnrolmentCount()).isEqualTo(2);

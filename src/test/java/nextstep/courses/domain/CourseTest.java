@@ -47,8 +47,8 @@ class CourseTest {
     void addSessionInCourse() {
         SessionInformation sessionInformation1 = new SessionInformation("TDD", 16);
         SessionInformation sessionInformation2 = new SessionInformation("TDD", 17);
-        Session session1 = new Session(sessionInformation1, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
-        Session session2 = new Session(sessionInformation2, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
+        Session session1 = new Session(1L, sessionInformation1, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
+        Session session2 = new Session(1L, sessionInformation2, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
         Course course = new Course("test course", 1L);
         course.addSession(session1);
         course.addSession(session2);

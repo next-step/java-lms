@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.BaseTime;
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.payment.PaymentStrategy;
 import nextstep.users.domain.NsUser;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseTime {
 
+    private final Long id;
     private final SessionInformation sessionInformation;
     private final SessionPeriod sessionPeriod;
     private final SessionStatus sessionStatus;
@@ -18,12 +20,13 @@ public class Session extends BaseTime {
     private final PaymentStrategy paymentStrategy;
     private final Enrollment enrollment;
 
-    public Session(SessionInformation sessionInformation, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment) {
-        this(sessionInformation, sessionPeriod, sessionStatus, coverImage, paymentStrategy, enrollment, LocalDateTime.now(), null);
+    public Session(Long id, SessionInformation sessionInformation, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment) {
+        this(id, sessionInformation, sessionPeriod, sessionStatus, coverImage, paymentStrategy, enrollment, LocalDateTime.now(), null);
     }
 
-    public Session(SessionInformation sessionInformation, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionInformation sessionInformation, SessionPeriod sessionPeriod, SessionStatus sessionStatus, Image coverImage, PaymentStrategy paymentStrategy, Enrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
+        this.id = id;
         this.sessionInformation = sessionInformation;
         this.sessionPeriod = sessionPeriod;
         this.sessionStatus = sessionStatus;
@@ -45,7 +48,8 @@ public class Session extends BaseTime {
         if (!sessionStatus.isEnrolling()) {
             throw new CannotEnrollException();
         }
-        enrollment.enroll(nsUser);
+        Student student = new Student(nsUser.getId(), this.id);
+        enrollment.enroll(student);
     }
 
     private void validateSessionStatusAndEnrolledStudents() {

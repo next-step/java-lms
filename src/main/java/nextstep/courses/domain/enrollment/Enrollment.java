@@ -1,7 +1,5 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.users.domain.NsUser;
-
 public class Enrollment {
 
     private final Students students;
@@ -22,7 +20,7 @@ public class Enrollment {
         return !students.isEmpty();
     }
 
-    public void enroll(NsUser nsUser) {
-        students.enroll(nsUser);
+    public void enroll(Student student) {
+        students.enroll(student);
     }
 }
