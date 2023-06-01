@@ -62,6 +62,15 @@ public class Session {
         student.approved();
     }
 
+    public Student rejected(NsUser user, List<Student> students) {
+        registration.addAll(students);
+        
+        Student student = enrolledStudent(user);
+        student.rejected();
+
+        return student;
+    }
+
     public void addStudents(List<Student> appliedStudents) {
         registration.addAll(appliedStudents);
     }

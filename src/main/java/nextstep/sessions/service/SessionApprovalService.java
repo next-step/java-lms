@@ -55,4 +55,12 @@ public class SessionApprovalService {
         studentRepository.update(student);
     }
 
+    public void reject(String userId, Long sessionId) {
+        NsUser user = findUserByUserId(userId);
+        Session savedSession = findSessionById(sessionId);
+        List<Student> appliedStudents = studentRepository.findAllBySessionId(sessionId);
+        Student rejectedStudent = savedSession.rejected(user, appliedStudents);
+        studentRepository.update(rejectedStudent);
+    }
+
 }
