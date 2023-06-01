@@ -1,6 +1,6 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotRecruitException;
+import nextstep.session.NotProceedingException;
 import nextstep.session.StudentNumberExceededException;
 import nextstep.users.domain.NsUser;
 
@@ -9,37 +9,33 @@ import java.util.List;
 
 public class SignUpInformation {
 
-    private ProgressStatus progressStatus;
-    private RecruitmentStatus recruitmentStatus;
-    private Long maxNumberOfStudent;
-    private final List<NsUser> students = new ArrayList<>();
+    private SessionStatus status;
+    private Student student;
+
+    public SignUpInformation(ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus, Long maxNumberOfStudent) {
+        this.status = new SessionStatus(progressStatus, recruitmentStatus);
+        this.student = new Student(maxNumberOfStudent);
+    }
 
     public SignUpInformation(ProgressStatus progressStatus, Long maxNumberOfStudent) {
-        this.progressStatus = progressStatus;
-        this.maxNumberOfStudent = maxNumberOfStudent;
+        this.status = new SessionStatus(progressStatus, RecruitmentStatus.RECRUITING);
+        this.student = new Student(maxNumberOfStudent);
     }
 
     public ProgressStatus getProgressStatus() {
-        return progressStatus;
+        return status.getProgressStatus();
     }
 
     public Long getMaxNumberOfStudent() {
-        return maxNumberOfStudent;
+        return student.getMaxNumberOfStudent();
     }
 
     public List<NsUser> getStudents() {
-        return students;
+        return student.getStudents();
     }
 
-    public void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
-        if (!progressStatus.equals(ProgressStatus.PROCEEDING)) {
-            throw new NotRecruitException("모집 기간에만 신청 가능합니다.");
-        }
-
-        if (students.size() == maxNumberOfStudent) {
-            throw new StudentNumberExceededException("최대 수강 인원 수를 초과했습니다.");
-        }
-
-        this.students.add(user);
+    public void signUp(NsUser user) throws StudentNumberExceededException, NotProceedingException {
+        status.checkSessionStatus();
+        student.signUp(user);
     }
 }
