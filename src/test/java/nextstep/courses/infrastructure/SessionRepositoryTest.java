@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.registration.RegistrationOpenType;
 import nextstep.courses.domain.session.SessionCostType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
@@ -32,7 +33,7 @@ public class SessionRepositoryTest {
     @DisplayName("save")
     void save() {
         Session session = Session.of(1L, "lms1", "img://cover.com/lms", 1
-                , SessionCostType.FREE, State.READY, 30
+                , SessionCostType.FREE, RegistrationOpenType.OPEN, State.READY, 30
                 , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
                 , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
         int count = sessionRepository.save(session);
@@ -43,7 +44,7 @@ public class SessionRepositoryTest {
     @DisplayName("select")
     void select() {
         Session session = Session.of(1L, "lms1", "img://cover.com/lms", 1
-                , SessionCostType.FREE, State.READY, 30
+                , SessionCostType.FREE, RegistrationOpenType.OPEN, State.READY, 30
                 , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
                 , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
         sessionRepository.save(session);

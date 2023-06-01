@@ -56,6 +56,7 @@ create table session (
     cover varchar(255) not null,
     cardinal_number int,
     session_cost_type varchar(10),
+    registration_open_type varchar(10),
     state varchar(15),
     max_user int,
     start_date timestamp,
