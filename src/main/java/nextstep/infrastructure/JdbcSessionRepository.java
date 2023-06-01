@@ -27,7 +27,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.getCourseId(),
                 session.getSessionType().name(),
                 session.getSessionStatus().name(),
-                session.getSessionCapacity().getMaximumCapacity(),
+                session.getSessionStudents().getMaximumCapacity(),
                 session.getSessionPeriod().getStartDate(),
                 session.getSessionPeriod().getEndDate(),
                 session.getBaseTime().getCreatedDate());

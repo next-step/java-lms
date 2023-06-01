@@ -5,7 +5,7 @@ import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class Session {
@@ -15,7 +15,6 @@ public class Session {
     private SessionPeriod sessionPeriod;
     private SessionPaymentType sessionType;
     private SessionStatus sessionStatus;
-    private SessionCapacity sessionCapacity;
     private SessionStudents sessionStudents;
     private BaseTime baseTime;
 
@@ -36,8 +35,7 @@ public class Session {
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
-        this.sessionCapacity = new SessionCapacity(maximumCapacity);
-        this.sessionStudents = new SessionStudents(new ArrayList<>());
+        this.sessionStudents = new SessionStudents(new HashSet<>(), maximumCapacity);
         this.baseTime = new BaseTime();
     }
 
@@ -46,23 +44,15 @@ public class Session {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
         }
 
-        if (canRecruitStudent()) {
-            throw new IllegalArgumentException("정원수를 초과했습니다");
-        }
-
         sessionStudents.enrollStudent(student);
-    }
-
-    private boolean canRecruitStudent() {
-        return sessionCapacity.getMaximumCapacity() < sessionStudents.getCurrentStudentCount();
-    }
-
-    public int getStudentsNumbers() {
-        return sessionStudents.getCurrentStudentCount();
     }
 
     public Long getCourseId() {
         return courseId;
+    }
+
+    public SessionStudents getSessionStudents() {
+        return sessionStudents;
     }
 
     public SessionPaymentType getSessionType() {
@@ -71,10 +61,6 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
-    }
-
-    public SessionCapacity getSessionCapacity() {
-        return sessionCapacity;
     }
 
     public SessionPeriod getSessionPeriod() {
@@ -93,7 +79,6 @@ public class Session {
                 ", sessionPeriod=" + sessionPeriod +
                 ", sessionType=" + sessionType +
                 ", sessionStatus=" + sessionStatus +
-                ", sessionCapacity=" + sessionCapacity +
                 ", sessionStudents=" + sessionStudents +
                 ", baseTime=" + baseTime +
                 ", course=" + course +
@@ -105,11 +90,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionCapacity, session.sessionCapacity) && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionType == session.sessionType && sessionStatus == session.sessionStatus && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, sessionPeriod, sessionType, sessionStatus, sessionCapacity, sessionStudents, baseTime, course);
+        return Objects.hash(id, courseId, sessionPeriod, sessionType, sessionStatus, sessionStudents, baseTime, course);
     }
 }

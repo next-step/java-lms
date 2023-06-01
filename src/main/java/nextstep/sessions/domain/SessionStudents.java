@@ -2,25 +2,27 @@ package nextstep.sessions.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Set;
 
 public class SessionStudents {
+    private Set<NsUser> students;
+    private int maximumCapacity;
 
-    private List<NsUser> students;
-    private Map<Long, NsUser> studentMap;
-
-    public SessionStudents(List<NsUser> students) {
+    public SessionStudents(Set<NsUser> students, int maximumCapacity) {
+        if (canRecruitStudent(students, maximumCapacity)) {
+            throw new IllegalArgumentException("정원수를 초과했습니다");
+        }
         this.students = students;
-        this.studentMap = students.stream()
-                .collect(Collectors.toMap(NsUser::getId, Function.identity()));
+        this.maximumCapacity = maximumCapacity;
+    }
+
+    private boolean canRecruitStudent(Set<NsUser> students, int maximumCapacity) {
+        return maximumCapacity < students.size();
     }
 
     public boolean contains(Long nsUserId) {
-        NsUser nsUser = studentMap.get(nsUserId);
-        return nsUser != null;
+        return students.stream().filter(value -> value.getId().equals(nsUserId)).findFirst().isPresent();
     }
 
     public void enrollStudent(NsUser nsUser) {
@@ -33,5 +35,30 @@ public class SessionStudents {
 
     public int getCurrentStudentCount() {
         return students.size();
+    }
+
+    public int getMaximumCapacity() {
+        return maximumCapacity;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionStudents{" +
+                "students=" + students +
+                ", maximumCapacity=" + maximumCapacity +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionStudents that = (SessionStudents) o;
+        return maximumCapacity == that.maximumCapacity && Objects.equals(students, that.students);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(students, maximumCapacity);
     }
 }

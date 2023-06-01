@@ -55,7 +55,7 @@ public class SessionTest {
                 SessionStatus.RECRUITING, 1);
         session.enrollSession(NsUserTest.JAVAJIGI);
         System.out.println("session = " + session);
-        assertThat(session.getStudentsNumbers()).isEqualTo(1);
+        assertThat(session.getSessionStudents().getCurrentStudentCount()).isEqualTo(1);
     }
 
     @Test
