@@ -24,12 +24,12 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(100L, ProgressStatus.READY);
+        Session session = new Session(100L, ProgressStatus.READY, RecruitmentStatus.RECRUITING);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(3L);
         assertThat(session.getMaxNumberOfStudent()).isEqualTo(savedSession.getMaxNumberOfStudent());
-        assertThat(session.getStatus()).isEqualTo(savedSession.getStatus());
+        assertThat(session.getProgressStatus()).isEqualTo(savedSession.getProgressStatus());
     }
 }

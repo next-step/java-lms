@@ -18,13 +18,12 @@ public class SignUpInformation {
         this.student = new Student(maxNumberOfStudent);
     }
 
-    public SignUpInformation(ProgressStatus progressStatus, Long maxNumberOfStudent) {
-        this.status = new SessionStatus(progressStatus, RecruitmentStatus.RECRUITING);
-        this.student = new Student(maxNumberOfStudent);
-    }
-
     public ProgressStatus getProgressStatus() {
         return status.getProgressStatus();
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return status.getRecruitmentStatus();
     }
 
     public Long getMaxNumberOfStudent() {

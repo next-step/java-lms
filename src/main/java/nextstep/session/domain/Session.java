@@ -1,7 +1,6 @@
 package nextstep.session.domain;
 
 import nextstep.students.domain.Students;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,22 +14,24 @@ public class Session {
     private Boolean isFree;
     private SignUpInformation signUpInformation;
 
-    public Session(Long maxNumberOfStudent, ProgressStatus status) {
-        this(0L, maxNumberOfStudent, status);
+    public Session(Long maxNumberOfStudent, ProgressStatus progressStatus, RecruitmentStatus recruitmentStatus) {
+        this(0L, maxNumberOfStudent, progressStatus, recruitmentStatus);
     }
 
-    public Session(Long id, Long maxNumberOfStudent, ProgressStatus status) {
+    public Session(Long id, Long maxNumberOfStudent, ProgressStatus status, RecruitmentStatus recruitmentStatus) {
         this.id = id;
-        this.signUpInformation = new SignUpInformation(status, maxNumberOfStudent);
+        this.signUpInformation = new SignUpInformation(status, recruitmentStatus, maxNumberOfStudent);
     }
 
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String status, Long maxNumberOfStudent, Boolean isFree) {
+    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, String image, String progressStatus,
+                   Long maxNumberOfStudent, Boolean isFree, String recruitStatus) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.image = image;
         this.isFree = isFree;
-        this.signUpInformation = new SignUpInformation(ProgressStatus.of(status), maxNumberOfStudent);
+        this.signUpInformation = new SignUpInformation(
+                ProgressStatus.of(progressStatus), RecruitmentStatus.of(recruitStatus), maxNumberOfStudent);
     }
 
     public Long getId() {
@@ -49,8 +50,12 @@ public class Session {
         return image;
     }
 
-    public ProgressStatus getStatus() {
+    public ProgressStatus getProgressStatus() {
         return signUpInformation.getProgressStatus();
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return signUpInformation.getRecruitmentStatus();
     }
 
     public Long getMaxNumberOfStudent() {

@@ -54,7 +54,8 @@ create table session (
     start_date timestamp,
     end_date timestamp,
     image varchar(200),
-    status varchar(10),
+    progress_status varchar(10),
+    recruit_status varchar(10),
     max_number_of_student bigint,
     is_free boolean,
     primary key (id)
@@ -67,3 +68,13 @@ create table students (
     foreign key (session_id) references session(id) on update cascade,
     foreign key (ns_user_id) references ns_user(id) on update cascade
 );
+
+create table pass_student (
+    session_id bigint not null,
+    ns_user_id bigint not null,
+    is_pass boolean,
+    primary key (session_id, ns_user_id),
+    foreign key (session_id) references session (id) on update cascade,
+    foreign key (ns_user_id) references ns_user (id) on update cascade
+);
+
