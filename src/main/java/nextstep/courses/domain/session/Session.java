@@ -4,20 +4,27 @@ import nextstep.courses.domain.student.Student;
 
 public class Session {
 
-    private final SessionRequired mandatoryInformation;
+    private final Long id;
 
-    private final SessionOptional additionalInformation;
+    private final SessionRequired required;
 
-    public Session(SessionRequired mandatoryInformation, SessionOptional additionalInformation) {
-        this.mandatoryInformation = mandatoryInformation;
-        this.additionalInformation = additionalInformation;
+    private final SessionOptional optional;
+
+    public Session(Long id, SessionRequired mandatoryInformation, SessionOptional additionalInformation) {
+        this.id = id;
+        this.required = mandatoryInformation;
+        this.optional = additionalInformation;
     }
 
     public void apply(Student student) {
-        mandatoryInformation.participate(student);
+        required.participate(student);
     }
 
     public int currentStudentNumber() {
-        return mandatoryInformation.getStudent();
+        return required.getStudent();
+    }
+
+    public int getMaxStudentCount() {
+        return required.getMaximumStudent();
     }
 }

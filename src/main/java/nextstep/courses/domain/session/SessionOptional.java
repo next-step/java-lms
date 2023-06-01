@@ -11,4 +11,9 @@ public class SessionOptional {
     public SessionOptional(LocalDateTime created) {
         this.created = created;
     }
+
+    public SessionOptional(LocalDateTime created, LocalDateTime updated) {
+        this.created = created;
+        this.updated = updated;
+    }
 }

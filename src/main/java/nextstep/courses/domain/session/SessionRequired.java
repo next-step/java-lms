@@ -38,4 +38,8 @@ public class SessionRequired {
     public int getStudent() {
         return sessionParticipant.getStudentsCount();
     }
+
+    public int getMaximumStudent() {
+        return sessionParticipant.getMaximumStudent();
+    }
 }

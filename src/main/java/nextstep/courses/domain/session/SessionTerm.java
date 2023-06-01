@@ -20,4 +20,12 @@ public class SessionTerm {
             throw new InvalidTermsException();
         }
     }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }

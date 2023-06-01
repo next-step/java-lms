@@ -29,4 +29,8 @@ public class SessionParticipant {
     public int getStudentsCount() {
         return students.getSize();
     }
+
+    public int getMaximumStudent() {
+        return maximumStudent;
+    }
 }
