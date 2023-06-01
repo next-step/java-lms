@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,9 @@ public class AnswerTest {
     @Test
     void delete_성공() {
         A1.delete(new ArrayList<>());
+        A2.delete(new ArrayList<>());
 
         assertThat(A1.isDeleted()).isTrue();
+        assertThat(A2.isDeleted()).isTrue();
     }
 }

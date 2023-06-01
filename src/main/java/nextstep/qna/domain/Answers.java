@@ -14,12 +14,16 @@ public class Answers {
     }
 
     public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+        deleteValidation(loginUser);
+        answers.forEach(answer -> answer.delete(deleteHistories));
+    }
+
+    private void deleteValidation(NsUser loginUser) throws CannotDeleteException {
         Optional<Answer> any = answers.stream()
                 .filter(answer -> !answer.isOwner(loginUser))
                 .findAny();
         if (any.isPresent()) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        answers.forEach(answer -> answer.delete(deleteHistories));
     }
 }
