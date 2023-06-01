@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TypeTest {
+public class SessionTypeTest {
 
     @Test
     @DisplayName("find_method_test")
     public void find_method_test(){
-        assertThat(Type.find("FREE")).isEqualTo(Type.FREE);
-        assertThat(Type.find("test")).isNull();
+        assertThat(SessionType.find("FREE")).isEqualTo(SessionType.FREE);
+        assertThat(SessionType.find("test")).isNull();
     }
 }

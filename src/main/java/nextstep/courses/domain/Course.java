@@ -11,25 +11,29 @@ public class Course {
 
     private Long creatorId;
 
+    private int cohort;
+
     private List<Session> sessions = new ArrayList<>();
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public Course(String title, Long creatorId, int cohort) {
+        this(0L, title, creatorId, cohort, LocalDateTime.now(), null);
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, int cohort, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
+        this.cohort = cohort;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 
     public String getTitle() {
@@ -46,6 +50,10 @@ public class Course {
 
     public List<Session> getSessions() {
         return sessions;
+    }
+
+    public int getCohort() {
+        return cohort;
     }
 
     @Override

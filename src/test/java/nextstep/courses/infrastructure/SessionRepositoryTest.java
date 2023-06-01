@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import org.assertj.core.api.Assertions;
@@ -26,14 +27,18 @@ public class SessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private SessionRepository sessionRepository;
+    private CourseRepository courseRepository;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate);
     }
 
     @Test
     void crud() {
+        Course course = new Course("TDD, 클린 코드 with Java", 1L, 1);
+        courseRepository.save(course);
         Session session = new Session(LocalDate.now(), LocalDate.now().plusDays(30), 1L);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
