@@ -4,18 +4,18 @@ import nextstep.session.NotFoundStatusException;
 
 import java.util.Arrays;
 
-public enum SessionStatus {
+public enum ProgressStatus {
     READY("ready"),
     RECRUITING("recruiting"),
     END("end");
 
     private String status;
 
-    SessionStatus(String status) {
+    ProgressStatus(String status) {
         this.status = status;
     }
 
-    public static SessionStatus of(String status) throws NotFoundStatusException {
+    public static ProgressStatus of(String status) throws NotFoundStatusException {
         return Arrays.stream(values())
                 .filter(value -> value.status.equals(status))
                 .findAny()

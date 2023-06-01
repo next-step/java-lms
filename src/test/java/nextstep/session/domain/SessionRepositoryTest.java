@@ -24,7 +24,7 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(100L, SessionStatus.READY);
+        Session session = new Session(100L, ProgressStatus.READY);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 

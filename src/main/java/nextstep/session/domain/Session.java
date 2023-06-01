@@ -17,11 +17,11 @@ public class Session {
     private Boolean isFree;
     private SignUpInformation signUpInformation;
 
-    public Session(Long maxNumberOfStudent, SessionStatus status) {
+    public Session(Long maxNumberOfStudent, ProgressStatus status) {
         this(0L, maxNumberOfStudent, status);
     }
 
-    public Session(Long id, Long maxNumberOfStudent, SessionStatus status) {
+    public Session(Long id, Long maxNumberOfStudent, ProgressStatus status) {
         this.id = id;
         this.signUpInformation = new SignUpInformation(status, maxNumberOfStudent);
     }
@@ -51,7 +51,7 @@ public class Session {
         return image;
     }
 
-    public SessionStatus getStatus() {
+    public ProgressStatus getStatus() {
         return signUpInformation.getStatus();
     }
 
@@ -69,7 +69,7 @@ public class Session {
 
     private void makeSignupInformation(String status, Long maxNumberOfStudent) {
         try {
-            this.signUpInformation = new SignUpInformation(SessionStatus.of(status), maxNumberOfStudent);
+            this.signUpInformation = new SignUpInformation(ProgressStatus.of(status), maxNumberOfStudent);
         } catch (NotFoundStatusException e) {
             e.printStackTrace();
         }
