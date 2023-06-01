@@ -15,7 +15,7 @@ class EnrollmentTest {
     @Test
     void maxEnrollment() {
         Enrollment enrollment = new Enrollment(50);
-        assertThat(enrollment.maxEnrollmentValue()).isEqualTo(50);
+        assertThat(enrollment.sessionCapacity()).isEqualTo(50);
     }
 
     @DisplayName("수강 신청을 하면 수강인원 인원이 늘어난다")

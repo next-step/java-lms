@@ -10,18 +10,18 @@ import java.util.List;
 
 public class Students {
 
-    private final int maxEnrollment;
+    private final int capacity;
     private final List<NsUser> students;
 
-    public Students(int maxEnrollment) {
-        this(maxEnrollment, new ArrayList<>());
+    public Students(int capacity) {
+        this(capacity, new ArrayList<>());
     }
 
-    public Students(int maxEnrollment, List<NsUser> students) {
-        if (maxEnrollment < students.size()) {
+    public Students(int capacity, List<NsUser> students) {
+        if (capacity < students.size()) {
             throw new ExceedMaxEnrollmentException();
         }
-        this.maxEnrollment = maxEnrollment;
+        this.capacity = capacity;
         this.students = students;
     }
 
@@ -53,6 +53,10 @@ public class Students {
     }
 
     public boolean isExceededMaxEnrollment() {
-        return maxEnrollment < countEnrollment();
+        return capacity < countEnrollment();
+    }
+
+    public int sessionCapacity() {
+        return capacity;
     }
 }
