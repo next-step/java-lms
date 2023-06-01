@@ -11,10 +11,6 @@ public class Session {
     private SessionUsers users;
 
     public Session(ImageInfo imageInfo, SessionPeriod period, SessionType type, SessionStatus status, int capacity) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("총 수용인원은 1명 이상이어야 합니다");
-        }
-
         this.imageInfo = imageInfo;
         this.period = period;
         this.type = type;
@@ -23,7 +19,7 @@ public class Session {
     }
 
     public void register(NsUser user) {
-        if (status.isRecruiting()) {
+        if (!status.isRecruiting()) {
             throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
         }
         users.add(user);

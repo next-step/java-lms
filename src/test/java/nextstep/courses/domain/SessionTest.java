@@ -1,9 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.CannotRegisterException;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDate;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class SessionTest {
     private static SessionPeriod PERIOD = new SessionPeriod(
@@ -23,7 +27,7 @@ class SessionTest {
                 1
         );
 
-        assertThatThrownBy(session::register)
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotRegisterException.class);
     }
 }
