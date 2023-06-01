@@ -7,11 +7,11 @@ public class SessionEnrollment {
 
     private final SessionStatus sessionStatus;
     private final Set<Student> students = new HashSet<>();
-    private final Long maxNumberOfStudent;
+    private final Long capacity;
 
-    public SessionEnrollment(SessionStatus sessionStatus, Long maxNumberOfStudent) {
+    public SessionEnrollment(SessionStatus sessionStatus, Long capacity) {
         this.sessionStatus = sessionStatus;
-        this.maxNumberOfStudent = maxNumberOfStudent;
+        this.capacity = capacity;
     }
 
     public void enroll(Student student) {
@@ -21,7 +21,11 @@ public class SessionEnrollment {
 
         if (isPositionFull()) {
             throw new CannotEnrollException(
-                    "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 = " + maxNumberOfStudent);
+                    "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 = " + capacity);
+        }
+
+        if (students.contains(student)) {
+            throw new AlreadyEnrollmentException(student + " 학생은 이미 등록한 상태입니다.");
         }
         this.students.add(student);
     }
@@ -31,7 +35,7 @@ public class SessionEnrollment {
     }
 
     public boolean isPositionFull() {
-        return totalStudentNum() == maxNumberOfStudent;
+        return totalStudentNum() == capacity;
     }
 
 }

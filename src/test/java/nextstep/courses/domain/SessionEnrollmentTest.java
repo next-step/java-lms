@@ -53,7 +53,7 @@ public class SessionEnrollmentTest {
     }
 
     @Test
-    @DisplayName("강의 상태(SessionStatus) '모집중'일 경우에 수강신청이 가능하다(예외를 던지지 않는다.")
+    @DisplayName("강의 상태(SessionStatus) '모집중'일 경우에 수강신청이 가능하다(예외를 던지지 않는다).")
     void enroll_SessionStatus_OPENED_NoException() {
         SessionEnrollment sessionEnrollment =
                 new SessionEnrollment(SessionStatus.OPENED, 3l);
@@ -81,5 +81,18 @@ public class SessionEnrollmentTest {
         assertThatThrownBy(() -> sessionEnrollment.enroll(june1))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessageContaining("현재는 수강신청을 할 수 없는 강의 상태입니다.");
+    }
+
+    @Test
+    @DisplayName("이미 등록된 학생의 경우 예외를 던진다.")
+    void enroll_AlreadyEnrollStudent_Duplicate_ThrowException() {
+        SessionEnrollment sessionEnrollment =
+                new SessionEnrollment(SessionStatus.OPENED, 3l);
+
+        sessionEnrollment.enroll(june1);
+
+        assertThatThrownBy(() -> sessionEnrollment.enroll(june1))
+                .isInstanceOf(AlreadyEnrollmentException.class)
+                .hasMessageContaining("학생은 이미 등록한 상태입니다.");
     }
 }
