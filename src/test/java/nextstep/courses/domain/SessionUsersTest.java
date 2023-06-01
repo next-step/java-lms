@@ -47,4 +47,18 @@ class SessionUsersTest {
         assertThatThrownBy(() -> users.add(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotRegisterException.class);
     }
+
+    @Test
+    public void 현재_수강_인원보다_제한_인원을_작게_설정할_수_없다() throws Exception {
+        //given
+        SessionUsers users = new SessionUsers(2);
+
+        //when
+        users.add(NsUserTest.JAVAJIGI);
+        users.add(NsUserTest.SANJIGI);
+
+        //then
+        assertThatThrownBy(() -> users.updateCapacity(1))
+                .isInstanceOf(IllegalStateException.class);
+    }
 }

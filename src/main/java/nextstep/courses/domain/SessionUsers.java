@@ -15,11 +15,15 @@ public class SessionUsers {
         this.users = new HashSet<>();
     }
 
-    public void updateCapacity(int value) {
+
+    public synchronized void updateCapacity(int value) {
+        if (value < users.size()) {
+            throw new IllegalStateException("변경하려는 수강 제한 인원이 현재 수강신청한 인원보다 작습니다");
+        }
         capacity.update(value);
     }
 
-    public void add(NsUser user) {
+    public synchronized void add(NsUser user) {
         if (users.size() >= capacity.value()) {
             throw new CannotRegisterException("강의 최대 수강 인원을 초과했습니다");
         }
