@@ -63,9 +63,6 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
         return timestamp.toLocalDateTime();
     }
 }

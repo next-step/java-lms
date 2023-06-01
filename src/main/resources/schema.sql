@@ -58,6 +58,6 @@ create table session (
     current_students int,
     max_students int,
     started_at timestamp not null,
-    ended_at timestamp,
+    ended_at timestamp not null,
     primary key (id)
 );

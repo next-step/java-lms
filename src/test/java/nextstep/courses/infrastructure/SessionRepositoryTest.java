@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @JdbcTest
 public class SessionRepositoryTest {
@@ -68,5 +69,12 @@ public class SessionRepositoryTest {
         savedSessions.forEach(savedSession -> {
             LOGGER.debug("{}", savedSession);
         });
+    }
+
+    @Test
+    @DisplayName("endAt이 null일 때 에러발생")
+    void endAt_is_null() {
+        assertThatThrownBy(() -> new Session(initStartedAt, null, initIsFree, initStatus, initCurrentStudents, initMaxStudents))
+                .isInstanceOf(RuntimeException.class);
     }
 }
