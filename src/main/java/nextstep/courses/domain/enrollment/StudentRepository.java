@@ -5,5 +5,5 @@ import java.util.List;
 public interface StudentRepository {
     int save(Student student);
 
-    List<Students> findBySessionId(Long sessionId);
+    List<Student> findBySessionId(Long sessionId);
 }

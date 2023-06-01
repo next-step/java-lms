@@ -1,11 +1,15 @@
 package nextstep.courses.domain.enrollment;
 
+import java.util.List;
+
 public class Enrollment {
 
-    private final Students students;
+    private final int capacity;
+    private Students students;
 
-    public Enrollment(int maxEnrollment) {
-        this.students = new Students(maxEnrollment);
+    public Enrollment(int capacity) {
+        this.capacity = capacity;
+        this.students = new Students(capacity);
     }
 
     public int sessionCapacity() {
@@ -20,7 +24,8 @@ public class Enrollment {
         return !students.isEmpty();
     }
 
-    public void enroll(Student student) {
+    public void enroll(Student student, List<Student> addedStudents) {
+        students = new Students(this.capacity, addedStudents);
         students.enroll(student);
     }
 }

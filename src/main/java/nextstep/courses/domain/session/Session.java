@@ -9,6 +9,8 @@ import nextstep.courses.domain.payment.PaymentStrategy;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session extends BaseTime {
 
@@ -45,11 +47,15 @@ public class Session extends BaseTime {
     }
 
     public Student enrollInSession(NsUser nsUser) {
+        return enrollInSession(nsUser, new ArrayList<>());
+    }
+
+    public Student enrollInSession(NsUser nsUser, List<Student> students) {
         if (!sessionStatus.isEnrolling()) {
             throw new CannotEnrollException();
         }
         Student student = new Student(nsUser.getId(), this.id);
-        enrollment.enroll(student);
+        enrollment.enroll(student, students);
         return student;
     }
 
