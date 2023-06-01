@@ -18,20 +18,18 @@ public class QuestionTest {
 
   private NsUser user;
   private Question question;
-  private List<DeleteHistory> deleteHistories;
 
   @BeforeEach
   public void setUp() throws Exception {
     user = NsUserTest.JAVAJIGI;
     question = new Question(1L, user, "title1", "contents1");
-    deleteHistories = new ArrayList<>();
   }
 
 
   @Test
   void delete_성공() throws Exception {
     question.addAnswer(AnswerTest.A1);
-    question.delete(user, deleteHistories);
+    List<DeleteHistory> deleteHistories = question.delete(user);
 
     // JPA를 사용하면 getter를 열어두는 경우가 많기 때문에 getter는 도메인에서 제거하지 않고 남겨놓음
     // 대신 테스트에서만 사용한다고 팀에서 약속했다고 가정
@@ -51,7 +49,7 @@ public class QuestionTest {
   void delete_로그인_사용자와_질문한_사람이_다르면_실패() throws Exception {
     NsUser otherUser = NsUserTest.SANJIGI;
 
-    Assertions.assertThatThrownBy(() -> question.delete(otherUser, deleteHistories))
+    Assertions.assertThatThrownBy(() -> question.delete(otherUser))
         .isInstanceOf(CannotDeleteException.class)
         .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
   }
@@ -60,7 +58,7 @@ public class QuestionTest {
   void delete_다른_사용자의_답변이_존재하면_삭제가_불가능() throws Exception {
     question.addAnswer(AnswerTest.A2);
 
-    Assertions.assertThatThrownBy(() -> question.delete(user, deleteHistories))
+    Assertions.assertThatThrownBy(() -> question.delete(user))
         .isInstanceOf(CannotDeleteException.class)
         .hasMessageContaining("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
   }
@@ -72,7 +70,7 @@ public class QuestionTest {
     question.addAnswer(AnswerTest.A1);
 
     // when
-    question.delete(user, deleteHistories);
+    List<DeleteHistory> deleteHistories = question.delete(user);
 
     // then
     assertTrue(question.isDeleted());
@@ -90,7 +88,7 @@ public class QuestionTest {
     question.addAnswer(AnswerTest.A1);
     question.addAnswer(AnswerTest.A2);
 
-    Assertions.assertThatThrownBy(() -> question.delete(user, deleteHistories))
+    Assertions.assertThatThrownBy(() -> question.delete(user))
         .isInstanceOf(CannotDeleteException.class)
         .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
   }

@@ -66,7 +66,7 @@ public class Answer {
     }
 
     public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
-        if (loginUser != this.writer) {
+        if (!loginUser.equals(this.writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
