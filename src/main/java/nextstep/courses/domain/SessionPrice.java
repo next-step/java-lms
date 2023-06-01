@@ -20,4 +20,11 @@ public class SessionPrice {
         }
         return SessionPayType.PAID;
     }
+
+    @Override
+    public String toString() {
+        return "SessionPrice{" +
+                "price=" + price +
+                '}';
+    }
 }

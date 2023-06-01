@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -90,16 +92,20 @@ public class Session {
         return auditTimestamp.getCreatedAt();
     }
 
-    public void enroll(Long userId) {
+    public void enroll(NsUser user) {
         if (!status.isRecruiting()) {
             throw new IllegalStateException("모집 중인 강의만 수강 신청이 가능합니다.");
         }
-        sessionUsers.registerUser(userId);
+        sessionUsers.registerUser(new SessionUser(id, user.getUserId()));
         this.auditTimestamp.update();
     }
 
     public int countUsers() {
         return sessionUsers.countUsers();
+    }
+
+    public List<SessionUser> getSessionUsers() {
+        return sessionUsers.getRegisteredUsers();
     }
 
     public void open() {
@@ -118,5 +124,36 @@ public class Session {
     private void changeStatus(SessionStatus status) {
         this.status = status;
         this.auditTimestamp.update();
+    }
+
+    public int getMaxUserCount() {
+        return sessionUsers.getMaxUserCount();
+    }
+
+
+    public LocalDate getStartDate() {
+        return sessionDate.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return sessionDate.getEndDate();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return auditTimestamp.getUpdatedAt();
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", sessionInfo=" + sessionInfo +
+                ", sessionUsers=" + sessionUsers +
+                ", sessionDate=" + sessionDate +
+                ", coverImage=" + coverImage +
+                ", price=" + price +
+                ", status=" + status +
+                ", auditTimestamp=" + auditTimestamp +
+                '}';
     }
 }

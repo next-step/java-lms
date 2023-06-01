@@ -58,9 +58,4 @@ public class SessionFixtureBuilder {
         this.id = id;
         return this;
     }
-
-    public SessionFixtureBuilder withRegisterdUsers(List<Long> registerdUsers) {
-        registerdUsers.forEach(userId -> this.registeredUsers.add(new SessionUser(userId)));
-        return this;
-    }
 }

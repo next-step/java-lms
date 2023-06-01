@@ -21,4 +21,12 @@ public class SessionDate {
     public LocalDate getEndDate() {
         return endDate;
     }
+
+    @Override
+    public String toString() {
+        return "SessionDate{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }
