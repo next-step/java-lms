@@ -21,11 +21,12 @@ public class SessionTest {
                 LocalDateTime.now(),
                 SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
-
-        session.enrollSession(NsUserTest.JAVAJIGI);
+        System.out.println("session1 = " + session);
+        session.enrollStudent(NsUserTest.JAVAJIGI);
+        System.out.println("session2 = " + session);
 
         assertThatThrownBy(() -> {
-            session.enrollSession(NsUserTest.SANJIGI);
+            session.enrollStudent(NsUserTest.SANJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -40,7 +41,7 @@ public class SessionTest {
                 SessionStatus.PREPARING, 1);
 
         assertThatThrownBy(() -> {
-            session.enrollSession(NsUserTest.JAVAJIGI);
+            session.enrollStudent(NsUserTest.JAVAJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -53,7 +54,7 @@ public class SessionTest {
                 LocalDateTime.now(),
                 SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
-        session.enrollSession(NsUserTest.JAVAJIGI);
+        session.enrollStudent(NsUserTest.JAVAJIGI);
         System.out.println("session = " + session);
         assertThat(session.getSessionStudents().getCurrentStudentCount()).isEqualTo(1);
     }
@@ -67,10 +68,10 @@ public class SessionTest {
                 LocalDateTime.now(),
                 SessionPaymentType.FREE,
                 SessionStatus.RECRUITING, 1);
-        session.enrollSession(NsUserTest.JAVAJIGI);
+        session.enrollStudent(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> {
-            session.enrollSession(NsUserTest.JAVAJIGI);
+            session.enrollStudent(NsUserTest.JAVAJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 }

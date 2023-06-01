@@ -1,6 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionStudentsTest {
 
-    private final SessionStudents sessionStudents = new SessionStudents(new HashSet<>(Arrays.asList(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI)), 4);
+    public static final SessionStudents sessionStudents = new SessionStudents(new HashSet<>(Arrays.asList(SessionStudentTest.student1, SessionStudentTest.student2)), 4);
 
     @ParameterizedTest(name = "nsUserId를 이용하여 수강 중인 학생인지 확인")
     @ValueSource(longs = {1L, 2L})
@@ -26,7 +25,15 @@ class SessionStudentsTest {
     @DisplayName(value = "중복 수강 신청할 경우 검사")
     void test2() {
         assertThatThrownBy(() -> {
-            sessionStudents.enrollStudent(NsUserTest.JAVAJIGI);
+            sessionStudents.enrollStudent(SessionStudentTest.student1);
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName(value = "정원 수 초과 검사")
+    void test3() {
+        assertThatThrownBy(() -> {
+            sessionStudents.enrollStudent(SessionStudentTest.student2);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 }

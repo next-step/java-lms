@@ -39,11 +39,12 @@ public class Session {
         this.baseTime = new BaseTime();
     }
 
-    public void enrollSession(NsUser student) {
+    public void enrollStudent(NsUser nsUser) {
         if (!sessionStatus.isRecruitable()) {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
         }
 
+        SessionStudent student = new SessionStudent(id, nsUser.getId());
         sessionStudents.enrollStudent(student);
     }
 
