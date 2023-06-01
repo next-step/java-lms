@@ -5,9 +5,10 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -54,4 +55,16 @@ public class QuestionTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
+
+    @Test
+    void delete_history() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+
+        q1.delete(NsUserTest.JAVAJIGI, deleteHistories);
+
+        assertThat(deleteHistories).hasSize(1);
+    }
+
+
 }
