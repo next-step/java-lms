@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.fixture.SessionFixtures;
 import nextstep.courses.exception.CannotRegisterException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -27,7 +27,7 @@ class SessionTest {
                 1
         );
 
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.register(SessionFixtures.USER_1))
                 .isInstanceOf(CannotRegisterException.class);
     }
 }

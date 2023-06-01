@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.fixture.SessionFixtures;
 import nextstep.courses.exception.CannotRegisterException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,8 +15,8 @@ class SessionUsersTest {
         SessionUsers users = new SessionUsers(2);
 
         //when
-        users.add(NsUserTest.JAVAJIGI);
-        users.add(NsUserTest.SANJIGI);
+        users.add(SessionFixtures.USER_1);
+        users.add(SessionFixtures.USER_2);
 
         //then
         assertThat(users.count()).isEqualTo(2);
@@ -28,10 +28,10 @@ class SessionUsersTest {
         SessionUsers users = new SessionUsers(2);
 
         //when
-        users.add(NsUserTest.JAVAJIGI);
+        users.add(SessionFixtures.USER_1);
 
         //then
-        assertThatThrownBy(() -> users.add(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> users.add(SessionFixtures.USER_1))
                 .isInstanceOf(CannotRegisterException.class);
     }
 
@@ -41,10 +41,10 @@ class SessionUsersTest {
         SessionUsers users = new SessionUsers(1);
 
         //when
-        users.add(NsUserTest.JAVAJIGI);
+        users.add(SessionFixtures.USER_1);
 
         //then
-        assertThatThrownBy(() -> users.add(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> users.add(SessionFixtures.USER_2))
                 .isInstanceOf(CannotRegisterException.class);
     }
 
@@ -54,8 +54,8 @@ class SessionUsersTest {
         SessionUsers users = new SessionUsers(2);
 
         //when
-        users.add(NsUserTest.JAVAJIGI);
-        users.add(NsUserTest.SANJIGI);
+        users.add(SessionFixtures.USER_1);
+        users.add(SessionFixtures.USER_2);
 
         //then
         assertThatThrownBy(() -> users.updateCapacity(1))
