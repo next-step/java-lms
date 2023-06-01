@@ -79,6 +79,10 @@ public class NsUser {
         return this;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
             throw new UnAuthorizedException();
@@ -111,6 +115,11 @@ public class NsUser {
 
         return name.equals(target.name) &&
                 email.equals(target.email);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this.id == ((NsUser) other).id;
     }
 
     public boolean isGuestUser() {

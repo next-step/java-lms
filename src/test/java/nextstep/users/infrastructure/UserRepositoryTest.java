@@ -1,5 +1,6 @@
 package nextstep.users.infrastructure;
 
+import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,4 +35,17 @@ public class UserRepositoryTest {
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
     }
+
+//    @Test
+//    void crud() {
+//        NsUser nsUser = new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com");
+//        int count = userRepository.save(nsUser);
+//        assertThat(count).isEqualTo(1);
+//        NsUser savedUser = userRepository.findByUserId("jerry").orElseThrow();
+//        assertThat(savedUser.getUserId()).isEqualTo(nsUser.getUserId());
+//        assertThat(savedUser.getName()).isEqualTo(nsUser.getName());
+//        assertThat(savedUser.getEmail()).isEqualTo(nsUser.getEmail());
+//        assertThat(savedUser.getPassword()).isEqualTo(nsUser.getPassword());
+//        LOGGER.debug("NsUser: {}", savedUser);
+//    }
 }
