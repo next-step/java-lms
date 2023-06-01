@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.courses.domain.SampleUser.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("학생들 객체 테스트")
@@ -54,5 +55,13 @@ class StudentsTest {
         assertThatExceptionOfType(ExceedMaxEnrollmentException.class)
                 .isThrownBy(() -> students.enroll(WOOK))
                 .withMessage("can not exceed the maximum enrollment");
+    }
+
+    @DisplayName("현재 세션에 등록한 학생의 숫자를 구할수 있다")
+    @Test
+    void currentEnrolmentCount() {
+        Students students = new Students(2);
+        students.enroll(JAVAJIGI);
+        assertThat(students.countEnrollment()).isEqualTo(1);
     }
 }

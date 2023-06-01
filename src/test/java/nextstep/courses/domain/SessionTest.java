@@ -49,19 +49,6 @@ class SessionTest {
         enrollment = new Enrollment(50);
     }
 
-    @DisplayName("현재 세션에 참가한 학생의 숫자를 구할수 있다")
-    @Test
-    void currentEnrolmentCount() {
-        Session session = new Session(sessionInformation, sessionPeriod, sessionStatus, coverImage,  new FreePaymentStrategy(), enrollment);
-        session.enrollInSession(JAVAJIGI);
-        session.enrollInSession(SANJIGI);
-        session.enrollInSession(WOOK);
-
-        int currentEnrolmentStudentCount = session.currentEnrolmentCount();
-
-        assertThat(currentEnrolmentStudentCount).isEqualTo(3);
-    }
-
     @DisplayName("현재 세션에 참가한 학생이 있는지 확인할수 있다(참가자가 없으면 false)")
     @Test
     void currentEnrolmentIsEmpty() {
