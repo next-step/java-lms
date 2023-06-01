@@ -26,9 +26,9 @@ public class EnrollmentTest {
 
     @Test
     void 수강인원_초과() {
-        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI);
-        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 1, students);
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 1);
         assertThatIllegalArgumentException().isThrownBy(() -> {
+            enrollment.enroll(NsUserTest.JAVAJIGI);
             enrollment.enroll(NsUserTest.SANJIGI);
         });
     }
