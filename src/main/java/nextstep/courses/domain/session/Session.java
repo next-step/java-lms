@@ -44,12 +44,13 @@ public class Session extends BaseTime {
         return enrollment.hasEnrolledStudent();
     }
 
-    public void enrollInSession(NsUser nsUser) {
+    public Student enrollInSession(NsUser nsUser) {
         if (!sessionStatus.isEnrolling()) {
             throw new CannotEnrollException();
         }
         Student student = new Student(nsUser.getId(), this.id);
         enrollment.enroll(student);
+        return student;
     }
 
     private void validateSessionStatusAndEnrolledStudents() {
