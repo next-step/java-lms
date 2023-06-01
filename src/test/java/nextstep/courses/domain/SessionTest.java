@@ -20,7 +20,7 @@ class SessionTest {
     @EnumSource(value = SessionStatus.class, names = {"RECRUITING"}, mode = EnumSource.Mode.EXCLUDE)
     public void 현재_모집중인_강의만_수강할_수_있다(SessionStatus status) throws Exception {
         Session session = new Session(
-                new ImageInfo("test.test.test"),
+                new ImageUrl("https://test.test/images/0"),
                 PERIOD,
                 SessionType.FREE,
                 status,

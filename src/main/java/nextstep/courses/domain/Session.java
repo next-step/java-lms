@@ -4,17 +4,17 @@ import nextstep.courses.exception.CannotRegisterException;
 import nextstep.users.domain.NsUser;
 
 public class Session {
-    private ImageInfo imageInfo;
     private SessionPeriod period;
+    private ImageUrl imageUrl;
     private SessionStatus status;
     private SessionType type;
     private SessionUsers users;
 
-    public Session(ImageInfo imageInfo, SessionPeriod period, SessionType type, SessionStatus status, int capacity) {
-        this.imageInfo = imageInfo;
         this.period = period;
         this.type = type;
         this.status = status;
+    public Session(ImageUrl imageUrl, SessionPeriod period, SessionType type, SessionStatus status, int capacity) {
+        this.imageUrl = Objects.requireNonNull(imageUrl);
         this.users = new SessionUsers(capacity);
     }
 
