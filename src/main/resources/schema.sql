@@ -57,7 +57,7 @@ create table session (
     cardinal_number int,
     session_cost_type varchar(10),
     registration_open_type varchar(10),
-    state varchar(15),
+    session_state varchar(15),
     max_user int,
     start_date timestamp,
     end_date timestamp,

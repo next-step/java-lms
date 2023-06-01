@@ -5,8 +5,8 @@ import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionCostType;
+import nextstep.courses.domain.session.SessionState;
 import nextstep.courses.domain.session.SessionTest;
-import nextstep.courses.domain.session.State;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
@@ -30,7 +30,7 @@ public class SessionRegistrationTest {
     @Test
     @DisplayName("수강 신청 가능 체크")
     void registerSession() {
-        SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 30);
+        SessionRegistration sessionRegistration = new SessionRegistration(SessionState.RECRUIT_START, RegistrationOpenType.OPEN, 30);
 
         assertThatNoException().isThrownBy(() -> {
             sessionRegistration.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
@@ -40,7 +40,7 @@ public class SessionRegistrationTest {
     @Test
     @DisplayName("수강 신청 인원 초과")
     void excessMaxUser() {
-        SessionRegistration sessionRegistration = new SessionRegistration(State.RECRUIT_START, 1, students);
+        SessionRegistration sessionRegistration = new SessionRegistration(SessionState.RECRUIT_START, RegistrationOpenType.OPEN, 1, students);
         assertThatThrownBy(() -> {
             sessionRegistration.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
         }).isInstanceOf(StudentMaxException.class).hasMessageContaining("정원 초과하여 신청할 수 없습니다.");
@@ -49,7 +49,7 @@ public class SessionRegistrationTest {
     @Test
     @DisplayName("중복 수강 신청 시도")
     void duplicateRegister() {
-        Session session = createSession(2L, SessionCostType.FREE, RegistrationOpenType.OPEN, State.RECRUIT_START,30);
+        Session session = createSession(2L, SessionCostType.FREE, RegistrationOpenType.OPEN, SessionState.RECRUIT_START,30);
         session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
 
         assertThatThrownBy(() -> {
@@ -60,26 +60,16 @@ public class SessionRegistrationTest {
     @Test
     @DisplayName("수강 신청 불가 - 모집중 강의가 아닐 경우")
     void checkSessionState() {
-        SessionRegistration sessionRegistration1 = new SessionRegistration(State.READY, 30);
-        SessionRegistration sessionRegistration2 = new SessionRegistration(State.RECRUIT_END, 30);
-        SessionRegistration sessionRegistration3 = new SessionRegistration(State.SESSION_START, 30);
-        SessionRegistration sessionRegistration4 = new SessionRegistration(State.SESSION_END, 30);
+        SessionRegistration sessionRegistration2 = new SessionRegistration(SessionState.RECRUIT_END, RegistrationOpenType.CLOSE,30);
+        SessionRegistration sessionRegistration4 = new SessionRegistration(SessionState.SESSION_END, RegistrationOpenType.CLOSE,30);
 
         assertThatThrownBy(() -> {
-            sessionRegistration1.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.readySession.getId()));
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("준비중인 강의입니다.");
-        
-        assertThatThrownBy(() -> {
             sessionRegistration2.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.recruitEndSession.getId()));
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("모집종료인 강의입니다."); 
-        
-        assertThatThrownBy(() -> {
-            sessionRegistration3.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionStartSession.getId()));
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의중인 강의입니다."); 
-        
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("비모집중인 강의입니다.");
+
         assertThatThrownBy(() -> {
             sessionRegistration4.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionEndSession.getId()));
-        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("강의종료인 강의입니다.");
+        }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("비모집중인 강의입니다.");
     }
 
 }

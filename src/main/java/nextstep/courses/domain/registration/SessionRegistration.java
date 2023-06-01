@@ -3,23 +3,25 @@ package nextstep.courses.domain.registration;
 import nextstep.courses.DuplicateStudentRegisterException;
 import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
-import nextstep.courses.domain.session.State;
+import nextstep.courses.domain.session.SessionState;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 
 import java.util.Objects;
 
 public class SessionRegistration {
-    private State state;
+    private SessionState sessionState;
+    private RegistrationOpenType registrationOpenType;
     private int maxUser;
     private Students students;
 
-    public SessionRegistration(State state, int maxUser) {
-        this(state, maxUser, new Students());
+    public SessionRegistration(SessionState sessionState, RegistrationOpenType registrationOpenType, int maxUser) {
+        this(sessionState, registrationOpenType, maxUser, new Students());
     }
 
-    public SessionRegistration(State state, int maxUser, Students students) {
-        this.state = state;
+    public SessionRegistration(SessionState sessionState, RegistrationOpenType registrationOpenType, int maxUser, Students students) {
+        this.sessionState = sessionState;
+        this.registrationOpenType = registrationOpenType;
         this.maxUser = maxUser;
         this.students = students;
     }
@@ -33,8 +35,8 @@ public class SessionRegistration {
     }
 
     private void validateState() {
-        if (state != State.RECRUIT_START) {
-            throw new SessionStateNotRecruitStartException(state.getDescription() + "인 강의입니다.");
+        if (!registrationOpenType.isOpen()) {
+            throw new SessionStateNotRecruitStartException(registrationOpenType.getDescription() + "인 강의입니다.");
         }
     }
 
@@ -50,12 +52,16 @@ public class SessionRegistration {
         }
     }
 
-    public State getState() {
-        return state;
+    public SessionState getSessionState() {
+        return sessionState;
     }
 
     public int getMaxUser() {
         return maxUser;
+    }
+
+    public RegistrationOpenType getRegistrationOpenType() {
+        return registrationOpenType;
     }
 
     @Override
@@ -63,11 +69,11 @@ public class SessionRegistration {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionRegistration that = (SessionRegistration) o;
-        return maxUser == that.maxUser && state == that.state;
+        return maxUser == that.maxUser && sessionState == that.sessionState;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, maxUser, students);
+        return Objects.hash(sessionState, maxUser, students);
     }
 }

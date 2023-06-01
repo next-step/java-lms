@@ -20,29 +20,28 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, state, maxUser, startDate, endDate);
+    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
     }
 
-    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.cover = cover;
         this.cardinalNumber = cardinalNumber;
         this.sessionCostType = sessionCostType;
-        this.registrationOpenType = registrationOpenType;
-        this.sessionRegistration = new SessionRegistration(state, maxUser);
+        this.sessionRegistration = new SessionRegistration(sessionState, registrationOpenType, maxUser);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, state, maxUser, startDate, endDate);
+    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
     }
 
-    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, State state, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, state, maxUser, startDate, endDate);
+    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
     }
 
     public Students enroll(Student student) {
@@ -71,10 +70,6 @@ public class Session {
 
     public SessionCostType getSessionCostType() {
         return sessionCostType;
-    }
-
-    public RegistrationOpenType getRegistrationOpenType() {
-        return registrationOpenType;
     }
 
     public SessionRegistration getSessionRegistration() {

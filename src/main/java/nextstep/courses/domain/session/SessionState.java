@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-public enum State {
+public enum SessionState {
     READY("READY", "준비중"),
     RECRUIT_START("RECRUIT_START", "모집중"),
     RECRUIT_END("RECRUIT_END", "모집종료"),
@@ -10,7 +10,7 @@ public enum State {
     private String code;
     private String description;
 
-    State(String code, String description) {
+    SessionState(String code, String description) {
         this.code = code;
         this.description = description;
     }
