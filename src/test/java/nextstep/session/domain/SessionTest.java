@@ -1,6 +1,6 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotRecruitException;
+import nextstep.session.NotProceedingException;
 import nextstep.session.StudentNumberExceededException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class SessionTest {
         // when
         assertThatThrownBy(
                 () -> session.signUp(NsUserTest.JAVAJIGI))
-                .isInstanceOf(NotRecruitException.class);
+                .isInstanceOf(NotProceedingException.class);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class SessionTest {
     }
 
     @Test
-    void 수강신청_성공() throws StudentNumberExceededException, NotRecruitException {
+    void 수강신청_성공() throws StudentNumberExceededException, NotProceedingException {
 
         // given
         Session session = new Session(1L, 2L, ProgressStatus.PROCEEDING);

@@ -1,7 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.session.NotFoundStatusException;
-import nextstep.session.NotRecruitException;
+import nextstep.session.NotProceedingException;
 import nextstep.session.StudentNumberExceededException;
 import nextstep.users.domain.NsUser;
 
@@ -75,7 +75,7 @@ public class Session {
         }
     }
 
-    void signUp(NsUser user) throws StudentNumberExceededException, NotRecruitException {
+    void signUp(NsUser user) throws StudentNumberExceededException, NotProceedingException {
         signUpInformation.signUp(user);
     }
 }
