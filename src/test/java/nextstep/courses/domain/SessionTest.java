@@ -24,7 +24,7 @@ public class SessionTest {
     void 세션_유효성_검사_수강신청_모집중() {
         int students = 0;
         Session session = SessionFixture
-                .session(4, students, SessionStatus.RECRUIT, SessionType.PAID, "/", "test.jpg");
+                .session(4, students, SessionStatus.RECRUIT, SessionType.PAID);
 
         session.apply(student);
 
@@ -34,7 +34,7 @@ public class SessionTest {
     @Test
     void 세션_유효성_검사_수강신청_모집중_아님() {
         Session session = SessionFixture
-                .session(1, 1, SessionStatus.QUIT, SessionType.PAID, "/", "test.jpg");
+                .session(1, 1, SessionStatus.QUIT, SessionType.PAID);
 
         Assertions.assertThatThrownBy(() -> session.apply(student))
                 .isInstanceOf(NotPeriodSessionException.class)
@@ -45,7 +45,7 @@ public class SessionTest {
     void 세션_유효성_검사_수강인원_초과() {
         int students = 31;
         Session session = SessionFixture
-                .session(1, students, SessionStatus.RECRUIT, SessionType.PAID, "/", "test.jpg");
+                .session(1, students, SessionStatus.RECRUIT, SessionType.PAID);
 
         Assertions.assertThatThrownBy(() -> session.apply(student))
                 .isInstanceOf(OverStudentException.class)

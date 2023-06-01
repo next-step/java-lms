@@ -28,3 +28,7 @@
 * [x] 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
 * [x] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
 * [x] 강의는 강의 최대 수강 인원을 초과할 수 없다.
+
+### DB
+* [x] session/session_cover_image repository 생성
+* [x] session/session_cover_image service 생성

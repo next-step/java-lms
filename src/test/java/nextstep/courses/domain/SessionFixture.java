@@ -9,19 +9,30 @@ import nextstep.courses.domain.student.Students;
 
 public class SessionFixture {
 
-    public static Session session(int maximumStudent, int studentSize, SessionStatus sessionStatus, SessionType sessionType, String path, String name) {
+    public static Session session(int maximumStudent, int studentSize, SessionStatus sessionStatus, SessionType sessionType) {
+        Long id = 1L;
+        SessionParticipant participant = participant(maximumStudent, studentSize);
 
-        SessionParticipant participant = new SessionParticipant(maximumStudent, students(studentSize));
+        SessionCondition condition = condition(sessionStatus, sessionType);
 
-        SessionCoverImage coverImage = new SessionCoverImage(path, name);
-        SessionCondition condition = new SessionCondition(sessionStatus, sessionType, coverImage);
+        SessionTerm term = term();
 
-        SessionTerm term = new SessionTerm(LocalDateTime.now(), LocalDateTime.now());
+        SessionRequired mandatory = new SessionRequired(participant, condition, term);
+        SessionOptional additional = new SessionOptional(LocalDateTime.now());
 
-        SessionMandatoryInformation mandatory = new SessionMandatoryInformation(participant, condition, term);
-        SessionAdditionalInformation additional = new SessionAdditionalInformation(LocalDateTime.now());
+        return new Session(id, mandatory, additional);
+    }
 
-        return new Session(mandatory, additional);
+    public static SessionParticipant participant(int maximumStudent, int studentSize) {
+        return new SessionParticipant(maximumStudent, students(studentSize));
+    }
+
+    public static SessionCondition condition(SessionStatus sessionStatus, SessionType sessionType) {
+        return new SessionCondition(sessionStatus, sessionType);
+    }
+
+    public static SessionTerm term() {
+        return new SessionTerm(LocalDateTime.now(), LocalDateTime.now());
     }
 
     public static Students students(int size) {

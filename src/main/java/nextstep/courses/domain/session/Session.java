@@ -1,31 +1,30 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.student.Student;
-import nextstep.courses.exceptions.NotPeriodSessionException;
-import nextstep.courses.exceptions.OverStudentException;
 
 public class Session {
 
-    private final SessionMandatoryInformation mandatoryInformation;
+    private final Long id;
 
-    private final SessionAdditionalInformation additionalInformation;
+    private final SessionRequired required;
 
-    public Session(SessionMandatoryInformation mandatoryInformation, SessionAdditionalInformation additionalInformation) {
-        this.mandatoryInformation = mandatoryInformation;
-        this.additionalInformation = additionalInformation;
+    private final SessionOptional optional;
+
+    public Session(Long id, SessionRequired mandatoryInformation, SessionOptional additionalInformation) {
+        this.id = id;
+        this.required = mandatoryInformation;
+        this.optional = additionalInformation;
     }
 
-    //    public Session(SessionParticipant sessionParticipant, SessionCondition sessionsCondition, SessionTerm sessionTerm) {
-//        this.sessionParticipant = sessionParticipant;
-//        this.sessionsCondition = sessionsCondition;
-//        this.sessionTerm = sessionTerm;
-//    }
-
     public void apply(Student student) {
-        mandatoryInformation.participate(student);
+        required.participate(student);
     }
 
     public int currentStudentNumber() {
-        return mandatoryInformation.getStudent();
+        return required.getStudent();
+    }
+
+    public int getMaxStudentCount() {
+        return required.getMaximumStudent();
     }
 }

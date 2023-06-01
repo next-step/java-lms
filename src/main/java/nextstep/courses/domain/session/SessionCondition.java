@@ -6,15 +6,20 @@ public class SessionCondition {
 
     private final SessionType sessionType;
 
-    private final SessionCoverImage sessionCoverImage;
-
-    public SessionCondition(SessionStatus sessionStatus, SessionType sessionType, SessionCoverImage sessionCoverImage) {
+    public SessionCondition(SessionStatus sessionStatus, SessionType sessionType) {
         this.sessionStatus = sessionStatus;
         this.sessionType = sessionType;
-        this.sessionCoverImage = sessionCoverImage;
     }
 
     public boolean participateAvailable() {
         return sessionStatus.isRecruit();
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
     }
 }
