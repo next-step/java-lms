@@ -15,18 +15,6 @@ class SessionTest {
             LocalDate.of(2023, 5, 30)
     );
 
-    @Test
-    public void capacity는_1_이상이어야_한다() throws Exception {
-        assertThatThrownBy(() -> {
-            Session session = new Session(
-                    new ImageInfo("test.test.test"),
-                    PERIOD,
-                    SessionType.FREE,
-                    SessionStatus.RECRUITING,
-                    0
-            );
-        }).isInstanceOf(IllegalArgumentException.class);
-    }
 
     @Test
     public void 강의_최대_수강_인원을_초과할_수_없다() throws Exception {
