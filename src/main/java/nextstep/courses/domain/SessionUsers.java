@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SessionUsers {
@@ -13,16 +14,12 @@ public class SessionUsers {
 
     public void registerUser(SessionUser user) {
         if (isFull()) {
-            throw new IllegalArgumentException("이미 등록된 강의입니다.");
+            throw new IllegalArgumentException("수강생이 가득 찼습니다: " + this.maxNumberOfUsers + "명");
         }
         if (this.registeredUsers.contains(user)) {
             throw new IllegalArgumentException("이미 등록된 사용자입니다.");
         }
         this.registeredUsers.add(user);
-    }
-
-    public void registerUser(Long userId) {
-        registerUser(new SessionUser(userId));
     }
 
     private boolean isFull() {
@@ -31,5 +28,21 @@ public class SessionUsers {
 
     public int countUsers() {
         return this.registeredUsers.size();
+    }
+
+    public List<SessionUser> getRegisteredUsers() {
+        return Collections.unmodifiableList(this.registeredUsers);
+    }
+
+    @Override
+    public String toString() {
+        return "SessionUsers{" +
+                "maxNumberOfUsers=" + maxNumberOfUsers +
+                ", registeredUsers=" + registeredUsers +
+                '}';
+    }
+
+    public int getMaxUserCount() {
+        return this.maxNumberOfUsers;
     }
 }
