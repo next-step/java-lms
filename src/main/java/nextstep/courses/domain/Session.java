@@ -18,7 +18,7 @@ public class Session extends BaseTimeEntity {
   private final SessionType sessionType;
 
   private final SessionStatus sessionStatus;
-
+  private final SessionRecruitStatus sessionRecruitStatus;
   private final Students students;
 
   private final SessionPeriod sessionPeriod;
@@ -27,7 +27,7 @@ public class Session extends BaseTimeEntity {
    * 주 생성자
    */
   public Session(Long id, SessionInfo sessionInfo, Image coverImage, SessionType sessionType,
-      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod,
+      SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, Students students, SessionPeriod sessionPeriod,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -35,9 +35,10 @@ public class Session extends BaseTimeEntity {
     this.coverImage = coverImage;
     this.sessionType = sessionType;
     this.sessionStatus = sessionStatus;
+    this.sessionRecruitStatus = sessionRecruitStatus;
     this.students = students;
     this.sessionPeriod = sessionPeriod;
-    hasNoUserForPreparingSession(sessionStatus);
+    hasNoUserForPreparingSession(this.sessionStatus);
   }
 
 
@@ -45,8 +46,8 @@ public class Session extends BaseTimeEntity {
    * 부 생성자
    */
   public Session(Long id, SessionInfo sessionInfo, Image image, SessionType sessionType,
-      SessionStatus sessionStatus, Students students, SessionPeriod sessionPeriod) {
-    this(id, sessionInfo, image, sessionType, sessionStatus, students, sessionPeriod,
+      SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, Students students, SessionPeriod sessionPeriod) {
+    this(id, sessionInfo, image, sessionType, sessionStatus, sessionRecruitStatus, students, sessionPeriod,
         LocalDateTime.now(), LocalDateTime.now());
   }
 
@@ -65,8 +66,23 @@ public class Session extends BaseTimeEntity {
   }
 
   public void enroll(NsUser user) {
+    validateEnrollAvailable();
+    students.add(new Student(user));
+  }
+
+  private void validateEnrollAvailable() {
     sessionStatus.validateEnrollAvailable();
-    students.add(user);
+    sessionRecruitStatus.validateEnrollAvailable();
+  }
+
+  public void approve(NsUser user) {
+    sessionStatus.validateApproveAvailable();
+    students.approve(user);
+  }
+
+  public void reject(NsUser user) {
+    sessionStatus.validateRejectAvailable();
+    students.reject(user);
   }
 
   public Long getId() {

@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure.persistence.dao;
 
+import static nextstep.courses.domain.SessionStatus.IN_PROGRESS;
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 import static nextstep.courses.domain.SessionType.FREE;
 import static org.assertj.core.api.Assertions.*;
@@ -36,7 +37,7 @@ class SessionEntityRepositoryTest {
       assertThat(entity.getSessionInfo()).isEqualTo(new SessionInfo("Session 1 Belong To Course 1", "Session 1 Description"));
       assertThat(entity.getCoverImageId()).isEqualTo(100L);
       assertThat(entity.getSessionType()).isEqualTo(FREE);
-      assertThat(entity.getSessionStatus()).isEqualTo(RECRUITING);
+      assertThat(entity.getSessionStatus()).isEqualTo(IN_PROGRESS);
       assertThat(entity.getMaxEnrollmentSize()).isEqualTo(2);
     });
   }

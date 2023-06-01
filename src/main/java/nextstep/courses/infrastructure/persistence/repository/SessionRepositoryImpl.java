@@ -2,16 +2,17 @@ package nextstep.courses.infrastructure.persistence.repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import nextstep.courses.domain.ApproveStatus;
 import nextstep.courses.domain.Image;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.Student;
 import nextstep.courses.infrastructure.persistence.dao.ImageEntityRepository;
 import nextstep.courses.infrastructure.persistence.dao.SessionEnrollmentEntityRepository;
 import nextstep.courses.infrastructure.persistence.dao.SessionEntityRepository;
 import nextstep.courses.infrastructure.persistence.entity.ImageEntity;
 import nextstep.courses.infrastructure.persistence.entity.SessionEnrollmentEntity;
 import nextstep.courses.infrastructure.persistence.entity.SessionEntity;
-import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.dao.NsUserEntityRepository;
 import nextstep.users.infrastructure.entity.NsUserEntity;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,7 @@ public class SessionRepositoryImpl implements SessionRepository {
   public Session findById(Long sessionId) {
     SessionEntity sessionEntity = findSessionEntity(sessionId);
 
-    List<NsUser> students = toSessionStudents(sessionId);
+    List<Student> students = toSessionStudents(sessionId);
 
     Image image = toSessionImage(sessionEntity.getCoverImageId());
 
@@ -46,14 +47,32 @@ public class SessionRepositoryImpl implements SessionRepository {
 
   @Override
   public Long saveSignUpHistory(Long sessionId, Long userId) {
-    SessionEnrollmentEntity sessionEnrollmentEntity = new SessionEnrollmentEntity(sessionId, userId);
+    SessionEnrollmentEntity sessionEnrollmentEntity = new SessionEnrollmentEntity(sessionId, userId,
+        ApproveStatus.WAITING);
     return sessionEnrollmentEntityRepository.save(sessionEnrollmentEntity);
   }
 
+  @Override
+  public void saveApproved(Long sessionId, Long userId) {
+    SessionEnrollmentEntity sessionEnrollmentEntity = sessionEnrollmentEntityRepository
+        .findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청 내역입니다."));
+    sessionEnrollmentEntity.approved();
+    sessionEnrollmentEntityRepository.update(sessionEnrollmentEntity);
+  }
+
+  @Override
+  public void saveRejected(Long sessionId, Long userId) {
+    SessionEnrollmentEntity sessionEnrollmentEntity = sessionEnrollmentEntityRepository
+        .findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청 내역입니다."));
+    sessionEnrollmentEntity.rejected();
+    sessionEnrollmentEntityRepository.update(sessionEnrollmentEntity);
+  }
+
   private SessionEntity findSessionEntity(Long sessionId) {
-    SessionEntity sessionEntity = sessionEntityRepository.findById(sessionId)
+    return sessionEntityRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
-    return sessionEntity;
   }
 
   private Image toSessionImage(Long coverImageId) {
@@ -62,10 +81,17 @@ public class SessionRepositoryImpl implements SessionRepository {
     return imageEntity.toDomain();
   }
 
-  private List<NsUser> toSessionStudents(Long sessionId) {
-    List<Long> userKeyIds = sessionEnrollmentEntityRepository.findUserKeyIdsBySessionId(sessionId);
-    List<NsUserEntity> users = nsUserEntityRepository.findByUserKeyIds(userKeyIds);
-    return users.stream().map(NsUserEntity::toDomain)
-        .collect(Collectors.toList());
+  private List<Student> toSessionStudents(Long sessionId) {
+    List<SessionEnrollmentEntity> sessionEnrollmentEntities = sessionEnrollmentEntityRepository.findBySessionId(sessionId);
+
+    List<Student> students = sessionEnrollmentEntities.stream()
+        .map(sessionEnrollmentEntity -> {
+          NsUserEntity userEntity = nsUserEntityRepository.findByUserKeyId(
+                  sessionEnrollmentEntity.getUserId())
+              .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+          return new Student(userEntity.toDomain(), sessionEnrollmentEntity.getApproveStatus());
+        }).collect(Collectors.toList());
+
+    return students;
   }
 }
