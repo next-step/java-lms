@@ -1,7 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.courses.exception.ExceedSessionCapacityException;
-import nextstep.courses.exception.NotReadySessionException;
+import nextstep.courses.exception.NotOpenSessionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +19,8 @@ class SessionTest {
     @BeforeEach
     void setUp() {
         session = new Session(0L, null, null, new SessionCapacity(0, 10),
-                "TDD, 클린코드", SessionType.PAY, SessionStatus.READY, LocalDateTime.now(), null);
+                "TDD, 클린코드", SessionType.PAY, SessionStatus.READY, RecruitmentStatus.OPEN,
+                LocalDateTime.now(), null);
     }
 
     @Test
@@ -32,11 +35,11 @@ class SessionTest {
     @Test
     void 강의상태가_모집중이_아니라서_예외가_발생한다() {
         // given
-        session.changeStatus(SessionStatus.CLOSE);
+        session.changeStatus(RecruitmentStatus.CLOSE);
 
         // when & then
         assertThatThrownBy(() -> session.enroll())
-                .isInstanceOf(NotReadySessionException.class)
+                .isInstanceOf(NotOpenSessionException.class)
                 .hasMessage("강의상태가 모집중이 아닙니다.");
     }
 
@@ -52,15 +55,15 @@ class SessionTest {
     }
 
     @Test
-    void 강의상태를_변경한다() {
+    void 강의모집상태를_변경한다() {
         // given
-        SessionStatus status = SessionStatus.OPEN;
+        RecruitmentStatus status = RecruitmentStatus.OPEN;
 
         // when
         session.changeStatus(status);
 
         // then
-        assertThat(session.getStatus()).isEqualTo(status);
+        assertThat(session.getRecruitmentStatus()).isEqualTo(status);
     }
 
     @Test

@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.NotReadySessionException;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.exception.NotOpenSessionException;
 
 import java.time.LocalDateTime;
 
@@ -20,12 +21,14 @@ public class Session {
 
     private SessionStatus status;
 
+    private RecruitmentStatus recruitmentStatus;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     public Session(Long id, Course course, SessionImage image, SessionCapacity capacity, String name, SessionType type,
-                   SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                   SessionStatus status, RecruitmentStatus recruitmentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.course = course;
         this.image = image;
@@ -33,24 +36,29 @@ public class Session {
         this.name = name;
         this.type = type;
         this.status = status;
+        this.recruitmentStatus = recruitmentStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public void enroll() {
-        validateSessionStatus();
+        validateRecruitmentStatus();
 
         capacity.increaseNumber();
     }
 
-    private void validateSessionStatus() {
-        if (!status.isReady()) {
-            throw new NotReadySessionException();
+    private void validateRecruitmentStatus() {
+        if (!recruitmentStatus.isOpen()) {
+            throw new NotOpenSessionException();
         }
     }
 
-    public void changeStatus(SessionStatus status) {
-        this.status = status;
+    public boolean canEnroll(SessionStatus status) {
+        return this.status.isSame(status);
+    }
+
+    public void changeStatus(RecruitmentStatus recruitmentStatus) {
+        this.recruitmentStatus = recruitmentStatus;
     }
 
     public void changeCapacityMax(int numberMax) {
@@ -91,5 +99,9 @@ public class Session {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 }
