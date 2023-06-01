@@ -14,12 +14,6 @@ public class AnswersTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void delete_성공() throws CannotDeleteException {
         Answers answers = new Answers();
