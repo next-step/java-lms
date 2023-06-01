@@ -1,8 +1,5 @@
 package nextstep.session.domain;
 
-import nextstep.session.NotFoundStatusException;
-import nextstep.session.NotProceedingException;
-import nextstep.session.StudentNumberExceededException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -32,7 +29,7 @@ public class Session {
         this.endDate = endDate;
         this.image = image;
         this.isFree = isFree;
-        makeSignupInformation(status, maxNumberOfStudent);
+        this.signUpInformation = new SignUpInformation(ProgressStatus.of(status), maxNumberOfStudent);
     }
 
     public Long getId() {
@@ -67,15 +64,7 @@ public class Session {
         return signUpInformation.getStudents();
     }
 
-    private void makeSignupInformation(String status, Long maxNumberOfStudent) {
-        try {
-            this.signUpInformation = new SignUpInformation(ProgressStatus.of(status), maxNumberOfStudent);
-        } catch (NotFoundStatusException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void signUp(NsUser user) throws StudentNumberExceededException, NotProceedingException {
+    void signUp(NsUser user) {
         signUpInformation.signUp(user);
     }
 }
