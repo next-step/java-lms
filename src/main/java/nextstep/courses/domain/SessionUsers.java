@@ -28,4 +28,8 @@ public class SessionUsers {
         }
         users.add(user);
     }
+
+    public int count() {
+        return users.size();
+    }
 }
