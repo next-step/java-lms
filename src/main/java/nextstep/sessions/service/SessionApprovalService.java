@@ -43,16 +43,10 @@ public class SessionApprovalService {
 
     public void approve(String userId, Long sessionId) {
         NsUser user = findUserByUserId(userId);
-
         Session savedSession = findSessionById(sessionId);
-
         List<Student> appliedStudents = studentRepository.findAllBySessionId(sessionId);
-        savedSession.addStudents(appliedStudents);
-        savedSession.approved(user);
-
-        Student student = savedSession.enrolledStudent(user);
-
-        studentRepository.update(student);
+        Student approvedStudent = savedSession.approved(user, appliedStudents);
+        studentRepository.update(approvedStudent);
     }
 
     public void reject(String userId, Long sessionId) {

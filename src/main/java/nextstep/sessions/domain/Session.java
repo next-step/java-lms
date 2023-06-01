@@ -57,22 +57,22 @@ public class Session {
         return registration.enrolledStudent(student);
     }
 
-    public void approved(NsUser user) {
+    public Student approved(NsUser user, List<Student> students) {
+        registration.addAll(students);
+
         Student student = enrolledStudent(user);
         student.approved();
-    }
-
-    public Student rejected(NsUser user, List<Student> students) {
-        registration.addAll(students);
-        
-        Student student = enrolledStudent(user);
-        student.rejected();
 
         return student;
     }
 
-    public void addStudents(List<Student> appliedStudents) {
-        registration.addAll(appliedStudents);
+    public Student rejected(NsUser user, List<Student> students) {
+        registration.addAll(students);
+
+        Student student = enrolledStudent(user);
+        student.rejected();
+
+        return student;
     }
 
     public Long getId() {
