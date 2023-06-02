@@ -19,7 +19,7 @@ public class AnswersTest {
         Answers answers = new Answers();
         answers.add(A1);
 
-        answers.delete(NsUserTest.JAVAJIGI, new ArrayList<>());
+        answers.delete(NsUserTest.JAVAJIGI);
 
         assertThat(A1.isDeleted()).isTrue();
     }
@@ -30,7 +30,7 @@ public class AnswersTest {
         answers.add(A1);
         answers.add(A2);
 
-        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI, new ArrayList<>()))
+        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
