@@ -47,11 +47,11 @@ public class SessionServiceTest {
     @Test
     void enroll() {
         Session session = testSession1();
-        sessionRepository.save(session);
+        long savedSessionId = sessionRepository.save(session);
 
-        sessionService.register(session, List.of(NsUserTest.JAVAJIGI));
+        sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId()));
 
-        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(session.getId());
+        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
         assertThat(findSessionJoins).hasSize(1);
     }
 
@@ -59,9 +59,10 @@ public class SessionServiceTest {
     @Test
     void maxUserException() {
         Session session = testSession4();
-        sessionRepository.save(session);
+        long savedSessionId = sessionRepository.save(session);
 
-        assertThatThrownBy(() -> sessionService.register(session, List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI)))
+        assertThatThrownBy(() -> sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId(),
+                NsUserTest.SANJIGI.getUserId())))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

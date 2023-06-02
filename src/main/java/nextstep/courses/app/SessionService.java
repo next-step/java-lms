@@ -10,6 +10,6 @@ public interface SessionService {
 
     Session findById(long id);
 
-    long register(Session session, List<NsUser> nsUser);
+    long register(long sessionId, List<String> userIds);
 
 }
