@@ -58,10 +58,9 @@ public class QuestionTest {
 
     @Test
     void delete_history() throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
-        q1.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories).hasSize(1);
     }
