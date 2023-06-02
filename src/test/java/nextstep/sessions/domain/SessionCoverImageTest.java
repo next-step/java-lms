@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.courses.exception.InvalidUrlPatternException;
+import nextstep.sessions.InvalidUrlPatternException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

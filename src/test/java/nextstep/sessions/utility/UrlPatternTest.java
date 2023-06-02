@@ -1,4 +1,4 @@
-package nextstep.courses.utility;
+package nextstep.sessions.utility;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

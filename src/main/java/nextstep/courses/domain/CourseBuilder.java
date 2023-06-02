@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionBuilder;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

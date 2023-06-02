@@ -41,4 +41,5 @@ public class JdbcCourseRepository implements CourseRepository {
         }
         return timestamp.toLocalDateTime();
     }
+
 }

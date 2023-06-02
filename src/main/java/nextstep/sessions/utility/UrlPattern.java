@@ -1,4 +1,4 @@
-package nextstep.courses.utility;
+package nextstep.sessions.utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

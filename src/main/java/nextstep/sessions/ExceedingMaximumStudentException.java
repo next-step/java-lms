@@ -1,4 +1,4 @@
-package nextstep.courses.exception;
+package nextstep.sessions;
 
 public class ExceedingMaximumStudentException extends RuntimeException {
 

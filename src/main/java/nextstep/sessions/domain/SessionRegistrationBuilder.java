@@ -1,14 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
-import nextstep.users.domain.NsUser;
-
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.students.domain.Students;
 
 public class SessionRegistrationBuilder {
 
     private SessionStatus status;
-    private List<NsUser> students;
+    private Students students;
     private int studentCapacity;
 
     private SessionRegistrationBuilder() {
@@ -33,21 +30,14 @@ public class SessionRegistrationBuilder {
         return this;
     }
 
-    public SessionRegistrationBuilder withStudents(List<NsUser> students) {
+    public SessionRegistrationBuilder withStudents(Students students) {
         this.students = students;
         return this;
     }
 
-    public SessionRegistrationBuilder withStudent(NsUser student) {
-        addStudent(student);
+    public SessionRegistrationBuilder withStudent(String userId, Long sessionId) {
+        students.add(userId, sessionId);
         return this;
-    }
-
-    private void addStudent(NsUser student) {
-        if (students == null) {
-            students = new ArrayList<>();
-        }
-        students.add(student);
     }
 
     public SessionRegistrationBuilder withStudentCapacity(int studentCapacity) {
