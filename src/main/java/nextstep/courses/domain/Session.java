@@ -1,17 +1,18 @@
 package nextstep.courses.domain;
 
-import org.springframework.cglib.core.Local;
-
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Session {
+    private int id;
+
+    private int courseId;
+
     private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
 
-    private File coverImage;
+    private String coverImageUrl;
 
     private boolean isFree;
 
@@ -20,15 +21,6 @@ public class Session {
     private int currentStudents;
 
     private int maxStudents;
-
-    public Session() {
-        this.startedAt = null;
-        this.endedAt = null;
-        this.isFree = true;
-        this.status = Status.preparing;
-        this.currentStudents = 0;
-        this.maxStudents = 0;
-    }
 
     public Session(LocalDateTime startedAt, LocalDateTime endedAt, boolean isFree, Status status, int currentStudents, int maxStudents) {
         if (startedAt.isAfter(endedAt)) {
@@ -45,6 +37,18 @@ public class Session {
         this.status = status;
         this.currentStudents = currentStudents;
         this.maxStudents = maxStudents;
+    }
+
+    public Session(int id, int courseId, String coverImageUrl, boolean isFree, Status status, int currentStudents, int maxStudents, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.id = id;
+        this.courseId = courseId;
+        this.coverImageUrl = coverImageUrl;
+        this.isFree = isFree;
+        this.status = status;
+        this.currentStudents = currentStudents;
+        this.maxStudents = maxStudents;
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
     }
 
     public void patchTerms(LocalDateTime startedAt, LocalDateTime endedAt) {
@@ -64,20 +68,24 @@ public class Session {
         return isFree;
     }
 
-    public void registerCoverImage(File file) {
-        this.coverImage = file;
+    public void registerCoverImageUrl(String url) {
+        this.coverImageUrl = url;
     }
 
-    public File coverImage() {
-        return this.coverImage;
+    public String coverImageUrl() {
+        return this.coverImageUrl;
     }
 
-    public void patchStatus(String status) {
-        this.status = Status.valueOf(status);
+    public void patchStatus(Status status) {
+        this.status = status;
     }
 
     public boolean isOpening() {
-        return status == Status.opening;
+        return status.isOpening(status);
+    }
+
+    public String statusToString() {
+        return status.toString();
     }
 
     public void registerMaxStudents(int count) {
@@ -85,7 +93,7 @@ public class Session {
     }
 
     public void enrolement() {
-        if (isOpening()) {
+        if (!isOpening()) {
             throw new RuntimeException("해당 강의는 모집중이 아닙니다.");
         }
 
@@ -102,5 +110,24 @@ public class Session {
 
     public int currentStudents() {
         return currentStudents;
+    }
+
+    public int maxStudents() {
+        return maxStudents;
+    }
+
+    @Override
+    public String toString() {
+        return "Session {" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", coverImageUrl=" + coverImageUrl +
+                ", isFree=" + isFree +
+                ", status=" + status +
+                ", currentStudents=" + currentStudents +
+                ", maxStudents=" + maxStudents +
+                ", startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                '}';
     }
 }
