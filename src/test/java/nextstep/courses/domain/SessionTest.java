@@ -9,8 +9,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.fixtures.SessionFixtures.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
 
@@ -31,23 +30,23 @@ public class SessionTest {
         String coverImageUrl = "https://nextstep.tdd";
         Session session = testSession1();
 
-        assertThat(session.getCoverImageUrl()).isEqualTo(coverImageUrl);
+        assertThat(session.getSessionCoverImage()).isEqualTo(coverImageUrl);
     }
 
     @ParameterizedTest(name = "강의결제 유형 {0}")
-    @EnumSource(value = SessionBillingType.class ,names = {"FREE"})
-    void sessionBillingType(SessionBillingType sessionBillType) {
+    @EnumSource(value = SessionBilling.class ,names = {"FREE"})
+    void sessionBillingType(SessionBilling sessionBillType) {
         Session session = testSession1();
 
-        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
+        assertThat(session.getSessionBilling()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의결제 유형 {0}")
-    @EnumSource(value = SessionBillingType.class ,names = {"PAID"})
-    void sessionBillingType2(SessionBillingType sessionBillType) {
+    @EnumSource(value = SessionBilling.class ,names = {"PAID"})
+    void sessionBillingType2(SessionBilling sessionBillType) {
         Session session = testSession2();
 
-        assertThat(session.getSessionType()).isEqualTo(sessionBillType);
+        assertThat(session.getSessionBilling()).isEqualTo(sessionBillType);
     }
 
     @ParameterizedTest(name = "강의 상태 {0}")
@@ -81,7 +80,8 @@ public class SessionTest {
 
         session.register(NsUserTest.JAVAJIGI);
 
-        assertThat(session.getCurrentUserCount()).isEqualTo(1);
+        assertThat(session.getSessionJoins()).hasSize(1).extracting("session.id", "nsUser.id")
+                .containsExactly(tuple(1L, 1L));
     }
 
     @DisplayName("준비중일 때 수강신청 시 오류")
