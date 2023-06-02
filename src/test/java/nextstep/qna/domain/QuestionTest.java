@@ -18,7 +18,7 @@ public class QuestionTest {
     void delete_성공() throws CannotDeleteException {
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
-        q1.delete(NsUserTest.JAVAJIGI, new ArrayList<>());
+        q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(q1.isDeleted()).isTrue();
     }
@@ -26,7 +26,7 @@ public class QuestionTest {
     @Test
     void delete_다른_사람이_쓴_글() {
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        assertThatThrownBy(() -> q1.delete(NsUserTest.SANJIGI, new ArrayList<>()))
+        assertThatThrownBy(() -> q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
@@ -37,7 +37,7 @@ public class QuestionTest {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, q1, "답변");
         q1.addAnswer(answer);
 
-        q1.delete(NsUserTest.JAVAJIGI, new ArrayList<>());
+        q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(q1.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
@@ -51,7 +51,7 @@ public class QuestionTest {
                 q1,
                 "답변"
         ));
-        assertThatThrownBy(() -> q1.delete(NsUserTest.JAVAJIGI, new ArrayList<>()))
+        assertThatThrownBy(() -> q1.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -61,7 +61,7 @@ public class QuestionTest {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         Question q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
-        q1.delete(NsUserTest.JAVAJIGI, deleteHistories);
+        q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories).hasSize(1);
     }
