@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,18 +15,18 @@ public class AnswerTest {
 
     @Test
     void delete_성공() {
-        A1.delete(new ArrayList<>());
-        A2.delete(new ArrayList<>());
-
         assertThat(A1.isDeleted()).isTrue();
         assertThat(A2.isDeleted()).isTrue();
+
     }
 
     @Test
     void delete_history() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        A1.delete(deleteHistories);
-        A2.delete(deleteHistories);
+        List<Answer> answers = List.of(A1, A2);
+
+        List<DeleteHistory> deleteHistories = answers.stream()
+                .map(Answer::delete)
+                .collect(Collectors.toList());
 
         assertThat(deleteHistories).hasSize(2);
     }
