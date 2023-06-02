@@ -6,7 +6,6 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Question {
     private Long id;
@@ -64,11 +63,17 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         deleteValidation(loginUser);
+        List<DeleteHistory>  deleteHistories = new ArrayList<>(List.of(delete()));
+
+        deleteHistories.addAll(answers.delete(loginUser));
+        return deleteHistories;
+    }
+
+    private DeleteHistory delete() {
         deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        answers.delete(loginUser, deleteHistories);
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     private void deleteValidation(NsUser loginUser) throws CannotDeleteException {
