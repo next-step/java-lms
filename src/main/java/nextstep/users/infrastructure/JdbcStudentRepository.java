@@ -1,5 +1,6 @@
 package nextstep.users.infrastructure;
 
+import nextstep.courses.domain.registration.RegistrationStatus;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.StudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -17,8 +18,8 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into student(ns_user_id, session_id) values (?, ?);";
-        return jdbcTemplate.update(sql, student.getNsUserId(), student.getSessionId());
+        String sql = "insert into student(ns_user_id, session_id, registration_status) values (?, ?, ?);";
+        return jdbcTemplate.update(sql, student.getNsUserId(), student.getSessionId(), student.getRegistrationStatus());
     }
 
     @Override
@@ -27,7 +28,8 @@ public class JdbcStudentRepository implements StudentRepository {
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
                 rs.getLong(2),
-                rs.getLong(3));
+                rs.getLong(3),
+                RegistrationStatus.valueOf(rs.getString(4)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }
