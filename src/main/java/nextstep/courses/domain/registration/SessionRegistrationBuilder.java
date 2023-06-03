@@ -25,7 +25,7 @@ public class SessionRegistrationBuilder {
 
 
     public SessionRegistration build() {
-        SessionRegistration sessionRegistration = SessionRegistration.of(sessionStatus, students);
+        SessionRegistration sessionRegistration = new SessionRegistration(sessionStatus, students);
         return sessionRegistration;
     }
 }

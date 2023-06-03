@@ -2,19 +2,24 @@ package nextstep.courses.domain.registration;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SessionRegistration {
     private final SessionStatus sessionStatus;
     private final Students students;
 
-    private SessionRegistration(SessionStatus sessionStatus, Students students) {
-        this.sessionStatus = sessionStatus;
-        this.students = students;
+    public SessionRegistration(SessionStatus sessionStatus, int maxUserCount) {
+        this(sessionStatus, maxUserCount, new HashSet<>());
     }
 
-    public static SessionRegistration of(SessionStatus sessionStatus, Students students) {
-        return new SessionRegistration(sessionStatus, students);
+    public SessionRegistration(SessionStatus sessionStatus, int maxUserCount, Set<NsUser> users) {
+        this(sessionStatus, new Students(maxUserCount, users));
+    }
+
+    public SessionRegistration(SessionStatus sessionStatus, Students students) {
+        this.sessionStatus = sessionStatus;
+        this.students = students;
     }
 
     public void addUser(NsUser user) {
