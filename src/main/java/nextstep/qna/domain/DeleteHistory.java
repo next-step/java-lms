@@ -29,12 +29,12 @@ public class DeleteHistory {
         this.deletedBy = deletedBy;
     }
 
-    public static DeleteHistory createAnswer(Long id, NsUser writer) {
-        return new DeleteHistory(ContentType.ANSWER, id, writer);
+    public static DeleteHistory createAnswer(Answer answer) {
+        return new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter());
     }
 
-    public static DeleteHistory createQuestion(Long id, NsUser writer) {
-        return new DeleteHistory(ContentType.QUESTION, id, writer);
+    public static DeleteHistory createQuestion(Question question) {
+        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter());
     }
 
     @Override
