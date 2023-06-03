@@ -19,8 +19,8 @@ public class StudentTest {
     @BeforeEach
     void setUp() {
         june1 = new Student(0L, 10L);
-        june2 = new Student(0L, 10L);
-        june3 = new Student(0L, 10L);
+        june2 = new Student(1L, 10L);
+        june3 = new Student(2L, 10L);
         session = SessionCreator.create(2L, SessionStatus.OPENED);
     }
 
