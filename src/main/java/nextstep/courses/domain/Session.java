@@ -22,6 +22,10 @@ public class Session {
         this.sessionCostType = sessionCostType;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDateTime startedAt() {
         return this.sessionPeriod.getStartedAt();
     }
