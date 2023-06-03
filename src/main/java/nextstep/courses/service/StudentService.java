@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service("studentService")
 @Transactional
+@Service("studentService")
 public class StudentService {
 
     @Autowired
