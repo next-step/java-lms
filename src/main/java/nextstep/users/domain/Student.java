@@ -14,6 +14,10 @@ public class Student {
         this(0L, nsUserId, sessionId, RegistrationStatus.PENDING);
     }
 
+    public Student(Long nsUserId, Long sessionId, RegistrationStatus registrationStatus) {
+        this(0L, nsUserId, sessionId, registrationStatus);
+    }
+
     public Student(Long id, Long nsUserId, Long sessionId, RegistrationStatus registrationStatus) {
         this.id = id;
         this.nsUserId = nsUserId;
@@ -31,6 +35,19 @@ public class Student {
 
     public RegistrationStatus getRegistrationStatus() {
         return registrationStatus;
+    }
+
+    public Student approveSession() {
+        registrationStatus = RegistrationStatus.APPROVED;
+        return this;
+    }
+
+    public boolean isSessionPending() {
+        return registrationStatus.isPending();
+    }
+
+    public String getSessionRegistrationStatus() {
+        return registrationStatus.getDescription();
     }
 
     @Override

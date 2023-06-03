@@ -29,6 +29,16 @@ public class Instructor {
         return sessionId;
     }
 
+    public void approve(Student student) {
+        validateSession(student);
+    }
+
+    private void validateSession(Student student) {
+        if (student.getSessionId() != sessionId) {
+            throw new IllegalArgumentException("진행하는 강의의 수강 대기생이 아닙니다.");
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

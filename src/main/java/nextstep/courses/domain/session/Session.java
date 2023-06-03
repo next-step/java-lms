@@ -89,11 +89,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return cardinalNumber == session.cardinalNumber && Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && Objects.equals(cover, session.cover) && sessionCostType == session.sessionCostType && registrationOpenType == session.registrationOpenType && Objects.equals(sessionRegistration, session.sessionRegistration) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate);
+        return Objects.equals(id, session.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionRegistration, startDate, endDate);
+        return Objects.hash(id);
     }
 }

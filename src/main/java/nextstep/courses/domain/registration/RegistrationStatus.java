@@ -12,4 +12,16 @@ public enum RegistrationStatus {
         this.code = code;
         this.description = description;
     }
+
+    public boolean isPending() {
+        return this == PENDING;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
