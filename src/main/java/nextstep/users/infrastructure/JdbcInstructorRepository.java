@@ -4,7 +4,9 @@ import nextstep.users.domain.Instructor;
 import nextstep.users.domain.InstructorRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcInstructorRepository implements InstructorRepository {
 
     private final JdbcOperations jdbcOperations;
