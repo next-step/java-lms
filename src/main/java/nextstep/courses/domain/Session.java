@@ -1,9 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public class Session {
     private Long id;
@@ -28,8 +30,8 @@ public class Session {
         return this.sessionPeriod.getEndedAt();
     }
 
-    public List<NsUser> getUsers() {
-        return sessionRegistration.getUsers();
+    public Set<NsUser> getUsers() {
+        return sessionRegistration.getStudents();
     }
 
     public String getSessionCoverImage() {

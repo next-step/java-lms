@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.registration;
 
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import static nextstep.Fixtures.aSessionRegistrationBuilder;
+import static nextstep.Fixtures.aStudentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -15,8 +16,10 @@ class SessionRegistrationTest {
     @Test
     void 수강신청_수강인원초과_불가능() {
         SessionRegistration sessionRegistration = aSessionRegistrationBuilder()
-                .withUser(NsUserTest.JAVAJIGI)
-                .withMaxUserCount(1)
+                .withStudents(aStudentsBuilder()
+                        .withMaxUserCount(1)
+                        .withUsers(NsUserTest.JAVAJIGI)
+                        .build())
                 .build();
 
         assertThatIllegalArgumentException()
@@ -29,7 +32,9 @@ class SessionRegistrationTest {
     @Test
     void 수강신청_중복신청된_경우() {
         SessionRegistration sessionRegistration = aSessionRegistrationBuilder()
-                .withUser(NsUserTest.JAVAJIGI)
+                .withStudents(aStudentsBuilder()
+                        .withUsers(NsUserTest.JAVAJIGI)
+                        .build())
                 .build();
 
         assertThatIllegalArgumentException()
@@ -55,10 +60,12 @@ class SessionRegistrationTest {
     @EnumSource(value = SessionStatus.class, names = {"RECRUITING"})
     void 수강신청_모집중_가능(SessionStatus sessionStatus) {
         SessionRegistration sessionRegistration = aSessionRegistrationBuilder()
-                .withUser(NsUserTest.JAVAJIGI)
+                .withStudents(aStudentsBuilder()
+                        .withUsers(NsUserTest.JAVAJIGI)
+                        .build())
                 .withSessionStatus(sessionStatus)
                 .build();
 
-        assertThat(sessionRegistration.getUsers()).hasSize(1).containsOnly(NsUserTest.JAVAJIGI);
+        assertThat(sessionRegistration.getStudents()).hasSize(1).containsOnly(NsUserTest.JAVAJIGI);
     }
 }

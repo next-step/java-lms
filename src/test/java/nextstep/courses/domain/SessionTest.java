@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
 
-import static nextstep.Fixtures.aSession;
-import static nextstep.Fixtures.aSessionRegistrationBuilder;
+import static nextstep.Fixtures.*;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
@@ -73,7 +73,9 @@ class SessionTest {
     void 수강신청_모집중_가능(SessionStatus sessionStatus) {
         Session session = aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
+                        .withStudents(aStudentsBuilder()
+                                .withUsers(NsUserTest.JAVAJIGI)
+                                .build())
                         .withSessionStatus(sessionStatus)
                         .build())
                 .build();
@@ -87,8 +89,10 @@ class SessionTest {
         final int maxUserCount = 1;
         Session session = aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
-                        .withMaxUserCount(maxUserCount)
+                        .withStudents(aStudentsBuilder()
+                                .withMaxUserCount(maxUserCount)
+                                .withUsers(NsUserTest.JAVAJIGI)
+                                .build())
                         .build())
                 .build();
 
@@ -102,8 +106,10 @@ class SessionTest {
     void 수강신청_중복신청된_경우() {
         Session session = aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
-                        .withUser(NsUserTest.SANJIGI)
+                        .withStudents(aStudentsBuilder()
+                                .withUsers(NsUserTest.JAVAJIGI)
+                                .withUsers(NsUserTest.SANJIGI)
+                                .build())
                         .build())
                 .build();
 
