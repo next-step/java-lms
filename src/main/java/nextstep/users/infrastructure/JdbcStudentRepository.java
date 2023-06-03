@@ -10,16 +10,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcStudentRepository implements StudentRepository {
 
-    private JdbcOperations jdbcTemplate;
+    private JdbcOperations jdbcOperations;
 
-    public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public JdbcStudentRepository(JdbcOperations jdbcOperations) {
+        this.jdbcOperations = jdbcOperations;
     }
 
     @Override
     public int save(Student student) {
         String sql = "insert into student(ns_user_id, session_id, registration_status) values (?, ?, ?);";
-        return jdbcTemplate.update(sql, student.getNsUserId(), student.getSessionId(), student.getRegistrationStatus());
+        return jdbcOperations.update(sql, student.getNsUserId(), student.getSessionId(), student.getRegistrationStatus());
     }
 
     @Override
@@ -30,6 +30,6 @@ public class JdbcStudentRepository implements StudentRepository {
                 rs.getLong(2),
                 rs.getLong(3),
                 RegistrationStatus.valueOf(rs.getString(4)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return jdbcOperations.queryForObject(sql, rowMapper, id);
     }
 }

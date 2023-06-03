@@ -11,7 +11,7 @@ public class Student {
     private RegistrationStatus registrationStatus;
 
     public Student(Long nsUserId, Long sessionId) {
-        this(0L, nsUserId, sessionId, registrationStatus.PENDING);
+        this(0L, nsUserId, sessionId, RegistrationStatus.PENDING);
     }
 
     public Student(Long id, Long nsUserId, Long sessionId, RegistrationStatus registrationStatus) {
