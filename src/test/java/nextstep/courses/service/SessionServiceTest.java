@@ -48,7 +48,7 @@ class SessionServiceTest {
         sessionService.register(foundSession, NsUserTest.JAVAJIGI);
         sessionService.register(foundSession, NsUserTest.SANJIGI);
 
-        List<String> sessionUserIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
+        List<Long> sessionUserIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
         assertThat(sessionUserIds).hasSize(2);
     }
 
@@ -70,6 +70,28 @@ class SessionServiceTest {
                 .isThrownBy(() -> sessionService.register(session, NsUserTest.SANJIGI))
                 .withMessageMatching("최대 수강 인원을 초과했습니다.");
 
+
+    }
+
+    @DisplayName("중복 수강신청")
+    @Test
+    void register_중복신청() {
+        Session session = aSession().withId(1L).withSessionRegistration(
+                aSessionRegistrationBuilder().withStudents(
+                        aStudentsBuilder()
+                                .build()
+                ).build()
+        ).build();
+
+        sessionService.register(session, NsUserTest.JAVAJIGI);
+
+        List<Long> userIds = sessionRepository.findSessionUserIdsBySessionId(1L);
+
+        assertThat(userIds.contains(NsUserTest.JAVAJIGI.getId())).isTrue();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> sessionService.register(session, NsUserTest.JAVAJIGI))
+                .withMessageMatching("이미 등록 되었습니다.");
 
     }
 }

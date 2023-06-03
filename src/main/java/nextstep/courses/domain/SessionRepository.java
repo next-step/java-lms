@@ -12,5 +12,5 @@ public interface SessionRepository {
 
     Session findById(Long sessionId);
 
-    List<String> findSessionUserIdsBySessionId(Long sessionId);
+    List<Long> findSessionUserIdsBySessionId(Long sessionId);
 }

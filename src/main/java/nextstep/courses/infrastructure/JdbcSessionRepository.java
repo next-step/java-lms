@@ -14,7 +14,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,10 +79,10 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public List<String> findSessionUserIdsBySessionId(Long sessionId) {
+    public List<Long> findSessionUserIdsBySessionId(Long sessionId) {
         String sql = "select id, session_id, user_id from session_users where session_id = ?";
-        RowMapper<String> rowMapper = ((rs, rowNum) ->
-                rs.getString(3));
+        RowMapper<Long> rowMapper = ((rs, rowNum) ->
+                rs.getLong(3));
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }

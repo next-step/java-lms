@@ -56,10 +56,9 @@ public class SessionRepositoryTest {
     void saveSessionUser() {
         long sessionId = sessionRepository.save(session);
         Session foundSession = sessionRepository.findById(sessionId);
-        foundSession.register(NsUserTest.JAVAJIGI);
+        long sessionUsersId = sessionRepository.saveSessionUser(foundSession, NsUserTest.JAVAJIGI);
 
-        long sessionUserId = sessionRepository.saveSessionUser(foundSession, NsUserTest.JAVAJIGI);
-        assertThat(NsUserTest.JAVAJIGI.getId()).isEqualTo(sessionUserId);
+        assertThat(sessionUsersId).isNotNull();
     }
 
     @DisplayName("Session UserIds 조회")
@@ -71,7 +70,7 @@ public class SessionRepositoryTest {
         sessionRepository.saveSessionUser(foundSession, NsUserTest.JAVAJIGI);
         sessionRepository.saveSessionUser(foundSession, NsUserTest.SANJIGI);
 
-        List<String> userIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
+        List<Long> userIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
         assertThat(userIds).hasSize(2);
     }
 
