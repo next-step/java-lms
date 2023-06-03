@@ -1,5 +1,7 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.session.SessionApproval;
+
 import java.util.Objects;
 
 public class Instructor {
@@ -29,12 +31,14 @@ public class Instructor {
         return sessionId;
     }
 
-    public void approve(Student student) {
-        validateSession(student);
+    public void approve(SessionApproval sessionApproval) {
+//        sessionApproval.validateSession(sessionId);
+        sessionApproval.validateRegistrationStatus();
+        sessionApproval.validateSelectionSessions();
     }
 
     private void validateSession(Student student) {
-        if (student.getSessionId() != sessionId) {
+        if (!student.isEqualSession(sessionId)) {
             throw new IllegalArgumentException("진행하는 강의의 수강 대기생이 아닙니다.");
         }
     }

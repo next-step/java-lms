@@ -50,6 +50,10 @@ public class Student {
         return registrationStatus.getDescription();
     }
 
+    public boolean isEqualSession(Long otherSessionId) {
+        return sessionId == otherSessionId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

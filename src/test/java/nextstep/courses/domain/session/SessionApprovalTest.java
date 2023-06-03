@@ -14,6 +14,22 @@ import static org.assertj.core.api.Assertions.*;
 
 public class SessionApprovalTest {
     @Test
+    @DisplayName("수강 여부 승인_강의 확인exception")
+    void approve_wrongSessionId() {
+
+        Student student = new Student(1L, 1L, RegistrationStatus.APPROVED);
+        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
+                , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+
+        SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
+
+        assertThatThrownBy(() -> {
+            sessionApproval.validateSession(2L);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("진행하는 강의의 수강 대기생이 아닙니다.");
+    }
+
+    @Test
     @DisplayName("수강 승인 예외_학생의 수강 승인이 완료된경우")
     void validate_approvalException() {
         Student student = new Student(1L, 1L, RegistrationStatus.APPROVED);
@@ -50,7 +66,6 @@ public class SessionApprovalTest {
         Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
                 , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
         Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
-
 
         SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
 

@@ -13,6 +13,12 @@ public class SessionApproval {
         this.selectionSessions = selectionSessions;
     }
 
+    public void validateSession(Long sessionId) {
+        if (!student.isEqualSession(sessionId)) {
+            throw new IllegalArgumentException("진행하는 강의의 수강 대기생이 아닙니다.");
+        }
+    }
+
     public void validateRegistrationStatus() {
         if (!student.isSessionPending()) {
             throw new IllegalArgumentException(student.getSessionRegistrationStatus() + "되어 승인 불가합니다.");
