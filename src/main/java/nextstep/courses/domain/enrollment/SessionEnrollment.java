@@ -40,4 +40,8 @@ public class SessionEnrollment {
     public boolean isPositionFull() {
         return totalStudentNum() == capacity;
     }
+
+    public SessionStatus getStatus() {
+        return sessionStatus;
+    }
 }

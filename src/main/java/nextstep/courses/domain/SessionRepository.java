@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SessionRepository {
 
-    int save(String session);
+    int save(Session session);
 
     Session findById(Long id);
 

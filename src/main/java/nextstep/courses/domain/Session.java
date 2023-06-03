@@ -36,7 +36,39 @@ public class Session {
         return sessionEnrollment.totalStudentNum();
     }
 
-    public boolean isPositionFull() {
-        return sessionEnrollment.isPositionFull();
+    public SessionInfo getSessionInfo() {
+        return sessionInfo;
     }
+    public Long getCourseId() {
+        return sessionInfo.getCourseId();
+    }
+    public Long getOwnerId() {
+        return sessionInfo.getOwnerId();
+    }
+    public String getTitle() {
+        return sessionInfo.getTitle();
+    }
+    public String getCoverImageInfo() {
+        return sessionInfo.getCoverImageInfo();
+    }
+    public SessionType getSessionType() {
+        return sessionInfo.getSessionType();
+    }
+
+    public SessionStatus getStatus() {
+        return sessionEnrollment.getStatus();
+    }
+
+    public Long getTotalStudentNum() {
+        return sessionEnrollment.totalStudentNum();
+    }
+
+    public LocalDateTime getCreateAt() {
+        return sessionTimeLine.getCreateAt();
+    }
+
+    public LocalDateTime getCloseAt() {
+        return sessionTimeLine.getCloseAt();
+    }
+
 }
