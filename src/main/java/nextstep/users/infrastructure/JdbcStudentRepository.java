@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcStudentRepository implements StudentRepository {
 
-    private JdbcOperations jdbcOperations;
+    private final JdbcOperations jdbcOperations;
 
     public JdbcStudentRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;

@@ -37,7 +37,8 @@ public class SelectionSessionRepositoryTest {
     @DisplayName("select")
     void select() {
         SelectionSession selectionSession = new SelectionSession(2L, 1L);
-        selectionSessionRepository.save(selectionSession);
+        int count = selectionSessionRepository.save(selectionSession);
+        assertThat(count).isEqualTo(1);
 
         SelectionSession savedSelectionSession = selectionSessionRepository.findById(1L).orElseThrow();
         assertThat(savedSelectionSession).isEqualTo(selectionSession);
