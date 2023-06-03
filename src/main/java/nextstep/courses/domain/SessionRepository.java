@@ -8,7 +8,8 @@ import java.util.List;
 public interface SessionRepository {
     long save(Session session);
 
-    long saveSessionUsers(Session session, NsUser nsUser);
+    long saveSessionUser(Session session, NsUser nsUser);
+
     Session findById(Long sessionId);
 
     List<String> findSessionUserIdsBySessionId(Long sessionId);

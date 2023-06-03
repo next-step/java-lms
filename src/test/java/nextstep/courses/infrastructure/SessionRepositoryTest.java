@@ -51,14 +51,14 @@ public class SessionRepositoryTest {
         assertThat(foundSession.getId()).isEqualTo(sessionId);
     }
 
-    @DisplayName("Session Registration 저장")
+    @DisplayName("Session User 저장")
     @Test
-    void saveSessionUsers() {
+    void saveSessionUser() {
         long sessionId = sessionRepository.save(session);
         Session foundSession = sessionRepository.findById(sessionId);
         foundSession.register(NsUserTest.JAVAJIGI);
 
-        long sessionUserId = sessionRepository.saveSessionUsers(foundSession, NsUserTest.JAVAJIGI);
+        long sessionUserId = sessionRepository.saveSessionUser(foundSession, NsUserTest.JAVAJIGI);
         assertThat(NsUserTest.JAVAJIGI.getId()).isEqualTo(sessionUserId);
     }
 
@@ -68,8 +68,8 @@ public class SessionRepositoryTest {
         long sessionId = sessionRepository.save(session);
         Session foundSession = sessionRepository.findById(sessionId);
 
-        sessionRepository.saveSessionUsers(foundSession, NsUserTest.JAVAJIGI);
-        sessionRepository.saveSessionUsers(foundSession, NsUserTest.SANJIGI);
+        sessionRepository.saveSessionUser(foundSession, NsUserTest.JAVAJIGI);
+        sessionRepository.saveSessionUser(foundSession, NsUserTest.SANJIGI);
 
         List<String> userIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
         assertThat(userIds).hasSize(2);

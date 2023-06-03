@@ -48,7 +48,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public long saveSessionUsers(Session session, NsUser nsUser) {
+    public long saveSessionUser(Session session, NsUser nsUser) {
         String sql = "insert into session_users (session_id, user_id) values (?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
