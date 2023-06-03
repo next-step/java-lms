@@ -12,7 +12,7 @@ public enum SessionType {
 
     public static SessionType find(String sessionType) {
         return Arrays.stream(values())
-                .filter(type -> type.name.equalsIgnoreCase(sessionType))
+                .filter(type -> type.name().equalsIgnoreCase(sessionType))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 강의 타입입니다."));
     }

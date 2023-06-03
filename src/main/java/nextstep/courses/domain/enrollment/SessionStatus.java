@@ -14,7 +14,7 @@ public enum SessionStatus {
 
     public static SessionStatus find(String sessionStatus) {
         return Arrays.stream(values())
-                .filter(type -> type.name.equalsIgnoreCase(sessionStatus))
+                .filter(type -> type.name().equalsIgnoreCase(sessionStatus))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 강의상태입니다."));
     }

@@ -40,9 +40,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, course_id, owner_id, title, image_url, charge_type, status_type, created_at" +
-                ", closed_at, capacity" +
-                " from where" +
+        String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, " +
+                " created_at, closed_at, capacity" +
+                " from session" +
                 " where id = ?";
 
         return jdbcTemplate.queryForObject(sql, generateRowMapper(), id);
