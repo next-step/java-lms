@@ -15,4 +15,12 @@ public class Student {
     public void enroll(Session session) {
         session.enroll(this);
     }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
 }
