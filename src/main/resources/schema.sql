@@ -16,7 +16,8 @@ create table session (
     charge_type varchar(50) not null,
     status_type varchar(50) not null,
     created_at timestamp not null,
-    closed_at timestamp
+    closed_at timestamp,
+    capacity bigint,
     primary key (id)
 );
 
