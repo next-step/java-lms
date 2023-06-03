@@ -82,9 +82,9 @@
   - [x] session
   - [x] student
 
-- [ ] repository 와 domain을 연결하는 service 생성
-  - [ ] course
-  - [ ] session
-  - [ ] student
+- [x] repository 와 domain을 연결하는 service 생성
+  - [x] course
+  - [x] session
+  - [x] student
 
   
