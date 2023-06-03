@@ -52,10 +52,10 @@ public class JdbcSessionRepository implements SessionRepository {
     public List<Session> findByCourseId(Long courseId) {
         String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at" +
                 ", closed_at, capacity" +
-                " from course" +
+                " from Session" +
                 " where course_id = ?";
 
-        return jdbcTemplate.queryForList(sql, Session.class, generateRowMapper(), courseId);
+        return jdbcTemplate.query(sql, generateRowMapper(), courseId);
     }
 
     private RowMapper<Session> generateRowMapper() {

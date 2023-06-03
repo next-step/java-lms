@@ -39,8 +39,8 @@ public class StudentRepositoryTest {
         Student savedStudent = studentRepository.findById(1L);
         Assertions.assertThat(student).isEqualTo(savedStudent);
 
-//        List<Student> students = studentRepository.findBySessionId(1L);
-//        Assertions.assertThat(students).contains(student);
+        List<Student> students = studentRepository.findBySessionId(1L);
+        Assertions.assertThat(students).contains(student);
     }
 
 }

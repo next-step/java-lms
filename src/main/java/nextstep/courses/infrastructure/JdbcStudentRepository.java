@@ -43,10 +43,10 @@ public class JdbcStudentRepository implements StudentRepository {
                 " where session_id = ?";
 
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
-              rs.getLong(1),
-              rs.getLong(2)
+                rs.getLong(1),
+                rs.getLong(2)
         );
 
-        return jdbcTemplate.queryForList(sql, Student.class, rowMapper, sessionId);
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }
