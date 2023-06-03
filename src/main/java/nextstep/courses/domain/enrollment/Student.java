@@ -2,6 +2,8 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.Session;
 
+import java.util.Objects;
+
 public class Student {
 
     private final Long studentId;
@@ -22,5 +24,22 @@ public class Student {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Student student = (Student) o;
+        return Objects.equals(studentId, student.studentId)
+                && Objects.equals(sessionId, student.sessionId);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, sessionId);
     }
 }

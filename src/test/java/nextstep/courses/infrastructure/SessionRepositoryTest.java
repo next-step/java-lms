@@ -31,8 +31,8 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("create 와 read 를 읽을 수 있다.")
-    void CREATE_READ() {
+    @DisplayName("create 와 read 기능을 올바르게 수행할 수 있다.")
+    void dbTest_Create_Read() {
         Session session = createSession();
         int count = sessionRepository.save(session);
         Assertions.assertThat(count).isEqualTo(1);
