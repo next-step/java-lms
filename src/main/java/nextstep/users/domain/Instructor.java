@@ -31,16 +31,18 @@ public class Instructor {
         return sessionId;
     }
 
-    public void approve(SessionApproval sessionApproval) {
-//        sessionApproval.validateSession(sessionId);
+    private void validate(SessionApproval sessionApproval) {
+        sessionApproval.validateSession(sessionId);
         sessionApproval.validateRegistrationStatus();
         sessionApproval.validateSelectionSessions();
     }
 
-    private void validateSession(Student student) {
-        if (!student.isEqualSession(sessionId)) {
-            throw new IllegalArgumentException("진행하는 강의의 수강 대기생이 아닙니다.");
-        }
+    public void approve(SessionApproval sessionApproval) {
+        validate(sessionApproval);
+    }
+
+    public void cancel(SessionApproval sessionApproval) {
+        validate(sessionApproval);
     }
 
     @Override
