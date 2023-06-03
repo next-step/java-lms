@@ -12,7 +12,7 @@ create table session (
     course_id bigint not null,
     owner_id bigint not null,
     title varchar(255) not null,
-    cover_image_info varchar(255) not null,
+    image_url varchar(255) not null,
     charge_type varchar(50) not null,
     status_type varchar(50) not null,
     created_at timestamp not null,
