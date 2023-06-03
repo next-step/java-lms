@@ -1,5 +1,5 @@
 package nextstep.lms.domain;
 
-public enum SessionType {
+public enum SessionPaidType {
     FREE, PAID
 }

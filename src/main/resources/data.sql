@@ -9,9 +9,10 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
 
-iNSERt iNTo session (start_date, end_date, session_state, session_type, registered_student, student_capacity, image_id) VALUES ('2024-05-01', '2024-05-05', 'READY', 'FREE', 0, 4, 1);
-iNSERt iNTo session (start_date, end_date, session_state, session_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'RECRUITING', 'PAID', 0, 4, 1);
-iNSERt iNTo session (start_date, end_date, session_state, session_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'RECRUITING', 'PAID', 5, 10, 1);
+iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_state, session_paid_type, registered_student, student_capacity, image_id) VALUES ('2024-05-01', '2024-05-05', 'READY', 'RECRUITING', 'FREE', 0, 4, 1);
+iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_state, session_paid_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'PROGRESS', 'RECRUITING', 'PAID', 0, 4, 1);
+iNSERt iNTo session (start_date, end_date, session_state, session_recruiting_state, session_paid_type, registered_student, student_capacity, image_id) VALUES ('2023-07-01', '2023-10-05', 'PROGRESS', 'RECRUITING', 'PAID', 5, 10, 1);
 
-iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 1, 'REGISTERED');
-iNSERt iNTo student (ns_user_id, session_id, register_type) VALUES (1, 3, 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 1, 'SELECTED', 'APPROVED', 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 2, 'NON_SELECTED', 'NON_APPROVED', 'REGISTERED');
+iNSERt iNTo student (ns_user_id, session_id, selected_type, approved_type, register_type) VALUES (1, 3, 'SELECTED', 'APPROVED', 'REGISTERED');

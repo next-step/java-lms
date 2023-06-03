@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class SessionTest {
     public static final Session CLASS_ONE = new Session(
             1L, LocalDate.of(2023, 5, 22), LocalDate.of(2023, 5, 22),
-            SessionState.RECRUITING, SessionType.FREE, 0, 5, 0L);
+            SessionState.PROGRESS, SessionRecruitingState.RECRUITING, SessionPaidType.FREE, 0, 5, 0L);
 
     private Session session;
 
@@ -21,7 +22,8 @@ public class SessionTest {
         LocalDate endDate = LocalDate.of(2023, 5, 23);
         Long imageCover = 0L;
 
-        session = new Session(startDate, endDate, imageCover, SessionType.FREE, studentCapacity);
+        session = new Session(startDate, endDate, imageCover, SessionPaidType.FREE, studentCapacity);
+        session.changeRecruitingState();
     }
 
     @Test
@@ -46,12 +48,21 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("강의 모집중으로 변경")
-    void recruitStudentsTest() {
+    @DisplayName("강의 진행중으로 변경")
+    void progressStateTest() {
         setUp(0);
 
-        assertThat(session.recruitStudents())
-                .isEqualTo(SessionState.RECRUITING);
+        assertThat(session.changeProgressState())
+                .isEqualTo(SessionState.PROGRESS);
+    }
+
+    @Test
+    @DisplayName("강의 종료로 변경")
+    void finishStateTest() {
+        setUp(0);
+
+        assertThat(session.changeFinishSessionState())
+                .isEqualTo(SessionState.FINISH);
     }
 
     @Test
@@ -61,7 +72,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 24);
 
-        assertThat(session.changeFinishSessionState(now))
+        assertThat(session.changeFinishSessionStateByDate(now))
                 .isEqualTo(SessionState.FINISH);
     }
 
@@ -72,7 +83,7 @@ public class SessionTest {
 
         LocalDate now = LocalDate.of(2023, 5, 23);
 
-        assertThat(session.changeFinishSessionState(now))
+        assertThat(session.changeFinishSessionStateByDate(now))
                 .isEqualTo(SessionState.READY);
     }
 
@@ -81,6 +92,7 @@ public class SessionTest {
     void notRecruitingErrorTest() {
         int studentCapacity = 5;
         setUp(studentCapacity);
+        session.changeStoppedState();
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -92,7 +104,7 @@ public class SessionTest {
         int studentCapacity = 2;
         setUp(studentCapacity);
 
-        session.recruitStudents();
+        session.changeProgressState();
         session.enroll(NsUserTest.JAVAJIGI);
         session.enroll(NsUserTest.SANJIGI);
 
@@ -105,7 +117,7 @@ public class SessionTest {
     void registerTest() {
         int studentCapacity = 5;
         setUp(studentCapacity);
-        session.recruitStudents();
+        session.changeProgressState();
         session.enroll(NsUserTest.JAVAJIGI);
 
         assertThat(session.getStudentCapacity().getRegisteredStudent())
@@ -117,7 +129,7 @@ public class SessionTest {
     void cancelTest() {
         int studentCapacity = 5;
         setUp(studentCapacity);
-        session.recruitStudents();
+        session.changeProgressState();
         Student javajigiStudent = session.enroll(NsUserTest.JAVAJIGI);
         session.enroll(NsUserTest.SANJIGI);
 
@@ -131,9 +143,9 @@ public class SessionTest {
     @DisplayName("강의 상태가 준비중이 아닐 때 강의 타입 변경 에러")
     void notReadySessionTypeErrorTest() {
         setUp(0);
-        session.recruitStudents();
+        session.changeProgressState();
 
-        assertThatThrownBy(() -> session.changeSessionType(SessionType.PAID))
+        assertThatThrownBy(() -> session.changeSessionType(SessionPaidType.PAID))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -142,8 +154,8 @@ public class SessionTest {
     void changeSessionTypeTest() {
         setUp(0);
 
-        assertThat(session.changeSessionType(SessionType.PAID))
-                .isEqualTo(SessionType.PAID);
+        assertThat(session.changeSessionType(SessionPaidType.PAID))
+                .isEqualTo(SessionPaidType.PAID);
     }
 
     @Test
@@ -151,15 +163,82 @@ public class SessionTest {
     void createSessionTest() {
         LocalDate startDate = LocalDate.of(2023, 5, 22);
         LocalDate endDate = LocalDate.of(2023, 5, 25);
-        Long aLong = 0L;
-        SessionType sessionType = SessionType.FREE;
+        Long imageId = 0L;
+        SessionPaidType sessionPaidType = SessionPaidType.FREE;
         int studentCapacity = 5;
 
-
-        Session session = Session.createSession(startDate, endDate, aLong, sessionType, studentCapacity);
+        Session session = Session.createSession(startDate, endDate, imageId, sessionPaidType, studentCapacity);
 
         assertThat(session)
                 .isInstanceOf(Session.class);
+    }
+
+    @Test
+    @DisplayName("강의가 진행 중인 상태에서도 수강신청 가능")
+    void sessionProgressRecruitingSuccessTest() {
+        Long id = 0L;
+        LocalDate startDate = LocalDate.of(2023, 5, 22);
+        LocalDate endDate = LocalDate.of(2024, 5, 25);
+        SessionState sessionState = SessionState.PROGRESS;
+        SessionPaidType sessionPaidType = SessionPaidType.FREE;
+        SessionRecruitingState sessionRecruitingState = SessionRecruitingState.RECRUITING;
+        int registeredStudent = 3;
+        int studentCapacity = 10;
+        Long imageId = 0L;
+
+        Session session = new Session(id, startDate, endDate, sessionState, sessionRecruitingState,
+                sessionPaidType, registeredStudent, studentCapacity, imageId);
+        session.enroll(NsUserTest.JAVAJIGI);
+
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
+                .isEqualTo(4);
+    }
+
+    @Test
+    @DisplayName("강의 모집 상태 변경 - 모집중 -> 비모집중")
+    void changeSessionRecruitingStateStoppedTest() {
+        setUp(5);
+
+        assertThat(session.changeStoppedState())
+                .isEqualTo(SessionRecruitingState.STOPPED);
+    }
+
+    @Test
+    @DisplayName("강의 모집 상태 변경 - 비모집중 -> 모집중")
+    void changeSessionRecruitingStateRecruitingTest() {
+        setUp(5);
+
+        assertThat(session.changeRecruitingState())
+                .isEqualTo(SessionRecruitingState.RECRUITING);
+    }
+
+    @Test
+    @DisplayName("강의 종료일 때 모집중으로 변경할 경우 에러 테스트")
+    void sessionFinishRecruitingErrorTest() {
+        setUp(5);
+        session.changeFinishSessionState();
+
+        assertThatThrownBy(() -> session.changeRecruitingState())
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("선발되지 않은 학생은 강사가 취소 테스트")
+    void nonSelectedStudentDropTest() {
+        setUp(5);
+        Student javajigiStudent = session.enroll(NsUserTest.JAVAJIGI);
+        javajigiStudent.changeStudentSelect();
+        javajigiStudent.getStudentApprovedType();
+        Student sanjigiStudent = session.enroll(NsUserTest.SANJIGI);
+        Student badajigiStudent = session.enroll(NsUserTest.BADAJIGI);
+        List<Student> students = List.of(javajigiStudent, sanjigiStudent, badajigiStudent);
+
+        List<Student> canceledStudents = session.dropNonSelectedStudent(students);
+
+        assertThat(session.getStudentCapacity().getRegisteredStudent())
+                .isEqualTo(1);
+        assertThat(canceledStudents)
+                .hasSize(2);
     }
 
 }

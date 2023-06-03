@@ -13,5 +13,7 @@ public interface SessionRepository {
 
     void updateRegisteredStudent(Session session);
 
-    void changeSessionType(Session session);
+    void changeSessionPaidType(Session session);
+
+    void changeSessionRecruitingState(Session session);
 }

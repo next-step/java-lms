@@ -54,7 +54,8 @@ create table session (
     , start_date date
     , end_date date
     , session_state varchar(50)
-    , session_type varchar(50)
+    , session_recruiting_state varchar(50)
+    , session_paid_type varchar(50)
     , registered_student int
     , student_capacity int
     , image_id bigint
@@ -64,6 +65,8 @@ create table session (
 create table student (
     ns_user_id bigint not null
     , session_id bigint not null
+    , selected_type varchar(50) not null
+    , approved_type varchar(50) not null
     , register_type varchar(50) not null
     , created_at timestamp default current_timestamp
     , updated_at timestamp default current_timestamp on update current_timestamp

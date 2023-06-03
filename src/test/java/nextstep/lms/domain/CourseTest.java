@@ -17,7 +17,7 @@ public class CourseTest {
                 LocalDate.of(2023, 5, 3),
                 LocalDate.of(2023, 5, 5),
                 0L,
-                SessionType.PAID,
+                SessionPaidType.PAID,
                 5
         );
 
@@ -25,7 +25,7 @@ public class CourseTest {
                 LocalDate.of(2023, 5, 6),
                 LocalDate.of(2023, 5, 10),
                 1L,
-                SessionType.FREE,
+                SessionPaidType.FREE,
                 10
         );
 

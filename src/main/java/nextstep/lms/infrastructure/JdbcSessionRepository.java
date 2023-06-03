@@ -1,9 +1,6 @@
 package nextstep.lms.infrastructure;
 
-import nextstep.lms.domain.Session;
-import nextstep.lms.domain.SessionRepository;
-import nextstep.lms.domain.SessionState;
-import nextstep.lms.domain.SessionType;
+import nextstep.lms.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,12 +23,14 @@ public class JdbcSessionRepository implements SessionRepository {
                 "start_date" +
                 ", end_date" +
                 ", session_state" +
-                ", session_type" +
+                ", session_recruiting_state" +
+                ", session_paid_type" +
                 ", registered_student" +
                 ", student_capacity" +
                 ", image_id" +
                 ") values(" +
                 "?" +
+                ", ?" +
                 ", ?" +
                 ", ?" +
                 ", ?" +
@@ -44,7 +43,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 , session.getSessionDate().getStartDate()
                 , session.getSessionDate().getEndDate()
                 , session.getSessionState()
-                , session.getSessionType()
+                , session.getSessionRecruitingState()
+                , session.getSessionPaidType()
                 , session.getStudentCapacity().getRegisteredStudent()
                 , session.getStudentCapacity().getStudentCapacity()
                 , session.getImageId()
@@ -64,7 +64,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 ", start_date" +
                 ", end_date" +
                 ", session_state" +
-                ", session_type" +
+                ", session_recruiting_state" +
+                ", session_paid_type" +
                 ", registered_student" +
                 ", student_capacity" +
                 ", image_id " +
@@ -76,10 +77,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDateTime(rs.getDate(2)),
                 toLocalDateTime(rs.getDate(3)),
                 toSessionState(rs.getString(4)),
-                toSessionType(rs.getString(5)),
-                rs.getInt(6),
+                toSessionRecruitingState(rs.getString(5)),
+                toSessionPaidType(rs.getString(6)),
                 rs.getInt(7),
-                rs.getLong(8));
+                rs.getInt(8),
+                rs.getLong(9));
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
@@ -98,11 +100,18 @@ public class JdbcSessionRepository implements SessionRepository {
         return SessionState.valueOf(sessionState);
     }
 
-    private SessionType toSessionType(String sessionType) {
+    private SessionRecruitingState toSessionRecruitingState(String sessionRecruitingState) {
+        if (sessionRecruitingState == null) {
+            return null;
+        }
+        return SessionRecruitingState.valueOf(sessionRecruitingState);
+    }
+
+    private SessionPaidType toSessionPaidType(String sessionType) {
         if (sessionType == null) {
             return null;
         }
-        return SessionType.valueOf(sessionType);
+        return SessionPaidType.valueOf(sessionType);
     }
 
     @Override
@@ -120,9 +129,16 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public void changeSessionType(Session session) {
-        String sql = "uPDATe session SET session_type = ? WHERE id = ?";
+    public void changeSessionPaidType(Session session) {
+        String sql = "uPDATe session SET session_paid_type = ? WHERE id = ?";
 
-        jdbcTemplate.update(sql, session.getSessionType(), session.getId());
+        jdbcTemplate.update(sql, session.getSessionPaidType(), session.getId());
+    }
+
+    @Override
+    public void changeSessionRecruitingState(Session session) {
+        String sql = "uPDATe session SET session_recruiting_state = ? WHERE id = ?";
+
+        jdbcTemplate.update(sql, session.getSessionRecruitingState(), session.getId());
     }
 }
