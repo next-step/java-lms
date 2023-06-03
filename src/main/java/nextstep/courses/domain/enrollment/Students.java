@@ -1,8 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.AlreadyEnrolledException;
 import nextstep.courses.ExceedMaxEnrollmentException;
-import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,18 +9,18 @@ import java.util.List;
 
 public class Students {
 
-    private final int maxEnrollment;
-    private final List<NsUser> students;
+    private final int capacity;
+    private final List<Student> students;
 
-    public Students(int maxEnrollment) {
-        this(maxEnrollment, new ArrayList<>());
+    public Students(int capacity) {
+        this(capacity, new ArrayList<>());
     }
 
-    public Students(int maxEnrollment, List<NsUser> students) {
-        if (maxEnrollment < students.size()) {
+    public Students(int capacity, List<Student> students) {
+        if (capacity < students.size()) {
             throw new ExceedMaxEnrollmentException();
         }
-        this.maxEnrollment = maxEnrollment;
+        this.capacity = capacity;
         this.students = students;
     }
 
@@ -29,22 +28,22 @@ public class Students {
         return students.size();
     }
 
-    public void enroll(NsUser user) {
-        if (isAlreadyEnrolled(user)) {
+    public void enroll(Student student) {
+        if (isAlreadyEnrolled(student)) {
             throw new AlreadyEnrolledException();
         }
-        students.add(user);
+        students.add(student);
         if (isExceededMaxEnrollment()) {
-            students.remove(user);
+            students.remove(student);
             throw new ExceedMaxEnrollmentException();
         }
     }
 
-    private boolean isAlreadyEnrolled(NsUser user) {
-        return students.contains(user);
+    private boolean isAlreadyEnrolled(Student student) {
+        return students.contains(student);
     }
 
-    public List<NsUser> fetchStudents() {
+    public List<Student> fetchStudents() {
         return Collections.unmodifiableList(students);
     }
 
@@ -53,6 +52,10 @@ public class Students {
     }
 
     public boolean isExceededMaxEnrollment() {
-        return maxEnrollment < countEnrollment();
+        return capacity < countEnrollment();
+    }
+
+    public int sessionCapacity() {
+        return capacity;
     }
 }

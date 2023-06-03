@@ -1,10 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.SampleUser.JAVAJIGI;
-import static nextstep.courses.domain.SampleUser.WOOK;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("수강신청 객체 테스트")
@@ -14,18 +17,22 @@ class EnrollmentTest {
     @Test
     void maxEnrollment() {
         Enrollment enrollment = new Enrollment(50);
-        assertThat(enrollment.maxEnrollmentValue()).isEqualTo(50);
+        assertThat(enrollment.sessionCapacity()).isEqualTo(50);
     }
 
     @DisplayName("수강 신청을 하면 수강인원 인원이 늘어난다")
     @Test
     void enroll() {
-        Enrollment enrollment = new Enrollment(3);
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(1L, 1L));
+        Enrollment enrollment = new Enrollment(4);
+        Student student1 = new Student(2L, 1L);
+        Student student2 = new Student(3L, 1L);
 
-        enrollment.enroll(WOOK);
-        enrollment.enroll(JAVAJIGI);
+        enrollment.enroll(student1, students);
+        enrollment.enroll(student2, students);
 
         assertThat(enrollment.hasEnrolledStudent()).isTrue();
-        assertThat(enrollment.currentEnrolmentCount()).isEqualTo(2);
+        assertThat(enrollment.currentEnrolmentCount()).isEqualTo(3);
     }
 }

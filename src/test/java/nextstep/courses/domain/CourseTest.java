@@ -1,5 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.payment.FreePaymentStrategy;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionInformation;
+import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,8 +47,8 @@ class CourseTest {
     void addSessionInCourse() {
         SessionInformation sessionInformation1 = new SessionInformation("TDD", 16);
         SessionInformation sessionInformation2 = new SessionInformation("TDD", 17);
-        Session session1 = new Session(sessionInformation1, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
-        Session session2 = new Session(sessionInformation2, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
+        Session session1 = new Session(1L, sessionInformation1, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
+        Session session2 = new Session(1L, sessionInformation2, sessionPeriod, sessionStatus, coverImage, new FreePaymentStrategy(), enrollment);
         Course course = new Course("test course", 1L);
         course.addSession(session1);
         course.addSession(session2);

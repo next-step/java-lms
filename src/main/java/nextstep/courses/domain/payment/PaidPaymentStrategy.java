@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.payment;
 
 public class PaidPaymentStrategy implements PaymentStrategy {
 
