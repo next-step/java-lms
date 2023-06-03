@@ -29,12 +29,7 @@ public class Sessions {
     }
 
     public boolean isContainsSameSession(Sessions otherSessions) {
-        for(Session session: otherSessions.sessions) {
-            if (sessions.contains(session)) {
-                return true;
-            }
-        }
-        return false;
+        return otherSessions.sessions.stream().anyMatch(session -> sessions.contains(session));
     }
 
     @Override
