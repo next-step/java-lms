@@ -30,9 +30,6 @@ public class Student {
         this.updatedAt = updatedAt;
     }
 
-    public Student() {
-    }
-
     public void approved() {
         approvalType = StudentApprovalType.APPROVED;
         updatedAt = LocalDateTime.now();

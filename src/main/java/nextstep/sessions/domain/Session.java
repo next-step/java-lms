@@ -25,9 +25,6 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session() {
-    }
-
     public Session(Long courseId,
                    SessionDuration duration,
                    SessionCoverImage coverImage,
