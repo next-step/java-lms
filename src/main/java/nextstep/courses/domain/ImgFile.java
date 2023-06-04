@@ -11,22 +11,21 @@ public class ImgFile {
     private String imgFile;
 
     public ImgFile(String imgFile) {
-        urlValidationCheck(imgFile);
+        checkImageFileValidation(imgFile);
         this.imgFile = imgFile;
     }
 
-    void urlValidationCheck(String url) {
+    void checkImageFileValidation(String url) {
         if (Objects.isNull(url)) {
             throw new IllegalArgumentException(TYPE_1);
         }
 
-        if (!isImageUrlPattern(url)) {
+        if (!isImageFilePattern(url)) {
             throw new IllegalArgumentException(TYPE_2);
         }
-
     }
 
-    public static boolean isImageUrlPattern(String imageUrl) {
+    private boolean isImageFilePattern(String imageUrl) {
         Matcher matcher = DELIMITER.matcher(imageUrl);
         return matcher.matches();
     }

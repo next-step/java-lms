@@ -19,31 +19,17 @@ class SessionTest {
     void setSession() {
         LocalDate start = LocalDate.of(2023, 6, 15);
         LocalDate end = LocalDate.of(2023, 6, 15);
-
-        List<Student> collect = IntStream.range(0, 15)
-                .mapToObj(number -> new Student())
-                .collect(Collectors.toList());
-
-        Students students = new Students(collect);
-        session = new Session("coby.jpg", start, end, students);
+        session = new Session(1L, "coby.jpg", start, end);
+        session.changeToStatus(SessionType.RECRUITING);
     }
 
     @Test
     void 생성자_테스트() {
         LocalDate start = LocalDate.of(2023, 6, 15);
         LocalDate end = LocalDate.of(2023, 6, 15);
+        Session session1 = new Session(1L, "coby.jpg", start, end);
 
-        List<Student> collect = IntStream.range(0, 21)
-                .mapToObj(number -> new Student())
-                .collect(Collectors.toList());
-
-        Students students = new Students(collect);
-
-        assertThatThrownBy(() -> {
-            new Session("coby.jpg", start, end, students);
-        }).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최대 인원을 초과하였습니다.");
-
+        assertThat(session1.getId()).isEqualTo(1L);
     }
 
     @Test
@@ -70,5 +56,43 @@ class SessionTest {
 
         session.changeToStatus(SessionType.END);
         assertThat(session.getStatus()).isEqualTo(SessionType.END);
+    }
+
+    @Test
+    void 강의_학생추가_테스트() {
+        IntStream.range(0, 22)
+                .forEach(i -> {
+                    if (i == 21) {
+                        assertThatThrownBy(() -> {
+                            session.putStudent(new Student((long) i, "coby", new Email("coby.typark@gmail.com")));
+                        }).isInstanceOf(IllegalArgumentException.class)
+                                .hasMessage("최대 인원을 초과하였습니다.");
+                    } else {
+                        session.putStudent(new Student((long) i, "coby", new Email("coby.typark@gmail.com")));
+                    }
+                });
+    }
+
+    @Test
+    void 강의_모집중이_아닐때_학생추가_테스트() {
+        session.changeToStatus(SessionType.READY);
+        assertThatThrownBy(() -> session.putStudent(new Student(1L, "coby", new Email("coby.typark@gmail.com"))))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("모집중인 강이가 아닙니다.");
+
+    }
+
+    @Test
+    void 강의에서_잘못된학생정보_제거() {
+        assertThatThrownBy(() -> session.removeStudent(new Student(1L, "coby", new Email("coby.typark@gmail.com"))))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("등록된 학생 정보가 없습니다.");
+    }
+
+    @Test
+    void 강의에서_학생정보_null로_제거() {
+        assertThatThrownBy(() -> session.removeStudent(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("학생 데이터가 잘못 생성되었습니다.");
     }
 }
