@@ -30,3 +30,25 @@
       1. deleteHistoryService에 add 요청
       2. Service 계층에서는 domain 객체에게 실질적 로직 실행 요청
    5. deleteHistoryService에 일급 컬렉션 (DeleteHistories) 필드 추가
+
+5. 피드백 사항 반영 및 추가 사항
+   1. 기능 요구사항으로 제시된 것에 대해 모두 단위 테스트 검증 실시
+      - Question, Answers, Answer, DeleteHistories test 추가
+   2. Question 객체에서 NsUser 객체를 직접 참조하는 문제 해결
+      - 식별자를 통해 간접 참조하는 방식 (id)
+   3. Question 객체 관련
+      1. 답변 삭제 가능 여부 판단과 답변 삭제 요청이 서로 다른 곳에서 진행되는 문제
+         - question 객체 안에서 전부 해결
+         - question.delete() 시 answer 역시 제거되도록 하면 로직이 전부 question으로 들어오게 됨.
+      2. getter 사용보다 메시지를 보내는 방식
+      3. 일급 컬렉션(answers) 활용
+   4. DeleteHistoryService 객체 내부에 상태를 두어서는 안 된다.
+      - DeleteHistories 상태변수 제거, 인자로 처리
+   5. QnAService 내부 saveAll에서 이전 기록들이 중복해서 들어가는 문제
+      - toHistory function을 Question, Answer에 각각 넣음
+      - Answers에 toHistories로 각 Answer의 toHistory 결과들 가져옴
+      - Question 객체의 toQuestionAndAnswersHistories 함수에서 DeleteHistories 결과 가져옴
+      - 이 결과를 saveAll의 인자로 넣음
+   6. 객체 내 상태 변수의 수를 줄이기 위해 객체 분리
+      - AnswerContents, QuestionContents, BaseEntity
+   7. 기타 필요 없는 메서드(setter 등) 정리 및 상태 변수 정리
