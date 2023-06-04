@@ -12,4 +12,8 @@ public abstract class AbstractCourse {
     protected LocalDateTime createdAt;
 
     protected LocalDateTime updatedAt;
+
+    public Long getId() {
+        return id;
+    }
 }

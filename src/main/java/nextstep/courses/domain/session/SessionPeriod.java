@@ -1,10 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class SessionPeriod {
-
     private LocalDate startDate;
 
     private LocalDate endDate;
@@ -19,4 +18,11 @@ public class SessionPeriod {
     public boolean isEndDateBeforeNow() {
         return endDate.isBefore(LocalDate.now());
     }
+
+    public void checkRecruit() {
+        if (isEndDateBeforeNow()) {
+            throw new IllegalStateException("종료된 강의는 모집할 수 없습니다.");
+        }
+    }
 }
+

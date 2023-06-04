@@ -1,5 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionFeeType;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Course extends AbstractCourse {
@@ -34,6 +41,20 @@ public class Course extends AbstractCourse {
 
     public Session findSession(Long sessionId) {
         return sessions.findSession(sessionId);
+    }
+
+    public Session createSession(
+            NsUser nsUser,
+            String title,
+            Long sessionNumber,
+            LocalDate startDate,
+            LocalDate endDate,
+            String url,
+            SessionFeeType sessionFeeType,
+            SessionStatus sessionStatus,
+            int capacity
+    ) {
+        return sessions.create(nsUser, title, sessionNumber, startDate, endDate, url, sessionFeeType, sessionStatus, capacity);
     }
 
     @Override
