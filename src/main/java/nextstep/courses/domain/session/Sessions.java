@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.DuplicateSessionException;
 
@@ -10,7 +10,11 @@ public class Sessions {
     private List<Session> sessions;
 
     public Sessions() {
-        this.sessions = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+
+    public Sessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 
     public void addSession(Session session) {
@@ -22,6 +26,10 @@ public class Sessions {
         if (sessions.contains(session)) {
             throw new DuplicateSessionException("동일 강의 등록 불가합니다.");
         }
+    }
+
+    public boolean isContainsSameSession(Sessions otherSessions) {
+        return otherSessions.sessions.stream().anyMatch(session -> sessions.contains(session));
     }
 
     @Override

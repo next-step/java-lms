@@ -1,9 +1,10 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.SessionCostType;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.State;
+import nextstep.courses.domain.registration.EnrollmentOpenType;
+import nextstep.courses.domain.session.SessionCostType;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class SessionRepositoryTest {
     @DisplayName("save")
     void save() {
         Session session = Session.of(1L, "lms1", "img://cover.com/lms", 1
-                , SessionCostType.FREE, State.READY, 30
+                , SessionCostType.FREE, EnrollmentOpenType.OPEN, SessionState.READY, 30
                 , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
                 , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
         int count = sessionRepository.save(session);
@@ -43,7 +44,7 @@ public class SessionRepositoryTest {
     @DisplayName("select")
     void select() {
         Session session = Session.of(1L, "lms1", "img://cover.com/lms", 1
-                , SessionCostType.FREE, State.READY, 30
+                , SessionCostType.FREE, EnrollmentOpenType.OPEN, SessionState.READY, 30
                 , LocalDateTime.of(2023, 6, 1, 14, 0, 0)
                 , LocalDateTime.of(2023, 6, 30, 14, 0, 0));
         sessionRepository.save(session);
