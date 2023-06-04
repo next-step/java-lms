@@ -25,7 +25,7 @@ public class StudentRepositoryTest {
     }
 
     @Test
-    @DisplayName("crud")
+    @DisplayName("save and select")
     void crud() {
         Student student = new Student(1L, 1L);
         int count = studentRepository.save(student);
