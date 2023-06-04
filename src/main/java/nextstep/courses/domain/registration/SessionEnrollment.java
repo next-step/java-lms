@@ -26,7 +26,7 @@ public class SessionEnrollment {
         this.students = students;
     }
 
-    public Students register(Student student) {
+    public Students enroll(Student student) {
         validateState();
         validateMaxUser();
         validateDuplicateStudent(student);

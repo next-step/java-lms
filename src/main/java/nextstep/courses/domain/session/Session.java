@@ -15,10 +15,8 @@ public class Session {
     private String cover;
     private int cardinalNumber;
     private SessionCostType sessionCostType;
-    private EnrollmentOpenType enrollmentOpenType;
     private SessionEnrollment sessionEnrollment;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private SessionPeriod sessionPeriod;
 
     Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
         this(0L, courseId, title, cover, cardinalNumber, sessionCostType, enrollmentOpenType, sessionState, maxUser, startDate, endDate);
@@ -32,8 +30,7 @@ public class Session {
         this.cardinalNumber = cardinalNumber;
         this.sessionCostType = sessionCostType;
         this.sessionEnrollment = new SessionEnrollment(sessionState, enrollmentOpenType, maxUser);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionPeriod = new SessionPeriod(startDate, endDate);
     }
 
     public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
@@ -45,7 +42,7 @@ public class Session {
     }
 
     public Students enroll(Student student) {
-        return sessionEnrollment.register(student);
+        return sessionEnrollment.enroll(student);
     }
 
     public Long getId() {
@@ -72,16 +69,12 @@ public class Session {
         return sessionCostType;
     }
 
-    public SessionEnrollment getSessionRegistration() {
+    public SessionEnrollment getSessionEnrollment() {
         return sessionEnrollment;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
     }
 
     @Override
