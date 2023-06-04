@@ -36,12 +36,12 @@ public class SelectionSessionRepositoryTest {
     @Test
     @DisplayName("select")
     void select() {
-        SelectionSession selectionSession = new SelectionSession(2L, 1L);
-        int count = selectionSessionRepository.save(selectionSession);
+        SelectionSession selectionSession1 = new SelectionSession(2L, 1L);
+        int count = selectionSessionRepository.save(selectionSession1);
         assertThat(count).isEqualTo(1);
 
         SelectionSession savedSelectionSession = selectionSessionRepository.findById(1L).orElseThrow();
-        assertThat(savedSelectionSession).isEqualTo(selectionSession);
+        assertThat(savedSelectionSession).isEqualTo(selectionSession1);
     }
 
     @Test
@@ -51,7 +51,6 @@ public class SelectionSessionRepositoryTest {
         SelectionSession selectionSession2 = new SelectionSession(1L, 2L);
         selectionSessionRepository.save(selectionSession1);
         selectionSessionRepository.save(selectionSession2);
-
 
         List<SelectionSession> savedSelectionSessions = selectionSessionRepository.findBySessionId(1L).orElseThrow();
         assertThat(savedSelectionSessions.size()).isEqualTo(2);
