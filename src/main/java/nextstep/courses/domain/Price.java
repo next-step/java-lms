@@ -9,7 +9,7 @@ public class Price {
         this.value = value;
     }
 
-    private long getValue() {
+    public long getValue() {
         return this.value;
     }
 

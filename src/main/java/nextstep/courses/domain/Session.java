@@ -14,18 +14,45 @@ public class Session {
     private BillType billType;
     private Price price;
     private SessionEnrollmentContext enrollmentContext;
+    private Long courseId;
 
+    public DateTray getDateTray() {
+        return dateTray;
+    }
 
+    public String getCoverUrl() {
+        return coverUrl;
+    }
 
-    private Course course;
+    public SessionEnrollmentContext getEnrollmentContext() {
+        return enrollmentContext;
+    }
 
-    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Course course) {
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Long courseId) {
         this.dateTray = new DateTray(startDate, endDate);
         this.coverUrl = coverUrl;
         this.billType = billType;
         this.price = price;
-        this.course = course;
+        this.courseId = courseId;
         this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment);
+        checkPriceValidate();
+    }
+
+    public Session(Long id, LocalDate startDate, LocalDate endDate,
+                   String coverUrl, BillType billType, Price price,
+                   long maxEnrollment, Status progressStatus, Long courseId,
+                   List<Student> students) {
+        this.id = id;
+        this.dateTray = new DateTray(startDate, endDate);
+        this.coverUrl = coverUrl;
+        this.billType = billType;
+        this.price = price;
+        this.courseId = courseId;
+        this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment, progressStatus, students);
         checkPriceValidate();
     }
 
@@ -68,5 +95,9 @@ public class Session {
 
     public Price getPrice() {
         return price;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -23,7 +23,7 @@ class SessionEnrollmentContextTest {
                 Session.BillType.FREE,
                 new Price(0L),
                 100L,
-                new Course("title", 1L)
+                0L
         );
 
         KOTLIN_TDD_SESSION = new Session(
@@ -33,7 +33,7 @@ class SessionEnrollmentContextTest {
                 Session.BillType.PAID,
                 new Price(1000L),
                 1L,
-                new Course("title", 1L)
+                0L
         );
     }
 

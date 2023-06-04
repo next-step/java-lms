@@ -24,7 +24,7 @@ class SessionTest {
                 Session.BillType.FREE,
                 new Price(0L),
                 100L,
-                new Course("title", 1L)
+                0L
         );
 
         Assertions.assertThat(session).isNotNull();
@@ -41,7 +41,7 @@ class SessionTest {
                 Session.BillType.FREE,
                 new Price(0L),
                 100L,
-                new Course("title", 1L)
+                0L
         );
 
         // when&then
@@ -59,7 +59,7 @@ class SessionTest {
                 billType,
                 price,
                 100L,
-                new Course("title", 1L)
+                0L
         )).isInstanceOf(IllegalArgumentException.class)
                 .message()
                 .isEqualTo("BillType과 Price가 일치하지 않습니다.");
@@ -76,7 +76,7 @@ class SessionTest {
                 billType,
                 price,
                 100L,
-                new Course("title", 1L)
+                0L
         )).doesNotThrowAnyException();
     }
 
@@ -91,7 +91,7 @@ class SessionTest {
                 Session.BillType.FREE,
                 new Price(0L),
                 100L,
-                new Course("title", 1L)
+                0L
         );
 
         // when&then
@@ -109,7 +109,7 @@ class SessionTest {
                 Session.BillType.FREE,
                 new Price(0L),
                 1L,
-                new Course("title", 1L)
+                0L
         );
 
         session.start();
