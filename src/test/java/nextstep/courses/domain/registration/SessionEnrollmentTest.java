@@ -33,7 +33,7 @@ public class SessionEnrollmentTest {
         SessionEnrollment sessionEnrollment = new SessionEnrollment(SessionState.RECRUIT_START, EnrollmentOpenType.OPEN, 30);
 
         assertThatNoException().isThrownBy(() -> {
-            sessionEnrollment.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
+            sessionEnrollment.enroll(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
         });
     }
 
@@ -42,18 +42,18 @@ public class SessionEnrollmentTest {
     void excessMaxUser() {
         SessionEnrollment sessionEnrollment = new SessionEnrollment(SessionState.RECRUIT_START, EnrollmentOpenType.OPEN, 1, students);
         assertThatThrownBy(() -> {
-            sessionEnrollment.register(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
+            sessionEnrollment.enroll(new Student(NsUserTest.SANJIGI.getId(), SessionTest.recruitStartSession.getId()));
         }).isInstanceOf(StudentMaxException.class).hasMessageContaining("정원 초과하여 신청할 수 없습니다.");
     }
 
     @Test
     @DisplayName("중복 수강 신청 시도")
-    void duplicateRegister() {
+    void duplicateenroll() {
         Session session = createSession(2L, SessionCostType.FREE, EnrollmentOpenType.OPEN, SessionState.RECRUIT_START,30);
-        session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
+        session.getSessionEnrollment().enroll(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
 
         assertThatThrownBy(() -> {
-            session.getSessionRegistration().register(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
+            session.getSessionEnrollment().enroll(new Student(NsUserTest.SANJIGI.getId(), session.getId()));
         }).isInstanceOf(DuplicateStudentEnrollException.class).hasMessageContaining("중복 강의 수강은 불가합니다.");
     }
 
@@ -64,11 +64,11 @@ public class SessionEnrollmentTest {
         SessionEnrollment sessionEnrollment4 = new SessionEnrollment(SessionState.SESSION_END, EnrollmentOpenType.CLOSE,30);
 
         assertThatThrownBy(() -> {
-            sessionEnrollment2.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.recruitEndSession.getId()));
+            sessionEnrollment2.enroll(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.recruitEndSession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("비모집중인 강의입니다.");
 
         assertThatThrownBy(() -> {
-            sessionEnrollment4.register(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionEndSession.getId()));
+            sessionEnrollment4.enroll(new Student(NsUserTest.JAVAJIGI.getId(), SessionTest.sessionEndSession.getId()));
         }).isInstanceOf(SessionStateNotRecruitStartException.class).hasMessageContaining("비모집중인 강의입니다.");
     }
 
