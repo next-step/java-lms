@@ -6,7 +6,6 @@ import nextstep.students.domain.Student;
 import nextstep.students.domain.Students;
 import nextstep.users.domain.NsUser;
 
-import java.util.List;
 import java.util.Objects;
 
 public class SessionRegistration {
@@ -39,10 +38,6 @@ public class SessionRegistration {
 
     public Student enrolledStudent(NsUser student) {
         return students.find(student.getUserId());
-    }
-
-    public void addAll(List<Student> appliedStudents) {
-        students.addAll(appliedStudents);
     }
 
     public SessionStatus getStatus() {

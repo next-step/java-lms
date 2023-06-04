@@ -8,6 +8,7 @@ import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
+import nextstep.students.domain.StudentRepository;
 import nextstep.students.domain.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,9 +22,11 @@ import java.util.Optional;
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
+    private final StudentRepository studentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, StudentRepository studentRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionRegistration(
                         SessionStatus.find(rs.getString(7)),
                         SessionRecruitmentStatus.find(rs.getString(8)),
-                        new Students(),
+                        new Students(studentRepository.findAllBySessionId(rs.getLong(1))),
                         rs.getInt(9)),
                 toLocalDateTime(rs.getTimestamp(10)),
                 toLocalDateTime(rs.getTimestamp(11)));

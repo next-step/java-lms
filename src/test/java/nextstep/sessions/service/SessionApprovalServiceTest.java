@@ -9,6 +9,7 @@ import nextstep.sessions.domain.SessionRegistrationBuilder;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.students.domain.Student;
+import nextstep.students.domain.StudentApprovalType;
 import nextstep.students.domain.StudentRepository;
 import nextstep.students.domain.Students;
 import nextstep.users.domain.NsUserTest;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
@@ -39,10 +40,11 @@ class SessionApprovalServiceTest {
         long sessionId = 1L;
         saveTestSession(sessionId);
 
-        studentRepository.save(new Student(NsUserTest.SANJIGI.getUserId(), sessionId));
+        long generatedStudentId = studentRepository.save(new Student(NsUserTest.SANJIGI.getUserId(), sessionId));
+        sessionApprovalService.approve(NsUserTest.SANJIGI.getUserId(), sessionId);
+        Student student = studentRepository.findById(generatedStudentId).get();
 
-        assertThatNoException()
-                .isThrownBy(() -> sessionApprovalService.approve(NsUserTest.SANJIGI.getUserId(), sessionId));
+        assertThat(student.getApprovalType()).isEqualTo(StudentApprovalType.APPROVED);
     }
 
     @Test
@@ -51,10 +53,11 @@ class SessionApprovalServiceTest {
         long sessionId = 1L;
         saveTestSession(sessionId);
 
-        studentRepository.save(new Student(NsUserTest.SANJIGI.getUserId(), sessionId));
+        long generatedStudentId = studentRepository.save(new Student(NsUserTest.SANJIGI.getUserId(), sessionId));
+        sessionApprovalService.reject(NsUserTest.SANJIGI.getUserId(), sessionId);
+        Student student = studentRepository.findById(generatedStudentId).get();
 
-        assertThatNoException()
-                .isThrownBy(() -> sessionApprovalService.reject(NsUserTest.SANJIGI.getUserId(), sessionId));
+        assertThat(student.getApprovalType()).isEqualTo(StudentApprovalType.REJECTED);
     }
 
     private void saveTestSession(long sessionId) {

@@ -39,7 +39,7 @@ class StudentRepositoryTest {
         Student student = new Student(NsUserTest.JAVAJIGI.getUserId(), 1L);
 
         log.debug("STUDENT SAVE: {}", student);
-        int count = studentRepository.save(student);
+        long generatedStudentId = studentRepository.save(student);
 
         Student savedStudent = studentRepository.findById(1L).get();
         log.debug("STUDENT READ: {}", savedStudent);
@@ -51,7 +51,7 @@ class StudentRepositoryTest {
         Student updatedStudent = studentRepository.findById(1L).get();
 
         assertAll(
-                () -> assertThat(count).isOne(),
+                () -> assertThat(generatedStudentId).isPositive(),
                 () -> assertThat(savedStudent.getSessionId()).isEqualTo(student.getSessionId()),
                 () -> assertThat(savedStudent.getUserId()).isEqualTo(student.getUserId()),
                 () -> assertThat(savedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt()),

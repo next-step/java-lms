@@ -4,7 +4,6 @@ import nextstep.students.domain.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -59,21 +58,15 @@ public class Session {
         return registration.enrolledStudent(student);
     }
 
-    public Student approved(NsUser user, List<Student> students) {
-        registration.addAll(students);
-
+    public Student approved(NsUser user) {
         Student student = enrolledStudent(user);
         student.approved();
-
         return student;
     }
 
-    public Student rejected(NsUser user, List<Student> students) {
-        registration.addAll(students);
-
+    public Student rejected(NsUser user) {
         Student student = enrolledStudent(user);
         student.rejected();
-
         return student;
     }
 

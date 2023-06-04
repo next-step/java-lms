@@ -11,8 +11,6 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 public class SessionApprovalService {
@@ -44,16 +42,14 @@ public class SessionApprovalService {
     public void approve(String userId, Long sessionId) {
         NsUser user = findUserByUserId(userId);
         Session savedSession = findSessionById(sessionId);
-        List<Student> appliedStudents = studentRepository.findAllBySessionId(sessionId);
-        Student approvedStudent = savedSession.approved(user, appliedStudents);
+        Student approvedStudent = savedSession.approved(user);
         studentRepository.update(approvedStudent);
     }
 
     public void reject(String userId, Long sessionId) {
         NsUser user = findUserByUserId(userId);
         Session savedSession = findSessionById(sessionId);
-        List<Student> appliedStudents = studentRepository.findAllBySessionId(sessionId);
-        Student rejectedStudent = savedSession.rejected(user, appliedStudents);
+        Student rejectedStudent = savedSession.rejected(user);
         studentRepository.update(rejectedStudent);
     }
 

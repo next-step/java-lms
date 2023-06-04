@@ -10,6 +10,7 @@ import nextstep.sessions.domain.SessionRegistrationBuilder;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.students.domain.Students;
+import nextstep.students.infrastructure.JdbcStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class SessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcStudentRepository(jdbcTemplate));
         durationMock = new SessionDuration(
                 LocalDateTime.of(2023, 4, 3, 0, 0),
                 LocalDateTime.of(2023, 6, 1, 0, 0)

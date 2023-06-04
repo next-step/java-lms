@@ -5,8 +5,12 @@ import nextstep.students.domain.StudentApprovalType;
 import nextstep.students.domain.StudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +26,18 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int save(Student student) {
+    public long save(Student student) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into student (ns_user_id, session_id, approval_type, created_at) values (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
-                student.getUserId(), student.getSessionId(), student.getApprovalTypeName(), student.getCreatedAt());
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, student.getUserId());
+            ps.setLong(2, student.getSessionId());
+            ps.setString(3, student.getApprovalTypeName());
+            ps.setTimestamp(4, Timestamp.valueOf(student.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     @Override
