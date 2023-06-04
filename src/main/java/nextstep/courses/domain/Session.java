@@ -55,6 +55,6 @@ public class Session {
     }
 
     public void register(NsUser user) {
-        sessionRegistration.addUser(user);
+        sessionRegistration.enroll(user);
     }
 }

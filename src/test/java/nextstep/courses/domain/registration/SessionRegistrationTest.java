@@ -23,7 +23,7 @@ class SessionRegistrationTest {
                 .build();
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> sessionRegistration.addUser(NsUserTest.SANJIGI))
+                .isThrownBy(() -> sessionRegistration.enroll(NsUserTest.SANJIGI))
                 .withMessageMatching("최대 수강 인원을 초과했습니다.");
 
     }
@@ -38,7 +38,7 @@ class SessionRegistrationTest {
                 .build();
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> sessionRegistration.addUser(NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> sessionRegistration.enroll(NsUserTest.JAVAJIGI))
                 .withMessageMatching("이미 등록 되었습니다.");
     }
 
@@ -51,7 +51,7 @@ class SessionRegistrationTest {
                 .build();
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> sessionRegistration.addUser(NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> sessionRegistration.enroll(NsUserTest.JAVAJIGI))
                 .withMessageMatching("해당 강의는 모집중이 아닙니다.");
     }
 

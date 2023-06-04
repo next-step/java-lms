@@ -22,7 +22,7 @@ public class SessionRegistration {
         this.students = students;
     }
 
-    public void addUser(NsUser user) {
+    public void enroll(NsUser user) {
         validateSessionStatus(sessionStatus);
         students.add(user);
     }
