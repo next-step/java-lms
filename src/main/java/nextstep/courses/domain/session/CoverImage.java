@@ -6,4 +6,15 @@ public class CoverImage {
     public CoverImage(String url) {
         this.url = url;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }

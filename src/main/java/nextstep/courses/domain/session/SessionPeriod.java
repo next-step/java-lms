@@ -24,5 +24,21 @@ public class SessionPeriod {
             throw new IllegalStateException("종료된 강의는 모집할 수 없습니다.");
         }
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionPeriod{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }
 

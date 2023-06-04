@@ -3,10 +3,14 @@ package nextstep.courses.repository;
 import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public interface SessionRepository {
-    Session create(Session newSession);
+    int create(Session newSession);
+
+    List<Session> findByCourseId(Long courseId);
 
     Session findById(Long sessionId);
 
-    Session register(Session session, NsUser nsUser);
+    int register(Session session, NsUser nsUser);
 }

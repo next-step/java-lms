@@ -4,10 +4,15 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sessions {
-    private List<Session> sessions;
+    private final List<Session> sessions = new ArrayList<>();
+
+    public void init(List<Session> sessionsForInit) {
+        sessions.addAll(sessionsForInit);
+    }
 
     public Session findSession(Long sessionId) {
         return sessions.stream()
@@ -17,6 +22,7 @@ public class Sessions {
     }
 
     public Session create(
+            Long courseId,
             NsUser nsUser,
             String title,
             Long sessionNumber,
@@ -30,6 +36,7 @@ public class Sessions {
         Session session = new Session(
                 0L,
                 title,
+                courseId,
                 sessionNumber,
                 new SessionPeriod(startDate, endDate),
                 new CoverImage(url),

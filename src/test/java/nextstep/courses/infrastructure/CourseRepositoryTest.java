@@ -35,4 +35,11 @@ public class CourseRepositoryTest {
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }
+
+    @Test
+    void testFindById() {
+        Course actual = courseRepository.findById(0L);
+        Course expected = new Course(0L, "넥스트스텝", 1L, actual.getCreatedAt(), null);
+        assertThat(actual).isEqualTo(expected);
+    }
 }

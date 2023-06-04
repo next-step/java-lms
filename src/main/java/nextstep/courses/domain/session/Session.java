@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session extends AbstractCourse {
+    private final Long courseId;
+
     private final Long sessionNumber;
 
     private final SessionPeriod sessionPeriod;
@@ -19,6 +21,7 @@ public class Session extends AbstractCourse {
     public Session(
             Long id,
             String title,
+            Long courseId,
             Long sessionNumber,
             SessionPeriod sessionPeriod,
             CoverImage coverImage,
@@ -30,6 +33,7 @@ public class Session extends AbstractCourse {
         Objects.requireNonNull(students);
         this.id = id;
         this.title = title;
+        this.courseId = courseId;
         this.sessionNumber = sessionNumber;
         this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
@@ -50,6 +54,7 @@ public class Session extends AbstractCourse {
                 0L,
                 title,
                 null,
+                null,
                 new SessionPeriod(startDate, endDate),
                 null,
                 new Students(capacity, sessionFeeType, SessionStatus.PREPARING),
@@ -68,5 +73,41 @@ public class Session extends AbstractCourse {
         sessionPeriod.checkRecruit();
         students.startRecruit();
         return this;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getSessionNumber() {
+        return sessionNumber;
+    }
+
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public Students getStudents() {
+        return students;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "courseId=" + courseId +
+                ", sessionNumber=" + sessionNumber +
+                ", sessionPeriod=" + sessionPeriod +
+                ", coverImage=" + coverImage +
+                ", students=" + students +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", creatorId=" + creatorId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
