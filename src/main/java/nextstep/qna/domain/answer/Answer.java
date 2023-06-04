@@ -1,10 +1,13 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.enums.ContentType;
+import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Question;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

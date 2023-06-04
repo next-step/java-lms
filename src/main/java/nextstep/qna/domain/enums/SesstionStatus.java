@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.enums;
 
 public enum SesstionStatus {
 

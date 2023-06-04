@@ -1,6 +1,6 @@
 package nextstep.qna.domain.fixture;
 
-import nextstep.qna.domain.Answer;
+import nextstep.qna.domain.answer.Answer;
 import nextstep.users.domain.NsUserFixture;
 
 public class AnswerFixture {
