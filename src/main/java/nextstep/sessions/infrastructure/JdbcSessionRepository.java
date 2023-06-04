@@ -29,10 +29,11 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into " +
-                "session (id, started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at) " +
-                "values(?, ?, ?, ?, ?, ? ,? ,?, ?)";
+                "session (id, course_id, started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at) " +
+                "values(?, ?, ?, ?, ?, ?, ? ,? ,?, ?)";
         return jdbcTemplate.update(sql,
                 session.getId(),
+                session.getCourseId(),
                 session.getStartedAt(),
                 session.getEndedAt(),
                 session.getCoverImageUrl(),
@@ -45,23 +46,24 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "select id, " +
+        String sql = "select id, course_id," +
                 "started_at, ended_at, cover_image, payment_type, status, recruitment_status, student_capacity, created_at, updated_at " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
+                rs.getLong(2),
                 new SessionDuration(
-                        toLocalDateTime(rs.getTimestamp(2)),
-                        toLocalDateTime(rs.getTimestamp(3))),
-                SessionCoverImage.create(rs.getString(4)),
-                SessionPaymentType.find(rs.getString(5)),
+                        toLocalDateTime(rs.getTimestamp(3)),
+                        toLocalDateTime(rs.getTimestamp(4))),
+                SessionCoverImage.create(rs.getString(5)),
+                SessionPaymentType.find(rs.getString(6)),
                 new SessionRegistration(
-                        SessionStatus.find(rs.getString(6)),
-                        SessionRecruitmentStatus.find(rs.getString(7)),
+                        SessionStatus.find(rs.getString(7)),
+                        SessionRecruitmentStatus.find(rs.getString(8)),
                         new Students(),
-                        rs.getInt(8)),
-                toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10)));
+                        rs.getInt(9)),
+                toLocalDateTime(rs.getTimestamp(10)),
+                toLocalDateTime(rs.getTimestamp(11)));
         Session savedSession = jdbcTemplate.queryForObject(sql, rowMapper, id);
         return Optional.ofNullable(savedSession);
     }

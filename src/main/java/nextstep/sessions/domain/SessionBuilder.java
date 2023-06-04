@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class SessionBuilder {
 
     private Long id;
+    private Long courseId;
     private SessionDuration duration;
     private SessionCoverImage coverImage;
     private SessionPaymentType paymentType;
@@ -17,6 +18,7 @@ public class SessionBuilder {
 
     private SessionBuilder(SessionBuilder copy) {
         this.id = copy.id;
+        this.courseId = copy.courseId;
         this.duration = copy.duration;
         this.coverImage = copy.coverImage;
         this.paymentType = copy.paymentType;
@@ -35,6 +37,11 @@ public class SessionBuilder {
 
     public SessionBuilder withId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public SessionBuilder withCourseId(Long courseId) {
+        this.courseId = courseId;
         return this;
     }
 
@@ -74,7 +81,7 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(id, duration, coverImage, paymentType, registration, createdAt, updatedAt);
+        return new Session(id, courseId, duration, coverImage, paymentType, registration, createdAt, updatedAt);
     }
 
 }

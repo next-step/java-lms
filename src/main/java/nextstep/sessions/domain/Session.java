@@ -11,6 +11,8 @@ public class Session {
 
     private Long id;
 
+    private Long courseId;
+
     private SessionDuration duration;
 
     private SessionCoverImage coverImage;
@@ -26,14 +28,16 @@ public class Session {
     public Session() {
     }
 
-    public Session(SessionDuration duration,
+    public Session(Long courseId,
+                   SessionDuration duration,
                    SessionCoverImage coverImage,
                    SessionPaymentType paymentType,
                    SessionRegistration registration) {
-        this(null, duration, coverImage, paymentType, registration, LocalDateTime.now(), null);
+        this(null, courseId, duration, coverImage, paymentType, registration, LocalDateTime.now(), null);
     }
 
     public Session(Long id,
+                   Long courseId,
                    SessionDuration duration,
                    SessionCoverImage coverImage,
                    SessionPaymentType paymentType,
@@ -41,6 +45,7 @@ public class Session {
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.id = id;
+        this.courseId = courseId;
         this.duration = duration;
         this.coverImage = coverImage;
         this.paymentType = paymentType;
@@ -77,6 +82,10 @@ public class Session {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 
     public SessionDuration getDuration() {

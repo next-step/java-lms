@@ -61,6 +61,7 @@ class SessionApprovalServiceTest {
         sessionRepository.save(
                 SessionBuilder.aSession()
                         .withId(sessionId)
+                        .withCourseId(1L)
                         .withDuration(new SessionDuration(LocalDateTime.now(),
                                 LocalDateTime.now()))
                         .withCoverImage(SessionCoverImage.create("http://test.com/image"))

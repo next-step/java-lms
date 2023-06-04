@@ -51,6 +51,7 @@ class SessionRepositoryTest {
         long testID = 1L;
         Session session = SessionBuilder.aSession()
                 .withId(testID)
+                .withCourseId(1L)
                 .withDuration(durationMock)
                 .withCoverImage(coverImageMock)
                 .withPaymentType(SessionPaymentType.PAID)

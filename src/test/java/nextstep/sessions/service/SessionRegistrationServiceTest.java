@@ -35,8 +35,9 @@ class SessionRegistrationServiceTest {
     void setUp() {
         testID = 1L;
         sessionRegistrationService.save(
-                SessionBuilder.aSession().
-                        withId(testID)
+                SessionBuilder.aSession()
+                        .withId(testID)
+                        .withCourseId(1L)
                         .withDuration(new SessionDuration(LocalDateTime.now(), LocalDateTime.now()))
                         .withCoverImage(SessionCoverImage.create("http://test.com/image"))
                         .withPaymentType(SessionPaymentType.PAID)
