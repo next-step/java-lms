@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.registration.RegistrationOpenType;
+import nextstep.courses.domain.registration.EnrollmentOpenType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionCostType;
 import nextstep.courses.domain.session.SessionRepository;
@@ -39,7 +39,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString(4),
                 rs.getInt(5),
                 SessionCostType.valueOf(rs.getString(6)),
-                RegistrationOpenType.valueOf(rs.getString(7)),
+                EnrollmentOpenType.valueOf(rs.getString(7)),
                 SessionState.valueOf(rs.getString(8)),
                 rs.getInt(9),
                 toLocalDateTime(rs.getTimestamp(10)),

@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.courses.domain.registration.RegistrationStatus;
+import nextstep.courses.domain.registration.EnrollmentStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +14,6 @@ public class StudentTest {
     @DisplayName("수강 승인")
     void approve() {
         Student student = student1.approveSession();
-        assertThat(student.getRegistrationStatus()).isEqualTo(RegistrationStatus.APPROVED);
+        assertThat(student.getEnrollmentStatus()).isEqualTo(EnrollmentStatus.APPROVED);
     }
 }

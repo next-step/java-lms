@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.registration.RegistrationOpenType;
-import nextstep.courses.domain.registration.RegistrationStatus;
+import nextstep.courses.domain.registration.EnrollmentOpenType;
+import nextstep.courses.domain.registration.EnrollmentStatus;
 import nextstep.users.domain.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,10 @@ public class SessionApprovalTest {
     @DisplayName("수강 여부 승인_강의 확인exception")
     void approve_wrongSessionId() {
 
-        Student student = new Student(1L, 1L, RegistrationStatus.APPROVED);
-        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
-                , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
-        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+        Student student = new Student(1L, 1L, EnrollmentStatus.APPROVED);
+        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)
+                , createSession(2L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
+        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
 
         SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
 
@@ -32,10 +32,10 @@ public class SessionApprovalTest {
     @Test
     @DisplayName("수강 승인 예외_학생의 수강 승인이 완료된경우")
     void validate_approvalException() {
-        Student student = new Student(1L, 1L, RegistrationStatus.APPROVED);
-        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
-                        , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
-        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+        Student student = new Student(1L, 1L, EnrollmentStatus.APPROVED);
+        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)
+                        , createSession(2L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
+        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
 
         SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
 
@@ -47,10 +47,10 @@ public class SessionApprovalTest {
     @Test
     @DisplayName("수강 승인 예외_학생의 수강 취소가 완료된경우")
     void validate_declineException() {
-        Student student = new Student(1L, 1L, RegistrationStatus.CANCELED);
-        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
-                , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
-        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+        Student student = new Student(1L, 1L, EnrollmentStatus.CANCELED);
+        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)
+                , createSession(2L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
+        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
 
         SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
 
@@ -62,10 +62,10 @@ public class SessionApprovalTest {
     @Test
     @DisplayName("수강 승인 예외_선발된 학생이 아닌 경우")
     void validate_notSelectionStudentException() {
-        Student student = new Student(1L, 1L, RegistrationStatus.CANCELED);
-        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)
-                , createSession(2L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
-        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, RegistrationOpenType.CLOSE, SessionState.READY, 30)));
+        Student student = new Student(1L, 1L, EnrollmentStatus.CANCELED);
+        Sessions selectionSessions = new Sessions(Arrays.asList(createSession(1L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)
+                , createSession(2L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
+        Sessions studentSessions = new Sessions(Arrays.asList(createSession(3L, SessionCostType.FREE, EnrollmentOpenType.CLOSE, SessionState.READY, 30)));
 
         SessionApproval sessionApproval = new SessionApproval(student, studentSessions, selectionSessions);
 

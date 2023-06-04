@@ -1,6 +1,6 @@
 package nextstep.courses.domain.registration;
 
-import nextstep.courses.DuplicateStudentRegisterException;
+import nextstep.courses.DuplicateStudentEnrollException;
 import nextstep.courses.SessionStateNotRecruitStartException;
 import nextstep.courses.StudentMaxException;
 import nextstep.courses.domain.session.SessionState;
@@ -9,19 +9,19 @@ import nextstep.users.domain.Students;
 
 import java.util.Objects;
 
-public class SessionRegistration {
+public class SessionEnrollment {
     private SessionState sessionState;
-    private RegistrationOpenType registrationOpenType;
+    private EnrollmentOpenType enrollmentOpenType;
     private int maxUser;
     private Students students;
 
-    public SessionRegistration(SessionState sessionState, RegistrationOpenType registrationOpenType, int maxUser) {
-        this(sessionState, registrationOpenType, maxUser, new Students());
+    public SessionEnrollment(SessionState sessionState, EnrollmentOpenType enrollmentOpenType, int maxUser) {
+        this(sessionState, enrollmentOpenType, maxUser, new Students());
     }
 
-    public SessionRegistration(SessionState sessionState, RegistrationOpenType registrationOpenType, int maxUser, Students students) {
+    public SessionEnrollment(SessionState sessionState, EnrollmentOpenType enrollmentOpenType, int maxUser, Students students) {
         this.sessionState = sessionState;
-        this.registrationOpenType = registrationOpenType;
+        this.enrollmentOpenType = enrollmentOpenType;
         this.maxUser = maxUser;
         this.students = students;
     }
@@ -35,8 +35,8 @@ public class SessionRegistration {
     }
 
     private void validateState() {
-        if (!registrationOpenType.isOpen()) {
-            throw new SessionStateNotRecruitStartException(registrationOpenType.getDescription() + "인 강의입니다.");
+        if (!enrollmentOpenType.isOpen()) {
+            throw new SessionStateNotRecruitStartException(enrollmentOpenType.getDescription() + "인 강의입니다.");
         }
     }
 
@@ -48,7 +48,7 @@ public class SessionRegistration {
 
     private void validateDuplicateStudent(Student student) {
         if (students.isDuplicate(student)) {
-            throw new DuplicateStudentRegisterException("중복 강의 수강은 불가합니다.");
+            throw new DuplicateStudentEnrollException("중복 강의 수강은 불가합니다.");
         }
     }
 
@@ -60,15 +60,15 @@ public class SessionRegistration {
         return maxUser;
     }
 
-    public RegistrationOpenType getRegistrationOpenType() {
-        return registrationOpenType;
+    public EnrollmentOpenType getRegistrationOpenType() {
+        return enrollmentOpenType;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SessionRegistration that = (SessionRegistration) o;
+        SessionEnrollment that = (SessionEnrollment) o;
         return maxUser == that.maxUser && sessionState == that.sessionState;
     }
 

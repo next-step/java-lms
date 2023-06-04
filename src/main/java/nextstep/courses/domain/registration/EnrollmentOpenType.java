@@ -1,13 +1,13 @@
 package nextstep.courses.domain.registration;
 
-public enum RegistrationOpenType {
+public enum EnrollmentOpenType {
     OPEN("OPEN", "모집중"),
     CLOSE("CLOSE", "비모집중");
 
     private String code;
     private String description;
 
-    RegistrationOpenType(String code, String description) {
+    EnrollmentOpenType(String code, String description) {
         this.code = code;
         this.description = description;
     }

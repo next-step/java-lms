@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.registration.RegistrationOpenType;
-import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.EnrollmentOpenType;
+import nextstep.courses.domain.registration.SessionEnrollment;
 import nextstep.users.domain.Student;
 import nextstep.users.domain.Students;
 
@@ -15,37 +15,37 @@ public class Session {
     private String cover;
     private int cardinalNumber;
     private SessionCostType sessionCostType;
-    private RegistrationOpenType registrationOpenType;
-    private SessionRegistration sessionRegistration;
+    private EnrollmentOpenType enrollmentOpenType;
+    private SessionEnrollment sessionEnrollment;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
+    Session(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        this(0L, courseId, title, cover, cardinalNumber, sessionCostType, enrollmentOpenType, sessionState, maxUser, startDate, endDate);
     }
 
-    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+    Session(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.cover = cover;
         this.cardinalNumber = cardinalNumber;
         this.sessionCostType = sessionCostType;
-        this.sessionRegistration = new SessionRegistration(sessionState, registrationOpenType, maxUser);
+        this.sessionEnrollment = new SessionEnrollment(sessionState, enrollmentOpenType, maxUser);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
+    public static Session of(Long id, Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(id, courseId, title, cover, cardinalNumber, sessionCostType, enrollmentOpenType, sessionState, maxUser, startDate, endDate);
     }
 
-    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, RegistrationOpenType registrationOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
-        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, registrationOpenType, sessionState, maxUser, startDate, endDate);
+    public static Session of(Long courseId, String title, String cover, int cardinalNumber, SessionCostType sessionCostType, EnrollmentOpenType enrollmentOpenType, SessionState sessionState, int maxUser, LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(courseId, title, cover, cardinalNumber, sessionCostType, enrollmentOpenType, sessionState, maxUser, startDate, endDate);
     }
 
     public Students enroll(Student student) {
-        return sessionRegistration.register(student);
+        return sessionEnrollment.register(student);
     }
 
     public Long getId() {
@@ -72,8 +72,8 @@ public class Session {
         return sessionCostType;
     }
 
-    public SessionRegistration getSessionRegistration() {
-        return sessionRegistration;
+    public SessionEnrollment getSessionRegistration() {
+        return sessionEnrollment;
     }
 
     public LocalDateTime getStartDate() {
