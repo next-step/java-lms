@@ -1,8 +1,7 @@
 package nextstep.courses.domain.registration;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SessionRegistration {
@@ -13,8 +12,8 @@ public class SessionRegistration {
         this(sessionStatus, maxUserCount, new HashSet<>());
     }
 
-    public SessionRegistration(SessionStatus sessionStatus, int maxUserCount, Set<NsUser> users) {
-        this(sessionStatus, new Students(maxUserCount, users));
+    public SessionRegistration(SessionStatus sessionStatus, int maxUserCount, Set<Student> students) {
+        this(sessionStatus, new Students(maxUserCount, students));
     }
 
     public SessionRegistration(SessionStatus sessionStatus, Students students) {
@@ -22,9 +21,9 @@ public class SessionRegistration {
         this.students = students;
     }
 
-    public void enroll(NsUser user) {
+    public void enroll(Student student, Set<Student> students) {
         validateSessionStatus(sessionStatus);
-        students.add(user);
+        this.students.enroll(student);
     }
 
     private void validateSessionStatus(SessionStatus sessionStatus) {
@@ -33,7 +32,7 @@ public class SessionRegistration {
         }
     }
 
-    public Set<NsUser> getStudents() {
+    public Set<Student> getStudents() {
         return students.getUsers();
     }
 
