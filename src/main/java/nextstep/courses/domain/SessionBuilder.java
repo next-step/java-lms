@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionRegistration;
+
 public class SessionBuilder {
     private Long id;
     private SessionRegistration sessionRegistration;

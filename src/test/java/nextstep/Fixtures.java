@@ -1,6 +1,9 @@
 package nextstep;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.registration.SessionRegistrationBuilder;
+import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.StudentsBuilder;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +26,11 @@ public class Fixtures {
     public static SessionRegistrationBuilder aSessionRegistrationBuilder() {
         return SessionRegistrationBuilder.aSessionRegistrationBuilder()
                 .withSessionStatus(sessionStatus)
+                .withStudents(aStudentsBuilder().build());
+    }
+
+    public static StudentsBuilder aStudentsBuilder() {
+        return StudentsBuilder.aStudentsBuilder()
                 .withMaxUserCount(maxUserCount);
     }
 }

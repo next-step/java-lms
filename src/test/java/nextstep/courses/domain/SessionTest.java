@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +10,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
 
-import static nextstep.Fixtures.aSession;
-import static nextstep.Fixtures.aSessionRegistrationBuilder;
+import static nextstep.Fixtures.*;
+import static nextstep.courses.domain.registration.StudentMother.aStudent;
+import static nextstep.courses.domain.registration.StudentsMother.aStudents;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
@@ -62,8 +65,9 @@ class SessionTest {
                         .withSessionStatus(sessionStatus)
                         .build())
                 .build();
+
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
+                .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
                 .withMessageMatching("해당 강의는 모집중이 아닙니다.");
     }
 
@@ -73,42 +77,41 @@ class SessionTest {
     void 수강신청_모집중_가능(SessionStatus sessionStatus) {
         Session session = aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
                         .withSessionStatus(sessionStatus)
+                        .withStudents(aStudents().build())
                         .build())
                 .build();
 
-        assertThat(session.getUsers()).hasSize(1).containsOnly(NsUserTest.JAVAJIGI);
+        assertThat(session.getUsers()).hasSize(1).containsOnly(aStudent().build());
     }
 
     @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
     @Test
     void 수강신청_수강인원초과_불가능() {
-        final int maxUserCount = 1;
         Session session = aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
-                        .withMaxUserCount(maxUserCount)
+                        .withStudents(aStudents().build())
                         .build())
                 .build();
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.register(NsUserTest.SANJIGI))
+                .isThrownBy(() -> session.register(NsUserTest.SANJIGI, session.getUsers()))
                 .withMessageMatching("최대 수강 인원을 초과했습니다.");
     }
 
     @DisplayName("중복 신청된 경우 예외처리")
     @Test
     void 수강신청_중복신청된_경우() {
-        Session session = aSession()
+        Session session = aSession().withId(1L)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withUser(NsUserTest.JAVAJIGI)
-                        .withUser(NsUserTest.SANJIGI)
+                        .withStudents(aStudentsBuilder()
+                                .withStudent(new Student(NsUserTest.JAVAJIGI.getId(), 1L))
+                                .build())
                         .build())
                 .build();
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.register(NsUserTest.SANJIGI))
+                .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
                 .withMessageMatching("이미 등록 되었습니다.");
     }
 }

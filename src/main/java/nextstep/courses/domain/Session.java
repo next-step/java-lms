@@ -1,9 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public class Session {
     private Long id;
@@ -20,6 +23,10 @@ public class Session {
         this.sessionCostType = sessionCostType;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDateTime startedAt() {
         return this.sessionPeriod.getStartedAt();
     }
@@ -28,8 +35,8 @@ public class Session {
         return this.sessionPeriod.getEndedAt();
     }
 
-    public List<NsUser> getUsers() {
-        return sessionRegistration.getUsers();
+    public Set<Student> getUsers() {
+        return sessionRegistration.getStudents();
     }
 
     public String getSessionCoverImage() {
@@ -48,7 +55,9 @@ public class Session {
         return sessionRegistration.getMaxUserCount();
     }
 
-    public void register(NsUser user) {
-        sessionRegistration.addUser(user);
+    public Student register(NsUser nsUser, Set<Student> students) {
+        Student student = new Student(nsUser.getId(), this.id);
+        sessionRegistration.enroll(student, students);
+        return student;
     }
 }
