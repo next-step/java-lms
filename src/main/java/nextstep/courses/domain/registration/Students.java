@@ -1,13 +1,11 @@
 package nextstep.courses.domain.registration;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class Students {
     private final int maxUserCount;
-    private final Set<NsUser> users;
+    private final Set<Student> students;
 
     public Students() {
         this(0);
@@ -17,31 +15,31 @@ public class Students {
         this(maxUserCount, new HashSet<>());
     }
 
-    public Students(int maxUserCount, Set<NsUser> users) {
+    public Students(int maxUserCount, Set<Student> students) {
         this.maxUserCount = maxUserCount;
-        this.users = users;
+        this.students = students;
     }
 
-    public void add(NsUser nsUser) {
+    public void enroll(Student student) {
         validateUserCount();
-        validateUserDuplicated(nsUser);
-        users.add(nsUser);
+        validateUserDuplicated(student);
+        students.add(student);
     }
 
     private void validateUserCount() {
-        if (this.maxUserCount <= users.size()) {
+        if (this.maxUserCount <= students.size()) {
             throw new IllegalArgumentException("최대 수강 인원을 초과했습니다.");
         }
     }
 
-    private void validateUserDuplicated(NsUser user) {
-        if (!users.add(user)) {
+    private void validateUserDuplicated(Student student) {
+        if (!students.add(student)) {
             throw new IllegalArgumentException("이미 등록 되었습니다.");
         }
     }
 
-    public Set<NsUser> getUsers() {
-        return this.users;
+    public Set<Student> getUsers() {
+        return this.students;
     }
 
     public int getMaxUserCount() {
