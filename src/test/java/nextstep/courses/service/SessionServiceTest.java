@@ -2,6 +2,8 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.Student;
+import nextstep.courses.domain.registration.StudentRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static nextstep.Fixtures.*;
+import static nextstep.courses.domain.registration.SessionRegistrationMother.aSessionRegistration;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 @SpringBootTest
 class SessionServiceTest {
@@ -21,6 +23,9 @@ class SessionServiceTest {
     private SessionService sessionService;
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @DisplayName("Session 저장")
     @Test
@@ -45,31 +50,27 @@ class SessionServiceTest {
         long sessionId = sessionRepository.save(session);
 
         Session foundSession = sessionRepository.findById(sessionId);
-        sessionService.register(foundSession, NsUserTest.JAVAJIGI);
-        sessionService.register(foundSession, NsUserTest.SANJIGI);
+        sessionService.register(foundSession.getId(), NsUserTest.JAVAJIGI);
+        sessionService.register(foundSession.getId(), NsUserTest.SANJIGI);
 
-        List<Long> sessionUserIds = sessionRepository.findSessionUserIdsBySessionId(sessionId);
-        assertThat(sessionUserIds).hasSize(2);
+        List<Student> students = studentRepository.findAllBySessionId(sessionId);
+        assertThat(students).hasSize(2);
     }
 
     @DisplayName("초과 등록")
     @Test
     void register_실패_인원초과() {
-        Session session = aSession().withId(1L).withSessionRegistration(
-                aSessionRegistrationBuilder().withStudents(
-                        aStudentsBuilder()
-                                .withMaxUserCount(1)
-                                .withUsers(NsUserTest.JAVAJIGI)
-                                .build()
-                ).build()
-        ).build();
+        Session session = aSession().withId(1L)
+                .withSessionRegistration(aSessionRegistration().build())
+                .build();
 
-        sessionRepository.save(session);
+        long sessionId = sessionRepository.save(session);
+        studentRepository.save(new Student(NsUserTest.JAVAJIGI.getId(), sessionId));
+        studentRepository.save(new Student(NsUserTest.SANJIGI.getId(), sessionId));
 
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> sessionService.register(session, NsUserTest.SANJIGI))
-                .withMessageMatching("최대 수강 인원을 초과했습니다.");
+        List<Student> students = studentRepository.findAllBySessionId(sessionId);
 
+        assertThat(students).hasSizeGreaterThan(session.getMaxUserCount());
 
     }
 
@@ -83,15 +84,12 @@ class SessionServiceTest {
                 ).build()
         ).build();
 
-        sessionService.register(session, NsUserTest.JAVAJIGI);
+        long sessionId = sessionService.save(session);
+        sessionService.register(sessionId, NsUserTest.JAVAJIGI);
 
-        List<Long> userIds = sessionRepository.findSessionUserIdsBySessionId(1L);
+        List<Student> students = studentRepository.findAllBySessionId(sessionId);
 
-        assertThat(userIds.contains(NsUserTest.JAVAJIGI.getId())).isTrue();
-
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> sessionService.register(session, NsUserTest.JAVAJIGI))
-                .withMessageMatching("이미 등록 되었습니다.");
+        assertThat(students.contains(new Student(NsUserTest.JAVAJIGI.getId(), sessionId))).isTrue();
 
     }
 }
