@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
@@ -66,8 +65,8 @@ public class QuestionTest {
   @Test
   void delete_같은_사용자의_답변만_존재하면_삭제_가능() throws Exception {
     // given
-    question.addAnswer(AnswerTest.A1);
-    question.addAnswer(AnswerTest.A1);
+    question.addAnswer(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
+    question.addAnswer(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
 
     // when
     List<DeleteHistory> deleteHistories = question.delete(user);
@@ -78,8 +77,8 @@ public class QuestionTest {
     for (Answer answer : question.getAnswers()) {
       assertTrue(answer.isDeleted());
     }
-    Assertions.assertThat(deleteHistories)
-        .hasSize(3);
+
+    Assertions.assertThat(deleteHistories).hasSize(3);
   }
 
   @Test
