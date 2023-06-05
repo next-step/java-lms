@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.registration.SessionRegistration;
 import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class Session {
         return this.sessionPeriod.getEndedAt();
     }
 
-    public Set<NsUser> getUsers() {
+    public Set<Student> getUsers() {
         return sessionRegistration.getStudents();
     }
 
@@ -54,7 +55,9 @@ public class Session {
         return sessionRegistration.getMaxUserCount();
     }
 
-    public void register(NsUser user) {
-        sessionRegistration.enroll(user);
+    public Student register(NsUser nsUser, Set<Student> students) {
+        Student student = new Student(nsUser.getId(), this.id);
+        sessionRegistration.enroll(student, students);
+        return student;
     }
 }
