@@ -17,6 +17,8 @@ class SessionTest {
   @BeforeEach
   void setup() {
     session = new Session(
+        "제목",
+        "내용",
         LocalDateTime.of(2023, 6, 2, 12, 0),
         LocalDateTime.of(2023, 6, 3, 0, 0),
         null,
@@ -27,6 +29,8 @@ class SessionTest {
   @Test
   void 생성자_수강신청_날짜_검증_실패() {
     session = new Session(
+        "제목",
+        "내용",
         LocalDateTime.of(2023, 6, 3, 0, 0),
         LocalDateTime.of(2023, 6, 2, 0, 0),
         null,
@@ -40,6 +44,8 @@ class SessionTest {
   @Test
   void 생성자_수강신청_인원_검증_실패() {
     session = new Session(
+        "제목",
+        "내용",
         LocalDateTime.of(2023, 6, 2, 0, 0),
         LocalDateTime.of(2023, 6, 3, 0, 0),
         null,
@@ -74,6 +80,8 @@ class SessionTest {
   @Test
   void enrollment_실패_모집인원_초과() {
     session = new Session(
+        "제목",
+        "내용",
         LocalDateTime.of(2023, 6, 2, 12, 0),
         LocalDateTime.of(2023, 6, 3, 0, 0),
         null,
@@ -91,6 +99,8 @@ class SessionTest {
   @Test
   void enrollment_실패_이미_신청한_사용자() {
     session = new Session(
+        "제목",
+        "내용",
         LocalDateTime.of(2023, 6, 2, 12, 0),
         LocalDateTime.of(2023, 6, 3, 0, 0),
         null,

@@ -13,6 +13,13 @@ import nextstep.users.domain.NsUser;
  */
 public class Session {
 
+  private Long id;
+
+  private String title;
+
+  private String contents;
+
+
   private LocalDateTime startDateTime;
 
   private LocalDateTime endDateTime;
@@ -27,7 +34,9 @@ public class Session {
 
   private Set<NsUser> users = new HashSet<>();
 
-  public Session(LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
+  public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
+    this.title = title;
+    this.contents = contents;
     this.startDateTime = startDateTime;
     this.endDateTime = endDateTime;
     this.coverImage = coverImage;
