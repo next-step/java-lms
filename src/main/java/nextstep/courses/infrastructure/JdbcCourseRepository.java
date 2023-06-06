@@ -1,17 +1,15 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import static nextstep.courses.util.RepositoryUtils.toLocalDateTime;
 
 @Repository("courseRepository")
-public class JdbcCourseRepository implements CourseRepository {
-    private JdbcOperations jdbcTemplate;
+public class JdbcCourseRepository implements JdbcRepository<Course> {
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -33,12 +31,5 @@ public class JdbcCourseRepository implements CourseRepository {
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
-    }
-
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }
