@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Course extends AbstractCourse {
+public class Course extends BaseEntity {
     private final Sessions sessions = new Sessions();
 
     public Course() {

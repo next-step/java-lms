@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public abstract class AbstractCourse {
+public abstract class BaseEntity {
     protected Long id;
 
     protected String title;
@@ -38,7 +38,7 @@ public abstract class AbstractCourse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbstractCourse that = (AbstractCourse) o;
+        BaseEntity that = (BaseEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(creatorId, that.creatorId) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 

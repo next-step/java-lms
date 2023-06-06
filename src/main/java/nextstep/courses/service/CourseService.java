@@ -6,6 +6,7 @@ import nextstep.courses.domain.session.SessionFeeType;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.repository.CourseRepository;
 import nextstep.courses.repository.SessionRepository;
+import nextstep.courses.repository.StudentRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,12 @@ public class CourseService {
 
     private final SessionRepository sessionRepository;
 
-    public CourseService(CourseRepository courseRepository, SessionRepository sessionRepository) {
+    private final StudentRepository studentRepository;
+
+    public CourseService(CourseRepository courseRepository, SessionRepository sessionRepository, StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
         this.sessionRepository = sessionRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Course findCourseById(Long courseId) {
@@ -52,10 +56,10 @@ public class CourseService {
     }
 
     @Transactional
-    public void registerSession(Long courseId, Long sessionId, NsUser nsUser) {
-        Session registered = findCourseById(courseId)
-                .findSession(sessionId)
-                .register(nsUser);
-        sessionRepository.register(registered, nsUser);
+    public void registerSession(Long sessionId, NsUser nsUser) {
+        Session registered = sessionRepository.findById(sessionId)
+                .initUsers(studentRepository.findBySessionId(sessionId))
+                .validateRegister(nsUser);
+        studentRepository.registerSession(registered.getId(), nsUser.getId());
     }
 }

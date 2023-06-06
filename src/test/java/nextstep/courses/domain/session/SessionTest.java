@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,6 +20,16 @@ class SessionTest {
     }
 
     private static Session createSessionForTest(LocalDate startDate, LocalDate endDate, int capacity) {
-        return new Session("TEST", startDate, endDate, SessionFeeType.FREE, capacity);
+        return new Session(
+                0L,
+                "TEST",
+                0L,
+                0L,
+                new SessionPeriod(startDate, endDate),
+                new CoverImage(""),
+                new Students(capacity, SessionFeeType.FREE, SessionStatus.PREPARING),
+                0L,
+                LocalDateTime.now(),
+                null);
     }
 }

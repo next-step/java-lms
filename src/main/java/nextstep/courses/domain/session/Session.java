@@ -1,13 +1,13 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.AbstractCourse;
+import nextstep.courses.domain.BaseEntity;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
-public class Session extends AbstractCourse {
+public class Session extends BaseEntity {
     private final Long courseId;
 
     private final Long sessionNumber;
@@ -43,29 +43,13 @@ public class Session extends AbstractCourse {
         this.updatedAt = updatedAt;
     }
 
-    public Session(
-            String title,
-            LocalDate startDate,
-            LocalDate endDate,
-            SessionFeeType sessionFeeType,
-            int capacity
-    ) {
-        this(
-                0L,
-                title,
-                null,
-                null,
-                new SessionPeriod(startDate, endDate),
-                null,
-                new Students(capacity, sessionFeeType, SessionStatus.PREPARING),
-                null,
-                LocalDateTime.now(),
-                null
-        );
+    public Session initUsers(List<Student> students) {
+        this.students.initUsers(students);
+        return this;
     }
 
-    public Session register(NsUser nsUser) {
-        students.addStudent(nsUser);
+    public Session validateRegister(NsUser nsUser) {
+        students.validateRegister(nsUser);
         return this;
     }
 

@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
 import nextstep.courses.repository.SessionRepository;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -102,12 +101,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDateTime(rs.getTimestamp(12)),
                 toLocalDateTime(rs.getTimestamp(13)));
         return jdbcOperations.queryForObject(sql, rowMapper, sessionId);
-    }
-
-    @Override
-    public int register(Session session, NsUser nsUser) {
-        String sql = "insert into session_student (session_id, user_id) values (?, ?)";
-        return jdbcOperations.update(sql, session.getId(), nsUser.getId());
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {
