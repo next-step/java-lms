@@ -36,7 +36,7 @@ class SessionTest {
         null,
         1);
 
-    assertThatThrownBy(() -> session.validate())
+    assertThatThrownBy(() -> session.validateInit())
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("수강신청 종료 일자는 수강신청 시작 일자보다 빠를 수 없습니다");
   }
@@ -51,7 +51,7 @@ class SessionTest {
         null,
         0);
 
-    assertThatThrownBy(() -> session.validate())
+    assertThatThrownBy(() -> session.validateInit())
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("수강인원 수는 1명 이상이어야 합니다");
   }
