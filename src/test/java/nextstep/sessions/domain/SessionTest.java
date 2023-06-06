@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import static nextstep.sessions.testFixture.SessionBuilder.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -16,25 +17,16 @@ class SessionTest {
 
   @BeforeEach
   void setup() {
-    session = new Session(
-        "제목",
-        "내용",
-        LocalDateTime.of(2023, 6, 2, 12, 0),
-        LocalDateTime.of(2023, 6, 3, 0, 0),
-        null,
-        1);
+    session = aSession().build();
     user = NsUserTest.JAVAJIGI;
   }
 
   @Test
   void 생성자_수강신청_날짜_검증_실패() {
-    session = new Session(
-        "제목",
-        "내용",
-        LocalDateTime.of(2023, 6, 3, 0, 0),
-        LocalDateTime.of(2023, 6, 2, 0, 0),
-        null,
-        1);
+    session = aSession()
+        .withStartDate(LocalDateTime.of(2023, 6, 3, 0, 0))
+        .withEndDate(LocalDateTime.of(2023, 6, 2, 0, 0))
+        .build();
 
     assertThatThrownBy(() -> session.validateInit())
         .isInstanceOf(IllegalArgumentException.class)
@@ -43,13 +35,9 @@ class SessionTest {
 
   @Test
   void 생성자_수강신청_인원_검증_실패() {
-    session = new Session(
-        "제목",
-        "내용",
-        LocalDateTime.of(2023, 6, 2, 0, 0),
-        LocalDateTime.of(2023, 6, 3, 0, 0),
-        null,
-        0);
+    session = aSession()
+        .withCapacity(0)
+        .build();
 
     assertThatThrownBy(() -> session.validateInit())
         .isInstanceOf(IllegalArgumentException.class)
@@ -79,14 +67,6 @@ class SessionTest {
 
   @Test
   void enrollment_실패_모집인원_초과() {
-    session = new Session(
-        "제목",
-        "내용",
-        LocalDateTime.of(2023, 6, 2, 12, 0),
-        LocalDateTime.of(2023, 6, 3, 0, 0),
-        null,
-        1);
-
     session.recruitStart();
     session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 1));
 
@@ -98,13 +78,9 @@ class SessionTest {
 
   @Test
   void enrollment_실패_이미_신청한_사용자() {
-    session = new Session(
-        "제목",
-        "내용",
-        LocalDateTime.of(2023, 6, 2, 12, 0),
-        LocalDateTime.of(2023, 6, 3, 0, 0),
-        null,
-        2);
+    session = aSession()
+        .withCapacity(2)
+        .build();
 
     session.recruitStart();
     session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0));
