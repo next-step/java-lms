@@ -8,83 +8,89 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
+  private Long id;
 
-    private String title;
+  private QuestionBody questionBody;
 
-    private String contents;
+  private NsUser writer;
 
-    private NsUser writer;
+  private Answers answers = new Answers();
 
-    private List<Answer> answers = new ArrayList<>();
+  private boolean deleted = false;
 
-    private boolean deleted = false;
+  private LocalDateTime createdDate = LocalDateTime.now();
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+  private LocalDateTime updatedDate;
 
-    private LocalDateTime updatedDate;
+  public Question() {
+  }
 
-    public Question() {
+  public Question(NsUser writer, String title, String contents) {
+    this(0L, writer, new QuestionBody(title, contents));
+  }
+
+  public Question(Long id, NsUser writer, String title, String contents) {
+    this(id, writer, new QuestionBody(title, contents));
+  }
+
+  public Question(Long id, NsUser writer, QuestionBody questionBody) {
+    this.id = id;
+    this.writer = writer;
+    this.questionBody = questionBody;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return this.questionBody.getTitle();
+  }
+
+  public String getContents() {
+    return this.questionBody.getContents();
+  }
+
+  public NsUser getWriter() {
+    return writer;
+  }
+
+  public void addAnswer(Answer answer) {
+    answer.toQuestion(this);
+    answers.add(answer);
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public List<Answer> getAnswers() {
+    return answers.getAnswers();
+  }
+
+  public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    if (!loginUser.equals(writer)) {
+      throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
+    deleted = true;
 
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
+    return deleteHistories(loginUser);
+  }
 
-    public Long getId() {
-        return id;
-    }
+  private List<DeleteHistory> deleteHistories(NsUser loginUser) throws CannotDeleteException {
+    LocalDateTime deletedDateTime = LocalDateTime.now();
 
-    public String getTitle() {
-        return title;
-    }
+    List<DeleteHistory> deleteHistories = new ArrayList<>();
+    deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, deletedDateTime));
+    deleteHistories.addAll(answers.deleteAll(loginUser, deletedDateTime));
 
-    public String getContents() {
-        return contents;
-    }
+    return deleteHistories;
+  }
 
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (!loginUser.equals(writer)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.delete(loginUser, deleteHistories);
-        }
-        deleted = true;
-
-        return deleteHistories;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
+  @Override
+  public String toString() {
+    return "Question [id=" + getId() + ", title=" + this.questionBody.getTitle() + ", contents=" + this.questionBody.getContents() + ", writer="
+        + writer + "]";
+  }
 }

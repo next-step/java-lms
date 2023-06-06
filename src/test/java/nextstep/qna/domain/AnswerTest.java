@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.qna.CannotDeleteException;
@@ -29,19 +30,18 @@ public class AnswerTest {
 
     @Test
     void delete_성공() throws Exception {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        answer.delete(user, deleteHistories);
+        LocalDateTime deletedDateTime = LocalDateTime.now();
+        DeleteHistory deleteHistory = answer.delete(user, deletedDateTime);
 
         Assertions.assertTrue(answer.isDeleted());
-        assertThat(deleteHistories).hasSize(1);
+        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), deletedDateTime));
     }
 
     @Test
     void delete_답변자와_일치하지_않으면_실패() throws Exception {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
         NsUser otherUser = NsUserTest.SANJIGI;
 
-        assertThatThrownBy(() -> answer.delete(otherUser, deleteHistories))
+        assertThatThrownBy(() -> answer.delete(otherUser, LocalDateTime.now()))
             .isInstanceOf(CannotDeleteException.class)
             .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
