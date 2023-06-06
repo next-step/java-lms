@@ -36,4 +36,8 @@ public class SessionUsers {
     public int count() {
         return users.size();
     }
+
+    public int capacity() {
+        return capacity.value();
+    }
 }
