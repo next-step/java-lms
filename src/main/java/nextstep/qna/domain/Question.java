@@ -1,8 +1,5 @@
 package nextstep.qna.domain;
 
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -11,16 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-
   private Long id;
 
-  private String title;
-
-  private String contents;
+  private QuestionBody questionBody;
 
   private NsUser writer;
 
-  private List<Answer> answers = new ArrayList<>();
+  private Answers answers = new Answers();
 
   private boolean deleted = false;
 
@@ -32,14 +26,17 @@ public class Question {
   }
 
   public Question(NsUser writer, String title, String contents) {
-    this(0L, writer, title, contents);
+    this(0L, writer, new QuestionBody(title, contents));
   }
 
   public Question(Long id, NsUser writer, String title, String contents) {
+    this(id, writer, new QuestionBody(title, contents));
+  }
+
+  public Question(Long id, NsUser writer, QuestionBody questionBody) {
     this.id = id;
     this.writer = writer;
-    this.title = title;
-    this.contents = contents;
+    this.questionBody = questionBody;
   }
 
   public Long getId() {
@@ -47,13 +44,12 @@ public class Question {
   }
 
   public String getTitle() {
-    return title;
+    return this.questionBody.getTitle();
   }
 
   public String getContents() {
-    return contents;
+    return this.questionBody.getContents();
   }
-
 
   public NsUser getWriter() {
     return writer;
@@ -69,7 +65,7 @@ public class Question {
   }
 
   public List<Answer> getAnswers() {
-    return answers;
+    return answers.getAnswers();
   }
 
   public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -82,25 +78,19 @@ public class Question {
     return deleteHistories(loginUser);
   }
 
-  @Override
-  public String toString() {
-    return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer="
-        + writer + "]";
-  }
-
   private List<DeleteHistory> deleteHistories(NsUser loginUser) throws CannotDeleteException {
     LocalDateTime deletedDateTime = LocalDateTime.now();
 
     List<DeleteHistory> deleteHistories = new ArrayList<>();
-
     deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, deletedDateTime));
-
-    for (Answer answer : answers) {
-      if (answer.isDeleted()) continue;
-
-      deleteHistories.add(answer.delete(loginUser, deletedDateTime));
-    }
+    deleteHistories.addAll(answers.deleteAll(loginUser, deletedDateTime));
 
     return deleteHistories;
+  }
+
+  @Override
+  public String toString() {
+    return "Question [id=" + getId() + ", title=" + this.questionBody.getTitle() + ", contents=" + this.questionBody.getContents() + ", writer="
+        + writer + "]";
   }
 }
