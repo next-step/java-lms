@@ -39,7 +39,7 @@ public class SessionRegistration {
 
   public void validateInit() {
     if (capacity <= 0) {
-      throw new IllegalArgumentException("수강 가능 인원은 0보다 커야 합니다");
+      throw new IllegalArgumentException("수강인원 수는 1명 이상이어야 합니다");
     }
   }
 
