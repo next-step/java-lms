@@ -32,7 +32,7 @@ public class SessionRegistration {
     }
 
     private void validate() {
-        if (!status.isRegistrable() || !recruitmentStatus.isRecruiting()) {
+        if (!isRegistrable()) {
             throw new NotEligibleRegistrationStatusException();
         }
         if (students.size() >= studentCapacity) {
@@ -40,8 +40,18 @@ public class SessionRegistration {
         }
     }
 
+    private boolean isRegistrable() {
+        return status.isRegistrable() && recruitmentStatus.isRecruiting();
+    }
+
     public Student enrolledStudent(NsUser student) {
         return students.find(student.getUserId());
+    }
+
+    public void validateApprovalOrRejected() {
+        if (!isRegistrable()) {
+            throw new IllegalStateException("수강신청이 완료되어 수정이 불가합니다.");
+        }
     }
 
     public SessionStatus getStatus() {

@@ -59,12 +59,14 @@ public class Session {
     }
 
     public Student approved(NsUser user) {
+        registration.validateApprovalOrRejected();
         Student student = enrolledStudent(user);
         student.approved();
         return student;
     }
 
     public Student rejected(NsUser user) {
+        registration.validateApprovalOrRejected();
         Student student = enrolledStudent(user);
         student.rejected();
         return student;
