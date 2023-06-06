@@ -1,7 +1,7 @@
-package nextstep.qna.domain.session;
+package nextstep.courses.domain.session;
 
-import nextstep.qna.domain.enums.CourseType;
-import nextstep.qna.domain.enums.SesstionStatus;
+import nextstep.courses.enums.CourseType;
+import nextstep.courses.enums.SesstionStatus;
 
 import java.time.LocalDateTime;
 
