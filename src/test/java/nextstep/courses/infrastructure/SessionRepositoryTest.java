@@ -2,7 +2,8 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionUser;
+import nextstep.courses.domain.SessionUserStatus;
 import nextstep.courses.fixture.SessionFixture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -31,14 +32,14 @@ public class SessionRepositoryTest {
 
     @Test
     void save() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.createRecruitingSession();
         Session savedSession = sessionRepository.save(session, 1L);
         assertThat(savedSession).isNotNull();
     }
 
     @Test
     void findById() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.createRecruitingSession();
         Session savedSession = sessionRepository.save(session, 1L);
 
         Session findSession = sessionRepository.findById(savedSession.getId());
@@ -47,8 +48,8 @@ public class SessionRepositoryTest {
 
     @Test
     void findByCourseId() {
-        sessionRepository.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
-        sessionRepository.save(SessionFixture.create(SessionStatus.PREPARING, 1), 1L);
+        sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
 
         List<Session> findSessions = sessionRepository.findByCourseId(1L);
         assertThat(findSessions).hasSize(2);
@@ -57,18 +58,42 @@ public class SessionRepositoryTest {
     @Test
     void saveSessionUser() {
         NsUser nsUser = NsUserTest.JAVAJIGI;
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
+        Session session = SessionFixture.createRecruitingSession();
 
-        long id = sessionRepository.saveSessionUser(session, nsUser);
+        long id = sessionRepository.saveSessionUser(session, new SessionUser(nsUser.getId()));
         assertThat(id).isPositive();
     }
 
     @Test
     void findAllUserBySessionId() {
-        Session savedSession = sessionRepository.save(SessionFixture.create(SessionStatus.RECRUITING, 1), 1L);
-        sessionRepository.saveSessionUser(savedSession, NsUserTest.JAVAJIGI);
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        sessionRepository.saveSessionUser(savedSession, new SessionUser(NsUserTest.JAVAJIGI.getId()));
 
-        List<NsUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
+        List<SessionUser> nextStepUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
         assertThat(nextStepUsers).hasSize(1);
+    }
+
+    @Test
+    void findUserByUserIdAndSessionId() {
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+        sessionRepository.saveSessionUser(savedSession, sessionUser);
+
+        SessionUser findSessionUser = sessionRepository.findUserByUserIdAndSessionId(savedSession.getId(), sessionUser.getUserId());
+        assertThat(findSessionUser.getUserId()).isEqualTo(sessionUser.getUserId());
+        assertThat(findSessionUser.getSessionUserStatus()).isEqualTo(sessionUser.getSessionUserStatus());
+    }
+
+    @Test
+    void updateSessionUserStatus() {
+        Session savedSession = sessionRepository.save(SessionFixture.createRecruitingSession(), 1L);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.WAIT);
+        sessionRepository.saveSessionUser(savedSession, sessionUser);
+
+        sessionUser.approve();
+        sessionRepository.updateSessionUserStatus(savedSession.getId(), sessionUser);
+
+        List<SessionUser> sessionUsers = sessionRepository.findAllUserBySessionId(savedSession.getId());
+        assertThat(sessionUsers.get(0)).extracting("sessionUserStatus").isEqualTo(SessionUserStatus.APPROVAL);
     }
 }

@@ -1,28 +1,23 @@
 package nextstep.courses.domain;
 
-public enum SessionStatus implements EnumModel {
-    PREPARING("준비중"),
-    RECRUITING("모집중"),
-    END("종료");
+public class SessionStatus {
+    private final SessionProgressStatus sessionProgressStatus;
+    private final SessionRecruitmentStatus sessionRecruitmentStatus;
 
-    private final String status;
-
-    SessionStatus(String status) {
-        this.status = status;
+    public SessionStatus(SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus) {
+        this.sessionProgressStatus = sessionProgressStatus;
+        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
     }
 
     public boolean canEnroll() {
-        return this == RECRUITING;
+        return sessionProgressStatus.canEnroll() && sessionRecruitmentStatus.canEnroll();
     }
 
-
-    @Override
-    public String getKey() {
-        return name();
+    public String getProgressStatus() {
+        return sessionProgressStatus.getKey();
     }
 
-    @Override
-    public String getValue() {
-        return status;
+    public String getRecruitmentStatus() {
+        return sessionRecruitmentStatus.getKey();
     }
 }

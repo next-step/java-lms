@@ -1,52 +1,64 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
+import java.util.List;
 
 public class Session {
-    public static final String RECRUITMENT_STATUS_MESSAGE = "모집중인 강의가 아닙니다.";
-
     private final Long id;
     private final SessionPeriod sessionPeriod;
     private PaymentType paymentType;
-    private SessionStatus sessionStatus;
-    private final NextStepUsers nextStepUsers;
+    private Enrollment enrollment;
     private SessionImageUrl sessionImageUrl;
 
     public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, SessionStatus sessionStatus, int maximumUserCount, SessionImageUrl sessionImageUrl) {
         this.id = id;
         this.sessionPeriod = sessionPeriod;
         this.paymentType = paymentType;
-        this.sessionStatus = sessionStatus;
-        this.nextStepUsers = new NextStepUsers(maximumUserCount);
+        this.enrollment = new Enrollment(maximumUserCount, sessionStatus);
         this.sessionImageUrl = sessionImageUrl;
     }
 
-    public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, SessionStatus sessionStatus, NextStepUsers nextStepUsers, SessionImageUrl sessionImageUrl) {
+    public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, SessionStatus sessionStatus, SessionUsers sessionUsers, SessionImageUrl sessionImageUrl) {
         this.id = id;
         this.sessionPeriod = sessionPeriod;
         this.paymentType = paymentType;
-        this.sessionStatus = sessionStatus;
-        this.nextStepUsers = nextStepUsers;
+        this.enrollment = new Enrollment(sessionUsers, sessionStatus);
         this.sessionImageUrl = sessionImageUrl;
     }
 
-    public void enroll(NsUser nextStepUser) {
-        validateStatus();
-        nextStepUsers.enroll(nextStepUser);
+    public Session(Long id, SessionPeriod sessionPeriod, PaymentType paymentType, Enrollment enrollment, SessionImageUrl sessionImageUrl) {
+        this.id = id;
+        this.sessionPeriod = sessionPeriod;
+        this.paymentType = paymentType;
+        this.enrollment = enrollment;
+        this.sessionImageUrl = sessionImageUrl;
     }
 
-    public void validateStatus() {
-        if (!this.sessionStatus.canEnroll()) {
-            throw new IllegalArgumentException(RECRUITMENT_STATUS_MESSAGE);
-        }
+    public void enroll(SessionUser sessionUser) {
+        this.enrollment.enroll(sessionUser);
     }
 
     public int enrollmentCount() {
-        return this.nextStepUsers.enrollmentCount();
+        return this.enrollment.enrollmentCount();
     }
 
     public int getMaximumEnrollmentCount() {
-        return nextStepUsers.getMaximumUserCount();
+        return this.enrollment.maximumEnrollmentCount();
+    }
+
+    public void approve(SessionUser sessionUser) {
+        this.enrollment.approve(sessionUser);
+    }
+
+    public void reject(SessionUser sessionUser) {
+        this.enrollment.reject(sessionUser);
+    }
+
+    public void addApprovedUser(Long userId) {
+        this.enrollment.addApprovedUser(userId);
+    }
+
+    public void addApprovedUsers(List<Long> userIds) {
+        this.enrollment.addApprovedUsers(userIds);
     }
 
     public Long getId() {
@@ -61,12 +73,12 @@ public class Session {
         return paymentType;
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public String getProgressStatus() {
+        return this.enrollment.getProgressStatus();
     }
 
-    public NextStepUsers getNextStepUsers() {
-        return this.nextStepUsers;
+    public String getRecruitmentStatus() {
+        return this.enrollment.getRecruitmentStatus();
     }
 
     public SessionImageUrl getSessionImageUrl() {
@@ -77,8 +89,7 @@ public class Session {
         private Long id;
         private SessionPeriod sessionPeriod;
         private PaymentType paymentType;
-        private SessionStatus sessionStatus;
-        private NextStepUsers nextStepUsers;
+        private Enrollment enrollment;
         private SessionImageUrl sessionImageUrl;
 
         public Builder withId(Long id) {
@@ -89,14 +100,13 @@ public class Session {
         public Builder with(Session session) {
             this.sessionPeriod = session.sessionPeriod;
             this.paymentType = session.paymentType;
-            this.sessionStatus = session.sessionStatus;
-            this.nextStepUsers = session.nextStepUsers;
+            this.enrollment = session.enrollment;
             this.sessionImageUrl = session.sessionImageUrl;
             return this;
         }
 
         public Session build() {
-            return new Session(id, sessionPeriod, paymentType, sessionStatus, nextStepUsers, sessionImageUrl);
+            return new Session(id, sessionPeriod, paymentType, enrollment, sessionImageUrl);
         }
     }
 }

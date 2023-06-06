@@ -10,29 +10,34 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class SessionTest {
     @Test
-    @DisplayName("강의 수강 신청 시 수강인원이 1 증가한다")
+    @DisplayName("승인된 사용자가 강의 수강 신청 시 수강인원이 1 증가한다")
     void enroll() {
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
-        session.enroll(NsUserTest.JAVAJIGI);
+        Session session = SessionFixture.createRecruitingSession();
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId(), SessionUserStatus.APPROVAL);
+        session.enroll(sessionUser);
         assertThat(session.enrollmentCount()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("강의 최대 수강 인원을 초과할 수 없다")
     void enrollFail() {
-        Session session = SessionFixture.create(SessionStatus.RECRUITING, 1);
-        session.enroll(NsUserTest.SANJIGI);
+        Session session = SessionFixture.create(SessionProgressStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, 1);
+        session.enroll(new SessionUser(NsUserTest.SANJIGI.getId(), SessionUserStatus.APPROVAL));
+        SessionUser newUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
-                .withMessageMatching(NextStepUsers.MAXIMUM_ENROLLMENT_MESSAGE);
+                .isThrownBy(() -> session.enroll(newUser))
+                .withMessageMatching(SessionUsers.MAXIMUM_ENROLLMENT_MESSAGE);
     }
 
     @Test
     @DisplayName("강의가 모집중이 아닌 경우 신청할 수 없다")
     void enrollFail2() {
-        Session session = SessionFixture.create(SessionStatus.PREPARING, 1);
+        Session session = SessionFixture.create(SessionProgressStatus.END, SessionRecruitmentStatus.NOT_RECRUITING, 1);
+        SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
+
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI))
-                .withMessageMatching(Session.RECRUITMENT_STATUS_MESSAGE);
+                .isThrownBy(() -> session.enroll(sessionUser))
+                .withMessageMatching(Enrollment.RECRUITMENT_STATUS_MESSAGE);
     }
 }

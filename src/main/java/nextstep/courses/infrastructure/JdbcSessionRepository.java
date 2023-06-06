@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -23,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session save(Session session, Long courseId) {
-        String sql = "insert into session(started_at, end_at, payment_type, status, maximum_user_count, image_url, course_id) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session(started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url, course_id) values(?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
@@ -31,10 +30,11 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(1, toTimeStamp(session.getSessionPeriod().getStartedAt()));
             ps.setTimestamp(2, toTimeStamp(session.getSessionPeriod().getEndAt()));
             ps.setString(3, session.getPaymentType().getKey());
-            ps.setString(4, session.getSessionStatus().getKey());
-            ps.setInt(5, session.getMaximumEnrollmentCount());
-            ps.setString(6, session.getSessionImageUrl().value());
-            ps.setLong(7, courseId);
+            ps.setString(4, session.getProgressStatus());
+            ps.setString(5, session.getRecruitmentStatus());
+            ps.setInt(6, session.getMaximumEnrollmentCount());
+            ps.setString(7, session.getSessionImageUrl().value());
+            ps.setLong(8, courseId);
             return ps;
         }, keyHolder);
 
@@ -49,7 +49,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long sessionId) {
-        String sql = "select id, started_at, end_at, payment_type, status, maximum_user_count, image_url from session where id = ?";
+        String sql = "select id, started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url from session where id = ?";
 
         RowMapper<Session> rowMapper = sessionRowMapper();
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
@@ -57,21 +57,22 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public List<Session> findByCourseId(Long courseId) {
-        String sql = "select id, started_at, end_at, payment_type, status, maximum_user_count, image_url from session where course_id = ?";
+        String sql = "select id, started_at, end_at, payment_type, status, recruitment_status, maximum_user_count, image_url from session where course_id = ?";
 
         RowMapper<Session> rowMapper = sessionRowMapper();
         return jdbcTemplate.query(sql, rowMapper, courseId);
     }
 
     @Override
-    public long saveSessionUser(Session session, NsUser nextStepUser) {
-        String sql = "insert into session_users(user_id, session_id) values(?, ?)";
+    public long saveSessionUser(Session session, SessionUser sessionUser) {
+        String sql = "insert into session_users(user_id, session_id, status) values(?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setLong(1, nextStepUser.getId());
+            ps.setLong(1, sessionUser.getUserId());
             ps.setLong(2, session.getId());
+            ps.setString(3, sessionUser.getSessionUserStatus().getKey());
             return ps;
         }, keyHolder);
 
@@ -80,13 +81,31 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public List<NsUser> findAllUserBySessionId(Long sessionId) {
-        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at from session_users su " +
-                "inner join ns_user u on (su.user_id = u.id) " +
-                "where su.session_id = ?";
+    public List<SessionUser> findAllUserBySessionId(Long sessionId) {
+        String sql = "select user_id, status from session_users where session_id = ?";
 
-        RowMapper<NsUser> rowMapper = userRowMapper();
+        RowMapper<SessionUser> rowMapper = userRowMapper();
         return jdbcTemplate.query(sql, rowMapper, sessionId);
+    }
+
+    @Override
+    public SessionUser findUserByUserIdAndSessionId(Long sessionId, Long userId) {
+        String sql = "select user_id, status from session_users where session_id = ? and user_id = ?";
+
+        RowMapper<SessionUser> rowMapper = userRowMapper();
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
+    }
+
+    @Override
+    public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
+        String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, sessionUser.getSessionUserStatus().getKey(), sessionId, sessionUser.getUserId());
+    }
+
+    @Override
+    public void saveApprovedUser(Session session, Long userId) {
+        String sql = "insert into approved_users(user_id, session_id) values(?, ?)";
+        jdbcTemplate.update(sql, userId, session.getId());
     }
 
     private RowMapper<Session> sessionRowMapper() {
@@ -94,21 +113,19 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 new SessionPeriod(toLocalDateTime(rs.getTimestamp(2)), toLocalDateTime(rs.getTimestamp(3))),
                 PaymentType.valueOf(rs.getString(4)),
-                SessionStatus.valueOf(rs.getString(5)),
-                rs.getInt(6),
-                new SessionImageUrl(rs.getString(7))
+                new SessionStatus(
+                        SessionProgressStatus.valueOf(rs.getString(5)),
+                        SessionRecruitmentStatus.valueOf(rs.getString(6))
+                ),
+                rs.getInt(7),
+                new SessionImageUrl(rs.getString(8))
         );
     }
 
-    private RowMapper<NsUser> userRowMapper() {
-        return (rs, rowNum) -> new NsUser(
+    private RowMapper<SessionUser> userRowMapper() {
+        return (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7))
+                SessionUserStatus.valueOf(rs.getString(2))
         );
     }
 
