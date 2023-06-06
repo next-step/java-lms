@@ -3,14 +3,14 @@ package nextstep.courses.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NextStepUsers {
+public class SessionUsers {
     public static final String MAXIMUM_ENROLLMENT_MESSAGE = "강의 최대 수강 인원이 초과되었습니다.";
     public static final String ALREADY_ENROLLED_USER = "이미 수강신청한 사용자입니다.";
 
     private final List<SessionUser> sessionUsers = new ArrayList<>();
     private final int maximumUserCount;
 
-    public NextStepUsers(int maximumUserCount) {
+    public SessionUsers(int maximumUserCount) {
         this.maximumUserCount = maximumUserCount;
     }
 

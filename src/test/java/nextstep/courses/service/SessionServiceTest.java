@@ -88,8 +88,9 @@ public class SessionServiceTest {
         Session session = sessionService.save(SessionFixture.createRecruitingSession(), 1L);
         SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
         sessionService.enroll(session, sessionUser);
+        sessionService.addApprovedUser(session, sessionUser.getUserId());
 
-        sessionService.approveEnrollment(session.getId(), sessionUser.getUserId());
+        sessionService.approveEnrollment(session, sessionUser.getUserId());
 
         SessionUser approvedUser = sessionService.findUserByUserIdAndSessionId(session.getId(), sessionUser.getUserId());
         assertThat(approvedUser.isApproved()).isTrue();
@@ -102,7 +103,7 @@ public class SessionServiceTest {
         SessionUser sessionUser = new SessionUser(NsUserTest.JAVAJIGI.getId());
         sessionService.enroll(session, sessionUser);
 
-        sessionService.rejectEnrollment(session.getId(), sessionUser.getUserId());
+        sessionService.rejectEnrollment(session, sessionUser.getUserId());
 
         SessionUser rejectedUser = sessionService.findUserByUserIdAndSessionId(session.getId(), sessionUser.getUserId());
         assertThat(rejectedUser.isApproved()).isFalse();

@@ -27,7 +27,7 @@ public class SessionTest {
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(newUser))
-                .withMessageMatching(NextStepUsers.MAXIMUM_ENROLLMENT_MESSAGE);
+                .withMessageMatching(SessionUsers.MAXIMUM_ENROLLMENT_MESSAGE);
     }
 
     @Test
@@ -38,6 +38,6 @@ public class SessionTest {
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> session.enroll(sessionUser))
-                .withMessageMatching(Session.RECRUITMENT_STATUS_MESSAGE);
+                .withMessageMatching(Enrollment.RECRUITMENT_STATUS_MESSAGE);
     }
 }

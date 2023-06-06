@@ -16,4 +16,6 @@ public interface SessionRepository {
     SessionUser findUserByUserIdAndSessionId(Long sessionId, Long userId);
 
     void updateSessionUserStatus(Long sessionId, SessionUser sessionUser);
+
+    void saveApprovedUser(Session session, Long userId);
 }

@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionUser;
+import nextstep.courses.domain.SessionUsers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,18 +49,22 @@ public class SessionService {
     }
 
     @Transactional
-    public void approveEnrollment(Long sessionId, Long userId) {
-        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(sessionId, userId);
-
-        sessionUser.approve();
-        sessionRepository.updateSessionUserStatus(sessionId, sessionUser);
+    public void addApprovedUser(Session session, Long userId) {
+        session.addApprovedUser(userId);
+        sessionRepository.saveApprovedUser(session, userId);
     }
 
     @Transactional
-    public void rejectEnrollment(Long sessionId, Long userId) {
-        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(sessionId, userId);
+    public void approveEnrollment(Session session, Long userId) {
+        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(session.getId(), userId);
+        session.approve(sessionUser);
+        sessionRepository.updateSessionUserStatus(session.getId(), sessionUser);
+    }
 
-        sessionUser.reject();
-        sessionRepository.updateSessionUserStatus(sessionId, sessionUser);
+    @Transactional
+    public void rejectEnrollment(Session session, Long userId) {
+        SessionUser sessionUser = sessionRepository.findUserByUserIdAndSessionId(session.getId(), userId);
+        session.reject(sessionUser);
+        sessionRepository.updateSessionUserStatus(session.getId(), sessionUser);
     }
 }

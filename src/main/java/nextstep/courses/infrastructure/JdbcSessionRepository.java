@@ -30,8 +30,8 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(1, toTimeStamp(session.getSessionPeriod().getStartedAt()));
             ps.setTimestamp(2, toTimeStamp(session.getSessionPeriod().getEndAt()));
             ps.setString(3, session.getPaymentType().getKey());
-            ps.setString(4, session.getSessionStatus().getProgressStatus());
-            ps.setString(5, session.getSessionStatus().getRecruitmentStatus());
+            ps.setString(4, session.getProgressStatus());
+            ps.setString(5, session.getRecruitmentStatus());
             ps.setInt(6, session.getMaximumEnrollmentCount());
             ps.setString(7, session.getSessionImageUrl().value());
             ps.setLong(8, courseId);
@@ -100,6 +100,12 @@ public class JdbcSessionRepository implements SessionRepository {
     public void updateSessionUserStatus(Long sessionId, SessionUser sessionUser) {
         String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
         jdbcTemplate.update(sql, sessionUser.getSessionUserStatus().getKey(), sessionId, sessionUser.getUserId());
+    }
+
+    @Override
+    public void saveApprovedUser(Session session, Long userId) {
+        String sql = "insert into approved_users(user_id, session_id) values(?, ?)";
+        jdbcTemplate.update(sql, userId, session.getId());
     }
 
     private RowMapper<Session> sessionRowMapper() {
