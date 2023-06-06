@@ -30,7 +30,14 @@ public class Session extends BaseEntity {
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
+        Objects.requireNonNull(title);
+        Objects.requireNonNull(courseId);
+        Objects.requireNonNull(sessionNumber);
+        Objects.requireNonNull(sessionPeriod);
+        Objects.requireNonNull(coverImage);
         Objects.requireNonNull(students);
+        Objects.requireNonNull(creatorId);
+        Objects.requireNonNull(createdAt);
         this.id = id;
         this.title = title;
         this.courseId = courseId;
