@@ -13,8 +13,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class SessionRegistrationTest {
 
@@ -85,6 +87,21 @@ class SessionRegistrationTest {
 
         assertThatThrownBy(() -> registration.register(NsUserTest.SANJIGI, sessionMock))
                 .isInstanceOf(NotEligibleRegistrationStatusException.class);
+    }
+
+    @Test
+    @DisplayName("기존 데이터(모집중)를 READ 할 경우 현재 정책(강의진행상태: 준비중, 모집상태: 모집중)에 맞게 변경합니다.(*데이터 마이그레이션)")
+    void test04() {
+        SessionRegistration registration = emptyStatusRegistration.but()
+                .withStatus(SessionStatus.ASIS_RECRUITING)
+                .build();
+
+        assertAll(
+                () -> assertThatNoException().isThrownBy(() -> registration.register(NsUserTest.JAVAJIGI, sessionMock)),
+                () -> assertThat(registration.getStatus()).isEqualTo(SessionStatus.PREPARING),
+                () -> assertThat(registration.getRecruitmentStatus()).isEqualTo(SessionRecruitmentStatus.RECRUITING)
+        );
+
     }
 
 }

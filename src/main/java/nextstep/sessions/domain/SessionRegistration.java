@@ -16,6 +16,10 @@ public class SessionRegistration {
     private final int studentCapacity;
 
     public SessionRegistration(SessionStatus status, SessionRecruitmentStatus recruitmentStatus, Students students, int studentCapacity) {
+        if (status.isAsisRecruiting()) {
+            status = SessionStatus.PREPARING;
+            recruitmentStatus = SessionRecruitmentStatus.RECRUITING;
+        }
         this.status = status;
         this.recruitmentStatus = recruitmentStatus;
         this.students = students;

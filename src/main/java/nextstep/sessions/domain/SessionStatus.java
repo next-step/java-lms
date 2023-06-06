@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 public enum SessionStatus {
     PREPARING("준비중"),
     PROGRESSING("진행중"),
+    ASIS_RECRUITING("모집중"),  // TODO: 데이터 마이그레이션 이후 상태 제거 필요
     ENDED("종료");
 
     private static final Map<String, SessionStatus> VALUE_MAP
@@ -31,7 +32,11 @@ public enum SessionStatus {
     }
 
     public boolean isRegistrable() {
-        return this != ENDED;
+        return this == PREPARING || this == PROGRESSING;
+    }
+
+    public boolean isAsisRecruiting() {
+        return this == ASIS_RECRUITING;
     }
 
 }
