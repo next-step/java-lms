@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import nextstep.qna.NotFoundException;
 
 public class Batches {
 
-  private List<Batch> batches = new ArrayList<>();
+  private Set<Batch> batches = new HashSet<>();
 
   public Batches() {
   }
