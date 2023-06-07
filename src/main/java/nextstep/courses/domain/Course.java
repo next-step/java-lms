@@ -13,6 +13,8 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private Sessions sessions;
+
     public Course() {
     }
 
@@ -26,7 +28,13 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sessions = new Sessions();
     }
+
+    public void putSession(Session session) {
+        sessions.putEntity(session);
+    }
+
 
     public String getTitle() {
         return title;
