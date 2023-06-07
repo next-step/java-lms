@@ -19,6 +19,8 @@ public class Session {
 
   private LocalDateTime endDate;
 
+  private Batch batch;
+
   private SessionStatus sessionStatus = SessionStatus.PREPARATION;
 
   private SessionType sessionType;
@@ -33,14 +35,14 @@ public class Session {
 
   private LocalDateTime updatedAt;
 
-  public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
-      SessionType sessionType, int maxRecruitment, Long creatorId) {
-    this(null, title, img, startDate, endDate, SessionStatus.PREPARATION, sessionType,
+  public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
+      Batch batch, SessionType sessionType, int maxRecruitment, Long creatorId) {
+    this(null, title, img, startDate, endDate, batch, SessionStatus.PREPARATION, sessionType,
         maxRecruitment, new Registrations(), creatorId, LocalDateTime.now(), null);
   }
 
   public Session(Long id, String title, String img, LocalDateTime startDate,
-      LocalDateTime endDate, SessionStatus sessionStatus,
+      LocalDateTime endDate, Batch batch, SessionStatus sessionStatus,
       SessionType sessionType, int maxRecruitment,
       Registrations registrations, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
@@ -50,6 +52,7 @@ public class Session {
     validateDate(startDate, endDate);
     this.startDate = startDate;
     this.endDate = endDate;
+    this.batch = batch;
     this.sessionStatus = sessionStatus;
     this.sessionType = sessionType;
     validateMaxRecruitment(maxRecruitment);
