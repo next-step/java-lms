@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static nextstep.fixtures.SessionFixtures.testSession1;
-import static nextstep.fixtures.SessionFixtures.testSession4;
+import static nextstep.fixtures.SessionFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -49,7 +48,7 @@ public class SessionServiceTest {
         Session session = testSession1();
         long savedSessionId = sessionRepository.save(session);
 
-        sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId()));
+        sessionService.register(savedSessionId, NsUserTest.JAVAJIGI);
 
         List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
         assertThat(findSessionJoins).hasSize(1);
@@ -58,11 +57,10 @@ public class SessionServiceTest {
     @DisplayName("강의 등록시 인원 수 초과")
     @Test
     void maxUserException() {
-        Session session = testSession4();
+        Session session = testSession5();
         long savedSessionId = sessionRepository.save(session);
 
-        assertThatThrownBy(() -> sessionService.register(savedSessionId, List.of(NsUserTest.JAVAJIGI.getUserId(),
-                NsUserTest.SANJIGI.getUserId())))
+        assertThatThrownBy(() -> sessionService.register(savedSessionId,NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

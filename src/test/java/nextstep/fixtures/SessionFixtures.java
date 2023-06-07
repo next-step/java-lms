@@ -20,4 +20,8 @@ public class SessionFixtures {
     public static Session testSession4() {
         return new Session(1L, SessionBilling.FREE, SessionStatus.CLOSED,"https://nextstep.tdd", 0, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
     }
+
+    public static Session testSession5() {
+        return new Session(1L, SessionBilling.FREE, SessionStatus.OPEN,"https://nextstep.tdd", 0, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
+    }
 }

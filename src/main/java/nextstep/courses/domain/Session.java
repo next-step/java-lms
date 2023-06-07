@@ -9,13 +9,11 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
-    private final List<SessionJoin> sessionJoins = new ArrayList<>();
+   // private final List<SessionJoin> sessionJoins = new ArrayList<>();
 
     private final SessionBilling sessionBilling;
-    private final SessionStatus sessionStatus;
     private final String sessionCoverImage;
-    private final int maxUserCount;
-
+    private final SessionRegistration sessionRegistration;
     private final SessionPeriod sessionPeriod;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -29,26 +27,17 @@ public class Session {
             throw new IllegalArgumentException("강의 기간을 설정해주세요");
         }
 
-        this.maxUserCount = maxUserCount;
         this.id = id;
         this.sessionBilling = sessionBillingType;
-        this.sessionStatus = sessionStatus == null ? SessionStatus.OPEN : sessionStatus;
         this.sessionCoverImage = sessionCoverImage;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sessionRegistration = new SessionRegistration(this, sessionStatus, maxUserCount);
     }
 
     public void register(NsUser user) {
-        if (!this.sessionStatus.isOpen()) {
-            throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
-        }
-
-        if (maxUserCount <= sessionJoins.size()) {
-            throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
-        }
-
-        sessionJoins.add(new SessionJoin(this, user, LocalDateTime.now(), null));
+        sessionRegistration.register(user);
     }
 
     public Long getId() {
@@ -56,7 +45,7 @@ public class Session {
     }
 
     public List<SessionJoin> getSessionJoins() {
-        return sessionJoins;
+        return sessionRegistration.getSessionJoins();
     }
 
     public SessionBilling getSessionBilling() {
@@ -64,7 +53,7 @@ public class Session {
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionRegistration.getSessionStatus();
     }
 
     public String getSessionCoverImage() {
@@ -72,7 +61,7 @@ public class Session {
     }
 
     public int getMaxUserCount() {
-        return maxUserCount;
+        return sessionRegistration.getMaxUserCount();
     }
 
     public SessionPeriod getSessionPeriod() {
@@ -88,8 +77,7 @@ public class Session {
     }
 
     public void addUser(NsUser nsUser) {
-        LocalDateTime now = LocalDateTime.now();
-        sessionJoins.add(new SessionJoin(this, nsUser, now, now));
+        sessionRegistration.addUser(nsUser);
     }
 
 
@@ -114,10 +102,9 @@ public class Session {
     public String toString() {
         return "Session{" +
                 "id=" + id +
-                ", sessionBillingType=" + sessionBilling +
-                ", sessionStatus=" + sessionStatus +
-                ", sessionCoverImage='" + sessionCoverImage  +
-                ", maxUserCount=" + maxUserCount +
+                ", sessionBilling=" + sessionBilling +
+                ", sessionCoverImage='" + sessionCoverImage +
+                ", sessionRegistration=" + sessionRegistration +
                 ", sessionPeriod=" + sessionPeriod +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

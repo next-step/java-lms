@@ -7,8 +7,6 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 
 @Service
 @Transactional
@@ -34,13 +32,9 @@ public class DefaultSessionService implements SessionService {
     }
 
     @Override
-    public long register(long sessionId, List<String> userIds) {
+    public long register(long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId);
-        List<NsUser> nsUsers = userRepository.findAllByUserIds(userIds);
-
-        for (NsUser nsUser : nsUsers) {
-            session.register(nsUser);
-        }
+        session.register(nsUser);
 
         return sessionRepository.saveSessionJoin(session);
     }

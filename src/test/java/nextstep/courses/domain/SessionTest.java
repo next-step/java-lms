@@ -103,7 +103,15 @@ public class SessionTest {
     @DisplayName("강의 최대 수강인원 달성 후 신청 시 오류")
     @Test
     void maximumUser() {
-        Session session = testSession4();
+        Session session = testSession5();
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("중복ID 신청 시 오류")
+    @Test
+    void duplicatedUser() {
+        Session session = testSession1();
+        session.register(NsUserTest.JAVAJIGI);
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 }
