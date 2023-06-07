@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class DefaultCourseService implements CourseService{
+public class DefaultCourseService implements CourseService {
     private final CourseRepository courseRepository;
 
     public DefaultCourseService(CourseRepository courseRepository) {

@@ -1,19 +1,15 @@
 package nextstep.courses.app;
 
-import nextstep.courses.domain.*;
-import nextstep.users.domain.NsUserTest;
+import nextstep.courses.domain.Course;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static nextstep.fixtures.CourseFixtures.*;
-import static org.assertj.core.api.Assertions.*;
-
-import java.util.List;
+import static nextstep.fixtures.CourseFixtures.testCourse1;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-
 public class CourseServiceTest {
     @Autowired
     private CourseService courseService;
