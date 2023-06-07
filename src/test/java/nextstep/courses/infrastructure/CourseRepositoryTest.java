@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.repository.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -34,5 +34,12 @@ public class CourseRepositoryTest {
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
+    }
+
+    @Test
+    void testFindById() {
+        Course actual = courseRepository.findById(0L);
+        Course expected = new Course(0L, "넥스트스텝", 1L, actual.getCreatedAt(), null);
+        assertThat(actual).isEqualTo(expected);
     }
 }
