@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
 public class Registration {
@@ -19,30 +18,17 @@ public class Registration {
   private boolean canceled = false;
 
   public Registration(NsUser nsUser, Session session) {
-    this(null, nsUser, session, LocalDateTime.now(), null);
+    this(null, nsUser, session, LocalDateTime.now(), null, false);
   }
 
   public Registration(Long id, NsUser nsUser, Session session, LocalDateTime createdDate,
-      LocalDateTime updatedDate) {
+      LocalDateTime updatedDate, boolean canceled) {
     this.id = id;
-    validateNsUser(nsUser);
     this.nsUser = nsUser;
-    validateSession(session);
     this.session = session;
     this.createdDate = createdDate;
     this.updatedDate = updatedDate;
-  }
-
-  private void validateNsUser(NsUser nsUser) {
-    if (nsUser == null) {
-      throw new NotFoundException();
-    }
-  }
-
-  private void validateSession(Session session) {
-    if (session == null) {
-      throw new NotFoundException();
-    }
+    this.canceled = canceled;
   }
 
   public static Registration createRegistration(NsUser nsUser, Session session) {
