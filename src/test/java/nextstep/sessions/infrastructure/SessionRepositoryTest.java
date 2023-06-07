@@ -5,10 +5,12 @@ import nextstep.sessions.domain.SessionBuilder;
 import nextstep.sessions.domain.SessionCoverImage;
 import nextstep.sessions.domain.SessionDuration;
 import nextstep.sessions.domain.SessionPaymentType;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRegistrationBuilder;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.students.domain.Students;
+import nextstep.students.infrastructure.JdbcStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,7 @@ class SessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcStudentRepository(jdbcTemplate));
         durationMock = new SessionDuration(
                 LocalDateTime.of(2023, 4, 3, 0, 0),
                 LocalDateTime.of(2023, 6, 1, 0, 0)
@@ -47,12 +49,16 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 정보를 테이블에 저장하고 조회합니다.")
     void crud() {
+        long testID = 1L;
         Session session = SessionBuilder.aSession()
+                .withId(testID)
+                .withCourseId(1L)
                 .withDuration(durationMock)
                 .withCoverImage(coverImageMock)
                 .withPaymentType(SessionPaymentType.PAID)
                 .with(SessionRegistrationBuilder.aRegistration()
-                        .withStatus(SessionStatus.RECRUITING)
+                        .withStatus(SessionStatus.PREPARING)
+                        .withRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .withStudents(new Students())
                         .withStudentCapacity(5))
                 .withCreatedAt(LocalDateTime.now())
@@ -61,7 +67,7 @@ class SessionRepositoryTest {
         log.debug("SESSION SAVE: {}", session);
         int count = sessionRepository.save(session);
 
-        Session savedSession = sessionRepository.findById(1L).get();
+        Session savedSession = sessionRepository.findById(testID).get();
         log.debug("SESSION READ: {}", savedSession);
 
         assertAll(
@@ -71,7 +77,8 @@ class SessionRepositoryTest {
                 () -> assertThat(savedSession.getPaymentType()).isEqualTo(SessionPaymentType.PAID),
                 () -> assertThat(savedSession.getRegistration())
                         .isEqualTo(SessionRegistrationBuilder.aRegistration()
-                                .withStatus(SessionStatus.RECRUITING)
+                                .withStatus(SessionStatus.PREPARING)
+                                .withRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                                 .withStudents(new Students())
                                 .withStudentCapacity(5).build())
         );
