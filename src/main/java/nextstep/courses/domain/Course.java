@@ -22,13 +22,20 @@ public class Course {
   }
 
   public Course(String title, Long creatorId) {
-    this(null, title, creatorId, LocalDateTime.now(), null);
+    this(null, title, 0, new Batches(), creatorId, LocalDateTime.now(), null);
   }
 
   public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
+    this(id, title, 0, new Batches(), creatorId, createdAt, updatedAt);
+  }
+
+  public Course(Long id, String title, int nowBatchNo, Batches batches, Long creatorId,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
+    this.nowBatchNo = nowBatchNo;
+    this.batches = batches;
     this.creatorId = creatorId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
