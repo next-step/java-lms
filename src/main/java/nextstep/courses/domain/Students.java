@@ -1,46 +1,54 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class Students {
+    private static final int MAX_STUDENTS = 20;
+    private static final String MAX_STUDENT_EXCEPTION = "최대 인원을 초과하였습니다.";
     private static final String ALREADY_STUDENT = "이미 등록된 학생 입니다.";
     private static final String NOT_INFO = "등록된 학생 정보가 없습니다.";
     private static final String NULL_EXCEPTION = "학생 데이터가 잘못 생성되었습니다.";
-    private Map<Long, Student> studentsMap = new HashMap<>();
+    private final Map<Long, NsUser> studentsMap = new HashMap<>();
     public Students() {
 
     }
 
-    public void putEntity(Student student) {
-        if (Objects.isNull(student)) {
+    public void putEntity(NsUser nsUser) {
+        if (studentsMap.size() > MAX_STUDENTS) {
+            throw new IllegalArgumentException(MAX_STUDENT_EXCEPTION);
+        }
+
+        if (Objects.isNull(nsUser)) {
             throw new IllegalArgumentException(NULL_EXCEPTION);
         }
 
-        if (studentsMap.containsKey(student.getId())) {
+        if (studentsMap.containsKey(nsUser.getId())) {
             throw new IllegalArgumentException(ALREADY_STUDENT);
         }
-        addStudent(student);
+        addStudent(nsUser);
     }
 
-    public void removeEntity(Student student) {
-        if (Objects.isNull(student)) {
+    public void removeEntity(NsUser nsUser) {
+        if (Objects.isNull(nsUser)) {
             throw new IllegalArgumentException(NULL_EXCEPTION);
         }
 
-        if (!studentsMap.containsKey(student.getId())) {
+        if (!studentsMap.containsKey(nsUser.getId())) {
             throw new IllegalArgumentException(NOT_INFO);
         }
-        removeSession(student);
+        removeSession(nsUser);
     }
 
-    private void addStudent(Student student) {
-        studentsMap.put(student.getId(), student);
+    private void addStudent(NsUser nsUser) {
+        studentsMap.put(nsUser.getId(), nsUser);
     }
 
-    private void removeSession(Student student) {
-        studentsMap.remove(student.getId());
+    private void removeSession(NsUser nsUser) {
+        studentsMap.remove(nsUser.getId());
     }
 
     public int getSize() {

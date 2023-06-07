@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.users.domain;
 
 import java.util.regex.Pattern;
 

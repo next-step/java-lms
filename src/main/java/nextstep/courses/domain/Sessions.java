@@ -8,10 +8,8 @@ public class Sessions {
     private static final String ALREADY_SESSION = "이미 등록된 강의 입니다.";
     private static final String NOT_INFO = "등록된 정보가 없습니다.";
     private static final String NULL_EXCEPTION = "강의가 잘못 생성되었습니다.";
-    private Map<Long, Session> sessionMap = new HashMap<>();
+    private final Map<Long, Session> sessionMap = new HashMap<>();
     public Sessions() {
-
-
     }
 
     public void putEntity(Session session) {

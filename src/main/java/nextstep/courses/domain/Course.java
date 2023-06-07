@@ -31,6 +31,10 @@ public class Course {
         this.sessions = new Sessions();
     }
 
+    public void putSession(Session session) {
+        sessions.putEntity(session);
+    }
+
 
     public String getTitle() {
         return title;

@@ -1,11 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Session {
-    private static final int MAX_STUDENTS = 20;
-    private static final String MAX_STUDENT_EXCEPTION = "최대 인원을 초과하였습니다.";
     private static final String NOT_RECRUITING_SESSION = "모집중인 강이가 아닙니다.";
 
     private Long id;
@@ -22,21 +21,17 @@ public class Session {
         sessionDuration = new SessionDuration(startedAt, endedAt);
     }
 
-    public void putStudent(Student student) {
+    public void putStudent(NsUser nsUser) {
         checkValidation();
-        students.putEntity(student);
+        students.putEntity(nsUser);
     }
 
-    public void removeStudent(Student student) {
-        students.removeEntity(student);
+    public void removeStudent(NsUser nsUser) {
+        students.removeEntity(nsUser);
     }
 
     private void checkValidation() {
-        if (students.getSize() > MAX_STUDENTS) {
-            throw new IllegalArgumentException(MAX_STUDENT_EXCEPTION);
-        }
-
-        if (!SessionType.RECRUITING.equals(status)) {
+        if (!SessionType.RECRUITING.isRecruiting(status)) {
             throw new IllegalArgumentException(NOT_RECRUITING_SESSION);
         }
     }

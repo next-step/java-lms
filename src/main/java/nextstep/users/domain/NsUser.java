@@ -12,11 +12,11 @@ public class NsUser {
 
     private String userId;
 
-    private String password;
+    private Password password;
 
     private String name;
 
-    private String email;
+    private Email email;
 
     private LocalDateTime createdAt;
 
@@ -32,9 +32,9 @@ public class NsUser {
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
-        this.password = password;
+        this.password = new Password(password);
         this.name = name;
-        this.email = email;
+        this.email = new Email(email);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -53,11 +53,11 @@ public class NsUser {
     }
 
     public String getPassword() {
-        return password;
+        return password.getPassword();
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
+    public NsUser changePassword(String password) {
+        this.password.changePassword(password);
         return this;
     }
 
@@ -67,15 +67,6 @@ public class NsUser {
 
     public NsUser setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
         return this;
     }
 
