@@ -3,6 +3,7 @@ package nextstep.courses.domain.registration;
 public class SessionRegistrationBuilder {
 
     private SessionStatus sessionStatus;
+    private SessionRecruitmentStatus sessionRecruitmentStatus;
     private Students students;
 
 
@@ -18,6 +19,11 @@ public class SessionRegistrationBuilder {
         return this;
     }
 
+    public SessionRegistrationBuilder withSessionRecruitmentStatus(SessionRecruitmentStatus recruitmentStatus) {
+        this.sessionRecruitmentStatus = recruitmentStatus;
+        return this;
+    }
+
     public SessionRegistrationBuilder withStudents(Students students) {
         this.students = students;
         return this;
@@ -25,7 +31,7 @@ public class SessionRegistrationBuilder {
 
 
     public SessionRegistration build() {
-        SessionRegistration sessionRegistration = new SessionRegistration(sessionStatus, students);
+        SessionRegistration sessionRegistration = new SessionRegistration(sessionStatus, sessionRecruitmentStatus, students);
         return sessionRegistration;
     }
 }

@@ -1,6 +1,7 @@
 package nextstep;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionRegistrationBuilder;
 import nextstep.courses.domain.registration.SessionStatus;
 import nextstep.courses.domain.registration.StudentsBuilder;
@@ -15,6 +16,8 @@ public class Fixtures {
     private static final SessionStatus sessionStatus = SessionStatus.RECRUITING;
     private static final int maxUserCount = 30;
 
+    private static final SessionRecruitmentStatus recruitmentStatus = SessionRecruitmentStatus.RECRUITING;
+
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
                 .withSessionRegistration(aSessionRegistrationBuilder().build())
@@ -26,6 +29,7 @@ public class Fixtures {
     public static SessionRegistrationBuilder aSessionRegistrationBuilder() {
         return SessionRegistrationBuilder.aSessionRegistrationBuilder()
                 .withSessionStatus(sessionStatus)
+                .withSessionRecruitmentStatus(recruitmentStatus)
                 .withStudents(aStudentsBuilder().build());
     }
 

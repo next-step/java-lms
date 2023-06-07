@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionRegistration;
 import nextstep.courses.domain.registration.SessionStatus;
 import nextstep.courses.domain.registration.Student;
@@ -49,6 +50,10 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionRegistration.getSessionStatus();
+    }
+
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return sessionRegistration.getSessionRecruitmentStatus();
     }
 
     public int getMaxUserCount() {

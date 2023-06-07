@@ -5,6 +5,7 @@ import java.util.Arrays;
 public enum SessionStatus {
     PREPARING("준비중"),
     RECRUITING("모집중"),
+    PROGRESSING("진행중"),
     CLOSED("종료");
 
     private final String sessionStatus;
@@ -24,8 +25,11 @@ public enum SessionStatus {
         return this.sessionStatus.equals(sessionStatus);
     }
 
-    public boolean isNotRecruiting() {
-        return this != RECRUITING;
+    public boolean isRecruiting() {
+        return this == RECRUITING;
     }
 
+    public boolean isNotProgressing() {
+        return this != PROGRESSING;
+    }
 }

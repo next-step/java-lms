@@ -1,11 +1,10 @@
 package nextstep.courses.domain.registration;
 
-import nextstep.courses.domain.registration.SessionStatus;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class SessionStatusTest {
@@ -23,20 +22,27 @@ class SessionStatusTest {
     @ParameterizedTest
     @ValueSource(strings = {"준비중"})
     void 강의상태_준비중(String sessionStatus) {
-        Assertions.assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.PREPARING);
+        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.PREPARING);
     }
 
     @DisplayName("강의상태 : 모집중")
     @ParameterizedTest
     @ValueSource(strings = {"모집중"})
     void 강의상태_모집중(String sessionStatus) {
-        Assertions.assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.RECRUITING);
+        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.RECRUITING);
     }
 
     @DisplayName("강의상태 : 종료")
     @ParameterizedTest
     @ValueSource(strings = {"종료"})
     void 강의상태_종료(String sessionStatus) {
-        Assertions.assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.CLOSED);
+        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.CLOSED);
+    }
+
+    @DisplayName("강의상태 : 진행중")
+    @ParameterizedTest
+    @ValueSource(strings = {"진행중"})
+    void 강의상태_진행중(String sessionStatus) {
+        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.PROGRESSING);
     }
 }
