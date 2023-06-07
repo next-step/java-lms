@@ -22,14 +22,15 @@ public class Batch {
   }
 
   public Batch(int batchNo, Course course, Long creatorId) {
-    this(null, batchNo, course, creatorId, LocalDateTime.now(), null);
+    this(null, batchNo, course, new Sessions(), creatorId, LocalDateTime.now(), null);
   }
 
-  public Batch(Long id, int batchNo, Course course, Long creatorId, LocalDateTime createdAt,
-      LocalDateTime updatedAt) {
+  public Batch(Long id, int batchNo, Course course, Sessions sessions, Long creatorId,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.batchNo = batchNo;
     this.course = course;
+    this.sessions = sessions;
     this.creatorId = creatorId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
