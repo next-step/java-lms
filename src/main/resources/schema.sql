@@ -18,6 +18,8 @@ create table session (
     primary key (id)
 );
 
+alter table session add recruitment_status varchar(20);
+
 create table student (
     user_id bigint not null,
     session_id bigint not null
