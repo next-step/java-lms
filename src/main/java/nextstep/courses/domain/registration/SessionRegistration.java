@@ -1,7 +1,6 @@
 package nextstep.courses.domain.registration;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SessionRegistration {
@@ -21,9 +20,10 @@ public class SessionRegistration {
         this.students = students;
     }
 
-    public void enroll(Student student, Set<Student> students) {
+    public void enroll(Student student, Set<Student> value) {
         validateSessionStatus(sessionStatus);
-        this.students.enroll(student);
+        Students students = new Students(this.getMaxUserCount(),value);
+        students.enroll(student);
     }
 
     private void validateSessionStatus(SessionStatus sessionStatus) {
