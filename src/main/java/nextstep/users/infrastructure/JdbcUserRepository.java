@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("userRepository")
@@ -30,6 +32,22 @@ public class JdbcUserRepository implements UserRepository {
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+    }
+
+    @Override
+    public List<NsUser> findAllByUserIds(List<String> userIds) {
+        String inSql = String.join(",", Collections.nCopies(userIds.size(), "?"));
+        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id in (%s)";
+        String formatSql = String.format(sql, inSql);
+        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5),
+                toLocalDateTime(rs.getTimestamp(6)),
+                toLocalDateTime(rs.getTimestamp(7)));
+        return jdbcTemplate.query(formatSql, userIds.toArray(), rowMapper);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

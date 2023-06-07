@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Course {
@@ -38,6 +39,10 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void addSession(Session session) {
         sessions.add(session);
     }
@@ -51,7 +56,7 @@ public class Course {
     }
 
     public List<Session> getSessions() {
-        return sessions;
+        return Collections.unmodifiableList(sessions);
     }
 
     public LocalDateTime getCreatedAt() {
