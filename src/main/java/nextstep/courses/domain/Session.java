@@ -5,7 +5,6 @@ import java.util.Objects;
 import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
-import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -28,23 +27,37 @@ public class Session {
 
   private Registrations registrations = new Registrations();
 
+  private Long creatorId;
+
+  private LocalDateTime createdAt = LocalDateTime.now();
+
+  private LocalDateTime updatedAt;
+
   public Session(String title, LocalDateTime startDate, LocalDateTime endDate, String img,
-      SessionType sessionType, int maxRecruitment) {
-    this(null, title, startDate, endDate, img, sessionType, maxRecruitment);
+      SessionType sessionType, int maxRecruitment, Long creatorId) {
+    this(null, title, img, startDate, endDate, SessionStatus.PREPARATION, sessionType,
+        maxRecruitment, new Registrations(), creatorId, LocalDateTime.now(), null);
   }
 
-  public Session(Long id, String title, LocalDateTime startDate, LocalDateTime endDate,
-      String img, SessionType sessionType, int maxRecruitment) {
+  public Session(Long id, String title, String img, LocalDateTime startDate,
+      LocalDateTime endDate, SessionStatus sessionStatus,
+      SessionType sessionType, int maxRecruitment,
+      Registrations registrations, Long creatorId, LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
     this.id = id;
     this.title = title;
+    this.img = img;
     validateDate(startDate, endDate);
     this.startDate = startDate;
     this.endDate = endDate;
-    this.img = img;
-    validateSessionType(sessionType);
+    this.sessionStatus = sessionStatus;
     this.sessionType = sessionType;
     validateMaxRecruitment(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
+    this.registrations = registrations;
+    this.creatorId = creatorId;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
@@ -54,12 +67,6 @@ public class Session {
 
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException();
-    }
-  }
-
-  private void validateSessionType(SessionType sessionType) {
-    if (sessionType == null) {
-      throw new NotFoundException();
     }
   }
 
