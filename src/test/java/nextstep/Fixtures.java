@@ -13,7 +13,7 @@ public class Fixtures {
     private static final LocalDateTime endedAt = LocalDateTime.now().plusDays(30);
     private static final String sessionCoverImage = "https://edu.nextstep.camp/images/covers/basic/008.jpg";
     private static final SessionCostType sessionCostType = SessionCostType.PAID;
-    private static final SessionStatus sessionStatus = SessionStatus.RECRUITING;
+    private static final SessionStatus sessionStatus = SessionStatus.PROGRESSING;
     private static final int maxUserCount = 30;
 
     private static final SessionRecruitmentStatus recruitmentStatus = SessionRecruitmentStatus.RECRUITING;

@@ -9,7 +9,7 @@ public class SessionRegistrationMother {
 
     public static SessionRegistrationBuilder aSessionRegistration() {
         return aSessionRegistrationBuilder()
-                .withSessionStatus(SessionStatus.RECRUITING)
+                .withSessionStatus(SessionStatus.PROGRESSING)
                 .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                 .withStudents(aStudentsBuilder()
                         .withMaxUserCount(1)
