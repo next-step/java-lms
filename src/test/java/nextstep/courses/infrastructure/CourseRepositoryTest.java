@@ -1,4 +1,4 @@
-package nextstep.infrastructure;
+package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;

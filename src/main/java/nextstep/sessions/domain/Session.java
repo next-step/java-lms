@@ -5,7 +5,6 @@ import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class Session {
@@ -35,7 +34,7 @@ public class Session {
         this.sessionPeriod = new SessionPeriod(startDate, endDate);
         this.sessionPaymentType = sessionPaymentType;
         this.sessionStatus = sessionStatus;
-        this.sessionStudents = new SessionStudents(new HashSet<>(), maximumCapacity);
+        this.sessionStudents = new SessionStudents(maximumCapacity);
         this.baseTime = new BaseTime();
     }
 
@@ -44,8 +43,7 @@ public class Session {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
         }
 
-        SessionStudent student = new SessionStudent(id, nsUser.getId());
-        sessionStudents.enrollStudent(student);
+        sessionStudents.enrollStudent(nsUser);
     }
 
     public Long getCourseId() {
@@ -70,6 +68,10 @@ public class Session {
 
     public BaseTime getBaseTime() {
         return baseTime;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

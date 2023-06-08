@@ -8,7 +8,7 @@ public class SessionPeriod {
     private LocalDateTime endDate;
 
     public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
-        isEndDateBeforeStartDate(startDate, endDate);
+        validateDates(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -21,7 +21,7 @@ public class SessionPeriod {
         return endDate;
     }
 
-    private void isEndDateBeforeStartDate(LocalDateTime startDate, LocalDateTime endDate) {
+    private void validateDates(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 더 늦습니다");
         }

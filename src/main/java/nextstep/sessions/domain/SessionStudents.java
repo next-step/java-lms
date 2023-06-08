@@ -1,14 +1,17 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUser;
+
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class SessionStudents {
-    private Set<SessionStudent> students;
+    private Set<NsUser> students;
     private int maximumCapacity;
 
-    public SessionStudents(Set<SessionStudent> students, int maximumCapacity) {
-        this.students = students;
+    public SessionStudents(int maximumCapacity) {
+        this.students = new HashSet<>();
         this.maximumCapacity = maximumCapacity;
     }
 
@@ -17,11 +20,11 @@ public class SessionStudents {
     }
 
     public boolean contains(Long nsUserId) {
-        return students.stream().filter(value -> value.getNsUserId().equals(nsUserId)).findFirst().isPresent();
+        return students.stream().filter(value -> value.getId().equals(nsUserId)).findFirst().isPresent();
     }
 
-    public void enrollStudent(SessionStudent nsUser) {
-        if (contains(nsUser.getNsUserId())) {
+    public void enrollStudent(NsUser nsUser) {
+        if (contains(nsUser.getId())) {
             throw new IllegalArgumentException("이미 등록된 학생입니다");
         }
 
