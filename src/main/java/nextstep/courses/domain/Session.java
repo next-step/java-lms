@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.registration.SessionRecruitmentStatus;
-import nextstep.courses.domain.registration.SessionRegistration;
-import nextstep.courses.domain.registration.SessionStatus;
-import nextstep.courses.domain.registration.Student;
+import nextstep.courses.domain.registration.*;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -12,7 +9,7 @@ import java.util.Set;
 
 public class Session {
     private Long id;
-    private final SessionRegistration sessionRegistration;
+    private SessionRegistration sessionRegistration;
     private final SessionPeriod sessionPeriod;
     private final String sessionCoverImage;
     private final SessionCostType sessionCostType;
@@ -78,5 +75,13 @@ public class Session {
 
         student.approve();
         return student;
+    }
+
+    public Session migrationStatus() {
+        if (sessionRegistration.getSessionStatus() == SessionStatus.RECRUITING) {
+            this.sessionRegistration = new SessionRegistration(SessionStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, sessionRegistration.getMaxUserCount());
+            return this;
+        }
+        return this;
     }
 }

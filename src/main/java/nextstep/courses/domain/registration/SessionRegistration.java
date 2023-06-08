@@ -17,17 +17,9 @@ public class SessionRegistration {
     }
 
     public SessionRegistration(SessionStatus sessionStatus, SessionRecruitmentStatus sessionRecruitmentStatus, Students students) {
-        this.sessionStatus = migrationStatus(sessionStatus);
+        this.sessionStatus = sessionStatus;
         this.sessionRecruitmentStatus = sessionRecruitmentStatus;
         this.students = students;
-    }
-
-    private SessionStatus migrationStatus(SessionStatus sessionStatus) {
-        if (sessionStatus.isRecruiting()) {
-            return SessionStatus.PROGRESSING;
-        }
-
-        return sessionStatus;
     }
 
     public void enroll(Student student, Set<Student> value) {

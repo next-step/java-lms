@@ -40,6 +40,8 @@ public class SessionService {
     public void register(Long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId);
         List<Student> students = studentRepository.findAllBySessionId(sessionId);
+        session = session.migrationStatus();
+        sessionRepository.updateSessionStatus(session);
         Student student = session.register(nsUser, new HashSet<>(students));
         studentRepository.save(student);
     }
