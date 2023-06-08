@@ -15,6 +15,13 @@ public class SessionUsers {
         this.users = new HashSet<>();
     }
 
+    public SessionUsers(Set<NsUser> users, Capacity capacity) {
+        if (capacity.isFull(users.size())) {
+            throw new IllegalArgumentException("강의 최대 수강인원인 " + capacity.value() + "명을 초과했습니다");
+        }
+        this.users = users;
+        this.capacity = capacity;
+    }
 
     public synchronized void updateCapacity(int value) {
         if (value < users.size()) {
@@ -24,7 +31,7 @@ public class SessionUsers {
     }
 
     public synchronized void add(NsUser user) {
-        if (users.size() >= capacity.value()) {
+        if (capacity.isFull(users.size())) {
             throw new CannotRegisterException("강의 최대 수강 인원을 초과했습니다");
         }
         if (users.contains(user)) {

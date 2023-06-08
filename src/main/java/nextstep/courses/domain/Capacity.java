@@ -27,4 +27,8 @@ public class Capacity implements Comparable<Capacity> {
     public int value() {
         return value;
     }
+
+    public boolean isFull(int size) {
+        return size == value;
+    }
 }
