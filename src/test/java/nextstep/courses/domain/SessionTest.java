@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.Fixtures.*;
+import static nextstep.courses.domain.registration.SessionRegistrationMother.aSessionRegistration;
 import static nextstep.courses.domain.registration.StudentMother.aStudent;
 import static nextstep.courses.domain.registration.StudentsMother.aStudents;
 import static org.assertj.core.api.Assertions.*;
@@ -115,6 +116,41 @@ class SessionTest {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
                 .withMessageMatching("이미 등록 되었습니다.");
+    }
+
+    @DisplayName("수강신청 승인_과정(코스) 신청한 사용자가 아닌 경우")
+    @Test
+    void 수강신청_승인_CourseUser_null() {
+        Session session = aSession().withSessionRegistration(
+                aSessionRegistration().build()
+        ).build();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> session.approve(aStudent().build(), null))
+                .withMessageMatching("과정에 신청하지 않은 사용자 입니다.");
+    }
+    @DisplayName("수강신청 승인_과정(코스) 선발된 인원이 아닌경우")
+    @Test
+    void 수강신청_승인_선발X() {
+        Session session = aSession().withSessionRegistration(
+                aSessionRegistration().build()
+        ).build();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> session.approve(aStudent().build(), CourseUserTest.SANJIGI))
+                .withMessageMatching("선발되지 않은 사용자 입니다.");
+    }
+
+    @DisplayName("수강신청 승인_과정(코스) 선발된 인원인 경우, 승인처리")
+    @Test
+    void 수강신청_승인_선발O() {
+        Session session = aSession().withSessionRegistration(
+                aSessionRegistration().build()
+        ).build();
+
+        Student student = session.approve(aStudent().build(), CourseUserTest.JAVAJIGI);
+        student.approve();
+        assertThat(student.getStatus()).isTrue();
     }
 }
 

@@ -7,6 +7,7 @@ import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 public class Session {
@@ -63,6 +64,19 @@ public class Session {
     public Student register(NsUser nsUser, Set<Student> students) {
         Student student = new Student(nsUser.getId(), this.id);
         sessionRegistration.enroll(student, students);
+        return student;
+    }
+
+    public Student approve(Student student, CourseUser courseUser) {
+        if (Optional.ofNullable(courseUser).isEmpty()) {
+            throw new IllegalArgumentException("과정에 신청하지 않은 사용자 입니다.");
+        }
+
+        if (courseUser.isNotSelected()) {
+            throw new IllegalArgumentException("선발되지 않은 사용자 입니다.");
+        }
+
+        student.approve();
         return student;
     }
 }

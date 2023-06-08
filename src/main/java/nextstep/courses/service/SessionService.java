@@ -1,5 +1,7 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.CourseUser;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.registration.Student;
@@ -18,9 +20,12 @@ public class SessionService {
 
     private final StudentRepository studentRepository;
 
-    public SessionService(SessionRepository sessionRepository, StudentRepository studentRepository) {
+    private final CourseRepository courseRepository;
+
+    public SessionService(SessionRepository sessionRepository, StudentRepository studentRepository, CourseRepository courseRepository) {
         this.sessionRepository = sessionRepository;
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     public long save(Session session) {
@@ -37,6 +42,15 @@ public class SessionService {
         List<Student> students = studentRepository.findAllBySessionId(sessionId);
         Student student = session.register(nsUser, new HashSet<>(students));
         studentRepository.save(student);
+    }
+
+    public void approve(Long sessionId, Long userId) {
+        Session session = sessionRepository.findById(sessionId);
+
+        CourseUser courseUser = courseRepository.findByUserId(userId);
+        Student student = studentRepository.findByUserId(userId);
+        student = session.approve(student, courseUser);
+        studentRepository.updateStatus(student);
     }
 
 }
