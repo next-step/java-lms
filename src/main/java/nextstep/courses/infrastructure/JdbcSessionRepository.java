@@ -1,13 +1,11 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
-import java.util.List;
 
 import static nextstep.courses.util.RepositoryUtils.toLocalDateTime;
 
@@ -61,27 +59,5 @@ public class JdbcSessionRepository implements JdbcRepository<Session> {
                 session.getCapacity(),
                 session.getCreatedAt()
         );
-    }
-
-    public int saveUser(Long sessionId, Long userId) {
-        String sql = "insert into sessions_users (session_id, user_id) values(?, ?)";
-        return jdbcTemplate.update(sql, sessionId, userId);
-    }
-
-    public List<NsUser> findAllUsers(Long sessionId) {
-        String sql = "select U.id, U.user_id, U.password, U.name, U.email, U.created_at, U.updated_at " +
-                "from ns_user U " +
-                "inner join sessions_users SU on U.id = SU.user_id where SU.session_id = ?";
-
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
-
-        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }

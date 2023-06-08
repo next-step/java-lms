@@ -6,16 +6,16 @@ import nextstep.users.domain.NsUser;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SessionUsers {
+public class Students {
     private final Set<NsUser> users;
     private final Capacity capacity;
 
-    public SessionUsers(int capacity) {
+    public Students(int capacity) {
         this.capacity = new Capacity(capacity);
         this.users = new HashSet<>();
     }
 
-    public SessionUsers(Set<NsUser> users, Capacity capacity) {
+    public Students(Set<NsUser> users, Capacity capacity) {
         if (capacity.isFull(users.size())) {
             throw new IllegalArgumentException("강의 최대 수강인원인 " + capacity.value() + "명을 초과했습니다");
         }

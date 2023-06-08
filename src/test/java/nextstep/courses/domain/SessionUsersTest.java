@@ -12,7 +12,7 @@ class SessionUsersTest {
     @Test
     public void 유저_등록이_잘_동작해야_한다() throws Exception {
         //given
-        SessionUsers users = new SessionUsers(2);
+        Students users = new Students(2);
 
         //when
         users.add(SessionFixtures.USER_1);
@@ -25,7 +25,7 @@ class SessionUsersTest {
     @Test
     public void 이미_등록한_유저는_등록할_수_없다() throws Exception {
         //given
-        SessionUsers users = new SessionUsers(2);
+        Students users = new Students(2);
 
         //when
         users.add(SessionFixtures.USER_1);
@@ -38,7 +38,7 @@ class SessionUsersTest {
     @Test
     public void 최대_수강_인원을_초과할_수_없다() throws Exception {
         //given
-        SessionUsers users = new SessionUsers(1);
+        Students users = new Students(1);
 
         //when
         users.add(SessionFixtures.USER_1);
@@ -51,7 +51,7 @@ class SessionUsersTest {
     @Test
     public void 현재_수강_인원보다_제한_인원을_작게_설정할_수_없다() throws Exception {
         //given
-        SessionUsers users = new SessionUsers(2);
+        Students users = new Students(2);
 
         //when
         users.add(SessionFixtures.USER_1);

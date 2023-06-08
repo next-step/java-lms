@@ -10,7 +10,7 @@ public class Session extends BaseEntity {
     private final Long courseId;
     private final CoverImage coverImage;
     private final SessionPeriod period;
-    private final SessionUsers users;
+    private final Students users;
     private final String title;
     private final SessionStatus status;
     private final SessionType type;
@@ -29,7 +29,7 @@ public class Session extends BaseEntity {
         this.period = Objects.requireNonNull(period);
         this.type = Objects.requireNonNull(type);
         this.status = Objects.requireNonNull(status);
-        this.users = new SessionUsers(capacity);
+        this.users = new Students(capacity);
     }
 
     public Long getCourseId() {
@@ -44,7 +44,7 @@ public class Session extends BaseEntity {
         return period;
     }
 
-    public SessionUsers getUsers() {
+    public Students getUsers() {
         return users;
     }
 
@@ -64,11 +64,12 @@ public class Session extends BaseEntity {
         return users.capacity();
     }
 
-    public void register(NsUser user) {
+    public Student register(NsUser user) {
         if (!status.isRecruiting()) {
             throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
         }
         users.add(user);
+        return new Student(getId(), user.getId());
     }
 
     @Override
