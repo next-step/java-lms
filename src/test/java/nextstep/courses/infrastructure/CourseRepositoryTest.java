@@ -2,7 +2,9 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.CourseUser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,4 +37,15 @@ public class CourseRepositoryTest {
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }
+
+    @DisplayName("코스(과정) 선발 사용자 등록 및 확인")
+    @Test
+    void findByUserId() {
+        CourseUser courseUser = new CourseUser(1L, 1L, true);
+        int count = courseRepository.saveUser(courseUser);
+        assertThat(count).isEqualTo(1);
+        CourseUser savedUser = courseRepository.findByUserId(courseUser.getUserId());
+        assertThat(savedUser).isNotNull();
+    }
+
 }
