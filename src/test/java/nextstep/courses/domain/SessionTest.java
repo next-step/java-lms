@@ -152,5 +152,18 @@ class SessionTest {
         student.approve();
         assertThat(student.getStatus()).isTrue();
     }
+
+    @DisplayName("강의 진행상태 모집중->진행중 마이그레이션")
+    @Test
+    void test() {
+        Session session = aSession().withId(1L)
+                .withSessionRegistration(aSessionRegistrationBuilder()
+                        .withSessionStatus(SessionStatus.RECRUITING)
+                        .build())
+                .build();
+
+        Session tobeSession = session.migrationStatus();
+        assertThat(tobeSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
+    }
 }
 

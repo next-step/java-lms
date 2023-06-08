@@ -67,7 +67,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int updateSessionStatus(Session session) {
         String sql = "update session set status = ? where id = ? ";
-        return jdbcTemplate.update(sql, session.getSessionStatus().name(),session.getId());
+        return jdbcTemplate.update(sql, session.getSessionStatus().name(), session.getId());
     }
 
 

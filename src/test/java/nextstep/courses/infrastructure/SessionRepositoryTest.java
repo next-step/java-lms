@@ -57,14 +57,16 @@ public class SessionRepositoryTest {
                 .build();
 
         long sessionId = sessionRepository.save(session);
-
-        assertThat(session.getSessionStatus().isRecruiting()).isTrue();
-
-        Session tobeSession = session.migrationStatus();
-        sessionRepository.updateSessionStatus(tobeSession);
         Session foundSession = sessionRepository.findById(sessionId);
 
-        assertThat(foundSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
+        assertThat(foundSession.getSessionStatus().isRecruiting()).isTrue();
+
+        Session tobeSession = foundSession.migrationStatus();
+        sessionRepository.updateSessionStatus(tobeSession);
+
+        tobeSession = sessionRepository.findById(tobeSession.getId());
+
+        assertThat(tobeSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
 
     }
 

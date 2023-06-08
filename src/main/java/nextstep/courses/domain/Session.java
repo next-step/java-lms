@@ -78,7 +78,7 @@ public class Session {
     }
 
     public Session migrationStatus() {
-        if (sessionRegistration.getSessionStatus() == SessionStatus.RECRUITING) {
+        if (sessionRegistration.getSessionStatus().equals(SessionStatus.RECRUITING)) {
             this.sessionRegistration = new SessionRegistration(SessionStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, sessionRegistration.getMaxUserCount());
             return this;
         }
