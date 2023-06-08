@@ -23,8 +23,8 @@ public class Session {
 
     private final Enrollment enrollment;
 
-    public void enroll(NsUser nsUser, List<NsUser> students) throws AlreadyEnrollmentException {
-        enrollment.enroll(nsUser, students);
+    public void enroll(NsUser nsUser) throws AlreadyEnrollmentException {
+        enrollment.enroll(nsUser);
     }
 
 }

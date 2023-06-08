@@ -23,4 +23,8 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    public void addSingleSession(Session session) {
+        sessions.add(session);
+    }
+
 }

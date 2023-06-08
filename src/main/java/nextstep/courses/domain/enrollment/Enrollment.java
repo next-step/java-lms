@@ -6,7 +6,6 @@ import nextstep.courses.enums.SessionStatus;
 import nextstep.courses.exceptions.AlreadyEnrollmentException;
 import nextstep.users.domain.NsUser;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Enrollment {
@@ -15,16 +14,19 @@ public class Enrollment {
 
     private final int capacity;
 
-    public Enrollment(SessionStatus sessionStatus, int capacity) {
+    private final Students students;
+
+    public Enrollment(SessionStatus sessionStatus, int capacity, final Students students) {
         this.sessionStatus = sessionStatus;
         this.capacity = capacity;
+        this.students = students;
     }
 
-    public void enroll(NsUser student, List<NsUser> value) throws AlreadyEnrollmentException {
+    public void enroll(NsUser student) throws AlreadyEnrollmentException {
         if (sessionStatus.isEnrolling() == false) {
             throw new IllegalArgumentException("종료된 세션에는 수강 신청할 수 없습니다.");
         }
-        final Students students = new Students(this.capacity, value);
+
         students.enroll(student);
     }
 

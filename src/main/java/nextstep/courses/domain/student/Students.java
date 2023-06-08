@@ -9,17 +9,16 @@ public class Students {
 
     private final int capacity;
 
-    private final List<NsUser> students;
+    private List<NsUser> students;
 
     public Students(int capacity, List<NsUser> students) {
-        validateCapacity(capacity, students);
-
+        validateCapacity(capacity);
         this.capacity = capacity;
         this.students = students;
     }
 
-    private void validateCapacity(final int capacity, final List<NsUser> students) {
-        if (capacity < students.size()) {
+    private void validateCapacity(final int capacity) {
+        if (this.capacity < capacity) {
             throw new IllegalArgumentException("최대 수용 인원인 " + capacity + "명을 초과할 수 없습니다.");
         }
     }
