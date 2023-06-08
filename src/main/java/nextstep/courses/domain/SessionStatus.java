@@ -3,5 +3,9 @@ package nextstep.courses.domain;
 public enum SessionStatus {
     PREPARING,
     RECRUITING,
-    CLOSED
+    CLOSED;
+
+    public boolean isRecruiting() {
+        return this == RECRUITING;
+    }
 }

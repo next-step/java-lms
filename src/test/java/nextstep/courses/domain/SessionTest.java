@@ -1,60 +1,31 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.CannotRegisterException;
+import nextstep.courses.domain.builder.EnrollmentBuilder;
+import nextstep.courses.domain.builder.SessionBuilder;
+import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.enrollment.Students;
+import nextstep.courses.domain.fixture.SessionFixtures;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
-import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
-    private static SessionPeriod PERIOD = new SessionPeriod(
-            LocalDate.of(2023, 5, 23),
-            LocalDate.of(2023, 5, 30)
-    );
 
     @Test
-    public void capacity는_1_이상이어야_한다() throws Exception {
-        assertThatThrownBy(() -> {
-            Session session = new Session(
-                    new ImageInfo("test.test.test"),
-                    PERIOD,
-                    SessionType.FREE,
-                    SessionStatus.RECRUITING,
-                    0
-            );
-        }).isInstanceOf(IllegalArgumentException.class);
-    }
+    void 수강신청에_성공한다() {
+        Long sessionId = 1L;
+        Session session = new SessionBuilder()
+                .withId(sessionId)
+                .withEnrollment(
+                        new EnrollmentBuilder()
+                                .withStatus(SessionStatus.RECRUITING)
+                                .withStudents(new Students(10))
+                                .build()
+                )
+                .build();
 
-    @Test
-    public void 강의_최대_수강_인원을_초과할_수_없다() throws Exception {
-        Session session = new Session(
-                new ImageInfo("test.test.test"),
-                PERIOD,
-                SessionType.FREE,
-                SessionStatus.RECRUITING,
-                1
-        );
-
-        session.register();
-        assertThatThrownBy(session::register)
-                .isInstanceOf(CannotRegisterException.class);
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"RECRUITING"}, mode = EnumSource.Mode.EXCLUDE)
-    public void 현재_모집중인_강의만_수강할_수_있다(SessionStatus status) throws Exception {
-        Session session = new Session(
-                new ImageInfo("test.test.test"),
-                PERIOD,
-                SessionType.FREE,
-                status,
-                1
-        );
-
-        assertThatThrownBy(session::register)
-                .isInstanceOf(CannotRegisterException.class);
+        Student student = session.enroll(SessionFixtures.USER);
+        assertThat(student.getSessionId()).isEqualTo(sessionId);
+        assertThat(student.getNsUserId()).isEqualTo(SessionFixtures.USER.getId());
     }
 }

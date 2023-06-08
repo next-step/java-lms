@@ -1,34 +1,67 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.CannotRegisterException;
+import nextstep.courses.domain.base.BaseEntity;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
+import nextstep.users.domain.NsUser;
 
-public class Session {
-    private final int capacity;
-    private ImageInfo imageInfo;
-    private SessionPeriod period;
-    private SessionStatus status;
-    private SessionType type;
-    private int currentUsers;
+import java.time.LocalDateTime;
 
-    public Session(ImageInfo imageInfo, SessionPeriod period, SessionType type, SessionStatus status, int capacity) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("총 수용인원은 1명 이상이어야 합니다");
-        }
+public class Session extends BaseEntity {
+    private final Long courseId;
+    private final CoverImage coverImage;
+    private final SessionPeriod period;
+    private final Enrollment enrollment;
+    private final String title;
 
-        this.imageInfo = imageInfo;
-        this.period = period;
-        this.type = type;
-        this.status = status;
-        this.capacity = capacity;
+    public Session(Long courseId, String title, CoverImage coverImage, SessionPeriod period, Enrollment enrollment) {
+        this(0L, courseId, title, coverImage, period, enrollment, LocalDateTime.now(), null);
     }
 
-    public void register() {
-        if (status != SessionStatus.RECRUITING) {
-            throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
-        }
-        if (currentUsers >= capacity) {
-            throw new CannotRegisterException("강의 최대 수강 인원을 초과했습니다");
-        }
-        currentUsers++;
+
+    public Session(Long id, Long courseId, String title, CoverImage coverImage, SessionPeriod period, Enrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
+        this.courseId = courseId;
+        this.title = title;
+        this.coverImage = coverImage;
+        this.period = period;
+        this.enrollment = enrollment;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public SessionPeriod getPeriod() {
+        return period;
+    }
+
+    public Student enroll(NsUser user) {
+        Student student = new Student(getId(), user.getId());
+        enrollment.enroll(student);
+        return student;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "courseId=" + courseId +
+                ", coverImage=" + coverImage +
+                ", enrollment=" + enrollment +
+                ", title='" + title + '\'' +
+                '}' + super.toString();
     }
 }
