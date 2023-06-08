@@ -1,8 +1,9 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nextstep.qna.domain.history.DeleteHistory;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;

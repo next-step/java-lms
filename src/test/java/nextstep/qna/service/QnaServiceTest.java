@@ -1,11 +1,11 @@
 package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.ContentType;
-import nextstep.qna.domain.DeleteHistory;
-import nextstep.qna.domain.Question;
-import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.enums.ContentType;
+import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.repository.QuestionRepository;
 import nextstep.qna.domain.fixture.QuestionFixture;
 import nextstep.users.domain.NsUserFixture;
 import org.junit.jupiter.api.BeforeEach;

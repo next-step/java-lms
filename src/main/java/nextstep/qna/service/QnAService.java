@@ -2,10 +2,10 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.AnswerRepository;
-import nextstep.qna.domain.DeleteHistory;
-import nextstep.qna.domain.Question;
-import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.repository.AnswerRepository;
+import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.repository.QuestionRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
