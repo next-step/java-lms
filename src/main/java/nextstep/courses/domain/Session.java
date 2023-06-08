@@ -9,8 +9,6 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
-   // private final List<SessionJoin> sessionJoins = new ArrayList<>();
-
     private final SessionBilling sessionBilling;
     private final String sessionCoverImage;
     private final SessionRegistration sessionRegistration;
@@ -33,11 +31,11 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.sessionRegistration = new SessionRegistration(this, sessionStatus, maxUserCount);
+        this.sessionRegistration = new SessionRegistration(sessionStatus, maxUserCount);
     }
 
     public void register(NsUser user) {
-        sessionRegistration.register(user);
+        sessionRegistration.register(this, user);
     }
 
     public Long getId() {
@@ -77,7 +75,7 @@ public class Session {
     }
 
     public void addUser(NsUser nsUser) {
-        sessionRegistration.addUser(nsUser);
+        sessionRegistration.addUser(this, nsUser);
     }
 
 
