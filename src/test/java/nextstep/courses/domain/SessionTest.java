@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.builder.EnrollmentBuilder;
+import nextstep.courses.domain.builder.SessionBuilder;
 import nextstep.courses.domain.fixture.SessionFixtures;
 import nextstep.courses.exception.CannotRegisterException;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +12,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class SessionTest {
-    private static SessionPeriod PERIOD = new SessionPeriod(
+    private static final SessionPeriod PERIOD = new SessionPeriod(
             LocalDate.of(2023, 5, 23),
             LocalDate.of(2023, 5, 30)
     );
@@ -19,17 +21,13 @@ class SessionTest {
     @ParameterizedTest
     @EnumSource(value = SessionStatus.class, names = {"RECRUITING"}, mode = EnumSource.Mode.EXCLUDE)
     public void 현재_모집중인_강의만_수강할_수_있다(SessionStatus status) throws Exception {
-        Session session = new Session(
-                0L,
-                "hello",
-                new CoverImage("https://test.test/images/0"),
-                PERIOD,
-                SessionType.FREE,
-                status,
-                1
-        );
+        Session session = new SessionBuilder()
+                .withEnrollment(
+                        new EnrollmentBuilder().withStatus(status).build()
+                )
+                .build();
 
-        assertThatThrownBy(() -> session.register(SessionFixtures.USER_1))
+        assertThatThrownBy(() -> session.enroll(SessionFixtures.USER))
                 .isInstanceOf(CannotRegisterException.class);
     }
 }

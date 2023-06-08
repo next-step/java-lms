@@ -1,37 +1,39 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.fixture.SessionFixtures;
+import nextstep.courses.domain.enrollment.Students;
 import nextstep.courses.exception.CannotRegisterException;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.domain.fixture.SessionFixtures.STUDENT_1;
+import static nextstep.courses.domain.fixture.SessionFixtures.STUDENT_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class SessionUsersTest {
+class StudentsTest {
 
     @Test
     public void 유저_등록이_잘_동작해야_한다() throws Exception {
         //given
-        Students users = new Students(2);
+        Students students = new Students(2);
 
         //when
-        users.add(SessionFixtures.USER_1);
-        users.add(SessionFixtures.USER_2);
+        students.add(STUDENT_1);
+        students.add(STUDENT_2);
 
         //then
-        assertThat(users.count()).isEqualTo(2);
+        assertThat(students.count()).isEqualTo(2);
     }
 
     @Test
     public void 이미_등록한_유저는_등록할_수_없다() throws Exception {
         //given
-        Students users = new Students(2);
+        Students students = new Students(2);
 
         //when
-        users.add(SessionFixtures.USER_1);
+        students.add(STUDENT_1);
 
         //then
-        assertThatThrownBy(() -> users.add(SessionFixtures.USER_1))
+        assertThatThrownBy(() -> students.add(STUDENT_1))
                 .isInstanceOf(CannotRegisterException.class);
     }
 
@@ -41,10 +43,10 @@ class SessionUsersTest {
         Students users = new Students(1);
 
         //when
-        users.add(SessionFixtures.USER_1);
+        users.add(STUDENT_1);
 
         //then
-        assertThatThrownBy(() -> users.add(SessionFixtures.USER_2))
+        assertThatThrownBy(() -> users.add(STUDENT_2))
                 .isInstanceOf(CannotRegisterException.class);
     }
 
@@ -54,8 +56,8 @@ class SessionUsersTest {
         Students users = new Students(2);
 
         //when
-        users.add(SessionFixtures.USER_1);
-        users.add(SessionFixtures.USER_2);
+        users.add(STUDENT_1);
+        users.add(STUDENT_2);
 
         //then
         assertThatThrownBy(() -> users.updateCapacity(1))

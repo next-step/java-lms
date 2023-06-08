@@ -23,7 +23,7 @@ public class SessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcStudentRepository(jdbcTemplate));
     }
 
     @Test
@@ -36,8 +36,8 @@ public class SessionRepositoryTest {
         assertThat(SESSION.getCourseId()).isEqualTo(savedSession.getCourseId());
         assertThat(SESSION.getCoverImage()).isEqualTo(savedSession.getCoverImage());
         assertThat(SESSION.getPeriod()).isEqualTo(savedSession.getPeriod());
-        assertThat(SESSION.getType()).isEqualTo(savedSession.getType());
-        assertThat(SESSION.getStatus()).isEqualTo(savedSession.getStatus());
+        assertThat(SESSION.getEnrollment().getType()).isEqualTo(savedSession.getEnrollment().getType());
+        assertThat(SESSION.getEnrollment().getStatus()).isEqualTo(savedSession.getEnrollment().getStatus());
         LOGGER.debug("Session: {}", savedSession);
     }
 }

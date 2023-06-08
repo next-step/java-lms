@@ -1,35 +1,31 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.CannotRegisterException;
+import nextstep.courses.domain.base.BaseEntity;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class Session extends BaseEntity {
     private final Long courseId;
     private final CoverImage coverImage;
     private final SessionPeriod period;
-    private final Students users;
+    private final Enrollment enrollment;
     private final String title;
-    private final SessionStatus status;
-    private final SessionType type;
 
-    public Session(Long courseId, String title, CoverImage coverImage, SessionPeriod period, SessionType type,
-                   SessionStatus status, int capacity) {
-        this(0L, courseId, title, coverImage, period, type, status, capacity, LocalDateTime.now(), null);
+    public Session(Long courseId, String title, CoverImage coverImage, SessionPeriod period, Enrollment enrollment) {
+        this(0L, courseId, title, coverImage, period, enrollment, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Long courseId, String title, CoverImage coverImage, SessionPeriod period, SessionType type,
-                   SessionStatus status, int capacity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public Session(Long id, Long courseId, String title, CoverImage coverImage, SessionPeriod period, Enrollment enrollment, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, createdAt, updatedAt);
-        this.courseId = Objects.requireNonNull(courseId);
-        this.title = Objects.requireNonNull(title);
-        this.coverImage = Objects.requireNonNull(coverImage);
-        this.period = Objects.requireNonNull(period);
-        this.type = Objects.requireNonNull(type);
-        this.status = Objects.requireNonNull(status);
-        this.users = new Students(capacity);
+        this.courseId = courseId;
+        this.title = title;
+        this.coverImage = coverImage;
+        this.period = period;
+        this.enrollment = enrollment;
     }
 
     public Long getCourseId() {
@@ -40,36 +36,23 @@ public class Session extends BaseEntity {
         return coverImage;
     }
 
-    public SessionPeriod getPeriod() {
-        return period;
-    }
-
-    public Students getUsers() {
-        return users;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public SessionStatus getStatus() {
-        return status;
+    public Enrollment getEnrollment() {
+        return enrollment;
     }
 
-    public SessionType getType() {
-        return type;
+    public SessionPeriod getPeriod() {
+        return period;
     }
 
-    public int getCapacity() {
-        return users.capacity();
-    }
-
-    public Student register(NsUser user) {
-        if (!status.isRecruiting()) {
-            throw new CannotRegisterException("현재 모집중인 강의가 아닙니다");
-        }
-        users.add(user);
-        return new Student(getId(), user.getId());
+    public Student enroll(NsUser user) {
+        Student student = new Student(getId(), user.getId());
+        enrollment.enroll(student);
+        return student;
     }
 
     @Override
@@ -77,12 +60,8 @@ public class Session extends BaseEntity {
         return "Session{" +
                 "courseId=" + courseId +
                 ", coverImage=" + coverImage +
-                ", period=" + period +
-                ", users=" + users +
+                ", enrollment=" + enrollment +
                 ", title='" + title + '\'' +
-                ", status=" + status +
-                ", type=" + type +
-                '}'
-                + super.toString();
+                '}' + super.toString();
     }
 }

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enrollment;
 
 public class Capacity implements Comparable<Capacity> {
     private int value;

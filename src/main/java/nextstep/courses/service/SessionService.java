@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.Student;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.users.domain.NsUser;
@@ -17,9 +17,9 @@ public class SessionService {
         this.studentRepository = studentRepository;
     }
 
-    public void register(Long sessionId, NsUser user) {
+    public void enroll(Long sessionId, NsUser user) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = session.register(user);
+        Student student = session.enroll(user);
         studentRepository.save(student);
     }
 

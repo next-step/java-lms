@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Student;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.enrollment.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -35,8 +34,8 @@ class JdbcStudentRepositoryTest {
         int count = studentRepository.save(student);
         assertThat(count).isEqualTo(1);
 
-        List<NsUser> allUsers = studentRepository.findAllBySessionId(SESSION.getId());
+        List<Student> allUsers = studentRepository.findAllBySessionId(SESSION.getId());
         assertThat(allUsers).hasSize(1);
-        assertThat(allUsers.get(0).getId()).isEqualTo(1L);
+        assertThat(allUsers.get(0).getNsUserId()).isEqualTo(1L);
     }
 }
