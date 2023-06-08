@@ -2,32 +2,30 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.builder.EnrollmentBuilder;
 import nextstep.courses.domain.builder.SessionBuilder;
+import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.enrollment.Students;
 import nextstep.courses.domain.fixture.SessionFixtures;
-import nextstep.courses.exception.CannotRegisterException;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
-    private static final SessionPeriod PERIOD = new SessionPeriod(
-            LocalDate.of(2023, 5, 23),
-            LocalDate.of(2023, 5, 30)
-    );
 
-
-    @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"RECRUITING"}, mode = EnumSource.Mode.EXCLUDE)
-    public void 현재_모집중인_강의만_수강할_수_있다(SessionStatus status) throws Exception {
+    @Test
+    void 수강신청에_성공한다() {
+        Long sessionId = 1L;
         Session session = new SessionBuilder()
+                .withId(sessionId)
                 .withEnrollment(
-                        new EnrollmentBuilder().withStatus(status).build()
+                        new EnrollmentBuilder()
+                                .withStatus(SessionStatus.RECRUITING)
+                                .withStudents(new Students(10))
+                                .build()
                 )
                 .build();
 
-        assertThatThrownBy(() -> session.enroll(SessionFixtures.USER))
-                .isInstanceOf(CannotRegisterException.class);
+        Student student = session.enroll(SessionFixtures.USER);
+        assertThat(student.getSessionId()).isEqualTo(sessionId);
+        assertThat(student.getNsUserId()).isEqualTo(SessionFixtures.USER.getId());
     }
 }
