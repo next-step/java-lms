@@ -64,6 +64,12 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
     }
 
+    @Override
+    public int updateSessionStatus(Session session) {
+        String sql = "update session set status = ? where id = ? ";
+        return jdbcTemplate.update(sql, session.getSessionStatus().name(),session.getId());
+    }
+
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         return timestamp.toLocalDateTime();
