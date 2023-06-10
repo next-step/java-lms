@@ -6,19 +6,12 @@ public class CourseInfo {
 
   private String title;
 
-  private int nowBatchNo = 0;
-
-  public CourseInfo(Long id, String title, int nowBatchNo) {
+  public CourseInfo(Long id, String title) {
     this.id = id;
     this.title = title;
-    this.nowBatchNo = nowBatchNo;
   }
 
   public String getTitle() {
     return title;
-  }
-
-  public int getNowBatchNo() {
-    return nowBatchNo;
   }
 }

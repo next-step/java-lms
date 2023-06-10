@@ -11,7 +11,7 @@ public class Course {
 
   private CourseInfo courseInfo;
 
-  private int nowBatchNo;
+  private NowBatchNo nowBatchNo;
 
   private Batches batches = new Batches();
 
@@ -31,19 +31,22 @@ public class Course {
 
   public Course(Long id, String title, int nowBatchNo, Batches batches, Long creatorId,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(new CourseInfo(id, title, nowBatchNo),
+    this(new CourseInfo(id, title),
+        new NowBatchNo(nowBatchNo),
         batches,
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
-  public Course(CourseInfo courseInfo, Batches batches, BaseInfo baseInfo) {
+  public Course(CourseInfo courseInfo, NowBatchNo nowBatchNo,
+      Batches batches, BaseInfo baseInfo) {
     this.courseInfo = courseInfo;
+    this.nowBatchNo = nowBatchNo;
     this.batches = batches;
     this.baseInfo = baseInfo;
   }
 
   public Batch createdBatch(Long creatorId) {
-    Batch batch = new Batch(++this.nowBatchNo, this, creatorId);
+    Batch batch = new Batch(nowBatchNo.createdBatch(), this, creatorId);
     batches.addBatch(batch);
     return batch;
   }
@@ -57,7 +60,7 @@ public class Course {
   }
 
   public int getNowBatchNo() {
-    return courseInfo.getNowBatchNo();
+    return nowBatchNo.getNowBatchNo();
   }
 
   public Long getCreatorId() {
