@@ -22,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int create(Session newSession) {
-        String sql = "insert into course_session (title, session_number, course_id, start_date, end_date, image_url, fee_type, status, capacity, creator_id, created_at) values (?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into course_session (title, session_number, course_id, start_date, end_date, image_url, fee_type, status, recruit, capacity, creator_id, created_at) values (?,?,?,?,?,?,?,?,?,?,?,?)";
         return jdbcOperations.update(sql,
                 newSession.getTitle(),
                 newSession.getSessionNumber(),
@@ -32,6 +32,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 newSession.getCoverImage().getUrl(),
                 newSession.getStudents().getSessionFeeType().name(),
                 newSession.getStudents().getSessionStatus().name(),
+                newSession.getStudents().getSessionRecruitment().name(),
                 newSession.getStudents().getCapacity(),
                 newSession.getCreatorId(),
                 newSession.getCreatedAt());
@@ -49,6 +50,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 "                    image_url,\n" +
                 "                    fee_type,\n" +
                 "                    status,\n" +
+                "                    recruit,\n" +
                 "                    capacity,\n" +
                 "                    creator_id,\n" +
                 "                    created_at,\n" +
@@ -61,12 +63,13 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionPeriod(toLocalDate(rs.getTimestamp(5)), toLocalDate(rs.getTimestamp(6))),
                 new CoverImage(rs.getString(7)),
                 new Students(
-                        rs.getInt(10),
+                        rs.getInt(11),
                         SessionFeeType.valueOf(rs.getString(8)),
-                        SessionStatus.valueOf(rs.getString(9))),
-                rs.getLong(11),
-                toLocalDateTime(rs.getTimestamp(12)),
-                toLocalDateTime(rs.getTimestamp(13)));
+                        SessionStatus.valueOf(rs.getString(9)),
+                        SessionRecruitment.valueOf(rs.getString(10))),
+                rs.getLong(12),
+                toLocalDateTime(rs.getTimestamp(13)),
+                toLocalDateTime(rs.getTimestamp(14)));
         return jdbcOperations.query(sql, rowMapper, courseId);
     }
 
@@ -82,6 +85,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 "                    image_url,\n" +
                 "                    fee_type,\n" +
                 "                    status,\n" +
+                "                    recruit,\n" +
                 "                    capacity,\n" +
                 "                    creator_id,\n" +
                 "                    created_at,\n" +
@@ -94,12 +98,13 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionPeriod(toLocalDate(rs.getTimestamp(5)), toLocalDate(rs.getTimestamp(6))),
                 new CoverImage(rs.getString(7)),
                 new Students(
-                        rs.getInt(10),
+                        rs.getInt(11),
                         SessionFeeType.valueOf(rs.getString(8)),
-                        SessionStatus.valueOf(rs.getString(9))),
-                rs.getLong(11),
-                toLocalDateTime(rs.getTimestamp(12)),
-                toLocalDateTime(rs.getTimestamp(13)));
+                        SessionStatus.valueOf(rs.getString(9)),
+                        SessionRecruitment.valueOf(rs.getString(10))),
+                rs.getLong(12),
+                toLocalDateTime(rs.getTimestamp(13)),
+                toLocalDateTime(rs.getTimestamp(14)));
         return jdbcOperations.queryForObject(sql, rowMapper, sessionId);
     }
 

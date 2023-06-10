@@ -13,19 +13,32 @@ public class Students {
 
     private SessionStatus sessionStatus;
 
+    private SessionRecruitment sessionRecruitment;
+
     private final List<Student> users;
 
     public Students(int capacity, SessionFeeType sessionFeeType, SessionStatus sessionStatus) {
-        this(capacity, sessionFeeType, sessionStatus, new ArrayList<>());
+        this(capacity, sessionFeeType, sessionStatus, SessionRecruitment.CLOSE, new ArrayList<>());
     }
 
-    public Students(int capacity, SessionFeeType sessionFeeType, SessionStatus sessionStatus, List<Student> users) {
+    public Students(int capacity, SessionFeeType sessionFeeType, SessionStatus sessionStatus, SessionRecruitment sessionRecruitment) {
+        this(capacity, sessionFeeType, sessionStatus, sessionRecruitment, new ArrayList<>());
+    }
+
+    public Students(
+            int capacity,
+            SessionFeeType sessionFeeType,
+            SessionStatus sessionStatus,
+            SessionRecruitment sessionRecruitment,
+            List<Student> users) {
         validateCapacity(capacity);
         Objects.requireNonNull(sessionFeeType);
         Objects.requireNonNull(sessionStatus);
+        Objects.requireNonNull(sessionRecruitment);
         this.capacity = capacity;
         this.sessionFeeType = sessionFeeType;
         this.sessionStatus = sessionStatus;
+        this.sessionRecruitment = sessionRecruitment;
         this.users = users;
     }
 
@@ -40,7 +53,7 @@ public class Students {
     }
 
     public void validateRegister(NsUser nsUser) {
-        if (!sessionStatus.equals(SessionStatus.RECRUITING)) {
+        if (sessionRecruitment.isClosed()) {
             throw new IllegalStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
         }
         if (users.size() >= capacity) {
@@ -52,7 +65,7 @@ public class Students {
     }
 
     public void startRecruit() {
-        this.sessionStatus = SessionStatus.RECRUITING;
+        this.sessionRecruitment = SessionRecruitment.OPEN;
     }
 
     public int getCapacity() {
@@ -67,6 +80,10 @@ public class Students {
         return sessionStatus;
     }
 
+    public SessionRecruitment getSessionRecruitment() {
+        return sessionRecruitment;
+    }
+
     public List<Student> getUsers() {
         return users;
     }
@@ -77,6 +94,7 @@ public class Students {
                 "capacity=" + capacity +
                 ", sessionFeeType=" + sessionFeeType +
                 ", sessionStatus=" + sessionStatus +
+                ", sessionRecruitment=" + sessionRecruitment +
                 ", users=" + users +
                 '}';
     }
