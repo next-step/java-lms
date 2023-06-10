@@ -20,6 +20,7 @@ public class Fixtures {
 
     public static SessionBuilder aSession() {
         return SessionBuilder.aSession()
+                .withSessionStatus(sessionStatus)
                 .withSessionRegistration(aSessionRegistrationBuilder().build())
                 .withSessionPeriod(new SessionPeriod(startedAt, endedAt))
                 .withSessionCoverImage(sessionCoverImage)
@@ -28,7 +29,6 @@ public class Fixtures {
 
     public static SessionRegistrationBuilder aSessionRegistrationBuilder() {
         return SessionRegistrationBuilder.aSessionRegistrationBuilder()
-                .withSessionStatus(sessionStatus)
                 .withSessionRecruitmentStatus(recruitmentStatus)
                 .withStudents(aStudentsBuilder().build());
     }

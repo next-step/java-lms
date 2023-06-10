@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,14 +53,14 @@ public class SessionRepositoryTest {
     void updateSessionStatus() {
         Session session = aSession().withId(1L)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(SessionStatus.RECRUITING)
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .build())
                 .build();
 
         long sessionId = sessionRepository.save(session);
         Session foundSession = sessionRepository.findById(sessionId);
 
-        assertThat(foundSession.getSessionStatus().isRecruiting()).isTrue();
+        assertThat(foundSession.getRecruitmentStatus().isRecruiting()).isTrue();
 
         Session tobeSession = foundSession.migrationStatus();
         sessionRepository.updateSessionStatus(tobeSession);
