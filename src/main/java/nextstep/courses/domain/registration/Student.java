@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Student {
     private final Long nsUserId;
     private final Long sessionId;
-    private boolean approved;
+    private final boolean approved;
 
 
     public Student(Long nsUserId, Long sessionId) {
@@ -30,12 +30,12 @@ public class Student {
         return approved;
     }
 
-    public void approve() {
-        this.approved = true;
+    public Student approve() {
+        return new Student(this.nsUserId, this.sessionId, true);
     }
 
-    public void reject() {
-        this.approved = false;
+    public Student reject() {
+        return new Student(this.nsUserId, this.sessionId, false);
     }
 
     @Override
