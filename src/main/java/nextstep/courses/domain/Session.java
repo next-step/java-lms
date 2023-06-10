@@ -9,31 +9,17 @@ import nextstep.users.domain.NsUser;
 
 public class Session {
 
-  private Long id;
+  private SessionInfo sessionInfo;
 
-  private String title;
-
-  private String img;
-
-  private LocalDateTime startDate;
-
-  private LocalDateTime endDate;
+  private SessionPeriod sessionPeriod;
 
   private Batch batch;
 
-  private SessionStatus sessionStatus = SessionStatus.PREPARATION;
-
-  private SessionType sessionType;
-
-  private int maxRecruitment;
+  private Enrollment enrollment;
 
   private Registrations registrations = new Registrations();
 
-  private Long creatorId;
-
-  private LocalDateTime createdAt = LocalDateTime.now();
-
-  private LocalDateTime updatedAt;
+  private BaseInfo baseInfo;
 
   public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
       Batch batch, SessionType sessionType, int maxRecruitment, Long creatorId) {
@@ -46,37 +32,23 @@ public class Session {
       SessionType sessionType, int maxRecruitment,
       Registrations registrations, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
-    this.id = id;
-    this.title = title;
-    this.img = img;
-    validateDate(startDate, endDate);
-    this.startDate = startDate;
-    this.endDate = endDate;
+    this(new SessionInfo(id, title, img),
+        new SessionPeriod(startDate, endDate),
+        batch,
+        new Enrollment(sessionStatus, sessionType, maxRecruitment),
+        registrations,
+        new BaseInfo(creatorId, createdAt, updatedAt));
+  }
+
+  public Session(SessionInfo sessionInfo, SessionPeriod sessionPeriod,
+      Batch batch, Enrollment enrollment, Registrations registrations,
+      BaseInfo baseInfo) {
+    this.sessionInfo = sessionInfo;
+    this.sessionPeriod = sessionPeriod;
     this.batch = batch;
-    this.sessionStatus = sessionStatus;
-    this.sessionType = sessionType;
-    validateMaxRecruitment(maxRecruitment);
-    this.maxRecruitment = maxRecruitment;
+    this.enrollment = enrollment;
     this.registrations = registrations;
-    this.creatorId = creatorId;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
-
-  private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
-    if (startDate == null || endDate == null) {
-      throw new IllegalArgumentException();
-    }
-
-    if (endDate.isBefore(startDate)) {
-      throw new IllegalArgumentException();
-    }
-  }
-
-  private void validateMaxRecruitment(int maxRecruitment) {
-    if (maxRecruitment < 1) {
-      throw new IllegalArgumentException();
-    }
+    this.baseInfo = baseInfo;
   }
 
   public void register(NsUser nsUser, Registration registration) {
@@ -89,7 +61,7 @@ public class Session {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
-    if (registrations.isRegistrationFulled(maxRecruitment)) {
+    if (enrollment.isRegistrationFulled(registrations)) {
       throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
     }
 
@@ -103,15 +75,15 @@ public class Session {
   }
 
   private boolean isRegistrationOpened() {
-    return !sessionStatus.equals(SessionStatus.RECRUITMENT);
+    return enrollment.isRegistrationOpened();
   }
 
   public void registerOpen() {
-    sessionStatus = SessionStatus.RECRUITMENT;
+    enrollment.registerOpen();
   }
 
   public void registerClose() {
-    sessionStatus = SessionStatus.COMPLETION;
+    enrollment.registerClose();
   }
 
   @Override
@@ -123,16 +95,15 @@ public class Session {
       return false;
     }
     Session session = (Session) o;
-    return maxRecruitment == session.maxRecruitment && Objects.equals(id, session.id)
-        && Objects.equals(title, session.title) && Objects
-        .equals(img, session.img) && Objects.equals(startDate, session.startDate)
-        && Objects.equals(endDate, session.endDate)
-        && sessionStatus == session.sessionStatus && sessionType == session.sessionType;
+    return Objects.equals(sessionInfo, session.sessionInfo) && Objects
+        .equals(sessionPeriod, session.sessionPeriod) && Objects
+        .equals(batch, session.batch) && Objects.equals(enrollment, session.enrollment)
+        && Objects.equals(registrations, session.registrations) && Objects
+        .equals(baseInfo, session.baseInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects
-        .hash(id, title, img, startDate, endDate, sessionStatus, sessionType, maxRecruitment);
+    return Objects.hash(sessionInfo, sessionPeriod, batch, enrollment, registrations, baseInfo);
   }
 }
