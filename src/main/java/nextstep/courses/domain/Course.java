@@ -4,19 +4,13 @@ import java.time.LocalDateTime;
 
 public class Course {
 
-  private Long id;
+  private CourseInfo courseInfo;
 
-  private String title;
-
-  private int nowBatchNo = 0;
+  private int nowBatchNo;
 
   private Batches batches = new Batches();
 
-  private Long creatorId;
-
-  private LocalDateTime createdAt = LocalDateTime.now();
-
-  private LocalDateTime updatedAt;
+  private BaseInfo baseInfo;
 
   public Course() {
   }
@@ -32,13 +26,15 @@ public class Course {
 
   public Course(Long id, String title, int nowBatchNo, Batches batches, Long creatorId,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.id = id;
-    this.title = title;
-    this.nowBatchNo = nowBatchNo;
+    this(new CourseInfo(id, title, nowBatchNo),
+        batches,
+        new BaseInfo(creatorId, createdAt, updatedAt));
+  }
+
+  public Course(CourseInfo courseInfo, Batches batches, BaseInfo baseInfo) {
+    this.courseInfo = courseInfo;
     this.batches = batches;
-    this.creatorId = creatorId;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.baseInfo = baseInfo;
   }
 
   public Batch createdBatch(Long creatorId) {
@@ -47,30 +43,19 @@ public class Course {
     return batch;
   }
 
-  public void addSession(int batchNo, Session session) {
-    batches.addSession(batchNo, session);
+  public Curriculum addSession(int batchNo, Session session) {
+    return batches.addSession(batchNo, session);
   }
 
   public String getTitle() {
-    return title;
+    return courseInfo.getTitle();
   }
 
   public Long getCreatorId() {
-    return creatorId;
+    return baseInfo.getCreatorId();
   }
 
   public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  @Override
-  public String toString() {
-    return "Course{" +
-        "id=" + id +
-        ", title='" + title + '\'' +
-        ", creatorId=" + creatorId +
-        ", createdAt=" + createdAt +
-        ", updatedAt=" + updatedAt +
-        '}';
+    return baseInfo.getCreatedAt();
   }
 }
