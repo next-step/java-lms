@@ -1,11 +1,11 @@
 package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.batch.Batch;
 import nextstep.courses.domain.batch.Batches;
 import nextstep.courses.domain.curriculum.Curriculum;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.base.BaseInfo;
 
 public class Course {
 
@@ -24,9 +24,9 @@ public class Course {
     this(null, title, 0, new Batches(), creatorId, LocalDateTime.now(), null);
   }
 
-  public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
+  public Course(Long id, int nowBatchNo, String title, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
-    this(id, title, 0, new Batches(), creatorId, createdAt, updatedAt);
+    this(id, title, nowBatchNo, new Batches(), creatorId, createdAt, updatedAt);
   }
 
   public Course(Long id, String title, int nowBatchNo, Batches batches, Long creatorId,
@@ -54,6 +54,10 @@ public class Course {
 
   public String getTitle() {
     return courseInfo.getTitle();
+  }
+
+  public int getNowBatchNo() {
+    return courseInfo.getNowBatchNo();
   }
 
   public Long getCreatorId() {

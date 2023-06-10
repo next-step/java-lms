@@ -17,4 +17,8 @@ public class CourseInfo {
   public String getTitle() {
     return title;
   }
+
+  public int getNowBatchNo() {
+    return nowBatchNo;
+  }
 }

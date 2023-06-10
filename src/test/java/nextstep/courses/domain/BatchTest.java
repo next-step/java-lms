@@ -21,7 +21,7 @@ public class BatchTest {
   public void setUp() {
     c1 = new Course("ssafy", 1L);
     s1 = new Session("tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
-        new Batch(), SessionType.PAID, 1, 1L);
+        SessionType.PAID, 1, 1L);
   }
 
   @DisplayName("기수(Batch)는 중복되는 강의(Session)를 추가할 수 없다.")

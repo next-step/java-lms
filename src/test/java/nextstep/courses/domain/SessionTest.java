@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.batch.Batch;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +16,7 @@ public class SessionTest {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.minusDays(3);
     assertThatThrownBy(
-        () -> new Session("title", "img", start, end, new Batch(), SessionType.FREE, 10, 1L))
+        () -> new Session("title", "img", start, end, SessionType.FREE, 10, 1L))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -27,7 +26,7 @@ public class SessionTest {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.plusDays(3);
     assertThatThrownBy(
-        () -> new Session("title", "img", start, end, new Batch(), SessionType.FREE, 0, 1L))
+        () -> new Session("title", "img", start, end, SessionType.FREE, 0, 1L))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -36,7 +35,7 @@ public class SessionTest {
   public void session() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.plusDays(3);
-    Session session = new Session("title", "img", start, end, new Batch(), SessionType.FREE, 100,
+    Session session = new Session("title", "img", start, end, SessionType.FREE, 100,
         1L);
   }
 

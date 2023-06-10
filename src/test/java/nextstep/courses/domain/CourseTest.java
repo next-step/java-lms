@@ -22,9 +22,9 @@ public class CourseTest {
   public void setUp() {
     c1 = new Course("ssafy", 1L);
     s1 = new Session("tdd", "tdd-img", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(2), new Batch(), SessionType.PAID, 1, 1L);
+        LocalDateTime.now().plusMonths(2), SessionType.PAID, 1, 1L);
     s2 = new Session("atdd", "atdd-img", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(1), new Batch(), SessionType.PAID, 30, 1L);
+        LocalDateTime.now().plusMonths(1), SessionType.PAID, 30, 1L);
   }
 
   @DisplayName("과정(Course)은 기수(Batch)을 개설할 수 있다.")

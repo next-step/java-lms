@@ -5,10 +5,9 @@ import java.util.Objects;
 import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
+import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
-import nextstep.courses.domain.base.BaseInfo;
-import nextstep.courses.domain.batch.Batch;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -17,8 +16,6 @@ public class Session {
 
   private SessionPeriod sessionPeriod;
 
-  private Batch batch;
-
   private Enrollment enrollment;
 
   private Registrations registrations = new Registrations();
@@ -26,30 +23,26 @@ public class Session {
   private BaseInfo baseInfo;
 
   public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
-      Batch batch, SessionType sessionType, int maxRecruitment, Long creatorId) {
-    this(null, title, img, startDate, endDate, batch, SessionStatus.PREPARATION, sessionType,
+      SessionType sessionType, int maxRecruitment, Long creatorId) {
+    this(null, title, img, startDate, endDate, SessionStatus.PREPARATION, sessionType,
         maxRecruitment, new Registrations(), creatorId, LocalDateTime.now(), null);
   }
 
   public Session(Long id, String title, String img, LocalDateTime startDate,
-      LocalDateTime endDate, Batch batch, SessionStatus sessionStatus,
-      SessionType sessionType, int maxRecruitment,
-      Registrations registrations, Long creatorId, LocalDateTime createdAt,
+      LocalDateTime endDate, SessionStatus sessionStatus, SessionType sessionType,
+      int maxRecruitment, Registrations registrations, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(new SessionInfo(id, title, img),
         new SessionPeriod(startDate, endDate),
-        batch,
         new Enrollment(sessionStatus, sessionType, maxRecruitment),
         registrations,
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
-  public Session(SessionInfo sessionInfo, SessionPeriod sessionPeriod,
-      Batch batch, Enrollment enrollment, Registrations registrations,
-      BaseInfo baseInfo) {
+  public Session(SessionInfo sessionInfo, SessionPeriod sessionPeriod, Enrollment enrollment,
+      Registrations registrations, BaseInfo baseInfo) {
     this.sessionInfo = sessionInfo;
     this.sessionPeriod = sessionPeriod;
-    this.batch = batch;
     this.enrollment = enrollment;
     this.registrations = registrations;
     this.baseInfo = baseInfo;
@@ -101,13 +94,13 @@ public class Session {
     Session session = (Session) o;
     return Objects.equals(sessionInfo, session.sessionInfo) && Objects
         .equals(sessionPeriod, session.sessionPeriod) && Objects
-        .equals(batch, session.batch) && Objects.equals(enrollment, session.enrollment)
-        && Objects.equals(registrations, session.registrations) && Objects
+        .equals(enrollment, session.enrollment) && Objects
+        .equals(registrations, session.registrations) && Objects
         .equals(baseInfo, session.baseInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sessionInfo, sessionPeriod, batch, enrollment, registrations, baseInfo);
+    return Objects.hash(sessionInfo, sessionPeriod, enrollment, registrations, baseInfo);
   }
 }

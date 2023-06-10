@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
-import nextstep.courses.domain.batch.Batch;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
@@ -27,9 +26,9 @@ public class RegistrationTest {
   @BeforeEach
   public void setUp() {
     s1 = new Session("tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
-        new Batch(), SessionType.PAID, 1, 1L);
+        SessionType.PAID, 1, 1L);
     s2 = new Session("atdd", "atdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
-        new Batch(), SessionType.PAID, 30, 1L);
+        SessionType.PAID, 30, 1L);
     javajigi = new NsUser(1L, "javajigi", "password", "name",
         "javajigi@slipp.net");
     sanjigi = new NsUser(2L, "sanjigi", "password", "name",
