@@ -1,21 +1,18 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.registration;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
 public class Registration {
 
-  private Long id;
+  private RegistrationInfo registrationInfo;
 
   private NsUser nsUser;
 
   private Session session;
 
-  private LocalDateTime createdDate = LocalDateTime.now();
-
-  private LocalDateTime updatedDate;
-
-  private boolean canceled = false;
+  private RegistrationStatus registrationStatus;
 
   public Registration(NsUser nsUser, Session session) {
     this(null, nsUser, session, LocalDateTime.now(), null, false);
@@ -23,12 +20,18 @@ public class Registration {
 
   public Registration(Long id, NsUser nsUser, Session session, LocalDateTime createdDate,
       LocalDateTime updatedDate, boolean canceled) {
-    this.id = id;
+    this(new RegistrationInfo(id, createdDate, updatedDate),
+        nsUser,
+        session,
+        new RegistrationStatus(canceled));
+  }
+
+  public Registration(RegistrationInfo registrationInfo, NsUser nsUser,
+      Session session, RegistrationStatus registrationStatus) {
+    this.registrationInfo = registrationInfo;
     this.nsUser = nsUser;
     this.session = session;
-    this.createdDate = createdDate;
-    this.updatedDate = updatedDate;
-    this.canceled = canceled;
+    this.registrationStatus = registrationStatus;
   }
 
   public static Registration createRegistration(NsUser nsUser, Session session) {
@@ -38,12 +41,11 @@ public class Registration {
   }
 
   public void cancel() {
-    canceled = true;
-    updatedDate = LocalDateTime.now();
+    registrationStatus.cancel();
   }
 
   public boolean isCanceled() {
-    return canceled;
+    return registrationStatus.isCanceled();
   }
 
   public boolean hasNsUser(NsUser nsUser) {

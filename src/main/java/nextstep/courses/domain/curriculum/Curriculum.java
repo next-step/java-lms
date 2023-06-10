@@ -1,6 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.curriculum;
 
 import java.util.Objects;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.batch.Batch;
 
 public class Curriculum {
 

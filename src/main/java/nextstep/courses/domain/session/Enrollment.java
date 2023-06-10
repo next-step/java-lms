@@ -1,4 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
+
+import nextstep.courses.domain.registration.Registrations;
 
 public class Enrollment {
 

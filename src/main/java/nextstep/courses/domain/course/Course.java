@@ -1,6 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.batch.Batches;
+import nextstep.courses.domain.curriculum.Curriculum;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.base.BaseInfo;
 
 public class Course {
 

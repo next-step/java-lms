@@ -3,6 +3,9 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

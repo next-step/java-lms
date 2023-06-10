@@ -1,7 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.batch;
 
 import java.util.HashSet;
 import java.util.Set;
+import nextstep.courses.domain.curriculum.Curriculum;
+import nextstep.courses.domain.session.Session;
 import nextstep.qna.NotFoundException;
 
 public class Batches {

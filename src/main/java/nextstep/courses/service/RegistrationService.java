@@ -1,9 +1,9 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Registration;
-import nextstep.courses.domain.RegistrationRepository;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.Registration;
+import nextstep.courses.domain.registration.RegistrationRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
