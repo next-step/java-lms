@@ -17,10 +17,10 @@ public class CourseTest {
   @BeforeEach
   public void setUp() {
     c1 = new Course("ssafy", 1L);
-    s1 = new Session("tdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);
-    s2 = new Session("atdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(1), "atdd-img", SessionType.PAID, 30);
+    s1 = new Session("tdd", "tdd-img", LocalDateTime.now(),
+        LocalDateTime.now().plusMonths(2), new Batch(), SessionType.PAID, 1, 1L);
+    s2 = new Session("atdd", "atdd-img", LocalDateTime.now(),
+        LocalDateTime.now().plusMonths(1), new Batch(), SessionType.PAID, 30, 1L);
   }
 
   @DisplayName("과정(Course)은 기수(Batch)을 개설할 수 있다.")
@@ -36,7 +36,6 @@ public class CourseTest {
   public void addSession() {
     Batch batch1 = c1.createdBatch(1L);
     Batch batch2 = c1.createdBatch(1L);
-
     assertAll(
         () -> c1.addSession(1, s1),
         () -> assertThat(batch1.hasSession(s1)).isTrue(),

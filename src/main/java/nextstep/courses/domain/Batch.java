@@ -10,7 +10,7 @@ public class Batch {
 
   private Course course;
 
-  private Sessions sessions = new Sessions();
+  private Curriculums curriculums = new Curriculums();
 
   private Long creatorId;
 
@@ -22,26 +22,28 @@ public class Batch {
   }
 
   public Batch(int batchNo, Course course, Long creatorId) {
-    this(null, batchNo, course, new Sessions(), creatorId, LocalDateTime.now(), null);
+    this(null, batchNo, course, new Curriculums(), creatorId, LocalDateTime.now(), null);
   }
 
-  public Batch(Long id, int batchNo, Course course, Sessions sessions, Long creatorId,
+  public Batch(Long id, int batchNo, Course course, Curriculums curriculums, Long creatorId,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.batchNo = batchNo;
     this.course = course;
-    this.sessions = sessions;
+    this.curriculums = curriculums;
     this.creatorId = creatorId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
-  public void addSession(Session session) {
-    sessions.addSession(session);
+  public Curriculum addSession(Session session) {
+    Curriculum curriculum = new Curriculum(this, session);
+    curriculums.addCurriculum(curriculum);
+    return curriculum;
   }
 
   public boolean hasSession(Session session) {
-    return sessions.hasSession(session);
+    return curriculums.hasCurriculum(new Curriculum(this, session));
   }
 
   public boolean checkBatchNo(int batchNo) {

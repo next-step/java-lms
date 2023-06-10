@@ -15,8 +15,8 @@ public class Batches {
     batches.add(batch);
   }
 
-  public void addSession(int batchNo, Session session) {
-    getBatch(batchNo).addSession(session);
+  public Curriculum addSession(int batchNo, Session session) {
+    return getBatch(batchNo).addSession(session);
   }
 
   private Batch getBatch(int batchNo) {
