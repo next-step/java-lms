@@ -4,19 +4,13 @@ import java.time.LocalDateTime;
 
 public class Batch {
 
-  private Long id;
-
-  private int batchNo;
+  private BatchInfo batchInfo;
 
   private Course course;
 
   private Curriculums curriculums = new Curriculums();
 
-  private Long creatorId;
-
-  private LocalDateTime createdAt = LocalDateTime.now();
-
-  private LocalDateTime updatedAt;
+  private BaseInfo baseInfo;
 
   public Batch() {
   }
@@ -27,13 +21,16 @@ public class Batch {
 
   public Batch(Long id, int batchNo, Course course, Curriculums curriculums, Long creatorId,
       LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.id = id;
-    this.batchNo = batchNo;
+    this(new BatchInfo(id, batchNo), course, curriculums,
+        new BaseInfo(creatorId, createdAt, updatedAt));
+  }
+
+  public Batch(BatchInfo batchInfo, Course course, Curriculums curriculums,
+      BaseInfo baseInfo) {
+    this.batchInfo = batchInfo;
     this.course = course;
     this.curriculums = curriculums;
-    this.creatorId = creatorId;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.baseInfo = baseInfo;
   }
 
   public Curriculum addSession(Session session) {
@@ -47,6 +44,6 @@ public class Batch {
   }
 
   public boolean checkBatchNo(int batchNo) {
-    return this.batchNo == batchNo;
+    return batchInfo.checkBatchNo(batchNo);
   }
 }

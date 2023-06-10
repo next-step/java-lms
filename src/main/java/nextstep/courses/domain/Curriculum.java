@@ -11,12 +11,13 @@ public class Curriculum {
   private Session session;
 
   public Curriculum(Batch batch, Session session) {
-    this.batch = batch;
-    this.session = session;
+    this(null, batch, session);
   }
 
-  public boolean hasSession(Session session) {
-    return session.equals(session);
+  public Curriculum(Long id, Batch batch, Session session) {
+    this.id = id;
+    this.batch = batch;
+    this.session = session;
   }
 
   @Override
