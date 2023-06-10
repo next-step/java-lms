@@ -13,9 +13,7 @@ class SessionStatusTest {
     @ParameterizedTest
     @ValueSource(strings = {"준비, 모집, 시작"})
     void 강의상태_없는경우(String sessionStatus) {
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> SessionStatus.findByName(sessionStatus))
-                .withMessageMatching("없는 강의상태 입니다.");
+        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.valueOf(SessionStatus.NONE.toString()));
     }
 
     @DisplayName("강의상태 : 준비중")
@@ -23,13 +21,6 @@ class SessionStatusTest {
     @ValueSource(strings = {"준비중"})
     void 강의상태_준비중(String sessionStatus) {
         assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.PREPARING);
-    }
-
-    @DisplayName("강의상태 : 모집중")
-    @ParameterizedTest
-    @ValueSource(strings = {"모집중"})
-    void 강의상태_모집중(String sessionStatus) {
-        assertThat(SessionStatus.findByName(sessionStatus)).isEqualTo(SessionStatus.RECRUITING);
     }
 
     @DisplayName("강의상태 : 종료")

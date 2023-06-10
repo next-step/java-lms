@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public enum SessionStatus {
     PREPARING("준비중"),
-    RECRUITING("모집중"),
     PROGRESSING("진행중"),
-    CLOSED("종료");
+    CLOSED("종료"),
+    NONE("없음");
 
     private final String sessionStatus;
 
@@ -18,15 +18,11 @@ public enum SessionStatus {
         return Arrays.stream(values())
                 .filter(status -> status.isMatch(sessionStatus))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("없는 강의상태 입니다."));
+                .orElse(NONE);
     }
 
     private boolean isMatch(String sessionStatus) {
         return this.sessionStatus.equals(sessionStatus);
-    }
-
-    public boolean isRecruiting() {
-        return this == RECRUITING;
     }
 
     public boolean isNotProgressing() {
