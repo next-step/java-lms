@@ -9,13 +9,16 @@ import java.util.Set;
 
 public class Session {
     private Long id;
-    private SessionRegistration sessionRegistration;
+
+    private SessionStatus sessionStatus;
+    private final SessionRegistration sessionRegistration;
     private final SessionPeriod sessionPeriod;
     private final String sessionCoverImage;
     private final SessionCostType sessionCostType;
 
-    public Session(Long id, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, String sessionCoverImage, SessionCostType sessionCostType) {
+    public Session(Long id, SessionStatus sessionStatus, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, String sessionCoverImage, SessionCostType sessionCostType) {
         this.id = id;
+        this.sessionStatus = sessionStatus;
         this.sessionRegistration = sessionRegistration;
         this.sessionPeriod = sessionPeriod;
         this.sessionCoverImage = sessionCoverImage;
@@ -47,7 +50,7 @@ public class Session {
     }
 
     public SessionStatus getSessionStatus() {
-        return sessionRegistration.getSessionStatus();
+        return this.sessionStatus;
     }
 
     public SessionRecruitmentStatus getRecruitmentStatus() {
@@ -59,28 +62,21 @@ public class Session {
     }
 
     public Student register(NsUser nsUser, Set<Student> students) {
+        validateSessionStatus();
         Student student = new Student(nsUser.getId(), this.id);
         sessionRegistration.enroll(student, students);
         return student;
     }
 
-    public Student approve(Student student, CourseUser courseUser) {
-        if (Optional.ofNullable(courseUser).isEmpty()) {
-            throw new IllegalArgumentException("과정에 신청하지 않은 사용자 입니다.");
+    private void validateSessionStatus() {
+        if (this.sessionStatus.isNotProgressing()) {
+            throw new IllegalArgumentException("해당 강의는 진행중이 아닙니다.");
         }
-
-        if (courseUser.isNotSelected()) {
-            throw new IllegalArgumentException("선발되지 않은 사용자 입니다.");
-        }
-
-        student.approve();
-        return student;
     }
 
     public Session migrationStatus() {
-        if (sessionRegistration.getSessionStatus().equals(SessionStatus.RECRUITING)) {
-            this.sessionRegistration = new SessionRegistration(SessionStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING, sessionRegistration.getMaxUserCount());
-            return this;
+        if (sessionRegistration.getSessionRecruitmentStatus().isRecruiting()) {
+            return new Session(this.id, SessionStatus.PROGRESSING, this.sessionRegistration, this.sessionPeriod, this.sessionCoverImage, this.sessionCostType);
         }
         return this;
     }

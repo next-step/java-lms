@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.Fixtures.*;
-import static nextstep.courses.domain.registration.SessionRegistrationMother.aSessionRegistration;
 import static nextstep.courses.domain.registration.StudentMother.aStudent;
 import static nextstep.courses.domain.registration.StudentsMother.aStudents;
 import static org.assertj.core.api.Assertions.*;
@@ -51,9 +50,7 @@ class SessionTest {
     @EnumSource(value = SessionStatus.class, names = {"PREPARING", "PROGRESSING", "CLOSED"})
     void 강의_상태_확인(SessionStatus sessionStatus) {
         Session session = aSession()
-                .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
-                        .build())
+                .withSessionStatus(sessionStatus)
                 .build();
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatus);
     }
@@ -63,15 +60,15 @@ class SessionTest {
     @EnumSource(value = SessionStatus.class, names = {"PREPARING", "CLOSED"})
     void 수강신청_모집중아닌경우_불가능(SessionStatus sessionStatus) {
         Session session = aSession()
+                .withSessionStatus(sessionStatus)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
                         .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .build())
                 .build();
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
-                .withMessageMatching("해당 강의는 모집중이 아닙니다.");
+                .withMessageMatching("해당 강의는 진행중이 아닙니다.");
     }
 
     @DisplayName("강의 수강신청은 강의 상태가 진행중일 때 가능하다.")
@@ -79,8 +76,9 @@ class SessionTest {
     @EnumSource(value = SessionStatus.class, names = {"PROGRESSING"})
     void 수강신청_모집중_가능(SessionStatus sessionStatus) {
         Session session = aSession()
+                .withSessionStatus(sessionStatus)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .withStudents(aStudents().build())
                         .build())
                 .build();
@@ -118,47 +116,13 @@ class SessionTest {
                 .withMessageMatching("이미 등록 되었습니다.");
     }
 
-    @DisplayName("수강신청 승인_과정(코스) 신청한 사용자가 아닌 경우")
-    @Test
-    void 수강신청_승인_CourseUser_null() {
-        Session session = aSession().withSessionRegistration(
-                aSessionRegistration().build()
-        ).build();
-
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.approve(aStudent().build(), null))
-                .withMessageMatching("과정에 신청하지 않은 사용자 입니다.");
-    }
-    @DisplayName("수강신청 승인_과정(코스) 선발된 인원이 아닌경우")
-    @Test
-    void 수강신청_승인_선발X() {
-        Session session = aSession().withSessionRegistration(
-                aSessionRegistration().build()
-        ).build();
-
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.approve(aStudent().build(), CourseUserTest.SANJIGI))
-                .withMessageMatching("선발되지 않은 사용자 입니다.");
-    }
-
-    @DisplayName("수강신청 승인_과정(코스) 선발된 인원인 경우, 승인처리")
-    @Test
-    void 수강신청_승인_선발O() {
-        Session session = aSession().withSessionRegistration(
-                aSessionRegistration().build()
-        ).build();
-
-        Student student = session.approve(aStudent().build(), CourseUserTest.JAVAJIGI);
-        student.approve();
-        assertThat(student.getStatus()).isTrue();
-    }
-
     @DisplayName("강의 진행상태 모집중->진행중 마이그레이션")
     @Test
     void test() {
         Session session = aSession().withId(1L)
+                .withSessionStatus(SessionStatus.NONE)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(SessionStatus.RECRUITING)
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .build())
                 .build();
 
