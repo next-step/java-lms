@@ -3,7 +3,6 @@ package nextstep.courses.domain.curriculum;
 import java.util.HashSet;
 import java.util.Set;
 import nextstep.courses.DuplicatedException;
-import nextstep.courses.domain.curriculum.Curriculum;
 
 public class Curriculums {
 

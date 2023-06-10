@@ -1,7 +1,6 @@
 package nextstep.courses.domain.registration;
 
 import java.util.Optional;
-import nextstep.courses.domain.registration.Registration;
 
 public interface RegistrationRepository {
 

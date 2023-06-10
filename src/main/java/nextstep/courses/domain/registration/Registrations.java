@@ -2,7 +2,6 @@ package nextstep.courses.domain.registration;
 
 import java.util.HashSet;
 import java.util.Set;
-import nextstep.courses.domain.registration.Registration;
 import nextstep.users.domain.NsUser;
 
 public class Registrations {
