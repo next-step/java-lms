@@ -24,7 +24,7 @@ public class Course {
     this(null, title, 0, new Batches(), creatorId, LocalDateTime.now(), null);
   }
 
-  public Course(Long id, int nowBatchNo, String title, Long creatorId, LocalDateTime createdAt,
+  public Course(Long id,  String title, int nowBatchNo, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(id, title, nowBatchNo, new Batches(), creatorId, createdAt, updatedAt);
   }
@@ -46,13 +46,18 @@ public class Course {
   }
 
   public Batch createdBatch(Long creatorId) {
-    Batch batch = new Batch(nowBatchNo.createdBatch(), this, creatorId);
+    nowBatchNo = nowBatchNo.createdBatch();
+    Batch batch = new Batch(nowBatchNo.getNowBatchNo(), this, creatorId);
     batches.addBatch(batch);
     return batch;
   }
 
   public Curriculum addSession(int batchNo, Session session) {
     return batches.addSession(batchNo, session);
+  }
+
+  public Long getId() {
+    return courseInfo.getId();
   }
 
   public String getTitle() {
@@ -65,9 +70,5 @@ public class Course {
 
   public Long getCreatorId() {
     return baseInfo.getCreatorId();
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return baseInfo.getCreatedAt();
   }
 }

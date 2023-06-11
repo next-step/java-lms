@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class BaseInfo {
 
-  private Long creatorId;
+  private final Long creatorId;
 
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
 
@@ -18,13 +18,5 @@ public class BaseInfo {
 
   public Long getCreatorId() {
     return creatorId;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
   }
 }
