@@ -18,9 +18,9 @@ public class StudentTest {
 
     @BeforeEach
     void setUp() {
-        june1 = new Student(0L, 10L);
-        june2 = new Student(1L, 10L);
-        june3 = new Student(2L, 10L);
+        june1 = new Student(10L, 0L);
+        june2 = new Student(10L, 1L);
+        june3 = new Student(10L, 2L);
         session = SessionCreator.create(2L, SessionStatus.OPENED);
     }
 
@@ -78,6 +78,5 @@ public class StudentTest {
         assertThatThrownBy(() -> session.enroll(june1))
                 .isInstanceOf(CannotEnrollException.class);
     }
-
 
 }

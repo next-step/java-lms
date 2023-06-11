@@ -28,6 +28,6 @@ public class StudentService {
     }
 
     public List<Student> findBySessionId(Long sessionId) {
-        return studentRepository.findBySessionId(sessionId);
+        return studentRepository.findAllBySessionId(sessionId);
     }
 }

@@ -6,20 +6,20 @@ import java.util.Objects;
 
 public class Student {
 
-    private final Long studentId;
     private final Long sessionId;
+    private final Long nsUserId;
 
-    public Student(Long studentId, Long sessionId) {
-        this.studentId = studentId;
+    public Student(Long sessionId, Long nsUserId) {
         this.sessionId = sessionId;
+        this.nsUserId = nsUserId;
     }
 
     public void enroll(Session session) {
         session.enroll(this);
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public Long getNsUserId() {
+        return nsUserId;
     }
 
     public Long getSessionId() {
@@ -35,11 +35,11 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return Objects.equals(studentId, student.studentId)
+        return Objects.equals(nsUserId, student.nsUserId)
                 && Objects.equals(sessionId, student.sessionId);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, sessionId);
+        return Objects.hash(nsUserId, sessionId);
     }
 }

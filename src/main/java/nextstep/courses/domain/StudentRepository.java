@@ -10,5 +10,5 @@ public interface StudentRepository {
 
     Student findById(Long studentId);
 
-    List<Student> findBySessionId(Long sessionId);
+    List<Student> findAllBySessionId(Long sessionId);
 }
