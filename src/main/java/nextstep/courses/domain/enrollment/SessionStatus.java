@@ -24,6 +24,6 @@ public enum SessionStatus {
     }
 
     public boolean canJoin() {
-        return this.equals(OPENED);
+        return this == OPENED;
     }
 }
