@@ -10,9 +10,13 @@ public class SessionStudents {
     private Set<NsUser> students;
     private int maximumCapacity;
 
-    public SessionStudents(int maximumCapacity) {
-        this.students = new HashSet<>();
+    public SessionStudents(Set<NsUser> users, int maximumCapacity) {
+        this.students = users;
         this.maximumCapacity = maximumCapacity;
+    }
+
+    public SessionStudents(int maximumCapacity) {
+        this(new HashSet<>(), maximumCapacity);
     }
 
     private boolean canRecruitStudent(int maximumCapacity) {

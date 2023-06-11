@@ -2,6 +2,7 @@ package nextstep.users.infrastructure;
 
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,11 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

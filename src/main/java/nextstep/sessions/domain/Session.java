@@ -19,10 +19,6 @@ public class Session {
 
     private Course course;
 
-    public Session(Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionPaymentType, SessionStatus sessionStatus, int maximumCapacity) {
-        this(0L, courseId, startDate, endDate, sessionPaymentType, sessionStatus, maximumCapacity);
-    }
-
     public Session(Long id, Course course, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionPaymentType, SessionStatus sessionStatus, int maximumCapacity) {
         this(id, course.getId(), startDate, endDate, sessionPaymentType, sessionStatus, maximumCapacity);
         this.course = course;
@@ -38,11 +34,20 @@ public class Session {
         this.baseTime = new BaseTime();
     }
 
+    public Session(Session session, SessionStudents students) {
+        this.id = session.getId();
+        this.courseId = session.getCourseId();
+        this.sessionPaymentType = session.getSessionPaymentType();
+        this.sessionPeriod = session.getSessionPeriod();
+        this.sessionStatus = session.getSessionStatus();
+        this.sessionStudents = students;
+        this.baseTime = new BaseTime();
+    }
+
     public void enrollStudent(NsUser nsUser) {
         if (!sessionStatus.isRecruitable()) {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
         }
-
         sessionStudents.enrollStudent(nsUser);
     }
 
@@ -75,19 +80,6 @@ public class Session {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionPaymentType == session.sessionPaymentType && sessionStatus == session.sessionStatus && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, courseId, sessionPeriod, sessionPaymentType, sessionStatus, sessionStudents, baseTime, course);
-    }
-
-    @Override
     public String toString() {
         return "Session{" +
                 "id=" + id +
@@ -99,5 +91,18 @@ public class Session {
                 ", baseTime=" + baseTime +
                 ", course=" + course +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionPaymentType == session.sessionPaymentType && sessionStatus == session.sessionStatus && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseId, sessionPeriod, sessionPaymentType, sessionStatus, sessionStudents, baseTime, course);
     }
 }

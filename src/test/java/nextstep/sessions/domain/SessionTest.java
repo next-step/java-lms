@@ -12,30 +12,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
-    public static Session session = new Session(
-            0L, CourseTest.C1,
+    public static final Session s1 = new Session(
+            1L, CourseTest.C1,
             LocalDateTime.now(),
             LocalDateTime.now(),
             SessionPaymentType.FREE,
             SessionStatus.RECRUITING, 1);
+    public static final Session s2 = new Session(
+            2L, CourseTest.C1,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            SessionPaymentType.FREE,
+            SessionStatus.PREPARING, 1);
 
     @BeforeAll
     static void setUp() {
-        session.enrollStudent(NsUserTest.JAVAJIGI);
+        s1.enrollStudent(NsUserTest.JAVAJIGI);
     }
 
     @Test
     @DisplayName(value = "강의는 강의 최대 수강 인원을 초과할 수 없다")
     void test1() {
         assertThatThrownBy(() -> {
-            session.enrollStudent(NsUserTest.SANJIGI);
+            s1.enrollStudent(NsUserTest.SANJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName(value = "수강신청")
     void test2() {
-        assertThat(session.getSessionStudents().getCurrentStudentCount()).isEqualTo(1);
+        assertThat(s1.getSessionStudents().getCurrentStudentCount()).isEqualTo(1);
     }
 
     @Test
@@ -59,7 +65,7 @@ public class SessionTest {
     @DisplayName(value = "이미 수강신청한 학생이 중복 수강신청했을 경우")
     void test4() {
         assertThatThrownBy(() -> {
-            session.enrollStudent(NsUserTest.JAVAJIGI);
+            s1.enrollStudent(NsUserTest.JAVAJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,18 +31,14 @@ public class SessionRepositoryTest {
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-
-        session = new Session(1L,
-                LocalDateTime.of(2023, 06, 01, 10, 00),
-                LocalDateTime.of(2023, 06, 15, 10, 00),
-                SessionPaymentType.FREE, SessionStatus.RECRUITING, 3);
+        session = new Session(SessionTest.s1, new SessionStudents(1));
     }
 
     @Test
     void save_and_findById() {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
-        Session savedSession = sessionRepository.findById(1L);
+        Session savedSession = sessionRepository.findById(1L).orElseThrow();
         assertThat(savedSession.getCourseId()).isEqualTo(session.getCourseId());
     }
 
