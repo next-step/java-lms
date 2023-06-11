@@ -39,18 +39,23 @@ public class Session {
     public SessionInfo getSessionInfo() {
         return sessionInfo;
     }
+
     public Long getCourseId() {
         return sessionInfo.getCourseId();
     }
+
     public Long getOwnerId() {
         return sessionInfo.getOwnerId();
     }
+
     public String getTitle() {
         return sessionInfo.getTitle();
     }
+
     public String getCoverImageInfo() {
         return sessionInfo.getCoverImageInfo();
     }
+
     public SessionType getSessionType() {
         return sessionInfo.getSessionType();
     }
