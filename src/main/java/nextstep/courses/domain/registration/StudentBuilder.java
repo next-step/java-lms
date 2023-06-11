@@ -4,6 +4,8 @@ public class StudentBuilder {
     private Long nsUserId;
     private Long sessionId;
 
+    private boolean approved;
+
     private StudentBuilder() {
     }
 
@@ -21,8 +23,13 @@ public class StudentBuilder {
         return this;
     }
 
+    public StudentBuilder withStatus(boolean approved) {
+        this.approved = approved;
+        return this;
+    }
+
     public Student build() {
-        Student student = new Student(nsUserId, sessionId);
+        Student student = new Student(nsUserId, sessionId, approved);
         return student;
     }
 }

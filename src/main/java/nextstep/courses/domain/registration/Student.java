@@ -5,10 +5,17 @@ import java.util.Objects;
 public class Student {
     private final Long nsUserId;
     private final Long sessionId;
+    private final boolean approved;
+
 
     public Student(Long nsUserId, Long sessionId) {
+        this(nsUserId, sessionId, true);
+    }
+
+    public Student(Long nsUserId, Long sessionId, boolean approved) {
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
+        this.approved = approved;
     }
 
     public Long getNsUserId() {
@@ -17,6 +24,18 @@ public class Student {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    public boolean getStatus() {
+        return approved;
+    }
+
+    public Student approve() {
+        return new Student(this.nsUserId, this.sessionId, true);
+    }
+
+    public Student reject() {
+        return new Student(this.nsUserId, this.sessionId, false);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionStatus;
 import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUserTest;
@@ -44,40 +45,40 @@ class SessionTest {
         assertThat(session.getSessionCostType()).isEqualTo(sessionCostType);
     }
 
-    @DisplayName("강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.")
+    @DisplayName("강의 상태는 준비중, 진행중, 종료 3가지 상태를 가진다.")
     @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"PREPARING", "RECRUITING", "CLOSED"})
+    @EnumSource(value = SessionStatus.class, names = {"PREPARING", "PROGRESSING", "CLOSED"})
     void 강의_상태_확인(SessionStatus sessionStatus) {
         Session session = aSession()
-                .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
-                        .build())
+                .withSessionStatus(sessionStatus)
                 .build();
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatus);
     }
 
-    @DisplayName("강의 상태가 모집중이 아니면, 수강신청이 불가능")
+    @DisplayName("강의 상태가 진행중이 아니면, 수강신청이 불가능")
     @ParameterizedTest
     @EnumSource(value = SessionStatus.class, names = {"PREPARING", "CLOSED"})
     void 수강신청_모집중아닌경우_불가능(SessionStatus sessionStatus) {
         Session session = aSession()
+                .withSessionStatus(sessionStatus)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .build())
                 .build();
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
-                .withMessageMatching("해당 강의는 모집중이 아닙니다.");
+                .withMessageMatching("해당 강의는 진행중이 아닙니다.");
     }
 
-    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    @DisplayName("강의 수강신청은 강의 상태가 진행중일 때 가능하다.")
     @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"RECRUITING"})
+    @EnumSource(value = SessionStatus.class, names = {"PROGRESSING"})
     void 수강신청_모집중_가능(SessionStatus sessionStatus) {
         Session session = aSession()
+                .withSessionStatus(sessionStatus)
                 .withSessionRegistration(aSessionRegistrationBuilder()
-                        .withSessionStatus(sessionStatus)
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
                         .withStudents(aStudents().build())
                         .build())
                 .build();
@@ -113,6 +114,20 @@ class SessionTest {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> session.register(NsUserTest.JAVAJIGI, session.getUsers()))
                 .withMessageMatching("이미 등록 되었습니다.");
+    }
+
+    @DisplayName("강의 진행상태 모집중->진행중 마이그레이션")
+    @Test
+    void test() {
+        Session session = aSession().withId(1L)
+                .withSessionStatus(SessionStatus.NONE)
+                .withSessionRegistration(aSessionRegistrationBuilder()
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
+                        .build())
+                .build();
+
+        Session tobeSession = session.migrationStatus();
+        assertThat(tobeSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
     }
 }
 

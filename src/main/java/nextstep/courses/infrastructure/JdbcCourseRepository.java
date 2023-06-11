@@ -35,6 +35,7 @@ public class JdbcCourseRepository implements CourseRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

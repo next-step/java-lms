@@ -2,6 +2,8 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
+import nextstep.courses.domain.registration.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static nextstep.Fixtures.aSession;
+import static nextstep.Fixtures.aSessionRegistrationBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -43,6 +46,29 @@ public class SessionRepositoryTest {
         Session foundSession = sessionRepository.findById(sessionId);
         assertThat(foundSession).isNotNull();
         assertThat(foundSession.getId()).isEqualTo(sessionId);
+    }
+
+    @DisplayName("강의 진행상태 모집중->진행중 마이그레이션")
+    @Test
+    void updateSessionStatus() {
+        Session session = aSession().withId(1L)
+                .withSessionRegistration(aSessionRegistrationBuilder()
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
+                        .build())
+                .build();
+
+        long sessionId = sessionRepository.save(session);
+        Session foundSession = sessionRepository.findById(sessionId);
+
+        assertThat(foundSession.getRecruitmentStatus().isRecruiting()).isTrue();
+
+        Session tobeSession = foundSession.migrationStatus();
+        sessionRepository.updateSessionStatus(tobeSession);
+
+        tobeSession = sessionRepository.findById(tobeSession.getId());
+
+        assertThat(tobeSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
+
     }
 
 }

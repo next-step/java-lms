@@ -35,8 +35,22 @@ public class SessionService {
     public void register(Long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId);
         List<Student> students = studentRepository.findAllBySessionId(sessionId);
+        session = session.migrationStatus();
+        sessionRepository.updateSessionStatus(session);
         Student student = session.register(nsUser, new HashSet<>(students));
         studentRepository.save(student);
+    }
+
+    public void approve(Long userId) {
+        Student student = studentRepository.findByUserId(userId);
+        student = student.approve();
+        studentRepository.updateStatus(student);
+    }
+
+    public void reject(Long userId) {
+        Student student = studentRepository.findByUserId(userId);
+        student = student.reject();
+        studentRepository.updateStatus(student);
     }
 
 }

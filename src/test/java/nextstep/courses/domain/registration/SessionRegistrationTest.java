@@ -41,10 +41,10 @@ class SessionRegistrationTest {
 
     @DisplayName("강의 상태가 모집중이 아니면, 수강신청이 불가능")
     @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"PREPARING", "CLOSED"})
-    void 수강신청_모집중아닌경우_불가능(SessionStatus sessionStatus) {
+    @EnumSource(value = SessionRecruitmentStatus.class, names = {"NOT_RECRUITING"})
+    void 수강신청_모집중아닌경우_불가능(SessionRecruitmentStatus sessionRecruitmentStatus) {
         SessionRegistration sessionRegistration = aSessionRegistrationBuilder()
-                .withSessionStatus(sessionStatus)
+                .withSessionRecruitmentStatus(sessionRecruitmentStatus)
                 .build();
 
         assertThatIllegalArgumentException()
@@ -54,10 +54,10 @@ class SessionRegistrationTest {
 
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
     @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"RECRUITING"})
-    void 수강신청_모집중_가능(SessionStatus sessionStatus) {
+    @EnumSource(value = SessionRecruitmentStatus.class, names = {"RECRUITING"})
+    void 수강신청_모집중_가능(SessionRecruitmentStatus status) {
         SessionRegistration sessionRegistration = aSessionRegistrationBuilder()
-                .withSessionStatus(sessionStatus)
+                .withSessionRecruitmentStatus(status)
                 .withStudents(aStudentsBuilder()
                         .withStudent(aStudent().build())
                         .build())

@@ -41,4 +41,25 @@ public class JdbcStudentRepository implements StudentRepository {
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
+
+    @Override
+    public Student findByUserId(Long nsUserId) {
+        String sql = "select user_id, session_id, status from student where user_id = ?";
+
+        RowMapper<Student> rowMapper = ((rs, rowNum) -> new Student(
+                rs.getLong(1),
+                rs.getLong(2),
+                rs.getBoolean(3)
+        ));
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, nsUserId);
+    }
+
+    @Override
+    public void updateStatus(Student student) {
+        String sql = "update student set status = ? where user_id = ? ";
+
+        jdbcTemplate.update(sql, student.getStatus(), student.getNsUserId());
+    }
+
 }
