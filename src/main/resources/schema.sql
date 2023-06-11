@@ -27,6 +27,12 @@ create table course_session (
 
 create table session_student (
     session_id bigint not null,
+    user_id bigint not null,
+    status varchar(20) not null
+);
+
+create table session_candidate (
+    session_id bigint not null,
     user_id bigint not null
 );
 

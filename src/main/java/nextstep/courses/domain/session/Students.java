@@ -52,6 +52,10 @@ public class Students {
         users.addAll(students);
     }
 
+    public boolean hasUserIdOf(Long userId) {
+        return users.stream().anyMatch(user -> user.getUserId().equals(userId));
+    }
+
     public void validateRegister(NsUser nsUser) {
         if (sessionRecruitment.isClosed()) {
             throw new IllegalStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
@@ -59,8 +63,14 @@ public class Students {
         if (users.size() >= capacity) {
             throw new IllegalStateException("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
         }
-        if (users.stream().anyMatch(user -> user.getUserId().equals(nsUser.getId()))) {
+        if (hasUserIdOf(nsUser.getId())) {
             throw new IllegalStateException("이미 등록된 학생입니다.");
+        }
+    }
+
+    public void validateExist(NsUser nsUser) {
+        if (!hasUserIdOf(nsUser.getId())) {
+            throw new IllegalArgumentException("수강 신청한 사용자가 아닙니다.");
         }
     }
 

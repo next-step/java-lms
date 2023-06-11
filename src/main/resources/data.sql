@@ -42,4 +42,6 @@ VALUES (
         CURRENT_TIMESTAMP(),
         NULL);
 
-INSERT INTO session_student (session_id, user_id) VALUES (0, 1);
+INSERT INTO session_student (session_id, user_id, status) VALUES (0, 1, 'APPROVED');
+
+INSERT INTO session_candidate (session_id, user_id) VALUES (0, 1);

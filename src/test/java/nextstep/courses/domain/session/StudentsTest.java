@@ -56,4 +56,17 @@ class StudentsTest {
         assertThatThrownBy(() -> students.validateRegister(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class);
     }
+
+    @DisplayName("수강 신청하지 않은 사용자는 수강 승인이 불가능하다.")
+    @Test
+    public void approveTest_수강신청하지_않은_학생() {
+        Students students = new Students(
+                1,
+                SessionFeeType.FREE,
+                SessionStatus.PREPARING,
+                SessionRecruitment.OPEN,
+                List.of(new Student(0L, NsUserTest.JAVAJIGI.getId())));
+        assertThatThrownBy(() -> students.validateExist(NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

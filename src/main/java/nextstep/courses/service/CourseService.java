@@ -4,6 +4,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionFeeType;
 import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.repository.CandidateRepository;
 import nextstep.courses.repository.CourseRepository;
 import nextstep.courses.repository.SessionRepository;
 import nextstep.courses.repository.StudentRepository;
@@ -20,10 +21,13 @@ public class CourseService {
 
     private final StudentRepository studentRepository;
 
-    public CourseService(CourseRepository courseRepository, SessionRepository sessionRepository, StudentRepository studentRepository) {
+    private final CandidateRepository candidateRepository;
+
+    public CourseService(CourseRepository courseRepository, SessionRepository sessionRepository, StudentRepository studentRepository, CandidateRepository candidateRepository) {
         this.courseRepository = courseRepository;
         this.sessionRepository = sessionRepository;
         this.studentRepository = studentRepository;
+        this.candidateRepository = candidateRepository;
     }
 
     public Course findCourseById(Long courseId) {
@@ -61,5 +65,23 @@ public class CourseService {
                 .initUsers(studentRepository.findBySessionId(sessionId))
                 .validateRegister(nsUser);
         studentRepository.registerSession(registered.getId(), nsUser.getId());
+    }
+
+    @Transactional
+    public void approveSessionRegister(Long sessionId, NsUser nsUser) {
+        sessionRepository.findById(sessionId)
+                .initUsers(studentRepository.findBySessionId(sessionId))
+                .initCandidates(candidateRepository.findBySessionId(sessionId))
+                .validateApprove(nsUser);
+        studentRepository.approveStudent(sessionId, nsUser.getId());
+    }
+
+    @Transactional
+    public void rejectSessionRegister(Long sessionId, NsUser nsUser) {
+        sessionRepository.findById(sessionId)
+                .initUsers(studentRepository.findBySessionId(sessionId))
+                .initCandidates(candidateRepository.findBySessionId(sessionId))
+                .validateReject(nsUser);
+        studentRepository.rejectStudent(sessionId, nsUser.getId());
     }
 }

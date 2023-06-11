@@ -8,4 +8,8 @@ public interface StudentRepository {
     List<Student> findBySessionId(Long sessionId);
 
     int registerSession(Long sessionId, Long userId);
+
+    int approveStudent(Long sessionId, Long id);
+
+    int rejectStudent(Long sessionId, Long id);
 }
