@@ -4,6 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,10 +21,10 @@ public class CourseTest {
   @BeforeEach
   public void setUp() {
     c1 = new Course("ssafy", 1L);
-    s1 = new Session("tdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);
-    s2 = new Session("atdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(1), "atdd-img", SessionType.PAID, 30);
+    s1 = new Session("tdd", "tdd-img", LocalDateTime.now(),
+        LocalDateTime.now().plusMonths(2), SessionType.PAID, 1, 1L);
+    s2 = new Session("atdd", "atdd-img", LocalDateTime.now(),
+        LocalDateTime.now().plusMonths(1), SessionType.PAID, 30, 1L);
   }
 
   @DisplayName("과정(Course)은 기수(Batch)을 개설할 수 있다.")
@@ -36,7 +40,6 @@ public class CourseTest {
   public void addSession() {
     Batch batch1 = c1.createdBatch(1L);
     Batch batch2 = c1.createdBatch(1L);
-
     assertAll(
         () -> c1.addSession(1, s1),
         () -> assertThat(batch1.hasSession(s1)).isTrue(),

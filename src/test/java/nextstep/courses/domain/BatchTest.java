@@ -4,6 +4,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import nextstep.courses.DuplicatedException;
+import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +20,8 @@ public class BatchTest {
   @BeforeEach
   public void setUp() {
     c1 = new Course("ssafy", 1L);
-    s1 = new Session("tdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);
+    s1 = new Session("tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
+        SessionType.PAID, 1, 1L);
   }
 
   @DisplayName("기수(Batch)는 중복되는 강의(Session)를 추가할 수 없다.")

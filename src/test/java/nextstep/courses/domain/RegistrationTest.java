@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
+import nextstep.courses.domain.registration.Registration;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionType;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +25,10 @@ public class RegistrationTest {
 
   @BeforeEach
   public void setUp() {
-    s1 = new Session("tdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(2), "tdd-img", SessionType.PAID, 1);
-    s2 = new Session("atdd", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(1), "atdd-img", SessionType.PAID, 30);
+    s1 = new Session("tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
+        SessionType.PAID, 1, 1L);
+    s2 = new Session("atdd", "atdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+        SessionType.PAID, 30, 1L);
     javajigi = new NsUser(1L, "javajigi", "password", "name",
         "javajigi@slipp.net");
     sanjigi = new NsUser(2L, "sanjigi", "password", "name",
