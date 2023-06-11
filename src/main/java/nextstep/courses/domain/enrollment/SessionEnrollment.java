@@ -18,18 +18,9 @@ public class SessionEnrollment {
     }
 
     public void enroll(Student student) {
-        if (!sessionStatus.canJoin()) {
-            throw new CannotEnrollException("현재는 수강신청을 할 수 없는 강의 상태입니다. 현재 강의 상태 = " + sessionStatus.name());
-        }
-
-        if (isPositionFull()) {
-            throw new CannotEnrollException(
-                    "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 = " + capacity);
-        }
-
-        if (students.contains(student)) {
-            throw new AlreadyEnrollmentException(student + " 학생은 이미 등록한 상태입니다.");
-        }
+        validateSessionStatus();
+        validateUserCount();
+        validateDuplicated(student);
         this.students.add(student);
     }
 
@@ -43,5 +34,24 @@ public class SessionEnrollment {
 
     public SessionStatus getStatus() {
         return sessionStatus;
+    }
+
+    private void validateSessionStatus() {
+        if (!sessionStatus.canJoin()) {
+            throw new CannotEnrollException("현재는 수강신청을 할 수 없는 강의 상태입니다. 현재 강의 상태 = " + sessionStatus.name());
+        }
+    }
+
+    private void validateUserCount() {
+        if (isPositionFull()) {
+            throw new CannotEnrollException(
+                    "현재 강의(Session)는 수강인원이 꽉 차서 더 이상 등록할 수 없습니다." + "최대인원 = " + capacity);
+        }
+    }
+
+    private void validateDuplicated(Student student) {
+        if (students.contains(student)) {
+            throw new AlreadyEnrollmentException(student + " 학생은 이미 등록한 상태입니다.");
+        }
     }
 }

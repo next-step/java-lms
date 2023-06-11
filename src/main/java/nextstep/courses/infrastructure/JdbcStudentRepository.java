@@ -19,15 +19,15 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into sessions_users (session_id, user_id) values(?, ?)";
-        return jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId());
+        String sql = "insert into student (user_id, session_id) values(?, ?)";
+        return jdbcTemplate.update(sql, student.getNsUserId(), student.getSessionId());
     }
 
     @Override
     public Student findById(Long studentId) {
-        String sql = "select id, session_id"+
-                " from " +
-                " where id = ?";
+        String sql = "select user_id, session_id"+
+                " from student" +
+                " where user_id = ?";
 
         RowMapper<Student> rowMapper = (rs, rowNum) ->
                 new Student(rs.getLong(1), rs.getLong(2));
@@ -37,8 +37,8 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public List<Student> findAllBySessionId(Long sessionId) {
-        String sql = "select session_id, user_id " +
-                "from sessions_users " +
+        String sql = "select user_id, session_id " +
+                "from student " +
                 "where session_id = ?";
 
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(

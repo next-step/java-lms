@@ -1,21 +1,15 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.Session;
-
 import java.util.Objects;
 
 public class Student {
 
-    private final Long sessionId;
     private final Long nsUserId;
+    private final Long sessionId;
 
-    public Student(Long sessionId, Long nsUserId) {
-        this.sessionId = sessionId;
+    public Student(Long nsUserId, Long sessionId) {
         this.nsUserId = nsUserId;
-    }
-
-    public void enroll(Session session) {
-        session.enroll(this);
+        this.sessionId = sessionId;
     }
 
     public Long getNsUserId() {

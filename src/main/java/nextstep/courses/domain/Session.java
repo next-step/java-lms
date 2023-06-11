@@ -3,11 +3,14 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enrollment.SessionEnrollment;
 import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.Student;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class Session {
 
+    private Long id;
     private final SessionInfo sessionInfo;
     private final SessionEnrollment sessionEnrollment;
     private final SessionTimeLine sessionTimeLine;
@@ -28,8 +31,10 @@ public class Session {
         this.sessionTimeLine = sessionTimeLine;
     }
 
-    public void enroll(Student student) {
+    public Student register(NsUser nsUser) {
+        Student student = new Student(nsUser.getId(), this.id);
         sessionEnrollment.enroll(student);
+        return student;
     }
 
     public Long totalStudentNum() {
@@ -38,6 +43,10 @@ public class Session {
 
     public SessionInfo getSessionInfo() {
         return sessionInfo;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getCourseId() {
