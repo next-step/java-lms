@@ -55,7 +55,7 @@ public class JdbcSessionRepositoryTest {
     void join() {
         Session session = testSession1();
         long sessionId = sessionRepository.save(session);
-        Session savedSession = new Session(sessionId, SessionBilling.FREE,SessionStatus.OPEN,"http://nextstep.tdd", 10, new SessionPeriod(LocalDateTime.now(),LocalDateTime.now().plusDays(7)), LocalDateTime.now(),LocalDateTime.now());
+        Session savedSession = new Session(sessionId, SessionBilling.FREE,"http://nextstep.tdd", SessionStatus.OPEN, SessionRecruitStatus.RECRUIT, 10, new SessionPeriod(LocalDateTime.now(),LocalDateTime.now().plusDays(7)), LocalDateTime.now(),LocalDateTime.now());
 
         savedSession.addUser(NsUserTest.JAVAJIGI);
         savedSession.addUser(NsUserTest.SANJIGI);

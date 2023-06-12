@@ -24,4 +24,8 @@ public enum SessionStatus {
         return this == OPEN;
     }
 
+    public boolean isClose() {
+        return this == CLOSED;
+    }
+
 }

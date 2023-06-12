@@ -9,18 +9,25 @@ import java.util.List;
 public class SessionRegistration {
     private final List<SessionJoin> sessionJoins = new ArrayList<>();
     private final SessionStatus sessionStatus;
+    private final SessionRecruitStatus sessionRecruitStatus;
     private final int maxUserCount;
 
-    public SessionRegistration(SessionStatus sessionStatus, int maxUserCount) {
+    public SessionRegistration(SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, int maxUserCount) {
         this.sessionStatus = sessionStatus;
+        this.sessionRecruitStatus = sessionRecruitStatus;
         this.maxUserCount = maxUserCount;
     }
 
 
     public void register(Session session,NsUser user) {
-        if (sessionStatus != SessionStatus.OPEN) {
-            throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
+        if (this.sessionRecruitStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
         }
+
+        if (this.sessionStatus.isClose()) {
+            throw new IllegalArgumentException("강의가 종료되었습니다.");
+        }
+
 
         if (isAlreadyJoined(session, user)) {
             throw new IllegalArgumentException("이미 등록된 유저입니다.");
@@ -59,6 +66,10 @@ public class SessionRegistration {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRecruitStatus;
     }
 
     public int getMaxUserCount() {
