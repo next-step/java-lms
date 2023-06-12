@@ -40,3 +40,21 @@
 * 도메인 모델은 TDD로 구현한다.
 * 단, Service 클래스는 단위 테스트가 없어도 된다.
 * 다음 동영상을 참고해 DB 테이블보다 도메인 모델을 먼저 설계하고 구현한다.
+
+
+## 핵심 학습 목표 : Step3
+* 2단계에서 구현한 객체 구조(도메인 구조)를 가능한 유지하면서 DB 테이블과 매핑한다.
+* 성능보다 도메인 객체에 로직 구현하는 것을 목표로 연습한다.
+* 객체 구조를 유지하기 위해 여러 번의 DB 쿼리를 실행해도 괜찮다.
+
+## 프로그래밍 요구사항 : Step3
+* 앞 단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다
+
+## 참고할 코드 : Step3
+* DB 테이블 추가 - src/main/resources/schema.sql
+  * 테이블에 샘플 데이터를 추가하고 싶다면 src/main/resources/data.sql 파일에 추가 가능함
+* CRUD 코드
+  * src/main/java 폴더의 nextstep.courses.infrastructure.JdbcCourseRepository
+  * JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
+* CRUD 코드에 대한 테스트 코드
+  * src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
