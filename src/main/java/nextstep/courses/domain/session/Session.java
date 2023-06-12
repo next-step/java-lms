@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Session extends BaseEntity {
     private final Long courseId;
@@ -18,6 +19,8 @@ public class Session extends BaseEntity {
 
     private final Students students;
 
+    private final Candidates candidates;
+
     public Session(
             Long id,
             String title,
@@ -26,6 +29,22 @@ public class Session extends BaseEntity {
             SessionPeriod sessionPeriod,
             CoverImage coverImage,
             Students students,
+            Long creatorId,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        this(id, title, courseId, sessionNumber, sessionPeriod, coverImage, students, new Candidates(), creatorId, createdAt, updatedAt);
+    }
+
+    public Session(
+            Long id,
+            String title,
+            Long courseId,
+            Long sessionNumber,
+            SessionPeriod sessionPeriod,
+            CoverImage coverImage,
+            Students students,
+            Candidates candidates,
             Long creatorId,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -45,6 +64,7 @@ public class Session extends BaseEntity {
         this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
         this.students = students;
+        this.candidates = candidates;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -52,6 +72,11 @@ public class Session extends BaseEntity {
 
     public Session initUsers(List<Student> students) {
         this.students.initUsers(students);
+        return this;
+    }
+
+    public Session initCandidates(Set<Candidate> candidates) {
+        this.candidates.initCandidates(candidates);
         return this;
     }
 
@@ -64,6 +89,18 @@ public class Session extends BaseEntity {
         sessionPeriod.checkRecruit();
         students.startRecruit();
         return this;
+    }
+
+    public Student approve(NsUser nsUser) {
+        Student student = students.validateExist(nsUser);
+        candidates.validateApprove(id, nsUser.getId());
+        return student;
+    }
+
+    public Student reject(NsUser nsUser) {
+        Student student = students.validateExist(nsUser);
+        candidates.validateReject(id, nsUser.getId());
+        return student;
     }
 
     public Long getCourseId() {
@@ -86,6 +123,10 @@ public class Session extends BaseEntity {
         return students;
     }
 
+    public Candidates getCandidates() {
+        return candidates;
+    }
+
     @Override
     public String toString() {
         return "Session{" +
@@ -94,6 +135,7 @@ public class Session extends BaseEntity {
                 ", sessionPeriod=" + sessionPeriod +
                 ", coverImage=" + coverImage +
                 ", students=" + students +
+                ", candidates=" + candidates +
                 ", id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +

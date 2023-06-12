@@ -7,9 +7,18 @@ public class Student {
 
     private final Long userId;
 
+    private SessionRegisterStatus sessionRegisterStatus;
+
     public Student(Long sessionId, Long userId) {
         this.sessionId = sessionId;
         this.userId = userId;
+        this.sessionRegisterStatus = SessionRegisterStatus.WAITING;
+    }
+
+    public Student(Long sessionId, Long userId, SessionRegisterStatus sessionRegisterStatus) {
+        this.sessionId = sessionId;
+        this.userId = userId;
+        this.sessionRegisterStatus = sessionRegisterStatus;
     }
 
     public Long getSessionId() {
@@ -18,6 +27,10 @@ public class Student {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public SessionRegisterStatus getSessionRegisterStatus() {
+        return sessionRegisterStatus;
     }
 
     @Override

@@ -17,6 +17,7 @@ create table course_session (
     image_url varchar(255),
     fee_type varchar(20) not null,
     status varchar(20) not null,
+    recruit varchar(5) not null,
     capacity bigint not null,
     creator_id bigint not null,
     created_at timestamp not null,
@@ -25,6 +26,12 @@ create table course_session (
 );
 
 create table session_student (
+    session_id bigint not null,
+    user_id bigint not null,
+    status varchar(20) not null
+);
+
+create table session_candidate (
     session_id bigint not null,
     user_id bigint not null
 );
