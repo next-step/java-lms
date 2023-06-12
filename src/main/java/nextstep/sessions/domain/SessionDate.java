@@ -22,4 +22,20 @@ public class SessionDate {
       throw new IllegalStateException("수강신청 기간이 아닙니다");
     }
   }
+
+  public LocalDateTime getStartDateTime() {
+    return this.startDateTime;
+  }
+
+  public LocalDateTime getEndDateTime() {
+    return this.endDateTime;
+  }
+
+  @Override
+  public String toString() {
+    return "SessionDate{" +
+        "startDateTime=" + startDateTime +
+        ", endDateTime=" + endDateTime +
+        '}';
+  }
 }
