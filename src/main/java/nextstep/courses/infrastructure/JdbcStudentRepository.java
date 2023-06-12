@@ -33,14 +33,14 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int approveStudent(Long sessionId, Long id) {
+    public int approve(Student student) {
         String sql = "update session_student set status = ? where session_id = ? and user_id = ?";
-        return jdbcOperations.update(sql, SessionRegisterStatus.APPROVED.name(), sessionId, id);
+        return jdbcOperations.update(sql, SessionRegisterStatus.APPROVED.name(), student.getSessionId(), student.getUserId());
     }
 
     @Override
-    public int rejectStudent(Long sessionId, Long id) {
+    public int reject(Student student) {
         String sql = "update session_student set status = ? where session_id = ? and user_id = ?";
-        return jdbcOperations.update(sql, SessionRegisterStatus.REJECTED.name(), sessionId, id);
+        return jdbcOperations.update(sql, SessionRegisterStatus.REJECTED.name(), student.getSessionId(), student.getUserId());
     }
 }

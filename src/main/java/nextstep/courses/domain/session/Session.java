@@ -91,16 +91,16 @@ public class Session extends BaseEntity {
         return this;
     }
 
-    public Session validateApprove(NsUser nsUser) {
-        students.validateExist(nsUser);
+    public Student approve(NsUser nsUser) {
+        Student student = students.validateExist(nsUser);
         candidates.validateApprove(id, nsUser.getId());
-        return this;
+        return student;
     }
 
-    public Session validateReject(NsUser nsUser) {
-        students.validateExist(nsUser);
+    public Student reject(NsUser nsUser) {
+        Student student = students.validateExist(nsUser);
         candidates.validateReject(id, nsUser.getId());
-        return this;
+        return student;
     }
 
     public Long getCourseId() {

@@ -50,11 +50,11 @@ class StudentRepositoryTest {
         assertThat(students1).hasSize(1);
         assertThat(students1.get(0).getSessionRegisterStatus()).isEqualTo(SessionRegisterStatus.APPROVED);
 
-        studentRepository.rejectStudent(0L, 1L);
+        studentRepository.reject(new Student(0L, 1L));
         List<Student> students2 = studentRepository.findBySessionId(0L);
         assertThat(students2.get(0).getSessionRegisterStatus()).isEqualTo(SessionRegisterStatus.REJECTED);
 
-        studentRepository.approveStudent(0L, 1L);
+        studentRepository.approve(new Student(0L, 1L));
         List<Student> students3 = studentRepository.findBySessionId(0L);
         assertThat(students3.get(0).getSessionRegisterStatus()).isEqualTo(SessionRegisterStatus.APPROVED);
     }

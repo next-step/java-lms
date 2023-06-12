@@ -9,7 +9,7 @@ public interface StudentRepository {
 
     int registerSession(Long sessionId, Long userId);
 
-    int approveStudent(Long sessionId, Long id);
+    int approve(Student student);
 
-    int rejectStudent(Long sessionId, Long id);
+    int reject(Student student);
 }
