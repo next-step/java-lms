@@ -18,4 +18,13 @@ public class SessionTimeLine {
             throw new IllegalArgumentException("강의 시작일과 마감일을 잘못 입력하였습니다.");
         }
     }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public LocalDateTime getCloseAt() {
+        return closeAt;
+    }
+
 }

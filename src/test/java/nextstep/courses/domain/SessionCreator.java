@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enrollment.SessionEnrollment;
+import nextstep.courses.domain.enrollment.SessionStatus;
+
 import java.time.LocalDateTime;
 
 public class SessionCreator {

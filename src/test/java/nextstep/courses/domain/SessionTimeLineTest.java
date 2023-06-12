@@ -1,30 +1,30 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 
-public class SessionTimeLineTest {
+public class SessionTimeLine {
 
-    @Test
-    @DisplayName("강의 시작일이 강의 종료일보다 빠르면 예외를 던지지 않는다.")
-    void create_CreateAtBeforeThanClosedAt_NoException() {
-        LocalDateTime createAt = LocalDateTime.now();
-        LocalDateTime closeAt = createAt.plusDays(5);
+    private LocalDateTime createAt;
+    private LocalDateTime closeAt;
 
-        Assertions.assertThatNoException()
-                .isThrownBy(() -> new SessionTimeLine(createAt, closeAt));
+    public SessionTimeLine(LocalDateTime createAt, LocalDateTime closeAt) {
+        validateInterval(createAt, closeAt);
+        this.createAt = createAt;
+        this.closeAt = closeAt;
     }
 
-    @Test
-    @DisplayName("강의 시작일이 강의 종료일보다 느리면 예외를 던진다.")
-    void create_CreateAtAfterThanClosedAt_NoException() {
-        LocalDateTime createAt = LocalDateTime.now();
-        LocalDateTime closeAt = createAt.minusDays(5);
-
-        Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> new SessionTimeLine(createAt, closeAt));
+    private void validateInterval(LocalDateTime createAt, LocalDateTime closeAt) {
+        if (createAt.isAfter(closeAt)) {
+            throw new IllegalArgumentException("강의 시작일과 마감일을 잘못 입력하였습니다.");
+        }
     }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public LocalDateTime getCloseAt() {
+        return closeAt;
+    }
+
 }

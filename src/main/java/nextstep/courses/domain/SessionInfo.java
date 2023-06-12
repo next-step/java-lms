@@ -15,4 +15,24 @@ public class SessionInfo {
         this.coverImageInfo = coverImageInfo;
         this.sessionType = sessionType;
     }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCoverImageInfo() {
+        return coverImageInfo;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
 }

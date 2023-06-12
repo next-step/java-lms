@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Answers implements Iterable<Answer> {
+
     private final List<Answer> answers;
 
     public Answers() {
@@ -28,6 +29,7 @@ public class Answers implements Iterable<Answer> {
                 .forEach(answer -> deleteHistories.add(answer.delete()));
         return deleteHistories;
     }
+
     @Override
     public Iterator<Answer> iterator() {
         return answers.iterator();
