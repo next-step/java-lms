@@ -18,10 +18,19 @@ public class SessionFixtures {
     }
 
     public static Session testSession4() {
-        return new Session(1L, SessionBilling.FREE, "https://nextstep.tdd", SessionStatus.CLOSED, SessionRecruitStatus.NOT_RECRUIT,0,new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
+        return new Session(1L, SessionBilling.FREE, "https://nextstep.tdd", SessionStatus.READY, SessionRecruitStatus.RECRUIT,0,new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
     }
 
     public static Session testSession5() {
         return new Session(1L, SessionBilling.FREE,"https://nextstep.tdd", SessionStatus.OPEN, SessionRecruitStatus.RECRUIT ,0, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
     }
+
+    public static Session testSession6() {
+        return new Session(1L, SessionBilling.FREE,"https://nextstep.tdd", SessionStatus.OPEN, SessionRecruitStatus.NOT_RECRUIT ,10, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public static Session testSession7() {
+        return new Session(1L, SessionBilling.FREE,"https://nextstep.tdd", SessionStatus.CLOSED, SessionRecruitStatus.RECRUIT ,10, new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(7)), LocalDateTime.now(), LocalDateTime.now());
+    }
+
 }

@@ -71,11 +71,11 @@ public class JdbcSessionRepository implements SessionRepository {
             return 0;
         }
 
-        String sql = "insert into session_join (session_id, user_id, created_at) values (?,?,?)";
+        String sql = "insert into session_join (session_id, user_id, session_join_status, created_at) values (?,?,?,?)";
 
         int savedCount = 0;
         for (SessionJoin sessionJoin : session.getSessionJoins()) {
-            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(), sessionJoin.getCreatedAt());
+            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(), sessionJoin.getSessionJoinStatus().name(), sessionJoin.getCreatedAt());
         }
 
         return savedCount;

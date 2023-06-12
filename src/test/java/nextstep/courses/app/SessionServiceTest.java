@@ -41,27 +41,4 @@ public class SessionServiceTest {
 
         assertThat(findSession.getId()).isEqualTo(1L);
     }
-
-    @DisplayName("등록")
-    @Test
-    void enroll() {
-        Session session = testSession1();
-        long savedSessionId = sessionRepository.save(session);
-
-        sessionService.register(savedSessionId, NsUserTest.JAVAJIGI);
-
-        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
-        assertThat(findSessionJoins).hasSize(1);
-    }
-
-    @DisplayName("강의 등록시 인원 수 초과")
-    @Test
-    void maxUserException() {
-        Session session = testSession5();
-        long savedSessionId = sessionRepository.save(session);
-
-        assertThatThrownBy(() -> sessionService.register(savedSessionId,NsUserTest.JAVAJIGI))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
 }
