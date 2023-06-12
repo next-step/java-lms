@@ -9,17 +9,19 @@ public class SessionJoin {
     private Long id;
     private final Session session;
     private final NsUser nsUser;
+    private final SessionJoinStatus sessionJoinStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
     public SessionJoin(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, session, nsUser, createdAt, updatedAt);
+        this(null, session, nsUser, SessionJoinStatus.APPLICATION, createdAt, updatedAt);
     }
 
-    public SessionJoin(Long id, Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SessionJoin(Long id, Session session, NsUser nsUser, SessionJoinStatus sessionJoinStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.session = session;
         this.nsUser = nsUser;
+        this.sessionJoinStatus = sessionJoinStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
