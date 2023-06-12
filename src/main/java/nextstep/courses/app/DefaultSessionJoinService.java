@@ -1,6 +1,7 @@
 package nextstep.courses.app;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionJoinRepository;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -11,10 +12,13 @@ import java.util.Optional;
 
 @Service
 public class DefaultSessionJoinService implements SessionJoinService{
+    private final SessionJoinRepository sessionJoinRepository;
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
 
-    public DefaultSessionJoinService(SessionRepository sessionRepository, UserRepository userRepository) {
+
+    public DefaultSessionJoinService(SessionJoinRepository sessionJoinRepository, SessionRepository sessionRepository, UserRepository userRepository) {
+        this.sessionJoinRepository = sessionJoinRepository;
         this.sessionRepository = sessionRepository;
         this.userRepository = userRepository;
     }
@@ -31,7 +35,7 @@ public class DefaultSessionJoinService implements SessionJoinService{
 
         session.register(nsUserOptional.get());
 
-        sessionRepository.saveSessionJoin(session);
+        sessionJoinRepository.save(session);
     }
 
 }

@@ -2,6 +2,7 @@ package nextstep.courses.app;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionJoin;
+import nextstep.courses.domain.SessionJoinRepository;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class SessionJoinServiceTest {
     @Autowired
     private SessionJoinService sessionJoinService;
-
+    @Autowired
+    private SessionJoinRepository sessionJoinRepository;
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -33,7 +35,7 @@ public class SessionJoinServiceTest {
 
         sessionJoinService.register(savedSessionId, NsUserTest.JAVAJIGI);
 
-        List<SessionJoin> findSessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSessionId);
+        List<SessionJoin> findSessionJoins = sessionJoinRepository.findAllBySessionId(savedSessionId);
         assertThat(findSessionJoins).hasSize(1);
     }
 

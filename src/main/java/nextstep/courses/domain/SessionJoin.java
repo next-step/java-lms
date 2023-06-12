@@ -30,6 +30,8 @@ public class SessionJoin {
         return this.session.equals(session) && this.nsUser.equals(nsUser);
     }
 
+
+
     public Long getId() {
         return id;
     }

@@ -65,36 +65,6 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    @Override
-    public int saveSessionJoin(Session session) {
-        if (CollectionUtils.isEmpty(session.getSessionJoins())) {
-            return 0;
-        }
-
-        String sql = "insert into session_join (session_id, user_id, session_join_status, created_at) values (?,?,?,?)";
-
-        int savedCount = 0;
-        for (SessionJoin sessionJoin : session.getSessionJoins()) {
-            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(), sessionJoin.getSessionJoinStatus().name(), sessionJoin.getCreatedAt());
-        }
-
-        return savedCount;
-    }
-
-    @Override
-    public List<SessionJoin> findAllSessionJoinBySessionId(Long sessionId) {
-        String sql = "select id, session_id, user_id, session_join_status, created_at, updated_at from session_join where session_id = ?";
-        RowMapper<SessionJoin> rowMapper = (rs, rowNum) ->
-                new SessionJoin(rs.getLong(1),
-                        findById(rs.getLong(2)),
-                        NsUserBuilder.init().id(rs.getLong(3)).build(),
-                        SessionJoinStatus.find(rs.getString(4)),
-                        toLocalDateTime(rs.getTimestamp(5)),
-                        toLocalDateTime(rs.getTimestamp(6))
-                );
-        return jdbcTemplate.query(sql, rowMapper, sessionId);
-    }
-
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

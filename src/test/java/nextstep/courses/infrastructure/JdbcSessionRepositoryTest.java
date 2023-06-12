@@ -49,21 +49,4 @@ public class JdbcSessionRepositoryTest {
         assertThat(sessionId).isEqualTo(findSession.getId());
         assertThat(session.getSessionStatus()).isEqualTo(findSession.getSessionStatus());
     }
-
-    @DisplayName("session join crud")
-    @Test
-    void join() {
-        Session session = testSession1();
-        long sessionId = sessionRepository.save(session);
-        Session savedSession = new Session(sessionId, SessionBilling.FREE,"http://nextstep.tdd", SessionStatus.OPEN, SessionRecruitStatus.RECRUIT, 10, new SessionPeriod(LocalDateTime.now(),LocalDateTime.now().plusDays(7)), LocalDateTime.now(),LocalDateTime.now());
-
-        savedSession.addUser(NsUserTest.JAVAJIGI);
-        savedSession.addUser(NsUserTest.SANJIGI);
-
-        sessionRepository.saveSessionJoin(savedSession);
-
-        List<SessionJoin> sessionJoins = sessionRepository.findAllSessionJoinBySessionId(savedSession.getId());
-        assertThat(sessionJoins).hasSize(2);
-    }
-
 }
