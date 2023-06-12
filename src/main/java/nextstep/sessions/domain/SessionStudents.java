@@ -23,12 +23,12 @@ public class SessionStudents {
         return maximumCapacity <= students.size();
     }
 
-    public boolean contains(Long nsUserId) {
-        return students.stream().filter(value -> value.getId().equals(nsUserId)).findFirst().isPresent();
+    public boolean contains(NsUser nsUser) {
+        return students.contains(nsUser);
     }
 
     public void enrollStudent(NsUser nsUser) {
-        if (contains(nsUser.getId())) {
+        if (contains(nsUser)) {
             throw new IllegalArgumentException("이미 등록된 학생입니다");
         }
 

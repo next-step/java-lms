@@ -20,6 +20,8 @@ public class JdbcSessionRepository implements SessionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //id, course_id, period(start_date, end_date), session_type, session_status, session_capacity
+//cover_image, image_type, payment_type,
     @Override
     public int save(Session session) {
         String sql = "insert into session (course_id, session_type, session_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?)";
@@ -53,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int saveUser(Long sessionId, NsUser nsUser) {
+    public int enrollUser(Long sessionId, NsUser nsUser) {
         String sql = "INSERT INTO session_student (session_id, ns_user_id) VALUES(?, ?)";
         return jdbcTemplate.update(sql, sessionId, nsUser.getId());
     }

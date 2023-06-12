@@ -11,7 +11,7 @@ public interface SessionRepository {
 
     Optional<Session> findById(Long id);
 
-    int saveUser(Long sessionId, NsUser nsUser);
+    int enrollUser(Long sessionId, NsUser nsUser);
 
     List<NsUser> findAllUsersBySessionId(Long SessionId);
 

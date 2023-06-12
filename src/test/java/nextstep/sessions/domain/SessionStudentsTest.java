@@ -13,14 +13,14 @@ class SessionStudentsTest {
     public static final SessionStudents sessionStudents = new SessionStudents(1);
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         sessionStudents.enrollStudent(NsUserTest.JAVAJIGI);
     }
 
     @Test
     @DisplayName(value = "nsUserId를 이용하여 수강 중인 학생인지 확인")
     void test1() {
-        assertTrue(sessionStudents.contains(1L));
+        assertTrue(sessionStudents.contains(NsUserTest.JAVAJIGI));
     }
 
     @Test

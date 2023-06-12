@@ -28,9 +28,11 @@ public class SessionService {
         sessionRepository.save(session);
     }
 
+    //session을 가져올 때 수강 정보까지 함께 읽어와 객체를 리턴 해보면 어떨까요?
     @Transactional
     public void enroll(Long sessionId, String userId) {
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
+        System.out.println("session = " + session);
         NsUser nsUser = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
         enrollStudent(session, nsUser);
     }
@@ -38,7 +40,7 @@ public class SessionService {
     public void enrollStudent(Session session, NsUser nsUser) {
         Session newSession = getSessionOfStudent(session);
         newSession.enrollStudent(nsUser);
-        sessionRepository.saveUser(newSession.getId(), nsUser);
+        sessionRepository.enrollUser(newSession.getId(), nsUser);
     }
 
     public Session getSessionOfStudent(Session session) {

@@ -44,10 +44,10 @@ public class SessionRepositoryTest {
 
     @Test
     void saveUser_and_findWithStudentById() {
-        int count = sessionRepository.saveUser(1L, NsUserTest.JAVAJIGI);
+        int count = sessionRepository.enrollUser(1L, NsUserTest.JAVAJIGI);
         assertThat(count).isEqualTo(1);
 
-        sessionRepository.saveUser(1L, NsUserTest.SANJIGI);
+        sessionRepository.enrollUser(1L, NsUserTest.SANJIGI);
 
         List<NsUser> allUsers = sessionRepository.findAllUsersBySessionId(1L);
 
