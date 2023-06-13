@@ -37,8 +37,7 @@ public class SessionRegistration {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        SessionJoin sessionJoin = createSessionJoin(session, user);
-        sessionJoins.add(sessionJoin);
+        sessionJoins.add(SessionJoin.apply(session, user));
     }
 
     private boolean isAlreadyJoined(Session session, NsUser user) {
@@ -50,14 +49,9 @@ public class SessionRegistration {
         return sessionJoins.size() >= maxUserCount;
     }
 
-    private SessionJoin createSessionJoin(Session session, NsUser user) {
-        LocalDateTime now = LocalDateTime.now();
-        return new SessionJoin(session, user, now, now);
-    }
-
     public void addUser(Session session, NsUser nsUser) {
         LocalDateTime now = LocalDateTime.now();
-        sessionJoins.add(new SessionJoin(session, nsUser, now, now));
+        sessionJoins.add(SessionJoin.apply(session, nsUser));
     }
 
     public List<SessionJoin> getSessionJoins() {
