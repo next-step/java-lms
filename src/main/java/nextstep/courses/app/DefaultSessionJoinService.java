@@ -7,10 +7,12 @@ import nextstep.courses.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class DefaultSessionJoinService implements SessionJoinService{
     private final SessionJoinRepository sessionJoinRepository;
     private final SessionRepository sessionRepository;
