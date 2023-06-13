@@ -48,8 +48,7 @@ public class SessionJoinServiceTest {
     @DisplayName("수강 신청 승인")
     @Test
     void approve() {
-        sessionRepository.save(testSession1());
-        long savedSessionId = testSession1().getId();
+        long savedSessionId = getSavedSessionId();
         sessionJoinService.register(savedSessionId, JAVAJIGI);
 
         sessionJoinService.approve(savedSessionId, JAVAJIGI);
@@ -63,8 +62,7 @@ public class SessionJoinServiceTest {
     @DisplayName("수강 신청 거절")
     @Test
     void reject() {
-        sessionRepository.save(testSession1());
-        long savedSessionId = testSession1().getId();
+        long savedSessionId = getSavedSessionId();
         sessionJoinService.register(savedSessionId, JAVAJIGI);
 
         sessionJoinService.reject(savedSessionId, JAVAJIGI);
@@ -75,4 +73,8 @@ public class SessionJoinServiceTest {
                 .containsExactly(tuple(savedSessionId, JAVAJIGI.getId(), SessionJoinStatus.REJECTION));
     }
 
+    private long getSavedSessionId() {
+        Session session = testSession1();
+        return sessionRepository.save(session);
+    }
 }
