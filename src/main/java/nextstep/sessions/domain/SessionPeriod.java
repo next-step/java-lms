@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SessionPeriod {
 
@@ -27,4 +28,24 @@ public class SessionPeriod {
         }
     }
 
+    @Override
+    public String toString() {
+        return "SessionPeriod{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionPeriod that = (SessionPeriod) o;
+        return Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startDate, endDate);
+    }
 }

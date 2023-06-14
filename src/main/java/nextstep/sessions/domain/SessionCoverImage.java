@@ -1,25 +1,40 @@
 package nextstep.sessions.domain;
 
+import nextstep.BaseTime;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 public class SessionCoverImage {
 
-    private Long id;
-    private String fileName;
-    private SessionImageType fileType;
+    private Long sessionId;
+    private String imageName;
+    private SessionImageType imageType;
     private URL url;
+    private BaseTime baseTime;
 
-    public SessionCoverImage(String fileName, String urlString, int maxWidth, int maxHeight) {
-        this.fileName = fileName;
-        this.fileType = SessionImageType.of(urlString);
-        this.url = createURL(urlString);
+    public SessionCoverImage(SessionCoverImage image) {
+        this(image.getSessionId(), image.getImageName(), image.getImageType(), image.getUrl().toString());
+    }
+
+    public SessionCoverImage(Long sessionId, String imageName, String url, int maxWidth, int maxHeight) {
+        this(sessionId, imageName, SessionImageType.of(url), url);
         isValidSize(maxWidth, maxHeight);
     }
+
+    public SessionCoverImage(Long sessionId, String imageName, SessionImageType imageType, String url) {
+        this.sessionId = sessionId;
+        this.imageType = imageType;
+        this.imageName = imageName;
+        this.url = createURL(url);
+        this.baseTime = new BaseTime();
+    }
+
 
     private boolean isValidSize(int maxWidth, int maxHeight) {
         try {
@@ -42,4 +57,47 @@ public class SessionCoverImage {
         }
     }
 
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public SessionImageType getImageType() {
+        return imageType;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public BaseTime getBaseTime() {
+        return baseTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionCoverImage{" +
+                "sessionId=" + sessionId +
+                ", imageName='" + imageName + '\'' +
+                ", imageType=" + imageType +
+                ", url=" + url +
+                ", baseTime=" + baseTime +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionCoverImage that = (SessionCoverImage) o;
+        return Objects.equals(sessionId, that.sessionId) && Objects.equals(imageName, that.imageName) && imageType == that.imageType && Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionId, imageName, imageType, url);
+    }
 }

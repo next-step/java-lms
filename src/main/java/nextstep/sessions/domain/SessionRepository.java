@@ -13,6 +13,10 @@ public interface SessionRepository {
 
     int enrollUser(Long sessionId, NsUser nsUser);
 
-    List<NsUser> findAllUsersBySessionId(Long SessionId);
+    List<NsUser> findAllUsersBySessionId(Long sessionId);
+
+    int saveCoverImage(Long sessionId, SessionCoverImage image);
+
+    Optional<SessionCoverImage> findCoverImageBySessionId(Long sessionId);
 
 }

@@ -1,8 +1,6 @@
 package nextstep.sessions.service;
 
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStudents;
-import nextstep.sessions.domain.SessionTest;
+import nextstep.sessions.domain.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +25,7 @@ class SessionServiceTest {
 
     Session session1;
     Session session2;
+    Session session3;
 
     @BeforeEach
     void setUp() {
@@ -33,14 +33,15 @@ class SessionServiceTest {
         user2 = NsUserTest.SANJIGI;
         session2 = new Session(SessionTest.s2, new SessionStudents(1));
         session1 = new Session(SessionTest.s1, new SessionStudents(1));
+        session3 = new Session(SessionTest.s3, new SessionStudents(2));
     }
 
     @Test
     @DisplayName(value = "같은 강의를 수강신청할 수 없음")
     void test1() {
-        service.enroll(session1.getId(), user1.getUserId());
+        service.enrollStudent(session1.getId(), user1.getUserId());
         assertThatThrownBy(() -> {
-            service.enroll(session1.getId(), user1.getUserId());
+            service.enrollStudent(session1.getId(), user1.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -48,7 +49,7 @@ class SessionServiceTest {
     @DisplayName(value = "모집 중 상태가 아닌 강의는 수강신청할 수 없음")
     void test2() {
         assertThatThrownBy(() -> {
-            service.enroll(session2.getId(), user1.getUserId());
+            service.enrollStudent(session2.getId(), user1.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -56,7 +57,7 @@ class SessionServiceTest {
     @DisplayName(value = "강의 최대 수강 인원을 초과할 수 없음")
     void test3() {
         assertThatThrownBy(() -> {
-            service.enroll(session1.getId(), user2.getUserId());
+            service.enrollStudent(session1.getId(), user2.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -64,7 +65,7 @@ class SessionServiceTest {
     @DisplayName(value = "존재하지 않는 강의는 수강할 수 없다")
     void test4() {
         assertThatThrownBy(() -> {
-            service.enroll(999L, user1.getUserId());
+            service.enrollStudent(999L, user2.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -72,7 +73,30 @@ class SessionServiceTest {
     @DisplayName(value = "존재하지 않는 사용자는 수강신청할 수 없다")
     void test5() {
         assertThatThrownBy(() -> {
-            service.enroll(session2.getId(), "nonExistentUser");
+            service.enrollStudent(session2.getId(), "nonExistentUser");
         }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName(value = "cover image 를 등록하고 조회할 수 있다")
+    void test6() {
+        service.saveCoverImage(session1.getId(), SessionCoverImageTest.image1);
+
+        Session session = service.getSession(session1);
+        assertThat(session.getSessionCoverImage()).isEqualTo(SessionCoverImageTest.image1);
+    }
+
+    @Test
+    @DisplayName(value = "cover image 를 등록하고 학생을 등록하고 조회할 수 있다")
+    void test7() {
+        service.saveCoverImage(session3.getId(), SessionCoverImageTest.image3);
+        service.enrollStudent(session3.getId(), NsUserTest.JAVAJIGI.getUserId());
+
+        Session session = service.getSession(session3);
+        SessionStudents sessionStudents = session.getSessionStudents();
+        SessionStudents sessionStudents1 = service.getSessionOfStudent(session).getSessionStudents();
+
+        assertThat(sessionStudents).isEqualTo(sessionStudents1);
+        assertThat(session.getSessionCoverImage()).isEqualTo(SessionCoverImageTest.image3);
     }
 }

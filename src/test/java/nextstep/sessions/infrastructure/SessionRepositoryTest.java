@@ -5,6 +5,7 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
+import nextstep.sessions.domain.SessionCoverImageTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    void saveUser_and_findWithStudentById() {
+    void enrollUser_and_findWithStudentById() {
         int count = sessionRepository.enrollUser(1L, NsUserTest.JAVAJIGI);
         assertThat(count).isEqualTo(1);
 
@@ -55,4 +56,15 @@ public class SessionRepositoryTest {
         assertThat(allUsers.get(0).getId()).isEqualTo(1L);
     }
 
+    @Test
+    void save_and_find_image() {
+        int count = sessionRepository.saveCoverImage(1L, SessionCoverImageTest.image1);
+        assertThat(count).isEqualTo(1);
+
+        SessionCoverImage sessionCoverImage = sessionRepository.findCoverImageBySessionId(1L).orElseThrow();
+
+        assertThat(sessionCoverImage.getUrl()).isEqualTo(SessionCoverImageTest.image1.getUrl());
+        assertThat(sessionCoverImage.getImageName()).isEqualTo(SessionCoverImageTest.image1.getImageName());
+        assertThat(sessionCoverImage.getImageType()).isEqualTo(SessionCoverImageTest.image1.getImageType());
+    }
 }

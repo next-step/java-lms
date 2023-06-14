@@ -15,6 +15,7 @@ public class Session {
     private SessionPaymentType sessionPaymentType;
     private SessionStatus sessionStatus;
     private SessionStudents sessionStudents;
+    private SessionCoverImage sessionCoverImage;
     private BaseTime baseTime;
 
     private Course course;
@@ -22,6 +23,24 @@ public class Session {
     public Session(Long id, Course course, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionPaymentType, SessionStatus sessionStatus, int maximumCapacity) {
         this(id, course.getId(), startDate, endDate, sessionPaymentType, sessionStatus, maximumCapacity);
         this.course = course;
+    }
+
+
+    public Session(Session session, SessionStudents students) {
+        this(session.getId(), session.getCourseId(), session.getSessionPeriod().getStartDate(), session.getSessionPeriod().getEndDate(),
+                session.getSessionPaymentType(), session.getSessionStatus(), session.getSessionStudents().getMaximumCapacity());
+        this.sessionCoverImage = session.getSessionCoverImage();
+        this.sessionStudents = students;
+        this.baseTime = new BaseTime();
+    }
+
+
+    public Session(Session session, SessionCoverImage coverImage) {
+        this(session.getId(), session.getCourseId(), session.getSessionPeriod().getStartDate(), session.getSessionPeriod().getEndDate(),
+                session.getSessionPaymentType(), session.getSessionStatus(), session.getSessionStudents().getMaximumCapacity());
+        this.sessionStudents = session.getSessionStudents();
+        this.sessionCoverImage = coverImage;
+        this.baseTime = new BaseTime();
     }
 
     public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, SessionPaymentType sessionPaymentType, SessionStatus sessionStatus, int maximumCapacity) {
@@ -34,16 +53,6 @@ public class Session {
         this.baseTime = new BaseTime();
     }
 
-    public Session(Session session, SessionStudents students) {
-        this.id = session.getId();
-        this.courseId = session.getCourseId();
-        this.sessionPaymentType = session.getSessionPaymentType();
-        this.sessionPeriod = session.getSessionPeriod();
-        this.sessionStatus = session.getSessionStatus();
-        this.sessionStudents = students;
-        this.baseTime = new BaseTime();
-    }
-
     public void enrollStudent(NsUser nsUser) {
         if (!sessionStatus.isRecruitable()) {
             throw new IllegalArgumentException("모집중일때만 신청 가능하다");
@@ -51,8 +60,19 @@ public class Session {
         sessionStudents.enrollStudent(nsUser);
     }
 
+    public void saveCoverImage(SessionCoverImage image) {
+        if (getSessionCoverImage() != null) {
+            throw new IllegalArgumentException("커버 사진은 한 장만 등록할 수 있습니다");
+        }
+        sessionCoverImage = new SessionCoverImage(image);
+    }
+
     public Long getCourseId() {
         return courseId;
+    }
+
+    public SessionCoverImage getSessionCoverImage() {
+        return sessionCoverImage;
     }
 
     public SessionStudents getSessionStudents() {
@@ -88,7 +108,7 @@ public class Session {
                 ", sessionPaymentType=" + sessionPaymentType +
                 ", sessionStatus=" + sessionStatus +
                 ", sessionStudents=" + sessionStudents +
-                ", baseTime=" + baseTime +
+                ", sessionCoverImage=" + sessionCoverImage +
                 ", course=" + course +
                 '}';
     }
@@ -98,11 +118,11 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionPaymentType == session.sessionPaymentType && sessionStatus == session.sessionStatus && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(baseTime, session.baseTime) && Objects.equals(course, session.course);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(sessionPeriod, session.sessionPeriod) && sessionPaymentType == session.sessionPaymentType && sessionStatus == session.sessionStatus && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(sessionCoverImage, session.sessionCoverImage) && Objects.equals(course, session.course);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, sessionPeriod, sessionPaymentType, sessionStatus, sessionStudents, baseTime, course);
+        return Objects.hash(id, courseId, sessionPeriod, sessionPaymentType, sessionStatus, sessionStudents, sessionCoverImage, course);
     }
 }

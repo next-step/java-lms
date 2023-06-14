@@ -20,11 +20,9 @@ public class JdbcSessionRepository implements SessionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //id, course_id, period(start_date, end_date), session_type, session_status, session_capacity
-//cover_image, image_type, payment_type,
     @Override
     public int save(Session session) {
-        String sql = "insert into session (course_id, session_type, session_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, payment_type, session_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 session.getCourseId(),
@@ -38,13 +36,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "SELECT id, course_id, start_date, end_date, session_type, session_status, session_capacity FROM session WHERE id = ?";
+        String sql = "SELECT id, course_id, start_date, end_date, payment_type, session_status, session_capacity FROM session WHERE id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong("id"),
                 rs.getLong("course_id"),
                 toLocalDateTime(rs.getTimestamp("start_date")),
                 toLocalDateTime(rs.getTimestamp("end_date")),
-                SessionPaymentType.of(rs.getString("session_type")),
+                SessionPaymentType.of(rs.getString("payment_type")),
                 SessionStatus.of(rs.getString("session_status")),
                 rs.getInt("session_capacity"));
         try {
@@ -76,6 +74,26 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
+    @Override
+    public int saveCoverImage(Long sessionId, SessionCoverImage image) {
+        String sql = "INSERT INTO cover_image (session_id, image_name, image_type, url, created_at) VALUES(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, sessionId, image.getImageName(), image.getImageType().name(), image.getUrl().toString(), image.getBaseTime().getCreatedDate());
+    }
+
+    @Override
+    public Optional<SessionCoverImage> findCoverImageBySessionId(Long sessionId) {
+        String sql = "SELECT session_id, image_name, image_type, url FROM cover_image WHERE session_id = ?";
+        RowMapper<SessionCoverImage> rowMapper = (rs, rowNum) -> new SessionCoverImage(
+                sessionId,
+                rs.getString("image_name"),
+                SessionImageType.of(rs.getString("image_type")),
+                rs.getString("url"));
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {

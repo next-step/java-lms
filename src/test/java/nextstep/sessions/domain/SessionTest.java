@@ -24,6 +24,12 @@ public class SessionTest {
             LocalDateTime.now(),
             SessionPaymentType.FREE,
             SessionStatus.PREPARING, 1);
+    public static final Session s3 = new Session(
+            3L, CourseTest.C1,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            SessionPaymentType.FREE,
+            SessionStatus.PREPARING, 2);
 
     @BeforeAll
     static void setUp() {
