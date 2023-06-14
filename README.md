@@ -92,9 +92,9 @@
 - [ ] 준비중, 진행중, 종료 상태를 가진다
 - [ ] 무료, 유료 상태를 가진다
 
-### SessionRegistration
-- [ ] SessionRegistration 상태가 모집중일 때만 가능하다.
-- [ ] Session 상태가 진행중이어도, SessionRegistration 모집 상태가 모집중 이면 가능하다.
+### SessionEnrollment
+- [ ] 상태가 모집중일 때만 가능하다.
+- [ ] Session 상태가 진행중이어도, SessionEnrollment 모집 상태가 모집중 이면 가능하다.
 
 ### SessionRecruitmentStatus
 - [ ] 우아한테크코스(무료), 우아한테크캠프 Pro(유료)와 같이 선발된 인원만 수강 가능
