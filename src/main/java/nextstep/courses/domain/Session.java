@@ -2,31 +2,30 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class Session {
     private final SessionInfo sessionInfo;
-    private final SessionStatus status;
+    private final SessionStatus sessionStatus;
     private final SessionTimeLine sessionTimeLine;
     private final Set<Student> students = new HashSet<>();
     private final Long maxNumOfStudent;
 
     public Session(Long courseId, Long id, String title, String coverImageInfo,
-                   SessionType sessionType, SessionStatus sessionStatus,
+                   SessionType sessionType, SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus,
                    LocalDateTime createdAt, LocalDateTime closedAt, Long maxNumOfStudent) {
 
         this(
                 new SessionInfo(courseId, id, title, coverImageInfo, sessionType),
-                sessionStatus,
+                new SessionStatus(sessionRecruitmentStatus, sessionProgressStatus),
                 new SessionTimeLine(createdAt, closedAt),
                 maxNumOfStudent
         );
     }
 
-    public Session(SessionInfo sessionInfo, SessionStatus status, SessionTimeLine sessionTimeLine, Long maxNumOfStudent) {
+    public Session(SessionInfo sessionInfo, SessionStatus sessionStatus, SessionTimeLine sessionTimeLine, Long maxNumOfStudent) {
         this.sessionInfo = sessionInfo;
-        this.status = status;
+        this.sessionStatus = sessionStatus;
         this.sessionTimeLine = sessionTimeLine;
         this.maxNumOfStudent = maxNumOfStudent;
     }
@@ -35,7 +34,7 @@ public class Session {
         if (isStudentFull()) {
             throw new CannotEnrollException("강의 수강 신청 인원이 다 찼습니다!");
         }
-        if (!this.status.canJoin()) {
+        if (!this.sessionStatus.canJoin()) {
             throw new CannotEnrollException("모집 중일때만 신청 가능합니다!");
         }
         students.add(student);
@@ -54,7 +53,7 @@ public class Session {
     }
 
     public SessionStatus getStatus() {
-        return status;
+        return sessionStatus;
     }
 
     public SessionTimeLine getSessionTimeLine() {
@@ -64,18 +63,5 @@ public class Session {
 
     public Long getMaxNumOfStudent() {
         return maxNumOfStudent;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Session session = (Session) o;
-        return Objects.equals(sessionInfo, session.sessionInfo) && status == session.status && Objects.equals(sessionTimeLine, session.sessionTimeLine) && Objects.equals(students, session.students) && Objects.equals(maxNumOfStudent, session.maxNumOfStudent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sessionInfo, status, sessionTimeLine, students, maxNumOfStudent);
     }
 }
