@@ -26,14 +26,22 @@ class SessionServiceTest {
     Session session1;
     Session session2;
     Session session3;
+    Session session4;
 
     @BeforeEach
     void setUp() {
         user1 = NsUserTest.JAVAJIGI;
         user2 = NsUserTest.SANJIGI;
-        session2 = new Session(SessionTest.s2, new SessionStudents(1));
+
         session1 = new Session(SessionTest.s1, new SessionStudents(1));
+        session2 = new Session(SessionTest.s2, new SessionStudents(1));
         session3 = new Session(SessionTest.s3, new SessionStudents(2));
+        session4 = new Session(SessionTest.s4, new SessionStudents(2));
+
+        service.save(session1);
+        service.save(session2);
+        service.save(session3);
+        service.save(session4);
     }
 
     @Test
@@ -46,7 +54,7 @@ class SessionServiceTest {
     }
 
     @Test
-    @DisplayName(value = "모집 중 상태가 아닌 강의는 수강신청할 수 없음")
+    @DisplayName(value = "비 모집 중 상태인 강의는 수강신청할 수 없음")
     void test2() {
         assertThatThrownBy(() -> {
             service.enrollStudent(session2.getId(), user1.getUserId());
@@ -54,8 +62,16 @@ class SessionServiceTest {
     }
 
     @Test
-    @DisplayName(value = "강의 최대 수강 인원을 초과할 수 없음")
+    @DisplayName(value = "강의 진행 상태가 종료일 경우 수강신청할 수 없음")
     void test3() {
+        assertThatThrownBy(() -> {
+            service.enrollStudent(session4.getId(), user1.getUserId());
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName(value = "강의 최대 수강 인원을 초과할 수 없음")
+    void test4() {
         assertThatThrownBy(() -> {
             service.enrollStudent(session1.getId(), user2.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
@@ -63,7 +79,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName(value = "존재하지 않는 강의는 수강할 수 없다")
-    void test4() {
+    void test5() {
         assertThatThrownBy(() -> {
             service.enrollStudent(999L, user2.getUserId());
         }).isInstanceOf(IllegalArgumentException.class);
@@ -71,7 +87,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName(value = "존재하지 않는 사용자는 수강신청할 수 없다")
-    void test5() {
+    void test6() {
         assertThatThrownBy(() -> {
             service.enrollStudent(session2.getId(), "nonExistentUser");
         }).isInstanceOf(IllegalArgumentException.class);
@@ -79,7 +95,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName(value = "cover image 를 등록하고 조회할 수 있다")
-    void test6() {
+    void test7() {
         service.saveCoverImage(session1.getId(), SessionCoverImageTest.image1);
 
         Session session = service.getSession(session1);
@@ -88,7 +104,7 @@ class SessionServiceTest {
 
     @Test
     @DisplayName(value = "cover image 를 등록하고 학생을 등록하고 조회할 수 있다")
-    void test7() {
+    void test8() {
         service.saveCoverImage(session3.getId(), SessionCoverImageTest.image3);
         service.enrollStudent(session3.getId(), NsUserTest.JAVAJIGI.getUserId());
 

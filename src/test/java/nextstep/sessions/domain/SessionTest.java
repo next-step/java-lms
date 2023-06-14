@@ -12,24 +12,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
+
     public static final Session s1 = new Session(
             1L, CourseTest.C1,
             LocalDateTime.now(),
             LocalDateTime.now(),
             SessionPaymentType.FREE,
-            SessionStatus.RECRUITING, 1);
+            SessionProgressStatus.PREPARING,
+            SessionRecruitmentStatus.RECRUIT, 1);
+
     public static final Session s2 = new Session(
             2L, CourseTest.C1,
             LocalDateTime.now(),
             LocalDateTime.now(),
             SessionPaymentType.FREE,
-            SessionStatus.PREPARING, 1);
+            SessionProgressStatus.PREPARING,
+            SessionRecruitmentStatus.NON_RECRUIT, 1);
+
     public static final Session s3 = new Session(
             3L, CourseTest.C1,
             LocalDateTime.now(),
             LocalDateTime.now(),
             SessionPaymentType.FREE,
-            SessionStatus.PREPARING, 2);
+            SessionProgressStatus.PREPARING,
+            SessionRecruitmentStatus.RECRUIT, 2);
+
+    public static final Session s4 = new Session(
+            4L, CourseTest.C1,
+            LocalDateTime.now(),
+            LocalDateTime.now(),
+            SessionPaymentType.FREE,
+            SessionProgressStatus.CLOSE,
+            SessionRecruitmentStatus.RECRUIT, 1);
 
     @BeforeAll
     static void setUp() {
@@ -51,19 +65,11 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName(value = "강의 수강신청은 강의 상태가 모집중일 때만 가능하다")
+    @DisplayName(value = "강의 진행 상태 : 종료, 강의 모집 상태 : 비모집 일 경우 수강신청 불가")
     void test3() {
-        Session session = new Session(
-                0L, CourseTest.C1,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                SessionPaymentType.FREE,
-                SessionStatus.RECRUITING, 1);
-
-        session.enrollStudent(NsUserTest.JAVAJIGI);
-
         assertThatThrownBy(() -> {
-            session.enrollStudent(NsUserTest.JAVAJIGI);
+            s2.enrollStudent(NsUserTest.JAVAJIGI);
+            s4.enrollStudent(NsUserTest.SANJIGI);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 

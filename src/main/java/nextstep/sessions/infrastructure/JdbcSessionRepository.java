@@ -22,12 +22,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (course_id, payment_type, session_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, payment_type, progress_status, recruitment_status, session_capacity, start_date, end_date, created_at) values(?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 session.getCourseId(),
-                session.getSessionPaymentType().name(),
-                session.getSessionStatus().name(),
+                session.getPaymentType().name(),
+                session.getProgressStatus().name(),
+                session.getRecruitmentStatus().name(),
                 session.getSessionStudents().getMaximumCapacity(),
                 session.getSessionPeriod().getStartDate(),
                 session.getSessionPeriod().getEndDate(),
@@ -36,14 +37,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "SELECT id, course_id, start_date, end_date, payment_type, session_status, session_capacity FROM session WHERE id = ?";
+        String sql = "SELECT id, course_id, start_date, end_date, payment_type, progress_status, recruitment_status, session_capacity FROM session WHERE id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong("id"),
                 rs.getLong("course_id"),
                 toLocalDateTime(rs.getTimestamp("start_date")),
                 toLocalDateTime(rs.getTimestamp("end_date")),
                 SessionPaymentType.of(rs.getString("payment_type")),
-                SessionStatus.of(rs.getString("session_status")),
+                SessionProgressStatus.of(rs.getString("progress_status")),
+                SessionRecruitmentStatus.of(rs.getString("recruitment_status")),
                 rs.getInt("session_capacity"));
         try {
             return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
