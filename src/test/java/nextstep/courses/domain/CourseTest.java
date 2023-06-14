@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDateTime;
 
+import static nextstep.courses.domain.SessionProgressStatus.OPENED;
+import static nextstep.courses.domain.SessionRecruitmentStatus.RECRUITING;
 import static org.assertj.core.api.Assertions.*;
 
 class CourseTest {
@@ -22,7 +24,7 @@ class CourseTest {
         this.course = new Course();
         Long courseId = 1L;
         SessionInfo sessionInfo = new SessionInfo(courseId, 0L, "titl1", "img", SessionType.FREE);
-        SessionStatus status = SessionStatus.OPENED;
+        SessionStatus status = new SessionStatus(RECRUITING, OPENED);
         SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
         this.firstSession = new Session(sessionInfo, status, sessionTimeLine, 3L);
         this.secondSession = new Session(sessionInfo, status, sessionTimeLine,3L);

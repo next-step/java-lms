@@ -43,6 +43,7 @@ class SessionRepositoryTest {
     private Session createSession() {
         SessionInfo sessionInfo = new SessionInfo(1L,0L, "titl1", "img", SessionType.FREE);
         SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
-        return new Session(sessionInfo, SessionStatus.OPENED, sessionTimeLine, 10L);
+        SessionStatus sessionStatus = new SessionStatus(SessionRecruitmentStatus.RECRUITING, SessionProgressStatus.OPENED);
+        return new Session(sessionInfo, sessionStatus, sessionTimeLine, 10L);
     }
 }

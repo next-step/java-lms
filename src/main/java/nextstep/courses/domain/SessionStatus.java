@@ -1,18 +1,24 @@
 package nextstep.courses.domain;
 
-import java.util.Arrays;
+public class SessionStatus {
 
-public enum SessionStatus {
-    READY, OPENED, CLOSED;
+    private final SessionRecruitmentStatus sessionRecruitmentStatus;
+    private final SessionProgressStatus sessionProgressStatus;
 
-    public static SessionStatus find(String sessionStatus) {
-        return Arrays.stream(values())
-                .filter(type -> type.name().equalsIgnoreCase(sessionStatus))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 강의 상태입니다."));
+    public SessionStatus(SessionRecruitmentStatus sessionRecruitmentStatus, SessionProgressStatus sessionProgressStatus) {
+        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
+        this.sessionProgressStatus = sessionProgressStatus;
     }
 
     public boolean canJoin() {
-        return this.equals(OPENED);
+        return sessionProgressStatus.canJoin() && sessionRecruitmentStatus.canJoin();
+    }
+
+    public SessionProgressStatus getSessionProgressStatus() {
+        return sessionProgressStatus;
+    }
+
+    public SessionRecruitmentStatus getSessionRecruitmentStatus() {
+        return sessionRecruitmentStatus;
     }
 }

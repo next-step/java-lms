@@ -19,8 +19,8 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into session (course_id, owner_id, title, image_url," +
-                " charge_type, status_type, created_at, closed_at, max_student)" +
-                " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " charge_type, status_progress_type, status_recruitment_type, created_at, closed_at, max_student)" +
+                " values(?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         return jdbcTemplate.update(
                 sql,
@@ -29,7 +29,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.getSessionInfo().getTitle(),
                 session.getSessionInfo().getCoverImageInfo(),
                 session.getSessionInfo().getSessionType().toString(),
-                session.getStatus().toString(),
+                session.getStatus().getSessionProgressStatus().toString(),
+                session.getStatus().getSessionRecruitmentStatus().toString(),
                 session.getSessionTimeLine().getCreatedAt(),
                 session.getSessionTimeLine().getClosedAt(),
                 session.getMaxNumOfStudent()
@@ -38,7 +39,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at, closed_at, max_student" +
+        String sql = "select course_id, owner_id, title, image_url, charge_type, status_progress_type, status_recruitment_type, created_at, closed_at, max_student" +
                 " from session" +
                 " where id = ?";
 
@@ -49,7 +50,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public List<Session> findByCourseId(Long courseId) {
 
-        String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at, closed_at, max_student" +
+        String sql = "select course_id, owner_id, title, image_url, charge_type, status_progress_type, status_recruitment_type, created_at, closed_at, max_student" +
                 " from session" +
                 " where course_id = ?";
 
@@ -59,8 +60,8 @@ public class JdbcSessionRepository implements SessionRepository {
     private RowMapper<Session> generateRowMapper() {
         return (rs, rowNum) -> new Session(
                 rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4), SessionType.find(rs.getString(5)),
-                SessionStatus.find(rs.getString(6)),
-                rs.getTimestamp(7).toLocalDateTime(), rs.getTimestamp(8).toLocalDateTime(),
-                rs.getLong(9));
+                SessionProgressStatus.find(rs.getString(6)), SessionRecruitmentStatus.find(rs.getString(7)),
+                rs.getTimestamp(8).toLocalDateTime(), rs.getTimestamp(9).toLocalDateTime(),
+                rs.getLong(10));
     }
 }
