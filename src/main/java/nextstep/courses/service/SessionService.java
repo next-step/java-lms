@@ -1,7 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.infrastructure.SessionRepository;
 import nextstep.courses.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
