@@ -45,7 +45,7 @@ public class Session {
 
   public void enrollment(NsUser user, LocalDateTime enrollmentDateTime) {
     sessionDate.validateEnrolment(enrollmentDateTime);
-    sessionRegistration.enrolment(user);
+    sessionRegistration.enrolment(this, user);
   }
 
   public void validateInit() {
@@ -81,8 +81,8 @@ public class Session {
     return this.sessionRegistration.getCapacity();
   }
 
-  public Set<NsUser> getUsers() {
-    return this.sessionRegistration.getUsers();
+  public Students getStudents() {
+    return this.sessionRegistration.getStudents();
   }
 
   public SessionStatus getStatus() {

@@ -49,7 +49,7 @@ class SessionTest {
     session.recruitStart();
     session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0));
 
-    assertThat(session.getUsers()).containsExactly(user);
+    assertThat(session.getStudents().contains(session, user)).isTrue();
   }
 
   @Test

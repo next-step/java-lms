@@ -13,6 +13,8 @@ import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.Student;
+import nextstep.sessions.domain.Students;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -41,13 +43,13 @@ public class JdbcSessionRepository implements SessionRepository {
     SessionStatus status = SessionStatus.from(sessionDao.sessionStatusId);
 
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
-    Set<NsUser> users = hasSessionUser(id) ? getUsers(id) : new HashSet<>();
+    Students students = hasSessionUser(id) ? getStudents(id) : new Students(new HashSet<>());
 
     return new Session(
         sessionDao.id,
         new SessionDate(sessionDao.startDateTime, sessionDao.endDateTime),
         new SessionBody(sessionDao.title, sessionDao.contents, sessionDao.coverImage),
-        new SessionRegistration(sessionDao.capacity, status, users)
+        new SessionRegistration(sessionDao.capacity, status, students)
     );
   }
 
@@ -55,35 +57,19 @@ public class JdbcSessionRepository implements SessionRepository {
   public void update(Session session) {
     String sql = "update session set start_date_time = ?, end_date_time = ?, title = ?, contents = ?, cover_image = ?, capacity = ?, session_status_id = ? where id = ?";
     jdbcTemplate.update(sql, session.getStartDate(), session.getEndDate(), session.getTitle(),
-        session.getContents(), session.getCoverImage(), session.getCapacity(), session.getStatus().getOrder(), session.getId());
+        session.getContents(), session.getCoverImage(), session.getCapacity(),
+        session.getStatus().getOrder(), session.getId());
 
     updateSessionUser(session);
   }
 
   private void updateSessionUser(Session session) {
-    if (session.getUsers().isEmpty()) {
-      return;
-    }
-
+    String sql = "insert into session_ns_user (session_id, user_id, created_at) values (?, ?, ?)";
     LocalDateTime now = LocalDateTime.now();
 
-    for (NsUser user : session.getUsers()) {
-      updateEnrolledUser(session, now, user);
-    }
-  }
-
-  private void updateEnrolledUser(Session session, LocalDateTime now, NsUser user) {
-    String selectAlreadyEnrolledUserSql = "select count(*) from session_ns_user where session_id = ? and user_id = ?";
-    String sessionUserInsertSql = "insert into session_ns_user (session_id, user_id, created_at) values (?, ?, ?)";
-
-    Integer count = jdbcTemplate.queryForObject(selectAlreadyEnrolledUserSql, Integer.class,
-        session.getId(), user.getId());
-
-    if (count != 0) {
-      return;
-    }
-
-    jdbcTemplate.update(sessionUserInsertSql, session.getId(), user.getId(), now);
+    session.getStudents().getStudents()
+        .stream().filter(student -> student.getSessionUserId().equals(0L))
+        .forEach(student -> jdbcTemplate.update(sql, session.getId(), student.getNsUserId(), now));
   }
 
   private SessionDao getSessionDao(Long id) {
@@ -99,7 +85,7 @@ public class JdbcSessionRepository implements SessionRepository {
     return sessionDao;
   }
 
-  private Set<NsUser> getUsers(Long sessionId) {
+  private Students getStudents(Long sessionId) {
     String sessionUserSelectSql = "select id, session_id, user_id, created_at, updated_at from session_ns_user where session_id = ?";
 
     List<SessionUserDao> sessionUserEntities = jdbcTemplate.query(sessionUserSelectSql,
@@ -108,21 +94,11 @@ public class JdbcSessionRepository implements SessionRepository {
         sessionId
     );
 
-    List<Long> userIds = sessionUserEntities.stream().map(su -> su.id).collect(Collectors.toList());
-    String inSql = String.join(",", Collections.nCopies(userIds.size(), "?"));
-    // String.format을 사용하기 때문에 인텔리제이에서 SQL이라고 인식하지 못해 문자열을 잡아주지 못해서 단점같다는 생각이 듦
-    String userSelectSql = String.format(
-        "select id, user_id, password, name, email, created_at, updated_at from ns_user where id in (%s)",
-        inSql);
+    Set<Student> students = sessionUserEntities.stream()
+        .map(su -> new Student(su.id, su.sessionId, su.userId))
+        .collect(Collectors.toSet());
 
-    List<NsUser> users = jdbcTemplate.query(userSelectSql,
-        (rs, rowNum) -> new NsUser(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4),
-            rs.getString(5), toLocalDateTime(rs.getTimestamp(6)),
-            toLocalDateTime(rs.getTimestamp(7))),
-        userIds.toArray()
-    );
-
-    return new HashSet<>(users);
+    return new Students(students);
   }
 
   private boolean hasSessionUser(Long sessionId) {
