@@ -18,8 +18,7 @@ public class SessionRegistration {
         this.maxUserCount = maxUserCount;
     }
 
-
-    public void register(Session session,NsUser user) {
+    public SessionJoin register(Session session, NsUser user) {
         if (this.sessionRecruitStatus.isNotRecruiting()) {
             throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
         }
@@ -37,7 +36,10 @@ public class SessionRegistration {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        sessionJoins.add(SessionJoin.apply(session, user));
+        SessionJoin applyedSessionJoin = SessionJoin.apply(session, user);
+        sessionJoins.add(applyedSessionJoin);
+
+        return applyedSessionJoin;
     }
 
     private boolean isAlreadyJoined(Session session, NsUser user) {

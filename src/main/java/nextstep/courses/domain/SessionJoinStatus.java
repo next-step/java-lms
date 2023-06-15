@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,14 +12,11 @@ public enum SessionJoinStatus {
     REJECTION;
 
 
-    private static final Map<String, SessionJoinStatus> SESSION_JOIN_STATUS_MAP = Collections.unmodifiableMap(
-            Stream.of(values()).collect(Collectors.toMap(SessionJoinStatus::name, x -> x)));
-
-    public static SessionJoinStatus find(String name) {
-        if (SESSION_JOIN_STATUS_MAP.containsKey(name)) {
-            return SESSION_JOIN_STATUS_MAP.get(name);
-        }
-
-        throw new IllegalArgumentException(name + "을 찾을 수 없습니다.");
+    public static SessionJoinStatus find(String joinStatus) {
+        return Arrays.stream(values())
+                .filter(status -> status.name().equals(joinStatus))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(joinStatus + "을 찾을 수 없습니다."));
     }
+
 }

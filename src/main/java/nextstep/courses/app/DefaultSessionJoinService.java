@@ -29,24 +29,18 @@ public class DefaultSessionJoinService implements SessionJoinService{
     @Override
     public void register(long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId);
-        Optional<NsUser> nsUserOptional = userRepository.findByUserId(nsUser.getUserId());
+        NsUser nsUserOpt = userRepository.findByUserId(nsUser.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 ID 입니다."));
 
-        if (nsUserOptional.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 ID 입니다.");
-        }
+        SessionJoin sessionJoin =  session.register(nsUserOpt);
 
-        session.register(nsUserOptional.get());
-
-        sessionJoinRepository.save(session);
+        sessionJoinRepository.save(sessionJoin);
     }
 
     @Override
     public void approve(long sessionId, NsUser nsUser) {
-        Optional<NsUser> nsUserOptional = userRepository.findByUserId(nsUser.getUserId());
-
-        if (nsUserOptional.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 ID 입니다.");
-        }
+        NsUser nsUserOpt = userRepository.findByUserId(nsUser.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 ID 입니다."));
 
         SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUser.getId());
         sessionJoin.approve();
@@ -55,11 +49,9 @@ public class DefaultSessionJoinService implements SessionJoinService{
 
     @Override
     public void reject(long sessionId, NsUser nsUser) {
-        Optional<NsUser> nsUserOptional = userRepository.findByUserId(nsUser.getUserId());
+        NsUser nsUserOpt = userRepository.findByUserId(nsUser.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 ID 입니다."));
 
-        if (nsUserOptional.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 ID 입니다.");
-        }
         SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUser.getId());
 
         sessionJoin.reject();

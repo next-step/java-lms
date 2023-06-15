@@ -24,6 +24,20 @@ public class JdbcSessionJoinRepository implements SessionJoinRepository {
     }
 
     @Override
+    public int save(SessionJoin sessionJoin) {
+        if (sessionJoin == null) {
+            return 0;
+        }
+
+        String sql = "insert into session_join (session_id, user_id, session_join_status, created_at) values (?,?,?,?)";
+
+        int savedCount = 0;
+            savedCount += jdbcTemplate.update(sql, sessionJoin.getSession().getId(), sessionJoin.getNsUser().getId(),
+                    sessionJoin.getSessionJoinStatus().name(), sessionJoin.getCreatedAt());
+
+        return savedCount;
+    }
+    /*
     public int save(Session session) {
         if (CollectionUtils.isEmpty(session.getSessionJoins())) {
             return 0;
@@ -39,6 +53,7 @@ public class JdbcSessionJoinRepository implements SessionJoinRepository {
 
         return savedCount;
     }
+    */
 
     @Override
     public List<SessionJoin> findAllBySessionId(Long sessionId) {

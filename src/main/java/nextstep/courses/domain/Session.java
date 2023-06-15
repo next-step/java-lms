@@ -34,8 +34,8 @@ public class Session {
         this.sessionRegistration = new SessionRegistration(sessionStatus, sessionRecruitStatus, maxUserCount);
     }
 
-    public void register(NsUser user) {
-        sessionRegistration.register(this, user);
+    public SessionJoin register(NsUser user) {
+        return sessionRegistration.register(this, user);
     }
 
     public Long getId() {
