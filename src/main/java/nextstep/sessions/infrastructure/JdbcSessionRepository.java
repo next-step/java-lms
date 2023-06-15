@@ -15,7 +15,6 @@ import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository("sessionRepository")
@@ -29,25 +28,17 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public int save(Session session) {
-    String sessionStatusSelectSql = "select id, status from session_status where status = ?";
-    RowMapper<SessionStatusDao> rowMapper = (rs, rowNum) -> new SessionStatusDao(
-        rs.getLong(1), SessionStatus.valueOf(rs.getString(2)));
-    SessionStatusDao sessionStatusEntity = jdbcTemplate.queryForObject(sessionStatusSelectSql,
-        rowMapper, session.getStatus().toString());
-
     String sessionInsertSql = "insert into session (start_date_time, end_date_time, title, contents, cover_image, capacity, session_status_id) values (?, ?, ?, ?, ?, ?, ?)";
 
     return jdbcTemplate.update(sessionInsertSql, session.getStartDate(), session.getEndDate(),
         session.getTitle(), session.getContents(), session.getCoverImage(), session.getCapacity(),
-        sessionStatusEntity.id);
+        session.getStatus().getOrder());
   }
 
   @Override
   public Session findById(Long id) {
     SessionDao sessionDao = getSessionDao(id);
-
-    // Session이 가지는 sessionStatus를 찾아오는 쿼리를 작성한다
-    SessionStatus status = getSessionStatus(sessionDao.sessionStatusId);
+    SessionStatus status = SessionStatus.from(sessionDao.sessionStatusId);
 
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
     Set<NsUser> users = hasSessionUser(id) ? getUsers(id) : new HashSet<>();
@@ -62,15 +53,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public void update(Session session) {
-    String sessionStatusSelectSql = "select id from session_status where status = ?";
-
-    Long statusId = jdbcTemplate.queryForObject(sessionStatusSelectSql,
-        (rs, rowNum) -> rs.getLong(1),
-        session.getStatus().toString());
     String sql = "update session set start_date_time = ?, end_date_time = ?, title = ?, contents = ?, cover_image = ?, capacity = ?, session_status_id = ? where id = ?";
-
     jdbcTemplate.update(sql, session.getStartDate(), session.getEndDate(), session.getTitle(),
-        session.getContents(), session.getCoverImage(), session.getCapacity(), statusId, session.getId());
+        session.getContents(), session.getCoverImage(), session.getCapacity(), session.getStatus().getOrder(), session.getId());
 
     updateSessionUser(session);
   }
@@ -140,16 +125,6 @@ public class JdbcSessionRepository implements SessionRepository {
     return new HashSet<>(users);
   }
 
-  private SessionStatus getSessionStatus(Long sessionStatusId) {
-    String sql = "select status from session_status where id = ?";
-    SessionStatus status = jdbcTemplate.queryForObject(sql,
-        (rs, rowNum) -> SessionStatus.valueOf(rs.getString(1)),
-        sessionStatusId
-    );
-
-    return status;
-  }
-
   private boolean hasSessionUser(Long sessionId) {
     String sql = "select count(*) from session_ns_user where session_id = ?";
     Integer count = jdbcTemplate.queryForObject(sql, Integer.class, sessionId);
@@ -163,18 +138,6 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     return timestamp.toLocalDateTime();
-  }
-
-  // 도메인 객체와 분리한 상태에서 dto와 entity중 이름을 고민하다가, Pk를 쥐고있기 때문에 entity라고 지었습니다
-  class SessionStatusDao {
-
-    private Long id;
-    private SessionStatus status;
-
-    SessionStatusDao(Long id, SessionStatus status) {
-      this.id = id;
-      this.status = status;
-    }
   }
 
   class SessionUserDao {
