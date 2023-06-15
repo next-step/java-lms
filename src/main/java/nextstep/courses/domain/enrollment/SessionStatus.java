@@ -5,25 +5,30 @@ import java.util.Arrays;
 public enum SessionStatus {
 
 
-    READY("준비중"),
-    OPENED("모집중"),
-    CLSOED("종료")
+    PREPARING("준비중"),
+    PROGRESSING("진행중"),
+    CLOSED("종료"),
+    NONE("없음");
     ;
 
-    private String name;
+    private final String sessionStatus;
 
-    public static SessionStatus find(String sessionStatus) {
+    public static SessionStatus findByName(String sessionStatus) {
         return Arrays.stream(values())
-                .filter(type -> type.name().equalsIgnoreCase(sessionStatus))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 강의상태입니다."));
+                .filter(status -> status.isMatch(sessionStatus))
+                .findFirst()
+                .orElse(NONE);
     }
 
-    SessionStatus(String name) {
-        this.name = name;
+    SessionStatus(String sessionStatus) {
+        this.sessionStatus = sessionStatus;
     }
 
-    public boolean canJoin() {
-        return this == OPENED;
+    private boolean isMatch(String sessionStatus) {
+        return this.sessionStatus.equals(sessionStatus);
+    }
+
+    public boolean isNotProgressing() {
+        return this != PROGRESSING;
     }
 }

@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enrollment.SessionEnrollment;
+import nextstep.courses.domain.enrollment.SessionRecruitmentStatus;
 import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 public class Session {
 
@@ -83,6 +83,10 @@ public class Session {
 
     public LocalDateTime getCloseAt() {
         return sessionTimeLine.getCloseAt();
+    }
+
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return sessionEnrollment.getSessionRecruitmentStatus();
     }
 
 }

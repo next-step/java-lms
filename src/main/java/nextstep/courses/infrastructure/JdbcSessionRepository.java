@@ -62,7 +62,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return (rs, rowNum) -> new Session(
                         new SessionInfo(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4),
                         SessionType.find(rs.getString(5))),
-                        new SessionEnrollment(SessionStatus.find(rs.getString(6)), rs.getLong(9)),
+                        new SessionEnrollment(SessionStatus.findByName(rs.getString(6)), rs.getLong(9)),
                         new SessionTimeLine(rs.getTimestamp(7).toLocalDateTime(), rs.getTimestamp(8).toLocalDateTime())
                         );
     }
