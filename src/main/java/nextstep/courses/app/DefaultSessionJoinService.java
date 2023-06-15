@@ -42,7 +42,7 @@ public class DefaultSessionJoinService implements SessionJoinService{
         NsUser nsUserOpt = userRepository.findByUserId(nsUser.getUserId())
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 ID 입니다."));
 
-        SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUser.getId());
+        SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUserOpt.getId());
         sessionJoin.approve();
         sessionJoinRepository.updateSessionJoinStatus(sessionJoin);
     }
@@ -52,7 +52,7 @@ public class DefaultSessionJoinService implements SessionJoinService{
         NsUser nsUserOpt = userRepository.findByUserId(nsUser.getUserId())
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 ID 입니다."));
 
-        SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUser.getId());
+        SessionJoin sessionJoin = sessionJoinRepository.findBySessionIdAndUserId(sessionId, nsUserOpt.getId());
 
         sessionJoin.reject();
         sessionJoinRepository.updateSessionJoinStatus(sessionJoin);
