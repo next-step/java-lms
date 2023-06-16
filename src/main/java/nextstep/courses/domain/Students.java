@@ -12,15 +12,20 @@ public class Students {
         this.students = new ArrayList<>();
     }
 
+    public Students(List<NsUser> students) {
+        this.students = students;
+    }
+
     public boolean isGreaterEqualThan(Long capacity) {
         return this.students.size() >= capacity;
     }
 
-    public void add(NsUser user) {
+    public Long add(NsUser user) {
         if (this.contains(user)) {
             throw new IllegalStateException("이미 강의를 신청하였습니다.");
         }
         this.students.add(user);
+        return user.getId();
     }
 
     private boolean contains(NsUser user) {
