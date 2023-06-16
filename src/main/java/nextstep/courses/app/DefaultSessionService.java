@@ -14,12 +14,10 @@ import java.util.Optional;
 @Transactional
 public class DefaultSessionService implements SessionService {
     private final SessionRepository sessionRepository;
-    private final UserRepository userRepository;
 
 
-    public DefaultSessionService(SessionRepository sessionRepository, UserRepository userRepository) {
+    public DefaultSessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -33,18 +31,5 @@ public class DefaultSessionService implements SessionService {
         return sessionRepository.findById(id);
     }
 
-    @Override
-    public long register(long sessionId, NsUser nsUser) {
-        Session session = sessionRepository.findById(sessionId);
-        Optional<NsUser> nsUserOptional = userRepository.findByUserId(nsUser.getUserId());
-
-        if (nsUserOptional.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 ID 입니다.");
-        }
-
-        session.register(nsUserOptional.get());
-
-        return sessionRepository.saveSessionJoin(session);
-    }
 
 }

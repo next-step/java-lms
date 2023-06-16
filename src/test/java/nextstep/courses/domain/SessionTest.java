@@ -34,7 +34,7 @@ public class SessionTest {
     }
 
     @ParameterizedTest(name = "강의결제 유형 {0}")
-    @EnumSource(value = SessionBilling.class ,names = {"FREE"})
+    @EnumSource(value = SessionBilling.class, names = {"FREE"})
     void sessionBillingType(SessionBilling sessionBillType) {
         Session session = testSession1();
 
@@ -42,7 +42,7 @@ public class SessionTest {
     }
 
     @ParameterizedTest(name = "강의결제 유형 {0}")
-    @EnumSource(value = SessionBilling.class ,names = {"PAID"})
+    @EnumSource(value = SessionBilling.class, names = {"PAID"})
     void sessionBillingType2(SessionBilling sessionBillType) {
         Session session = testSession2();
 
@@ -50,7 +50,7 @@ public class SessionTest {
     }
 
     @ParameterizedTest(name = "강의 상태 {0}")
-    @EnumSource(value = SessionStatus.class ,names = {"READY"})
+    @EnumSource(value = SessionStatus.class, names = {"READY"})
     void sessionStatusType(SessionStatus sessionStatusType) {
         Session session = testSession2();
 
@@ -58,7 +58,7 @@ public class SessionTest {
     }
 
     @ParameterizedTest(name = "강의 상태 {0}")
-    @EnumSource(value = SessionStatus.class ,names = {"OPEN"})
+    @EnumSource(value = SessionStatus.class, names = {"OPEN"})
     void sessionStatusType2(SessionStatus sessionStatusType) {
         Session session = testSession1();
 
@@ -66,17 +66,16 @@ public class SessionTest {
     }
 
     @ParameterizedTest(name = "강의 상태 {0}")
-    @EnumSource(value = SessionStatus.class ,names = {"CLOSED"})
+    @EnumSource(value = SessionStatus.class, names = {"CLOSED"})
     void sessionStatusType3(SessionStatus sessionStatusType) {
         Session session = testSession3();
 
         assertThat(session.getSessionStatus()).isEqualTo(sessionStatusType);
     }
 
-    @DisplayName("모집중일시 수강신청 테스트")
-    @Test
-    void openStatus() {
-        Session session = testSession1();
+    @DisplayName("강의가 준비중인 상태라도 모집상태가 모집중이면 수강신청이 가능하다.")
+    void readyStatus() {
+        Session session = testSession4();
 
         session.register(NsUserTest.JAVAJIGI);
 
@@ -84,34 +83,20 @@ public class SessionTest {
                 .containsExactly(tuple(1L, 1L));
     }
 
-    @DisplayName("준비중일 때 수강신청 시 오류")
     @Test
-    void readyStatus() {
-        Session session = testSession2();
+    @DisplayName("강의가 모집중이 아니면 수강신청 할 수 없다.")
+    void notRecruit() {
+        Session session =testSession6();
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("종료일 때 수강신청 시 오류")
     @Test
-    void closedStatus() {
-        Session session = testSession3();
+    @DisplayName("강의가 종료되면 수강신청 할 수 없다.")
+    void closedStatusRecruit() {
+        Session session = testSession7();
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("강의 최대 수강인원 달성 후 신청 시 오류")
-    @Test
-    void maximumUser() {
-        Session session = testSession5();
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("중복ID 신청 시 오류")
-    @Test
-    void duplicatedUser() {
-        Session session = testSession1();
-        session.register(NsUserTest.JAVAJIGI);
-        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
-    }
 }

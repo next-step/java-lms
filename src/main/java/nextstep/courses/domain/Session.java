@@ -9,8 +9,6 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
-   // private final List<SessionJoin> sessionJoins = new ArrayList<>();
-
     private final SessionBilling sessionBilling;
     private final String sessionCoverImage;
     private final SessionRegistration sessionRegistration;
@@ -18,7 +16,7 @@ public class Session {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public Session(Long id, SessionBilling sessionBillingType, SessionStatus sessionStatus, String sessionCoverImage, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionBilling sessionBillingType, String sessionCoverImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, int maxUserCount, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (sessionBillingType == null) {
             throw new IllegalArgumentException("과금 유형을 선택해주세요");
         }
@@ -33,11 +31,11 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.sessionRegistration = new SessionRegistration(this, sessionStatus, maxUserCount);
+        this.sessionRegistration = new SessionRegistration(sessionStatus, sessionRecruitStatus, maxUserCount);
     }
 
-    public void register(NsUser user) {
-        sessionRegistration.register(user);
+    public SessionJoin register(NsUser user) {
+        return sessionRegistration.register(this, user);
     }
 
     public Long getId() {
@@ -54,6 +52,10 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionRegistration.getSessionStatus();
+    }
+
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRegistration.getSessionRecruitStatus();
     }
 
     public String getSessionCoverImage() {
@@ -77,7 +79,7 @@ public class Session {
     }
 
     public void addUser(NsUser nsUser) {
-        sessionRegistration.addUser(nsUser);
+        sessionRegistration.addUser(this, nsUser);
     }
 
 

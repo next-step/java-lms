@@ -7,57 +7,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SessionRegistration {
-    private final Session session;
     private final List<SessionJoin> sessionJoins = new ArrayList<>();
     private final SessionStatus sessionStatus;
+    private final SessionRecruitStatus sessionRecruitStatus;
     private final int maxUserCount;
 
-    public SessionRegistration(Session session, SessionStatus sessionStatus, int maxUserCount) {
-        this.session = session;
+    public SessionRegistration(SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, int maxUserCount) {
         this.sessionStatus = sessionStatus;
+        this.sessionRecruitStatus = sessionRecruitStatus;
         this.maxUserCount = maxUserCount;
     }
 
-
-    public void register(NsUser user) {
-        if (sessionStatus != SessionStatus.OPEN) {
-            throw new IllegalArgumentException("수강신청은 모집중일때만 등록이 가능합니다.");
+    public SessionJoin register(Session session, NsUser user) {
+        if (this.sessionRecruitStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException("강의가 모집중이지 않습니다.");
         }
 
-        if (isAlreadyJoined(sessionJoins, user)) {
+        if (this.sessionStatus.isClose()) {
+            throw new IllegalArgumentException("강의가 종료되었습니다.");
+        }
+
+
+        if (isAlreadyJoined(session, user)) {
             throw new IllegalArgumentException("이미 등록된 유저입니다.");
         }
 
-        if (isSessionFull(sessionJoins, maxUserCount)) {
+        if (isSessionFull(maxUserCount)) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
 
-        SessionJoin sessionJoin = createSessionJoin(user);
-        sessionJoins.add(sessionJoin);
+        SessionJoin applyedSessionJoin = SessionJoin.apply(session, user);
+        sessionJoins.add(applyedSessionJoin);
+
+        return applyedSessionJoin;
     }
 
-    private boolean isAlreadyJoined(List<SessionJoin> sessionJoins, NsUser user) {
+    private boolean isAlreadyJoined(Session session, NsUser user) {
         return sessionJoins.stream()
                 .anyMatch(join -> join.isAlreadyJoin(session, user));
     }
 
-    private boolean isSessionFull(List<SessionJoin> sessionJoins, int maxUserCount) {
+    private boolean isSessionFull(int maxUserCount) {
         return sessionJoins.size() >= maxUserCount;
     }
 
-    private SessionJoin createSessionJoin(NsUser user) {
+    public void addUser(Session session, NsUser nsUser) {
         LocalDateTime now = LocalDateTime.now();
-        return new SessionJoin(session, user, now, now);
-    }
-
-    public void addUser(NsUser nsUser) {
-        LocalDateTime now = LocalDateTime.now();
-        sessionJoins.add(new SessionJoin(session, nsUser, now, now));
-    }
-
-
-    public Session getSession() {
-        return session;
+        sessionJoins.add(SessionJoin.apply(session, nsUser));
     }
 
     public List<SessionJoin> getSessionJoins() {
@@ -68,6 +64,10 @@ public class SessionRegistration {
         return sessionStatus;
     }
 
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRecruitStatus;
+    }
+
     public int getMaxUserCount() {
         return maxUserCount;
     }
@@ -75,7 +75,6 @@ public class SessionRegistration {
     @Override
     public String toString() {
         return "SessionRegistration{" +
-                "session=" + session +
                 ", sessionJoins=" + sessionJoins +
                 ", sessionStatus=" + sessionStatus +
                 ", maxUserCount=" + maxUserCount +

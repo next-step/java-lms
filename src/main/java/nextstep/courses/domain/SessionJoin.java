@@ -9,17 +9,20 @@ public class SessionJoin {
     private Long id;
     private final Session session;
     private final NsUser nsUser;
+    private SessionJoinStatus sessionJoinStatus;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
-    public SessionJoin(Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, session, nsUser, createdAt, updatedAt);
+    public static SessionJoin apply(Session session, NsUser nsUser) {
+        LocalDateTime now = LocalDateTime.now();
+        return new SessionJoin(null, session, nsUser, SessionJoinStatus.APPLICATION, now, null);
     }
 
-    public SessionJoin(Long id, Session session, NsUser nsUser, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SessionJoin(Long id, Session session, NsUser nsUser, SessionJoinStatus sessionJoinStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.session = session;
         this.nsUser = nsUser;
+        this.sessionJoinStatus = sessionJoinStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -27,6 +30,8 @@ public class SessionJoin {
     public boolean isAlreadyJoin(Session session, NsUser nsUser) {
         return this.session.equals(session) && this.nsUser.equals(nsUser);
     }
+
+
 
     public Long getId() {
         return id;
@@ -38,6 +43,19 @@ public class SessionJoin {
 
     public NsUser getNsUser() {
         return nsUser;
+    }
+
+    public SessionJoinStatus getSessionJoinStatus() {
+        return sessionJoinStatus;
+    }
+    public void approve() {
+        this.sessionJoinStatus = SessionJoinStatus.APPROVAL;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void reject() {
+        this.sessionJoinStatus = SessionJoinStatus.REJECTION;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
