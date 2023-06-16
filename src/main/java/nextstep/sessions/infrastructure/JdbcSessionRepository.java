@@ -67,7 +67,7 @@ public class JdbcSessionRepository implements SessionRepository {
     String sql = "insert into session_ns_user (session_id, user_id, created_at) values (?, ?, ?)";
     LocalDateTime now = LocalDateTime.now();
 
-    session.getStudents().getStudents()
+    session.getStudents()
         .stream().filter(student -> student.getSessionUserId().equals(0L))
         .forEach(student -> jdbcTemplate.update(sql, session.getId(), student.getNsUserId(), now));
   }

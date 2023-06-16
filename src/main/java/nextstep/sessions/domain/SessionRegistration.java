@@ -61,8 +61,8 @@ public class SessionRegistration {
     return this.status;
   }
 
-  public Students getStudents() {
-    return this.students;
+  public Set<Student> getStudents() {
+    return this.students.getStudents();
   }
 
   @Override

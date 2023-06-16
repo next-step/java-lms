@@ -81,7 +81,7 @@ public class Session {
     return this.sessionRegistration.getCapacity();
   }
 
-  public Students getStudents() {
+  public Set<Student> getStudents() {
     return this.sessionRegistration.getStudents();
   }
 
