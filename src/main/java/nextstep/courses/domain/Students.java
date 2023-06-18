@@ -13,12 +13,23 @@ public class Students {
     }
 
     public void addStudent(Student student) throws CannotEnrollException {
-        isOverMaxStudent();
+        checkAddStudentAble(student);
         students.add(student);
     }
-    public void isOverMaxStudent() throws CannotEnrollException {
+
+    private void checkAddStudentAble(Student student) throws CannotEnrollException {
+        isOverMaxStudent();
+        isDuplicated(student);
+    }
+    private void isOverMaxStudent() throws CannotEnrollException {
         if(maxStudents < students.size() + 1) {
             throw new CannotEnrollException("수강 신청 최대 인원을 초과했습니다.");
+        }
+    }
+
+    private void isDuplicated(Student student) throws CannotEnrollException {
+        if(students.contains(student)) {
+            throw new CannotEnrollException("이미 수강 신청 중인 학생입니다.");
         }
     }
 
