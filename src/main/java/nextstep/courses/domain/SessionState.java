@@ -1,10 +1,24 @@
 package nextstep.courses.domain;
 
+import java.util.Arrays;
+
 public enum SessionState {
+    PREPARING("PREPARING"), RECRUITING("RECRUITING"), CLOSE("CLOSE");
 
-    PREPARING, RECRUITING, CLOSE;
+    private String code;
 
-    public static boolean isRecruitable(SessionState sessionState) {
-        return sessionState.equals(RECRUITING);
+    SessionState(String code) {
+        this.code = code;
+    }
+
+    public static SessionState convert(String code){
+        return Arrays.stream(SessionState.values())
+                .filter(s -> s.code.equals(code))
+                .findFirst()
+                .orElse(CLOSE);
+    }
+
+    public boolean isRecruitable() {
+        return this.equals(RECRUITING);
     }
 }
