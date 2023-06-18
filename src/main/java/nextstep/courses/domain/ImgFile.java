@@ -29,4 +29,8 @@ public class ImgFile {
         Matcher matcher = DELIMITER.matcher(imageUrl);
         return matcher.matches();
     }
+
+    public String getImgFile() {
+        return imgFile;
+    }
 }

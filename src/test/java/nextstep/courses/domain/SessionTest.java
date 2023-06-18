@@ -15,21 +15,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionTest {
 
     Session session;
+    LocalDateTime start;
+    LocalDateTime end;
 
     @BeforeEach
     void setSession() {
-        LocalDate start = LocalDate.of(2023, 6, 15);
-        LocalDate end = LocalDate.of(2023, 6, 15);
-        session = new Session(1L, "coby.jpg", start, end);
+        start = LocalDateTime.of(2023, 7, 1,0,0);
+        end = LocalDateTime.of(2023, 7, 15,0,0);
+        session = new Session(1L, "16기 java 느리지만 끝까지 하자!","coby.jpg", start, end);
         session.changeToStatus(SessionType.RECRUITING);
     }
 
     @Test
     void 생성자_테스트() {
-        LocalDate start = LocalDate.of(2023, 6, 15);
-        LocalDate end = LocalDate.of(2023, 6, 15);
-        Session session1 = new Session(1L, "coby.jpg", start, end);
-
+        Session session1 = new Session(1L, "16기 java 느리지만 끝까지 하자!","coby.jpg", start, end);
         assertThat(session1.getId()).isEqualTo(1L);
     }
 

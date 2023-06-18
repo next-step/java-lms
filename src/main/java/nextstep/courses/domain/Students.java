@@ -2,9 +2,9 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Students {
     private static final int MAX_STUDENTS = 20;
@@ -12,9 +12,20 @@ public class Students {
     private static final String ALREADY_STUDENT = "이미 등록된 학생 입니다.";
     private static final String NOT_INFO = "등록된 학생 정보가 없습니다.";
     private static final String NULL_EXCEPTION = "학생 데이터가 잘못 생성되었습니다.";
-    private final Map<Long, NsUser> studentsMap = new HashMap<>();
-    public Students() {
+    private Map<Long, NsUser> studentsMap = new HashMap<>();
 
+    private List<NsUser> users = new ArrayList<>();
+
+    public Students() {
+    }
+
+    public Students(List<NsUser> users) {
+        this.users = users;
+    }
+
+    public void convertStudentListToMap() {
+        studentsMap = users.stream()
+                .collect(Collectors.toMap(NsUser::getId, Function.identity(), (pre, post) -> pre));
     }
 
     public void putEntity(NsUser nsUser) {
@@ -41,6 +52,14 @@ public class Students {
             throw new IllegalArgumentException(NOT_INFO);
         }
         removeSession(nsUser);
+    }
+
+    public static Students createStudents(List<NsUser> nsUsers) {
+        Students students = new Students();
+        nsUsers.stream().forEach(
+                nsUser -> students.putEntity(nsUser)
+        );
+        return students;
     }
 
     private void addStudent(NsUser nsUser) {
