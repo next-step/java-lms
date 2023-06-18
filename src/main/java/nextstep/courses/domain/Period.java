@@ -19,4 +19,8 @@ public class Period {
     public Period(LocalDateTime endDate) {
         this(LocalDateTime.now(), endDate);
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
 }

@@ -21,8 +21,10 @@ public class Session {
     private LocalDateTime updateAt;
     private Long creatorId;
 
-    public Session(Long id, String title, int maxCount, Period period, String imageUrl, SessionState sessionState,
-            SessionType sessionType) {
+    private final Set<Student> students = new HashSet<>();
+
+    @Builder
+    public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
@@ -38,5 +40,60 @@ public class Session {
 
     public void apply(NsUser loginUser) {
         sessionValidator.addPerson(loginUser);
+    }
+
+
+    public void add(Student student) {
+        if (isFull()) {
+            throw new IllegalArgumentException("강의 수강 신청 인원이 다 찼습니다!");
+        }
+        if (!sessionValidator.sessionState().isRecruitable()) {
+            throw new IllegalArgumentException("모집 중일때만 신청 가능합니다!");
+        }
+        students.add(student);
+    }
+
+    private boolean isFull() {
+        return this.sessionValidator.maxCount() <= this.students.size();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public LocalDateTime startDate() {
+        return period.getStartDate();
+    }
+
+    public LocalDateTime endDate() {
+        return period.getStartDate();
+    }
+
+    public LocalDateTime createAt() {
+        return this.createAt;
+    }
+
+    public Long creatorId() {
+        return this.creatorId;
+    }
+
+    public String imageUrl() {
+        return imageUrl;
+    }
+
+    public String sessionType() {
+        return this.sessionType.name();
+    }
+
+    public SessionValidator sessionValidator() {
+        return this.sessionValidator;
     }
 }
