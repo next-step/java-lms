@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -56,6 +57,10 @@ public class Answer {
         return deleted;
     }
 
+    public boolean isSameWriter(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
@@ -70,6 +75,14 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public void delete() {
+        setDeleted(true);
+    }
+
+    public DeleteHistory toHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
