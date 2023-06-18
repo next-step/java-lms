@@ -5,10 +5,12 @@ import java.util.Objects;
 public class Student {
     private final Long studentId;
     private final Long sessionId;
+
     public Student(Long studentId, Long sessionId) {
         this.studentId = studentId;
         this.sessionId = sessionId;
     }
+
     public void enroll(Session session) {
         session.add(this);
     }
@@ -28,6 +30,7 @@ public class Student {
         Student student = (Student) o;
         return Objects.equals(studentId, student.studentId) && Objects.equals(sessionId, student.sessionId);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(studentId, sessionId);

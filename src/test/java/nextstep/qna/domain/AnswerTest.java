@@ -14,7 +14,7 @@ public class AnswerTest {
     public static Answer answer2;
 
     @BeforeEach
-    void init(){
+    void init() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.QUESTION_1, "Answers Contents1");
         answer2 = new Answer(NsUserTest.SANJIGI, QuestionTest.QUESTION_2, "Answers Contents2");
     }

@@ -8,7 +8,7 @@ public class Period {
     private final LocalDateTime endDate;
 
     public Period(LocalDateTime startDate, LocalDateTime endDate) {
-        if(endDate.isBefore(startDate)){
+        if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("기간의 시작시간이 종료시간보다 늦으면 안됩니다.");
         }
 

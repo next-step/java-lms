@@ -16,15 +16,15 @@ public class Sessions {
         this.sessions = sessions;
     }
 
-    public void add(Session session){
+    public void add(Session session) {
         this.sessions.add(session);
     }
 
-    public List<Session> getSession(){
+    public List<Session> getSession() {
         return Collections.unmodifiableList(sessions);
     }
 
-    public int size(){
+    public int size() {
         return sessions.size();
     }
 }

@@ -12,7 +12,7 @@ public enum SessionType {
         this.code = code;
     }
 
-    public static SessionType convert(String code){
+    public static SessionType convert(String code) {
         return Arrays.stream(SessionType.values())
                 .filter(s -> s.code.equals(code))
                 .findFirst()

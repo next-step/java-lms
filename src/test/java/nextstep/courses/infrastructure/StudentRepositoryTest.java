@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;

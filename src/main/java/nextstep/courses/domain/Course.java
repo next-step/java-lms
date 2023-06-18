@@ -37,7 +37,7 @@ public class Course {
         this.sessions = sessions;
     }
 
-    public void addSession(Session session){
+    public void addSession(Session session) {
         sessions.add(session);
     }
 
@@ -53,7 +53,7 @@ public class Course {
         return createdAt;
     }
 
-    public int sessionsSize(){
+    public int sessionsSize() {
         return sessions.size();
     }
 }

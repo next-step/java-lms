@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import nextstep.users.domain.NsUser;
 
 public class SessionValidator {

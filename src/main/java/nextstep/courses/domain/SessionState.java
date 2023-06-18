@@ -11,7 +11,7 @@ public enum SessionState {
         this.code = code;
     }
 
-    public static SessionState convert(String code){
+    public static SessionState convert(String code) {
         return Arrays.stream(SessionState.values())
                 .filter(s -> s.code.equals(code))
                 .findFirst()
