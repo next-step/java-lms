@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.SessionUserMapping;
+import nextstep.courses.domain.SessionUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -32,30 +32,30 @@ class JdbcSessionUserMappingRepositoryTest {
 
     @Test
     void save() {
-        SessionUserMapping sessionUserMapping = new SessionUserMapping(6L , 1L, 3L, LocalDateTime.now());
+        SessionUser sessionUserMapping = new SessionUser(6L , 1L, 3L, LocalDateTime.now());
         int save = jdbcSessionUserMappingRepository.save(sessionUserMapping);
         assertThat(save).isEqualTo(1);
     }
 
     @Test
     void findById() {
-        SessionUserMapping sessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
+        SessionUser sessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
         assertThat(sessionUserMapping.getId()).isEqualTo(1L);
     }
 
     @Test
     void findBySessionId() {
-        List<SessionUserMapping> bySessionId = jdbcSessionUserMappingRepository.findBySessionId(1L);
+        List<SessionUser> bySessionId = jdbcSessionUserMappingRepository.findBySessionId(1L);
         assertThat(bySessionId.size()).isEqualTo(5);
     }
 
     @Test
     void update() {
-        SessionUserMapping sessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
+        SessionUser sessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
         sessionUserMapping.changeSessionId(2L);
         jdbcSessionUserMappingRepository.update(sessionUserMapping);
 
-        SessionUserMapping updateSessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
+        SessionUser updateSessionUserMapping = jdbcSessionUserMappingRepository.findById(1L);
         assertThat(updateSessionUserMapping.getSessionId()).isEqualTo(2);
 
     }

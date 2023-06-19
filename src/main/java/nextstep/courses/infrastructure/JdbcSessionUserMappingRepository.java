@@ -22,15 +22,15 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     }
 
     @Override
-    public int save(SessionUserMapping sessionUserMapping) {
+    public int save(SessionUser sessionUserMapping) {
         String sql = "insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(?, ?, ?, ?)";
         return jdbcTemplate.update(sql,sessionUserMapping.getId(), sessionUserMapping.getSessionId(), sessionUserMapping.getNsUserId(), LocalDateTime.now());
     }
 
     @Override
-    public SessionUserMapping findById(Long id) {
+    public SessionUser findById(Long id) {
         String sql = "select id, session_id, ns_user_id, created_at from session_user_mapping where id = ?";
-        RowMapper<SessionUserMapping> rowMapper = (rs, rowNum) -> new SessionUserMapping(
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
@@ -39,9 +39,9 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     }
 
     @Override
-    public List<SessionUserMapping> findBySessionId(Long sessionId) {
+    public List<SessionUser> findBySessionId(Long sessionId) {
         String sql = "select id, session_id, ns_user_id, created_at from session_user_mapping where session_id = ?";
-        RowMapper<SessionUserMapping> rowMapper = (rs, rowNum) -> new SessionUserMapping(
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
@@ -50,7 +50,7 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     }
 
     @Override
-    public int update(SessionUserMapping sessionUserMapping) {
+    public int update(SessionUser sessionUserMapping) {
         String sql = "update session_user_mapping set session_id=?, ns_user_id=?, updated_at=? where id = ?";
         return jdbcTemplate.update(sql, sessionUserMapping.getSessionId(), sessionUserMapping.getNsUserId(), LocalDateTime.now(), sessionUserMapping.getId());
     }
@@ -68,11 +68,11 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     }
 
     @Override
-    public Optional<List<SessionUserMapping>> findBySessionIds(List<Long> sessionIds) {
+    public Optional<List<SessionUser>> findBySessionIds(List<Long> sessionIds) {
         String sql = "select id, session_id, ns_user_id, created_at from session_user_mapping where session_id IN  = (:values)";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource("values", sessionIds);
-        RowMapper<SessionUserMapping> rowMapper = (rs, rowNum) -> new SessionUserMapping(
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SessionUserMappingRepository {
-    int save(SessionUserMapping sessionUserMapping);
+    int save(SessionUser sessionUserMapping);
 
-    SessionUserMapping findById(Long id);
+    SessionUser findById(Long id);
 
-    List<SessionUserMapping> findBySessionId(Long sessionId);
+    List<SessionUser> findBySessionId(Long sessionId);
 
-    int update(SessionUserMapping sessionUserMapping);
-    Optional<List<SessionUserMapping>> findBySessionIds(List<Long> sessionIds);
+    int update(SessionUser sessionUserMapping);
+    Optional<List<SessionUser>> findBySessionIds(List<Long> sessionIds);
 
     int deleteById(Long id);
 
