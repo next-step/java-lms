@@ -59,7 +59,6 @@ create table session (
     started_at timestamp not null,
     ended_at timestamp not null,
     status varchar(20) not null,
-    course_id bigint not null,
     primary key (id)
 );
 

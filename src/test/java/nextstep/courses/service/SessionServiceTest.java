@@ -57,4 +57,13 @@ class SessionServiceTest {
         Session session = sessionService.findSession(1L);
         assertThat(session.getTitle()).isEqualTo("변경되었나?");
     }
+
+    @Test
+    void insertSession() {
+        Session session1 = new Session(50L, "변경되었나?","coby.jpg", start, end);
+        sessionService.insertSession(session1);
+
+        Session session = sessionService.findSession(50L);
+        assertThat(session.getTitle()).isEqualTo("변경되었나?");
+    }
 }
