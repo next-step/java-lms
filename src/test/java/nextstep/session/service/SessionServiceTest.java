@@ -48,7 +48,6 @@ class SessionServiceTest {
     @Test
     @DisplayName(value = "같은 강의를 수강신청할 수 없음")
     void test1() {
-        service.enrollStudent(user1, session1.getId());
         assertThatThrownBy(() -> {
             service.enrollStudent(user1, session1.getId());
         }).isInstanceOf(IllegalArgumentException.class);
