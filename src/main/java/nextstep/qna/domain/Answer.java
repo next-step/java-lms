@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -79,9 +74,14 @@ public class Answer {
         }
     }
 
-    public void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory deleteAnswer(NsUser loginUser) throws CannotDeleteException {
         checkEnableDeleteAnswer(loginUser);
-        setDeleted(true);
+        this.deleted();
+        return new DeleteHistory(this);
+    }
+
+    private void deleted() {
+        this.deleted = true;
     }
 
     @Override

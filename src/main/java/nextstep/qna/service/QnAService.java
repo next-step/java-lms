@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,7 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        Question result = question.deleteQuestion(loginUser);
-        List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION,
-                result.getId(),
-                result.getWriter(),
-                LocalDateTime.now())));
-        deleteHistories.addAll(result.getAnswers().createDeleteHistory());
+        List<DeleteHistory> deleteHistories = question.deleteQuestion(loginUser);
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

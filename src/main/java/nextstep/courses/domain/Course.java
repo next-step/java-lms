@@ -1,24 +1,16 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
-
-    public Course() {
-    }
-
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
+    private List<Cardinal> cardinals;
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -26,8 +18,16 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.cardinals = new ArrayList<>();
     }
 
+    public void addCardinal(Session session) {
+        cardinals.add(new Cardinal((long) (cardinals.size() + 1), session, new Students(10)));
+    }
+
+    public int cardinalCount() {
+        return cardinals.size();
+    }
     public String getTitle() {
         return title;
     }
