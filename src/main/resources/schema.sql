@@ -67,7 +67,8 @@ create table session_ns_user (
     user_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,
-    primary key (id)
+    primary key (id),
+    unique (session_id, user_id)
 );
 
 create table session_status (

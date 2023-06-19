@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import nextstep.users.domain.NsUser;
 
@@ -24,7 +25,7 @@ public class Students {
   }
 
   public void add(Session session, NsUser user) {
-    this.students.add(new Student(session, user));
+    this.students.add(new Student(session, user, LocalDateTime.now(), null));
   }
 
   public int size() {

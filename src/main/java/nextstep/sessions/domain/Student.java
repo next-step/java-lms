@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import java.time.LocalDateTime;
 import nextstep.users.domain.NsUser;
 
 public class Student {
@@ -9,14 +10,20 @@ public class Student {
 
   private Long nsUserId;
 
-  public Student(Session session, NsUser user) {
-    this(0L, session.getId(), user.getId());
+  private LocalDateTime createdAt;
+
+  private LocalDateTime updatedAt;
+
+  public Student(Session session, NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(0L, session.getId(), user.getId(), createdAt, updatedAt);
   }
 
-  public Student(Long sessionUserId, Long sessionId, Long nsUserId) {
+  public Student(Long sessionUserId, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.sessionUserId = sessionUserId;
     this.sessionId = sessionId;
     this.nsUserId = nsUserId;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   public boolean isTaking(Session session, NsUser nsUser) {

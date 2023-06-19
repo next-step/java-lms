@@ -80,6 +80,9 @@ class SessionRepositoryTest {
 
     Session updatedSession = sessionRepository.findById(1L);
     assertThat(updatedSession.getTitle()).isEqualTo(session.getTitle());
-    assertThat(updatedSession.getStudents().contains(savedSession, user)).isTrue();
+    assertThat(updatedSession.getStudents().stream()
+        .filter(student -> student.isTaking(updatedSession, user))
+        .findAny()
+        .isPresent()).isTrue();
   }
 }
