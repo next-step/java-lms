@@ -12,5 +12,5 @@ public interface SessionRepository {
     int update(Session session);
 
     int delete(Long id);
-    Optional<List<Session>> findBySessionIds(List<Long> sessionIds);
+    List<Session> findBySessionIds(List<Long> sessionIds);
 }

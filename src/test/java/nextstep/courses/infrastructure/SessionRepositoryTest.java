@@ -76,8 +76,8 @@ class SessionRepositoryTest {
         ids.add(1L);
         ids.add(2L);
 
-        Optional<List<Session>> bySessionIds = sessionRepository.findBySessionIds(ids);
-        assertThat(bySessionIds.orElseGet(null).size()).isEqualTo(2);
+        List<Session> bySessionIds = sessionRepository.findBySessionIds(ids);
+        assertThat(bySessionIds.size()).isEqualTo(2);
 
     }
 }

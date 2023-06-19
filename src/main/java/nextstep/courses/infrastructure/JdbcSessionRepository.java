@@ -28,10 +28,10 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (id, title, free, created_at, imgFile, started_at, ended_at, status, course_id) values(?, ?, ?, ? ,? ,? ,?, ?, ?)";
+        String sql = "insert into session (id, title, free, created_at, imgFile, started_at, ended_at, status) values(?, ?, ?, ? ,? ,? ,?, ?)";
         return jdbcTemplate.update(sql,session.getId(), session.getTitle(), session.getFree(), LocalDate.now(), session.getImageFile(),
                 session.getSessionDuration().getStartedAt(), session.getSessionDuration().getEndedAt()
-                ,session.getStatus().toString(), session.getCourseId());
+                ,session.getStatus().toString());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<List<Session>> findBySessionIds(List<Long> sessionIds) {
+    public List<Session> findBySessionIds(List<Long> sessionIds) {
         String sql = "select id, title, free, created_at, started_at, ended_at, imgFile, status, course_id from session where id IN (:values)";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource("values", sessionIds);
@@ -98,6 +98,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString(7),
                 SessionType.valueOf(rs.getString(8)));
 
-        return Optional.of(namedParameterJdbcTemplate.query(sql, parameters, rowMapper));
+        return namedParameterJdbcTemplate.query(sql, parameters, rowMapper);
     }
 }
