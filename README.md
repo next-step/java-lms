@@ -58,3 +58,20 @@
   * JdbcCourseRepository 샘플 코드는 Spring JDBC 라이브러리를 활용해 구현함
 * CRUD 코드에 대한 테스트 코드
   * src/test/java 폴더의 nextstep.courses.infrastructure.CourseRepositoryTest
+
+## 핵심 학습 목표 : Step4
+DB 테이블이 변경될 때도 스트랭글러 패턴을 적용해 점진적인 리팩터링을 연습한다.
+스트랭글러(교살자) 패턴 - 마틴 파울러 (https://martinfowler.com/bliki/StranglerFigApplication.html)
+스트랭글러 무화과 패턴 (https://learn.microsoft.com/ko-kr/azure/architecture/patterns/strangler-fig)
+
+## 변경된 기능 요구사항 : Step4
+* 강의가 진행 중인 상태에서도 수강신청이 가능해야 한다.
+   * 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
+* 우아한테크코스(무료), 우아한테크캠프 Pro(유료)와 같이 선발된 인원만 수강 가능해야 한다.
+   * 강사는 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인이 가능해야 한다.
+   * 강사는 수강신청한 사람 중 선발되지 않은 사람은 수강을 취소할 수 있어야 한다.
+
+## 프로그래밍 요구사항 : Step4
+* 리팩터링할 때 컴파일 에러와 기존의 단위 테스트의 실패를 최소화하면서 점진적인 리팩터링이 가능하도록 한다.
+* DB 테이블에 데이터가 존재한다는 가정하에 리팩터링해야 한다.
+  * 즉, 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링 해야 한다.
