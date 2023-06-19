@@ -45,16 +45,16 @@ public class Session {
         this.courseId = courseId;
     }
 
-    public void putStudent(NsUser nsUser) {
+    public void enroll(NsUser nsUser) {
         checkValidation();
-        students.putEntity(nsUser);
+        students.enroll(nsUser);
     }
 
     public void changeStudents(Students students) {
         this.students = students;
     }
 
-    public void removeStudent(NsUser nsUser) {
+    public void cancel(NsUser nsUser) {
         students.removeEntity(nsUser);
     }
 

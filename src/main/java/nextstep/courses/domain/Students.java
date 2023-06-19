@@ -13,7 +13,6 @@ public class Students {
     private static final String NOT_INFO = "등록된 학생 정보가 없습니다.";
     private static final String NULL_EXCEPTION = "학생 데이터가 잘못 생성되었습니다.";
     private Map<Long, NsUser> studentsMap = new HashMap<>();
-
     private List<NsUser> users = new ArrayList<>();
 
     public Students() {
@@ -28,7 +27,7 @@ public class Students {
                 .collect(Collectors.toMap(NsUser::getId, Function.identity(), (pre, post) -> pre));
     }
 
-    public void putEntity(NsUser nsUser) {
+    public void enroll(NsUser nsUser) {
         if (studentsMap.size() > MAX_STUDENTS) {
             throw new IllegalArgumentException(MAX_STUDENT_EXCEPTION);
         }
@@ -57,7 +56,7 @@ public class Students {
     public static Students createStudents(List<NsUser> nsUsers) {
         Students students = new Students();
         nsUsers.stream().forEach(
-                nsUser -> students.putEntity(nsUser)
+                nsUser -> students.enroll(nsUser)
         );
         return students;
     }
