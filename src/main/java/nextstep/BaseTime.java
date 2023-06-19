@@ -16,14 +16,6 @@ public class BaseTime {
     }
 
     @Override
-    public String toString() {
-        return "BaseTime{" +
-                "createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -36,3 +28,4 @@ public class BaseTime {
         return Objects.hash(createdDate, updatedDate);
     }
 }
+
