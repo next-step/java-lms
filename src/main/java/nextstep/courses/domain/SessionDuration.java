@@ -20,7 +20,7 @@ public class SessionDuration {
         this.endedAt = endedAt;
     }
 
-    void checkCourseDuration(LocalDateTime startedAt, LocalDateTime endedAt) {
+    private void checkCourseDuration(LocalDateTime startedAt, LocalDateTime endedAt) {
         if (Objects.isNull(startedAt)) {
             throw new IllegalArgumentException(TYPE_1);
         }
