@@ -7,12 +7,22 @@ import nextstep.users.domain.NsUser;
 public class SessionRegistration {
   private int capacity;
 
-  private SessionStatus status = SessionStatus.READY;
+  private SessionStatus status;
 
-  private Set<NsUser> users = new HashSet<>();
+  private Students students;
 
   public SessionRegistration(int capacity) {
+    this(capacity, SessionStatus.READY, new HashSet<>());
+  }
+
+  public SessionRegistration(int capacity, SessionStatus status, Set<Student> students) {
+    this(capacity, status, new Students(students));
+  }
+
+  public SessionRegistration(int capacity, SessionStatus status, Students students) {
     this.capacity = capacity;
+    this.status = status;
+    this.students = students;
   }
 
   public void recruitStart() {
@@ -23,18 +33,18 @@ public class SessionRegistration {
     this.status = SessionStatus.END;
   }
 
-  public void enrolment(NsUser user) {
-    if (users.size() >= capacity) {
+  public void enrolment(Session session, NsUser user) {
+    if (students.size() > capacity) {
       throw new IllegalStateException("수강인원이 초과되었습니다");
     }
 
-    if (users.contains(user)) {
+    if (students.contains(session, user)) {
       throw new IllegalStateException("이미 수강신청한 사용자입니다");
     }
 
     SessionStatus.isRecruitingOrThrow(status);
 
-    users.add(user);
+    students.add(session, user);
   }
 
   public void validateInit() {
@@ -43,7 +53,24 @@ public class SessionRegistration {
     }
   }
 
-  public Set<NsUser> getUsers() {
-    return this.users;
+  public int getCapacity() {
+    return this.capacity;
+  }
+
+  public SessionStatus getStatus() {
+    return this.status;
+  }
+
+  public Set<Student> getStudents() {
+    return this.students.getStudents();
+  }
+
+  @Override
+  public String toString() {
+    return "SessionRegistration{" +
+        "capacity=" + capacity +
+        ", status=" + status +
+        ", students=" + students +
+        '}';
   }
 }

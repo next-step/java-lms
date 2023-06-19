@@ -21,10 +21,15 @@ public class Session {
   private SessionRegistration sessionRegistration;
 
   public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
-    this(new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity));
+    this(0L, new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity));
   }
 
   public Session(SessionDate sessionDate, SessionBody sessionBody, SessionRegistration sessionRegistration) {
+    this(0L, sessionDate, sessionBody, sessionRegistration);
+  }
+
+  public Session(Long id, SessionDate sessionDate, SessionBody sessionBody, SessionRegistration sessionRegistration) {
+    this.id = id;
     this.sessionDate = sessionDate;
     this.sessionBody = sessionBody;
     this.sessionRegistration = sessionRegistration;
@@ -40,7 +45,7 @@ public class Session {
 
   public void enrollment(NsUser user, LocalDateTime enrollmentDateTime) {
     sessionDate.validateEnrolment(enrollmentDateTime);
-    sessionRegistration.enrolment(user);
+    sessionRegistration.enrolment(this, user);
   }
 
   public void validateInit() {
@@ -48,7 +53,49 @@ public class Session {
     sessionRegistration.validateInit();
   }
 
-  public Set<NsUser> getUsers() {
-    return this.sessionRegistration.getUsers();
+  public Long getId() {
+    return this.id;
+  }
+
+  public LocalDateTime getStartDate() {
+    return this.sessionDate.getStartDateTime();
+  }
+
+  public LocalDateTime getEndDate() {
+    return this.sessionDate.getEndDateTime();
+  }
+
+  public String getTitle() {
+    return this.sessionBody.getTitle();
+  }
+
+  public String getContents() {
+    return this.sessionBody.getContents();
+  }
+
+  public byte[] getCoverImage() {
+    return this.sessionBody.getCoverImage();
+  }
+
+  public int getCapacity() {
+    return this.sessionRegistration.getCapacity();
+  }
+
+  public Set<Student> getStudents() {
+    return this.sessionRegistration.getStudents();
+  }
+
+  public SessionStatus getStatus() {
+    return this.sessionRegistration.getStatus();
+  }
+
+  @Override
+  public String toString() {
+    return "Session{" +
+        "id=" + id +
+        ", sessionDate=" + sessionDate +
+        ", sessionBody=" + sessionBody +
+        ", sessionRegistration=" + sessionRegistration +
+        '}';
   }
 }

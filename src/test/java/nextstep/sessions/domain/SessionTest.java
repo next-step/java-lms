@@ -49,7 +49,14 @@ class SessionTest {
     session.recruitStart();
     session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0));
 
-    assertThat(session.getUsers()).containsExactly(user);
+    Student stu = session.getStudents()
+        .stream().filter(
+            student -> student.getSessionId().equals(session.getId()) && student.getNsUserId()
+                .equals(student.getNsUserId()))
+        .findFirst()
+        .orElseThrow();
+
+    assertThat(stu).isNotNull();
   }
 
   @Test
