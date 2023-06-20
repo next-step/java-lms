@@ -41,7 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
     SessionStatus status = SessionStatus.from(sessionEntity.sessionStatusId);
 
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
-    Students students = hasSessionUser(id) ? getStudents(id) : new Students(new HashSet<>());
+    Students students = hasStudent(id) ? getStudents(id) : new Students(new HashSet<>());
 
     return new Session(
         sessionEntity.id,
@@ -58,15 +58,15 @@ public class JdbcSessionRepository implements SessionRepository {
         session.getContents(), session.getCoverImage(), session.getCapacity(),
         session.getStatus().getOrder(), session.getId());
 
-    updateSessionUsers(session.getStudents());
+    updateStudents(session.getStudents());
   }
 
-  private void updateSessionUsers(Set<Student> students) {
-    String sql = "insert into session_ns_user (session_id, user_id, created_at) values (?, ?, ?)";
+  private void updateStudents(Set<Student> students) {
+    String sql = "insert into student (session_id, user_id, created_at) values (?, ?, ?)";
     LocalDateTime now = LocalDateTime.now();
 
     students
-        .stream().filter(student -> student.getSessionUserId().equals(0L))
+        .stream().filter(student -> student.getId().equals(0L))
         .forEach(student -> jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), now));
   }
 
@@ -84,23 +84,23 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   private Students getStudents(Long sessionId) {
-    String sessionUserSelectSql = "select id, session_id, user_id, created_at, updated_at from session_ns_user where session_id = ?";
+    String sql = "select id, session_id, user_id, created_at, updated_at from student where session_id = ?";
 
-    List<SessionUserEntity> sessionUserEntities = jdbcTemplate.query(sessionUserSelectSql,
-        (rs, rowNum) -> new SessionUserEntity(rs.getLong(1), rs.getLong(2), rs.getLong(3),
+    List<StudentEntity> studentEntities = jdbcTemplate.query(sql,
+        (rs, rowNum) -> new StudentEntity(rs.getLong(1), rs.getLong(2), rs.getLong(3),
             toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
         sessionId
     );
 
-    Set<Student> students = sessionUserEntities.stream()
+    Set<Student> students = studentEntities.stream()
         .map(su -> new Student(su.id, su.sessionId, su.userId, su.createdAt, su.updatedAt))
         .collect(Collectors.toSet());
 
     return new Students(students);
   }
 
-  private boolean hasSessionUser(Long sessionId) {
-    String sql = "select count(*) from session_ns_user where session_id = ?";
+  private boolean hasStudent(Long sessionId) {
+    String sql = "select count(*) from student where session_id = ?";
     Integer count = jdbcTemplate.queryForObject(sql, Integer.class, sessionId);
 
     return !count.equals(0);
@@ -114,7 +114,7 @@ public class JdbcSessionRepository implements SessionRepository {
     return timestamp.toLocalDateTime();
   }
 
-  class SessionUserEntity {
+  class StudentEntity {
 
     private Long id;
     private Long sessionId;
@@ -122,7 +122,7 @@ public class JdbcSessionRepository implements SessionRepository {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    SessionUserEntity(Long id, Long sessionId, Long userId, LocalDateTime createdAt,
+    StudentEntity(Long id, Long sessionId, Long userId, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
       this.id = id;
       this.sessionId = sessionId;

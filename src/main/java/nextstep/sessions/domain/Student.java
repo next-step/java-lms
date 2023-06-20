@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import nextstep.users.domain.NsUser;
 
 public class Student {
-  private Long sessionUserId;
+  private Long id;
 
   private Long sessionId;
 
@@ -18,8 +18,8 @@ public class Student {
     this(0L, session.getId(), user.getId(), createdAt, updatedAt);
   }
 
-  public Student(Long sessionUserId, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.sessionUserId = sessionUserId;
+  public Student(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.id = id;
     this.sessionId = sessionId;
     this.nsUserId = nsUserId;
     this.createdAt = createdAt;
@@ -34,8 +34,8 @@ public class Student {
     return this.sessionId.equals(student.getSessionId()) && this.nsUserId.equals(student.getNsUserId());
   }
 
-  public Long getSessionUserId() {
-    return sessionUserId;
+  public Long getId() {
+    return id;
   }
 
   public Long getSessionId() {
@@ -57,7 +57,7 @@ public class Student {
   @Override
   public String toString() {
     return "Student{" +
-        "sessionUserId=" + sessionUserId +
+        "id=" + id +
         ", sessionId=" + sessionId +
         ", nsUserId=" + nsUserId +
         '}';
