@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.Student;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class SessionService {
     NsUser user = nsUserRepository.findByUserId(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-    session.enrollment(user, LocalDateTime.now());
+    session.enrollment(new Student(session, user, LocalDateTime.now(), null));
   }
 
   // start / end각각으로 분리하는 게 아니라 엔티티에 대해 update할 내용을 dto로 받아서

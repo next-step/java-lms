@@ -2,7 +2,6 @@ package nextstep.sessions.domain;
 
 import java.util.HashSet;
 import java.util.Set;
-import nextstep.users.domain.NsUser;
 
 public class SessionRegistration {
   private int capacity;
@@ -33,18 +32,18 @@ public class SessionRegistration {
     this.status = SessionStatus.END;
   }
 
-  public void enrolment(Session session, NsUser user) {
-    if (students.size() > capacity) {
+  public void enrolment(Student student) {
+    if (students.overFull(capacity)) {
       throw new IllegalStateException("수강인원이 초과되었습니다");
     }
 
-    if (students.contains(session, user)) {
+    if (students.contains(student)) {
       throw new IllegalStateException("이미 수강신청한 사용자입니다");
     }
 
     SessionStatus.isRecruitingOrThrow(status);
 
-    students.add(session, user);
+    students.add(student);
   }
 
   public void validateInit() {

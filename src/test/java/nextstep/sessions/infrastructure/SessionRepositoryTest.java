@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.Student;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
@@ -75,13 +76,14 @@ class SessionRepositoryTest {
     savedSession.recruitStart();
     // data.sql에 의존되어 있음. 괜찮은가?
     NsUser user = userRepository.findByUserId("javajigi").orElseThrow();
-    savedSession.enrollment(user, LocalDateTime.of(2023, 6, 2, 13, 0));
+    Student student = new Student(savedSession, user, LocalDateTime.of(2023, 6, 2, 13, 0), null);
+    savedSession.enrollment(student);
     sessionRepository.update(savedSession);
 
     Session updatedSession = sessionRepository.findById(1L);
     assertThat(updatedSession.getTitle()).isEqualTo(session.getTitle());
     assertThat(updatedSession.getStudents().stream()
-        .filter(student -> student.isTaking(updatedSession, user))
+        .filter(s -> s.isTaking(student))
         .findAny()
         .isPresent()).isTrue();
   }

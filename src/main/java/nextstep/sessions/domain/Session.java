@@ -43,9 +43,9 @@ public class Session {
     this.sessionRegistration.recruitEnd();
   }
 
-  public void enrollment(NsUser user, LocalDateTime enrollmentDateTime) {
-    sessionDate.validateEnrolment(enrollmentDateTime);
-    sessionRegistration.enrolment(this, user);
+  public void enrollment(Student student) {
+    sessionDate.validateEnrolment(student.getCreatedAt());
+    sessionRegistration.enrolment(student);
   }
 
   public void validateInit() {

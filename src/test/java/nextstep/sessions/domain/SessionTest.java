@@ -47,12 +47,13 @@ class SessionTest {
   @Test
   void enrolment_성공() {
     session.recruitStart();
-    session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0));
+    Student student = new Student(session, user, LocalDateTime.of(2023, 6, 2, 12, 0), null);
+    session.enrollment(student);
 
     Student stu = session.getStudents()
         .stream().filter(
-            student -> student.getSessionId().equals(session.getId()) && student.getNsUserId()
-                .equals(student.getNsUserId()))
+            s -> s.getSessionId().equals(session.getId()) && s.getNsUserId()
+                .equals(s.getNsUserId()))
         .findFirst()
         .orElseThrow();
 
@@ -61,13 +62,15 @@ class SessionTest {
 
   @Test
   void enrollment_실패_모집중_아님() {
-    assertThatThrownBy(() -> session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0)))
+    Student student = new Student(session, user, LocalDateTime.of(2023, 6, 2, 12, 0), null);
+
+    assertThatThrownBy(() -> session.enrollment(student))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("모집중인 강의만 신청 가능합니다");
 
     session.recruitEnd();
 
-    assertThatThrownBy(() -> session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0)))
+    assertThatThrownBy(() -> session.enrollment(student))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("모집중인 강의만 신청 가능합니다");
   }
@@ -75,10 +78,12 @@ class SessionTest {
   @Test
   void enrollment_실패_모집인원_초과() {
     session.recruitStart();
-    session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 1));
+    Student student1 = new Student(session, user, LocalDateTime.of(2023, 6, 2, 12, 0), null);
+    Student student2 = new Student(session, NsUserTest.SANJIGI, LocalDateTime.of(2023, 6, 2, 12, 1), null);
+    session.enrollment(student1);
 
     assertThatThrownBy(
-        () -> session.enrollment(NsUserTest.SANJIGI, LocalDateTime.of(2023, 6, 2, 12, 1)))
+        () -> session.enrollment(student2))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("수강인원이 초과되었습니다");
   }
@@ -90,19 +95,23 @@ class SessionTest {
         .build();
 
     session.recruitStart();
-    session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0));
+    Student student = new Student(session, user, LocalDateTime.of(2023, 6, 2, 12, 0), null);
+    session.enrollment(student);
 
-    assertThatThrownBy(() -> session.enrollment(user, LocalDateTime.of(2023, 6, 2, 12, 0)))
+    assertThatThrownBy(() -> session.enrollment(student))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("이미 수강신청한 사용자입니다");
   }
 
   @Test
   void enrollment_실패_수강신청_기간_아님() {
-    assertThatThrownBy(() -> session.enrollment(user, LocalDateTime.of(2023, 6, 2, 11, 59)))
+    Student student1 = new Student(session, user, LocalDateTime.of(2023, 6, 2, 11, 59), null);
+    Student student2 = new Student(session, user, LocalDateTime.of(2023, 6, 3, 12, 00), null);
+
+    assertThatThrownBy(() -> session.enrollment(student1))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("수강신청 기간이 아닙니다");
-    assertThatThrownBy(() -> session.enrollment(user, LocalDateTime.of(2023, 6, 3, 12, 00)))
+    assertThatThrownBy(() -> session.enrollment(student2))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("수강신청 기간이 아닙니다");
   }

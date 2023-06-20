@@ -1,21 +1,22 @@
 package nextstep.sessions.domain;
 
-import java.time.LocalDateTime;
 import java.util.Set;
-import nextstep.users.domain.NsUser;
 
 public class Students {
 
   private Set<Student> students;
 
-
   public Students(Set<Student> students) {
     this.students = students;
   }
 
-  public boolean contains(Session session, NsUser user) {
+  public boolean overFull(int capacity) {
+    return students.size() >= capacity;
+  }
+
+  public boolean contains(Student student) {
     return students.stream()
-        .filter(student -> student.isTaking(session, user))
+        .filter(s -> s.isTaking(student))
         .findAny()
         .isPresent();
   }
@@ -24,8 +25,8 @@ public class Students {
     return this.students;
   }
 
-  public void add(Session session, NsUser user) {
-    this.students.add(new Student(session, user, LocalDateTime.now(), null));
+  public void add(Student student) {
+    this.students.add(student);
   }
 
   public int size() {

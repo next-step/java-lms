@@ -30,6 +30,10 @@ public class Student {
     return this.sessionId.equals(session.getId()) && this.nsUserId.equals(nsUser.getId());
   }
 
+  public boolean isTaking(Student student) {
+    return this.sessionId.equals(student.getSessionId()) && this.nsUserId.equals(student.getNsUserId());
+  }
+
   public Long getSessionUserId() {
     return sessionUserId;
   }
@@ -40,6 +44,14 @@ public class Student {
 
   public Long getNsUserId() {
     return this.nsUserId;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
   }
 
   @Override
