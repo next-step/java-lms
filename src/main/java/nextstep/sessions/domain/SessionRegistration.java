@@ -15,10 +15,6 @@ public class SessionRegistration {
     this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()));
   }
 
-  public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Set<Student> students) {
-    this(capacity, recruitingStatus, progressStatus, new Students(students));
-  }
-
   public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Students students) {
     this.capacity = capacity;
     this.recruitingStatus = recruitingStatus;
@@ -41,6 +37,10 @@ public class SessionRegistration {
 
     if (students.contains(student)) {
       throw new IllegalStateException("이미 수강신청한 사용자입니다");
+    }
+
+    if (!progressStatus.isApplicable()) {
+      throw new IllegalStateException("강의가 종료된 상태입니다");
     }
 
     SessionRecruitingStatus.isRecruitingOrThrow(recruitingStatus);

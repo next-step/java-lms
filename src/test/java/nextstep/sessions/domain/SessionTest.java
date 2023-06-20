@@ -115,4 +115,17 @@ class SessionTest {
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("수강신청 기간이 아닙니다");
   }
+
+  @Test
+  void enrollment_실패_강의_종료() {
+    session = aSession()
+        .withSessionProgressStatus(SessionProgressStatus.END)
+        .withSessionRecruitingStatus(SessionRecruitingStatus.RECRUITING)
+        .build();
+    Student student = new Student(session, user, LocalDateTime.of(2023, 6, 2, 12, 0), null);
+
+    assertThatThrownBy(() -> session.enrollment(student))
+        .isInstanceOf(IllegalStateException.class)
+            .hasMessage("강의가 종료된 상태입니다");
+  }
 }

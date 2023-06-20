@@ -20,4 +20,8 @@ public enum SessionProgressStatus {
   public Long getOrder() {
     return this.order;
   }
+
+  public boolean isApplicable() {
+    return END != this;
+  }
 }
