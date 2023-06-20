@@ -9,9 +9,10 @@ import java.util.stream.Collectors;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionBody;
 import nextstep.sessions.domain.SessionDate;
+import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
-import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.Students;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -28,17 +29,18 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public int save(Session session) {
-    String sessionInsertSql = "insert into session (start_date_time, end_date_time, title, contents, cover_image, capacity, session_status_id) values (?, ?, ?, ?, ?, ?, ?)";
+    String sessionInsertSql = "insert into session (start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
     return jdbcTemplate.update(sessionInsertSql, session.getStartDate(), session.getEndDate(),
         session.getTitle(), session.getContents(), session.getCoverImage(), session.getCapacity(),
-        session.getStatus().getOrder());
+        session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder());
   }
 
   @Override
   public Session findById(Long id) {
     SessionEntity sessionEntity = getSessionEntity(id);
-    SessionStatus status = SessionStatus.from(sessionEntity.sessionStatusId);
+    SessionRecruitingStatus recruitingStatus = SessionRecruitingStatus.from(sessionEntity.sessionRecruitingStatusId);
+    SessionProgressStatus progressStatus = SessionProgressStatus.from(sessionEntity.sessionProgressStatusId);
 
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
     Students students = hasStudent(id) ? getStudents(id) : new Students(new HashSet<>());
@@ -47,16 +49,16 @@ public class JdbcSessionRepository implements SessionRepository {
         sessionEntity.id,
         new SessionDate(sessionEntity.startDateTime, sessionEntity.endDateTime),
         new SessionBody(sessionEntity.title, sessionEntity.contents, sessionEntity.coverImage),
-        new SessionRegistration(sessionEntity.capacity, status, students)
+        new SessionRegistration(sessionEntity.capacity, recruitingStatus, progressStatus, students)
     );
   }
 
   @Override
   public void update(Session session) {
-    String sql = "update session set start_date_time = ?, end_date_time = ?, title = ?, contents = ?, cover_image = ?, capacity = ?, session_status_id = ? where id = ?";
+    String sql = "update session set start_date_time = ?, end_date_time = ?, title = ?, contents = ?, cover_image = ?, capacity = ?, session_recruiting_status_id = ?, session_progress_status_id = ? where id = ?";
     jdbcTemplate.update(sql, session.getStartDate(), session.getEndDate(), session.getTitle(),
         session.getContents(), session.getCoverImage(), session.getCapacity(),
-        session.getStatus().getOrder(), session.getId());
+        session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder(), session.getId());
 
     updateStudents(session.getStudents());
   }
@@ -71,12 +73,12 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   private SessionEntity getSessionEntity(Long id) {
-    String sql = "select id, start_date_time, end_date_time, title, contents, cover_image, capacity, session_status_id from session where id = ?";
+    String sql = "select id, start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id from session where id = ?";
     SessionEntity sessionEntity = jdbcTemplate.queryForObject(sql,
         (rs, rowNum) -> new SessionEntity(rs.getLong(1),
             toLocalDateTime(rs.getTimestamp(2)), toLocalDateTime(rs.getTimestamp(3)),
             rs.getString(4), rs.getString(5), rs.getBytes(6),
-            rs.getInt(7), rs.getLong(8)),
+            rs.getInt(7), rs.getLong(8), rs.getLong(9)),
         id
     );
 
@@ -141,10 +143,11 @@ public class JdbcSessionRepository implements SessionRepository {
     private String contents;
     private byte[] coverImage;
     private int capacity;
-    private Long sessionStatusId;
+    private Long sessionRecruitingStatusId;
+    private Long sessionProgressStatusId;
 
     public SessionEntity(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime, String title,
-        String contents, byte[] coverImage, int capacity, Long sessionStatusId) {
+        String contents, byte[] coverImage, int capacity, Long sessionRecruitingStatusId, Long sessionProgressStatusId) {
       this.id = id;
       this.startDateTime = startDateTime;
       this.endDateTime = endDateTime;
@@ -152,7 +155,8 @@ public class JdbcSessionRepository implements SessionRepository {
       this.contents = contents;
       this.coverImage = coverImage;
       this.capacity = capacity;
-      this.sessionStatusId = sessionStatusId;
+      this.sessionRecruitingStatusId = sessionRecruitingStatusId;
+      this.sessionProgressStatusId = sessionProgressStatusId;
     }
   }
 }

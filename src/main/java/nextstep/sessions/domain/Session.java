@@ -2,7 +2,6 @@ package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import nextstep.users.domain.NsUser;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다
@@ -85,8 +84,12 @@ public class Session {
     return this.sessionRegistration.getStudents();
   }
 
-  public SessionStatus getStatus() {
-    return this.sessionRegistration.getStatus();
+  public SessionRecruitingStatus getRecruitingStatus() {
+    return this.sessionRegistration.getRecruitingStatus();
+  }
+
+  public SessionProgressStatus getProgressStatus() {
+    return this.sessionRegistration.getProgressStatus();
   }
 
   @Override

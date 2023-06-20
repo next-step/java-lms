@@ -4,7 +4,7 @@ step4 변경 요구사항
 - as-is : SessionStatus(Ready / Recruiting / End)  
 - to-be
   - SessionProgressStatus(Ready / Progress / End)
-  - RecruitingStatus(Nothing / Recruiting)
+  - SessionRecruitingStatus(Nothing / Recruiting)
 
 2. 수강 승인 기능
 - 사용자의 어떠한 선발된 그룹인지 상태를 추가한다 NsUserGroup (Wootecho / Wootecampro)

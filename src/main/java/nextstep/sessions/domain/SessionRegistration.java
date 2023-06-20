@@ -6,30 +6,32 @@ import java.util.Set;
 public class SessionRegistration {
   private int capacity;
 
-  private SessionStatus status;
+  private SessionRecruitingStatus recruitingStatus;
+  private SessionProgressStatus progressStatus;
 
   private Students students;
 
   public SessionRegistration(int capacity) {
-    this(capacity, SessionStatus.READY, new HashSet<>());
+    this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()));
   }
 
-  public SessionRegistration(int capacity, SessionStatus status, Set<Student> students) {
-    this(capacity, status, new Students(students));
+  public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Set<Student> students) {
+    this(capacity, recruitingStatus, progressStatus, new Students(students));
   }
 
-  public SessionRegistration(int capacity, SessionStatus status, Students students) {
+  public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Students students) {
     this.capacity = capacity;
-    this.status = status;
+    this.recruitingStatus = recruitingStatus;
+    this.progressStatus = progressStatus;
     this.students = students;
   }
 
   public void recruitStart() {
-    this.status = SessionStatus.RECRUITING;
+    this.recruitingStatus = SessionRecruitingStatus.RECRUITING;
   }
 
   public void recruitEnd() {
-    this.status = SessionStatus.END;
+    this.recruitingStatus = SessionRecruitingStatus.NOTHING;
   }
 
   public void enrolment(Student student) {
@@ -41,7 +43,7 @@ public class SessionRegistration {
       throw new IllegalStateException("이미 수강신청한 사용자입니다");
     }
 
-    SessionStatus.isRecruitingOrThrow(status);
+    SessionRecruitingStatus.isRecruitingOrThrow(recruitingStatus);
 
     students.add(student);
   }
@@ -56,8 +58,12 @@ public class SessionRegistration {
     return this.capacity;
   }
 
-  public SessionStatus getStatus() {
-    return this.status;
+  public SessionRecruitingStatus getRecruitingStatus() {
+    return this.recruitingStatus;
+  }
+
+  public SessionProgressStatus getProgressStatus() {
+    return this.progressStatus;
   }
 
   public Set<Student> getStudents() {
@@ -68,7 +74,7 @@ public class SessionRegistration {
   public String toString() {
     return "SessionRegistration{" +
         "capacity=" + capacity +
-        ", status=" + status +
+        ", status=" + recruitingStatus +
         ", students=" + students +
         '}';
   }
