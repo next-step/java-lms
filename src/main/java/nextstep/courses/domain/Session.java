@@ -35,8 +35,8 @@ public class Session {
         this.registration = new Registration(session.registration, students);
     }
 
-    public Long add(NsUser user) {
-        return registration.register(user);
+    public Student add(NsUser user) {
+        return new Student(this.id, registration.register(user));
     }
 
     public String getTitle() {

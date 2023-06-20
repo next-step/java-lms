@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository("studentsRepository")
-public class JdbcStudentsRepository implements StudentsRepository {
+public class JdbcStudentRepository implements StudentRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcStudentsRepository(JdbcOperations jdbcTemplate) {
+    public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public int save(Long sessionId, Long userId) {
-        String sql = "insert into students (session_id, user_id) values(?, ?)";
-        return jdbcTemplate.update(sql, sessionId, userId);
+    public int save(Student student) {
+        String sql = "insert into student (session_id, user_id) values(?, ?)";
+        return jdbcTemplate.update(sql, student.getSessionId(), student.getUserId());
     }
 
     @Override
     public List<NsUser> findAllBySessionId(Long id) {
-        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join students on ns_user.id = students.user_id where students.session_id = ?";
+        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join student on ns_user.id = student.user_id where student.session_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),

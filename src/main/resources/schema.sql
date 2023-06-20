@@ -20,7 +20,7 @@ create table session (
     primary key (id)
 );
 
-create table students (
+create table student (
     session_id bigint not null,
     user_id bigint not null
 );

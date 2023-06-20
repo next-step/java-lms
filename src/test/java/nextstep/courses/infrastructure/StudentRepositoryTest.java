@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.StudentsRepository;
+import nextstep.courses.domain.Student;
+import nextstep.courses.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,22 +15,22 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class StudentsRepositoryTest {
+public class StudentRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private StudentsRepository studentsRepository;
+    private StudentRepository studentRepository;
 
     @BeforeEach
     void setUp() {
-        studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
+        studentRepository = new JdbcStudentRepository(jdbcTemplate);
     }
 
     @Test
     void crud() {
-        int count = studentsRepository.save(1L, NsUserTest.JAVAJIGI.getId());
+        int count = studentRepository.save(new Student(1L, NsUserTest.JAVAJIGI.getId()));
         assertThat(count).isEqualTo(1);
-        List<NsUser> savedStudents = studentsRepository.findAllBySessionId(1L);
+        List<NsUser> savedStudents = studentRepository.findAllBySessionId(1L);
         assertThat(savedStudents.stream().anyMatch(nsUser -> nsUser.matchUser(NsUserTest.JAVAJIGI))).isTrue();
     }
 }
