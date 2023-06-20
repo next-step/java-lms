@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public class Registration {
     private RegistrationStatus registrationStatus;
 
@@ -15,13 +17,18 @@ public class Registration {
         this.capacity = capacity;
     }
 
-    public void register(NsUser user) {
+    public Registration(Registration registration, List<NsUser> students) {
+        this.registrationStatus = registration.registrationStatus;
+        this.students = new Students(students);
+    }
+
+    public Long register(NsUser user) {
         if (this.registrationStatus != RegistrationStatus.OPEN) {
             throw new IllegalStateException("강의 모집 중이 아닙니다.");
         }
         if (this.students.isGreaterEqualThan(this.capacity)) {
             throw new IllegalStateException("강의가 현재 만석입니다.");
         }
-        this.students.add(user);
+        return this.students.add(user);
     }
 }

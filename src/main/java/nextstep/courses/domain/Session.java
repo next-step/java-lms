@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public class Session {
     private Long id;
 
@@ -24,7 +26,20 @@ public class Session {
         this.registration = registration;
     }
 
-    public void add(NsUser user) {
-        registration.register(user);
+    public Session(Session session, List<NsUser> students) {
+        this.id = session.id;
+        this.title = session.title;
+        this.period = session.period;
+        this.coverImageUrl = session.coverImageUrl;
+        this.isFree = session.isFree;
+        this.registration = new Registration(session.registration, students);
+    }
+
+    public Student add(NsUser user) {
+        return new Student(this.id, registration.register(user));
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
