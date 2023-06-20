@@ -19,7 +19,7 @@ public class SessionValidator {
 
     public SessionValidator(Long maxCount, String sessionStateString) {
         this.maxCount = maxCount;
-        this.sessionState = sessionState;
+        this.sessionState = SessionState.convert(sessionStateString);
         nsUsers = new HashSet<>();
     }
 

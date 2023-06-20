@@ -6,7 +6,7 @@ public enum SessionType {
 
     FREE("FREE"), PAY("PAY");
 
-    private String code;
+    private final String code;
 
     SessionType(String code) {
         this.code = code;

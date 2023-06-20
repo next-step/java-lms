@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum SessionState {
     PREPARING("PREPARING"), RECRUITING("RECRUITING"), CLOSE("CLOSE");
 
-    private String code;
+    private final String code;
 
     SessionState(String code) {
         this.code = code;

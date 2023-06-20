@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class Session {
 
-    private Long id;
-    private Long courseId;
+    private final Long id;
+    private final Long courseId;
     private String title;
     private Period period;
     private String imageUrl;
@@ -19,7 +19,7 @@ public class Session {
     private SessionValidator sessionValidator;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private Long creatorId;
+    private final Long creatorId;
 
     private final Set<Student> students = new HashSet<>();
 
