@@ -14,6 +14,7 @@ import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.Student;
+import nextstep.sessions.domain.StudentStatus;
 import nextstep.sessions.domain.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -64,12 +65,12 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   private void updateStudents(Set<Student> students) {
-    String sql = "insert into student (session_id, user_id, created_at) values (?, ?, ?)";
+    String sql = "insert into student (session_id, user_id, student_status_id, created_at) values (?, ?, ?, ?)";
     LocalDateTime now = LocalDateTime.now();
 
     students
         .stream().filter(student -> student.getId().equals(0L))
-        .forEach(student -> jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), now));
+        .forEach(student -> jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), student.getStudentStatus().getOrder(), now));
   }
 
   private SessionEntity getSessionEntity(Long id) {
@@ -86,16 +87,16 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   private Students getStudents(Long sessionId) {
-    String sql = "select id, session_id, user_id, created_at, updated_at from student where session_id = ?";
+    String sql = "select id, session_id, user_id, student_status_id, created_at, updated_at from student where session_id = ?";
 
     List<StudentEntity> studentEntities = jdbcTemplate.query(sql,
-        (rs, rowNum) -> new StudentEntity(rs.getLong(1), rs.getLong(2), rs.getLong(3),
-            toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
+        (rs, rowNum) -> new StudentEntity(rs.getLong(1), rs.getLong(2), rs.getLong(3), rs.getLong(4),
+            toLocalDateTime(rs.getTimestamp(5)), toLocalDateTime(rs.getTimestamp(6))),
         sessionId
     );
 
     Set<Student> students = studentEntities.stream()
-        .map(su -> new Student(su.id, su.sessionId, su.userId, su.createdAt, su.updatedAt))
+        .map(su -> new Student(su.id, su.sessionId, su.userId, su.createdAt, su.updatedAt, StudentStatus.from(su.studentStatusId)))
         .collect(Collectors.toSet());
 
     return new Students(students);
@@ -121,14 +122,16 @@ public class JdbcSessionRepository implements SessionRepository {
     private Long id;
     private Long sessionId;
     private Long userId;
+    private Long studentStatusId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    StudentEntity(Long id, Long sessionId, Long userId, LocalDateTime createdAt,
+    StudentEntity(Long id, Long sessionId, Long userId, Long studentStatusId, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
       this.id = id;
       this.sessionId = sessionId;
       this.userId = userId;
+      this.studentStatusId = studentStatusId;
       this.createdAt = createdAt;
       this.updatedAt = updatedAt;
     }

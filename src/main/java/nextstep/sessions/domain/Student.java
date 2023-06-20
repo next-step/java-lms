@@ -14,20 +14,23 @@ public class Student {
 
   private LocalDateTime updatedAt;
 
+  private StudentStatus studentStatus;
+
   public Student(Session session, NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(0L, session.getId(), user.getId(), createdAt, updatedAt);
+    this(0L, session.getId(), user.getId(), createdAt, updatedAt, StudentStatus.WAITING);
   }
 
-  public Student(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public Student(Session session, NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt, StudentStatus studentStatus) {
+    this(0L, session.getId(), user.getId(), createdAt, updatedAt, studentStatus);
+  }
+
+  public Student(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt, StudentStatus studentStatus) {
     this.id = id;
     this.sessionId = sessionId;
     this.nsUserId = nsUserId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-  }
-
-  public boolean isTaking(Session session, NsUser nsUser) {
-    return this.sessionId.equals(session.getId()) && this.nsUserId.equals(nsUser.getId());
+    this.studentStatus = studentStatus;
   }
 
   public boolean isTaking(Student student) {
@@ -44,6 +47,10 @@ public class Student {
 
   public Long getNsUserId() {
     return this.nsUserId;
+  }
+
+  public StudentStatus getStudentStatus() {
+    return this.studentStatus;
   }
 
   public LocalDateTime getCreatedAt() {

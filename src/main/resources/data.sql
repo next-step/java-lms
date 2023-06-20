@@ -15,3 +15,7 @@ INSERT INTO session_recruiting_status (status) VALUES ('END');
 
 INSERT INTO session_progress_status (status) VALUES ('RECRUITING');
 INSERT INTO session_progress_status (status) VALUES ('END');
+
+INSERT INTO student_status (status) VALUES ('WAITING');
+INSERT INTO student_status (status) VALUES ('ACCEPTED');
+INSERT INTO student_status (status) VALUES ('REJECTED');
