@@ -16,15 +16,15 @@ public class QuestionTest {
     public static Answer answer2;
 
     @BeforeEach
-    void init(){
+    void init() {
         answer1 = new Answer(NsUserTest.JAVAJIGI, QUESTION_1, "Answers Contents1");
         answer2 = new Answer(NsUserTest.SANJIGI, QUESTION_2, "Answers Contents1");
     }
 
     @AfterEach
-    void after(){
-       QUESTION_1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-       QUESTION_2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    void after() {
+        QUESTION_1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        QUESTION_2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
     }
 
     @Test

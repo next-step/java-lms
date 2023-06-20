@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 public class SessionsTest {
@@ -21,12 +22,12 @@ public class SessionsTest {
 
     @Test
     void addSession() {
-      List<Session> sessionList = new ArrayList<>(List.of(SESSION1));
-      Sessions sessions = new Sessions(sessionList);
+        List<Session> sessionList = new ArrayList<>(List.of(SESSION1));
+        Sessions sessions = new Sessions(sessionList);
 
-      sessions.add(SESSION2);
+        sessions.add(SESSION2);
 
-      assertThat(sessions.getSession())
-              .isEqualTo(List.of(SESSION1, SESSION2));
+        assertThat(sessions.getSession())
+                .isEqualTo(List.of(SESSION1, SESSION2));
     }
 }
