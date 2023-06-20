@@ -38,8 +38,8 @@ public class SessionValidator {
         nsUsers.add(nsUser);
     }
 
-    public SessionState sessionState() {
-        return sessionState;
+    public boolean isRecuritable() {
+        return sessionState.isRecruitable();
     }
 
     public Long maxCount() {

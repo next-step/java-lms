@@ -4,9 +4,6 @@ import lombok.Builder;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class Session {
 
@@ -21,7 +18,7 @@ public class Session {
     private LocalDateTime updateAt;
     private final Long creatorId;
 
-    private final Set<Student> students = new HashSet<>();
+    private final Students students;
 
     @Builder
     public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator) {
@@ -36,25 +33,32 @@ public class Session {
         this.sessionType = sessionType;
         this.createAt = LocalDateTime.now();
         this.creatorId = creatorId;
+        this.students = new Students();
     }
 
     public void apply(NsUser loginUser) {
         sessionValidator.addPerson(loginUser);
     }
 
-
     public void add(Student student) {
-        if (isFull()) {
+        if (isFull(students.size())) {
             throw new IllegalArgumentException("강의 수강 신청 인원이 다 찼습니다!");
         }
-        if (!sessionValidator.sessionState().isRecruitable()) {
+        if (!sessionValidator.isRecuritable()) {
             throw new IllegalArgumentException("모집 중일때만 신청 가능합니다!");
         }
         students.add(student);
     }
 
-    private boolean isFull() {
-        return this.sessionValidator.maxCount() <= this.students.size();
+    public Student enroll(Long studentId){
+        Student student = new Student(studentId, id);
+        this.add(student);
+
+        return student;
+    }
+
+    private boolean isFull(int size) {
+        return this.sessionValidator.maxCount() <= size;
     }
 
     public Long getId() {

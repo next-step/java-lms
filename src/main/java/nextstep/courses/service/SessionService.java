@@ -41,9 +41,9 @@ public class SessionService {
     @Transactional
     public Session registerStudent(Long sessionId, Long studentId) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = studentService.findById(studentId);
+        Student student = session.enroll(studentId);
 
-        session.add(student);
+        studentService.registerStudent(student);
         return session;
     }
 }
