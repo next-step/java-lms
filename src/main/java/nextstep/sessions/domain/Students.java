@@ -11,7 +11,8 @@ public class Students {
   }
 
   public boolean overFull(int capacity) {
-    return students.size() >= capacity;
+    long count = students.stream().filter(student -> !student.isRejected()).count();
+    return count >= capacity;
   }
 
   public boolean contains(Student student) {

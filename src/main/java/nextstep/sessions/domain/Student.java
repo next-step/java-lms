@@ -33,6 +33,10 @@ public class Student {
     return this.sessionId.equals(student.getSessionId()) && this.nsUserId.equals(student.getNsUserId());
   }
 
+  public boolean isRejected() {
+    return this.studentStatus.isRejected();
+  }
+
   public void accept() {
     this.studentStatus = StudentStatus.ACCEPTED;
   }

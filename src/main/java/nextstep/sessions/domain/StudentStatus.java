@@ -20,4 +20,8 @@ public enum StudentStatus {
   public Long getOrder() {
     return this.order;
   }
+
+  public boolean isRejected() {
+    return this == REJECTED;
+  }
 }
