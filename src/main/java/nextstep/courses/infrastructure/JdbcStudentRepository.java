@@ -20,13 +20,13 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into student (session_id, user_id) values(?, ?)";
-        return jdbcTemplate.update(sql, student.getSessionId(), student.getUserId());
+        String sql = "insert into student (session_id, user_id, approval_status) values(?, ?, ?)";
+        return jdbcTemplate.update(sql, student.getSessionId(), student.getUserId(), student.getApprovalStatus().toString());
     }
 
     @Override
-    public List<NsUser> findAllBySessionId(Long id) {
-        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join student on ns_user.id = student.user_id where student.session_id = ?";
+    public List<NsUser> findAllBySessionIdAndApprovalStatus(Long id, ApprovalStatus approvalStatus) {
+        String sql = "select ns_user.id, ns_user.user_id, ns_user.password, ns_user.name, ns_user.email, ns_user.created_at, ns_user.updated_at from ns_user join student on ns_user.id = student.user_id where student.session_id = ? and student.approval_status = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),
@@ -36,7 +36,7 @@ public class JdbcStudentRepository implements StudentRepository {
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7))
         );
-        return jdbcTemplate.query(sql, rowMapper, id);
+        return jdbcTemplate.query(sql, rowMapper, id, approvalStatus.toString());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.ApprovalStatus;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
@@ -28,9 +29,9 @@ public class StudentRepositoryTest {
 
     @Test
     void crud() {
-        int count = studentRepository.save(new Student(1L, NsUserTest.JAVAJIGI.getId()));
+        int count = studentRepository.save(new Student(1L, NsUserTest.JAVAJIGI.getId(), ApprovalStatus.WAIT));
         assertThat(count).isEqualTo(1);
-        List<NsUser> savedStudents = studentRepository.findAllBySessionId(1L);
+        List<NsUser> savedStudents = studentRepository.findAllBySessionIdAndApprovalStatus(1L, ApprovalStatus.WAIT);
         assertThat(savedStudents.stream().anyMatch(nsUser -> nsUser.matchUser(NsUserTest.JAVAJIGI))).isTrue();
     }
 }

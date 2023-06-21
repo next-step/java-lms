@@ -7,5 +7,5 @@ import java.util.List;
 public interface StudentRepository {
     int save(Student student);
 
-    List<NsUser> findAllBySessionId(Long id);
+    List<NsUser> findAllBySessionIdAndApprovalStatus(Long id, ApprovalStatus approvalStatus);
 }

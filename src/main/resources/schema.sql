@@ -23,7 +23,8 @@ create table session (
 
 create table student (
     session_id bigint not null,
-    user_id bigint not null
+    user_id bigint not null,
+    approval_status varchar(20) not null
 );
 
 create table ns_user (

@@ -21,14 +21,22 @@ public class Students {
     }
 
     public Long add(NsUser user) {
-        if (this.contains(user)) {
-            throw new IllegalStateException("이미 강의를 신청하였습니다.");
+        if (this.students.contains(user)) {
+            throw new IllegalStateException("이미 처리되었습니다.");
         }
         this.students.add(user);
         return user.getId();
     }
 
-    private boolean contains(NsUser user) {
+    public Long remove(NsUser user) {
+        if (!this.students.contains(user)) {
+            throw new IllegalStateException("승인 대기 상태가 아닙니다.");
+        }
+        this.students.remove(user);
+        return user.getId();
+    }
+
+    public boolean contains(NsUser user) {
         return this.students.stream()
                 .anyMatch(currentUser -> currentUser.matchUser(user));
     }

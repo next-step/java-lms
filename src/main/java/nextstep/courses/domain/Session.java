@@ -29,18 +29,26 @@ public class Session {
         this.registration = registration;
     }
 
-    public Session(Session session, List<NsUser> students) {
+    public Session(Session session, List<NsUser> approvedStudents, List<NsUser> waitStudents) {
         this.id = session.id;
         this.title = session.title;
         this.period = session.period;
         this.coverImageUrl = session.coverImageUrl;
         this.isFree = session.isFree;
         this.sessionStatus = session.sessionStatus;
-        this.registration = new Registration(session.registration, students);
+        this.registration = new Registration(session.registration, approvedStudents, waitStudents, session.registration.getCapacity());
     }
 
-    public Student add(NsUser user) {
-        return new Student(this.id, registration.register(user));
+    public Student register(NsUser user) {
+        return new Student(this.id, registration.register(user), ApprovalStatus.WAIT);
+    }
+
+    public Student approve(NsUser user) {
+        return new Student(this.id, registration.approve(user), ApprovalStatus.APPROVED);
+    }
+
+    public Student disapprove(NsUser user) {
+        return new Student(this.id, registration.disapprove(user), ApprovalStatus.DISAPPROVED);
     }
 
     public String getTitle() {

@@ -31,7 +31,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionStatus.valueOf(rs.getString(7)),
                 new Registration(
                         RegistrationStatus.valueOf(rs.getString(8)),
-                        new Students(),
                         rs.getLong(9)
                 )
         );
