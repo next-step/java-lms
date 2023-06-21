@@ -1,8 +1,10 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserGroup;
+import nextstep.users.domain.NsUserNsUserGroup;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다
@@ -20,8 +22,8 @@ public class Session {
 
   private SessionRegistration sessionRegistration;
 
-  public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
-    this(0L, new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity));
+  public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity, NsUserGroup nsUserGroup) {
+    this(0L, new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity, nsUserGroup));
   }
 
   public Session(SessionDate sessionDate, SessionBody sessionBody, SessionRegistration sessionRegistration) {
@@ -43,14 +45,18 @@ public class Session {
     this.sessionRegistration.recruitEnd();
   }
 
-  public void enrollment(NsUser user, LocalDateTime enrollmentDateTime) {
-    sessionDate.validateEnrolment(enrollmentDateTime);
-    sessionRegistration.enrolment(this, user);
+  public void enrollment(Student student) {
+    sessionDate.validateEnrolment(student.getCreatedAt());
+    sessionRegistration.enrolment(student);
   }
 
   public void validateInit() {
     sessionDate.validateInit();
     sessionRegistration.validateInit();
+  }
+
+  public void accept(List<NsUserNsUserGroup> nsUserNsUserGroups, Student student) {
+    sessionRegistration.accept(nsUserNsUserGroups, student);
   }
 
   public Long getId() {
@@ -85,8 +91,16 @@ public class Session {
     return this.sessionRegistration.getStudents();
   }
 
-  public SessionStatus getStatus() {
-    return this.sessionRegistration.getStatus();
+  public SessionRecruitingStatus getRecruitingStatus() {
+    return this.sessionRegistration.getRecruitingStatus();
+  }
+
+  public SessionProgressStatus getProgressStatus() {
+    return this.sessionRegistration.getProgressStatus();
+  }
+
+  public NsUserGroup getNsUserGroup() {
+    return this.sessionRegistration.getNsUserGroup();
   }
 
   @Override

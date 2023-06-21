@@ -4,10 +4,13 @@ import static nextstep.sessions.testFixture.SessionBuilder.aSession;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
-import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.SessionRecruitingStatus;
+import nextstep.sessions.domain.Student;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserNsUserGroup;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +51,7 @@ class SessionRepositoryTest {
   // TODO: autoIncrement라서 rollback시 pk가 날아가는 것 때문에 테스트하기 어려움
   // -> PK에 종속적이지 않게 테스트할 수 없을까?
   @Test
-  void sessionStatusUpdateAndFind() {
+  void sessionRecruitingStatusUpdateAndFind() {
     Session session = aSession().build();
     int count = sessionRepository.save(session);
     assertThat(count).isEqualTo(1);
@@ -59,7 +62,7 @@ class SessionRepositoryTest {
     savedSession.recruitStart();
     sessionRepository.update(savedSession);
     Session updatedSession = sessionRepository.findById(3L);
-    assertThat(updatedSession.getStatus()).isEqualTo(SessionStatus.RECRUITING);
+    assertThat(updatedSession.getRecruitingStatus()).isEqualTo(SessionRecruitingStatus.RECRUITING);
   }
 
 
@@ -75,13 +78,14 @@ class SessionRepositoryTest {
     savedSession.recruitStart();
     // data.sql에 의존되어 있음. 괜찮은가?
     NsUser user = userRepository.findByUserId("javajigi").orElseThrow();
-    savedSession.enrollment(user, LocalDateTime.of(2023, 6, 2, 13, 0));
+    Student student = new Student(savedSession, user, LocalDateTime.of(2023, 6, 2, 13, 0), null);
+    savedSession.enrollment(student);
     sessionRepository.update(savedSession);
 
     Session updatedSession = sessionRepository.findById(1L);
     assertThat(updatedSession.getTitle()).isEqualTo(session.getTitle());
     assertThat(updatedSession.getStudents().stream()
-        .filter(student -> student.isTaking(updatedSession, user))
+        .filter(s -> s.isTaking(student))
         .findAny()
         .isPresent()).isTrue();
   }
