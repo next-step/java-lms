@@ -14,6 +14,7 @@ create table session (
     end_date timestamp not null,
     cover_image_url varchar(255) not null,
     is_free boolean not null,
+    session_status varchar(20) not null,
     registration_status varchar(20) not null,
     capacity bigint not null,
     course_id bigint not null,

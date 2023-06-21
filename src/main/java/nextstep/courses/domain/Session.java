@@ -15,14 +15,17 @@ public class Session {
 
     private Boolean isFree;
 
+    private SessionStatus sessionStatus;
+
     private Registration registration;
 
-    public Session(Long id, String title, Period period, String coverImageUrl, Boolean isFree, Registration registration) {
+    public Session(Long id, String title, Period period, String coverImageUrl, Boolean isFree, SessionStatus sessionStatus, Registration registration) {
         this.id = id;
         this.title = title;
         this.period = period;
         this.coverImageUrl = coverImageUrl;
         this.isFree = isFree;
+        this.sessionStatus = sessionStatus;
         this.registration = registration;
     }
 
@@ -32,6 +35,7 @@ public class Session {
         this.period = session.period;
         this.coverImageUrl = session.coverImageUrl;
         this.isFree = session.isFree;
+        this.sessionStatus = session.sessionStatus;
         this.registration = new Registration(session.registration, students);
     }
 
