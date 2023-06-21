@@ -7,9 +7,9 @@ step4 변경 요구사항
   - SessionRecruitingStatus(Nothing / Recruiting)
 
 2. 수강 승인 기능
-- 사용자의 어떠한 선발된 그룹인지 상태를 추가한다 NsUserGroup (Wootecho / Wootecampro)
+- 사용자의 어떠한 선발된 그룹인지 상태를 추가한다 NsUserGroup (WTC / WCP)
 - SessionUser에 상태를 추가한다 StudentStatus (Waiting / Accepted / Rejected)
-- 수강 신청한 사용자가 강사가 등록해 놓은 수강 상태와 같다면 승인 요청을 보낸다
+- 수강 신청한 사용자의 그룹중 강사가 등록해 놓은 수강 상태와 같은 것이 존재한다면 승인 요청을 보낸다
   - 승인하면 StudentStatus 상태가 Accepted로 변경
 - 승인 취소하면 StudentStatus가 Rejected로 변경된다
 

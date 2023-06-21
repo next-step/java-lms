@@ -1,11 +1,16 @@
 package nextstep.sessions.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.annotation.Resource;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.Student;
+import nextstep.sessions.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserGroup;
+import nextstep.users.domain.NsUserNsUserGroup;
+import nextstep.users.domain.NsUserNsUserGroupRepository;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +24,15 @@ public class SessionService {
   @Resource(name = "userRepository")
   private UserRepository nsUserRepository;
 
+  @Resource(name = "studentRepository")
+  private StudentRepository studentRepository;
+
+  @Resource(name = "nsUserNsUserGroupRepository")
+  private NsUserNsUserGroupRepository nsUserNsUserGroup;
+
   @Transactional
-  public void save(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
-    Session session = new Session(title, contents, startDateTime, endDateTime, coverImage, capacity);
+  public void save(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity, NsUserGroup nsUserGroup) {
+    Session session = new Session(title, contents, startDateTime, endDateTime, coverImage, capacity, nsUserGroup);
     sessionRepository.save(session);
   }
 
@@ -32,6 +43,27 @@ public class SessionService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
     session.enrollment(new Student(session, user, LocalDateTime.now(), null));
+  }
+
+  @Transactional
+  public void accept(Long studentId) {
+    Student student = studentRepository.findById(studentId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청자입니다."));
+    Session session = sessionRepository.findById(student.getSessionId());
+    List<NsUserNsUserGroup> nsUserNsUserGroups = nsUserNsUserGroup.findByNsUserId(student.getNsUserId());
+
+    session.accept(nsUserNsUserGroups, student);
+
+    studentRepository.update(student);
+  }
+
+  @Transactional
+  public void reject(Long studentId) {
+    Student student = studentRepository.findById(studentId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청자입니다."));
+    student.reject();
+
+    studentRepository.update(student);
   }
 
   // start / end각각으로 분리하는 게 아니라 엔티티에 대해 update할 내용을 dto로 받아서

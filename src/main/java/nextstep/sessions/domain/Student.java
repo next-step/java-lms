@@ -17,24 +17,28 @@ public class Student {
   private StudentStatus studentStatus;
 
   public Student(Session session, NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this(0L, session.getId(), user.getId(), createdAt, updatedAt, StudentStatus.WAITING);
+    this(0L, session.getId(), user.getId(), StudentStatus.WAITING, createdAt, updatedAt);
   }
 
-  public Student(Session session, NsUser user, LocalDateTime createdAt, LocalDateTime updatedAt, StudentStatus studentStatus) {
-    this(0L, session.getId(), user.getId(), createdAt, updatedAt, studentStatus);
-  }
-
-  public Student(Long id, Long sessionId, Long nsUserId, LocalDateTime createdAt, LocalDateTime updatedAt, StudentStatus studentStatus) {
+  public Student(Long id, Long sessionId, Long nsUserId, StudentStatus studentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.id = id;
     this.sessionId = sessionId;
     this.nsUserId = nsUserId;
+    this.studentStatus = studentStatus;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.studentStatus = studentStatus;
   }
 
   public boolean isTaking(Student student) {
     return this.sessionId.equals(student.getSessionId()) && this.nsUserId.equals(student.getNsUserId());
+  }
+
+  public void accept() {
+    this.studentStatus = StudentStatus.ACCEPTED;
+  }
+
+  public void reject() {
+    this.studentStatus = StudentStatus.REJECTED;
   }
 
   public Long getId() {

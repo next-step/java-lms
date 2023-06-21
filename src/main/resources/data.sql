@@ -19,3 +19,6 @@ INSERT INTO session_progress_status (status) VALUES ('END');
 INSERT INTO student_status (status) VALUES ('WAITING');
 INSERT INTO student_status (status) VALUES ('ACCEPTED');
 INSERT INTO student_status (status) VALUES ('REJECTED');
+
+INSERT INTO ns_user_group (name) VALUES ('우아한테크코스'); --우아한테크코스;
+INSERT INTO ns_user_group (name) VALUES ('우아한테크캠프 Pro'); --우아한테크캠프Pro;
