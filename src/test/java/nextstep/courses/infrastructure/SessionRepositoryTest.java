@@ -37,7 +37,7 @@ class SessionRepositoryTest {
 
     @Test
     void save() {
-        Session session = new Session(10L, "무료강의입니다.", "test.jpg", LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(15), 1L);
+        Session session = new Session(20L, "무료강의입니다.", "test.jpg", LocalDateTime.now().plusDays(8), LocalDateTime.now().plusDays(15), 1L);
         int save = sessionRepository.save(session);
         assertThat(save).isEqualTo(1);
     }
@@ -46,12 +46,6 @@ class SessionRepositoryTest {
     void findById() {
         Session sessionBySessionId = sessionRepository.findById(1L);
         assertThat(sessionBySessionId.getId()).isEqualTo(1L);
-    }
-
-    @Test
-    void findByCourseId() {
-        List<Session> sessionBySessionId = sessionRepository.findByCourseId(1L);
-        assertThat(sessionBySessionId.size()).isEqualTo(2);
     }
 
     @Test

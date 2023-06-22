@@ -25,8 +25,8 @@ class SessionServiceTest {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private static final LocalDateTime start = LocalDateTime.of(2023, 6, 28,0,0);;
-    private static final LocalDateTime end = LocalDateTime.of(2023, 7, 5,0,0);
+    private static final LocalDateTime start = LocalDateTime.of(2023, 7, 1,0,0);;
+    private static final LocalDateTime end = LocalDateTime.of(2023, 7, 10,0,0);
 
     @BeforeEach
     public void setup() {

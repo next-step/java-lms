@@ -50,21 +50,6 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public List<Session> findByCourseId(Long courseId) {
-        String sql = "select id, title, free, created_at, started_at, ended_at, imgFile, status, course_id from session where course_id = ?";
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getBoolean(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)),
-                toLocalDateTime(rs.getTimestamp(6)),
-                rs.getString(7),
-                SessionType.valueOf(rs.getString(8)));
-        return jdbcTemplate.query(sql, rowMapper, courseId);
-    }
-
-    @Override
     public int update(Session session) {
         String sql = "update session set title=?, free=?, status=? where id = ?";
         return jdbcTemplate.update(sql, session.getTitle(), session.getFree(), session.getStatus().toString(), session.getId());
@@ -85,7 +70,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public List<Session> findBySessionIds(List<Long> sessionIds) {
-        String sql = "select id, title, free, created_at, started_at, ended_at, imgFile, status, course_id from session where id IN (:values)";
+        String sql = "select id, title, free, created_at, started_at, ended_at, imgFile, status from session where id IN (:values)";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource("values", sessionIds);
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(

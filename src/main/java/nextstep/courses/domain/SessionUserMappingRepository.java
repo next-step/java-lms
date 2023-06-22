@@ -9,6 +9,7 @@ public interface SessionUserMappingRepository {
     SessionUser findById(Long id);
 
     List<SessionUser> findBySessionId(Long sessionId);
+    List<SessionUser> findByUserId(Long userId);
 
     int update(SessionUser sessionUserMapping);
     Optional<List<SessionUser>> findBySessionIds(List<Long> sessionIds);
@@ -16,5 +17,7 @@ public interface SessionUserMappingRepository {
     int deleteById(Long id);
 
     int deleteBySessionId(Long sessionId);
+
+    int deleteByUserId(Long userId);
 
 }

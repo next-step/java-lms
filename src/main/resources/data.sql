@@ -12,6 +12,7 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 insert into session (id, title, free, created_at, imgFile, started_at, ended_at, status) values(1,'테스트중입니다', true, now(), 'test.jpg', DATEADD('DAY', 8, CURRENT_TIMESTAMP()), DATEADD('DAY', 14, CURRENT_TIMESTAMP()), 'RECRUITING');
 insert into session (id, title, free, created_at, imgFile, started_at, ended_at, status) values(2,'테스트중입니다', true, now(), 'test.jpg', DATEADD('DAY', 8, CURRENT_TIMESTAMP()), DATEADD('DAY', 14, CURRENT_TIMESTAMP()), 'RECRUITING');
+insert into session (id, title, free, created_at, imgFile, started_at, ended_at, status) values(10,'테스트중입니다', true, now(), 'test.jpg', DATEADD('DAY', 8, CURRENT_TIMESTAMP()), DATEADD('DAY', 14, CURRENT_TIMESTAMP()), 'RECRUITING');
 
 
 insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(1, 1, 1, now());
@@ -19,6 +20,7 @@ insert into session_user_mapping (id, session_id, ns_user_id, created_at) values
 insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(3, 1, 3, now());
 insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(4, 1, 4, now());
 insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(5, 1, 5, now());
+insert into session_user_mapping (id, session_id, ns_user_id, created_at) values(6, 10, 2, now());
 
 
 

@@ -50,9 +50,20 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     }
 
     @Override
-    public int update(SessionUser sessionUserMapping) {
+    public List<SessionUser> findByUserId(Long userId) {
+        String sql = "select id, session_id, ns_user_id, created_at from session_user_mapping where ns_user_id = ?";
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
+                rs.getLong(1),
+                rs.getLong(2),
+                rs.getLong(3),
+                toLocalDateTime(rs.getTimestamp(4)));
+        return jdbcTemplate.query(sql, rowMapper, userId);
+    }
+
+    @Override
+    public int update(SessionUser sessionUser) {
         String sql = "update session_user_mapping set session_id=?, ns_user_id=?, updated_at=? where id = ?";
-        return jdbcTemplate.update(sql, sessionUserMapping.getSessionId(), sessionUserMapping.getNsUserId(), LocalDateTime.now(), sessionUserMapping.getId());
+        return jdbcTemplate.update(sql, sessionUser.getSessionId(), sessionUser.getNsUserId(), LocalDateTime.now(), sessionUser.getId());
     }
 
     @Override
@@ -65,6 +76,12 @@ public class JdbcSessionUserMappingRepository implements SessionUserMappingRepos
     public int deleteBySessionId(Long sessionId) {
         String sql = "delete from session_user_mapping where session_id = ?";
         return jdbcTemplate.update(sql, sessionId);
+    }
+
+    @Override
+    public int deleteByUserId(Long userId) {
+        String sql = "delete from session_user_mapping where ns_user_id = ?";
+        return jdbcTemplate.update(sql, userId);
     }
 
     @Override

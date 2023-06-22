@@ -32,7 +32,7 @@ class JdbcSessionUserMappingRepositoryTest {
 
     @Test
     void save() {
-        SessionUser sessionUserMapping = new SessionUser(6L , 1L, 3L, LocalDateTime.now());
+        SessionUser sessionUserMapping = new SessionUser(55L, 1L, 3L, LocalDateTime.now());
         int save = jdbcSessionUserMappingRepository.save(sessionUserMapping);
         assertThat(save).isEqualTo(1);
     }
