@@ -7,16 +7,10 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.JdbcUserRepository;
 
 
-public class RegisterService {
+public class ApproveService {
     private JdbcUserRepository userRepository;
     private JdbcStudentRepository studentsRepository;
     private SessionService sessionService;
 
-    public void register(Long nsUserId, Long sessionId) {
-        NsUser user = userRepository.findById(nsUserId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 userId"));
-        Session session = sessionService.findSessionWithStudentsById(sessionId);
-        Student student = session.register(user);
-        studentsRepository.save(student);
-    }
+
 }

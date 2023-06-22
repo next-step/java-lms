@@ -37,9 +37,29 @@ class StudentsTest {
     }
 
     @Test
-    public void add_AlreadyRegistered() {
+    public void add_Duplicate() {
         Students students = new Students();
         students.add(NsUserTest.JAVAJIGI);
         assertThatIllegalStateException().isThrownBy(() -> students.add(NsUserTest.JAVAJIGI));
+    }
+
+    @Test
+    public void remove() {
+        Students students = new Students();
+        students.add(NsUserTest.JAVAJIGI);
+        students.add(NsUserTest.SANJIGI);
+
+        assertThat(students.isGreaterEqualThan(2L)).isTrue();
+
+        students.remove(NsUserTest.SANJIGI);
+
+        assertThat(students.isGreaterEqualThan(2L)).isFalse();
+    }
+
+    @Test
+    public void remove_NotFound() {
+        Students students = new Students();
+        students.add(NsUserTest.JAVAJIGI);
+        assertThatIllegalStateException().isThrownBy(() -> students.remove(NsUserTest.SANJIGI));
     }
 }

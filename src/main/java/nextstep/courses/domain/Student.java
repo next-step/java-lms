@@ -6,9 +6,12 @@ public class Student {
 
     private Long userId;
 
-    public Student(Long sessionId, Long userId) {
+    private ApprovalStatus approvalStatus;
+
+    public Student(Long sessionId, Long userId, ApprovalStatus approvalStatus) {
         this.sessionId = sessionId;
         this.userId = userId;
+        this.approvalStatus = approvalStatus;
     }
 
     public Long getSessionId() {
@@ -17,5 +20,9 @@ public class Student {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public ApprovalStatus getApprovalStatus() {
+        return approvalStatus;
     }
 }
