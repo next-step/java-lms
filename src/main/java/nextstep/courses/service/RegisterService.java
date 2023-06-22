@@ -12,8 +12,8 @@ public class RegisterService {
     private JdbcStudentRepository studentsRepository;
     private SessionService sessionService;
 
-    public void register(String userStringId, Long sessionId) {
-        NsUser user = userRepository.findByUserId(userStringId)
+    public void register(Long nsUserId, Long sessionId) {
+        NsUser user = userRepository.findById(nsUserId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 userId"));
         Session session = sessionService.findSessionWithStudentsById(sessionId);
         Student student = session.register(user);

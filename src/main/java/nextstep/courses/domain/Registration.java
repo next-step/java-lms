@@ -14,16 +14,20 @@ public class Registration {
     private Long capacity;
 
     public Registration(RegistrationStatus registrationStatus, Long capacity) {
-        this.registrationStatus = registrationStatus;
-        this.approvedStudents = new Students();
-        this.waitStudents = new Students();
-        this.capacity = capacity;
+        this(registrationStatus, new Students(), new Students(), capacity);
     }
 
     public Registration(Registration registration, List<NsUser> approvedStudents, List<NsUser> waitStudents, Long capacity) {
         this.registrationStatus = registration.registrationStatus;
         this.approvedStudents = new Students(approvedStudents);
         this.waitStudents = new Students(waitStudents);
+        this.capacity = capacity;
+    }
+
+    public Registration(RegistrationStatus registrationStatus, Students approvedStudents, Students waitStudents, Long capacity) {
+        this.registrationStatus = registrationStatus;
+        this.approvedStudents = approvedStudents;
+        this.waitStudents = waitStudents;
         this.capacity = capacity;
     }
 
