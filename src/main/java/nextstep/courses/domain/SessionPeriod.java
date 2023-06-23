@@ -1,30 +1,39 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SessionPeriod {
 
-    private LocalDateTime createAt;
-    private LocalDateTime closeAt;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
 
-    public SessionPeriod(LocalDateTime createAt, LocalDateTime closeAt) {
-        validateInterval(createAt, closeAt);
-        this.createAt = createAt;
-        this.closeAt = closeAt;
-    }
-
-    private void validateInterval(LocalDateTime createAt, LocalDateTime closeAt) {
-        if (createAt.isAfter(closeAt)) {
-            throw new IllegalArgumentException("강의 시작일과 마감일을 잘못 입력하였습니다.");
+    public SessionPeriod(LocalDateTime startedAt, LocalDateTime endedAt) {
+        if (startedAt.isAfter(endedAt)) {
+            throw new IllegalArgumentException("시작일은 종료일 이전이어야 합니다.");
         }
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getStartedAt() {
+        return startedAt;
     }
 
-    public LocalDateTime getCloseAt() {
-        return closeAt;
+    public LocalDateTime getEndedAt() {
+        return endedAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionPeriod that = (SessionPeriod) o;
+        return Objects.equals(startedAt, that.startedAt) && Objects.equals(endedAt, that.endedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startedAt, endedAt);
+    }
 }

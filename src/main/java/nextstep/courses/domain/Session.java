@@ -7,86 +7,80 @@ import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class Session {
 
     private Long id;
-    private final SessionInfo sessionInfo;
+
+    private SessionStatus sessionStatus;
     private final SessionRegistration sessionRegistration;
     private final SessionPeriod sessionPeriod;
+    private final String sessionCoverImage;
+    private final SessionCostType sessionCostType;
 
-    public Session(Long courseId, Long ownerId, String title, String coverImageInfo,
-                   SessionType sessionType, SessionStatus sessionStatus,
-                   LocalDateTime createdAt, LocalDateTime closedAt, Long maxNumOfStudent) {
-
-        this(new SessionInfo(courseId, ownerId, title, coverImageInfo, sessionType),
-                new SessionRegistration(sessionStatus, maxNumOfStudent),
-                new SessionPeriod(createdAt, closedAt));
-    }
-
-    public Session(SessionInfo sessionInfo, SessionRegistration sessionRegistration,
-                   SessionPeriod sessionPeriod){
-        this.sessionInfo = sessionInfo;
+    public Session(Long id, SessionStatus sessionStatus, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, String sessionCoverImage, SessionCostType sessionCostType) {
+        this.id = id;
+        this.sessionStatus = sessionStatus;
         this.sessionRegistration = sessionRegistration;
         this.sessionPeriod = sessionPeriod;
-    }
-
-    public Student register(NsUser nsUser) {
-        Student student = new Student(nsUser.getId(), this.id);
-        sessionRegistration.enroll(student);
-        return student;
-    }
-
-    public Long totalStudentNum() {
-        return sessionRegistration.totalStudentNum();
-    }
-
-    public SessionInfo getSessionInfo() {
-        return sessionInfo;
+        this.sessionCoverImage = sessionCoverImage;
+        this.sessionCostType = sessionCostType;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getCourseId() {
-        return sessionInfo.getCourseId();
+    public LocalDateTime startedAt() {
+        return this.sessionPeriod.getStartedAt();
     }
 
-    public Long getOwnerId() {
-        return sessionInfo.getOwnerId();
+    public LocalDateTime endedAt() {
+        return this.sessionPeriod.getEndedAt();
     }
 
-    public String getTitle() {
-        return sessionInfo.getTitle();
+    public Set<Student> getUsers() {
+        return sessionRegistration.getStudents();
     }
 
-    public String getCoverImageInfo() {
-        return sessionInfo.getCoverImageInfo();
+    public String getSessionCoverImage() {
+        return sessionCoverImage;
     }
 
-    public SessionType getSessionType() {
-        return sessionInfo.getSessionType();
+    public SessionCostType getSessionCostType() {
+        return this.sessionCostType;
     }
 
-    public SessionStatus getStatus() {
-        return sessionRegistration.getStatus();
-    }
-
-    public Long getTotalStudentNum() {
-        return sessionRegistration.totalStudentNum();
-    }
-
-    public LocalDateTime getCreateAt() {
-        return sessionPeriod.getCreateAt();
-    }
-
-    public LocalDateTime getCloseAt() {
-        return sessionPeriod.getCloseAt();
+    public SessionStatus getSessionStatus() {
+        return this.sessionStatus;
     }
 
     public SessionRecruitmentStatus getRecruitmentStatus() {
         return sessionRegistration.getSessionRecruitmentStatus();
     }
 
+    public int getMaxUserCount() {
+        return sessionRegistration.getMaxUserCount();
+    }
+
+    public Student register(NsUser nsUser, Set<Student> students) {
+        validateSessionStatus();
+        Student student = new Student(nsUser.getId(), this.id);
+        sessionRegistration.enroll(student, students);
+        return student;
+    }
+
+    private void validateSessionStatus() {
+        if (this.sessionStatus.isNotProgressing()) {
+            throw new IllegalArgumentException("해당 강의는 진행중이 아닙니다.");
+        }
+    }
+
+    public Session migrationStatus() {
+        if (sessionRegistration.getSessionRecruitmentStatus().isRecruiting()) {
+            return new Session(this.id, SessionStatus.PROGRESSING, this.sessionRegistration, this.sessionPeriod, this.sessionCoverImage, this.sessionCostType);
+        }
+        return this;
+    }
 }
