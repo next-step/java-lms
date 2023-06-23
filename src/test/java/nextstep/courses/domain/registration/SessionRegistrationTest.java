@@ -1,14 +1,15 @@
 package nextstep.courses.domain.registration;
 
-import nextstep.courses.domain.AlreadyEnrollmentException;
-import nextstep.courses.domain.exception.CannotEnrollException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import static org.assertj.core.api.Assertions.*;
+import static nextstep.Fixtures.aSessionRegistrationBuilder;
+import static nextstep.Fixtures.aStudentsBuilder;
+import static nextstep.courses.domain.registration.SessionRegistrationMother.aSessionRegistration;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class SessionRegistrationTest {
 
