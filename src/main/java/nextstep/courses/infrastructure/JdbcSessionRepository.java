@@ -1,69 +1,77 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionRegistration;
 import nextstep.courses.domain.registration.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
-    private final JdbcOperations jdbcTemplate;
+    private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcOperations) {
-        this.jdbcTemplate = jdbcOperations;
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public int save(Session session) {
-        String sql = "insert into session(course_id, owner_id, title, image_url," +
-                " charge_type, status_type, created_at, closed_at, capacity)" +
-                " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public long save(Session session) {
+        String sql = "insert into session (status, max_user_count, started_at, ended_at, cover_image, cost_type, recruitment_status)" +
+                " values(?, ?, ?, ?, ?, ?, ?)";
 
-        return jdbcTemplate.update(
-                sql,
-                session.getCourseId(),
-                session.getOwnerId(),
-                session.getTitle(),
-                session.getCoverImageInfo(),
-                session.getSessionType().toString(),
-                session.getStatus().toString(),
-                session.getCreateAt(),
-                session.getCloseAt(),
-                session.getTotalStudentNum()
-        );
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, session.getSessionStatus().name());
+            ps.setInt(2, session.getMaxUserCount());
+            ps.setTimestamp(3, Timestamp.valueOf(session.startedAt()));
+            ps.setTimestamp(4, Timestamp.valueOf(session.endedAt()));
+            ps.setString(5, session.getSessionCoverImage());
+            ps.setString(6, session.getSessionCostType().name());
+            ps.setString(7, session.getRecruitmentStatus().name());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Session findById(Long id) {
-        String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, " +
-                " created_at, closed_at, capacity" +
-                " from session" +
-                " where id = ?";
+    public Session findById(Long sessionId) {
+        String sql = "select id, status, max_user_count, started_at, ended_at, cover_image, cost_type, recruitment_status " +
+                "from session " +
+                "where id = ? ";
 
-        return jdbcTemplate.queryForObject(sql, generateRowMapper(), id);
+        RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
+                rs.getLong(1),
+                SessionStatus.valueOf(rs.getString(2)),
+                new SessionRegistration(SessionRecruitmentStatus.valueOf(rs.getString(8)),
+                        rs.getInt(3)),
+                new SessionPeriod(toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
+                rs.getString(6),
+                SessionCostType.valueOf(rs.getString(7))
+        ));
+
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
     }
 
     @Override
-    public List<Session> findByCourseId(Long courseId) {
-        String sql = "select course_id, owner_id, title, image_url, charge_type, status_type, created_at" +
-                ", closed_at, capacity" +
-                " from Session" +
-                " where course_id = ?";
-
-        return jdbcTemplate.query(sql, generateRowMapper(), courseId);
+    public int updateSessionStatus(Session session) {
+        String sql = "update session set status = ? where id = ? ";
+        return jdbcTemplate.update(sql, session.getSessionStatus().name(), session.getId());
     }
 
-    private RowMapper<Session> generateRowMapper() {
-        return (rs, rowNum) -> new Session(
-                        new SessionInfo(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4),
-                        SessionType.find(rs.getString(5))),
-                        new SessionRegistration(SessionStatus.findByName(rs.getString(6)), rs.getLong(9)),
-                        new SessionPeriod(rs.getTimestamp(7).toLocalDateTime(), rs.getTimestamp(8).toLocalDateTime())
-                        );
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        return timestamp.toLocalDateTime();
     }
 }
