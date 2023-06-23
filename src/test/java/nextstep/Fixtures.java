@@ -1,9 +1,12 @@
 package nextstep;
 
 import nextstep.courses.domain.SessionBuilder;
+import nextstep.courses.domain.SessionCostType;
 import nextstep.courses.domain.SessionPeriod;
 import nextstep.courses.domain.registration.SessionRecruitmentStatus;
+import nextstep.courses.domain.registration.SessionRegistrationBuilder;
 import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.StudentsBuilder;
 
 import java.time.LocalDateTime;
 
