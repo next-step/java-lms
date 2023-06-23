@@ -15,13 +15,13 @@ class SessionTest {
 
     public static final Session SESSION1 = sessionBuilder.id(1L)
             .sessionType(SessionType.PAY)
-            .sessionValidator(new SessionValidator(3L, SessionState.RECRUITING))
+            .sessionValidator(new SessionValidator(SessionState.RECRUITING))
             .title("JPA와 함께")
             .build();
 
     public static final Session SESSION2 = sessionBuilder.id(2L)
             .sessionType(SessionType.FREE)
-            .sessionValidator(new SessionValidator(3L, SessionState.CLOSE))
+            .sessionValidator(new SessionValidator(SessionState.CLOSE))
             .title("마이바티스와 함께..")
             .build();
 

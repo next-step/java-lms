@@ -34,9 +34,10 @@ public class SessionRepositoryTest {
                 .title("강의1")
                 .period(new Period(LocalDateTime.now().plusHours(2)))
                 .imageUrl("http://image.com")
-                .sessionValidator(new SessionValidator(1L, SessionState.PREPARING))
+                .sessionValidator(new SessionValidator(SessionState.PREPARING))
                 .sessionType(SessionType.PAY)
                 .creatorId(1L)
+                .students(new Students())
                 .build();
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
