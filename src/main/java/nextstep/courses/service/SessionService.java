@@ -3,13 +3,12 @@ package nextstep.courses.service;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.StudentRepository;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Transactional

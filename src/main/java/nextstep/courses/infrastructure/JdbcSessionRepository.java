@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.enrollment.SessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -62,8 +62,8 @@ public class JdbcSessionRepository implements SessionRepository {
         return (rs, rowNum) -> new Session(
                         new SessionInfo(rs.getLong(1), rs.getLong(2), rs.getString(3), rs.getString(4),
                         SessionType.find(rs.getString(5))),
-                        new SessionEnrollment(SessionStatus.findByName(rs.getString(6)), rs.getLong(9)),
-                        new SessionTimeLine(rs.getTimestamp(7).toLocalDateTime(), rs.getTimestamp(8).toLocalDateTime())
+                        new SessionRegistration(SessionStatus.findByName(rs.getString(6)), rs.getLong(9)),
+                        new SessionPeriod(rs.getTimestamp(7).toLocalDateTime(), rs.getTimestamp(8).toLocalDateTime())
                         );
     }
 }

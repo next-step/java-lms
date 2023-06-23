@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.SessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionRecruitmentStatus;
-import nextstep.courses.domain.enrollment.SessionStatus;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
+import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -12,33 +12,33 @@ public class Session {
 
     private Long id;
     private final SessionInfo sessionInfo;
-    private final SessionEnrollment sessionEnrollment;
-    private final SessionTimeLine sessionTimeLine;
+    private final SessionRegistration sessionRegistration;
+    private final SessionPeriod sessionPeriod;
 
     public Session(Long courseId, Long ownerId, String title, String coverImageInfo,
                    SessionType sessionType, SessionStatus sessionStatus,
                    LocalDateTime createdAt, LocalDateTime closedAt, Long maxNumOfStudent) {
 
         this(new SessionInfo(courseId, ownerId, title, coverImageInfo, sessionType),
-                new SessionEnrollment(sessionStatus, maxNumOfStudent),
-                new SessionTimeLine(createdAt, closedAt));
+                new SessionRegistration(sessionStatus, maxNumOfStudent),
+                new SessionPeriod(createdAt, closedAt));
     }
 
-    public Session(SessionInfo sessionInfo, SessionEnrollment sessionEnrollment,
-                   SessionTimeLine sessionTimeLine){
+    public Session(SessionInfo sessionInfo, SessionRegistration sessionRegistration,
+                   SessionPeriod sessionPeriod){
         this.sessionInfo = sessionInfo;
-        this.sessionEnrollment = sessionEnrollment;
-        this.sessionTimeLine = sessionTimeLine;
+        this.sessionRegistration = sessionRegistration;
+        this.sessionPeriod = sessionPeriod;
     }
 
     public Student register(NsUser nsUser) {
         Student student = new Student(nsUser.getId(), this.id);
-        sessionEnrollment.enroll(student);
+        sessionRegistration.enroll(student);
         return student;
     }
 
     public Long totalStudentNum() {
-        return sessionEnrollment.totalStudentNum();
+        return sessionRegistration.totalStudentNum();
     }
 
     public SessionInfo getSessionInfo() {
@@ -70,23 +70,23 @@ public class Session {
     }
 
     public SessionStatus getStatus() {
-        return sessionEnrollment.getStatus();
+        return sessionRegistration.getStatus();
     }
 
     public Long getTotalStudentNum() {
-        return sessionEnrollment.totalStudentNum();
+        return sessionRegistration.totalStudentNum();
     }
 
     public LocalDateTime getCreateAt() {
-        return sessionTimeLine.getCreateAt();
+        return sessionPeriod.getCreateAt();
     }
 
     public LocalDateTime getCloseAt() {
-        return sessionTimeLine.getCloseAt();
+        return sessionPeriod.getCloseAt();
     }
 
     public SessionRecruitmentStatus getRecruitmentStatus() {
-        return sessionEnrollment.getSessionRecruitmentStatus();
+        return sessionRegistration.getSessionRecruitmentStatus();
     }
 
 }

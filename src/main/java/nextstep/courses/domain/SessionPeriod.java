@@ -2,12 +2,12 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class SessionTimeLine {
+public class SessionPeriod {
 
     private LocalDateTime createAt;
     private LocalDateTime closeAt;
 
-    public SessionTimeLine(LocalDateTime createAt, LocalDateTime closeAt) {
+    public SessionPeriod(LocalDateTime createAt, LocalDateTime closeAt) {
         validateInterval(createAt, closeAt);
         this.createAt = createAt;
         this.closeAt = closeAt;

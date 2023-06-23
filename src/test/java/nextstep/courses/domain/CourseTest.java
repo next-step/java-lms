@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.SessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,12 +25,12 @@ public class CourseTest {
         Long courseId = 1L;
         SessionInfo sessionInfo = new SessionInfo(courseId, 1L, "title1", "coverImageInfo", SessionType.FREE);
         SessionStatus sessionStatus = SessionStatus.OPENED;
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(sessionStatus, 3L);
-        SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
+        SessionRegistration sessionRegistration = new SessionRegistration(sessionStatus, 3L);
+        SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
 
-        session1 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
-        session2 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
-        session3 = new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
+        session1 = new Session(sessionInfo, sessionRegistration, sessionPeriod);
+        session2 = new Session(sessionInfo, sessionRegistration, sessionPeriod);
+        session3 = new Session(sessionInfo, sessionRegistration, sessionPeriod);
 
         course.addSession(session1);
         course.addSession(session2);

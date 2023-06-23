@@ -1,4 +1,4 @@
-package nextstep.courses.domain.enrollment;
+package nextstep.courses.domain.registration;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.StudentRepository;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.Student;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

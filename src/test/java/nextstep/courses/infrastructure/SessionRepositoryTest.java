@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.enrollment.SessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,8 +43,8 @@ public class SessionRepositoryTest {
 
     private Session createSession() {
         SessionInfo sessionInfo = new SessionInfo(1L, 0L, "title1", "img", SessionType.FREE);
-        SessionTimeLine sessionTimeLine = new SessionTimeLine(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(SessionStatus.OPENED, 10L);
-        return new Session(sessionInfo, sessionEnrollment, sessionTimeLine);
+        SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
+        SessionRegistration sessionRegistration = new SessionRegistration(SessionStatus.OPENED, 10L);
+        return new Session(sessionInfo, sessionRegistration, sessionPeriod);
     }
 }

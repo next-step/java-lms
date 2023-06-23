@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.Student;
 
 import java.util.List;
 

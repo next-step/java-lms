@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-public class SessionTimeLineTest {
+public class SessionPeriodTest {
 
     @Test
     @DisplayName("강의 시작일이 강의 종료일보다 빠르면 예외를 던지지 않는다.")
@@ -22,7 +22,7 @@ public class SessionTimeLineTest {
         LocalDateTime closeAt = createAt.minusDays(5);
 
         Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> new SessionTimeLine(createAt, closeAt));
+                .isThrownBy(() -> new SessionPeriod(createAt, closeAt));
     }
 
 }
