@@ -4,20 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Students {
-
-    private final int capacity;
+    private final int maxUserCount;
     private final Set<Student> students;
 
     public Students() {
         this(0);
     }
 
-    public Students(int capacity) {
-        this(capacity, new HashSet<>());
+    public Students(int maxUserCount) {
+        this(maxUserCount, new HashSet<>());
     }
 
-    public Students(int capacity, Set<Student> students) {
-        this.capacity = capacity;
+    public Students(int maxUserCount, Set<Student> students) {
+        this.maxUserCount = maxUserCount;
         this.students = students;
     }
 
@@ -28,7 +27,7 @@ public class Students {
     }
 
     private void validateUserCount() {
-        if (this.capacity <= students.size()) {
+        if (this.maxUserCount <= students.size()) {
             throw new IllegalArgumentException("최대 수강 인원을 초과했습니다.");
         }
     }
@@ -43,7 +42,7 @@ public class Students {
         return this.students;
     }
 
-    public int getCapacity() {
-        return this.capacity;
+    public int getMaxUserCount() {
+        return this.maxUserCount;
     }
 }
