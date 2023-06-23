@@ -21,7 +21,7 @@ public class Session {
     private final Students students;
 
     @Builder
-    public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator) {
+    public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator, Students students) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
@@ -33,7 +33,7 @@ public class Session {
         this.sessionType = sessionType;
         this.createAt = LocalDateTime.now();
         this.creatorId = creatorId;
-        this.students = new Students();
+        this.students = students;
     }
 
     public void apply(NsUser loginUser) {
@@ -41,9 +41,6 @@ public class Session {
     }
 
     public void add(Student student) {
-        if (isFull(students.size())) {
-            throw new IllegalArgumentException("강의 수강 신청 인원이 다 찼습니다!");
-        }
         if (!sessionValidator.isRecuritable()) {
             throw new IllegalArgumentException("모집 중일때만 신청 가능합니다!");
         }
@@ -55,10 +52,6 @@ public class Session {
         this.add(student);
 
         return student;
-    }
-
-    private boolean isFull(int size) {
-        return this.sessionValidator.maxCount() <= size;
     }
 
     public Long getId() {
@@ -99,5 +92,9 @@ public class Session {
 
     public SessionValidator sessionValidator() {
         return this.sessionValidator;
+    }
+
+    public int StudentsMaxCount() {
+        return students.maxCount();
     }
 }

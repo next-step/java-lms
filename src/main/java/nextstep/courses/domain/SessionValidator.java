@@ -7,18 +7,15 @@ import nextstep.users.domain.NsUser;
 
 public class SessionValidator {
 
-    private final Long maxCount;
     private final Set<NsUser> nsUsers;
     private SessionState sessionState;
 
-    public SessionValidator(Long maxCount, SessionState sessionState) {
-        this.maxCount = maxCount;
+    public SessionValidator(SessionState sessionState) {
         this.sessionState = sessionState;
         nsUsers = new HashSet<>();
     }
 
-    public SessionValidator(Long maxCount, String sessionStateString) {
-        this.maxCount = maxCount;
+    public SessionValidator(String sessionStateString) {
         this.sessionState = SessionState.convert(sessionStateString);
         nsUsers = new HashSet<>();
     }
@@ -26,10 +23,6 @@ public class SessionValidator {
     public void addPerson(NsUser nsUser) {
         if (!sessionState.isRecruitable()) {
             throw new IllegalArgumentException("해당 강의는 수강신청중이 아닙니다.");
-        }
-
-        if (nsUsers.size() >= maxCount) {
-            throw new IllegalArgumentException("수강신청 정원을 넘었습니다.");
         }
 
         if (nsUsers.contains(nsUser)) {
@@ -40,9 +33,5 @@ public class SessionValidator {
 
     public boolean isRecuritable() {
         return sessionState.isRecruitable();
-    }
-
-    public Long maxCount() {
-        return maxCount;
     }
 }

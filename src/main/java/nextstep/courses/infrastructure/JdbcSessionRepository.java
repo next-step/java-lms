@@ -22,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
     public int save(Session session) {
         String sql = "insert into session (course_id, title, creator_id, created_at, start_date, end_date, image_url, pay_type, session_state, max_count) values(?, ?, ?, ?, ?, ? ,?, ?, ?, ?)";
 
-        return jdbcTemplate.update(sql, session.getCourseId(), session.getTitle(), session.creatorId(), session.createAt(), session.startDate(), session.endDate(), session.imageUrl() ,session.sessionType(), SessionState.PREPARING.name(), session.sessionValidator().maxCount());
+        return jdbcTemplate.update(sql, session.getCourseId(), session.getTitle(), session.creatorId(), session.createAt(), session.startDate(), session.endDate(), session.imageUrl() ,session.sessionType(), SessionState.PREPARING.name(), session.StudentsMaxCount());
     }
 
     @Override
@@ -37,7 +37,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 .period(new Period(toLocalDateTime(rs.getTimestamp(6)), toLocalDateTime(rs.getTimestamp(7))))
                 .imageUrl(rs.getString(8))
                 .sessionType(SessionType.convert(rs.getString(9)))
-                .sessionValidator(new SessionValidator(rs.getLong(10), rs.getString(11)))
+                .students(new Students((int) rs.getLong(10)))
+                .sessionValidator(new SessionValidator( rs.getString(11)))
                 .courseId(rs.getLong(12))
                 .build();
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -58,7 +59,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 .period(new Period(toLocalDateTime(rs.getTimestamp(6)), toLocalDateTime(rs.getTimestamp(7))))
                 .imageUrl(rs.getString(8))
                 .sessionType(SessionType.convert(rs.getString(9)))
-                .sessionValidator(new SessionValidator(rs.getLong(10), rs.getString(11)))
+                .sessionValidator(new SessionValidator(rs.getString(11)))
                 .build();
 
         return jdbcTemplate.query(sql, rowMapper, courseId);
