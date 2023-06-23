@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 import static nextstep.Fixtures.aSessionRegistrationBuilder;
 import static nextstep.Fixtures.aStudentsBuilder;
 import static nextstep.courses.domain.registration.SessionRegistrationMother.aSessionRegistration;
+import static nextstep.courses.domain.registration.StudentMother.aStudent;
+import static nextstep.courses.domain.registration.StudentMother.anotherStudent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 

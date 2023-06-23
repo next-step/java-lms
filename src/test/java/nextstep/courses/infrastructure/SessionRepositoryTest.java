@@ -1,50 +1,73 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
-import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
 import nextstep.courses.domain.registration.SessionStatus;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.time.LocalDateTime;
+import static nextstep.Fixtures.aSession;
+import static nextstep.Fixtures.aSessionRegistrationBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class SessionRepositoryTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private SessionRepository sessionRepository;
+    private Session session;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        session = aSession().build();
     }
 
+    @DisplayName("Session 저장")
     @Test
-    @DisplayName("create 와 read 기능을 올바르게 수행할 수 있다.")
-    void dbTest_Create_Read() {
-        Session session = createSession();
-        int count = sessionRepository.save(session);
-        Assertions.assertThat(count).isEqualTo(1);
-
-        Session savedSession = sessionRepository.findById(1L);
-        Assertions.assertThat(session.getTitle()).isEqualTo(savedSession.getTitle());
+    void save() {
+        long sessionId = sessionRepository.save(session);
+        Session savedSession = aSession().withId(sessionId).build();
+        assertThat(savedSession.getId()).isEqualTo(sessionId);
     }
 
-    private Session createSession() {
-        SessionInfo sessionInfo = new SessionInfo(1L, 0L, "title1", "img", SessionType.FREE);
-        SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
-        SessionRegistration sessionRegistration = new SessionRegistration(SessionStatus.OPENED, 10L);
-        return new Session(sessionInfo, sessionRegistration, sessionPeriod);
+    @DisplayName("Session 조회")
+    @Test
+    void findById() {
+        long sessionId = sessionRepository.save(session);
+
+        Session foundSession = sessionRepository.findById(sessionId);
+        assertThat(foundSession).isNotNull();
+        assertThat(foundSession.getId()).isEqualTo(sessionId);
+    }
+
+    @DisplayName("강의 진행상태 모집중->진행중 마이그레이션")
+    @Test
+    void updateSessionStatus() {
+        Session session = aSession().withId(1L)
+                .withSessionRegistration(aSessionRegistrationBuilder()
+                        .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)
+                        .build())
+                .build();
+
+        long sessionId = sessionRepository.save(session);
+        Session foundSession = sessionRepository.findById(sessionId);
+
+        assertThat(foundSession.getRecruitmentStatus().isRecruiting()).isTrue();
+
+        Session tobeSession = foundSession.migrationStatus();
+        sessionRepository.updateSessionStatus(tobeSession);
+
+        tobeSession = sessionRepository.findById(tobeSession.getId());
+
+        assertThat(tobeSession.getSessionStatus()).isEqualTo(SessionStatus.PROGRESSING);
+
     }
 }
