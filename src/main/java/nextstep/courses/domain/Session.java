@@ -46,12 +46,9 @@ public class Session {
                    String coverUrl, BillType billType, Price price,
                    long maxEnrollment, Status progressStatus, Long courseId,
                    List<Student> students) {
+        this(startDate, endDate, coverUrl, billType, price, maxEnrollment, courseId);
+
         this.id = id;
-        this.dateTray = new DateTray(startDate, endDate);
-        this.coverUrl = coverUrl;
-        this.billType = billType;
-        this.price = price;
-        this.courseId = courseId;
         this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment, progressStatus, students);
         checkPriceValidate();
     }

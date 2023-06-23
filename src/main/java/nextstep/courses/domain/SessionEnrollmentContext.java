@@ -12,9 +12,13 @@ public class SessionEnrollmentContext {
         this.maxEnrollment = maxEnrollment;
     }
 
-    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus, List<Student> students) {
-        this.maxEnrollment = maxEnrollment;
+    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus) {
+        this(maxEnrollment);
         this.progressStatus = progressStatus;
+    }
+
+    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus, List<Student> students) {
+        this(maxEnrollment, progressStatus);
         this.students.addAll(students);
     }
 
