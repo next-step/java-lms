@@ -15,7 +15,7 @@ class SessionTest {
 
     public static final Session SESSION1 = sessionBuilder.id(1L)
             .sessionType(SessionType.PAY)
-            .sessionValidator(new SessionValidator(SessionState.RECRUITING))
+            .sessionValidator(new SessionValidator(SessionState.PREPARING, SessionRecruitState.RECRUITING))
             .title("JPA와 함께")
             .build();
 

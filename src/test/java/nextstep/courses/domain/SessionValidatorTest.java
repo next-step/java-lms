@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class SessionValidatorTest {
     @Test
     void createTest_수강신청_중복요청() {
-        SessionValidator sessionHeadCount = new SessionValidator(SessionState.RECRUITING);
+        SessionValidator sessionHeadCount = new SessionValidator(SessionState.PREPARING, SessionRecruitState.RECRUITING);
         sessionHeadCount.addPerson(NsUserTest.JAVAJIGI);
         sessionHeadCount.addPerson(NsUserTest.SANJIGI);
 

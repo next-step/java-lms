@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -44,7 +42,7 @@ class StudentsTest {
         assertThat(students.size())
                 .isEqualTo(2);
 
-        students.add(new Student(3L, 3L));
+        students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode()));
 
         assertThat(students.size())
                 .isEqualTo(3);
@@ -58,7 +56,21 @@ class StudentsTest {
 
         Students students = new Students(studentSet, 2);
 
+        assertThatThrownBy(() -> students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode())))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강 신청 인원을 넘었습니다");
+    }
+
+    @Test
+    void isApproved() {
+        Set<Student> studentSet = new HashSet<>();
+        studentSet.add(new Student(1L, 1L));
+        studentSet.add(new Student(2L, 2L));
+
+        Students students = new Students(studentSet, 3);
+
         assertThatThrownBy(() -> students.add(new Student(3L, 3L)))
-                    .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강 가능한 인원이 아닙니다");
     }
 }
