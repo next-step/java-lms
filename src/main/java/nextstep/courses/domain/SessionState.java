@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.time.LocalDate;
+
 public enum SessionState {
 
     PREPARING("준비중", true),
@@ -18,11 +20,18 @@ public enum SessionState {
         this.availableManualChangeSession = availableManualChangeSession;
     }
 
-    // 추가모집 상태변경 가능 -> 모집상태가 종료이면서, 강의 시작후 7일
-//    public boolean isAllowAdditionalRecruitment(RecruitmentState recruitmentState,  LocalDate now) {
-//
-//
-//    }
+    public SessionState syncSessionStateAccordingTo(LocalDate now, SessionPeriod sessionPeriod) {
+
+        if (sessionPeriod.isAfterEndDate(now)) {
+            return SessionState.FINISH;
+        }
+
+        if (sessionPeriod.isBeforeStartDate(now)) {
+            return SessionState.PREPARING;
+        }
+
+        return SessionState.PROGRESSING;
+    }
 
 
     public boolean isAvailableManualChangeSession() {
