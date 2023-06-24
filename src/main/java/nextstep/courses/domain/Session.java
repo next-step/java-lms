@@ -44,13 +44,19 @@ public class Session {
         if (!sessionValidator.isRecuritable()) {
             throw new IllegalArgumentException("모집 중일때만 신청 가능합니다!");
         }
+        if (!sessionValidator.isProceeding() || !sessionValidator.isPreparing()) {
+            throw new IllegalArgumentException("준비중, 진행중 일때만 신청 가능합니다!");
+        }
         students.add(student);
     }
 
-    public Student enroll(Long studentId){
-        Student student = new Student(studentId, id);
+    public Student enroll(Student student){
         this.add(student);
+        return student;
+    }
 
+    public Student requestEnroll(Long studentId){
+        Student student = new Student(studentId, id);
         return student;
     }
 

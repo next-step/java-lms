@@ -39,11 +39,26 @@ public class SessionService {
     }
 
     @Transactional
-    public Session registerStudent(Long sessionId, Long studentId) {
+    public int requestRegisterStudent(Long sessionId, Long studentId) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = session.enroll(studentId);
+        Student student = session.requestEnroll(studentId);
+        return studentService.requestSessionApproval(student);
+    }
 
-        studentService.registerStudent(student);
-        return session;
+    @Transactional
+    public Student registerStudent(Long sessionId, Long studentId) {
+        Session session = sessionRepository.findById(sessionId);
+        Student student = studentService.findById(sessionId);
+        return session.enroll(student);
+    }
+
+    @Transactional
+    public int approveStudent(Long sessionId, Long studentId) {
+        return studentService.approveStudent(sessionId, studentId);
+    }
+
+    @Transactional
+    public int approveCancelStudent(Long sessionId, Long studentId) {
+        return studentService.approveCancelStudent(sessionId, studentId);
     }
 }

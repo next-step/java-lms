@@ -9,10 +9,10 @@ public class SessionValidator {
 
     private final Set<NsUser> nsUsers;
     private SessionState sessionState;
+    private SessionRecruitState sessionRecruitState;
 
     public SessionValidator(SessionState sessionState) {
-        this.sessionState = sessionState;
-        nsUsers = new HashSet<>();
+        this(sessionState, SessionRecruitState.UN_RECRUITING);
     }
 
     public SessionValidator(String sessionStateString) {
@@ -20,8 +20,14 @@ public class SessionValidator {
         nsUsers = new HashSet<>();
     }
 
+    public SessionValidator(SessionState sessionState, SessionRecruitState sessionRecruitState) {
+        this.sessionState = sessionState;
+        this.sessionRecruitState = sessionRecruitState;
+        nsUsers = new HashSet<>();
+    }
+
     public void addPerson(NsUser nsUser) {
-        if (!sessionState.isRecruitable()) {
+        if (!sessionRecruitState.isRecruitable()) {
             throw new IllegalArgumentException("해당 강의는 수강신청중이 아닙니다.");
         }
 
@@ -32,6 +38,14 @@ public class SessionValidator {
     }
 
     public boolean isRecuritable() {
-        return sessionState.isRecruitable();
+        return sessionRecruitState.isRecruitable();
+    }
+
+    public boolean isProceeding() {
+        return SessionState.isProceeding(sessionState);
+    }
+
+    public boolean isPreparing() {
+        return SessionState.isPreparing(sessionState);
     }
 }

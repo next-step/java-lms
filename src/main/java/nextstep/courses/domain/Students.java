@@ -35,6 +35,9 @@ public class Students {
         if(isFull()){
             throw new IllegalArgumentException("수강 신청 인원을 넘었습니다");
         }
+        if(!student.isApproved()){
+            throw new IllegalArgumentException("수강 가능한 인원이 아닙니다");
+        }
         this.students.add(student);
     }
 
