@@ -69,8 +69,16 @@ public class SessionPeriod {
         return now.isBefore(startDate);
     }
 
+    public boolean isEqualStartDate(LocalDate now) {
+        return now.isEqual(startDate);
+    }
+
     public boolean isAfterEndDate(LocalDate now) {
         return now.isAfter(endDate);
+    }
+
+    public boolean isEqualEndDate(LocalDate now) {
+        return now.isEqual(endDate);
     }
 
     private void validateSessionId(long sessionId) {
