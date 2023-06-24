@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.qna.UnAuthorizedException;
 
+import java.time.LocalDate;
+
 public class SessionEnrollment {
 
     private final long sessionId;
@@ -23,8 +25,12 @@ public class SessionEnrollment {
     }
 
     public SessionEnrollment changeSessionState(SessionState sessionState, SessionPeriod sessionPeriod) {
-
+        this.sessionState.validate(sessionPeriod, sessionState);
         return this;
+    }
+
+    private void validateChangeSessionState() {
+
     }
 
     private void validChangeSessionState(SessionPeriod sessionPeriod) {
@@ -34,6 +40,13 @@ public class SessionEnrollment {
     public SessionEnrollment changeRecruitmentState(long sessionId, RecruitmentState recruitmentState) {
         // validateSessionId(sessionId);
         return this;
+    }
+
+    public SessionEnrollment syncSessionStateAccordingTo(long sessionId, SessionPeriod sessionPeriod) {
+        validateSessionId(sessionId);
+
+        SessionState changeSessionState = sessionState.syncSessionStateAccordingTo(LocalDate.now(), sessionPeriod);
+        return new SessionEnrollment(sessionId, changeSessionState, recruitmentState, sessionStudents);
     }
 
     private void validateSessionId(long sessionId) {
