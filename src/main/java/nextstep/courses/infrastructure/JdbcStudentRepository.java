@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 @Repository("studentRepository")
@@ -19,6 +20,7 @@ public class JdbcStudentRepository implements StudentRepository {
     public int save(Student student) {
         String sql = "insert into student (session_id, approval_state) values(?, ?)" ;
         return jdbcTemplate.update(sql, student.getSessionId(), student.getApprovalState());
+
     }
 
     @Override
@@ -29,6 +31,7 @@ public class JdbcStudentRepository implements StudentRepository {
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3));
+
 
         return jdbcTemplate.queryForObject(sql, rowMapper, studentId);
     }
@@ -50,4 +53,5 @@ public class JdbcStudentRepository implements StudentRepository {
         String sql = "update student set approval_state = ? where id = ? and session_id = ?" ;
         return jdbcTemplate.update(sql, approvalState.getCode(), studentId, sessionId);
     }
+
 }

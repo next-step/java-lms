@@ -60,5 +60,6 @@ public class SessionService {
     @Transactional
     public int approveCancelStudent(Long sessionId, Long studentId) {
         return studentService.approveCancelStudent(sessionId, studentId);
+
     }
 }

@@ -1,6 +1,8 @@
 package nextstep.courses.service;
 
+
 import nextstep.courses.domain.ApprovalState;
+
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class StudentService {
 
     @Transactional
     public int requestSessionApproval(Student student) {
+
         return studentRepository.save(student);
     }
 
@@ -33,7 +36,7 @@ public class StudentService {
     public List<Student> findBySessionId(Long sessionId) {
         return studentRepository.findBySessionId(sessionId);
     }
-
+  
     @Transactional
     public int approveStudent(Long sessionId, Long id) {
         return studentRepository.updateApprovalState(sessionId, id, ApprovalState.APPROVAL);

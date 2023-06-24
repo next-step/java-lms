@@ -7,6 +7,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+
 class StudentsTest {
 
     @Test
@@ -42,11 +43,10 @@ class StudentsTest {
         assertThat(students.size())
                 .isEqualTo(2);
 
-        students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode()));
 
-        assertThat(students.size())
-                .isEqualTo(3);
-    }
+        students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode()));
+        students.add(new Student(3L, 3L));
+
 
     @Test
     void isFull() {

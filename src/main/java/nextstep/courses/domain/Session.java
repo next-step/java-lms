@@ -22,6 +22,7 @@ public class Session {
 
     @Builder
     public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator, Students students) {
+
         this.id = id;
         this.courseId = courseId;
         this.title = title;

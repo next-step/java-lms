@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import org.slf4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

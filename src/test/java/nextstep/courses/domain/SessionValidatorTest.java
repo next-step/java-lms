@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 class SessionValidatorTest {
+  
     @Test
     void createTest_수강신청_중복요청() {
         SessionValidator sessionHeadCount = new SessionValidator(SessionState.PREPARING, SessionRecruitState.RECRUITING);

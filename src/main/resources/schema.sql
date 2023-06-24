@@ -77,3 +77,4 @@ create table student
     session_id bigint not null,
     approval_state varchar(30) not null DEFAULT 'UN_APPROVAL'
 );
+

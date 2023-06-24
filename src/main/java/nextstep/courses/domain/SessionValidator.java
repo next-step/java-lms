@@ -26,6 +26,12 @@ public class SessionValidator {
         nsUsers = new HashSet<>();
     }
 
+    public SessionValidator(Long maxCount, String sessionStateString) {
+        this.maxCount = maxCount;
+        this.sessionState = SessionState.convert(sessionStateString);
+        nsUsers = new HashSet<>();
+    }
+
     public void addPerson(NsUser nsUser) {
         if (!sessionRecruitState.isRecruitable()) {
             throw new IllegalArgumentException("해당 강의는 수강신청중이 아닙니다.");

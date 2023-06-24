@@ -27,6 +27,7 @@ public class Students {
         this.maxCount = maxCount;
     }
 
+
     public Set<Student> getStudents() {
         return Collections.unmodifiableSet(students);
     }
@@ -38,6 +39,7 @@ public class Students {
         if(!student.isApproved()){
             throw new IllegalArgumentException("수강 가능한 인원이 아닙니다");
         }
+
         this.students.add(student);
     }
 
@@ -50,4 +52,5 @@ public class Students {
     public boolean isFull(){
         return maxCount <= students.size();
     }
+
 }
