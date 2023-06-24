@@ -4,7 +4,6 @@ import nextstep.courses.domain.SessionEnrollmentContext.Status;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -32,13 +31,19 @@ public class Session {
         return courseId;
     }
 
-    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Long courseId) {
-        this.dateTray = new DateTray(startDate, endDate);
+    public Session(Long id, DateTray dateTray, String coverUrl, BillType billType, Price price, SessionEnrollmentContext enrollmentContext, Long courseId) {
+        this.id = id;
+        this.dateTray = dateTray;
         this.coverUrl = coverUrl;
         this.billType = billType;
         this.price = price;
+        this.enrollmentContext = enrollmentContext;
         this.courseId = courseId;
-        this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment);
+        checkPriceValidate();
+    }
+
+    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Long courseId) {
+        this(0L, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment), courseId);
         checkPriceValidate();
     }
 
@@ -46,10 +51,7 @@ public class Session {
                    String coverUrl, BillType billType, Price price,
                    long maxEnrollment, Status progressStatus, Long courseId,
                    List<Student> students) {
-        this(startDate, endDate, coverUrl, billType, price, maxEnrollment, courseId);
-
-        this.id = id;
-        this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment, progressStatus, students);
+        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressStatus, students), courseId);
         checkPriceValidate();
     }
 
