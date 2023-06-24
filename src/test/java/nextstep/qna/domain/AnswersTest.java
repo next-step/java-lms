@@ -21,10 +21,9 @@ class AnswersTest {
     @BeforeEach
     public void initialize() {
         SimpleIdGenerator.initialize();
-        question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+        question = Question.of(NsUserTest.JAVAJIGI.getUserId(), "title1", "contents1");
+        answer = Answer.of(NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1");
         answers = Answers.of(List.of(answer));
-        question.loadAnswers(answers);
     }
 
     @Test
@@ -43,9 +42,9 @@ class AnswersTest {
     @Test
     @DisplayName("답변목록에 다른 답변작성자가 존재하는지 확인")
     void 답변목록에_다른_답변작성자가_존재하는지_확인() {
-        answer = Answer.of(NsUserTest.SANJIGI, question, "Answers Contents1");
+        answer = Answer.of(NsUserTest.SANJIGI.getUserId(), question.getId(), "Answers Contents1");
         answers = Answers.of(List.of(answer));
-        assertThat(answers.hasAnotherOwner(NsUserTest.JAVAJIGI)).isTrue();
+        assertThat(answers.hasAnotherOwner(NsUserTest.JAVAJIGI.getUserId())).isTrue();
     }
 
     @DisplayName("답변 삭제 시 삭제 이력이 반환되는지 확인")

@@ -33,15 +33,15 @@ public class QnaServiceTest {
 
     private Question question;
     private Answer answer;
+    private Answers answers;
 
 
     @BeforeEach
     public void setUp() {
         SimpleIdGenerator.initialize();
-        question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = Answer.of(11L, NsUserTest.JAVAJIGI, question, "Answers Contents1", null);
-        Answers answers = Answers.of(List.of(answer));
-        question.loadAnswers(answers);
+        question = Question.of(NsUserTest.JAVAJIGI.getUserId(), "title1", "contents1");
+        answer = Answer.of(11L, NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1", null);
+        answers = Answers.of(List.of(answer));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class QnaServiceTest {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThat(question.isDeleted()).isFalse();
-        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
+        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId(), answers);
 
         assertThat(question.isDeleted()).isTrue();
         verifyDeleteHistories();
@@ -60,7 +60,7 @@ public class QnaServiceTest {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId(), answers);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
@@ -68,7 +68,7 @@ public class QnaServiceTest {
     public void delete_성공_질문자_답변자_같음() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
-        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
+        qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId(), answers);
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
@@ -80,7 +80,7 @@ public class QnaServiceTest {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
-            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
+            qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId(), answers);
         }).isInstanceOf(CannotDeleteException.class);
     }
 

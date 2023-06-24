@@ -17,7 +17,7 @@ class DeleteHistoryTest {
     void DeleteHistory_객체_생성_테스트() {
 
 
-        DeleteHistory deleteHistory = DeleteHistory.of(ContentType.QUESTION, 1, NsUserTest.JAVAJIGI);
+        DeleteHistory deleteHistory = DeleteHistory.of(ContentType.QUESTION, 1, NsUserTest.JAVAJIGI.getUserId());
 
         assertAll(
                 () -> assertThat(deleteHistory).isNotNull(),
@@ -32,7 +32,7 @@ class DeleteHistoryTest {
     void ContentType가_null_인_경우() {
 
 
-        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> DeleteHistory.of(null, 1, NsUserTest.JAVAJIGI));
+        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> DeleteHistory.of(null, 1, NsUserTest.JAVAJIGI.getUserId()));
         assertEquals("컨텐츠 타입에 값이 입력되질 않았어요 :(", exception.getMessage());
 
     }
@@ -50,7 +50,7 @@ class DeleteHistoryTest {
     @DisplayName("contentId가 0일 경우 예외를 던진다")
     void contentId가_0인경우() {
 
-        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> DeleteHistory.of(ContentType.QUESTION, 0, NsUserTest.JAVAJIGI));
+        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> DeleteHistory.of(ContentType.QUESTION, 0, NsUserTest.JAVAJIGI.getUserId()));
         assertEquals("유효하지 않는 컨텐츠 아이디에요 :( [ 입력 값 : 0]", exception.getMessage());
 
     }

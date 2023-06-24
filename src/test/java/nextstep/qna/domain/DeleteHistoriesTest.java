@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -17,10 +15,8 @@ class DeleteHistoriesTest {
 
     @BeforeEach
     public void beforeEach() {
-        Question question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
-        Answers answers = Answers.of(List.of(answer));
-        question.loadAnswers(answers);
+        Question question = Question.of(NsUserTest.JAVAJIGI.getUserId(), "title1", "contents1");
+        Answer answer = Answer.of(NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1");
         deleteHistory = DeleteHistory.of(ContentType.ANSWER, answer.getId(), answer.getWriter());
 
         deleteHistoriesOne = DeleteHistories.create();

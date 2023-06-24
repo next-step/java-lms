@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,17 +22,15 @@ public class AnswerTest {
     @BeforeEach
     public void initialize() {
         SimpleIdGenerator.initialize();
-        question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
-        Answers answers = Answers.of(List.of(answer));
-        question.loadAnswers(answers);
+        question = Question.of(NsUserTest.JAVAJIGI.getUserId(), "title1", "contents1");
+        answer = Answer.of(NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1");
     }
 
     @Test
     @DisplayName("Answer 객체 생성 테스트")
     void Answer_객체_생성_테스트() {
 
-        Answer answer = Answer.of(1L, NsUserTest.JAVAJIGI, question, "Answers Contents1", null);
+        Answer answer = Answer.of(1L, NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1", null);
 
         assertAll(
                 () -> assertThat(answer).isNotNull(),
@@ -48,7 +44,7 @@ public class AnswerTest {
     void 객체_생성시_작성자_유효하지_않은경우_예외를_던진다() {
 
         Assertions.assertThrows(UnAuthorizedException.class, () -> {
-            Answer.of(null, question, "Answers Contents1");
+            Answer.of(null, question.getId(), "Answers Contents1");
         });
     }
 
@@ -56,7 +52,7 @@ public class AnswerTest {
     @DisplayName("Answer 객체 생성 시 질문이 유효하지 않을경우 NotFoundException 예외를 던진다")
     void 객체_생성시_질문_유효하지_않은경우_예외를_던진다() {
         Assertions.assertThrows(NotFoundException.class, () -> {
-            Answer.of(NsUserTest.JAVAJIGI, null, "Answers Contents1");
+            Answer.of(NsUserTest.JAVAJIGI.getUserId(), 0, "Answers Contents1");
         });
     }
 
@@ -78,7 +74,7 @@ public class AnswerTest {
     void Answer_객체_생성_테스트_아이디가_0() {
 
 
-        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> Answer.of(0, NsUserTest.JAVAJIGI, question, "contents1", null));
+        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> Answer.of(0, NsUserTest.JAVAJIGI.getUserId(), question.getId(), "contents1", null));
         assertEquals("유효하지 않는 아이디에요 :( [입력 값 : 0]", exception.getMessage());
     }
 
@@ -86,7 +82,7 @@ public class AnswerTest {
     @DisplayName("Answer 삭제시  질문이_이미_삭제된_경우 예외를 던진다 ")
     void 답변_이미_삭제된_경우() {
 
-        answer = Answer.of(1L, NsUserTest.JAVAJIGI, question, "Answers Contents1", null, DeleteStatus.DELETED);
+        answer = Answer.of(1L, NsUserTest.JAVAJIGI.getUserId(), question.getId(), "Answers Contents1", null, DeleteStatus.DELETED);
 
         Throwable exception = Assertions.assertThrows(CannotDeleteException.class, () -> answer.remove());
         assertEquals("이미 삭제된 답변이에요 :(", exception.getMessage());
