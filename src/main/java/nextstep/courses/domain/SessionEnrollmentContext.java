@@ -12,6 +12,16 @@ public class SessionEnrollmentContext {
         this.maxEnrollment = maxEnrollment;
     }
 
+    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus) {
+        this(maxEnrollment);
+        this.progressStatus = progressStatus;
+    }
+
+    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus, List<Student> students) {
+        this(maxEnrollment, progressStatus);
+        this.students.addAll(students);
+    }
+
     public boolean statusEquals(Status status) {
         return progressStatus == status;
     }
@@ -55,5 +65,17 @@ public class SessionEnrollmentContext {
 
     public enum Status {
         NOT_STARTED, IN_PROGRESS, FINISHED
+    }
+
+    public List<Student> getStudents() {
+        return List.copyOf(students);
+    }
+
+    public Status getProgressStatus() {
+        return progressStatus;
+    }
+
+    public long getMaxEnrollment() {
+        return maxEnrollment;
     }
 }

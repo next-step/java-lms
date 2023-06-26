@@ -6,10 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionTest {
 
@@ -17,16 +20,7 @@ class SessionTest {
     @DisplayName("Session 생성")
     void testCreate() {
         // given
-        Session session = new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                Session.BillType.FREE,
-                new Price(0L),
-                100L,
-                new Course("title", 1L)
-        );
-
+        final var session = SessionBuilder.builder();
         Assertions.assertThat(session).isNotNull();
     }
 
@@ -34,15 +28,9 @@ class SessionTest {
     @DisplayName("강의 생성시 초기 상태는 NOT_STARTED 이다")
     void testCreateStatus() {
         // given
-        Session session = new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                Session.BillType.FREE,
-                new Price(0L),
-                100L,
-                new Course("title", 1L)
-        );
+        Session session = SessionBuilder.builder()
+                .withEnrollmentContext(SessionEnrollmentContextBuilder.builder())
+                .build();
 
         // when&then
         Assertions.assertThat(session.statusEquals(SessionEnrollmentContext.Status.NOT_STARTED)).isTrue();
@@ -52,15 +40,11 @@ class SessionTest {
     @DisplayName("강의 가격과 BillType이 일치하지 않으면 예외가 발생한다")
     @MethodSource("provideBillTypeAndPriceFail")
     void testCreateBillType(Session.BillType billType, Price price) {
-        Assertions.assertThatThrownBy(() -> new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                billType,
-                price,
-                100L,
-                new Course("title", 1L)
-        )).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> SessionBuilder.builder()
+                .withBillType(billType)
+                .withPrice(price)
+                .build()
+        ).isInstanceOf(IllegalArgumentException.class)
                 .message()
                 .isEqualTo("BillType과 Price가 일치하지 않습니다.");
     }
@@ -69,30 +53,22 @@ class SessionTest {
     @DisplayName("강의 가격과 BillType이 일치하면 예외가 발생하지 않는다")
     @MethodSource("provideBillTypeAndPriceSuccess")
     void testCreateBillTypeSuccess(Session.BillType billType, Price price) {
-        Assertions.assertThatCode(() -> new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                billType,
-                price,
-                100L,
-                new Course("title", 1L)
-        )).doesNotThrowAnyException();
+        assertThatCode(() -> SessionBuilder.builder()
+                .withBillType(billType)
+                .withPrice(price)
+                .build()
+        ).doesNotThrowAnyException();
     }
 
-    @Test
+    @ParameterizedTest
+    @EnumSource(value = SessionEnrollmentContext.Status.class, names = {"IN_PROGRESS", "FINISHED"})
     @DisplayName("수강신청은 모집상태가 IN_PROGRESS 일때만 가능하다")
-    void testEnrollStatus() {
+    void testEnrollStatus(SessionEnrollmentContext.Status status) {
         // given
-        Session session = new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                Session.BillType.FREE,
-                new Price(0L),
-                100L,
-                new Course("title", 1L)
-        );
+        Session session = SessionBuilder.builder()
+                .withEnrollmentContext(SessionEnrollmentContextBuilder.builder()
+                        .withProgressStatus(status))
+                .build();
 
         // when&then
         Assertions.assertThat(session.isEnrollable()).isFalse();
@@ -102,15 +78,14 @@ class SessionTest {
     @DisplayName("수강신청은 최대인원수를 초과할 수 없다")
     void testEnrollMax() {
         // given
-        Session session = new Session(
-                LocalDate.now(),
-                LocalDate.now(),
-                "url",
-                Session.BillType.FREE,
-                new Price(0L),
-                1L,
-                new Course("title", 1L)
-        );
+        Session session = SessionBuilder
+                .builder()
+                .withEnrollmentContext(
+                        SessionEnrollmentContextBuilder
+                                .builder()
+                                .withMaxEnrollment(1L)
+                )
+                .build();
 
         session.start();
 

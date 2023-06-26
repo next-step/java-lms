@@ -13,6 +13,14 @@ public class DateTray {
         checkValidate();
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
     private void checkValidate() {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 늦을 수 없습니다.");

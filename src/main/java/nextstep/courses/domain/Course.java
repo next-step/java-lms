@@ -15,10 +15,6 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    private final List<Session> sessions = new ArrayList<>();
-
-    public Course() {
-    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
@@ -53,9 +49,5 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public void addSession(Session session) {
-        this.sessions.add(session);
     }
 }

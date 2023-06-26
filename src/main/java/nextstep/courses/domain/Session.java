@@ -4,7 +4,6 @@ import nextstep.courses.domain.SessionEnrollmentContext.Status;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -14,18 +13,45 @@ public class Session {
     private BillType billType;
     private Price price;
     private SessionEnrollmentContext enrollmentContext;
+    private Long courseId;
 
+    public DateTray getDateTray() {
+        return dateTray;
+    }
 
+    public String getCoverUrl() {
+        return coverUrl;
+    }
 
-    private Course course;
+    public SessionEnrollmentContext getEnrollmentContext() {
+        return enrollmentContext;
+    }
 
-    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Course course) {
-        this.dateTray = new DateTray(startDate, endDate);
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public Session(Long id, DateTray dateTray, String coverUrl, BillType billType, Price price, SessionEnrollmentContext enrollmentContext, Long courseId) {
+        this.id = id;
+        this.dateTray = dateTray;
         this.coverUrl = coverUrl;
         this.billType = billType;
         this.price = price;
-        this.course = course;
-        this.enrollmentContext = new SessionEnrollmentContext(maxEnrollment);
+        this.enrollmentContext = enrollmentContext;
+        this.courseId = courseId;
+        checkPriceValidate();
+    }
+
+    public Session(LocalDate startDate, LocalDate endDate, String coverUrl, BillType billType, Price price, long maxEnrollment, Long courseId) {
+        this(0L, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment), courseId);
+        checkPriceValidate();
+    }
+
+    public Session(Long id, LocalDate startDate, LocalDate endDate,
+                   String coverUrl, BillType billType, Price price,
+                   long maxEnrollment, Status progressStatus, Long courseId,
+                   List<Student> students) {
+        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressStatus, students), courseId);
         checkPriceValidate();
     }
 
@@ -68,5 +94,9 @@ public class Session {
 
     public Price getPrice() {
         return price;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
