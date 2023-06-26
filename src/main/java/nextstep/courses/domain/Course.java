@@ -10,6 +10,7 @@ public class Course {
     private String title;
 
     private Long creatorId;
+
     List<Session> sessions;
 
     private LocalDateTime createdAt;

@@ -17,8 +17,8 @@ public class CourseTest {
                 "제목",
                 1L,
                 List.of(
-                        new Session(1L),
-                        new Session(2L)
+                        new Session.Builder().build(),
+                        new Session.Builder().build()
                 ),
                 LocalDateTime.now(),
                 null

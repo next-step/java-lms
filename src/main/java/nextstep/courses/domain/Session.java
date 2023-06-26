@@ -12,29 +12,18 @@ public class Session {
     private LectureStatus lectureStatus;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Long> userIds = new ArrayList<>();
+    private List<Long> userIds;
     private int maxUser;
 
-    public Session(long id) {
-        this.id = id;
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public Session(String image) {
-        this.image = image;
-    }
-
-    public Session(LectureType lectureType) {
-        this.lectureType = lectureType;
-    }
-
-    public Session(LectureStatus lectureStatus) {
-        this.lectureStatus = lectureStatus;
-        this.maxUser = 2;
+    private Session(Builder builder) {
+        this.id = builder.id;
+        this.image = builder.image;
+        this.lectureType = builder.lectureType;
+        this.lectureStatus = builder.lectureStatus;
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.userIds = builder.userIds;
+        this.maxUser = builder.maxUser;
     }
 
     public LocalDate getStartDate() {
@@ -66,10 +55,65 @@ public class Session {
             throw new RuntimeException("수강신청은 모집중일때 가능합니다.");
         }
 
-        if(this.userIds.size() >= maxUser) {
+        if (this.userIds.size() >= maxUser) {
             throw new RuntimeException("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
         }
 
         userIds.add(userId);
+    }
+
+    public static class Builder {
+        private Long id = 0L;
+        private String image = "";
+        private LectureType lectureType = LectureType.FREE;
+        private LectureStatus lectureStatus = LectureStatus.PREPARING;
+        private LocalDate startDate = LocalDate.now();
+        private LocalDate endDate = LocalDate.now().plusDays(30);
+        private List<Long> userIds = new ArrayList<>();
+        private int maxUser = 100;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder image(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder lectureType(LectureType lectureType) {
+            this.lectureType = lectureType;
+            return this;
+        }
+
+        public Builder lectureStatus(LectureStatus lectureStatus) {
+            this.lectureStatus = lectureStatus;
+            return this;
+        }
+
+        public Builder startDate(LocalDate startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDate endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder userIds(List<Long> userIds) {
+            this.userIds = userIds;
+            return this;
+        }
+
+        public Builder maxUser(int maxUser) {
+            this.maxUser = maxUser;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(this);
+        }
     }
 }
