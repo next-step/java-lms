@@ -8,30 +8,14 @@ import java.util.List;
 public class Session {
     private Long id;
     private String image;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private SessionDate sessionDate;
     private LectureType lectureType;
-    private LectureStatus lectureStatus;
-    private List<Long> userIds;
-    private int maxUser;
+    private SessionInfo sessionInfo;
 
     private Session(Builder builder) {
         this.id = builder.id;
         this.image = builder.image;
         this.lectureType = builder.lectureType;
-        this.lectureStatus = builder.lectureStatus;
-        this.startDate = builder.startDate;
-        this.endDate = builder.endDate;
-        this.userIds = builder.userIds;
-        this.maxUser = builder.maxUser;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
     }
 
     public Long getId() {
@@ -46,21 +30,6 @@ public class Session {
         return lectureType;
     }
 
-    public LectureStatus getLectureStatus() {
-        return lectureStatus;
-    }
-
-    public void register(long userId) {
-        if (!this.lectureStatus.equals(LectureStatus.RECRUITING)) {
-            throw new RuntimeException("수강신청은 모집중일때 가능합니다.");
-        }
-
-        if (this.userIds.size() >= maxUser) {
-            throw new RuntimeException("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
-        }
-
-        userIds.add(userId);
-    }
 
     public static class Builder {
         private Long id = 0L;
