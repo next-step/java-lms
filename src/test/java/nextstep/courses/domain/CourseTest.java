@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.courses.domain.SessionBuilder.session;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CourseTest {
@@ -16,12 +17,12 @@ public class CourseTest {
                 0L,
                 "제목",
                 1L,
-                List.of(
-                        new Session.Builder().build(),
-                        new Session.Builder().build()
-                ),
                 LocalDateTime.now(),
-                null
+                null,
+                List.of(
+                        session().build(),
+                        session().build()
+                )
         );
 
         assertThat(course.getSessions()).hasSize(2);

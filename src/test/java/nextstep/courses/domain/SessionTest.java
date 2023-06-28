@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.domain.SessionBuilder.session;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
@@ -9,7 +10,7 @@ public class SessionTest {
 
     @Test
     void 이미지정보() {
-        Session session = new Session.Builder()
+        Session session = session()
                 .image("image.jpeg")
                 .build();
 
@@ -18,7 +19,7 @@ public class SessionTest {
 
     @Test
     void 무료강의() {
-        Session session = new Session.Builder()
+        Session session = session()
                 .lectureType(LectureType.FREE)
                 .build();
 
@@ -27,7 +28,7 @@ public class SessionTest {
 
     @Test
     void 유료강의() {
-        Session session = new Session.Builder()
+        Session session = session()
                 .lectureType(LectureType.PAID)
                 .build();
 
