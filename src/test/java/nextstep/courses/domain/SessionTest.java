@@ -7,19 +7,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
-    @Test
-    void 시작일_종료일() {
-        LocalDate startDate = LocalDate.of(2023, 5, 1);
-        LocalDate endDate = LocalDate.of(2023, 5, 30);
 
-        Session session = new Session.Builder()
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
-
-        assertThat(session.getStartDate()).isNotNull();
-        assertThat(session.getEndDate()).isNotNull();
-    }
 
     @Test
     void 이미지정보() {

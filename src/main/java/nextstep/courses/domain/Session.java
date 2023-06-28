@@ -8,10 +8,10 @@ import java.util.List;
 public class Session {
     private Long id;
     private String image;
-    private LectureType lectureType;
-    private LectureStatus lectureStatus;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LectureType lectureType;
+    private LectureStatus lectureStatus;
     private List<Long> userIds;
     private int maxUser;
 
