@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 
+import nextstep.users.domain.NsUser;
+
 public class Session {
     private final Long id;
     private final String image;
@@ -26,5 +28,9 @@ public class Session {
 
     public LectureType getLectureType() {
         return lectureType;
+    }
+
+    public void register(NsUser user) {
+        sessionInfo.register(user);
     }
 }
