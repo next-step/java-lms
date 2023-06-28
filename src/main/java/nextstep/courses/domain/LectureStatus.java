@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
 public enum LectureStatus {
-    PREPARING, RECRUITING, COMPLETED
+    PREPARING, RECRUITING, COMPLETED;
+    public boolean isRecruiting() {
+        return this.equals(RECRUITING);
+    }
 }

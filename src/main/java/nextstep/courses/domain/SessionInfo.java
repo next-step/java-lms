@@ -5,9 +5,9 @@ import nextstep.users.domain.NsUser;
 import java.util.List;
 
 public class SessionInfo {
-    private LectureStatus lectureStatus;
-    private List<NsUser> users;
-    private int maxUser;
+    private final LectureStatus lectureStatus;
+    private final List<NsUser> users;
+    private final int maxUser;
 
     public SessionInfo(LectureStatus lectureStatus, List<NsUser> users, int maxUser) {
         this.lectureStatus = lectureStatus;
@@ -16,7 +16,7 @@ public class SessionInfo {
     }
 
     public void register(NsUser user) {
-        if (!this.lectureStatus.equals(LectureStatus.RECRUITING)) {
+        if (!this.lectureStatus.isRecruiting()) {
             throw new RuntimeException("수강신청은 모집중일때 가능합니다.");
         }
 

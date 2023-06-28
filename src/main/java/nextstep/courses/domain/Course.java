@@ -11,7 +11,7 @@ public class Course {
 
     private Long creatorId;
 
-    List<Session> sessions;
+    private List<Session> sessions;
 
     private LocalDateTime createdAt;
 
@@ -22,7 +22,7 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, Collections.emptyList(), LocalDateTime.now(), null);
+        this(0L, title, creatorId, LocalDateTime.now(), null, Collections.emptyList());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -33,7 +33,7 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
-    public Course(Long id, String title, Long creatorId, List<Session> sessions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, List<Session> sessions) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
@@ -67,5 +67,9 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
     }
 }

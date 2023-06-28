@@ -5,12 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static nextstep.courses.domain.SessionInfoBuilder.sessionInfo;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionInfoTest {
 
@@ -41,7 +37,6 @@ public class SessionInfoTest {
                 .lectureStatus(LectureStatus.RECRUITING)
                 .build();
 
-
         assertThatCode(() -> sessionInfo.register(NsUser.GUEST_USER))
                 .doesNotThrowAnyException();
     }
@@ -60,6 +55,7 @@ public class SessionInfoTest {
     @Test
     void 최대수강인원_초과불가() {
         SessionInfo sessionInfo = sessionInfo()
+                .lectureStatus(LectureStatus.RECRUITING)
                 .maxUser(2)
                 .build();
 
