@@ -4,7 +4,6 @@ import nextstep.courses.domain.registration.SessionRegistration;
 import nextstep.courses.domain.registration.SessionStatus;
 
 public class SessionBuilder {
-
     private Long id;
     private SessionStatus sessionStatus;
     private SessionRegistration sessionRegistration;

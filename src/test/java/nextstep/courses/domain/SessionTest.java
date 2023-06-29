@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class SessionTest {
-
     @DisplayName("강의는 시작일과 종료일을 가진다.")
     @Test
     void 시작일_종료일_확인() {

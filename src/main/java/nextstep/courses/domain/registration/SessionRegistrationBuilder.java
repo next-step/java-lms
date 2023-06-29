@@ -1,10 +1,8 @@
 package nextstep.courses.domain.registration;
 
 public class SessionRegistrationBuilder {
-
     private SessionRecruitmentStatus sessionRecruitmentStatus;
     private Students students;
-
 
     private SessionRegistrationBuilder(){
     }

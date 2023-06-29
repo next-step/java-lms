@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StudentsBuilder {
-
     public static final int DEFAULT_MAX_USER_COUNT = 30;
     private Set<Student> students;
     private int maxUserCount;

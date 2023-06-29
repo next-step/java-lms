@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class SessionRecruitmentStatusTest {
-
     @DisplayName("존재하지 않는 모집상태일 경우 예외를 던진다.")
     @ParameterizedTest
     @ValueSource(strings = {"모집", "비집중"})

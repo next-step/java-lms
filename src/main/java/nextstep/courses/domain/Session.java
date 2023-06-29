@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class Session {
-
     private Long id;
 
     private SessionStatus sessionStatus;

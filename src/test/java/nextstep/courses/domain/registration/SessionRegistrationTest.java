@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class SessionRegistrationTest {
-
     @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
     @Test
     void 수강신청_수강인원초과_불가능() {

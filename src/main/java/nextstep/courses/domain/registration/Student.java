@@ -3,7 +3,6 @@ package nextstep.courses.domain.registration;
 import java.util.Objects;
 
 public class Student {
-
     private final Long nsUserId;
     private final Long sessionId;
     private final boolean approved;

@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionStatusTest {
-
     @DisplayName("강의상태 : 정의된 값이 없는경우")
     @ParameterizedTest
     @ValueSource(strings = {"준비, 모집, 시작"})

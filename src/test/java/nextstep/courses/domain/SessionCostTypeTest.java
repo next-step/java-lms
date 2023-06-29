@@ -8,7 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class SessionCostTypeTest {
-
     @DisplayName("강의비용 유형 : 없는경우")
     @ParameterizedTest
     @ValueSource(strings = {"무로, 유로, 외상"})

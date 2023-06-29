@@ -1,7 +1,6 @@
 package nextstep.courses.domain.registration;
 
 public class StudentBuilder {
-
     private Long nsUserId;
     private Long sessionId;
 

@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
-
     private JdbcOperations jdbcTemplate;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {

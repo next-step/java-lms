@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class SessionPeriodTest {
-
     @DisplayName("(강의)시작일이 종료일보다 큰 경우")
     @Test
     void 시작일이_종료일보다_큰_경우() {

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service("courseService")
 public class CourseService {
-
     private final CourseRepository courseRepository;
 
     public CourseService(CourseRepository courseRepository) {

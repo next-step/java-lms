@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class SessionServiceTest {
-
     @Autowired
     private SessionService sessionService;
     @Autowired

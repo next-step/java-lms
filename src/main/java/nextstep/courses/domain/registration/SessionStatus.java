@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 public enum SessionStatus {
 
-
     PREPARING("준비중"),
     PROGRESSING("진행중"),
     CLOSED("종료"),

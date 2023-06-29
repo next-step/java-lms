@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SessionRegistration {
-
     private final SessionRecruitmentStatus sessionRecruitmentStatus;
     private final Students students;
 

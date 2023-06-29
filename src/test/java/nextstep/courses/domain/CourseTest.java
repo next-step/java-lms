@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 public class CourseTest {
-
     @Test
     @DisplayName("과정은 여러개의 강의를 가질 수 있다.")
     void 과정_강의_일대다관계() {

@@ -5,7 +5,6 @@ import static nextstep.courses.domain.registration.StudentMother.aStudent;
 import static nextstep.courses.domain.registration.StudentsBuilder.aStudentsBuilder;
 
 public class SessionRegistrationMother {
-
     public static SessionRegistrationBuilder aSessionRegistration() {
         return aSessionRegistrationBuilder()
                 .withSessionRecruitmentStatus(SessionRecruitmentStatus.RECRUITING)

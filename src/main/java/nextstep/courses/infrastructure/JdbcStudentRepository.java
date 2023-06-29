@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
-
     private JdbcOperations jdbcTemplate;
 
     public JdbcStudentRepository(JdbcOperations jdbcTemplate) {

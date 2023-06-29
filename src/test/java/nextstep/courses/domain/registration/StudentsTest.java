@@ -8,7 +8,6 @@ import static nextstep.courses.domain.registration.StudentMother.anotherStudent;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class StudentsTest {
-
     @DisplayName("강의는 강의 최대 수강 인원을 초과할 수 없다.")
     @Test
     void 수강신청_수강인원초과_불가능() {
