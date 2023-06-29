@@ -1,24 +1,22 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.StudentRepository;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.Student;
+import nextstep.courses.domain.registration.StudentRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+import static nextstep.courses.domain.registration.StudentMother.aStudent;
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JdbcTest
 public class StudentRepositoryTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentRepositoryTest.class);
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -27,20 +25,24 @@ public class StudentRepositoryTest {
     @BeforeEach
     void setUp() {
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        studentRepository.save(aStudent().build());
     }
 
+    @DisplayName("Student 저장")
     @Test
-    @DisplayName("create 와 read 기능을 올바르게 수행할 수 있다.")
-    void dbTest_Create_Read() {
-        Student student = new Student(1L, 1L);
-        int count = studentRepository.save(student);
-        Assertions.assertThat(count).isEqualTo(1);
-
-        Student savedStudent = studentRepository.findById(1L);
-        Assertions.assertThat(student).isEqualTo(savedStudent);
-
-        List<Student> students = studentRepository.findAllBySessionId(1L);
-        Assertions.assertThat(students).contains(student);
+    void save() {
+        List<Student> students = studentRepository.findAllBySessionId(aStudent().build().getSessionId());
+        assertThat(students).hasSize(1);
     }
 
+    @DisplayName("Student 상태 업데이트")
+    @Test
+    void updateStatus() {
+        studentRepository.updateStatus(aStudent()
+                .withStatus(false)
+                .build());
+
+        Student student = studentRepository.findByUserId(aStudent().build().getNsUserId());
+        Assertions.assertThat(student.getStatus()).isFalse();
+    }
 }

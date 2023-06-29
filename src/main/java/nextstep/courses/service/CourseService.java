@@ -10,23 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service("courseService")
 public class CourseService {
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private SessionService sessionService;
-
-    public CourseService(CourseRepository courseRepository, SessionService sessionService) {
+    public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
-        this.sessionService = sessionService;
     }
 
-    public Course registerSession(Long courseId, Long sessionId) {
-        Course course = courseRepository.findById(courseId);
-        Session session = sessionService.findBySessionId(sessionId);
+    public long save(Course course) {
+        return courseRepository.save(course);
+    }
 
-        course.addSession(session);
-        return course;
+    @Transactional(readOnly = true)
+    public Course findById(long id) {
+        return courseRepository.findById(id);
     }
 }

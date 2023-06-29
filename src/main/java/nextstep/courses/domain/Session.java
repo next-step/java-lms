@@ -1,88 +1,85 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.SessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.SessionRegistration;
+import nextstep.courses.domain.registration.SessionRecruitmentStatus;
+import nextstep.courses.domain.registration.SessionStatus;
+import nextstep.courses.domain.registration.Student;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class Session {
-
     private Long id;
-    private final SessionInfo sessionInfo;
-    private final SessionEnrollment sessionEnrollment;
-    private final SessionTimeLine sessionTimeLine;
 
-    public Session(Long courseId, Long ownerId, String title, String coverImageInfo,
-                   SessionType sessionType, SessionStatus sessionStatus,
-                   LocalDateTime createdAt, LocalDateTime closedAt, Long maxNumOfStudent) {
+    private SessionStatus sessionStatus;
+    private final SessionRegistration sessionRegistration;
+    private final SessionPeriod sessionPeriod;
+    private final String sessionCoverImage;
+    private final SessionCostType sessionCostType;
 
-        this(new SessionInfo(courseId, ownerId, title, coverImageInfo, sessionType),
-                new SessionEnrollment(sessionStatus, maxNumOfStudent),
-                new SessionTimeLine(createdAt, closedAt));
-    }
-
-    public Session(SessionInfo sessionInfo, SessionEnrollment sessionEnrollment,
-                   SessionTimeLine sessionTimeLine){
-        this.sessionInfo = sessionInfo;
-        this.sessionEnrollment = sessionEnrollment;
-        this.sessionTimeLine = sessionTimeLine;
-    }
-
-    public Student register(NsUser nsUser) {
-        Student student = new Student(nsUser.getId(), this.id);
-        sessionEnrollment.enroll(student);
-        return student;
-    }
-
-    public Long totalStudentNum() {
-        return sessionEnrollment.totalStudentNum();
-    }
-
-    public SessionInfo getSessionInfo() {
-        return sessionInfo;
+    public Session(Long id, SessionStatus sessionStatus, SessionRegistration sessionRegistration, SessionPeriod sessionPeriod, String sessionCoverImage, SessionCostType sessionCostType) {
+        this.id = id;
+        this.sessionStatus = sessionStatus;
+        this.sessionRegistration = sessionRegistration;
+        this.sessionPeriod = sessionPeriod;
+        this.sessionCoverImage = sessionCoverImage;
+        this.sessionCostType = sessionCostType;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getCourseId() {
-        return sessionInfo.getCourseId();
+    public LocalDateTime startedAt() {
+        return this.sessionPeriod.getStartedAt();
     }
 
-    public Long getOwnerId() {
-        return sessionInfo.getOwnerId();
+    public LocalDateTime endedAt() {
+        return this.sessionPeriod.getEndedAt();
     }
 
-    public String getTitle() {
-        return sessionInfo.getTitle();
+    public Set<Student> getUsers() {
+        return sessionRegistration.getStudents();
     }
 
-    public String getCoverImageInfo() {
-        return sessionInfo.getCoverImageInfo();
+    public String getSessionCoverImage() {
+        return sessionCoverImage;
     }
 
-    public SessionType getSessionType() {
-        return sessionInfo.getSessionType();
+    public SessionCostType getSessionCostType() {
+        return this.sessionCostType;
     }
 
-    public SessionStatus getStatus() {
-        return sessionEnrollment.getStatus();
+    public SessionStatus getSessionStatus() {
+        return this.sessionStatus;
     }
 
-    public Long getTotalStudentNum() {
-        return sessionEnrollment.totalStudentNum();
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return sessionRegistration.getSessionRecruitmentStatus();
     }
 
-    public LocalDateTime getCreateAt() {
-        return sessionTimeLine.getCreateAt();
+    public int getMaxUserCount() {
+        return sessionRegistration.getMaxUserCount();
     }
 
-    public LocalDateTime getCloseAt() {
-        return sessionTimeLine.getCloseAt();
+    public Student register(NsUser nsUser, Set<Student> students) {
+        validateSessionStatus();
+        Student student = new Student(nsUser.getId(), this.id);
+        sessionRegistration.enroll(student, students);
+        return student;
     }
 
+    private void validateSessionStatus() {
+        if (this.sessionStatus.isNotProgressing()) {
+            throw new IllegalArgumentException("해당 강의는 진행중이 아닙니다.");
+        }
+    }
+
+    public Session migrationStatus() {
+        if (sessionRegistration.getSessionRecruitmentStatus().isRecruiting()) {
+            return new Session(this.id, SessionStatus.PROGRESSING, this.sessionRegistration, this.sessionPeriod, this.sessionCoverImage, this.sessionCostType);
+        }
+        return this;
+    }
 }

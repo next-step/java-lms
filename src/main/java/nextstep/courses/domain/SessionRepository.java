@@ -1,12 +1,9 @@
 package nextstep.courses.domain;
 
-import java.util.List;
-
 public interface SessionRepository {
+    long save(Session session);
 
-    int save(Session session);
+    Session findById(Long sessionId);
 
-    Session findById(Long id);
-
-    List<Session> findByCourseId(Long courseId);
+    int updateSessionStatus(Session session);
 }

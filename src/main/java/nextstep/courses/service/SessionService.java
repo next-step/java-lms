@@ -2,24 +2,20 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.StudentRepository;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.registration.Student;
+import nextstep.courses.domain.registration.StudentRepository;
 import nextstep.users.domain.NsUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 
+@Service
 @Transactional
-@Service("sessionService")
 public class SessionService {
-
-    @Autowired
     private final SessionRepository sessionRepository;
 
-    @Autowired
     private final StudentRepository studentRepository;
 
     public SessionService(SessionRepository sessionRepository, StudentRepository studentRepository) {
@@ -27,22 +23,34 @@ public class SessionService {
         this.studentRepository = studentRepository;
     }
 
-    public int createSession(Session session) {
-        return this.sessionRepository.save(session);
+    public long save(Session session) {
+        return sessionRepository.save(session);
     }
 
-    public Session findBySessionId(Long sessionId) {
-        return this.sessionRepository.findById(sessionId);
+    @Transactional(readOnly = true)
+    public Session findById(long id) {
+        return sessionRepository.findById(id);
     }
 
-    public List<Session> findByCourseId(Long courseId) {
-        return sessionRepository.findByCourseId(courseId);
-    }
-
-    public void registerStudent(Long sessionId, NsUser nsUser) {
+    public void register(Long sessionId, NsUser nsUser) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = session.register(nsUser);
+        List<Student> students = studentRepository.findAllBySessionId(sessionId);
+        session = session.migrationStatus();
+        sessionRepository.updateSessionStatus(session);
+        Student student = session.register(nsUser, new HashSet<>(students));
         studentRepository.save(student);
+    }
+
+    public void approve(Long userId) {
+        Student student = studentRepository.findByUserId(userId);
+        student = student.approve();
+        studentRepository.updateStatus(student);
+    }
+
+    public void reject(Long userId) {
+        Student student = studentRepository.findByUserId(userId);
+        student = student.reject();
+        studentRepository.updateStatus(student);
     }
 
 }
