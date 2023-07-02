@@ -2,7 +2,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDate;
 import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.enums.SessionState;
+import nextstep.courses.domain.enums.ProgressState;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -36,7 +36,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionDate(rs.getString(2), rs.getString(3)),
                 rs.getString(4),
                 rs.getBoolean(5),
-                SessionState.of(rs.getInt(6)),
+                ProgressState.of(rs.getInt(6)),
                 rs.getInt(7),
                 rs.getLong(8),
                 toLocalDateTime(rs.getTimestamp(9)),

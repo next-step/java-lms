@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionState;
+import nextstep.courses.domain.enums.ProgressState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
@@ -25,11 +25,11 @@ public class SessionTest {
     @Test
     void 강의상태변경_불가() {
         SessionDate sessionDate = new SessionDate("20230401", "20230431", false);
-        Session session =  new Session(0L, sessionDate, "https://nextstep.com", true ,SessionState.PREPARING
+        Session session =  new Session(0L, sessionDate, "https://nextstep.com", true , ProgressState.PREPARING
                 ,30, 0L, LocalDateTime.now(), LocalDateTime.now());
 
         assertThatThrownBy(() -> {
-            session.setSessionState(SessionState.END);
+            session.setSessionState(ProgressState.END);
         }).isInstanceOf(SessionExpiredException.class).hasMessageContaining("강의종료일이 경과하여 상태 변경이 불가합니다.");
     }
 
@@ -37,15 +37,15 @@ public class SessionTest {
     void 강의상태변경() {
         Session session =  new Session("20230701", "20230731", 30 ,1L);
 
-        session.setSessionState(SessionState.PREPARING);
-        Assertions.assertThat(session.equalsState(SessionState.PREPARING)).isTrue();
+        session.setSessionState(ProgressState.PREPARING);
+        Assertions.assertThat(session.equalsState(ProgressState.PREPARING)).isTrue();
     }
 
     @Test
     void 강의신청불가_모집중아님() {
         Session session =  new Session("20230701", "20230731", 30 ,1L);
 
-        session.setSessionState(SessionState.END);
+        session.setSessionState(ProgressState.END);
 
         assertThatThrownBy(() -> {
             session.enroll(new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com"));
@@ -56,7 +56,7 @@ public class SessionTest {
     void 강의신청테스트() {
         Session session =  new Session("20230701", "20230731", 30 ,1L);
 
-        session.setSessionState(SessionState.PROCEEDING);
+        session.setSessionState(ProgressState.PROCEEDING);
 
         session.enroll(jerry);
         session.enroll(joy);

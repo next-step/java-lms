@@ -15,7 +15,7 @@ public class SessionStatus {
         return enrollments.getSize();
     }
 
-    public void enroll(NsUser student, long sessionId) {
+    public void  enroll(NsUser student, long sessionId) {
         if (enrollments.getSize() >= maxCapacity) {
             throw new EnrollFullException("최대 수강 인원을 초과하여 신청이 불가합니다.");
         }

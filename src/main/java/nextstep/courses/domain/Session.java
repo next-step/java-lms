@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionState;
+import nextstep.courses.domain.enums.ProgressState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
@@ -13,7 +13,7 @@ public class Session {
     private String coverImagePath;
     private boolean isFree;
     private SessionStatus status;
-    private SessionState state;
+    private ProgressState state;
     private Long courseId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -26,16 +26,10 @@ public class Session {
     public Session(Long id, String startDate, String endDate, String coverImagePath, boolean isFree,
                    int maxCapacity, Long courseId) {
         this(id, new SessionDate(startDate, endDate), coverImagePath, isFree,
-                SessionState.PREPARING, maxCapacity, courseId, LocalDateTime.now(), null);
+                ProgressState.PREPARING, maxCapacity, courseId, LocalDateTime.now(), null);
     }
 
-//    public Session(Long id, String startDate, String endDate, String coverImagePath, boolean isFree, int state,
-//                   int maxCapacity, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-//        this(id, new SessionDate(startDate, endDate), coverImagePath, isFree, SessionState.of(state),
-//                maxCapacity, courseId, createdAt, updatedAt);
-//    }
-
-    public Session(Long id, SessionDate sessionDate, String coverImagePath, boolean isFree, SessionState state,
+    public Session(Long id, SessionDate sessionDate, String coverImagePath, boolean isFree, ProgressState state,
                    int maxCapacity, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.sessionDate = sessionDate;
@@ -49,7 +43,7 @@ public class Session {
     }
 
     public void enroll(NsUser student) {
-        if (!state.equals(SessionState.PROCEEDING)) {
+        if (!state.equals(ProgressState.PROCEEDING)) {
             throw new SessionNotOpenException("강의가 모집중이 아니어서 신청이 불가합니다.");
         }
 
@@ -57,7 +51,7 @@ public class Session {
     }
 
 
-    public void setSessionState(SessionState requestState) {
+    public void setSessionState(ProgressState requestState) {
         if (sessionDate.isExpired()) {
             throw new SessionExpiredException("강의종료일이 경과하여 상태 변경이 불가합니다.");
         }
@@ -78,7 +72,7 @@ public class Session {
                 '}';
     }
 
-    public boolean equalsState(SessionState state) {
+    public boolean equalsState(ProgressState state) {
         return this.state.equals(state);
     }
 
