@@ -21,17 +21,18 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (start_date, end_date, cover_image_path, is_free, state, " +
-                "max_capacity, course_id, created_at)" +
-                " values(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (start_date, end_date, cover_image_path, is_free, progress_state, " +
+                "recruitment_state, max_capacity, course_id, created_at)" +
+                " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, session.getStartDate(), session.getEndDate(), session.getCoverImagePath(),
-                session.isFree(), session.getProgressState(), session.getMaxCapacity(), session.getCourseId(), session.getCreatedAt());
+                session.isFree(), session.getProgressState(), session.getRecruitmentState(), session.getMaxCapacity(),
+                session.getCourseId(), session.getCreatedAt());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, start_date, end_date, cover_image_path, is_free, progress_state, recruitment_state, max_capacity, course_id, " +
-                "created_at, updated_at from session where id = ?";
+        String sql = "select id, start_date, end_date, cover_image_path, is_free, progress_state, recruitment_state, " +
+                "max_capacity, course_id, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 new SessionDate(rs.getString(2), rs.getString(3)),

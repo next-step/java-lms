@@ -117,4 +117,8 @@ public class Session {
     public Long getCourseId() {
         return courseId;
     }
+
+    public int getRecruitmentState() {
+        return  recruitmentState.getInt();
+    }
 }
