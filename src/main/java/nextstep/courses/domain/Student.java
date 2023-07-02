@@ -41,7 +41,19 @@ public class Student {
     }
 
     public enum StudentStatus {
-        REQUESTED, ENROLLED, CANCELED
+        REQUESTED, ENROLLED, CANCELED;
+
+        public boolean isEnrolled() {
+            return this == ENROLLED;
+        }
+
+        public boolean isCanceled() {
+            return this == CANCELED;
+        }
+
+        public boolean isRequested() {
+            return this == REQUESTED;
+        }
     }
 
     public void applyEnroll() {
@@ -49,18 +61,14 @@ public class Student {
     }
 
     public void cancelEnroll() {
-        if (this.status == StudentStatus.ENROLLED) {
+        if (this.status.isEnrolled()) {
             throw new IllegalArgumentException("이미 수강신청이 완료된 학생은 취소할 수 없습니다.");
         }
 
-        if (this.status == StudentStatus.CANCELED) {
+        if (this.status.isCanceled()) {
             throw new IllegalArgumentException("이미 수강신청이 취소된 학생은 취소할 수 없습니다.");
         }
 
         this.status = StudentStatus.CANCELED;
-    }
-
-    public boolean isEnrolled() {
-        return this.status == StudentStatus.ENROLLED;
     }
 }

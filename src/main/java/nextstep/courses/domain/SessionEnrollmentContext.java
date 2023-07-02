@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,16 +12,16 @@ public class SessionEnrollmentContext {
     private long maxEnrollment;
 
     public SessionEnrollmentContext(long maxEnrollment) {
-        this.maxEnrollment = maxEnrollment;
+        this(maxEnrollment, SessionStatus.NOT_STARTED);
     }
 
     public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus) {
-        this(maxEnrollment);
-        this.progressSessionStatus = progressSessionStatus;
+        this(maxEnrollment, progressSessionStatus, EnrollmentStatus.ENROLLABLE, new ArrayList<>());
     }
 
     public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus, EnrollmentStatus enrollmentStatus, List<Student> students) {
-        this(maxEnrollment, progressSessionStatus);
+        this.maxEnrollment = maxEnrollment;
+        this.progressSessionStatus = progressSessionStatus;
         this.enrollmentStatus = enrollmentStatus;
         this.students.addAll(students);
     }
@@ -34,17 +35,13 @@ public class SessionEnrollmentContext {
     }
 
     public boolean isEnrollable() {
-        return isNotFinished() && isNotFull() && isStatusEnrollable();
+        return progressSessionStatus.isNotFinished() && isNotFull() && isStatusEnrollable();
     }
 
     private List<Student> getEnrolledStudents() {
         return this.students.stream()
-                .filter(Student::isEnrolled)
+                .filter(student -> student.getStatus().isEnrolled())
                 .collect(Collectors.toList());
-    }
-
-    private boolean isNotFinished() {
-        return this.progressSessionStatus != SessionStatus.FINISHED;
     }
 
     private boolean isNotFull() {
@@ -73,11 +70,11 @@ public class SessionEnrollmentContext {
     }
 
     private void checkEnrollmentValidate() {
-        if (!isNotFinished()) {
+        if (!progressSessionStatus.isNotFinished()) {
             throw new IllegalArgumentException("강의가 종료되었습니다.");
         }
 
-        if (this.progressSessionStatus == SessionStatus.NOT_STARTED) {
+        if (this.progressSessionStatus.isNotStarted()) {
             throw new IllegalArgumentException("아직 모집중이 아닙니다.");
         }
 
@@ -93,11 +90,23 @@ public class SessionEnrollmentContext {
     }
 
     public enum SessionStatus {
-        NOT_STARTED, IN_PROGRESS, FINISHED
+        NOT_STARTED, IN_PROGRESS, FINISHED;
+
+        public boolean isNotFinished() {
+            return this != FINISHED;
+        }
+
+        public boolean isNotStarted() {
+            return this == NOT_STARTED;
+        }
     }
 
     public enum EnrollmentStatus {
-        ENROLLABLE, NOT_ENROLLABLE
+        ENROLLABLE, NOT_ENROLLABLE;
+
+        public boolean isEnrollable() {
+            return this == ENROLLABLE;
+        }
     }
 
     public List<Student> getStudents() {
