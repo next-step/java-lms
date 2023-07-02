@@ -40,8 +40,8 @@ public class JdbcSessionRepository {
     @Transactional(readOnly = true)
     public List<Session> findByCourseId(Long courseId) {
         String sql = "select id, start_date, end_date, " +
-                "coverUrl, billType, price, " +
-                "maxEnrollment, progressStatus, courseId " +
+                "cover_url, bill_type, price, " +
+                "max_enrollment, progress_status, enrollment_status, course_id " +
                 "from session where courseId = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
@@ -53,7 +53,8 @@ public class JdbcSessionRepository {
                 new Price(rs.getInt(6)),
                 rs.getLong(7),
                 SessionEnrollmentContext.SessionStatus.valueOf(rs.getString(8)),
-                rs.getLong(9),
+                SessionEnrollmentContext.EnrollmentStatus.valueOf(rs.getString(9)),
+                rs.getLong(10),
                 jdbcStudentRepository.findBySessionId(rs.getLong(1))
         );
         return jdbcTemplate.query(sql, rowMapper, courseId);
