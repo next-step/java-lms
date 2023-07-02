@@ -67,7 +67,7 @@ public class JdbcSessionRepository {
 
     public int save(Session session) {
         String sql = "insert into session (start_date, end_date, cover_url, bill_type, price, max_enrollment, progress_status, enrollment_status, course_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?)";
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
                 session.getDateTray().getStartDate(),
                 session.getDateTray().getEndDate(),
