@@ -5,25 +5,26 @@ import java.util.List;
 
 public class SessionEnrollmentContext {
     private final List<Student> students = new ArrayList<>();
-    private Status progressStatus = Status.NOT_STARTED;
+    private SessionStatus progressSessionStatus = SessionStatus.NOT_STARTED;
+    private EnrollmentStatus enrollmentStatus = EnrollmentStatus.ENROLLABLE;
     private long maxEnrollment;
 
     public SessionEnrollmentContext(long maxEnrollment) {
         this.maxEnrollment = maxEnrollment;
     }
 
-    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus) {
+    public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus) {
         this(maxEnrollment);
-        this.progressStatus = progressStatus;
+        this.progressSessionStatus = progressSessionStatus;
     }
 
-    public SessionEnrollmentContext(long maxEnrollment, Status progressStatus, List<Student> students) {
-        this(maxEnrollment, progressStatus);
+    public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus, List<Student> students) {
+        this(maxEnrollment, progressSessionStatus);
         this.students.addAll(students);
     }
 
-    public boolean statusEquals(Status status) {
-        return progressStatus == status;
+    public boolean statusEquals(SessionStatus sessionStatus) {
+        return progressSessionStatus == sessionStatus;
     }
 
     public long getNumberOfStudents() {
@@ -31,24 +32,44 @@ public class SessionEnrollmentContext {
     }
 
     public boolean isEnrollable() {
-        return this.progressStatus == Status.IN_PROGRESS &&
-                this.maxEnrollment > students.size();
+        return isNotFinished() && isNotFull() && isStatusEnrollable();
+    }
+
+    private boolean isNotFinished() {
+        return this.progressSessionStatus != SessionStatus.FINISHED;
+    }
+
+    private boolean isNotFull() {
+        return this.maxEnrollment > students.size();
+    }
+
+    private boolean isStatusEnrollable() {
+        return this.enrollmentStatus == EnrollmentStatus.ENROLLABLE;
     }
 
     public void start() {
-        this.progressStatus = Status.IN_PROGRESS;
+        this.progressSessionStatus = SessionStatus.IN_PROGRESS;
     }
 
     public void end() {
-        this.progressStatus = Status.FINISHED;
+        this.progressSessionStatus = SessionStatus.FINISHED;
+        stopEnrollment();
+    }
+
+    public void stopEnrollment() {
+        this.enrollmentStatus = EnrollmentStatus.NOT_ENROLLABLE;
+    }
+
+    public void resumeEnrollment() {
+        this.enrollmentStatus = EnrollmentStatus.ENROLLABLE;
     }
 
     private void checkEnrollmentValidate() {
-        if (this.progressStatus == Status.FINISHED) {
+        if (this.progressSessionStatus == SessionStatus.FINISHED) {
             throw new IllegalArgumentException("강의가 종료되었습니다.");
         }
 
-        if (this.progressStatus == Status.NOT_STARTED) {
+        if (this.progressSessionStatus == SessionStatus.NOT_STARTED) {
             throw new IllegalArgumentException("아직 모집중이 아닙니다.");
         }
 
@@ -63,16 +84,20 @@ public class SessionEnrollmentContext {
         return student;
     }
 
-    public enum Status {
+    public enum SessionStatus {
         NOT_STARTED, IN_PROGRESS, FINISHED
+    }
+
+    public enum EnrollmentStatus {
+        ENROLLABLE, NOT_ENROLLABLE
     }
 
     public List<Student> getStudents() {
         return List.copyOf(students);
     }
 
-    public Status getProgressStatus() {
-        return progressStatus;
+    public SessionStatus getProgressStatus() {
+        return progressSessionStatus;
     }
 
     public long getMaxEnrollment() {

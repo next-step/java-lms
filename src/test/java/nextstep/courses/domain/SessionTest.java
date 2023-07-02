@@ -33,7 +33,7 @@ class SessionTest {
                 .build();
 
         // when&then
-        Assertions.assertThat(session.statusEquals(SessionEnrollmentContext.Status.NOT_STARTED)).isTrue();
+        Assertions.assertThat(session.statusEquals(SessionEnrollmentContext.SessionStatus.NOT_STARTED)).isTrue();
     }
 
     @ParameterizedTest
@@ -61,13 +61,13 @@ class SessionTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = SessionEnrollmentContext.Status.class, names = {"IN_PROGRESS", "FINISHED"})
+    @EnumSource(value = SessionEnrollmentContext.SessionStatus.class, names = {"IN_PROGRESS", "FINISHED"})
     @DisplayName("수강신청은 모집상태가 IN_PROGRESS 일때만 가능하다")
-    void testEnrollStatus(SessionEnrollmentContext.Status status) {
+    void testEnrollStatus(SessionEnrollmentContext.SessionStatus sessionStatus) {
         // given
         Session session = SessionBuilder.builder()
                 .withEnrollmentContext(SessionEnrollmentContextBuilder.builder()
-                        .withProgressStatus(status))
+                        .withProgressStatus(sessionStatus))
                 .build();
 
         // when&then

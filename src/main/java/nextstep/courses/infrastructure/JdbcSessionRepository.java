@@ -29,7 +29,7 @@ public class JdbcSessionRepository {
                 Session.BillType.valueOf(rs.getString(5)),
                 new Price(rs.getInt(6)),
                 rs.getLong(7),
-                SessionEnrollmentContext.Status.valueOf(rs.getString(8)),
+                SessionEnrollmentContext.SessionStatus.valueOf(rs.getString(8)),
                 rs.getLong(9),
                 students
         );
@@ -51,7 +51,7 @@ public class JdbcSessionRepository {
                 Session.BillType.valueOf(rs.getString(5)),
                 new Price(rs.getInt(6)),
                 rs.getLong(7),
-                SessionEnrollmentContext.Status.valueOf(rs.getString(8)),
+                SessionEnrollmentContext.SessionStatus.valueOf(rs.getString(8)),
                 rs.getLong(9),
                 jdbcStudentRepository.findBySessionId(rs.getLong(1))
         );

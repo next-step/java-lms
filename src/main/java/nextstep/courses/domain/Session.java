@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.SessionEnrollmentContext.Status;
+import nextstep.courses.domain.SessionEnrollmentContext.SessionStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -49,9 +49,9 @@ public class Session {
 
     public Session(Long id, LocalDate startDate, LocalDate endDate,
                    String coverUrl, BillType billType, Price price,
-                   long maxEnrollment, Status progressStatus, Long courseId,
+                   long maxEnrollment, SessionStatus progressSessionStatus, Long courseId,
                    List<Student> students) {
-        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressStatus, students), courseId);
+        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressSessionStatus, students), courseId);
         checkPriceValidate();
     }
 
@@ -63,8 +63,8 @@ public class Session {
         throw new IllegalArgumentException("BillType과 Price가 일치하지 않습니다.");
     }
 
-    public boolean statusEquals(Status status) {
-        return this.enrollmentContext.statusEquals(status);
+    public boolean statusEquals(SessionStatus sessionStatus) {
+        return this.enrollmentContext.statusEquals(sessionStatus);
     }
 
     public BillType getBillType() {
