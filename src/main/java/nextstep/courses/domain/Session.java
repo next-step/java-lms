@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enums.ProgressState;
+import nextstep.courses.domain.enums.RecruitmentState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
@@ -12,11 +13,14 @@ public class Session {
     private SessionDate sessionDate;
     private String coverImagePath;
     private boolean isFree;
-    private SessionStatus status;
-    private ProgressState state;
+    private ProgressState progressState;
+    private RecruitmentState recruitmentState;
+    private int maxCapacity;
     private Long courseId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private SessionStatus status;
 
     public Session(String startDate, String endDate, int maxCapacity, Long courseId) {
         this(1L, startDate, endDate, " ", false,
@@ -26,37 +30,35 @@ public class Session {
     public Session(Long id, String startDate, String endDate, String coverImagePath, boolean isFree,
                    int maxCapacity, Long courseId) {
         this(id, new SessionDate(startDate, endDate), coverImagePath, isFree,
-                ProgressState.PREPARING, maxCapacity, courseId, LocalDateTime.now(), null);
+                ProgressState.PREPARING, RecruitmentState.RECRUITING, maxCapacity, courseId, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, SessionDate sessionDate, String coverImagePath, boolean isFree, ProgressState state,
-                   int maxCapacity, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, SessionDate sessionDate, String coverImagePath, boolean isFree, ProgressState progressState,
+                   RecruitmentState recruitmentState, int maxCapacity, Long courseId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.sessionDate = sessionDate;
-        this.isFree = isFree;
-        this.status = new SessionStatus(maxCapacity);
-        this.state = state;
         this.coverImagePath = coverImagePath;
+        this.isFree = isFree;
+        this.progressState = progressState;
+        this.recruitmentState = recruitmentState;
+        this.maxCapacity = maxCapacity;
         this.courseId = courseId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+
+        this.status = new SessionStatus(this.maxCapacity, this.progressState, this.recruitmentState);
     }
 
     public void enroll(NsUser student) {
-        if (!state.equals(ProgressState.PROCEEDING)) {
-            throw new SessionNotOpenException("강의가 모집중이 아니어서 신청이 불가합니다.");
-        }
-
         status.enroll(student, this.id);
     }
-
 
     public void setSessionState(ProgressState requestState) {
         if (sessionDate.isExpired()) {
             throw new SessionExpiredException("강의종료일이 경과하여 상태 변경이 불가합니다.");
         }
 
-        state = requestState;
+        progressState = requestState;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class Session {
     }
 
     public boolean equalsState(ProgressState state) {
-        return this.state.equals(state);
+        return this.progressState.equals(state);
     }
 
     public int getSignedUpStatus() {
@@ -100,8 +102,8 @@ public class Session {
         return status.getMaxCapacity();
     }
 
-    public int getState() {
-        return state.getInt();
+    public int getProgressState() {
+        return progressState.getInt();
     }
 
     public LocalDateTime getCreatedAt() {

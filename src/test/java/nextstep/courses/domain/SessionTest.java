@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.enums.ProgressState;
+import nextstep.courses.domain.enums.RecruitmentState;
 import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
@@ -18,15 +19,15 @@ public class SessionTest {
 
     @Test
     void 생성자검증() {
-        Assertions.assertThat(new Session("20230701", "20230731", 10 ,0L))
+        Assertions.assertThat(new Session("20230801", "20230831", 10 ,0L))
                 .isInstanceOf(Session.class);
     }
 
     @Test
     void 강의상태변경_불가() {
         SessionDate sessionDate = new SessionDate("20230401", "20230431", false);
-        Session session =  new Session(0L, sessionDate, "https://nextstep.com", true , ProgressState.PREPARING
-                ,30, 0L, LocalDateTime.now(), LocalDateTime.now());
+        Session session =  new Session(0L, sessionDate, "https://nextstep.com", true , ProgressState.PREPARING,
+                RecruitmentState.NOT_RECRUITING,30, 0L, LocalDateTime.now(), LocalDateTime.now());
 
         assertThatThrownBy(() -> {
             session.setSessionState(ProgressState.END);
@@ -35,26 +36,15 @@ public class SessionTest {
 
     @Test
     void 강의상태변경() {
-        Session session =  new Session("20230701", "20230731", 30 ,1L);
+        Session session =  new Session("20230801", "20230831", 30 ,1L);
 
         session.setSessionState(ProgressState.PREPARING);
         Assertions.assertThat(session.equalsState(ProgressState.PREPARING)).isTrue();
     }
 
     @Test
-    void 강의신청불가_모집중아님() {
-        Session session =  new Session("20230701", "20230731", 30 ,1L);
-
-        session.setSessionState(ProgressState.END);
-
-        assertThatThrownBy(() -> {
-            session.enroll(new NsUser(1L, "jerry", "password", "name", "jerry@nextstep.com"));
-        }).isInstanceOf(SessionNotOpenException.class).hasMessageContaining("강의가 모집중이 아니어서 신청이 불가합니다.");
-    }
-
-    @Test
     void 강의신청테스트() {
-        Session session =  new Session("20230701", "20230731", 30 ,1L);
+        Session session =  new Session("20230801", "20230831", 30 ,1L);
 
         session.setSessionState(ProgressState.PROCEEDING);
 

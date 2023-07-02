@@ -28,7 +28,7 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session("20230701", "20230731", 30, 1004L);
+        Session session = new Session("20230801", "20230831", 30, 1004L);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
