@@ -53,12 +53,20 @@ public class Session {
         status.enroll(student, this.id);
     }
 
-    public void setSessionState(ProgressState requestState) {
+    public void changeProgressState(ProgressState requestState) {
         if (sessionDate.isExpired()) {
             throw new SessionExpiredException("강의종료일이 경과하여 상태 변경이 불가합니다.");
         }
 
-        progressState = requestState;
+        this.progressState = status.changeProgressState(requestState);
+    }
+
+    public void changeRecruitmentState(RecruitmentState requestState) {
+        if (sessionDate.isExpired()) {
+            throw new SessionExpiredException("강의종료일이 경과하여 상태 변경이 불가합니다.");
+        }
+
+        this.recruitmentState = status.changeRecruitmentState(requestState);
     }
 
     @Override
@@ -72,10 +80,6 @@ public class Session {
                 ", courseId=" + courseId +
                 ", createdAt=" + createdAt +
                 '}';
-    }
-
-    public boolean equalsState(ProgressState state) {
-        return this.progressState.equals(state);
     }
 
     public int getSignedUpStatus() {
@@ -99,7 +103,7 @@ public class Session {
     }
 
     public int getMaxCapacity() {
-        return status.getMaxCapacity();
+        return this.maxCapacity;
     }
 
     public int getProgressState() {

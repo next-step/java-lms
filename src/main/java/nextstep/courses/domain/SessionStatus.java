@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.ProgressState;
 import nextstep.courses.domain.enums.RecruitmentState;
 import nextstep.courses.exception.EnrollFullException;
+import nextstep.courses.exception.SessionExpiredException;
 import nextstep.courses.exception.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
 
@@ -26,7 +27,7 @@ public class SessionStatus {
         return enrollments.getSize();
     }
 
-    public void  enroll(NsUser student, long sessionId) {
+    public void enroll(NsUser student, long sessionId) {
         if (progressState.equals(ProgressState.END)) {
             throw new SessionNotOpenException("강의가 종료되어 신청이 불가합니다.");
         }
@@ -42,7 +43,15 @@ public class SessionStatus {
         enrollments.enroll(student, sessionId);
     }
 
-    public int getMaxCapacity() {
-        return maxCapacity;
+    public ProgressState changeProgressState(ProgressState requestState) {
+        return progressState = requestState;
+    }
+
+    public RecruitmentState changeRecruitmentState(RecruitmentState requestState) {
+        if (progressState.equals(ProgressState.END)) {
+            throw new SessionExpiredException("강의종료일이 경과하여 상태 변경이 불가합니다.");
+        }
+
+        return recruitmentState = requestState;
     }
 }

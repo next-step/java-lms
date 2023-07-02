@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class SessionStatusTest {
@@ -21,7 +22,7 @@ public class SessionStatusTest {
 
     @Test
     void 생성자테스트() {
-        Assertions.assertThat(new SessionStatus(30)).isInstanceOf(SessionStatus.class);
+        assertThat(new SessionStatus(30)).isInstanceOf(SessionStatus.class);
     }
 
     @Test
@@ -63,4 +64,19 @@ public class SessionStatusTest {
             sessionStatus.enroll(david, 1L);
         }).isInstanceOf(SessionNotOpenException.class).hasMessageContaining("강의가 비모집중으로 신청이 불가합니다.");
     }
+
+    @Test
+    void 강의진행상태변경() {
+        SessionStatus sessionStatus = new SessionStatus(1, ProgressState.PROCEEDING, RecruitmentState.NOT_RECRUITING);
+
+        assertThat(sessionStatus.changeProgressState(ProgressState.END)).isEqualTo(ProgressState.END);
+    }
+
+    @Test
+    void 강의모집상태변경() {
+        SessionStatus sessionStatus = new SessionStatus(1, ProgressState.PROCEEDING, RecruitmentState.NOT_RECRUITING);
+
+        assertThat(sessionStatus.changeRecruitmentState(RecruitmentState.RECRUITING)).isEqualTo(RecruitmentState.RECRUITING);
+    }
+
 }
