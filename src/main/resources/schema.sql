@@ -59,6 +59,7 @@ create table session (
   price bigint,
   max_enrollment bigint,
   progress_status varchar(30),
+  enrollment_status varchar(30),
   primary key (id)
 );
 

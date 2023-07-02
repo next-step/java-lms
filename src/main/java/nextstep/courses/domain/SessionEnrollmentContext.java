@@ -18,8 +18,9 @@ public class SessionEnrollmentContext {
         this.progressSessionStatus = progressSessionStatus;
     }
 
-    public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus, List<Student> students) {
+    public SessionEnrollmentContext(long maxEnrollment, SessionStatus progressSessionStatus, EnrollmentStatus enrollmentStatus, List<Student> students) {
         this(maxEnrollment, progressSessionStatus);
+        this.enrollmentStatus = enrollmentStatus;
         this.students.addAll(students);
     }
 
@@ -98,6 +99,10 @@ public class SessionEnrollmentContext {
 
     public SessionStatus getProgressStatus() {
         return progressSessionStatus;
+    }
+
+    public EnrollmentStatus getEnrollmentStatus() {
+        return enrollmentStatus;
     }
 
     public long getMaxEnrollment() {

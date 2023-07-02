@@ -49,9 +49,9 @@ public class Session {
 
     public Session(Long id, LocalDate startDate, LocalDate endDate,
                    String coverUrl, BillType billType, Price price,
-                   long maxEnrollment, SessionStatus progressSessionStatus, Long courseId,
-                   List<Student> students) {
-        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressSessionStatus, students), courseId);
+                   long maxEnrollment, SessionStatus progressSessionStatus, SessionEnrollmentContext.EnrollmentStatus enrollmentStatus,
+                   Long courseId, List<Student> students) {
+        this(id, new DateTray(startDate, endDate), coverUrl, billType, price, new SessionEnrollmentContext(maxEnrollment, progressSessionStatus, enrollmentStatus, students), courseId);
         checkPriceValidate();
     }
 

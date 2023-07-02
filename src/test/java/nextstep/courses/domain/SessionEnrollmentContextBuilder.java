@@ -6,6 +6,7 @@ import java.util.List;
 public class SessionEnrollmentContextBuilder {
     private List<Student> students = new ArrayList<>();
     private SessionEnrollmentContext.SessionStatus progressSessionStatus = SessionEnrollmentContext.SessionStatus.NOT_STARTED;
+    private SessionEnrollmentContext.EnrollmentStatus enrollmentStatus = SessionEnrollmentContext.EnrollmentStatus.ENROLLABLE;
     private long maxEnrollment;
 
     public static SessionEnrollmentContextBuilder builder() {
@@ -28,6 +29,6 @@ public class SessionEnrollmentContextBuilder {
     }
 
     public SessionEnrollmentContext build() {
-        return new SessionEnrollmentContext(maxEnrollment, progressSessionStatus, students);
+        return new SessionEnrollmentContext(maxEnrollment, progressSessionStatus, enrollmentStatus, students);
     }
 }
