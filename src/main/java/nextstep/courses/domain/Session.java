@@ -89,7 +89,7 @@ public class Session {
 
     public Student enroll(NsUser user) {
         Student student = new Student(this, user);
-        return enrollmentContext.enroll(student);
+        return enrollmentContext.requestEnroll(student);
     }
 
     public Price getPrice() {

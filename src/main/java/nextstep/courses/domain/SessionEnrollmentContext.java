@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SessionEnrollmentContext {
     private final List<Student> students = new ArrayList<>();
@@ -29,11 +30,17 @@ public class SessionEnrollmentContext {
     }
 
     public long getNumberOfStudents() {
-        return this.students.size();
+        return getEnrolledStudents().size();
     }
 
     public boolean isEnrollable() {
         return isNotFinished() && isNotFull() && isStatusEnrollable();
+    }
+
+    private List<Student> getEnrolledStudents() {
+        return this.students.stream()
+                .filter(Student::isEnrolled)
+                .collect(Collectors.toList());
     }
 
     private boolean isNotFinished() {
@@ -41,7 +48,7 @@ public class SessionEnrollmentContext {
     }
 
     private boolean isNotFull() {
-        return this.maxEnrollment > students.size();
+        return this.maxEnrollment > getEnrolledStudents().size();
     }
 
     private boolean isStatusEnrollable() {
@@ -66,7 +73,7 @@ public class SessionEnrollmentContext {
     }
 
     private void checkEnrollmentValidate() {
-        if (this.progressSessionStatus == SessionStatus.FINISHED) {
+        if (!isNotFinished()) {
             throw new IllegalArgumentException("강의가 종료되었습니다.");
         }
 
@@ -74,12 +81,12 @@ public class SessionEnrollmentContext {
             throw new IllegalArgumentException("아직 모집중이 아닙니다.");
         }
 
-        if (this.maxEnrollment <= this.getNumberOfStudents()) {
+        if (!isNotFull()) {
             throw new IllegalArgumentException("수강생이 가득 찼습니다.");
         }
     }
 
-    public Student enroll(Student student) {
+    public Student requestEnroll(Student student) {
         checkEnrollmentValidate();
         students.add(student);
         return student;

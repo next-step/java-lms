@@ -11,8 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
 
@@ -91,8 +90,77 @@ class SessionTest {
 
         // when&then
         Assertions.assertThat(session.isEnrollable()).isTrue();
-        session.enroll(NsUserTest.JAVAJIGI);
+        Student student = session.enroll(NsUserTest.JAVAJIGI);
+        student.applyEnroll();
+
         Assertions.assertThat(session.isEnrollable()).isFalse();
+    }
+
+    @Test
+    @DisplayName("선발되지 않은 인원은 최대 수강 인원수에 포함되지 않는다")
+    void testEnrollMaxNotSelected() {
+        // given
+        Session session = SessionBuilder
+                .builder()
+                .withEnrollmentContext(
+                        SessionEnrollmentContextBuilder
+                                .builder()
+                                .withMaxEnrollment(1L)
+                )
+                .build();
+
+        session.start();
+
+        // when
+        Assertions.assertThat(session.isEnrollable()).isTrue();
+        session.enroll(NsUserTest.JAVAJIGI);
+        assertThat(session.getEnrollmentContext().getNumberOfStudents()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("선발된 인원은 최대 수강 인원수에 포함된다")
+    void testEnrollMaxSelected() {
+        // given
+        Session session = SessionBuilder
+                .builder()
+                .withEnrollmentContext(
+                        SessionEnrollmentContextBuilder
+                                .builder()
+                                .withMaxEnrollment(1L)
+                )
+                .build();
+
+        session.start();
+
+        // when
+        Assertions.assertThat(session.isEnrollable()).isTrue();
+        Student student = session.enroll(NsUserTest.JAVAJIGI);
+        student.applyEnroll();
+
+        assertThat(session.getEnrollmentContext().getNumberOfStudents()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("취소한 인원은 최대 수강 인원수에 포함되지 않는다")
+    void testEnrollMaxCanceled() {
+        // given
+        Session session = SessionBuilder
+                .builder()
+                .withEnrollmentContext(
+                        SessionEnrollmentContextBuilder
+                                .builder()
+                                .withMaxEnrollment(1L)
+                )
+                .build();
+
+        session.start();
+
+        // when
+        Assertions.assertThat(session.isEnrollable()).isTrue();
+        Student student = session.enroll(NsUserTest.JAVAJIGI);
+        student.cancelEnroll();
+
+        assertThat(session.getEnrollmentContext().getNumberOfStudents()).isEqualTo(0);
     }
 
     static Stream<Arguments> provideBillTypeAndPriceFail() {
