@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -9,6 +8,8 @@ import static nextstep.courses.domain.SessionInfoBuilder.sessionInfo;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionInfoTest {
+
+    private Student student = new Student(1L, 1L);
 
     @Test
     void 수강신청_정보() {
@@ -37,7 +38,7 @@ public class SessionInfoTest {
                 .lectureStatus(LectureStatus.RECRUITING)
                 .build();
 
-        assertThatCode(() -> sessionInfo.register(NsUser.GUEST_USER))
+        assertThatCode(() -> sessionInfo.register(student))
                 .doesNotThrowAnyException();
     }
 
@@ -47,7 +48,7 @@ public class SessionInfoTest {
                 .lectureStatus(LectureStatus.PREPARING)
                 .build();
 
-        assertThatThrownBy(() -> sessionInfo.register(NsUser.GUEST_USER))
+        assertThatThrownBy(() -> sessionInfo.register(student))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("수강신청은 모집중일때 가능합니다.");
     }
@@ -59,10 +60,10 @@ public class SessionInfoTest {
                 .maxUser(2)
                 .build();
 
-        sessionInfo.register(NsUser.GUEST_USER);
-        sessionInfo.register(NsUser.GUEST_USER);
+        sessionInfo.register(student);
+        sessionInfo.register(student);
 
-        assertThatThrownBy(() -> sessionInfo.register(NsUser.GUEST_USER))
+        assertThatThrownBy(() -> sessionInfo.register(student))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
 

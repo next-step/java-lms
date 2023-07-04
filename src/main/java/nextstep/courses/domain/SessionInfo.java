@@ -6,16 +6,16 @@ import java.util.List;
 
 public class SessionInfo {
     private final LectureStatus lectureStatus;
-    private final List<NsUser> users;
+    private final List<Student> users;
     private final int maxUser;
 
-    public SessionInfo(LectureStatus lectureStatus, List<NsUser> users, int maxUser) {
+    public SessionInfo(LectureStatus lectureStatus, List<Student> users, int maxUser) {
         this.lectureStatus = lectureStatus;
         this.users = users;
         this.maxUser = maxUser;
     }
 
-    public void register(NsUser user) {
+    public void register(Student student) {
         if (!this.lectureStatus.isRecruiting()) {
             throw new RuntimeException("수강신청은 모집중일때 가능합니다.");
         }
@@ -24,7 +24,7 @@ public class SessionInfo {
             throw new RuntimeException("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
         }
 
-        users.add(user);
+        users.add(student);
     }
 
 
@@ -32,7 +32,7 @@ public class SessionInfo {
         return lectureStatus;
     }
 
-    public List<NsUser> getUsers() {
+    public List<Student> getUsers() {
         return users;
     }
 

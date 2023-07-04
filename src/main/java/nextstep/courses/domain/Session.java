@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Session {
-    private final Long id;
+    private Long id;
     private final Long courseId;
     private final LocalDateTime createdAt;
     private final String image;
@@ -42,7 +42,7 @@ public class Session {
     }
 
     public void register(NsUser user) {
-        sessionInfo.register(user);
+        sessionInfo.register(new Student(id, user.getId()));
     }
 
     public SessionDate getSessionDate() {
@@ -76,4 +76,9 @@ public class Session {
     public LectureStatus getLectureStatus() {
         return sessionInfo.getLectureStatus();
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

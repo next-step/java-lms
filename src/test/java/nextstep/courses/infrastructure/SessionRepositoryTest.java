@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class SessionRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

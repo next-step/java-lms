@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SessionInfoBuilder {
     private LectureStatus lectureStatus = LectureStatus.PREPARING;
-    private List<NsUser> users = new ArrayList<>();
+    private List<Student> users = new ArrayList<>();
     private int maxUser = 100;
 
     public SessionInfoBuilder lectureStatus(LectureStatus lectureStatus) {
@@ -15,7 +15,7 @@ public class SessionInfoBuilder {
         return this;
     }
 
-    public SessionInfoBuilder users(List<NsUser> users) {
+    public SessionInfoBuilder users(List<Student> users) {
         this.users = users;
         return this;
     }
