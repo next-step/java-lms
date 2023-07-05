@@ -9,17 +9,18 @@ import java.time.LocalDateTime;
 public class Session {
     private Long id;
     private final Long courseId;
-    private final LocalDateTime createdAt;
     private final String image;
     private final LectureType lectureType;
     private final SessionDate sessionDate;
     private final SessionInfo sessionInfo;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public Session(Long id, Long courseId, String image, LectureType lectureType, SessionDate sessionDate, SessionInfo sessionInfo) {
-        this(id,courseId,image,lectureType,sessionDate,sessionInfo,LocalDateTime.now());
+        this(id, courseId, image, lectureType, sessionDate, sessionInfo, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Long courseId, String image, LectureType lectureType, SessionDate sessionDate, SessionInfo sessionInfo, LocalDateTime createdAt) {
+    public Session(Long id, Long courseId, String image, LectureType lectureType, SessionDate sessionDate, SessionInfo sessionInfo, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.image = image;
@@ -27,6 +28,7 @@ public class Session {
         this.sessionDate = sessionDate;
         this.sessionInfo = sessionInfo;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {

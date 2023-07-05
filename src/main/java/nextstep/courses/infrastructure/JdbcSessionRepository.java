@@ -36,7 +36,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(long id) {
-        String sql = "select id,course_id,image,lecture_type,start_date,end_date,lecture_status,max_user,created_at from session where id = ?";
+        String sql = "select id,course_id,image,lecture_type,start_date,end_date,lecture_status,max_user,created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
@@ -51,7 +51,8 @@ public class JdbcSessionRepository implements SessionRepository {
                         new ArrayList<>(),
                         rs.getInt(8)
                 ),
-                toLocalDateTime(rs.getTimestamp(9)));
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
