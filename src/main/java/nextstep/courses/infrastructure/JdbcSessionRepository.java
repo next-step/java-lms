@@ -20,7 +20,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into session (course_id, image, start_date, end_date, lecture_status, lecture_type, max_user, created_at) values(?, ?, ?, ?, ?, ?, ?, ?)";
-        System.out.println("이게왜널:"+session.getCourseId());
+
         return jdbcTemplate.update(
                 sql,
                 session.getCourseId(),
