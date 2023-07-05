@@ -48,7 +48,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 ),
                 new SessionInfo(
                         LectureStatus.valueOf(rs.getString(7)),
-                        new ArrayList<>(),
+                        new Students(),
                         rs.getInt(8)
                 ),
                 toLocalDateTime(rs.getTimestamp(9)),

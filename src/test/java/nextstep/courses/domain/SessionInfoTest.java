@@ -17,7 +17,7 @@ public class SessionInfoTest {
 
         assertThat(sessionInfo.getMaxUser()).isNotNull();
         assertThat(sessionInfo.getLectureStatus()).isNotNull();
-        assertThat(sessionInfo.getUsers()).isNotNull();
+        assertThat(sessionInfo.getStudents()).isNotNull();
     }
 
     @ParameterizedTest

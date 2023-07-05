@@ -1,17 +1,13 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
-import java.util.List;
-
 public class SessionInfo {
     private final LectureStatus lectureStatus;
-    private final List<Student> users;
+    private final Students students;
     private final int maxUser;
 
-    public SessionInfo(LectureStatus lectureStatus, List<Student> users, int maxUser) {
+    public SessionInfo(LectureStatus lectureStatus, Students students, int maxUser) {
         this.lectureStatus = lectureStatus;
-        this.users = users;
+        this.students = students;
         this.maxUser = maxUser;
     }
 
@@ -19,12 +15,7 @@ public class SessionInfo {
         if (!this.lectureStatus.isRecruiting()) {
             throw new RuntimeException("수강신청은 모집중일때 가능합니다.");
         }
-
-        if (this.users.size() >= maxUser) {
-            throw new RuntimeException("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
-        }
-
-        users.add(student);
+        students.add(student, maxUser);
     }
 
 
@@ -32,11 +23,11 @@ public class SessionInfo {
         return lectureStatus;
     }
 
-    public List<Student> getUsers() {
-        return users;
-    }
-
     public int getMaxUser() {
         return maxUser;
+    }
+
+    public Students getStudents() {
+        return students;
     }
 }
