@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +45,7 @@ class SessionEnrollmentContextTest {
         );
 
         // when&then
-        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.Status.NOT_STARTED)).isTrue();
+        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.SessionStatus.NOT_STARTED)).isTrue();
     }
 
     @Test
@@ -61,7 +60,7 @@ class SessionEnrollmentContextTest {
         sessionEnrollmentContext.start();
 
         // then
-        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.Status.IN_PROGRESS)).isTrue();
+        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.SessionStatus.IN_PROGRESS)).isTrue();
     }
 
     @Test
@@ -76,6 +75,37 @@ class SessionEnrollmentContextTest {
         sessionEnrollmentContext.end();
 
         // then
-        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.Status.FINISHED)).isTrue();
+        Assertions.assertThat(sessionEnrollmentContext.statusEquals(SessionEnrollmentContext.SessionStatus.FINISHED)).isTrue();
+    }
+
+    @Test
+    @DisplayName("강의가 진행중일 때에도 모집중이라면 수강신청이 가능하다")
+    void testEnrollableInProgress() {
+        // given
+        SessionEnrollmentContext sessionEnrollmentContext = new SessionEnrollmentContext(
+                100L
+        );
+
+        // when
+        sessionEnrollmentContext.start();
+
+        // then
+        Assertions.assertThat(sessionEnrollmentContext.isEnrollable()).isTrue();
+    }
+
+    @Test
+    @DisplayName("강의가 진행중일 때 모집을 종료하면 수강신청이 불가능하다")
+    void testEnrollableInProgressEnd() {
+        // given
+        SessionEnrollmentContext sessionEnrollmentContext = new SessionEnrollmentContext(
+                100L
+        );
+
+        // when
+        sessionEnrollmentContext.start();
+        sessionEnrollmentContext.stopEnrollment();
+
+        // then
+        Assertions.assertThat(sessionEnrollmentContext.isEnrollable()).isFalse();
     }
 }

@@ -19,7 +19,7 @@ public class JdbcSessionRepository {
 
         String sql = "select id, start_date, end_date, " +
                 "cover_url, bill_type, price, " +
-                "max_enrollment, progress_status, course_id " +
+                "max_enrollment, progress_status, enrollment_status, course_id " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
@@ -29,8 +29,9 @@ public class JdbcSessionRepository {
                 Session.BillType.valueOf(rs.getString(5)),
                 new Price(rs.getInt(6)),
                 rs.getLong(7),
-                SessionEnrollmentContext.Status.valueOf(rs.getString(8)),
-                rs.getLong(9),
+                SessionEnrollmentContext.SessionStatus.valueOf(rs.getString(8)),
+                SessionEnrollmentContext.EnrollmentStatus.valueOf(rs.getString(9)),
+                rs.getLong(10),
                 students
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -39,8 +40,8 @@ public class JdbcSessionRepository {
     @Transactional(readOnly = true)
     public List<Session> findByCourseId(Long courseId) {
         String sql = "select id, start_date, end_date, " +
-                "coverUrl, billType, price, " +
-                "maxEnrollment, progressStatus, courseId " +
+                "cover_url, bill_type, price, " +
+                "max_enrollment, progress_status, enrollment_status, course_id " +
                 "from session where courseId = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
@@ -51,8 +52,9 @@ public class JdbcSessionRepository {
                 Session.BillType.valueOf(rs.getString(5)),
                 new Price(rs.getInt(6)),
                 rs.getLong(7),
-                SessionEnrollmentContext.Status.valueOf(rs.getString(8)),
-                rs.getLong(9),
+                SessionEnrollmentContext.SessionStatus.valueOf(rs.getString(8)),
+                SessionEnrollmentContext.EnrollmentStatus.valueOf(rs.getString(9)),
+                rs.getLong(10),
                 jdbcStudentRepository.findBySessionId(rs.getLong(1))
         );
         return jdbcTemplate.query(sql, rowMapper, courseId);
@@ -64,8 +66,8 @@ public class JdbcSessionRepository {
     }
 
     public int save(Session session) {
-        String sql = "insert into session (start_date, end_date, cover_url, bill_type, price, max_enrollment, progress_status, course_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (start_date, end_date, cover_url, bill_type, price, max_enrollment, progress_status, enrollment_status, course_id) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
                 session.getDateTray().getStartDate(),
                 session.getDateTray().getEndDate(),
@@ -74,6 +76,7 @@ public class JdbcSessionRepository {
                 session.getPrice().getValue(),
                 session.getEnrollmentContext().getMaxEnrollment(),
                 session.getEnrollmentContext().getProgressStatus().name(),
+                session.getEnrollmentContext().getEnrollmentStatus().name(),
                 session.getCourseId()
         );
     }
