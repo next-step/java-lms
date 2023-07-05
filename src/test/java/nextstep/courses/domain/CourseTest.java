@@ -15,7 +15,6 @@ public class CourseTest {
     @Test
     void addSession() {
         course.addSession(SESSION1);
-
         assertThat(course.sessionsSize()).isEqualTo(1);
     }
 }
