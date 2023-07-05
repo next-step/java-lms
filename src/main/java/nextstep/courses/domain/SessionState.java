@@ -27,11 +27,11 @@ public enum SessionState {
                 .orElse(CLOSE);
     }
 
-    public static boolean isProceeding(SessionState sessionState) {
-        return sessionState.equals(PROCEEDING);
+    public boolean isProceeding() {
+        return this == PROCEEDING;
     }
 
-    public static boolean isPreparing(SessionState sessionState) {
-        return sessionState.equals(PREPARING);
+    public boolean isPreparing() {
+        return this == PREPARING;
     }
 }

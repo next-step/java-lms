@@ -36,11 +36,15 @@ public class StudentService {
 
     @Transactional
     public int approveStudent(Long sessionId, Long id) {
-        return studentRepository.updateApprovalState(sessionId, id, ApprovalState.APPROVAL);
+        Student student = studentRepository.findById(id);
+        student.approve();
+        return studentRepository.save(student);
     }
 
     @Transactional
     public int approveCancelStudent(Long sessionId, Long id) {
-        return studentRepository.updateApprovalState(sessionId, id, ApprovalState.UN_APPROVAL);
+        Student student = studentRepository.findById(id);
+        student.cancel();
+        return studentRepository.save(student);
     }
 }

@@ -7,7 +7,7 @@ public enum ApprovalState {
 
     private final String code;
 
-    ApprovalState(String code) {
+    private ApprovalState(String code) {
         this.code = code;
     }
 
@@ -22,7 +22,7 @@ public enum ApprovalState {
                 .orElse(UN_APPROVAL);
     }
 
-    public static boolean isApproved(ApprovalState approvalState){
-        return approvalState.getCode().equals(APPROVAL.getCode());
+    public boolean isApproved(){
+        return this.getCode() == APPROVAL.getCode();
     }
 }

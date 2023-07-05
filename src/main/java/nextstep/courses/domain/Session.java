@@ -4,6 +4,8 @@ import lombok.Builder;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Session {
 
@@ -13,19 +15,23 @@ public class Session {
     private Period period;
     private String imageUrl;
     private SessionType sessionType;
-    private SessionValidator sessionValidator;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private final Long creatorId;
 
     private final Students students;
 
+    private final Set<NsUser> nsUsers;
+    private SessionRecruitState sessionRecruitState;
+    private SessionState sessionState;
+
     @Builder
-    public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionValidator sessionValidator, Students students) {
+    public Session(Long id, Long courseId, String title, Long creatorId, Period period, LocalDateTime createAt, LocalDateTime updateAt, String imageUrl, SessionType sessionType, SessionRecruitState sessionRecruitState, SessionState sessionState, Students students) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.sessionValidator = sessionValidator;
+        this.sessionRecruitState = sessionRecruitState;
+        this.sessionState = sessionState;
         this.period = period;
         this.createAt = createAt;
         this.updateAt = updateAt;
@@ -34,17 +40,25 @@ public class Session {
         this.createAt = LocalDateTime.now();
         this.creatorId = creatorId;
         this.students = students;
+        this.nsUsers = new HashSet<>();
     }
 
     public void apply(NsUser loginUser) {
-        sessionValidator.addPerson(loginUser);
+        if (!sessionRecruitState.isRecruitable()) {
+            throw new IllegalArgumentException("해당 강의는 수강신청중이 아닙니다.");
+        }
+
+        if (nsUsers.contains(loginUser)) {
+            throw new IllegalArgumentException("중복 신청입니다.");
+        }
+        nsUsers.add(loginUser);
     }
 
     public void add(Student student) {
-        if (!sessionValidator.isRecuritable()) {
+        if (!sessionRecruitState.isRecruitable()) {
             throw new IllegalArgumentException("모집 중일때만 신청 가능합니다!");
         }
-        if (!sessionValidator.isProceeding() || !sessionValidator.isPreparing()) {
+        if (!sessionState.isProceeding() || !sessionState.isPreparing()) {
             throw new IllegalArgumentException("준비중, 진행중 일때만 신청 가능합니다!");
         }
         students.add(student);
@@ -56,8 +70,7 @@ public class Session {
     }
 
     public Student requestEnroll(Long studentId){
-        Student student = new Student(studentId, id);
-        return student;
+        return new Student(studentId, id);
     }
 
     public Long getId() {
@@ -96,11 +109,7 @@ public class Session {
         return this.sessionType.name();
     }
 
-    public SessionValidator sessionValidator() {
-        return this.sessionValidator;
-    }
-
-    public int StudentsMaxCount() {
+    public int studentsMaxCount() {
         return students.maxCount();
     }
 }

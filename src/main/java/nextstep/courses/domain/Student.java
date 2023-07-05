@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Student {
     private final Long studentId;
     private final Long sessionId;
-    private final ApprovalState approvalState;
+    private ApprovalState approvalState;
 
     public Student(Long studentId, Long sessionId) {
         this(studentId, sessionId, ApprovalState.UN_APPROVAL.getCode());
@@ -14,6 +14,12 @@ public class Student {
         this.studentId = studentId;
         this.sessionId = sessionId;
         this.approvalState = ApprovalState.convert(approvalStateString);
+    }
+
+    public Student(Long studentId, Long sessionId, ApprovalState approvalState) {
+        this.studentId = studentId;
+        this.sessionId = sessionId;
+        this.approvalState = approvalState;
     }
 
     public Long getStudentId() {
@@ -25,11 +31,19 @@ public class Student {
     }
 
     public boolean isApproved(){
-        return ApprovalState.isApproved(approvalState);
+        return approvalState.isApproved();
     }
 
     public String getApprovalState() {
         return approvalState.name();
+    }
+
+    public void approve(){
+        this.approvalState = ApprovalState.APPROVAL;
+    }
+
+    public void cancel(){
+        this.approvalState = ApprovalState.UN_APPROVAL;
     }
 
     @Override

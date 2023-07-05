@@ -7,7 +7,7 @@ public enum SessionRecruitState {
 
     private final String code;
 
-    SessionRecruitState(String code) {
+    private SessionRecruitState(String code) {
         this.code = code;
     }
 
@@ -23,6 +23,6 @@ public enum SessionRecruitState {
     }
 
     public boolean isRecruitable() {
-        return this.equals(RECRUITING);
+        return this == RECRUITING;
     }
 }

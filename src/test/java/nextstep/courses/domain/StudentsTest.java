@@ -42,7 +42,7 @@ class StudentsTest {
         assertThat(students.size())
                 .isEqualTo(2);
 
-        students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode()));
+        students.add(new Student(3L, 3L, ApprovalState.APPROVAL));
 
         assertThat(students.size())
                 .isEqualTo(3);
@@ -56,7 +56,7 @@ class StudentsTest {
 
         Students students = new Students(studentSet, 2);
 
-        assertThatThrownBy(() -> students.add(new Student(3L, 3L, ApprovalState.APPROVAL.getCode())))
+        assertThatThrownBy(() -> students.add(new Student(3L, 3L, ApprovalState.APPROVAL)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강 신청 인원을 넘었습니다");
     }
