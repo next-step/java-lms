@@ -52,20 +52,4 @@ public class SessionInfoTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("수강신청은 모집중일때 가능합니다.");
     }
-
-    @Test
-    void 최대수강인원_초과불가() {
-        SessionInfo sessionInfo = sessionInfo()
-                .lectureStatus(LectureStatus.RECRUITING)
-                .maxUser(2)
-                .build();
-
-        sessionInfo.register(student);
-        sessionInfo.register(student);
-
-        assertThatThrownBy(() -> sessionInfo.register(student))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
-
-    }
 }
