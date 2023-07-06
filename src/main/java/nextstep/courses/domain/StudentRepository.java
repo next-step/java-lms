@@ -8,4 +8,6 @@ public interface StudentRepository {
     Student findById(Long studentId);
 
     List<Student> findBySessionId(Long sessionId);
+
+    int updateApprovalState(Long sessionId, Long studentId, ApprovalState approvalState);
 }

@@ -8,7 +8,7 @@ public enum SessionType {
 
     private final String code;
 
-    SessionType(String code) {
+    private SessionType(String code) {
         this.code = code;
     }
 
