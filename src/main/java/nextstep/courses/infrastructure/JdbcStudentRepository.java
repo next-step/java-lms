@@ -22,8 +22,8 @@ public class JdbcStudentRepository implements StudentRepository {
 
         return jdbcTemplate.update(
                 sql,
-                student.getSession_id(),
-                student.getUser_id(),
+                student.getSessionId(),
+                student.getUserId(),
                 LocalDateTime.now()
         );
     }

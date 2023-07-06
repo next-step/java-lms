@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static nextstep.courses.domain.SessionBuilder.session;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -31,7 +30,7 @@ public class StudentRepositoryTest {
         Student save = studentRepository.findById(1L);
 
         assertThat(save.getId()).isEqualTo(student.getId());
-        assertThat(save.getUser_id()).isEqualTo(1L);
-        assertThat(save.getSession_id()).isEqualTo(1L);
+        assertThat(save.getUserId()).isEqualTo(1L);
+        assertThat(save.getSessionId()).isEqualTo(1L);
     }
 }

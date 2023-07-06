@@ -11,7 +11,7 @@ public class StudentTest {
     void 학생() {
         Student student = new Student(1L, 1L);
 
-        assertThat(student.getSession_id()).isEqualTo(1L);
-        assertThat(student.getUser_id()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(student.getUserId()).isEqualTo(1L);
     }
 }
