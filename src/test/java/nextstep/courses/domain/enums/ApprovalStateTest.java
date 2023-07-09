@@ -6,23 +6,22 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ProgressStateTest {
+public class ApprovalStateTest {
 
     @Test
     void 동일비교 () {
-        assertThat(ProgressState.END).isEqualTo(ProgressState.END);
+        assertThat(ApprovalState.APPROVED).isEqualTo(ApprovalState.APPROVED);
     }
 
     @Test
     void 동치비교 () {
-        assertThat(ProgressState.of(9)).isEqualTo(ProgressState.END);
+        assertThat(ApprovalState.of(1)).isEqualTo(ApprovalState.APPROVED);
     }
 
     @Test
     void 미존재값조회() {
         assertThatThrownBy(() -> {
-            ProgressState progressState = ProgressState.of(10);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Invalid ProgressState value: 10");
+            ApprovalState approvalState = ApprovalState.of(10);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Invalid ApprovalState value: 10");
     }
-
 }

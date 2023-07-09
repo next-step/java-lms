@@ -1,6 +1,10 @@
 package nextstep.courses.domain.enums;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public enum ApprovalState {
     PENDING(0),
@@ -17,7 +21,7 @@ public enum ApprovalState {
         return (ApprovalState) Arrays.stream(ApprovalState.values())
                 .filter(approvalState -> approvalState.getInt() == state)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid ProgressState value: " + state));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ApprovalState value: " + state));
     }
 
     public int getInt() {
