@@ -2,20 +2,20 @@ package nextstep.courses.domain.enums;
 
 import java.util.Arrays;
 
-public enum ProgressState {
-    PREPARING(1),
-    PROCEEDING(2),
-    END(9);
+public enum ApprovalState {
+    PENDING(0),
+    APPROVED(1),
+    CANCELED(9);
 
     private int state;
 
-    ProgressState(int state) {
+    ApprovalState(int state) {
         this.state = state;
     }
 
-    public static ProgressState of(int state) {
-        return (ProgressState) Arrays.stream(ProgressState.values())
-                .filter(progressState -> progressState.getInt() == state)
+    public static ApprovalState of(int state) {
+        return (ApprovalState) Arrays.stream(ApprovalState.values())
+                .filter(approvalState -> approvalState.getInt() == state)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Invalid ProgressState value: " + state));
     }

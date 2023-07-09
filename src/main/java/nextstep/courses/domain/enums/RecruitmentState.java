@@ -14,7 +14,7 @@ public enum RecruitmentState {
 
     public static RecruitmentState of(int state) {
         return (RecruitmentState) Arrays.stream(RecruitmentState.values())
-                .filter(sessionState -> sessionState.getInt() == state)
+                .filter(recruitmentState -> recruitmentState.getInt() == state)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Invalid RecruitmentState value: " + state));
     }
