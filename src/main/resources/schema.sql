@@ -26,6 +26,7 @@ create table enrollment (
      session_id bigint not null,
      user_id varchar(20) not null,
      enroll_date varchar(8) not null,
+     approval_state bigint not null,
      created_at timestamp not null,
      updated_at timestamp,
      primary key (session_id, user_id)

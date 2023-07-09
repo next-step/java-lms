@@ -45,5 +45,6 @@ public class EnrollmentRepositoryTest {
         assertThat(savedEnrollment.getStudent()).isEqualTo(enrollment.getStudent());
         assertThat(savedEnrollment.getSessionId()).isEqualTo(enrollment.getSessionId());
         assertThat(savedEnrollment.getEnrollDate()).isEqualTo(enrollment.getEnrollDate());
+        assertThat(savedEnrollment.getApprovalState()).isEqualTo(enrollment.getApprovalState());
     }
 }

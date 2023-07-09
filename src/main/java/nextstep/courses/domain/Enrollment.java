@@ -47,6 +47,10 @@ public class Enrollment {
         return enrollDate;
     }
 
+    public int getApprovalState() {
+        return this.approvalState.getInt();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
