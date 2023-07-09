@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.enums.ApprovalState;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -37,6 +38,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
                 sessionId,
                 nsUser,
                 rs.getString(1),
+                ApprovalState.PENDING,
                 toLocalDateTime(rs.getTimestamp(2)),
                 toLocalDateTime(rs.getTimestamp(3)));
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);

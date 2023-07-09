@@ -40,7 +40,7 @@ public class SessionStatus {
             throw new EnrollFullException("최대 수강 인원을 초과하여 신청이 불가합니다.");
         }
 
-        enrollments.enroll(student, sessionId);
+        enrollments.enroll(sessionId, student);
     }
 
     public ProgressState changeProgressState(ProgressState requestState) {
