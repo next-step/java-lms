@@ -16,7 +16,7 @@ public class CourseTest {
         LocalDateTime now = LocalDateTime.now();
         Course course = new Course(1004L, "TDD, 클린 코드 with Java",1004L, now, now);
 
-        course.addSession(new Session("20230701", "20230731", 30, 1004L));
+        course.addSession(new Session("20230801", "20230831", 30, 1004L));
 
         Assertions.assertThat(course.getTitle()).isEqualTo("TDD, 클린 코드 with Java");
         Assertions.assertThat(course.getCreatorId()).isEqualTo(1004L);
