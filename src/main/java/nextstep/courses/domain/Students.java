@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Students {
-    private final List<Student> values = new ArrayList<>();
+    private final List<Student> values;
 
+    public Students(List<Student> values) {
+        this.values = values;
+    }
+
+    public Students() {
+        this.values = new ArrayList<>();
+    }
 
     public void add(Student student, int maxUser) {
         if (this.values.size() >= maxUser) {
@@ -13,5 +20,9 @@ public class Students {
         }
 
         values.add(student);
+    }
+
+    public int size() {
+        return values.size();
     }
 }

@@ -1,10 +1,9 @@
 package nextstep.courses.domain;
 
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session {
     private Long id;
@@ -43,8 +42,8 @@ public class Session {
         return lectureType;
     }
 
-    public void register(NsUser user) {
-        sessionInfo.register(new Student(id, user.getId()));
+    public Student register(long userId) {
+        return sessionInfo.register(new Student(id, userId));
     }
 
     public SessionDate getSessionDate() {
@@ -81,6 +80,18 @@ public class Session {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void updateStudents(List<Student> students){
+        sessionInfo.setStudents(new Students(students));
+    }
+
+    public void recruiting(){
+        sessionInfo.recruiting();
+    }
+
+    public int currentStudentCount() {
+        return sessionInfo.currentStudentCount();
     }
 
 }
