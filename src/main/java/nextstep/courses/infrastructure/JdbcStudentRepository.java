@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class JdbcStudentRepository implements StudentRepository {
     private JdbcOperations jdbcTemplate;
@@ -39,6 +40,19 @@ public class JdbcStudentRepository implements StudentRepository {
                 toLocalDateTime(rs.getTimestamp(5))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    @Override
+    public List<Student> findBySessionId(long sessionId) {
+        String sql = "select id,session_id, user_id, created_at, updated_at from student where session_id = ?";
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+                rs.getLong(1),
+                rs.getLong(2),
+                rs.getLong(3),
+                toLocalDateTime(rs.getTimestamp(4)),
+                toLocalDateTime(rs.getTimestamp(5))
+        );
+        return jdbcTemplate.query(sql, new Object[]{sessionId}, rowMapper);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

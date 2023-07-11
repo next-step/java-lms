@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
