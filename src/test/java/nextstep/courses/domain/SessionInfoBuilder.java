@@ -1,13 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class SessionInfoBuilder {
     private LectureStatus lectureStatus = LectureStatus.PREPARING;
-    private List<NsUser> users = new ArrayList<>();
+    private Students students = new Students();
     private int maxUser = 100;
 
     public SessionInfoBuilder lectureStatus(LectureStatus lectureStatus) {
@@ -15,8 +10,8 @@ public class SessionInfoBuilder {
         return this;
     }
 
-    public SessionInfoBuilder users(List<NsUser> users) {
-        this.users = users;
+    public SessionInfoBuilder users(Students students) {
+        this.students = students;
         return this;
     }
 
@@ -28,12 +23,12 @@ public class SessionInfoBuilder {
     public SessionInfo build() {
         return new SessionInfo(
                 lectureStatus,
-                users,
+                students,
                 maxUser
         );
     }
 
-    public static SessionInfoBuilder sessionInfo(){
+    public static SessionInfoBuilder sessionInfo() {
         return new SessionInfoBuilder();
     }
 }

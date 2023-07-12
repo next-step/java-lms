@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class SessionBuilder {
     private Long id = 1L;
+    private Long courseId = 1L;
     private String image = "test.jpg";
     private LectureType lectureType = LectureType.FREE;
     private SessionDate sessionDate = new SessionDate(LocalDate.now(), LocalDate.now().plusDays(30));
@@ -40,7 +41,7 @@ public class SessionBuilder {
 
     public Session build() {
         return new Session(
-                id, image, lectureType, sessionDate, sessionInfo
+                id, courseId, image, lectureType, sessionDate, sessionInfo
         );
     }
 }
