@@ -37,8 +37,8 @@ public class Session {
         this(0L, course, generation, coverImage, type, status, headCount, startAt, endAt);
     }
 
-    public Session(long id, Long course_id, int generation, String cover_image, SessionType type, SessionStatus status, int head_count, LocalDateTime start_at, LocalDateTime end_at) {
-        this(id, new Course(course_id), generation, cover_image, type, status, head_count, start_at, end_at);
+    public Session(long id, Long courseId, int generation, String cover_image, SessionType type, SessionStatus status, int head_count, LocalDateTime startAt, LocalDateTime endAt) {
+        this(id, new Course(courseId), generation, cover_image, type, status, head_count, startAt, endAt);
     }
 
     public Session(Long id, Course course, int generation, String coverImage, SessionType type, SessionStatus status, int headCount, LocalDateTime startAt, LocalDateTime endAt) {
