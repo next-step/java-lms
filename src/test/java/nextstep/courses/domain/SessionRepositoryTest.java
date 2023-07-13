@@ -6,6 +6,7 @@ import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.users.domain.NextStepUser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -56,22 +58,23 @@ public class SessionRepositoryTest {
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
     }
 
+    @DisplayName("세션 생성 테스트")
     @Test
     void create() {
         assertAll(
                 () -> assertThat(session).isNotNull(),
-                () -> assertThat(session.getCourse().getTitle()).isEqualTo("넥스트스텝"),
-                () -> assertThat(session.getEssentialInfo().getCoverImage()).isEqualTo("우하하하하"),
-                () -> assertThat(session.getType()).isEqualTo(SessionType.FREE),
-                () -> assertThat(session.getStatus()).isEqualTo(SessionStatus.WAITING),
-                () -> assertThat(session.getStatus()).isNotEqualTo(SessionStatus.RECRUIT)
+                () -> assertThat(Objects.requireNonNull(session).getCourse().getTitle()).isEqualTo("넥스트스텝"),
+                () -> assertThat(Objects.requireNonNull(session).getEssentialInfo().getCoverImage()).isEqualTo("우하하하하"),
+                () -> assertThat(Objects.requireNonNull(session).getType()).isEqualTo(SessionType.FREE),
+                () -> assertThat(Objects.requireNonNull(session).getStatus()).isEqualTo(SessionStatus.WAITING),
+                () -> assertThat(Objects.requireNonNull(session).getStatus()).isNotEqualTo(SessionStatus.RECRUIT)
         );
         ;
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = "{a}")
-    void addSignUpHistory(String input) {
+    @DisplayName("수강신청 테스트")
+    @Test
+    void addSignUpHistory() {
 
         assertThatThrownBy(() -> {
             session.addSignUpHistory(new SignUpHistory(session, JAVAJIGI));
@@ -98,6 +101,7 @@ public class SessionRepositoryTest {
 
     }
 
+    @DisplayName("세션 CRUD 테스트")
     @Test
     void crud() {
 

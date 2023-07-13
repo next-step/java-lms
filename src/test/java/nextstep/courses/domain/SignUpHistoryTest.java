@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.code.SessionStatus;
 import nextstep.courses.code.SessionType;
 import nextstep.users.domain.NextStepUser;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignUpHistoryTest {
 
+    @DisplayName("수강 신청 기록 생성")
     @Test
     void create() {
 
