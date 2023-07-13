@@ -12,7 +12,7 @@ public class Session {
     private static final String STATUS_ERROR_MESSAGE = "강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.";
 
     private final Long id;
-
+    
     private final SessionEssentialInfo essentialInfo;
 
     private final SessionType type;
@@ -45,7 +45,7 @@ public class Session {
 
     public void addSignUpHistory(SignUpHistory signUpHistory) {
         validStatus();
-        signUpHistory.toSession(this);
+        signUpHistory.saveSession(this);
         signUpHistories.add(signUpHistory);
         validSignUpHistoriesSize();
     }

@@ -25,6 +25,10 @@ public class SignUpHistory {
         this.createAt = createAt;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Session getSession() {
         return session;
     }
@@ -37,11 +41,11 @@ public class SignUpHistory {
         return createAt;
     }
 
-    public void toSession(Session session) {
+    public void saveSession(Session session) {
         this.session = session;
     }
 
-    public void toUser(NextStepUser user) {
+    public void saveUser(NextStepUser user) {
         this.user = user;
     }
 
