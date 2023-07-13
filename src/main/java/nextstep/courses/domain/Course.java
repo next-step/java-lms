@@ -57,7 +57,7 @@ public class Course {
     }
 
     public void addSession(Session session) {
-        session.toCourse(this);
+        session.saveCourse(this);
         sessions.add(session);
     }
 
