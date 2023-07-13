@@ -15,7 +15,20 @@ public class SignUpHistoryTest {
     void create() {
 
         Course course = new Course("넥스트스텝", 1L);
-        Session session = new Session(course, 1, "우하하하하", SessionType.FREE, SessionStatus.WAITING, 10, LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+        Session session = new Session(
+                course,
+                new SessionEssentialInfo(
+                        1,
+                        "우하하하하",
+                        0
+                ),
+                SessionType.FREE,
+                SessionStatus.RECRUIT,
+                new SessionPeriod(
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(5)
+                )
+        );
         NextStepUser JAVAJIGI = new NextStepUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
         SignUpHistory signUpHistory = new SignUpHistory(session, JAVAJIGI);

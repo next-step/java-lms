@@ -2,7 +2,6 @@ package nextstep.courses.domain;
 
 import nextstep.courses.code.SessionStatus;
 import nextstep.courses.code.SessionType;
-import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.users.domain.NextStepUser;
@@ -35,7 +34,20 @@ public class SessionRepositoryTest {
     private CourseRepository courseRepository;
 
     private Course course = new Course("넥스트스텝", 1L);
-    private Session session = new Session(course, 1, "우하하하하", SessionType.FREE, SessionStatus.WAITING, 0, LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+    private Session session = new Session(
+            course,
+            new SessionEssentialInfo(
+                    1,
+                    "우하하하하",
+                    0
+            ),
+            SessionType.FREE,
+            SessionStatus.WAITING,
+            new SessionPeriod(
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusDays(5)
+            )
+    );
     private NextStepUser JAVAJIGI = new NextStepUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
 
     @BeforeEach
@@ -49,11 +61,12 @@ public class SessionRepositoryTest {
         assertAll(
                 () -> assertThat(session).isNotNull(),
                 () -> assertThat(session.getCourse().getTitle()).isEqualTo("넥스트스텝"),
-                () -> assertThat(session.getCoverImage()).isEqualTo("우하하하하"),
+                () -> assertThat(session.getEssentialInfo().getCoverImage()).isEqualTo("우하하하하"),
                 () -> assertThat(session.getType()).isEqualTo(SessionType.FREE),
                 () -> assertThat(session.getStatus()).isEqualTo(SessionStatus.WAITING),
                 () -> assertThat(session.getStatus()).isNotEqualTo(SessionStatus.RECRUIT)
-                ); ;
+        );
+        ;
     }
 
     @ParameterizedTest
@@ -64,7 +77,20 @@ public class SessionRepositoryTest {
             session.addSignUpHistory(new SignUpHistory(session, JAVAJIGI));
         }).hasMessageContaining("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
 
-        session = new Session(course, 1, "우하하하하", SessionType.FREE, SessionStatus.RECRUIT, 0, LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+        session = new Session(
+                course,
+                new SessionEssentialInfo(
+                        1,
+                        "우하하하하",
+                        0
+                ),
+                SessionType.FREE,
+                SessionStatus.RECRUIT,
+                new SessionPeriod(
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(5)
+                )
+        );
 
         assertThatThrownBy(() -> {
             session.addSignUpHistory(new SignUpHistory(session, JAVAJIGI));
@@ -79,12 +105,24 @@ public class SessionRepositoryTest {
         courseRepository.save(course);
         Course savedCourse = courseRepository.findById(1L);
 
-        Session session = new Session(savedCourse, 1, "우하하하하", SessionType.FREE, SessionStatus.WAITING, 10, LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+        Session session = new Session(savedCourse,
+                new SessionEssentialInfo(
+                        1,
+                        "우하하하하",
+                        10
+                ),
+                SessionType.FREE,
+                SessionStatus.WAITING,
+                new SessionPeriod(
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(5)
+                )
+        );
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
         Session saveSession = sessionRepository.findById(1L);
-        assertThat(saveSession.getCoverImage()).isEqualTo(session.getCoverImage());
+        assertThat(saveSession.getEssentialInfo().getCoverImage()).isEqualTo(session.getEssentialInfo().getCoverImage());
         LOGGER.debug("saveSession : {}", saveSession);
 
     }
