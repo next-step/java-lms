@@ -7,14 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ProgressStateTest {
-
     @Test
-    void 동일비교 () {
-        assertThat(ProgressState.END).isEqualTo(ProgressState.END);
-    }
-
-    @Test
-    void 동치비교 () {
+    void 동치비교() {
         assertThat(ProgressState.of(9)).isEqualTo(ProgressState.END);
     }
 
@@ -25,4 +19,9 @@ public class ProgressStateTest {
         }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Invalid ProgressState value: 10");
     }
 
+    @Test
+    void isEnd() {
+        assertThat(ProgressState.END.isEnd()).isTrue();
+        assertThat(ProgressState.PROCEEDING.isEnd()).isFalse();
+    }
 }

@@ -36,7 +36,7 @@ public class SessionStatus {
             throw new SessionNotOpenException("강의가 비모집중으로 신청이 불가합니다.");
         }
 
-        if (enrollments.getSize() >= maxCapacity) {
+        if (enrollments.isFull(maxCapacity)) {
             throw new EnrollFullException("최대 수강 인원을 초과하여 신청이 불가합니다.");
         }
 

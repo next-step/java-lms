@@ -27,4 +27,8 @@ public enum ApprovalState {
     public int getInt() {
         return state;
     }
+
+    public boolean isApproved() {
+        return this == ApprovalState.APPROVED;
+    }
 }

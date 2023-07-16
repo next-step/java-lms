@@ -60,7 +60,7 @@ public class Enrollment {
     }
 
     public boolean isApproved() {
-        return this.approvalState == ApprovalState.APPROVED;
+        return this.approvalState.isApproved();
     }
 
     public boolean isSameSession(long sessionId) {

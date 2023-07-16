@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Enrollments {
-    List<Enrollment> enrollments = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Enrollment enroll(long sessionId, NsUser student) {
         Enrollment enrollment = new Enrollment(sessionId, student);
@@ -25,11 +25,6 @@ public class Enrollments {
         return enrollments.size();
     }
 
-    public void approve(long sessionId, NsUser student) {
-        Enrollment enrollment = get(sessionId, student);
-        enrollment.approve();
-    }
-
     private Enrollment get(long sessionId, NsUser student) {
         Enrollment enrollment = new Enrollment(sessionId, student);
         return enrollments.stream().filter(x -> x.equals(enrollment))
@@ -38,13 +33,12 @@ public class Enrollments {
                         + " 학생이 등록되지 않았습니다."));
     }
 
-    public void cancel(long sessionId, NsUser student) {
-        Enrollment enrollment = get(sessionId, student);
-        enrollment.cancel();
-    }
-
     public long getApprovalCount(long sessionId) {
         return enrollments.stream().filter(x -> x.isSameSession(sessionId) && x.isApproved())
                 .count();
+    }
+
+    public boolean isFull(int capacity) {
+        return enrollments.size() >= capacity;
     }
 }

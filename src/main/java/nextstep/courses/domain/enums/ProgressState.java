@@ -23,4 +23,8 @@ public enum ProgressState {
     public int getInt() {
         return state;
     }
+
+    public boolean isEnd() {
+        return this == ProgressState.END;
+    }
 }
