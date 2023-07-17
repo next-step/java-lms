@@ -12,7 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class SessionDateTest {
     @Test
     void 생성자테스트() {
-        Assertions.assertThat(new SessionDate("20230601", "20230630")).isInstanceOf(SessionDate.class);
+        Assertions.assertThat(new SessionDate("20230801", "20230830")).isInstanceOf(SessionDate.class);
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] {arguments}")

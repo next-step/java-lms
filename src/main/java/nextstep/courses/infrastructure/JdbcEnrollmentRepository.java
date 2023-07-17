@@ -1,21 +1,16 @@
 package nextstep.courses.infrastructure;
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.enums.SessionState;
+import nextstep.courses.domain.enums.ApprovalState;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
@@ -27,9 +22,9 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public int save(Enrollment enrollment) {
-        String sql = "insert into Enrollment (session_id, user_id, enroll_date, created_at) values(?, ?, ?, ?)";
+        String sql = "insert into Enrollment (session_id, user_id, enroll_date, approval_state, created_at) values(?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, enrollment.getSessionId(), enrollment.getStudent().getUserId(),
-                enrollment.getEnrollDate(), enrollment.getCreatedAt());
+                enrollment.getEnrollDate(), enrollment.getApprovalState(), enrollment.getCreatedAt());
     }
 
     @Override
@@ -37,14 +32,15 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
         UserRepository userRepository = new JdbcUserRepository(jdbcTemplate);
         NsUser nsUser = userRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
 
-        String sql = "select enroll_date, created_at, updated_at from Enrollment " +
+        String sql = "select enroll_date, approval_state, created_at, updated_at from Enrollment " +
                 "where session_id = ? and user_id = ?";
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 sessionId,
                 nsUser,
                 rs.getString(1),
-                toLocalDateTime(rs.getTimestamp(2)),
-                toLocalDateTime(rs.getTimestamp(3)));
+                ApprovalState.of(rs.getInt(2)),
+                toLocalDateTime(rs.getTimestamp(3)),
+                toLocalDateTime(rs.getTimestamp(4)));
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
     }
 

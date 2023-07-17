@@ -13,7 +13,8 @@ create table session (
     end_date varchar(8) not null,
     cover_image_path varchar(255),
     is_free boolean not null,
-    state bigint not null,
+    progress_state bigint not null,
+    recruitment_state bigint not null,
     max_capacity bigint not null,
     course_id bigint not null,
     created_at timestamp not null,
@@ -25,6 +26,7 @@ create table enrollment (
      session_id bigint not null,
      user_id varchar(20) not null,
      enroll_date varchar(8) not null,
+     approval_state bigint not null,
      created_at timestamp not null,
      updated_at timestamp,
      primary key (session_id, user_id)
