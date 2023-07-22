@@ -4,7 +4,6 @@ import nextstep.courses.CannotRegisterSessionException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -13,54 +12,46 @@ public class Session {
     private PaymentType paymentType;
     private SessionState state;
     private int maxCapacityOfStudents;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private List<NsUser> students = new ArrayList<>();
 
-    private Session(int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
-        this(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, startDate, endDate);
+    private SessionPeriod sessionPeriod;
+
+    private Students students;
+
+    private Session(int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
+        this(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, sessionPeriod);
     }
 
-    private Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
+    public Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
         this.coverImage = coverImage;
         this.paymentType = paymentType;
         this.state = state;
         this.maxCapacityOfStudents = maxCapacityOfStudents;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionPeriod = sessionPeriod;
+        this.students = new Students(maxCapacityOfStudents);
     }
 
-    public static Session createFreeSession(int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
-        return new Session(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, startDate, endDate);
+    public static Session createFreeSession(int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
+        return new Session(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, sessionPeriod);
     }
 
-    public static Session createSession(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, LocalDate startDate, LocalDate endDate) {
-        return new Session(coverImage, paymentType, state, maxCapacityOfStudents, startDate, endDate);
+    public static Session createSession(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
+        return new Session(coverImage, paymentType, state, maxCapacityOfStudents, sessionPeriod);
     }
-
 
     public void registerSession(NsUser student) throws CannotRegisterSessionException {
-        valid(1);
-        this.students.add(student);
+        this.students.register(student);
     }
 
     public void registerSessionAll(List<NsUser> students) throws CannotRegisterSessionException {
         valid(students.size());
-        this.students.addAll(students);
+        this.students.register(students);
     }
 
     private void valid(int countOfPerson) throws CannotRegisterSessionException {
-        validStartDate();
         validStatus();
         validCapacity(countOfPerson);
     }
 
-    private void validStartDate() throws CannotRegisterSessionException {
-        LocalDate now = LocalDate.now();
-        if (now.isAfter(this.startDate)) {
-            throw new CannotRegisterSessionException("이미 시작한 강의입니다.");
-        }
-    }
 
     private void validStatus() throws CannotRegisterSessionException {
         if (!state.canRegistering()) {
@@ -76,6 +67,30 @@ public class Session {
 
     public void nextState() {
         this.state = state.updateState();
+    }
+
+    public String getCoverImage() {
+        return coverImage.getImage();
+    }
+
+    public String getPaymentType() {
+        return paymentType.name();
+    }
+
+    public String getState() {
+        return state.name();
+    }
+
+    public int getMaxCapacityOfStudents() {
+        return maxCapacityOfStudents;
+    }
+
+    public LocalDate getStartDate() {
+        return sessionPeriod.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return sessionPeriod.getEndDate();
     }
 
 }
