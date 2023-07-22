@@ -6,11 +6,11 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.*;
 
-class SessionPeriodTest {
+public class SessionPeriodTest {
     static final LocalDate YESTERDAY = LocalDate.now().minusDays(1);
     static final LocalDate TODAY = LocalDate.now();
     static final LocalDate TOMORROW = LocalDate.now().plusDays(1);
-    static final SessionPeriod SESSION_PERIOD = new SessionPeriod(TODAY, TOMORROW);
+    public static final SessionPeriod SESSION_PERIOD = new SessionPeriod(TODAY, TOMORROW);
 
     @Test
     public void create() throws Exception {

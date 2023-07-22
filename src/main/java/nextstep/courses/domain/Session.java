@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.CannotRegisterSessionException;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Session {
@@ -20,7 +21,7 @@ public class Session {
         this(null, PaymentType.FREE, SessionState.PREPARING, maxCapacityOfStudents, sessionPeriod);
     }
 
-    private Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
+    public Session(Image coverImage, PaymentType paymentType, SessionState state, int maxCapacityOfStudents, SessionPeriod sessionPeriod) {
         this.coverImage = coverImage;
         this.paymentType = paymentType;
         this.state = state;
@@ -38,7 +39,6 @@ public class Session {
     }
 
     public void registerSession(NsUser student) throws CannotRegisterSessionException {
-        valid(1);
         this.students.register(student);
     }
 
@@ -67,6 +67,30 @@ public class Session {
 
     public void nextState() {
         this.state = state.updateState();
+    }
+
+    public String getCoverImage() {
+        return coverImage.getImage();
+    }
+
+    public String getPaymentType() {
+        return paymentType.name();
+    }
+
+    public String getState() {
+        return state.name();
+    }
+
+    public int getMaxCapacityOfStudents() {
+        return maxCapacityOfStudents;
+    }
+
+    public LocalDate getStartDate() {
+        return sessionPeriod.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return sessionPeriod.getEndDate();
     }
 
 }

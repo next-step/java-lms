@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotRegisterSessionException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
@@ -7,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentsTest {
@@ -41,8 +41,9 @@ class StudentsTest {
     public void 정원초과() throws Exception {
         final List<NsUser> nsUsers = Arrays.asList(new NsUser(), new NsUser(), new NsUser());
         Students students = new Students(1);
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> students.register(nsUsers));
+
+        assertThatThrownBy(() -> students.register(nsUsers))
+                .isInstanceOf(CannotRegisterSessionException.class);
     }
 
 }

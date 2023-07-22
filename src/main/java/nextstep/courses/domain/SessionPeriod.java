@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotRegisterSessionException;
-
 import java.time.LocalDate;
 
 public class SessionPeriod {
@@ -16,11 +14,11 @@ public class SessionPeriod {
         this.endDate = endDate;
     }
 
-//    private void validStartDate() throws CannotRegisterSessionException {
-//        LocalDate now = LocalDate.now();
-//        if (now.isAfter(this.startDate)) {
-//            throw new CannotRegisterSessionException("이미 시작한 강의입니다.");
-//        }
-//    }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }

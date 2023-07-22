@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotRegisterSessionException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -7,29 +8,29 @@ import java.util.List;
 
 public class Students {
 
-    private int maxCountOfPerson;
+    private int maxCapacity;
     private final List<NsUser> students;
 
     public Students() {
-        maxCountOfPerson = 30;
-        students = new ArrayList<>(maxCountOfPerson);
+        maxCapacity = 30;
+        students = new ArrayList<>(maxCapacity);
     }
 
     public Students(int countOfPerson) {
-        this.maxCountOfPerson = countOfPerson;
-        students = new ArrayList<>(maxCountOfPerson);
+        this.maxCapacity = countOfPerson;
+        students = new ArrayList<>(maxCapacity);
     }
 
-    public void register(NsUser students) {
+    public void register(NsUser students) throws CannotRegisterSessionException {
         if (isExceedCapacity(1)) {
-            throw new IllegalArgumentException("정원 초과입니다.");
+            throw new CannotRegisterSessionException("정원 초과입니다.");
         }
         this.students.add(students);
     }
 
-    public void register(List<NsUser> students) {
+    public void register(List<NsUser> students) throws CannotRegisterSessionException {
         if (isExceedCapacity(students.size())) {
-            throw new IllegalArgumentException("정원 초과입니다.");
+            throw new CannotRegisterSessionException("정원 초과입니다.");
         }
         this.students.addAll(students);
     }
@@ -39,6 +40,6 @@ public class Students {
     }
 
     private boolean isExceedCapacity(int count) {
-        return maxCountOfPerson <= students.size() + count;
+        return maxCapacity <= students.size() + count;
     }
 }

@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static nextstep.courses.domain.SessionPeriodTest.SESSION_PERIOD;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,11 +31,10 @@ class SessionTest {
     @Test
     public void 수강인원초과() throws Exception {
         Session session = Session.createFreeSession(1, SESSION_PERIOD);
-        NsUser student1 = new NsUser();
-        NsUser student2 = new NsUser();
+        final List<NsUser> newStudents = Arrays.asList(new NsUser(), new NsUser());
 
         assertThatThrownBy(() -> {
-            session.registerSessionAll(Arrays.asList(student1, student2));
+            session.registerSessionAll(newStudents);
         }).isInstanceOf(CannotRegisterSessionException.class);
     }
 
