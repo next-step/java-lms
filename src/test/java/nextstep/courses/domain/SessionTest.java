@@ -4,9 +4,9 @@ import nextstep.courses.CannotRegisterSessionException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 
+import static nextstep.courses.domain.SessionPeriodTest.SESSION_PERIOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,28 +15,21 @@ class SessionTest {
     static final Session SESSION01;
 
     static {
-        Image coverImage = new Image("");
-        LocalDate startDate = LocalDate.of(2023, 05, 27);
-        LocalDate endDate = LocalDate.of(2023, 06, 25);
-        SESSION01 = Session.createSession(coverImage, PaymentType.FREE, SessionState.PREPARING, 30, startDate, endDate);
+        SESSION01 = Session.createSession(new Image(""), PaymentType.FREE, SessionState.PREPARING, 30, SESSION_PERIOD);
     }
 
     @Test
     public void create() throws Exception {
         Image coverImage = new Image("");
-        LocalDate startDate = LocalDate.of(2023, 05, 27);
-        LocalDate endDate = LocalDate.of(2023, 06, 25);
         assertThat(
-                Session.createSession(coverImage, PaymentType.FREE, SessionState.PREPARING, 30, startDate, endDate)
+                Session.createSession(coverImage, PaymentType.FREE, SessionState.PREPARING, 30, SESSION_PERIOD)
         ).isNotNull()
                 .isInstanceOf(Session.class);
     }
 
     @Test
     public void 수강인원초과() throws Exception {
-        LocalDate startDate = LocalDate.of(2023, 05, 27);
-        LocalDate endDate = LocalDate.of(2023, 06, 25);
-        Session session = Session.createFreeSession(1, startDate, endDate);
+        Session session = Session.createFreeSession(1, SESSION_PERIOD);
         NsUser student1 = new NsUser();
         NsUser student2 = new NsUser();
 
@@ -47,9 +40,7 @@ class SessionTest {
 
     @Test
     public void 세션모집완료() throws Exception {
-        LocalDate startDate = LocalDate.of(2023, 05, 27);
-        LocalDate endDate = LocalDate.of(2023, 06, 25);
-        Session session = Session.createSession(new Image(""), PaymentType.CHARGED, SessionState.CLOSED, 1, startDate, endDate);
+        Session session = Session.createSession(new Image(""), PaymentType.CHARGED, SessionState.CLOSED, 1, SESSION_PERIOD);
         NsUser student1 = new NsUser();
 
         assertThatThrownBy(() -> {
