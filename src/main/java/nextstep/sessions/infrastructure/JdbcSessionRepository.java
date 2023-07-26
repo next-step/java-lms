@@ -40,10 +40,6 @@ public class JdbcSessionRepository implements SessionRepository {
   @Override
   public Session findById(Long id) {
     SessionEntity sessionEntity = getSessionEntity(id);
-    SessionRecruitingStatus recruitingStatus = SessionRecruitingStatus.from(
-        sessionEntity.sessionRecruitingStatusId);
-    SessionProgressStatus progressStatus = SessionProgressStatus.from(
-        sessionEntity.sessionProgressStatusId);
 
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
     Students students = hasStudent(id) ? getStudents(id) : new Students(new HashSet<>());
@@ -52,7 +48,11 @@ public class JdbcSessionRepository implements SessionRepository {
         sessionEntity.id,
         new SessionDate(sessionEntity.startDateTime, sessionEntity.endDateTime),
         new SessionBody(sessionEntity.title, sessionEntity.contents, sessionEntity.coverImage),
-        new SessionRegistration(sessionEntity.capacity, recruitingStatus, progressStatus, students)
+        new SessionRegistration(
+            sessionEntity.capacity,
+            sessionEntity.sessionRecruitingStatusId,
+            sessionEntity.sessionProgressStatusId,
+            students)
     );
   }
 

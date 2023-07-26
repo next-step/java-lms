@@ -4,14 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.SessionRecruitingStatus;
-import nextstep.sessions.domain.students.Student;
-import nextstep.sessions.domain.students.Students;
 
 public class SessionRegistration {
   private int capacity;
   private SessionRecruitingStatus recruitingStatus;
   private SessionProgressStatus progressStatus;
   private Students students;
+
+  public SessionRegistration(int capacity, Long sessionRecruitingStatusId, Long sessionProgressStatusId, Students students) {
+    this(capacity, SessionRecruitingStatus.from(sessionRecruitingStatusId), SessionProgressStatus.from(sessionProgressStatusId), students);
+  }
 
   public SessionRegistration(int capacity) {
     this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()));
@@ -38,6 +40,7 @@ public class SessionRegistration {
 
   public void enrolment(Student student) {
     if (students.overFull(capacity)) {
+      // 사용자에겐 굳이 몇명 모집 중에 다 찼는지를 알릴 필요 없다
       throw new IllegalStateException("수강인원이 초과되었습니다");
     }
 
