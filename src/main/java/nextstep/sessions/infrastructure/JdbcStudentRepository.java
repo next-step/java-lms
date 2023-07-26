@@ -21,7 +21,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
   @Override
   public Optional<Student> findById(Long id) {
-    String sql = "select id, session_id, ns_user_id, student_status_id, created_at, updated_at from student where id = ?";
+    String sql = "select id, session_id, user_id, student_status_id, created_at, updated_at from student where id = ?";
 
     return Optional.of(jdbcTemplate.queryForObject(sql,
         (rs, rowNum) -> new Student(rs.getLong(1), rs.getLong(2), rs.getLong(3),
@@ -39,7 +39,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
   @Override
   public void save(Student student) {
-    String sql = "insert into student (session_id, ns_user_id, student_status_id, created_at) values (?, ?, ?, ?)";
+    String sql = "insert into student (session_id, user_id, student_status_id, created_at) values (?, ?, ?, ?)";
 
     jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(),
         student.getStudentStatus().getOrder(), LocalDateTime.now());
@@ -47,7 +47,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
   @Override
   public Students findAllBySessionId(Long sessionId) {
-    String sql = "select id, session_id, ns_user_id, student_status_id, created_at, updated_at from student where session_id = ?";
+    String sql = "select id, session_id, user_id, student_status_id, created_at, updated_at from student where session_id = ?";
 
     return new Students(jdbcTemplate.query(sql,
         (rs, rowNum) -> new Student(rs.getLong(1), rs.getLong(2), rs.getLong(3),
