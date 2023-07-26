@@ -2,6 +2,8 @@ package nextstep.sessions.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.Students;
 
 public class SessionRegistration {
   private int capacity;

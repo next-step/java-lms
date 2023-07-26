@@ -1,6 +1,7 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.students;
 
 import java.time.LocalDateTime;
+import nextstep.sessions.domain.Session;
 import nextstep.users.domain.NsUser;
 
 public class Student {

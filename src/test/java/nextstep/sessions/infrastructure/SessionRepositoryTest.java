@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionRecruitingStatus;
-import nextstep.sessions.domain.Student;
+import nextstep.sessions.domain.students.Student;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;

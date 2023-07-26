@@ -13,9 +13,9 @@ import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionRecruitingStatus;
-import nextstep.sessions.domain.Student;
-import nextstep.sessions.domain.StudentStatus;
-import nextstep.sessions.domain.Students;
+import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.StudentStatus;
+import nextstep.sessions.domain.students.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 

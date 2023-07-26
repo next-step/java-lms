@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.students;
 
 import java.util.Set;
 

@@ -8,7 +8,7 @@ import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.SessionRegistration;
-import nextstep.sessions.domain.Students;
+import nextstep.sessions.domain.students.Students;
 
 public class SessionBuilder {
   private LocalDateTime startDateTime = LocalDateTime.of(2023, 6, 2, 12, 0);

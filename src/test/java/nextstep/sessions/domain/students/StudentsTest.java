@@ -1,10 +1,14 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.students;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.StudentStatus;
+import nextstep.sessions.domain.students.Students;
 import nextstep.sessions.testFixture.SessionBuilder;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;

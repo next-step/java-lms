@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import nextstep.sessions.domain.students.Student;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다

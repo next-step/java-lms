@@ -3,9 +3,9 @@ package nextstep.sessions.infrastructure;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import nextstep.sessions.domain.Student;
-import nextstep.sessions.domain.StudentRepository;
-import nextstep.sessions.domain.StudentStatus;
+import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.StudentRepository;
+import nextstep.sessions.domain.students.StudentStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
