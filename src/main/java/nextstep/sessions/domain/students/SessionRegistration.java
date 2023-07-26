@@ -11,8 +11,8 @@ public class SessionRegistration {
   private SessionProgressStatus progressStatus;
   private Students students;
 
-  public SessionRegistration(int capacity, Long sessionRecruitingStatusId, Long sessionProgressStatusId, Students students) {
-    this(capacity, SessionRecruitingStatus.from(sessionRecruitingStatusId), SessionProgressStatus.from(sessionProgressStatusId), students);
+  public SessionRegistration(int capacity, Long sessionRecruitingStatusId, Long sessionProgressStatusId) {
+    this(capacity, SessionRecruitingStatus.from(sessionRecruitingStatusId), SessionProgressStatus.from(sessionProgressStatusId), new Students(new HashSet<>()));
   }
 
   public SessionRegistration(int capacity) {
@@ -87,6 +87,9 @@ public class SessionRegistration {
     return this.students.getStudents();
   }
 
+  public void setStudents(Students students) {
+    this.students = students;
+  }
 
   @Override
   public String toString() {

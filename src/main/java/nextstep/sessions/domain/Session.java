@@ -98,6 +98,10 @@ public class Session {
     return this.sessionRegistration.getProgressStatus();
   }
 
+  public SessionRegistration getSessionRegistration() {
+    return this.sessionRegistration;
+  }
+
   @Override
   public String toString() {
     return "Session{" +

@@ -2,20 +2,13 @@ package nextstep.sessions.infrastructure;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionBody;
 import nextstep.sessions.domain.SessionDate;
-import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
-import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.students.Student;
-import nextstep.sessions.domain.students.StudentStatus;
-import nextstep.sessions.domain.students.Students;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -41,9 +34,6 @@ public class JdbcSessionRepository implements SessionRepository {
   public Session findById(Long id) {
     SessionEntity sessionEntity = getSessionEntity(id);
 
-    // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
-    Students students = hasStudent(id) ? getStudents(id) : new Students(new HashSet<>());
-
     return new Session(
         sessionEntity.id,
         new SessionDate(sessionEntity.startDateTime, sessionEntity.endDateTime),
@@ -51,8 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
         new SessionRegistration(
             sessionEntity.capacity,
             sessionEntity.sessionRecruitingStatusId,
-            sessionEntity.sessionProgressStatusId,
-            students)
+            sessionEntity.sessionProgressStatusId)
     );
   }
 
@@ -90,59 +79,12 @@ public class JdbcSessionRepository implements SessionRepository {
     return sessionEntity;
   }
 
-  private Students getStudents(Long sessionId) {
-    String sql = "select id, session_id, user_id, student_status_id, created_at, updated_at from student where session_id = ?";
-
-    List<StudentEntity> studentEntities = jdbcTemplate.query(sql,
-        (rs, rowNum) -> new StudentEntity(rs.getLong(1), rs.getLong(2), rs.getLong(3),
-            rs.getLong(4),
-            toLocalDateTime(rs.getTimestamp(5)), toLocalDateTime(rs.getTimestamp(6))),
-        sessionId
-    );
-
-    Set<Student> students = studentEntities.stream()
-        .map(su -> new Student(su.id, su.sessionId, su.userId,
-            StudentStatus.from(su.studentStatusId), su.createdAt, su.updatedAt
-            ))
-        .collect(Collectors.toSet());
-
-    return new Students(students);
-  }
-
-  private boolean hasStudent(Long sessionId) {
-    String sql = "select count(*) from student where session_id = ?";
-    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, sessionId);
-
-    return !count.equals(0);
-  }
-
   private LocalDateTime toLocalDateTime(Timestamp timestamp) {
     if (timestamp == null) {
       return null;
     }
 
     return timestamp.toLocalDateTime();
-  }
-
-  class StudentEntity {
-
-    private Long id;
-    private Long sessionId;
-    private Long userId;
-    private Long studentStatusId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    StudentEntity(Long id, Long sessionId, Long userId, Long studentStatusId,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
-      this.id = id;
-      this.sessionId = sessionId;
-      this.userId = userId;
-      this.studentStatusId = studentStatusId;
-      this.createdAt = createdAt;
-      this.updatedAt = updatedAt;
-    }
   }
 
   class SessionEntity {

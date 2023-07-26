@@ -1,10 +1,16 @@
 package nextstep.sessions.domain.students;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Students {
 
   private Set<Student> students;
+
+  public Students(List<Student> students) {
+    this(new HashSet<>(students));
+  }
 
   public Students(Set<Student> students) {
     this.students = students;

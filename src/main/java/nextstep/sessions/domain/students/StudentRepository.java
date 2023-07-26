@@ -6,5 +6,9 @@ public interface StudentRepository {
 
   Optional<Student> findById(Long id);
 
+  Students findAllBySessionId(Long sessionId);
+
   void update(Student student);
+
+  void save(Student student);
 }
