@@ -41,7 +41,7 @@ class SessionRepositoryTest {
     Session session = aSession().build();
     int count = sessionRepository.save(session);
     assertThat(count).isEqualTo(1);
-    Session savedSession = sessionRepository.findById(2L);
+    Session savedSession = sessionRepository.findById(2L).orElseThrow();
     assertThat(savedSession.getTitle()).isEqualTo(session.getTitle());
     LOGGER.debug("Session: {}", savedSession);
   }
@@ -54,12 +54,12 @@ class SessionRepositoryTest {
     int count = sessionRepository.save(session);
     assertThat(count).isEqualTo(1);
 
-    Session savedSession = sessionRepository.findById(3L);
+    Session savedSession = sessionRepository.findById(3L).orElseThrow();
     assertThat(savedSession.getTitle()).isEqualTo(session.getTitle());
 
     savedSession.recruitStart();
     sessionRepository.update(savedSession);
-    Session updatedSession = sessionRepository.findById(3L);
+    Session updatedSession = sessionRepository.findById(3L).orElseThrow();
     assertThat(updatedSession.getRecruitingStatus()).isEqualTo(SessionRecruitingStatus.RECRUITING);
   }
 
@@ -72,7 +72,7 @@ class SessionRepositoryTest {
     int count = sessionRepository.save(session);
     assertThat(count).isEqualTo(1);
 
-    Session savedSession = sessionRepository.findById(1L);
+    Session savedSession = sessionRepository.findById(1L).orElseThrow();
     savedSession.recruitStart();
     // data.sql에 의존되어 있음. 괜찮은가?
     NsUser user = userRepository.findByUserId("javajigi").orElseThrow();
@@ -80,7 +80,7 @@ class SessionRepositoryTest {
     savedSession.enrollment(student);
     sessionRepository.update(savedSession);
 
-    Session updatedSession = sessionRepository.findById(1L);
+    Session updatedSession = sessionRepository.findById(1L).orElseThrow();
     assertThat(updatedSession.getTitle()).isEqualTo(session.getTitle());
     assertThat(updatedSession.getStudents().stream()
         .filter(s -> s.isTaking(student))
