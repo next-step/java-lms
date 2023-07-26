@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.students.Student;
 
 /**

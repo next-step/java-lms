@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.HashSet;
 import java.util.Set;
+import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.students.Student;
 import nextstep.sessions.domain.students.Students;
 import org.junit.jupiter.api.Test;

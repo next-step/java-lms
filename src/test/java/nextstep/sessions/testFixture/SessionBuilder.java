@@ -7,7 +7,7 @@ import nextstep.sessions.domain.SessionBody;
 import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.SessionProgressStatus;
 import nextstep.sessions.domain.SessionRecruitingStatus;
-import nextstep.sessions.domain.SessionRegistration;
+import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.students.Students;
 
 public class SessionBuilder {

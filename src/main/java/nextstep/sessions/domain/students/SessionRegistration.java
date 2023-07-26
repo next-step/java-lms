@@ -1,7 +1,9 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.students;
 
 import java.util.HashSet;
 import java.util.Set;
+import nextstep.sessions.domain.SessionProgressStatus;
+import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.students.Student;
 import nextstep.sessions.domain.students.Students;
 
