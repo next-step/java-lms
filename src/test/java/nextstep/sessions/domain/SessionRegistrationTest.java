@@ -17,11 +17,9 @@ class SessionRegistrationTest {
     @Test
     void accept() {
         Student student = aStudent().build();
-        Session session = aSession()
-            .withStudents(new Students(new HashSet<>(Set.of(student))))
-            .build();
+        SessionRegistration sessionRegistration = new SessionRegistration(1);
 
-        session.accept(student);
+        sessionRegistration.accept(student);
 
         assertThat(student.getStudentStatus()).isEqualTo(ACCEPTED);
     }
@@ -30,12 +28,10 @@ class SessionRegistrationTest {
     void accept_fail_overCapacity() {
         Student student1 = aStudent().withStudentStatus(ACCEPTED).build();
         Student student2 = aStudent().build();
-        Session session = aSession()
-            .withStudents(new Students(new HashSet<>(Set.of(student1, student2))))
-            .withCapacity(1)
-            .build();
+        Students students = new Students(new HashSet<>(Set.of(student1, student2)));;
+        SessionRegistration sessionRegistration = new SessionRegistration(1, students);
 
-        assertThatThrownBy(() -> session.accept(student2))
+        assertThatThrownBy(() -> sessionRegistration.accept(student2))
             .isInstanceOf(IllegalStateException.class)
             .hasMessageContaining("수강 인원이 초과되었습니다.");
     }
