@@ -62,29 +62,4 @@ class SessionRepositoryTest {
     Session updatedSession = sessionRepository.findById(3L).orElseThrow();
     assertThat(updatedSession.getRecruitingStatus()).isEqualTo(SessionRecruitingStatus.RECRUITING);
   }
-
-
-  // TODO: 시나리오 테스트이기 때문에 단위테스트가 아니라고 느껴짐
-  // -> 레포지토리 테스트를 단위테스트처럼 만들 수 있는 방법은?
-  @Test
-  void userUpdateAndFind() {
-    Session session = aSession().build();
-    int count = sessionRepository.save(session);
-    assertThat(count).isEqualTo(1);
-
-    Session savedSession = sessionRepository.findById(1L).orElseThrow();
-    savedSession.recruitStart();
-    // data.sql에 의존되어 있음. 괜찮은가?
-    NsUser user = userRepository.findByUserId("javajigi").orElseThrow();
-    Student student = new Student(savedSession, user, LocalDateTime.of(2023, 6, 2, 13, 0), null);
-    savedSession.enrollment(student);
-    sessionRepository.update(savedSession);
-
-    Session updatedSession = sessionRepository.findById(1L).orElseThrow();
-    assertThat(updatedSession.getTitle()).isEqualTo(session.getTitle());
-    assertThat(updatedSession.getStudents().stream()
-        .filter(s -> s.isTaking(student))
-        .findAny()
-        .isPresent()).isTrue();
-  }
 }

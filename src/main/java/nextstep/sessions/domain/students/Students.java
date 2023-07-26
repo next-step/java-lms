@@ -3,6 +3,7 @@ package nextstep.sessions.domain.students;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class Students {
 
@@ -38,6 +39,10 @@ public class Students {
 
   public int size() {
     return students.size();
+  }
+
+  public Stream<Student> stream() {
+    return this.students.stream();
   }
 
   @Override
