@@ -28,18 +28,22 @@ public class SessionService {
     @Transactional
     public void save(String title, String contents, LocalDateTime startDateTime,
         LocalDateTime endDateTime, byte[] coverImage, int capacity) {
-        Session session = new Session(title, contents, startDateTime, endDateTime, coverImage,
+        Session session = new Session(
+            title,
+            contents,
+            startDateTime,
+            endDateTime,
+            coverImage,
             capacity);
+
         sessionRepository.save(session);
     }
 
     @Transactional
     public void enrollment(Long sessionId, String userId) {
-        Session session = sessionRepository.findById(sessionId);
-        NsUser user = nsUserRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-        Students students = studentRepository.findAllBySessionId(sessionId);
-        session.getSessionRegistration().setStudents(students);
+        Session session = findSessionById(sessionId);
+        NsUser user = findNsUserById(userId);
+        session.setStudents(studentRepository.findAllBySessionId(sessionId));
         Student student = new Student(session, user, LocalDateTime.now(), null);
 
         session.enrollment(student);
@@ -48,9 +52,8 @@ public class SessionService {
 
     @Transactional
     public void accept(Long studentId) {
-        Student student = studentRepository.findById(studentId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청자입니다."));
-        SessionRegistration sessionRegistration = sessionRepository.findById(student.getSessionId())
+        Student student = findStudentById(studentId);
+        SessionRegistration sessionRegistration = findSessionById(student.getSessionId())
             .getSessionRegistration();
         Students students = studentRepository.findAllBySessionId(student.getSessionId());
         sessionRegistration.setStudents(students);
@@ -62,8 +65,7 @@ public class SessionService {
 
     @Transactional
     public void reject(Long studentId) {
-        Student student = studentRepository.findById(studentId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청자입니다."));
+        Student student = findStudentById(studentId);
         student.reject();
 
         studentRepository.update(student);
@@ -73,7 +75,7 @@ public class SessionService {
     // 수정하는 방식이라면 내용이 수정되어야 한다
     @Transactional
     public void recruitStart(Long sessionId) {
-        Session session = sessionRepository.findById(sessionId);
+        Session session = findSessionById(sessionId);
         session.recruitStart();
 
         sessionRepository.update(session);
@@ -81,9 +83,24 @@ public class SessionService {
 
     @Transactional
     public void recruitEnd(Long sessionId) {
-        Session session = sessionRepository.findById(sessionId);
+        Session session = findSessionById(sessionId);
         session.recruitEnd();
 
         sessionRepository.update(session);
+    }
+
+    private Student findStudentById(Long id) {
+        return studentRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수강 신청자입니다."));
+    }
+
+    private NsUser findNsUserById(String id) {
+        return nsUserRepository.findByUserId(id)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
+
+    private Session findSessionById(Long id) {
+        return sessionRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의입니다."));
     }
 }

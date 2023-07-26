@@ -2,6 +2,7 @@ package nextstep.sessions.infrastructure;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionBody;
@@ -31,10 +32,10 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   @Override
-  public Session findById(Long id) {
+  public Optional<Session> findById(Long id) {
     SessionEntity sessionEntity = getSessionEntity(id);
 
-    return new Session(
+    return Optional.of(new Session(
         sessionEntity.id,
         new SessionDate(sessionEntity.startDateTime, sessionEntity.endDateTime),
         new SessionBody(sessionEntity.title, sessionEntity.contents, sessionEntity.coverImage),
@@ -42,7 +43,7 @@ public class JdbcSessionRepository implements SessionRepository {
             sessionEntity.capacity,
             sessionEntity.sessionRecruitingStatusId,
             sessionEntity.sessionProgressStatusId)
-    );
+    ));
   }
 
   @Override

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.Students;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다
@@ -100,6 +101,10 @@ public class Session {
 
   public SessionRegistration getSessionRegistration() {
     return this.sessionRegistration;
+  }
+
+  public void setStudents(Students students) {
+    this.sessionRegistration.setStudents(students);
   }
 
   @Override
