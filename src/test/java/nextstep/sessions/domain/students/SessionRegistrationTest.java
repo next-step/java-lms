@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.students;
 
 import static nextstep.sessions.domain.students.StudentStatus.ACCEPTED;
 import static nextstep.sessions.testFixture.StudentBuilder.aStudent;
