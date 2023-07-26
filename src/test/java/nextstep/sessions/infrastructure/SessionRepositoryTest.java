@@ -4,13 +4,11 @@ import static nextstep.sessions.testFixture.SessionBuilder.aSession;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.Student;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserNsUserGroup;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;

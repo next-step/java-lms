@@ -1,28 +1,23 @@
 package nextstep.sessions.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import nextstep.users.domain.NsUserGroup;
-import nextstep.users.domain.NsUserNsUserGroup;
 
 public class SessionRegistration {
   private int capacity;
   private SessionRecruitingStatus recruitingStatus;
   private SessionProgressStatus progressStatus;
   private Students students;
-  private NsUserGroup nsUserGroup;
 
-  public SessionRegistration(int capacity, NsUserGroup nsUserGroup) {
-    this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()), nsUserGroup);
+  public SessionRegistration(int capacity) {
+    this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()));
   }
 
-  public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Students students, NsUserGroup nsUserGroup) {
+  public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Students students) {
     this.capacity = capacity;
     this.recruitingStatus = recruitingStatus;
     this.progressStatus = progressStatus;
     this.students = students;
-    this.nsUserGroup = nsUserGroup;
   }
 
   public void recruitStart() {
@@ -57,10 +52,7 @@ public class SessionRegistration {
     }
   }
 
-  public void accept(List<NsUserNsUserGroup> nsUserNsUserGroups, Student student) {
-    nsUserNsUserGroups.stream().filter(group -> group.getNsUserGroupId().equals(this.nsUserGroup.getId()))
-        .findAny()
-        .orElseThrow(() -> new IllegalStateException("강의에 선발된 인원만 수강신청이 가능합니다"));
+  public void accept(Student student) {
 
     student.accept();
   }
@@ -81,9 +73,6 @@ public class SessionRegistration {
     return this.students.getStudents();
   }
 
-  public NsUserGroup getNsUserGroup() {
-    return nsUserGroup;
-  }
 
   @Override
   public String toString() {

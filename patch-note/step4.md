@@ -18,8 +18,8 @@ step4 변경 요구사항
 - 강사가 수강 승인을 하면 ApprovalStatus가 Accepted로 변경된다
 - 강사가 수강 승인을 취소하면 ApprovalStatus가 Rejected로 변경된다
 - 우선 해야할 일
-  - [ ] NsUserGroup 관련 로직 삭제
-  - [ ] StudentStatus 관련 로직 삭제
+  - [X] NsUserGroup 관련 로직 삭제
+  - [ ] StudentStatus 관련 로직 변경
 
 3. 수강 신청 로직 변경
 - capacity에 대해서 count할 때, StudentStatus가 Rejected라면 count하지 않도록 기능을 변경한다

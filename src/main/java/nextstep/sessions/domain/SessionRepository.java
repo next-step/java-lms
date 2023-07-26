@@ -16,4 +16,8 @@ public interface SessionRepository {
   Session findById(Long id);
 
   void update(Session session);
+
+  default void foo() {
+
+  }
 }

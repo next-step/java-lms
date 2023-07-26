@@ -16,7 +16,6 @@ import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.sessions.domain.Student;
 import nextstep.sessions.domain.StudentStatus;
 import nextstep.sessions.domain.Students;
-import nextstep.users.domain.NsUserGroup;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -31,12 +30,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public int save(Session session) {
-    String sessionInsertSql = "insert into session (start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id, ns_user_group_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String sessionInsertSql = "insert into session (start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
     return jdbcTemplate.update(sessionInsertSql, session.getStartDate(), session.getEndDate(),
         session.getTitle(), session.getContents(), session.getCoverImage(), session.getCapacity(),
-        session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder(),
-        session.getNsUserGroup().getId());
+        session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder());
   }
 
   @Override
@@ -50,15 +48,11 @@ public class JdbcSessionRepository implements SessionRepository {
     // Session이 가지는 Users를 찾아오는 쿼리를 작성한다
     Students students = hasStudent(id) ? getStudents(id) : new Students(new HashSet<>());
 
-    // Session이 가지는 NsUserGroup을 찾아오는 쿼리를 작성한다
-    NsUserGroup nsUserGroup = getNsUserGroup(sessionEntity.nsUserGroupId);
-
     return new Session(
         sessionEntity.id,
         new SessionDate(sessionEntity.startDateTime, sessionEntity.endDateTime),
         new SessionBody(sessionEntity.title, sessionEntity.contents, sessionEntity.coverImage),
-        new SessionRegistration(sessionEntity.capacity, recruitingStatus, progressStatus, students,
-            nsUserGroup)
+        new SessionRegistration(sessionEntity.capacity, recruitingStatus, progressStatus, students)
     );
   }
 
@@ -84,12 +78,12 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   private SessionEntity getSessionEntity(Long id) {
-    String sql = "select id, start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id, ns_user_group_id from session where id = ?";
+    String sql = "select id, start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id from session where id = ?";
     SessionEntity sessionEntity = jdbcTemplate.queryForObject(sql,
         (rs, rowNum) -> new SessionEntity(rs.getLong(1),
             toLocalDateTime(rs.getTimestamp(2)), toLocalDateTime(rs.getTimestamp(3)),
             rs.getString(4), rs.getString(5), rs.getBytes(6),
-            rs.getInt(7), rs.getLong(8), rs.getLong(9), rs.getLong(10)),
+            rs.getInt(7), rs.getLong(8), rs.getLong(9)),
         id
     );
 
@@ -113,13 +107,6 @@ public class JdbcSessionRepository implements SessionRepository {
         .collect(Collectors.toSet());
 
     return new Students(students);
-  }
-
-  private NsUserGroup getNsUserGroup(Long nsUserGroupId) {
-    String sql = "select id, name from ns_user_group where id = ?";
-
-    return jdbcTemplate.queryForObject(sql,
-        (rs, rowNum) -> new NsUserGroup(rs.getLong(1), rs.getString(2)), nsUserGroupId);
   }
 
   private boolean hasStudent(Long sessionId) {
@@ -169,12 +156,10 @@ public class JdbcSessionRepository implements SessionRepository {
     private int capacity;
     private Long sessionRecruitingStatusId;
     private Long sessionProgressStatusId;
-    private Long nsUserGroupId;
-
     public SessionEntity(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime,
         String title,
         String contents, byte[] coverImage, int capacity, Long sessionRecruitingStatusId,
-        Long sessionProgressStatusId, Long nsUserGroupId) {
+        Long sessionProgressStatusId) {
       this.id = id;
       this.startDateTime = startDateTime;
       this.endDateTime = endDateTime;
@@ -184,7 +169,6 @@ public class JdbcSessionRepository implements SessionRepository {
       this.capacity = capacity;
       this.sessionRecruitingStatusId = sessionRecruitingStatusId;
       this.sessionProgressStatusId = sessionProgressStatusId;
-      this.nsUserGroupId = nsUserGroupId;
     }
   }
 }

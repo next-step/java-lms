@@ -1,10 +1,7 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import nextstep.users.domain.NsUserGroup;
-import nextstep.users.domain.NsUserNsUserGroup;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다
@@ -22,8 +19,8 @@ public class Session {
 
   private SessionRegistration sessionRegistration;
 
-  public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity, NsUserGroup nsUserGroup) {
-    this(0L, new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity, nsUserGroup));
+  public Session(String title, String contents, LocalDateTime startDateTime, LocalDateTime endDateTime, byte[] coverImage, int capacity) {
+    this(0L, new SessionDate(startDateTime, endDateTime), new SessionBody(title, contents, coverImage), new SessionRegistration(capacity));
   }
 
   public Session(SessionDate sessionDate, SessionBody sessionBody, SessionRegistration sessionRegistration) {
@@ -55,8 +52,8 @@ public class Session {
     sessionRegistration.validateInit();
   }
 
-  public void accept(List<NsUserNsUserGroup> nsUserNsUserGroups, Student student) {
-    sessionRegistration.accept(nsUserNsUserGroups, student);
+  public void accept(Student student) {
+    sessionRegistration.accept(student);
   }
 
   public Long getId() {
@@ -97,10 +94,6 @@ public class Session {
 
   public SessionProgressStatus getProgressStatus() {
     return this.sessionRegistration.getProgressStatus();
-  }
-
-  public NsUserGroup getNsUserGroup() {
-    return this.sessionRegistration.getNsUserGroup();
   }
 
   @Override
