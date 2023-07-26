@@ -55,6 +55,9 @@ public class SessionRegistration {
   }
 
   public void accept(Student student) {
+    if (students.overFull(capacity)) {
+        throw new IllegalStateException(String.format("수강인원이 초과되었습니다, 제한 인원 : %d, 현재 인원 : %d", capacity, students.size()));
+    }
 
     student.accept();
   }
