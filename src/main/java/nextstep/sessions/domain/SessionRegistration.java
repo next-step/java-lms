@@ -15,6 +15,10 @@ public class SessionRegistration {
     this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, new Students(new HashSet<>()));
   }
 
+  public SessionRegistration(int capacity, Students students) {
+    this(capacity, SessionRecruitingStatus.NOTHING, SessionProgressStatus.READY, students);
+  }
+
   public SessionRegistration(int capacity, SessionRecruitingStatus recruitingStatus, SessionProgressStatus progressStatus, Students students) {
     this.capacity = capacity;
     this.recruitingStatus = recruitingStatus;
@@ -56,7 +60,7 @@ public class SessionRegistration {
 
   public void accept(Student student) {
     if (students.overFull(capacity)) {
-        throw new IllegalStateException(String.format("수강인원이 초과되었습니다, 제한 인원 : %d, 현재 인원 : %d", capacity, students.size()));
+        throw new IllegalStateException(String.format("수강인원이 초과되었습니다. 제한 인원 : %d, 현재 인원 : %d", capacity, students.size()));
     }
 
     student.accept();

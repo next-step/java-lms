@@ -1,7 +1,6 @@
 package nextstep.sessions.domain;
 
 import static nextstep.sessions.domain.students.StudentStatus.ACCEPTED;
-import static nextstep.sessions.testFixture.SessionBuilder.aSession;
 import static nextstep.sessions.testFixture.StudentBuilder.aStudent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,6 +32,6 @@ class SessionRegistrationTest {
 
         assertThatThrownBy(() -> sessionRegistration.accept(student2))
             .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("수강 인원이 초과되었습니다.");
+            .hasMessageContaining("수강인원이 초과되었습니다.");
     }
 }
