@@ -1,6 +1,5 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,7 +15,7 @@ public class Session {
     private SessionEnrollment sessionEnrollment;
 
     public Session(Long courseId, CoverImage coverImage) {
-        this(courseId, coverImage, SessionEnrollment.newInstance());
+        this(courseId, coverImage, new SessionEnrollment());
     }
 
     public Session(Long id, Long courseId, SessionPeriod sessionPeriod, LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, PaymentType paymentType, SessionEnrollment sessionEnrollment) {
@@ -34,7 +33,7 @@ public class Session {
         this(0L, courseId, SessionPeriod.newInstance(), LocalDateTime.now(), null, coverImage, PaymentType.FREE, sessionEnrollment);
     }
 
-    public void register(NsUser user) {
+    public void register(SessionUser user) {
         sessionEnrollment.enroll(user);
     }
 
@@ -49,5 +48,46 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(id, courseId, sessionPeriod, createdAt, updatedAt, coverImage, paymentType, sessionEnrollment);
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public Long getCourseId() {
+        return courseId;
+    }
+    public LocalDateTime getStartAt() {
+        return sessionPeriod.getStartAt();
+    }
+    public LocalDateTime getEndAt() {
+        return sessionPeriod.getEndAt();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getCoverImagePath() {
+        return coverImage.getPath();
+    }
+
+    public String getCoverImageName() {
+        return coverImage.getName();
+    }
+
+    public String getPaymentType() {
+        return paymentType.name();
+    }
+
+    public String getSessionStatus() {
+        return sessionEnrollment.getSessionStatus();
+    }
+
+    public int getMaxUserSize() {
+        return sessionEnrollment.getMaxUserSize();
     }
 }
