@@ -41,11 +41,13 @@ public class StudentRepositoryTest {
         int count = this.sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = this.sessionRepository.findById(1L).orElseThrow();
+        Session savedSession = this.sessionRepository.findAll().stream()
+            .findFirst()
+            .orElseThrow();
         savedSession.recruitStart();
         NsUser user = this.userRepository.findByUserId("javajigi").orElseThrow();
         Student student = new Student(savedSession, user, LocalDateTime.of(2023, 6, 2, 13, 0), null);
-        savedSession.enrollment(student);
+        savedSession.enrollment(session.getStudents(), student);
         this.studentRepository.save(student);
 
         Students students = studentRepository.findAllBySessionId(savedSession.getId());

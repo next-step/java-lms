@@ -2,6 +2,7 @@ package nextstep.sessions.infrastructure;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import nextstep.sessions.domain.Session;
@@ -47,6 +48,22 @@ public class JdbcSessionRepository implements SessionRepository {
   }
 
   @Override
+  public List<Session> findAll() {
+    String sql = "select id, start_date_time, end_date_time, title, contents, cover_image, capacity, session_recruiting_status_id, session_progress_status_id from session";
+
+    return jdbcTemplate.query(sql, (rs, rowNum) -> new Session(
+        rs.getLong(1),
+        new SessionDate(toLocalDateTime(rs.getTimestamp(2)), toLocalDateTime(rs.getTimestamp(3))),
+        new SessionBody(rs.getString(4), rs.getString(5), rs.getBytes(6)),
+        new SessionRegistration(
+            rs.getInt(7),
+            rs.getInt(8),
+            rs.getInt(9)
+        )
+    ));
+  }
+
+  @Override
   public void update(Session session) {
     String sql = "update session set start_date_time = ?, end_date_time = ?, title = ?, contents = ?, cover_image = ?, capacity = ?, session_recruiting_status_id = ?, session_progress_status_id = ? where id = ?";
     jdbcTemplate.update(sql, session.getStartDate(), session.getEndDate(), session.getTitle(),
@@ -54,7 +71,7 @@ public class JdbcSessionRepository implements SessionRepository {
         session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder(),
         session.getId());
 
-    updateStudents(session.getStudents());
+    updateStudents(session.studentsAsSet());
   }
 
   private void updateStudents(Set<Student> students) {

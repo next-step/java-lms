@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,9 +18,7 @@ public interface SessionRepository {
 
   Optional<Session> findById(Long id);
 
+  List<Session> findAll();
+
   void update(Session session);
-
-  default void foo() {
-
-  }
 }
