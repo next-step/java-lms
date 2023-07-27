@@ -45,9 +45,9 @@ public class Session {
     this.sessionRegistration.recruitEnd();
   }
 
-  public void enrollment(Student student) {
+  public void enrollment(Students students, Student student) {
     sessionDate.validateEnrolment(student.getCreatedAt());
-    sessionRegistration.enrolment(student);
+    sessionRegistration.enrolment(students, student);
   }
 
   public void validateInit() {
@@ -87,8 +87,12 @@ public class Session {
     return this.sessionRegistration.getCapacity();
   }
 
-  public Set<Student> getStudents() {
+  public Students getStudents() {
     return this.sessionRegistration.getStudents();
+  }
+
+  public Set<Student> studentsAsSet() {
+    return this.sessionRegistration.asSet();
   }
 
   public SessionRecruitingStatus getRecruitingStatus() {
@@ -101,10 +105,6 @@ public class Session {
 
   public SessionRegistration getSessionRegistration() {
     return this.sessionRegistration;
-  }
-
-  public void setStudents(Students students) {
-    this.sessionRegistration.setStudents(students);
   }
 
   @Override

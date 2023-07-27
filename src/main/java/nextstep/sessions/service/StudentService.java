@@ -29,10 +29,10 @@ public class StudentService {
     public void enrollment(Long sessionId, String userId) {
         Session session = findSessionById(sessionId);
         NsUser user = findNsUserById(userId);
-        session.setStudents(studentRepository.findAllBySessionId(sessionId));
+        Students students = studentRepository.findAllBySessionId(sessionId);
         Student student = new Student(session, user, LocalDateTime.now(), null);
 
-        session.enrollment(student);
+        session.enrollment(students, student);
         studentRepository.save(student);
     }
 
