@@ -70,18 +70,6 @@ public class JdbcSessionRepository implements SessionRepository {
         session.getContents(), session.getCoverImage(), session.getCapacity(),
         session.getRecruitingStatus().getOrder(), session.getProgressStatus().getOrder(),
         session.getId());
-
-    updateStudents(session.studentsAsSet());
-  }
-
-  private void updateStudents(Set<Student> students) {
-    String sql = "insert into student (session_id, user_id, student_status_id, created_at) values (?, ?, ?, ?)";
-    LocalDateTime now = LocalDateTime.now();
-
-    students
-        .stream().filter(student -> student.getId().equals(0L))
-        .forEach(student -> jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(),
-            student.getStudentStatus().getOrder(), now));
   }
 
   private SessionEntity getSessionEntity(Long id) {
