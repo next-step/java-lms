@@ -11,16 +11,16 @@
 ---
 ## 1단계 - 레거시 코드 리팩터링
 ### todo 리스트
-1. delete 로직 분리
-    - Question 및 Answer 객체에서 직접 delete/유효성 테스트 진행
-    - Question은 Answer에게 삭제하라고 메시지 전달
+1. delete 로직 분리 [x]
+    - Question 및 Answer 객체에서 직접 delete/유효성 테스트 진행 [x]
+    - Question은 Answer에게 삭제하라고 메시지 전달 [x]
 2. Answer 일급 콜렉션 화 [x]
     - Answer 리스트를 가지고 있는 Answers 객체 추가 [x]
     - Answers에도 delete 기능을 추가하여 여기서 일괄 삭제 [x]
     - Answer를 추가할 수 있는 addAnswer 추가 [x]
-3. 삭제 완료시 DeleteHistory 반환 
-    - 위에서 구현한 모든 delete 기능은 DeleteHistory를 반환
-    - Answers와 Question은 DeleteHistory 리스트를 반환
+3. 삭제 완료시 DeleteHistory 반환 [x]
+    - 위에서 구현한 모든 delete 기능은 DeleteHistory를 반환 [x]
+    - Answers와 Question은 DeleteHistory 리스트를 반환 [x]
 
 ### 요구사항
 #### 질문 삭제하기 요구사항
