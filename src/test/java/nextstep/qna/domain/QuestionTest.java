@@ -19,7 +19,7 @@ public class QuestionTest {
     public void setUp() throws Exception {
         question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = AnswerTest.A1;
-        question.addAnswer2(answer);
+        question.addAnswer(answer);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class QuestionTest {
 
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
-        question.addAnswer2(AnswerTest.A2);
+        question.addAnswer(AnswerTest.A2);
 
         assertThatThrownBy(() -> {
             question.delete(NsUserTest.JAVAJIGI);
