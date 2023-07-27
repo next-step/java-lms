@@ -42,9 +42,8 @@ public class StudentService {
         SessionRegistration sessionRegistration = findSessionById(student.getSessionId())
             .getSessionRegistration();
         Students students = studentRepository.findAllBySessionId(student.getSessionId());
-        sessionRegistration.setStudents(students);
 
-        sessionRegistration.accept(student);
+        sessionRegistration.accept(students, student);
 
         studentRepository.update(student);
     }
