@@ -4,13 +4,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionBody;
 import nextstep.sessions.domain.SessionDate;
 import nextstep.sessions.domain.students.SessionRegistration;
 import nextstep.sessions.domain.SessionRepository;
-import nextstep.sessions.domain.students.Student;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
