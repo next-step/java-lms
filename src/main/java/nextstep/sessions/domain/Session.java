@@ -55,6 +55,10 @@ public class Session {
     sessionRegistration.validateInit();
   }
 
+  public void accept(Students students, Student student) {
+    this.sessionRegistration.accept(students, student);
+  }
+
   public Long getId() {
     return this.id;
   }

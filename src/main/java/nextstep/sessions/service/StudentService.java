@@ -39,11 +39,10 @@ public class StudentService {
     @Transactional
     public void accept(Long studentId) {
         Student student = findStudentById(studentId);
-        SessionRegistration sessionRegistration = findSessionById(student.getSessionId())
-            .getSessionRegistration();
+        Session session = findSessionById(student.getSessionId());
         Students students = studentRepository.findAllBySessionId(student.getSessionId());
 
-        sessionRegistration.accept(students, student);
+        session.accept(students, student);
 
         studentRepository.update(student);
     }
