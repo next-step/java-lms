@@ -83,14 +83,6 @@ public class Session {
     return this.sessionRegistration.getCapacity();
   }
 
-  public Students getStudents() {
-    return this.sessionRegistration.getStudents();
-  }
-
-  public Set<Student> studentsAsSet() {
-    return this.sessionRegistration.asSet();
-  }
-
   public SessionRecruitingStatus getRecruitingStatus() {
     return this.sessionRegistration.getRecruitingStatus();
   }

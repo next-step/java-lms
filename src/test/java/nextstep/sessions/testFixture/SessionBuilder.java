@@ -19,7 +19,6 @@ public class SessionBuilder {
   private int capacity = 1;
   private SessionRecruitingStatus sessionRecruitingStatus = SessionRecruitingStatus.NOTHING;
   private SessionProgressStatus sessionProgressStatus = SessionProgressStatus.READY;
-  private Students students = new Students(new HashSet<>());
 
   private SessionBuilder() {
   }
@@ -58,15 +57,9 @@ public class SessionBuilder {
     return this;
   }
 
-  public SessionBuilder withStudents(Students students) {
-    this.students = students;
-
-    return this;
-  }
-
   public Session build() {
     return new Session(new SessionDate(this.startDateTime, this.endDateTime),
         new SessionBody(this.title, this.contents, this.coverImage),
-        new SessionRegistration(this.capacity, this.sessionRecruitingStatus, this.sessionProgressStatus, this.students));
+        new SessionRegistration(this.capacity, this.sessionRecruitingStatus, this.sessionProgressStatus));
   }
 }

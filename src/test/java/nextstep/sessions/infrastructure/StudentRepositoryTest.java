@@ -4,6 +4,7 @@ import static nextstep.sessions.testFixture.SessionBuilder.aSession;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.students.Student;
@@ -47,7 +48,7 @@ public class StudentRepositoryTest {
         savedSession.recruitStart();
         NsUser user = this.userRepository.findByUserId("javajigi").orElseThrow();
         Student student = new Student(savedSession, user, LocalDateTime.of(2023, 6, 2, 13, 0), null);
-        savedSession.enrollment(session.getStudents(), student);
+        savedSession.enrollment(new Students(new HashSet<>()), student);
         this.studentRepository.save(student);
 
         Students students = studentRepository.findAllBySessionId(savedSession.getId());

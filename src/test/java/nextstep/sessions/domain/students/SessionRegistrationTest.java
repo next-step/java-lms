@@ -7,9 +7,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.HashSet;
 import java.util.Set;
-import nextstep.sessions.domain.students.SessionRegistration;
-import nextstep.sessions.domain.students.Student;
-import nextstep.sessions.domain.students.Students;
 import org.junit.jupiter.api.Test;
 
 class SessionRegistrationTest {
@@ -29,7 +26,7 @@ class SessionRegistrationTest {
         Student student1 = aStudent().withStudentStatus(ACCEPTED).build();
         Student student2 = aStudent().build();
         Students students = new Students(new HashSet<>(Set.of(student1, student2)));
-        SessionRegistration sessionRegistration = new SessionRegistration(1, students);
+        SessionRegistration sessionRegistration = new SessionRegistration(1);
 
         assertThatThrownBy(
             () -> sessionRegistration.accept(students, student2))
