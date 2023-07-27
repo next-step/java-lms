@@ -2,7 +2,9 @@ package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import nextstep.users.domain.NsUser;
+import nextstep.sessions.domain.students.SessionRegistration;
+import nextstep.sessions.domain.students.Student;
+import nextstep.sessions.domain.students.Students;
 
 /**
  * 객체를 생성한 후에 validate 메서드를 통해 명시적으로 검증해야 한다
@@ -43,14 +45,18 @@ public class Session {
     this.sessionRegistration.recruitEnd();
   }
 
-  public void enrollment(NsUser user, LocalDateTime enrollmentDateTime) {
-    sessionDate.validateEnrolment(enrollmentDateTime);
-    sessionRegistration.enrolment(this, user);
+  public void enrollment(Students students, Student student) {
+    sessionDate.validateEnrolment(student.getCreatedAt());
+    sessionRegistration.enrolment(students, student);
   }
 
   public void validateInit() {
     sessionDate.validateInit();
     sessionRegistration.validateInit();
+  }
+
+  public void accept(Students students, Student student) {
+    this.sessionRegistration.accept(students, student);
   }
 
   public Long getId() {
@@ -81,12 +87,16 @@ public class Session {
     return this.sessionRegistration.getCapacity();
   }
 
-  public Set<Student> getStudents() {
-    return this.sessionRegistration.getStudents();
+  public SessionRecruitingStatus getRecruitingStatus() {
+    return this.sessionRegistration.getRecruitingStatus();
   }
 
-  public SessionStatus getStatus() {
-    return this.sessionRegistration.getStatus();
+  public SessionProgressStatus getProgressStatus() {
+    return this.sessionRegistration.getProgressStatus();
+  }
+
+  public SessionRegistration getSessionRegistration() {
+    return this.sessionRegistration;
   }
 
   @Override
