@@ -37,3 +37,64 @@
 2. QnaService의 deleteQuestion() 메서드에 단위 테스트 가능한 코드(핵심 비지니스 로직)를 도메인 모델 객체에 구현한다.
 3. QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 4. QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+
+---
+
+## 2단계 - 수강신청(도메인 모델)
+### todo list
+
+1. Course 객체는 Session 리스트 객체를 가지고 있음.
+   - Session 일급 콜렉션으로 구현 -> Sessions
+   - 사용자 아이디 
+   
+2. Sessions 객체
+   - 강의 시작, 종료, 모집 등의 기능 진행 시 강의 아이디 필요.
+
+3. Session 객체
+   - 강의 아이디(id), 강의 명(title) 필요
+   - 강의 시작일(startDt)과 강의 종료일(endDt)를 가지고 있음. 
+     - default는 null 이며 시작 또는 종료시 LocalDateTime.now()로 할당
+   - 강의 커버 이미지를 가지고 있음. 이미지 객체 필요해 보임 (CoverImage)
+     - 인스턴스 변수로 받는게 좋아 보임. 
+   - 유무료 여부(isFree)를 가지고 있음.
+   - 상태를 가지고 있음. SessionStatus 객체로 분리
+     - 생성 시 준비 중
+   - 수강 최대 인원 필요 (maxNumberOfStudent)
+   - 수강 중 인원 필요 (Students) -> User의 집합
+   - 수강 신청 기능 (enrolment)
+     - User 객체 필요
+     - 수강 신청 시 수강 최대 인원 체크 (Students와 협력)
+     - 강의 상태가 모집중 인지 확인
+     - Students에 추가
+   - 강의 시작, 종료, 모집 기능 필요
+     - 모집은 모집중으로 상태 변경
+     - 시작은 진행중으로 상태 변경
+     - 종료는 종료로 상태 변경
+     
+3. SessionStatus Enum 객체
+   - 강의 상태를 가지고 있음
+   - 준비중(PREPARING), 모집중(RECRUITING), 진행중(PROCEEDING) 종료(END)
+   - 진행중은 요구사항에는 없으나 필요해 보임.
+
+4. CoverImage 객체 -> Session 생성 시 필요
+   - Image size, path 등의 정보 필요
+
+5. Students 객체
+   - Session에서 강의를 듣고 있는 User 객체들 
+   - 최대 수강인원을 받아 최대 수강인원을 넘었거나 같은지 확인하는 기능 필요
+
+### 요구 사항
+#### 수강 신청 기능 요구사항
+1. 과정(Course)은 기수 단위로 여러 개의 강의(Session)를 가질 수 있다.
+2. 강의는 시작일과 종료일을 가진다.
+3. 강의는 강의 커버 이미지 정보를 가진다.
+4. 강의는 무료 강의와 유료 강의로 나뉜다.
+5. 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
+6. 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
+7. 강의는 강의 최대 수강 인원을 초과할 수 없다.
+
+#### 프로그래밍 요구사항
+1. DB 테이블 설계 없이 도메인 모델부터 구현한다.
+2. 도메인 모델은 TDD로 구현한다.
+   - 단, Service 클래스는 단위 테스트가 없어도 된다.
+3. 다음 동영상을 참고해 DB 테이블보다 도메인 모델을 먼저 설계하고 구현한다.
