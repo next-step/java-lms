@@ -20,11 +20,12 @@ public class SessionUsers {
     }
 
 
-    public void enroll(SessionUser sessionUser) {
+    public SessionUser enroll(SessionUser sessionUser) {
         if (sessionUsers.size() == maxUserSize) {
             throw new IllegalStateException("수강 인원이 가득 찼습니다.");
         }
         sessionUsers.add(sessionUser);
+        return sessionUser;
     }
 
     public int getMaxUserSize() {
