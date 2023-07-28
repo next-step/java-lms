@@ -79,9 +79,9 @@
 4. CoverImage 객체 -> Session 생성 시 필요
    - Image size, path 등의 정보 필요
 
-5. Students 객체
-   - Session에서 강의를 듣고 있는 User 객체들 
-   - 최대 수강인원을 받아 최대 수강인원을 넘었거나 같은지 확인하는 기능 필요
+5. Students 객체 [x]
+   - Session에서 강의를 듣고 있는 User 객체들 [x]
+   - 최대 수강인원을 받아 최대 수강인원을 넘었거나 같은지 확인하는 기능 필요 [x]
 
 ### 요구 사항
 #### 수강 신청 기능 요구사항
