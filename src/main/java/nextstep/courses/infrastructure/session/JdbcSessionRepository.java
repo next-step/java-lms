@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
-    private final SessionUserRepository sessionUserRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, SessionUserRepository sessionUserRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.sessionUserRepository = sessionUserRepository;
     }
 
     @Override
@@ -43,7 +41,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 PaymentType.valueOf(rs.getString("payment_type")),
                 new SessionEnrollment(
                         SessionStatus.valueOf(rs.getString("session_status")),
-                        sessionUserRepository.findBySessionId(rs.getLong("id")),
                         rs.getInt("max_user_size")
                 )
         );
