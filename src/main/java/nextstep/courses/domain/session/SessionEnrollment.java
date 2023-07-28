@@ -36,8 +36,8 @@ public class SessionEnrollment {
         }
     }
 
-    public String getSessionStatus() {
-        return sessionStatus.name();
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
 
     public int getMaxUserSize() {

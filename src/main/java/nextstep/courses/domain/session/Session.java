@@ -79,11 +79,11 @@ public class Session {
         return coverImage.getName();
     }
 
-    public String getPaymentType() {
-        return paymentType.name();
+    public PaymentType getPaymentType() {
+        return paymentType;
     }
 
-    public String getSessionStatus() {
+    public SessionStatus getSessionStatus() {
         return sessionEnrollment.getSessionStatus();
     }
 

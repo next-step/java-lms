@@ -19,7 +19,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into sessions (course_id, start_at, end_at, created_at, updated_at, cover_image_path, cover_image_name, payment_type, session_status, max_user_size) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getCourseId(), session.getStartAt(), session.getEndAt(), session.getCreatedAt(), session.getUpdatedAt(), session.getCoverImagePath(), session.getCoverImageName(), session.getPaymentType(), session.getSessionStatus(), session.getMaxUserSize());
+        return jdbcTemplate.update(sql, session.getCourseId(), session.getStartAt(), session.getEndAt(), session.getCreatedAt(), session.getUpdatedAt(), session.getCoverImagePath(), session.getCoverImageName(), enumToString(session.getPaymentType()), enumToString(session.getSessionStatus()), session.getMaxUserSize());
     }
 
     @Override
@@ -52,5 +52,12 @@ public class JdbcSessionRepository implements SessionRepository {
             return null;
         }
         return timestamp.toLocalDateTime();
+    }
+
+    private String enumToString(Enum<?> e) {
+        if (e == null) {
+            return null;
+        }
+        return e.name();
     }
 }
