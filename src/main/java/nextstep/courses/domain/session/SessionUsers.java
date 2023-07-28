@@ -5,8 +5,8 @@ import java.util.List;
 
 public class SessionUsers {
 
-    private List<SessionUser> sessionUsers;
-    private int maxUserSize;
+    private final List<SessionUser> sessionUsers;
+    private final int maxUserSize;
     public SessionUsers(int maxUserSize) {
         this(new ArrayList<>(), maxUserSize);
     }
