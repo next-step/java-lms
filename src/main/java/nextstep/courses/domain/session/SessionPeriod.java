@@ -22,10 +22,6 @@ public class SessionPeriod {
         return new SessionPeriod(startAt, endAt);
     }
 
-    public static SessionPeriod newInstance() {
-        return new SessionPeriod();
-    }
-
     public LocalDateTime getStartAt() {
         return startAt;
     }
