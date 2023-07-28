@@ -9,18 +9,18 @@ public class SessionEnrollment {
     private List<SessionUser> sessionUsers;
     private int maxUserSize;
 
-    public SessionEnrollment(SessionStatus sessionStatus, List<SessionUser> sessionUsers, int maxUserSize) {
-        this.sessionStatus = sessionStatus;
-        this.sessionUsers = sessionUsers;
-        this.maxUserSize = maxUserSize;
-    }
-
     public SessionEnrollment(SessionStatus sessionStatus, int maxUserSize) {
         this(sessionStatus, new ArrayList<>(), maxUserSize);
     }
 
     public SessionEnrollment() {
         this(SessionStatus.PREPARING, 0);
+    }
+
+    public SessionEnrollment(SessionStatus sessionStatus, List<SessionUser> sessionUsers, int maxUserSize) {
+        this.sessionStatus = sessionStatus;
+        this.sessionUsers = sessionUsers;
+        this.maxUserSize = maxUserSize;
     }
 
 
