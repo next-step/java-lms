@@ -11,7 +11,10 @@ public class SessionUsers {
         this(new ArrayList<>(), maxUserSize);
     }
 
-    private SessionUsers(List<SessionUser> sessionUsers, int maxUserSize) {
+    public SessionUsers(List<SessionUser> sessionUsers, int maxUserSize) {
+        if (sessionUsers.size() > maxUserSize) {
+            throw new IllegalArgumentException("수강 인원이 너무 많습니다.");
+        }
         this.sessionUsers = sessionUsers;
         this.maxUserSize = maxUserSize;
     }
@@ -22,5 +25,9 @@ public class SessionUsers {
             throw new IllegalStateException("수강 인원이 가득 찼습니다.");
         }
         sessionUsers.add(sessionUser);
+    }
+
+    public int getMaxUserSize() {
+        return maxUserSize;
     }
 }
