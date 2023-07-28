@@ -1,6 +1,4 @@
-package nextstep.users.domain;
-
-import nextstep.courses.domain.CoverImage;
+package nextstep.courses.domain;
 
 public class CoverImageTest {
     public static final CoverImage coverImage = new CoverImage(1L, "./image", "session1.jpg", 1024L);
