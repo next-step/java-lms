@@ -25,11 +25,11 @@ public class SessionEnrollment {
 
 
     public void enroll(SessionUser user) {
-        validate2();
+        validate();
         sessionUsers.add(user);
     }
 
-    private void validate2() {
+    private void validate() {
         if (sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중이 아닙니다.");
         }
