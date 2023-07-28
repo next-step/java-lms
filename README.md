@@ -71,7 +71,7 @@
      - 시작은 진행중으로 상태 변경
      - 종료는 종료로 상태 변경
      
-3. SessionStatus Enum 객체
+3. SessionStatus Enum 객체 [x]
    - 강의 상태를 가지고 있음
    - 준비중(PREPARING), 모집중(RECRUITING), 진행중(PROCEEDING) 종료(END)
    - 진행중은 요구사항에는 없으나 필요해 보임.
