@@ -14,7 +14,7 @@ public class SessionPeriod {
         this.endAt = endAt;
     }
 
-    private SessionPeriod() {
+    public SessionPeriod() {
         this(LocalDateTime.now(), LocalDateTime.MAX);
     }
 

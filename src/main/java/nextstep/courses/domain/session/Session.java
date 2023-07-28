@@ -30,7 +30,7 @@ public class Session {
     }
 
     public Session(Long courseId, CoverImage coverImage, SessionEnrollment sessionEnrollment) {
-        this(0L, courseId, SessionPeriod.newInstance(), LocalDateTime.now(), null, coverImage, PaymentType.FREE, sessionEnrollment);
+        this(0L, courseId, new SessionPeriod(), LocalDateTime.now(), null, coverImage, PaymentType.FREE, sessionEnrollment);
     }
 
     public void register(SessionUser user) {
