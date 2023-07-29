@@ -24,4 +24,8 @@ public class Students {
     public boolean isPossibleAdd(int maxNumberOfStudent) {
         return students.size() < maxNumberOfStudent;
     }
+
+    public void addStudent(NsUser student){
+        students.add(student);
+    }
 }
