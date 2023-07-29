@@ -25,9 +25,9 @@ public class SessionEnrollment {
         this.sessionUsers = sessionUsers;
     }
 
-    public SessionUser enroll(SessionUser user) {
+    public void enroll(SessionUser user) {
         validate();
-        return sessionUsers.enroll(user);
+        sessionUsers.enroll(user);
     }
 
     private void validate() {

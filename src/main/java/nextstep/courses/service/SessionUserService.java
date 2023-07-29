@@ -25,7 +25,8 @@ public class SessionUserService {
 
     public void save(Long sessionId, Long userId) {
         Session session = sessionRepository.findById(sessionId);
-        SessionUser sessionUser = session.register(userId);
+        SessionUser sessionUser = new SessionUser(sessionId, userId);
+        session.register(sessionUser);
         sessionUserRepository.save(sessionUser);
     }
 }

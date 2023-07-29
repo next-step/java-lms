@@ -22,7 +22,7 @@ public class SessionService {
     public Session findById(Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
         List<SessionUser> sessionUsers = sessionUserRepository.findBySessionId(sessionId);
-        sessionUsers.forEach(sessionUser -> session.register(sessionUser.getUserId()));
+        sessionUsers.forEach(session::register);
         return session;
     }
 

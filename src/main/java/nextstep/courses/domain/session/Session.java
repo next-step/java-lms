@@ -33,8 +33,8 @@ public class Session {
         this(0L, courseId, new SessionPeriod(), LocalDateTime.now(), null, coverImage, PaymentType.FREE, sessionEnrollment);
     }
 
-    public SessionUser register(Long userId) {
-        return sessionEnrollment.enroll(new SessionUser(this.id, userId));
+    public void register(SessionUser sessionUser) {
+        sessionEnrollment.enroll(sessionUser);
     }
 
     @Override
