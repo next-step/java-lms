@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.NotChangeStatusException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,5 +86,12 @@ public class SessionTest {
 
         // then
         assertThat(sessionStatus).isEqualTo(SessionStatus.END);
+    }
+
+    @Test
+    public void 강의_아이디로_같은_강의_여부_확인() throws Exception {
+        // when, then
+        assertThat(session.isSessionWithId(0L)).isTrue();
+        assertThat(session.isSessionWithId(1L)).isFalse();
     }
 }
