@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.NotChangeStatusException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class Session {
         this.coverImage = coverImage;
     }
 
-    public void enrolment(NsUser user) throws IllegalAccessException {
+    public void enrolment(NsUser user) throws IllegalArgumentException {
         checkedProceeding();
 
         checkedMaxNumberOfStudent();
@@ -35,15 +36,15 @@ public class Session {
         students.addStudent(user);
     }
 
-    private void checkedMaxNumberOfStudent() throws IllegalAccessException {
+    private void checkedMaxNumberOfStudent() throws IllegalArgumentException {
         if (!students.isPossibleAdd(maxNumberOfStudent)) {
-            throw new IllegalAccessException("수강 인원이 가득 찼습니다.");
+            throw new IllegalArgumentException("수강 인원이 가득 찼습니다.");
         }
     }
 
-    private void checkedProceeding() throws IllegalAccessException {
+    private void checkedProceeding() throws IllegalArgumentException {
         if (sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalAccessException("모집 중이 아닙니다.");
+            throw new IllegalArgumentException("모집 중이 아닙니다.");
         }
     }
 
@@ -73,5 +74,9 @@ public class Session {
 
     public void addCoverImage(CoverImage coverImage){
         this.coverImage = coverImage;
+    }
+
+    public boolean isSessionWithId(long id) {
+        return this.id == id;
     }
 }
