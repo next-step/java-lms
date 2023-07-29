@@ -50,30 +50,30 @@
 2. Sessions 객체
    - 강의 시작, 종료, 모집 등의 기능 진행 시 강의 아이디 필요.
 
-3. Session 객체
-   - 강의 아이디(id), 강의 명(title) 필요
-   - 강의 시작일(startDt)과 강의 종료일(endDt)를 가지고 있음. 
-     - default는 null 이며 시작 또는 종료시 LocalDateTime.now()로 할당
-   - 강의 커버 이미지를 가지고 있음. 이미지 객체 필요해 보임 (CoverImage)
-     - 인스턴스 변수로 받는게 좋아 보임. 
-   - 유무료 여부(isFree)를 가지고 있음.
-   - 상태를 가지고 있음. SessionStatus 객체로 분리
-     - 생성 시 준비 중
-   - 수강 최대 인원 필요 (maxNumberOfStudent)
-   - 수강 중 인원 필요 (Students) -> User의 집합
-   - 수강 신청 기능 (enrolment)
-     - User 객체 필요
-     - 수강 신청 시 수강 최대 인원 체크 (Students와 협력)
-     - 강의 상태가 모집중 인지 확인
-     - Students에 추가
-   - 강의 시작, 종료, 모집 기능 필요
-     - 모집은 모집중으로 상태 변경
-     - 시작은 진행중으로 상태 변경
-     - 종료는 종료로 상태 변경
+3. Session 객체 [x]
+   - 강의 아이디(id), 강의 명(title) 필요 [x]
+   - 강의 시작일(startDt)과 강의 종료일(endDt)를 가지고 있음. [x]
+     - default는 null 이며 시작 또는 종료시 LocalDateTime.now()로 할당 [x]
+   - 강의 커버 이미지를 가지고 있음. 이미지 객체 필요해 보임 (CoverImage) [x]
+   - 유무료 여부(isFree)를 가지고 있음. [x]
+   - 상태를 가지고 있음. SessionStatus 객체로 분리 [x]
+     - 생성 시 준비 중 [x]
+   - 수강 최대 인원 필요 (maxNumberOfStudent) [x]
+   - 수강 중 인원 필요 (Students) -> User의 집합 [x]
+   - 수강 신청 기능 (enrolment) [x]
+     - User 객체 필요 [x]
+     - 강의 상태가 모집중 인지 확인 [x]
+     - 수강 신청 시 수강 최대 인원 체크 (Students와 협력) [x]
+     - Students에 추가 [x]
+   - 강의 시작, 종료, 모집 기능 필요 [x]
+     - 모집은 모집중으로 상태 변경 [x]
+     - 시작은 진행중으로 상태 변경 [x]
+     - 종료는 종료로 상태 변경 [x]
+     - 상태 변경 시 이전 상태에 대한 유효성 체크 추가 [x]
      
 3. SessionStatus Enum 객체 [x]
    - 강의 상태를 가지고 있음
-   - 준비중(PREPARING), 모집중(RECRUITING), 진행중(PROCEEDING) 종료(END)
+   - 준비중(PREPARING), 모집중(RECRUITING), 진행중(PROCEEDING), 종료(END)
    - 진행중은 요구사항에는 없으나 필요해 보임.
 
 4. CoverImage 객체 -> Session 생성 시 필요 [x]
