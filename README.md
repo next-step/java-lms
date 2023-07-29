@@ -43,12 +43,11 @@
 ## 2단계 - 수강신청(도메인 모델)
 ### todo list
 
-1. Course 객체는 Session 리스트 객체를 가지고 있음.
-   - Session 일급 콜렉션으로 구현 -> Sessions
-   - 사용자 아이디 
+1. Course 객체는 Session 리스트 객체를 가지고 있음. [x]
+   - Session 일급 콜렉션으로 구현 -> Sessions [x]
    
-2. Sessions 객체
-   - 강의 시작, 종료, 모집 등의 기능 진행 시 강의 아이디 필요.
+2. Sessions 객체 [x]
+   - 강의 시작, 종료, 모집 등의 기능 진행 시 강의 아이디 필요. [x]
 
 3. Session 객체 [x]
    - 강의 아이디(id), 강의 명(title) 필요 [x]
