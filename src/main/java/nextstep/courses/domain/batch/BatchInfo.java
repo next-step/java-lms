@@ -14,4 +14,12 @@ public class BatchInfo {
   public boolean checkBatchNo(int batchNo) {
     return this.batchNo == batchNo;
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public int getBatchNo() {
+    return batchNo;
+  }
 }

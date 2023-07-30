@@ -1,9 +1,8 @@
 package nextstep.courses.domain.batch;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import nextstep.courses.domain.curriculum.Curriculum;
-import nextstep.courses.domain.session.Session;
 import nextstep.qna.NotFoundException;
 
 public class Batches {
@@ -13,18 +12,30 @@ public class Batches {
   public Batches() {
   }
 
+  public Batches(List<Batch> batches) {
+    this(new HashSet<>(batches));
+  }
+
+  public Batches(Set<Batch> batches) {
+    this.batches = batches;
+  }
+
   public void addBatch(Batch batch) {
     batches.add(batch);
   }
 
-  public Curriculum addSession(int batchNo, Session session) {
-    return getBatch(batchNo).addSession(session);
+  public void removeBatch(Batch batch) {
+    batches.remove(batch);
   }
 
-  private Batch getBatch(int batchNo) {
+  public Batch getBatch(int batchNo) {
     return batches.stream()
         .filter(batch -> batch.checkBatchNo(batchNo))
         .findAny()
         .orElseThrow(NotFoundException::new);
+  }
+
+  public int getSize() {
+    return batches.size();
   }
 }
