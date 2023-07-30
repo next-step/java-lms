@@ -1,6 +1,7 @@
 package nextstep.courses.domain.batch;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.curriculum.Curriculum;
 import nextstep.courses.domain.curriculum.Curriculums;
@@ -18,7 +19,12 @@ public class Batch {
   }
 
   public Batch(int batchNo, Long courseId, Long creatorId) {
-    this(null, batchNo, courseId, creatorId, LocalDateTime.now(), null);
+    this(null, batchNo, courseId, creatorId);
+  }
+
+  public Batch(Long id, int batchNo, Long courseId, Long creatorId) {
+    this(id, batchNo, courseId
+        , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
   public Batch(Long id, int batchNo, Long courseId, Long creatorId,
@@ -32,18 +38,32 @@ public class Batch {
     this.baseInfo = baseInfo;
   }
 
-  public Curriculum addSession(Session session, Curriculums curriculums) {
-    Curriculum curriculum = new Curriculum(this, session);
+  public Curriculum addSession(Session session, Curriculums curriculums, Long creatorId) {
+    Curriculum curriculum = new Curriculum(getId(), session.getId(), creatorId);
     curriculums.addCurriculum(curriculum);
     return curriculum;
   }
 
-  public boolean hasSession(Session session, Curriculums curriculums) {
-    return curriculums.hasCurriculum(new Curriculum(this, session));
-  }
-
   public boolean checkBatchNo(int batchNo) {
     return batchInfo.checkBatchNo(batchNo);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Batch batch = (Batch) o;
+    return Objects.equals(batchInfo, batch.batchInfo) && Objects
+        .equals(courseId, batch.courseId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(batchInfo, courseId);
   }
 
   public Long getId() {

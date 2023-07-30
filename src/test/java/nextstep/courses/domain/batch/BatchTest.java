@@ -23,12 +23,14 @@ public class BatchTest {
 
   @BeforeEach
   public void setUp() {
-    c1 = new Course("ssafy", 1L);
+    c1 = new Course(1L, "ssafy", 1L);
     bs1 = new Batches();
-    s1 = new Session("tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
-        SessionType.PAID, 1, 1L);
-    s2 = new Session("atdd", "atdd-img", LocalDateTime.now(),
-        LocalDateTime.now().plusMonths(1), SessionType.PAID, 30, 1L);
+    s1 = new Session(1L, "tdd", "tdd-img"
+        , LocalDateTime.now(), LocalDateTime.now().plusMonths(2)
+        , SessionType.PAID, 1, 1L);
+    s2 = new Session(2L, "atdd", "atdd-img"
+        , LocalDateTime.now(), LocalDateTime.now().plusMonths(1)
+        , SessionType.PAID, 30, 1L);
   }
 
   @DisplayName("과정(Course)은 기수(Batch) 단위로 여러 개의 강의(Session)를 가질 수 있다.")
@@ -41,12 +43,12 @@ public class BatchTest {
     assertThat(bs1.getSize()).isEqualTo(2);
 
     assertAll(
-        () -> batch1.addSession(s1, curriculums1),
-        () -> assertThat(batch1.hasSession(s1, curriculums1)).isTrue(),
-        () -> batch1.addSession(s2, curriculums1),
-        () -> assertThat(batch1.hasSession(s2, curriculums1)).isTrue(),
-        () -> batch2.addSession(s2, curriculums2),
-        () -> assertThat(batch2.hasSession(s2, curriculums2)).isTrue()
+        () -> batch1.addSession(s1, curriculums1, 1L),
+        () -> assertThat(curriculums1.hasSession(s1.getId())).isTrue(),
+        () -> batch1.addSession(s2, curriculums1, 1L),
+        () -> assertThat(curriculums1.hasSession(s2.getId())).isTrue(),
+        () -> batch2.addSession(s2, curriculums2, 1L),
+        () -> assertThat(curriculums2.hasSession(s2.getId())).isTrue()
     );
   }
 
@@ -55,9 +57,9 @@ public class BatchTest {
   public void addSession_throwException_ifDuplicatedSessionAdd() {
     Batch batch = c1.createdBatch(1L, bs1);
     Curriculums curriculums1 = new Curriculums();
-    batch.addSession(s1, curriculums1);
+    batch.addSession(s1, curriculums1, 1L);
 
-    assertThatThrownBy(() -> batch.addSession(s1, curriculums1))
+    assertThatThrownBy(() -> batch.addSession(s1, curriculums1, 1L))
         .isInstanceOf(DuplicatedException.class);
   }
 }

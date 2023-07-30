@@ -53,13 +53,6 @@ public class JdbcBatchRepository implements BatchRepository {
     return jdbcTemplate.query(sql, rowMapper, courseId);
   }
 
-  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-    if (timestamp == null) {
-      return null;
-    }
-    return timestamp.toLocalDateTime();
-  }
-
   @Override
   public Long save(Batch batch) {
     if (batch.getId() != null && findById(batch.getId()).isPresent()) {
@@ -67,7 +60,8 @@ public class JdbcBatchRepository implements BatchRepository {
     }
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    String sql = "insert into batch (batch_no, course_id, creator_id, created_at, updated_at) "
+    String sql = "insert into batch (batch_no, course_id"
+        + ", creator_id, created_at, updated_at) "
         + "values(?, ?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
@@ -79,6 +73,17 @@ public class JdbcBatchRepository implements BatchRepository {
       return ps;
     }, keyHolder);
 
+    return getId(keyHolder);
+  }
+
+  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    return timestamp.toLocalDateTime();
+  }
+
+  private Long getId(KeyHolder keyHolder) {
     return keyHolder.getKey().longValue();
   }
 }

@@ -29,8 +29,8 @@ public class BatchRepositoryTest {
   @BeforeEach
   void setUp() {
     courseRepository = new JdbcCourseRepository(jdbcTemplate);
-    courseRepository.save(new Course("TDD, 클린 코드 with Java", 1L));
-    course = courseRepository.findById(1L).get();
+    Long courseId = courseRepository.save(new Course("TDD, 클린 코드 with Java", 1L));
+    course = courseRepository.findById(courseId).get();
 
     batchRepository = new JdbcBatchRepository(jdbcTemplate);
   }
@@ -42,8 +42,19 @@ public class BatchRepositoryTest {
     Batch batch = course.createdBatch(1L, batches);
     Long saveId = batchRepository.save(batch);
 
-    Batch savedBatch = batchRepository.findById(saveId).get();
-    assertThat(batch.getBatchNo()).isEqualTo(savedBatch.getBatchNo());
-    assertThat(batch.getCourseId()).isEqualTo(savedBatch.getCourseId());
+    Batch retBatch = batchRepository.findById(saveId).get();
+    assertThat(retBatch.getBatchNo()).isEqualTo(batch.getBatchNo());
+  }
+
+  @Test
+  @Transactional
+  void findByCourseId() {
+    Batches batches = new Batches(batchRepository.findByCourseId(course.getId()));
+    Batch batch = course.createdBatch(1L, batches);
+    batchRepository.save(batch);
+
+    Batch retBatch = batchRepository.findByCourseId(course.getId()).get(0);
+    assertThat(retBatch.getCourseId()).isEqualTo(course.getId());
+    assertThat(retBatch.getBatchNo()).isEqualTo(batch.getBatchNo());
   }
 }

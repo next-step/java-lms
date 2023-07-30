@@ -24,17 +24,6 @@ public class Batches {
     batches.add(batch);
   }
 
-  public void removeBatch(Batch batch) {
-    batches.remove(batch);
-  }
-
-  public Batch getBatch(int batchNo) {
-    return batches.stream()
-        .filter(batch -> batch.checkBatchNo(batchNo))
-        .findAny()
-        .orElseThrow(NotFoundException::new);
-  }
-
   public int getSize() {
     return batches.size();
   }
