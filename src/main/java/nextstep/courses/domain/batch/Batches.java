@@ -3,7 +3,6 @@ package nextstep.courses.domain.batch;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import nextstep.qna.NotFoundException;
 
 public class Batches {
 

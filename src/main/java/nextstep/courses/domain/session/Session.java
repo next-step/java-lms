@@ -10,13 +10,13 @@ import nextstep.courses.domain.registration.Registrations;
 
 public class Session {
 
-  private SessionInfo sessionInfo;
+  private final SessionInfo sessionInfo;
 
-  private SessionPeriod sessionPeriod;
+  private final SessionPeriod sessionPeriod;
 
-  private Enrollment enrollment;
+  private final Enrollment enrollment;
 
-  private BaseInfo baseInfo;
+  private final BaseInfo baseInfo;
 
   public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
       SessionType sessionType, int maxRecruitment, Long creatorId) {

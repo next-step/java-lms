@@ -6,7 +6,7 @@ public class BaseInfo {
 
   private final Long creatorId;
 
-  private LocalDateTime createdAt;
+  private final LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
 

@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class CourseInfo {
 
-  private Long id;
+  private final Long id;
 
-  private String title;
+  private final String title;
 
   public CourseInfo(Long id, String title) {
     this.id = id;

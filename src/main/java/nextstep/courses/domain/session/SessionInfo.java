@@ -4,11 +4,11 @@ import java.util.Objects;
 
 public class SessionInfo {
 
-  private Long id;
+  private final Long id;
 
-  private String title;
+  private final String title;
 
-  private String img;
+  private final String img;
 
   public SessionInfo(Long id, String title, String img) {
     this.id = id;

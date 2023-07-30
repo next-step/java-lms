@@ -8,14 +8,11 @@ import nextstep.courses.domain.batch.Batches;
 
 public class Course {
 
-  private CourseInfo courseInfo;
+  private final CourseInfo courseInfo;
 
   private NowBatchNo nowBatchNo;
 
-  private BaseInfo baseInfo;
-
-  public Course() {
-  }
+  private final BaseInfo baseInfo;
 
   public Course(String title, Long creatorId) {
     this(null, title, creatorId);

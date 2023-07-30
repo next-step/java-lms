@@ -6,9 +6,9 @@ public class Enrollment {
 
   private SessionStatus sessionStatus = SessionStatus.PREPARATION;
 
-  private SessionType sessionType;
+  private final SessionType sessionType;
 
-  private int maxRecruitment;
+  private final int maxRecruitment;
 
   public Enrollment(SessionStatus sessionStatus, SessionType sessionType, int maxRecruitment) {
     this.sessionStatus = sessionStatus;

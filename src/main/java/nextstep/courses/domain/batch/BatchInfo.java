@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class BatchInfo {
 
-  private Long id;
+  private final Long id;
 
-  private int batchNo;
+  private final int batchNo;
 
   public BatchInfo(Long id, int batchNo) {
     this.id = id;

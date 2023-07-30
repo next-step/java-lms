@@ -21,7 +21,7 @@ public class Registration {
   }
 
   public Registration(Long id, Long nsUserId, Long sessionId, Long creatorId) {
-    this(null, false, nsUserId, sessionId
+    this(id, false, nsUserId, sessionId
         , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
@@ -79,7 +79,7 @@ public class Registration {
     return Objects.hash(registrationInfo, nsUserId, sessionId);
   }
 
-  public Long getId(){
+  public Long getId() {
     return registrationInfo.getId();
   }
 
@@ -95,7 +95,7 @@ public class Registration {
     return sessionId;
   }
 
-  public Long getCreatorId(){
+  public Long getCreatorId() {
     return baseInfo.getCreatorId();
   }
 }

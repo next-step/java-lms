@@ -9,14 +9,11 @@ import nextstep.courses.domain.session.Session;
 
 public class Batch {
 
-  private BatchInfo batchInfo;
+  private final BatchInfo batchInfo;
 
-  private Long courseId;
+  private final Long courseId;
 
-  private BaseInfo baseInfo;
-
-  public Batch() {
-  }
+  private final BaseInfo baseInfo;
 
   public Batch(int batchNo, Long courseId, Long creatorId) {
     this(null, batchNo, courseId, creatorId);

@@ -7,13 +7,13 @@ import nextstep.courses.domain.session.Session;
 
 public class Curriculum {
 
-  private Long id;
+  private final Long id;
 
-  private Long batchId;
+  private final Long batchId;
 
-  private Long sessionId;
+  private final Long sessionId;
 
-  private BaseInfo baseInfo;
+  private final BaseInfo baseInfo;
 
   public Curriculum(Long batchId, Long sessionId, Long creatorId) {
     this(null, batchId, sessionId, creatorId);
