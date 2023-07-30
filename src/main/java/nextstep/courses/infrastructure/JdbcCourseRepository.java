@@ -34,20 +34,14 @@ public class JdbcCourseRepository implements CourseRepository {
     return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
   }
 
-  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-    if (timestamp == null) {
-      return null;
-    }
-    return timestamp.toLocalDateTime();
-  }
-
   @Override
   public Long save(Course course) {
     if (course.getId() != null && findById(course.getId()).isPresent()) {
-      String sql = "update course set title = ?, now_batch_no = ?, updated_at = ? where id = ?";
+      String sql = "update course set title = ?, now_batch_no = ?"
+          + ", updated_at = ? where id = ?";
       jdbcTemplate
-          .update(sql, course.getTitle(), course.getNowBatchNo(), LocalDateTime.now(),
-              course.getId());
+          .update(sql, course.getTitle(), course.getNowBatchNo()
+              , LocalDateTime.now(), course.getId());
       return course.getId();
     }
 
@@ -64,6 +58,17 @@ public class JdbcCourseRepository implements CourseRepository {
       return ps;
     }, keyHolder);
 
+    return getId(keyHolder);
+  }
+
+  private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    return timestamp.toLocalDateTime();
+  }
+
+  private Long getId(KeyHolder keyHolder) {
     return keyHolder.getKey().longValue();
   }
 }

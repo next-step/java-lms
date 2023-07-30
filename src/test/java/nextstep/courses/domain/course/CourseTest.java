@@ -15,7 +15,7 @@ public class CourseTest {
 
   @BeforeEach
   public void setUp() {
-    c1 = new Course("ssafy", 1L);
+    c1 = new Course(1L, "ssafy", 1L);
     bs1 = new Batches();
   }
 

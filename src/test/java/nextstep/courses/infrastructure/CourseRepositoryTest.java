@@ -32,8 +32,8 @@ public class CourseRepositoryTest {
     Course course = new Course("TDD, 클린 코드 with Java", 1L);
     Long saveId = courseRepository.save(course);
 
-    Course savedCourse = courseRepository.findById(saveId).get();
-    assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+    Course retCourse = courseRepository.findById(saveId).get();
+    assertThat(retCourse.getTitle()).isEqualTo(course.getTitle());
   }
 
   @Test
@@ -46,7 +46,7 @@ public class CourseRepositoryTest {
     Batch batch = savedCourse.createdBatch(1L, new Batches());
     Long updateId = courseRepository.save(savedCourse);
 
-    Course updatedCourse = courseRepository.findById(updateId).get();
-    assertThat(savedCourse.getNowBatchNo()).isEqualTo(updatedCourse.getNowBatchNo());
+    Course retCourse = courseRepository.findById(updateId).get();
+    assertThat(retCourse.getNowBatchNo()).isEqualTo(savedCourse.getNowBatchNo());
   }
 }
