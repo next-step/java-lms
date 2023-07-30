@@ -5,4 +5,6 @@ import java.util.Optional;
 public interface SessionRepository {
 
   Optional<Session> findById(Long id);
+
+  Long save(Session session);
 }

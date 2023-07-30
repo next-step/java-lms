@@ -23,4 +23,12 @@ public class SessionPeriod {
       throw new IllegalArgumentException();
     }
   }
+
+  public LocalDateTime getStartDate() {
+    return startDate;
+  }
+
+  public LocalDateTime getEndDate() {
+    return endDate;
+  }
 }

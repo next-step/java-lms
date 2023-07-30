@@ -18,42 +18,45 @@ public class Session {
 
   private Enrollment enrollment;
 
-  private Registrations registrations = new Registrations();
-
   private BaseInfo baseInfo;
 
   public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
       SessionType sessionType, int maxRecruitment, Long creatorId) {
-    this(null, title, img, startDate, endDate, SessionStatus.PREPARATION, sessionType,
-        maxRecruitment, new Registrations(), creatorId, LocalDateTime.now(), null);
+    this(null, title, img, startDate, endDate, sessionType, maxRecruitment, creatorId);
+  }
+
+  public Session(Long id, String title, String img, LocalDateTime startDate, LocalDateTime endDate,
+      SessionType sessionType, int maxRecruitment, Long creatorId) {
+    this(id, title, img
+        , startDate, endDate
+        , SessionStatus.PREPARATION, sessionType, maxRecruitment
+        , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
   public Session(Long id, String title, String img, LocalDateTime startDate,
       LocalDateTime endDate, SessionStatus sessionStatus, SessionType sessionType,
-      int maxRecruitment, Registrations registrations, Long creatorId, LocalDateTime createdAt,
+      int maxRecruitment, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(new SessionInfo(id, title, img),
         new SessionPeriod(startDate, endDate),
         new Enrollment(sessionStatus, sessionType, maxRecruitment),
-        registrations,
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
   public Session(SessionInfo sessionInfo, SessionPeriod sessionPeriod, Enrollment enrollment,
-      Registrations registrations, BaseInfo baseInfo) {
+      BaseInfo baseInfo) {
     this.sessionInfo = sessionInfo;
     this.sessionPeriod = sessionPeriod;
     this.enrollment = enrollment;
-    this.registrations = registrations;
     this.baseInfo = baseInfo;
   }
 
-  public void register(NsUser nsUser, Registration registration) {
-    validateRegister(nsUser);
+  public void register(NsUser nsUser, Registration registration, Registrations registrations) {
+    validateRegister(nsUser, registrations);
     registrations.register(registration);
   }
 
-  private void validateRegister(NsUser nsUser) {
+  private void validateRegister(NsUser nsUser, Registrations registrations) {
     if (isRegistrationOpened()) {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
@@ -65,10 +68,6 @@ public class Session {
     if (registrations.hasNsUser(nsUser)) {
       throw new DuplicatedException("강의는 중복으로 신청할 수 없습니다.");
     }
-  }
-
-  public boolean hasNsUser(NsUser nsUser) {
-    return registrations.hasNsUser(nsUser);
   }
 
   private boolean isRegistrationOpened() {
@@ -92,15 +91,47 @@ public class Session {
       return false;
     }
     Session session = (Session) o;
-    return Objects.equals(sessionInfo, session.sessionInfo) && Objects
-        .equals(sessionPeriod, session.sessionPeriod) && Objects
-        .equals(enrollment, session.enrollment) && Objects
-        .equals(registrations, session.registrations) && Objects
-        .equals(baseInfo, session.baseInfo);
+    return Objects.equals(sessionInfo, session.sessionInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sessionInfo, sessionPeriod, enrollment, registrations, baseInfo);
+    return Objects.hash(sessionInfo);
+  }
+
+  public Long getId() {
+    return sessionInfo.getId();
+  }
+
+  public String getTitle() {
+    return sessionInfo.getTitle();
+  }
+
+  public String getImg() {
+    return sessionInfo.getImg();
+  }
+
+  public LocalDateTime getStartDate() {
+    return sessionPeriod.getStartDate();
+  }
+
+  public LocalDateTime getEndDate() {
+    return sessionPeriod.getEndDate();
+  }
+
+  public SessionStatus getSessionStatus() {
+    return enrollment.getSessionStatus();
+  }
+
+  public SessionType getSessionType() {
+    return enrollment.getSessionType();
+  }
+
+  public int getMaxRecruitment() {
+    return enrollment.getMaxRecruitment();
+  }
+
+  public Long getCreatorId() {
+    return baseInfo.getCreatorId();
   }
 }

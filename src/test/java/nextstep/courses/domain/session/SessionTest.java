@@ -1,10 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -38,5 +36,4 @@ public class SessionTest {
     Session session = new Session("title", "img", start, end, SessionType.FREE, 100,
         1L);
   }
-
 }
