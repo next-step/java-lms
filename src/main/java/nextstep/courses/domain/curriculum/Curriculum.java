@@ -1,25 +1,39 @@
 package nextstep.courses.domain.curriculum;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.base.BaseInfo;
 
 public class Curriculum {
 
   private Long id;
 
-  private Batch batch;
+  private Long batchId;
 
-  private Session session;
+  private Long sessionId;
 
-  public Curriculum(Batch batch, Session session) {
-    this(null, batch, session);
+  private BaseInfo baseInfo;
+
+  public Curriculum(Long batchId, Long sessionId, Long creatorId) {
+    this(null, batchId, sessionId, creatorId);
   }
 
-  public Curriculum(Long id, Batch batch, Session session) {
+  public Curriculum(Long id, Long batchId, Long sessionId, Long creatorId) {
+    this(id, batchId, sessionId, creatorId, LocalDateTime.now(), LocalDateTime.now());
+  }
+
+  public Curriculum(Long id, Long batchId, Long sessionId
+      , Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this(id, batchId, sessionId
+        , new BaseInfo(creatorId, createdAt, updatedAt));
+  }
+
+  public Curriculum(Long id, Long batchId, Long sessionId,
+      BaseInfo baseInfo) {
     this.id = id;
-    this.batch = batch;
-    this.session = session;
+    this.batchId = batchId;
+    this.sessionId = sessionId;
+    this.baseInfo = baseInfo;
   }
 
   @Override
@@ -31,12 +45,28 @@ public class Curriculum {
       return false;
     }
     Curriculum that = (Curriculum) o;
-    return Objects.equals(batch, that.batch) && Objects
-        .equals(session, that.session);
+    return Objects.equals(id, that.id) && Objects.equals(batchId, that.batchId)
+        && Objects.equals(sessionId, that.sessionId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(batch, session);
+    return Objects.hash(id, batchId, sessionId);
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public Long getBatchId() {
+    return batchId;
+  }
+
+  public Long getSessionId() {
+    return sessionId;
+  }
+
+  public Long getCreatorId() {
+    return baseInfo.getCreatorId();
   }
 }

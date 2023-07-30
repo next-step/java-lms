@@ -1,6 +1,7 @@
 package nextstep.courses.domain.curriculum;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import nextstep.courses.DuplicatedException;
 
@@ -9,6 +10,14 @@ public class Curriculums {
   private Set<Curriculum> curriculums = new HashSet<>();
 
   public Curriculums() {
+  }
+
+  public Curriculums(List<Curriculum> curriculums) {
+    this(new HashSet<>(curriculums));
+  }
+
+  public Curriculums(Set<Curriculum> curriculums) {
+    this.curriculums = curriculums;
   }
 
   public void addCurriculum(Curriculum curriculum) {
