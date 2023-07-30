@@ -1,18 +1,25 @@
 package nextstep.courses.domain.registration;
 
-import java.time.LocalDateTime;
-
 public class RegistrationInfo {
 
-  private Long id;
+  private final Long id;
 
-  private LocalDateTime createdDate = LocalDateTime.now();
+  private boolean canceled = false;
 
-  private LocalDateTime updatedDate;
-
-  public RegistrationInfo(Long id, LocalDateTime createdDate, LocalDateTime updatedDate) {
+  public RegistrationInfo(Long id, boolean canceled) {
     this.id = id;
-    this.createdDate = createdDate;
-    this.updatedDate = updatedDate;
+    this.canceled = canceled;
+  }
+
+  public void cancel() {
+    canceled = true;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public boolean isCanceled() {
+    return canceled;
   }
 }

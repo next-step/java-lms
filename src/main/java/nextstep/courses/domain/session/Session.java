@@ -2,13 +2,11 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import nextstep.courses.DuplicatedException;
 import nextstep.courses.RegistrationFulledException;
 import nextstep.courses.RegistrationNotOpenedException;
 import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.Registrations;
-import nextstep.users.domain.NsUser;
 
 public class Session {
 
