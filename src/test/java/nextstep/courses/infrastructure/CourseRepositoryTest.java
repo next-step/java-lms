@@ -3,20 +3,18 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import nextstep.courses.domain.batch.Batch;
+import nextstep.courses.domain.batch.Batches;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @JdbcTest
 public class CourseRepositoryTest {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -29,23 +27,26 @@ public class CourseRepositoryTest {
   }
 
   @Test
-  void crud() {
-    // 저장
+  @Transactional
+  void create() {
     Course course = new Course("TDD, 클린 코드 with Java", 1L);
-    int count = courseRepository.save(course);
-    assertThat(count).isEqualTo(1);
+    Long saveId = courseRepository.save(course);
 
-    Course savedCourse = courseRepository.findById(1L).get();
+    Course savedCourse = courseRepository.findById(saveId).get();
     assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+  }
 
-    // 수정
-    Batch batch = savedCourse.createdBatch(1L);
-    count = courseRepository.save(savedCourse);
-    assertThat(count).isEqualTo(1);
+  @Test
+  @Transactional
+  void update() {
+    Course course = new Course("TDD, 클린 코드 with Java", 1L);
+    Long saveId = courseRepository.save(course);
+    Course savedCourse = courseRepository.findById(saveId).get();
 
-    Course updatedCourse = courseRepository.findById(1L).get();
+    Batch batch = savedCourse.createdBatch(1L, new Batches());
+    Long updateId = courseRepository.save(savedCourse);
+
+    Course updatedCourse = courseRepository.findById(updateId).get();
     assertThat(savedCourse.getNowBatchNo()).isEqualTo(updatedCourse.getNowBatchNo());
-
-    LOGGER.debug("Course: {}", savedCourse.getNowBatchNo());
   }
 }

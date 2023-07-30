@@ -6,5 +6,5 @@ public interface CourseRepository {
 
   Optional<Course> findById(Long id);
 
-  int save(Course course);
+  Long save(Course course);
 }

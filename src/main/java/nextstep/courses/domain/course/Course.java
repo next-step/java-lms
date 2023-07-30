@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.batch.Batch;
 import nextstep.courses.domain.batch.Batches;
-import nextstep.courses.domain.curriculum.Curriculum;
-import nextstep.courses.domain.session.Session;
 
 public class Course {
 
@@ -13,47 +11,33 @@ public class Course {
 
   private NowBatchNo nowBatchNo;
 
-  private Batches batches = new Batches();
-
   private BaseInfo baseInfo;
 
   public Course() {
   }
 
   public Course(String title, Long creatorId) {
-    this(null, title, 0, new Batches(), creatorId, LocalDateTime.now(), null);
+    this(null, title, 0, creatorId, LocalDateTime.now(), null);
   }
 
-  public Course(Long id,  String title, int nowBatchNo, Long creatorId, LocalDateTime createdAt,
+  public Course(Long id, String title, int nowBatchNo, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
-    this(id, title, nowBatchNo, new Batches(), creatorId, createdAt, updatedAt);
-  }
-
-  public Course(Long id, String title, int nowBatchNo, Batches batches, Long creatorId,
-      LocalDateTime createdAt, LocalDateTime updatedAt) {
     this(new CourseInfo(id, title),
         new NowBatchNo(nowBatchNo),
-        batches,
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
-  public Course(CourseInfo courseInfo, NowBatchNo nowBatchNo,
-      Batches batches, BaseInfo baseInfo) {
+  public Course(CourseInfo courseInfo, NowBatchNo nowBatchNo, BaseInfo baseInfo) {
     this.courseInfo = courseInfo;
     this.nowBatchNo = nowBatchNo;
-    this.batches = batches;
     this.baseInfo = baseInfo;
   }
 
-  public Batch createdBatch(Long creatorId) {
+  public Batch createdBatch(Long creatorId, Batches batches) {
     nowBatchNo = nowBatchNo.createdBatch();
-    Batch batch = new Batch(nowBatchNo.getNowBatchNo(), this, creatorId);
+    Batch batch = new Batch(nowBatchNo.getNowBatchNo(), getId(), creatorId);
     batches.addBatch(batch);
     return batch;
-  }
-
-  public Curriculum addSession(int batchNo, Session session) {
-    return batches.addSession(batchNo, session);
   }
 
   public Long getId() {
