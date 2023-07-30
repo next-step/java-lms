@@ -44,11 +44,11 @@ public class BatchTest {
 
     assertAll(
         () -> batch1.addSession(s1, curriculums1, 1L),
-        () -> assertThat(curriculums1.hasSession(s1.getId())).isTrue(),
+        () -> assertThat(curriculums1.hasSession(s1)).isTrue(),
         () -> batch1.addSession(s2, curriculums1, 1L),
-        () -> assertThat(curriculums1.hasSession(s2.getId())).isTrue(),
+        () -> assertThat(curriculums1.hasSession(s2)).isTrue(),
         () -> batch2.addSession(s2, curriculums2, 1L),
-        () -> assertThat(curriculums2.hasSession(s2.getId())).isTrue()
+        () -> assertThat(curriculums2.hasSession(s2)).isTrue()
     );
   }
 

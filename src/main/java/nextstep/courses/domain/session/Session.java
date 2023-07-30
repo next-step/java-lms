@@ -51,27 +51,27 @@ public class Session {
     this.baseInfo = baseInfo;
   }
 
-  public void register(NsUser nsUser, Registration registration, Registrations registrations) {
-    validateRegister(nsUser, registrations);
+  public void register(Registration registration, Registrations registrations) {
+    validateRegister(registrations);
     registrations.register(registration);
   }
 
-  private void validateRegister(NsUser nsUser, Registrations registrations) {
+  private void validateRegister(Registrations registrations) {
     if (isRegistrationOpened()) {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
-    if (enrollment.isRegistrationFulled(registrations)) {
+    if (isRegistrationFulled(registrations)) {
       throw new RegistrationFulledException("최대 수강 인원이 가득 찼습니다.");
-    }
-
-    if (registrations.hasNsUser(nsUser)) {
-      throw new DuplicatedException("강의는 중복으로 신청할 수 없습니다.");
     }
   }
 
   private boolean isRegistrationOpened() {
     return enrollment.isRegistrationOpened();
+  }
+
+  private boolean isRegistrationFulled(Registrations registrations) {
+    return enrollment.isRegistrationFulled(registrations);
   }
 
   public void registerOpen() {

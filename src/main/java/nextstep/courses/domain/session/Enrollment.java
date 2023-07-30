@@ -38,4 +38,16 @@ public class Enrollment {
   public boolean isRegistrationFulled(Registrations registrations) {
     return registrations.isRegistrationFulled(maxRecruitment);
   }
+
+  public SessionStatus getSessionStatus() {
+    return sessionStatus;
+  }
+
+  public SessionType getSessionType() {
+    return sessionType;
+  }
+
+  public int getMaxRecruitment() {
+    return maxRecruitment;
+  }
 }

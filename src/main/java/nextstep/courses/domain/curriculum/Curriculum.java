@@ -3,6 +3,7 @@ package nextstep.courses.domain.curriculum;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import nextstep.courses.domain.base.BaseInfo;
+import nextstep.courses.domain.session.Session;
 
 public class Curriculum {
 
@@ -34,6 +35,10 @@ public class Curriculum {
     this.batchId = batchId;
     this.sessionId = sessionId;
     this.baseInfo = baseInfo;
+  }
+
+  public boolean hasSession(Long sessionId) {
+    return this.sessionId.equals(sessionId);
   }
 
   @Override
