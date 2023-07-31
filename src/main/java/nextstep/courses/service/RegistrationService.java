@@ -1,9 +1,10 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Registration;
-import nextstep.courses.domain.RegistrationRepository;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.registration.Registration;
+import nextstep.courses.domain.registration.RegistrationRepository;
+import nextstep.courses.domain.registration.Registrations;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ public class RegistrationService {
   private RegistrationRepository registrationRepository;
 
   @Transactional
-  public void registerSession(NsUser nsUser, long sessionId) {
+  public void registerSession(NsUser loginUser, long sessionId) {
     Session session = sessionRepository.findById(sessionId)
         .orElseThrow(NotFoundException::new);
+    Registrations registrations = new Registrations(
+        registrationRepository.findBySessionId(sessionId));
 
-    Registration registration = Registration.createRegistration(nsUser, session);
+    Registration registration = Registration.createRegistration(loginUser, session, registrations);
     registrationRepository.save(registration);
   }
 
@@ -33,5 +36,4 @@ public class RegistrationService {
     registration.cancel();
     registrationRepository.save(registration);
   }
-
 }

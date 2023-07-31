@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,7 +13,8 @@ public class SessionTest {
   public void throwException_ifEndDateBeforeStartDate() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.minusDays(3);
-    assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 10))
+    assertThatThrownBy(
+        () -> new Session("title", "img", start, end, SessionType.FREE, 10, 1L))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -22,7 +23,8 @@ public class SessionTest {
   public void throwException_ifLess0MaxRecruitment() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.plusDays(3);
-    assertThatThrownBy(() -> new Session("title", start, end, "img", SessionType.FREE, 0))
+    assertThatThrownBy(
+        () -> new Session("title", "img", start, end, SessionType.FREE, 0, 1L))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -31,7 +33,7 @@ public class SessionTest {
   public void session() {
     LocalDateTime start = LocalDateTime.now();
     LocalDateTime end = start.plusDays(3);
-    Session session = new Session("title", start, end, "img", SessionType.FREE, 100);
+    Session session = new Session("title", "img", start, end, SessionType.FREE, 100,
+        1L);
   }
-
 }
