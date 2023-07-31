@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.util.Objects;
 
@@ -22,5 +22,13 @@ public class CoverImage {
     @Override
     public int hashCode() {
         return Objects.hash(path, name);
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,11 @@ public class SessionPeriod {
     private final LocalDateTime startAt;
     private final LocalDateTime endAt;
 
-    private SessionPeriod(LocalDateTime startAt, LocalDateTime endAt) {
+    public SessionPeriod() {
+        this(LocalDateTime.now(), LocalDateTime.MAX);
+    }
+
+    public SessionPeriod(LocalDateTime startAt, LocalDateTime endAt) {
         if (startAt.isAfter(endAt)) {
             throw new IllegalArgumentException("시작일은 종료일 이후 일 수 없습니다.");
         }
@@ -14,15 +18,15 @@ public class SessionPeriod {
         this.endAt = endAt;
     }
 
-    private SessionPeriod() {
-        this(LocalDateTime.now(), LocalDateTime.MAX);
-    }
-
     public static SessionPeriod between(LocalDateTime startAt, LocalDateTime endAt) {
         return new SessionPeriod(startAt, endAt);
     }
 
-    public static SessionPeriod newInstance() {
-        return new SessionPeriod();
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
     }
 }
