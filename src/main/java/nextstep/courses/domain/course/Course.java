@@ -3,14 +3,10 @@ package nextstep.courses.domain.course;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import nextstep.courses.domain.base.BaseInfo;
-import nextstep.courses.domain.batch.Batch;
-import nextstep.courses.domain.batch.Batches;
 
 public class Course {
 
   private final CourseInfo courseInfo;
-
-  private NowBatchNo nowBatchNo;
 
   private final BaseInfo baseInfo;
 
@@ -19,28 +15,22 @@ public class Course {
   }
 
   public Course(Long id, String title, Long creatorId) {
-    this(id, title, 0
-        , creatorId, LocalDateTime.now(), LocalDateTime.now());
+    this(id, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
-  public Course(Long id, String title, int nowBatchNo, Long creatorId, LocalDateTime createdAt,
+  public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(new CourseInfo(id, title)
-        , new NowBatchNo(nowBatchNo)
         , new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
-  public Course(CourseInfo courseInfo, NowBatchNo nowBatchNo, BaseInfo baseInfo) {
+  public Course(CourseInfo courseInfo, BaseInfo baseInfo) {
     this.courseInfo = courseInfo;
-    this.nowBatchNo = nowBatchNo;
     this.baseInfo = baseInfo;
   }
 
-  public Batch createdBatch(Long creatorId, Batches batches) {
-    nowBatchNo = nowBatchNo.createdBatch();
-    Batch batch = new Batch(nowBatchNo.getNowBatchNo(), getId(), creatorId);
-    batches.addBatch(batch);
-    return batch;
+  public void changeTitle(String title) {
+    courseInfo.changeTitle(title);
   }
 
   @Override
@@ -66,10 +56,6 @@ public class Course {
 
   public String getTitle() {
     return courseInfo.getTitle();
-  }
-
-  public int getNowBatchNo() {
-    return nowBatchNo.getNowBatchNo();
   }
 
   public Long getCreatorId() {

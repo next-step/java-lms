@@ -6,10 +6,14 @@ public class CourseInfo {
 
   private final Long id;
 
-  private final String title;
+  private String title;
 
   public CourseInfo(Long id, String title) {
     this.id = id;
+    this.title = title;
+  }
+
+  public void changeTitle(String title) {
     this.title = title;
   }
 

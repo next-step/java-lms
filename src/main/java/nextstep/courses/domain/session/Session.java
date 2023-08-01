@@ -12,38 +12,48 @@ public class Session {
 
   private final SessionInfo sessionInfo;
 
+  private final BatchInfo batchInfo;
+
   private final SessionPeriod sessionPeriod;
 
   private final Enrollment enrollment;
 
   private final BaseInfo baseInfo;
 
-  public Session(String title, String img, LocalDateTime startDate, LocalDateTime endDate,
+  public Session(String title, String img, Long courseId, int batchNo, LocalDateTime startDate,
+      LocalDateTime endDate,
       SessionType sessionType, int maxRecruitment, Long creatorId) {
-    this(null, title, img, startDate, endDate, sessionType, maxRecruitment, creatorId);
+    this(null, title, img, courseId, batchNo, startDate, endDate, sessionType, maxRecruitment,
+        creatorId);
   }
 
-  public Session(Long id, String title, String img, LocalDateTime startDate, LocalDateTime endDate,
+  public Session(Long id, String title, String img, Long courseId, int batchNo,
+      LocalDateTime startDate, LocalDateTime endDate,
       SessionType sessionType, int maxRecruitment, Long creatorId) {
     this(id, title, img
+        , courseId, batchNo
         , startDate, endDate
         , SessionStatus.PREPARATION, sessionType, maxRecruitment
         , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
-  public Session(Long id, String title, String img, LocalDateTime startDate,
+  public Session(Long id, String title, String img, Long courseId, int batchNo,
+      LocalDateTime startDate,
       LocalDateTime endDate, SessionStatus sessionStatus, SessionType sessionType,
       int maxRecruitment, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(new SessionInfo(id, title, img),
+        new BatchInfo(courseId, batchNo),
         new SessionPeriod(startDate, endDate),
         new Enrollment(sessionStatus, sessionType, maxRecruitment),
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
-  public Session(SessionInfo sessionInfo, SessionPeriod sessionPeriod, Enrollment enrollment,
+  public Session(SessionInfo sessionInfo, BatchInfo cousreInfo,
+      SessionPeriod sessionPeriod, Enrollment enrollment,
       BaseInfo baseInfo) {
     this.sessionInfo = sessionInfo;
+    this.batchInfo = cousreInfo;
     this.sessionPeriod = sessionPeriod;
     this.enrollment = enrollment;
     this.baseInfo = baseInfo;
@@ -89,12 +99,13 @@ public class Session {
       return false;
     }
     Session session = (Session) o;
-    return Objects.equals(sessionInfo, session.sessionInfo);
+    return Objects.equals(sessionInfo, session.sessionInfo) && Objects
+        .equals(batchInfo, session.batchInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sessionInfo);
+    return Objects.hash(sessionInfo, batchInfo);
   }
 
   public Long getId() {
@@ -107,6 +118,14 @@ public class Session {
 
   public String getImg() {
     return sessionInfo.getImg();
+  }
+
+  public Long getCourseId() {
+    return batchInfo.getCourseId();
+  }
+
+  public int getBatchNo() {
+    return batchInfo.getBatchNo();
   }
 
   public LocalDateTime getStartDate() {

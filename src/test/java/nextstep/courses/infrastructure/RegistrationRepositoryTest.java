@@ -3,6 +3,8 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.RegistrationRepository;
 import nextstep.courses.domain.registration.Registrations;
@@ -27,6 +29,8 @@ public class RegistrationRepositoryTest {
 
   private UserRepository userRepository;
 
+  private CourseRepository courseRepository;
+
   private SessionRepository sessionRepository;
 
   private RegistrationRepository registrationRepository;
@@ -40,8 +44,13 @@ public class RegistrationRepositoryTest {
     userRepository = new JdbcUserRepository(jdbcTemplate);
     nsUser = userRepository.findByUserId("javajigi").get();
 
+    courseRepository = new JdbcCourseRepository(jdbcTemplate);
+    Long saveId = courseRepository.save(new Course("TDD, 클린 코드 with Java", 1L));
+    Course course = courseRepository.findById(saveId).get();
+
     sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     Session newSession = new Session("tdd", "tdd-img"
+        , course.getId(), 1
         , LocalDateTime.now(), LocalDateTime.now().plusMonths(2)
         , SessionType.PAID, 10, 1L);
     newSession.registerOpen();

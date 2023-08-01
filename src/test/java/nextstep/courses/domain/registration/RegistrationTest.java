@@ -25,9 +25,9 @@ public class RegistrationTest {
 
   @BeforeEach
   public void setUp() {
-    s1 = new Session(1L, "tdd", "tdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
+    s1 = new Session(1L, "tdd", "tdd-img", 1L, 1, LocalDateTime.now(), LocalDateTime.now().plusMonths(2),
         SessionType.PAID, 1, 1L);
-    s2 = new Session(2L, "atdd", "atdd-img", LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+    s2 = new Session(2L, "atdd", "atdd-img", 1L, 2, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
         SessionType.PAID, 30, 1L);
     javajigi = new NsUser(1L, "javajigi", "password", "name",
         "javajigi@slipp.net");
