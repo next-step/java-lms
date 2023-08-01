@@ -5,7 +5,7 @@ import nextstep.users.domain.NsUser;
 public class Session {
     private final long id;
     private final SessionManagement sessionManagement;
-    private String title;
+    private final String title;
     private CoverImage coverImage;
 
     public Session(long id, String title, int maxNumberOfStudent, boolean free) {
@@ -35,7 +35,7 @@ public class Session {
         return sessionManagement.endSession();
     }
 
-    public void addCoverImage(CoverImage coverImage){
+    public void addCoverImage(CoverImage coverImage) {
         this.coverImage = coverImage;
     }
 

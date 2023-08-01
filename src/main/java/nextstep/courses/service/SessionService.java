@@ -16,30 +16,30 @@ public class SessionService {
     private SessionRepository sessionRepository;
 
     @Transactional
-    public void enrolment(NsUser student, long sessionId){
+    public void enrolment(NsUser student, long sessionId) {
         findSession(sessionId)
                 .enrolment(student);
     }
 
     @Transactional
-    public void startRecruiting(long sessionId){
+    public void startRecruiting(long sessionId) {
         findSession(sessionId)
                 .startRecruiting();
     }
 
     @Transactional
-    public void startSession(long sessionId){
+    public void startSession(long sessionId) {
         findSession(sessionId)
                 .startSession();
     }
 
     @Transactional
-    public void endSession(long sessionId){
+    public void endSession(long sessionId) {
         findSession(sessionId)
                 .endSession();
     }
 
-    private Session findSession(long courseId){
+    private Session findSession(long courseId) {
         return Optional.ofNullable(sessionRepository.findById(courseId))
                 .orElseThrow();
     }

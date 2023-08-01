@@ -1,4 +1,4 @@
 package nextstep.courses;
 
-public class NotChangeStatusException extends RuntimeException{
+public class NotChangeStatusException extends RuntimeException {
 }
