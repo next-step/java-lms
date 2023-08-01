@@ -2,6 +2,7 @@ package nextstep.courses.domain.application;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.courses.SessionApprovalFailException;
 import nextstep.courses.domain.base.BaseInfo;
 import nextstep.courses.domain.course.Course;
 import nextstep.users.domain.NsUser;

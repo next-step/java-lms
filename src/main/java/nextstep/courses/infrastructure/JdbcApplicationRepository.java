@@ -59,6 +59,25 @@ public class JdbcApplicationRepository implements ApplicationRepository {
   }
 
   @Override
+  public Optional<Application> findByNsUserIdAndCourseId(Long nsUserId, Long courseId) {
+    String sql = "select id, pass"
+        + ", ns_user_id, course_id"
+        + ", creator_id, created_at, updated_at "
+        + "from application "
+        + "where ns_user_id = ?"
+        + "and course_id = ?";
+    RowMapper<Application> rowMapper = (rs, rowNum) -> new Application(
+        rs.getLong(1),
+        rs.getBoolean(2),
+        rs.getLong(3),
+        rs.getLong(4),
+        rs.getLong(5),
+        toLocalDateTime(rs.getTimestamp(6)),
+        toLocalDateTime(rs.getTimestamp(7)));
+    return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, courseId));
+  }
+
+  @Override
   public Long save(Application application) {
     if (application.getId() != null && findById(application.getId()).isPresent()) {
       String sql = "update application set pass = ?, updated_at = ? "

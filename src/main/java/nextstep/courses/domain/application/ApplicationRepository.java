@@ -9,5 +9,7 @@ public interface ApplicationRepository {
 
   List<Application> findByCourseId(Long courseId);
 
+  Optional<Application> findByNsUserIdAndCourseId(Long nsUserId, Long courseId);
+
   Long save(Application application);
 }
