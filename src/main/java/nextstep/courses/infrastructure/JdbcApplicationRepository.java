@@ -27,7 +27,7 @@ public class JdbcApplicationRepository implements ApplicationRepository {
     String sql = "select id, pass"
         + ", ns_user_id, course_id"
         + ", creator_id, created_at, updated_at "
-        + "from registration "
+        + "from application "
         + "where id = ?";
     RowMapper<Application> rowMapper = (rs, rowNum) -> new Application(
         rs.getLong(1),
@@ -45,7 +45,7 @@ public class JdbcApplicationRepository implements ApplicationRepository {
     String sql = "select id, pass"
         + ", ns_user_id, course_id"
         + ", creator_id, created_at, updated_at "
-        + "from registration "
+        + "from application "
         + "where course_id = ?";
     RowMapper<Application> rowMapper = (rs, rowNum) -> new Application(
         rs.getLong(1),
@@ -70,7 +70,7 @@ public class JdbcApplicationRepository implements ApplicationRepository {
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
     String sql = "insert into application (pass"
-        + ", ns_user_id, session_id"
+        + ", ns_user_id, course_id"
         + ", creator_id, created_at, updated_at) "
         + "values(?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
