@@ -21,7 +21,7 @@ public class SessionTest {
     public void 수강신청_모집중_아님() throws Exception {
         // when, then
         assertThatThrownBy(()->session.enrolment(NsUserTest.JAVAJIGI))
-                .isInstanceOf(IllegalAccessException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class SessionTest {
 
         // when, then
         assertThatThrownBy(()->session.enrolment(NsUserTest.JAVAJIGI))
-                .isInstanceOf(IllegalAccessException.class);
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
