@@ -15,7 +15,7 @@ public class Students {
 
     public Students(List<NsUser> students) {
         if (students == null) {
-            throw new IllegalArgumentException("student is null");
+            throw new NullPointerException();
         }
 
         this.students = students;
@@ -25,7 +25,7 @@ public class Students {
         return students.size() < maxNumberOfStudent;
     }
 
-    public void addStudent(NsUser student){
+    public void addStudent(NsUser student) {
         students.add(student);
     }
 }
