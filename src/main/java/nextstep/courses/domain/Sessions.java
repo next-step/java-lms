@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 public class Sessions {
 
-    private List<Session> sessions = new ArrayList<>();
+    private final List<Session> sessions = new ArrayList<>();
 
     public void addSession(Session session) {
         if (session == null) {
