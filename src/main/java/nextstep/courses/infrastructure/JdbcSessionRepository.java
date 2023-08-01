@@ -28,7 +28,7 @@ public class JdbcSessionRepository implements SessionRepository {
     String sql = "select id, title, img"
         + ", course_id, batch_no"
         + ", start_date, end_date"
-        + ", session_status, session_type, max_recruitment"
+        + ", session_status, recruiting, session_type, max_recruitment"
         + ", creator_id, created_at, updated_at "
         + "from session "
         + "where id = ?";
@@ -41,11 +41,12 @@ public class JdbcSessionRepository implements SessionRepository {
         toLocalDateTime(rs.getTimestamp(6)),
         toLocalDateTime(rs.getTimestamp(7)),
         SessionStatus.valueOf(rs.getString(8)),
-        SessionType.valueOf(rs.getString(9)),
-        rs.getInt(10),
-        rs.getLong(11),
-        toLocalDateTime(rs.getTimestamp(12)),
-        toLocalDateTime(rs.getTimestamp(13)));
+        rs.getBoolean(9),
+        SessionType.valueOf(rs.getString(10)),
+        rs.getInt(11),
+        rs.getLong(12),
+        toLocalDateTime(rs.getTimestamp(13)),
+        toLocalDateTime(rs.getTimestamp(14)));
     return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
   }
 
@@ -55,13 +56,14 @@ public class JdbcSessionRepository implements SessionRepository {
       String sql = "update session set title = ?, img = ?"
           + ", batch_no = ?"
           + ", start_date = ?, end_date = ?"
-          + ", session_status = ?, session_type = ?, max_recruitment = ?"
+          + ", session_status = ?, recruiting = ?, session_type = ?, max_recruitment = ?"
           + ", updated_at = ? where id = ?";
       jdbcTemplate
           .update(sql, session.getTitle(), session.getImg()
               , session.getBatchNo()
               , session.getStartDate(), session.getEndDate()
-              , session.getSessionStatus().name(), session.getSessionType().name(),
+              , session.getSessionStatus().name(), session.isRecruiting(),
+              session.getSessionType().name(),
               session.getMaxRecruitment()
               , LocalDateTime.now(), session.getId());
       return session.getId();
@@ -71,9 +73,9 @@ public class JdbcSessionRepository implements SessionRepository {
     String sql = "insert into session (title, img"
         + ", course_id, batch_no"
         + ", start_date, end_date"
-        + ", session_status, session_type, max_recruitment"
+        + ", session_status, recruiting, session_type, max_recruitment"
         + ", creator_id, created_at, updated_at) "
-        + "values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?, ?, ?)";
+        + "values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
       ps.setString(1, session.getTitle());
@@ -83,11 +85,12 @@ public class JdbcSessionRepository implements SessionRepository {
       ps.setTimestamp(5, Timestamp.valueOf(session.getStartDate()));
       ps.setTimestamp(6, Timestamp.valueOf(session.getEndDate()));
       ps.setString(7, session.getSessionStatus().name());
-      ps.setString(8, session.getSessionType().name());
-      ps.setInt(9, session.getMaxRecruitment());
-      ps.setLong(10, session.getCreatorId());
-      ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+      ps.setBoolean(8, session.isRecruiting());
+      ps.setString(9, session.getSessionType().name());
+      ps.setInt(10, session.getMaxRecruitment());
+      ps.setLong(11, session.getCreatorId());
       ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+      ps.setTimestamp(13, Timestamp.valueOf(LocalDateTime.now()));
       return ps;
     }, keyHolder);
 

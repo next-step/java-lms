@@ -53,7 +53,7 @@ public class RegistrationRepositoryTest {
         , course.getId(), 1
         , LocalDateTime.now(), LocalDateTime.now().plusMonths(2)
         , SessionType.PAID, 10, 1L);
-    newSession.registerOpen();
+    newSession.recruitOpen();
     Long sessionId = sessionRepository.save(newSession);
     session = sessionRepository.findById(sessionId).get();
 
@@ -101,6 +101,6 @@ public class RegistrationRepositoryTest {
     Long updateId = registrationRepository.save(savedRegistration);
 
     Registration retRegistration = registrationRepository.findById(updateId).get();
-    assertThat(retRegistration.isCanceled()).isEqualTo(savedRegistration.isCanceled());
+    assertThat(retRegistration.isCancel()).isEqualTo(savedRegistration.isCancel());
   }
 }

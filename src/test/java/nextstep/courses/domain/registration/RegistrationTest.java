@@ -39,7 +39,7 @@ public class RegistrationTest {
   @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
   @Test
   public void createRegistration_throwException_ifSessionStatusNotRECRUITMENT() {
-    s1.registerClose();
+    s1.recruitClose();
 
     assertThatThrownBy(() -> Registration.createRegistration(javajigi, s1, registrations))
         .isInstanceOf(
@@ -49,7 +49,7 @@ public class RegistrationTest {
   @DisplayName("강의 수강신청 시 최대인원이 넘어가면 예외를 던진다.")
   @Test
   public void createRegistration_throwException_ifRegistrationFull() {
-    s1.registerOpen();
+    s1.recruitOpen();
     Registration.createRegistration(javajigi, s1, registrations);
 
     assertThatThrownBy(() -> Registration.createRegistration(sanjigi, s1, registrations))
@@ -60,7 +60,7 @@ public class RegistrationTest {
   @DisplayName("강의 수강신청 시 사용자는 강의를 중복신청할 수 없다.")
   @Test
   public void createRegistration_throwException_ifUserAlreadyRegisterSession() {
-    s2.registerOpen();
+    s2.recruitOpen();
     Registration.createRegistration(javajigi, s2, registrations);
 
     assertThatThrownBy(() -> Registration.createRegistration(javajigi, s2, registrations))
@@ -71,27 +71,10 @@ public class RegistrationTest {
   @DisplayName("강의 수강신청을 취소한다.")
   @Test
   public void cancel() {
-    s1.registerOpen();
+    s1.recruitOpen();
     Registration registration = Registration.createRegistration(javajigi, s1, registrations);
     registration.cancel();
 
-    assertAll(
-        () -> assertThat(registration.isCanceled()).isTrue(),
-        () -> assertThat(registrations.hasNsUser(javajigi.getId())).isFalse()
-    );
-  }
-
-  @DisplayName("사용자는 강의 수강신청 취소 후 다시 신청할 수 있다.")
-  @Test
-  public void createRegistration_AfterCancel() {
-    s1.registerOpen();
-    Registration registration = Registration.createRegistration(javajigi, s1, registrations);
-    registration.cancel();
-
-    assertAll(
-        () -> assertThat(registrations.hasNsUser(javajigi.getId())).isFalse(),
-        () -> Registration.createRegistration(javajigi, s1, registrations),
-        () -> assertThat(registrations.hasNsUser(javajigi.getId())).isTrue()
-    );
+    assertThat(registration.isCancel()).isTrue();
   }
 }

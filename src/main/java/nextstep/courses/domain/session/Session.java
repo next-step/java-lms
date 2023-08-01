@@ -33,19 +33,19 @@ public class Session {
     this(id, title, img
         , courseId, batchNo
         , startDate, endDate
-        , SessionStatus.PREPARATION, sessionType, maxRecruitment
+        , SessionStatus.PREPARATION, false, sessionType, maxRecruitment
         , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
   public Session(Long id, String title, String img, Long courseId, int batchNo,
-      LocalDateTime startDate,
-      LocalDateTime endDate, SessionStatus sessionStatus, SessionType sessionType,
+      LocalDateTime startDate, LocalDateTime endDate,
+      SessionStatus sessionStatus, boolean recruiting, SessionType sessionType,
       int maxRecruitment, Long creatorId, LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this(new SessionInfo(id, title, img),
         new BatchInfo(courseId, batchNo),
         new SessionPeriod(startDate, endDate),
-        new Enrollment(sessionStatus, sessionType, maxRecruitment),
+        new Enrollment(sessionStatus, recruiting, sessionType, maxRecruitment),
         new BaseInfo(creatorId, createdAt, updatedAt));
   }
 
@@ -65,7 +65,7 @@ public class Session {
   }
 
   private void validateRegister(Registrations registrations) {
-    if (isRegistrationOpened()) {
+    if (!isRegistrationOpened()) {
       throw new RegistrationNotOpenedException("강의 상태가 모집중이 아닙니다.");
     }
 
@@ -82,12 +82,14 @@ public class Session {
     return enrollment.isRegistrationFulled(registrations);
   }
 
-  public void registerOpen() {
-    enrollment.registerOpen();
+  public void recruitOpen() {
+    enrollment.recruitOpen();
   }
 
-  public void registerClose() {
-    enrollment.registerClose();
+
+
+  public void recruitClose() {
+    enrollment.recruitClose();
   }
 
   @Override
@@ -139,6 +141,8 @@ public class Session {
   public SessionStatus getSessionStatus() {
     return enrollment.getSessionStatus();
   }
+
+  public boolean isRecruiting() { return enrollment.isRecruiting(); }
 
   public SessionType getSessionType() {
     return enrollment.getSessionType();

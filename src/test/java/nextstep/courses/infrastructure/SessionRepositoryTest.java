@@ -63,7 +63,7 @@ public class SessionRepositoryTest {
     Long saveId = sessionRepository.save(session);
     Session savedSession = sessionRepository.findById(saveId).get();
 
-    savedSession.registerOpen();
+    savedSession.recruitOpen();
     Long updateId = sessionRepository.save(savedSession);
 
     Session retSession = sessionRepository.findById(updateId).get();

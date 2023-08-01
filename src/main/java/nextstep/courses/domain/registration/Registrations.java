@@ -33,7 +33,6 @@ public class Registrations {
 
   public boolean hasNsUser(Long nsUserId) {
     return registrations.stream()
-        .filter(registration -> !registration.isCanceled())
         .anyMatch(registration -> registration.hasNsUser(nsUserId));
   }
 
@@ -43,7 +42,7 @@ public class Registrations {
 
   private int getRegisterCount() {
     return (int) registrations.stream()
-        .filter(registration -> !registration.isCanceled())
+        .filter(registration -> !registration.isCancel())
         .count();
   }
 }

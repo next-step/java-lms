@@ -4,14 +4,18 @@ import nextstep.courses.domain.registration.Registrations;
 
 public class Enrollment {
 
-  private SessionStatus sessionStatus = SessionStatus.PREPARATION;
+  private SessionStatus sessionStatus;
+
+  private boolean recruiting;
 
   private final SessionType sessionType;
 
   private final int maxRecruitment;
 
-  public Enrollment(SessionStatus sessionStatus, SessionType sessionType, int maxRecruitment) {
+  public Enrollment(SessionStatus sessionStatus, boolean recruiting,
+      SessionType sessionType, int maxRecruitment) {
     this.sessionStatus = sessionStatus;
+    this.recruiting = recruiting;
     this.sessionType = sessionType;
     validateMaxRecruitment(maxRecruitment);
     this.maxRecruitment = maxRecruitment;
@@ -24,15 +28,19 @@ public class Enrollment {
   }
 
   public boolean isRegistrationOpened() {
-    return !sessionStatus.equals(SessionStatus.RECRUITMENT);
+    return recruiting && !sessionStatus.equals(SessionStatus.COMPLETION);
   }
 
-  public void registerOpen() {
-    sessionStatus = SessionStatus.RECRUITMENT;
+  public void changeSessionStatus(SessionStatus sessionStatus) {
+    this.sessionStatus = sessionStatus;
   }
 
-  public void registerClose() {
-    sessionStatus = SessionStatus.COMPLETION;
+  public void recruitOpen() {
+    recruiting = true;
+  }
+
+  public void recruitClose() {
+    recruiting = false;
   }
 
   public boolean isRegistrationFulled(Registrations registrations) {
@@ -41,6 +49,10 @@ public class Enrollment {
 
   public SessionStatus getSessionStatus() {
     return sessionStatus;
+  }
+
+  public boolean isRecruiting() {
+    return recruiting;
   }
 
   public SessionType getSessionType() {
