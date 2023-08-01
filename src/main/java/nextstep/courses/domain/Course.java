@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 
 public class Course {
@@ -14,8 +12,6 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    private Sessions sessions = new Sessions();
 
     public Course() {
     }
@@ -42,26 +38,6 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void addSession(Session session){
-        sessions.addSession(session);
-    }
-
-    public void enrolment(NsUser user, long sessionId){
-        sessions.enrolment(user, sessionId);
-    }
-
-    public SessionStatus startRecruiting(long sessionId) {
-        return sessions.startRecruiting(sessionId);
-    }
-
-    public SessionStatus startSession(long sessionId) {
-        return sessions.startSession(sessionId);
-    }
-
-    public SessionStatus endSession(long sessionId) {
-        return sessions.endSession(sessionId);
     }
 
     @Override
