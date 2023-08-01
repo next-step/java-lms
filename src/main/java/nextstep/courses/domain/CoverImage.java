@@ -2,10 +2,10 @@ package nextstep.courses.domain;
 
 public class CoverImage {
 
-    Long id;
-    String imagePath;
-    String fileName;
-    Long size;
+    private final Long id;
+    private final String imagePath;
+    private final String fileName;
+    private final Long size;
 
     public CoverImage(Long id, String imagePath, String fileName, Long size) {
         this.id = id;
