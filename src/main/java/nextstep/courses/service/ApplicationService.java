@@ -7,18 +7,20 @@ import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("applicationService")
 public class ApplicationService {
 
-  @Autowired
   private CourseRepository courseRepository;
-
-  @Autowired
   private ApplicationRepository applicationRepository;
+
+  public ApplicationService(CourseRepository courseRepository,
+      ApplicationRepository applicationRepository) {
+    this.courseRepository = courseRepository;
+    this.applicationRepository = applicationRepository;
+  }
 
   @Transactional
   public void apply(NsUser loginUser, long courseId) {

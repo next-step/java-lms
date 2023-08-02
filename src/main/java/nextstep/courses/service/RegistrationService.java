@@ -5,7 +5,6 @@ import nextstep.courses.SessionApprovalFailException;
 import nextstep.courses.SessionCancelFailException;
 import nextstep.courses.domain.application.Application;
 import nextstep.courses.domain.application.ApplicationRepository;
-import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.RegistrationRepository;
 import nextstep.courses.domain.registration.Registrations;
@@ -13,24 +12,24 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("registrationService")
 public class RegistrationService {
 
-  @Autowired
-  private CourseRepository courseRepository;
+  private final ApplicationRepository applicationRepository;
+  private final SessionRepository sessionRepository;
+  private final RegistrationRepository registrationRepository;
 
-  @Autowired
-  private ApplicationRepository applicationRepository;
-
-  @Autowired
-  private SessionRepository sessionRepository;
-
-  @Autowired
-  private RegistrationRepository registrationRepository;
+  public RegistrationService(
+      ApplicationRepository applicationRepository,
+      SessionRepository sessionRepository,
+      RegistrationRepository registrationRepository) {
+    this.applicationRepository = applicationRepository;
+    this.sessionRepository = sessionRepository;
+    this.registrationRepository = registrationRepository;
+  }
 
   @Transactional
   public void register(NsUser loginUser, long sessionId) {
@@ -101,7 +100,8 @@ public class RegistrationService {
         .orElseThrow(NotFoundException::new);
   }
 
-  private Optional<Application> findApplicationOptional(Registration registration, Session session) {
+  private Optional<Application> findApplicationOptional(Registration registration,
+      Session session) {
     Optional<Application> optionalApplication = applicationRepository
         .findByNsUserIdAndCourseId(registration.getNsUserId(), session.getCourseId());
     return optionalApplication;
