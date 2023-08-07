@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
