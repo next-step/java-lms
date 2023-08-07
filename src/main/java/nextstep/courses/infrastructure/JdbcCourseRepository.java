@@ -23,38 +23,35 @@ public class JdbcCourseRepository implements CourseRepository {
 
   @Override
   public Optional<Course> findById(Long id) {
-    String sql = "select id, title, now_batch_no, creator_id, created_at, updated_at from course where id = ?";
+    String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
     RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
         rs.getLong(1),
         rs.getString(2),
-        rs.getInt(3),
-        rs.getLong(4),
-        toLocalDateTime(rs.getTimestamp(5)),
-        toLocalDateTime(rs.getTimestamp(6)));
+        rs.getLong(3),
+        toLocalDateTime(rs.getTimestamp(4)),
+        toLocalDateTime(rs.getTimestamp(5)));
     return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
   }
 
   @Override
   public Long save(Course course) {
     if (course.getId() != null && findById(course.getId()).isPresent()) {
-      String sql = "update course set title = ?, now_batch_no = ?"
-          + ", updated_at = ? where id = ?";
+      String sql = "update course set title = ?, updated_at = ?"
+          + " where id = ?";
       jdbcTemplate
-          .update(sql, course.getTitle(), course.getNowBatchNo()
-              , LocalDateTime.now(), course.getId());
+          .update(sql, course.getTitle(), LocalDateTime.now(), course.getId());
       return course.getId();
     }
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    String sql = "insert into course (title, now_batch_no, creator_id, created_at, updated_at) "
-        + "values(?, ?, ?, ?, ?)";
+    String sql = "insert into course (title, creator_id, created_at, updated_at) "
+        + "values(?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
       ps.setString(1, course.getTitle());
-      ps.setInt(2, course.getNowBatchNo());
-      ps.setLong(3, course.getCreatorId());
+      ps.setLong(2, course.getCreatorId());
+      ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
       ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-      ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
       return ps;
     }, keyHolder);
 

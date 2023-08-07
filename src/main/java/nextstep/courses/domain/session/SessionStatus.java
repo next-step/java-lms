@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 public enum SessionStatus {
 
-  PREPARATION, RECRUITMENT, COMPLETION;
+  PREPARATION, PROGRESS, COMPLETION;
 
   private SessionStatus() {
   }

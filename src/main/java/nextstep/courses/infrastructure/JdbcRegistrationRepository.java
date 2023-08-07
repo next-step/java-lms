@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.registration.Registration;
 import nextstep.courses.domain.registration.RegistrationRepository;
+import nextstep.courses.domain.registration.RegistrationStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+@Repository("registrationRepository")
 public class JdbcRegistrationRepository implements RegistrationRepository {
 
   private final JdbcOperations jdbcTemplate;
@@ -22,14 +25,14 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
   @Override
   public Optional<Registration> findById(Long id) {
-    String sql = "select id, canceled"
+    String sql = "select id, registration_status"
         + ", ns_user_id, session_id"
         + ", creator_id, created_at, updated_at "
         + "from registration "
         + "where id = ?";
     RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
         rs.getLong(1),
-        rs.getBoolean(2),
+        RegistrationStatus.valueOf(rs.getString(2)),
         rs.getLong(3),
         rs.getLong(4),
         rs.getLong(5),
@@ -40,14 +43,14 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
   @Override
   public List<Registration> findBySessionId(Long sessionId) {
-    String sql = "select id, canceled"
+    String sql = "select id, registration_status"
         + ", ns_user_id, session_id"
         + ", creator_id, created_at, updated_at "
         + "from registration "
         + "where session_id = ?";
     RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
         rs.getLong(1),
-        rs.getBoolean(2),
+        RegistrationStatus.valueOf(rs.getString(2)),
         rs.getLong(3),
         rs.getLong(4),
         rs.getLong(5),
@@ -59,21 +62,22 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
   @Override
   public Long save(Registration registration) {
     if (registration.getId() != null && findById(registration.getId()).isPresent()) {
-      String sql = "update registration set canceled = ?, updated_at = ? "
+      String sql = "update registration set registration_status = ?, updated_at = ? "
           + "where id = ?";
       jdbcTemplate
-          .update(sql, registration.isCanceled(), LocalDateTime.now(), registration.getId());
+          .update(sql, registration.getRegistrationStatus().name(), LocalDateTime.now(),
+              registration.getId());
       return registration.getId();
     }
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    String sql = "insert into registration (canceled"
+    String sql = "insert into registration (registration_status"
         + ", ns_user_id, session_id"
         + ", creator_id, created_at, updated_at) "
         + "values(?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
-      ps.setBoolean(1, registration.isCanceled());
+      ps.setString(1, registration.getRegistrationStatus().name());
       ps.setLong(2, registration.getNsUserId());
       ps.setLong(3, registration.getSessionId());
       ps.setLong(4, registration.getCreatorId());

@@ -2,8 +2,6 @@ package nextstep.courses.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import nextstep.courses.domain.batch.Batch;
-import nextstep.courses.domain.batch.Batches;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,10 +41,10 @@ public class CourseRepositoryTest {
     Long saveId = courseRepository.save(course);
     Course savedCourse = courseRepository.findById(saveId).get();
 
-    Batch batch = savedCourse.createdBatch(1L, new Batches());
+    savedCourse.changeTitle("ATDD, 인수 테스트");
     Long updateId = courseRepository.save(savedCourse);
 
     Course retCourse = courseRepository.findById(updateId).get();
-    assertThat(retCourse.getNowBatchNo()).isEqualTo(savedCourse.getNowBatchNo());
+    assertThat(retCourse.getTitle()).isEqualTo(savedCourse.getTitle());
   }
 }

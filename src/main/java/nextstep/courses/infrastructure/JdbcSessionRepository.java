@@ -26,8 +26,9 @@ public class JdbcSessionRepository implements SessionRepository {
   @Override
   public Optional<Session> findById(Long id) {
     String sql = "select id, title, img"
+        + ", course_id, batch_no"
         + ", start_date, end_date"
-        + ", session_status, session_type, max_recruitment"
+        + ", session_status, recruiting, session_type, max_recruitment"
         + ", creator_id, created_at, updated_at "
         + "from session "
         + "where id = ?";
@@ -35,14 +36,17 @@ public class JdbcSessionRepository implements SessionRepository {
         rs.getLong(1),
         rs.getString(2),
         rs.getString(3),
-        toLocalDateTime(rs.getTimestamp(4)),
-        toLocalDateTime(rs.getTimestamp(5)),
-        SessionStatus.valueOf(rs.getString(6)),
-        SessionType.valueOf(rs.getString(7)),
-        rs.getInt(8),
-        rs.getLong(9),
-        toLocalDateTime(rs.getTimestamp(10)),
-        toLocalDateTime(rs.getTimestamp(11)));
+        rs.getLong(4),
+        rs.getInt(5),
+        toLocalDateTime(rs.getTimestamp(6)),
+        toLocalDateTime(rs.getTimestamp(7)),
+        SessionStatus.valueOf(rs.getString(8)),
+        rs.getBoolean(9),
+        SessionType.valueOf(rs.getString(10)),
+        rs.getInt(11),
+        rs.getLong(12),
+        toLocalDateTime(rs.getTimestamp(13)),
+        toLocalDateTime(rs.getTimestamp(14)));
     return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
   }
 
@@ -50,35 +54,43 @@ public class JdbcSessionRepository implements SessionRepository {
   public Long save(Session session) {
     if (session.getId() != null && findById(session.getId()).isPresent()) {
       String sql = "update session set title = ?, img = ?"
+          + ", batch_no = ?"
           + ", start_date = ?, end_date = ?"
-          + ", session_status = ?, session_type = ?, max_recruitment = ?"
+          + ", session_status = ?, recruiting = ?, session_type = ?, max_recruitment = ?"
           + ", updated_at = ? where id = ?";
       jdbcTemplate
           .update(sql, session.getTitle(), session.getImg()
+              , session.getBatchNo()
               , session.getStartDate(), session.getEndDate()
-              , session.getSessionStatus().name(), session.getSessionType().name(), session.getMaxRecruitment()
+              , session.getSessionStatus().name(), session.isRecruiting(),
+              session.getSessionType().name(),
+              session.getMaxRecruitment()
               , LocalDateTime.now(), session.getId());
       return session.getId();
     }
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
     String sql = "insert into session (title, img"
+        + ", course_id, batch_no"
         + ", start_date, end_date"
-        + ", session_status, session_type, max_recruitment"
+        + ", session_status, recruiting, session_type, max_recruitment"
         + ", creator_id, created_at, updated_at) "
-        + "values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?)";
+        + "values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?, ?, ?, ?)";
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
       ps.setString(1, session.getTitle());
       ps.setString(2, session.getImg());
-      ps.setTimestamp(3, Timestamp.valueOf(session.getStartDate()));
-      ps.setTimestamp(4, Timestamp.valueOf(session.getEndDate()));
-      ps.setString(5, session.getSessionStatus().name());
-      ps.setString(6, session.getSessionType().name());
-      ps.setInt(7, session.getMaxRecruitment());
-      ps.setLong(8, session.getCreatorId());
-      ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
-      ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
+      ps.setLong(3, session.getCourseId());
+      ps.setInt(4, session.getBatchNo());
+      ps.setTimestamp(5, Timestamp.valueOf(session.getStartDate()));
+      ps.setTimestamp(6, Timestamp.valueOf(session.getEndDate()));
+      ps.setString(7, session.getSessionStatus().name());
+      ps.setBoolean(8, session.isRecruiting());
+      ps.setString(9, session.getSessionType().name());
+      ps.setInt(10, session.getMaxRecruitment());
+      ps.setLong(11, session.getCreatorId());
+      ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+      ps.setTimestamp(13, Timestamp.valueOf(LocalDateTime.now()));
       return ps;
     }, keyHolder);
 

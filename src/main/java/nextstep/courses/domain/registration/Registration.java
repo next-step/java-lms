@@ -21,13 +21,13 @@ public class Registration {
   }
 
   public Registration(Long id, Long nsUserId, Long sessionId, Long creatorId) {
-    this(id, false, nsUserId, sessionId
+    this(id, RegistrationStatus.WAITING, nsUserId, sessionId
         , creatorId, LocalDateTime.now(), LocalDateTime.now());
   }
 
-  public Registration(Long id, boolean canceled, Long nsUserId, Long sessionId
+  public Registration(Long id, RegistrationStatus registrationStatus, Long nsUserId, Long sessionId
       , Long creatorId, LocalDateTime createdDate, LocalDateTime updatedDate) {
-    this(new RegistrationInfo(id, canceled),
+    this(new RegistrationInfo(id, registrationStatus),
         nsUserId,
         sessionId,
         new BaseInfo(creatorId, createdDate, updatedDate));
@@ -53,8 +53,20 @@ public class Registration {
     return registration;
   }
 
+  public void approval() {
+    registrationInfo.approval();
+  }
+
+  public boolean isApproval() {
+    return registrationInfo.isApproval();
+  }
+
   public void cancel() {
     registrationInfo.cancel();
+  }
+
+  public boolean isCancel(){
+    return registrationInfo.isCancel();
   }
 
   public boolean hasNsUser(Long nsUserId) {
@@ -83,8 +95,8 @@ public class Registration {
     return registrationInfo.getId();
   }
 
-  public boolean isCanceled() {
-    return registrationInfo.isCanceled();
+  public RegistrationStatus getRegistrationStatus() {
+    return registrationInfo.getRegistrationStatus();
   }
 
   public Long getNsUserId() {

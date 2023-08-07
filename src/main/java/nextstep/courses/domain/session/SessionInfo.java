@@ -45,4 +45,6 @@ public class SessionInfo {
   public String getImg() {
     return img;
   }
+
+
 }
