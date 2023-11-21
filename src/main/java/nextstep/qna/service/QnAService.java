@@ -24,7 +24,8 @@ public class QnAService {
     private DeleteHistoryService deleteHistoryService;
 
     @Transactional
-    public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
+    public void deleteQuestion(NsUser loginUser,
+                               long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
         // 완료
         if (!question.isOwner(loginUser)) {
@@ -42,7 +43,9 @@ public class QnAService {
         question.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
         for (Answer answer : answers) {
+            // 완료
             answer.setDeleted(true);
+            //
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         deleteHistoryService.saveAll(deleteHistories);
