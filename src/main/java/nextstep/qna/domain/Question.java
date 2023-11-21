@@ -27,11 +27,16 @@ public class Question {
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
+    public Question(NsUser writer,
+                    String title,
+                    String contents) {
         this(0L, writer, title, contents);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id,
+                    NsUser writer,
+                    String title,
+                    String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -74,7 +79,7 @@ public class Question {
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isOwner(loginUser)) {
+        if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
