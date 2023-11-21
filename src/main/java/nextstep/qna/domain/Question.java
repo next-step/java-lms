@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
     private Long id;
@@ -29,8 +30,13 @@ public class Question {
 
     public Question(NsUser writer,
                     String title,
-                    String contents) {
-        this(0L, writer, title, contents);
+                    String contents,
+                    LocalDateTime localDateTime) {
+        this.id = 0L;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = localDateTime;
     }
 
     public Question(Long id,
@@ -41,6 +47,19 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Question(NsUser writer,
+                    String title,
+                    String contents,
+                    boolean deleted,
+                    LocalDateTime localDateTime) {
+        this.id = 0L;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.deleted = deleted;
+        this.createdDate = localDateTime;
     }
 
     public Long getId() {
@@ -76,6 +95,7 @@ public class Question {
 
     public void delete(NsUser loginUser) {
         validateOwner(loginUser);
+        this.deleted = true;
     }
 
     private void validateOwner(NsUser loginUser) {
@@ -106,4 +126,16 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return deleted == question.deleted && Objects.equals(id, question.id) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents) && Objects.equals(writer, question.writer) && Objects.equals(answers, question.answers) && Objects.equals(createdDate, question.createdDate) && Objects.equals(updatedDate, question.updatedDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, contents, writer, answers, deleted, createdDate, updatedDate);
+    }
 }
