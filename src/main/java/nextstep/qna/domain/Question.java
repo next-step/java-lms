@@ -42,6 +42,16 @@ public class Question {
         this.createdDate = localDateTime;
     }
 
+    public Question(NsUser writer,
+                    String title,
+                    String contents,
+                    boolean deleted,
+                    LocalDateTime localDateTime) {
+        this(0L, writer, title, contents);
+        this.deleted = deleted;
+        this.createdDate = localDateTime;
+    }
+
     public Question(Long id,
                     NsUser writer,
                     String title,
@@ -50,19 +60,6 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-    }
-
-    public Question(NsUser writer,
-                    String title,
-                    String contents,
-                    boolean deleted,
-                    LocalDateTime localDateTime) {
-        this.id = 0L;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.deleted = deleted;
-        this.createdDate = localDateTime;
     }
 
     public Long getId() {
@@ -99,9 +96,14 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser,
                                       LocalDataTimeHolder localDataTimeHolder) {
         validateOwner(loginUser);
+
         this.deleted = true;
-        answers.delete(loginUser);
-        return new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, id, writer, localDataTimeHolder.now())));
+
+        ArrayList<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, localDataTimeHolder.now()));
+        deleteHistories.addAll(answers.delete(loginUser, localDataTimeHolder));
+
+        return deleteHistories;
     }
 
     private void validateOwner(NsUser loginUser) {

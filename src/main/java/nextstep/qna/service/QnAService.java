@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service("qnaService")
@@ -26,12 +25,8 @@ public class QnAService {
     public void deleteQuestion(NsUser loginUser,
                                long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-
-        List<Answer> answers = question.getAnswers();
         List<DeleteHistory> deleteHistories = question.delete(loginUser, new LocalDateTimeNowHolder());
-        for (Answer answer : answers) {
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

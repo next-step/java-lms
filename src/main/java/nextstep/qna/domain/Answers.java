@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> answers;
@@ -21,8 +22,11 @@ public class Answers {
         return new Answers(answers);
     }
 
-    public void delete(NsUser longinUser) {
-        this.answers.forEach(answer -> answer.delete(longinUser));
+    public List<DeleteHistory> delete(NsUser longinUser,
+                                      LocalDataTimeHolder localDataTimeHolder) {
+        return this.answers.stream()
+                .map(answer -> answer.delete(longinUser, localDataTimeHolder))
+                .collect(Collectors.toList());
     }
 
     public void add(Answer answer) {

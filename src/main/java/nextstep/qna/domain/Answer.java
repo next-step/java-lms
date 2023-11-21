@@ -29,14 +29,14 @@ public class Answer {
     public Answer(NsUser writer,
                   Question question,
                   String contents) {
-        this(null, writer, question, contents);
+        this(0L, writer, question, contents);
     }
 
     public Answer(NsUser writer,
                   Question question,
                   String contents,
                   boolean deleted) {
-        this(null, writer, question, contents);
+        this(0L, writer, question, contents);
         this.deleted = deleted;
     }
 
@@ -44,7 +44,7 @@ public class Answer {
                   Question question,
                   String contents,
                   LocalDateTime localDateTime) {
-        this(null, writer, question, contents);
+        this(0L, writer, question, contents);
         this.createdDate = localDateTime;
     }
 
@@ -88,9 +88,11 @@ public class Answer {
         return deleted;
     }
 
-    public void delete(NsUser loginUser) {
+    public DeleteHistory delete(NsUser loginUser,
+                                LocalDataTimeHolder localDataTimeHolder) {
         validateOwner(loginUser);
         this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, localDataTimeHolder.now());
     }
 
     private void validateOwner(NsUser loginUser) {
