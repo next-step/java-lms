@@ -95,10 +95,12 @@ public class Question {
         answers.add(answer);
     }
 
-    public void delete(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser loginUser,
+                                      LocalDataTimeHolder localDataTimeHolder) {
         validateOwner(loginUser);
         this.deleted = true;
         answers.delete(loginUser);
+        return List.of(new DeleteHistory(ContentType.QUESTION, id, writer, localDataTimeHolder.now()));
     }
 
     private void validateOwner(NsUser loginUser) {
