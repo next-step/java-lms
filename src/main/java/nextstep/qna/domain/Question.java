@@ -96,6 +96,12 @@ public class Question {
     public void delete(NsUser loginUser) {
         validateOwner(loginUser);
         this.deleted = true;
+
+        for (Answer answer : answers) {
+            if (!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
+        }
     }
 
     private void validateOwner(NsUser loginUser) {
