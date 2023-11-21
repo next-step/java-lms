@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -100,7 +101,7 @@ public class Question {
         validateOwner(loginUser);
         this.deleted = true;
         answers.delete(loginUser);
-        return List.of(new DeleteHistory(ContentType.QUESTION, id, writer, localDataTimeHolder.now()));
+        return new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, id, writer, localDataTimeHolder.now())));
     }
 
     private void validateOwner(NsUser loginUser) {
