@@ -32,6 +32,31 @@ public class Answer {
         this(null, writer, question, contents);
     }
 
+    public Answer(NsUser writer,
+                  Question question,
+                  String contents,
+                  boolean deleted) {
+        this(null, writer, question, contents);
+        this.deleted = deleted;
+    }
+
+    public Answer(NsUser writer,
+                  Question question,
+                  String contents,
+                  LocalDateTime localDateTime) {
+        this(null, writer, question, contents);
+        this.createdDate = localDateTime;
+    }
+
+    public Answer(NsUser writer,
+                  Question question,
+                  String contents,
+                  boolean deleted,
+                  LocalDateTime localDateTime) {
+        this(writer, question, contents, deleted);
+        this.createdDate = localDateTime;
+    }
+
     public Answer(Long id,
                   NsUser writer,
                   Question question,
@@ -65,6 +90,7 @@ public class Answer {
 
     public void delete(NsUser loginUser) {
         validateOwner(loginUser);
+        this.deleted = true;
     }
 
     private void validateOwner(NsUser loginUser) {

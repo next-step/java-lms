@@ -29,12 +29,15 @@ public class Question {
 
     public Question(NsUser writer,
                     String title,
+                    String contents) {
+        this(0L, writer, title, contents);
+    }
+
+    public Question(NsUser writer,
+                    String title,
                     String contents,
                     LocalDateTime localDateTime) {
-        this.id = 0L;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this(0L, writer, title, contents);
         this.createdDate = localDateTime;
     }
 
@@ -106,11 +109,6 @@ public class Question {
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
