@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.List;
 
 public class Answers {
@@ -11,5 +13,9 @@ public class Answers {
 
     public static Answers from(List<Answer> answers) {
         return new Answers(answers);
+    }
+
+    public void delete(NsUser longinUser) {
+        this.answers.forEach(answer -> answer.delete(longinUser));
     }
 }

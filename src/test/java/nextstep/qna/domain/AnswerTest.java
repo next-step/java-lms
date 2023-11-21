@@ -13,6 +13,6 @@ public class AnswerTest {
     @Test
     @DisplayName("답변의 작성자와 삭제를 요청한 대상이 다르면 예외 처리를 한다")
     void deleteNotCorrectUser() {
-        Assertions.assertThrows(CannotDeleteException.class, () -> A1.delete(NsUserTest.SANJIGI), "질문을 삭제할 권한이 없습니다.");
+        Assertions.assertThrows(CannotDeleteException.class, () -> A1.delete(NsUserTest.SANJIGI), "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }

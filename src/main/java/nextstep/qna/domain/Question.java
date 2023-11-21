@@ -74,11 +74,11 @@ public class Question {
         answers.add(answer);
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) {
         validateOwner(loginUser);
     }
 
-    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+    private void validateOwner(NsUser loginUser) {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
