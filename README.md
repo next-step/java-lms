@@ -44,8 +44,8 @@
     * [x] 타입 (extension)
         * [x] gif, jpg, jpeg, png, svg 만 허용한다
     * [ ] 크기 (size)
-        * [ ] 가로 (width)
-            * [ ] 300픽셀 이상이다
+        * [x] 가로 (width)
+            * [x] 300픽셀 이상이다
         * [ ] 세로 (height)
             * [ ] 200픽셀 이상이다
         * [ ] 3:2의 비율 이다

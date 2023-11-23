@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotVolumeOver1MBException;
+import nextstep.courses.VolumeOverException;
 
 public class Volume {
 
@@ -9,7 +9,7 @@ public class Volume {
 
     public Volume(long volumeSize) {
         if (volumeSize > MAX_SIZE) {
-            throw new CannotVolumeOver1MBException("파일 크기는 1MB 이하여야 합니다.");
+            throw new VolumeOverException("파일 크기는 1MB 이하여야 합니다.");
         }
 
         this.volumeSize = volumeSize;
