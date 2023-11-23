@@ -7,12 +7,15 @@ public class FreeSession implements Session {
     private final SessionType sessionType;
     private final Period period;
     private final Thumbnail thumbnail;
+    private final Students students;
 
     public FreeSession(Period period,
-                       Thumbnail thumbnail) {
+                       Thumbnail thumbnail,
+                       Students students) {
         this.sessionType = SessionType.FREE;
         this.period = period;
         this.thumbnail = thumbnail;
+        this.students = students;
     }
 
     @Override
@@ -22,6 +25,6 @@ public class FreeSession implements Session {
 
     @Override
     public void apply(Payment payment) {
-
+        students.add();
     }
 }

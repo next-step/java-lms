@@ -20,12 +20,14 @@ class SessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
+        Students students = new Students();
 
         assertAll(
                 () -> {
                     Session session = new FreeSession(
                             period,
-                            thumbnail);
+                            thumbnail,
+                            students);
                     boolean actual = session.isSupport(SessionType.FREE);
                     boolean expected = true;
 
@@ -34,7 +36,9 @@ class SessionTest {
                 () -> {
                     Session session = new PaidSession(
                             period,
-                            thumbnail);
+                            thumbnail,
+                            students,
+                            students);
                     boolean actual = session.isSupport(SessionType.PAID);
                     boolean expected = true;
 
