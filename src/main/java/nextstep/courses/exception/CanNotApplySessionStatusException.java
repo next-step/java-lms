@@ -1,4 +1,4 @@
-package nextstep.courses;
+package nextstep.courses.exception;
 
 public class CanNotApplySessionStatusException extends IllegalArgumentException {
     private static final long serialVersionUID = 1L;

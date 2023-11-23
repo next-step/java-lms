@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.code.SessionType;
 import nextstep.payments.domain.Payment;
 
 public interface Session {

@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.code;
 
-import nextstep.courses.NotExtensionTypeException;
+import nextstep.courses.exception.NotExtensionTypeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

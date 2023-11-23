@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotStartDateAfterEndDateException;
+import nextstep.courses.exception.CannotStartDateAfterEndDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

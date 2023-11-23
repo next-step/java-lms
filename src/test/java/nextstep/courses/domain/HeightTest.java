@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.SizeUnderException;
+import nextstep.courses.exception.SizeUnderException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

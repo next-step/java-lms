@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotStartDateAfterEndDateException;
+import nextstep.courses.exception.CannotStartDateAfterEndDateException;
 
 import java.time.LocalDate;
 

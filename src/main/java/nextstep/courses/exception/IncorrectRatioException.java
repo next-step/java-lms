@@ -1,4 +1,4 @@
-package nextstep.courses;
+package nextstep.courses.exception;
 
 public class IncorrectRatioException extends IllegalArgumentException {
     private static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.VolumeOverException;
+import nextstep.courses.exception.VolumeOverException;
 
 public class Volume {
 

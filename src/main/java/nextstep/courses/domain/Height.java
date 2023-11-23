@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.SizeUnderException;
+import nextstep.courses.exception.SizeUnderException;
 
 public class Height {
     public static final long MIN_PIXEL = 200L;

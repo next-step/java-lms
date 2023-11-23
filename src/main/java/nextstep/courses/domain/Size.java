@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.IncorrectRatioException;
+import nextstep.courses.exception.IncorrectRatioException;
 
 public class Size {
 

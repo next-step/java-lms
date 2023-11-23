@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.code;
 
-import nextstep.courses.NotExtensionTypeException;
+import nextstep.courses.exception.NotExtensionTypeException;
 
 import java.util.Arrays;
 

@@ -1,5 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.strategy;
 
+import nextstep.courses.domain.Period;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.Students;
+import nextstep.courses.domain.Thumbnail;
+import nextstep.courses.domain.code.SessionStatus;
+import nextstep.courses.domain.code.SessionType;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession implements Session {

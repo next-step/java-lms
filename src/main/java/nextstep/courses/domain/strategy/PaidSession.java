@@ -1,7 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.strategy;
 
-import nextstep.courses.IncorrectAmountException;
-import nextstep.courses.SessionDeadLineException;
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.code.SessionStatus;
+import nextstep.courses.domain.code.SessionType;
+import nextstep.courses.exception.IncorrectAmountException;
+import nextstep.courses.exception.SessionDeadLineException;
 import nextstep.payments.domain.Payment;
 
 public class PaidSession implements Session {

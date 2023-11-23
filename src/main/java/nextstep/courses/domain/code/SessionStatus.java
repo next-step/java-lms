@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.code;
 
-import nextstep.courses.CanNotApplySessionStatusException;
+import nextstep.courses.exception.CanNotApplySessionStatusException;
 
 import java.util.function.Supplier;
 

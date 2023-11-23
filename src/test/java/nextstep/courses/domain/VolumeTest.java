@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.VolumeOverException;
+import nextstep.courses.exception.VolumeOverException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

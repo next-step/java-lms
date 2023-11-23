@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.NotPositiveException;
+import nextstep.courses.exception.NotPositiveException;
 import nextstep.payments.domain.Payment;
 
 public class Amount {

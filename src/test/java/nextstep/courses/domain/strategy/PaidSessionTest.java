@@ -1,8 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.strategy;
 
-import nextstep.courses.CanNotApplySessionStatusException;
-import nextstep.courses.IncorrectAmountException;
-import nextstep.courses.SessionDeadLineException;
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.code.SessionStatus;
+import nextstep.courses.exception.CanNotApplySessionStatusException;
+import nextstep.courses.exception.IncorrectAmountException;
+import nextstep.courses.exception.SessionDeadLineException;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

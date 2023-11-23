@@ -1,6 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.code;
 
-import nextstep.courses.CanNotApplySessionStatusException;
+import nextstep.courses.exception.CanNotApplySessionStatusException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
