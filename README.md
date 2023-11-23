@@ -38,17 +38,19 @@
     * [x] 시작일 (startDate)
     * [x] 종료일 (endDate)
     * [x] 시작일은 종료일 이후 일 수 없다
-* [ ] 커버 이미지 (Thumbnail)
+* [x] 커버 이미지 (Thumbnail)
     * [x] 크기 (volume)
         * [x] 1MB 이하이다
     * [x] 타입 (extension)
         * [x] gif, jpg, jpeg, png, svg 만 허용한다
-    * [ ] 크기 (size)
+    * [x] 크기 (size)
         * [x] 가로 (width)
             * [x] 300픽셀 이상이다
         * [x] 세로 (height)
             * [x] 200픽셀 이상이다
         * [x] 3:2의 비율 이다
+    * [x] 파일 이름
+    * [x] 저장 위치
 * [ ] 강의 타입 (type, Interface...?)
     * [ ] 무료
         * [ ] 인원 제한이 없다
