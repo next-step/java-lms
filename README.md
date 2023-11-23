@@ -41,8 +41,8 @@
 * [ ] 커버 이미지 (Thumbnail)
     * [x] 크기 (volume)
         * [x] 1MB 이하이다
-    * [ ] 타입 (extension)
-        * [ ] gif, jpg, jpeg, png, svg 만 허용한다
+    * [x] 타입 (extension)
+        * [x] gif, jpg, jpeg, png, svg 만 허용한다
     * [ ] 크기 (size)
         * [ ] 가로 (width)
             * [ ] 300픽셀 이상이다
