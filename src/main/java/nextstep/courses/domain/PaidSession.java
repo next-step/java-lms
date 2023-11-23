@@ -9,13 +9,13 @@ public class PaidSession implements Session {
     private final Thumbnail thumbnail;
     private final Students limitStudents;
     private final Students students;
-    private final long amount;
+    private final Amount amount;
 
     public PaidSession(Period period,
                        Thumbnail thumbnail,
                        Students limitStudents,
                        Students students,
-                       long amount) {
+                       Amount amount) {
         this.limitStudents = limitStudents;
         this.students = students;
         this.period = period;
@@ -34,7 +34,7 @@ public class PaidSession implements Session {
             throw new SessionDeadLineException("수강 신청이 마감 되었습니다.");
         }
 
-        if (!payment.isSameAmount(amount)) {
+        if (!amount.isSameAmount(payment)) {
             throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
         }
 

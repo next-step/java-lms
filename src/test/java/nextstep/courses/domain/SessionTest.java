@@ -21,6 +21,7 @@ class SessionTest {
                 new Size(new Width(300),
                         new Height(200)));
         Students students = new Students();
+        Amount amount = new Amount(20000L);
 
         assertAll(
                 () -> {
@@ -34,12 +35,13 @@ class SessionTest {
                     assertThat(actual).isEqualTo(expected);
                 },
                 () -> {
+
                     Session session = new PaidSession(
                             period,
                             thumbnail,
                             students,
                             students,
-                            20000L);
+                            amount);
                     boolean actual = session.isSupport(SessionType.PAID);
                     boolean expected = true;
 
