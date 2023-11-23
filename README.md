@@ -34,10 +34,10 @@
 
 ### 강의 (List)
 
-* [ ] 강의 기간 (Period)
-    * [ ] 시작일 (startDate)
-    * [ ] 종료일 (endDate)
-    * [ ] 시작일은 종료일 이후 일 수 없다
+* [x] 강의 기간 (Period)
+    * [x] 시작일 (startDate)
+    * [x] 종료일 (endDate)
+    * [x] 시작일은 종료일 이후 일 수 없다
 * [ ] 커버 이미지 (Thumbnail)
     * [ ] 크기 (volume)
         * [ ] 1MB 이하이다.
