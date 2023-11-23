@@ -33,20 +33,31 @@ public class PaidSession implements Session {
 
     @Override
     public void apply(Payment payment) {
+        validateDeadLine();
+        validateAmount(payment);
+        validateStatus();
+
+        students.add();
+    }
+
+    private void validateDeadLine() {
         if (isDeadLine()) {
             throw new SessionDeadLineException("수강 신청이 마감 되었습니다.");
         }
-
-        if (!amount.isSameAmount(payment)) {
-            throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
-        }
-
-        status.validateApply();
-
-        students.add();
     }
 
     private boolean isDeadLine() {
         return limitStudents.equals(students);
     }
+
+    private void validateAmount(Payment payment) {
+        if (!amount.isSameAmount(payment)) {
+            throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
+        }
+    }
+
+    private void validateStatus() {
+        status.validateApply();
+    }
+
 }
