@@ -22,6 +22,6 @@ public class FreeSession implements Session {
 
     @Override
     public void apply(Payment payment) {
-        
+
     }
 }
