@@ -39,8 +39,8 @@
     * [x] 종료일 (endDate)
     * [x] 시작일은 종료일 이후 일 수 없다
 * [ ] 커버 이미지 (Thumbnail)
-    * [ ] 크기 (volume)
-        * [ ] 1MB 이하이다.
+    * [x] 크기 (volume)
+        * [x] 1MB 이하이다
     * [ ] 타입 (extension)
         * [ ] gif, jpg, jpeg, png, svg 만 허용한다
     * [ ] 크기 (size)
