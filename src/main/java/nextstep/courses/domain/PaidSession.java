@@ -10,17 +10,20 @@ public class PaidSession implements Session {
     private final Students limitStudents;
     private final Students students;
     private final Amount amount;
+    private final SessionStatus status;
 
     public PaidSession(Period period,
                        Thumbnail thumbnail,
                        Students limitStudents,
                        Students students,
-                       Amount amount) {
+                       Amount amount,
+                       SessionStatus status) {
         this.limitStudents = limitStudents;
         this.students = students;
         this.period = period;
         this.thumbnail = thumbnail;
         this.amount = amount;
+        this.status = status;
     }
 
     @Override

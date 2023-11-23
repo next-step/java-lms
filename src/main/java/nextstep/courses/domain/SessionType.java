@@ -5,7 +5,7 @@ public enum SessionType {
     FREE("무료 강의"),
     PAID("유료 강의");
 
-    private String description;
+    private final String description;
 
     SessionType(String description) {
         this.description = description;

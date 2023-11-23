@@ -28,7 +28,9 @@ class SessionTest {
                     Session session = new FreeSession(
                             period,
                             thumbnail,
-                            students);
+                            students,
+                            SessionStatus.RECRUITING);
+
                     boolean actual = session.isSupport(SessionType.FREE);
                     boolean expected = true;
 
@@ -41,7 +43,9 @@ class SessionTest {
                             thumbnail,
                             students,
                             students,
-                            amount);
+                            amount,
+                            SessionStatus.RECRUITING);
+
                     boolean actual = session.isSupport(SessionType.PAID);
                     boolean expected = true;
 

@@ -31,7 +31,8 @@ class PaidSessionTest {
                 thumbnail,
                 limitStudents,
                 students,
-                amount);
+                amount,
+                SessionStatus.RECRUITING);
 
         assertThrows(SessionDeadLineException.class, () -> session.apply(new Payment()), "수강 신청 인원이 마감 되었습니다.");
     }
@@ -54,7 +55,8 @@ class PaidSessionTest {
                 thumbnail,
                 limitStudents,
                 students,
-                amount);
+                amount,
+                SessionStatus.RECRUITING);
 
         assertThrows(IncorrectAmountException.class, () -> session.apply(new Payment("테스트", 0L, 0L, 15000L)),
                 "결제 금액과 강의 금액이 다릅니다.");
@@ -78,7 +80,8 @@ class PaidSessionTest {
                 thumbnail,
                 limitStudents,
                 students,
-                amount);
+                amount,
+                SessionStatus.RECRUITING);
 
         assertDoesNotThrow(() -> session.apply(new Payment("테스트", 0L, 0L, 20000L)));
     }
