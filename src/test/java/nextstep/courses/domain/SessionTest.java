@@ -38,7 +38,8 @@ class SessionTest {
                             period,
                             thumbnail,
                             students,
-                            students);
+                            students,
+                            20000L);
                     boolean actual = session.isSupport(SessionType.PAID);
                     boolean expected = true;
 
