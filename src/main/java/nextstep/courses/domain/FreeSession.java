@@ -25,6 +25,7 @@ public class FreeSession implements Session {
 
     @Override
     public void apply(Payment payment) {
+        status.validateApply();
         students.add();
     }
 }

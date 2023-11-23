@@ -41,6 +41,8 @@ public class PaidSession implements Session {
             throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
         }
 
+        status.validateApply();
+
         students.add();
     }
 

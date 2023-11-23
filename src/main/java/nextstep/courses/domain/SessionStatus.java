@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CanNotApplySessionStatusException;
+
 import java.util.function.Supplier;
 
 public enum SessionStatus {
@@ -21,7 +23,14 @@ public enum SessionStatus {
         return this.description;
     }
 
-    public boolean canApply() {
+    public void validateApply() {
+        if (!canApply()) {
+            throw new CanNotApplySessionStatusException("수강 신청이 가능한 상태가 아닙니다.");
+        }
+    }
+
+    private boolean canApply() {
         return this.canApply.get();
     }
+
 }

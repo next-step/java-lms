@@ -1,8 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CanNotApplySessionStatusException;
 import nextstep.courses.IncorrectAmountException;
 import nextstep.courses.SessionDeadLineException;
 import nextstep.payments.domain.Payment;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -63,8 +65,55 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("유료 강의 신청을 한다")
+    @DisplayName("모집중이 아니면 예외 처리 된다.")
     void apply2() {
+        Period period = new Period(LocalDate.of(2023, 11, 24),
+                LocalDate.of(2023, 11, 24));
+        Thumbnail thumbnail = new Thumbnail("테스트",
+                "/home/test.png",
+                new Volume(1024L),
+                new Size(new Width(300),
+                        new Height(200)));
+        Students limitStudents = new Students(1);
+        Students students = new Students();
+        Amount amount = new Amount(20000L);
+
+
+        Assertions.assertAll(
+                () -> {
+                    Session session = new PaidSession(
+                            period,
+                            thumbnail,
+                            limitStudents,
+                            students,
+                            amount,
+                            SessionStatus.PREPARING);
+
+                    assertThrows(CanNotApplySessionStatusException.class,
+                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L)),
+                            "수강 신청이 가능한 상태가 아닙니다.");
+                },
+                () -> {
+                    Session session = new PaidSession(
+                            period,
+                            thumbnail,
+                            limitStudents,
+                            students,
+                            amount,
+                            SessionStatus.END);
+
+                    assertThrows(CanNotApplySessionStatusException.class,
+                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L)),
+                            "수강 신청이 가능한 상태가 아닙니다.");
+                }
+        );
+
+
+    }
+
+    @Test
+    @DisplayName("유료 강의 신청을 한다")
+    void apply3() {
         Period period = new Period(LocalDate.of(2023, 11, 24),
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
