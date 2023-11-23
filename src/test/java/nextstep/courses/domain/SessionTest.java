@@ -24,11 +24,12 @@ class SessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
-        Students students = new Students();
+
         Amount amount = new Amount(20000L);
 
         assertAll(
                 () -> {
+                    FreeStudents students = new FreeStudents();
                     Session session = new FreeSession(
                             period,
                             thumbnail,
@@ -41,12 +42,11 @@ class SessionTest {
                     assertThat(actual).isEqualTo(expected);
                 },
                 () -> {
-
+                    PaidStudents paidStudents = new PaidStudents(0);
                     Session session = new PaidSession(
                             period,
                             thumbnail,
-                            students,
-                            students,
+                            paidStudents,
                             amount,
                             SessionStatus.RECRUITING);
 

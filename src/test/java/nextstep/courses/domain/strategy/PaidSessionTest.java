@@ -4,8 +4,9 @@ import nextstep.courses.domain.*;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.exception.CanNotApplySessionStatusException;
 import nextstep.courses.exception.IncorrectAmountException;
-import nextstep.courses.exception.SessionDeadLineException;
+import nextstep.courses.exception.SessionFullException;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,18 +28,21 @@ class PaidSessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
-        Students limitStudents = new Students(0);
-        Students students = new Students();
+        PaidStudents paidStudents = new PaidStudents(0);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
                 period,
                 thumbnail,
-                limitStudents,
-                students,
+                paidStudents,
                 amount,
                 SessionStatus.RECRUITING);
 
-        assertThrows(SessionDeadLineException.class, () -> session.apply(new Payment()), "수강 신청 인원이 마감 되었습니다.");
+        assertThrows(SessionFullException.class, () -> session.apply(new Payment("테스트", 0L, 0L, 20000L), new NsUser()),
+                "수강 신청 " +
+                        "인원이" +
+                        " " +
+                        "마감 " +
+                        "되었습니다.");
     }
 
     @Test
@@ -51,18 +55,16 @@ class PaidSessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
-        Students limitStudents = new Students(1);
-        Students students = new Students();
+        PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
                 period,
                 thumbnail,
-                limitStudents,
-                students,
+                paidStudents,
                 amount,
                 SessionStatus.RECRUITING);
 
-        assertThrows(IncorrectAmountException.class, () -> session.apply(new Payment("테스트", 0L, 0L, 15000L)),
+        assertThrows(IncorrectAmountException.class, () -> session.apply(new Payment("테스트", 0L, 0L, 15000L), new NsUser()),
                 "결제 금액과 강의 금액이 다릅니다.");
     }
 
@@ -76,8 +78,7 @@ class PaidSessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
-        Students limitStudents = new Students(1);
-        Students students = new Students();
+        PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
 
 
@@ -86,26 +87,24 @@ class PaidSessionTest {
                     Session session = new PaidSession(
                             period,
                             thumbnail,
-                            limitStudents,
-                            students,
+                            paidStudents,
                             amount,
                             SessionStatus.PREPARING);
 
                     assertThrows(CanNotApplySessionStatusException.class,
-                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L)),
+                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L), new NsUser()),
                             "수강 신청이 가능한 상태가 아닙니다.");
                 },
                 () -> {
                     Session session = new PaidSession(
                             period,
                             thumbnail,
-                            limitStudents,
-                            students,
+                            paidStudents,
                             amount,
                             SessionStatus.END);
 
                     assertThrows(CanNotApplySessionStatusException.class,
-                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L)),
+                            () -> session.apply(new Payment("테스트", 0L, 0L, 20000L), new NsUser()),
                             "수강 신청이 가능한 상태가 아닙니다.");
                 }
         );
@@ -123,17 +122,15 @@ class PaidSessionTest {
                 new Volume(1024L),
                 new Size(new Width(300),
                         new Height(200)));
-        Students limitStudents = new Students(1);
-        Students students = new Students();
+        PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
                 period,
                 thumbnail,
-                limitStudents,
-                students,
+                paidStudents,
                 amount,
                 SessionStatus.RECRUITING);
 
-        assertDoesNotThrow(() -> session.apply(new Payment("테스트", 0L, 0L, 20000L)));
+        assertDoesNotThrow(() -> session.apply(new Payment("테스트", 0L, 0L, 20000L), new NsUser()));
     }
 }
