@@ -17,7 +17,7 @@ class PaidStudentsTest {
     void add() {
         PaidStudents actual = new PaidStudents(1);
         actual.add(new NsUser());
-        PaidStudents expected = new PaidStudents(1, List.of(new NsUser()));
+        PaidStudents expected = new PaidStudents(1, new Students(List.of(new NsUser())));
 
         assertThat(actual).isEqualTo(expected);
     }

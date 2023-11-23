@@ -3,38 +3,29 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.SessionFullException;
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class PaidStudents {
 
     private final int capacity;
 
-    private final List<NsUser> students;
+    private final Students students;
 
     public PaidStudents(int capacity) {
-        this(capacity, new ArrayList<>());
+        this(capacity, new Students());
     }
 
     public PaidStudents(int capacity,
-                        List<NsUser> students) {
-        if (capacity < students.size()) {
-            throw new SessionFullException("수강 신청 인원이 마감 되었습니다.");
-        }
+                        Students students) {
         this.capacity = capacity;
         this.students = students;
     }
 
     public void add(NsUser student) {
-        if (isFull()) {
+        if (students.isFull(capacity)) {
             throw new SessionFullException("수강 신청 인원이 마감 되었습니다.");
         }
         students.add(student);
-    }
-
-    private boolean isFull() {
-        return students.size() >= capacity;
     }
 
     @Override

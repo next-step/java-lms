@@ -29,7 +29,7 @@ class SessionTest {
 
         assertAll(
                 () -> {
-                    FreeStudents students = new FreeStudents();
+                    Students students = new Students();
                     Session session = new FreeSession(
                             period,
                             thumbnail,

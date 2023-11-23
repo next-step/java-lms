@@ -1,8 +1,8 @@
 package nextstep.courses.domain.strategy;
 
-import nextstep.courses.domain.FreeStudents;
 import nextstep.courses.domain.Period;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.Students;
 import nextstep.courses.domain.Thumbnail;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.domain.code.SessionType;
@@ -12,12 +12,12 @@ import nextstep.users.domain.NsUser;
 public class FreeSession implements Session {
     private final Period period;
     private final Thumbnail thumbnail;
-    private final FreeStudents students;
+    private final Students students;
     private final SessionStatus status;
 
     public FreeSession(Period period,
                        Thumbnail thumbnail,
-                       FreeStudents students,
+                       Students students,
                        SessionStatus status) {
         this.period = period;
         this.thumbnail = thumbnail;
