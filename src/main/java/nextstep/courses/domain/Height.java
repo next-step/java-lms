@@ -13,4 +13,8 @@ public class Height {
 
         this.pixel = pixel;
     }
+
+    public double divisionInput(long pixel) {
+        return (double) pixel / this.pixel;
+    }
 }

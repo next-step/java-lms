@@ -4,7 +4,7 @@ import nextstep.courses.SizeUnderException;
 
 public class Width {
 
-    public static final long MIN_PIXEL = 300L;
+    private static final long MIN_PIXEL = 300L;
     private final long pixel;
 
     public Width(long pixel) {
@@ -13,5 +13,9 @@ public class Width {
         }
 
         this.pixel = pixel;
+    }
+
+    public double ratio(Height height) {
+        return height.divisionInput(pixel);
     }
 }
