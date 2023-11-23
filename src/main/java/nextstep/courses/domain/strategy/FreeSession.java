@@ -34,6 +34,7 @@ public class FreeSession implements Session {
     public void apply(Payment payment,
                       NsUser student) {
         status.validateApply();
+
         students.add(student);
     }
 }

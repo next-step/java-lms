@@ -3,7 +3,6 @@ package nextstep.courses.domain.strategy;
 import nextstep.courses.domain.*;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.domain.code.SessionType;
-import nextstep.courses.exception.IncorrectAmountException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -34,20 +33,10 @@ public class PaidSession implements Session {
     @Override
     public void apply(Payment payment,
                       NsUser student) {
-        validateAmount(payment);
-        validateStatus();
+        amount.validateAmount(payment);
+        status.validateApply();
 
         paidStudents.add(student);
-    }
-
-    private void validateAmount(Payment payment) {
-        if (!amount.isSameAmount(payment)) {
-            throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
-        }
-    }
-
-    private void validateStatus() {
-        status.validateApply();
     }
 
 }

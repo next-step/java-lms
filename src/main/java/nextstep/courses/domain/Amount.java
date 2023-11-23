@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.IncorrectAmountException;
 import nextstep.courses.exception.NotPositiveException;
 import nextstep.payments.domain.Payment;
 
@@ -20,7 +21,13 @@ public class Amount {
         return amount < MIN_AMOUNT;
     }
 
-    public boolean isSameAmount(Payment payment) {
+    private boolean isSameAmount(Payment payment) {
         return payment.isSameAmount(amount);
+    }
+
+    public void validateAmount(Payment payment) {
+        if (!isSameAmount(payment)) {
+            throw new IncorrectAmountException("결제 금액과 강의 금액이 다릅니다.");
+        }
     }
 }

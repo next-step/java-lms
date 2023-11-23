@@ -1,11 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.IncorrectAmountException;
 import nextstep.courses.exception.NotPositiveException;
 import nextstep.payments.domain.Payment;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AmountTest {
@@ -22,10 +23,7 @@ class AmountTest {
         Amount amount = new Amount(20000L);
         Payment payment = new Payment("테스트", 0L, 0L, 20000L);
 
-        boolean actual = amount.isSameAmount(payment);
-        boolean expected = true;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertDoesNotThrow(() -> amount.validateAmount(payment));
     }
 
     @Test
@@ -34,9 +32,6 @@ class AmountTest {
         Amount amount = new Amount(20000L);
         Payment payment = new Payment("테스트", 0L, 0L, 10000L);
 
-        boolean actual = amount.isSameAmount(payment);
-        boolean expected = false;
-
-        Assertions.assertThat(actual).isEqualTo(expected);
+        assertThrows(IncorrectAmountException.class, () -> amount.validateAmount(payment), "결제 금액과 강의 금액이 다릅니다.");
     }
 }
