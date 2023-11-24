@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
+
+    private static final ContentType CONTENT_TYPE_QUESTION = ContentType.QUESTION;
+
     private Long id;
 
     private String title;
@@ -16,11 +19,11 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers = new Answers();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -91,14 +94,21 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        deleteValidation(loginUser);
+        delete();
+        return deleteHistories(answers.delete(loginUser));
+    }
+
+    private List<DeleteHistory> deleteHistories(List<DeleteHistory> deleteHistoriesOfAnswers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(CONTENT_TYPE_QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(deleteHistoriesOfAnswers);
+        return deleteHistories;
+    }
+
+    private void deleteValidation(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        delete();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.delete(loginUser));
-        return deleteHistories;
     }
 }
