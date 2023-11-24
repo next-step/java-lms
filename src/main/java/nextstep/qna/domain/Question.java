@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -35,28 +37,11 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -65,24 +50,46 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        this.answers.add(answer);
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        try {
+            validateDelete(loginUser);
+            LocalDateTime deleteTime = LocalDateTime.now();
+
+            List<DeleteHistory> deleteHistories = new ArrayList<>();
+            deleteHistories.add(delete(deleteTime));
+            deleteHistories.addAll(deleteAnswers(loginUser, deleteTime));
+
+            return deleteHistories;
+        } catch (UnAuthorizedException e) {
+            throw new CannotDeleteException(e.getMessage());
+        }
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser loginUser, LocalDateTime deleteTime) throws CannotDeleteException {
+        try {
+            return this.answers.deleteAnswers(loginUser, deleteTime);
+        } catch (UnAuthorizedException e) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+    }
+
+    private DeleteHistory delete(LocalDateTime deleteTime) {
+        this.deleted = true;
+        return DeleteHistory.createQuestionHistory(this.id, this.writer, deleteTime);
+    }
+
+    private void validateDelete(NsUser loginUser) {
+        if (!this.writer.equals(loginUser)) {
+            throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 
     @Override
