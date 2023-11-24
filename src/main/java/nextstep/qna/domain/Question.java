@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -77,10 +77,6 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateSamePerson(loginUser);
         this.deleted = true;
@@ -88,13 +84,8 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
 
-        for (Answer answer : answers) {
-            answer.validateSamePerson(loginUser);
-        }
+        deleteHistories.addAll(answers.delete(loginUser));
 
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
-        }
         return deleteHistories;
     }
 
