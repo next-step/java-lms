@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.courses.ImageSizeOverException;
+import nextstep.courses.ImageVolumeOverException;
 import nextstep.courses.InvalidImageTypeException;
 import nextstep.courses.domain.Image;
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +13,8 @@ public class ImageTest {
     @Test
     @DisplayName("이미지 최대 크기를 초과할 경우 에러 발생한다")
     public void image_size_limit() {
-        assertThatExceptionOfType(ImageSizeOverException.class)
-            .isThrownBy(() -> new Image(2, "JPG"))
+        assertThatExceptionOfType(ImageVolumeOverException.class)
+            .isThrownBy(() -> new Image(2, "JPG", 300, 200))
             .withMessageMatching("이미지 최대 크기를 초과했습니다.");
     }
 
@@ -22,7 +22,7 @@ public class ImageTest {
     @DisplayName("지원하지 않는 이미지 타입으로 이미지 생성 시 에러 발생한다")
     public void image_type() {
         assertThatExceptionOfType(InvalidImageTypeException.class)
-            .isThrownBy(() -> new Image(2, "BMP"))
+            .isThrownBy(() -> new Image(2, "BMP", 300, 200))
             .withMessageMatching("지원하지 않는 이미지 타입입니다.");
     }
 
