@@ -29,16 +29,13 @@ public class QnAService {
         if (!question.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            answer.delete(loginUser);
-        }
+        Answers answers = new Answers(question.getAnswers());
+        answers.delete(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         question.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
+        for (Answer answer : answers.answers()) {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         deleteHistoryService.saveAll(deleteHistories);

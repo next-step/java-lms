@@ -23,3 +23,6 @@
 * [ ] QnaService의 deleteQuestion() 메서드의 핵심 비지니스 로직을 도메인 모델 객체에 구현
   * [ ] TDD로 구현
 * [ ] 리팩토링 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+
+#### Todo
+* [x] 답변을 삭제한다 (delete = true)

@@ -85,10 +85,10 @@ public class Answer {
 
     private void validate(NsUser loginUser) throws CannotDeleteException {
         if (!writerEqualsLoginUser(loginUser)){
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("답변 작성자와 로그인 사용자가 일치하지 않습니다.");
         }
         if (!writerEqualsQuestionWriter()){
-            throw new CannotDeleteException("질문 작성자와 다른 작성자의 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException("답변 작성자와 질문 작성자가 일치하지 않습니다.");
         }
     }
 
