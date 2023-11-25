@@ -1,6 +1,8 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    //private List<Answer> answers = new ArrayList<>();
+
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -35,6 +39,11 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Question(NsUser writer, String title, String contents, Answers answers) {
+        this(0L, writer, title, contents);
+        this.answers = answers;
     }
 
     public Long getId() {
@@ -68,7 +77,10 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    public boolean isOwner(NsUser loginUser) throws CannotDeleteException {
+        if(!writer.equals(loginUser)){
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
         return writer.equals(loginUser);
     }
 
@@ -81,12 +93,17 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        this.deleted = true;
+        this.answers.deleteAnswers(loginUser);
     }
 }
