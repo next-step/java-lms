@@ -34,9 +34,9 @@ public class Answers {
     }
 
     public List<DeleteHistory> deleted() {
-        return this.answers.stream()
+        return Collections.unmodifiableList(this.answers.stream()
             .map(answer -> answer.deleted())
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     @Override

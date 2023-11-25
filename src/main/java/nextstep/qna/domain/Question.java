@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -89,7 +90,7 @@ public class Question {
         result.add(deletedQuestion());
         result.addAll(deletedAnswer());
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     private DeleteHistory deletedQuestion() {
