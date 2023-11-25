@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Question {
     private Long id;
@@ -49,17 +51,29 @@ public class Question {
         this.answers = answers.added(answer);
     }
 
-    public DeleteHistory deleted() {
+    public List<DeleteHistory> deleted() {
         delete();
-        return deleteHistory();
+        return deletedHistory();
     }
 
     private void delete() {
         this.deleted = true;
     }
 
-    private DeleteHistory deleteHistory() {
+    private List<DeleteHistory> deletedHistory() {
+        List<DeleteHistory> result = new ArrayList<>();
+        result.add(deletedQuestion());
+        result.addAll(deletedAnswer());
+
+        return result;
+    }
+
+    private DeleteHistory deletedQuestion() {
         return DeleteHistory.question(this.id, this.writer);
+    }
+
+    private List<DeleteHistory> deletedAnswer() {
+        return this.answers.deleted();
     }
 
     public boolean isOwner(NsUser loginUser) {

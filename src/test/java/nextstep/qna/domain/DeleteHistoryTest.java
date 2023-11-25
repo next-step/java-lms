@@ -14,4 +14,10 @@ public class DeleteHistoryTest {
         assertThat(DeleteHistory.question(0L, NsUser.GUEST_USER)).extracting(DeleteHistory::contentType).isEqualTo(ContentType.QUESTION);
     }
 
+    @Test
+    @DisplayName("답변 삭제 히스토리를 생성할 수 있다")
+    public void answer_delete_history() {
+        assertThat(DeleteHistory.answer(0L, NsUser.GUEST_USER)).extracting(DeleteHistory::contentType).isEqualTo(ContentType.ANSWER);
+    }
+
 }

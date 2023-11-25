@@ -4,7 +4,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -28,7 +29,7 @@ public class QuestionTest {
     @Test
     @DisplayName("질문 삭제 시 히스토리를 생성할 수 있다")
     public void delete_question_history() {
-        assertThat(Q1.deleted()).isInstanceOf(DeleteHistory.class);
+        assertThat(Q2.deleted()).hasOnlyElementsOfType(DeleteHistory.class).hasSize(1);
     }
 
 }

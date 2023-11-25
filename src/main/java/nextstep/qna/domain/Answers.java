@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -30,6 +31,12 @@ public class Answers {
             .filter(answer -> !answer.isOwner(writer))
             .findAny()
             .isPresent();
+    }
+
+    public List<DeleteHistory> deleted() {
+        return this.answers.stream()
+            .map(answer -> answer.deleted())
+            .collect(Collectors.toList());
     }
 
     @Override
