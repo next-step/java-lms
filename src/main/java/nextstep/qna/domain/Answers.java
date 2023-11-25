@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Answers {
@@ -13,19 +14,13 @@ public class Answers {
 	}
 
 	public void delete(NsUser loginUser) throws CannotDeleteException {
-		if (hasSize()) {
-			try {
-				for (Answer answer : answers) {
-					answer.delete(loginUser);
-				}
-			} catch (CannotDeleteException e) {
-				throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+		try {
+			for (Answer answer : answers) {
+				answer.delete(loginUser);
 			}
+		} catch (CannotDeleteException e) {
+			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
-	}
-
-	private boolean hasSize() {
-		return answers.size() > 0;
 	}
 
 	public List<Answer> answers() {
@@ -34,5 +29,12 @@ public class Answers {
 
 	public void add(Answer answer) {
 		answers.add(answer);
+	}
+
+	public List<DeleteHistory> deleteHistories(List<DeleteHistory> deleteHistories) {
+		answers.forEach(answer -> {
+			deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+		});
+		return deleteHistories;
 	}
 }

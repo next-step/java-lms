@@ -20,11 +20,11 @@
   * [x] 질문글 작성자 != 답변글 작성자인 경우 답변글을 삭제할 수 없다.
 
 #### 리팩터링 요구사항
-* [ ] QnaService의 deleteQuestion() 메서드의 핵심 비지니스 로직을 도메인 모델 객체에 구현
-  * [ ] TDD로 구현
-* [ ] 리팩토링 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+* [x] QnaService의 deleteQuestion() 메서드의 핵심 비지니스 로직을 도메인 모델 객체에 구현
+  * [x] TDD로 구현
+* [x] 리팩토링 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
 
 #### Todo
 * [x] 답변을 삭제한다. (deleted = true)
 * [x] 질문을 삭제한다. (deleted = true)
-* [ ] 답변과 질문의 삭제 이력을 가져온다.
+* [x] 답변과 질문의 삭제 이력을 가져온다.
