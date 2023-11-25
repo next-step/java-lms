@@ -47,11 +47,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -64,12 +59,21 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public DeleteHistory deleteAnswer(NsUser loginUser, LocalDateTime deleteTime) {
+        validateDelete(loginUser);
+        this.deleted = true;
+
+        return DeleteHistory.createAnswerHistory(this.id, loginUser, deleteTime);
+    }
+
+    private void validateDelete(NsUser loginUser) {
+        if (!this.isOwner(loginUser)) {
+            throw new UnAuthorizedException("답변은 작성자만 삭제가 가능합니다.");
+        }
     }
 
     @Override
