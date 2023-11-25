@@ -1,7 +1,6 @@
-package nextstep.qna.domain;
+package nextstep.courses.domain;
 
 import nextstep.courses.InvalidImageSpecificationException;
-import nextstep.courses.domain.ImageSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
