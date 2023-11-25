@@ -49,13 +49,21 @@ public class Question {
         this.answers = answers.added(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public DeleteHistory deleted() {
+        delete();
+        return deleteHistory();
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private void delete() {
+        this.deleted = true;
+    }
+
+    private DeleteHistory deleteHistory() {
+        return DeleteHistory.question(this.id, this.writer);
+    }
+
+    public boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
     }
 
     public boolean isDeleted() {

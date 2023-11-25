@@ -18,4 +18,17 @@ public class QuestionTest {
         assertThat(Q1.hasAnswerOfOthers()).isTrue();
     }
 
+    @Test
+    @DisplayName("질문을 삭제할 수 있다")
+    public void delete_question() {
+        Q1.deleted();
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("질문 삭제 시 히스토리를 생성할 수 있다")
+    public void delete_question_history() {
+        assertThat(Q1.deleted()).isInstanceOf(DeleteHistory.class);
+    }
+
 }
