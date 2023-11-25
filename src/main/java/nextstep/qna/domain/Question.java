@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -22,9 +23,6 @@ public class Question {
     private LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -51,9 +49,35 @@ public class Question {
         this.answers = answers.added(answer);
     }
 
-    public List<DeleteHistory> deleted() {
+    public List<DeleteHistory> deleted(NsUser loginUser) {
+        validateDelete(loginUser);
         delete();
         return deletedHistory();
+    }
+
+    public void validateDelete(NsUser loginUser) {
+        validateIsOwner(loginUser);
+        validateAnswerOfOthers();
+    }
+
+    private void validateIsOwner(NsUser loginUser) {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateAnswerOfOthers() {
+        if (hasAnswerOfOthers()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean isOwner(NsUser loginUser) {
+        return this.writer.equals(loginUser);
+    }
+
+    private boolean hasAnswerOfOthers() {
+        return this.answers.hasAnswerExcept(this.writer);
     }
 
     private void delete() {
@@ -76,16 +100,8 @@ public class Question {
         return this.answers.deleted();
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean hasAnswerOfOthers() {
-        return this.answers.hasAnswerExcept(this.writer);
     }
 
     @Override
