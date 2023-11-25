@@ -2,7 +2,6 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.type.SessionStatus;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Session {
@@ -11,8 +10,12 @@ public class Session {
     private Image image;
     private SessionStatus status;
 
-    public Session(LocalDate start, LocalDate end, Image image, SessionStatus status) {
-        this.duration = new Duration(start, end);
+    public static Session init(Duration duration, Image image) {
+        return new Session(duration, image, SessionStatus.READY);
+    }
+
+    protected Session(Duration duration, Image image, SessionStatus status) {
+        this.duration = duration;
         this.image = image;
         this.status = status;
     }
