@@ -48,17 +48,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -84,7 +75,7 @@ public class Answer {
 	}
 
     private void validate(NsUser loginUser) throws CannotDeleteException {
-        if (!writerEqualsLoginUser(loginUser)){
+        if (!isOwner(loginUser)){
             throw new CannotDeleteException("답변 작성자와 로그인 사용자가 일치하지 않습니다.");
         }
         if (!writerEqualsQuestionWriter()){
@@ -92,8 +83,8 @@ public class Answer {
         }
     }
 
-    private boolean writerEqualsLoginUser(NsUser loginUser) {
-        return writer.equals(loginUser);
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
     }
 
     private boolean writerEqualsQuestionWriter() {

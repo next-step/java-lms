@@ -13,16 +13,26 @@ public class Answers {
 	}
 
 	public void delete(NsUser loginUser) throws CannotDeleteException {
-		try {
-			for (Answer answer : answers) {
-				answer.delete(loginUser);
+		if (hasSize()) {
+			try {
+				for (Answer answer : answers) {
+					answer.delete(loginUser);
+				}
+			} catch (CannotDeleteException e) {
+				throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 			}
-		} catch (CannotDeleteException e) {
-			throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 		}
+	}
+
+	private boolean hasSize() {
+		return answers.size() > 0;
 	}
 
 	public List<Answer> answers() {
 		return answers;
+	}
+
+	public void add(Answer answer) {
+		answers.add(answer);
 	}
 }

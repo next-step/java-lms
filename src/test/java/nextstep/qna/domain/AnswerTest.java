@@ -15,7 +15,7 @@ public class AnswerTest {
 
 	@Test
 	@DisplayName("delete_답변 작성자가 아닌 loginUser_throw exception")
-	void 답변글작성자_loginUser_불일치() {
+	void 답변글작성자_로그인유저_불일치() {
 		assertThatThrownBy(() -> {
 			A1.delete(NsUserTest.SANJIGI);
 		}).isInstanceOf(CannotDeleteException.class).hasMessage("답변 작성자와 로그인 사용자가 일치하지 않습니다.");

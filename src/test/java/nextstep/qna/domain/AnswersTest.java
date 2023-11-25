@@ -17,7 +17,7 @@ class AnswersTest {
 
 	@Test
 	@DisplayName("delete_로그인 사용자와 답변 작성자가 다른 Answer 존재_throw exception")
-	void delete2() {
+	void 답변글작성자_loginUser_불일치() {
 		assertThatThrownBy(() -> {
 			sameWriterWithQuestion.delete(NsUserTest.SANJIGI);
 		}).isInstanceOf(CannotDeleteException.class).hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
@@ -25,7 +25,7 @@ class AnswersTest {
 
 	@Test
 	@DisplayName("delete_질문 작성자와 답변 작성자가 다른 Answer 존재_throw exception")
-	void delete3() {
+	void 답변글작성자_질문글작성자_불일치() {
 		assertThatThrownBy(() -> {
 			notSameWriterWithQuestion.delete(NsUserTest.JAVAJIGI);
 		}).isInstanceOf(CannotDeleteException.class).hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
@@ -33,7 +33,7 @@ class AnswersTest {
 
 	@Test
 	@DisplayName("delete_로그인 사용자, 질문 작성자, 답변 작성자 모두 일치_삭제 상태 true")
-	void delete() {
+	void 답변글작성자_loginUser_질문글작성자_일치() {
 		assertThatNoException().isThrownBy(() -> {
 			sameWriterWithQuestion.delete(NsUserTest.JAVAJIGI);
 		});
