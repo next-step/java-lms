@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import javax.xml.crypto.Data;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
@@ -18,9 +19,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private DateRecord dateRecord;
 
     public Answer() {
     }

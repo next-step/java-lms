@@ -10,9 +10,7 @@ import java.util.List;
 public class Question {
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionContent questionContent;
 
     private NsUser writer;
 
@@ -20,22 +18,23 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private DateRecord dateRecord;
 
     public Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+        this(0L, writer, new QuestionContent(title, contents));
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        this(id, writer, new QuestionContent(title, contents));
+    }
+
+    public Question(Long id, NsUser writer, QuestionContent questionContent) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionContent = questionContent;
     }
 
     public Long getId() {
@@ -79,6 +78,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", questionContent=" + questionContent + ", writer=" + writer + "]";
     }
 }
