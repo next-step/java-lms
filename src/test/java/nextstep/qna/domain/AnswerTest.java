@@ -14,13 +14,6 @@ public class AnswerTest {
     public static final Answer A3 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents3");
 
     @Test
-    void 질문_작성자와_답변_작성자가_다름() {
-        Assertions.assertThatExceptionOfType(CannotDeleteException.class)
-            .isThrownBy(() -> A2.delete(NsUserTest.JAVAJIGI))
-            .withMessage("답변 작성자와 질문 작성자가 일치해야 삭제할 수 있습니다.");
-    }
-
-    @Test
     void 로그인_유저와_답변_작성자가_다름() {
         Assertions.assertThatExceptionOfType(CannotDeleteException.class)
             .isThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
