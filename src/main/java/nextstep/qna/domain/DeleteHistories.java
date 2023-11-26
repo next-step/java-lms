@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DeleteHistories {
@@ -17,6 +18,6 @@ public class DeleteHistories {
     }
 
     public List<DeleteHistory> deleteHistories() {
-        return deleteHistories;
+        return Collections.unmodifiableList(deleteHistories);
     }
 }
