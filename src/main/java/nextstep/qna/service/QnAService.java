@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 @Service("qnaService")
 public class QnAService {
@@ -31,11 +30,8 @@ public class QnAService {
 
         DeleteHistories deleteHistories = new DeleteHistories();
         question.delete(deleteHistories);
-
-        for (Answer answer : answers.getAnswers()) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        answers.deleteAll(deleteHistories);
+        
         deleteHistoryService.saveAll(deleteHistories.getHistories());
     }
 }
