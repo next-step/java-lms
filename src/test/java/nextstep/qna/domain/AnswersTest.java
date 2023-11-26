@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class AnswersTest {
@@ -28,4 +29,15 @@ class AnswersTest {
         );
     }
 
+    @Test
+    @DisplayName("질문자와 답변자가 다른 답변이 있는 경우 예외를 반환한다.")
+    void 질문자와_답변자가_다른_답변이_있는_경우_예외_반환() {
+        Question question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer1 = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+        Answer answer2 = Answer.of(NsUserTest.SANJIGI, question, "Answers Contents2");
+
+        Answers answers = Answers.from(Arrays.asList(answer1, answer2));
+        assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class);
+    }
 }
