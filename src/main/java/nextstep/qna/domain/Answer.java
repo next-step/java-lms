@@ -76,4 +76,16 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    public DeleteHistory delete(NsUser user) {
+        answerUserCheck(user);
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
+    public void answerUserCheck(NsUser user) {
+        if (!isOwner(user)) {
+            throw new UnAuthorizedException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
 }

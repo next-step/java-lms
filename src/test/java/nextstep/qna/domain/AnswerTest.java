@@ -18,7 +18,7 @@ public class AnswerTest {
         //given
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         //when
-        DeleteHistory history = answer.delete(answer);
+        DeleteHistory history = answer.delete(NsUserTest.JAVAJIGI);
         //then
         assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
     }

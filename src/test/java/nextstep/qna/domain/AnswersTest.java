@@ -40,7 +40,7 @@ public class AnswersTest {
         List<Answer> answer = List.of(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
         Answers answers = new Answers(answer);
         //when
-        List<DeleteHistory> histories = answers.delete(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
+        List<DeleteHistory> histories = answers.delete(NsUserTest.JAVAJIGI);
         //then
         assertThat(histories.size()).isEqualTo(1);
     }
