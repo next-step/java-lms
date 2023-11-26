@@ -80,6 +80,10 @@ public class Answer {
         this.deleted = true;
     }
 
+    public void deleteBy(NsUser user) {
+        if(isOwner(user)) delete();
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";

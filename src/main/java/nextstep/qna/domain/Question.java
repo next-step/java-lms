@@ -23,11 +23,15 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    private Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
+    private Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
+    }
+
+    public static Question of(NsUser writer, String title, String contents) {
+        return new Question(writer, title, contents);
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
