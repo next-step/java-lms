@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
     @Test
@@ -21,7 +21,7 @@ public class AnswersTest {
         answerList.add(new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2"));
         Answers answers = new Answers(answerList);
 
-        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI,LocalDateTime.now())).isInstanceOf(UnAuthorizedException.class);
+        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI)).isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test
@@ -31,11 +31,22 @@ public class AnswersTest {
         answerList.add(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
         Answers answers = new Answers(answerList);
 
-        assertThat(answers.delete(NsUserTest.JAVAJIGI,LocalDateTime.now()))
+        assertThat(answers.delete(NsUserTest.JAVAJIGI))
                 .containsOnly(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+    }
 
+    @Test
+    @DisplayName("새로운 답변을 추가할 수 있는지 확인")
+    void add_성공() {
+        List<Answer> answerList = new ArrayList<>();
+        answerList.add(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
+        Answers answers = new Answers(answerList);
+        Answers result = answers.add(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2"));
 
+        answerList.add(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2"));
+        Answers matchList = new Answers(answerList);
 
+        assertThat(result).isEqualTo(matchList);
     }
 
 }
