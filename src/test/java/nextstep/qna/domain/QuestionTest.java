@@ -12,7 +12,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("소유자가 다르면 질문을 삭제 할 수 없다.")
-    void validateOwner() {
+    void validateDeleteOwner() {
         Assertions.assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 }
