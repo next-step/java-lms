@@ -7,24 +7,24 @@ import nextstep.users.domain.NsUser;
 
 public class Answers {
 
-    private List<Answer> answers = new ArrayList<>();
+    private List<Answer> values = new ArrayList<>();
 
     public Answers() {
     }
 
-    public Answers(List<Answer> answers) {
-        this.answers = answers;
+    public Answers(List<Answer> values) {
+        this.values = values;
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
+        for (Answer answer : values) {
             deleteHistories.add(answer.delete(loginUser));
         }
         return deleteHistories;
     }
 
     public void add(Answer answer) {
-        this.answers.add(answer);
+        this.values.add(answer);
     }
 }
