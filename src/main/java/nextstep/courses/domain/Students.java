@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.AlreadyAddStudentException;
-import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +8,22 @@ import java.util.Objects;
 
 public class Students {
 
-    private final List<NsUser> students;
+    private final List<Student> students;
 
     public Students() {
         this(new ArrayList<>());
     }
 
-    public Students(List<NsUser> students) {
+    public Students(List<Student> students) {
         this.students = students;
     }
 
-    public void canEnrol(NsUser student) {
+    public void enrol(Student student) {
         if (students.contains(student)) {
             throw new AlreadyAddStudentException("이미 수강을 신청한 학생입니다.");
         }
+
+        students.add(student);
     }
 
     public boolean isFull(int capacity) {

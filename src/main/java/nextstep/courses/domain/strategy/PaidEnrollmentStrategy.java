@@ -1,9 +1,9 @@
 package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Enrollment;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.courses.exception.SessionFullException;
-import nextstep.users.domain.NsUser;
 
 import java.util.Objects;
 
@@ -24,11 +24,11 @@ public class PaidEnrollmentStrategy implements Enrollment {
     }
 
     @Override
-    public void enrol(NsUser student) {
+    public void enrol(Student student) {
         if (students.isFull(capacity)) {
             throw new SessionFullException("수강 신청 인원이 마감 되었습니다.");
         }
-        students.canEnrol(student);
+        students.enrol(student);
     }
 
     @Override

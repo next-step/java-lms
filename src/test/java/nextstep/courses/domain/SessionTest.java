@@ -30,6 +30,7 @@ class SessionTest {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(1);
         Amount amount = new Amount(20000L);
         Session session = new Session(
+                0L,
                 period,
                 thumbnail,
                 paidEnrollmentStrategy,
@@ -57,6 +58,7 @@ class SessionTest {
         Assertions.assertAll(
                 () -> {
                     Session session = new Session(
+                            0L,
                             period,
                             thumbnail,
                             paidEnrollmentStrategy,
@@ -69,6 +71,7 @@ class SessionTest {
                 },
                 () -> {
                     Session session = new Session(
+                            0L,
                             period,
                             thumbnail,
                             paidEnrollmentStrategy,
@@ -97,12 +100,14 @@ class SessionTest {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(1);
         Amount amount = new Amount(20000L);
         Session session = new Session(
+                0L,
                 period,
                 thumbnail,
                 paidEnrollmentStrategy,
                 amount,
                 SessionStatus.RECRUITING);
 
-        assertDoesNotThrow(() -> session.enrol(new Payment("테스트", 0L, 0L, 20000L), new NsUser()));
+        assertDoesNotThrow(() -> session.enrol(new Payment("테스트", 0L, 0L, 20000L),
+                new NsUser(0L, "테스트", "테스트", "테스트", "테스트")));
     }
 }

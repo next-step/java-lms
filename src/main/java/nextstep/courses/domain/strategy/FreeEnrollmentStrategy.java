@@ -1,8 +1,8 @@
 package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Enrollment;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
-import nextstep.users.domain.NsUser;
 
 import java.util.Objects;
 
@@ -19,8 +19,8 @@ public class FreeEnrollmentStrategy implements Enrollment {
     }
 
     @Override
-    public void enrol(NsUser student) {
-        students.canEnrol(student);
+    public void enrol(Student student) {
+        students.enrol(student);
     }
 
     @Override
