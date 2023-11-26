@@ -88,9 +88,7 @@ public class Question {
 
         final List<DeleteHistory> deleteList = new ArrayList<>();
         deleteList.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-
-        final List<DeleteHistory> deleteAnswerList = answers.delete(loginUser);
-        deleteList.addAll(deleteAnswerList);
+        deleteList.addAll(answers.delete(loginUser));
 
         return deleteList;
     }
