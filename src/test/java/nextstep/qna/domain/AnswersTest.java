@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class AnswersTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
@@ -38,5 +37,29 @@ class AnswersTest {
         assertThatThrownBy(() -> answers.verifyAllAnswerOwnerIsTargetUser(owner))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("모든 답변을 삭제한다.")
+    void testDeleteAll() {
+        //given
+        final Answer tempA1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Temp Answers Contents1");
+        final Answer tempA2 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Temp Answers Contents2");
+
+        final Answers answers = new Answers(List.of(tempA1, tempA2));
+        final DeleteHistories deleteHistories = new DeleteHistories();
+        final int sizeBeforeDelete = deleteHistories.size();
+
+        //when
+        answers.deleteAll(deleteHistories);
+
+        final boolean isDeletedTempA1 = tempA1.isDeleted();
+        final boolean isDeletedTempA2 = tempA2.isDeleted();
+        final int sizeAfterDelete = deleteHistories.size();
+
+        //then
+        assertThat(isDeletedTempA1).isTrue();
+        assertThat(isDeletedTempA2).isTrue();
+        assertThat(sizeAfterDelete).isEqualTo(sizeBeforeDelete + 2);
     }
 }
