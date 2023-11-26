@@ -19,16 +19,6 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
-    /**
-     * TODO. 인스턴스 4개인 생성자 없애기
-     */
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
-        this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
-    }
-
     public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy) {
         this.contentType = contentType;
         this.contentId = contentId;

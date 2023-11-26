@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
@@ -17,9 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private Answers answers2 = new Answers(new ArrayList<>());
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -41,53 +38,18 @@ public class Question {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public void addAnswer2(Answer answer) {
-        answer.toQuestion(this);
-        this.answers2 = answers2.add(answer);
+        this.answers = answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) {
@@ -95,9 +57,9 @@ public class Question {
 
         checkWriter(loginUser);
         changeDeleteState(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION,this.id,this.writer));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer));
 
-        deleteHistories.addAll(answers2.delete(loginUser));
+        deleteHistories.addAll(answers.delete(loginUser));
 
         return deleteHistories;
     }
@@ -111,4 +73,11 @@ public class Question {
             throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+
 }
