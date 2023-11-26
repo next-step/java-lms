@@ -16,10 +16,14 @@ public class Answers {
                 .collect(Collectors.toList());
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         for (Answer answer : answers) {
-            answer.delete(loginUser);
+            deleteHistories.add(answer.delete(loginUser));
         }
+
+        return deleteHistories;
     }
 
     public void add(final Answer answer) {
