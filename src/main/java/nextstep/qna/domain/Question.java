@@ -97,7 +97,7 @@ public class Question {
 
         questionUserCheck(user);
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer));
         deleteHistories.addAll(answers.delete(user));
         return deleteHistories;
     }
