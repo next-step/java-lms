@@ -68,9 +68,7 @@ public class Question {
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validate(loginUser);
-        if (!answers.isEmpty()) {
-            answers.delete(loginUser);
-        }
+        answers.delete(loginUser);
         deleted = true;
     }
 
@@ -84,8 +82,7 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         if (isDeleted() && answers.isAllDeleted()) {
             deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer));
-            answers.getAnswers()
-                .forEach(answer -> deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter())));
+            deleteHistories.addAll(answers.getDeleteHistories());
         }
         return deleteHistories;
     }

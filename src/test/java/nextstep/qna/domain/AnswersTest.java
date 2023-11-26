@@ -27,8 +27,9 @@ public class AnswersTest {
     }
 
     @Test
-    void 답변_없음() {
-        assertThat(ANSWERS3.isEmpty()).isTrue();
+    void 삭제_이력() throws CannotDeleteException {
+        ANSWERS1.delete(NsUserTest.JAVAJIGI);
+        assertThat(ANSWERS1.getDeleteHistories()).hasSize(2);
     }
 
 }
