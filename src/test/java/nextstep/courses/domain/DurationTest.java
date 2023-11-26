@@ -18,7 +18,7 @@ public class DurationTest {
 
     @Test
     @DisplayName("시작일과 종료일을 포함한 기간을 생성할 수 있다")
-    public void session_image() {
+    public void duration() {
         LocalDate start = LocalDate.of(2023, 10, 1);
         LocalDate end = LocalDate.of(2023, 12, 31);
         Duration duration = new Duration(start, end);
@@ -28,8 +28,16 @@ public class DurationTest {
     }
 
     @Test
+    @DisplayName("기간을 입력하지 않은 경우 에러 발생한다")
+    public void null_duration() {
+        assertThatExceptionOfType(InvalidDurationException.class)
+            .isThrownBy(() -> new Duration(null, LocalDate.of(2023, 11, 26)))
+            .withMessageMatching("기간을 입력해야합니다.");
+    }
+
+    @Test
     @DisplayName("시작일이 종료일보다 이후일 경우 에러 발생한다")
-    public void image_specification_condition() {
+    public void start_after_end_duration() {
         assertThatExceptionOfType(InvalidDurationException.class)
             .isThrownBy(() -> new Duration(LocalDate.of(2024,1,1), LocalDate.of(2023, 11, 26)))
             .withMessageMatching("종료일이 시작일 이전입니다.");

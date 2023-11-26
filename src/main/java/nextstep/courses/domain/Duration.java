@@ -17,6 +17,17 @@ public class Duration {
     }
 
     private void validate() {
+        validateNotNull();
+        validateNotInvalid();
+    }
+
+    private void validateNotNull() {
+        if (this.start == null || this.end == null) {
+            throw new InvalidDurationException("기간을 입력해야합니다.");
+        }
+    }
+
+    private void validateNotInvalid() {
         if (this.start.isAfter(this.end)) {
             throw new InvalidDurationException("종료일이 시작일 이전입니다.");
         }

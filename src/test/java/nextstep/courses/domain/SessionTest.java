@@ -16,13 +16,13 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다")
     public void session_image() {
-        assertThat(new Session(0L, duration(), image())).extracting(Session::image).isEqualTo(image());
+        assertThat(new Session(duration(), image())).extracting(Session::image).isEqualTo(image());
     }
 
     @Test
     @DisplayName("강의 상태가 모집중이 아닐 때 수강신청 시 에러 발생한다")
     public void not_recruiting_status_apply() {
-        Session session = new Session(0L, duration(), image(), SessionStatus.READY);
+        Session session = new Session(duration(), image(), SessionStatus.READY);
 
         assertThatExceptionOfType(NotRecruitingSessionException.class)
             .isThrownBy(() -> session.apply(null, NsUserTest.JAVAJIGI))

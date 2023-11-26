@@ -20,7 +20,7 @@ public class ChargedSessionTest {
     @Test
     @DisplayName("강의 상태가 모집중이 아닐 때 수강신청 시 에러 발생한다")
     public void not_recruiting_status_apply() {
-        Session session = new ChargedSession(0L, duration(), image(), SessionStatus.READY, 5, BigDecimal.valueOf(10_000));
+        Session session = new ChargedSession(duration(), image(), SessionStatus.READY, 5, BigDecimal.valueOf(10_000));
         NsUser user = NsUserTest.JAVAJIGI;
         Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
 
@@ -32,7 +32,7 @@ public class ChargedSessionTest {
     @Test
     @DisplayName("최대 수강 인원 초과 시 에러 발생한다")
     public void exceed_max_number_of_student() {
-        Session chargedSession = new ChargedSession(0L, duration(), image(), SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000));
+        Session chargedSession = new ChargedSession(duration(), image(), SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000));
         NsUser user = NsUserTest.JAVAJIGI;
         Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
 
@@ -44,7 +44,7 @@ public class ChargedSessionTest {
     @Test
     @DisplayName("수강생이 결제한 금액과 수강료가 일치하지 않으면 수강 신청 시 에러 발생한다")
     public void validate_session_price() {
-        Session chargedSession = new ChargedSession(0L, duration(), image(), SessionStatus.RECRUITING, 5, BigDecimal.valueOf(10_000));
+        Session chargedSession = new ChargedSession(duration(), image(), SessionStatus.RECRUITING, 5, BigDecimal.valueOf(10_000));
         NsUser user = NsUserTest.JAVAJIGI;
         Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(8_000));
 

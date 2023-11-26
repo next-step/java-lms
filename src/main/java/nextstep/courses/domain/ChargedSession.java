@@ -13,14 +13,14 @@ public class ChargedSession extends Session {
     private final int maxNumberOfStudent;
     private final BigDecimal price;
 
-    public ChargedSession(Long id, Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
-        super(id, duration, image);
+    public ChargedSession(Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
+        super(duration, image);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = price;
     }
 
-    public ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
-        super(id, duration, image, status);
+    public ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
+        super(duration, image, status);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = price;
     }
@@ -43,7 +43,7 @@ public class ChargedSession extends Session {
     }
 
     private void validateMaxNumberOfStudent() {
-        if (this.maxNumberOfStudent == this.students.size()) {
+        if (this.maxNumberOfStudent <= this.students.size()) {
             throw new ExceedMaxStudentException("수강 인원을 초과했습니다.");
         }
     }

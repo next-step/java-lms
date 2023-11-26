@@ -12,21 +12,18 @@ import java.util.Objects;
 
 public class Session {
 
-    private final Long id;
     private final Duration duration;
     private final Image image;
     private SessionStatus status;
     protected final List<NsUser> students = new ArrayList<>();
 
-    public Session(Long id, Duration duration, Image image) {
-        this.id = id;
+    public Session(Duration duration, Image image) {
         this.duration = duration;
         this.image = image;
         this.status = duration.sessionStatus(LocalDate.now());
     }
 
-    public Session(Long id, Duration duration, Image image, SessionStatus status) {
-        this.id = id;
+    public Session(Duration duration, Image image, SessionStatus status) {
         this.duration = duration;
         this.image = image;
         this.status = status;
