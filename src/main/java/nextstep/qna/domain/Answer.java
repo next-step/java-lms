@@ -13,7 +13,7 @@ public class Answer {
 
     private NsUser writer;
 
-    private Question question;
+    //private Question question;
 
     private String contents;
 
@@ -26,8 +26,22 @@ public class Answer {
     private Answer() {
     }
 
+    private Answer(NsUser writer, String contents, boolean deleted){
+        this.writer = writer;
+        this.contents = contents;
+        this.deleted = deleted;
+    }
+
     private Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
+    }
+
+    public static Answer of(NsUser writer, String contents, boolean deleted) {
+        return new Answer(writer, contents, deleted);
+    }
+
+    public static Answer of(NsUser writer, Question question, String contents) {
+        return new Answer(writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
@@ -41,12 +55,8 @@ public class Answer {
         }
 
         this.writer = writer;
-        this.question = question;
+        //this.question = question;
         this.contents = contents;
-    }
-
-    public static Answer of(NsUser writer, Question question, String contents){
-        return new Answer(writer, question, contents);
     }
 
     public Long getId() {
@@ -74,9 +84,9 @@ public class Answer {
         return contents;
     }
 
-    public void toQuestion(Question question) {
-        this.question = question;
-    }
+//    public void toQuestion(Question question) {
+//        this.question = question;
+//    }
 
     public void delete() {
         this.deleted = true;
@@ -99,12 +109,11 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer = (Answer) o;
-        return isDeleted() == answer.isDeleted() && Objects.equals(getId(), answer.getId()) && Objects.equals(getWriter(), answer.getWriter()) && Objects.equals(question, answer.question) && Objects.equals(getContents(), answer.getContents()) && Objects.equals(createdDate, answer.createdDate) && Objects.equals(updatedDate, answer.updatedDate);
+        return isDeleted() == answer.isDeleted() && Objects.equals(getId(), answer.getId()) && Objects.equals(getWriter(), answer.getWriter()) && Objects.equals(getContents(), answer.getContents());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getWriter(), question, getContents(), isDeleted(), createdDate, updatedDate);
+        return Objects.hash(getId(), getWriter(), getContents(), isDeleted());
     }
-
 }

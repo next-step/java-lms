@@ -32,4 +32,21 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.deleteBy(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
+
+    @Test
+    @DisplayName("삭제를 할 경우 질문과 답변의 삭제 상태를 변경한다.")
+    void 질문_답변_상태_변경() throws CannotDeleteException {
+        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents1", false));
+        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents2", false));
+
+        Q3.deleteBy(NsUserTest.JAVAJIGI);
+
+        Question Q4 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", true);
+        Q4.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents1", true));
+        Q4.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents2", true));
+
+        assertThat(Q3).isEqualTo(Q4);
+    }
+
 }
