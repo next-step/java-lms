@@ -34,8 +34,8 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("삭제를 할 경우 질문과 답변의 삭제 상태를 변경한다.")
-    void 질문_답변_상태_변경() throws CannotDeleteException {
+    @DisplayName("답변이 있을 경우 질문자와 답변글의 모든 답변자가 같으면 질문과 답변의 삭제 상태를 변경한다.")
+    void 질문과_답변_삭제_상태_변경() throws CannotDeleteException {
         Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
         Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents1", false));
         Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents2", false));
@@ -47,6 +47,17 @@ public class QuestionTest {
         Q4.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents2", true));
 
         assertThat(Q3).isEqualTo(Q4);
+    }
+
+    @Test
+    @DisplayName("답변이 있는 질문 삭제 시 질문자와 답변글의 모든 답변자가 같지 않은 경우 예외를 반환한다.")
+    void 질문자와_답변글의_모든_답변자가_같지_않은_경우_예외_반환() {
+        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Q3.addAnswer(Answer.of(NsUserTest.SANJIGI, "Answers Contents1", false));
+        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, "Answers Contents2", false));
+
+        assertThatThrownBy(() -> Q3.deleteBy(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class);
     }
 
 }
