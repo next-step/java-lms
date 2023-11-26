@@ -31,17 +31,24 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
+        validateWriter(writer);
+        validateQuestion(question);
 
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+    }
+
+    private static void validateWriter(NsUser writer) {
+        if(writer == null) {
+            throw new UnAuthorizedException();
+        }
+    }
+
+    private static void validateQuestion(Question question) {
+        if(question == null) {
+            throw new NotFoundException();
+        }
     }
 
     public Long getId() {
@@ -52,16 +59,8 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
@@ -79,6 +78,11 @@ public class Answer {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
+
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";

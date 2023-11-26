@@ -42,41 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateSamePerson(loginUser);
         this.deleted = true;
@@ -93,6 +58,23 @@ public class Question {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
+
+    public NsUser getWriter() {
+        return writer;
+    }
+
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        answers.add(answer);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     @Override
