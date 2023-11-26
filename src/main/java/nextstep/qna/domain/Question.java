@@ -18,6 +18,8 @@ public class Question {
 
     private List<Answer> answers = new ArrayList<>();
 
+    private Answers answersObject = new Answers();
+
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -39,17 +41,11 @@ public class Question {
     }
 
     public List<DeleteHistory> remove(NsUser writer) throws CannotDeleteException {
-        if (!this.writer.equals(writer)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+        deletePermissionCheck(writer);
 
-        for (Answer answer : answers) {
-            if (!answer.isOwner(writer)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         delete();
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
 
         for (Answer answer : answers) {
@@ -57,6 +53,15 @@ public class Question {
         }
 
         return deleteHistories;
+    }
+    private void deletePermissionCheck(NsUser writer) throws CannotDeleteException {
+        if (!this.writer.equals(writer)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        if (!answersObject.isOwner(writer)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 
     private void delete() {
@@ -92,6 +97,11 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
+    }
+
+    public void addAnswers(Answer answer) {
+        answer.toQuestion(this);
+        answersObject.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {

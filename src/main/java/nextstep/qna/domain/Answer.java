@@ -30,7 +30,6 @@ public class Answer {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
 
-        //답변 삭제
         delete();
 
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
