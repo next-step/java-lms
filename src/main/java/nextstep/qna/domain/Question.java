@@ -17,6 +17,7 @@ public class Question {
     private NsUser writer;
 
     private List<Answer> answers = new ArrayList<>();
+    private Answers answers1;
 
     private boolean deleted = false;
 
@@ -83,14 +84,17 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
+
         this.deleted = true;
+        answers1.delete(loginUser);
+
     }
-    private boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    private boolean isNotOwner(NsUser loginUser) {
+        return !writer.equals(loginUser);
     }
     @Override
     public String toString() {
