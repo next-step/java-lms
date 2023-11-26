@@ -82,8 +82,8 @@ public class Question {
         return this;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public Answers getAnswers() {
+        return new Answers(this.answers);
     }
 
     @Override
