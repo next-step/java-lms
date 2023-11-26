@@ -5,8 +5,11 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import static nextstep.qna.domain.AnswerTest.A1;
+import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,5 +42,15 @@ class AnswersTest {
         Answers answers = Answers.from(Arrays.asList(answer1, answer2));
         assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("답변을 추가한다.")
+    void 답변_추가() {
+        Answers answers = Answers.from(new ArrayList<>());
+        answers.addAnswer(A1);
+        answers.addAnswer(A2);
+
+        assertThat(answers).isEqualTo(Answers.from(Arrays.asList(A1, A2)));
     }
 }
