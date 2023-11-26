@@ -4,7 +4,7 @@ import nextstep.courses.exception.VolumeOverException;
 
 public class Volume {
 
-    private static final long MAX_SIZE = 1048576L;
+    private static final long MAX_SIZE = 1024L * 1024L;
     private final long volumeSize;
 
     public Volume(long volumeSize) {
