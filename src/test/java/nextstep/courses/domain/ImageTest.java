@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.ImageVolumeOverException;
-import nextstep.courses.InvalidImageTypeException;
+import nextstep.courses.exception.ImageVolumeOverException;
+import nextstep.courses.exception.InvalidImageTypeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

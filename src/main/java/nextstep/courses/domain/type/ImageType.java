@@ -1,6 +1,6 @@
 package nextstep.courses.domain.type;
 
-import nextstep.courses.InvalidImageTypeException;
+import nextstep.courses.exception.InvalidImageTypeException;
 
 import java.util.Arrays;
 

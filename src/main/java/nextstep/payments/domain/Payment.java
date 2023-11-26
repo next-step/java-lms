@@ -20,15 +20,18 @@ public class Payment {
     public Payment() {
     }
 
-    public static Payment init(Long sessionId, Long nsUserId, BigDecimal amount) {
-        return new Payment(0L, sessionId, nsUserId, amount);
-    }
-
-    private Payment(Long id, Long sessionId, Long nsUserId, BigDecimal amount) {
+    public Payment(Long id, Long sessionId, Long nsUserId, BigDecimal amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isEqualAmount(BigDecimal amount) {
+        if (this.amount.compareTo(amount) == 0) {
+            return true;
+        }
+        return false;
     }
 }

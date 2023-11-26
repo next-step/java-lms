@@ -1,8 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidImageSpecificationException;
+import nextstep.courses.exception.InvalidImageSpecificationException;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class ImageSpecification {
 
@@ -39,4 +40,16 @@ public class ImageSpecification {
             .divide(BigDecimal.valueOf(this.height));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageSpecification that = (ImageSpecification) o;
+        return width == that.width && height == that.height;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height);
+    }
 }

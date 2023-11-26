@@ -1,25 +1,46 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.exception.NotRecruitingSessionException;
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
 
-    protected Long id;
-    private Duration duration;
-    private Image image;
+    private final Long id;
+    private final Duration duration;
+    private final Image image;
     private SessionStatus status;
+    protected final List<NsUser> students = new ArrayList<>();
 
-    public static Session init(Long id, Duration duration, Image image) {
-        return new Session(id, duration, image, SessionStatus.READY);
+    public Session(Long id, Duration duration, Image image) {
+        this.id = id;
+        this.duration = duration;
+        this.image = image;
+        this.status = duration.sessionStatus(LocalDate.now());
     }
 
-    protected Session(Long id, Duration duration, Image image, SessionStatus status) {
+    public Session(Long id, Duration duration, Image image, SessionStatus status) {
         this.id = id;
         this.duration = duration;
         this.image = image;
         this.status = status;
+    }
+
+    public void apply(Payment payment, NsUser nsUser) {
+        validateStatus();
+        this.students.add(nsUser);
+    }
+
+    protected void validateStatus() {
+        if (!this.status.equals(SessionStatus.RECRUITING)) {
+            throw new NotRecruitingSessionException("모집중인 강의가 아닙니다.");
+        }
     }
 
     public Image image() {

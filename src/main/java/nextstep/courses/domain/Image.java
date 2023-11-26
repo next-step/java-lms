@@ -1,7 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.ImageVolumeOverException;
+import nextstep.courses.exception.ImageVolumeOverException;
 import nextstep.courses.domain.type.ImageType;
+
+import java.util.Objects;
 
 public class Image {
 
@@ -22,4 +24,16 @@ public class Image {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return volume == image.volume && type == image.type && Objects.equals(specification, image.specification);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(volume, type, specification);
+    }
 }

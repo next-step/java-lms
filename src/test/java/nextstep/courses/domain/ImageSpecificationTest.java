@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidImageSpecificationException;
+import nextstep.courses.exception.InvalidImageSpecificationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

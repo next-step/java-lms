@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidDurationException;
+import nextstep.courses.exception.InvalidDurationException;
 import nextstep.courses.domain.type.SessionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

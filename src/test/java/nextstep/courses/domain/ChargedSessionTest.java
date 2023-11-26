@@ -1,7 +1,12 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.DifferentSessionAmountException;
-import nextstep.courses.ExceedMaxStudentException;
+import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.exception.DifferentSessionAmountException;
+import nextstep.courses.exception.ExceedMaxStudentException;
+import nextstep.courses.exception.NotRecruitingSessionException;
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,22 +18,38 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class ChargedSessionTest {
 
     @Test
+    @DisplayName("강의 상태가 모집중이 아닐 때 수강신청 시 에러 발생한다")
+    public void not_recruiting_status_apply() {
+        Session session = new ChargedSession(0L, duration(), image(), SessionStatus.READY, 5, BigDecimal.valueOf(10_000));
+        NsUser user = NsUserTest.JAVAJIGI;
+        Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
+
+        assertThatExceptionOfType(NotRecruitingSessionException.class)
+            .isThrownBy(() -> session.apply(payment, user))
+            .withMessageMatching("모집중인 강의가 아닙니다.");
+    }
+
+    @Test
     @DisplayName("최대 수강 인원 초과 시 에러 발생한다")
     public void exceed_max_number_of_student() {
-        ChargedSession chargedSession = ChargedSession.init(0L, duration(), image(), 0, BigDecimal.valueOf(10_000));
+        Session chargedSession = new ChargedSession(0L, duration(), image(), SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000));
+        NsUser user = NsUserTest.JAVAJIGI;
+        Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
 
         assertThatExceptionOfType(ExceedMaxStudentException.class)
-            .isThrownBy(() -> chargedSession.addStudent())
+            .isThrownBy(() -> chargedSession.apply(payment, user))
             .withMessageMatching("수강 인원을 초과했습니다.");
     }
 
     @Test
     @DisplayName("수강생이 결제한 금액과 수강료가 일치하지 않으면 수강 신청 시 에러 발생한다")
     public void validate_session_price() {
-        ChargedSession chargedSession = ChargedSession.init(0L, duration(), image(), 5, BigDecimal.valueOf(10_000));
+        Session chargedSession = new ChargedSession(0L, duration(), image(), SessionStatus.RECRUITING, 5, BigDecimal.valueOf(10_000));
+        NsUser user = NsUserTest.JAVAJIGI;
+        Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(8_000));
 
         assertThatExceptionOfType(DifferentSessionAmountException.class)
-            .isThrownBy(() -> chargedSession.apply(1L, BigDecimal.valueOf(8_000)))
+            .isThrownBy(() -> chargedSession.apply(payment, user))
             .withMessageMatching("수강료와 결제 금액이 일치하지 않습니다.");
     }
 

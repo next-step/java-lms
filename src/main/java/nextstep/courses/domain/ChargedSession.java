@@ -1,9 +1,10 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.DifferentSessionAmountException;
-import nextstep.courses.ExceedMaxStudentException;
 import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.exception.DifferentSessionAmountException;
+import nextstep.courses.exception.ExceedMaxStudentException;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.math.BigDecimal;
 
@@ -11,38 +12,38 @@ public class ChargedSession extends Session {
 
     private final int maxNumberOfStudent;
     private final BigDecimal price;
-    private int numberOfStudent;
 
-    public static ChargedSession init(Long id, Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
-        return new ChargedSession(id, duration, image, SessionStatus.READY, maxNumberOfStudent, price);
+    public ChargedSession(Long id, Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
+        super(id, duration, image);
+        this.maxNumberOfStudent = maxNumberOfStudent;
+        this.price = price;
     }
 
-    private ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
+    public ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
         super(id, duration, image, status);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = price;
     }
 
-    public Payment apply(Long nsUserId, BigDecimal amount) {
-        validateAmount(amount);
-        addStudent();
-
-        return Payment.init(this.id, nsUserId, amount);
+    public void apply(Payment payment, NsUser nsUser) {
+        validate(payment);
+        this.students.add(nsUser);
     }
 
-    private void validateAmount(BigDecimal amount) {
-        if (this.price.compareTo(amount) != 0) {
+    private void validate(Payment payment) {
+        validateStatus();
+        validateAmount(payment);
+        validateMaxNumberOfStudent();
+    }
+
+    private void validateAmount(Payment payment) {
+        if (!payment.isEqualAmount(this.price)) {
             throw new DifferentSessionAmountException("수강료와 결제 금액이 일치하지 않습니다.");
         }
     }
 
-    public void addStudent() {
-        validateMaxNumberOfStudent();
-        this.numberOfStudent++;
-    }
-
     private void validateMaxNumberOfStudent() {
-        if (this.maxNumberOfStudent == this.numberOfStudent) {
+        if (this.maxNumberOfStudent == this.students.size()) {
             throw new ExceedMaxStudentException("수강 인원을 초과했습니다.");
         }
     }
