@@ -18,10 +18,6 @@ public class Answers {
         }
     }
 
-    public List<Answer> getAnswers() {
-        return this.answers;
-    }
-
     public void deleteAll(final DeleteHistories deleteHistories) {
         for (Answer answer : this.answers) {
             answer.delete(deleteHistories);
