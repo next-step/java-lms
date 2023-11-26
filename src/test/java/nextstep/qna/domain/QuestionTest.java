@@ -16,6 +16,8 @@ public class QuestionTest {
     void setting() {
         Q1.addAnswer(AnswerTest.A1);
         Q1.addAnswer(AnswerTest.A2);
+        Q2.addAnswer(AnswerTest.A3);
+        Q2.addAnswer(AnswerTest.A4);
     }
 
     @DisplayName("본인이 질문한 질문이 아닌데 삭제하려고 할 경우 CannotDeleteException 발생")

@@ -28,13 +28,15 @@ public class Answer {
     /**
      * 리팩토링 메소드 시작
      */
-    public void remove(NsUser writer) throws CannotDeleteException {
+    public DeleteHistory remove(NsUser writer) throws CannotDeleteException {
         if (!this.writer.equals(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
 
         //답변 삭제
         delete();
+
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     private void delete() {
