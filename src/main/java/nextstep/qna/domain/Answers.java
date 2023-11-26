@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Answers {
@@ -25,8 +24,7 @@ public class Answers {
 
     public void deleteAll(final DeleteHistories deleteHistories) {
         for (Answer answer : this.answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            answer.delete(deleteHistories);
         }
     }
 }
