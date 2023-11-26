@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import javax.xml.crypto.Data;
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -17,9 +19,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private DateRecord dateRecord;
 
     public Answer() {
     }
@@ -30,46 +30,56 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
+        validateWriter(writer);
+        validateQuestion(question);
 
         this.writer = writer;
         this.question = question;
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
+    private static void validateWriter(NsUser writer) {
+        if(writer == null) {
+            throw new UnAuthorizedException();
+        }
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private static void validateQuestion(Question question) {
+        if(question == null) {
+            throw new NotFoundException();
+        }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        validateSamePerson(loginUser);
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+    }
+
+    private void validateSamePerson(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
     }
 
     @Override
