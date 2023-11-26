@@ -6,3 +6,4 @@
 - [x] 답변의 작성자가 아닌데 삭제하려고 할 경우 CannotDeleteException 발생
 - [x] 질문을 삭제하면 List<DeleteHistory>를 리턴한다.
 - [x] 답변을 삭제하면 DeleteHistory를 리턴한다.
+- [ ] Answers 객체에 Answer를 추가한다.
