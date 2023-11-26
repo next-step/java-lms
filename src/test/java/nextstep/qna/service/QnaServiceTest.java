@@ -51,7 +51,7 @@ public class QnaServiceTest {
         assertThat(question.isDeleted()).isTrue();
         verifyDeleteHistories();
     }
-
+;
     @Test
     public void delete_다른_사람이_쓴_글() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
