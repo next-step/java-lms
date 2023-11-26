@@ -19,11 +19,10 @@ public class Students {
         this.students = students;
     }
 
-    public void add(NsUser student) {
+    public void canEnrol(NsUser student) {
         if (students.contains(student)) {
             throw new AlreadyAddStudentException("이미 수강을 신청한 학생입니다.");
         }
-        students.add(student);
     }
 
     public boolean isFull(int capacity) {

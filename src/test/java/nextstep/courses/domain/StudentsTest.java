@@ -17,6 +17,6 @@ class StudentsTest {
         NsUser user = new NsUser(1L, "테스트", "테스트", "테스트", "test@test.com");
         Students students = new Students(List.of(user));
 
-        assertThrows(AlreadyAddStudentException.class, () -> students.add(user), "이미 수강을 신청한 학생입니다.");
+        assertThrows(AlreadyAddStudentException.class, () -> students.canEnrol(user), "이미 수강을 신청한 학생입니다.");
     }
 }

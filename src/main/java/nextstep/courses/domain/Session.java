@@ -1,13 +1,34 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.code.SessionType;
+import nextstep.courses.domain.code.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public interface Session {
+public class Session {
+    private final Period period;
+    private final Thumbnail thumbnail;
+    private final Enrollment enrollment;
+    private final Amount amount;
+    private final SessionStatus status;
 
-    boolean isSupport(SessionType sessionType);
+    public Session(Period period,
+                   Thumbnail thumbnail,
+                   Enrollment enrollment,
+                   Amount amount,
+                   SessionStatus status) {
+        this.enrollment = enrollment;
+        this.period = period;
+        this.thumbnail = thumbnail;
+        this.amount = amount;
+        this.status = status;
+    }
 
-    void apply(Payment payment,
-               NsUser student);
+    public void enrol(Payment payment,
+                      NsUser student) {
+        amount.validateAmount(payment);
+        status.validateApply();
+
+        enrollment.enrol(student);
+    }
+
 }
