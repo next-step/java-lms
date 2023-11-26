@@ -20,7 +20,7 @@ public class AnswerTest {
         // then
         assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("질문을 삭제할 권한이 없습니다.");
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @DisplayName("답글의 작성자와 사용자가 같을 때 삭제 상태로 바꾼다.")
