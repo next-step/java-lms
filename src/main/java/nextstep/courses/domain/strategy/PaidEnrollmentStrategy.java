@@ -1,14 +1,13 @@
 package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Amount;
-import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.courses.exception.SessionFullException;
 
 import java.util.Objects;
 
-public class PaidEnrollmentStrategy implements Enrollment {
+public class PaidEnrollmentStrategy implements EnrollmentStrategy {
 
     private final int capacity;
     private final Amount amount;

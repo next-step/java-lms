@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-class EnrollmentStatusTest {
+class SessionStatusTest {
 
     @Test
     @DisplayName("RECRUITING 때는 신청이 가능 하다")

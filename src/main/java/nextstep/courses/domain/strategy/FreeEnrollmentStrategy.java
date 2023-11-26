@@ -1,12 +1,11 @@
 package nextstep.courses.domain.strategy;
 
-import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 
 import java.util.Objects;
 
-public class FreeEnrollmentStrategy implements Enrollment {
+public class FreeEnrollmentStrategy implements EnrollmentStrategy {
 
     private final Students students;
 

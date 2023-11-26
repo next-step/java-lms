@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.domain.code.SessionType;
 import nextstep.courses.domain.strategy.EnrollFactory;
+import nextstep.courses.domain.strategy.EnrollmentStrategy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -15,7 +16,7 @@ public class Session {
     private final long courseId;
     private final Period period;
     private final Thumbnail thumbnail;
-    private Enrollment enrollment;
+    private EnrollmentStrategy enrollment;
     private final SessionStatus status;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
@@ -53,7 +54,7 @@ public class Session {
                    long courseId,
                    Period period,
                    Thumbnail thumbnail,
-                   Enrollment enrollment,
+                   EnrollmentStrategy enrollment,
                    SessionStatus status,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
