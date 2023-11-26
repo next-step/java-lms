@@ -9,7 +9,7 @@ public class Session {
     private final long sessionId;
     private final Period period;
     private final Thumbnail thumbnail;
-    private final Enrollment enrollment;
+    private Enrollment enrollment;
     private final SessionStatus status;
 
     public Session(long sessionId,
@@ -26,7 +26,8 @@ public class Session {
     }
 
     public Student enrol(Payment payment,
-                         NsUser nsUser) {
+                         NsUser nsUser,
+                         Students students) {
         status.validateApply();
 
         Student student = new Student(this.sessionId, nsUser.getId());

@@ -1,9 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
-import nextstep.courses.domain.Student;
-import nextstep.courses.domain.StudentRepository;
+import nextstep.courses.domain.*;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -18,11 +15,12 @@ public class SessionService {
         this.studentRepository = studentRepository;
     }
 
-    public void enroll(NsUser nsUser,
+    public void enroll(NsUser loginUser,
                        Payment payment,
                        long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        Student student = session.enrol(payment, nsUser);
+        Students students = studentRepository.findBySessionId(sessionId);
+        Student student = session.enrol(payment, loginUser, students);
         studentRepository.save(student);
     }
 }
