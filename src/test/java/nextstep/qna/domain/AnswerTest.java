@@ -17,7 +17,7 @@ public class AnswerTest {
     void 질문_작성자와_답변_작성자가_다름() {
         Assertions.assertThatExceptionOfType(CannotDeleteException.class)
             .isThrownBy(() -> A2.delete(NsUserTest.JAVAJIGI))
-            .withMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            .withMessage("답변 작성자와 질문 작성자가 일치해야 삭제할 수 있습니다.");
     }
 
     @Test

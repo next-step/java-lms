@@ -1,7 +1,5 @@
 package nextstep.qna.domain;
 
-import java.util.List;
-
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -14,13 +12,14 @@ public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
-    public static final Question Q3 = new Question(NsUserTest.JAVAJIGI, new Answers(List.of(AnswerTest.A1, AnswerTest.A3)));
-    public static final Question Q4 = new Question(NsUserTest.JAVAJIGI, new Answers(List.of(AnswerTest.A1, AnswerTest.A2)));
+    public static final Question Q3 = new Question(NsUserTest.JAVAJIGI, AnswersTest.ANSWERS1);
+    public static final Question Q4 = new Question(NsUserTest.JAVAJIGI, AnswersTest.ANSWERS2);
 
     @Test
     void 로그인_유저와_질문자가_다름() {
         assertThatExceptionOfType(CannotDeleteException.class)
-            .isThrownBy(() -> Q1.delete(NsUserTest.SANJIGI));
+            .isThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+            .withMessage("본인이 작성한 질문만 삭제할 수 있습니다.");
     }
 
     @Test
@@ -41,7 +40,7 @@ public class QuestionTest {
         assertThat(Q3.isDeleted()).isTrue();
         assertThat(Q3.getAnswers().isAllDeleted()).isTrue();
     }
-    
+
     @Test
     void 삭제_이력_있음() throws Exception {
         Q3.delete(NsUserTest.JAVAJIGI);
