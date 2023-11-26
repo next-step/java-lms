@@ -8,5 +8,5 @@
 - [x] 답변을 삭제하면 DeleteHistory를 리턴한다.
 - [x] Answers 객체에 Answer를 추가한다.
 - [x] 답변 작성자가 모두 일치한다면 true, 아니면 false리턴.
-- [ ] DeleteHistories에 질문 삭제 이력을 추가한다.
+- [x] DeleteHistories에 질문 삭제 이력을 추가한다.
 - [ ] DeleteHistories에 답변 삭제 이력을 추가한다.
