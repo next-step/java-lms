@@ -11,7 +11,7 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    @DisplayName("소유자가 다르면 질문을 삭제 할 수 없다.")
+    @DisplayName("답변을 삭제한다. 소유자가 다르면 질문을 삭제 할 수 없다.")
     void validateDeleteOwner() {
         Assertions.assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }

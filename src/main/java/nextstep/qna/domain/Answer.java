@@ -59,9 +59,10 @@ public class Answer {
         }
     }
 
-    public void delete(NsUser nsUser) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
         validateDeleteOwner(nsUser);
         deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
