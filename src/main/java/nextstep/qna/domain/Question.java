@@ -38,29 +38,31 @@ public class Question {
         this.contents = contents;
     }
 
-    /**
-     * 리팩토링 메소드 시작
-     */
-    public void remove(NsUser writer) throws CannotDeleteException {
+    public List<DeleteHistory> remove(NsUser writer) throws CannotDeleteException {
         if (!this.writer.equals(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         for (Answer answer : answers) {
-            answer.toString();
             if (!answer.isOwner(writer)) {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }
-
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         delete();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.remove(writer));
+        }
+
+        return deleteHistories;
     }
 
     private void delete() {
         this.deleted = true;
     }
 
-    /** 리팩토링 메소드 끝*/
     public Long getId() {
         return id;
     }

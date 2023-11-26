@@ -25,9 +25,6 @@ public class Answer {
     public Answer() {
     }
 
-    /**
-     * 리팩토링 메소드 시작
-     */
     public DeleteHistory remove(NsUser writer) throws CannotDeleteException {
         if (!this.writer.equals(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
@@ -43,19 +40,17 @@ public class Answer {
         this.deleted = true;
     }
 
-    /** 리팩토링 메소드 끝*/
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 

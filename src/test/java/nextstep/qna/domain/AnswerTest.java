@@ -14,7 +14,6 @@ public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
     public static final Answer A3 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents3");
-    public static final Answer A4 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents4");
 
     @DisplayName("본인 답변이 아닌데 삭제하려고 할 경우 CannotDeleteException 발생")
     @Test
@@ -23,6 +22,7 @@ public class AnswerTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("답변을 삭제할 권한이 없습니다.");
     }
+
     @DisplayName("답변을 삭제하면 DeleteHistory를 리턴")
     @Test
     void 답변_삭제() throws CannotDeleteException {

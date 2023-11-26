@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
@@ -16,8 +19,6 @@ public class QuestionTest {
     void setting() {
         Q1.addAnswer(AnswerTest.A1);
         Q1.addAnswer(AnswerTest.A2);
-        Q2.addAnswer(AnswerTest.A3);
-        Q2.addAnswer(AnswerTest.A4);
     }
 
     @DisplayName("본인이 질문한 질문이 아닌데 삭제하려고 할 경우 CannotDeleteException 발생")
@@ -34,5 +35,26 @@ public class QuestionTest {
         assertThatThrownBy(() -> Q1.remove(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @DisplayName("질문을 삭제하면 List<DeleteHistory>를 리턴")
+    @Test
+    void 질문_삭제() throws CannotDeleteException {
+        //given
+        Question question = new Question(NsUserTest.SANJIGI, "testTitle", "testContents");
+        Answer answer1 = new Answer(NsUserTest.SANJIGI, question, "testAnswer1");
+        Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "testAnswer2");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+
+        //when
+        List<DeleteHistory> deleteHistories = question.remove(NsUserTest.SANJIGI);
+
+        //then
+        assertThat(deleteHistories).containsExactly(
+                new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer1.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer2.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
+        );
     }
 }
