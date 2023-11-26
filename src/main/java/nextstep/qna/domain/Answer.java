@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -47,17 +48,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -75,5 +67,27 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+	public void delete(NsUser loginUser) throws CannotDeleteException {
+        validate(loginUser);
+        deleted = true;
+	}
+
+    private void validate(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)){
+            throw new CannotDeleteException("답변 작성자와 로그인 사용자가 일치하지 않습니다.");
+        }
+        if (!writerEqualsQuestionWriter()){
+            throw new CannotDeleteException("답변 작성자와 질문 작성자가 일치하지 않습니다.");
+        }
+    }
+
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
+    private boolean writerEqualsQuestionWriter() {
+        return writer.equals(question.getWriter());
     }
 }
