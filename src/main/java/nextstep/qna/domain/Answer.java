@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -23,6 +24,24 @@ public class Answer {
 
     public Answer() {
     }
+
+    /**
+     * 리팩토링 메소드 시작
+     */
+    public void remove(NsUser writer) throws CannotDeleteException {
+        if (!this.writer.equals(writer)) {
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
+        }
+
+        //답변 삭제
+        delete();
+    }
+
+    private void delete() {
+        this.deleted = true;
+    }
+
+    /** 리팩토링 메소드 끝*/
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
