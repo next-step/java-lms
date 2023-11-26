@@ -72,13 +72,13 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public List<Answer> getAnswers() {
