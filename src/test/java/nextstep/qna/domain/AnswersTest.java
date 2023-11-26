@@ -3,7 +3,6 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Answers;
 
 import java.util.List;
 
