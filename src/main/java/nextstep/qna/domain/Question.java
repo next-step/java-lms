@@ -93,6 +93,12 @@ public class Question {
         this.deleted = true;
     }
 
+    public void deleteBy(NsUser user) {
+        if(isOwner(user)) {
+            delete();
+        }
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";

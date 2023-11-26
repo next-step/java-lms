@@ -17,4 +17,11 @@ public class QuestionTest {
         assertThat(Q1.isDeleted()).isTrue();
     }
 
+    @Test
+    @DisplayName("로그인 사용자와 질문자가 같은 경우 삭제 가능하다.")
+    void 로그인_사용자와_질문자가_같은_경우_삭제_가능() {
+        Q1.deleteBy(NsUserTest.JAVAJIGI);
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
 }
