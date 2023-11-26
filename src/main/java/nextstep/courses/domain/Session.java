@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.code.SessionStatus;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -24,12 +25,12 @@ public class Session {
         this.status = status;
     }
 
-    public Student enrol(long payment,
+    public Student enrol(Payment payment,
                          NsUser nsUser) {
         status.validateApply();
 
         Student student = new Student(this.sessionId, nsUser.getId());
-        enrollment.enrol(student, payment);
+        enrollment.enroll(student, payment.amount());
 
         return student;
     }

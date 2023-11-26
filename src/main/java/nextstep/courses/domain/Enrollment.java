@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
 public interface Enrollment {
-    void enrol(Student student,
-               long payment);
+    void enroll(Student student,
+                long payment);
 }

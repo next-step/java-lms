@@ -15,7 +15,7 @@ class PaidEnrollmentStrategyTest {
     void isSupport() {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(0, new Amount(10000L));
 
-        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.enrol(new Student(), 10000L),
+        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.enroll(new Student(), 10000L),
                 "수강 신청 인원이 마감 되었습니다.");
     }
 

@@ -30,8 +30,8 @@ public class PaidEnrollmentStrategy implements Enrollment {
     }
 
     @Override
-    public void enrol(Student student,
-                      long payment) {
+    public void enroll(Student student,
+                       long payment) {
         amount.validateAmount(payment);
 
         if (students.isFull(capacity)) {
