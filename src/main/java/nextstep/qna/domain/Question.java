@@ -77,7 +77,7 @@ public class Question {
         return deleted;
     }
 
-    public Question setDeleted(boolean deleted) {
+    private Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -99,5 +99,10 @@ public class Question {
 
     public boolean isNotOwner(final NsUser user) {
         return !isOwner(user);
+    }
+
+    public void delete(final DeleteHistories deleteHistories) {
+        setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
     }
 }
