@@ -5,8 +5,6 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,7 +20,7 @@ public class AnswerTest {
         //when
         DeleteHistory history = answer.delete(NsUserTest.JAVAJIGI);
         //then
-        assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
     }
 
     @DisplayName("답변 작성자가 아니라서 삭제할 수 없다.")

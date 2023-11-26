@@ -6,11 +6,11 @@
 * 모든 피드백을 완료하면 다음 단계를 도전하고 앞의 과정을 반복한다.
 
 ## 리펙토링 작업사항
-* [ ] Question의 Answer리스트를 일급 컬렉션으로 변경
-* [ ] deleteQuestion 메서드 변경
-  * [ ] delete작업 및 히스토리를 도메인에서 처리하도록 변경
-  * [ ] 라인 수 줄이기
-* [ ] DeleteHistory 생성시 인스턴스변수 줄이기 
+* [X] Question의 Answer리스트를 일급 컬렉션으로 변경
+* [X] deleteQuestion 메서드 변경
+  * [X] delete작업 및 히스토리를 도메인에서 처리하도록 변경
+  * [X] 라인 수 줄이기
+* [X] DeleteHistory 생성시 인스턴스변수 줄이기 
 
 ## 질문 삭제하기 요구사항
 * 질문 데이터를 완전히 삭제하는 것이 아니라 데이터의 상태를 삭제 상태(deleted - boolean type)로 변경한다.
