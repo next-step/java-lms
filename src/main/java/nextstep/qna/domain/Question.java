@@ -69,8 +69,16 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
+        this.delete(loginUser);
+        answers.delete(loginUser);
+        return deleteHistories.deleteHistories();
+    }
+
+    private void delete(NsUser loginUser) throws CannotDeleteException {
+        validateOwner(loginUser);
+        deleted = true;
+        deleteHistories.add(deleteHistory());
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
@@ -79,22 +87,17 @@ public class Question {
         }
     }
 
-    private void delete(NsUser loginUser) throws CannotDeleteException {
-        validateOwner(loginUser);
-        deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        this.delete(loginUser);
-        answers.delete(loginUser);
-        return deleteHistories.deleteHistories();
+    private DeleteHistory deleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
         return deleted;
     }
-
 
     @Override
     public String toString() {

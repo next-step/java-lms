@@ -53,24 +53,28 @@ public class Answer {
         return this;
     }
 
+    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
+        validateDeleteOwner(nsUser);
+        deleted = true;
+        return deleteHistory();
+    }
+
     private void validateDeleteOwner(NsUser nsUser) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
-        validateDeleteOwner(nsUser);
-        deleted = true;
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
+
+    private DeleteHistory deleteHistory(){
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
