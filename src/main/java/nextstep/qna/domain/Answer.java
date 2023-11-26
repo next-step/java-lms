@@ -21,10 +21,10 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
+    private Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
+    private Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
@@ -41,6 +41,10 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+    }
+
+    public static Answer of(NsUser writer, Question question, String contents){
+        return new Answer(writer, question, contents);
     }
 
     public Long getId() {
@@ -70,6 +74,10 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public void delete(){
+        this.deleted = true;
     }
 
     @Override
