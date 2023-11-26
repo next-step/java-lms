@@ -26,11 +26,11 @@ class SessionTest {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(1, amount);
 
         Assertions.assertAll(() -> {
-            Session session = new Session(0L, period, thumbnail, paidEnrollmentStrategy, SessionStatus.PREPARING);
+            Session session = new Session(0L, 0L, period, thumbnail, paidEnrollmentStrategy, SessionStatus.PREPARING);
 
             assertThrows(CanNotApplySessionStatusException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(), new Students()), "수강 신청이 가능한 상태가 아닙니다.");
         }, () -> {
-            Session session = new Session(0L, period, thumbnail, paidEnrollmentStrategy, SessionStatus.END);
+            Session session = new Session(0L, 0L, period, thumbnail, paidEnrollmentStrategy, SessionStatus.END);
 
             assertThrows(CanNotApplySessionStatusException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(), new Students()), "수강 신청이 가능한 상태가 아닙니다.");
         });
@@ -45,7 +45,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(20000L);
 
-        Session session = new Session(0L, period, thumbnail, SessionType.PAID, 1, amount, SessionStatus.RECRUITING);
+        Session session = new Session(0L, 0L, period, thumbnail, SessionType.PAID, 1, amount, SessionStatus.RECRUITING);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
@@ -57,7 +57,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(0L);
 
-        Session session = new Session(0L, period, thumbnail, SessionType.FREE, 0, amount, SessionStatus.RECRUITING);
+        Session session = new Session(0L, 0L, period, thumbnail, SessionType.FREE, 0, amount, SessionStatus.RECRUITING);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
