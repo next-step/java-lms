@@ -1,5 +1,6 @@
 package nextstep.courses.domain.strategy;
 
+import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.Enrollment;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
@@ -11,20 +12,28 @@ public class PaidEnrollmentStrategy implements Enrollment {
 
     private final int capacity;
 
+    private final Amount amount;
+
     private final Students students;
 
-    public PaidEnrollmentStrategy(int capacity) {
-        this(capacity, new Students());
+    public PaidEnrollmentStrategy(int capacity,
+                                  Amount amount) {
+        this(capacity, amount, new Students());
     }
 
     public PaidEnrollmentStrategy(int capacity,
+                                  Amount amount,
                                   Students students) {
         this.capacity = capacity;
+        this.amount = amount;
         this.students = students;
     }
 
     @Override
-    public void enrol(Student student) {
+    public void enrol(Student student,
+                      long payment) {
+        amount.validateAmount(payment);
+
         if (students.isFull(capacity)) {
             throw new SessionFullException("수강 신청 인원이 마감 되었습니다.");
         }

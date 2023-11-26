@@ -23,7 +23,7 @@ class AmountTest {
         Amount amount = new Amount(20000L);
         Payment payment = new Payment("테스트", 0L, 0L, 20000L);
 
-        assertDoesNotThrow(() -> amount.validateAmount(payment));
+        assertDoesNotThrow(() -> amount.validateAmount(20000L));
     }
 
     @Test
@@ -32,6 +32,6 @@ class AmountTest {
         Amount amount = new Amount(20000L);
         Payment payment = new Payment("테스트", 0L, 0L, 10000L);
 
-        assertThrows(IncorrectAmountException.class, () -> amount.validateAmount(payment), "결제 금액과 강의 금액이 다릅니다.");
+        assertThrows(IncorrectAmountException.class, () -> amount.validateAmount(10000L), "결제 금액과 강의 금액이 다릅니다.");
     }
 }
