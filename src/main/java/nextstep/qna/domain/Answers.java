@@ -23,6 +23,14 @@ public class Answers {
                 .allMatch(answer -> answer.isOwner(writer));
     }
 
+    public List<DeleteHistory> removeAll(NsUser writer) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.remove(writer));
+        }
+        return deleteHistories;
+    }
+
     public List<Answer> getAnswers() {
         return Collections.unmodifiableList(answers);
     }

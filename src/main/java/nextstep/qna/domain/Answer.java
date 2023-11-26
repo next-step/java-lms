@@ -25,20 +25,6 @@ public class Answer {
     public Answer() {
     }
 
-    public DeleteHistory remove(NsUser writer) throws CannotDeleteException {
-        if (!this.writer.equals(writer)) {
-            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
-        }
-
-        delete();
-
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
-    }
-
-    private void delete() {
-        this.deleted = true;
-    }
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
@@ -56,6 +42,20 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+    }
+
+    public DeleteHistory remove(NsUser writer) throws CannotDeleteException {
+        if (!this.writer.equals(writer)) {
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
+        }
+
+        delete();
+
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+    }
+
+    private void delete() {
+        this.deleted = true;
     }
 
     public Long getId() {

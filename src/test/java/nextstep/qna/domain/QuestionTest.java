@@ -17,8 +17,6 @@ public class QuestionTest {
 
     @BeforeEach
     void setting() {
-        Q1.addAnswer(AnswerTest.A1);
-        Q1.addAnswer(AnswerTest.A2);
         Q1.addAnswers(AnswerTest.A1);
         Q1.addAnswers(AnswerTest.A2);
     }
@@ -46,8 +44,8 @@ public class QuestionTest {
         Question question = new Question(NsUserTest.SANJIGI, "testTitle", "testContents");
         Answer answer1 = new Answer(NsUserTest.SANJIGI, question, "testAnswer1");
         Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "testAnswer2");
-        question.addAnswer(answer1);
-        question.addAnswer(answer2);
+        question.addAnswers(answer1);
+        question.addAnswers(answer2);
 
         //when
         List<DeleteHistory> deleteHistories = question.remove(NsUserTest.SANJIGI);

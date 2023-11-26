@@ -1,11 +1,14 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AnswersTest {
 
@@ -23,7 +26,7 @@ class AnswersTest {
         answers.add(answer2);
 
         //then
-        Assertions.assertThat(answers.getAnswers()).containsExactly(answer1, answer2);
+        assertThat(answers.getAnswers()).containsExactly(answer1, answer2);
     }
 
     @DisplayName("답변 작성자가 모두 일치한다면 true, 아니면 false리턴.")
@@ -40,7 +43,28 @@ class AnswersTest {
         boolean differentOwner = answers.isOwner(NsUserTest.JAVAJIGI);
 
         //then
-        Assertions.assertThat(sameOwner).isTrue();
-        Assertions.assertThat(differentOwner).isFalse();
+        assertThat(sameOwner).isTrue();
+        assertThat(differentOwner).isFalse();
+    }
+
+    @DisplayName("모든 답변을 삭제하면 List<DeleteHistory>를 리턴")
+    @Test
+    void 모든_답변_삭제() throws CannotDeleteException {
+        //given
+        Answers answers = new Answers();
+        Question question = new Question(NsUserTest.SANJIGI, "testTitle", "testContents");
+        Answer answer1 = new Answer(NsUserTest.SANJIGI, question, "testAnswer1");
+        Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "testAnswer2");
+        answers.add(answer1);
+        answers.add(answer2);
+
+        //when
+        List<DeleteHistory> deleteHistories = answers.removeAll(NsUserTest.SANJIGI);
+
+        //then
+        assertThat(deleteHistories).containsExactly(
+                new DeleteHistory(ContentType.ANSWER, answer1.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer2.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
+        );
     }
 }
