@@ -10,8 +10,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CoverImagePixelTest {
 
-    public static final CoverImagePixel CP = new CoverImagePixel(300, 200);
-
     @Test
     @DisplayName("조건에 맞는 가로와 세로 픽셀일 경우 CoverImagePixel은 정상적으로 생성된다.")
     void createCoverImagePixel() {

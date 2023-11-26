@@ -12,8 +12,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CoverImageSizeTest {
 
-    public static final CoverImageSize CS = new CoverImageSize(1024);
-
     @Test
     @DisplayName("정상적인 범위의 이미지 사이즈일 경우 정상적으로 생성된다.")
     void createCoverImageSize() {

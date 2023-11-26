@@ -13,8 +13,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CoverImageFileNameTest {
 
-    public static final CoverImageFileName CF = new CoverImageFileName("/test/test.jpg");
-
     @Test
     @DisplayName("정상적인 확장자와 이미지 경로를 입력한다면 정상 생성된다.")
     void createCoverImageFilePath() {
