@@ -16,6 +16,14 @@ public class Student {
         this.sessionId = sessionId;
     }
 
+    public long getNsUserId() {
+        return nsUserId;
+    }
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
