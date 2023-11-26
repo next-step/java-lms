@@ -17,6 +17,10 @@ public class DeleteHistories {
         deleteHistories.add(deleteHistory);
     }
 
+    public void add(DeleteHistories DeleteHistories) {
+        deleteHistories.addAll(DeleteHistories.deleteHistories);
+    }
+
     public List<DeleteHistory> deleteHistories() {
         return Collections.unmodifiableList(deleteHistories);
     }

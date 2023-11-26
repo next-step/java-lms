@@ -17,8 +17,6 @@ public class Question {
 
     private Answers answers;
 
-    private DeleteHistories deleteHistories;
-
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -34,8 +32,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.deleteHistories = new DeleteHistories();
-        this.answers = new Answers(deleteHistories);
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -70,15 +67,16 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        this.delete(loginUser);
-        answers.delete(loginUser);
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(this.delete(loginUser));
+        deleteHistories.add(answers.delete(loginUser));
         return deleteHistories.deleteHistories();
     }
 
-    private void delete(NsUser loginUser) throws CannotDeleteException {
+    private DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
         deleted = true;
-        deleteHistories.add(deleteHistory());
+        return deleteHistory();
     }
 
     private void validateOwner(NsUser loginUser) throws CannotDeleteException {
