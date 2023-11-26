@@ -47,25 +47,12 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
@@ -78,24 +65,17 @@ public class Answer {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        validate(loginUser);
+        validateDeletingPolicies(loginUser);
         deleted = true;
     }
 
-    private void validate(NsUser loginUser) throws CannotDeleteException {
-        if (!writerEqualsQuestionWriter()) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    private void validateDeletingPolicies(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(question.getWriter())) {
+            throw new CannotDeleteException("답변 작성자와 질문 작성자가 일치해야 삭제할 수 있습니다.");
         }
-        if (!writerEqualsLoginUser(loginUser)) {
+        if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("본인이 작성한 답변만 삭제할 수 있습니다.");
         }
     }
 
-    private boolean writerEqualsQuestionWriter() {
-        return writer.equals(question.getWriter());
-    }
-
-    private boolean writerEqualsLoginUser(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
 }

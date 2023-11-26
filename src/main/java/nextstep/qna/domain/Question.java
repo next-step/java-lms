@@ -48,24 +48,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -73,15 +55,6 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -103,7 +76,7 @@ public class Question {
 
     private void validate(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+            throw new CannotDeleteException("본인이 작성한 질문만 삭제할 수 있습니다.");
         }
     }
 
