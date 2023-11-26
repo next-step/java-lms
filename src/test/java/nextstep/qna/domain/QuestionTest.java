@@ -22,9 +22,9 @@ public class QuestionTest {
     @DisplayName("질문을 삭제할 때, 삭제상태를 true로 변경한다.")
     @Test
     void 질문_삭제시_삭제상태를_변경() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI);
-        Q1.addAnswer(AnswerTest.A1);
-        assertThat(Q1.isDeleted()).isTrue();
+        final Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.delete(NsUserTest.JAVAJIGI);
+        assertThat(question.isDeleted()).isTrue();
     }
 
 }

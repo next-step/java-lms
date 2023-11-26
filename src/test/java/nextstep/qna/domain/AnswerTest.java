@@ -5,8 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
@@ -19,6 +18,12 @@ public class AnswerTest {
         assertThatThrownBy(() -> {
             A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    void delete() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
+        assertThat(A1.isDeleted()).isTrue();
     }
 
 }
