@@ -11,27 +11,18 @@ import java.util.Objects;
 public class PaidEnrollmentStrategy implements Enrollment {
 
     private final int capacity;
-
     private final Amount amount;
-
-    private final Students students;
 
     public PaidEnrollmentStrategy(int capacity,
                                   Amount amount) {
-        this(capacity, amount, new Students());
-    }
-
-    public PaidEnrollmentStrategy(int capacity,
-                                  Amount amount,
-                                  Students students) {
         this.capacity = capacity;
         this.amount = amount;
-        this.students = students;
     }
 
     @Override
-    public void enroll(Student student,
-                       long payment) {
+    public void enroll(long payment,
+                       Student student,
+                       Students students) {
         amount.validateAmount(payment);
 
         if (students.isFull(capacity)) {
@@ -44,12 +35,12 @@ public class PaidEnrollmentStrategy implements Enrollment {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PaidEnrollmentStrategy paidEnrollmentStrategy1 = (PaidEnrollmentStrategy) o;
-        return capacity == paidEnrollmentStrategy1.capacity && Objects.equals(students, paidEnrollmentStrategy1.students);
+        PaidEnrollmentStrategy that = (PaidEnrollmentStrategy) o;
+        return capacity == that.capacity && Objects.equals(amount, that.amount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(capacity, students);
+        return Objects.hash(capacity, amount);
     }
 }

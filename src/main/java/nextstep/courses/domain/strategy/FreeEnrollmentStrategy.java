@@ -19,8 +19,9 @@ public class FreeEnrollmentStrategy implements Enrollment {
     }
 
     @Override
-    public void enroll(Student student,
-                       long amount) {
+    public void enroll(long amount,
+                       Student student,
+                       Students students) {
         students.enrol(student);
     }
 

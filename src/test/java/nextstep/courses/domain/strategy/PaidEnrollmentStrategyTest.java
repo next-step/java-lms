@@ -2,6 +2,7 @@ package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.Student;
+import nextstep.courses.domain.Students;
 import nextstep.courses.exception.SessionFullException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class PaidEnrollmentStrategyTest {
     void isSupport() {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(0, new Amount(10000L));
 
-        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.enroll(new Student(), 10000L),
+        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.enroll(10000L, new Student(), new Students()),
                 "수강 신청 인원이 마감 되었습니다.");
     }
 

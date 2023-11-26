@@ -31,7 +31,7 @@ public class Session {
         status.validateApply();
 
         Student student = new Student(this.sessionId, nsUser.getId());
-        enrollment.enroll(student, payment.amount());
+        enrollment.enroll(payment.amount(), student, students);
 
         return student;
     }
