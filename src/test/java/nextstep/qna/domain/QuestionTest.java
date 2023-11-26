@@ -80,12 +80,13 @@ public class QuestionTest {
     @DisplayName("질문을 삭제하면, Question의 deleted는 true가 되고 매개변수로 넣은 deleteHistories에 삭제 기록이 저장된다")
     void testDelete() {
         //given
+        final Question tempQ1 = new Question(NsUserTest.JAVAJIGI, "title1", "Temp contents1");
         DeleteHistories deleteHistories = new DeleteHistories();
         final int sizeBeforeDelete = deleteHistories.size();
 
         //when
-        Q1.delete(deleteHistories);
-        final boolean isDeleted = Q1.isDeleted();
+        tempQ1.delete(deleteHistories);
+        final boolean isDeleted = tempQ1.isDeleted();
         final int sizeAfterDelete = deleteHistories.size();
 
         //then
