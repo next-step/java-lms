@@ -5,7 +5,7 @@ import nextstep.courses.exception.NotPositiveException;
 
 public class Amount {
 
-    public static final long MIN_AMOUNT = 1L;
+    public static final long MIN_AMOUNT = 0L;
     private final long amount;
 
     public Amount(long amount) {

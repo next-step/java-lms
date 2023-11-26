@@ -20,7 +20,7 @@ public class SessionService {
                        long sessionId) {
         Session session = sessionRepository.findById(sessionId);
         Students students = studentRepository.findBySessionId(sessionId);
-        Student student = session.enrol(payment, loginUser, students);
+        Student student = session.enroll(payment, loginUser, students);
         studentRepository.save(student);
     }
 }
