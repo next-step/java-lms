@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.IncorrectRatioException;
 import nextstep.courses.exception.SizeUnderException;
 
-public class Size {
+public class ImageSize {
 
     private static final long MIN_WIDTH_PIXEL = 300L;
     public static final long MIN_HEIGHT_PIXEL = 200L;
@@ -12,8 +12,8 @@ public class Size {
     private final long widthPixel;
     private final long heightPixel;
 
-    public Size(long widthPixel,
-                long heightPixel) {
+    public ImageSize(long widthPixel,
+                     long heightPixel) {
         validatePixel(widthPixel, heightPixel);
         validateRatio(widthPixel, heightPixel);
 

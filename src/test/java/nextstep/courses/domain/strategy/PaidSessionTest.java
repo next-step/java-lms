@@ -25,8 +25,8 @@ class PaidSessionTest {
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
-                new Volume(1024L),
-                new Size(300L,
+                new FileSize(1024L),
+                new ImageSize(300L,
                         200L));
         PaidStudents paidStudents = new PaidStudents(0);
         Amount amount = new Amount(20000L);
@@ -52,8 +52,8 @@ class PaidSessionTest {
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
-                new Volume(1024L),
-                new Size(300L,
+                new FileSize(1024L),
+                new ImageSize(300L,
                         200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
@@ -75,8 +75,8 @@ class PaidSessionTest {
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
-                new Volume(1024L),
-                new Size(300L,
+                new FileSize(1024L),
+                new ImageSize(300L,
                         200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
@@ -119,8 +119,8 @@ class PaidSessionTest {
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
-                new Volume(1024L),
-                new Size(300L,
+                new FileSize(1024L),
+                new ImageSize(300L,
                         200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);

@@ -4,16 +4,16 @@ public class Thumbnail {
 
     private final String name;
     private final String uri;
-    private final Volume volume;
-    private final Size size;
+    private final FileSize fileSize;
+    private final ImageSize imageSize;
 
     public Thumbnail(String name,
                      String uri,
-                     Volume volume,
-                     Size size) {
+                     FileSize fileSize,
+                     ImageSize imageSize) {
         this.name = name;
         this.uri = uri;
-        this.volume = volume;
-        this.size = size;
+        this.fileSize = fileSize;
+        this.imageSize = imageSize;
     }
 }

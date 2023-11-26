@@ -21,8 +21,8 @@ class SessionTest {
                 LocalDate.of(2023, 11, 24));
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
-                new Volume(1024L),
-                new Size(300,
+                new FileSize(1024L),
+                new ImageSize(300,
                         200));
 
         Amount amount = new Amount(20000L);
