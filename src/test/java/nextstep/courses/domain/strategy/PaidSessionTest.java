@@ -26,8 +26,8 @@ class PaidSessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
                 new Volume(1024L),
-                new Size(new Width(300),
-                        new Height(200)));
+                new Size(300L,
+                        200L));
         PaidStudents paidStudents = new PaidStudents(0);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
@@ -53,8 +53,8 @@ class PaidSessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
                 new Volume(1024L),
-                new Size(new Width(300),
-                        new Height(200)));
+                new Size(300L,
+                        200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
@@ -76,8 +76,8 @@ class PaidSessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
                 new Volume(1024L),
-                new Size(new Width(300),
-                        new Height(200)));
+                new Size(300L,
+                        200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
 
@@ -120,8 +120,8 @@ class PaidSessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트",
                 "/home/test.png",
                 new Volume(1024L),
-                new Size(new Width(300),
-                        new Height(200)));
+                new Size(300L,
+                        200L));
         PaidStudents paidStudents = new PaidStudents(1);
         Amount amount = new Amount(20000L);
         Session session = new PaidSession(
