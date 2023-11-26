@@ -1,20 +1,39 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.DifferentSessionAmountException;
 import nextstep.courses.ExceedMaxStudentException;
 import nextstep.courses.domain.type.SessionStatus;
+import nextstep.payments.domain.Payment;
+
+import java.math.BigDecimal;
 
 public class ChargedSession extends Session {
 
     private final int maxNumberOfStudent;
+    private final BigDecimal price;
     private int numberOfStudent;
 
-    public static ChargedSession init(Duration duration, Image image, int maxNumberOfStudent) {
-        return new ChargedSession(duration, image, SessionStatus.READY, maxNumberOfStudent);
+    public static ChargedSession init(Long id, Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
+        return new ChargedSession(id, duration, image, SessionStatus.READY, maxNumberOfStudent, price);
     }
 
-    private ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent) {
-        super(duration, image, status);
+    private ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
+        super(id, duration, image, status);
         this.maxNumberOfStudent = maxNumberOfStudent;
+        this.price = price;
+    }
+
+    public Payment apply(Long nsUserId, BigDecimal amount) {
+        validateAmount(amount);
+        addStudent();
+
+        return Payment.init(this.id, nsUserId, amount);
+    }
+
+    private void validateAmount(BigDecimal amount) {
+        if (this.price.compareTo(amount) != 0) {
+            throw new DifferentSessionAmountException("수강료와 결제 금액이 일치하지 않습니다.");
+        }
     }
 
     public void addStudent() {

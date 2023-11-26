@@ -6,15 +6,17 @@ import java.util.Objects;
 
 public class Session {
 
+    protected Long id;
     private Duration duration;
     private Image image;
     private SessionStatus status;
 
-    public static Session init(Duration duration, Image image) {
-        return new Session(duration, image, SessionStatus.READY);
+    public static Session init(Long id, Duration duration, Image image) {
+        return new Session(id, duration, image, SessionStatus.READY);
     }
 
-    protected Session(Duration duration, Image image, SessionStatus status) {
+    protected Session(Long id, Duration duration, Image image, SessionStatus status) {
+        this.id = id;
         this.duration = duration;
         this.image = image;
         this.status = status;
