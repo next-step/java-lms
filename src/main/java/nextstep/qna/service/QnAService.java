@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
@@ -31,13 +29,13 @@ public class QnAService {
         Answers answers = question.getAnswers();
         answers.verifyAllAnswerOwnerIsTargetUser(loginUser);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        DeleteHistories deleteHistories = new DeleteHistories();
         question.setDeleted(true);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
         for (Answer answer : answers.getAnswers()) {
             answer.setDeleted(true);
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
-        deleteHistoryService.saveAll(deleteHistories);
+        deleteHistoryService.saveAll(deleteHistories.getHistories());
     }
 }
