@@ -87,4 +87,9 @@ public class Answer {
     public boolean isNotOwner(final NsUser user) {
         return !isOwner(user);
     }
+
+    public void delete(final DeleteHistories deleteHistories) {
+        setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now()));
+    }
 }
