@@ -2,19 +2,19 @@ package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
-
-import java.util.Objects;
+import nextstep.courses.domain.code.EnrollType;
 
 public class FreeEnrollmentStrategy implements EnrollmentStrategy {
 
-    private final Students students;
+    private final long id;
+    private final long sessionId;
+    private final EnrollType enrollType;
 
-    public FreeEnrollmentStrategy() {
-        this(new Students());
-    }
-
-    public FreeEnrollmentStrategy(Students students) {
-        this.students = students;
+    public FreeEnrollmentStrategy(long id,
+                                  long sessionId) {
+        this.id = id;
+        this.sessionId = sessionId;
+        this.enrollType = EnrollType.FREE;
     }
 
     @Override
@@ -24,16 +24,4 @@ public class FreeEnrollmentStrategy implements EnrollmentStrategy {
         students.enrol(student);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FreeEnrollmentStrategy that = (FreeEnrollmentStrategy) o;
-        return Objects.equals(students, that.students);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(students);
-    }
 }

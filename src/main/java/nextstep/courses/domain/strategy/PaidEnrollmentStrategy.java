@@ -3,19 +3,28 @@ package nextstep.courses.domain.strategy;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
+import nextstep.courses.domain.code.EnrollType;
 import nextstep.courses.exception.SessionFullException;
 
 import java.util.Objects;
 
 public class PaidEnrollmentStrategy implements EnrollmentStrategy {
 
+    private final long id;
+    private final long sessionId;
     private final int capacity;
     private final Amount amount;
+    private final EnrollType enrollType;
 
-    public PaidEnrollmentStrategy(int capacity,
+    public PaidEnrollmentStrategy(long id,
+                                  long sessionId,
+                                  int capacity,
                                   Amount amount) {
+        this.id = id;
+        this.sessionId = sessionId;
         this.capacity = capacity;
         this.amount = amount;
+        this.enrollType = EnrollType.PAID;
     }
 
     @Override

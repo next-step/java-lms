@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.code.SessionStatus;
-import nextstep.courses.domain.code.SessionType;
-import nextstep.courses.domain.strategy.EnrollFactory;
 import nextstep.courses.domain.strategy.EnrollmentStrategy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -14,6 +12,7 @@ public class Session {
 
     private final long id;
     private final long courseId;
+    private final String title;
     private final Period period;
     private final Thumbnail thumbnail;
     private EnrollmentStrategy enrollment;
@@ -23,20 +22,20 @@ public class Session {
 
     public Session(long id,
                    long courseId,
+                   String title,
                    Thumbnail thumbnail,
                    LocalDate startDate,
                    LocalDate endDate,
-                   String sessionType,
+                   EnrollmentStrategy enrollment,
                    String sessionStatus,
-                   int capacity,
-                   long amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
-        this(id, courseId, new Period(startDate, endDate), thumbnail, EnrollFactory.create(SessionType.valueOf(sessionType), capacity, new Amount(amount)), SessionStatus.valueOf(sessionStatus), createdAt, updatedAt);
+        this(id, courseId, title, new Period(startDate, endDate), thumbnail, enrollment, SessionStatus.valueOf(sessionStatus), createdAt, updatedAt);
     }
 
     public Session(long id,
                    long courseId,
+                   String title,
                    Period period,
                    Thumbnail thumbnail,
                    EnrollmentStrategy enrollment,
@@ -45,6 +44,7 @@ public class Session {
                    LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
+        this.title = title;
         this.enrollment = enrollment;
         this.period = period;
         this.thumbnail = thumbnail;
