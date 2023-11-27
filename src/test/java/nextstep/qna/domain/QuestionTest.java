@@ -34,4 +34,31 @@ public class QuestionTest {
             question.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(UnAuthorizedException.class);
     }
+
+    @DisplayName("질문과 답변을 삭제한다.")
+    @Test
+    void 질문과_답변을_삭제한다() {
+        //given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+        question.addAnswer(answer);
+        //when
+        question.delete(NsUserTest.JAVAJIGI);
+        //then
+        assertThat(question.isDeleted()).isTrue();
+    }
+
+    @DisplayName("질문과 답변을 삭제 할 수 없다.")
+    @Test
+    void 질문과_답변을_삭제_할_수_없다() {
+        //given
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer = new Answer(NsUserTest.SANJIGI, question, "Answers Contents1");
+        question.addAnswer(answer);
+        //when
+        //then
+        assertThatThrownBy(() -> {
+            question.delete(NsUserTest.JAVAJIGI);
+        }).isInstanceOf(UnAuthorizedException.class);
+    }
 }
