@@ -64,12 +64,8 @@ public class Answer {
         this.question = question;
     }
 
-    public void delete(NsUser nsUser) throws CannotDeleteException {
-        if (!isOwner(nsUser)) {
-            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
-        }
-
-        this.deleted = true;
+    public void changeStatus(boolean status) {
+        this.deleted = status;
     }
 
     public DeleteHistory writeDeleteHistory() {

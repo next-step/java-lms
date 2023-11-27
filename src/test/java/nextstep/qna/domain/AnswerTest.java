@@ -12,23 +12,32 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
 
-    @DisplayName("답글 작성자와 사용자가 다르면 예외를 발생시킵니다.")
+    @DisplayName("답글 작성자와 사용자가 같은지 확인합니다.")
     @Test
-    void notSameUser() {
+    void isOwner() {
         // given
         // when
+        boolean result = A1.isOwner(NsUserTest.JAVAJIGI);
         // then
-        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("답변을 삭제할 권한이 없습니다.");
+        assertThat(result).isTrue();
     }
 
-    @DisplayName("답글의 작성자와 사용자가 같을 때 삭제 상태로 바꾼다.")
+    @DisplayName("답글 작성자와 사용자가 다르면 false를 반환합니다.")
     @Test
-    void changeStatus() throws CannotDeleteException {
+    void falseOwner() {
         // given
         // when
-        A1.delete(NsUserTest.JAVAJIGI);
+        boolean result = A1.isOwner(NsUserTest.SANJIGI);
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @DisplayName("답글의 삭제 상태를 변경합니다.")
+    @Test
+    void changeDelete() {
+        // given
+        // when
+        A1.changeStatus(true);
         // then
         assertThat(A1.isDeleted()).isTrue();
     }

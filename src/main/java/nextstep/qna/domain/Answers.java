@@ -18,10 +18,14 @@ public class Answers {
         this.answers = answers;
     }
 
-    public void deleteAnswers(NsUser nsUser) throws CannotDeleteException {
+    public boolean deleteAnswers(NsUser nsUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            deleteAnswer(nsUser, answer);
+            if (!answer.isOwner(nsUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
         }
+        answers.forEach(answer -> answer.changeStatus(true));
+        return true;
     }
 
     public List<DeleteHistory> createAnswerDeleteHistory() {
@@ -33,11 +37,7 @@ public class Answers {
         answers.add(answer);
     }
 
-    private void deleteAnswer(NsUser nsUser, Answer answer) throws CannotDeleteException {
-        try {
-            answer.delete(nsUser);
-        } catch (Exception e) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+    public List<Answer> getAnswers() {
+        return answers;
     }
 }

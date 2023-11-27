@@ -65,8 +65,10 @@ public class Question {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        answers.deleteAnswers(nsUser);
-        this.deleted = true;
+
+        if (answers.deleteAnswers(nsUser)) {
+            this.deleted = true;
+        }
     }
 
     public List<DeleteHistory> writeDeleteHistory() {
