@@ -12,15 +12,13 @@ public class Answers {
         this.answers = answers;
     }
 
-    public void verifyAllAnswerOwnerIsTargetUser(final NsUser user) throws CannotDeleteException {
-        for (Answer answer : this.answers) {
-            answer.verifyUserWithAnswerDeletionPermission(user);
-        }
-    }
+    public DeleteHistories deleteAll(final NsUser user) throws CannotDeleteException {
+        DeleteHistories deleteHistories = new DeleteHistories();
 
-    public void deleteAll(final DeleteHistories deleteHistories) {
         for (Answer answer : this.answers) {
-            answer.delete(deleteHistories);
+            deleteHistories.add(answer.delete(user));
         }
+
+        return deleteHistories;
     }
 }

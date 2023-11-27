@@ -21,4 +21,8 @@ public class DeleteHistories {
     public List<DeleteHistory> getHistories() {
         return this.histories;
     }
+
+    public void add(DeleteHistories deleteHistories) {
+        this.histories.addAll(deleteHistories.getHistories());
+    }
 }

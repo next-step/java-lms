@@ -26,12 +26,11 @@ public class QnAService {
         question.verifyUserWithQuestionDeletionPermission(loginUser);
 
         Answers answers = question.getAnswers();
-        answers.verifyAllAnswerOwnerIsTargetUser(loginUser);
 
         DeleteHistories deleteHistories = new DeleteHistories();
         question.delete(deleteHistories);
-        answers.deleteAll(deleteHistories);
-        
+        deleteHistories.add(answers.deleteAll(loginUser));
+
         deleteHistoryService.saveAll(deleteHistories.getHistories());
     }
 }
