@@ -3,9 +3,9 @@ package nextstep.courses.domain.strategy;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.code.EnrollType;
 
-public class EnrollFactory {
+public class EnrollmentFactory {
 
-    private EnrollFactory() {
+    private EnrollmentFactory() {
     }
 
     public static EnrollmentStrategy create(long id,

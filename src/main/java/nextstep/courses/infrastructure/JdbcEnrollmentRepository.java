@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.EnrollmentRepository;
-import nextstep.courses.domain.strategy.EnrollFactory;
+import nextstep.courses.domain.strategy.EnrollmentFactory;
 import nextstep.courses.domain.strategy.EnrollmentStrategy;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,7 +18,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public EnrollmentStrategy findBySessionId(long sessionId) {
         String sql = "select id, session_id, enroll_type, capacity, amount from enrollment where session_id = ?";
-        RowMapper<EnrollmentStrategy> rowMapper = (rs, rowNum) -> EnrollFactory.create(
+        RowMapper<EnrollmentStrategy> rowMapper = (rs, rowNum) -> EnrollmentFactory.create(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),
