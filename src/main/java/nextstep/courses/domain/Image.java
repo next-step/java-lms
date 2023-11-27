@@ -6,14 +6,15 @@ public class Image {
     public static final int MINIMUM_WIDTH = 300;
     public static final int MINIMUM_HEIGHT = 200;
     public static final int RATE_BETWEEN_WIDTH_AND_HEIGHT = 3 / 2;
+    private final String path;
     private final int width;
     private final int height;
     private final ImageType imageType;
 
-    public Image(int width, int height, ImageType imageType) {
+    public Image(String path, int width, int height, ImageType imageType) {
 
         inputValidation(width, height, imageType);
-
+        this.path = path;
         this.width = width;
         this.height = height;
         this.imageType = imageType;
