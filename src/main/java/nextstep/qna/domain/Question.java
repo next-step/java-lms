@@ -63,14 +63,15 @@ public class Question {
         return answers;
     }
 
-    public void validQuestion(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validQuestion(loginUser);
+        this.deleted = true;
+    }
+
+    private void validQuestion(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-    }
-
-    public void delete() {
-        this.deleted = true;
     }
 
     @Override

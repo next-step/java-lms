@@ -14,15 +14,15 @@ public class QuestionTest {
 
     @DisplayName("질문 등록자와 삭제 요청자가 다르면 CannotDeleteException을 발생시킨다.")
     @Test
-    void valid_question() throws CannotDeleteException {
-        assertThatThrownBy(() -> Q1.validQuestion(SANJIGI))
+    void valid_question() {
+        assertThatThrownBy(() -> Q1.delete(SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
     }
 
     @DisplayName("delete 메서드 호출시 사용자가 soft delete된다.")
     @Test
-    void delete() {
-        Q1.delete();
+    void delete() throws CannotDeleteException {
+        Q1.delete(JAVAJIGI);
         assertThat(Q1.isDeleted()).isEqualTo(true);
     }
 }
