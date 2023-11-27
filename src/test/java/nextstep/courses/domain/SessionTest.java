@@ -23,7 +23,8 @@ class SessionTest {
     @DisplayName("모집중이 아니면 예외 처리 된다.")
     void apply() {
         Period period = new Period(LocalDate.of(2023, 11, 24), LocalDate.of(2023, 11, 24));
-        Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
+        Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L,
+                200L));
         Amount amount = new Amount(20000L);
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(1, amount);
 
@@ -44,7 +45,7 @@ class SessionTest {
     @DisplayName("유료 강의 신청을 한다")
     void apply2() {
         Period period = new Period(LocalDate.of(2023, 11, 24), LocalDate.of(2023, 11, 24));
-        Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
+        Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(20000L);
 
         Session session = new Session(0L, 0L, period, thumbnail, EnrollFactory.create(SessionType.PAID, 1,
@@ -57,7 +58,7 @@ class SessionTest {
     @DisplayName("무료 강의 신청을 한다")
     void apply3() {
         Period period = new Period(LocalDate.of(2023, 11, 24), LocalDate.of(2023, 11, 24));
-        Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
+        Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(0L);
 
         Session session = new Session(0L, 0L, period, thumbnail, EnrollFactory.create(SessionType.FREE, 0,

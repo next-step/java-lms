@@ -9,13 +9,6 @@ public class Thumbnail {
     private final FileSize fileSize;
     private final ImageSize imageSize;
 
-    public Thumbnail(String name,
-                     String uri,
-                     FileSize fileSize,
-                     ImageSize imageSize) {
-        this(0L, 0L, name, uri, fileSize, imageSize);
-    }
-
     public Thumbnail(long id,
                      long sessionId,
                      String name,
