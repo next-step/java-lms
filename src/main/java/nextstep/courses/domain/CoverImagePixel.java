@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidImageSizeException;
+import nextstep.courses.CannotRecruitException;
 
 import java.util.Objects;
 
@@ -22,15 +22,15 @@ public class CoverImagePixel {
 
     private void validate(int width, int height) {
         if (width < MIN_WIDTH_SIZE) {
-            throw new InvalidImageSizeException("가로 픽셀은 최소 300픽셀 이상이어야 합니다.");
+            throw new CannotRecruitException("가로 픽셀은 최소 300픽셀 이상이어야 합니다.");
         }
 
         if (height < MIN_HEIGHT_SIZE) {
-            throw new InvalidImageSizeException("세로 픽셀은 최소 200픽셀 이상이어야 합니다.");
+            throw new CannotRecruitException("세로 픽셀은 최소 200픽셀 이상이어야 합니다.");
         }
 
         if (isInvalidRatio(width, height)) {
-            throw new InvalidImageSizeException("가로와 세로의 비율은 3:2 여야 합니다.");
+            throw new CannotRecruitException("가로와 세로의 비율은 3:2 여야 합니다.");
         }
     }
 

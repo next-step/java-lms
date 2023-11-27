@@ -1,6 +1,6 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.InvalidDurationException;
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.SessionDuration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class SessionDurationTest {
     @DisplayName("시작일 또는 종료일이 null일 경우 오류가 발생한다.")
     void createSessionDuration_null() {
         assertThatThrownBy(() -> new SessionDuration(null, null))
-                .isInstanceOf(InvalidDurationException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("강의 시작 혹은 종료 날짜는 비어있을 수 없습니다.");
     }
 
@@ -34,7 +34,7 @@ class SessionDurationTest {
     void createSessionDuration_startDate_beforeNow() {
         LocalDateTime startDate = LocalDateTime.now();
         assertThatThrownBy(() -> new SessionDuration(startDate.minusDays(1), startDate.plusHours(1)))
-                .isInstanceOf(InvalidDurationException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("시작날짜는 현재시간보다 이전일 수 없습니다.");
     }
 
@@ -43,7 +43,7 @@ class SessionDurationTest {
     void createSessionDuration_startDate_after_endDate() {
         LocalDateTime startDate = LocalDateTime.now();
         assertThatThrownBy(() -> new SessionDuration(startDate.plusHours(1), startDate))
-                .isInstanceOf(InvalidDurationException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("시작날짜는 종료날짜보다 이후일 수 없습니다.");
     }
 
@@ -52,7 +52,7 @@ class SessionDurationTest {
     void createSessionDuration_startDate_same_endDate() {
         LocalDateTime startDate = LocalDateTime.now();
         assertThatThrownBy(() -> new SessionDuration(startDate.plusDays(1), startDate.plusDays(1)))
-                .isInstanceOf(InvalidDurationException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("시작날짜와 종료날짜는 동일할 수 없습니다.");
     }
 }

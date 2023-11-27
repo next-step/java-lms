@@ -1,6 +1,6 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.InvalidImageNameException;
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.CoverImageFileName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class CoverImageFileNameTest {
     @NullAndEmptySource
     void createCoverImageFilePath_null_empty(String filePath) {
         assertThatThrownBy(() -> new CoverImageFileName(filePath))
-                .isInstanceOf(InvalidImageNameException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("이미지 이름은 필수 값입니다.");
     }
 
@@ -33,7 +33,7 @@ class CoverImageFileNameTest {
     @ValueSource(strings = {"txt", "docs", "ppt"})
     void createCoverImageFilePath_not_image_extension(String filePath) {
         assertThatThrownBy(() -> new CoverImageFileName(filePath))
-                .isInstanceOf(InvalidImageNameException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("이미지 파일 형식이 아닙니다.");
     }
 }

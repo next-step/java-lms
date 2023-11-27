@@ -1,6 +1,6 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.AlreadyJoinStudentException;
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ class StudentsTest {
         Students students = new Students(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
 
         assertThatThrownBy(() -> students.add(NsUserTest.JAVAJIGI))
-                .isInstanceOf(AlreadyJoinStudentException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("이미 수강신청을 완료한 학생입니다.");
     }
 }

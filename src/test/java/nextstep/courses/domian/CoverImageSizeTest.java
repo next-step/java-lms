@@ -1,6 +1,6 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.InvalidImageSizeException;
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.CoverImageSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class CoverImageSizeTest {
     @ValueSource(ints = {-1, 0})
     void createCoverImageSize_0_negative(int imageSize) {
         assertThatThrownBy(() -> new CoverImageSize(imageSize))
-                .isInstanceOf(InvalidImageSizeException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("이미지 사이즈는 0이거나 0보다작을 수 없습니다.");
     }
 
@@ -32,7 +32,7 @@ class CoverImageSizeTest {
     @DisplayName("이미지 사이즈가 최대 이미지 사이즈(1MB)보다 클 경우 오류가 발생한다.")
     void createCoverImageSize_overSize() {
         assertThatThrownBy(() -> new CoverImageSize(1048577))
-                .isInstanceOf(InvalidImageSizeException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("이미지 사이즈는 1MB를 넘을 수 없습니다.");
     }
 }

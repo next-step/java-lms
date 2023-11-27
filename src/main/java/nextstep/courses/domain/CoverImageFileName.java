@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidImageNameException;
+import nextstep.courses.CannotRecruitException;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -19,11 +19,11 @@ public class CoverImageFileName {
 
     private void validate(String filePath) {
         if (isNullOrEmpty(filePath)) {
-            throw new InvalidImageNameException("이미지 이름은 필수 값입니다.");
+            throw new CannotRecruitException("이미지 이름은 필수 값입니다.");
         }
 
         if (!isImageFilePattern(filePath)) {
-            throw new InvalidImageNameException("이미지 파일 형식이 아닙니다.");
+            throw new CannotRecruitException("이미지 파일 형식이 아닙니다.");
         }
     }
 

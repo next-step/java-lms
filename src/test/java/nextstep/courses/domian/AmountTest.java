@@ -1,6 +1,6 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.InvalidSessionAmountException;
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.Amount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ class AmountTest {
     @DisplayName("만일 금액생성시 금액 값이 null이라면 오류가 발생한다.")
     void createSessionAmount_null() {
         Assertions.assertThatThrownBy(() -> new Amount(null))
-                .isInstanceOf(InvalidSessionAmountException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("금액은 비어있을 수 없습니다.");
     }
 
@@ -24,7 +24,7 @@ class AmountTest {
     @DisplayName("만일 금액생성시 금액 값이 음수라면 오류가 발생한다.")
     void createSessionAmount_negative() {
         Assertions.assertThatThrownBy(() -> new Amount(-1L))
-                .isInstanceOf(InvalidSessionAmountException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("금액은 음수일 수 없습니다.");
     }
 
