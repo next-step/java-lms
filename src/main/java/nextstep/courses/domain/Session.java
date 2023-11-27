@@ -18,6 +18,7 @@ public class Session {
     public void enrolment(NsUser student, Long userPayed) {
         if (isFree()) {
             sessionEnrolment.freeEnrolment(student);
+            return;
         }
 
         sessionEnrolment.payEnrolment(student, userPayed);
