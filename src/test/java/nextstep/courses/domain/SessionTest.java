@@ -58,7 +58,7 @@ public class SessionTest {
                     SessionType.FREE,
                     new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
                     SessionStatus.OPENED,
-                    10,
+                    1,
                     1000
             );
         });
@@ -67,6 +67,41 @@ public class SessionTest {
     @Test
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
     void sessionHasFee() {
+        Session session = new Session(
+                START_DATE,
+                END_DATE,
+                SessionType.PAID,
+                new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
+                SessionStatus.OPENED,
+                10,
+                1000
+        );
+        assertThat(session.enroll(NsUserTest.JAVAJIGI, 1000)).isTrue();
+    }
+
+    @Test
+    @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.")
+    void sessionHasMaximumEnrollment() {
+        Session session = new Session(
+                START_DATE,
+                END_DATE,
+                SessionType.PAID,
+                new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
+                SessionStatus.OPENED,
+                10,
+                1000
+        );
+        for (int i = 0; i < 10; i++) {
+            session.enroll(NsUserTest.JAVAJIGI, 1000);
+        }
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            session.enroll(NsUserTest.SANJIGI, 1000);
+        });
+    }
+
+    @Test
+    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    void sessionHasSessionStatus() {
         Session session = new Session(
                 START_DATE,
                 END_DATE,
