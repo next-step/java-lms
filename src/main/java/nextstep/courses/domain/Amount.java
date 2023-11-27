@@ -4,14 +4,14 @@ import nextstep.courses.InvalidSessionAmountException;
 
 import java.util.Objects;
 
-public class SessionAmount {
+public class Amount {
 
     private Long amount;
 
-    public SessionAmount() {
+    public Amount() {
     }
 
-    public SessionAmount(Long amount) {
+    public Amount(Long amount) {
         validate(amount);
 
         this.amount = amount;

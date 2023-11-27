@@ -7,10 +7,10 @@ public class SessionEnrolment {
 
     private SessionStuden sessionStuden;
     private SessionStatusType sessionStatusType;
-    private SessionAmount amount;
+    private Amount amount;
     private boolean isFree;
 
-    public SessionEnrolment(SessionStuden sessionStuden, SessionStatusType sessionStatusType, SessionAmount amount, boolean isFree) {
+    public SessionEnrolment(SessionStuden sessionStuden, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
         this.sessionStuden = sessionStuden;
         this.sessionStatusType = sessionStatusType;
         this.amount = amount;
