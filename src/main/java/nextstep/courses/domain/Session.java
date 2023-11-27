@@ -6,6 +6,7 @@ public class Session {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Image coverImage;
 
     public Session() {
     }

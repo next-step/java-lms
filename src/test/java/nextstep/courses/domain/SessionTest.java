@@ -21,4 +21,11 @@ public class SessionTest {
 
     }
 
+    @Test
+    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
+    void sessionHasCoverUrl() {
+        Session session = new Session();
+        assertThat(session).hasFieldOrProperty("coverImage");
+    }
+
 }
