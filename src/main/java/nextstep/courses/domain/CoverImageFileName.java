@@ -1,39 +1,59 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotRecruitException;
+import nextstep.courses.InvalidValueException;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CoverImageFileName {
 
-    private static final Pattern EXTENSION_PATTERN = Pattern.compile(".*\\.(jpeg|jpg|png|gif)$");
-    private final String filePath;
+    private static final int START_INDEX = 0;
+    private static final int EXTENSION_INDEX = 1;
+    private static final String DOT = ".";
+    private final String fileName;
 
-    public CoverImageFileName(String filePath) {
-        validate(filePath);
+    public CoverImageFileName(String fullFileName) {
+        validate(fullFileName);
 
-        this.filePath = filePath;
+        this.fileName = fullFileName;
     }
 
-    private void validate(String filePath) {
-        if (isNullOrEmpty(filePath)) {
-            throw new CannotRecruitException("이미지 이름은 필수 값입니다.");
+    private void validate(String fullFileName) {
+        if (isNullOrEmpty(fullFileName)) {
+            throw new InvalidValueException("파일명은 필수입니다.");
         }
 
-        if (!isImageFilePattern(filePath)) {
-            throw new CannotRecruitException("이미지 파일 형식이 아닙니다.");
+        String fileName = findFileName(fullFileName);
+        String extension = findExtension(fullFileName);
+
+        if (isNullOrEmpty(fileName)) {
+            throw new InvalidValueException("확장자를 제외한 파일이름은 필수 입니다.");
+        }
+
+        if (!ImageExtension.isPossible(extension)) {
+            throw new InvalidValueException("이미지 파일 형식이 아닙니다.");
         }
     }
 
-    private boolean isNullOrEmpty(String filePath) {
-        return filePath == null || filePath.isBlank();
+    private boolean isNullOrEmpty(String fileName) {
+        return fileName == null || fileName.isBlank();
     }
 
-    private boolean isImageFilePattern(String filePath) {
-        Matcher matcher = EXTENSION_PATTERN.matcher(filePath);
-        return matcher.matches();
+    private String findExtension(String fullFileName) {
+        return fullFileName.substring(findDotIndex(fullFileName) + EXTENSION_INDEX);
+    }
+
+    private String findFileName(String fullFileName) {
+        return fullFileName.substring(START_INDEX, findDotIndex(fullFileName));
+    }
+
+    private int findDotIndex(String fileName) {
+        int dotIndex = fileName.lastIndexOf(DOT);
+
+        if (dotIndex == -1) {
+            throw new InvalidValueException("정상적인 파일 이름이 아닙니다.");
+        }
+
+        return dotIndex;
     }
 
     @Override
@@ -41,11 +61,11 @@ public class CoverImageFileName {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CoverImageFileName that = (CoverImageFileName) o;
-        return Objects.equals(filePath, that.filePath);
+        return Objects.equals(fileName, that.fileName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filePath);
+        return Objects.hash(fileName);
     }
 }
