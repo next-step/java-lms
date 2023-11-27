@@ -56,7 +56,7 @@ public class Answer {
     public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
         validateDeleteOwner(nsUser);
         deleted = true;
-        return deleteHistory();
+        return DeleteHistory.ofAnswer(id, writer);
     }
 
     private void validateDeleteOwner(NsUser nsUser) throws CannotDeleteException {
@@ -67,10 +67,6 @@ public class Answer {
 
     private boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    private DeleteHistory deleteHistory(){
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
