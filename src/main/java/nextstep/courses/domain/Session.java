@@ -5,25 +5,25 @@ import nextstep.users.domain.NsUser;
 public class Session {
     private final Long id;
     private final SessionDuration sessionDuration;
-    private SessionEnrolmentInfo sessionEnrolmentInfo;
+    private SessionEnrolment sessionEnrolment;
     private final CoverImage coverImage;
 
-    public Session(Long id, SessionDuration sessionDuration, SessionEnrolmentInfo sessionEnrolmentInfo, CoverImage coverImage) {
+    public Session(Long id, SessionDuration sessionDuration, SessionEnrolment sessionEnrolment, CoverImage coverImage) {
         this.id = id;
         this.sessionDuration = sessionDuration;
-        this.sessionEnrolmentInfo = sessionEnrolmentInfo;
+        this.sessionEnrolment = sessionEnrolment;
         this.coverImage = coverImage;
     }
 
     public void enrolment(NsUser student, Long userPayed) {
         if (isFree()) {
-            sessionEnrolmentInfo.freeEnrolment(student);
+            sessionEnrolment.freeEnrolment(student);
         }
 
-        sessionEnrolmentInfo.payEnrolment(student, userPayed);
+        sessionEnrolment.payEnrolment(student, userPayed);
     }
 
     private boolean isFree() {
-        return this.sessionEnrolmentInfo.isFree();
+        return this.sessionEnrolment.isFree();
     }
 }

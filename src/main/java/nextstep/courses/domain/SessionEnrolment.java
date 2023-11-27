@@ -3,15 +3,15 @@ package nextstep.courses.domain;
 import nextstep.courses.CannotRecruitException;
 import nextstep.users.domain.NsUser;
 
-public class SessionEnrolmentInfo {
+public class SessionEnrolment {
 
-    private SessionStudentInfo sessionStudentInfo;
+    private SessionStuden sessionStuden;
     private SessionStatusType sessionStatusType;
     private SessionAmount amount;
     private boolean isFree;
 
-    public SessionEnrolmentInfo(SessionStudentInfo sessionStudentInfo, SessionStatusType sessionStatusType, SessionAmount amount, boolean isFree) {
-        this.sessionStudentInfo = sessionStudentInfo;
+    public SessionEnrolment(SessionStuden sessionStuden, SessionStatusType sessionStatusType, SessionAmount amount, boolean isFree) {
+        this.sessionStuden = sessionStuden;
         this.sessionStatusType = sessionStatusType;
         this.amount = amount;
         this.isFree = isFree;
@@ -19,14 +19,14 @@ public class SessionEnrolmentInfo {
 
     public void freeEnrolment(NsUser student) {
         defaultValidate();
-        this.sessionStudentInfo.add(student);
+        this.sessionStuden.add(student);
     }
 
     public void payEnrolment(NsUser student, Long userPayed) {
         defaultValidate();
         validatePay(userPayed);
 
-        this.sessionStudentInfo.add(student);
+        this.sessionStuden.add(student);
     }
 
     public boolean isFree() {
@@ -54,6 +54,6 @@ public class SessionEnrolmentInfo {
     }
 
     private boolean isFullStudents() {
-        return this.sessionStudentInfo.isMaxStudents();
+        return this.sessionStuden.isMaxStudents();
     }
 }
