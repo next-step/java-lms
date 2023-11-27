@@ -41,4 +41,15 @@ class AnswersTest {
                         tuple(ContentType.ANSWER, 2L, NsUserTest.JAVAJIGI)
                 );
     }
+
+    @DisplayName("댓글 작성자가 아닌 사용자가 삭제를 하려고 하면 에러를 발생시킵니다.")
+    @Test
+    void invalidUser() {
+        // given
+        // when
+        // then
+        Assertions.assertThatThrownBy(() -> answers.deleteAnswers(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 }

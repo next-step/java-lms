@@ -20,7 +20,7 @@ public class Answers {
 
     public void deleteAnswers(NsUser nsUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            answer.delete(nsUser);
+            deleteAnswer(nsUser, answer);
         }
     }
 
@@ -31,5 +31,13 @@ public class Answers {
 
     public void add(Answer answer) {
         answers.add(answer);
+    }
+
+    private void deleteAnswer(NsUser nsUser, Answer answer) throws CannotDeleteException {
+        try {
+            answer.delete(nsUser);
+        } catch (Exception e) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
