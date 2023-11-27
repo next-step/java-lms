@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.code.EnrollType;
+import nextstep.courses.domain.code.EnrollmentType;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.domain.strategy.EnrollmentFactory;
 import nextstep.courses.domain.strategy.PaidEnrollmentStrategy;
@@ -48,7 +48,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(20000L);
 
-        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollType.PAID, 1,
+        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollmentType.PAID, 1,
                 amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
@@ -61,7 +61,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(0L);
 
-        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollType.FREE, 0,
+        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollmentType.FREE, 0,
                 amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));

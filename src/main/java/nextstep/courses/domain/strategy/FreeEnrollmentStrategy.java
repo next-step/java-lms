@@ -2,19 +2,19 @@ package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
-import nextstep.courses.domain.code.EnrollType;
+import nextstep.courses.domain.code.EnrollmentType;
 
 public class FreeEnrollmentStrategy implements EnrollmentStrategy {
 
     private final long id;
     private final long sessionId;
-    private final EnrollType enrollType;
+    private final EnrollmentType enrollmentType;
 
     public FreeEnrollmentStrategy(long id,
                                   long sessionId) {
         this.id = id;
         this.sessionId = sessionId;
-        this.enrollType = EnrollType.FREE;
+        this.enrollmentType = EnrollmentType.FREE;
     }
 
     @Override

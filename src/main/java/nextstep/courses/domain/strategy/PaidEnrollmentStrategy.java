@@ -3,7 +3,7 @@ package nextstep.courses.domain.strategy;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
-import nextstep.courses.domain.code.EnrollType;
+import nextstep.courses.domain.code.EnrollmentType;
 import nextstep.courses.exception.SessionFullException;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ public class PaidEnrollmentStrategy implements EnrollmentStrategy {
     private final long sessionId;
     private final int capacity;
     private final Amount amount;
-    private final EnrollType enrollType;
+    private final EnrollmentType enrollmentType;
 
     public PaidEnrollmentStrategy(long id,
                                   long sessionId,
@@ -24,7 +24,7 @@ public class PaidEnrollmentStrategy implements EnrollmentStrategy {
         this.sessionId = sessionId;
         this.capacity = capacity;
         this.amount = amount;
-        this.enrollType = EnrollType.PAID;
+        this.enrollmentType = EnrollmentType.PAID;
     }
 
     @Override

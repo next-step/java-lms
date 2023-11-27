@@ -1,7 +1,7 @@
 package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Amount;
-import nextstep.courses.domain.code.EnrollType;
+import nextstep.courses.domain.code.EnrollmentType;
 
 public class EnrollmentFactory {
 
@@ -13,15 +13,15 @@ public class EnrollmentFactory {
                                             String sessionType,
                                             int capacity,
                                             long amount) {
-        return create(id, sessionId, EnrollType.valueOf(sessionType), capacity, new Amount(amount));
+        return create(id, sessionId, EnrollmentType.valueOf(sessionType), capacity, new Amount(amount));
     }
 
     public static EnrollmentStrategy create(long id,
                                             long sessionId,
-                                            EnrollType sessionType,
+                                            EnrollmentType sessionType,
                                             int capacity,
                                             Amount amount) {
-        if (sessionType == EnrollType.FREE) {
+        if (sessionType == EnrollmentType.FREE) {
             return create(id, sessionId);
         }
         return create(id, sessionId, capacity, amount);
