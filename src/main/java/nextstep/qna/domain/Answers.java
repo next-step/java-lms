@@ -2,16 +2,23 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Answers {
 
-    private final List<Answer> answers;
+    private final List<Answer> answers = new ArrayList<>();
 
     public Answers(List<Answer> answers) {
-        this.answers = answers;
+        this.answers.addAll(answers);
+    }
+
+    public Answers(Answer... answers) {
+        Arrays.stream(answers)
+                .forEach(this::add);
     }
 
     public Answers add(Answer answer) {

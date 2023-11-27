@@ -25,7 +25,7 @@ public class AnswersTest {
     @Test
     void 답변목록에_답변을_추가한다() {
         //given
-        List<Answer> answer = List.of(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         Answers answers = new Answers(answer);
         //when
         answers.add(new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2"));

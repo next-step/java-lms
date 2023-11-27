@@ -1,6 +1,6 @@
 package nextstep.qna.service;
 
-import nextstep.qna.CannotDeleteException;
+import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.*;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ public class QnaServiceTest {
 
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
-        }).isInstanceOf(CannotDeleteException.class);
+        }).isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class QnaServiceTest {
 
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
-        }).isInstanceOf(CannotDeleteException.class);
+        }).isInstanceOf(UnAuthorizedException.class);
     }
 
     private void verifyDeleteHistories() {
