@@ -96,17 +96,19 @@ public class Question {
         return deleted;
     }
 
-    public boolean delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
         if (writer != user) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        List<Answer> answerList = getAnswers();
-        if (!answerList.isEmpty()) {
-            throw new CannotDeleteException("답변이 있을 경우 삭제할 수 없습니다.");
+        this.deleted = true;
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), writer, LocalDateTime.now()));
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(user));
         }
 
-        this.deleted = true;
-        return deleted;
+        return deleteHistories;
     }
 }
