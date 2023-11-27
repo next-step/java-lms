@@ -34,4 +34,7 @@ public class Answers {
                 });
     }
 
+    public void deleteAll() {
+        this.answers.forEach(Answer::delete);
+    }
 }

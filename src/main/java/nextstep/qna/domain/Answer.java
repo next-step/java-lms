@@ -30,11 +30,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -54,6 +54,10 @@ public class Answer {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     public boolean isOwner(NsUser writer) {

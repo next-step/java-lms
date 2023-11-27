@@ -77,6 +77,13 @@ public class Question {
         return this;
     }
 
+    public Question delete() {
+        deleted = true;
+        answers.deleteAll();
+
+        return this;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
