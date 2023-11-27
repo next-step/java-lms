@@ -6,7 +6,7 @@ import nextstep.courses.exception.SizeUnderException;
 public class ImageSize {
 
     private static final long MIN_WIDTH_PIXEL = 300L;
-    public static final long MIN_HEIGHT_PIXEL = 200L;
+    private static final long MIN_HEIGHT_PIXEL = 200L;
     private static final double ERROR_RATE = 0.001;
     private static final double EXPECTED_RATIO = 3.0 / 2.0;
     private final long widthPixel;
