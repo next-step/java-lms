@@ -23,10 +23,6 @@ public class Answers {
         answers.add(answer);
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     public void validateAllOwner(NsUser user) {
         this.answers.stream()
                 .filter(answer -> !answer.isOwner(user))

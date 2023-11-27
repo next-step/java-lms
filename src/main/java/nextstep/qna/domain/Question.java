@@ -73,9 +73,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public Question delete(NsUser user) {
@@ -85,20 +84,6 @@ public class Question {
 
         return this;
     }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers.getAnswers();
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
 
     private void validateDeletable(NsUser user) {
         validateOwner(user);
@@ -116,5 +101,10 @@ public class Question {
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         deleteHistories.addAll(answers.makeDeleteHistories());
         return deleteHistories;
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
