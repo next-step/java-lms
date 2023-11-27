@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -54,11 +55,6 @@ public class Question {
         return contents;
     }
 
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -72,21 +68,28 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public List<DeleteHistory> delete(NsUser user) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        questionUserCheck(user);
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer));
+        deleteHistories.addAll(answers.delete(user));
+        return deleteHistories;
+    }
+
+    private void questionUserCheck(NsUser user) {
+        if (!isOwner(user)) {
+            throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
