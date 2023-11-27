@@ -3,15 +3,13 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.groups.Tuple.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.groups.Tuple.tuple;
 
 class AnswersTest {
 

@@ -1,9 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
