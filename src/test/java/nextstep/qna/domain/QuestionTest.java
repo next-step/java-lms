@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,12 +67,12 @@ public class QuestionTest {
         final DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.QUESTION, tempQ1.getId(), user, ignored);
 
         //when
-        final DeleteHistory deleteHistory = tempQ1.delete(user);
+        final List<DeleteHistory> deleteHistories = tempQ1.delete(user);
         final boolean isDeleted = tempQ1.isDeleted();
 
         //then
         assertThat(isDeleted).isTrue();
-        assertThat(deleteHistory).isEqualTo(expectedDeleteHistory);
+        assertThat(deleteHistories).contains(expectedDeleteHistory);
     }
 
     @Test
