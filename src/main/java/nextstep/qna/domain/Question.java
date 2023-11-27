@@ -1,12 +1,14 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
+
 public class Question {
+
     private Long id;
 
     private String title;
@@ -15,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -24,6 +26,11 @@ public class Question {
     private LocalDateTime updatedDate;
 
     public Question() {
+    }
+
+    public Question(NsUser writer, Answers answers) {
+        this.writer = writer;
+        this.answers = answers;
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -41,24 +48,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -68,25 +57,37 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validate(loginUser);
+        answers.delete(loginUser);
+        deleted = true;
+    }
+
+    private void validate(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("본인이 작성한 질문만 삭제할 수 있습니다.");
+        }
+    }
+
+    public List<DeleteHistory> getDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        if (isDeleted() && answers.isAllDeleted()) {
+            deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer));
+            deleteHistories.addAll(answers.getDeleteHistories());
+        }
+        return deleteHistories;
+    }
+
+    public Answers getAnswers() {
+        return answers;
     }
 }
