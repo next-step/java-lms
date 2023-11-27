@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,14 +17,20 @@ public class QuestionTest {
     @DisplayName("질문 등록자와 삭제 요청자가 다르면 CannotDeleteException을 발생시킨다.")
     @Test
     void valid_question() {
-        assertThatThrownBy(() -> Q1.delete(SANJIGI))
+        assertThatThrownBy(
+            () -> Q1.deleteQuestion(
+                SANJIGI, LocalDateTime.of(2023, 11,27, 1, 0, 0)
+            )
+        )
             .isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("delete 메서드 호출시 사용자가 soft delete된다.")
+    @DisplayName("deleteQuestion 메서드 호출시 사용자가 soft delete된다.")
     @Test
     void delete() throws CannotDeleteException {
-        Q1.delete(JAVAJIGI);
+        Q1.deleteQuestion(
+            JAVAJIGI, LocalDateTime.of(2023, 11,27, 1, 0, 0)
+        );
         assertThat(Q1.isDeleted()).isEqualTo(true);
     }
 }

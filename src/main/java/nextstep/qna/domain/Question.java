@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -36,6 +36,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -46,11 +47,6 @@ public class Question {
         return writer;
     }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
@@ -59,11 +55,17 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> deleteQuestion(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        // delete question
+        delete(loginUser);
+        deleteHistories.add(createDeleteHistory(now));
+        // delete answers
+        deleteHistories.addAll(answers.deleteAnswers(loginUser, now));
+        return deleteHistories;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    private void delete(NsUser loginUser) throws CannotDeleteException {
         validQuestion(loginUser);
         this.deleted = true;
     }
@@ -74,8 +76,21 @@ public class Question {
         }
     }
 
+    private DeleteHistory createDeleteHistory(LocalDateTime now) {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, now);
+    }
+
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public Answers getAnswers() {
+        return this.answers;
+    }
+
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        this.answers.add(answer);
     }
 }

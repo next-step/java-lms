@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -65,11 +60,7 @@ public class Answer {
         return writer;
     }
 
-    public void toQuestion(Question question) {
-        this.question = question;
-    }
-
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
         validAnswer(loginUser);
         this.deleted = true;
     }
@@ -80,9 +71,16 @@ public class Answer {
         }
     }
 
+    public DeleteHistory createDeleteHistory(LocalDateTime now) {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, now);
+    }
 
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public void toQuestion(Question question) {
+        this.question = question;
     }
 }
