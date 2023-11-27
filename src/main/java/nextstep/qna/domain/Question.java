@@ -16,7 +16,11 @@ public class Question {
 
     private NsUser writer;
 
+    //AS-IS
     private List<Answer> answers = new ArrayList<>();
+
+    //TO-BE
+    private Answers answerCollections;
 
     private boolean deleted = false;
 
@@ -25,6 +29,10 @@ public class Question {
     private LocalDateTime updatedDate;
 
     public Question() {
+    }
+
+    public Question(NsUser writer) {
+        this(0L, writer, null, null);
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -36,6 +44,16 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    //TO-BE
+    public Question(Long id, NsUser writer, String title, String contents, Answers answerCollections) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.answerCollections = answerCollections;
+
     }
 
     public Long getId() {
@@ -64,6 +82,7 @@ public class Question {
         return writer;
     }
 
+    //AS-IS
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
@@ -76,8 +95,19 @@ public class Question {
 
     //TO-BE
     public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateAuthority(loginUser);
+        validateWriterOfAnswers();
+    }
+
+    private void validateAuthority(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateWriterOfAnswers() throws CannotDeleteException {
+        if(!answerCollections.isAllSameBy(this.writer)){
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
@@ -90,6 +120,7 @@ public class Question {
         return deleted;
     }
 
+    //AS-IS
     public List<Answer> getAnswers() {
         return answers;
     }
@@ -98,6 +129,5 @@ public class Question {
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
-
 
 }

@@ -24,6 +24,10 @@ public class Answer {
     public Answer() {
     }
 
+    public Answer(NsUser writer, Question question) {
+        this(null, writer, question, null);
+    }
+
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
