@@ -16,4 +16,5 @@ class CourseTest {
                 .hasFieldOrProperty("sessions");
     }
 
+
 }
