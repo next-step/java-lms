@@ -90,7 +90,13 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void validateOwner(NsUser user) throws CannotDeleteException {
+
+    public void validateDeletable(NsUser user) {
+        validateOwner(user);
+        answers.validateAllOwner(user);
+    }
+
+    private void validateOwner(NsUser user) {
         if (!this.isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
