@@ -1,5 +1,6 @@
 package nextstep.courses.domian;
 
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.InvalidValueException;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.SessionEnrolment;
@@ -54,7 +55,7 @@ class SessionEnrolmentTest {
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStuden, SessionStatusType.END, amount, true);
         Assertions.assertThatThrownBy(() -> sessionEnrolment.freeEnrolment(newUser))
-                .isInstanceOf(InvalidValueException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("현재 강의가 모집중인 상태가 아닙니다.");
     }
 
@@ -68,7 +69,7 @@ class SessionEnrolmentTest {
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStuden, SessionStatusType.RECRUITMENT, amount, false);;
         Assertions.assertThatThrownBy(() -> sessionEnrolment.payEnrolment(newUser, 20_000L))
-                .isInstanceOf(InvalidValueException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("결제금액과 강의금액이 맞지 않습니다.");
     }
 
@@ -82,7 +83,7 @@ class SessionEnrolmentTest {
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStuden, SessionStatusType.RECRUITMENT, amount, false);;
         Assertions.assertThatThrownBy(() -> sessionEnrolment.payEnrolment(newUser, 30_000L))
-                .isInstanceOf(InvalidValueException.class)
+                .isInstanceOf(CannotRecruitException.class)
                 .hasMessage("강의 최대 수강 인원이 모두 찼습니다.");
     }
 }

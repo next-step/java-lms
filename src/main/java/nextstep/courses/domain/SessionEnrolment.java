@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotRecruitException;
 import nextstep.courses.InvalidValueException;
 import nextstep.users.domain.NsUser;
 
@@ -18,15 +19,23 @@ public class SessionEnrolment {
     }
 
     public void freeEnrolment(NsUser student) {
-        defaultValidate();
-        this.sessionStuden.add(student);
+        try {
+            defaultValidate();
+            this.sessionStuden.add(student);
+        } catch (InvalidValueException e) {
+            throw new CannotRecruitException(e.getMessage());
+        }
     }
 
     public void payEnrolment(NsUser student, Long userPayed) {
-        defaultValidate();
-        validatePay(userPayed);
+        try {
+            defaultValidate();
+            validatePay(userPayed);
 
-        this.sessionStuden.add(student);
+            this.sessionStuden.add(student);
+        } catch (InvalidValueException e) {
+            throw new CannotRecruitException(e.getMessage());
+        }
     }
 
     public boolean isFree() {
