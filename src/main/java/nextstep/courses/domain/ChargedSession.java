@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.type.Price;
 import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.exception.DifferentSessionAmountException;
 import nextstep.courses.exception.ExceedMaxStudentException;
@@ -11,23 +12,23 @@ import java.math.BigDecimal;
 public class ChargedSession extends Session {
 
     private final int maxNumberOfStudent;
-    private final BigDecimal price;
+    private final Price price;
 
     public ChargedSession(Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
         super(duration, image);
         this.maxNumberOfStudent = maxNumberOfStudent;
-        this.price = price;
+        this.price = new Price(price);
     }
 
     public ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
         super(duration, image, status);
         this.maxNumberOfStudent = maxNumberOfStudent;
-        this.price = price;
+        this.price = new Price(price);
     }
 
     public void apply(Payment payment, NsUser nsUser) {
         validate(payment);
-        this.students.add(nsUser);
+        addStudent(nsUser);
     }
 
     private void validate(Payment payment) {

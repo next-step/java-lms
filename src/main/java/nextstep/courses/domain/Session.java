@@ -7,10 +7,11 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Session {
+public abstract class Session {
 
     private final Duration duration;
     private final Image image;
@@ -29,15 +30,20 @@ public class Session {
         this.status = status;
     }
 
-    public void apply(Payment payment, NsUser nsUser) {
-        validateStatus();
-        this.students.add(nsUser);
-    }
+    public abstract void apply(Payment payment, NsUser nsUser);
 
     protected void validateStatus() {
         if (!this.status.equals(SessionStatus.RECRUITING)) {
             throw new NotRecruitingSessionException("모집중인 강의가 아닙니다.");
         }
+    }
+
+    protected void addStudent(NsUser nsUser) {
+        this.students.add(nsUser);
+    }
+
+    public List<NsUser> students() {
+        return Collections.unmodifiableList(this.students);
     }
 
     public Image image() {
