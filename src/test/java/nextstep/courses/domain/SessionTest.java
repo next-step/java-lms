@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.courses.domain.code.SessionType;
+import nextstep.courses.domain.strategy.EnrollFactory;
 import nextstep.courses.domain.strategy.PaidEnrollmentStrategy;
 import nextstep.courses.exception.CanNotApplySessionStatusException;
 import nextstep.payments.domain.Payment;
@@ -46,7 +47,8 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(20000L);
 
-        Session session = new Session(0L, 0L, period, thumbnail, SessionType.PAID, 1, amount, SessionStatus.RECRUITING);
+        Session session = new Session(0L, 0L, period, thumbnail, EnrollFactory.create(SessionType.PAID, 1,
+                amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
@@ -58,7 +60,8 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail("테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(0L);
 
-        Session session = new Session(0L, 0L, period, thumbnail, SessionType.FREE, 0, amount, SessionStatus.RECRUITING);
+        Session session = new Session(0L, 0L, period, thumbnail, EnrollFactory.create(SessionType.FREE, 0,
+                amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }

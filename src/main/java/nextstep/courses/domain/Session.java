@@ -32,22 +32,7 @@ public class Session {
                    long amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
-        this(id, courseId, new Period(startDate, endDate), thumbnail, SessionType.valueOf(sessionType), capacity,
-                new Amount(amount), SessionStatus.valueOf(sessionStatus));
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Session(long id,
-                   long courseId,
-                   Period period,
-                   Thumbnail thumbnail,
-                   SessionType sessionType,
-                   int capacity,
-                   Amount amount,
-                   SessionStatus status) {
-        this(id, courseId, period, thumbnail, EnrollFactory.create(sessionType, capacity, amount), status,
-                LocalDateTime.now(), null);
+        this(id, courseId, new Period(startDate, endDate), thumbnail, EnrollFactory.create(SessionType.valueOf(sessionType), capacity, new Amount(amount)), SessionStatus.valueOf(sessionStatus), createdAt, updatedAt);
     }
 
     public Session(long id,
