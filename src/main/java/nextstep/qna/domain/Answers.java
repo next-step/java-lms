@@ -21,8 +21,22 @@ public class Answers {
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
         if (!answers.isEmpty()) {
+            validateDeletingPolicy();
             deleteAnswers(loginUser);
         }
+    }
+
+    private void validateDeletingPolicy() throws CannotDeleteException {
+        if (!allAnswerWritersIsSame()) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean allAnswerWritersIsSame() {
+        return answers.stream()
+            .map(Answer::getWriter)
+            .collect(Collectors.toSet())
+            .size() == 1;
     }
 
     private void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
