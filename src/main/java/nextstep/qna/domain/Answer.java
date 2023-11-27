@@ -84,10 +84,14 @@ public class Answer {
     }
 
     public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+        validateUser(user);
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, getId(), writer, LocalDateTime.now());
+    }
+
+    private void validateUser(NsUser user) throws CannotDeleteException {
         if (writer != user) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, getId(), writer, LocalDateTime.now());
     }
 }

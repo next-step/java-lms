@@ -97,10 +97,7 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
-        if (writer != user) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
+        validateUser(user);
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -110,5 +107,11 @@ public class Question {
         }
 
         return deleteHistories;
+    }
+
+    private void validateUser(NsUser user) throws CannotDeleteException {
+        if (writer != user) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
