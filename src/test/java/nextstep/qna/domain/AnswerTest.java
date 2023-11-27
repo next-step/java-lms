@@ -19,4 +19,11 @@ public class AnswerTest {
         assertThatThrownBy(() -> A1.validAnswer(SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
     }
+
+    @DisplayName("delete 메서드 호출시 사용자가 soft delete된다.")
+    @Test
+    void delete() {
+        A1.delete();
+        assertThat(A1.isDeleted()).isEqualTo(true);
+    }
 }
