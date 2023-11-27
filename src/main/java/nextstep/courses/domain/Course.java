@@ -19,6 +19,7 @@ public class Course {
     public Course() {
     }
 
+
     public List<Session> sessions() {
         return sessions;
     }
