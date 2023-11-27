@@ -24,6 +24,10 @@ public class Image extends BaseEntity {
         this.specification = new ImageSpecification(width, height);
     }
 
+    public Long id() {
+        return this.id;
+    }
+
     public Volume volume() {
         return this.volume;
     }

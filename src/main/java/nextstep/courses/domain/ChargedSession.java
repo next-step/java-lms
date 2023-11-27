@@ -8,6 +8,9 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ChargedSession extends Session {
 
@@ -15,13 +18,16 @@ public class ChargedSession extends Session {
     private final Price price;
 
     public ChargedSession(Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
-        super(duration, image);
-        this.maxNumberOfStudent = maxNumberOfStudent;
-        this.price = new Price(price);
+        this(0L, duration, image, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
     }
 
     public ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
-        super(duration, image, status);
+        this(0L, duration, image, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
+    }
+
+    public ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
+                          LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, duration, image, status, createdAt, updatedAt);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = new Price(price);
     }
@@ -49,4 +55,34 @@ public class ChargedSession extends Session {
         }
     }
 
+    public int maxNumberOfStudent() {
+        return this.maxNumberOfStudent;
+    }
+
+    public Price price() {
+        return this.price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChargedSession)) return false;
+        if (!super.equals(o)) return false;
+        ChargedSession session = (ChargedSession) o;
+        return maxNumberOfStudent == session.maxNumberOfStudent && Objects.equals(price, session.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), maxNumberOfStudent, price);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+            ", ChargedSession{" +
+            "maxNumberOfStudent=" + maxNumberOfStudent +
+            ", price=" + price +
+            '}';
+    }
 }
