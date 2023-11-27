@@ -41,4 +41,14 @@ public class QuestionTest {
         assertThat(Q1.isDeleted()).isTrue();
         assertThat(A1.isDeleted()).isTrue();
     }
+
+    @Test
+    @DisplayName("DeleteHistory 생성 / Question과 Answer 모두 삭제 생성 / 생성")
+    void makeDeleteHistories() {
+        // given
+        Q1.addAnswer(A1);
+
+        // when then
+        assertThat(Q1.makeDeleteHistories()).hasSize(2);
+    }
 }
