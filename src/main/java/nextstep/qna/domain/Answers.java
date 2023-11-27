@@ -15,9 +15,9 @@ public class Answers {
         this.list = answerList;
     }
 
-    public List<DeleteHistory> delete(NsUser nsUser) {
+    public List<DeleteHistory> delete(NsUser nsUser, LocalDateTime localDateTime) {
         return list.stream()
-                .map(answer -> answer.delete(nsUser))
+                .map(answer -> answer.delete(nsUser, localDateTime))
                 .collect(Collectors.toList());
     }
 

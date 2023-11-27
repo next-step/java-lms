@@ -77,10 +77,10 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public DeleteHistory delete(NsUser questionUser) {
+    public DeleteHistory delete(NsUser questionUser, LocalDateTime localDateTime) {
         checkWriteOther(questionUser);
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, this.id,this.writer);
+        return DeleteHistory.ofAnswer(this.id,this.writer,localDateTime);
     }
 
     private void checkWriteOther(NsUser questionUser) {

@@ -52,14 +52,14 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime localDateTime) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         checkWriter(loginUser);
         changeDeleteState(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer));
+        deleteHistories.add(DeleteHistory.ofQuestion(this.id, this.writer, localDateTime));
 
-        deleteHistories.addAll(answers.delete(loginUser));
+        deleteHistories.addAll(answers.delete(loginUser, localDateTime));
 
         return deleteHistories;
     }
