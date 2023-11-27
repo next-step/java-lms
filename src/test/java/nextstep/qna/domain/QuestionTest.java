@@ -1,8 +1,21 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUserTest;
+import static nextstep.users.domain.NsUserTest.*;
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import nextstep.qna.CannotDeleteException;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(JAVAJIGI, "title1", "contents1");
+    public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
+
+    @DisplayName("질문 등록자와 삭제 요청자가 다르면 CannotDeleteException을 발생시킨다.")
+    @Test
+    void valid_question() throws CannotDeleteException {
+        assertThatThrownBy(() -> Q1.validQuestion(SANJIGI))
+            .isInstanceOf(CannotDeleteException.class);
+    }
 }
