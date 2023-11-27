@@ -6,12 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.qna.domain.AnswerTest.A1;
+import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문한사람이 같다 / 통과")
@@ -46,9 +47,10 @@ public class QuestionTest {
     @DisplayName("DeleteHistory 생성 / Question과 Answer 모두 삭제 생성 / 생성")
     void makeDeleteHistories() {
         // given
-        Q1.addAnswer(A1);
+        Q2.addAnswer(A1);
+        Q2.addAnswer(A2);
 
         // when then
-        assertThat(Q1.makeDeleteHistories()).hasSize(2);
+        assertThat(Q2.makeDeleteHistories()).hasSize(3);
     }
 }
