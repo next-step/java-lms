@@ -76,4 +76,9 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    public boolean delete() {
+        this.deleted = true;
+        return deleted;
+    }
 }
