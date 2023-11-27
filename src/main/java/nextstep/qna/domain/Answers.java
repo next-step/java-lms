@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Answers {
-	private final List<Answer> answers;
+	private final List<Answer> values;
 
-	public Answers(List<Answer> answers) {
-		this.answers = answers;
+	public Answers(List<Answer> values) {
+		this.values = values;
 	}
 
 	public void delete(NsUser loginUser) throws CannotDeleteException {
 		try {
-			for (Answer answer : answers) {
+			for (Answer answer : values) {
 				answer.delete(loginUser);
 			}
 		} catch (CannotDeleteException e) {
@@ -23,16 +23,16 @@ public class Answers {
 		}
 	}
 
-	public List<Answer> answers() {
-		return answers;
+	public List<Answer> get() {
+		return values;
 	}
 
 	public void add(Answer answer) {
-		answers.add(answer);
+		values.add(answer);
 	}
 
 	public List<DeleteHistory> deleteHistories(List<DeleteHistory> deleteHistories) {
-		answers.forEach(answer -> {
+		values.forEach(answer -> {
 			deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
 		});
 		return deleteHistories;
