@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotRecruitException;
+import nextstep.courses.InvalidValueException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,19 +19,19 @@ public class SessionDuration {
 
     private void validate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null) {
-            throw new CannotRecruitException("강의 시작 혹은 종료 날짜는 비어있을 수 없습니다.");
+            throw new InvalidValueException("강의 시작 혹은 종료 날짜는 비어있을 수 없습니다.");
         }
 
         if (startDate.isBefore(LocalDateTime.now())) {
-            throw new CannotRecruitException("시작날짜는 현재시간보다 이전일 수 없습니다.");
+            throw new InvalidValueException("시작날짜는 현재시간보다 이전일 수 없습니다.");
         }
 
         if (startDate.isAfter(endDate)) {
-            throw new CannotRecruitException("시작날짜는 종료날짜보다 이후일 수 없습니다.");
+            throw new InvalidValueException("시작날짜는 종료날짜보다 이후일 수 없습니다.");
         }
 
         if (startDate.isEqual(endDate)) {
-            throw new CannotRecruitException("시작날짜와 종료날짜는 동일할 수 없습니다.");
+            throw new InvalidValueException("시작날짜와 종료날짜는 동일할 수 없습니다.");
         }
     }
 

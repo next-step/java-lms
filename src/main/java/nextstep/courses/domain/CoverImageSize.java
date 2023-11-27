@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotRecruitException;
+import nextstep.courses.InvalidValueException;
 
 import java.util.Objects;
 
@@ -17,11 +17,11 @@ public class CoverImageSize {
 
     private void validate(int imageSize) {
         if (imageSize <= 0) {
-            throw new CannotRecruitException("이미지 사이즈는 0이거나 0보다작을 수 없습니다.");
+            throw new InvalidValueException("이미지 사이즈는 0이거나 0보다작을 수 없습니다.");
         }
 
         if (imageSize > MAX_IMAGE_SIZE) {
-            throw new CannotRecruitException("이미지 사이즈는 1MB를 넘을 수 없습니다.");
+            throw new InvalidValueException("이미지 사이즈는 1MB를 넘을 수 없습니다.");
         }
     }
 
