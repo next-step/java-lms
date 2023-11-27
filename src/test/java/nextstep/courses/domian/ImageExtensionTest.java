@@ -5,8 +5,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class ImageExtensionTest {
 
     @ParameterizedTest(name = "확장자 {0}는 이미지 확장자 이다 {1}")

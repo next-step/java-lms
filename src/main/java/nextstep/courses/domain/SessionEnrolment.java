@@ -6,13 +6,13 @@ import nextstep.users.domain.NsUser;
 
 public class SessionEnrolment {
 
-    private SessionStuden sessionStuden;
+    private SessionStudent sessionStudent;
     private SessionStatusType sessionStatusType;
     private Amount amount;
     private boolean isFree;
 
-    public SessionEnrolment(SessionStuden sessionStuden, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
-        this.sessionStuden = sessionStuden;
+    public SessionEnrolment(SessionStudent sessionStudent, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
+        this.sessionStudent = sessionStudent;
         this.sessionStatusType = sessionStatusType;
         this.amount = amount;
         this.isFree = isFree;
@@ -21,7 +21,7 @@ public class SessionEnrolment {
     public void freeEnrolment(NsUser student) {
         try {
             defaultValidate();
-            this.sessionStuden.add(student);
+            this.sessionStudent.add(student);
         } catch (InvalidValueException e) {
             throw new CannotRecruitException(e.getMessage());
         }
@@ -32,7 +32,7 @@ public class SessionEnrolment {
             defaultValidate();
             validatePay(userPayed);
 
-            this.sessionStuden.add(student);
+            this.sessionStudent.add(student);
         } catch (InvalidValueException e) {
             throw new CannotRecruitException(e.getMessage());
         }
@@ -63,6 +63,6 @@ public class SessionEnrolment {
     }
 
     private boolean isFullStudents() {
-        return this.sessionStuden.isMaxStudents();
+        return this.sessionStudent.isMaxStudents();
     }
 }
