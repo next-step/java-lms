@@ -20,7 +20,7 @@ class AnswersTest {
         final Answers answers = new Answers(List.of(tempA1, tempA2));
 
         //when
-        final DeleteHistories deleteHistories = answers.deleteAll(NsUserTest.JAVAJIGI);
+        final List<DeleteHistory> deleteHistories = answers.deleteAll(NsUserTest.JAVAJIGI);
 
         final boolean isDeletedTempA1 = tempA1.isDeleted();
         final boolean isDeletedTempA2 = tempA2.isDeleted();
