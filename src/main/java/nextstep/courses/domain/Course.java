@@ -5,17 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Course {
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;
 
     private Long creatorId;
     private List<Session> sessions = new ArrayList<>();
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public Course() {
     }
@@ -25,11 +21,10 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public void addSession(Session session) {
@@ -48,18 +43,12 @@ public class Course {
         return Collections.unmodifiableList(this.sessions);
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", creatorId=" + creatorId +
+            '}';
     }
 }

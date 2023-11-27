@@ -19,6 +19,10 @@ public class Volume {
         }
     }
 
+    public double volume() {
+        return this.volume;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,5 +34,12 @@ public class Volume {
     @Override
     public int hashCode() {
         return Objects.hash(volume);
+    }
+
+    @Override
+    public String toString() {
+        return "Volume{" +
+            "volume=" + volume +
+            '}';
     }
 }
