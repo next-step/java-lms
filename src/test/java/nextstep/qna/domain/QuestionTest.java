@@ -18,25 +18,25 @@ public class QuestionTest {
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문한사람이 같다 / 통과")
     void deleteSameLoginQuestionUser() {
         // when then
-        Q1.validateDeletable(NsUserTest.JAVAJIGI);
+        Q1.delete(NsUserTest.JAVAJIGI);
     }
 
     @Test
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문한사람이 다르다 / CannotDeleteException")
     void deleteDiffLoginQuestionUser() {
         // when then
-        assertThatThrownBy(() -> Q1.validateDeletable(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
-    @DisplayName("삭제 / Question과 Answer을 모두 삭제한다 / softDelete")
+    @DisplayName("삭제 / Question과 Answer을 모두 삭제한다 / 성공")
     void delete() {
         // given
         Q1.addAnswer(A1);
 
         // when
-        Q1.delete();
+        Q1.delete(NsUserTest.JAVAJIGI);
 
         // then
         assertThat(Q1.isDeleted()).isTrue();
@@ -44,7 +44,7 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("DeleteHistory 생성 / Question과 Answer 모두 삭제 생성 / 생성")
+    @DisplayName("DeleteHistory 생성 / Question과 Answer / 생성")
     void makeDeleteHistories() {
         // given
         Q2.addAnswer(A1);

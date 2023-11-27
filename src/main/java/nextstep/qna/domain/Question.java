@@ -78,7 +78,8 @@ public class Question {
         return this;
     }
 
-    public Question delete() {
+    public Question delete(NsUser user) {
+        this.validateDeletable(user);
         deleted = true;
         answers.deleteAll();
 
@@ -99,7 +100,7 @@ public class Question {
     }
 
 
-    public void validateDeletable(NsUser user) {
+    private void validateDeletable(NsUser user) {
         validateOwner(user);
         answers.validateAllOwner(user);
     }
