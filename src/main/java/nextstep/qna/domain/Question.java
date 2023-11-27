@@ -80,17 +80,13 @@ public class Question {
         return new DeleteHistory(ContentType.QUESTION, id, writer, now);
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    public Answers getAnswers() {
-        return this.answers;
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         this.answers.add(answer);
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
