@@ -76,4 +76,8 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    public boolean isSameWriter(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
 }
