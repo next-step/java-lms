@@ -41,17 +41,25 @@ public class ChargedSessionRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void create() {
         ChargedSession session = session(savedImage());
-        int count = chargedSessionRepository.save(session, savedCourse());
+        int count = chargedSessionRepository.save(6L, session, savedCourse());
         assertThat(count).isEqualTo(1);
-        ChargedSession savedChargedSession = chargedSessionRepository.findById(1L);
-        assertThat(session).isEqualTo(savedChargedSession);
-        LOGGER.debug("ChargedSession: {}", savedChargedSession);
+    }
+
+    @Test
+    void read() {
+        ChargedSession session = chargedSessionRepository.findById(2L);
+        assertThat(session).isEqualTo(savedSession());
+        LOGGER.debug("ChargedSession: {}", session);
     }
 
     private ChargedSession session(Image image) {
         return new ChargedSession(1L, duration(), image, SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000), LocalDateTime.now(), null);
+    }
+
+    private ChargedSession savedSession() {
+        return new ChargedSession(2L, duration(), savedImage(), SessionStatus.RECRUITING, 100, BigDecimal.valueOf(1_0000), LocalDateTime.now(), null);
     }
 
     private Course savedCourse() {
@@ -63,7 +71,7 @@ public class ChargedSessionRepositoryTest {
     }
 
     private Duration duration() {
-        return new Duration(LocalDate.now(), LocalDate.now());
+        return new Duration(LocalDate.of(2023, 11, 1), LocalDate.of(2024, 1, 1));
     }
 
 }

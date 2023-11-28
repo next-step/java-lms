@@ -28,9 +28,10 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
     }
 
     @Override
-    public int save(ChargedSession session, Course course) {
-        String sql = "insert into session (course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int save(Long id, ChargedSession session, Course course) {
+        String sql = "insert into session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
+            id,
             course.id(),
             DEFAULT_CHARGED_SESSION_TYPE,
             session.duration().start(),

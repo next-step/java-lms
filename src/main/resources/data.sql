@@ -13,4 +13,9 @@ INSERT INTO image (id, volume, type, width, height, created_at) VALUES (2, 0.3, 
 
 INSERT INTO course (id, title, creator_id, created_at) VALUES (2, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) VALUES (3, 2, 'free', '2023-11-01', '2024-01-01', 2, 'RECRUITING', 100, 10000, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) VALUES (2, 2, 'charged', '2023-11-01', '2024-01-01', 2, 'RECRUITING', 100, 10000, CURRENT_TIMESTAMP());
+
+INSERT INTO session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) VALUES (3, 2, 'free', '2023-11-01', '2024-01-01', 2, 'RECRUITING', 0, 0, CURRENT_TIMESTAMP());
+
+INSERT INTO apply (id, session_id, user_id, created_at) VALUES (2, 3, 1, CURRENT_TIMESTAMP());
+

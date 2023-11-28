@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -28,16 +29,17 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     }
 
     @Override
-    public int save(FreeSession session, Course course) {
-        String sql = "insert into session (course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int save(Long id, FreeSession session, Course course) {
+        String sql = "insert into session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
+            id,
             course.id(),
             DEFAULT_FREE_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
             session.image().id(),
             session.status().name(),
-            null,
+            BigDecimal.ZERO,
             null,
             session.createdAt());
     }

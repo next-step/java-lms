@@ -40,17 +40,25 @@ public class FreeSessionRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void create() {
         FreeSession session = session(savedImage());
-        int count = freeSessionRepository.save(session, savedCourse());
+        int count = freeSessionRepository.save(5L, session, savedCourse());
         assertThat(count).isEqualTo(1);
-        FreeSession savedFreeSession = freeSessionRepository.findById(1L);
-        assertThat(session).isEqualTo(savedFreeSession);
-        LOGGER.debug("FreeSession: {}", savedFreeSession);
+    }
+
+    @Test
+    void read() {
+        FreeSession session = freeSessionRepository.findById(3L);
+        assertThat(session).isEqualTo(savedSession());
+        LOGGER.debug("FreeSession: {}", session);
     }
 
     private FreeSession session(Image image) {
         return new FreeSession(1L, duration(), image, SessionStatus.RECRUITING, LocalDateTime.now(), null);
+    }
+
+    private FreeSession savedSession() {
+        return new FreeSession(3L, duration(), savedImage(), SessionStatus.RECRUITING, LocalDateTime.now(), null);
     }
 
     private Image savedImage() {
@@ -62,7 +70,7 @@ public class FreeSessionRepositoryTest {
     }
 
     private Duration duration() {
-        return new Duration(LocalDate.now(), LocalDate.now());
+        return new Duration(LocalDate.of(2023, 11, 1), LocalDate.of(2024, 1, 1));
     }
 
 }
