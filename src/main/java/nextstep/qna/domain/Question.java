@@ -16,11 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    //AS-IS
-    private List<Answer> answers = new ArrayList<>();
-
-    //TO-BE
-    private Answers answerCollections;
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -39,6 +35,10 @@ public class Question {
         this(0L, writer, title, contents);
     }
 
+    public Question(NsUser writer, String title, String contents, Answers answerCollections) {
+        this(0L, writer, title, contents, answerCollections);
+    }
+
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
@@ -46,59 +46,32 @@ public class Question {
         this.contents = contents;
     }
 
-    //TO-BE
-    public Question(Long id, NsUser writer, String title, String contents, Answers answerCollections) {
+    public Question(Long id, NsUser writer, String title, String contents, Answers answers) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answerCollections = answerCollections;
-
+        this.answers = answers;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
 
-    //AS-IS
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
+    public void addAnswers(Answers answers) {
+        answers.toQuestion(this);
+        this.answers = answers;
     }
 
-    //AS-IS
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    //TO-BE
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateAuthority(loginUser);
         validateWriterOfAnswers();
         this.deleted = true;
-        answerCollections.deleteAll();
+        answers.deleteAll();
     }
 
     private void validateAuthority(NsUser loginUser) throws CannotDeleteException {
@@ -108,23 +81,13 @@ public class Question {
     }
 
     private void validateWriterOfAnswers() throws CannotDeleteException {
-        if(!answerCollections.isAllSameBy(this.writer)){
+        if (!answers.isAllSameBy(this.writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    //AS-IS
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
@@ -132,4 +95,10 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
+    public List<DeleteHistory> deleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deleteHistory());
+        return deleteHistories;
+    }
 }
