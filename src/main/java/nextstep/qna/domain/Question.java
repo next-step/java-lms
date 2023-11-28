@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers(null);
 
     private boolean deleted = false;
 
@@ -38,37 +38,21 @@ public class Question {
         this.contents = contents;
     }
 
-    public void deleteByOwner(NsUser loginUser, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
-        // 질문과 댓글이 모두 작성자인지 확인
-        checkCanDelete(loginUser);
-        // 질문과 댓글을 삭제
-        setDeleted();
-        // 삭제 이력을 생성
-        makeDeleteHistory(deleteHistories);
-    }
-
-    private void setDeleted() {
-        setDeleted(true);
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-        }
-    }
-
     boolean checkCanDelete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        for (Answer answer : answers) {
-            answer.checkCanDelete(loginUser);
-        }
+        answers.checkDelete(loginUser);
         return true;
     }
 
-    void makeDeleteHistory(List<DeleteHistory> deleteHistories) {
+    public List<DeleteHistory> makeDeleteHistory(NsUser loginUser) throws CannotDeleteException {
+        checkCanDelete(loginUser);
+        setDeleted();
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.makeDeleteHistory(deleteHistories);
-        }
+        deleteHistories.addAll(answers.makeDeleteHistory(loginUser));
+        return deleteHistories;
     }
 
 
@@ -107,8 +91,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Question setDeleted() {
+        this.deleted = true;
         return this;
     }
 
@@ -116,7 +100,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
