@@ -1,7 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +18,18 @@ public class AnswerTest {
 
         // when & then
         assertThat(answer.isSameWriter(JAVAJIGI)).isTrue();
+    }
+
+    @DisplayName("Answer객체의 deleted상태를 true로 바꿔 질문을 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        Answer answer = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+
+        // when
+        answer.delete();
+
+        // then
+        assertThat(answer.isDeleted()).isTrue();
     }
 }

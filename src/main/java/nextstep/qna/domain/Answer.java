@@ -72,12 +72,16 @@ public class Answer {
         this.question = question;
     }
 
+    public boolean isSameWriter(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
+
+    public void delete() {
+        this.deleted = true;
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
-    }
-
-    public boolean isSameWriter(NsUser loginUser) {
-        return writer.equals(loginUser);
     }
 }
