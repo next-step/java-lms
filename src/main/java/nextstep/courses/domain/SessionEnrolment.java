@@ -17,23 +17,15 @@ public class SessionEnrolment {
     }
 
     public void freeEnrolment(NsUser student) {
-        try {
-            defaultValidate();
-            this.sessionStudent.add(student);
-        } catch (java.lang.IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        defaultValidate();
+        this.sessionStudent.add(student);
     }
 
     public void payEnrolment(NsUser student, Long userPayed) {
-        try {
-            defaultValidate();
-            validatePay(userPayed);
+        defaultValidate();
+        validatePay(userPayed);
 
-            this.sessionStudent.add(student);
-        } catch (java.lang.IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        this.sessionStudent.add(student);
     }
 
     public boolean isFree() {
