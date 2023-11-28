@@ -6,7 +6,19 @@
 
 ### 도메인 설계
 
-- [ ] 도메인 관계도
+- [x] 도메인 관계도
+
+```mermaid
+---
+title: REGISTRATION
+---
+erDiagram
+    COURSE ||--o{ SESSION: ""
+    SESSION ||--o{ REGISTRATION: ""
+    REGISTRATION }o--|| USERS: ""
+    SESSION ||--o{ PAYMENTS: ""
+    PAYMENTS }o--|| USERS: ""
+```
 
 ### 도메인별 비즈니스 로직
 
