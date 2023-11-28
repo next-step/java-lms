@@ -91,7 +91,7 @@ public class Question {
 
     public List<DeleteHistory> delete(NsUser loginUser) {
         if (!writer.matchUser(loginUser)) {
-            throw new CannotDeleteException("삭제 권한이 존재하지 않습니다.");
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         List<DeleteHistory> deleteHistories = answers.deleteAll(loginUser);
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));

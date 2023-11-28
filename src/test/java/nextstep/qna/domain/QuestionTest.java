@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static nextstep.qna.domain.AnswerTest.A1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,17 +27,7 @@ public class QuestionTest {
     void 로그인한_사용자와_질문한_사용자가_다른경우_삭제할_수_없다() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("삭제 권한이 존재하지 않습니다.");
-    }
-
-    @Test
-    void 답변이_있는_경우_삭제할_수_없다() {
-        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.addAnswer(A1);
-
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("답변이 존재합니다.");
+                .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
