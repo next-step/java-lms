@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Test;
 
 class AnswersTest {
 
-        @Test
-        void 로그인_사용자와_답변_작성자_같을_경우_답변_삭제_성공() throws CannotDeleteException {
-                Answers answers = new Answers(List.of(A1));
-                NsUser loginUser = JAVAJIGI;
-                assertThatCode(() -> answers.deleteAnswers(loginUser)).doesNotThrowAnyException();
-        }
+    @Test
+    void 로그인_사용자와_답변_작성자_같을_경우_답변_삭제_성공() throws CannotDeleteException {
+        Answers answers = new Answers(List.of(A1));
+        NsUser loginUser = JAVAJIGI;
+        assertThatCode(() -> answers.deleteAnswers(loginUser)).doesNotThrowAnyException();
+    }
 
-        @Test
-        void 로그인_사용자와_답변_작성자_다를_경우_답변_삭제_실패() {
-                Answers answers = new Answers(List.of(A2));
-                NsUser loginUser = JAVAJIGI;
-                assertThatThrownBy(() -> answers.deleteAnswers(loginUser)).isInstanceOf(CannotDeleteException.class)
-                    .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+    @Test
+    void 로그인_사용자와_답변_작성자_다를_경우_답변_삭제_실패() {
+        Answers answers = new Answers(List.of(A2));
+        NsUser loginUser = JAVAJIGI;
+        assertThatThrownBy(() -> answers.deleteAnswers(loginUser)).isInstanceOf(CannotDeleteException.class)
+            .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 }

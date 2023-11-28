@@ -7,72 +7,72 @@ import nextstep.users.domain.NsUser;
 
 public class Answer {
 
-        private Long id;
+    private Long id;
 
-        private NsUser writer;
+    private NsUser writer;
 
-        private Question question;
+    private Question question;
 
-        private String contents;
+    private String contents;
 
-        private boolean deleted = false;
+    private boolean deleted = false;
 
-        private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
-        private LocalDateTime updatedDate;
+    private LocalDateTime updatedDate;
 
-        public Answer() {
+    public Answer() {
+    }
+
+    public Answer(NsUser writer, Question question, String contents) {
+        this(null, writer, question, contents);
+    }
+
+    public Answer(Long id, NsUser writer, Question question, String contents) {
+        this.id = id;
+        if (writer == null) {
+            throw new UnAuthorizedException();
         }
 
-        public Answer(NsUser writer, Question question, String contents) {
-                this(null, writer, question, contents);
+        if (question == null) {
+            throw new NotFoundException();
         }
 
-        public Answer(Long id, NsUser writer, Question question, String contents) {
-                this.id = id;
-                if (writer == null) {
-                        throw new UnAuthorizedException();
-                }
+        this.writer = writer;
+        this.question = question;
+        this.contents = contents;
+    }
 
-                if (question == null) {
-                        throw new NotFoundException();
-                }
+    public Long getId() {
+        return id;
+    }
 
-                this.writer = writer;
-                this.question = question;
-                this.contents = contents;
-        }
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-        public Long getId() {
-                return id;
-        }
+    public boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
+    }
 
-        public boolean isDeleted() {
-                return deleted;
-        }
+    public NsUser getWriter() {
+        return writer;
+    }
 
-        public boolean isOwner(NsUser writer) {
-                return this.writer.equals(writer);
-        }
+    public String getContents() {
+        return contents;
+    }
 
-        public NsUser getWriter() {
-                return writer;
-        }
+    public void toQuestion(Question question) {
+        this.question = question;
+    }
 
-        public String getContents() {
-                return contents;
-        }
+    public void delete() {
+        this.deleted = true;
+    }
 
-        public void toQuestion(Question question) {
-                this.question = question;
-        }
-
-        public void delete() {
-                this.deleted = true;
-        }
-
-        @Override
-        public String toString() {
-                return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
-        }
+    @Override
+    public String toString() {
+        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
 }
