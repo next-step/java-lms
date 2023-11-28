@@ -49,8 +49,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Answer setDeleted() {
+        this.deleted = true;
         return this;
     }
 
@@ -79,14 +79,15 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    boolean checkCanDelete(NsUser loginUser) throws CannotDeleteException {
+    void checkCanDelete(NsUser loginUser) throws CannotDeleteException {
         if(!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        return true;
     }
 
-    void makeDeleteHistory(List<DeleteHistory> deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    DeleteHistory makeDeleteHistory(NsUser loginUser) throws CannotDeleteException {
+        checkCanDelete(loginUser);
+        setDeleted();
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 }
