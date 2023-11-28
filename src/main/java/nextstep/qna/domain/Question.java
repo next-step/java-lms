@@ -86,12 +86,14 @@ public class Question {
         return answers;
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateBeforeDelete(loginUser);
+
+        this.deleted = true;
+        this.answers.forEach(Answer::delete);
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    private void validateBeforeDelete(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -99,12 +101,15 @@ public class Question {
         if (isOtherUser(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-
-        this.deleted = true;
     }
 
     private boolean isOtherUser(NsUser loginUser) {
         return answers.stream()
             .anyMatch(answer -> !answer.isSameWriter(loginUser));
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
