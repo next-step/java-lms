@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 
 public class Answers {
 
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
+
+    public Answers() {}
 
     public Answers(List<Answer> answers) {
         this.answers = new ArrayList<>(answers);

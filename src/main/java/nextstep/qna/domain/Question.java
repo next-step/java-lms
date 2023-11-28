@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers;
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -48,30 +48,11 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        
-        if (answers == null) {
-            answers = new Answers(List.of(answer));
-            return;
-        }
-        
         answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public Answers getAnswers() {
-        return answers;
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
@@ -89,7 +70,7 @@ public class Question {
 
     public List<DeleteHistory> deleteHistories(LocalDateTime now) {
         List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, now));
+        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, now));
 
         return deleteHistories;
     }

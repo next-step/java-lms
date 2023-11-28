@@ -40,6 +40,7 @@ public class AnswerTest {
     void deleteHistory() {
         // given
         Answer answer = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        answer.delete();
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when
