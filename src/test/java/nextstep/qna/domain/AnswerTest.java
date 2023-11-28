@@ -23,7 +23,7 @@ public class AnswerTest {
     }
 
     @Test
-    void 질문이_삭제되면_DeleteHistory를_반환한다() {
+    void 답변이_삭제되면_DeleteHistory를_반환한다() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.ANSWER, answer.getId(),
                 NsUserTest.JAVAJIGI, LocalDateTime.now());
