@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.code.EnrollmentStatus;
 import nextstep.courses.domain.code.EnrollmentType;
+import nextstep.courses.domain.code.Selection;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -70,7 +71,7 @@ public class Session {
     public Student enroll(Payment payment,
                           NsUser nsUser,
                           Students students) {
-        Student student = new Student(this.id, nsUser.getId(), true);
+        Student student = new Student(this.id, nsUser.getId(), Selection.WAITING);
         enrollment.enroll(payment.amount(), student, students);
 
         return student;

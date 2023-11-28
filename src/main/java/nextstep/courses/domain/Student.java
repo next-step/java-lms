@@ -1,22 +1,30 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.code.Selection;
+
 import java.util.Objects;
 
 public class Student {
     private final long nsUserId;
     private final long sessionId;
-    private final boolean approved;
+    private Selection selection;
 
     public Student() {
-        this(0L, 0L, true);
+        this(0L, 0L, Selection.WAITING);
     }
 
     public Student(long nsUserId,
                    long sessionId,
-                   boolean approved) {
+                   String selection) {
+        this(nsUserId, sessionId, Selection.valueOf(selection));
+    }
+
+    public Student(long nsUserId,
+                   long sessionId,
+                   Selection selection) {
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
-        this.approved = approved;
+        this.selection = selection;
     }
 
     public long getNsUserId() {
@@ -38,5 +46,13 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(nsUserId, sessionId);
+    }
+
+    public void approve() {
+        this.selection = Selection.APPROVED;
+    }
+
+    public Selection getSelection() {
+        return this.selection;
     }
 }

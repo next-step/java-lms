@@ -25,7 +25,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(long sessionId) {
-        String sql = "select id, course_id, title, start_at, end_at, session_status, enrollment_type, capacity, amount" +
+        String sql = "select id, course_id, title, start_at, end_at, session_status, enrollment_type, " +
+                "enrollment_status, capacity, amount" +
                 "created_at, " +
                 "updated_at " +
                 "from session " +
