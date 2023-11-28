@@ -3,8 +3,6 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
 
@@ -12,18 +10,18 @@ public class Session {
     private final SessionType sessionType;
     private Image coverImage;
     private final SessionStatus sessionStatus;
-    private int maximumEnrollment = 0;
-    private final int fee;
+    private int maximumEnrollmentCount = 0;
+    private final Price price;
     private final Participants participants = new Participants();
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollment, int fee) {
-        inputValidation(sessionType,maximumEnrollment);
+    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollmentCount, int fee) {
+        inputValidation(sessionType, maximumEnrollmentCount);
         this.duration = new Duration(startDate, endDate);
         this.sessionType = sessionType;
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
-        this.maximumEnrollment = maximumEnrollment;
-        this.fee = fee;
+        this.maximumEnrollmentCount = maximumEnrollmentCount;
+        this.price = new Price(fee);
     }
 
     private void inputValidation(SessionType sessionType,int maximumEnrollment) {
@@ -41,11 +39,11 @@ public class Session {
     }
 
     private boolean isFullEnrollment() {
-        return sessionType.isPaid() && participants.size() >= maximumEnrollment;
+        return sessionType.isPaid() && participants.isFullEnrollment(maximumEnrollmentCount);
     }
 
     private boolean possibleFee(int paidFee){
-        return sessionType.isPaid() && fee == paidFee;
+        return sessionType.isPaid() && price.samePrice(paidFee);
     }
 
     public boolean enroll(NsUser nsUser, int paidFee) {

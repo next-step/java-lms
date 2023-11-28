@@ -17,4 +17,8 @@ public class Participants {
         return participants.size();
     }
 
+    public boolean isFullEnrollment(int maximumEnrollmentCount) {
+        return participants.size() >= maximumEnrollmentCount;
+    }
+
 }
