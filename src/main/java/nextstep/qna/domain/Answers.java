@@ -18,6 +18,10 @@ public class Answers {
         return new Answers(values);
     }
 
+    public void addAnswer(Answer answer) {
+        values.add(answer);
+    }
+
     public List<DeleteHistory> deleteAll(NsUser nsUser) {
         try {
             return values.stream()
@@ -26,10 +30,5 @@ public class Answers {
         } catch (CannotDeleteException e) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.", e);
         }
-    }
-
-    // TODO 제거 대상
-    public List<Answer> values() {
-        return values;
     }
 }
