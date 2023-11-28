@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidValueException;
-
 import java.util.Objects;
 
 public class Amount {
@@ -23,11 +21,11 @@ public class Amount {
 
     private void validate(Long amount) {
         if (amount == null) {
-            throw new InvalidValueException("금액은 비어있을 수 없습니다.");
+            throw new IllegalArgumentException("금액은 비어있을 수 없습니다.");
         }
 
         if (isNegative(amount)) {
-            throw new InvalidValueException("금액은 음수일 수 없습니다.");
+            throw new IllegalArgumentException("금액은 음수일 수 없습니다.");
         }
     }
 

@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidValueException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class Students {
 
     private void validate(NsUser student) {
         if (isAlreadyStudent(student)) {
-            throw new InvalidValueException("이미 수강신청을 완료한 학생입니다.");
+            throw new IllegalArgumentException("이미 수강신청을 완료한 학생입니다.");
         }
     }
 

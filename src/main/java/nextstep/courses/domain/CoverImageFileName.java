@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidValueException;
-
 import java.util.Objects;
 
 public class CoverImageFileName {
@@ -19,18 +17,18 @@ public class CoverImageFileName {
 
     private void validate(String fullFileName) {
         if (isNullOrEmpty(fullFileName)) {
-            throw new InvalidValueException("파일명은 필수입니다.");
+            throw new IllegalArgumentException("파일명은 필수입니다.");
         }
 
         String fileName = findFileName(fullFileName);
         String extension = findExtension(fullFileName);
 
         if (isNullOrEmpty(fileName)) {
-            throw new InvalidValueException("확장자를 제외한 파일이름은 필수 입니다.");
+            throw new IllegalArgumentException("확장자를 제외한 파일이름은 필수 입니다.");
         }
 
         if (!ImageExtension.isPossible(extension)) {
-            throw new InvalidValueException("이미지 파일 형식이 아닙니다.");
+            throw new IllegalArgumentException("이미지 파일 형식이 아닙니다.");
         }
     }
 
@@ -50,7 +48,7 @@ public class CoverImageFileName {
         int dotIndex = fileName.lastIndexOf(DOT);
 
         if (dotIndex == -1) {
-            throw new InvalidValueException("정상적인 파일 이름이 아닙니다.");
+            throw new IllegalArgumentException("정상적인 파일 이름이 아닙니다.");
         }
 
         return dotIndex;

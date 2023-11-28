@@ -1,6 +1,5 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.CannotRecruitException;
 import nextstep.courses.domain.Amount;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImageFileName;
@@ -75,7 +74,7 @@ class SessionTest {
         ;
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
-                .isInstanceOf(CannotRecruitException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제금액과 강의금액이 맞지 않습니다.");
     }
 
@@ -93,7 +92,7 @@ class SessionTest {
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
-                .isInstanceOf(CannotRecruitException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("강의 최대 수강 인원이 모두 찼습니다.");
     }
 
@@ -111,7 +110,7 @@ class SessionTest {
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
-                .isInstanceOf(CannotRecruitException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의가 모집중인 상태가 아닙니다.");
     }
 }

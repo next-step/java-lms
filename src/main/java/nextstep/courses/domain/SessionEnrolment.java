@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotRecruitException;
-import nextstep.courses.InvalidValueException;
 import nextstep.users.domain.NsUser;
 
 public class SessionEnrolment {
@@ -22,8 +20,8 @@ public class SessionEnrolment {
         try {
             defaultValidate();
             this.sessionStudent.add(student);
-        } catch (InvalidValueException e) {
-            throw new CannotRecruitException(e.getMessage());
+        } catch (java.lang.IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -33,8 +31,8 @@ public class SessionEnrolment {
             validatePay(userPayed);
 
             this.sessionStudent.add(student);
-        } catch (InvalidValueException e) {
-            throw new CannotRecruitException(e.getMessage());
+        } catch (java.lang.IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -44,17 +42,17 @@ public class SessionEnrolment {
 
     private void defaultValidate() {
         if (!this.sessionStatusType.isRecruitment()) {
-            throw new InvalidValueException("현재 강의가 모집중인 상태가 아닙니다.");
+            throw new java.lang.IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
         }
     }
 
     private void validatePay(Long userPayed) {
         if (isFullStudents()) {
-            throw new InvalidValueException("강의 최대 수강 인원이 모두 찼습니다.");
+            throw new java.lang.IllegalArgumentException("강의 최대 수강 인원이 모두 찼습니다.");
         }
 
         if (isInCorrectAmount(userPayed)) {
-            throw new InvalidValueException("결제금액과 강의금액이 맞지 않습니다.");
+            throw new java.lang.IllegalArgumentException("결제금액과 강의금액이 맞지 않습니다.");
         }
     }
 
