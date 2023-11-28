@@ -31,11 +31,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -57,16 +57,8 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
