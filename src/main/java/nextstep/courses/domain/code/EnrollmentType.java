@@ -1,13 +1,12 @@
 package nextstep.courses.domain.code;
 
 import nextstep.courses.domain.Amount;
-import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.courses.domain.strategy.EnrollmentStrategy;
 import nextstep.courses.domain.strategy.FreeEnrollmentStrategy;
 import nextstep.courses.domain.strategy.PaidEnrollmentStrategy;
 
-public enum Enrollment {
+public enum EnrollmentType {
 
     FREE("무료 강의", new FreeEnrollmentStrategy()),
     PAID("유료 강의", new PaidEnrollmentStrategy());
@@ -15,8 +14,8 @@ public enum Enrollment {
     private final String description;
     private final EnrollmentStrategy enrollmentStrategy;
 
-    Enrollment(String description,
-               EnrollmentStrategy enrollmentStrategy) {
+    EnrollmentType(String description,
+                   EnrollmentStrategy enrollmentStrategy) {
         this.description = description;
         this.enrollmentStrategy = enrollmentStrategy;
     }
@@ -25,14 +24,10 @@ public enum Enrollment {
         return this.description;
     }
 
-    public void enroll(EnrollmentStatus enrollmentStatus,
-                       long payment,
-                       Amount amount,
-                       int capacity,
-                       Student student,
-                       Students students) {
-        enrollmentStatus.validateEnroll();
+    public void validateEnroll(long payment,
+                               Amount amount,
+                               int capacity,
+                               Students students) {
         enrollmentStrategy.validate(payment, amount, capacity, students);
-        students.enroll(student);
     }
 }

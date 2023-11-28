@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class PaidEnrollmentStrategyTest {
+class PaidEnrollmentStrategyTestType {
 
     @Test
     @DisplayName("유료 강의 최대 인원까지 차오른 강의를 신청하면 예외 처리 한다")
