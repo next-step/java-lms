@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import static java.time.LocalDateTime.now;
 import static nextstep.qna.domain.ContentType.ANSWER;
 
 import java.util.ArrayList;
@@ -17,17 +16,13 @@ public class Answers {
         this.answers = answers;
     }
 
-    public static Answers of(List<Answer> answers) {
-        return new Answers(answers);
-    }
-
     public List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> histories = new ArrayList<>();
         for (Answer answer : answers) {
             answer.checkOwner(loginUser);
             answer.deleted();
 
-            histories.add(new DeleteHistory(ANSWER, answer, now()));
+            histories.add(new DeleteHistory(ANSWER, answer));
         }
 
         return histories;

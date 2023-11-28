@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import static java.time.LocalDateTime.now;
+
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -19,21 +21,19 @@ public class DeleteHistory {
 
     public DeleteHistory(ContentType contentType,
                          Long contentId,
-                         NsUser deletedBy,
-                         LocalDateTime createdDate) {
+                         NsUser deletedBy) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
+        this.createdDate = now();
     }
 
     public DeleteHistory(ContentType contentType,
-                         Answer answer,
-                         LocalDateTime createdDate) {
+                         Answer answer) {
         this.contentType = contentType;
         this.contentId = answer.getId();
         this.deletedBy =  answer.getWriter();
-        this.createdDate = createdDate;
+        this.createdDate = now();
     }
 
     public Long getId() {
