@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -17,9 +18,11 @@ public class Answers {
         return new Answers(values);
     }
 
-    public void deleteAll(NsUser nsUser) {
+    public List<DeleteHistory> deleteAll(NsUser nsUser) {
         try {
-            values.forEach(answer -> answer.delete(nsUser));
+            return values.stream()
+                    .map(answer -> answer.delete(nsUser))
+                    .collect(Collectors.toList());
         } catch (CannotDeleteException e) {
             throw new CannotDeleteException("다른 사용자의 답변이 존재합니다.", e);
         }
