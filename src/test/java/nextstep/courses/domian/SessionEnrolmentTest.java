@@ -28,7 +28,9 @@ class SessionEnrolmentTest {
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
         sessionEnrolment.payEnrolment(newUser, 30_000L);
 
-        Assertions.assertThat(sessionStudent.isMaxStudents()).isTrue();
+        boolean actual = sessionStudent.isMaxStudents();
+
+        Assertions.assertThat(actual).isTrue();
     }
 
     @Test

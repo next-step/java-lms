@@ -39,7 +39,10 @@ class SessionTest {
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
         session.enrolment(newUser, 0L);
 
-        assertThat(students.totalCount()).isEqualTo(3);
+        int actual = students.totalCount();
+        int expected = 3;
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -71,7 +74,6 @@ class SessionTest {
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
-        ;
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
                 .isInstanceOf(IllegalArgumentException.class)
