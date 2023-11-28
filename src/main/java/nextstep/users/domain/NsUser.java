@@ -1,11 +1,12 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import nextstep.qna.error.UnAuthorizedException;
+
 public class NsUser {
+
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
@@ -22,9 +23,6 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
-    public NsUser() {
-    }
-
     public NsUser(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, LocalDateTime.now(), null);
     }
@@ -39,6 +37,8 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
+    public NsUser() {}
+
     public Long getId() {
         return id;
     }
@@ -47,36 +47,12 @@ public class NsUser {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
     }
 
     public void update(NsUser loginUser, NsUser target) {

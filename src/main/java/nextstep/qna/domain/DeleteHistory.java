@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class DeleteHistory {
+
     private Long id;
 
     private ContentType contentType;
@@ -14,16 +15,45 @@ public class DeleteHistory {
 
     private NsUser deletedBy;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
-    public DeleteHistory() {
-    }
-
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType,
+                         Long contentId,
+                         NsUser deletedBy,
+                         LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public DeleteHistory(ContentType contentType,
+                         Answer answer,
+                         LocalDateTime createdDate) {
+        this.contentType = contentType;
+        this.contentId = answer.getId();
+        this.deletedBy =  answer.getWriter();
+        this.createdDate = createdDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public NsUser getDeletedBy() {
+        return deletedBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     @Override
@@ -44,7 +74,11 @@ public class DeleteHistory {
 
     @Override
     public String toString() {
-        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+        return "DeleteHistory [id=" + getId() +
+               ", contentType=" + getContentType() +
+               ", contentId=" + getContentId() +
+               ", deletedBy=" + getDeletedBy() +
+               ", createdDate=" + getCreatedDate() +
+               "]";
     }
 }

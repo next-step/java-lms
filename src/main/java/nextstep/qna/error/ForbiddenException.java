@@ -1,4 +1,4 @@
-package nextstep.qna;
+package nextstep.qna.error;
 
 public class ForbiddenException extends RuntimeException{
     public ForbiddenException() {

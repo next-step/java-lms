@@ -1,4 +1,4 @@
-package nextstep.qna;
+package nextstep.qna.error;
 
 public class UnAuthorizedException extends RuntimeException {
     private static final long serialVersionUID = 1L;
