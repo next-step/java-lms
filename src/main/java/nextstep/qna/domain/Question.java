@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -34,6 +34,7 @@ public class Question {
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
+        this.answers = Answers.from(new ArrayList<>());
         this.title = title;
         this.contents = contents;
     }
@@ -66,7 +67,8 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        // TODO 제거 대상
+        answers.values().add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -84,19 +86,14 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.values();
     }
 
     public void delete(NsUser loginUser) {
         if (!writer.matchUser(loginUser)) {
             throw new CannotDeleteException("삭제 권한이 존재하지 않습니다.");
         }
-
-        if (!answers.isEmpty()) {
-            throw new CannotDeleteException("답변이 존재합니다.");
-        }
-
-
+        answers.deleteAll(loginUser);
         this.deleted = true;
     }
 

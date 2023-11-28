@@ -27,4 +27,9 @@ public class Answers {
             throw new CannotDeleteException("다른 사용자의 답변이 존재합니다.", e);
         }
     }
+
+    // TODO 제거 대상
+    public List<Answer> values() {
+        return values;
+    }
 }
