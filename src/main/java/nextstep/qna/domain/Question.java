@@ -48,6 +48,12 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
+        
+        if (answers == null) {
+            answers = new Answers(List.of(answer));
+            return;
+        }
+        
         answers.add(answer);
     }
 
@@ -79,6 +85,13 @@ public class Question {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    public List<DeleteHistory> deleteHistories(LocalDateTime now) {
+        List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, now));
+
+        return deleteHistories;
     }
 
     @Override
