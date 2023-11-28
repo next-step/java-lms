@@ -8,17 +8,16 @@ import java.util.List;
 
 public class Session {
 
-    private Duration duration;
-    private SessionType sessionType;
+    private final Duration duration;
+    private final SessionType sessionType;
     private Image coverImage;
-    private SessionStatus sessionStatus;
+    private final SessionStatus sessionStatus;
     private int maximumEnrollment = 0;
-    private int fee;
-    private List<NsUser> participants = new ArrayList<>();
+    private final int fee;
+    private final Participants participants = new Participants();
 
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollment, int fee) {
-
-        inputValidation(startDate, endDate, sessionType, coverImage, sessionStatus, maximumEnrollment, fee);
+        inputValidation(sessionType,maximumEnrollment);
         this.duration = new Duration(startDate, endDate);
         this.sessionType = sessionType;
         this.coverImage = coverImage;
@@ -27,7 +26,7 @@ public class Session {
         this.fee = fee;
     }
 
-    private void inputValidation(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollment, int fee) {
+    private void inputValidation(SessionType sessionType,int maximumEnrollment) {
         if(sessionType.isFree() && maximumEnrollment != 0){
             throw new IllegalArgumentException("무료 세션은 최대 수강 인원이 없습니다.");
         }
@@ -53,6 +52,6 @@ public class Session {
         if (!canEnroll(paidFee)) {
             throw new IllegalArgumentException("수강 신청이 불가능합니다.");
         }
-        return participants.add(nsUser);
+        return participants.enroll(nsUser);
     }
 }
