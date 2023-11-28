@@ -8,8 +8,7 @@ import java.util.List;
 
 public class Session {
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Duration duration;
     private SessionType sessionType;
     private Image coverImage;
     private SessionStatus sessionStatus;
@@ -20,9 +19,7 @@ public class Session {
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollment, int fee) {
 
         inputValidation(startDate, endDate, sessionType, coverImage, sessionStatus, maximumEnrollment, fee);
-
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.duration = new Duration(startDate, endDate);
         this.sessionType = sessionType;
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;

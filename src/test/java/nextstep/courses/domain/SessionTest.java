@@ -28,9 +28,7 @@ public class SessionTest {
     void sessionHasStartAndEndDate() {
         Session session = SESSION_모집중_10명_1000원();
         assertThat(session)
-                .hasFieldOrProperty("startDate")
-                .hasFieldOrProperty("endDate");
-
+                .hasFieldOrProperty("duration");
     }
 
     @Test
