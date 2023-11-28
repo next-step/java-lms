@@ -83,12 +83,12 @@ public class Question {
     }
 
     public void addAnswerToAnswerList(Answer answer) {
-        //answer.toQuestion(this);
+        answer.toQuestion(this);
         answerList.add(answer);
     }
 
     public void addAnswer(Answer answer) {
-        //answer.toQuestion(this);
+        answer.toQuestion(this);
         answers.addAnswer(answer);
     }
 

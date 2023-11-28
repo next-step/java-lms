@@ -13,7 +13,7 @@ public class Answer {
 
     private NsUser writer;
 
-    //private Question question;
+    private Question question;
 
     private String contents;
 
@@ -26,8 +26,9 @@ public class Answer {
     private Answer() {
     }
 
-    private Answer(NsUser writer, String contents, boolean deleted){
+    private Answer(NsUser writer, Question question, String contents, boolean deleted){
         this.writer = writer;
+        this.question = question;
         this.contents = contents;
         this.deleted = deleted;
     }
@@ -36,8 +37,8 @@ public class Answer {
         this(null, writer, question, contents);
     }
 
-    public static Answer of(NsUser writer, String contents, boolean deleted) {
-        return new Answer(writer, contents, deleted);
+    public static Answer of(NsUser writer, Question question, String contents, boolean deleted) {
+        return new Answer(writer, question, contents, deleted);
     }
 
     public static Answer of(NsUser writer, Question question, String contents) {
@@ -55,7 +56,7 @@ public class Answer {
         }
 
         this.writer = writer;
-        //this.question = question;
+        this.question = question;
         this.contents = contents;
     }
 
@@ -84,9 +85,9 @@ public class Answer {
         return contents;
     }
 
-//    public void toQuestion(Question question) {
-//        this.question = question;
-//    }
+    public void toQuestion(Question question) {
+        this.question = question;
+    }
 
     public void delete() {
         this.deleted = true;
