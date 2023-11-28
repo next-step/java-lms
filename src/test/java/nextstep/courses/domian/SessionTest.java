@@ -33,7 +33,7 @@ class SessionTest {
         Amount amount = new Amount();
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, true);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
@@ -53,7 +53,7 @@ class SessionTest {
         Amount amount = new Amount(30000L);
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
@@ -70,7 +70,7 @@ class SessionTest {
         Amount amount = new Amount(30000L);
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
@@ -88,7 +88,7 @@ class SessionTest {
         Amount amount = new Amount(30000L);
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
@@ -106,7 +106,7 @@ class SessionTest {
         Amount amount = new Amount(30000L);
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.READY, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
