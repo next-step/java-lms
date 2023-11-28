@@ -1,92 +1,94 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 
 public class Question {
-    private Long id;
 
-    private String title;
+        private Long id;
 
-    private String contents;
+        private String title;
 
-    private NsUser writer;
+        private String contents;
 
-    private List<Answer> answers = new ArrayList<>();
+        private NsUser writer;
 
-    private boolean deleted = false;
+        private Answers answers = new Answers(new ArrayList<>());
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+        private boolean deleted = false;
 
-    private LocalDateTime updatedDate;
+        private LocalDateTime createdDate = LocalDateTime.now();
 
-    public Question() {
-    }
+        private LocalDateTime updatedDate;
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
+        private Question() {
+        }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
+        public Question(NsUser writer, String title, String contents) {
+                this(0L, writer, title, contents);
+        }
 
-    public Long getId() {
-        return id;
-    }
+        public Question(Long id, NsUser writer, String title, String contents) {
+                this.id = id;
+                this.writer = writer;
+                this.title = title;
+                this.contents = contents;
+        }
 
-    public String getTitle() {
-        return title;
-    }
+        public Long getId() {
+                return id;
+        }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
+        public String getTitle() {
+                return title;
+        }
 
-    public String getContents() {
-        return contents;
-    }
+        public String getContents() {
+                return contents;
+        }
 
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
+        public NsUser getWriter() {
+                return writer;
+        }
 
-    public NsUser getWriter() {
-        return writer;
-    }
+        public void addAnswer(Answer answer) {
+                answer.toQuestion(this);
+                answers.add(answer);
+        }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
+        private boolean isOwner(NsUser loginUser) {
+                return writer.equals(loginUser);
+        }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
+        public boolean isDeleted() {
+                return deleted;
+        }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
+        public List<DeleteHistory> deleteQuestion(NsUser loginUser) throws CannotDeleteException {
+                validateDeleteQuestionPermission(loginUser);
+                List<DeleteHistory> historiesOfDeletedQuestionAndAnswers = answers.deleteAnswers(loginUser);
+                historiesOfDeletedQuestionAndAnswers.add(deleteQuestionHistory());
 
-    public boolean isDeleted() {
-        return deleted;
-    }
+                return historiesOfDeletedQuestionAndAnswers;
+        }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
+        private void validateDeleteQuestionPermission(NsUser loginUser) throws CannotDeleteException {
+                if (!isOwner(loginUser)) {
+                        throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+                }
+        }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
+        private DeleteHistory deleteQuestionHistory() {
+                this.deleted = true;
+                return new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now());
+        }
+
+        @Override
+        public String toString() {
+                return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer
+                    + "]";
+        }
 }
