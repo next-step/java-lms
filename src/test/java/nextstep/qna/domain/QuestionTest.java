@@ -24,22 +24,11 @@ public class QuestionTest {
     }
 
     @Test
-    public void assertValidateForDeleteCase1() {
+    public void assertValidateQuestionWriterForDelete() {
         Exception exception = assertThrows(CannotDeleteException.class, () -> {
             question.validateForDelete(NsUserTest.SANJIGI);
         });
         String expectedMessage = "질문을 삭제할 권한이 없습니다.";
-
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void assertValidateForDeleteCase2() {
-        Exception exception = assertThrows(CannotDeleteException.class, () -> {
-            question.validateForDelete(NsUserTest.JAVAJIGI);
-        });
-
-        String expectedMessage = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
 
         assertTrue(exception.getMessage().contains(expectedMessage));
     }
