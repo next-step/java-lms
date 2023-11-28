@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -42,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -82,30 +64,21 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        validateBeforeDelete(loginUser);
+        validateOtherWriter(loginUser);
 
         this.deleted = true;
-        this.answers.forEach(Answer::delete);
+        this.answers.deleteAll(loginUser);
     }
 
-    private void validateBeforeDelete(NsUser loginUser) throws CannotDeleteException {
+    private void validateOtherWriter(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        if (isOtherUser(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    private boolean isOtherUser(NsUser loginUser) {
-        return answers.stream()
-            .anyMatch(answer -> !answer.isSameWriter(loginUser));
     }
 
     @Override
