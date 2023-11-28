@@ -83,7 +83,11 @@ public class Answer {
     }
 
     public DeleteHistory deleteHistory(LocalDateTime now) {
-        return new DeleteHistory(ANSWER, id, writer, now);
+        if (deleted) {
+            return new DeleteHistory(ANSWER, id, writer, now);
+        }
+
+        throw new IllegalArgumentException("해당 답변은 삭제되지 않았습니다.");
     }
 
     @Override

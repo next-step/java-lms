@@ -48,4 +48,16 @@ public class AnswerTest {
         // then
         assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), JAVAJIGI, LocalDateTime.of(2023, 11, 28, 13, 0)));
     }
+
+    @DisplayName("삭제되지 않은 답변의 삭제 기록을 생성하려하면 예외를 발생시킨다.")
+    @Test
+    void deleteHistoryWhenNotDeleted() {
+        // given
+        Answer answer = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+
+        // when & then
+        assertThatThrownBy(() -> answer.deleteHistory(now)).isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("해당 답변은 삭제되지 않았습니다.");
+    }
 }
