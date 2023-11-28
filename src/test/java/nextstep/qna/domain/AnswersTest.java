@@ -45,11 +45,20 @@ class AnswersTest {
     void deleteAnswer() throws CannotDeleteException {
         // given
         // when
-        boolean result = answers.deleteAnswers(NsUserTest.JAVAJIGI);
+        answers.deleteAnswers(NsUserTest.JAVAJIGI);
         // then
         Assertions.assertThat(answers.getAnswers()).hasSize(2)
                 .extracting("deleted")
                 .containsExactly(true, true);
+    }
+
+    @DisplayName("댓글을 삭제하면 댓글의 삭제 상태를 true로 변경합니다.")
+    @Test
+    void deleteAnswerStatus() throws CannotDeleteException {
+        // given
+        // when
+        boolean result = answers.deleteAnswers(NsUserTest.JAVAJIGI);
+        // then
         Assertions.assertThat(result).isTrue();
     }
 

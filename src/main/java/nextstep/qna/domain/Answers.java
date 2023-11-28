@@ -20,11 +20,12 @@ public class Answers {
 
     public boolean deleteAnswers(NsUser nsUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            if (!answer.isOwner(nsUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            checkIsOwner(nsUser, answer);
         }
-        answers.forEach(answer -> answer.changeStatus(true));
+
+        for (Answer answer : answers) {
+            answer.delete(nsUser);
+        }
         return true;
     }
 
@@ -35,6 +36,12 @@ public class Answers {
 
     public void add(Answer answer) {
         answers.add(answer);
+    }
+
+    private void checkIsOwner(NsUser nsUser, Answer answer) throws CannotDeleteException {
+        if (!answer.isOwner(nsUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 
     public List<Answer> getAnswers() {
