@@ -78,11 +78,13 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete(NsUser nsUser) {
+    public DeleteHistory delete(NsUser nsUser) {
         if (!writer.matchUser(nsUser)) {
             throw new CannotDeleteException("작성자가 아닌경우 삭제할 수 없습니다.");
         }
 
         this.deleted = true;
+
+        return new DeleteHistory(ContentType.ANSWER, id, nsUser, LocalDateTime.now());
     }
 }
