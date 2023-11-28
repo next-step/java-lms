@@ -18,7 +18,7 @@ public abstract class Session extends BaseEntity {
     private final Duration duration;
     private final Image image;
     private SessionStatus status;
-    protected final List<NsUser> students = new ArrayList<>();
+    protected final List<Apply> applys = new ArrayList<>();
 
     public Session(Duration duration, Image image) {
         this(0L, duration, image, duration.sessionStatus(LocalDate.now()), LocalDateTime.now(), null);
@@ -45,11 +45,11 @@ public abstract class Session extends BaseEntity {
     }
 
     protected void addStudent(NsUser nsUser) {
-        this.students.add(nsUser);
+        this.applys.add(new Apply(this, nsUser));
     }
 
-    public List<NsUser> students() {
-        return Collections.unmodifiableList(this.students);
+    public Long id() {
+        return this.id;
     }
 
     public Duration duration() {
@@ -64,17 +64,22 @@ public abstract class Session extends BaseEntity {
         return this.image;
     }
 
+    public List<Apply> applys() {
+        return Collections.unmodifiableList(this.applys);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Session)) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(image, session.image) && status == session.status && Objects.equals(students, session.students);
+        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(image, session.image) && status == session.status && Objects.equals(applys, session.applys);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, duration, image, status, students);
+        return Objects.hash(id, duration, image, status, applys);
     }
 
     @Override
@@ -84,8 +89,7 @@ public abstract class Session extends BaseEntity {
             ", duration=" + duration +
             ", image=" + image +
             ", status=" + status +
-            ", students=" + students +
+            ", applys=" + applys +
             '}';
     }
-
 }

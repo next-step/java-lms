@@ -21,9 +21,9 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     private JdbcOperations jdbcTemplate;
     private ImageRepository imageRepository;
 
-    public JdbcFreeSessionRepository(JdbcOperations jdbcTemplate, ImageRepository imageRepository) {
+    public JdbcFreeSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.imageRepository = imageRepository;
+        this.imageRepository = new JdbcImageRepository(jdbcTemplate);
 
     }
 
@@ -54,6 +54,12 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
             toLocalDateTime(rs.getTimestamp(7)),
             toLocalDateTime(rs.getTimestamp(8)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_FREE_SESSION_TYPE);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "select count(*) > 0 from session where id = ? and type = ?";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, id, DEFAULT_FREE_SESSION_TYPE);
     }
 
     private Image image(Long id) {

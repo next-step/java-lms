@@ -7,5 +7,7 @@ public interface ChargedSessionRepository {
     int save(ChargedSession session, Course course);
 
     ChargedSession findById(Long id);
+
+    boolean existsById(Long id);
 }
 

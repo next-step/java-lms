@@ -7,5 +7,7 @@ public interface FreeSessionRepository {
     int save(FreeSession session, Course course);
 
     FreeSession findById(Long id);
+
+    boolean existsById(Long id);
 }
 

@@ -21,9 +21,9 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
     private JdbcOperations jdbcTemplate;
     private ImageRepository imageRepository;
 
-    public JdbcChargedSessionRepository(JdbcOperations jdbcTemplate, ImageRepository imageRepository) {
+    public JdbcChargedSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.imageRepository = imageRepository;
+        this.imageRepository = new JdbcImageRepository(jdbcTemplate);
 
     }
 
@@ -56,6 +56,12 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
                 toLocalDateTime(rs.getTimestamp(9)),
                 toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_CHARGED_SESSION_TYPE);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "select count(*) > 0 from session where id = ? and type = ?";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, id, DEFAULT_CHARGED_SESSION_TYPE);
     }
 
     private Image image(Long id) {

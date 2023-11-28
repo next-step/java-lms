@@ -50,7 +50,7 @@ public class ChargedSession extends Session {
     }
 
     private void validateMaxNumberOfStudent() {
-        if (this.maxNumberOfStudent <= this.students.size()) {
+        if (this.maxNumberOfStudent <= this.applys.size()) {
             throw new ExceedMaxStudentException("수강 인원을 초과했습니다.");
         }
     }

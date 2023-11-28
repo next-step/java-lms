@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.ChargedSession;
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.Duration;
+import nextstep.courses.domain.Image;
 import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.repository.ChargedSessionRepository;
 import nextstep.courses.repository.CourseRepository;
@@ -34,7 +37,7 @@ public class ChargedSessionRepositoryTest {
     void setUp() {
         imageRepository = new JdbcImageRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
-        chargedSessionRepository = new JdbcChargedSessionRepository(jdbcTemplate, imageRepository);
+        chargedSessionRepository = new JdbcChargedSessionRepository(jdbcTemplate);
     }
 
     @Test
@@ -47,20 +50,16 @@ public class ChargedSessionRepositoryTest {
         LOGGER.debug("ChargedSession: {}", savedChargedSession);
     }
 
+    private ChargedSession session(Image image) {
+        return new ChargedSession(1L, duration(), image, SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000), LocalDateTime.now(), null);
+    }
+
     private Course savedCourse() {
-        Course course = new Course(1L, "TDD, 클린 코드 with Java", 1L, LocalDateTime.now(), null);
-        courseRepository.save(course);
-        return course;
+        return courseRepository.findById(2L);
     }
 
     private Image savedImage() {
-        Image image = new Image(1L, 1, "JPG", 300, 200, LocalDateTime.now(), null);
-        imageRepository.save(image);
-        return image;
-    }
-
-    private ChargedSession session(Image image) {
-        return new ChargedSession(1L, duration(), image, SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000), LocalDateTime.now(), null);
+        return imageRepository.findById(2L);
     }
 
     private Duration duration() {

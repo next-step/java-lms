@@ -63,7 +63,7 @@ public class ChargedSessionTest {
         Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
 
         chargedSession.apply(payment, user);
-        assertThat(chargedSession.students()).isEqualTo(Arrays.asList(user));
+        assertThat(chargedSession.applys()).isEqualTo(Arrays.asList(new Apply(chargedSession, user)));
     }
 
     private Duration duration() {

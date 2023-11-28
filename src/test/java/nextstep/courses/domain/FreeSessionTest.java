@@ -39,7 +39,7 @@ public class FreeSessionTest {
         NsUser user = NsUserTest.JAVAJIGI;
 
         session.apply(null, user);
-        Assertions.assertThat(session.students()).isEqualTo(Arrays.asList(user));
+        Assertions.assertThat(session.applys()).isEqualTo(Arrays.asList(new Apply(session, user)));
     }
 
     private Duration duration() {

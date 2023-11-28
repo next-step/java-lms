@@ -36,7 +36,7 @@ public class FreeSessionRepositoryTest {
     void setUp() {
         imageRepository = new JdbcImageRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
-        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate, imageRepository);
+        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
     }
 
     @Test
@@ -49,20 +49,16 @@ public class FreeSessionRepositoryTest {
         LOGGER.debug("FreeSession: {}", savedFreeSession);
     }
 
-    private Course savedCourse() {
-        Course course = new Course(1L, "TDD, 클린 코드 with Java", 1L, LocalDateTime.now(), null);
-        courseRepository.save(course);
-        return course;
+    private FreeSession session(Image image) {
+        return new FreeSession(1L, duration(), image, SessionStatus.RECRUITING, LocalDateTime.now(), null);
     }
 
     private Image savedImage() {
-        Image image = new Image(1L, 1, "JPG", 300, 200, LocalDateTime.now(), null);
-        imageRepository.save(image);
-        return image;
+        return imageRepository.findById(2L);
     }
 
-    private FreeSession session(Image image) {
-        return new FreeSession(1L, duration(), image, SessionStatus.RECRUITING, LocalDateTime.now(), null);
+    private Course savedCourse() {
+        return courseRepository.findById(2L);
     }
 
     private Duration duration() {
