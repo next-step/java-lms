@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -89,7 +89,11 @@ public class Question {
 
     public void delete(NsUser loginUser) {
         if (!writer.matchUser(loginUser)) {
-            throw new UnAuthorizedException("삭제 권한이 존재하지 않습니다.");
+            throw new CannotDeleteException("삭제 권한이 존재하지 않습니다.");
+        }
+
+        if (!answers.isEmpty()) {
+            throw new CannotDeleteException("답변이 존재합니다.");
         }
 
 

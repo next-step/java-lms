@@ -1,8 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.UnAuthorizedException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +14,11 @@ public class QuestionTest {
 
     @Test
     void 로그인한_사용자와_질문한_사용자가_같은경우_삭제_가능하다() {
-        // when
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
-        // when
-        assertThat(Q1.isDeleted()).isTrue();
+        question.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(question.isDeleted()).isTrue();
     }
 
     @Test
@@ -32,9 +30,10 @@ public class QuestionTest {
 
     @Test
     void 답변이_있는_경우_삭제할_수_없다() {
-        Q1.addAnswer(A1);
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.addAnswer(A1);
 
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("답변이 존재합니다.");
     }
