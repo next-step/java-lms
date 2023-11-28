@@ -15,9 +15,13 @@ public enum ImageType {
         this.type = type;
     }
 
+    public boolean sameType(String type){
+        return this.type.equals(type);
+    }
+
     public ImageType getType(String type) {
         return Arrays.stream(values())
-                .filter(imageType -> imageType.type.equals(type))
+                .filter(imageType -> imageType.sameType(type))
                 .findFirst()
                 .orElseThrow(()->new IllegalArgumentException("지원하지 않는 이미지 타입입니다."));
     }

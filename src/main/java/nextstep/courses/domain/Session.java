@@ -31,7 +31,7 @@ public class Session {
     }
 
     private void inputValidation(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollment, int fee) {
-        if(sessionType == SessionType.FREE && maximumEnrollment != 0){
+        if(sessionType.isFree() && maximumEnrollment != 0){
             throw new IllegalArgumentException("무료 세션은 최대 수강 인원이 없습니다.");
         }
     }
@@ -41,15 +41,15 @@ public class Session {
     }
 
     private boolean isOpened(){
-        return sessionStatus == SessionStatus.OPENED;
+        return sessionStatus.isOpened();
     }
 
     private boolean isFullEnrollment() {
-        return sessionType == SessionType.PAID && participants.size() >= maximumEnrollment;
+        return sessionType.isPaid() && participants.size() >= maximumEnrollment;
     }
 
     private boolean possibleFee(int paidFee){
-        return sessionType == SessionType.PAID && fee == paidFee;
+        return sessionType.isPaid() && fee == paidFee;
     }
 
     public boolean enroll(NsUser nsUser, int paidFee) {
