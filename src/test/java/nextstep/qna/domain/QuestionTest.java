@@ -9,9 +9,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -54,43 +57,34 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("질문을 삭제할 수 있는 유저인지 확인하고 삭제가 가능한 유저이면, 예외가 발생하지 않는다.")
-    void testVerifyUserWithQuestionDeletionPermissionWithOwner() {
-        //given
-        final NsUser owner = NsUserTest.JAVAJIGI;
-
-        //when, then
-        assertThatNoException()
-                .isThrownBy(() -> Q1.verifyUserWithQuestionDeletionPermission(owner));
-    }
-
-    @Test
-    @DisplayName("질문을 삭제할 수 있는 유저인지 확인하고 삭제가 불가능한 유저이면, 예외가 발생한다.")
-    void testVerifyUserWithQuestionDeletionPermissionWithNotOwner() {
-        //given
-        final NsUser notOwner = NsUserTest.SANJIGI;
-
-        //when, then
-        assertThatThrownBy(() -> Q1.verifyUserWithQuestionDeletionPermission(notOwner))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
-    }
-
-    @Test
     @DisplayName("질문을 삭제하면, Question의 deleted는 true가 되고 매개변수로 넣은 deleteHistories에 삭제 기록이 저장된다")
-    void testDelete() {
+    void testDelete() throws CannotDeleteException {
         //given
         final Question tempQ1 = new Question(NsUserTest.JAVAJIGI, "title1", "Temp contents1");
-        DeleteHistories deleteHistories = new DeleteHistories();
-        final int sizeBeforeDelete = deleteHistories.size();
+        final NsUser user = NsUserTest.JAVAJIGI;
+
+        final LocalDateTime ignored = LocalDateTime.now();
+        final DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.QUESTION, tempQ1.getId(), user, ignored);
 
         //when
-        tempQ1.delete(deleteHistories);
+        final List<DeleteHistory> deleteHistories = tempQ1.delete(user);
         final boolean isDeleted = tempQ1.isDeleted();
-        final int sizeAfterDelete = deleteHistories.size();
 
         //then
         assertThat(isDeleted).isTrue();
-        assertThat(sizeAfterDelete).isEqualTo(sizeBeforeDelete + 1);
+        assertThat(deleteHistories).contains(expectedDeleteHistory);
+    }
+
+    @Test
+    @DisplayName("질문글의 주인이 아닌 유저가 질문의 삭제를 시도하면, CannotDeleteException 예외가 발생한다.")
+    void testDeleteWithNonOwner() {
+        //given
+        final Question tempQ1 = new Question(NsUserTest.JAVAJIGI, "title1", "Temp contents1");
+        final NsUser user = NsUserTest.SANJIGI;
+
+        //when, then
+        assertThatThrownBy(() -> tempQ1.delete(user))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 }

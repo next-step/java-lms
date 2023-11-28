@@ -3,24 +3,23 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Answers {
-    List<Answer> answers;
+    private final List<Answer> answers;
 
     public Answers(List<Answer> answers) {
         this.answers = answers;
     }
 
-    public void verifyAllAnswerOwnerIsTargetUser(final NsUser user) throws CannotDeleteException {
-        for (Answer answer : this.answers) {
-            answer.verifyUserWithAnswerDeletionPermission(user);
-        }
-    }
+    public List<DeleteHistory> deleteAll(final NsUser user) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-    public void deleteAll(final DeleteHistories deleteHistories) {
         for (Answer answer : this.answers) {
-            answer.delete(deleteHistories);
+            deleteHistories.add(answer.delete(user));
         }
+
+        return deleteHistories;
     }
 }

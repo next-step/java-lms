@@ -78,18 +78,16 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void verifyUserWithAnswerDeletionPermission(final NsUser user) throws CannotDeleteException {
-        if (isNotOwner(user)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
     public boolean isNotOwner(final NsUser user) {
         return !isOwner(user);
     }
 
-    public void delete(final DeleteHistories deleteHistories) {
-        setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now()));
+    public DeleteHistory delete(final NsUser user) throws CannotDeleteException {
+        if (isNotOwner(user)) {
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
+        }
+
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 }

@@ -91,18 +91,25 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void verifyUserWithQuestionDeletionPermission(final NsUser user) throws CannotDeleteException {
-        if (isNotOwner(user)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
     public boolean isNotOwner(final NsUser user) {
         return !isOwner(user);
     }
 
-    public void delete(final DeleteHistories deleteHistories) {
-        setDeleted(true);
+    public List<DeleteHistory> delete(final NsUser user) throws CannotDeleteException {
+        if (isNotOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+
+        this.deleted = true;
+        
+        final List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
+        deleteHistories.addAll(deleteAnswersInQuestion(user));
+
+        return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswersInQuestion(final NsUser user) throws CannotDeleteException {
+        return getAnswers().deleteAll(user);
     }
 }
