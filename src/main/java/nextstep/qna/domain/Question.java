@@ -92,6 +92,7 @@ public class Question {
             throw new UnAuthorizedException("삭제 권한이 존재하지 않습니다.");
         }
 
+
         this.deleted = true;
     }
 
