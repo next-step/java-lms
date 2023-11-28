@@ -16,9 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private Answers answers2 = new Answers();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -50,26 +48,11 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers2.addAnswer(answer);
-    }
-
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        answers.addAnswer(answer);
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
     public void validateCanDelete(NsUser loginUser) {
@@ -77,29 +60,32 @@ public class Question {
         validateIsOwnerAnswers(loginUser);
     }
 
-    public void validateIsOwner(NsUser loginUser) {
+    private void validateIsOwner(NsUser loginUser) {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
     private void validateIsOwnerAnswers(NsUser loginUser) {
-        if (!answers2.isOwnerAllAnswers(loginUser)) {
+        if (!answers.isOwnerAllAnswers(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) {
-
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    public List<DeleteHistory> delete() {
         this.deleted = true;
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-        for (Answer answer : answers) {
-            DeleteHistory history = answer.delete();
-            deleteHistories.add(history);
-        }
-
+        deleteHistories.addAll(deleteAnswers());
         return deleteHistories;
+    }
+
+    private List<DeleteHistory> deleteAnswers() {
+        return this.answers.delete();
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
