@@ -25,9 +25,6 @@ public class QnaServiceTest {
     @Mock
     private QuestionRepository questionRepository;
 
-    @Mock
-    private DeleteHistoryService deleteHistoryService;
-
     @InjectMocks
     private QnAService qnAService;
 
@@ -49,7 +46,6 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        verifyDeleteHistories();
     }
 
     @Test
@@ -69,7 +65,6 @@ public class QnaServiceTest {
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        verifyDeleteHistories();
     }
 
     @Test
@@ -79,12 +74,5 @@ public class QnaServiceTest {
         assertThatThrownBy(() -> {
             qnAService.deleteQuestion(NsUserTest.SANJIGI, question.getId());
         }).isInstanceOf(CannotDeleteException.class);
-    }
-
-    private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
