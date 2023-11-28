@@ -76,4 +76,17 @@ public class QuestionTest {
                 new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.of(2023, 11, 28, 13, 0))
             );
     }
+
+    @DisplayName("삭제 되지 않은 질문의 삭제 기록을 생성하면 예외를 던진다.")
+    @Test
+    void deleteHistoriesWhenNotDeleted() {
+        // given
+        Question question = new Question(JAVAJIGI, "title1", "contents1");
+
+        LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+
+        // when & then
+        assertThatThrownBy(() -> question.deleteHistories(now)).isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("해당 질문은 삭제되지 않았습니다.");
+    }
 }

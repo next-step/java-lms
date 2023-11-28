@@ -69,10 +69,14 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteHistories(LocalDateTime now) {
-        List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
-        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, now));
+        if (deleted) {
+            List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
+            deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, now));
 
-        return deleteHistories;
+            return deleteHistories;
+        }
+
+        throw new IllegalArgumentException("해당 질문은 삭제되지 않았습니다.");
     }
 
     @Override
