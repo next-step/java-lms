@@ -40,4 +40,18 @@ class AnswersTest {
         assertThat(answers.isAllSameBy(JAVAJIGI)).isFalse();
     }
 
+    @Test
+    @DisplayName("성공 - 답변의 상태를 모두 삭제 처리한다.")
+    void success_answer_all_delete() throws Exception {
+        Answers answers = new Answers(
+                List.of(new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1), new Answer(SANJIGI, Q1))
+        );
+
+        answers.deleteAll();
+
+        assertThat(answers.answers()).hasSize(3)
+                .extracting("deleted")
+                .containsOnly(true, true, true);
+    }
+
 }

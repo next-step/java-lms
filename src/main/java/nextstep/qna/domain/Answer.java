@@ -51,6 +51,10 @@ public class Answer {
         return id;
     }
 
+    public void delete() {
+        this.deleted = true;
+    }
+
     public Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;

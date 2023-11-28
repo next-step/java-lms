@@ -97,6 +97,8 @@ public class Question {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateAuthority(loginUser);
         validateWriterOfAnswers();
+        this.deleted = true;
+        answerCollections.deleteAll();
     }
 
     private void validateAuthority(NsUser loginUser) throws CannotDeleteException {

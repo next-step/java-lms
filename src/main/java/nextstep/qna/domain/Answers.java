@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Answers {
@@ -22,6 +23,14 @@ public class Answers {
 
     private boolean hasNoAnswers() {
         return answers.isEmpty();
+    }
+
+    public void deleteAll(){
+        answers.forEach(Answer::delete);
+    }
+
+    public List<Answer> answers() {
+        return Collections.unmodifiableList(answers);
     }
 }
 
