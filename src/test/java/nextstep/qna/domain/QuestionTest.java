@@ -48,4 +48,25 @@ public class QuestionTest {
         question.delete(NsUserTest.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
     }
+
+    @Test
+    @DisplayName("로그인 사용자와 질문한 사람이 다른 경우 삭제할 수 없다.")
+    void 로그인_사용자와_질문한_사람이_다른_경우_삭제_불가능() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("질문의 질문자와 여러개의 답변글의 사용자가 다른 경우 삭제할 수 없다")
+    void 질문의_질문자와_여러개의_답변의_답변자가_다른_경우_삭제_불가능() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
+        Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "Answers Contents2");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+
+        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class);
+    }
 }

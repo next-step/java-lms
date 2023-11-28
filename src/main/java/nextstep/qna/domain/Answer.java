@@ -90,8 +90,8 @@ public class Answer {
     }
 
     private void validateUser(NsUser user) throws CannotDeleteException {
-        if (writer != user) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 작성한 작성자가 아닙니다.");
         }
     }
 }

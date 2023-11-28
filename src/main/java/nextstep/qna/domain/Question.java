@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -82,10 +82,6 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
@@ -102,9 +98,7 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), writer, LocalDateTime.now()));
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(user));
-        }
+        deleteHistories.addAll(answers.delete(user));
 
         return deleteHistories;
     }
