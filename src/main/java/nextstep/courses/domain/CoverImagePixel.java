@@ -20,15 +20,15 @@ public class CoverImagePixel {
 
     private void validate(int width, int height) {
         if (width < MIN_WIDTH_SIZE) {
-            throw new IllegalArgumentException("가로 픽셀은 최소 300픽셀 이상이어야 합니다.");
+            throw new IllegalArgumentException(String.format("가로 픽셀은 최소 %d픽셀 이상이어야 합니다. 현재 픽셀 : %d", MIN_WIDTH_SIZE, width));
         }
 
         if (height < MIN_HEIGHT_SIZE) {
-            throw new IllegalArgumentException("세로 픽셀은 최소 200픽셀 이상이어야 합니다.");
+            throw new IllegalArgumentException(String.format("세로 픽셀은 최소 %d픽셀 이상이어야 합니다. 현재 픽셀 : %d", MIN_HEIGHT_SIZE, height));
         }
 
         if (isInvalidRatio(width, height)) {
-            throw new IllegalArgumentException("가로와 세로의 비율은 3:2 여야 합니다.");
+            throw new IllegalArgumentException(String.format("가로와 세로의 비율은 %.1f 여야 합니다. 현재비율 : %.1f", WIDTH_HEIGHT_RATIO, (double) width / height));
         }
     }
 

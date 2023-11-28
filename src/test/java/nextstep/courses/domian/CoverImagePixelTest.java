@@ -22,7 +22,7 @@ class CoverImagePixelTest {
     void createCoverImagePixel_invalid_width() {
         assertThatThrownBy(() -> new CoverImagePixel(100, 200))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("가로 픽셀은 최소 300픽셀 이상이어야 합니다.");
+                .hasMessageContaining("가로 픽셀은 최소 300픽셀 이상이어야 합니다.");
     }
 
     @Test
@@ -30,7 +30,7 @@ class CoverImagePixelTest {
     void createCoverImagePixel_invalid_height() {
         assertThatThrownBy(() -> new CoverImagePixel(300, 100))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("세로 픽셀은 최소 200픽셀 이상이어야 합니다.");
+                .hasMessageContaining("세로 픽셀은 최소 200픽셀 이상이어야 합니다.");
     }
 
     @Test
@@ -38,6 +38,6 @@ class CoverImagePixelTest {
     void createCoverImagePixel_invalid_ratio() {
         assertThatThrownBy(() -> new CoverImagePixel(400, 200))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("가로와 세로의 비율은 3:2 여야 합니다.");
+                .hasMessageContaining("가로와 세로의 비율은 1.5 여야 합니다.");
     }
 }
