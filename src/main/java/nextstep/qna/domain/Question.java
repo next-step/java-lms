@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -24,7 +25,7 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    private Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -77,7 +78,7 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(deleteAnswers());
-        return deleteHistories;
+        return Collections.unmodifiableList(deleteHistories);
     }
 
     private List<DeleteHistory> deleteAnswers() {
