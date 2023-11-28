@@ -69,10 +69,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
@@ -98,17 +94,11 @@ public class Question {
     public Question delete(NsUser loginUser) throws CannotDeleteException {
         this.setDeleted(true);
 
-        List<Answer> deletedAnswers = new ArrayList<>();
         for (Answer answer : this.answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-
-            answer.setDeleted(true);
-            deletedAnswers.add(answer);
+            Answer deletedAnswer = answer.setDeleted(loginUser, true);
+            this.addAnswer(deletedAnswer);
         }
 
-        this.setAnswers(deletedAnswers);
         return this;
     }
 }
