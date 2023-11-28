@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Question {
     private Long id;
@@ -83,6 +85,13 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public void delete(NsUser loginUser) {
+        if (!this.writer.equals(loginUser)) {
+            throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.deleted = true;
     }
 
     @Override
