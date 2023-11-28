@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.ThumbnailRepository;
@@ -16,20 +15,19 @@ import java.time.LocalDateTime;
 public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
     private final ThumbnailRepository thumbnailRepository;
-    private final EnrollmentRepository enrollmentRepository;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate,
-                                 ThumbnailRepository thumbnailRepository,
-                                 EnrollmentRepository enrollmentRepository) {
+                                 ThumbnailRepository thumbnailRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.thumbnailRepository = thumbnailRepository;
-        this.enrollmentRepository = enrollmentRepository;
     }
 
 
     @Override
     public Session findById(long sessionId) {
-        String sql = "select id, course_id, title, start_at, end_at, session_status, created_at, updated_at " +
+        String sql = "select id, course_id, title, start_at, end_at, session_status, enrollment_type, capacity, amount" +
+                "created_at, " +
+                "updated_at " +
                 "from session " +
                 "where " +
                 "session_id = ?";
@@ -40,10 +38,12 @@ public class JdbcSessionRepository implements SessionRepository {
                 thumbnailRepository.findBySessionId(rs.getLong(1)),
                 toLocalDate(rs.getTimestamp(4)),
                 toLocalDate(rs.getTimestamp(5)),
-                enrollmentRepository.findBySessionId(rs.getLong(1)),
                 rs.getString(6),
-                toLocalDateTime(rs.getTimestamp(7)),
-                toLocalDateTime(rs.getTimestamp(8)));
+                rs.getString(7),
+                rs.getInt(8),
+                rs.getLong(9),
+                toLocalDateTime(rs.getTimestamp(10)),
+                toLocalDateTime(rs.getTimestamp(11)));
 
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
     }

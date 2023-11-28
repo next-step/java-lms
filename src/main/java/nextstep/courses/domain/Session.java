@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.code.Enrollment;
 import nextstep.courses.domain.code.SessionStatus;
-import nextstep.courses.domain.strategy.EnrollmentStrategy;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -15,8 +15,10 @@ public class Session {
     private final String title;
     private final Period period;
     private final Thumbnail thumbnail;
-    private EnrollmentStrategy enrollment;
     private final SessionStatus status;
+    private final Enrollment enrollment;
+    private final int capacity;
+    private final Amount amount;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
@@ -26,11 +28,14 @@ public class Session {
                    Thumbnail thumbnail,
                    LocalDate startDate,
                    LocalDate endDate,
-                   EnrollmentStrategy enrollment,
                    String sessionStatus,
+                   String enrollment,
+                   int capacity,
+                   long amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
-        this(id, courseId, title, new Period(startDate, endDate), thumbnail, enrollment, SessionStatus.valueOf(sessionStatus), createdAt, updatedAt);
+        this(id, courseId, title, new Period(startDate, endDate), thumbnail, SessionStatus.valueOf(sessionStatus),
+                Enrollment.valueOf(enrollment), capacity, new Amount(amount), createdAt, updatedAt);
     }
 
     public Session(long id,
@@ -38,17 +43,21 @@ public class Session {
                    String title,
                    Period period,
                    Thumbnail thumbnail,
-                   EnrollmentStrategy enrollment,
                    SessionStatus status,
+                   Enrollment enrollment,
+                   int capacity,
+                   Amount amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.enrollment = enrollment;
+        this.capacity = capacity;
         this.period = period;
         this.thumbnail = thumbnail;
         this.status = status;
+        this.enrollment = enrollment;
+        this.amount = amount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -59,7 +68,7 @@ public class Session {
         status.validateApply();
 
         Student student = new Student(this.id, nsUser.getId());
-        enrollment.enroll(payment.amount(), student, students);
+        enrollment.enroll(payment.amount(), amount, capacity, student, students);
 
         return student;
     }

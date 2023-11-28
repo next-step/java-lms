@@ -1,9 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.code.EnrollmentType;
+import nextstep.courses.domain.code.Enrollment;
 import nextstep.courses.domain.code.SessionStatus;
-import nextstep.courses.domain.strategy.EnrollmentFactory;
-import nextstep.courses.domain.strategy.PaidEnrollmentStrategy;
 import nextstep.courses.exception.CanNotApplySessionStatusException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -26,14 +24,13 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L,
                 200L));
         Amount amount = new Amount(20000L);
-        PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy(0L, 0L, 1, amount);
 
         Assertions.assertAll(() -> {
-            Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, paidEnrollmentStrategy, SessionStatus.PREPARING, LocalDateTime.now(), null);
+            Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, SessionStatus.PREPARING, Enrollment.PAID, 1, amount, LocalDateTime.now(), null);
 
             assertThrows(CanNotApplySessionStatusException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(), new Students()), "수강 신청이 가능한 상태가 아닙니다.");
         }, () -> {
-            Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, paidEnrollmentStrategy, SessionStatus.END, LocalDateTime.now(), null);
+            Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, SessionStatus.END, Enrollment.PAID, 1, amount, LocalDateTime.now(), null);
 
             assertThrows(CanNotApplySessionStatusException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(), new Students()), "수강 신청이 가능한 상태가 아닙니다.");
         });
@@ -48,8 +45,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(20000L);
 
-        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollmentType.PAID, 1,
-                amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
+        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, SessionStatus.RECRUITING, Enrollment.PAID, 1, amount, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
@@ -61,8 +57,7 @@ class SessionTest {
         Thumbnail thumbnail = new Thumbnail(0L, 0L, "테스트", "/home/test.png", new FileSize(1024L), new ImageSize(300L, 200L));
         Amount amount = new Amount(0L);
 
-        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, EnrollmentFactory.create(0L, 0L, EnrollmentType.FREE, 0,
-                amount), SessionStatus.RECRUITING, LocalDateTime.now(), null);
+        Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnail, SessionStatus.RECRUITING, Enrollment.FREE, 1, amount, LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
