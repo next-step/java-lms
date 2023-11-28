@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -31,5 +33,19 @@ public class AnswerTest {
 
         // then
         assertThat(answer.isDeleted()).isTrue();
+    }
+
+    @DisplayName("현재 시간을 인자로 받아 DeleteHistory를 만들어 반환한다.")
+    @Test
+    void deleteHistory() {
+        // given
+        Answer answer = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+
+        // when
+        DeleteHistory deleteHistory = answer.deleteHistory(now);
+
+        // then
+        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), JAVAJIGI, LocalDateTime.of(2023, 11, 28, 13, 0)));
     }
 }
