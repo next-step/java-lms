@@ -91,11 +91,15 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser nsUser) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
+        return delete(nsUser, LocalDateTime.now());
+    }
+
+    public DeleteHistory delete(NsUser nsUser, LocalDateTime time) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
-
+        return new DeleteHistory(ContentType.QUESTION, id, writer, time);
     }
 }

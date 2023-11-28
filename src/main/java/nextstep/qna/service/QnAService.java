@@ -26,11 +26,9 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-
         List<Answer> answers = question.getAnswers();
-        question.delete(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
+        deleteHistories.add(question.delete(loginUser));
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete(loginUser));
         }
