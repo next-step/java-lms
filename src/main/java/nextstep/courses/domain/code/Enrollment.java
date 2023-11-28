@@ -25,11 +25,13 @@ public enum Enrollment {
         return this.description;
     }
 
-    public void enroll(long payment,
+    public void enroll(EnrollmentStatus enrollmentStatus,
+                       long payment,
                        Amount amount,
                        int capacity,
                        Student student,
                        Students students) {
+        enrollmentStatus.validateEnroll();
         enrollmentStrategy.validate(payment, amount, capacity, students);
         students.enroll(student);
     }

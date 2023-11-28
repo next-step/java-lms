@@ -15,7 +15,8 @@ class EnrollmentTest {
     void apply2() {
         Enrollment actual = Enrollment.PAID;
 
-        assertDoesNotThrow(() -> actual.enroll(20000L, new Amount(20000L), 1, new Student(), new Students()));
+        assertDoesNotThrow(() -> actual.enroll(EnrollmentStatus.RECRUITING, 20000L, new Amount(20000L), 1, new Student(),
+                new Students()));
     }
 
     @Test
@@ -23,6 +24,6 @@ class EnrollmentTest {
     void apply3() {
         Enrollment actual = Enrollment.FREE;
 
-        assertDoesNotThrow(() -> actual.enroll(0L, new Amount(20000L), 0, new Student(), new Students()));
+        assertDoesNotThrow(() -> actual.enroll(EnrollmentStatus.RECRUITING, 0L, new Amount(20000L), 0, new Student(), new Students()));
     }
 }

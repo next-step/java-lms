@@ -40,10 +40,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDate(rs.getTimestamp(5)),
                 rs.getString(6),
                 rs.getString(7),
-                rs.getInt(8),
-                rs.getLong(9),
-                toLocalDateTime(rs.getTimestamp(10)),
-                toLocalDateTime(rs.getTimestamp(11)));
+                rs.getString(8),
+                rs.getInt(9),
+                rs.getLong(10),
+                toLocalDateTime(rs.getTimestamp(11)),
+                toLocalDateTime(rs.getTimestamp(12)));
 
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
     }

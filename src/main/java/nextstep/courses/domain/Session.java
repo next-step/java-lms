@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.code.Enrollment;
+import nextstep.courses.domain.code.EnrollmentStatus;
 import nextstep.courses.domain.code.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -17,6 +18,7 @@ public class Session {
     private final Thumbnail thumbnail;
     private final SessionStatus status;
     private final Enrollment enrollment;
+    private final EnrollmentStatus enrollmentStatus;
     private final int capacity;
     private final Amount amount;
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -30,12 +32,13 @@ public class Session {
                    LocalDate endDate,
                    String sessionStatus,
                    String enrollment,
+                   String enrollmentStatus,
                    int capacity,
                    long amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this(id, courseId, title, new Period(startDate, endDate), thumbnail, SessionStatus.valueOf(sessionStatus),
-                Enrollment.valueOf(enrollment), capacity, new Amount(amount), createdAt, updatedAt);
+                Enrollment.valueOf(enrollment), EnrollmentStatus.valueOf(enrollmentStatus), capacity, new Amount(amount), createdAt, updatedAt);
     }
 
     public Session(long id,
@@ -45,6 +48,7 @@ public class Session {
                    Thumbnail thumbnail,
                    SessionStatus status,
                    Enrollment enrollment,
+                   EnrollmentStatus enrollmentStatus,
                    int capacity,
                    Amount amount,
                    LocalDateTime createdAt,
@@ -52,6 +56,7 @@ public class Session {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
+        this.enrollmentStatus = enrollmentStatus;
         this.capacity = capacity;
         this.period = period;
         this.thumbnail = thumbnail;
@@ -65,10 +70,8 @@ public class Session {
     public Student enroll(Payment payment,
                           NsUser nsUser,
                           Students students) {
-        status.validateApply();
-
         Student student = new Student(this.id, nsUser.getId());
-        enrollment.enroll(payment.amount(), amount, capacity, student, students);
+        enrollment.enroll(enrollmentStatus, payment.amount(), amount, capacity, student, students);
 
         return student;
     }
