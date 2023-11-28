@@ -18,7 +18,7 @@ public class Question {
 
     private List<Answer> answers = new ArrayList<>();
 
-    private Answers answers2;
+    private Answers answers2 = new Answers();
 
     private boolean deleted = false;
 
@@ -53,11 +53,6 @@ public class Question {
         answers2.addAnswer(answer);
     }
 
-    public void validateIsOwner(NsUser loginUser) {
-        if (!writer.equals(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
 
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -77,11 +72,34 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) {
+    public void validateCanDelete(NsUser loginUser) {
         validateIsOwner(loginUser);
+        validateIsOwnerAnswers(loginUser);
+    }
 
+    public void validateIsOwner(NsUser loginUser) {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private void validateIsOwnerAnswers(NsUser loginUser) {
         if (!answers2.isOwnerAllAnswers(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) {
+
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        for (Answer answer : answers) {
+            DeleteHistory history = answer.delete();
+            deleteHistories.add(history);
+        }
+
+        return deleteHistories;
     }
 }
