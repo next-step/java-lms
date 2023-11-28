@@ -4,6 +4,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswerTest {
@@ -21,5 +23,15 @@ public class AnswerTest {
     void answer_삭제() {
         A1.delete();
         assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("답변을 삭제하면 히스토리가 반환된다.")
+    void answer_삭제_히스토리() {
+        DeleteHistory fakeHistory = new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
+
+        DeleteHistory deleteHistory = A1.delete();
+
+        assertThat(deleteHistory).isEqualTo(fakeHistory);
     }
 }

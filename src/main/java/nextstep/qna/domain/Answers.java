@@ -24,4 +24,13 @@ public class Answers {
         return answers.stream()
                 .allMatch(answer -> answer.isOwner(writer));
     }
+
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            DeleteHistory history = answer.delete();
+            deleteHistories.add(history);
+        }
+        return deleteHistories;
+    }
 }
