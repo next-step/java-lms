@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.courses.domain.type.Price;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -28,8 +30,8 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public boolean isEqualAmount(BigDecimal amount) {
-        if (this.amount.compareTo(amount) == 0) {
+    public boolean isEqualAmount(Price price) {
+        if (price.isEqualAmount(this.amount)) {
             return true;
         }
         return false;

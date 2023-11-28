@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class ChargedSessionTest {
@@ -51,6 +53,17 @@ public class ChargedSessionTest {
         assertThatExceptionOfType(DifferentSessionAmountException.class)
             .isThrownBy(() -> chargedSession.apply(payment, user))
             .withMessageMatching("수강료와 결제 금액이 일치하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("수강 신청할 수 있다")
+    public void apply_session() {
+        Session chargedSession = new ChargedSession(duration(), image(), SessionStatus.RECRUITING, 5, BigDecimal.valueOf(10_000));
+        NsUser user = NsUserTest.JAVAJIGI;
+        Payment payment = new Payment(0L, 0L, user.getId(), BigDecimal.valueOf(10_000));
+
+        chargedSession.apply(payment, user);
+        assertThat(chargedSession.applys()).isEqualTo(Arrays.asList(new Apply(chargedSession, user)));
     }
 
     private Duration duration() {

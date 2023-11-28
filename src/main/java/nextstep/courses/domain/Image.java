@@ -1,27 +1,43 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.ImageVolumeOverException;
 import nextstep.courses.domain.type.ImageType;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Image {
+public class Image extends BaseEntity {
 
-    private final long volume;
+    private final Long id;
+    private final Volume volume;
     private final ImageType type;
     private final ImageSpecification specification;
 
-    public Image(long volume, String type, int width, int height) {
-        this.volume = volume;
-        this.type = ImageType.of(type);
-        this.specification = new ImageSpecification(width, height);
-        validate();
+    public Image(double volume, String type, int width, int height) {
+        this(0L, volume, type, width, height, LocalDateTime.now(), null);
     }
 
-    private void validate() {
-        if (this.volume > 1) {
-            throw new ImageVolumeOverException("이미지 최대 크기를 초과했습니다.");
-        }
+    public Image(Long id, double volume, String type, int width, int height, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.volume = new Volume(volume);
+        this.type = ImageType.of(type);
+        this.specification = new ImageSpecification(width, height);
+    }
+
+    public Long id() {
+        return this.id;
+    }
+
+    public Volume volume() {
+        return this.volume;
+    }
+
+    public ImageType type() {
+        return this.type;
+    }
+
+    public ImageSpecification specification() {
+        return this.specification;
     }
 
     @Override
@@ -29,11 +45,21 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return volume == image.volume && type == image.type && Objects.equals(specification, image.specification);
+        return Objects.equals(volume, image.volume) && type == image.type && Objects.equals(specification, image.specification);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(volume, type, specification);
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+            "id=" + id +
+            ", volume=" + volume +
+            ", type=" + type +
+            ", specification=" + specification +
+            '}';
     }
 }

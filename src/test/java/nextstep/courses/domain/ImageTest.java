@@ -21,7 +21,7 @@ public class ImageTest {
     @DisplayName("지원하지 않는 이미지 타입으로 이미지 생성 시 에러 발생한다")
     public void image_type() {
         assertThatExceptionOfType(InvalidImageTypeException.class)
-            .isThrownBy(() -> new Image(2, "BMP", 300, 200))
+            .isThrownBy(() -> new Image(1, "BMP", 300, 200))
             .withMessageMatching("지원하지 않는 이미지 타입입니다.");
     }
 

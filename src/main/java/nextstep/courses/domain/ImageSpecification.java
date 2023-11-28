@@ -40,6 +40,14 @@ public class ImageSpecification {
             .divide(BigDecimal.valueOf(this.height));
     }
 
+    public int width() {
+        return this.width;
+    }
+
+    public int height() {
+        return this.height;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,5 +59,13 @@ public class ImageSpecification {
     @Override
     public int hashCode() {
         return Objects.hash(width, height);
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSpecification{" +
+            "width=" + width +
+            ", height=" + height +
+            '}';
     }
 }

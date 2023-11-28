@@ -4,6 +4,7 @@ import nextstep.courses.exception.InvalidDurationException;
 import nextstep.courses.domain.type.SessionStatus;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Duration {
 
@@ -49,6 +50,26 @@ public class Duration {
 
     public LocalDate end() {
         return this.end;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Duration)) return false;
+        Duration duration = (Duration) o;
+        return Objects.equals(start, duration.start) && Objects.equals(end, duration.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
+    }
+
+    @Override
+    public String toString() {
+        return "Duration{" +
+            "start=" + start +
+            ", end=" + end +
+            '}';
     }
 
 }
