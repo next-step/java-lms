@@ -20,7 +20,7 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -55,19 +55,21 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> deleteQuestion(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+    public List<DeleteHistory> deleteQuestion(NsUser loginUser) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         // delete question
         delete(loginUser);
-        deleteHistories.add(createDeleteHistory(now));
+        deleteHistories.add(createDeleteHistory());
         // delete answers
-        deleteHistories.addAll(answers.deleteAnswers(loginUser, now));
+        deleteHistories.addAll(answers.deleteAnswers(loginUser));
         return deleteHistories;
     }
 
-    private void delete(NsUser loginUser) throws CannotDeleteException {
+    private void delete(NsUser loginUser) {
         validQuestion(loginUser);
         this.deleted = true;
+
+        createDeleteHistory();
     }
 
     private void validQuestion(NsUser loginUser) throws CannotDeleteException {
@@ -76,8 +78,8 @@ public class Question {
         }
     }
 
-    private DeleteHistory createDeleteHistory(LocalDateTime now) {
-        return new DeleteHistory(ContentType.QUESTION, id, writer, now);
+    private DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer);
     }
 
     public void addAnswer(Answer answer) {

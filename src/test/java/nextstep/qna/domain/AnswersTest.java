@@ -4,8 +4,6 @@ import static nextstep.qna.domain.AnswerTest.*;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +17,7 @@ public class AnswersTest {
 		Answers answers = new Answers();
 		answers.add(A2);
 
-		assertThatThrownBy(
-			() -> answers.deleteAnswers(
-				JAVAJIGI, LocalDateTime.of(2023, 11, 27, 1, 0, 0)
-			)
-		)
+		assertThatThrownBy(() -> answers.deleteAnswers(JAVAJIGI))
 			.isInstanceOf(CannotDeleteException.class);
 	}
 }

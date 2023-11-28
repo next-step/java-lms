@@ -22,7 +22,7 @@ public class AnswerTest {
 
     @DisplayName("deleteAnswer 메서드 호출시 사용자가 soft delete된다.")
     @Test
-    void delete() throws CannotDeleteException {
+    void delete() {
         A1.deleteAnswer(JAVAJIGI);
         assertThat(A1.isDeleted()).isEqualTo(true);
     }

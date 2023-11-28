@@ -18,7 +18,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -60,19 +60,21 @@ public class Answer {
         return writer;
     }
 
-    public void deleteAnswer(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory deleteAnswer(NsUser loginUser) {
         validAnswer(loginUser);
         this.deleted = true;
+
+        return createDeleteHistory();
     }
 
-    private void validAnswer(NsUser loginUser) throws CannotDeleteException {
+    private void validAnswer(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public DeleteHistory createDeleteHistory(LocalDateTime now) {
-        return new DeleteHistory(ContentType.ANSWER, id, writer, now);
+    private DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer);
     }
 
     @Override
