@@ -30,6 +30,7 @@ public enum Enrollment {
                        int capacity,
                        Student student,
                        Students students) {
-        enrollmentStrategy.enroll(payment, amount, capacity, student, students);
+        enrollmentStrategy.validate(payment, amount, capacity, students);
+        students.enroll(student);
     }
 }

@@ -1,7 +1,6 @@
 package nextstep.courses.domain.strategy;
 
 import nextstep.courses.domain.Amount;
-import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.courses.exception.IncorrectAmountException;
 import nextstep.courses.exception.SessionFullException;
@@ -17,8 +16,8 @@ class PaidEnrollmentStrategyTest {
     void enroll() {
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy();
 
-        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.enroll(10000L, new Amount(10000L), 0,
-                        new Student(), new Students()),
+        assertThrows(SessionFullException.class, () -> paidEnrollmentStrategy.validate(10000L, new Amount(10000L), 0,
+                        new Students()),
                 "수강 신청 인원이 마감 되었습니다.");
     }
 
@@ -28,9 +27,8 @@ class PaidEnrollmentStrategyTest {
         Amount amount = new Amount(20000L);
         PaidEnrollmentStrategy paidEnrollmentStrategy = new PaidEnrollmentStrategy();
 
-        assertThrows(IncorrectAmountException.class, () -> paidEnrollmentStrategy.enroll(15000L, amount, 1,
-                        new Student()
-                        , new Students()),
+        assertThrows(IncorrectAmountException.class, () -> paidEnrollmentStrategy.validate(15000L, amount, 1,
+                        new Students()),
                 "결제 금액과 강의 금액이 다릅니다.");
     }
 
