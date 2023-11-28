@@ -15,6 +15,12 @@ public class AnswerTest {
         Assertions.assertThatExceptionOfType(CannotDeleteException.class)
                 .isThrownBy(() -> A1.checkCanDelete(NsUserTest.SANJIGI))
                 .withMessageMatching("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
 
+    @Test
+    void makeDeleteHistory() throws CannotDeleteException {
+
+        A1.makeDeleteHistory(NsUserTest.JAVAJIGI);
+        Assertions.assertThat(A1.isDeleted()).isTrue();
     }
 }
