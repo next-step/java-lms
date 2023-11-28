@@ -24,11 +24,16 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public Students findBySessionId(long sessionId) {
-        String sql = "select ns_user_id, session_id from student where session_id = ?";
+        String sql = "select ns_user_id, session_id, approved from student where session_id = ?";
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
-                rs.getLong(2));
+                rs.getLong(2),
+                toBoolean(rs.getString(3)));
 
         return new Students(jdbcTemplate.query(sql, rowMapper, sessionId));
+    }
+
+    private boolean toBoolean(String approved) {
+        return approved.equals("Y");
     }
 }

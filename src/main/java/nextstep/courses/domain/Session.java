@@ -70,7 +70,7 @@ public class Session {
     public Student enroll(Payment payment,
                           NsUser nsUser,
                           Students students) {
-        Student student = new Student(this.id, nsUser.getId());
+        Student student = new Student(this.id, nsUser.getId(), true);
         enrollment.enroll(payment.amount(), student, students);
 
         return student;

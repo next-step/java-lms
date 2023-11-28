@@ -5,15 +5,18 @@ import java.util.Objects;
 public class Student {
     private final long nsUserId;
     private final long sessionId;
+    private final boolean approved;
 
     public Student() {
-        this(0L, 0L);
+        this(0L, 0L, true);
     }
 
     public Student(long nsUserId,
-                   long sessionId) {
+                   long sessionId,
+                   boolean approved) {
         this.nsUserId = nsUserId;
         this.sessionId = sessionId;
+        this.approved = approved;
     }
 
     public long getNsUserId() {
