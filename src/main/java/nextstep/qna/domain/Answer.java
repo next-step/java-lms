@@ -85,6 +85,6 @@ public class Answer {
 
         this.deleted = true;
 
-        return new DeleteHistory(ContentType.ANSWER, id, nsUser, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 }
