@@ -18,4 +18,16 @@ class StudentTest {
 
         Assertions.assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    @DisplayName("선발 상태를 탈락 상태로 변경 가능하다")
+    void fail() {
+        Student student = new Student(0L, 0L, Selection.WAITING);
+        student.fail();
+
+        Selection actual = student.getSelection();
+        Selection expected = Selection.FAILED;
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 }

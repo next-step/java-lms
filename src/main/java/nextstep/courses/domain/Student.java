@@ -52,7 +52,12 @@ public class Student {
         this.selection = Selection.APPROVED;
     }
 
+    public void fail() {
+        this.selection = Selection.FAILED;
+    }
+
     public Selection getSelection() {
         return this.selection;
     }
+
 }

@@ -35,4 +35,13 @@ public class SessionService {
 
         studentRepository.updateSelection(student);
     }
+
+    @Transactional
+    public void fail(long studentId,
+                     long sessionId) {
+        Student student = studentRepository.findByIdAndSessionId(studentId, sessionId).orElseThrow(() -> new NotFoundStudentException("강의 신청한 학생을 찾을 수 없습니다."));
+        student.fail();
+
+        studentRepository.updateSelection(student);
+    }
 }
