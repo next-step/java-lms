@@ -18,6 +18,8 @@ public class Question {
 
     private List<Answer> answers = new ArrayList<>();
 
+    private Answers answers2;
+
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -42,31 +44,13 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers2.addAnswer(answer);
     }
 
     public void validateIsOwner(NsUser loginUser) {
@@ -95,5 +79,9 @@ public class Question {
 
     public void delete(NsUser loginUser) {
         validateIsOwner(loginUser);
+
+        if (!answers2.isOwnerAllAnswers(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
