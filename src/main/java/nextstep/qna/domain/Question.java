@@ -17,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -83,15 +83,18 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
-    public void delete(NsUser loginUser) {
+    public DeleteHistories delete(NsUser loginUser) {
         if (!this.writer.equals(loginUser)) {
             throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
         }
+        DeleteHistories deletedHistories = this.answers.delete(loginUser);
         this.deleted = true;
+        deletedHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        return deletedHistories;
     }
 
     @Override

@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
@@ -16,5 +19,17 @@ public class QuestionTest {
     void if_user_is_not_same_as_login_user_then_can_not_delete_question() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(UnAuthorizedException.class);
+    }
+
+    @DisplayName("답변이 없고 질문만 존재할 경우 삭제할 수 있다.")
+    @Test
+    void should_delete_if_question_has_no_answer() {
+        DeleteHistories expected = new DeleteHistories(List.of(new DeleteHistory(ContentType.QUESTION,
+                                                                                 0L,
+                                                                                 NsUserTest.JAVAJIGI,
+                                                                                 LocalDateTime.now())));
+        DeleteHistories actual = Q1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(actual).isEqualTo(expected);
     }
 }
