@@ -89,12 +89,15 @@ public class Question {
         return answers.values();
     }
 
-    public void delete(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser loginUser) {
         if (!writer.matchUser(loginUser)) {
             throw new CannotDeleteException("삭제 권한이 존재하지 않습니다.");
         }
-        answers.deleteAll(loginUser);
+        List<DeleteHistory> deleteHistories = answers.deleteAll(loginUser);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         this.deleted = true;
+
+        return deleteHistories;
     }
 
     @Override

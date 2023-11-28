@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.qna.domain.AnswerTest.A1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +47,7 @@ public class QuestionTest {
         DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.QUESTION, question.getId(),
                 NsUserTest.JAVAJIGI, LocalDateTime.now());
 
-        DeleteHistory deleteHistory = question.delete(NsUserTest.JAVAJIGI);
-        assertThat(deleteHistory).isEqualTo(expectedDeleteHistory);
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
+        assertThat(deleteHistories).contains(expectedDeleteHistory);
     }
 }
