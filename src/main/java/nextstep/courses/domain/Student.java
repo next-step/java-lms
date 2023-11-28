@@ -5,7 +5,7 @@ import nextstep.courses.domain.code.Selection;
 import java.util.Objects;
 
 public class Student {
-    private final long nsUserId;
+    private final long userId;
     private final long sessionId;
     private Selection selection;
 
@@ -13,22 +13,22 @@ public class Student {
         this(0L, 0L, Selection.WAITING);
     }
 
-    public Student(long nsUserId,
+    public Student(long userId,
                    long sessionId,
                    String selection) {
-        this(nsUserId, sessionId, Selection.valueOf(selection));
+        this(userId, sessionId, Selection.valueOf(selection));
     }
 
-    public Student(long nsUserId,
+    public Student(long userId,
                    long sessionId,
                    Selection selection) {
-        this.nsUserId = nsUserId;
+        this.userId = userId;
         this.sessionId = sessionId;
         this.selection = selection;
     }
 
-    public long getNsUserId() {
-        return nsUserId;
+    public long getUserId() {
+        return userId;
     }
 
     public long getSessionId() {
@@ -40,12 +40,12 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(nsUserId, student.nsUserId) && Objects.equals(sessionId, student.sessionId);
+        return Objects.equals(userId, student.userId) && Objects.equals(sessionId, student.sessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nsUserId, sessionId);
+        return Objects.hash(userId, sessionId);
     }
 
     public void approve() {

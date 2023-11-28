@@ -7,7 +7,7 @@ public interface StudentRepository {
 
     Students findBySessionId(long sessionId);
 
-    Optional<Student> findByIdAndSessionId(long studentId,
+    Optional<Student> findByIdAndSessionId(long userId,
                                            long sessionId);
 
     void updateSelection(Student student);
