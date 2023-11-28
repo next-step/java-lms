@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import java.util.List;
+
 public interface ThumbnailRepository {
-    Thumbnail findBySessionId(long sessionId);
+    List<Thumbnail> findBySessionId(long sessionId);
 }

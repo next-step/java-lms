@@ -8,6 +8,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session {
 
@@ -21,7 +22,7 @@ public class Session {
     public Session(long id,
                    long courseId,
                    String title,
-                   Thumbnail thumbnail,
+                   List<Thumbnail> thumbnails,
                    LocalDate startDate,
                    LocalDate endDate,
                    String sessionStatus,
@@ -31,7 +32,7 @@ public class Session {
                    long amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
-        this(id, courseId, title, new Period(startDate, endDate), thumbnail, SessionStatus.valueOf(sessionStatus),
+        this(id, courseId, title, new Period(startDate, endDate), thumbnails, SessionStatus.valueOf(sessionStatus),
                 EnrollmentType.valueOf(enrollment), EnrollmentStatus.valueOf(enrollmentStatus), capacity, new Amount(amount), createdAt, updatedAt);
     }
 
@@ -39,7 +40,7 @@ public class Session {
                    long courseId,
                    String title,
                    Period period,
-                   Thumbnail thumbnail,
+                   List<Thumbnail> thumbnails,
                    SessionStatus status,
                    EnrollmentType enrollmentType,
                    EnrollmentStatus enrollmentStatus,
@@ -47,7 +48,7 @@ public class Session {
                    Amount amount,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
-        this(id, courseId, new SessionInformation(title, period, thumbnail, status), new Enrollment(enrollmentType,
+        this(id, courseId, new SessionInformation(title, period, thumbnails, status), new Enrollment(enrollmentType,
                 enrollmentStatus, capacity,
                 amount), createdAt, updatedAt);
     }
