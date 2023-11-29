@@ -6,13 +6,28 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.users.domain.NsUserTest.JAVAJIGI;
-import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+
+    public static Answer javajigiAnswer(Question question) {
+        return new Answer(JAVAJIGI, question, null);
+    }
+
+    public static Answer sanjigiiAnswer(Question question) {
+        return new Answer(SANJIGI, question, null);
+    }
+
+    public static Answer honuxiAnswer(Question question) {
+        return new Answer(HONUX, question, null);
+    }
+
+    public static Answer crongAnswer(Question question) {
+        return new Answer(CRONG, question, null);
+    }
 
     @Test
     @DisplayName("성공 - 답변 작성자와 일치할 경우 답변을 삭제 한다.")

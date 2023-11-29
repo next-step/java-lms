@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static nextstep.qna.domain.AnswerTest.*;
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +20,7 @@ public class QuestionTest {
     @DisplayName("성공 - 로그인 사용자와 질문한 사람이 같은 경우 삭제가 가능하다.")
     void success_delete_qna_condition() throws Exception {
         Q1.addAnswers(new Answers(
-                List.of(new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1))
+                List.of(javajigiAnswer(Q1), javajigiAnswer(Q1))
         ));
         Q1.delete(NsUserTest.JAVAJIGI);
     }
@@ -36,7 +37,7 @@ public class QuestionTest {
     @DisplayName("성공 - qna 삭제 시 질문지와 댓글에 대한 삭제 히스토리가 생성된다")
     void success_delete_qna_and_save_delete_history() throws Exception {
         Q2.addAnswers(new Answers(
-                List.of(new Answer(JAVAJIGI, Q2), new Answer(SANJIGI, Q2), new Answer(HONUX, Q2))
+                List.of(javajigiAnswer(Q2), sanjigiiAnswer(Q2), honuxiAnswer(Q2))
         ));
 
 
