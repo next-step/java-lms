@@ -1,4 +1,4 @@
 package nextstep.courses.domain;
 
-public class Session {
+public abstract class Session {
 }
