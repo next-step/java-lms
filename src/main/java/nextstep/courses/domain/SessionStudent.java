@@ -27,4 +27,8 @@ public class SessionStudent {
     public boolean isMaxStudents() {
         return this.students.totalCount() == this.maxStudentCount;
     }
+
+    public int studentCount() {
+        return this.students.totalCount();
+    }
 }

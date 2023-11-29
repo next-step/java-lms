@@ -24,6 +24,14 @@ public class Session {
         sessionEnrolment.payEnrolment(student, userPayed);
     }
 
+    public int totalStudentCount() {
+        return this.sessionEnrolment.totalStudent();
+    }
+
+    public boolean isMaxStudent() {
+        return this.sessionEnrolment.isFullStudents();
+    }
+
     private boolean isFree() {
         return this.sessionEnrolment.isFree();
     }
