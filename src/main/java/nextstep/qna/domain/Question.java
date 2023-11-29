@@ -72,9 +72,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void setDeleted() {
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
