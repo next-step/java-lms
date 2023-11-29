@@ -8,6 +8,7 @@ public abstract class Session {
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private SessionStatus status;
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
         validateSession(title, startDate, endDate);
@@ -15,6 +16,7 @@ public abstract class Session {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = SessionStatus.READY;
     }
 
     private void validateSession(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
@@ -35,5 +37,9 @@ public abstract class Session {
 
     public LocalDateTime getEndDate() {
         return this.endDate;
+    }
+
+    public SessionStatus getStatus() {
+        return this.status;
     }
 }

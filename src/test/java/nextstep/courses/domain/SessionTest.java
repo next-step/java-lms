@@ -71,4 +71,17 @@ class SessionTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("start date cannot be after end date");
     }
+
+    @Test
+    @DisplayName("Session이 처음 생성되면, Session의 status는 Ready 상태를 가진다.")
+    void testInitSessionStatusIsReady() {
+        //given
+        final Session session = new FreeSession(defaultTitle, defaultStartDate, defaultEndDate);
+
+        //when
+        final SessionStatus status = session.getStatus();
+
+        //then
+        assertThat(status).isEqualTo(SessionStatus.READY);
+    }
 }
