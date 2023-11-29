@@ -16,12 +16,12 @@ public class Answers {
         this.answers = new ArrayList(answers);
     }
 
-    public boolean isAllSameBy(NsUser questionWriter) {
+    public boolean isAllSameBy(NsUser writer) {
         if (hasNoAnswers()) {
             return false;
         }
         return answers.stream()
-                .allMatch(answer -> answer.isOwner(questionWriter));
+                .allMatch(answer -> answer.isOwner(writer));
     }
 
     private boolean hasNoAnswers() {
