@@ -12,8 +12,8 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    public void delete_성공() {
-        DeleteHistory history = A1.delete();
+    public void delete_성공() throws Exception {
+        DeleteHistory history = A1.delete(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
 
         assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now()));
