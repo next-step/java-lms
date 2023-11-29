@@ -22,7 +22,7 @@ class AnswersTest {
                 List.of(javajigiAnswer(Q1), javajigiAnswer(Q1), javajigiAnswer(Q1))
         );
 
-        assertThat(answers.isAllSameBy(JAVAJIGI)).isTrue();
+        assertThat(answers.hasOtherWriter(JAVAJIGI)).isFalse();
     }
 
     @Test
@@ -32,7 +32,7 @@ class AnswersTest {
                 List.of(javajigiAnswer(Q1), javajigiAnswer(Q1), sanjigiiAnswer(Q1))
         );
 
-        assertThat(answers.isAllSameBy(JAVAJIGI)).isFalse();
+        assertThat(answers.hasOtherWriter(JAVAJIGI)).isTrue();
     }
 
     @Test
@@ -40,7 +40,7 @@ class AnswersTest {
     void success_qna_include_answer_zero() throws Exception {
         Answers answers = new Answers(new ArrayList<>());
 
-        assertThat(answers.isAllSameBy(JAVAJIGI)).isFalse();
+        assertThat(answers.hasOtherWriter(JAVAJIGI)).isFalse();
     }
 
     @Test

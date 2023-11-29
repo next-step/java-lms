@@ -13,7 +13,7 @@ import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static final Question Q1 = new Question(JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
 
     @Test
@@ -22,7 +22,11 @@ public class QuestionTest {
         Q1.addAnswers(new Answers(
                 List.of(javajigiAnswer(Q1), javajigiAnswer(Q1))
         ));
-        Q1.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q1.delete(JAVAJIGI);
+
+        assertThat(deleteHistories).hasSize(3)
+                .extracting("deletedBy")
+                .containsOnly(JAVAJIGI, JAVAJIGI, JAVAJIGI);
     }
 
     @Test
@@ -46,16 +50,14 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("성공 - qna 삭제 시 질문지와 댓글에 대한 삭제 히스토리가 생성된다")
+    @DisplayName("성공 - 로그인 유저와 질문자가 같고, 질문만 존재하고 답변이 없을 경우 삭제가 가능하다.")
     void success_delete_qna_and_save_delete_history() throws Exception {
-        Q2.addAnswers(new Answers(
-                List.of(javajigiAnswer(Q2), sanjigiiAnswer(Q2), honuxiAnswer(Q2))
-        ));
+        Q1.addAnswers(new Answers(List.of()));
+        List<DeleteHistory> deleteHistories = Q1.delete(JAVAJIGI);
 
-
-        List<DeleteHistory> deleteHistories = Q2.deleteHistory();
-
-        assertThat(deleteHistories).hasSize(4);
+        assertThat(deleteHistories).hasSize(1)
+                .extracting("deletedBy")
+                .containsOnly(JAVAJIGI);
     }
 
 }

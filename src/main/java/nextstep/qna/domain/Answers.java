@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> answers;
@@ -16,22 +15,25 @@ public class Answers {
         this.answers = new ArrayList(answers);
     }
 
-    public boolean isAllSameBy(NsUser writer) {
+    public boolean hasOtherWriter(NsUser writer) {
         if (hasNoAnswers()) {
             return false;
         }
         return answers.stream()
-                .allMatch(answer -> answer.isOwner(writer));
+                .anyMatch(answer -> !answer.isOwner(writer));
     }
 
     private boolean hasNoAnswers() {
         return answers.isEmpty();
     }
 
-    public void deleteAll(NsUser writer) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAll(NsUser writer) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
             answer.delete(writer);
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
@@ -49,10 +51,5 @@ public class Answers {
         }
     }
 
-    public List<DeleteHistory> deleteHistory() {
-        return answers.stream()
-                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
-                .collect(Collectors.toList());
-    }
 }
 
