@@ -37,8 +37,18 @@ public class Question {
         this.contents = contents;
     }
 
-    public DeleteHistory delete() {
-        this.deleted=true;
+    public List<DeleteHistory> delete() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(this.deleteQuestion());
+        for (Answer answer : this.answers) {
+            deleteHistories.add(answer.delete());
+        }
+        return deleteHistories;
+    }
+
+    private DeleteHistory deleteQuestion() {
+        this.deleted = true;
         return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 

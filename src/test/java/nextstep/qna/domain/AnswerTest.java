@@ -16,6 +16,6 @@ public class AnswerTest {
         DeleteHistory history = A1.delete();
         assertThat(A1.isDeleted()).isTrue();
 
-        assertThat(history).isEqualTo(new DeleteHistory(ContentType.QUESTION, A1.getId(), A1.getWriter(), LocalDateTime.now()));
+        assertThat(history).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now()));
     }
 }

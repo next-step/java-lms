@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,10 +14,24 @@ public class QuestionTest {
 
     @Test
     public void delete_성공() {
-        DeleteHistory history = Q1.delete();
+        List<DeleteHistory> history = Q1.delete();
         assertThat(Q1.isDeleted()).isTrue();
 
-        assertThat(history).isEqualTo(new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now()));
+        assertThat(history).containsExactly(new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now()));
+    }
+
+    @Test
+    public void delete_성공_답변() {
+        Answer A1 = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer A2 = new Answer(12L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
+        Q2.addAnswer(A1);
+        Q2.addAnswer(A2);
+
+        Q2.delete();
+
+        assertThat(Q2.isDeleted()).isTrue();
+        assertThat(Q2.getAnswers()).filteredOn(answer -> answer.isDeleted())
+                .isEqualTo(Q2.getAnswers());
     }
 
 

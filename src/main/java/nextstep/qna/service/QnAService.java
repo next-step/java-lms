@@ -37,11 +37,7 @@ public class QnAService {
             }
         }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(question.delete());
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
-        }
+        List<DeleteHistory> deleteHistories = question.delete();
         deleteHistoryService.saveAll(deleteHistories);
     }
 }
