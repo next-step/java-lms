@@ -86,6 +86,6 @@ public class QnaServiceTest {
                 new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
         );
 
-        verify(deleteHistoryService).saveAll(deleteHistories.getDeleteHistories());
+        verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
