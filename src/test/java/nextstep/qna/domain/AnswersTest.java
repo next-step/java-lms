@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -41,17 +43,29 @@ class AnswersTest {
     }
 
     @Test
-    @DisplayName("성공 - 답변의 상태를 모두 삭제 처리한다.")
+    @DisplayName("성공 - 작성자가 모두 일치하는 답변의 경우 답변을 모두 삭제할 수 있다.")
     void success_answer_all_delete() throws Exception {
         Answers answers = new Answers(
-                List.of(new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1), new Answer(SANJIGI, Q1))
+                List.of(new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1))
         );
 
-        answers.deleteAll();
+        answers.deleteAll(JAVAJIGI);
 
         assertThat(answers.answers()).hasSize(3)
                 .extracting("deleted")
                 .containsOnly(true, true, true);
+    }
+
+    @Test
+    @DisplayName("실패 - 작성자가 일치하지 않는 답변이 한 개라도 존재하는 경우 답변을 삭제할 수 없다.")
+    void fail_answer_all_delete() throws Exception {
+        Answers answers = new Answers(
+                List.of(new Answer(JAVAJIGI, Q1), new Answer(JAVAJIGI, Q1), new Answer(SANJIGI, Q1))
+        );
+
+        Assertions.assertThatThrownBy(() -> answers.deleteAll(JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
 }

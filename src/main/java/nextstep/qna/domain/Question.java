@@ -71,7 +71,7 @@ public class Question {
         validateAuthority(loginUser);
         validateWriterOfAnswers();
         this.deleted = true;
-        answers.deleteAll();
+        answers.deleteAll(loginUser);
     }
 
     private void validateAuthority(NsUser loginUser) throws CannotDeleteException {

@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -27,8 +28,10 @@ public class Answers {
         return answers.isEmpty();
     }
 
-    public void deleteAll() {
-        answers.forEach(Answer::delete);
+    public void deleteAll(NsUser writer) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.delete(writer);
+        }
     }
 
     public boolean isDeleted() {
