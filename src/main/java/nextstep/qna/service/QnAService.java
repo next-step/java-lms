@@ -27,7 +27,7 @@ public class QnAService {
         Question question = questionToBeDeleted(loginUser, questionId);
         questionRepository.update(questionId, question);
 
-        List<Answer> answers = answersToBeDeleted(loginUser, questionId);
+        Answers answers = answersToBeDeleted(loginUser, questionId);
         for (Answer answer : answers) {
             answerRepository.update(answer.getId(), answer);
         }
@@ -46,13 +46,9 @@ public class QnAService {
         return questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
     }
 
-    private List<Answer> answersToBeDeleted(NsUser loginUser, long questionId) {
-        List<Answer> deletedAnswers = new ArrayList<>();
-        for (Answer answer : getAnswers(questionId)) {
-            answer = answer.delete(loginUser);
-            deletedAnswers.add(answer);
-        }
-
+    private Answers answersToBeDeleted(NsUser loginUser, long questionId) {
+        Answers answers = new Answers(getAnswers(questionId));
+        Answers deletedAnswers = answers.delete(loginUser);
         return deletedAnswers;
     }
 
@@ -60,7 +56,7 @@ public class QnAService {
         return answerRepository.findByQuestion(questionId);
     }
 
-    private List<DeleteHistory> deleteHistoriesOf(Question question, List<Answer> answers) {
+    private List<DeleteHistory> deleteHistoriesOf(Question question, Answers answers) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(DeleteHistory.from(question));
         deleteHistories.addAll(DeleteHistory.from(answers));

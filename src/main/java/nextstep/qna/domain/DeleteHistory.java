@@ -37,7 +37,7 @@ public class DeleteHistory {
         );
     }
 
-    public static List<DeleteHistory> from(List<Answer> answers) {
+    public static List<DeleteHistory> from(Answers answers) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Answer answer : answers) {
