@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.cource;
 
 public interface CourseRepository {
     int save(Course course);

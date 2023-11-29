@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.cource;
 
 import nextstep.courses.exception.image.ImageFileSizeExceededException;
 import nextstep.courses.exception.image.ImageSizeBelowMinException;
