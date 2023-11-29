@@ -33,3 +33,13 @@
 질문이 아니면 예와가 발생하는 로직 인거 같다.
 그래서 검증하는 test code를 만들어주고 Question 클래스에 
 delete 메서드를 추가 후 if문을 안으로 옮겨줬다.
+
+두번째로는 눈에 들어온것은 question.getAnswers(), question.setDeleted(),
+questionId, question.getWriter() 수많은 getter와 setter들이였다.
+그래서 든 생각은 question.delete() 메서드에 모든 로직을 넣어주는건 어떨지..
+모든 로직이 들어간다면 getAnswers, setDeleted, questionId, getWriter
+get set을 안쓸 수 있지 않을까 questionId같은 경우는 이 값으로 찾아온 question이기 때문에 
+question에 있는 인스턴스변수 id를 사용하면 될거같다.
+로직을 Question으로 옮긴 후 기존 테스트 통과 
+
+
