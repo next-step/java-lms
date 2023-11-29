@@ -9,6 +9,14 @@ public class Enrollment {
     private final int capacity;
     private final Amount amount;
 
+    public Enrollment(String enrollmentType,
+                      String enrollmentStatus,
+                      int capacity,
+                      long amount) {
+        this(EnrollmentType.valueOf(enrollmentType), EnrollmentStatus.valueOf(enrollmentStatus), capacity,
+                new Amount(amount));
+    }
+
     public Enrollment(EnrollmentType enrollmentType,
                       EnrollmentStatus enrollmentStatus,
                       int capacity,

@@ -30,14 +30,14 @@ class SessionTest {
 
         Assertions.assertAll(() -> {
             Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnails, SessionStatus.PREPARING,
-                    EnrollmentType.PAID, EnrollmentStatus.CLOSED, 1, amount, LocalDateTime.now(), null);
+                    new Enrollment(EnrollmentType.PAID, EnrollmentStatus.CLOSED, 1, amount), LocalDateTime.now(), null);
 
             assertThrows(SessionClosedException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L),
                     new NsUser(0L, "테스트", "테스트", "테스트", "테스트"),
                     new Students()), "모집 종료된 강의 입니다.");
         }, () -> {
             Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnails, SessionStatus.END,
-                    EnrollmentType.PAID, EnrollmentStatus.CLOSED, 1, amount, LocalDateTime.now(), null);
+                    new Enrollment(EnrollmentType.PAID, EnrollmentStatus.CLOSED, 1, amount), LocalDateTime.now(), null);
 
             assertThrows(SessionClosedException.class, () -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()), "모집 종료된 강의 입니다.");
         });
@@ -55,7 +55,7 @@ class SessionTest {
         Amount amount = new Amount(20000L);
 
         Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnails, SessionStatus.RECRUITING,
-                EnrollmentType.PAID, EnrollmentStatus.RECRUITING, 1, amount, LocalDateTime.now(), null);
+                new Enrollment(EnrollmentType.PAID, EnrollmentStatus.RECRUITING, 1, amount), LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
@@ -70,7 +70,7 @@ class SessionTest {
         Amount amount = new Amount(0L);
 
         Session session = new Session(0L, 0L, "테스트 타이틀", period, thumbnails, SessionStatus.RECRUITING,
-                EnrollmentType.FREE, EnrollmentStatus.RECRUITING, 1, amount, LocalDateTime.now(), null);
+                new Enrollment(EnrollmentType.FREE, EnrollmentStatus.RECRUITING, 1, amount), LocalDateTime.now(), null);
 
         assertDoesNotThrow(() -> session.enroll(new Payment("", 0L, 0L, 20000L), new NsUser(0L, "테스트", "테스트", "테스트", "테스트"), new Students()));
     }
