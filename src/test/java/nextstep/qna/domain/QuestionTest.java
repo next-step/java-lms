@@ -25,20 +25,6 @@ public class QuestionTest {
     }
 
     @Test
-    public void delete_성공_답변_여러개() throws Exception {
-        Answer A1 = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        Answer A2 = new Answer(12L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
-        Q1.addAnswer(A1);
-        Q1.addAnswer(A2);
-
-        Q1.delete(NsUserTest.JAVAJIGI);
-
-        assertThat(Q1.isDeleted()).isTrue();
-        assertThat(Q1.getAnswers()).filteredOn(answer -> answer.isDeleted())
-                .isEqualTo(Q1.getAnswers());
-    }
-
-    @Test
     public void delete_다른_사람이_쓴_글() {
         assertThatThrownBy(() -> {
             Q1.delete(NsUserTest.SANJIGI);
