@@ -26,6 +26,7 @@
 
 ## TODO
 * [X] 자신이 작성하지 않은 질문은 삭제할 수 없어서 예외가 발생한다.
+* [X] 질문자와 답변자가 다른경우 답변을 삭제할 수 없고 예외가 발생한다.
 
 ### 작업을 하면서 생각했던 것들 
 일단 제일 작은 단위부터 TDD를 해보자
@@ -41,5 +42,17 @@ questionId, question.getWriter() 수많은 getter와 setter들이였다.
 get set을 안쓸 수 있지 않을까 questionId같은 경우는 이 값으로 찾아온 question이기 때문에 
 question에 있는 인스턴스변수 id를 사용하면 될거같다.
 로직을 Question으로 옮긴 후 기존 테스트 통과 
+
+로직을 옮기고나니 answer.isOwner가 눈에 들어왔다
+이 로직도 Question 처럼 Answer 자기자신이 처리하면 좋을거 같았다.
+메서드명으로는 뭐가 좋을까?... 항상 이런게 고민이다.
+id 값이 같은지 판별해서 예외가 발생하는거니까 isDeleted?가 좋을까 
+보통 is가 앞에 붙으면 리턴 값이 boolean 값인거 같으니까
+validateLoginUser 정도가 적당할까 ?
+단위테스트 mock 테스트 모두 통과 !
+
+
+
+
 
 
