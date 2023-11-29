@@ -37,8 +37,9 @@ public class Question {
         this.contents = contents;
     }
 
-    public void delete() {
+    public DeleteHistory delete() {
         this.deleted=true;
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
     public Long getId() {

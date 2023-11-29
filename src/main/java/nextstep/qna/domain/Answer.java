@@ -43,8 +43,9 @@ public class Answer {
         this.contents = contents;
     }
 
-    public void delete() {
+    public DeleteHistory delete() {
         this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     public Long getId() {
