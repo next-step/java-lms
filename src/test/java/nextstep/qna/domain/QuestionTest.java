@@ -31,7 +31,7 @@ public class QuestionTest {
     void 질문을_삭제하면_삭제히스토리가_나온다() throws CannotDeleteException {
         LocalDateTime time = LocalDateTime.now();
         DeleteHistory history = new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), time);
-        assertThat(Q1.delete(NsUserTest.JAVAJIGI, time)).contains(history);
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI)).contains(history);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class QuestionTest {
         DeleteHistory questionHistory = new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), time);
         DeleteHistory answerHistory = new DeleteHistory(ContentType.ANSWER, AnswerTest.A1.getId(), AnswerTest.A1.getWriter(), time);
 
-        assertThat(Q1.delete(NsUserTest.JAVAJIGI, time)).contains(questionHistory, answerHistory);
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI)).contains(questionHistory, answerHistory);
     }
 
 }

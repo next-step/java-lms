@@ -83,18 +83,14 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
-        return delete(nsUser, LocalDateTime.now());
-    }
-
-    public List<DeleteHistory> delete(NsUser nsUser, LocalDateTime time) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, time));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(nsUser, time));
+            deleteHistories.add(answer.delete(nsUser));
         }
         return deleteHistories;
     }

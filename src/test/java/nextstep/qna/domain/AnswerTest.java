@@ -28,6 +28,6 @@ public class AnswerTest {
     void 답변을_삭제하면_삭제히스토리가_나온다() throws CannotDeleteException {
         LocalDateTime time = LocalDateTime.now();
         DeleteHistory history = new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), time);
-        assertThat(A1.delete(NsUserTest.JAVAJIGI, time)).isEqualTo(history);
+        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(history);
     }
 }
