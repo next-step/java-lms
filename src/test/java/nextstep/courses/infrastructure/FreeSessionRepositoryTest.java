@@ -1,12 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Duration;
-import nextstep.courses.domain.FreeSession;
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.Images;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.type.SessionProgressStatus;
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.repository.FreeSessionRepository;
-import nextstep.courses.repository.ImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -37,7 +34,7 @@ public class FreeSessionRepositoryTest {
 
     @Test
     void create() {
-        FreeSession session = new FreeSession(5L, duration(), images(), SessionStatus.RECRUITING, LocalDateTime.now(), null);
+        FreeSession session = new FreeSession(5L, duration(), images(), recruitingStatus(), LocalDateTime.now(), null);
         int count = freeSessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
     }
@@ -45,7 +42,7 @@ public class FreeSessionRepositoryTest {
     @Test
     void read() {
         FreeSession savedSession = freeSessionRepository.findById(3L);
-        FreeSession session = new FreeSession(3L, duration(), images(), SessionStatus.RECRUITING, LocalDateTime.now(), null);
+        FreeSession session = new FreeSession(3L, duration(), images(), recruitingStatus(), LocalDateTime.now(), null);
         assertThat(savedSession).isEqualTo(session);
         LOGGER.debug("FreeSession: {}", savedSession);
     }
@@ -58,5 +55,9 @@ public class FreeSessionRepositoryTest {
 
     private Duration duration() {
         return new Duration(LocalDate.of(2023, 11, 1), LocalDate.of(2024, 1, 1));
+    }
+
+    private static SessionStatus recruitingStatus() {
+        return new SessionStatus(SessionProgressStatus.ONGOING, SessionRecruitingStatus.RECRUITING);
     }
 }

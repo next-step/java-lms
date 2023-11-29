@@ -1,7 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.exception.InvalidDurationException;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionProgressStatus;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -35,13 +36,20 @@ public class Duration {
     }
 
     public SessionStatus sessionStatus(LocalDate today) {
+        SessionProgressStatus progressStatus = sessionProgressStatus(today);
+        SessionRecruitingStatus recruitingStatus = SessionRecruitingStatus.defaultStatusOf(progressStatus);
+
+        return new SessionStatus(progressStatus, recruitingStatus);
+    }
+
+    private SessionProgressStatus sessionProgressStatus(LocalDate today) {
         if (today.isBefore(this.start)) {
-            return SessionStatus.READY;
+            return SessionProgressStatus.READY;
         }
         if (today.isBefore(this.end)) {
-            return SessionStatus.RECRUITING;
+            return SessionProgressStatus.ONGOING;
         }
-        return SessionStatus.TERMINATE;
+        return SessionProgressStatus.TERMINATE;
     }
 
     public LocalDate start() {

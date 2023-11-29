@@ -11,8 +11,8 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 INSERT INTO course (id, title, creator_id, created_at) VALUES (2, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) VALUES (2, 2, 'charged', '2023-11-01', '2024-01-01', 'RECRUITING', 100, 10000, CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) VALUES (3, 2, 'free', '2023-11-01', '2024-01-01', 'RECRUITING', 0, null, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, type, start_date, end_date, progress, recruiting, max_student, price, created_at) VALUES (2, 2, 'charged', '2023-11-01', '2024-01-01', 'ONGOING', 'RECRUITING', 100, 10000, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, type, start_date, end_date, progress, recruiting, max_student, price, created_at) VALUES (3, 2, 'free', '2023-11-01', '2024-01-01', 'ONGOING','RECRUITING', 0, null, CURRENT_TIMESTAMP());
 
 INSERT INTO image (id, session_id, volume, type, width, height, created_at) VALUES (2, 2, 0.3, 'GIF', 300, 200, CURRENT_TIMESTAMP());
 INSERT INTO image (id, session_id, volume, type, width, height, created_at) VALUES (3, 3, 0.3, 'GIF', 300, 200, CURRENT_TIMESTAMP());

@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.exception.NotRecruitingSessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -39,7 +38,7 @@ public abstract class Session extends BaseEntity {
     public abstract void apply(Payment payment, NsUser nsUser);
 
     protected void validateStatus() {
-        if (!this.status.equals(SessionStatus.RECRUITING)) {
+        if (!this.status.isRecruiting()) {
             throw new NotRecruitingSessionException("모집중인 강의가 아닙니다.");
         }
     }
@@ -74,7 +73,7 @@ public abstract class Session extends BaseEntity {
         if (this == o) return true;
         if (!(o instanceof Session)) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && status == session.status && Objects.equals(applys, session.applys);
+        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && Objects.equals(status, session.status) && Objects.equals(applys, session.applys);
     }
 
     @Override

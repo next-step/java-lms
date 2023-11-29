@@ -1,7 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionProgressStatus;
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.repository.FreeSessionRepository;
 import nextstep.courses.repository.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -30,14 +31,15 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
 
     @Override
     public int save(FreeSession session, Long courseId) {
-        String sql = "insert into session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (id, course_id, type, start_date, end_date, progress, recruiting, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             session.id(),
             courseId,
             DEFAULT_FREE_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
-            session.status().name(),
+            session.status().progress().name(),
+            session.status().recruiting().name(),
             BigDecimal.ZERO,
             null,
             session.createdAt());
@@ -45,15 +47,15 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
 
     @Override
     public FreeSession findById(Long id) {
-        String sql = "select id, course_id, start_date, end_date, status, created_at, updated_at " +
+        String sql = "select id, course_id, start_date, end_date, progress, recruiting, created_at, updated_at " +
             "from session where id = ? and type = ?";
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
             rs.getLong(1),
             new Duration(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
             images(id),
-            SessionStatus.valueOf(rs.getString(5)),
-            toLocalDateTime(rs.getTimestamp(6)),
-            toLocalDateTime(rs.getTimestamp(7)));
+            new SessionStatus(SessionProgressStatus.valueOf(rs.getString(5)), SessionRecruitingStatus.valueOf(rs.getString(6))),
+            toLocalDateTime(rs.getTimestamp(7)),
+            toLocalDateTime(rs.getTimestamp(8)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_FREE_SESSION_TYPE);
     }
 

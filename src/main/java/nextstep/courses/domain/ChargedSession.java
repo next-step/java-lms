@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.type.Price;
-import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.exception.DifferentSessionAmountException;
 import nextstep.courses.exception.ExceedMaxStudentException;
 import nextstep.payments.domain.Payment;

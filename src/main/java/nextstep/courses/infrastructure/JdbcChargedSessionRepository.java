@@ -1,7 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionProgressStatus;
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.repository.ChargedSessionRepository;
 import nextstep.courses.repository.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -29,14 +30,15 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
 
     @Override
     public int save(ChargedSession session, Long courseId) {
-        String sql = "insert into session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (id, course_id, type, start_date, end_date, progress, recruiting, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             session.id(),
             courseId,
             DEFAULT_CHARGED_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
-            session.status().name(),
+            session.status().progress().name(),
+            session.status().recruiting().name(),
             session.maxNumberOfStudent(),
             session.price().price(),
             session.createdAt());
@@ -44,17 +46,17 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
 
     @Override
     public ChargedSession findById(Long id) {
-        String sql = "select id, course_id, start_date, end_date, status, max_student, price, created_at, updated_at " +
+        String sql = "select id, course_id, start_date, end_date, progress, recruiting, max_student, price, created_at, updated_at " +
             "from session where id = ? and type = ?";
         RowMapper<ChargedSession> rowMapper = (rs, rowNum) -> new ChargedSession(
                 rs.getLong(1),
                 new Duration(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
                 images(id),
-                SessionStatus.valueOf(rs.getString(5)),
-                rs.getInt(6),
-                rs.getBigDecimal(7),
-                toLocalDateTime(rs.getTimestamp(8)),
-                toLocalDateTime(rs.getTimestamp(9)));
+                new SessionStatus(SessionProgressStatus.valueOf(rs.getString(5)), SessionRecruitingStatus.valueOf(rs.getString(6))),
+                rs.getInt(7),
+                rs.getBigDecimal(8),
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_CHARGED_SESSION_TYPE);
     }
 
