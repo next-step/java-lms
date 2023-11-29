@@ -9,6 +9,7 @@ public abstract class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private SessionStatus status;
+    private int maxStudentLimit;
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
         validateSession(title, startDate, endDate);
@@ -17,6 +18,7 @@ public abstract class Session {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = SessionStatus.READY;
+        this.maxStudentLimit = 15;
     }
 
     private void validateSession(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
@@ -41,5 +43,9 @@ public abstract class Session {
 
     public SessionStatus getStatus() {
         return this.status;
+    }
+
+    public int getMaxStudentLimit() {
+        return this.maxStudentLimit;
     }
 }

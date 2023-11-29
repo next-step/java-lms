@@ -84,4 +84,17 @@ class SessionTest {
         //then
         assertThat(status).isEqualTo(SessionStatus.READY);
     }
+
+    @Test
+    @DisplayName("Session이 처음 생성되면, Session의 최대 수강인원을 15명으로 지정한다. (따로 요구한 사항이 없으므로, 임의로 지정)")
+    void testInitSessionMaxStudentLimitIs15() {
+        //given
+        final Session session = new FreeSession(defaultTitle, defaultStartDate, defaultEndDate);
+
+        //when
+        final int maxStudentLimit = session.getMaxStudentLimit();
+
+        //then
+        assertThat(maxStudentLimit).isEqualTo(15);
+    }
 }
