@@ -20,9 +20,7 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private TimeStamped timeStamped;
 
     public Question() {
     }
