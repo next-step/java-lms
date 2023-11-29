@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,5 +34,12 @@ public class AnswerTest {
         String expectedMessage = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
 
         assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+    public void assertDeleteAnswer() {
+        DeleteHistory deleteHistory =  answer.deleteAnswer();
+
+        assertThat(deleteHistory.wasThisDeletedBy(NsUserTest.SANJIGI, ContentType.ANSWER)).isTrue();
     }
 }

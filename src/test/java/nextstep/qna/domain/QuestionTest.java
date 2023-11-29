@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,7 +20,7 @@ public class QuestionTest {
 
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
         answer = new Answer(11L, NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
@@ -31,5 +34,12 @@ public class QuestionTest {
         String expectedMessage = "질문을 삭제할 권한이 없습니다.";
 
         assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+    public void assertDeleteQuestion() {
+        List<DeleteHistory> deleteHistories =  question.deleteQuestion();
+
+        assertThat(deleteHistories.get(0).wasThisDeletedBy(NsUserTest.JAVAJIGI, ContentType.QUESTION)).isTrue();
     }
 }
