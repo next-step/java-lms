@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Course {
@@ -17,6 +19,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private List<Session> sessions = new ArrayList<>();
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
@@ -61,6 +65,16 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(final Session session) {
+        Assert.notNull(session, "session must not be null");
+
+        this.sessions.add(session);
+    }
+
+    public List<Session> getSessions() {
+        return this.sessions;
     }
 
     @Override

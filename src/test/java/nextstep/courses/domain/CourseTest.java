@@ -37,4 +37,19 @@ class CourseTest {
         //then
         assertThat(isCourseEquals).isTrue();
     }
+
+    @Test
+    @DisplayName("여러개의 강의(Session)을 가질 수 있다.")
+    void testCourseHaveMultipleSessions() {
+        //given
+        Course course = new Course("TDD, 클린 코드 with Java", 1, 1L);
+
+        //when
+        course.addSession(new Session());
+        course.addSession(new Session());
+        course.addSession(new Session());
+
+        //then
+        assertThat(course.getSessions()).hasSize(3);
+    }
 }
