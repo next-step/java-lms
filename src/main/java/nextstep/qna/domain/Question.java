@@ -31,6 +31,11 @@ public class Question {
         this(0L, writer, title, contents);
     }
 
+    public Question(NsUser writer, String title, String contents, List<Answer> answers) {
+        this(0L, writer, title, contents);
+        this.answers = answers;
+    }
+
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
@@ -46,18 +51,9 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
 
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -73,11 +69,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -91,15 +82,20 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public DeleteHistory delete(NsUser nsUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
         return delete(nsUser, LocalDateTime.now());
     }
 
-    public DeleteHistory delete(NsUser nsUser, LocalDateTime time) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser nsUser, LocalDateTime time) throws CannotDeleteException {
         if (!isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
-        return new DeleteHistory(ContentType.QUESTION, id, writer, time);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, time));
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(nsUser, time));
+        }
+        return deleteHistories;
     }
 }
