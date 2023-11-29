@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -58,6 +61,24 @@ public class QuestionTest {
 
         assertThatThrownBy(() -> Q3.deleteBy(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("질문을 삭제하면 질문과 답변 이력이 객체로 저장된다.")
+    void 질문_삭제시_질문_답변_이력_객체_저장() throws CannotDeleteException {
+        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Answer answer1 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",false);
+        Answer answer2 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false);
+
+        Q3.addAnswer(answer1);
+        Q3.addAnswer(answer2);
+
+        DeleteHistories deleteHistories = Q3.deleteBy(NsUserTest.JAVAJIGI);
+
+        assertThat(deleteHistories.equals(DeleteHistories.from(Arrays.asList(
+                new DeleteHistory(ContentType.QUESTION, Q3.getId(), Q3.getWriter(), LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), LocalDateTime.now()))))).isTrue();
     }
 
 }

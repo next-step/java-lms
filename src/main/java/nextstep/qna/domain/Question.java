@@ -113,13 +113,17 @@ public class Question {
         this.deleted = true;
     }
 
-    public void deleteBy(NsUser user) throws CannotDeleteException {
+    public DeleteHistories deleteBy(NsUser user) throws CannotDeleteException {
+        DeleteHistories deleteHistories = DeleteHistories.from(new ArrayList<>());
+
         if(!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        answers.deleteBy(user);
-
         delete();
+        deleteHistories.addQuestionDeleteHistory(this);
+        answers.deleteBy(user, deleteHistories);
+
+        return deleteHistories;
     }
 
     @Override
