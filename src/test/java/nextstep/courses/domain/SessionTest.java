@@ -19,4 +19,11 @@ public class SessionTest {
 
         assertThat(session.getStartDate()).isBefore(endDate);
     }
+
+    @Test
+    @DisplayName("강의는 이미지를 가질 수 있다.")
+    void 강의는_이미지를_가질_수_있다() {
+        Session session = new Session(new Image(1, "png", "300px", "200px"));
+        assertThat(session.getImage()).isNotNull();
+    }
 }
