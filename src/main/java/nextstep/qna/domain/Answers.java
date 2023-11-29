@@ -17,8 +17,7 @@ public class Answers {
     }
 
     public Answers(Answer... answers) {
-        Arrays.stream(answers)
-                .forEach(this::add);
+        this(Arrays.asList(answers));
     }
 
     public Answers add(Answer answer) {
