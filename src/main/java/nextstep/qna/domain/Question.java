@@ -7,24 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private String contents;
+    private final String contents;
 
-    private NsUser writer;
+    private final NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final List<Answer> answers = new ArrayList<>();
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -45,18 +42,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -72,12 +59,12 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void setDeleted() {
+    public void delete() {
         this.deleted = true;
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.deleted;
     }
 
     public List<Answer> getAnswers() {

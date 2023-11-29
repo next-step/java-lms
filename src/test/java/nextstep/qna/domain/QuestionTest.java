@@ -14,7 +14,7 @@ public class QuestionTest {
     @DisplayName("질문을 삭제하는 경우 삭제 상태가 변경된다.")
     void deleteQuestionTest() {
         assertThat(Q1.isDeleted()).isFalse();
-        Q1.setDeleted();
+        Q1.delete();
         assertThat(Q1.isDeleted()).isTrue();
     }
 }

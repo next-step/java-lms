@@ -10,14 +10,22 @@
 
 ## step1 질문 삭제하기 요구사항
 * [ ] 질문 데이터를 완전히 삭제하는 것이 아니라 데이터의 상태를 삭제 상태(deleted - boolean type)로 변경한다.
+  * [X] question -> 삭제를 하는 경우 상태가 변경한다. (매개변수 삭제)
+  * [ ] QnAService에 question 객체를 전달
 * [ ] 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.
+  * [ ] question을 삭제요청 시 질문한 사람과 다른 경우 exception throw
 * [ ] 답변이 없는 경우 삭제가 가능하다.
 * [ ] 질문자와 답변 글의 모든 답변자 같은 경우 삭제가 가능하다.
 * [ ] 질문을 삭제할 때 답변 또한 삭제해야 하며, 답변의 삭제 또한 삭제 상태(deleted)를 변경한다.
+  * [ ] answer -> 삭제하는 경우 상태가 변경한다. (매개변수 삭제)
 * [ ] 질문자와 답변자가 다른 경우 답변을 삭제할 수 없다.
 * [ ] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
+
 ## step1 리펙토링 요구사항
 * [ ] deleteQuestion() 메서드에 단위 테스트 가능한 코드(핵심 비지니스 로직)를 도메인 모델 객체에 구현
+  * [ ] 여기서는 삭제하는 하는 역할을 갖는다.
+  * [ ] 매개변수에 question 객체를 전달한다.
+  * [ ] deleteHistories -> 삭제내역 liset 저장하는 일급콜렉션 생성
 * [ ] QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현
 
 ## **힌트**
@@ -29,7 +37,17 @@
 - 도메인 모델에 setter 메서드 추가하지 않는다.
 
 ## step1 리팩토링 todo
-* [X] question -> 삭제를 하는 경우 상태가 변경한다. (매개변수 삭제)
-* [ ] questionRespository -> Question 객체 id가 자동 증가하며 저장
-* [ ] answers -> 여러 Answer를 일급콜렉션에 저장한다.
+* [ ] question -> 
+  * [ ] 여러 Answer를 저장하는 일급콜렉션 클래스를 생성한다.
+  * [X] setTitle 삭제
+  * [X] setContents 삭제
+  * [X] setDeleted -> delete로 변경
+  * [X] 인스턴스변수에 final
+* [ ] answers -> 
+  * [ ] answer 유저와 질문자가 같은지 find.
+* [ ] questionRespository -> 
+  * [ ] save method 생성
+  * [ ] Question 객체 id가 자동 증가하며 저장 (find max id)
+* [ ] deleteHistories -> 삭제이력을 쌓는 경우 createDate 매개변수 줄이기
 * [ ] answer -> 로그인 유저와 답변 유저가 동일한지 체크한다.
+* [ ] AOP class 활용(생성시간, 업데이트 시간)
