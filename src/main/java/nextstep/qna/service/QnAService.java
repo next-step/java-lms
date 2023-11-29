@@ -52,15 +52,13 @@ public class QnAService {
     }
 
     private DeleteHistory deleteHistoryFromQuestion(Question question) {
-        return new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now());
+        return DeleteHistory.from(question);
     }
 
     private List<DeleteHistory> deleteHistoryFromAnswers(List<Answer> answers) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            DeleteHistory deletedAnswerHistory =
-                    new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
-            deleteHistories.add(deletedAnswerHistory);
+            deleteHistories.add(DeleteHistory.from(answer));
         }
 
         return deleteHistories;
