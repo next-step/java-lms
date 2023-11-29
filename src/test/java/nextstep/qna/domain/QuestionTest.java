@@ -18,7 +18,7 @@ public class QuestionTest {
     @Test
     @DisplayName("삭제할 때 로그인 사용자와 질문자가 다르면 예외를 던진다.")
     void question_삭제() {
-        assertThatThrownBy(() -> Q1.validateCanDelete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessageContaining("질문을 삭제할 권한이 없습니다.");
     }
@@ -28,7 +28,7 @@ public class QuestionTest {
     void question_삭제_히스토리() {
         DeleteHistory fakeHistory = new DeleteHistory(ContentType.QUESTION, Q2.getId(), NsUserTest.SANJIGI, LocalDateTime.now());
 
-        List<DeleteHistory> histories = Q2.delete();
+        List<DeleteHistory> histories = Q2.delete(NsUserTest.SANJIGI);
 
         assertThat(histories).contains(fakeHistory);
     }

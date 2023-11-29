@@ -56,7 +56,7 @@ public class Question {
         return deleted;
     }
 
-    public void validateCanDelete(NsUser loginUser) {
+    private void validateCanDelete(NsUser loginUser) {
         validateIsOwner(loginUser);
         validateIsOwnerAnswers(loginUser);
     }
@@ -73,12 +73,17 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> delete() {
-        this.deleted = true;
+    public List<DeleteHistory> delete(NsUser loginUser) {
+        validateCanDelete(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.add(deleteQuestion());
         deleteHistories.addAll(deleteAnswers());
         return Collections.unmodifiableList(deleteHistories);
+    }
+
+    private DeleteHistory deleteQuestion() {
+        this.deleted = true;
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
     private List<DeleteHistory> deleteAnswers() {
