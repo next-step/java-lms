@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,12 @@ public class QuestionTest {
 
     private Question question;
 
+    private NsUser loginUser;
+
     @BeforeEach
     void setUp() {
-        question = new Question(Q1.getId() ,Q1.getWriter(), Q1.getTitle(), Q1.getContents());
+        question = new Question(Q1.getId(), Q1.getWriter(), Q1.getTitle(), Q1.getContents());
+        loginUser = Q1.getWriter();
     }
 
     @DisplayName("질문자와 로그인 사용자가 동일하지 않다면 삭제할 수 없다.")
@@ -34,10 +38,10 @@ public class QuestionTest {
     void should_delete_if_question_has_no_answer() {
         DeleteHistories expected = new DeleteHistories(List.of(new DeleteHistory(ContentType.QUESTION,
                                                                                  Q1.getId(),
-                                                                                 JAVAJIGI,
+                                                                                 question.getWriter(),
                                                                                  LocalDateTime.now())));
 
-        DeleteHistories actual = question.delete(JAVAJIGI);
+        DeleteHistories actual = question.delete(loginUser);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -51,17 +55,17 @@ public class QuestionTest {
                                                                                  LocalDateTime.now()),
                                                                new DeleteHistory(ContentType.ANSWER,
                                                                                  A1.getId(),
-                                                                                 Q1.getWriter(),
+                                                                                 question.getWriter(),
                                                                                  LocalDateTime.now()),
                                                                new DeleteHistory(ContentType.ANSWER,
                                                                                  A3.getId(),
-                                                                                 Q1.getWriter(),
+                                                                                 question.getWriter(),
                                                                                  LocalDateTime.now()));
         question.addAnswer(new Answer(A1.getId(), A1.getWriter(), question, A1.getContents()));
         question.addAnswer(new Answer(A3.getId(), A3.getWriter(), question, A3.getContents()));
         DeleteHistories expected = new DeleteHistories(givenQuestionsAndAnswers);
 
-        DeleteHistories actual = question.delete(JAVAJIGI);
+        DeleteHistories actual = question.delete(loginUser);
 
         assertThat(actual).isEqualTo(expected);
     }
