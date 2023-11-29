@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Session {
     private Image image;
+    SessionType sessionType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -14,6 +15,10 @@ public class Session {
         this.image = image;
     }
 
+    public Session(SessionType sessionType) {
+        this.sessionType = sessionType;
+    }
+
     public Session(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -21,6 +26,10 @@ public class Session {
 
     public Image getImage() {
         return image;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
     }
 
     public LocalDateTime getStartDate() {
