@@ -27,14 +27,14 @@ public class QuestionTest {
     @Test
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문한사람이 같다 / 통과")
     void deleteSameLoginQuestionUser() {
-        // when then
+        // expect
         Q1.delete(NsUserFixture.JAVAJIGI);
     }
 
     @Test
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문한사람이 다르다 / CannotDeleteException")
     void deleteDiffLoginQuestionUser() {
-        // when then
+        // expect
         assertThatThrownBy(() -> Q1.delete(NsUserFixture.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
@@ -60,7 +60,7 @@ public class QuestionTest {
         Q1.addAnswer(A1);
         Q1.addAnswer(A2);
 
-        // when then
+        // expect
         assertThat(Q1.delete(NsUserFixture.JAVAJIGI)).hasSize(3);
     }
 }
