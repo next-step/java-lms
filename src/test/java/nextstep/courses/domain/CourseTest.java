@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CourseTest {
@@ -43,11 +45,13 @@ class CourseTest {
     void testCourseHaveMultipleSessions() {
         //given
         Course course = new Course("TDD, 클린 코드 with Java", 1, 1L);
+        final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
+        final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         //when
-        course.addSession(new FreeSession());
-        course.addSession(new PaidSession());
-        course.addSession(new FreeSession());
+        course.addSession(new FreeSession("로또", startDate, endDate));
+        course.addSession(new PaidSession("자동차 게임", startDate, endDate));
+        course.addSession(new FreeSession("레거시 코드 리팩터링", startDate, endDate));
 
         //then
         assertThat(course.getSessions()).hasSize(3);
