@@ -50,9 +50,6 @@ public class DeleteHistory {
     }
 
     public boolean wasThisDeletedBy(NsUser user, ContentType contentType) {
-        if (this.contentType == contentType && deletedBy.equalsNameAndEmail(user)) {
-            return true;
-        }
-        return false;
+        return this.contentType == contentType && deletedBy.equalsNameAndEmail(user);
     }
 }
