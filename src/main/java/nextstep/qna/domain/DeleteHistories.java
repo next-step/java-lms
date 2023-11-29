@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,12 +8,20 @@ public class DeleteHistories {
 
     private final List<DeleteHistory> histories;
 
+    public DeleteHistories() {
+        this.histories = new ArrayList<>();
+    }
+
     public DeleteHistories(List<DeleteHistory> histories) {
         this.histories = histories;
     }
 
     public void add(DeleteHistory deleteHistory) {
         this.histories.add(deleteHistory);
+    }
+
+    public void addAll(DeleteHistories elements) {
+        this.histories.addAll(elements.histories);
     }
 
     public List<DeleteHistory> getValues() {

@@ -32,4 +32,28 @@ public class QuestionTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
+    @DisplayName("질문자와 답변자가 동일하다면 질문 데이터와 답변 데이터 모두 삭제된다.")
+    @Test
+    void delete_question_and_answers_if_login_user_is_owner() {
+        List<DeleteHistory> givenQuestionsAndAnswers = List.of(new DeleteHistory(ContentType.QUESTION,
+                                                                                 0L,
+                                                                                 NsUserTest.JAVAJIGI,
+                                                                                 LocalDateTime.now()),
+                                                               new DeleteHistory(ContentType.ANSWER,
+                                                                                 null,
+                                                                                 NsUserTest.JAVAJIGI,
+                                                                                 LocalDateTime.now()),
+                                                               new DeleteHistory(ContentType.ANSWER,
+                                                                                 null,
+                                                                                 NsUserTest.JAVAJIGI,
+                                                                                 LocalDateTime.now()));
+        Q1.addAnswer(AnswerTest.A1);
+        Q1.addAnswer(AnswerTest.A1);
+        DeleteHistories expected = new DeleteHistories(givenQuestionsAndAnswers);
+
+        DeleteHistories actual = Q1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(actual).isEqualTo(expected);
+    }
 }
