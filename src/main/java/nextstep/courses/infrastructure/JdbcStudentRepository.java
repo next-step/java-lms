@@ -48,9 +48,15 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public void update(Student student) {
-        String sql = "update student set selection = ? where ns_user_id = ? and session_id = ?";
+        String sql = "update student " +
+                "set studend_id = ?, " +
+                "session_id = ?," +
+                " selection = ? " +
+                "where student_id = ? and session_id = ?";
 
         jdbcTemplate.update(sql,
+                student.getStudentId(),
+                student.getSessionId(),
                 student.getSelection(),
                 student.getStudentId(),
                 student.getSessionId());
