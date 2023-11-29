@@ -20,9 +20,9 @@
 
 
 - Image(강의 커버 이미지)
-  - [ ] 이미지 용량은 1MB 이하여야 한다.
-  - [ ] 이미지 타입은 gif, jpg, jpeg, png, svg만 허용한다.
-  - [ ] 이미지 크기는 width 300, height 200 이상이어야 하며, 비율은 3:2 이다.
+  - [x] 이미지 용량은 1MB 이하여야 한다.
+  - [x] 이미지 타입은 gif, jpg, jpeg, png, svg만 허용한다.
+  - [x] 이미지 크기는 width 300, height 200 이상이어야 하며, 비율은 3:2 이다.
 
 
 - CourseRegistration(수강 신청)
