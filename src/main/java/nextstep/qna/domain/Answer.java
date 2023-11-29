@@ -70,6 +70,10 @@ public class Answer {
         this.question = question;
     }
 
+    public boolean canDelete(NsUser nsUser) {
+        return writer.equals(nsUser);
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() +
