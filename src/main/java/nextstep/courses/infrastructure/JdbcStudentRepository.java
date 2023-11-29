@@ -19,9 +19,9 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into student (user_id, session_id, selection) values(?, ?, ?)";
+        String sql = "insert into student (student_Id, session_id, selection) values(?, ?, ?)";
 
-        return jdbcTemplate.update(sql, student.getUserId(), student.getSessionId(), student.getSelection());
+        return jdbcTemplate.update(sql, student.getStudentId(), student.getSessionId(), student.getSelection());
     }
 
     @Override
@@ -36,23 +36,23 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public Optional<Student> findByIdAndSessionId(long userId,
-                                                  long sessionId) {
+    public Optional<Student> findByStudentIdAndSessionId(long studentId,
+                                                         long sessionId) {
         String sql = "select ns_user_id, session_id, selection from student where ns_user_id = ? and session_id = ?";
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3));
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, userId, sessionId));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, studentId, sessionId));
     }
 
     @Override
-    public void updateSelection(Student student) {
+    public void update(Student student) {
         String sql = "update student set selection = ? where ns_user_id = ? and session_id = ?";
 
         jdbcTemplate.update(sql,
                 student.getSelection(),
-                student.getUserId(),
+                student.getStudentId(),
                 student.getSessionId());
     }
 

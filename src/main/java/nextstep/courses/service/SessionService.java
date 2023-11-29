@@ -28,20 +28,20 @@ public class SessionService {
     }
 
     @Transactional
-    public void approve(long userId,
+    public void approve(long studentId,
                         long sessionId) {
-        Student student = studentRepository.findByIdAndSessionId(userId, sessionId).orElseThrow(() -> new NotFoundStudentException("강의 신청한 학생을 찾을 수 없습니다."));
+        Student student = studentRepository.findByStudentIdAndSessionId(studentId, sessionId).orElseThrow(() -> new NotFoundStudentException("강의 신청한 학생을 찾을 수 없습니다."));
         student.approve();
 
-        studentRepository.updateSelection(student);
+        studentRepository.update(student);
     }
 
     @Transactional
-    public void fail(long userId,
+    public void fail(long studentId,
                      long sessionId) {
-        Student student = studentRepository.findByIdAndSessionId(userId, sessionId).orElseThrow(() -> new NotFoundStudentException("강의 신청한 학생을 찾을 수 없습니다."));
+        Student student = studentRepository.findByStudentIdAndSessionId(studentId, sessionId).orElseThrow(() -> new NotFoundStudentException("강의 신청한 학생을 찾을 수 없습니다."));
         student.fail();
 
-        studentRepository.updateSelection(student);
+        studentRepository.update(student);
     }
 }

@@ -39,10 +39,10 @@ create table thumbnail
 
 create table student
 (
-    ns_user_id bigint      not null,
+    student_id bigint      not null,
     session_id bigint      not null,
     selection  varchar(20) not null default 'WAITING',
-    primary key (ns_user_id, session_id)
+    primary key (student_id, session_id)
 );
 
 create table ns_user
