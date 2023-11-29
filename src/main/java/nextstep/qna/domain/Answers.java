@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Answers {
-    private List<Answer> answers;
+    private final List<Answer> answers;
 
     public Answers() {
         this.answers = new ArrayList<>();
