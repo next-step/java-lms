@@ -7,31 +7,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
-    private Long id;
-
+public class Question extends Content {
     private String title;
-
-    private String contents;
-
-    private NsUser writer;
-
     private Answers answers = new Answers();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
+        this.type = ContentType.QUESTION;
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -47,44 +32,15 @@ public class Question {
         return deleteHistories;
     }
 
-    private void validateDeletePermission(NsUser user) throws CannotDeleteException {
-        if (!this.isOwner(user)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
     private DeleteHistory delete() {
         this.deleted = true;
+        this.updatedDate = LocalDateTime.now();
         return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public NsUser getWriter() {
-        return writer;
     }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     @Override

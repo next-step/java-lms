@@ -8,29 +8,15 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Answer {
-    private Long id;
-
-    private NsUser writer;
-
+public class Answer extends Content {
     private Question question;
-
-    private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+        this.type = ContentType.ANSWER;
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
@@ -49,33 +35,8 @@ public class Answer {
         validateDeletePermission(loginUser);
 
         this.deleted = true;
+        this.updatedDate = LocalDateTime.now();
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
-    }
-
-    private void validateDeletePermission(NsUser user) throws CannotDeleteException{
-        if (!this.isOwner(user)) {
-            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
