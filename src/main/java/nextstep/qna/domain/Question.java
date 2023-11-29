@@ -42,15 +42,10 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+        Answers answers = new Answers(this.answers);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-
-        List<Answer> answers = this.answers;
-        for (Answer answer : answers) {
-            answer.validateLoginUser(loginUser);
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        deleteHistories.addAll(answers.delete(loginUser));
 
         this.deleted = true;
         return deleteHistories;

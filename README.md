@@ -55,6 +55,16 @@ validateLoginUser 정도가 적당할까 ?
 반복문을 한번 돌릴 때 예외, 삭제처리를 해주면 좋지 않을까란 생각이 들었다.
 반복문을 합쳐주고 mock 테스트 단위 테스트 통과!
 
+answers 자료구조에 너무 많은 로직들과 answer의 getter, setter가 사용되고 있다.
+일단 반복문의 로직을 Answers라는 일급 컬렉션을 만들어줄 필요가 있을까 ?
+Answers에서 List<DeleteHistory>를 리턴하는 메서드를 만들어서 한번에 처리해주면 좋을거같단 생각이 들었다
+deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+deleteHistories.addAll(answers.delete(loginUser)); 
+뭐 이런 식으로 ? 이렇게 접근하는게 맞는건가 ,,,...
+Answers에 로직 이동 후 테스트 통과!
+
+
+
 
 
 
