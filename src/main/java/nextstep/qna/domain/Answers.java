@@ -35,8 +35,8 @@ public class Answers {
 
     private boolean isOwner(NsUser user) {
         return this.answers.stream()
-                .filter(answer -> answer.isOwner(user))
-                .count() != 0;
+                .filter(answer -> !answer.isOwner(user))
+                .count() == 0;
     }
 
     public void add(Answer answer) {
