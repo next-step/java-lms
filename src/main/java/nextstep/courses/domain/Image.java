@@ -6,7 +6,7 @@ import nextstep.courses.exception.image.UnsupportedImageRatioException;
 import nextstep.courses.type.ImageType;
 
 public class Image {
-    private static final long FILE_SIZE_MAX = 1024 * 1;
+    private static final long FILE_SIZE_MAX = 1024;
 
     private static final long WIDTH_MIN = 300;
     private static final long HEIGHT_MIN = 200;
