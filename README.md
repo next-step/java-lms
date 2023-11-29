@@ -42,7 +42,7 @@
   * [X] 답변이 있는 질문 삭제 시 질문자와 답변글의 모든 답변자가 같지 않은 경우 예외를 반환한다.
   
 ### DeleteHistory
-* [ ] 질문과 답변 삭제 이력을 객체로 저장한다.
+* [X] 질문과 답변 삭제 이력을 객체로 저장한다.
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
