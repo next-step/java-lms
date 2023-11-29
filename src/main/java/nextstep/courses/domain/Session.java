@@ -16,23 +16,23 @@ public abstract class Session extends BaseEntity {
 
     private final Long id;
     private final Duration duration;
-    private final Image image;
+    private final Images images;
     private SessionStatus status;
     protected final List<Apply> applys = new ArrayList<>();
 
-    public Session(Duration duration, Image image) {
-        this(0L, duration, image, duration.sessionStatus(LocalDate.now()), LocalDateTime.now(), null);
+    public Session(Duration duration, Images images) {
+        this(0L, duration, images, duration.sessionStatus(LocalDate.now()), LocalDateTime.now(), null);
     }
 
-    public Session(Duration duration, Image image, SessionStatus status) {
-        this(0L, duration, image, status, LocalDateTime.now(), null);
+    public Session(Duration duration, Images images, SessionStatus status) {
+        this(0L, duration, images, status, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Duration duration, Image image, SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Duration duration, Images images, SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.duration = duration;
-        this.image = image;
+        this.images = images;
         this.status = status;
     }
 
@@ -60,8 +60,8 @@ public abstract class Session extends BaseEntity {
         return this.status;
     }
 
-    public Image image() {
-        return this.image;
+    public Images images() {
+        return this.images;
     }
 
     public List<Apply> applys() {
@@ -74,12 +74,12 @@ public abstract class Session extends BaseEntity {
         if (this == o) return true;
         if (!(o instanceof Session)) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(image, session.image) && status == session.status && Objects.equals(applys, session.applys);
+        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && status == session.status && Objects.equals(applys, session.applys);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, duration, image, status, applys);
+        return Objects.hash(super.hashCode(), id, duration, images, status, applys);
     }
 
     @Override
@@ -87,7 +87,7 @@ public abstract class Session extends BaseEntity {
         return "Session{" +
             "id=" + id +
             ", duration=" + duration +
-            ", image=" + image +
+            ", images=" + images +
             ", status=" + status +
             ", applys=" + applys +
             '}';

@@ -28,15 +28,14 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
     }
 
     @Override
-    public int save(Long id, ChargedSession session, Course course) {
-        String sql = "insert into session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int save(ChargedSession session, Long courseId) {
+        String sql = "insert into session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-            id,
-            course.id(),
+            session.id(),
+            courseId,
             DEFAULT_CHARGED_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
-            session.image().id(),
             session.status().name(),
             session.maxNumberOfStudent(),
             session.price().price(),
@@ -45,17 +44,17 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
 
     @Override
     public ChargedSession findById(Long id) {
-        String sql = "select id, course_id, start_date, end_date, image_id, status, max_student, price, created_at, updated_at " +
+        String sql = "select id, course_id, start_date, end_date, status, max_student, price, created_at, updated_at " +
             "from session where id = ? and type = ?";
         RowMapper<ChargedSession> rowMapper = (rs, rowNum) -> new ChargedSession(
                 rs.getLong(1),
                 new Duration(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
-                image(rs.getLong(5)),
-                SessionStatus.valueOf(rs.getString(6)),
-                rs.getInt(7),
-                rs.getBigDecimal(8),
-                toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10)));
+                images(id),
+                SessionStatus.valueOf(rs.getString(5)),
+                rs.getInt(6),
+                rs.getBigDecimal(7),
+                toLocalDateTime(rs.getTimestamp(8)),
+                toLocalDateTime(rs.getTimestamp(9)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_CHARGED_SESSION_TYPE);
     }
 
@@ -65,8 +64,8 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
         return jdbcTemplate.queryForObject(sql, Boolean.class, id, DEFAULT_CHARGED_SESSION_TYPE);
     }
 
-    private Image image(Long id) {
-        return imageRepository.findById(id);
+    private Images images(Long id) {
+        return imageRepository.findAllBySessionId(id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

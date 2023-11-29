@@ -1,13 +1,11 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.ChargedSession;
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Duration;
 import nextstep.courses.domain.Image;
+import nextstep.courses.domain.Images;
 import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.repository.ChargedSessionRepository;
-import nextstep.courses.repository.CourseRepository;
-import nextstep.courses.repository.ImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -19,6 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,44 +29,30 @@ public class ChargedSessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private ChargedSessionRepository chargedSessionRepository;
-    private CourseRepository courseRepository;
-    private ImageRepository imageRepository;
 
     @BeforeEach
     void setUp() {
-        imageRepository = new JdbcImageRepository(jdbcTemplate);
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
         chargedSessionRepository = new JdbcChargedSessionRepository(jdbcTemplate);
     }
 
     @Test
     void create() {
-        ChargedSession session = session(savedImage());
-        int count = chargedSessionRepository.save(6L, session, savedCourse());
+        ChargedSession session = new ChargedSession(6L, duration(), images(), SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000), LocalDateTime.now(), null);
+        int count = chargedSessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
     void read() {
-        ChargedSession session = chargedSessionRepository.findById(2L);
-        assertThat(session).isEqualTo(savedSession());
-        LOGGER.debug("ChargedSession: {}", session);
+        ChargedSession savedSession = chargedSessionRepository.findById(2L);
+        ChargedSession session = new ChargedSession(2L, duration(), images(), SessionStatus.RECRUITING, 100, BigDecimal.valueOf(1_0000), LocalDateTime.now(), null);
+        assertThat(savedSession).isEqualTo(session);
+        LOGGER.debug("ChargedSession: {}", savedSession);
     }
 
-    private ChargedSession session(Image image) {
-        return new ChargedSession(1L, duration(), image, SessionStatus.RECRUITING, 0, BigDecimal.valueOf(10_000), LocalDateTime.now(), null);
-    }
-
-    private ChargedSession savedSession() {
-        return new ChargedSession(2L, duration(), savedImage(), SessionStatus.RECRUITING, 100, BigDecimal.valueOf(1_0000), LocalDateTime.now(), null);
-    }
-
-    private Course savedCourse() {
-        return courseRepository.findById(2L);
-    }
-
-    private Image savedImage() {
-        return imageRepository.findById(2L);
+    private Images images() {
+        Image image = new Image(2L, 0.3, "GIF", 300, 200, LocalDateTime.now(), null);
+        return new Images(Arrays.asList(image));
     }
 
     private Duration duration() {

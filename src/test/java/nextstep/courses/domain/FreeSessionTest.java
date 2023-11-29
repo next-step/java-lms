@@ -19,13 +19,13 @@ public class FreeSessionTest {
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다")
     public void session_image() {
-        assertThat(new FreeSession(duration(), image())).extracting(Session::image).isEqualTo(image());
+        assertThat(new FreeSession(duration(), images())).extracting(Session::images).isEqualTo(images());
     }
 
     @Test
     @DisplayName("강의 상태가 모집중이 아닐 때 수강신청 시 에러 발생한다")
     public void not_recruiting_status_apply() {
-        Session session = new FreeSession(duration(), image(), SessionStatus.READY);
+        Session session = new FreeSession(duration(), images(), SessionStatus.READY);
 
         assertThatExceptionOfType(NotRecruitingSessionException.class)
             .isThrownBy(() -> session.apply(null, NsUserTest.JAVAJIGI))
@@ -35,7 +35,7 @@ public class FreeSessionTest {
     @Test
     @DisplayName("수강 신청할 수 있다")
     public void apply_session() {
-        Session session = new FreeSession(duration(), image(), SessionStatus.RECRUITING);
+        Session session = new FreeSession(duration(), images(), SessionStatus.RECRUITING);
         NsUser user = NsUserTest.JAVAJIGI;
 
         session.apply(null, user);
@@ -46,8 +46,9 @@ public class FreeSessionTest {
         return new Duration(LocalDate.now(), LocalDate.now());
     }
 
-    private Image image() {
-        return new Image(1, "JPG", 300, 200);
+    private Images images() {
+        Image image = new Image(1, "JPG", 300, 200);
+        return new Images(Arrays.asList(image));
     }
 
 }

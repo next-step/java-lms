@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Image;
+import nextstep.courses.domain.Images;
 import nextstep.courses.repository.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("ImageRepository")
 public class JdbcImageRepository implements ImageRepository {
@@ -18,9 +20,11 @@ public class JdbcImageRepository implements ImageRepository {
     }
 
     @Override
-    public int save(Image image) {
-        String sql = "insert into image (volume, type, width, height, created_at) values(?, ?, ?, ?, ?)";
+    public int save(Image image, Long sessionId) {
+        String sql = "insert into image (id, session_id, volume, type, width, height, created_at) values(?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
+            image.id(),
+            sessionId,
             image.volume().volume(),
             image.type().name(),
             image.specification().width(),
@@ -31,7 +35,18 @@ public class JdbcImageRepository implements ImageRepository {
     @Override
     public Image findById(Long id) {
         String sql = "select id, volume, type, width, height, created_at, updated_at from image where id = ?";
-        RowMapper<Image> rowMapper = (rs, rowNum) -> new Image(
+        return jdbcTemplate.queryForObject(sql, imageRowMapper(), id);
+    }
+
+    @Override
+    public Images findAllBySessionId(Long id) {
+        String sql = "select id, volume, type, width, height, created_at, updated_at from image where session_id = ?";
+        List<Image> images = jdbcTemplate.query(sql, imageRowMapper(), id);
+        return new Images(images);
+    }
+
+    private RowMapper<Image> imageRowMapper() {
+        return (rs, rowNum) -> new Image(
                 rs.getLong(1),
                 rs.getDouble(2),
                 rs.getString(3),
@@ -39,7 +54,6 @@ public class JdbcImageRepository implements ImageRepository {
                 rs.getInt(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

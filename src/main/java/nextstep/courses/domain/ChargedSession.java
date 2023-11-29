@@ -17,17 +17,17 @@ public class ChargedSession extends Session {
     private final int maxNumberOfStudent;
     private final Price price;
 
-    public ChargedSession(Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
-        this(0L, duration, image, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price) {
+        this(0L, duration, images, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
     }
 
-    public ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
-        this(0L, duration, image, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
+        this(0L, duration, images, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
     }
 
-    public ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
+    public ChargedSession(Long id, Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
                           LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, duration, image, status, createdAt, updatedAt);
+        super(id, duration, images, status, createdAt, updatedAt);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = new Price(price);
     }

@@ -29,15 +29,14 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     }
 
     @Override
-    public int save(Long id, FreeSession session, Course course) {
-        String sql = "insert into session (id, course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int save(FreeSession session, Long courseId) {
+        String sql = "insert into session (id, course_id, type, start_date, end_date, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-            id,
-            course.id(),
+            session.id(),
+            courseId,
             DEFAULT_FREE_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
-            session.image().id(),
             session.status().name(),
             BigDecimal.ZERO,
             null,
@@ -46,15 +45,15 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
 
     @Override
     public FreeSession findById(Long id) {
-        String sql = "select id, course_id, start_date, end_date, image_id, status, created_at, updated_at " +
+        String sql = "select id, course_id, start_date, end_date, status, created_at, updated_at " +
             "from session where id = ? and type = ?";
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
             rs.getLong(1),
             new Duration(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
-            image(rs.getLong(5)),
-            SessionStatus.valueOf(rs.getString(6)),
-            toLocalDateTime(rs.getTimestamp(7)),
-            toLocalDateTime(rs.getTimestamp(8)));
+            images(id),
+            SessionStatus.valueOf(rs.getString(5)),
+            toLocalDateTime(rs.getTimestamp(6)),
+            toLocalDateTime(rs.getTimestamp(7)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id, DEFAULT_FREE_SESSION_TYPE);
     }
 
@@ -64,8 +63,8 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
         return jdbcTemplate.queryForObject(sql, Boolean.class, id, DEFAULT_FREE_SESSION_TYPE);
     }
 
-    private Image image(Long id) {
-        return imageRepository.findById(id);
+    private Images images(Long id) {
+        return imageRepository.findAllBySessionId(id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
