@@ -2,7 +2,7 @@
 
 ## I. 도메인 설계 및 비즈니스 로직
 
-### 1. 과정(Course)
+### 1. 과정(Courses)
 
 > 여러 강의를 묶는 책임을 수행한다.
 > 같은 과정 혹은 과정과 기수가 모두 같은 여러 강의에게 공통적인 속성을 부여할 수 있다.
@@ -10,7 +10,7 @@
 - 기수 단위 운영
 - 여러 개 강의를 가질 수 있음
 
-### 2. 강의(Session)
+### 2. 강의(Sessions)
 
 > 과정에 속하며, 신청 받을 책임을 수행한다.
 > 강의에 대한 정보와 상태를 가진다.
@@ -64,10 +64,11 @@
 ---
 title: REGISTRATION
 ---
-erDiagram
-    COURSE ||--o{ SESSION: ""
-    SESSION ||--o{ REGISTRATION: ""
-    REGISTRATION }o--|| USERS: ""
-    SESSION ||--o{ PAYMENTS: ""
-    PAYMENTS }o--|| USERS: ""
+classDiagram
+    COURSES <.. SESSIONS
+    SESSIONS <.. PAYMENTS
+    USERS <.. PAYMENTS
+    SESSIONS <.. REGISTRATIONS
+    PAYMENTS <.. REGISTRATIONS
+    USERS <.. REGISTRATIONS
 ```
