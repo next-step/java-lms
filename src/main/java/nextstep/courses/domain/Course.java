@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Course {
     private Long id;
@@ -13,7 +14,14 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private List<Session> sessions;
+
     public Course() {
+    }
+
+
+    public List<Session> sessions() {
+        return sessions;
     }
 
     public Course(String title, Long creatorId) {
