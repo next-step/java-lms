@@ -23,7 +23,7 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 이미지를 가질 수 있다.")
     void 강의는_이미지를_가질_수_있다() {
-        Session session = new Session(new Image(1, "png", "300px", "200px"));
+        Session session = new Session(new Image("png", 300, 200));
         assertThat(session.getImage()).isNotNull();
     }
 }
