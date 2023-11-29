@@ -37,6 +37,10 @@ public class Question {
         this.contents = contents;
     }
 
+    public void delete() {
+        this.deleted=true;
+    }
+
     public Long getId() {
         return id;
     }
@@ -70,11 +74,6 @@ public class Question {
 
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
