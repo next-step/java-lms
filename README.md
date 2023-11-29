@@ -7,3 +7,16 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+### TODO
+- [ ] Question 내부로 delete() 로직 이동
+- [ ] QuestionRepository 에서 delete() 로직 제거
+
+
+### DONE
+- [X] Question.delete()에서 질문자와 loginUser가 같은지 체크
+- [X] Question.delete()에서 답변이 없는지 체크
+- [X] Question.delete()에서 답변이 있다면 Answer.delete() 호출
+- [X] Question.delete()에서 위 체크로직이 이상 없을 경우 deleted 필드를 true로 변경
+- [X] Answer 내부로 delete() 로직 이동
+- [X] Answer.delete()에서 답변자와 loginUser가 같은지 체크
