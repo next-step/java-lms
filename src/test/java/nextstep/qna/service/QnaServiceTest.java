@@ -23,8 +23,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
-    private static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-
     @Mock
     private QuestionRepository questionRepository;
 
@@ -44,7 +42,7 @@ public class QnaServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+        answer = new Answer(11L, NsUserTest.JAVAJIGI, question, "Answers Contents1");
         answers.add(answer);
         question.addAnswer(answer);
     }
