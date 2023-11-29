@@ -26,6 +26,13 @@ public class Students {
         students.add(student);
     }
 
+    public void enroll(Enrollment enrollment,
+                       long payment,
+                       Student student) {
+        enrollment.validateEnroll(payment, this);
+        students.add(student);
+    }
+
     public boolean isFull(int capacity) {
         return capacity <= students.size();
     }
@@ -42,4 +49,5 @@ public class Students {
     public int hashCode() {
         return Objects.hash(students);
     }
+
 }

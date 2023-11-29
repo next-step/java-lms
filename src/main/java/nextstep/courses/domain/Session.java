@@ -62,7 +62,7 @@ public class Session {
                           NsUser nsUser,
                           Students students) {
         Student student = new Student(this.id, nsUser.getId(), Selection.WAITING);
-        enrollment.enroll(payment.amount(), student, students);
+        students.enroll(enrollment, payment.amount(), student);
 
         return student;
     }

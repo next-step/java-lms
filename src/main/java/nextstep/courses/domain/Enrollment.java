@@ -27,11 +27,10 @@ public class Enrollment {
         this.amount = amount;
     }
 
-    public void enroll(long payment,
-                       Student student,
-                       Students students) {
+    public void validateEnroll(long payment,
+                               Students students) {
         enrollmentStatus.validateEnroll();
         enrollmentType.validateEnroll(payment, amount, capacity, students);
-        students.enroll(student);
     }
+
 }
