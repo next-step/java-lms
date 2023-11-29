@@ -34,6 +34,18 @@ public class QuestionTest {
     }
 
     @Test
+    @DisplayName("실패 - 서로 다른 답변 작성자가 있는 경우 질문을 삭제할수 없다.")
+    void fail_delete_qna_different_writer_answer() throws Exception {
+        Q2.addAnswers(new Answers(
+                List.of(javajigiAnswer(Q2), sanjigiiAnswer(Q2), sanjigiiAnswer(Q2))
+        ));
+
+        Assertions.assertThatThrownBy(() -> Q2.delete(SANJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
     @DisplayName("성공 - qna 삭제 시 질문지와 댓글에 대한 삭제 히스토리가 생성된다")
     void success_delete_qna_and_save_delete_history() throws Exception {
         Q2.addAnswers(new Answers(
