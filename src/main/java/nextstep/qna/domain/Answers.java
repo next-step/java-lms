@@ -21,15 +21,10 @@ public class Answers {
         answers.add(answer);
     }
 
-    public boolean isOwnerAllAnswers(NsUser writer) {
-        return answers.stream()
-                .allMatch(answer -> answer.isOwner(writer));
-    }
-
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser writer) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            DeleteHistory history = answer.delete();
+            DeleteHistory history = answer.delete(writer);
             deleteHistories.add(history);
         }
         return Collections.unmodifiableList(deleteHistories);
