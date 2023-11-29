@@ -7,11 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
+    private static final LocalDateTime now = LocalDateTime.now();
     Answer A1;
     Answer A2;
     Answers A1s;
@@ -29,14 +31,14 @@ public class AnswersTest {
     @DisplayName("삭제유효성검사 / 로그인사용자와 모든 질문등록자가 같다 / 삭제성공")
     void deleteSameLoginAnswerUser() {
         // when then
-        A1s.deleteAll(NsUserFixture.JAVAJIGI);
+        A1s.deleteAll(NsUserFixture.JAVAJIGI, now);
     }
 
     @Test
     @DisplayName("삭제유효성검사 / 로그인사용자와 질문등록자가 다르다 / CannotDeleteException")
     void deleteDiffLoginAnswerUser() {
         // when then
-        assertThatThrownBy(() -> A1_A2s.deleteAll(NsUserFixture.JAVAJIGI))
+        assertThatThrownBy(() -> A1_A2s.deleteAll(NsUserFixture.JAVAJIGI, now))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }

@@ -80,8 +80,12 @@ public class Question {
     public List<DeleteHistory> delete(NsUser user) {
         this.validateDeletable(user);
         deleted = true;
-        answers.deleteAll(user);
-        return makeDeleteHistories();
+
+        LocalDateTime now = LocalDateTime.now();
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(makeDeleteHistory(now));
+        deleteHistories.addAll(answers.deleteAll(user, now));
+        return deleteHistories;
     }
 
     private void validateDeletable(NsUser user) {
@@ -94,11 +98,8 @@ public class Question {
         }
     }
 
-    private List<DeleteHistory> makeDeleteHistories() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.makeDeleteHistories());
-        return deleteHistories;
+    private DeleteHistory makeDeleteHistory(LocalDateTime time) {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, time);
     }
 
     @Override

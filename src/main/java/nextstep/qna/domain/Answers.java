@@ -22,13 +22,9 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void deleteAll(NsUser user) {
-        this.answers.forEach(answer -> answer.delete(user));
-    }
-
-    public List<DeleteHistory> makeDeleteHistories() {
-        return answers.stream()
-                .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
+    public List<DeleteHistory> deleteAll(NsUser user, LocalDateTime time) {
+        return this.answers.stream()
+                .map(answer -> answer.delete(user, time))
                 .collect(Collectors.toList());
     }
 }

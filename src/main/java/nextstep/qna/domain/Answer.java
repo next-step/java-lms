@@ -52,15 +52,20 @@ public class Answer {
         return deleted;
     }
 
-    public void delete(NsUser user) {
+    public DeleteHistory delete(NsUser user, LocalDateTime time) {
         this.validateDeletable(user);
         deleted = true;
+        return this.makeDeleteHistory(time);
     }
 
     private void validateDeletable(NsUser user) {
         if (!this.isOwner(user)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    private DeleteHistory makeDeleteHistory(LocalDateTime time) {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, time);
     }
 
     public boolean isOwner(NsUser writer) {
