@@ -63,6 +63,9 @@ deleteHistories.addAll(answers.delete(loginUser));
 뭐 이런 식으로 ? 이렇게 접근하는게 맞는건가 ,,,...
 Answers에 로직 이동 후 테스트 통과!
 
+아직 해결하지못한 문제는 Answers에있는 getter, setter이다
+이건 Question과 똑같이 delete 메서드로 묶어서 DeleteHistory를 리턴하는 메서드로 만들어주면 좋을거같다.
+
 
 
 

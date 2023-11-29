@@ -14,7 +14,7 @@ public class AnswerTest {
     @DisplayName("질문자와 답변자가 다른경우 답변을 삭제할 수 없고 예외가 발생한다.")
     void answer_exception() {
         Assertions.assertThatThrownBy(() -> {
-            A1.validateLoginUser(NsUserTest.SANJIGI);
+            A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }
