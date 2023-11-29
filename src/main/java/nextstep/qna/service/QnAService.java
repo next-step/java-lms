@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,43 +23,47 @@ public class QnAService {
     private DeleteHistoryService deleteHistoryService;
 
     @Transactional
-    public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-        Question question = getQuestion(loginUser, questionId);
+    public void deleteQuestion(NsUser loginUser, long questionId) {
+        Question question = questionToBeDeleted(loginUser, questionId);
+        questionRepository.update(questionId, question);
 
-        question = question.delete(loginUser);
+        List<Answer> answers = answersToBeDeleted(loginUser, questionId);
+        for (Answer answer : answers) {
+            answerRepository.update(answer.getId(), answer);
+        }
 
-        List<DeleteHistory> deleteHistories = deletedQuestionAndAnswers(question);
+        List<DeleteHistory> deleteHistories = deleteHistoriesOf(question, answers);
         deleteHistoryService.saveAll(deleteHistories);
     }
 
-    private Question getQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-        Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        if (!question.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+    private Question questionToBeDeleted(NsUser loginUser, long questionId) {
+        Question question = getQuestion(questionId);
+        question = question.delete(loginUser);
         return question;
     }
 
-    private List<DeleteHistory> deletedQuestionAndAnswers(Question question) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        DeleteHistory deleteHistoryFromQuestion = deleteHistoryFromQuestion(question);
-        List<DeleteHistory> deleteHistoriesFromAnswers = deleteHistoryFromAnswers(question.getAnswers());
-
-        deleteHistories.add(deleteHistoryFromQuestion);
-        deleteHistories.addAll(deleteHistoriesFromAnswers);
-        return deleteHistories;
+    private Question getQuestion(long questionId) throws CannotDeleteException {
+        return questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
     }
 
-    private DeleteHistory deleteHistoryFromQuestion(Question question) {
-        return DeleteHistory.from(question);
-    }
-
-    private List<DeleteHistory> deleteHistoryFromAnswers(List<Answer> answers) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(DeleteHistory.from(answer));
+    private List<Answer> answersToBeDeleted(NsUser loginUser, long questionId) {
+        List<Answer> deletedAnswers = new ArrayList<>();
+        for (Answer answer : getAnswers(questionId)) {
+            answer = answer.delete(loginUser);
+            deletedAnswers.add(answer);
         }
 
+        return deletedAnswers;
+    }
+
+    private List<Answer> getAnswers(long questionId) {
+        return answerRepository.findByQuestion(questionId);
+    }
+
+    private List<DeleteHistory> deleteHistoriesOf(Question question, List<Answer> answers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(DeleteHistory.from(question));
+        deleteHistories.addAll(DeleteHistory.from(answers));
         return deleteHistories;
     }
 }

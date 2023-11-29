@@ -6,39 +6,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static nextstep.qna.domain.AnswerTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
-
-    @BeforeEach
-    void setUp() {
-        Q1.addAnswer(A1);
-        Q1.addAnswer(A2);
-
-        Q2.addAnswer(A3);
-        Q2.addAnswer(A4);
-    }
+    private static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    private static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    @DisplayName("질문 작성자와 답변 작성자가 같으면 데이터를 삭제 상태로 변경한다")
+    @DisplayName("질문 작성자가 로그인한 사용자면 질문을 삭제 상태로 변경하고 해당 질문을 반환한다")
     void delete_success() throws CannotDeleteException {
-        Question question = Q2.delete(NsUserTest.SANJIGI);
+        Question deletedQuestion = Q1.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(question.isDeleted()).isTrue();
-        for (Answer answer : question.getAnswers()) {
-            assertThat(answer.isDeleted()).isTrue();
-        }
+        assertThat(deletedQuestion.isDeleted()).isTrue();
     }
 
     @Test
-    @DisplayName("질문 작성자와 답변 작성자가 다르면 삭제할 수 없다는 예외를 던진다")
-    void delete_different_questionWriter_AnswerWriter_throwsException() {
+    @DisplayName("질문 작성자가 로그인한 사용자가 아니면 삭제할 수 없다는 예외를 던진다")
+    void delete_different_questionWriter_loginUser_throwsException() {
         assertThatThrownBy(
-                () -> Q1.delete(NsUserTest.JAVAJIGI)
+                () -> Q2.delete(NsUserTest.JAVAJIGI)
         ).isInstanceOf(CannotDeleteException.class);
     }
 }
