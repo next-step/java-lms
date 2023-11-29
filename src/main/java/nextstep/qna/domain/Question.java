@@ -77,11 +77,11 @@ public class Question {
         return deleted;
     }
 
-    public Question delete(NsUser user) {
+    public List<DeleteHistory> delete(NsUser user) {
         this.validateDeletable(user);
         deleted = true;
         answers.deleteAll(user);
-        return this;
+        return makeDeleteHistories();
     }
 
     private void validateDeletable(NsUser user) {
@@ -94,7 +94,7 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> makeDeleteHistories() {
+    private List<DeleteHistory> makeDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         deleteHistories.addAll(answers.makeDeleteHistories());

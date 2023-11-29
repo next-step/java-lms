@@ -21,7 +21,7 @@ public class QuestionTest {
         Q2 = new Question(NsUserFixture.SANJIGI, "title2", "contents2");
 
         A1 = new Answer(NsUserFixture.JAVAJIGI, Q1, "Answers Contents1");
-        A2 = new Answer(NsUserFixture.SANJIGI, Q1, "Answers Contents2");
+        A2 = new Answer(NsUserFixture.JAVAJIGI, Q1, "Answers Contents2");
     }
 
     @Test
@@ -57,10 +57,10 @@ public class QuestionTest {
     @DisplayName("DeleteHistory 생성 / Question과 Answer / 생성")
     void makeDeleteHistories() {
         // given
-        Q2.addAnswer(A1);
-        Q2.addAnswer(A2);
+        Q1.addAnswer(A1);
+        Q1.addAnswer(A2);
 
         // when then
-        assertThat(Q2.makeDeleteHistories()).hasSize(3);
+        assertThat(Q1.delete(NsUserFixture.JAVAJIGI)).hasSize(3);
     }
 }
