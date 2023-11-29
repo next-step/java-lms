@@ -28,6 +28,7 @@ public class QuestionTest {
                                                                                  0L,
                                                                                  NsUserTest.JAVAJIGI,
                                                                                  LocalDateTime.now())));
+
         DeleteHistories actual = Q1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(actual).isEqualTo(expected);
