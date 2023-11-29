@@ -37,12 +37,16 @@ public class Answer {
         this(null, writer, question, contents);
     }
 
+    public static Answer of(NsUser writer, Question question, String contents) {
+        return new Answer(writer, question, contents);
+    }
+
     public static Answer of(NsUser writer, Question question, String contents, boolean deleted) {
         return new Answer(writer, question, contents, deleted);
     }
 
-    public static Answer of(NsUser writer, Question question, String contents) {
-        return new Answer(writer, question, contents);
+    public static Answer of(Long id, NsUser writer, Question question, String contents) {
+        return new Answer(id, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {

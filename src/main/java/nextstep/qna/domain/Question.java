@@ -41,12 +41,21 @@ public class Question {
         this.deleted = deleted;
     }
 
+    private Question(Long id, NsUser writer, String title, String contents, Answers answers){
+        this(id, writer, title, contents);
+        this.answers = answers;
+    }
+
     public static Question of(NsUser writer, String title, String contents) {
         return new Question(writer, title, contents, Answers.from(new ArrayList<>()));
     }
 
     public static Question of(NsUser writer, String title, String contents, boolean deleted) {
         return new Question(writer, title, contents, Answers.from(new ArrayList<>()), deleted);
+    }
+
+    public static Question of(Long id, NsUser writer, String title, String contents) {
+        return new Question(id, writer, title, contents, Answers.from(new ArrayList<>()));
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {

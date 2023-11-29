@@ -27,6 +27,10 @@ public class DeleteHistories {
         deleteHistories.add(answerHistory);
     }
 
+    public List<DeleteHistory> getDeleteHistories() {
+        return this.deleteHistories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

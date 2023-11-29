@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,9 +34,9 @@ public class QnaServiceTest {
     private Answer answer;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+    public void setUp() {
+        question = Question.of(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
+        answer = Answer.of(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
     }
 
@@ -53,7 +52,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_다른_사람이_쓴_글() throws Exception {
+    public void delete_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
@@ -73,7 +72,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+    public void delete_답변_중_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
@@ -82,9 +81,11 @@ public class QnaServiceTest {
     }
 
     private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
+        DeleteHistories deleteHistories = DeleteHistories.from(Arrays.asList(
                 new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
+                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
+        );
+
+        verify(deleteHistoryService).saveAll(deleteHistories.getDeleteHistories());
     }
 }
