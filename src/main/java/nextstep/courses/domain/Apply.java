@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.type.ApplyStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -10,16 +11,34 @@ public class Apply extends BaseEntity {
     private final Long id;
     private final Session session;
     private final NsUser student;
+    private ApplyStatus status;
 
     public Apply(Session session, NsUser student) {
-        this(0L, session, student, LocalDateTime.now(), null);
+        this(0L, session, student, ApplyStatus.APPLYING, LocalDateTime.now(), null);
     }
 
-    public Apply(Long id, Session session, NsUser student, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Apply(Session session, NsUser student, ApplyStatus status) {
+        this(0L, session, student, status, LocalDateTime.now(), null);
+    }
+
+    public Apply(Long id, Session session, NsUser student, ApplyStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.session = session;
         this.student = student;
+        this.status = status;
+    }
+
+    public void approve() {
+        this.status = ApplyStatus.APPROVAL;
+    }
+
+    public void refuse() {
+        this.status = ApplyStatus.REFUSAL;
+    }
+
+    public boolean isApproval() {
+        return this.status.equals(ApplyStatus.APPROVAL);
     }
 
     public Session session() {
@@ -28,6 +47,10 @@ public class Apply extends BaseEntity {
 
     public NsUser student() {
         return this.student;
+    }
+
+    public ApplyStatus status() {
+        return this.status;
     }
 
     @Override
@@ -46,7 +69,7 @@ public class Apply extends BaseEntity {
     @Override
     public String toString() {
         return "Apply{" +
-            "session=" + session +
+            "session=" + session.id() +
             ", student=" + student +
             '}';
     }

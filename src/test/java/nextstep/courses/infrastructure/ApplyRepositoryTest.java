@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Apply;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.type.ApplyStatus;
 import nextstep.courses.repository.ApplyRepository;
 import nextstep.courses.repository.FreeSessionRepository;
 import nextstep.users.domain.NsUser;
@@ -52,11 +53,11 @@ public class ApplyRepositoryTest {
     }
 
     public Apply apply(Session session, NsUser user) {
-        return new Apply(1L, session, user, LocalDateTime.now(), null);
+        return new Apply(1L, session, user, ApplyStatus.APPLYING, LocalDateTime.now(), null);
     }
 
     public Apply savedApply() {
-        return new Apply(2L, savedSession(), savedUser(), LocalDateTime.now(), null);
+        return new Apply(2L, savedSession(), savedUser(), ApplyStatus.APPLYING, LocalDateTime.now(), null);
     }
 
     public Session savedSession() {

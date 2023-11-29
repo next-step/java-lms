@@ -45,7 +45,7 @@ public class FreeSessionTest {
         NsUser user = NsUserTest.JAVAJIGI;
 
         session.apply(null, user);
-        Assertions.assertThat(session.applys()).isEqualTo(Arrays.asList(new Apply(session, user)));
+        Assertions.assertThat(session.applies()).isEqualTo(new Applies(Arrays.asList(new Apply(session, user))));
     }
 
     private Duration duration() {

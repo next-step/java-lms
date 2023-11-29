@@ -1,14 +1,12 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.type.ApplyStatus;
 import nextstep.courses.exception.NotRecruitingSessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
@@ -17,7 +15,7 @@ public abstract class Session extends BaseEntity {
     private final Duration duration;
     private final Images images;
     private SessionStatus status;
-    protected final List<Apply> applys = new ArrayList<>();
+    protected final Applies applies;
 
     public Session(Duration duration, Images images) {
         this(0L, duration, images, duration.sessionStatus(LocalDate.now()), LocalDateTime.now(), null);
@@ -33,6 +31,7 @@ public abstract class Session extends BaseEntity {
         this.duration = duration;
         this.images = images;
         this.status = status;
+        this.applies = new Applies();
     }
 
     public abstract void apply(Payment payment, NsUser nsUser);
@@ -44,7 +43,8 @@ public abstract class Session extends BaseEntity {
     }
 
     protected void addStudent(NsUser nsUser) {
-        this.applys.add(new Apply(this, nsUser));
+        Apply apply = new Apply(this, nsUser, ApplyStatus.APPLYING);
+        this.applies.add(apply);
     }
 
     public Long id() {
@@ -63,22 +63,21 @@ public abstract class Session extends BaseEntity {
         return this.images;
     }
 
-    public List<Apply> applys() {
-        return Collections.unmodifiableList(this.applys);
+    public Applies applies() {
+        return this.applies;
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Session)) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && Objects.equals(status, session.status) && Objects.equals(applys, session.applys);
+        return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && Objects.equals(status, session.status) && Objects.equals(applies, session.applies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, duration, images, status, applys);
+        return Objects.hash(super.hashCode(), id, duration, images, status, applies);
     }
 
     @Override
@@ -88,7 +87,7 @@ public abstract class Session extends BaseEntity {
             ", duration=" + duration +
             ", images=" + images +
             ", status=" + status +
-            ", applys=" + applys +
+            ", applys=" + applies +
             '}';
     }
 }
