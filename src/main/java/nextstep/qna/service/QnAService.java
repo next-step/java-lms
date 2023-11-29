@@ -26,9 +26,7 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        if (!question.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+        checkSameOwner(loginUser, question);
 
         List<Answer> answers = question.getAnswers();
         for (Answer answer : answers) {
@@ -43,6 +41,12 @@ public class QnAService {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
         deleteHistoryService.saveAll(deleteHistories);
+    }
+
+    private static void checkSameOwner(NsUser loginUser, Question question) throws CannotDeleteException {
+        if (!question.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 
     private static void isNotSameLoginUserAndAnswerOwner(NsUser loginUser, Answer answer) throws CannotDeleteException {
