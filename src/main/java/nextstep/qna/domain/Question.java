@@ -80,14 +80,12 @@ public class Question {
     public Question delete(NsUser user) {
         this.validateDeletable(user);
         deleted = true;
-        answers.deleteAll();
-
+        answers.deleteAll(user);
         return this;
     }
 
     private void validateDeletable(NsUser user) {
         validateOwner(user);
-        answers.validateAllOwner(user);
     }
 
     private void validateOwner(NsUser user) {

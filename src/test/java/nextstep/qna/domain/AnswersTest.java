@@ -26,17 +26,17 @@ public class AnswersTest {
     }
 
     @Test
-    @DisplayName("삭제유효성검사 / 로그인사용자와 모든 질문등록자가 같다 / 통과")
+    @DisplayName("삭제유효성검사 / 로그인사용자와 모든 질문등록자가 같다 / 삭제성공")
     void deleteSameLoginAnswerUser() {
         // when then
-        A1s.validateAllOwner(NsUserFixture.JAVAJIGI);
+        A1s.deleteAll(NsUserFixture.JAVAJIGI);
     }
 
     @Test
-    @DisplayName("삭제유효성검사 / 로그인사용자와 질문등록자가 다르다 / 통과")
+    @DisplayName("삭제유효성검사 / 로그인사용자와 질문등록자가 다르다 / CannotDeleteException")
     void deleteDiffLoginAnswerUser() {
         // when then
-        assertThatThrownBy(() -> A1_A2s.validateAllOwner(NsUserFixture.JAVAJIGI))
+        assertThatThrownBy(() -> A1_A2s.deleteAll(NsUserFixture.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }
