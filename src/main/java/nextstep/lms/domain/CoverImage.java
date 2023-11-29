@@ -9,7 +9,7 @@ public class CoverImage {
     private static final List<String> EXTENSIONS = new ArrayList<>(Arrays.asList("gif","jpg","jpeg","png","svg"));
     private static final int MIN_WIDTH_PX_SIZE = 300;
     private static final int MIN_HEIGHT_PX_SIZE = 200;
-    private static final double WIDTH_HEIGHT_RATIO = MIN_WIDTH_PX_SIZE / MIN_HEIGHT_PX_SIZE;
+    private static final double WIDTH_HEIGHT_RATIO = MIN_WIDTH_PX_SIZE / (double) MIN_HEIGHT_PX_SIZE;
     private String name;
     private String type;
     private double fileSize;
@@ -34,21 +34,21 @@ public class CoverImage {
     }
 
     private double fileSizeChecking(double value) {
-        if (value < MAX_FILE_MB_SIZE) {
+        if (value <= MAX_FILE_MB_SIZE) {
             return value;
         }
         throw new IllegalArgumentException("파일이 너무 큽니다.");
     }
 
     private int widthChecking(int value) {
-        if (value > MIN_WIDTH_PX_SIZE) {
+        if (value >= MIN_WIDTH_PX_SIZE) {
             return value;
         }
         throw new IllegalArgumentException("이미지 너비가 너무 작습니다.");
     }
 
     private int heightChecking(int value) {
-        if (value > MIN_HEIGHT_PX_SIZE) {
+        if (value >= MIN_HEIGHT_PX_SIZE) {
             return value;
         }
         throw new IllegalArgumentException("이미지 높이가 너무 작습니다.");
