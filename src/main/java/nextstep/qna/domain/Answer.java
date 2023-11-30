@@ -48,18 +48,7 @@ public class Answer {
         return id;
     }
 
-    public void delete(NsUser writer) throws CannotDeleteException {
-        validateDeleteOwner(writer);
-        delete();
-    }
-
-    private void validateDeleteOwner(NsUser writer) throws CannotDeleteException {
-        if (!isOwner(writer)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    private void delete() {
+    public void delete() {
         this.deleted = true;
     }
 

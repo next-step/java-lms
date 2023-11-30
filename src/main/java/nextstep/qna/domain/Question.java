@@ -17,6 +17,7 @@ public class Question {
     private final NsUser writer;
 
     private final List<Answer> answers = new ArrayList<>();
+//    private final Answers answers2;
 
     private boolean deleted = false;
 
@@ -57,11 +58,24 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        validateDeleteOwner(loginUser);
+        validateQuestionDeleteOwner(loginUser);
+        checkHasAnswers();
         delete();
     }
 
-    private void validateDeleteOwner(NsUser loginUser) throws CannotDeleteException {
+    private void checkHasAnswers() throws CannotDeleteException {
+        int answerCnt = 0;
+        for (Answer answer : answers) {
+            if (!answer.isDeleted()) {
+                answerCnt++;
+            }
+        }
+        if (answerCnt > 0) {
+            throw new CannotDeleteException("질문에 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private void validateQuestionDeleteOwner(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
