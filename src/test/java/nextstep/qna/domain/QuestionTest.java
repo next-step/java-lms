@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,14 +17,16 @@ public class QuestionTest {
     @Test
     @DisplayName("자신의 질문이라면 삭제가 가능하다.")
     void deleteTest() {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        LocalDateTime now = LocalDateTime.now();
+        Q1.delete(NsUserTest.JAVAJIGI, now);
         assertThat(Q1.isDeleted()).isTrue();
     }
 
     @Test
     @DisplayName("다른사람이 쓴 글은 삭제할 수 없다.")
     void deleteFailTest() {
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+        LocalDateTime now = LocalDateTime.now();
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI, now))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }
