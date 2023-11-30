@@ -5,9 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Question {
     private Long id;
@@ -73,13 +71,7 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            try {
-                DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
-                deleteHistories.add(history);
-            }
-            catch (CannotDeleteException reason) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            deleteAnswer(writer, deleteTime, answer, deleteHistories);
         }
 
         this.deleted = true;
@@ -87,5 +79,15 @@ public class Question {
         deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
 
         return deleteHistories;
+    }
+
+    private static void deleteAnswer(NsUser writer, LocalDateTime deleteTime, Answer answer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+        try {
+            DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
+            deleteHistories.add(history);
+        }
+        catch (CannotDeleteException reason) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }
