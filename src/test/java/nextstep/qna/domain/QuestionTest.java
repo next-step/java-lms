@@ -30,7 +30,7 @@ public class QuestionTest {
     }
 
     @Test
-    public void delete_다른_사람이_쓴_글() throws Exception {
+    public void delete_다른_사람이_쓴_글은_삭제할_수_없다() throws Exception {
         assertThatThrownBy(() -> Q1.deleteBy(NsUserTest.SANJIGI)).isInstanceOf(
             CannotDeleteException.class);
     }
@@ -49,7 +49,7 @@ public class QuestionTest {
     }
 
     @Test
-    public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+    public void delete_답변_중_다른_사람이_쓴_글은_삭제할_수_없다() throws Exception {
         Q1.addAnswer(AnswerTest.A2);
         assertThatThrownBy(() -> Q1.deleteBy(NsUserTest.JAVAJIGI)).isInstanceOf(
             CannotDeleteException.class);

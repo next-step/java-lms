@@ -15,7 +15,7 @@ public class AnswerTest {
         "Answers Contents2");
 
     @Test
-    public void delete_다른_사람이_쓴_글() throws Exception {
+    public void delete_다른_사람이_쓴_답변은_삭제할_수_없다() throws Exception {
         assertThatThrownBy(() -> A1.deleteBy(NsUserTest.SANJIGI)).isInstanceOf(
             CannotDeleteException.class);
     }
