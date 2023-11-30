@@ -9,23 +9,37 @@ public abstract class Session {
     private final SessionInfo sessionInfo;
     private final SessionDate sessionDate;
     private final SessionStudent sessionStudent;
+    private final CoverImage coverImage;
     private SessionStatus status;
 
     protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(new SessionInfo(title, price), new SessionDate(startDate, endDate));
+        this(new SessionInfo(title, price), new SessionDate(startDate, endDate), null);
+    }
+
+    protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+        this(new SessionInfo(title, price), new SessionDate(startDate, endDate), coverImage);
     }
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate));
+        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate), null);
     }
 
-    protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate) {
+    protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate), coverImage);
+    }
+
+    protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
         validateSession(sessionInfo, sessionDate);
 
         this.sessionInfo = sessionInfo;
         this.sessionDate = sessionDate;
         this.status = SessionStatus.READY;
         this.sessionStudent = new SessionStudent(15, 0);
+
+        if (coverImage == null) {
+            coverImage = CoverImage.defaultCoverImage();
+        }
+        this.coverImage = coverImage;
     }
 
     private void validateSession(final SessionInfo sessionInfo, final SessionDate sessionDate) {
@@ -55,6 +69,10 @@ public abstract class Session {
 
     protected boolean isNotRecruiting() {
         return this.status != SessionStatus.RECRUITING;
+    }
+
+    protected CoverImage getCoverImage() {
+        return this.coverImage;
     }
 
     public abstract void ready();

@@ -9,6 +9,10 @@ public class FreeSession extends Session {
         super(title, startDate, endDate);
     }
 
+    public FreeSession(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+        super(title, startDate, endDate, coverImage);
+    }
+
     @Override
     public void ready() {
         setStatus(SessionStatus.READY);
