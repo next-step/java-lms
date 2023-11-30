@@ -21,7 +21,7 @@ public class SessionService {
 
     @Transactional
     public void enrolment (Payment payment) {
-        Session session = sessionRepository.findById(payment.getSessionId()).orElseThrow();
+        Session session = sessionRepository.findById(payment.getSessionId());
         NsUser nsUser = userRepository.findById(payment.getNsUserId()).orElseThrow();
 
         session.enrolment(nsUser, payment.getAmount());
