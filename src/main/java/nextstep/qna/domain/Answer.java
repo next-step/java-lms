@@ -74,7 +74,7 @@ public class Answer {
         this.question = question;
     }
 
-    public void deleteBy(NsUser user) throws Exception {
+    public void deleteBy(NsUser user) throws CannotDeleteException {
         if (!this.isOwner(user)) {
             throw new CannotDeleteException("");
         }

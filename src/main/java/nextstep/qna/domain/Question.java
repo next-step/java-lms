@@ -87,7 +87,8 @@ public class Question {
         return answers;
     }
 
-    public void deleteBy(NsUser user) throws Exception {
+    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         if (!this.isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -100,13 +101,21 @@ public class Question {
 
         this.getAnswers().forEach(a -> {
             try {
+                deleteHistories.add(
+                    new DeleteHistory(ContentType.ANSWER, a.getId(), user, LocalDateTime.now()));
                 a.deleteBy(user);
-            } catch (Exception e) {
+
+            } catch (CannotDeleteException e) {
                 throw new RuntimeException(e);
             }
         });
 
         this.deleted = true;
+
+        deleteHistories.add(
+            new DeleteHistory(ContentType.QUESTION, this.id, user, LocalDateTime.now()));
+
+        return deleteHistories;
     }
 
     @Override
