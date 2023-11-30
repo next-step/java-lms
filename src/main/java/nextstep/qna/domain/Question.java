@@ -17,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -65,11 +65,6 @@ public class Question {
         return writer;
     }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
@@ -83,7 +78,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -92,30 +87,18 @@ public class Question {
         if (!this.isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        if (this.getAnswers().stream()
-            .anyMatch(a -> !a.isOwner(user))
-        ) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-
-        this.getAnswers().forEach(a -> {
-            try {
-                deleteHistories.add(
-                    new DeleteHistory(ContentType.ANSWER, a.getId(), user, LocalDateTime.now()));
-                a.deleteBy(user);
-
-            } catch (CannotDeleteException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
         this.deleted = true;
 
         deleteHistories.add(
             new DeleteHistory(ContentType.QUESTION, this.id, user, LocalDateTime.now()));
 
+        deleteHistories.addAll(this.answers.deleteBy(user));
+
         return deleteHistories;
+    }
+
+    public void addAnswer(Answer answer) {
+        this.answers.add(answer, this);
     }
 
     @Override
