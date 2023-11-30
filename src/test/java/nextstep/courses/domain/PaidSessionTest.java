@@ -20,7 +20,7 @@ class PaidSessionTest {
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         //when
-        PaidSession paidSession = new PaidSession(title, price, startDate, endDate);
+        Session paidSession = new PaidSession(title, price, startDate, endDate);
 
         //then
         assertThat(paidSession.getTitle()).isEqualTo(title);
@@ -33,7 +33,7 @@ class PaidSessionTest {
     @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (강의가 처음 열리면 강의 상태는 READY이다.)")
     void testEnrollWithInitSession() {
         //given
-        final PaidSession paidSession = buildDefaultPaidSession();
+        final Session paidSession = buildDefaultPaidSession();
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
@@ -46,7 +46,7 @@ class PaidSessionTest {
     @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (READY 상태)")
     void testEnrollWithSessionStatusIsReady() {
         //given
-        final PaidSession paidSession = buildDefaultPaidSession();
+        final Session paidSession = buildDefaultPaidSession();
         paidSession.ready();
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
@@ -60,7 +60,7 @@ class PaidSessionTest {
     @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (CLOSED 상태)")
     void testEnrollWithSessionStatusIsClosed() {
         //given
-        final PaidSession paidSession = buildDefaultPaidSession();
+        final Session paidSession = buildDefaultPaidSession();
         paidSession.close();
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
@@ -76,7 +76,7 @@ class PaidSessionTest {
         //given
         final double price = 3000;
 
-        final PaidSession paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
+        final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) (price - 1));
 
         //when, then
@@ -91,7 +91,7 @@ class PaidSessionTest {
         //given
         final double price = 3000;
 
-        final PaidSession paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
+        final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
         enrollForMaxLimit(paidSession, payment);
 
@@ -101,7 +101,7 @@ class PaidSessionTest {
                 .hasMessage("max student limit is reached");
     }
 
-    private void enrollForMaxLimit(final PaidSession paidSession, final Payment payment) {
+    private void enrollForMaxLimit(final Session paidSession, final Payment payment) {
         for (int count = 0; count < 15; count++) {
             paidSession.enroll(payment);
         }
@@ -113,7 +113,7 @@ class PaidSessionTest {
         //given
         final double price = 3000;
 
-        final PaidSession paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
+        final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
 
         final int currentStudentCountBeforeEnroll = paidSession.getCurrentStudentCount();
@@ -126,7 +126,7 @@ class PaidSessionTest {
         assertThat(currentStudentCountAfterEnroll).isEqualTo(currentStudentCountBeforeEnroll + 1);
     }
 
-    private PaidSession buildDefaultPaidSession() {
+    private Session buildDefaultPaidSession() {
         final String title = "TDD, 클린 코드 with Java";
         final double price = 3000;
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
@@ -135,7 +135,7 @@ class PaidSessionTest {
         return new PaidSession(title, price, startDate, endDate);
     }
 
-    private PaidSession buildDefaultPaidSessionWithRecruitingStatusAndPrice(final double price) {
+    private Session buildDefaultPaidSessionWithRecruitingStatusAndPrice(final double price) {
         final String title = "TDD, 클린 코드 with Java";
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
