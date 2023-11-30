@@ -50,7 +50,7 @@ class CourseTest {
 
         //when
         course.addSession(new FreeSession("로또", startDate, endDate));
-        course.addSession(new PaidSession("자동차 게임", startDate, endDate));
+        course.addSession(new PaidSession("자동차 게임", 3000, startDate, endDate));
         course.addSession(new FreeSession("레거시 코드 리팩터링", startDate, endDate));
 
         //then

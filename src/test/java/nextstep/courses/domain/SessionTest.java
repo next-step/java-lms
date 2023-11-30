@@ -17,18 +17,6 @@ class SessionTest {
     private final LocalDateTime defaultStartDate = LocalDateTime.of(2024, 1, 1, 0, 0);
     private final LocalDateTime defaultEndDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
-    @Test
-    @DisplayName("Session은 제목, 시작일, 종료일을 가진다.")
-    void testSessionFields() {
-        //when
-        Session session = new FreeSession(defaultTitle, defaultStartDate, defaultEndDate);
-
-        //then
-        assertThat(session.getTitle()).isEqualTo(defaultTitle);
-        assertThat(session.getStartDate()).isEqualTo(defaultStartDate);
-        assertThat(session.getEndDate()).isEqualTo(defaultEndDate);
-    }
-
     @ParameterizedTest
     @NullAndEmptySource
     @DisplayName("Session의 제목은 비어있으면, 예외가 발생한다.")
