@@ -18,6 +18,14 @@ public class CoverImagePixel {
         this.height = height;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     private void validate(int width, int height) {
         if (width < MIN_WIDTH_SIZE) {
             throw new IllegalArgumentException(String.format("가로 픽셀은 최소 %d픽셀 이상이어야 합니다. 현재 픽셀 : %d", MIN_WIDTH_SIZE, width));

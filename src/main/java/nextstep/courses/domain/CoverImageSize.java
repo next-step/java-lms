@@ -13,6 +13,10 @@ public class CoverImageSize {
         this.imageSize = imageSize;
     }
 
+    public int getImageSize() {
+        return imageSize;
+    }
+
     private void validate(int imageSize) {
         if (imageSize <= 0) {
             throw new IllegalArgumentException("이미지 사이즈는 0이거나 0보다작을 수 없습니다.");

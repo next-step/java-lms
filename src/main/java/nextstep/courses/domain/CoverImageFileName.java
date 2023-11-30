@@ -15,6 +15,10 @@ public class CoverImageFileName {
         this.fileName = fullFileName;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
     private void validate(String fullFileName) {
         if (isNullOrEmpty(fullFileName)) {
             throw new IllegalArgumentException("파일명은 필수입니다.");
