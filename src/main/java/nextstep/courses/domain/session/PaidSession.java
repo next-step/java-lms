@@ -23,6 +23,6 @@ public class PaidSession extends Session {
             throw new IllegalStateException("max student limit is reached");
         }
 
-        enrollStudent();
+        increaseEnrollment();
     }
 }

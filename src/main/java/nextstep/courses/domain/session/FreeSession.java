@@ -15,6 +15,6 @@ public class FreeSession extends Session {
             throw new IllegalStateException("session is not recruiting");
         }
 
-        enrollStudent();
+        increaseEnrollment();
     }
 }

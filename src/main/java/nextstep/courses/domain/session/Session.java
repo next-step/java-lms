@@ -6,11 +6,10 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 
 public abstract class Session {
-    private SessionInfo sessionInfo;
+    private final SessionInfo sessionInfo;
+    private final SessionDate sessionDate;
+    private final SessionStudent sessionStudent;
     private SessionStatus status;
-    private int maxStudentLimit;
-    private int currentStudentCount;
-    private SessionDate sessionDate;
 
     protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(new SessionInfo(title, price), new SessionDate(startDate, endDate));
@@ -26,8 +25,7 @@ public abstract class Session {
         this.sessionInfo = sessionInfo;
         this.sessionDate = sessionDate;
         this.status = SessionStatus.READY;
-        this.maxStudentLimit = 15;
-        this.currentStudentCount = 0;
+        this.sessionStudent = new SessionStudent(15, 0);
     }
 
     private void validateSession(final SessionInfo sessionInfo, final SessionDate sessionDate) {
@@ -35,20 +33,24 @@ public abstract class Session {
         Assert.notNull(sessionDate, "session date cannot be null");
     }
 
-    protected SessionStatus getStatus() {
-        return this.status;
-    }
-
-    protected int getMaxStudentLimit() {
-        return this.maxStudentLimit;
+    protected long getPrice() {
+        return this.sessionInfo.getPrice();
     }
 
     protected int getCurrentStudentCount() {
-        return this.currentStudentCount;
+        return this.sessionStudent.getCurrentStudentCount();
     }
 
-    protected long getPrice() {
-        return this.sessionInfo.getPrice();
+    protected boolean isReachedMaxStudentLimit() {
+        return this.sessionStudent.isReachedMaxStudentLimit();
+    }
+
+    protected void increaseEnrollment() {
+        this.sessionStudent.increaseStudentCount();
+    }
+
+    protected SessionStatus getStatus() {
+        return this.status;
     }
 
     protected boolean isNotRecruiting() {
@@ -65,14 +67,6 @@ public abstract class Session {
 
     protected void close() {
         this.status = SessionStatus.CLOSED;
-    }
-
-    protected boolean isReachedMaxStudentLimit() {
-        return getCurrentStudentCount() >= getMaxStudentLimit();
-    }
-
-    protected void enrollStudent() {
-        this.currentStudentCount++;
     }
 
     public abstract void enroll(Payment payment);
