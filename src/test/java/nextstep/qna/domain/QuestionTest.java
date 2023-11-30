@@ -20,4 +20,14 @@ public class QuestionTest {
         assertThat(question.isDeleted()).isTrue();
 
     }
+
+    @Test
+    @DisplayName("[Question.deleteIfWriter()] 질문하지 않은 사용자가 삭제를 요청하면 -> 거부한다.")
+    public void deleteWrongWriterTest() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
+        question.deleteIfWriter(NsUserTest.SANJIGI);
+
+        assertThat(question.isDeleted()).isFalse();
+
+    }
 }
