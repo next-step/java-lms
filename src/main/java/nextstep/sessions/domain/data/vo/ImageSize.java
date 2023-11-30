@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.data.vo;
 
 import nextstep.sessions.domain.exception.SessionsException;
 

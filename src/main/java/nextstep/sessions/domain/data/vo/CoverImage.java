@@ -1,4 +1,6 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.data.vo;
+
+import nextstep.sessions.domain.data.type.ImageType;
 
 public class CoverImage {
 

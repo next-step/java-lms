@@ -1,6 +1,11 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.data;
 
 import java.time.LocalDateTime;
+
+import nextstep.sessions.domain.data.type.SessionFee;
+import nextstep.sessions.domain.data.type.SessionState;
+import nextstep.sessions.domain.data.vo.CoverImage;
+import nextstep.sessions.domain.data.vo.Duration;
 
 public class Session {
 

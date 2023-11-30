@@ -1,4 +1,4 @@
-package nextstep.sessions.domain;
+package nextstep.sessions.domain.data.type;
 
 public enum SessionState {
 
