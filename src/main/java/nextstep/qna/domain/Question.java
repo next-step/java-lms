@@ -106,7 +106,7 @@ public class Question {
     }
 
     private DeleteHistory softDelete() {
-        this.setDeleted(true);
+        this.deleted = true;
         return ofQuestion(this.getId(), this.getWriter(), LocalDateTime.now());
     }
 
