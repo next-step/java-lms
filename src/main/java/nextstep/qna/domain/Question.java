@@ -45,8 +45,7 @@ public class Question {
         return writer;
     }
 
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
+    protected void addAnswer(Answer answer) {
         answers.add(answer);
     }
 

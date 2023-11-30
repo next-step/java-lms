@@ -42,6 +42,7 @@ public class Answer {
 
         this.writer = writer;
         this.question = question;
+        this.question.addAnswer(this);
         this.contents = contents;
     }
 
@@ -55,10 +56,6 @@ public class Answer {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     public boolean isSameWriter(NsUser loginUser) {
