@@ -39,55 +39,55 @@ public abstract class Session {
         Assert.isTrue(startDate.isBefore(endDate), "start date cannot be after end date");
     }
 
-    public String getTitle() {
+    protected String getTitle() {
         return this.title;
     }
 
-    public LocalDateTime getStartDate() {
+    protected LocalDateTime getStartDate() {
         return this.startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    protected LocalDateTime getEndDate() {
         return this.endDate;
     }
 
-    public SessionStatus getStatus() {
+    protected SessionStatus getStatus() {
         return this.status;
     }
 
-    public int getMaxStudentLimit() {
+    protected int getMaxStudentLimit() {
         return this.maxStudentLimit;
     }
 
-    public int getCurrentStudentCount() {
+    protected int getCurrentStudentCount() {
         return this.currentStudentCount;
     }
 
-    public double getPrice() {
+    protected double getPrice() {
         return this.price;
     }
 
-    public boolean isNotRecruiting() {
+    protected boolean isNotRecruiting() {
         return this.status != SessionStatus.RECRUITING;
     }
 
-    public void ready() {
+    protected void ready() {
         this.status = SessionStatus.READY;
     }
 
-    public void recruit() {
+    protected void recruit() {
         this.status = SessionStatus.RECRUITING;
     }
 
-    public void close() {
+    protected void close() {
         this.status = SessionStatus.CLOSED;
     }
 
-    public boolean isReachedMaxStudentLimit() {
+    protected boolean isReachedMaxStudentLimit() {
         return getCurrentStudentCount() >= getMaxStudentLimit();
     }
 
-    public void enrollStudent() {
+    protected void enrollStudent() {
         this.currentStudentCount++;
     }
 
