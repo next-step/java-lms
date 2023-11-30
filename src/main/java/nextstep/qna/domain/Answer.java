@@ -76,4 +76,12 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
+    public void deleteIfWriter(NsUser writer) {
+        if (!this.writer.equals(writer)) {
+            return;
+        }
+
+        this.setDeleted(true);
+    }
 }
