@@ -19,16 +19,11 @@ public class Question {
 
     private Answers answers;
 
-//    private List<Answer> answers = new ArrayList<>();
-
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
-
-//    public Question() {
-//    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -46,31 +41,12 @@ public class Question {
         return id;
     }
 
-//    public String getTitle() {
-//        return title;
-//    }
-
-//    public Question setTitle(String title) {
-//        this.title = title;
-//        return this;
-//    }
-
-//    public String getContents() {
-//        return contents;
-//    }
-
-//    public Question setContents(String contents) {
-//        this.contents = contents;
-//        return this;
-//    }
-
     public NsUser getWriter() {
         return writer;
     }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-//        answers.add(answer);
         this.answers = answers.add(answer);
     }
 
@@ -105,11 +81,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-//    public Question setDeleted(boolean deleted) {
-//        this.deleted = deleted;
-//        return this;
-//    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -133,9 +104,6 @@ public class Question {
     private List<DeleteHistory> deletedAnswer() {
         return this.answers.deleted();
     }
-//    public List<Answer> getAnswers() {
-//        return answers;
-//    }
 
     @Override
     public String toString() {
