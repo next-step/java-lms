@@ -67,5 +67,9 @@ public abstract class Session {
         return this.price;
     }
 
+    public boolean isNotRecruiting() {
+        return this.status != SessionStatus.RECRUITING;
+    }
+
     public abstract void enroll(Payment payment);
 }
