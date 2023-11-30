@@ -18,11 +18,18 @@ public class Students {
         this.students = students;
     }
 
-    public void enrol(Student student) {
+    public void enroll(Student student) {
         if (students.contains(student)) {
             throw new AlreadyAddStudentException("이미 수강을 신청한 학생입니다.");
         }
 
+        students.add(student);
+    }
+
+    public void enroll(Enrollment enrollment,
+                       long payment,
+                       Student student) {
+        enrollment.validateEnroll(payment, this);
         students.add(student);
     }
 
@@ -42,4 +49,5 @@ public class Students {
     public int hashCode() {
         return Objects.hash(students);
     }
+
 }

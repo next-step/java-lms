@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("thumbnailRepository")
 public class JdbcThumbnailRepository implements ThumbnailRepository {
     private JdbcOperations jdbcTemplate;
@@ -16,7 +18,7 @@ public class JdbcThumbnailRepository implements ThumbnailRepository {
 
 
     @Override
-    public Thumbnail findBySessionId(long sessionId) {
+    public List<Thumbnail> findBySessionId(long sessionId) {
         String sql = "select id, session_id, name, url, file_size, width_pixel, height_pixel from thumbnail where " +
                 "session_id = ?";
         RowMapper<Thumbnail> rowMapper = (rs, rowNum) -> new Thumbnail(
@@ -28,6 +30,6 @@ public class JdbcThumbnailRepository implements ThumbnailRepository {
                 rs.getLong(6),
                 rs.getLong(7));
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }

@@ -15,6 +15,6 @@ class StudentsTest {
     void add() {
         Students students = new Students(List.of(new Student()));
 
-        assertThrows(AlreadyAddStudentException.class, () -> students.enrol(new Student()), "이미 수강을 신청한 학생입니다.");
+        assertThrows(AlreadyAddStudentException.class, () -> students.enroll(new Student()), "이미 수강을 신청한 학생입니다.");
     }
 }
