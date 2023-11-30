@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Question {
     private Long id;
@@ -90,11 +93,22 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void deleteIfWriter(NsUser writer) {
+    public List<DeleteHistory> deleteIfWriter(NsUser writer, LocalDateTime deleteTime) {
         if (!isOwner(writer)) {
-            return;
+            return List.of();
+        }
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : this.answers) {
+            DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
+            if (history == null) {
+                continue;
+            }
+            deleteHistories.add(history);
         }
 
         this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
+        return deleteHistories;
     }
 }

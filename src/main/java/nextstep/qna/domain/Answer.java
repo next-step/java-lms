@@ -74,7 +74,7 @@ public class Answer {
      * @param writer 질문을 작성한 사람과 writer가 일치할 경우에만 삭제합니다.
      * @param deleteTime 질문 삭제 시각
      *
-     * @return 삭제 정보
+     * @return 삭제 정보. 삭제되지 않았다면 null을 반환합니다.
      */
     public DeleteHistory deleteIfWriter(NsUser writer, LocalDateTime deleteTime) {
         if (!this.writer.equals(writer)) {
