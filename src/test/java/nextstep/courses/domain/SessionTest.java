@@ -110,4 +110,31 @@ class SessionTest {
         //then
         assertThat(currentStudentCount).isEqualTo(0);
     }
+
+
+    @Test
+    @DisplayName("Session의 수강료를 지정할 수 있다.")
+    void testSessionConstructorHasPrice() {
+        //given
+        final int price = 1500;
+        final Session session = new PaidSession(defaultTitle, price, defaultStartDate, defaultEndDate);
+
+        //when
+        final double getPrice = session.getPrice();
+
+        //then
+        assertThat(getPrice).isEqualTo(price);
+    }
+
+    @Test
+    @DisplayName("Session의 수강료를 0원 미만으로 지정할 시, 예외가 발생한다.")
+    void testSessionPriceIsBiggerThanAndEqualTo0() {
+        //given
+        final int price = -1;
+
+        //when, then
+        assertThatThrownBy(() -> new PaidSession(defaultTitle, price, defaultStartDate, defaultEndDate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("price cannot be negative");
+    }
 }

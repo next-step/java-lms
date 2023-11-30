@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public abstract class Session {
     private String title;
+    private double price;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private SessionStatus status;
@@ -13,9 +14,14 @@ public abstract class Session {
     private int currentStudentCount;
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
-        validateSession(title, startDate, endDate);
+        this(title, 0, startDate, endDate);
+    }
+
+    protected Session(final String title, final double price, final LocalDateTime startDate, final LocalDateTime endDate) {
+        validateSession(title, price, startDate, endDate);
 
         this.title = title;
+        this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = SessionStatus.READY;
@@ -23,8 +29,9 @@ public abstract class Session {
         this.currentStudentCount = 0;
     }
 
-    private void validateSession(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
+    private void validateSession(final String title, final double price, final LocalDateTime startDate, final LocalDateTime endDate) {
         Assert.hasText(title, "title cannot be blank");
+        Assert.isTrue(price >= 0, "price cannot be negative");
         Assert.notNull(startDate, "start date cannot be null");
         Assert.notNull(endDate, "end date cannot be null");
 
@@ -53,5 +60,9 @@ public abstract class Session {
 
     public int getCurrentStudentCount() {
         return this.currentStudentCount;
+    }
+
+    public double getPrice() {
+        return this.price;
     }
 }
