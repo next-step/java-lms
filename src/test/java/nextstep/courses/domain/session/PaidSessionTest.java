@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
