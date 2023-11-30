@@ -23,4 +23,16 @@ public class Session {
         this.sessionStatus = sessionStatus;
         this.students = new ArrayList<>(students) ;
     }
+
+    protected void sessionStatusCheck() {
+        if (this.sessionStatus != SessionStatus.RECRUITING) {
+            throw new IllegalArgumentException("수강신청 기간이 아닙니다.");
+        }
+    }
+
+    protected void studentDuplicationCheck(NsUser nsUser) {
+        if (this.students.contains(nsUser)) {
+            throw new IllegalArgumentException("이미 수강중인 강의입니다.");
+        }
+    }
 }

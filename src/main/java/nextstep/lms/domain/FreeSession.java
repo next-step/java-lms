@@ -10,4 +10,10 @@ public class FreeSession extends Session{
                        CoverImage coverImage, SessionStatus sessionStatus, List<NsUser> students) {
         super(name, startDate, endDate, coverImage, sessionStatus, students);
     }
+    public boolean enroll(NsUser nsUser) throws IllegalArgumentException {
+        super.sessionStatusCheck();
+        super.studentDuplicationCheck(nsUser);
+        super.students.add(nsUser);
+        return true;
+    }
 }

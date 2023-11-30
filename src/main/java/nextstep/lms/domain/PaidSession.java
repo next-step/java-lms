@@ -17,6 +17,8 @@ public class PaidSession extends Session{
     }
 
     public boolean enroll(NsUser nsUser, int tuitionFee) throws IllegalArgumentException {
+        super.sessionStatusCheck();
+        super.studentDuplicationCheck(nsUser);
         if (this.tuitionFee != tuitionFee) {
             throw new IllegalArgumentException("결제금액이 수강료와 다릅니다.");
         }
