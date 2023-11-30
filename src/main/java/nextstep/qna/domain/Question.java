@@ -74,7 +74,7 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
-        deleteHistories.addAll(this.answers.deleteAnswers());
+        deleteHistories.addAll(this.answers.deleteAnswers(nsUser));
 
         this.deleted = true;
 
@@ -85,8 +85,6 @@ public class Question {
         if (!this.isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-
-        this.answers.validateDelete(nsUser);
     }
 
     public boolean isDeleted() {

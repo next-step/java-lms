@@ -17,8 +17,7 @@ public class Answers {
         this.answers = answers;
     }
 
-
-    void validateDelete(NsUser user) throws CannotDeleteException {
+    private void validateDelete(NsUser user) throws CannotDeleteException {
         for (Answer answer : answers) {
             if (!answer.isOwner(user)) {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
@@ -30,7 +29,9 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAnswers() {
+    public List<DeleteHistory> deleteAnswers(NsUser user) throws CannotDeleteException {
+        validateDelete(user);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
             deleteHistories.add(answer.delete());
