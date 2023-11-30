@@ -30,10 +30,38 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (처음 강의가 열리면 강의 상태는 준비중이다)")
+    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (강의가 처음 열리면 강의 상태는 READY이다.)")
     void testEnrollWithInitSession() {
         //given
         final PaidSession paidSession = buildDefaultPaidSession();
+        Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
+
+        //when, then
+        assertThatThrownBy(() -> paidSession.enroll(payment))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("session is not recruiting");
+    }
+
+    @Test
+    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (READY 상태)")
+    void testEnrollWithSessionStatusIsReady() {
+        //given
+        final PaidSession paidSession = buildDefaultPaidSession();
+        paidSession.ready();
+        Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
+
+        //when, then
+        assertThatThrownBy(() -> paidSession.enroll(payment))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("session is not recruiting");
+    }
+
+    @Test
+    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (CLOSED 상태)")
+    void testEnrollWithSessionStatusIsClosed() {
+        //given
+        final PaidSession paidSession = buildDefaultPaidSession();
+        paidSession.close();
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
