@@ -21,6 +21,10 @@ public class Period {
         }
     }
 
+    public static Period from() {
+        return new Period(LocalDate.now(), LocalDate.now().plusDays(7));
+    }
+
     public static Period of(LocalDate startDate, LocalDate endDate) {
         return new Period(startDate, endDate);
     }

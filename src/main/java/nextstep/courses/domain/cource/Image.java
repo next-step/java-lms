@@ -42,6 +42,10 @@ public class Image {
         }
     }
 
+    public static Image from() {
+        return new Image("jpg", WIDTH_MIN, HEIGHT_MIN, FILE_SIZE_MAX);
+    }
+
     public static Image of(String type, long width, long height, long fileSize) {
         return new Image(type, width, height, fileSize);
     }
