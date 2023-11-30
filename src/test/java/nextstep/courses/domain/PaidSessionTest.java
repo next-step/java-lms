@@ -107,6 +107,25 @@ class PaidSessionTest {
         }
     }
 
+    @Test
+    @DisplayName("강의 상태가 모집중이고 강의 가격과 지불한 가격이 같으며 최대 수강 인원을 넘지 않으면, 수강 신청이 가능하다.")
+    void testEnroll() {
+        //given
+        final double price = 3000;
+
+        final PaidSession paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
+        Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
+
+        final int currentStudentCountBeforeEnroll = paidSession.getCurrentStudentCount();
+
+        //when
+        paidSession.enroll(payment);
+        final int currentStudentCountAfterEnroll = paidSession.getCurrentStudentCount();
+
+        //then
+        assertThat(currentStudentCountAfterEnroll).isEqualTo(currentStudentCountBeforeEnroll + 1);
+    }
+
     private PaidSession buildDefaultPaidSession() {
         final String title = "TDD, 클린 코드 with Java";
         final double price = 3000;
