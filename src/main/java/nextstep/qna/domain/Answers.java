@@ -27,7 +27,6 @@ public class Answers {
 
     public boolean isAnswerOwner(NsUser loginUser) {
         long answerOwnerCount = values.stream().filter(answer -> answer.isOwner(loginUser)).count();
-        System.out.println(answersSize() + " " + answerOwnerCount);
         if (answersSize() == answerOwnerCount) {
             return true;
         }
