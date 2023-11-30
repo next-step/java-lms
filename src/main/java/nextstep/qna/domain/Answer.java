@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -76,9 +77,9 @@ public class Answer {
      *
      * @return 삭제 정보. 삭제되지 않았다면 null을 반환합니다.
      */
-    public DeleteHistory deleteIfWriter(NsUser writer, LocalDateTime deleteTime) {
+    public DeleteHistory deleteIfWriter(NsUser writer, LocalDateTime deleteTime) throws CannotDeleteException {
         if (!this.writer.equals(writer)) {
-            return null;
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
 
         this.deleted = true;

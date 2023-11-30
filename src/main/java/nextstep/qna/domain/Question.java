@@ -70,7 +70,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> deleteIfWriter(NsUser writer, LocalDateTime deleteTime) {
+    public List<DeleteHistory> deleteIfWriter(NsUser writer, LocalDateTime deleteTime) throws CannotDeleteException {
         if (!isOwner(writer)) {
             return List.of();
         }

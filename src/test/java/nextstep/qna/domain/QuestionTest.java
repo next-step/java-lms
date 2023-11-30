@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자신을 삭제 상태로 만든다.")
-    public void deleteTest() {
+    public void deleteTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW);
 
@@ -29,7 +30,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 질문하지 않은 사용자가 삭제를 요청하면 -> 거부한다.")
-    public void deleteWrongWriterTest() {
+    public void deleteWrongWriterTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         question.deleteIfWriter(NsUserTest.SANJIGI, FIXED_NOW);
 
@@ -39,7 +40,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자기 자신과 삭제 상태로 바뀐 답변들의 정보를 준다.")
-    public void deleteInfoTest() {
+    public void deleteInfoTest() throws CannotDeleteException {
 
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         DeleteHistory questionDelete = new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI, FIXED_NOW);
