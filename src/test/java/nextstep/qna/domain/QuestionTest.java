@@ -1,13 +1,13 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 
 public class QuestionTest {
 
@@ -35,6 +35,7 @@ public class QuestionTest {
 
         // then
         assertThat(Q1.isDeleted()).isTrue();
+        assertThat(AnswerTest.A1.isDeleted()).isTrue();
     }
 
     @Test
