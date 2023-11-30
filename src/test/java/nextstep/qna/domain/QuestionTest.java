@@ -16,13 +16,13 @@ public class QuestionTest {
     @Test
     void 질문삭제권한체크_exception() {
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> Q1.validateDelete(NsUserTest.SANJIGI))
+                .isThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
                 .withMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
-    void delete() {
-        assertThat(Q1.delete())
+    void delete() throws CannotDeleteException {
+        assertThat(Q1.delete(NsUserTest.JAVAJIGI))
                 .containsExactly(new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
         assertThat(Q1.isDeleted()).isTrue();
     }

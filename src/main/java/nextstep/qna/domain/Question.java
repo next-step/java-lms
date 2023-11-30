@@ -20,7 +20,7 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -52,11 +52,6 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
     }
@@ -74,7 +69,9 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser nsUser) throws CannotDeleteException {
+        validateDelete(nsUser);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(this.answers.deleteAnswers());
@@ -84,7 +81,7 @@ public class Question {
         return deleteHistories;
     }
 
-    public void validateDelete(NsUser nsUser) throws CannotDeleteException {
+    private void validateDelete(NsUser nsUser) throws CannotDeleteException {
         if (!this.isOwner(nsUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
