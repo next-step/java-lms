@@ -17,6 +17,9 @@ public class PaidSession extends Session {
         }
 
         //  유료 강의의 경우, 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
+        if (payment.isNotPaid(getPrice())) {
+            throw new IllegalStateException("paid amount is different with price");
+        }
 
         //  최대 수강 인원
 
