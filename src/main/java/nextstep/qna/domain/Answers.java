@@ -18,8 +18,7 @@ public class Answers {
 
     public void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            answer.validateAnswer(loginUser);
-            answer.delete();
+            answer.delete(loginUser);
         }
     }
 

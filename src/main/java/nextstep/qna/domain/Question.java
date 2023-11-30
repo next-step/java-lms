@@ -6,6 +6,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,13 +97,18 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
-        if (!Objects.equals(loginUser, writer)) {
-            throw new CannotDeleteException("로그인 사용자와 질문한 사용자가 같아야 합니다.");
-        }
+    public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
+        validateDelete(loginUser);
 
         this.deleted = true;
         deleteAnswers(loginUser);
+        return new DeleteHistories(Collections.singletonList(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
+    }
+
+    private void validateDelete(NsUser loginUser) throws CannotDeleteException {
+        if (!Objects.equals(loginUser, writer)) {
+            throw new CannotDeleteException("로그인 사용자와 질문한 사용자가 같아야 합니다.");
+        }
     }
 
     private void deleteAnswers(NsUser loginUser) throws CannotDeleteException {

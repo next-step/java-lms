@@ -26,8 +26,8 @@ public class AnswerTest {
 
     @Test
     @DisplayName("답변의 삭제 상태를 변경한다.")
-    void 답변_삭제_상태_변경(){
-        A1.delete();
+    void 답변_삭제_상태_변경() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
 

@@ -100,7 +100,8 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete() {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateAnswer(loginUser);
         this.deleted = true;
     }
 

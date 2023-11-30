@@ -30,3 +30,10 @@
   * [X] 질문자와 답변자가 다른 경우 답변을 삭제 할 수없다.
 * [x] 이력 등록 요구사항 
   * [x] 삭제 이력 정보를 남긴다.
+
+## 리뷰 요청 사항
+* [x] 사용하지 않는 validate 클래스 제거
+* [x] Question 삭제시 사용자 비교 메서드 추출 및 equals 재정의
+* [x] validateAnswer 를 delete 메서드 내로 이동
+* [x] 불필요한 @Transactional 어노테이션 제거 
+* [x] Question 삭제시 History 처리 부분 domain 영역으로 이동 
