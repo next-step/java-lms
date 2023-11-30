@@ -16,7 +16,7 @@ public class AnswersTest {
 
     @DisplayName("모든 답변의 작성자가 인자로 받은 로그인 사용자와 일치하면 모든 Answer의 삭제 상태를 true로 바꿔 답변을 삭제한다.")
     @Test
-    void deleteAll() {
+    void deleteAll() throws CannotDeleteException {
         // given
         Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
         Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");

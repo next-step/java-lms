@@ -59,7 +59,7 @@ public class Question {
         return this.deletedDate;
     }
 
-    public void delete(NsUser loginUser, LocalDateTime now) {
+    public void delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
         validateOtherWriter(loginUser);
 
         this.deleted = true;
@@ -67,7 +67,7 @@ public class Question {
         this.answers.deleteAll(loginUser, now);
     }
 
-    private void validateOtherWriter(NsUser loginUser) {
+    private void validateOtherWriter(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }

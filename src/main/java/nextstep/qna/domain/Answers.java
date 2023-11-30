@@ -18,13 +18,13 @@ public class Answers {
         this.answers = new ArrayList<>(answers);
     }
 
-    public void deleteAll(NsUser loginUser, LocalDateTime now) {
+    public void deleteAll(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
         validateOtherWriter(loginUser);
 
         answers.forEach(answer -> answer.delete(now));
     }
 
-    private void validateOtherWriter(NsUser loginUser) {
+    private void validateOtherWriter(NsUser loginUser) throws CannotDeleteException {
         if (isOtherUser(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

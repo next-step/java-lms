@@ -15,7 +15,7 @@ public class QuestionTest {
 
     @DisplayName("Question객체의 deleted상태를 true로 바꿔 질문을 삭제한다.")
     @Test
-    void delete() {
+    void delete() throws CannotDeleteException {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
 
@@ -52,7 +52,7 @@ public class QuestionTest {
 
     @DisplayName("질문, 답변의 삭제 기록 리스트를 반환한다.")
     @Test
-    void deleteHistories() {
+    void deleteHistories() throws CannotDeleteException {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
         Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
