@@ -83,5 +83,13 @@ public abstract class Session {
         this.status = SessionStatus.CLOSED;
     }
 
+    public boolean isReachedMaxStudentLimit() {
+        return getCurrentStudentCount() >= getMaxStudentLimit();
+    }
+
+    public void enrollStudent() {
+        this.currentStudentCount++;
+    }
+
     public abstract void enroll(Payment payment);
 }

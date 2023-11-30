@@ -85,6 +85,28 @@ class PaidSessionTest {
                 .hasMessage("paid amount is different with price");
     }
 
+    @Test
+    @DisplayName("수강 신청시에 최대 수강 인원을 넘으면, 예외가 발생한다.")
+    void testEnrollWithMaxStudentLimit() {
+        //given
+        final double price = 3000;
+
+        final PaidSession paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
+        Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
+        enrollForMaxLimit(paidSession, payment);
+
+        //when, then
+        assertThatThrownBy(() -> paidSession.enroll(payment))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("max student limit is reached");
+    }
+
+    private void enrollForMaxLimit(final PaidSession paidSession, final Payment payment) {
+        for (int count = 0; count < 15; count++) {
+            paidSession.enroll(payment);
+        }
+    }
+
     private PaidSession buildDefaultPaidSession() {
         final String title = "TDD, 클린 코드 with Java";
         final double price = 3000;
