@@ -16,10 +16,14 @@ public class PaidSession extends Session{
         this.tuitionFee = tuitionFee;
     }
 
-    public void enrollment(NsUser nsUser) throws Exception {
+    public boolean enroll(NsUser nsUser, int tuitionFee) throws IllegalArgumentException {
+        if (this.tuitionFee != tuitionFee) {
+            throw new IllegalArgumentException("결제금액이 수강료와 다릅니다.");
+        }
         if (super.students.size() == capacity) {
-            throw new Exception("강의 최대 수강 인원을 초과할 수 없습니다.");
+            throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다.");
         }
         super.students.add(nsUser);
+        return true;
     }
 }
