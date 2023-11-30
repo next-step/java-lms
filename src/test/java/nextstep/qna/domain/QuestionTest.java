@@ -7,13 +7,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static nextstep.qna.domain.AnswerTest.*;
-import static nextstep.users.domain.NsUserTest.*;
+import static nextstep.qna.domain.fixture.DomainFixture.*;
+import static nextstep.users.domain.fixture.DomainFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
 
     @DisplayName("Question객체의 deleted상태를 true로 바꿔 질문을 삭제한다.")
     @Test
@@ -57,8 +55,8 @@ public class QuestionTest {
     void deleteHistories() throws CannotDeleteException {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
-        Answer answer1 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        Answer answer2 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
+        Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
+        Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         question.addAnswer(answer1);
         question.addAnswer(answer2);
         question.delete(JAVAJIGI);
@@ -87,6 +85,6 @@ public class QuestionTest {
 
         // when & then
         assertThatThrownBy(() -> question.createDeleteHistories(now)).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("해당 질문은 삭제되지 않았습니다.");
+            .hasMessage("해당 질문은 삭제되지 않았습니다. 질문 ID :: 0");
     }
 }

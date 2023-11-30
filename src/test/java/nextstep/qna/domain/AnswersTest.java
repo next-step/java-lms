@@ -1,8 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static nextstep.qna.domain.AnswerTest.*;
-import static nextstep.users.domain.NsUserTest.*;
+import static nextstep.users.domain.fixture.DomainFixture.*;
+import static nextstep.qna.domain.fixture.DomainFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class AnswersTest {
@@ -20,8 +18,8 @@ public class AnswersTest {
     @Test
     void deleteAll() throws CannotDeleteException {
         // given
-        Answer answer1 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        Answer answer2 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
+        Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
+        Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         Answers answers = new Answers(List.of(answer1, answer2));
 
         // when
@@ -47,8 +45,8 @@ public class AnswersTest {
     @Test
     void deleteHistory() throws CannotDeleteException {
         // given
-        Answer answer1 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        Answer answer2 = new Answer(JAVAJIGI, QuestionTest.Q1, "Answers Contents2");
+        Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
+        Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         Answers answers = new Answers(List.of(answer1, answer2));
         answers.deleteAll(JAVAJIGI);
 
