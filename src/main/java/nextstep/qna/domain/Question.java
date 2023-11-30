@@ -89,4 +89,12 @@ public class Question {
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
+    public void deleteIfWriter(NsUser writer) {
+        if (!isOwner(writer)) {
+            return;
+        }
+
+        this.deleted = true;
+    }
 }
