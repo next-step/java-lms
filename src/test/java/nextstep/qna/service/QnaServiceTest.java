@@ -2,7 +2,6 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static nextstep.users.domain.fixture.DomainFixture.*;
-import static nextstep.qna.domain.fixture.DomainFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -37,13 +35,13 @@ public class QnaServiceTest {
     private Answer answer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         question = new Question(1L, JAVAJIGI, "title1", "contents1");
         answer = new Answer(11L, JAVAJIGI, question, "Answers Contents1");
     }
 
     @Test
-    public void delete_성공() throws Exception {
+    public void delete_성공() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThat(question.isDeleted()).isFalse();
@@ -54,7 +52,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_다른_사람이_쓴_글() throws Exception {
+    public void delete_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
@@ -63,7 +61,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_성공_질문자_답변자_같음() throws Exception {
+    public void delete_성공_질문자_답변자_같음() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         qnAService.deleteQuestion(JAVAJIGI, question.getId());
@@ -74,7 +72,7 @@ public class QnaServiceTest {
     }
 
     @Test
-    public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+    public void delete_답변_중_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> {
