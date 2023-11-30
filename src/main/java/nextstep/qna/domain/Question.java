@@ -23,6 +23,8 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
+    private LocalDateTime deletedDate;
+
     public Question() {
     }
 
@@ -53,23 +55,28 @@ public class Question {
         return deleted;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public LocalDateTime deletedDate() {
+        return this.deletedDate;
+    }
+
+    public void delete(NsUser loginUser, LocalDateTime now) {
         validateOtherWriter(loginUser);
 
         this.deleted = true;
-        this.answers.deleteAll(loginUser);
+        this.deletedDate = now;
+        this.answers.deleteAll(loginUser, now);
     }
 
-    private void validateOtherWriter(NsUser loginUser) throws CannotDeleteException {
+    private void validateOtherWriter(NsUser loginUser) {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public List<DeleteHistory> createDeleteHistories(LocalDateTime now) {
+    public List<DeleteHistory> createDeleteHistories() {
         if (deleted) {
-            List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
-            deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, now));
+            List<DeleteHistory> deleteHistories = answers.deleteHistories();
+            deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, deletedDate));
 
             return deleteHistories;
         }

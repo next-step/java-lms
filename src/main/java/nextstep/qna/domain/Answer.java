@@ -23,6 +23,8 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
+    private LocalDateTime deletedDate;
+
     public Answer() {
     }
 
@@ -62,13 +64,14 @@ public class Answer {
         return writer.equals(loginUser);
     }
 
-    public void delete() {
+    public void delete(LocalDateTime now) {
         this.deleted = true;
+        this.deletedDate = now;
     }
 
-    public DeleteHistory createDeleteHistory(LocalDateTime now) {
+    public DeleteHistory createDeleteHistory() {
         if (deleted) {
-            return new DeleteHistory(ANSWER, id, writer, now);
+            return new DeleteHistory(ANSWER, id, writer, deletedDate);
         }
 
         throw new IllegalArgumentException("해당 답변은 삭제되지 않았습니다. 답변 ID ::" + id);

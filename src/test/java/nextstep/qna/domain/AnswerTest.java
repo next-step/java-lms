@@ -28,22 +28,22 @@ public class AnswerTest {
         Answer answer = new Answer(JAVAJIGI, Q1, "Answers Contents1");
 
         // when
-        answer.delete();
+        answer.delete(LocalDateTime.now());
 
         // then
         assertThat(answer.isDeleted()).isTrue();
     }
 
-    @DisplayName("현재 시간을 인자로 받아 DeleteHistory를 만들어 반환한다.")
+    @DisplayName("DeleteHistory를 만들어 반환한다.")
     @Test
     void deleteHistory() {
         // given
         Answer answer = new Answer(JAVAJIGI, Q1, "Answers Contents1");
-        answer.delete();
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+        answer.delete(now);
 
         // when
-        DeleteHistory deleteHistory = answer.createDeleteHistory(now);
+        DeleteHistory deleteHistory = answer.createDeleteHistory();
 
         // then
         assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), JAVAJIGI, LocalDateTime.of(2023, 11, 28, 13, 0)));
@@ -57,7 +57,7 @@ public class AnswerTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when & then
-        assertThatThrownBy(() -> answer.createDeleteHistory(now)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(answer::createDeleteHistory).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 답변은 삭제되지 않았습니다. 답변 ID ::null");
     }
 }

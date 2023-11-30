@@ -15,12 +15,12 @@ public class QuestionTest {
 
     @DisplayName("Question객체의 deleted상태를 true로 바꿔 질문을 삭제한다.")
     @Test
-    void delete() throws CannotDeleteException {
+    void delete() {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
 
         // when
-        question.delete(JAVAJIGI);
+        question.delete(JAVAJIGI, LocalDateTime.now());
 
         // then
         assertThat(question.isDeleted()).isTrue();
@@ -33,7 +33,7 @@ public class QuestionTest {
         Question question = new Question(JAVAJIGI, "title1", "contents1");
 
         // when & then
-        assertThatThrownBy(() -> question.delete(SANJIGI)).isInstanceOf(CannotDeleteException.class)
+        assertThatThrownBy(() -> question.delete(SANJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class)
             .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
@@ -46,25 +46,26 @@ public class QuestionTest {
         question.addAnswer(A2);
 
         // when & then
-        assertThatThrownBy(() -> question.delete(JAVAJIGI)).isInstanceOf(CannotDeleteException.class)
+        assertThatThrownBy(() -> question.delete(JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class)
             .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    @DisplayName("현재 시간을 인자로 받아 질문, 답변의 삭제 기록 리스트를 반환한다.")
+    @DisplayName("질문, 답변의 삭제 기록 리스트를 반환한다.")
     @Test
-    void deleteHistories() throws CannotDeleteException {
+    void deleteHistories() {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
         Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
         Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         question.addAnswer(answer1);
         question.addAnswer(answer2);
-        question.delete(JAVAJIGI);
 
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+        question.delete(JAVAJIGI, now);
+
 
         // when
-        List<DeleteHistory> deleteHistories = question.createDeleteHistories(now);
+        List<DeleteHistory> deleteHistories = question.createDeleteHistories();
 
         // then
         assertThat(deleteHistories).hasSize(3)
@@ -84,7 +85,7 @@ public class QuestionTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when & then
-        assertThatThrownBy(() -> question.createDeleteHistories(now)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(question::createDeleteHistories).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 질문은 삭제되지 않았습니다. 질문 ID :: 0");
     }
 }

@@ -16,14 +16,14 @@ public class AnswersTest {
 
     @DisplayName("모든 답변의 작성자가 인자로 받은 로그인 사용자와 일치하면 모든 Answer의 삭제 상태를 true로 바꿔 답변을 삭제한다.")
     @Test
-    void deleteAll() throws CannotDeleteException {
+    void deleteAll() {
         // given
         Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
         Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         Answers answers = new Answers(List.of(answer1, answer2));
 
         // when
-        answers.deleteAll(JAVAJIGI);
+        answers.deleteAll(JAVAJIGI, LocalDateTime.now());
 
         // then
         IntStream.range(0, 2)
@@ -37,7 +37,7 @@ public class AnswersTest {
         Answers answers = new Answers(List.of(A1, A2));
 
         // when & then
-        assertThatThrownBy(() -> answers.deleteAll(JAVAJIGI)).isInstanceOf(CannotDeleteException.class)
+        assertThatThrownBy(() -> answers.deleteAll(JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class)
             .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
@@ -48,12 +48,13 @@ public class AnswersTest {
         Answer answer1 = new Answer(JAVAJIGI, Q1, "Answers Contents1");
         Answer answer2 = new Answer(JAVAJIGI, Q1, "Answers Contents2");
         Answers answers = new Answers(List.of(answer1, answer2));
-        answers.deleteAll(JAVAJIGI);
 
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
+        answers.deleteAll(JAVAJIGI, now);
+
 
         // when
-        List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
+        List<DeleteHistory> deleteHistories = answers.deleteHistories();
 
         // then
         assertThat(deleteHistories).hasSize(2)
