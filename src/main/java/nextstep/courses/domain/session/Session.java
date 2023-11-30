@@ -6,40 +6,33 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 
 public abstract class Session {
-    private String title;
-    private double price;
+    private SessionInfo sessionInfo;
     private SessionStatus status;
     private int maxStudentLimit;
     private int currentStudentCount;
     private SessionDate sessionDate;
 
-    protected Session(final String title, final double price, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(title, price, new SessionDate(startDate, endDate));
+    protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
+        this(new SessionInfo(title, price), new SessionDate(startDate, endDate));
     }
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(title, 0, new SessionDate(startDate, endDate));
+        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate));
     }
 
-    protected Session(final String title, final double price, final SessionDate sessionDate) {
-        validateSession(title, price, sessionDate);
+    protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate) {
+        validateSession(sessionInfo, sessionDate);
 
-        this.title = title;
-        this.price = price;
+        this.sessionInfo = sessionInfo;
         this.sessionDate = sessionDate;
         this.status = SessionStatus.READY;
         this.maxStudentLimit = 15;
         this.currentStudentCount = 0;
     }
 
-    private void validateSession(final String title, final double price, final SessionDate sessionDate) {
-        Assert.hasText(title, "title cannot be blank");
-        Assert.isTrue(price >= 0, "price cannot be negative");
+    private void validateSession(final SessionInfo sessionInfo, final SessionDate sessionDate) {
+        Assert.notNull(sessionInfo, "session info cannot be null");
         Assert.notNull(sessionDate, "session date cannot be null");
-    }
-
-    protected String getTitle() {
-        return this.title;
     }
 
     protected SessionStatus getStatus() {
@@ -54,8 +47,8 @@ public abstract class Session {
         return this.currentStudentCount;
     }
 
-    protected double getPrice() {
-        return this.price;
+    protected long getPrice() {
+        return this.sessionInfo.getPrice();
     }
 
     protected boolean isNotRecruiting() {

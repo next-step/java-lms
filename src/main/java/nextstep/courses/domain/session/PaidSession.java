@@ -5,7 +5,7 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDateTime;
 
 public class PaidSession extends Session {
-    public PaidSession(final String title, final double price, final LocalDateTime startDate, final LocalDateTime endDate) {
+    public PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         super(title, price, startDate, endDate);
     }
 

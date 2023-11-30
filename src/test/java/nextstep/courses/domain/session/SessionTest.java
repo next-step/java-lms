@@ -2,8 +2,6 @@ package nextstep.courses.domain.session;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.LocalDateTime;
 
@@ -15,16 +13,6 @@ class SessionTest {
     private final String defaultTitle = "TDD, 클린 코드 with Java";
     private final LocalDateTime defaultStartDate = LocalDateTime.of(2024, 1, 1, 0, 0);
     private final LocalDateTime defaultEndDate = LocalDateTime.of(2024, 12, 31, 0, 0);
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    @DisplayName("Session의 제목은 비어있으면, 예외가 발생한다.")
-    void testSessionTitleIsNotBlank(String title) {
-        //when, then
-        assertThatThrownBy(() -> new FreeSession(title, defaultStartDate, defaultEndDate))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("title cannot be blank");
-    }
 
     @Test
     @DisplayName("Session이 처음 생성되면, Session의 status는 Ready 상태를 가진다.")

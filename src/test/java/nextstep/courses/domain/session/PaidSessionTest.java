@@ -15,7 +15,7 @@ class PaidSessionTest {
     void testPaidSessionConstructor() {
         //given
         final String title = "TDD, 클린 코드 with Java";
-        final double price = 3000;
+        final long price = 3000;
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
@@ -71,7 +71,7 @@ class PaidSessionTest {
     @DisplayName("수강 신청시에 지불한 가격이 강의의 가격과 맞지 않으면, 예외가 발생한다.")
     void testEnrollWithSessionPrice() {
         //given
-        final double price = 3000;
+        final long price = 3000;
 
         final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) (price - 1));
@@ -86,7 +86,7 @@ class PaidSessionTest {
     @DisplayName("수강 신청시에 최대 수강 인원을 넘으면, 예외가 발생한다.")
     void testEnrollWithMaxStudentLimit() {
         //given
-        final double price = 3000;
+        final long price = 3000;
 
         final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
@@ -108,7 +108,7 @@ class PaidSessionTest {
     @DisplayName("강의 상태가 모집중이고 강의 가격과 지불한 가격이 같으며 최대 수강 인원을 넘지 않으면, 수강 신청이 가능하다.")
     void testEnroll() {
         //given
-        final double price = 3000;
+        final long price = 3000;
 
         final Session paidSession = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
         Payment payment = new Payment("tddJava", 0L, 0L, (long) price);
@@ -125,14 +125,14 @@ class PaidSessionTest {
 
     private Session buildDefaultPaidSession() {
         final String title = "TDD, 클린 코드 with Java";
-        final double price = 3000;
+        final long price = 3000;
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         return new PaidSession(title, price, startDate, endDate);
     }
 
-    private Session buildDefaultPaidSessionWithRecruitingStatusAndPrice(final double price) {
+    private Session buildDefaultPaidSessionWithRecruitingStatusAndPrice(final long price) {
         final String title = "TDD, 클린 코드 with Java";
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
