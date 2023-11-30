@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Course {
     private Long id;
 
-    private Integer generation;
+    private int generation;
 
     private String title;
 
