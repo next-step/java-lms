@@ -71,5 +71,17 @@ public abstract class Session {
         return this.status != SessionStatus.RECRUITING;
     }
 
+    public void ready() {
+        this.status = SessionStatus.READY;
+    }
+
+    public void recruit() {
+        this.status = SessionStatus.RECRUITING;
+    }
+
+    public void close() {
+        this.status = SessionStatus.CLOSED;
+    }
+
     public abstract void enroll(Payment payment);
 }
