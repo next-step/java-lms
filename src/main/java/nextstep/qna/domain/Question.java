@@ -108,7 +108,7 @@ public class Question {
         }
 
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
+        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
         return deleteHistories;
     }
 }

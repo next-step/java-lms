@@ -39,13 +39,7 @@ public class QnAService {
             }
         }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            DeleteHistory deleteHistory = answer.deleteIfWriter(loginUser, NOW);
-            deleteHistories.add(deleteHistory);
-        }
-        deleteHistoryService.saveAll(deleteHistories);
+        List<DeleteHistory> deleteHistory = question.deleteIfWriter(loginUser, NOW);
+        deleteHistoryService.saveAll(deleteHistory);
     }
 }
