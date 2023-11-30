@@ -32,6 +32,22 @@ public class SessionEnrolment {
         return isFree;
     }
 
+    public int totalStudent() {
+        return this.sessionStudent.studentCount();
+    }
+
+    public boolean isFullStudents() {
+        return this.sessionStudent.isMaxStudents();
+    }
+
+    public String sessionStatusType() {
+        return this.sessionStatusType.toString();
+    }
+
+    public Long amount() {
+        return this.amount.amount();
+    }
+
     private void defaultValidate() {
         if (!this.sessionStatusType.isRecruitment()) {
             throw new java.lang.IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
@@ -52,7 +68,4 @@ public class SessionEnrolment {
         return !this.amount.isCorrectAmount(userPayed);
     }
 
-    private boolean isFullStudents() {
-        return this.sessionStudent.isMaxStudents();
-    }
 }

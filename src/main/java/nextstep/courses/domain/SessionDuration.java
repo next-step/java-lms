@@ -15,6 +15,14 @@ public class SessionDuration {
         this.endDate = endDate;
     }
 
+    public LocalDateTime startDate() {
+        return startDate;
+    }
+
+    public LocalDateTime endDate() {
+        return endDate;
+    }
+
     private void validate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("강의 시작 혹은 종료 날짜는 비어있을 수 없습니다.");
