@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SessionTest {
+public class FreeSessionTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
     void 수강신청_모집중_에러() {
