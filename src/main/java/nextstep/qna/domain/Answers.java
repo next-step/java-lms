@@ -1,10 +1,18 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Answers {
     private final List<Answer> answers;
+
+    public static Answers initialize() {
+        return new Answers(Collections.emptyList());
+    }
 
     public Answers addAnswer(Answer newAnswer) {
         List<Answer> answers = new ArrayList<>(this.answers);
@@ -18,6 +26,28 @@ public class Answers {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public boolean validateDeleteOwner(NsUser questionWriter) {
+        for (Answer answer : answers) {
+            if (!answer.isOwner(questionWriter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<DeleteHistory> deleteAll() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            answer.delete();
+            deleteHistories.add(DeleteHistory.Answer(answer.getId(), answer.getWriter()));
+        }
+        return deleteHistories;
+    }
+
+    public int size() {
+        return answers.size();
     }
 
     @Override

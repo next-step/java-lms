@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +19,17 @@ public class AnswersTest {
     }
 
     @Test
-    @DisplayName("질문이 추가되는 경우 답변이 추가된다.")
+    @DisplayName("질문에 답변이 추가되는 경우 답변이 추가된다.")
     void addAnswerTest() {
-//        Answers answers = Answers.addAnswer(AnswerTest.A1);
+        Answers initAnswer = Answers.initialize();
+
+        assertThat(initAnswer.addAnswer(AnswerTest.A1).size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("질문에 해당하는 답변을 가져온다.")
+    void getAnswerCountTest() {
+        Answers answers = Answers.initialize();
+
     }
 }

@@ -19,7 +19,7 @@
   * [X] 질문에 답변이 있는지 체크하고 없으면 삭제한다.
 * [ ] 질문자와 답변 글의 모든 답변자 같은 경우 삭제가 가능하다.
   * [ ] question에 해당하는 모든 답변을 조회할 수 있다.
-  * [ ] 답변자와 질문자가 다른지 체크할 수 있다.
+  * [X] 답변자와 질문자가 다른지 체크할 수 있다.
   * [ ] 답변자가 하나라도 다른 경우 삭제할 수 없다.
   * [ ] 답변중에 loginUser와 하나라도 다른 경우 exception throw
   * [ ] answer의 삭제validate는 answers에게 물어본다.
@@ -29,7 +29,7 @@
 * [ ] 질문자와 답변자가 다른 경우 답변을 삭제할 수 없다.
   * [ ] 질문자와 답변자가 다른 경우 exception Throw
 * [ ] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
-* [ ] 질문이 추가되는 경우 답변이 추가된다.
+* [X] 질문이 추가되는 경우 답변이 추가된다.
 
 ## **힌트**
 - 객체의 상태 데이터를 꺼내지(get)말고 메시지를 보낸다.
@@ -52,8 +52,12 @@
   * [X] setContents 삭제
   * [X] setDeleted -> delete로 변경
   * [X] 인스턴스변수에 final
+* [ ] Answers indent줄이기
 * [ ] questionRespository -> 
   * [ ] save method 생성
   * [ ] Question 객체 id가 자동 증가하며 저장 (find max id)
 * [ ] deleteHistories -> 삭제이력을 쌓는 경우 createDate 매개변수 줄이기
 * [ ] AOP class 활용(생성시간, 업데이트 시간)
+
+## 궁금한점
+* [ ] answers를 처음에 빈collection으로 만들고, 계속 add를 해서 새로운 객체로 반환하면 계속해서 인스턴스 생성되는게 아닌지?

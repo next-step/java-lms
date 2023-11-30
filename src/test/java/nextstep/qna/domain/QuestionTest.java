@@ -35,15 +35,6 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("질문 삭제 시 답변이 있는 경우 삭제불가 exception throw")
-    void canNotDeleteWithAnswerTest() {
-        Answer answer = new Answer(Q1.getWriter(), Q1, "answer1");
-        Q1.addAnswer(answer);
-        assertThrows(CannotDeleteException.class, () -> Q1.delete(Q1.getWriter()));
-        answer.delete();
-    }
-
-    @Test
     @DisplayName("질문 삭제 시 답변이 없는 경우 삭제한다.")
     void deleteWithoutAnswerTest() {
         assertDoesNotThrow(() -> Q1.delete(Q1.getWriter()));

@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -16,8 +17,7 @@ public class Question {
 
     private final NsUser writer;
 
-    private final List<Answer> answers = new ArrayList<>();
-//    private final Answers answers2;
+    private final Answers answers;
 
     private boolean deleted = false;
 
@@ -34,6 +34,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = Answers.initialize();
     }
 
     public Long getId() {
@@ -52,27 +53,30 @@ public class Question {
         return writer;
     }
 
+
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateQuestionAndAnswerDeleteOwner(loginUser);
+
+        return deleteAndSaveHistories();
+    }
+
+    private List<DeleteHistory> deleteAndSaveHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.addAll(deleteAnswers());
+        deleteQuestion();
+        deleteHistories.add(DeleteHistory.Question(id, writer));
+        return deleteHistories;
+    }
+
+    private void validateQuestionAndAnswerDeleteOwner(NsUser loginUser) throws CannotDeleteException {
         validateQuestionDeleteOwner(loginUser);
-        checkHasAnswers();
-        delete();
-    }
-
-    private void checkHasAnswers() throws CannotDeleteException {
-        int answerCnt = 0;
-        for (Answer answer : answers) {
-            if (!answer.isDeleted()) {
-                answerCnt++;
-            }
-        }
-        if (answerCnt > 0) {
-            throw new CannotDeleteException("질문에 답변이 있어 삭제할 수 없습니다.");
-        }
+        validateAnswersDeleteOwner();
     }
 
     private void validateQuestionDeleteOwner(NsUser loginUser) throws CannotDeleteException {
@@ -81,11 +85,17 @@ public class Question {
         }
     }
 
+    private void validateAnswersDeleteOwner() throws CannotDeleteException {
+        if (!answers.validateDeleteOwner(writer)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
     private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    private void delete() {
+    private void deleteQuestion() {
         this.deleted = true;
     }
 
@@ -93,7 +103,11 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    private List<DeleteHistory> deleteAnswers() {
+        return answers.deleteAll();
+    }
+
+    public Answers getAnswers() {
         return answers;
     }
 
