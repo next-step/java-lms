@@ -16,7 +16,7 @@ class AnswersTest {
         Answers answers = new Answers();
         answers.add(AnswerTest.A1);
 
-        assertThat(answers.answersSize()).isEqualTo(1);
+        assertThat(answers.getValues().size()).isEqualTo(1);
     }
 
     @DisplayName("전달받은 유저가 답변들을 작성한 유저와 동일하면 true를 반환한다.")
@@ -42,6 +42,6 @@ class AnswersTest {
                 new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"),
                 new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents2")));
 
-        assertThat(answers.delete().size()).isEqualTo(answers.answersSize());
+        assertThat(answers.delete().size()).isEqualTo(answers.getValues().size());
     }
 }
