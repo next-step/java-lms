@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -29,19 +30,20 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("[Question.deleteIfWriter()] 질문하지 않은 사용자가 삭제를 요청하면 -> 거부한다.")
+    @DisplayName("[Question.deleteIfWriter()] 질문하지 않은 사용자가 삭제를 요청하면 -> CannotDeleteException을 던진다.")
     public void deleteWrongWriterTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
-        question.deleteIfWriter(NsUserTest.SANJIGI, FIXED_NOW);
 
-        assertThat(question.isDeleted()).isFalse();
+        assertThatThrownBy(() -> {
+            question.deleteIfWriter(NsUserTest.SANJIGI, FIXED_NOW);
+        })
+                .isInstanceOf(CannotDeleteException.class);
 
     }
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자기 자신과 삭제 상태로 바뀐 답변들의 정보를 준다.")
     public void deleteInfoTest() throws CannotDeleteException {
-
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         DeleteHistory questionDelete = new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI, FIXED_NOW);
 
@@ -56,5 +58,18 @@ public class QuestionTest {
 
         assertThat(question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW))
                 .hasSameElementsAs(List.of(questionDelete, answer1Delete, answer2Delete));
+    }
+
+    @Test
+    @DisplayName("[Question.deleteIfWriter()] 질문자 외 다른 답변자가 작성한 답변이 달려 있는 질문에게 삭제를 요청할 때 -> CannotDeleteException을 던짐")
+    public void deleteAQuestionWhichHasAnotherAnswerTest() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
+        Answer answer = new Answer(NsUserTest.SANJIGI, question, "answer1");
+        question.addAnswer(answer);
+
+        assertThatThrownBy(() -> {
+            question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW);
+        })
+                .isInstanceOf(CannotDeleteException.class);
     }
 }

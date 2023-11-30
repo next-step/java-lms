@@ -72,20 +72,24 @@ public class Question {
 
     public List<DeleteHistory> deleteIfWriter(NsUser writer, LocalDateTime deleteTime) throws CannotDeleteException {
         if (!isOwner(writer)) {
-            return List.of();
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
-            if (history == null) {
-                continue;
+            try {
+                DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
+                deleteHistories.add(history);
             }
-            deleteHistories.add(history);
+            catch (CannotDeleteException reason) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
         }
 
         this.deleted = true;
+
         deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
+
         return deleteHistories;
     }
 }
