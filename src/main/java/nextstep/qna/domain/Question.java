@@ -67,11 +67,11 @@ public class Question {
         }
     }
 
-    public boolean isOwner(NsUser loginUser) {
+    private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
-    public void delete() {
+    private void delete() {
         this.deleted = true;
     }
 

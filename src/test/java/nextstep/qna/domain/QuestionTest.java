@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QuestionTest {
@@ -15,15 +16,23 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문을 삭제하는 경우 삭제 상태가 변경된다.")
-    void deleteQuestionTest() {
+    void deleteQuestionTest() throws CannotDeleteException {
         assertThat(Q1.isDeleted()).isFalse();
-        Q1.delete();
+        Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 
     @Test
-    @DisplayName("질문 삭제 요청하는 유저와 질문 작성유저가 다른 경우 exception throw")
-    void userNotWriterDeleteExceptionTest() {
+    @DisplayName("질문 삭제 시 질문 작성자와 다른 유저인 경우 exception throw")
+    void deleteUserNotWriterExceptionTest() {
         assertThrows(CannotDeleteException.class, () -> Q1.delete(NsUserTest.SANJIGI));
     }
+
+    @Test
+    @DisplayName("질문 삭제 시 질문 작성자와 같은 경우 삭제한다.")
+    void deleteSameAsUserAndWriterTest() {
+        assertDoesNotThrow(() -> Q1.delete(NsUserTest.JAVAJIGI));
+        assertThat(Q1.isDeleted()).isTrue();
+    }
+
 }

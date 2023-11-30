@@ -13,12 +13,18 @@
   * [X] question -> 삭제를 하는 경우 상태가 변경한다. (매개변수 삭제)
   * [ ] QnAService에 question 객체를 전달
 * [ ] 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.
-  * [X] question을 삭제요청 시 질문한 사람과 다른 경우 exception throw
+  * [X] question 삭제 요청 시 loginUser와 다른 경우 exception throw
+  * [X] question 삭제 요청 시 loginUser와 같으면 삭제한다.
   * [ ] delete함수에서 권한체크를 하다보니, 불필요한 answer loop가 발생함.
 * [ ] 답변이 없는 경우 삭제가 가능하다.
+  * [ ] 질문에 답변이 있는 경우 삭제불가 exception throw.
 * [ ] 질문자와 답변 글의 모든 답변자 같은 경우 삭제가 가능하다.
+  * [ ] 답변자가 하나라도 다른 경우 삭제할 수 없다.
+  * [ ] answer의 validate는 answers에서 판단한다.
 * [ ] 질문을 삭제할 때 답변 또한 삭제해야 하며, 답변의 삭제 또한 삭제 상태(deleted)를 변경한다.
-  * [ ] answer -> 삭제하는 경우 상태가 변경한다. (매개변수 삭제)
+  * [X] answer -> 삭제하는 경우 상태가 변경한다. (매개변수 삭제)
+  * [X] answer 삭제 요청 시 loginUser와 다른 경우 exception throw
+  * [X] answer 삭제 요청 시 loginUser와 같으면 삭제한다.
 * [ ] 질문자와 답변자가 다른 경우 답변을 삭제할 수 없다.
 * [ ] 질문과 답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.
 
