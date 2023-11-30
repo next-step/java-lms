@@ -1,15 +1,12 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
-import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 
 public abstract class Session {
-    private final SessionInfo sessionInfo;
-    private final SessionDate sessionDate;
-    private final SessionStudent sessionStudent;
-    private final CoverImage coverImage;
+    private SessionMakingData sessionMakingData;
+    private SessionStudent sessionStudent;
     private SessionStatus status;
 
     protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
@@ -29,26 +26,14 @@ public abstract class Session {
     }
 
     protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
-        validateSession(sessionInfo, sessionDate);
+        this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
 
-        this.sessionInfo = sessionInfo;
-        this.sessionDate = sessionDate;
         this.status = SessionStatus.READY;
         this.sessionStudent = new SessionStudent(15, 0);
-
-        if (coverImage == null) {
-            coverImage = CoverImage.defaultCoverImage();
-        }
-        this.coverImage = coverImage;
-    }
-
-    private void validateSession(final SessionInfo sessionInfo, final SessionDate sessionDate) {
-        Assert.notNull(sessionInfo, "session info cannot be null");
-        Assert.notNull(sessionDate, "session date cannot be null");
     }
 
     protected long getPrice() {
-        return this.sessionInfo.getPrice();
+        return this.sessionMakingData.getPrice();
     }
 
     protected int getCurrentStudentCount() {
@@ -72,7 +57,7 @@ public abstract class Session {
     }
 
     protected CoverImage getCoverImage() {
-        return this.coverImage;
+        return this.sessionMakingData.getCoverImage();
     }
 
     public abstract void ready();
