@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("qnaService")
@@ -28,7 +27,7 @@ public class QnAService {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
         question.delete(loginUser);
-        List<DeleteHistory> deleteHistories = question.deleteHistories(LocalDateTime.now());
+        List<DeleteHistory> deleteHistories = question.createDeleteHistories(LocalDateTime.now());
 
         deleteHistoryService.saveAll(deleteHistories);
     }

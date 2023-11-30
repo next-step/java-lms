@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -68,7 +67,7 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> deleteHistories(LocalDateTime now) {
+    public List<DeleteHistory> createDeleteHistories(LocalDateTime now) {
         if (deleted) {
             List<DeleteHistory> deleteHistories = answers.deleteHistories(now);
             deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, now));
@@ -76,7 +75,7 @@ public class Question {
             return deleteHistories;
         }
 
-        throw new IllegalArgumentException("해당 질문은 삭제되지 않았습니다.");
+        throw new IllegalArgumentException("해당 질문은 삭제되지 않았습니다. 질문 ID :: " + id);
     }
 
     @Override

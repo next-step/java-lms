@@ -44,7 +44,7 @@ public class AnswerTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when
-        DeleteHistory deleteHistory = answer.deleteHistory(now);
+        DeleteHistory deleteHistory = answer.createDeleteHistory(now);
 
         // then
         assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), JAVAJIGI, LocalDateTime.of(2023, 11, 28, 13, 0)));
@@ -58,7 +58,7 @@ public class AnswerTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when & then
-        assertThatThrownBy(() -> answer.deleteHistory(now)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> answer.createDeleteHistory(now)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 답변은 삭제되지 않았습니다.");
     }
 }

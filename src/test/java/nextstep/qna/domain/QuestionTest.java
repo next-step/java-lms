@@ -66,7 +66,7 @@ public class QuestionTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when
-        List<DeleteHistory> deleteHistories = question.deleteHistories(now);
+        List<DeleteHistory> deleteHistories = question.createDeleteHistories(now);
 
         // then
         assertThat(deleteHistories).hasSize(3)
@@ -86,7 +86,7 @@ public class QuestionTest {
         LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when & then
-        assertThatThrownBy(() -> question.deleteHistories(now)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> question.createDeleteHistories(now)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 질문은 삭제되지 않았습니다.");
     }
 }

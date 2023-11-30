@@ -69,12 +69,12 @@ public class Answer {
         this.deleted = true;
     }
 
-    public DeleteHistory deleteHistory(LocalDateTime now) {
+    public DeleteHistory createDeleteHistory(LocalDateTime now) {
         if (deleted) {
             return new DeleteHistory(ANSWER, id, writer, now);
         }
 
-        throw new IllegalArgumentException("해당 답변은 삭제되지 않았습니다.");
+        throw new IllegalArgumentException("해당 답변은 삭제되지 않았습니다. 답변 ID ::" + id);
     }
 
     @Override
