@@ -2,8 +2,12 @@ package nextstep.courses.domain.session;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,5 +78,28 @@ class SessionTest {
 
         //then
         assertThat(getCoverImage).isEqualTo(coverImage);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ofProvider")
+    @DisplayName("of 메서드를 통해, FreeSession 혹은 PaidSession이 생성된다.")
+    void testOf(final long price, final Class<FreeSession> type) {
+        //given
+        final String title = "TDD, 클린 코드 with Java";
+        final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
+        final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
+
+        //when
+        final Session session = Session.of(title, price, startDate, endDate);
+
+        //then
+        assertThat(session).isInstanceOf(type);
+    }
+
+    public static Stream<Arguments> ofProvider() {
+        return Stream.of(
+                Arguments.of(3000L, PaidSession.class),
+                Arguments.of(0L, FreeSession.class)
+        );
     }
 }

@@ -5,11 +5,11 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDateTime;
 
 public class PaidSession extends Session {
-    public PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
+    protected PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         super(title, price, startDate, endDate);
     }
 
-    public PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+    protected PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
         super(title, price, startDate, endDate, coverImage);
     }
 

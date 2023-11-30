@@ -1,7 +1,6 @@
 package nextstep.courses.domain.course;
 
-import nextstep.courses.domain.session.FreeSession;
-import nextstep.courses.domain.session.PaidSession;
+import nextstep.courses.domain.session.Session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +15,8 @@ class CourseTest {
         //given
         final String title = "TDD, 클린 코드 with Java";
         final long creatorId = 1L;
-        Course course1 = new Course(title, 1, creatorId);
-        Course course2 = new Course(title, 2, creatorId);
+        final Course course1 = new Course(title, 1, creatorId);
+        final Course course2 = new Course(title, 2, creatorId);
 
         //when
         final boolean isCourseEquals = course1.equals(course2);
@@ -32,8 +31,8 @@ class CourseTest {
         //given
         final String title = "TDD, 클린 코드 with Java";
         final long creatorId = 1L;
-        Course course1 = new Course(title, 1, creatorId);
-        Course course2 = new Course(title, 1, creatorId);
+        final Course course1 = new Course(title, 1, creatorId);
+        final Course course2 = new Course(title, 1, creatorId);
 
         //when
         final boolean isCourseEquals = course1.equals(course2);
@@ -46,14 +45,14 @@ class CourseTest {
     @DisplayName("여러개의 강의(Session)을 가질 수 있다.")
     void testCourseHaveMultipleSessions() {
         //given
-        Course course = new Course("TDD, 클린 코드 with Java", 1, 1L);
+        final Course course = new Course("TDD, 클린 코드 with Java", 1, 1L);
         final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         //when
-        course.addSession(new FreeSession("로또", startDate, endDate));
-        course.addSession(new PaidSession("자동차 게임", 3000, startDate, endDate));
-        course.addSession(new FreeSession("레거시 코드 리팩터링", startDate, endDate));
+        course.addSession(Session.of("로또", 0, startDate, endDate));
+        course.addSession(Session.of("자동차 게임", 3000, startDate, endDate));
+        course.addSession(Session.of("레거시 코드 리팩터링", 1000, startDate, endDate));
 
         //then
         assertThat(course.getSessions()).hasSize(3);

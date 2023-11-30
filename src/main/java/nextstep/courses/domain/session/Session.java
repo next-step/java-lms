@@ -32,6 +32,22 @@ public abstract class Session {
         this.sessionStudent = new SessionStudent(15, 0);
     }
 
+    public static Session of(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
+        if (price == 0) {
+            return new FreeSession(title, startDate, endDate);
+        }
+
+        return new PaidSession(title, price, startDate, endDate);
+    }
+
+    public static Session of(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+        if (price == 0) {
+            return new FreeSession(title, startDate, endDate, coverImage);
+        }
+
+        return new PaidSession(title, price, startDate, endDate, coverImage);
+    }
+
     protected long getPrice() {
         return this.sessionMakingData.getPrice();
     }
