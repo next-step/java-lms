@@ -32,6 +32,11 @@ public class JdbcUserRepository implements UserRepository {
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
     }
 
+    @Override
+    public Optional<NsUser> findById(Long id) {
+        return Optional.empty();
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;
