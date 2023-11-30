@@ -47,11 +47,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -62,10 +57,6 @@ public class Answer {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
@@ -90,7 +81,7 @@ public class Answer {
             return null;
         }
 
-        this.setDeleted(true);
+        this.deleted = true;
 
         return new DeleteHistory(
                 ContentType.ANSWER,
