@@ -36,13 +36,12 @@ public class AnswerTest {
         assertThat(A1.isDeleted()).isTrue();
     }
 
-
     @Test
     @DisplayName("실패 - 답변 작성자와 일치하지 않을 경우 답변을 삭제 하지 못한다.")
     void success_delete_answer_writer_answer_writer_same() throws Exception {
         Assertions.assertThatThrownBy(() -> A1.delete(SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .hasMessage("답변의 작성자와 일치하지 않아 답변을 삭제할 수 없습니다.");
     }
 
 }
