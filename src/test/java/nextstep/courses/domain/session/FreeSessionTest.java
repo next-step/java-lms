@@ -26,19 +26,6 @@ class FreeSessionTest {
     }
 
     @Test
-    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (강의가 처음 열리면 강의 상태는 READY이다.)")
-    void testEnrollWithInitSession() {
-        //given
-        final Session freeSession = buildDefaultFreeSession();
-        Payment payment = new Payment("tddJava", 0L, 0L, 0L);
-
-        //when, then
-        assertThatThrownBy(() -> freeSession.enroll(payment))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("session is not recruiting");
-    }
-
-    @Test
     @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (READY 상태)")
     void testEnrollWithSessionStatusIsReady() {
         //given

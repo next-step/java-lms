@@ -27,16 +27,17 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강 신청시에 강의 상태가 모집중이 아니면, 예외가 발생한다. (강의가 처음 열리면 강의 상태는 READY이다.)")
-    void testEnrollWithInitSession() {
+    @DisplayName("Session의 수강료를 지정할 수 있다.")
+    void testSessionConstructorHasPrice() {
         //given
-        final Session paidSession = buildDefaultPaidSession();
-        Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
+        final int price = 1500;
+        final Session session = buildDefaultPaidSessionWithRecruitingStatusAndPrice(price);
 
-        //when, then
-        assertThatThrownBy(() -> paidSession.enroll(payment))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("session is not recruiting");
+        //when
+        final long getPrice = session.getPrice();
+
+        //then
+        assertThat(getPrice).isEqualTo(price);
     }
 
     @Test
