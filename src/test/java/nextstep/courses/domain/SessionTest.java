@@ -97,4 +97,17 @@ class SessionTest {
         //then
         assertThat(maxStudentLimit).isEqualTo(15);
     }
+
+    @Test
+    @DisplayName("Session이 처음 생성되면, Session의 현재 수강인원을 0명으로 지정한다.")
+    void testInitSessionCurrentStudentCountIs0() {
+        //given
+        final Session session = new FreeSession(defaultTitle, defaultStartDate, defaultEndDate);
+
+        //when
+        final int currentStudentCount = session.getCurrentStudentCount();
+
+        //then
+        assertThat(currentStudentCount).isEqualTo(0);
+    }
 }
