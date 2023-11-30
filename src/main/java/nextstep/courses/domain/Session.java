@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
@@ -65,4 +66,6 @@ public abstract class Session {
     public double getPrice() {
         return this.price;
     }
+
+    public abstract void enroll(Payment payment);
 }
