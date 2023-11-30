@@ -49,25 +49,19 @@ public abstract class Session {
         this.sessionStudent.increaseStudentCount();
     }
 
-    protected SessionStatus getStatus() {
-        return this.status;
+    protected void setStatus(SessionStatus status) {
+        this.status = status;
     }
 
     protected boolean isNotRecruiting() {
         return this.status != SessionStatus.RECRUITING;
     }
 
-    protected void ready() {
-        this.status = SessionStatus.READY;
-    }
+    public abstract void ready();
 
-    protected void recruit() {
-        this.status = SessionStatus.RECRUITING;
-    }
+    public abstract void recruit();
 
-    protected void close() {
-        this.status = SessionStatus.CLOSED;
-    }
+    public abstract void close();
 
     public abstract void enroll(Payment payment);
 }

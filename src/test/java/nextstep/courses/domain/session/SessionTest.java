@@ -15,16 +15,16 @@ class SessionTest {
     private final LocalDateTime defaultEndDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
     @Test
-    @DisplayName("Session이 처음 생성되면, Session의 status는 Ready 상태를 가진다.")
+    @DisplayName("Session이 처음 생성되면, Session의 status는 Recruiting 상태가 아니다.")
     void testInitSessionStatusIsReady() {
         //given
         final Session session = new FreeSession(defaultTitle, defaultStartDate, defaultEndDate);
 
         //when
-        final SessionStatus status = session.getStatus();
+        final boolean bool = session.isNotRecruiting();
 
         //then
-        assertThat(status).isEqualTo(SessionStatus.READY);
+        assertThat(bool).isTrue();
     }
 
     @Test

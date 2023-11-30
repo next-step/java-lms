@@ -10,6 +10,21 @@ public class FreeSession extends Session {
     }
 
     @Override
+    public void ready() {
+        setStatus(SessionStatus.READY);
+    }
+
+    @Override
+    public void recruit() {
+        setStatus(SessionStatus.RECRUITING);
+    }
+
+    @Override
+    public void close() {
+        setStatus(SessionStatus.CLOSED);
+    }
+
+    @Override
     public void enroll(final Payment payment) {
         if (isNotRecruiting()) {
             throw new IllegalStateException("session is not recruiting");
