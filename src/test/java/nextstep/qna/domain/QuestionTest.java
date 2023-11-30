@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,5 +41,27 @@ public class QuestionTest {
     void deleteWithoutAnswerTest() {
         assertDoesNotThrow(() -> Q1.delete(Q1.getWriter()));
         assertThat(Q1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("답변자와 질문자가 다른 경우 exception throw")
+    void deleteLoginUserNotSameWriterExceptionTest() {
+        Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q2, "answer1");
+        Answer A2 = new Answer(NsUserTest.SANJIGI, Q2, "answer2");
+        Q2.addAnswer(A1);
+        Q2.addAnswer(A2);
+        assertThrows(CannotDeleteException.class, () -> Q2.delete(Q2.getWriter()));
+    }
+
+    @Test
+    @DisplayName("답변자가 모두 질문자인 경우 삭제한다.")
+    void getAnswerCountTest() throws CannotDeleteException {
+        Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "answer1");
+        Answer A2 = new Answer(NsUserTest.JAVAJIGI, Q1, "answer2");
+        Q1.addAnswer(A1);
+        Q1.addAnswer(A2);
+
+        List<DeleteHistory> delete = Q1.delete(Q1.getWriter());
+        assertThat(delete.size()).isEqualTo(3);
     }
 }

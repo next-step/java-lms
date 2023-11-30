@@ -17,7 +17,7 @@ public class Question {
 
     private final NsUser writer;
 
-    private final Answers answers;
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -56,7 +56,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.addAnswer(answer);
+        this.answers = answers.addAnswer(answer);
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -67,8 +67,8 @@ public class Question {
 
     private List<DeleteHistory> deleteAndSaveHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-
         deleteHistories.addAll(deleteAnswers());
+
         deleteQuestion();
         deleteHistories.add(DeleteHistory.Question(id, writer));
         return deleteHistories;

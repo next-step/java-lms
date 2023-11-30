@@ -20,16 +20,4 @@ public class AnswerTest {
         A1.delete();
         assertThat(A1.isDeleted()).isTrue();
     }
-    @Test
-    @DisplayName("답변 삭제 시 답변 작성자와 다른 경우 exception throw")
-    void deleteLoginUserNotSameWriterExceptionTest() {
-//        assertThrows(CannotDeleteException.class, () -> A1.delete(NsUserTest.SANJIGI));
-    }
-
-    @Test
-    @DisplayName("답변 삭제 시 답변 작성자와 같은 경우 삭제한다.")
-    void deleteSameAsLoginAndWriterTest() {
-//        assertDoesNotThrow(() -> A1.delete(NsUserTest.JAVAJIGI));
-//        assertThat(A1.isDeleted()).isTrue();
-    }
 }
