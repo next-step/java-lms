@@ -40,14 +40,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
