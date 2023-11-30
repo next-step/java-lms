@@ -17,7 +17,7 @@ public class AnswersTest {
 
     @Test
     public void 답변삭제시_히스토리생성테스트() {
-        Answers answers = Answers.init().add(A1).add(A2);
-        assertThat(answers.deleted()).hasOnlyElementsOfType(DeleteHistory.class).hasSize(2);
+        Answers answers = Answers.init().add(A1);
+        assertThat(answers.deleted(NsUserTest.JAVAJIGI)).hasOnlyElementsOfType(DeleteHistory.class).hasSize(1);
     }
 }

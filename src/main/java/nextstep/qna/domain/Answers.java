@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -29,9 +30,20 @@ public class Answers {
                 .anyMatch(answer -> !answer.isOwner(writer));
     }
 
-    public List<DeleteHistory> deleted() {
-        return Collections.unmodifiableList(this.answers.stream()
+    public List<DeleteHistory> deleted(NsUser loginUser) {
+        validateHasAnswerOfOthers(loginUser);
+        return answers.stream()
                 .map(Answer::deleted)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private void validateHasAnswerOfOthers(NsUser loginUser) {
+        if (hasAnswerOfThers(loginUser)) {
+            throw new CannotDeleteException("다른 사용자가 작성한 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    private boolean hasAnswerOfThers(NsUser loginUser) {
+        return answers.stream().anyMatch(answer -> !answer.isOwner(loginUser));
     }
 }

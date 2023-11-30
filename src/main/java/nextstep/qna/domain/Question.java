@@ -53,28 +53,17 @@ public class Question {
     public List<DeleteHistory> deleted(NsUser loginUser) {
         validateDelete(loginUser);
         delete();
-        return deletedHistory();
+        return deletedHistory(loginUser);
     }
 
-    public void validateDelete(NsUser loginUser) {
+    private void validateDelete(NsUser loginUser) {
         validateIsOwner(loginUser);
-        validateHasAnswerOfOthers();
     }
 
     private void validateIsOwner(NsUser loginUser) {
         if(!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사용자가 작성한 질문은 삭제할 수 없습니다.");
         }
-    }
-
-    private void validateHasAnswerOfOthers() {
-        if(hasAnswerOfThers()) {
-            throw new CannotDeleteException("다른 사용자가 작성한 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    private boolean hasAnswerOfThers() {
-        return this.answers.checkAnswer(this.writer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -89,10 +78,10 @@ public class Question {
         this.deleted = true;
     }
 
-    private List<DeleteHistory> deletedHistory() {
+    private List<DeleteHistory> deletedHistory(NsUser loginUser) {
         List<DeleteHistory> result = new ArrayList<>();
         result.add(deletedQuestion());
-        result.addAll(deletedAnswer());
+        result.addAll(deletedAnswer(loginUser));
 
         return Collections.unmodifiableList(result);
     }
@@ -101,8 +90,8 @@ public class Question {
         return DeleteHistory.question(this.id, this.writer);
     }
 
-    private List<DeleteHistory> deletedAnswer() {
-        return this.answers.deleted();
+    private List<DeleteHistory> deletedAnswer(NsUser loginUser) {
+        return this.answers.deleted(loginUser);
     }
 
     @Override
