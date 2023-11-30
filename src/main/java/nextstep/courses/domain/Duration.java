@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDateTime;
 
 public class Duration {
@@ -13,8 +15,8 @@ public class Duration {
         this.endDate = endDate;
     }
 
-    public boolean isInProgress() {
-        return startDate.isBefore(LocalDateTime.now()) && endDate.isAfter(LocalDateTime.now());
+    public boolean isInProgress(LocalDateTime date) {
+        return startDate.isBefore(date) && endDate.isAfter(date);
     }
 
     private void inputValidation(LocalDateTime startDate, LocalDateTime endDate) {

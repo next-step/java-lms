@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Session {
 
@@ -30,7 +31,7 @@ public class Session {
         }
     }
 
-    private boolean canEnroll(int paidFee){
+    private boolean canEnroll(Price paidFee){
         return isOpened() && !isFullEnrollment() && possibleFee(paidFee);
     }
 
@@ -42,18 +43,21 @@ public class Session {
         return sessionType.isPaid() && nsUsers.isFullEnrollment(maximumEnrollmentCount);
     }
 
-    private boolean possibleFee(int paidFee){
+    private boolean possibleFee(Price paidFee){
         return sessionType.isPaid() && price.samePrice(paidFee);
     }
 
-    public boolean enroll(NsUser nsUser, int paidFee) {
+    public boolean enroll(NsUser nsUser, Price paidFee, LocalDateTime date) {
         if (!canEnroll(paidFee)) {
             throw new IllegalArgumentException("수강 신청이 불가능합니다.");
+        }
+        if(!isInProgress(date)){
+            throw new IllegalArgumentException("수강 신청 기간이 아닙니다.");
         }
         return nsUsers.enroll(nsUser);
     }
 
-    public boolean isInProgress() {
-        return duration.isInProgress();
+    public boolean isInProgress(LocalDateTime date) {
+        return duration.isInProgress(date);
     }
 }
