@@ -1,6 +1,10 @@
 package nextstep.courses.domain.cource;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Course {
     private Long id;
@@ -12,6 +16,10 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private long courseNumber;
+
+    private Sessions sessions;
 
     public Course() {
     }
@@ -26,6 +34,12 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.courseNumber = id;
+        this.sessions = Sessions.of(new ArrayList<>());
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
     }
 
     public String getTitle() {
