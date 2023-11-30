@@ -1,9 +1,9 @@
 package nextstep.courses.domain.repository;
 
-import nextstep.courses.domain.entity.Course;
+import nextstep.courses.domain.entity.NsCourse;
 
 public interface CourseRepository {
-    int save(Course course);
+    int save(NsCourse nsCourse);
 
-    Course findById(Long id);
+    NsCourse findById(Long id);
 }

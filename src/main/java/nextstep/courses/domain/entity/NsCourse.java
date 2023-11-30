@@ -2,7 +2,8 @@ package nextstep.courses.domain.entity;
 
 import java.time.LocalDateTime;
 
-public class Course {
+public class NsCourse {
+
     private Long id;
 
     private String title;
@@ -13,19 +14,23 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public NsCourse() {
     }
 
-    public Course(String title, Long creatorId) {
+    public NsCourse(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NsCourse(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

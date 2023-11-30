@@ -9,4 +9,14 @@ public class CoverImage {
     private long height;
 
     private ImageType imageType;
+
+    public CoverImage(long size,
+                      long width,
+                      long height,
+                      ImageType imageType) {
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.imageType = imageType;
+    }
 }

@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.entity.Course;
+import nextstep.courses.domain.entity.NsCourse;
 import nextstep.courses.domain.repository.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class CourseRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
+public class NsCourseRepositoryTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NsCourseRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -28,11 +28,11 @@ public class CourseRepositoryTest {
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
-        int count = courseRepository.save(course);
+        NsCourse nsCourse = new NsCourse("TDD, 클린 코드 with Java", 1L);
+        int count = courseRepository.save(nsCourse);
         assertThat(count).isEqualTo(1);
-        Course savedCourse = courseRepository.findById(1L);
-        assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
-        LOGGER.debug("Course: {}", savedCourse);
+        NsCourse savedNsCourse = courseRepository.findById(1L);
+        assertThat(nsCourse.getTitle()).isEqualTo(savedNsCourse.getTitle());
+        LOGGER.debug("Course: {}", savedNsCourse);
     }
 }
