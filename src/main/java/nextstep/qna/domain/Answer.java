@@ -66,18 +66,18 @@ public class Answer {
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
-    private void deleteAnswer() {
-        this.deleted = true;
-    }
-
     private void validateIsOwner(NsUser writer) {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public boolean isOwner(NsUser writer) {
+    private boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
+    }
+
+    private void deleteAnswer() {
+        this.deleted = true;
     }
 
     @Override
