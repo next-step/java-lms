@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
@@ -17,15 +16,14 @@ public class QuestionTest {
     @Test
     void 로그인사용자가_질문작성자가_아닌_경우_CannotDeleteException() {
         assertThatThrownBy(() -> {
-            Q1.delete(Q2Writer);
+            Q1.validateDeletable(Q2Writer);
         }).isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
-    void 로그인사용자가_질문작성자인_경우_삭제상태변경() throws CannotDeleteException {
-        Q1.delete(Q1Writer);
-        assertThat(Q1.isDeleted()).isTrue();
+    void 로그인사용자가_질문작성자인_경우_삭제가능() throws CannotDeleteException {
+        Q1.validateDeletable(Q1Writer);
     }
 
 }
