@@ -26,7 +26,15 @@ public class QuestionTest {
     }
 
     @Test
-    public void delete_능성공_질문자_답변자_같음() throws Exception {
+    public void delete_성공_질문자_답변자_같음() throws Exception {
+        // given
+        Q1.addAnswer(AnswerTest.A1);
+
+        // when
+        Q1.deleteBy(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(Q1.isDeleted()).isTrue();
     }
 
     @Test
