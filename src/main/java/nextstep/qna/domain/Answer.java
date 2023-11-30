@@ -77,11 +77,26 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void deleteIfWriter(NsUser writer) {
+    /**
+     * 이 질문을 삭제합니다.
+     *
+     * @param writer 질문을 작성한 사람과 writer가 일치할 경우에만 삭제합니다.
+     * @param deleteTime 질문 삭제 시각
+     *
+     * @return 삭제 정보
+     */
+    public DeleteHistory deleteIfWriter(NsUser writer, LocalDateTime deleteTime) {
         if (!this.writer.equals(writer)) {
-            return;
+            return null;
         }
 
         this.setDeleted(true);
+
+        return new DeleteHistory(
+                ContentType.ANSWER,
+                this.id,
+                writer,
+                deleteTime
+        );
     }
 }
