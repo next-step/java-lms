@@ -29,12 +29,10 @@ public class Answers {
     }
 
     public boolean validateDeleteOwner(NsUser questionWriter) {
-        for (Answer answer : answers) {
-            if (!answer.isOwner(questionWriter)) {
-                return false;
-            }
-        }
-        return true;
+        return answers.stream()
+                .filter(answer -> !answer.isOwner(questionWriter))
+                .findAny()
+                .isPresent();
     }
 
     public List<DeleteHistory> deleteAll() {
