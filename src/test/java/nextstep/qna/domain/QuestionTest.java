@@ -31,5 +31,8 @@ public class QuestionTest {
 
     @Test
     public void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+        Q1.addAnswer(AnswerTest.A2);
+        assertThatThrownBy(() -> Q1.deleteBy(NsUserTest.JAVAJIGI)).isInstanceOf(
+            CannotDeleteException.class);
     }
 }
