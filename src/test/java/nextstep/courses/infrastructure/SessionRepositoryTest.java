@@ -88,7 +88,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = new SessionStudent(maxStudentCount);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), isFree);
 
-        return new Session(0L, 1L, sessionDuration, sessionEnrolment);
+        return new Session(0L, 2L, sessionDuration, sessionEnrolment);
     }
 
     private Session updateSession(Long id, int maxStudentCount, SessionStatusType sessionStatusType, Long amount, boolean isFree) {
@@ -96,6 +96,6 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = new SessionStudent(maxStudentCount);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), isFree);
 
-        return new Session(id, 1L, sessionDuration, sessionEnrolment);
+        return new Session(id, 2L, sessionDuration, sessionEnrolment);
     }
 }
