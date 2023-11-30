@@ -84,7 +84,7 @@ public class SessionTest {
         assertThat(session.enroll(NsUserTest.JAVAJIGI, 1000)).isTrue();
     }
 
-    private static Session SESSION_모집중_10명_1000원() {
+    static Session SESSION_모집중_10명_1000원() {
         Session session = new Session(
                 START_DATE,
                 END_DATE,
