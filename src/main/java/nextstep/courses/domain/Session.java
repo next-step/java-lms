@@ -12,7 +12,7 @@ public class Session {
     private final SessionStatus sessionStatus;
     private int maximumEnrollmentCount = 0;
     private final Price price;
-    private final Participants participants = new Participants();
+    private final NsUsers nsUsers = new NsUsers();
 
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollmentCount, int fee) {
         inputValidation(sessionType, maximumEnrollmentCount);
@@ -39,7 +39,7 @@ public class Session {
     }
 
     private boolean isFullEnrollment() {
-        return sessionType.isPaid() && participants.isFullEnrollment(maximumEnrollmentCount);
+        return sessionType.isPaid() && nsUsers.isFullEnrollment(maximumEnrollmentCount);
     }
 
     private boolean possibleFee(int paidFee){
@@ -50,6 +50,6 @@ public class Session {
         if (!canEnroll(paidFee)) {
             throw new IllegalArgumentException("수강 신청이 불가능합니다.");
         }
-        return participants.enroll(nsUser);
+        return nsUsers.enroll(nsUser);
     }
 }
