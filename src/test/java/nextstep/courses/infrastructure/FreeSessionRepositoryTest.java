@@ -42,14 +42,14 @@ public class FreeSessionRepositoryTest {
     @Test
     void read() {
         FreeSession savedSession = freeSessionRepository.findById(3L);
-        FreeSession session = new FreeSession(3L, duration(), images(), recruitingStatus(), LocalDateTime.now(), null);
+        FreeSession session = new FreeSession(3L, duration(), images(), recruitingStatus(), LocalDateTime.of(2024, 11, 11, 12, 12, 12), null);
         assertThat(savedSession).isEqualTo(session);
         LOGGER.debug("FreeSession: {}", savedSession);
     }
 
     private Images images() {
-        Image image1 = new Image(3L, 0.3, "GIF", 300, 200, LocalDateTime.now(), null);
-        Image image2 = new Image(4L, 1.0, "JPG", 300, 200, LocalDateTime.now(), null);
+        Image image1 = new Image(3L, 0.3, "GIF", 300, 200, LocalDateTime.of(2024, 11, 11, 12, 12, 12), null);
+        Image image2 = new Image(4L, 1.0, "JPG", 300, 200, LocalDateTime.of(2025, 11, 11, 12, 12, 12), null);
         return new Images(Arrays.asList(image1, image2));
     }
 

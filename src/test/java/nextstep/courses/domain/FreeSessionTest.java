@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -33,7 +34,7 @@ public class FreeSessionTest {
         Session session = new FreeSession(duration(), images(), notRecruitingStatus());
 
         assertThatExceptionOfType(NotRecruitingSessionException.class)
-            .isThrownBy(() -> session.apply(null, NsUserTest.JAVAJIGI))
+            .isThrownBy(() -> session.apply(null, NsUserTest.JAVAJIGI,  LocalDateTime.MAX))
             .withMessageMatching("모집중인 강의가 아닙니다.");
     }
 
@@ -44,8 +45,8 @@ public class FreeSessionTest {
         Session session = new FreeSession(duration(), images(), status);
         NsUser user = NsUserTest.JAVAJIGI;
 
-        session.apply(null, user);
-        Assertions.assertThat(session.applies()).isEqualTo(new Applies(Arrays.asList(new Apply(session, user))));
+        session.apply(null, user, LocalDateTime.MAX);
+        Assertions.assertThat(session.applies()).isEqualTo(new Applies(Arrays.asList(new Apply(session, user, LocalDateTime.MAX))));
     }
 
     private Duration duration() {
@@ -53,7 +54,7 @@ public class FreeSessionTest {
     }
 
     private Images images() {
-        Image image = new Image(1, "JPG", 300, 200);
+        Image image = new Image(1, "JPG", 300, 200, LocalDateTime.of(2023, 11, 30, 11, 50, 12));
         return new Images(Arrays.asList(image));
     }
 

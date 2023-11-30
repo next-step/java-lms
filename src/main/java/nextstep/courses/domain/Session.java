@@ -21,8 +21,20 @@ public abstract class Session extends BaseEntity {
         this(0L, duration, images, duration.sessionStatus(LocalDate.now()), LocalDateTime.now(), null);
     }
 
+    public Session(Duration duration, Images images, LocalDateTime createdAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), createdAt, null);
+    }
+
+    public Session(Duration duration, Images images, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), createdAt, updatedAt);
+    }
+
     public Session(Duration duration, Images images, SessionStatus status) {
         this(0L, duration, images, status, LocalDateTime.now(), null);
+    }
+
+    public Session(Duration duration, Images images, SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, duration, images, status, createdAt, updatedAt);
     }
 
     public Session(Long id, Duration duration, Images images, SessionStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -34,7 +46,7 @@ public abstract class Session extends BaseEntity {
         this.applies = new Applies();
     }
 
-    public abstract void apply(Payment payment, NsUser nsUser);
+    public abstract void apply(Payment payment, NsUser nsUser, LocalDateTime applyAt);
 
     protected void validateStatus() {
         if (!this.status.isRecruiting()) {
@@ -42,8 +54,8 @@ public abstract class Session extends BaseEntity {
         }
     }
 
-    protected void addStudent(NsUser nsUser) {
-        Apply apply = new Apply(this, nsUser, ApplyStatus.APPLYING);
+    protected void addStudent(NsUser nsUser, LocalDateTime applyAt) {
+        Apply apply = new Apply(this, nsUser, ApplyStatus.APPLYING, applyAt);
         this.applies.add(apply);
     }
 
@@ -71,6 +83,7 @@ public abstract class Session extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Session)) return false;
+        if (!super.equals(o)) return false;
         Session session = (Session) o;
         return Objects.equals(id, session.id) && Objects.equals(duration, session.duration) && Objects.equals(images, session.images) && Objects.equals(status, session.status) && Objects.equals(applies, session.applies);
     }
@@ -87,7 +100,7 @@ public abstract class Session extends BaseEntity {
             ", duration=" + duration +
             ", images=" + images +
             ", status=" + status +
-            ", applys=" + applies +
+            ", applies=" + applies +
             '}';
     }
 }

@@ -13,6 +13,6 @@ public enum SessionProgressStatus {
     }
 
     public boolean isTerminal() {
-        return this.equals(TERMINATE);
+        return this == TERMINATE;
     }
 }

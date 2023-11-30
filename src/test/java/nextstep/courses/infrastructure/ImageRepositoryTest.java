@@ -40,7 +40,7 @@ public class ImageRepositoryTest {
     @Test
     void read() {
         Image savedImage = imageRepository.findById(2L);
-        Image image = new Image(2L, 0.3, "GIF", 300, 200, LocalDateTime.now(), null);
+        Image image = new Image(2L, 0.3, "GIF", 300, 200, LocalDateTime.of(2023, 11, 11, 12, 12, 12), null);
         assertThat(savedImage).isEqualTo(image);
         LOGGER.debug("Image: {}", savedImage);
     }
@@ -48,8 +48,8 @@ public class ImageRepositoryTest {
     @Test
     void read_all() {
         Images savedImages = imageRepository.findAllBySessionId(3L);
-        Image image1 = new Image(3L, 0.3, "GIF", 300, 200, LocalDateTime.now(), null);
-        Image image2 = new Image(4L, 1.0, "JPG", 300, 200, LocalDateTime.now(), null);
+        Image image1 = new Image(3L, 0.3, "GIF", 300, 200, LocalDateTime.of(2024, 11, 11, 12, 12, 12), null);
+        Image image2 = new Image(4L, 1.0, "JPG", 300, 200, LocalDateTime.of(2025, 11, 11, 12, 12, 12), null);
         assertThat(savedImages).isEqualTo(new Images(Arrays.asList(image1, image2)));
     }
 

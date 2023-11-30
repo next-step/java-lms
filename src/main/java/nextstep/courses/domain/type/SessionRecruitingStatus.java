@@ -19,6 +19,6 @@ public enum SessionRecruitingStatus {
     }
 
     public boolean isRecruiting() {
-        return this.equals(RECRUITING);
+        return this == RECRUITING;
     }
 }

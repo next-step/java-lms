@@ -43,13 +43,13 @@ public class ChargedSessionRepositoryTest {
     @Test
     void read() {
         ChargedSession savedSession = chargedSessionRepository.findById(2L);
-        ChargedSession session = new ChargedSession(2L, duration(), images(), recruitingStatus(), 100, BigDecimal.valueOf(1_0000), LocalDateTime.now(), null);
+        ChargedSession session = new ChargedSession(2L, duration(), images(), recruitingStatus(), 100, BigDecimal.valueOf(1_0000), LocalDateTime.of(2023, 11, 11, 12, 12, 12), null);
         assertThat(savedSession).isEqualTo(session);
         LOGGER.debug("ChargedSession: {}", savedSession);
     }
 
     private Images images() {
-        Image image = new Image(2L, 0.3, "GIF", 300, 200, LocalDateTime.now(), null);
+        Image image = new Image(2L, 0.3, "GIF", 300, 200, LocalDateTime.of(2023, 11, 11, 12, 12, 12), null);
         return new Images(Arrays.asList(image));
     }
 

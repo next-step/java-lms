@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.ImageNotExistException;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -11,13 +9,6 @@ public class Images {
 
     public Images(List<Image> images) {
         this.images = images;
-        validate();
-    }
-
-    public void validate() {
-        if (this.images.size() < 1) {
-            throw new ImageNotExistException("이미지 최소 개수를 만족하지 않습니다.");
-        }
     }
 
     @Override

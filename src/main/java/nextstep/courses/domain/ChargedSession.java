@@ -20,8 +20,25 @@ public class ChargedSession extends Session {
         this(0L, duration, images, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
     }
 
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), maxNumberOfStudent, price, createdAt, null);
+    }
+
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), maxNumberOfStudent, price, createdAt, updatedAt);
+    }
+
     public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
         this(0L, duration, images, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
+    }
+
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt) {
+        this(0L, duration, images, status, maxNumberOfStudent, price, createdAt, null);
+    }
+
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
+                          LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, duration, images, status, maxNumberOfStudent, price, createdAt, updatedAt);
     }
 
     public ChargedSession(Long id, Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
@@ -31,9 +48,9 @@ public class ChargedSession extends Session {
         this.price = new Price(price);
     }
 
-    public void apply(Payment payment, NsUser nsUser) {
+    public void apply(Payment payment, NsUser nsUser, LocalDateTime applyAt) {
         validate(payment);
-        addStudent(nsUser);
+        addStudent(nsUser, applyAt);
     }
 
     private void validate(Payment payment) {

@@ -17,8 +17,24 @@ public class Apply extends BaseEntity {
         this(0L, session, student, ApplyStatus.APPLYING, LocalDateTime.now(), null);
     }
 
+    public Apply(Session session, NsUser student, LocalDateTime createdAt) {
+        this(0L, session, student, ApplyStatus.APPLYING, createdAt, null);
+    }
+
+    public Apply(Session session, NsUser student, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, session, student, ApplyStatus.APPLYING, createdAt, updatedAt);
+    }
+
     public Apply(Session session, NsUser student, ApplyStatus status) {
         this(0L, session, student, status, LocalDateTime.now(), null);
+    }
+
+    public Apply(Session session, NsUser student, ApplyStatus status, LocalDateTime createdAt) {
+        this(0L, session, student, status, createdAt, null);
+    }
+
+    public Apply(Session session, NsUser student, ApplyStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, session, student, status, createdAt, updatedAt);
     }
 
     public Apply(Long id, Session session, NsUser student, ApplyStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
