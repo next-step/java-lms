@@ -6,6 +6,7 @@ import nextstep.courses.domain.CoverImagePixel;
 import nextstep.courses.domain.CoverImageRepository;
 import nextstep.courses.domain.CoverImageSize;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -28,6 +29,7 @@ class CoverImageRepositoryTest {
     }
 
     @Test
+    @DisplayName("coverImage 생성 테스트")
     void create() {
         CoverImage coverImage = new CoverImage(
                 1L,
@@ -42,6 +44,7 @@ class CoverImageRepositoryTest {
     }
 
     @Test
+    @DisplayName("coverImage 조회 테스트")
     void read() {
         CoverImage coverImage = new CoverImage(
                 1L,
@@ -62,6 +65,7 @@ class CoverImageRepositoryTest {
     }
 
     @Test
+    @DisplayName("coverImage 갱신 테스트")
     void update() {
         CoverImage before = new CoverImage(
                 1L,
@@ -85,6 +89,7 @@ class CoverImageRepositoryTest {
     }
 
     @Test
+    @DisplayName("coverImage 삭제 테스트")
     void delete() {
         CoverImage coverImage = new CoverImage(
                 1L,

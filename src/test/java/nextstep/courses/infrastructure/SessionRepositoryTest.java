@@ -35,7 +35,7 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("Session 데이터 insert 테스트")
+    @DisplayName("Session 데이터 생성 테스트")
     void create() {
         Session session = createSession(100, SessionStatusType.RECRUITMENT, 10_000L, false);
 
@@ -45,7 +45,7 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("Session 데이터 select 테스트")
+    @DisplayName("Session 데이터 조회 테스트")
     void read() {
         Session expected = createSession(100, SessionStatusType.RECRUITMENT, 10_000L, false);
         sessionRepository.save(expected);
@@ -61,7 +61,7 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("Session 데이터 update 테스트")
+    @DisplayName("Session 데이터 갱신 테스트")
     void update() {
         Session session = createSession(100, SessionStatusType.RECRUITMENT, 10_000L, false);
         sessionRepository.save(session);
@@ -73,7 +73,7 @@ class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("Session 데이터 delete 테스트")
+    @DisplayName("Session 데이터 삭제 테스트")
     void delete() {
         Session session = createSession(100, SessionStatusType.RECRUITMENT, 10_000L, false);
         sessionRepository.save(session);
