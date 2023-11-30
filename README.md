@@ -7,3 +7,8 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## 기능 정의 
+- [ ] 질문 삭제 기능
+  - [ ] 답변 삭제 기능
+  - [ ] 답변 
