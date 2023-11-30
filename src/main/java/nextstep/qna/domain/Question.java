@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
     private Long id;
@@ -19,7 +20,7 @@ public class Question {
 
     //private List<Answer> answers = new ArrayList<>();
 
-    private Answers answers;
+    private Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -77,13 +78,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) throws CannotDeleteException {
-        if(!writer.equals(loginUser)){
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-        return writer.equals(loginUser);
-    }
-
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -103,7 +97,21 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
+        if (!Objects.equals(loginUser, writer)) {
+            throw new CannotDeleteException("로그인 사용자와 질문한 사용자가 같아야 합니다.");
+        }
+
         this.deleted = true;
-        this.answers.deleteAnswers(loginUser);
+        deleteAnswers(loginUser);
+    }
+
+    private void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        if (Objects.nonNull(this.answers)) {
+            this.answers.deleteAnswers(loginUser);
+        }
+    }
+
+    public DeleteHistory getDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id,  writer, LocalDateTime.now());
     }
 }

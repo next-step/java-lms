@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Answers {
-    private List<Answer> answers = new ArrayList<>();
+    private List<Answer> answers;
 
     public Answers(List<Answer> answers){
         this.answers = answers;
     }
 
-
     public void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
-
         for (Answer answer : answers) {
             answer.validateAnswer(loginUser);
             answer.delete();

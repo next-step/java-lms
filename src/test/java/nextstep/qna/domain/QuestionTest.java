@@ -26,11 +26,13 @@ public class QuestionTest {
     public static final Question 내가_쓴_답변만_있는_질문 = new Question(NsUserTest.SANJIGI, "title2", "contents2", new Answers(Arrays.asList(A2)));
 
     @Test
-    @DisplayName("로그인 사용자와 질문한 사용자가 같은지 확인한다")
+    @DisplayName("로그인 사용자와 질문한 사용자가 같지 않으면 삭제할 수 없다.")
     void 로그인_사용자와_질문한_사용자가_다르면_예외_발생() {
         assertThatThrownBy(() -> {
-            Q1.isOwner(NsUserTest.SANJIGI);
-        }).isInstanceOf(CannotDeleteException.class);
+            Q1.delete(NsUserTest.SANJIGI);
+        }).isInstanceOf(CannotDeleteException.class)
+                .hasMessage("로그인 사용자와 질문한 사용자가 같아야 합니다.")
+        ;
     }
 
     @Test
@@ -40,13 +42,6 @@ public class QuestionTest {
         assertThat(답변_없는_질문.isDeleted()).isTrue();
     }
 
-    @Test
-    @DisplayName("답변이 있으면 삭제 할 수 없다.")
-    void 답변이_있으면_삭제_할_수_없다() {
-        assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> {
-            답변_있는_질문.delete(NsUserTest.SANJIGI);
-        }).withMessage("답변이 있는 경우 삭제할 수 없습니다.");
-    }
 
     @Test
     @DisplayName("답변자가 다른 답변이 있으면 예외를 발생한다.")

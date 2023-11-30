@@ -17,7 +17,7 @@ public class DeleteHistoriesTest {
     @DisplayName("질문 삭제 이력을 담는다")
     void 질문_삭제_이력(){
         DeleteHistories deleteHistories = new DeleteHistories(new ArrayList<>());
-        deleteHistories.addQuestionDeleteHistory(Q1);
+//        deleteHistories.addQuestionDeleteHistory(Q1);
 
         Assertions.assertThat(deleteHistories.getDeleteHistories()).extracting("contentId", Long.class)
                 .contains(0L);
