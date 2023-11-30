@@ -13,7 +13,8 @@
   * [X] question -> 삭제를 하는 경우 상태가 변경한다. (매개변수 삭제)
   * [ ] QnAService에 question 객체를 전달
 * [ ] 로그인 사용자와 질문한 사람이 같은 경우 삭제 가능하다.
-  * [ ] question을 삭제요청 시 질문한 사람과 다른 경우 exception throw
+  * [X] question을 삭제요청 시 질문한 사람과 다른 경우 exception throw
+  * [ ] delete함수에서 권한체크를 하다보니, 불필요한 answer loop가 발생함.
 * [ ] 답변이 없는 경우 삭제가 가능하다.
 * [ ] 질문자와 답변 글의 모든 답변자 같은 경우 삭제가 가능하다.
 * [ ] 질문을 삭제할 때 답변 또한 삭제해야 하며, 답변의 삭제 또한 삭제 상태(deleted)를 변경한다.
@@ -43,8 +44,11 @@
   * [X] setContents 삭제
   * [X] setDeleted -> delete로 변경
   * [X] 인스턴스변수에 final
+  * [ ] 
 * [ ] answers -> 
   * [ ] answer 유저와 질문자가 같은지 find.
+* [ ] NsUser ->
+  * [ ] 
 * [ ] questionRespository -> 
   * [ ] save method 생성
   * [ ] Question 객체 id가 자동 증가하며 저장 (find max id)
