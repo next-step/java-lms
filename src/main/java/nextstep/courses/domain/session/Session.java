@@ -9,40 +9,36 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Session {
-    private Period period;
+    private final Period period;
 
-    private Image image;
+    private final Image image;
 
-    private SessionType sessionType;
-    private SessionState sessionState;
+    private final SessionType sessionType;
+    private final SessionState sessionState;
 
-    private Long amount;
-    private Long enrollmentMax;
+    private final Long amount;
+    private final Long enrollmentMax;
 
-    /**
-     * @Todo 일급컬렉션
-     */
-    private Students students;
+    private final Students students;
 
-    public Session(Period period, Image image, SessionType sessionType, SessionState sessionState, Long amount, Long enrollmentMax, List<NsUser> students) {
+    public Session(Period period, Image image, SessionType sessionType, SessionState sessionState, Long amount, Long enrollmentMax, Students students) {
         this.period = period;
         this.image = image;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
         this.amount = amount;
         this.enrollmentMax = enrollmentMax;
-        this.students = Students.of(students);
+        this.students = students;
     }
 
     public static Session ofFree(Period period, Image image){
-        return new Session(period, image, SessionType.FREE, SessionState.PREPARING, null, null, new ArrayList<>());
+        return new Session(period, image, SessionType.FREE, SessionState.PREPARING, null, null, Students.of(new ArrayList<>()));
     }
 
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax){
-        return new Session(period, image, SessionType.PAID, SessionState.PREPARING, amount, enrollmentMax, new ArrayList<>());
+        return new Session(period, image, SessionType.PAID, SessionState.PREPARING, amount, enrollmentMax, Students.of(new ArrayList<>()));
     }
 
     public void enroll(NsUser student, Payment payment) {
@@ -72,15 +68,15 @@ public class Session {
         students.add(student);
     }
 
-    public void preparing() {
-        this.sessionState = SessionState.PREPARING;
+    public Session preparing() {
+        return new Session(period, image, sessionType, SessionState.PREPARING, amount, enrollmentMax, students);
     }
 
-    public void recruiting() {
-        this.sessionState = SessionState.RECRUITING;
+    public Session recruiting() {
+        return new Session(period, image, sessionType, SessionState.RECRUITING, amount, enrollmentMax, students);
     }
 
-    public void end() {
-        this.sessionState = SessionState.END;
+    public Session end() {
+        return new Session(period, image, sessionType, SessionState.END, amount, enrollmentMax, students);
     }
 }
