@@ -47,9 +47,21 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+//    public Answer setDeleted(boolean deleted) {
+//        this.deleted = deleted;
+//        return this;
+//    }
+    public DeleteHistory deleted() {
+        delete();
+        return deleteHistory();
+    }
+
+    private void delete() {
+        this.deleted = true;
+    }
+
+    private DeleteHistory deleteHistory() {
+        return DeleteHistory.answer(this.id, this.writer);
     }
 
     public boolean isDeleted() {
@@ -64,9 +76,9 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
+//    public String getContents() {
+//        return contents;
+//    }
 
     public void toQuestion(Question question) {
         this.question = question;
