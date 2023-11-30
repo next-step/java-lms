@@ -46,16 +46,4 @@ public class CoverImage {
         return this.coverImagePixel.getHeight();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CoverImage that = (CoverImage) o;
-        return Objects.equals(id, that.id) && Objects.equals(sessionId, that.sessionId) && Objects.equals(coverImageFileName, that.coverImageFileName) && Objects.equals(coverImageSize, that.coverImageSize) && Objects.equals(coverImagePixel, that.coverImagePixel);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, sessionId, coverImageFileName, coverImageSize, coverImagePixel);
-    }
 }
