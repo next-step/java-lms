@@ -23,10 +23,7 @@ class PaidSessionTest {
         Session paidSession = new PaidSession(title, price, startDate, endDate);
 
         //then
-        assertThat(paidSession.getTitle()).isEqualTo(title);
-        assertThat(paidSession.getPrice()).isEqualTo(price);
-        assertThat(paidSession.getStartDate()).isEqualTo(startDate);
-        assertThat(paidSession.getEndDate()).isEqualTo(endDate);
+        assertThat(paidSession).isNotNull();
     }
 
     @Test

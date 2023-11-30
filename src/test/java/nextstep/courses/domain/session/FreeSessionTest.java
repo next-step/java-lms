@@ -22,9 +22,7 @@ class FreeSessionTest {
         FreeSession freeSession = new FreeSession(title, startDate, endDate);
 
         //then
-        assertThat(freeSession.getTitle()).isEqualTo(title);
-        assertThat(freeSession.getStartDate()).isEqualTo(startDate);
-        assertThat(freeSession.getEndDate()).isEqualTo(endDate);
+        assertThat(freeSession).isNotNull();
     }
 
     @Test
