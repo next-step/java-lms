@@ -27,6 +27,4 @@ public class AnswersTest {
         Q1.addAnswer(A2);
         assertThat(Q1.getAnswers().size()).isEqualTo(2);
     }
-
-
 }
