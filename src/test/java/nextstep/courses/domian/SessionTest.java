@@ -29,17 +29,12 @@ class SessionTest {
     @DisplayName("무료 강의라면 인원수 제한없이 신청이 가능하다.")
     void enrolment_무료() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(students);
-        Amount amount = new Amount();
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, true);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        Session session = createFreeSession(students);
 
-        Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        NsUser newUser = createNewUser();
         session.enrolment(newUser, 0L);
 
-        int actual = students.totalCount();
+        int actual = session.totalStudentCount();
         int expected = 3;
 
         assertThat(actual).isEqualTo(expected);
@@ -49,33 +44,25 @@ class SessionTest {
     @DisplayName("유료 강의라면 인원수 인원수에 맞게만 신청이 가능하다.")
     void enrolment_유료() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(students, 3);
-        Amount amount = new Amount(30000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        Session session = createPaySession(students, 3, SessionStatusType.RECRUITMENT, 30_000L);
 
-        Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
-        session.enrolment(newUser, 30000L);
+        NsUser newUser = createNewUser();
+        session.enrolment(newUser, 30_000L);
 
-        assertThat(sessionStudent.isMaxStudents()).isTrue();
+        boolean actual = session.isMaxStudent();
+
+        assertThat(actual).isTrue();
     }
 
     @Test
     @DisplayName("유료 강의의 경우 강의 금액과 결제 금액이 다르다면 오류가 발생한다.")
     void enrolment_유료_금액불일치() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(students, 3);
-        Amount amount = new Amount(30000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        Session session = createPaySession(students, 3, SessionStatusType.RECRUITMENT, 30_000L);
 
-        Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        NsUser newUser = createNewUser();
 
-        assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
+        assertThatThrownBy(() -> session.enrolment(newUser, 20_000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제금액과 강의금액이 맞지 않습니다.");
     }
@@ -84,14 +71,9 @@ class SessionTest {
     @DisplayName("유료 강의의 경우 강의 인원수가 꽉 차있다면 신청이 불가능하다.")
     void enrolment_유료_인원수초과() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(students, 2);
-        Amount amount = new Amount(30000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        Session session = createPaySession(students, 2, SessionStatusType.RECRUITMENT, 30_000L);
 
-        Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        NsUser newUser = createNewUser();
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -102,17 +84,34 @@ class SessionTest {
     @DisplayName("강의가 모집중이지 않은 경우 강의 신청시 오류가 발생한다.")
     void enrolment_not_recruitment() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(students, 2);
-        Amount amount = new Amount(30000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.READY, amount, false);
-        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        Session session = createPaySession(students, 3, SessionStatusType.READY, 30_000L);
 
-        Session session = new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        NsUser newUser = createNewUser();
 
         assertThatThrownBy(() -> session.enrolment(newUser, 20000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의가 모집중인 상태가 아닙니다.");
+    }
+
+    private NsUser createNewUser() {
+        return new NsUser(3L, "test", "test", "test", "test");
+    }
+
+    private Session createPaySession(Students students, int maxStudentCount, SessionStatusType sessionStatusType, Long amount) {
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
+        CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        SessionStudent sessionStudent = new SessionStudent(students, maxStudentCount);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), false);
+
+        return new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+    }
+
+    private Session createFreeSession(Students students) {
+        SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
+        CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        SessionStudent sessionStudent = new SessionStudent(students);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, new Amount(0L), true);
+
+        return new Session(1L, sessionDuration, sessionEnrolment, coverImage);
     }
 }
