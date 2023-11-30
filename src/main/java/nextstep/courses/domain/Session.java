@@ -52,4 +52,8 @@ public class Session {
         }
         return nsUsers.enroll(nsUser);
     }
+
+    public boolean isInProgress() {
+        return duration.isInProgress();
+    }
 }

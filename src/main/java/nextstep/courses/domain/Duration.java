@@ -13,6 +13,10 @@ public class Duration {
         this.endDate = endDate;
     }
 
+    public boolean isInProgress() {
+        return startDate.isBefore(LocalDateTime.now()) && endDate.isAfter(LocalDateTime.now());
+    }
+
     private void inputValidation(LocalDateTime startDate, LocalDateTime endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("종료일은 시작일보다 빠를 수 없습니다.");

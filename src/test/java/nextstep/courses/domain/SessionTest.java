@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 public class SessionTest {
 
-    private static final LocalDateTime START_DATE = LocalDateTime.of(2020, 1, 1, 0, 0);
-    private static final LocalDateTime END_DATE = LocalDateTime.of(2020, 2, 1, 0, 0);
+    private static final LocalDateTime START_DATE = LocalDateTime.of(2023, 1, 1, 0, 0);
+    private static final LocalDateTime END_DATE = LocalDateTime.of(2023, 12, 1, 0, 0);
     private final Session defaultSession = new Session(
             START_DATE,
             END_DATE,
@@ -24,11 +24,10 @@ public class SessionTest {
     );
 
     @Test
-    @DisplayName("강의는 시작일과 종료일을 가진다.")
+    @DisplayName("강의가 진행중 인지 확인 할 수 있다.")
     void sessionHasStartAndEndDate() {
         Session session = SESSION_모집중_10명_1000원();
-        assertThat(session)
-                .hasFieldOrProperty("duration");
+        assertThat(session.isInProgress()).isTrue();
     }
 
     @Test
