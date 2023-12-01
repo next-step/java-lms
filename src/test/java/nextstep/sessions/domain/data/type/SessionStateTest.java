@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SessionStateTest {
 
     @Test
-    void isPay() {
+    void isRecruiting() {
         assertThat(SessionState.RECRUITING.isRecruiting()).isTrue();
     }
 }

@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
-import nextstep.registrations.domain.data.Registrations;
 import nextstep.sessions.domain.data.type.SessionState;
 import nextstep.sessions.domain.data.vo.*;
 import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -44,16 +44,16 @@ public class Session {
         return new Session(sessionType, sessionState, registrations);
     }
 
-    public void validateEnrollment(Payment payment) {
+    public Registration registration(NsUser user, Payment payment) {
+        validate(payment);
+        return new Registration(this, user, payment);
+    }
+
+    private void validate(Payment payment) {
         if (!sessionState.isRecruiting()) {
             throw new SessionsException("모집중이 아닌 강의입니다.");
         }
-        if (sessionType.isPaid() && !sessionType.isEnoughCapacity(registrations.size())) {
-            throw new SessionsException("강의 최대 인원을 초과했습니다.");
-        }
-        if (sessionType.isPaid() && !sessionType.isEqualPaidAmount(payment)) {
-            throw new SessionsException("수강료와 결제한 금액이 다릅니다.");
-        }
+        sessionType.validatePaidSession(registrations.size(), payment);
     }
 
 }

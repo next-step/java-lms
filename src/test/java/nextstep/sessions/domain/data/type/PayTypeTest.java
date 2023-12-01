@@ -8,6 +8,6 @@ public class PayTypeTest {
 
     @Test
     void isPay() {
-        assertThat(PayType.PAY.isPay()).isTrue();
+        assertThat(PayType.PAID.isPaid()).isTrue();
     }
 }

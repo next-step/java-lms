@@ -1,4 +1,4 @@
-package nextstep.registrations.domain.data;
+package nextstep.sessions.domain.data.vo;
 
 import java.util.ArrayList;
 import java.util.List;

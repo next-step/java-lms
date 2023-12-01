@@ -3,7 +3,7 @@ package nextstep.sessions.domain.data.type;
 public enum PayType {
 
     FREE("FREE", "무료"),
-    PAY("PAY", "유료");
+    PAID("PAID", "유료");
 
     private final String type;
     private final String title;
@@ -13,7 +13,7 @@ public enum PayType {
         this.title = title;
     }
 
-    public boolean isPay() {
-        return this == PAY;
+    public boolean isPaid() {
+        return this == PAID;
     }
 }

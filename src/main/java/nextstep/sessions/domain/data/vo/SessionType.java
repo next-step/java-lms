@@ -2,6 +2,7 @@ package nextstep.sessions.domain.data.vo;
 
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.type.PayType;
+import nextstep.sessions.domain.exception.SessionsException;
 
 public class SessionType {
 
@@ -19,15 +20,31 @@ public class SessionType {
         this.capacity = capacity;
     }
 
-    public boolean isPaid() {
-        return payType.isPay();
+    public void validatePaidSession(int registrationCount, Payment payment) {
+        if (payType.isPaid()) {
+            validateCapacity(registrationCount);
+            validatePayment(payment);
+        }
     }
 
-    public boolean isEnoughCapacity(int registrationCount) {
+    private void validateCapacity(int registrationCount) {
+        if (!isValidCapacity(registrationCount)) {
+            throw new SessionsException("강의 최대 인원을 초과했습니다.");
+        }
+    }
+
+    private boolean isValidCapacity(int registrationCount) {
         return registrationCount < capacity;
     }
 
-    public boolean isEqualPaidAmount(Payment payment) {
+    private void validatePayment(Payment payment) {
+        if (!isValidPayment(payment)) {
+            throw new SessionsException("수강료와 결제한 금액이 다릅니다.");
+        }
+    }
+
+    private boolean isValidPayment(Payment payment) {
         return payment.isEqualAmount(fee);
     }
+
 }
