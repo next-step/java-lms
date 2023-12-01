@@ -20,7 +20,7 @@ public class AnswerTest {
     @Test
     void makeDeleteHistory() throws CannotDeleteException {
 
-        A1.makeDeleteHistory(NsUserTest.JAVAJIGI);
+        A1.makeDelete(NsUserTest.JAVAJIGI);
         Assertions.assertThat(A1.isDeleted()).isTrue();
     }
 }

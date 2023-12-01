@@ -6,7 +6,6 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Answer {
     private Long id;
@@ -85,7 +84,7 @@ public class Answer {
         }
     }
 
-    DeleteHistory makeDeleteHistory(NsUser loginUser) throws CannotDeleteException {
+    DeleteHistory makeDelete(NsUser loginUser) throws CannotDeleteException {
         checkCanDelete(loginUser);
         setDeleted();
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());

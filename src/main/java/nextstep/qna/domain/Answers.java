@@ -10,11 +10,11 @@ public class Answers {
     private final List<Answer> answers;
 
     public Answers(List<Answer> answers) {
-        if(answers == null) {
-            this.answers = new ArrayList<>();
-            return;
-        }
         this.answers = answers;
+    }
+
+    public Answers() {
+        this.answers = new ArrayList<>();
     }
 
     public void checkDelete(NsUser loginUser) throws CannotDeleteException {
@@ -23,18 +23,14 @@ public class Answers {
         }
     }
 
-    public void setDeleted() {
-        answers.forEach(Answer::setDeleted);
-    }
-
     public void add(Answer answer) {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> makeDeleteHistory(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> makeDelete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            deleteHistories.add(answer.makeDeleteHistory(loginUser));
+            deleteHistories.add(answer.makeDelete(loginUser));
         }
         return deleteHistories;
     }
