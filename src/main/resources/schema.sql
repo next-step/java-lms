@@ -69,5 +69,4 @@ CREATE TABLE session (
     amount bigint,
     is_free boolean,
     PRIMARY KEY (id),
-    FOREIGN KEY (course_id) REFERENCES course(id)
 );
