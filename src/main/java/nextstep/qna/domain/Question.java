@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Question {
@@ -16,8 +15,6 @@ public class Question {
     private String contents;
 
     private NsUser writer;
-
-    private List<Answer> answerList = new ArrayList<>();
 
     private Answers answers;
 
@@ -91,11 +88,6 @@ public class Question {
         return writer;
     }
 
-    public void addAnswerToAnswerList(Answer answer) {
-        answer.toQuestion(this);
-        answerList.add(answer);
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.addAnswer(answer);
@@ -105,17 +97,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswerList() {
-        return answerList;
     }
 
     public void delete() {
@@ -145,11 +128,11 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return isDeleted() == question.isDeleted() && Objects.equals(getId(), question.getId()) && Objects.equals(getTitle(), question.getTitle()) && Objects.equals(getContents(), question.getContents()) && Objects.equals(getWriter(), question.getWriter()) && Objects.equals(getAnswerList(), question.getAnswerList()) && Objects.equals(answers, question.answers);
+        return isDeleted() == question.isDeleted() && Objects.equals(getId(), question.getId()) && Objects.equals(getTitle(), question.getTitle()) && Objects.equals(getContents(), question.getContents()) && Objects.equals(getWriter(), question.getWriter()) && Objects.equals(answers, question.answers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getContents(), getWriter(), getAnswerList(), answers, isDeleted());
+        return Objects.hash(getId(), getTitle(), getContents(), getWriter(), answers, isDeleted());
     }
 }
