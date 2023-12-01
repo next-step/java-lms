@@ -3,9 +3,9 @@ package nextstep.courses.domain.Image;
 import java.util.Objects;
 
 public class CoverImage {
-    private Volume volume;
-    private ImageFormat format;
-    private AspectRatio aspectRatio;
+    private final Volume volume;
+    private final ImageFormat format;
+    private final AspectRatio aspectRatio;
 
     public CoverImage(long volume, String type, int width, int height) {
 
