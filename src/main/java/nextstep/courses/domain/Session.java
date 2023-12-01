@@ -2,11 +2,14 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
 
+    private LocalDate startDate;
+    private LocalDate endDate;
     private SessionStatus status;
     private List<NsUser> registeredUser = new ArrayList<>();
 
@@ -15,6 +18,15 @@ public class Session {
 
     public Session(SessionStatus status) {
         this.status = status;
+    }
+
+    public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
+        this.status = sessionStatus;
+        if(startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException();
+        }
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public List<NsUser> register(NsUser user) throws CannotRegisterException {
