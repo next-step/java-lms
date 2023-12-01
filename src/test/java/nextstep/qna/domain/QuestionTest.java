@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -73,12 +74,12 @@ public class QuestionTest {
         Q3.addAnswer(answer1);
         Q3.addAnswer(answer2);
 
-        DeleteHistories deleteHistories = Q3.deleteBy(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q3.deleteBy(NsUserTest.JAVAJIGI);
 
-        assertThat(deleteHistories.equals(DeleteHistories.from(Arrays.asList(
+        assertThat(deleteHistories.equals(Arrays.asList(
                 new DeleteHistory(ContentType.QUESTION, Q3.getId(), Q3.getWriter(), LocalDateTime.now()),
                 new DeleteHistory(ContentType.ANSWER, answer1.getId(), answer1.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), LocalDateTime.now()))))).isTrue();
+                new DeleteHistory(ContentType.ANSWER, answer2.getId(), answer2.getWriter(), LocalDateTime.now())))).isTrue();
     }
 
 }

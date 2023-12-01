@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Question {
@@ -105,14 +106,14 @@ public class Question {
         this.deleted = true;
     }
 
-    public DeleteHistories deleteBy(NsUser user) throws CannotDeleteException {
-        DeleteHistories deleteHistories = DeleteHistories.from(new ArrayList<>());
+    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         if(!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         delete();
-        deleteHistories.addQuestionDeleteHistory(this);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         answers.deleteBy(user, deleteHistories);
 
         return deleteHistories;

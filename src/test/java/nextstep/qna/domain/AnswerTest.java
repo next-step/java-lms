@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static nextstep.qna.domain.QuestionTest.Q1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +28,7 @@ public class AnswerTest {
         Question question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
 
-        answer.deleteBy(NsUserTest.JAVAJIGI);
+        answer.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>());
         assertThat(answer.isDeleted()).isTrue();
     }
 
@@ -36,7 +38,7 @@ public class AnswerTest {
         Question question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
 
-        assertThatThrownBy(() -> answer.deleteBy(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> answer.deleteBy(NsUserTest.SANJIGI, new ArrayList<>()))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
