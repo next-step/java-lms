@@ -57,7 +57,7 @@ public class ApplyRepositoryTest {
     }
 
     public Apply savedApply() {
-        return new Apply(2L, savedSession(), savedUser(), ApplyStatus.APPLYING, LocalDateTime.now(), null);
+        return new Apply(2L, savedSession(), savedUser(), ApplyStatus.APPLYING, LocalDateTime.of(2025, 11, 11, 12, 12, 12), null);
     }
 
     public Session savedSession() {

@@ -45,6 +45,10 @@ public class Apply extends BaseEntity {
         this.status = status;
     }
 
+    public boolean isApplyOf(Long studentId) {
+        return this.student.isEqualId(studentId);
+    }
+
     public void approve() {
         this.status = ApplyStatus.APPROVAL;
     }
@@ -73,20 +77,22 @@ public class Apply extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Apply)) return false;
+        if (!super.equals(o)) return false;
         Apply apply = (Apply) o;
-        return Objects.equals(id, apply.id) && Objects.equals(session, apply.session) && Objects.equals(student, apply.student);
+        return Objects.equals(id, apply.id) && Objects.equals(session, apply.session) && Objects.equals(student, apply.student) && status == apply.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, session, student);
+        return Objects.hash(super.hashCode(), id, session, student, status);
     }
 
     @Override
     public String toString() {
         return "Apply{" +
-            "session=" + session.id() +
+            "id=" + id +
             ", student=" + student +
+            ", status=" + status +
             '}';
     }
 }

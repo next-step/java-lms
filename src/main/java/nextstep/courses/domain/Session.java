@@ -59,6 +59,20 @@ public abstract class Session extends BaseEntity {
         this.applies.add(apply);
     }
 
+    public boolean equalId(Long id) {
+        return this.id == id;
+    }
+
+    public void approve(Long studentId) {
+        Apply apply = this.applies.of(studentId);
+        apply.approve();
+    }
+
+    public void refuse(Long studentId) {
+        Apply apply = this.applies.of(studentId);
+        apply.refuse();
+    }
+
     public Long id() {
         return this.id;
     }

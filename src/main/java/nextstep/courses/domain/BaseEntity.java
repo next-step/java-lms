@@ -37,4 +37,12 @@ public class BaseEntity {
     public int hashCode() {
         return Objects.hash(createdAt, updatedAt);
     }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+            "createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
 }

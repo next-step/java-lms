@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.NotFoundApplyException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +31,13 @@ public class Applies {
         return this.applies.stream()
             .filter(Apply::isApproval)
             .collect(Collectors.toList());
+    }
+
+    public Apply of(Long studentId) {
+        return applies.stream()
+            .filter(apply -> apply.isApplyOf(studentId))
+            .findFirst()
+            .orElseThrow(() -> new NotFoundApplyException("지원 내역을 찾을 수 없습니다."));
     }
 
     @Override

@@ -18,5 +18,5 @@ INSERT INTO image (id, session_id, volume, type, width, height, created_at) VALU
 INSERT INTO image (id, session_id, volume, type, width, height, created_at) VALUES (3, 3, 0.3, 'GIF', 300, 200, '2024-11-11 12:12:12');
 INSERT INTO image (id, session_id, volume, type, width, height, created_at) VALUES (4, 3, 1.0, 'JPG', 300, 200, '2025-11-11 12:12:12');
 
-INSERT INTO apply (id, session_id, user_id, status, created_at) VALUES (2, 3, 1, 'APPLYING', CURRENT_TIMESTAMP());
+INSERT INTO apply (id, session_id, user_id, status, created_at) VALUES (2, 3, 1, 'APPLYING', '2025-11-11 12:12:12');
 
