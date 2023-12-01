@@ -2,8 +2,8 @@ package nextstep.registrations.service;
 
 import nextstep.payments.domain.Payment;
 import nextstep.registrations.domain.data.Registration;
-import nextstep.registrations.domain.data.Registrations;
 import nextstep.registrations.domain.repository.RegistrationRepository;
+import nextstep.sessions.domain.data.Session;
 import nextstep.users.domain.NsUser;
 
 public class RegistrationService {
@@ -14,10 +14,9 @@ public class RegistrationService {
         this.registrationRepository = registrationRepository;
     }
 
-    public void register(long sessionId, NsUser loginUser, Payment payment) {
-        Registrations registrations = registrationRepository.findAllBySessionId(sessionId);
-        registrations.validateSession();
-        Registration registration = registrations.newRegistration(loginUser, payment);
-        registrationRepository.save(registration);
+    public void enroll(long sessionId, NsUser loginUser, Payment payment) {
+        Session session = registrationRepository.findBySessionId(sessionId);
+        session.validateEnrollment();
+        registrationRepository.save(new Registration(session, loginUser, payment));
     }
 }

@@ -1,11 +1,11 @@
 package nextstep.registrations.domain.repository;
 
 import nextstep.registrations.domain.data.Registration;
-import nextstep.registrations.domain.data.Registrations;
+import nextstep.sessions.domain.data.Session;
 
 public interface RegistrationRepository {
 
-    Registrations findAllBySessionId(long sessionId);
+    Session findBySessionId(long sessionId);
 
     void save(Registration register);
 }

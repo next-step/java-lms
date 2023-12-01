@@ -15,8 +15,4 @@ public class Registration {
         this.user = user;
         this.payment = payment;
     }
-
-    public Session session() {
-        return session;
-    }
 }

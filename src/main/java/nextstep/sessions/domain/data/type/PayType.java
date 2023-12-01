@@ -1,6 +1,6 @@
 package nextstep.sessions.domain.data.type;
 
-public enum SessionType {
+public enum PayType {
 
     FREE("FREE", "무료"),
     PAY("PAY", "유료");
@@ -8,7 +8,7 @@ public enum SessionType {
     private final String type;
     private final String title;
 
-    SessionType(String type, String title) {
+    PayType(String type, String title) {
         this.type = type;
         this.title = title;
     }
