@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionTest {
@@ -19,5 +21,14 @@ class SessionTest {
         assertThatThrownBy(() -> {
             session.register(NsUser.GUEST_USER);
         }).isInstanceOf(CannotRegisterException.class);
+    }
+
+    @Test
+    void 강의의_시작일은_종료일보다_커야한다() {
+        LocalDate startDate = LocalDate.of(2023, 12, 03);
+        LocalDate endDate = LocalDate.of(2023, 12, 01);
+        assertThatThrownBy(() -> {
+            new Session(SessionStatus.WAITING, startDate, endDate);
+        }).isInstanceOf(IllegalArgumentException.class);
     }
 }
