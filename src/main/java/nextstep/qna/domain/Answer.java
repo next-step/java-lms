@@ -75,7 +75,7 @@ public class Answer {
     public DeleteHistory delete(NsUser user) {
         answerUserCheck(user);
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, id, writer);
+        return DeleteHistory.ofAnswer(id, writer);
     }
 
     public void answerUserCheck(NsUser user) {
