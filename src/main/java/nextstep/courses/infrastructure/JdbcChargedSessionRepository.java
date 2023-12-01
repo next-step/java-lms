@@ -1,7 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionProgressStatus;
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.repository.ChargedSessionRepository;
 import nextstep.courses.repository.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -28,15 +29,16 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
     }
 
     @Override
-    public int save(ChargedSession session, Course course) {
-        String sql = "insert into session (course_id, type, start_date, end_date, image_id, status, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int save(ChargedSession session, Long courseId) {
+        String sql = "insert into session (id, course_id, type, start_date, end_date, progress, recruiting, max_student, price, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-            course.id(),
+            session.id(),
+            courseId,
             DEFAULT_CHARGED_SESSION_TYPE,
             session.duration().start(),
             session.duration().end(),
-            session.image().id(),
-            session.status().name(),
+            session.status().progress().name(),
+            session.status().recruiting().name(),
             session.maxNumberOfStudent(),
             session.price().price(),
             session.createdAt());
@@ -44,13 +46,13 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
 
     @Override
     public ChargedSession findById(Long id) {
-        String sql = "select id, course_id, start_date, end_date, image_id, status, max_student, price, created_at, updated_at " +
+        String sql = "select id, course_id, start_date, end_date, progress, recruiting, max_student, price, created_at, updated_at " +
             "from session where id = ? and type = ?";
         RowMapper<ChargedSession> rowMapper = (rs, rowNum) -> new ChargedSession(
                 rs.getLong(1),
                 new Duration(toLocalDate(rs.getDate(3)), toLocalDate(rs.getDate(4))),
-                image(rs.getLong(5)),
-                SessionStatus.valueOf(rs.getString(6)),
+                images(id),
+                new SessionStatus(SessionProgressStatus.valueOf(rs.getString(5)), SessionRecruitingStatus.valueOf(rs.getString(6))),
                 rs.getInt(7),
                 rs.getBigDecimal(8),
                 toLocalDateTime(rs.getTimestamp(9)),
@@ -64,8 +66,8 @@ public class JdbcChargedSessionRepository implements ChargedSessionRepository {
         return jdbcTemplate.queryForObject(sql, Boolean.class, id, DEFAULT_CHARGED_SESSION_TYPE);
     }
 
-    private Image image(Long id) {
-        return imageRepository.findById(id);
+    private Images images(Long id) {
+        return imageRepository.findAllBySessionId(id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

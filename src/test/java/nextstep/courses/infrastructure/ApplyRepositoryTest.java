@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Apply;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.type.ApplyStatus;
 import nextstep.courses.repository.ApplyRepository;
 import nextstep.courses.repository.FreeSessionRepository;
 import nextstep.users.domain.NsUser;
@@ -38,17 +39,25 @@ public class ApplyRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void create() {
         Apply apply = apply(savedSession(), savedUser());
         int count = applyRepository.save(apply);
         assertThat(count).isEqualTo(1);
-        Apply savedApply = applyRepository.findById(1L);
-        assertThat(apply).isEqualTo(savedApply);
-        LOGGER.debug("Apply: {}", savedApply);
+    }
+
+    @Test
+    void read() {
+        Apply apply = applyRepository.findById(2L);
+        assertThat(apply).isEqualTo(savedApply());
+        LOGGER.debug("Apply: {}", apply);
     }
 
     public Apply apply(Session session, NsUser user) {
-        return new Apply(1L, session, user, LocalDateTime.now(), null);
+        return new Apply(1L, session, user, ApplyStatus.APPLYING, LocalDateTime.now(), null);
+    }
+
+    public Apply savedApply() {
+        return new Apply(2L, savedSession(), savedUser(), ApplyStatus.APPLYING, LocalDateTime.of(2025, 11, 11, 12, 12, 12), null);
     }
 
     public Session savedSession() {

@@ -1,13 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Duration;
-import nextstep.courses.domain.FreeSession;
-import nextstep.courses.domain.Image;
-import nextstep.courses.domain.type.SessionStatus;
-import nextstep.courses.repository.CourseRepository;
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.type.SessionProgressStatus;
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.repository.FreeSessionRepository;
-import nextstep.courses.repository.ImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -18,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,40 +26,38 @@ public class FreeSessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private FreeSessionRepository freeSessionRepository;
-    private CourseRepository courseRepository;
-    private ImageRepository imageRepository;
 
     @BeforeEach
     void setUp() {
-        imageRepository = new JdbcImageRepository(jdbcTemplate);
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
         freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
     }
 
     @Test
-    void crud() {
-        FreeSession session = session(savedImage());
-        int count = freeSessionRepository.save(session, savedCourse());
+    void create() {
+        FreeSession session = new FreeSession(5L, duration(), images(), recruitingStatus(), LocalDateTime.now(), null);
+        int count = freeSessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
-        FreeSession savedFreeSession = freeSessionRepository.findById(1L);
-        assertThat(session).isEqualTo(savedFreeSession);
-        LOGGER.debug("FreeSession: {}", savedFreeSession);
     }
 
-    private FreeSession session(Image image) {
-        return new FreeSession(1L, duration(), image, SessionStatus.RECRUITING, LocalDateTime.now(), null);
+    @Test
+    void read() {
+        FreeSession savedSession = freeSessionRepository.findById(3L);
+        FreeSession session = new FreeSession(3L, duration(), images(), recruitingStatus(), LocalDateTime.of(2024, 11, 11, 12, 12, 12), null);
+        assertThat(savedSession).isEqualTo(session);
+        LOGGER.debug("FreeSession: {}", savedSession);
     }
 
-    private Image savedImage() {
-        return imageRepository.findById(2L);
-    }
-
-    private Course savedCourse() {
-        return courseRepository.findById(2L);
+    private Images images() {
+        Image image1 = new Image(3L, 0.3, "GIF", 300, 200, LocalDateTime.of(2024, 11, 11, 12, 12, 12), null);
+        Image image2 = new Image(4L, 1.0, "JPG", 300, 200, LocalDateTime.of(2025, 11, 11, 12, 12, 12), null);
+        return new Images(Arrays.asList(image1, image2));
     }
 
     private Duration duration() {
-        return new Duration(LocalDate.now(), LocalDate.now());
+        return new Duration(LocalDate.of(2023, 11, 1), LocalDate.of(2024, 1, 1));
     }
 
+    private static SessionStatus recruitingStatus() {
+        return new SessionStatus(SessionProgressStatus.ONGOING, SessionRecruitingStatus.RECRUITING);
+    }
 }

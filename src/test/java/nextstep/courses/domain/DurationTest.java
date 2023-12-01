@@ -1,7 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.type.SessionRecruitingStatus;
 import nextstep.courses.exception.InvalidDurationException;
-import nextstep.courses.domain.type.SessionStatus;
+import nextstep.courses.domain.type.SessionProgressStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,9 +56,9 @@ public class DurationTest {
         LocalDate end = LocalDate.of(2023, 12, 31);
 
         return Stream.of(
-            Arguments.of(start, end, LocalDate.of(2023, 11, 26), SessionStatus.READY),
-            Arguments.of(start, end, LocalDate.of(2023, 12, 15), SessionStatus.RECRUITING),
-            Arguments.of(start, end, LocalDate.of(2024, 1, 1), SessionStatus.TERMINATE)
+            Arguments.of(start, end, LocalDate.of(2023, 11, 26), new SessionStatus(SessionProgressStatus.READY, SessionRecruitingStatus.RECRUITING)),
+            Arguments.of(start, end, LocalDate.of(2023, 12, 15), new SessionStatus(SessionProgressStatus.ONGOING, SessionRecruitingStatus.RECRUITING)),
+            Arguments.of(start, end, LocalDate.of(2024, 1, 1), new SessionStatus(SessionProgressStatus.TERMINATE, SessionRecruitingStatus.NOT_RECRUITING))
         );
     }
 

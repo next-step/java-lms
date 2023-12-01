@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Apply;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.type.ApplyStatus;
 import nextstep.courses.repository.ApplyRepository;
 import nextstep.courses.repository.ChargedSessionRepository;
 import nextstep.courses.repository.FreeSessionRepository;
@@ -31,22 +32,24 @@ public class JdbcApplyRepository implements ApplyRepository {
 
     @Override
     public int save(Apply apply) {
-        String sql = "insert into apply (session_id, user_id, created_at) values(?, ?, ?)";
+        String sql = "insert into apply (session_id, user_id, status, created_at) values(?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             apply.session().id(),
             apply.student().getId(),
+            apply.status().name(),
             apply.createdAt());
     }
 
     @Override
     public Apply findById(Long id) {
-        String sql = "select id, session_id, user_id, created_at, updated_at from apply where id = ?";
+        String sql = "select id, session_id, user_id, status, created_at, updated_at from apply where id = ?";
         RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
                 rs.getLong(1),
                 session(rs.getLong(2)),
                 nsUser(rs.getLong(3)),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                ApplyStatus.valueOf(rs.getString(4)),
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

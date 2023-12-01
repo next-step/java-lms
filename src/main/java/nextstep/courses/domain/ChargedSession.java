@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.type.Price;
-import nextstep.courses.domain.type.SessionStatus;
 import nextstep.courses.exception.DifferentSessionAmountException;
 import nextstep.courses.exception.ExceedMaxStudentException;
 import nextstep.payments.domain.Payment;
@@ -17,24 +16,41 @@ public class ChargedSession extends Session {
     private final int maxNumberOfStudent;
     private final Price price;
 
-    public ChargedSession(Duration duration, Image image, int maxNumberOfStudent, BigDecimal price) {
-        this(0L, duration, image, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price) {
+        this(0L, duration, images, duration.sessionStatus(LocalDate.now()), maxNumberOfStudent, price, LocalDateTime.now(), null);
     }
 
-    public ChargedSession(Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
-        this(0L, duration, image, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), maxNumberOfStudent, price, createdAt, null);
     }
 
-    public ChargedSession(Long id, Duration duration, Image image, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
+    public ChargedSession(Duration duration, Images images, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, duration, images, duration.sessionStatus(createdAt.toLocalDate()), maxNumberOfStudent, price, createdAt, updatedAt);
+    }
+
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price) {
+        this(0L, duration, images, status, maxNumberOfStudent, price, LocalDateTime.now(), null);
+    }
+
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price, LocalDateTime createdAt) {
+        this(0L, duration, images, status, maxNumberOfStudent, price, createdAt, null);
+    }
+
+    public ChargedSession(Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
                           LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, duration, image, status, createdAt, updatedAt);
+        this(0L, duration, images, status, maxNumberOfStudent, price, createdAt, updatedAt);
+    }
+
+    public ChargedSession(Long id, Duration duration, Images images, SessionStatus status, int maxNumberOfStudent, BigDecimal price,
+                          LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, duration, images, status, createdAt, updatedAt);
         this.maxNumberOfStudent = maxNumberOfStudent;
         this.price = new Price(price);
     }
 
-    public void apply(Payment payment, NsUser nsUser) {
+    public void apply(Payment payment, NsUser nsUser, LocalDateTime applyAt) {
         validate(payment);
-        addStudent(nsUser);
+        addStudent(nsUser, applyAt);
     }
 
     private void validate(Payment payment) {
@@ -50,7 +66,7 @@ public class ChargedSession extends Session {
     }
 
     private void validateMaxNumberOfStudent() {
-        if (this.maxNumberOfStudent <= this.applys.size()) {
+        if (!this.applies.isApprovalCountLessThan(this.maxNumberOfStudent)) {
             throw new ExceedMaxStudentException("수강 인원을 초과했습니다.");
         }
     }

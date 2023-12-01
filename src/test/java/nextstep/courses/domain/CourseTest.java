@@ -15,7 +15,7 @@ public class CourseTest {
     public void add_session() {
         Duration duration = new Duration(LocalDate.now(), LocalDate.now());
         Image image = new Image(1, "JPG", 300, 200);
-        Session session = new FreeSession(duration, image);
+        Session session = new FreeSession(duration, new Images(Arrays.asList(image)));
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
 
         course.addSession(session);
