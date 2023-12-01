@@ -4,9 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.enums.SessionRepository;
+import nextstep.courses.domain.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
