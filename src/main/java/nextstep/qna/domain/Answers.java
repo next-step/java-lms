@@ -25,9 +25,9 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public DeleteHistories delete(NsUser loginUser) {
+    public List<DeleteHistory> delete(NsUser loginUser) {
         return answers.stream()
                       .map(answer -> answer.delete(loginUser))
-                      .collect(collectingAndThen(toList(), DeleteHistories::new));
+                      .collect(toUnmodifiableList());
     }
 }

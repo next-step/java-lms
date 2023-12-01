@@ -36,9 +36,9 @@ public class QuestionTest {
                                                         givenQuestion.getId(),
                                                         loginUser,
                                                         NOW);
-        DeleteHistories expected = new DeleteHistories(List.of(deleteHistory));
+        List<DeleteHistory> expected = List.of(deleteHistory);
 
-        DeleteHistories actual = givenQuestion.delete(loginUser);
+        List<DeleteHistory> actual = givenQuestion.delete(loginUser);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -64,9 +64,9 @@ public class QuestionTest {
                                                         givenAnswer1.getId(),
                                                         loginUser,
                                                         NOW);
-        DeleteHistories expected = new DeleteHistories(List.of(deletedQuestion, deletedAnswer1, deletedAnswer2));
+        List<DeleteHistory> expected = List.of(deletedQuestion, deletedAnswer1, deletedAnswer2);
 
-        DeleteHistories actual = givneQuestion.delete(loginUser);
+        List<DeleteHistory> actual = givneQuestion.delete(loginUser);
 
         assertThat(actual).isEqualTo(expected);
     }
