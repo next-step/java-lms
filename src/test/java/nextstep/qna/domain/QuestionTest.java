@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.qna.CannotDeleteException;
@@ -33,5 +34,24 @@ public class QuestionTest {
         assertThatThrownBy(() -> question.delete(JAVAJIGI))
                 .isExactlyInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("로그인 사용자, 질문자와 모든 답변자들이 같으면 답변을 삭제 상태로 바꿀 수 있다.")
+    void delete_question_and_answers() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+        Answer answer1 = new Answer(JAVAJIGI, question, "답변1");
+        question.addAnswer(answer1);
+        Answer answer2 = new Answer(JAVAJIGI, question, "답변2");
+        question.addAnswer(answer2);
+
+        // when
+        question.delete(JAVAJIGI);
+
+        // then
+        assertThat(question.isDeleted()).isTrue();
+        assertThat(answer1.isDeleted()).isTrue();
+        assertThat(answer2.isDeleted()).isTrue();
     }
 }

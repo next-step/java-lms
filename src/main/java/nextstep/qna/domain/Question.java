@@ -88,15 +88,18 @@ public class Question {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         if (isOwner(loginUser)) {
             deleteAnswers();
+            return;
         }
         throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
     private void deleteAnswers() throws CannotDeleteException {
         for (Answer answer : this.answers) {
-            if (!answer.isOwner(this.writer)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            if (answer.isOwner(this.writer)) {
+                answer.delete();
+                continue;
             }
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
