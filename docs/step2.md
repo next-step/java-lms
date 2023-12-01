@@ -62,11 +62,11 @@
 
 ```mermaid
 ---
-title: REGISTRATION
+title: 수강 신청
 ---
 classDiagram
-    COURSES <.. SESSIONS
-    SESSIONS <.. REGISTRATIONS
+    COURSES "1" .. "N" SESSIONS
+    SESSIONS "1" .. "N" REGISTRATIONS
     PAYMENTS <.. REGISTRATIONS
     USERS <.. REGISTRATIONS
 ```
