@@ -2,7 +2,10 @@ package nextstep.courses.domain.field;
 
 public class CoverImage {
 
-    private long size;
+    public static final Long SIZE_LIMIT = 1024L * 1024L;
+    private static final double DENOMINATOR = (3d / 2d);
+
+    private long size; // less than MB
 
     private long width;
 
@@ -14,9 +17,31 @@ public class CoverImage {
                       long width,
                       long height,
                       ImageType imageType) {
+        overSize(size);
+        checkSizeRatio(width, height);
+
         this.size = size;
         this.width = width;
         this.height = height;
         this.imageType = imageType;
+    }
+
+    public static CoverImage of(long size,
+                                long width,
+                                long height,
+                                String imageType) {
+        return new CoverImage(size, width, height, ImageType.getType(imageType));
+    }
+
+    private void overSize(long size) {
+        if (SIZE_LIMIT < size) {
+            throw new IllegalArgumentException("이미지 크기가 너무 큽니다(1MB 초과)");
+        }
+    }
+
+    private void checkSizeRatio(double width, double height) {
+        if (width / DENOMINATOR != height) {
+            throw new IllegalArgumentException("가로와 세로의 비율이 적절하지 않습니다");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package nextstep.courses.domain.entity;
 
+import static nextstep.courses.domain.field.ImageType.GIF;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import nextstep.courses.domain.field.CoverImage;
-import nextstep.courses.domain.field.ImageType;
 
 class NsSessionTest {
 
@@ -17,7 +17,7 @@ class NsSessionTest {
 
     @BeforeEach
     void init() {
-        coverImage = new CoverImage(1L, 300L, 200L, ImageType.GIF);
+        coverImage = CoverImage.of(CoverImage.SIZE_LIMIT, 300L, 200L, GIF.getExtension());
     }
 
     @Test
