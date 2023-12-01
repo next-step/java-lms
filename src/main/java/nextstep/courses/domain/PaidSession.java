@@ -20,8 +20,6 @@ public class PaidSession extends Session {
     @Override
     public void apply(Payment payment) {
         validateState();
-        //Todo : payment의 역할이 맞을까 -> 해당 객체 가격을 vo로 만들고 싶자만 패키지가 다르다
-        //하지만 반대로 Amount객체의 역할로 하면 getter를 써야한다....
         validateFee(payment);
         participants.isMaxCount(maxApplyCount);
         this.participants = participants.add(payment.findUser());
