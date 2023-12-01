@@ -6,12 +6,12 @@ import nextstep.courses.domain.enums.Status;
 import nextstep.users.domain.NsUser;
 
 public class Session extends BaseTimeEntity{
-	private Long id;
-	private String title;
-	private Period period;
-	private Image image;
-	private Status status;
-	private SessionRegistration sessionRegistration;
+	private final Long id;
+	private final String title;
+	private final Period period;
+	private final Image image;
+	private final Status status;
+	private final SessionRegistration sessionRegistration;
 
 	public Session(
 		LocalDateTime createdAt, LocalDateTime updatedAt,

@@ -3,11 +3,11 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class Course extends BaseTimeEntity{
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private Long creatorId;
+    private final Long creatorId;
 
     private Sessions sessions;
 
