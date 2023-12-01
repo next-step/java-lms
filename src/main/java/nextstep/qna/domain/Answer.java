@@ -79,9 +79,9 @@ public class Answer {
     }
 
     public Answer delete(NsUser writer) throws CannotDeleteException {
-        if (!this.isOwner(writer)) {
+        if (!isOwner(writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        return this.setDeleted(true);
+        return setDeleted(true);
     }
 }
