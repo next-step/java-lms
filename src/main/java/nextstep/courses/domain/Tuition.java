@@ -17,6 +17,6 @@ public class Tuition {
 	private void isGreaterThanZero() {
 		if (tuition < 0) {
 			throw new IllegalArgumentException("강의 신청 비용은 0보다 작을 수 없습니다.");
-		};
+		}
 	}
 }

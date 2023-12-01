@@ -30,7 +30,7 @@ public class SessionRegistration {
 
 	private void validCapacity() {
 		if (!paidType.isFree()) {
-			maximumCapacity.isOver(students.number());
+			maximumCapacity.isGreaterThan(students.number());
 		}
 	}
 
