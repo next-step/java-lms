@@ -8,6 +8,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import java.util.stream.Stream;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,5 +33,20 @@ public class AnswerTest {
                 arguments(JAVAJIGI, true),
                 arguments(SANJIGI, false)
         );
+    }
+
+    @Test
+    @DisplayName("질문이 삭제되면 아래 댓글들도 삭제된다.")
+    void delete() {
+        // given
+        Question question = new Question(JAVAJIGI, "질문1", "질문1입니다");
+        Answer answer = new Answer(JAVAJIGI, question, "답글2입니다");
+        question.addAnswer(answer);
+
+        // when
+        answer.delete();
+
+        // then
+        assertThat(answer.isDeleted()).isTrue();
     }
 }
