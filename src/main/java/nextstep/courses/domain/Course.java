@@ -13,9 +13,6 @@ public class Course extends BaseTimeEntity{
 
     private final List<Session> sessions = new ArrayList<>();
 
-    public Course() {
-    }
-
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }

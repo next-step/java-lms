@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.enums;
 
 import java.util.Arrays;
 
@@ -7,7 +7,8 @@ public enum ImageType {
 	JPG,
 	JPEG,
 	PNG,
-	SVG;
+	SVG
+	;
 
 	ImageType() {}
 

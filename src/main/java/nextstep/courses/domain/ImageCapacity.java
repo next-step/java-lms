@@ -1,10 +1,10 @@
 package nextstep.courses.domain;
 
-public class Capacity {
+public class ImageCapacity {
 	private static final double MAX_CAPACITY = 1.0;
 	private final double capacity;
 
-	public Capacity(Double capacity) {
+	public ImageCapacity(Double capacity) {
 		this.capacity = capacity;
 		isOverCapacity();
 	}
