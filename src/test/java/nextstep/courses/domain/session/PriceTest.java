@@ -1,5 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.Price;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

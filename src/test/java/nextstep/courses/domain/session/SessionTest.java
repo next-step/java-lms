@@ -1,5 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.type.SessionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
