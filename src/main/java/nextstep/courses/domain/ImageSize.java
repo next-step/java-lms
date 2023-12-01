@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 public class ImageSize {
 	private static final int WIDTH_MIN = 300;
 	private static final int HEIGHT_MIN = 200;
-	private static final int IMAGE_RATIO = 3/2;
+	private static final double IMAGE_RATIO = 1.5d;
 
 	private final int width;
 	private final int height;
@@ -33,7 +33,7 @@ public class ImageSize {
 	}
 
 	private void isRatioConstant() {
-		if (width/height != IMAGE_RATIO) {
+		if ((double) width/height != IMAGE_RATIO) {
 			throw new IllegalArgumentException("이미지의 가로 세로 길이 비율이 알맞지 않습니다.");
 		}
 	}
