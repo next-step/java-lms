@@ -40,6 +40,14 @@ public class SessionEnrolment {
         return this.sessionStudent.isMaxStudents();
     }
 
+    public String sessionStatusType() {
+        return this.sessionStatusType.toString();
+    }
+
+    public Long amount() {
+        return this.amount.amount();
+    }
+
     private void defaultValidate() {
         if (!this.sessionStatusType.isRecruitment()) {
             throw new java.lang.IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
@@ -59,4 +67,5 @@ public class SessionEnrolment {
     private boolean isInCorrectAmount(Long userPayed) {
         return !this.amount.isCorrectAmount(userPayed);
     }
+
 }

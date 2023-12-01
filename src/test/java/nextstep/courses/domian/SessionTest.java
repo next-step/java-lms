@@ -99,7 +99,7 @@ class SessionTest {
 
     private Session createPaySession(Students students, int maxStudentCount, SessionStatusType sessionStatusType, Long amount) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
         SessionStudent sessionStudent = new SessionStudent(students, maxStudentCount);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), false);
 
@@ -108,7 +108,7 @@ class SessionTest {
 
     private Session createFreeSession(Students students) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        CoverImage coverImage = new CoverImage(new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
+        CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
         SessionStudent sessionStudent = new SessionStudent(students);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, new Amount(0L), true);
 

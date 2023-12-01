@@ -19,6 +19,10 @@ public class Amount {
         return Objects.equals(this.amount, amount);
     }
 
+    public Long amount() {
+        return this.amount;
+    }
+
     private void validate(Long amount) {
         if (amount == null) {
             throw new IllegalArgumentException("금액은 비어있을 수 없습니다.");
