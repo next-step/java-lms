@@ -3,6 +3,7 @@ package nextstep.sessions.domain.data;
 import java.time.LocalDateTime;
 
 import nextstep.courses.domain.Course;
+import nextstep.payments.domain.Payment;
 import nextstep.registrations.domain.data.Registrations;
 import nextstep.sessions.domain.data.type.SessionState;
 import nextstep.sessions.domain.data.vo.*;
@@ -43,12 +44,15 @@ public class Session {
         return new Session(sessionType, sessionState, registrations);
     }
 
-    public void validateEnrollment() {
+    public void validateEnrollment(Payment payment) {
         if (!sessionState.isRecruiting()) {
             throw new SessionsException("모집중이 아닌 강의입니다.");
         }
         if (sessionType.isPaid() && !sessionType.isEnoughCapacity(registrations.size())) {
             throw new SessionsException("강의 최대 인원을 초과했습니다.");
+        }
+        if (sessionType.isPaid() && !sessionType.isEqualPaidAmount(payment)) {
+            throw new SessionsException("수강료와 결제한 금액이 다릅니다.");
         }
     }
 
