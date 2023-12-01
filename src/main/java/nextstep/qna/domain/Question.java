@@ -2,10 +2,10 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.answer.Answers;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -13,7 +13,8 @@ public class Question {
     private String title;
     private String contents;
     private NsUser writer;
-    private List<Answer> answers = new ArrayList<>();
+//    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
     private boolean deleted = false;
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
@@ -67,6 +68,7 @@ public class Question {
     }
 
     public void isDeletedBy(NsUser loginUser) throws CannotDeleteException {
+        answers.isDeleteBy(loginUser);
         canDeleteBy(loginUser);
         deleted = true;
     }
@@ -87,8 +89,12 @@ public class Question {
         return deleted;
     }
 
+//    public List<Answer> getAnswers() {
+//        return answers;
+//    }
+
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswerList();
     }
 
     @Override

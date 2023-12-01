@@ -1,5 +1,6 @@
 package nextstep.qna.domain.history;
 
+import nextstep.qna.domain.Question;
 import nextstep.qna.domain.answer.Answers;
 
 import java.util.ArrayList;
@@ -10,8 +11,10 @@ public class DeleteHistories {
 
     private List<DeleteHistory> deleteHistoryList = new ArrayList<>();
 
-    public void add(DeleteHistory deleteHistory) {
-        deleteHistoryList.add(deleteHistory);
+    public void addQuestion(Question question) {
+        Answers answers = new Answers(question.getAnswers());
+        deleteHistoryList.add(new DeleteHistory().has(question));
+        addAnswers(answers);
     }
 
     public void addAnswers(Answers answers) {
