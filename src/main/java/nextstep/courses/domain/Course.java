@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Course extends BaseTimeEntity{
     private Long id;
@@ -11,7 +9,7 @@ public class Course extends BaseTimeEntity{
 
     private Long creatorId;
 
-    private final List<Session> sessions = new ArrayList<>();
+    private Sessions sessions;
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
