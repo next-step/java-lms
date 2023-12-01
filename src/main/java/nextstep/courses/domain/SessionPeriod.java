@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class SessionPeriod {
@@ -22,7 +20,7 @@ public class SessionPeriod {
     }
 
     public SessionPeriod(LocalDate startDate, LocalDate endDate) {
-        this(startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+        this(startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX.withNano(0)));
     }
 
     public LocalDateTime startDate() {

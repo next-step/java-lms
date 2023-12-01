@@ -27,6 +27,10 @@ public class Session {
     }
 
     public String title() {
-        return title;
+        return this.title;
+    }
+
+    public boolean isFree(){
+        return this.isFree;
     }
 }
