@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,7 +42,7 @@ public class PriceTest {
         ParticipantCount participantCount = new ParticipantCount(10);
         // when
         Price price = new Price(isFree, money, participantCount);
-        price.pay(money);
+        price.addParticipant(money);
         // then
         assertThat(price.nowParticipants()).isEqualTo(1);
     }
@@ -58,7 +57,7 @@ public class PriceTest {
         // when
         Price price = new Price(isFree, money, participantCount);
         // then
-        assertThatThrownBy(() -> price.addParticipant())
+        assertThatThrownBy(() -> price.addParticipant(money))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -72,7 +71,7 @@ public class PriceTest {
         // when
         Price price = new Price(isFree, money, participantCount);
         // then
-        assertThatThrownBy(() -> price.pay(1000))
+        assertThatThrownBy(() -> price.addParticipant(1000))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
