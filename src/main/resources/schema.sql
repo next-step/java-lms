@@ -68,5 +68,5 @@ CREATE TABLE session (
     session_status_type varchar(20),
     amount bigint,
     is_free boolean,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
