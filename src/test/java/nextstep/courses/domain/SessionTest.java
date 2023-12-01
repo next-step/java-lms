@@ -4,8 +4,6 @@ import nextstep.courses.type.SessionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest {
@@ -14,9 +12,7 @@ public class SessionTest {
     @Test
     void 강의생성() {
         // given
-        LocalDateTime startDateTime = LocalDateTime.of(2021, 8, 1, 0, 0);
-        LocalDateTime endDateTime = LocalDateTime.of(2021, 8, 31, 23, 59);
-        SessionPeriod sessionPeriod = new SessionPeriod(startDateTime, endDateTime);
+        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Session session = new Session("TDD", sessionPeriod, true, 10000, 10, SessionStatus.PREPAR);
         // when
         // then
