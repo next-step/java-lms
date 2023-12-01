@@ -3,6 +3,9 @@ package nextstep.courses.domain.session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 public class ParticipantCountTest {
 
     @DisplayName("최대 참가자 수 생성하고 참여자는 0명이다.")
@@ -13,17 +16,17 @@ public class ParticipantCountTest {
         // when
         ParticipantCount participantCount = new ParticipantCount(maxCount);
         // then
-        assertThat(participantCount.max()).isEqualTo(0);
+        assertThat(participantCount.max()).isEqualTo(10);
     }
 
     @DisplayName("최대 참가자 수 생성하고 기본참여자는 2명이다.")
     @Test
-    void 최대참가자수_생성하고_참여자는_0명이다() {
+    void 최대참가자수_생성하고_기본참여자는_2명이다() {
         // given
         int maxCount = 10;
         int defaultCount = 2;
         // when
-        ParticipantCount participantCount = new ParticipantCount(maxCount,defaultCount);
+        ParticipantCount participantCount = new ParticipantCount(maxCount, defaultCount);
         // then
         assertThat(participantCount.nowCount()).isEqualTo(2);
     }
@@ -45,9 +48,11 @@ public class ParticipantCountTest {
     void 최대참가자수를_초과하면_예외가_발생한다() {
         // given
         int maxCount = 10;
+        int defaultCount = 10;
         // when
+        ParticipantCount participantCount = new ParticipantCount(maxCount, defaultCount);
         // then
-        assertThatThrownBy(() -> new ParticipantCount(maxCount))
+        assertThatThrownBy(() -> participantCount.add())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
