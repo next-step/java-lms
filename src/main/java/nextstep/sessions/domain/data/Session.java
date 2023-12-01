@@ -11,15 +11,21 @@ import nextstep.sessions.domain.data.vo.Duration;
 public class Session {
 
     private Long id;
-    private final Course course;
-    private final String name;
+    private Course course;
+    private String name;
     private final SessionType sessionType;
     private final int fee;
     private final int capacity;
-
     private final SessionState sessionState;
-    private final CoverImage coverImage;
-    private final Duration duration;
+    private CoverImage coverImage;
+    private Duration duration;
+
+    public Session(SessionType sessionType, int fee, int capacity, SessionState sessionState) {
+        this.sessionType = sessionType;
+        this.fee = fee;
+        this.capacity = capacity;
+        this.sessionState = sessionState;
+    }
 
     public Session(Course course, String name, SessionType sessionType, int fee, int capacity, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate) {
         this.course = course;
@@ -32,8 +38,16 @@ public class Session {
         this.duration = new Duration(startDate, endDate);
     }
 
+    public static Session ofPaidSession(int fee, int capacity, SessionState sessionState) {
+        return new Session(SessionType.PAY, fee, capacity, sessionState);
+    }
+
     public boolean isPaid() {
         return sessionType.isPay();
+    }
+
+    public boolean isRecruiting() {
+        return sessionState.isRecruiting();
     }
 
     public int capacity() {

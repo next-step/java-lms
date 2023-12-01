@@ -16,8 +16,11 @@ public class Registrations {
         this.registrations = new ArrayList<>(registrations);
     }
 
-    public void validateRegistration() {
+    public void validateSession() {
         Session session = registrations.get(0).session();
+        if (!session.isRecruiting()) {
+            throw new RegistrationException("모집중이 아닌 강의입니다.");
+        }
         if (session.isPaid() && !isEnoughCapacity(session)) {
             throw new RegistrationException("강의 최대 인원을 초과했습니다.");
         }

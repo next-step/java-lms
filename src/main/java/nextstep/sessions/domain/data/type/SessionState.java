@@ -12,4 +12,8 @@ public enum SessionState {
         this.state = state;
         this.title = title;
     }
+
+    public boolean isRecruiting() {
+        return this == RECRUITING;
+    }
 }

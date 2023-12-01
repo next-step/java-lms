@@ -16,7 +16,7 @@ public class RegistrationService {
 
     public void register(long sessionId, NsUser loginUser, Payment payment) {
         Registrations registrations = registrationRepository.findAllBySessionId(sessionId);
-        registrations.validateRegistration();
+        registrations.validateSession();
         Registration registration = registrations.newRegistration(loginUser, payment);
         registrationRepository.save(registration);
     }
