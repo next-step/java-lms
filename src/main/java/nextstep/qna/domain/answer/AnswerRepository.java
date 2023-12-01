@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
 import java.util.List;
 

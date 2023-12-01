@@ -1,5 +1,8 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.history;
 
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.answer.Answer;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -7,13 +10,9 @@ import java.util.Objects;
 
 public class DeleteHistory {
     private Long id;
-
     private ContentType contentType;
-
     private Long contentId;
-
     private NsUser deletedBy;
-
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
@@ -24,6 +23,31 @@ public class DeleteHistory {
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public DeleteHistory has(Object o) {
+        if (Question.class.isAssignableFrom(o.getClass())) {
+            return hasQuestion((Question) o);
+        }
+        return hasAnswer((Answer) o);
+    }
+
+    // New method
+    public DeleteHistory hasQuestion(Question question) {
+        question.setDeleted(true);
+        contentType = ContentType.QUESTION;
+        contentId = question.getId();
+        deletedBy = question.getWriter();
+        return this;
+    }
+
+    // New method
+    public DeleteHistory hasAnswer(Answer answer) {
+        answer.setDeleted(true);
+        contentType = ContentType.ANSWER;
+        contentId = answer.getId();
+        deletedBy = answer.getWriter();
+        return this;
     }
 
     @Override

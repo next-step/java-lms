@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.history;
 
 import java.util.List;
 
