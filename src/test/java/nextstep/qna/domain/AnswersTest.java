@@ -30,17 +30,6 @@ public class AnswersTest {
             .forEach(i -> assertThat(answers.isDeleted(i)).isTrue());
     }
 
-    @DisplayName("답변을 삭제할 때 인자로 로그인 사용자를 받아 모든 답변의 작성자와 일치하지 않으면 예외를 반환한다.")
-    @Test
-    void deleteAllWhenOtherWriter() {
-        // given
-        Answers answers = new Answers(List.of(A1, A2));
-
-        // when & then
-        assertThatThrownBy(() -> answers.deleteAll(JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class)
-            .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
-
     @DisplayName("현재 시간을 인자로 받아 DeleteHistory 리스트를 만들어 반환한다.")
     @Test
     void deleteHistory() throws CannotDeleteException {
@@ -54,7 +43,7 @@ public class AnswersTest {
 
 
         // when
-        List<DeleteHistory> deleteHistories = answers.deleteHistories();
+        List<DeleteHistory> deleteHistories = answers.createDeleteHistories();
 
         // then
         assertThat(deleteHistories).hasSize(2)

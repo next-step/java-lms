@@ -55,10 +55,6 @@ public class Question {
         return deleted;
     }
 
-    public LocalDateTime deletedDate() {
-        return this.deletedDate;
-    }
-
     public void delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
         validateOtherWriter(loginUser);
 
@@ -75,7 +71,7 @@ public class Question {
 
     public List<DeleteHistory> createDeleteHistories() {
         if (deleted) {
-            List<DeleteHistory> deleteHistories = answers.deleteHistories();
+            List<DeleteHistory> deleteHistories = answers.createDeleteHistories();
             deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, deletedDate));
 
             return deleteHistories;

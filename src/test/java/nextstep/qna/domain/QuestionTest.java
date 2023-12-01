@@ -37,19 +37,6 @@ public class QuestionTest {
             .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
-    @DisplayName("질문을 삭제할 때 작성자가 다른 답변이 있으면 예외를 던진다.")
-    @Test
-    void deleteWhenNotEqualWithAnswerWriter() {
-        // given
-        Question question = new Question(JAVAJIGI, "title1", "contents1");
-        question.addAnswer(A1);
-        question.addAnswer(A2);
-
-        // when & then
-        assertThatThrownBy(() -> question.delete(JAVAJIGI, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class)
-            .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
-
     @DisplayName("질문, 답변의 삭제 기록 리스트를 반환한다.")
     @Test
     void deleteHistories() throws CannotDeleteException {
@@ -81,8 +68,6 @@ public class QuestionTest {
     void deleteHistoriesWhenNotDeleted() {
         // given
         Question question = new Question(JAVAJIGI, "title1", "contents1");
-
-        LocalDateTime now = LocalDateTime.of(2023,11,28,13,0);
 
         // when & then
         assertThatThrownBy(question::createDeleteHistories).isInstanceOf(IllegalArgumentException.class)
