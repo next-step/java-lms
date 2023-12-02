@@ -11,6 +11,10 @@ public class CoverImage {
     private final int width;
     private final int height;
 
+    public CoverImage(final int fileSize, final String imageType, final int width, final int height) {
+        this(fileSize, ImageType.fromString(imageType), width, height);
+    }
+
     public CoverImage(final int fileSize, final ImageType imageType, final int width, final int height) {
         validate(fileSize, imageType, width, height);
 
@@ -20,8 +24,8 @@ public class CoverImage {
         this.height = height;
     }
 
-    public CoverImage(final int fileSize, final String imageType, final int width, final int height) {
-        this(fileSize, ImageType.fromString(imageType), width, height);
+    public static CoverImage defaultCoverImage() {
+        return new CoverImage(1000, ImageType.JPG, 300, 200);
     }
 
     private void validate(final int fileSize, final ImageType imageType, final int width, final int height) {
@@ -31,10 +35,6 @@ public class CoverImage {
         Assert.isTrue(height >= 200, "height must be greater than and equal to 200 pixel");
 
         Assert.isTrue((double) width / height == 1.5, "ratio must be 1.5");
-    }
-
-    public static CoverImage defaultCoverImage() {
-        return new CoverImage(1000, ImageType.JPG, 300, 200);
     }
 
     @Override
