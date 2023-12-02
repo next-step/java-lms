@@ -1,6 +1,6 @@
 package nextstep.courses.domain.image;
 
-public class ImageSize {
+public class ImagePixel {
 
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
@@ -9,7 +9,7 @@ public class ImageSize {
     private final int width;
     private final int height;
 
-    public ImageSize(int width, int height) {
+    public ImagePixel(int width, int height) {
         validate(width, height);
         this.width = width;
         this.height = height;
