@@ -109,4 +109,4 @@
 - [X] ~~현재 수강신청한 학생의 수를 `int`로 가지고 있는게 아니라, `List<NsUser>`로 관리하자.~~
 - [X] ~~`isRecruiting()` 메서드는 `SessionStatus`에서 관리하는게 조금 더 객체지향적일 것 같다.~~
 - [X] ~~주생성자는 부생성자 밑에 위치 시키자.~~
-- [ ] `Session` 클래스가 `enroll` 객체를 가지게 하자. `ex. public void enroll(NsUser nsUser)`
+- [X] ~~`Session` 클래스가 `enroll` 객체를 가지게 하자. `ex. public void enroll(NsUser nsUser)`~~

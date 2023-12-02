@@ -50,9 +50,9 @@ class CourseTest {
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         //when
-        course.addSession(Session.of("로또", 0, startDate, endDate));
-        course.addSession(Session.of("자동차 게임", 3000, startDate, endDate));
-        course.addSession(Session.of("레거시 코드 리팩터링", 1000, startDate, endDate));
+        course.addSession(new Session("로또", 0, startDate, endDate));
+        course.addSession(new Session("자동차 게임", 3000, startDate, endDate));
+        course.addSession(new Session("레거시 코드 리팩터링", 1000, startDate, endDate));
 
         //then
         assertThat(course.getSessions()).hasSize(3);

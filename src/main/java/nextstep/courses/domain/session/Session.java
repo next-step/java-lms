@@ -5,63 +5,47 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public abstract class Session {
+public class Session {
     private SessionMakingData sessionMakingData;
     private SessionStudent sessionStudent;
     private SessionStatus status;
 
-    protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
+    public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(new SessionInfo(title, price), new SessionDate(startDate, endDate), null);
     }
 
-    protected Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+    public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
         this(new SessionInfo(title, price), new SessionDate(startDate, endDate), coverImage);
     }
 
-    protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
+    public Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), null);
     }
 
-    protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+    public Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
         this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), coverImage);
     }
 
-    protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
+    public Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
         this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
 
         this.status = SessionStatus.READY;
         this.sessionStudent = new SessionStudent(15);
     }
 
-    public static Session of(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
-        if (price == 0) {
-            return new FreeSession(title, startDate, endDate);
-        }
-
-        return new PaidSession(title, price, startDate, endDate);
-    }
-
-    public static Session of(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        if (price == 0) {
-            return new FreeSession(title, startDate, endDate, coverImage);
-        }
-
-        return new PaidSession(title, price, startDate, endDate, coverImage);
-    }
-
-    protected long getPrice() {
+    public long getPrice() {
         return this.sessionMakingData.getPrice();
     }
 
-    protected int getCurrentStudentCount() {
+    public int getCurrentStudentCount() {
         return this.sessionStudent.getCurrentStudentCount();
     }
 
-    protected boolean isReachedMaxStudentLimit() {
+    public boolean isReachedMaxStudentLimit() {
         return this.sessionStudent.isReachedMaxStudentLimit();
     }
 
-    protected void increaseEnrollment(final NsUser user) {
+    public void increaseEnrollment(final NsUser user) {
         this.sessionStudent.increaseStudentCount(user);
     }
 
@@ -69,11 +53,11 @@ public abstract class Session {
         this.status = status;
     }
 
-    protected boolean isNotRecruiting() {
+    public boolean isNotRecruiting() {
         return !this.status.isRecruiting();
     }
 
-    protected CoverImage getCoverImage() {
+    public CoverImage getCoverImage() {
         return this.sessionMakingData.getCoverImage();
     }
 
@@ -93,6 +77,25 @@ public abstract class Session {
         return this.sessionMakingData.isPaidSession();
     }
 
+    public void enroll(Payment payment, NsUser user) {
+        if (isNotRecruiting()) {
+            throw new IllegalStateException("session is not recruiting");
+        }
 
-    public abstract void enroll(Payment payment, NsUser user);
+        if (isPaidSession()) {
+            validateIfPaidSession(payment);
+        }
+
+        increaseEnrollment(user);
+    }
+
+    private void validateIfPaidSession(final Payment payment) {
+        if (payment.isNotPaid(getPrice())) {
+            throw new IllegalStateException("paid amount is different with price");
+        }
+
+        if (isReachedMaxStudentLimit()) {
+            throw new IllegalStateException("max student limit is reached");
+        }
+    }
 }
