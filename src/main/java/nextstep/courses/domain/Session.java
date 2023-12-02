@@ -4,5 +4,6 @@ public class Session {
 
     private Long id;
 
+    private SessionPeriod period;
 
 }
