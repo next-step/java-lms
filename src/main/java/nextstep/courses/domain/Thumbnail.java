@@ -12,6 +12,12 @@ public class Thumbnail {
     private final FileDimensions thumbnailDimensions;
 
     public Thumbnail(Integer thumbnailId, String thumbnailName,
+                     long thumbnailSize, int thumbnailWidth, int thumbnailHeight) {
+        this(thumbnailId, thumbnailName, new FileSize(thumbnailSize),
+                new FileDimensions(thumbnailWidth, thumbnailHeight));
+    }
+
+    public Thumbnail(Integer thumbnailId, String thumbnailName,
                      FileSize thumbnailSize, FileDimensions thumbnailDimensions) {
         validateThumbnailExt(thumbnailName);
         this.thumbnailId = thumbnailId;
