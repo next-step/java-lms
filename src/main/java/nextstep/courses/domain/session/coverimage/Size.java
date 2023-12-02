@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session.coverimage;
 
+import nextstep.courses.domain.session.coverimage.wrapper.CapacitySize;
 import nextstep.courses.domain.session.coverimage.wrapper.Height;
 import nextstep.courses.domain.session.coverimage.wrapper.Width;
+import nextstep.courses.exception.ImageCapacitySizeException;
 import nextstep.courses.exception.ImageSizeException;
 
 public class Size {
@@ -11,11 +13,14 @@ public class Size {
 
     private Width width;
     private Height height;
+    private CapacitySize capacitySize;
 
-    public Size(int width, int height) throws ImageSizeException {
+    public Size(int width, int height, long capacitySize) throws ImageSizeException {
         validateAspectRatio(width, height);
+
         this.width = new Width(width);
         this.height = new Height(height);
+        this.capacitySize = new CapacitySize(capacitySize);
     }
 
     private void validateAspectRatio(int width, int height) throws ImageSizeException {
