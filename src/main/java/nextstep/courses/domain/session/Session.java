@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +30,7 @@ public abstract class Session {
         this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
 
         this.status = SessionStatus.READY;
-        this.sessionStudent = new SessionStudent(15, 0);
+        this.sessionStudent = new SessionStudent(15);
     }
 
     public static Session of(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
@@ -60,8 +61,8 @@ public abstract class Session {
         return this.sessionStudent.isReachedMaxStudentLimit();
     }
 
-    protected void increaseEnrollment() {
-        this.sessionStudent.increaseStudentCount();
+    protected void increaseEnrollment(final NsUser user) {
+        this.sessionStudent.increaseStudentCount(user);
     }
 
     private void setStatus(SessionStatus status) {
@@ -92,5 +93,6 @@ public abstract class Session {
         return this.sessionMakingData.isPaidSession();
     }
 
-    public abstract void enroll(Payment payment);
+
+    public abstract void enroll(Payment payment, NsUser user);
 }

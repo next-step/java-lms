@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +15,11 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(final Payment payment) {
+    public void enroll(final Payment payment, final NsUser user) {
         if (isNotRecruiting()) {
             throw new IllegalStateException("session is not recruiting");
         }
 
-        increaseEnrollment();
+        increaseEnrollment(user);
     }
 }

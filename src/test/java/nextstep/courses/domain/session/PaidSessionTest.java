@@ -1,6 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +51,7 @@ class PaidSessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
-        assertThatThrownBy(() -> paidSession.enroll(payment))
+        assertThatThrownBy(() -> paidSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -63,7 +65,7 @@ class PaidSessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
-        assertThatThrownBy(() -> paidSession.enroll(payment))
+        assertThatThrownBy(() -> paidSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -78,7 +80,7 @@ class PaidSessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, (long) (price - 1));
 
         //when, then
-        assertThatThrownBy(() -> paidSession.enroll(payment))
+        assertThatThrownBy(() -> paidSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("paid amount is different with price");
     }
@@ -94,15 +96,19 @@ class PaidSessionTest {
         enrollForMaxLimit(paidSession, payment);
 
         //when, then
-        assertThatThrownBy(() -> paidSession.enroll(payment))
+        assertThatThrownBy(() -> paidSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("max student limit is reached");
     }
 
     private void enrollForMaxLimit(final Session paidSession, final Payment payment) {
         for (int count = 0; count < 15; count++) {
-            paidSession.enroll(payment);
+            paidSession.enroll(payment, buildTempUser(count));
         }
+    }
+
+    private NsUser buildTempUser(final int count) {
+        return new NsUser((long) (count + 100), "tempId" + count, "password", "name" + count, "temp" + count + "@slipp.net");
     }
 
     @Test
@@ -117,7 +123,7 @@ class PaidSessionTest {
         final int currentStudentCountBeforeEnroll = paidSession.getCurrentStudentCount();
 
         //when
-        paidSession.enroll(payment);
+        paidSession.enroll(payment, NsUserTest.JAVAJIGI);
         final int currentStudentCountAfterEnroll = paidSession.getCurrentStudentCount();
 
         //then

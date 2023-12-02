@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class FreeSessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 0L);
 
         //when, then
-        assertThatThrownBy(() -> freeSession.enroll(payment))
+        assertThatThrownBy(() -> freeSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -48,7 +49,7 @@ class FreeSessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 0L);
 
         //when, then
-        assertThatThrownBy(() -> freeSession.enroll(payment))
+        assertThatThrownBy(() -> freeSession.enroll(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -64,7 +65,7 @@ class FreeSessionTest {
         final int currentStudentCountBeforeEnroll = freeSession.getCurrentStudentCount();
 
         //when
-        freeSession.enroll(payment);
+        freeSession.enroll(payment, NsUserTest.JAVAJIGI);
         final int currentStudentCountAfterEnroll = freeSession.getCurrentStudentCount();
 
         //then

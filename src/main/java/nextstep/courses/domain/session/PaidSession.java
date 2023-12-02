@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +13,9 @@ public class PaidSession extends Session {
     protected PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
         super(title, price, startDate, endDate, coverImage);
     }
-    
+
     @Override
-    public void enroll(final Payment payment) {
+    public void enroll(final Payment payment, final NsUser user) {
         if (isNotRecruiting()) {
             throw new IllegalStateException("session is not recruiting");
         }
@@ -27,6 +28,6 @@ public class PaidSession extends Session {
             throw new IllegalStateException("max student limit is reached");
         }
 
-        increaseEnrollment();
+        increaseEnrollment(user);
     }
 }
