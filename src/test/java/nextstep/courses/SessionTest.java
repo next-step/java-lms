@@ -8,6 +8,7 @@ import nextstep.courses.enumeration.SessionStatus;
 import nextstep.courses.exception.CanNotRegisterSessionException;
 import nextstep.courses.exception.ExceedStudentsCountException;
 import nextstep.courses.exception.PaymentMisMatchException;
+import nextstep.courses.exception.StudentAlreadyApplyException;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -126,5 +127,15 @@ public class SessionTest {
         assertThatThrownBy(() -> sessionInReady.registerFreeSession(JAVAJIGI))
                 .isInstanceOf(CanNotRegisterSessionException.class)
                 .hasMessage("강의가 모집중이여야만 신청할 수 있습니다.");
+    }
+
+    @Test
+    @DisplayName("이미 등록한 학생은 다시 등록할 수 없다.")
+    void alreadyRegisterStudentTest() {
+        freeSession.registerFreeSession(JAVAJIGI);
+
+        assertThatThrownBy(() -> freeSession.registerFreeSession(JAVAJIGI))
+                .isInstanceOf(StudentAlreadyApplyException.class)
+                .hasMessage("이미 신청완료한 학생입니다.");
     }
 }
