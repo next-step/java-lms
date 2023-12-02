@@ -4,18 +4,18 @@ import nextstep.courses.exception.ImageSizeException;
 
 public class Width {
 
-    public static final int MINIMUM = 300;
+    private static final int MINIMUM = 300;
 
-    private int value;
+    private int px;
 
-    public Width(int value) throws ImageSizeException {
-        validate(value);
-        this.value = value;
+    public Width(int px) throws ImageSizeException {
+        validate(px);
+        this.px = px;
     }
 
-    private void validate(int value) throws ImageSizeException {
-        if (value < MINIMUM) {
-            throw new ImageSizeException(String.format("이미지의 너비는 %s이상 이어야 합니다. 현재 너비 :: %spx", MINIMUM, value));
+    private void validate(int px) throws ImageSizeException {
+        if (px < MINIMUM) {
+            throw new ImageSizeException(String.format("이미지의 너비는 %s이상 이어야 합니다. 현재 너비 :: %spx", MINIMUM, px));
         }
     }
 }
