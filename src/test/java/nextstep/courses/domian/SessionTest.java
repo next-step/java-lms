@@ -45,7 +45,7 @@ class SessionTest {
     @DisplayName("유료 강의라면 인원수 인원수에 맞게만 신청이 가능하다.")
     void enrolment_유료() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        Session session = createPaySession(students, 3, SessionStatusType.RECRUITMENT, 30_000L);
+        Session session = createPaySession(students, 3, SessionStatusType.ONGOING, 30_000L);
 
         NsUser newUser = createNewUser();
         session.enrolment(newUser, 30_000L);
@@ -59,7 +59,7 @@ class SessionTest {
     @DisplayName("유료 강의의 경우 강의 금액과 결제 금액이 다르다면 오류가 발생한다.")
     void enrolment_유료_금액불일치() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        Session session = createPaySession(students, 3, SessionStatusType.RECRUITMENT, 30_000L);
+        Session session = createPaySession(students, 3, SessionStatusType.ONGOING, 30_000L);
 
         NsUser newUser = createNewUser();
 
@@ -72,7 +72,7 @@ class SessionTest {
     @DisplayName("유료 강의의 경우 강의 인원수가 꽉 차있다면 신청이 불가능하다.")
     void enrolment_유료_인원수초과() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        Session session = createPaySession(students, 2, SessionStatusType.RECRUITMENT, 30_000L);
+        Session session = createPaySession(students, 2, SessionStatusType.ONGOING, 30_000L);
 
         NsUser newUser = createNewUser();
 
@@ -85,7 +85,7 @@ class SessionTest {
     @DisplayName("강의가 모집중이지 않은 경우 강의 신청시 오류가 발생한다.")
     void enrolment_not_recruitment() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        Session session = createPaySession(students, 3, SessionStatusType.READY, 30_000L);
+        Session session = createPaySession(students, 3, SessionStatusType.END, 30_000L);
 
         NsUser newUser = createNewUser();
 
@@ -111,7 +111,7 @@ class SessionTest {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
         SessionStudent sessionStudent = new SessionStudent(students);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, new Amount(0L), true);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, new Amount(0L), true);
 
         return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }

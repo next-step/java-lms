@@ -5,13 +5,17 @@ import nextstep.users.domain.NsUser;
 public class SessionEnrolment {
 
     private SessionStudent sessionStudent;
-    private SessionStatusType sessionStatusType;
+    private SessionStatus sessionStatus;
     private Amount amount;
     private boolean isFree;
 
     public SessionEnrolment(SessionStudent sessionStudent, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
+        this(sessionStudent, new SessionStatus(sessionStatusType), amount, isFree);
+    }
+
+    public SessionEnrolment(SessionStudent sessionStudent, SessionStatus sessionStatus, Amount amount, boolean isFree) {
         this.sessionStudent = sessionStudent;
-        this.sessionStatusType = sessionStatusType;
+        this.sessionStatus = sessionStatus;
         this.amount = amount;
         this.isFree = isFree;
     }
@@ -41,7 +45,11 @@ public class SessionEnrolment {
     }
 
     public String sessionStatusType() {
-        return this.sessionStatusType.toString();
+        return this.sessionStatus.sessionStatusType();
+    }
+
+    public String recruitmentStatusType() {
+        return this.sessionStatus.recruitmentStatusType();
     }
 
     public Long amount() {
@@ -49,7 +57,7 @@ public class SessionEnrolment {
     }
 
     private void defaultValidate() {
-        if (!this.sessionStatusType.isRecruitment()) {
+        if (!this.sessionStatus.isRecruitment()) {
             throw new java.lang.IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
         }
     }

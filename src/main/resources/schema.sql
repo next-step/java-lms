@@ -66,6 +66,7 @@ CREATE TABLE session (
     end_date timestamp,
     max_student_count int,
     session_status_type varchar(20),
+    recruitment_status_type varchar(20) default 'RECRUITING',
     amount bigint,
     is_free boolean,
     PRIMARY KEY (id)

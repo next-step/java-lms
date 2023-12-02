@@ -25,7 +25,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "INSERT INTO session (course_id, start_date, end_date, max_student_count, session_status_type, amount, is_free) VALUES (?, ?, ?, ?, ?, ?, ?) ";
+        String sql = "INSERT INTO session (course_id, start_date, end_date, max_student_count, session_status_type, recruitment_status_type, amount, is_free) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 
         return jdbcTemplate.update(
                 sql,
@@ -34,6 +34,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.endDate(),
                 session.totalStudentCount(),
                 session.sessionStatus(),
+                session.recruitmentStatus(),
                 session.sessionAmount(),
                 session.isFree());
     }

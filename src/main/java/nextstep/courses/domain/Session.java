@@ -59,6 +59,10 @@ public class Session {
         return this.sessionEnrolment.sessionStatusType();
     }
 
+    public String recruitmentStatus() {
+        return this.sessionEnrolment.recruitmentStatusType();
+    }
+
     public Long sessionAmount() {
         return this.sessionEnrolment.amount();
     }
