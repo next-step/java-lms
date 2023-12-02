@@ -1,28 +1,32 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.fixture.NsUserFixture.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static nextstep.fixture.NsUserFixture.JAVAJIGI;
 import static org.assertj.core.api.Assertions.*;
 
 class AnswersTest {
 
-    private static final String TEST_TILE = "test_tile";
-    private static final String TEST_CONTENT = "test_content";
+    private static final String TEST_CONTENTS = "test_contents";
 
-    @DisplayName("모든 답변은 자기 자신이 쓴 것이 아니라면 삭제시 예외가 발생한다.")
+    @DisplayName("삭제된 답변과 삭제 목록의 수는 동일하다.")
     @Test
-    void if_answers_does_not_deleted_by_owner_then_throw_exception() {
+    void deleted_answers_and_deletedHistories_number_are_same() {
+        Times times = new Times(LocalDateTime.now(), null);
+        AnswerInformation information = new AnswerInformation(TEST_CONTENTS, JAVAJIGI, false, times);
+        Answer answer1 = new Answer(1L, information);
+        Answer answer2 = new Answer(2L, information);
+        Answers answers = new Answers(answer1, answer2);
         NsUser loginUser = JAVAJIGI;
-        Question givenQuestion = new Question(JAVAJIGI, TEST_TILE, TEST_CONTENT);
-        Answer givenAnswer1 = new Answer(JAVAJIGI, givenQuestion, TEST_CONTENT);
-        Answer givenAnswer2 = new Answer(SANJIGI, givenQuestion, TEST_CONTENT);
-        Answers answers = new Answers(givenAnswer1, givenAnswer2);
 
-        assertThatThrownBy(() -> answers.delete(loginUser))
-                .isInstanceOf(CannotDeleteException.class);
+        Answers deletedAnswers = answers.delete(loginUser);
+        List<DeletedHistory> actual = deletedAnswers.buildHistories();
+
+        assertThat(actual).hasSize(2);
     }
 }
