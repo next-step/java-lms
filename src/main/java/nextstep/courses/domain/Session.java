@@ -73,4 +73,17 @@ public class Session {
     public List<NsUser> getStudents() {
         return students;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "sessionId=" + sessionId +
+                ", sessionName='" + sessionName + '\'' +
+                ", sessionPeriod=" + sessionPeriod +
+                ", thumbnail=" + thumbnail +
+                ", sessionType=" + sessionType +
+                ", sessionStatus=" + sessionStatus +
+                ", students=" + students +
+                '}';
+    }
 }
