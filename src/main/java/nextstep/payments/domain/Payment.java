@@ -21,7 +21,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Long id, Long sessionId, NsUser nsUser, Long amount) {
+    private Payment(Long id, Long sessionId, NsUser nsUser, Long amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUser = nsUser;

@@ -18,7 +18,7 @@ public class PaidSessionTest {
     @Test
     @DisplayName("유료 강의 수강 신청 시 최대 수강 인원을 초과하면 예외를 던진다.")
     void register_over_students() {
-        Session paidSession = new PaidSession(1L, coverImage(), Status.NOT_OPEN, START_DATE, END_DATE, 1, 10_000L);
+        Session paidSession = new PaidSession(1L, coverImage(), Status.OPEN, START_DATE, END_DATE, 1, 10_000L);
 
         paidSession.register(Payment.ofPaid(1L, 1L, NsUserTest.JAVAJIGI, 10_000L));
 
