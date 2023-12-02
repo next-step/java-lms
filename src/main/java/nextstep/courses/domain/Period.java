@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Period {
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public Period(LocalDateTime startDate, LocalDateTime endDate) {
+    public Period(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }

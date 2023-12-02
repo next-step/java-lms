@@ -10,6 +10,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CoverImageTest {
 
+    public static final CoverImage IMAGE1 = new CoverImage(1, "gif", 300, 200);
+
     @Test
     @DisplayName("이미지 크기가 1(MB)이상일 경우 예외를 던진다.")
     void size_test() {
