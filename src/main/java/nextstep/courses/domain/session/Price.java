@@ -26,15 +26,15 @@ public class Price {
     }
 
     public void addParticipant(int money, NsUser user) {
-        payCheck(money);
+        validate(money);
         participantCount.add(user);
     }
 
-    private void payCheck(int money) {
-        if (isFree) {
-            throw new IllegalArgumentException("무료 강의는 결제할 수 없습니다.");
+    private void validate(int money) {
+        if (!isFree) {
+            participantCount.validateParticipant();
         }
-        if(this.money != money) {
+        if (this.money != money) {
             throw new IllegalArgumentException("결제 금액이 다릅니다.");
         }
     }

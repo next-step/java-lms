@@ -60,7 +60,7 @@ public class ParticipantCountTest {
         // when
         ParticipantCount participantCount = new ParticipantCount(maxCount, new SessionParticipants(users));
         // then
-        assertThatThrownBy(() -> participantCount.add(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> participantCount.validateParticipant())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
