@@ -11,10 +11,6 @@ public class Session {
     private final SessionEnrolment sessionEnrolment;
     private final CoverImages coverImages;
 
-    public Session(Long id, Long courseId, SessionDuration sessionDuration, SessionEnrolment sessionEnrolment) {
-        this(id, courseId, sessionDuration, sessionEnrolment, new CoverImages());
-    }
-
     public Session(Long courseId, SessionDuration sessionDuration, SessionEnrolment sessionEnrolment, CoverImages coverImages) {
         this.courseId = courseId;
         this.sessionDuration = sessionDuration;

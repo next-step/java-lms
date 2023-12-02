@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Amount;
+import nextstep.courses.domain.CoverImages;
 import nextstep.courses.domain.RecruitmentStatusType;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
@@ -39,7 +40,7 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 데이터 생성 테스트")
     void create() {
-        Session session = createSession(100, SessionStatusType.ONGOING, 10_000L, false);
+        Session session = createSession(100, SessionStatusType.ONGOING, RecruitmentStatusType.RECRUITING, 10_000L, false);
 
         int actual = sessionRepository.save(session);
 
@@ -49,7 +50,7 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 데이터 조회 테스트")
     void read() {
-        Session expected = createSession(100, SessionStatusType.ONGOING, 10_000L, false);
+        Session expected = createSession(100, SessionStatusType.ONGOING, RecruitmentStatusType.RECRUITING, 10_000L, false);
         sessionRepository.save(expected);
 
         Session actual = sessionRepository.findById(1L);
@@ -58,6 +59,7 @@ class SessionRepositoryTest {
                 () -> assertThat(actual.courseId()).isEqualTo(expected.courseId()),
                 () -> assertThat(actual.totalStudentCount()).isEqualTo(expected.totalStudentCount()),
                 () -> assertThat(actual.sessionStatus()).isEqualTo(expected.sessionStatus()),
+                () -> assertThat(actual.recruitmentStatus()).isEqualTo(expected.recruitmentStatus()),
                 () -> assertThat(actual.sessionAmount()).isEqualTo(expected.sessionAmount()),
                 () -> assertThat(actual.isFree()).isEqualTo(expected.isFree()));
     }
@@ -65,7 +67,7 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 데이터 갱신 테스트")
     void update() {
-        Session session = createSession(100, SessionStatusType.ONGOING, 2_000L, false);
+        Session session = createSession(100, SessionStatusType.ONGOING, RecruitmentStatusType.RECRUITING, 10_000L, false);
         sessionRepository.save(session);
 
         Session updateSession = updateSession(1L, 1000, SessionStatusType.READY, RecruitmentStatusType.RECRUITING, 2_000L, false);
@@ -77,7 +79,7 @@ class SessionRepositoryTest {
     @Test
     @DisplayName("Session 데이터 삭제 테스트")
     void delete() {
-        Session session = createSession(100, SessionStatusType.ONGOING, 10_000L, false);
+        Session session = createSession(100, SessionStatusType.ONGOING, RecruitmentStatusType.RECRUITING, 10_000L, false);
         sessionRepository.save(session);
 
         int actual = sessionRepository.delete(1L);
@@ -85,12 +87,13 @@ class SessionRepositoryTest {
         assertThat(actual).isOne();
     }
 
-    private Session createSession(int maxStudentCount, SessionStatusType sessionStatusType, Long amount, boolean isFree) {
+    private Session createSession(int maxStudentCount, SessionStatusType sessionStatusType, RecruitmentStatusType recruitmentStatusType, Long amount, boolean isFree) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         SessionStudent sessionStudent = new SessionStudent(maxStudentCount);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), isFree);
+        SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, new Amount(amount), isFree);
 
-        return new Session(0L, 2L, sessionDuration, sessionEnrolment);
+        return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages());
     }
 
     private Session updateSession(Long id, int maxStudentCount, SessionStatusType sessionStatusType, RecruitmentStatusType recruitmentStatusType, Long amount, boolean isFree) {
@@ -99,6 +102,6 @@ class SessionRepositoryTest {
         SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, new Amount(amount), isFree);
 
-        return new Session(id, 2L, sessionDuration, sessionEnrolment);
+        return new Session(id, 1L, sessionDuration, sessionEnrolment, new CoverImages());
     }
 }

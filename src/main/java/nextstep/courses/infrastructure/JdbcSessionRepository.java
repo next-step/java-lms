@@ -1,10 +1,13 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Amount;
+import nextstep.courses.domain.CoverImages;
+import nextstep.courses.domain.RecruitmentStatusType;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.SessionStatusType;
 import nextstep.courses.domain.SessionStudent;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -41,7 +44,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "SELECT session.id, session.course_id, session.start_date, session.end_date, session.max_student_count, session.session_status_type, session.amount, session.is_free " +
+        String sql = "SELECT session.id, session.course_id, session.start_date, session.end_date, session.max_student_count, session.session_status_type, session.recruitment_status_type, session.amount, session.is_free " +
                 "FROM session WHERE session.id = ? ";
 
         RowMapper<Session> rowMapper = (resultSet, rowNumber) -> {
@@ -52,11 +55,13 @@ public class JdbcSessionRepository implements SessionRepository {
             SessionDuration sessionDuration = new SessionDuration(startDate, endDate);
             SessionStudent sessionStudent = new SessionStudent(resultSet.getInt(5));
             SessionStatusType sessionStatusType = SessionStatusType.valueOf(resultSet.getString(6));
-            Amount amount = new Amount(resultSet.getLong(7));
-            boolean isFree = resultSet.getBoolean(8);
+            RecruitmentStatusType recruitmentStatusType = RecruitmentStatusType.valueOf(resultSet.getString(7));
+            Amount amount = new Amount(resultSet.getLong(8));
+            boolean isFree = resultSet.getBoolean(9);
 
-            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, amount, isFree);
-            return new Session(sessionId, courseId, sessionDuration, sessionEnrolment);
+            SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
+            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, amount, isFree);
+            return new Session(sessionId, courseId, sessionDuration, sessionEnrolment, new CoverImages());
         };
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
