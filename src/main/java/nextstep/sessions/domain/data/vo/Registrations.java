@@ -8,7 +8,7 @@ import nextstep.users.domain.NsUser;
 
 public class Registrations {
 
-    List<Registration> registrations;
+    private final List<Registration> registrations;
 
     public Registrations(List<Registration> registrations) {
         this.registrations = new ArrayList<>(registrations);
