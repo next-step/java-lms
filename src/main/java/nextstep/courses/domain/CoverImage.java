@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.ImageSizeOverException;
-import nextstep.courses.exception.InvalidImageExtensionException;
 import nextstep.courses.exception.InvalidImageWidthAndHeightException;
 
 public class CoverImage {
@@ -12,21 +11,23 @@ public class CoverImage {
     private static final int WIDTH_RATIO = 2;
     private static final int HEIGHT_RATIO = 3;
 
+    private final long size;
+    private final Extension extension;
+    private final int width;
+    private final int height;
+
     public CoverImage(long size, String extension, int width, int height) {
         validateImageSize(size);
-        validateExtension(extension);
         validateWidthAndHeight(width, height);
+        this.size = size;
+        this.extension = Extension.of(extension);
+        this.width = width;
+        this.height = height;
     }
 
     private void validateImageSize(long size) {
         if (size > IMAGE_SIZE) {
             throw new ImageSizeOverException(size);
-        }
-    }
-
-    private void validateExtension(String extension) {
-        if (!Extension.contains(extension)) {
-            throw new InvalidImageExtensionException();
         }
     }
 
