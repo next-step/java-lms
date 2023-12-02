@@ -7,11 +7,7 @@ import nextstep.sessions.domain.exception.SessionsException;
 public class SessionType {
 
     private final PayInfo payInfo;
-    private int capacity;
-
-    public SessionType(PaidType paidType) {
-        this.payInfo = new PayInfo(paidType);
-    }
+    private final int capacity;
 
     public SessionType(PaidType paidType, long fee, int capacity) {
         this.payInfo = new PayInfo(paidType, fee);

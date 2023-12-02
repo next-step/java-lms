@@ -8,13 +8,8 @@ public class SessionInfo {
     private final EnrollmentInfo enrollmentInfo;
     private OpenInfo openInfo;
 
-    public SessionInfo(EnrollmentInfo enrollmentInfo) {
-        this.enrollmentInfo = enrollmentInfo;
-    }
-
     public SessionInfo(SessionType sessionType, SessionState sessionState) {
         this.enrollmentInfo = new EnrollmentInfo(sessionType, sessionState);
-
     }
 
     public SessionInfo(EnrollmentInfo enrollmentInfo, OpenInfo openInfo) {

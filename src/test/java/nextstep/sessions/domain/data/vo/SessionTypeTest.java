@@ -20,9 +20,11 @@ public class SessionTypeTest {
     }
 
     @Test
-    void 무료_강의() {
+    void 무료_강의_인원_금액_제한_조건_무시() {
         SessionType sessionType = new SessionType(PaidType.FREE, 0, 9999);
+        Payment payment = new Payment(1L, 2L, 3L, 1000000L);
 
-        Assertions.assertDoesNotThrow(() -> sessionType.validateSession(1, new Payment()));
+        Assertions.assertDoesNotThrow(() -> sessionType.validateSession(10000, payment));
     }
+
 }

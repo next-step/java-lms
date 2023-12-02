@@ -7,11 +7,7 @@ import nextstep.sessions.domain.exception.SessionsException;
 public class PayInfo {
 
     private final PaidType paidType;
-    private long fee;
-
-    public PayInfo(PaidType paidType) {
-        this.paidType = paidType;
-    }
+    private final long fee;
 
     public PayInfo(PaidType paidType, long fee) {
         this.paidType = paidType;

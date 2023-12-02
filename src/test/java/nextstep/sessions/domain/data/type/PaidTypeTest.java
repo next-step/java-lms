@@ -9,5 +9,6 @@ public class PaidTypeTest {
     @Test
     void isPaid() {
         assertThat(PaidType.PAID.isPaid()).isTrue();
+        assertThat(PaidType.FREE.isPaid()).isFalse();
     }
 }

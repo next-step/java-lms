@@ -9,5 +9,7 @@ public class SessionStateTest {
     @Test
     void isRecruiting() {
         assertThat(SessionState.RECRUITING.isRecruiting()).isTrue();
+        assertThat(SessionState.PREPARING.isRecruiting()).isFalse();
+        assertThat(SessionState.DONE.isRecruiting()).isFalse();
     }
 }
