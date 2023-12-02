@@ -27,7 +27,6 @@ public class JdbcCourseRepository implements CourseRepository {
     public NsCourse findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from nscourse where id = ?";
         RowMapper<NsCourse> rowMapper = (rs, rowNum) -> new NsCourse(
-                rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),

@@ -1,11 +1,15 @@
 package nextstep.courses.domain.field;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 public enum SessionType {
+
     FREE("free"),
     PAID("paid"),
     ;
+
+    private static final Random RANDOM = new Random();
 
     private final String type;
 
@@ -22,5 +26,10 @@ public enum SessionType {
 
     public String getType() {
         return type;
+    }
+
+    public static SessionType random() {
+        SessionType[] values = SessionType.values();
+        return values[RANDOM.nextInt(values.length)];
     }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.domain.field;
 import java.util.stream.Stream;
 
 public enum ImageType {
+
     GIF("gif"),
     JPG("jpg"),
     JPGE("jpge"),

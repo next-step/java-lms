@@ -4,32 +4,36 @@ import java.time.LocalDateTime;
 
 public class NsCourse {
 
-    private Long id;
+    public static final NsCourse DEFAULT_COURSE = new NsCourse("TDD, 클린 코드 with Java", 1L);
+
+    private long id;
 
     private String title;
 
-    private Long creatorId;
+    private long creatorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public NsCourse() {
+    public NsCourse() {}
+
+    public NsCourse(String title, long creatorId) {
+        this(title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public NsCourse(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public NsCourse(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public NsCourse(String title,
+                    long creatorId,
+                    LocalDateTime createdAt,
+                    LocalDateTime updatedAt) {
+        this.id = 1;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -37,7 +41,7 @@ public class NsCourse {
         return title;
     }
 
-    public Long getCreatorId() {
+    public long getCreatorId() {
         return creatorId;
     }
 

@@ -1,12 +1,16 @@
 package nextstep.courses.domain.field;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 public enum SessionStatus {
+
     WAIT("wait"),
     OPEN("open"),
     CLOSED("closed"),
     ;
+
+    private static final Random RANDOM = new Random();
 
     private final String type;
 
@@ -23,5 +27,10 @@ public enum SessionStatus {
 
     public String getType() {
         return type;
+    }
+
+    public static SessionStatus random() {
+        SessionStatus[] values = SessionStatus.values();
+        return values[RANDOM.nextInt(values.length)];
     }
 }
