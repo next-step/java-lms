@@ -5,7 +5,7 @@ import java.util.List;
 import nextstep.users.domain.NsUser;
 
 public class Session {
-    private final Integer sessionId;
+    private final Long sessionId;
     private final String sessionName;
     private final Period sessionPeriod;
     private final Thumbnail thumbnail;
@@ -13,7 +13,7 @@ public class Session {
     private final SessionStatus sessionStatus;
     private final List<NsUser> students;
 
-    public Session(Integer sessionId, String sessionName, LocalDate startDate, LocalDate endDate,
+    public Session(Long sessionId, String sessionName, LocalDate startDate, LocalDate endDate,
                    Integer thumbnailId, String thumbnailName, long thumbnailSize, int thumbnailWidth, int thumbnailHeight,
                    boolean isPaid, Integer maxStudents, Integer sessionFee,
                    SessionStatus sessionStatus, List<NsUser> students) {
@@ -27,7 +27,7 @@ public class Session {
                 students);
     }
 
-    public Session(Integer sessionId, String sessionName, Period sessionPeriod, Thumbnail thumbnail,
+    public Session(Long sessionId, String sessionName, Period sessionPeriod, Thumbnail thumbnail,
                    SessionType sessionType, SessionStatus sessionStatus, List<NsUser> students) {
         this.sessionId = sessionId;
         this.sessionName = sessionName;
@@ -38,12 +38,24 @@ public class Session {
         this.students = students;
     }
 
+    public boolean isEnrollmentPossible(Integer sessionFee) {
+        if (!isRecruiting()) {
+            return false;
+        }
+        if (!isWithinCapacity()) {
+            return false;
+        }
+        if (!checkSessionFeeEquality(sessionFee)) {
+            return false;
+        }
+        return true;
+    }
     public boolean isRecruiting() {
         return sessionStatus == SessionStatus.RECRUITING;
     }
 
-    public boolean isEnrollmentPossible() {
-        return this.sessionType.isEnrollmentPossible(this.students.size());
+    public boolean isWithinCapacity() {
+        return this.sessionType.isWithinCapacity(this.students.size());
     }
 
     public boolean checkSessionFeeEquality(Integer sessionFee) {
@@ -52,6 +64,10 @@ public class Session {
 
     public void enroll(NsUser student) {
         this.students.add(student);
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public List<NsUser> getStudents() {

@@ -30,7 +30,7 @@ public class PaidSession extends SessionType{
     }
 
     @Override
-    public boolean isEnrollmentPossible(Integer size) {
+    public boolean isWithinCapacity(Integer size) {
         return size < maxStudents;
     }
 

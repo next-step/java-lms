@@ -7,7 +7,7 @@ public class FreeSession extends SessionType{
     }
 
     @Override
-    public boolean isEnrollmentPossible(Integer size) {
+    public boolean isWithinCapacity(Integer size) {
         return true;
     }
 

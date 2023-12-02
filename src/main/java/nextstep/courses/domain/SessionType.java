@@ -15,6 +15,6 @@ public abstract class SessionType {
         return new FreeSession(isPaid);
     }
 
-    public abstract boolean isEnrollmentPossible(Integer size);
+    public abstract boolean isWithinCapacity(Integer size);
     public abstract boolean checkSessionFeeEquality(Integer sessionFee);
 }
