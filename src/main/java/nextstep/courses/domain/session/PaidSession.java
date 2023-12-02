@@ -12,22 +12,7 @@ public class PaidSession extends Session {
     protected PaidSession(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
         super(title, price, startDate, endDate, coverImage);
     }
-
-    @Override
-    public void ready() {
-        setStatus(SessionStatus.READY);
-    }
-
-    @Override
-    public void recruit() {
-        setStatus(SessionStatus.RECRUITING);
-    }
-
-    @Override
-    public void close() {
-        setStatus(SessionStatus.CLOSED);
-    }
-
+    
     @Override
     public void enroll(final Payment payment) {
         if (isNotRecruiting()) {

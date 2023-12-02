@@ -35,4 +35,8 @@ public class SessionMakingData {
     public long getPrice() {
         return this.sessionInfo.getPrice();
     }
+
+    public boolean isPaidSession() {
+        return this.sessionInfo.isPaidSession();
+    }
 }

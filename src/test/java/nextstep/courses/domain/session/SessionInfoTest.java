@@ -13,7 +13,7 @@ class SessionInfoTest {
     @DisplayName("제목이 비어있으면, 예외가 발생한다.")
     void testTitleIsNotBlank(String title) {
         //when, then
-        assertThatThrownBy(() -> new SessionInfo(title, 1000))
+        assertThatThrownBy(() -> new SessionInfo(title, 1000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("title cannot be blank");
     }

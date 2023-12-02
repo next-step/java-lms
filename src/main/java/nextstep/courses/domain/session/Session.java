@@ -18,11 +18,11 @@ public abstract class Session {
     }
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate), null);
+        this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), null);
     }
 
     protected Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        this(new SessionInfo(title, 0), new SessionDate(startDate, endDate), coverImage);
+        this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), coverImage);
     }
 
     protected Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
@@ -64,7 +64,7 @@ public abstract class Session {
         this.sessionStudent.increaseStudentCount();
     }
 
-    protected void setStatus(SessionStatus status) {
+    private void setStatus(SessionStatus status) {
         this.status = status;
     }
 
@@ -76,11 +76,21 @@ public abstract class Session {
         return this.sessionMakingData.getCoverImage();
     }
 
-    public abstract void ready();
+    public void ready() {
+        setStatus(SessionStatus.READY);
+    }
 
-    public abstract void recruit();
+    public void recruit() {
+        setStatus(SessionStatus.RECRUITING);
+    }
 
-    public abstract void close();
+    public void close() {
+        setStatus(SessionStatus.CLOSED);
+    }
+
+    private boolean isPaidSession() {
+        return this.sessionMakingData.isPaidSession();
+    }
 
     public abstract void enroll(Payment payment);
 }
