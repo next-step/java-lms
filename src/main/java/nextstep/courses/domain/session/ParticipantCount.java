@@ -14,18 +14,16 @@ public class ParticipantCount {
     }
 
     public ParticipantCount(int maxParticipants, SessionParticipants nowParticipants) {
-        validateParticipant(maxParticipants, nowParticipants);
         this.maxParticipants = maxParticipants;
         this.sessionParticipants = nowParticipants;
     }
 
     public void add(NsUser user) {
         sessionParticipants.add(user);
-        validateParticipant(maxParticipants, sessionParticipants);
     }
 
-    private void validateParticipant(int maxParticipants, SessionParticipants nowParticipants) {
-        if (maxParticipants < nowParticipants.count()) {
+    public void validateParticipant() {
+        if (maxParticipants == sessionParticipants.count()) {
             throw new IllegalArgumentException("최대 참가자 수를 초과하였습니다.");
         }
     }
