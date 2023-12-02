@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +17,10 @@ public class DeleteHistoriesTest {
     @Test
     @DisplayName("질문 삭제 이력을 담는다")
     void 질문_삭제_이력(){
-        DeleteHistories deleteHistories = new DeleteHistories(new ArrayList<>());
-//        deleteHistories.addQuestionDeleteHistory(Q1);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, Q1.getId(), Q1.getWriter(), LocalDateTime.now()));
 
-        Assertions.assertThat(deleteHistories.getDeleteHistories()).extracting("contentId", Long.class)
+        Assertions.assertThat(deleteHistories).extracting("contentId", Long.class)
                 .contains(0L);
     }
 
@@ -27,9 +28,9 @@ public class DeleteHistoriesTest {
     @DisplayName("답변 삭제 이력을 담는다")
     void 답변_삭제_이력(){
         Answers answers = new Answers(Arrays.asList(A3,A4));
-        DeleteHistories deleteHistories = new DeleteHistories(answers.deleteAllHistories());
+        List<DeleteHistory> deleteHistories = answers.deleteAllHistories();
 
-        Assertions.assertThat(deleteHistories.getDeleteHistories()).extracting("contentId", Long.class)
+        Assertions.assertThat(deleteHistories).extracting("contentId", Long.class)
                 .contains(1L, 2L);
     }
 }

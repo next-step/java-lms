@@ -40,3 +40,6 @@
 
 ## 2차 리뷰 요청 사항 
 * [x] Question, Answer 삭제 History를 한번에 받아와 처리하도록 수정 
+* [x] 삭제 처리 기능 Question delete 메서드 안으로 이동 
+* [x] private method 호출 순서에 맞게 위치 변경
+* [x] Deletehistories 클래스 제거

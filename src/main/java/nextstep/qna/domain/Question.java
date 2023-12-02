@@ -5,10 +5,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Question {
     private Long id;
@@ -97,32 +94,34 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
         this.deleted = true;
-        deleteAnswers(loginUser);
-        return makeDeletehistories();
-    }
 
-    private DeleteHistories makeDeletehistories() {
-        DeleteHistories deleteHistories = new DeleteHistories(makeDeleteHistory());
-        deleteHistories.addAllDeleteHistories(answers.deleteAllHistories());
+        List<DeleteHistory> deleteHistories = new ArrayList<>(Collections.singletonList(makeDeleteHistory()));
+        deleteHistories.addAll(deleteAnswers(loginUser));
         return deleteHistories;
     }
 
     private void validateDelete(NsUser loginUser) throws CannotDeleteException {
-        if (!Objects.equals(loginUser, writer)) {
+        if (!isOwner(loginUser)) {
             throw new CannotDeleteException("로그인 사용자와 질문한 사용자가 같아야 합니다.");
         }
     }
 
-    private void deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+    private List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
         if (Objects.nonNull(this.answers)) {
             this.answers.deleteAnswers(loginUser);
+            return this.answers.deleteAllHistories();
         }
+        return Collections.emptyList();
     }
 
     public DeleteHistory makeDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id,  writer, LocalDateTime.now());
+    }
+
+    private boolean isOwner(NsUser loginUser) {
+        return Objects.equals(loginUser, writer);
     }
 }
