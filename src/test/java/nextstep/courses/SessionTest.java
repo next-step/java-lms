@@ -58,8 +58,8 @@ public class SessionTest {
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        paymentMatch = new Payment("1", 1L, 1L, 2000L);
-        paymentMisMatch = new Payment("1", 1L, 1L, 1000L);
+        paymentMatch = Payment.of("1", 1L, 1L, 2000L);
+        paymentMisMatch = Payment.of("1", 1L, 1L, 1000L);
     }
 
     @Test
