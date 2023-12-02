@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.users.domain.NsUser;
+
 public class Price {
 
     private boolean isFree;
@@ -23,12 +25,12 @@ public class Price {
         return isFree;
     }
 
-    public void addParticipant(int money) {
-        pay(money);
-        participantCount.add();
+    public void addParticipant(int money, NsUser user) {
+        payCheck(money);
+        participantCount.add(user);
     }
 
-    private void pay(int money) {
+    private void payCheck(int money) {
         if (isFree) {
             throw new IllegalArgumentException("무료 강의는 결제할 수 없습니다.");
         }

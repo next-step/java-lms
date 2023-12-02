@@ -1,7 +1,12 @@
 package nextstep.courses.domain.session;
 
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,7 +47,7 @@ public class PriceTest {
         ParticipantCount participantCount = new ParticipantCount(10);
         // when
         Price price = new Price(isFree, money, participantCount);
-        price.addParticipant(money);
+        price.addParticipant(money, NsUserTest.JAVAJIGI);
         // then
         assertThat(price.nowParticipants()).isEqualTo(1);
     }
@@ -53,11 +58,14 @@ public class PriceTest {
         // given
         boolean isFree = false;
         int money = 10000;
-        ParticipantCount participantCount = new ParticipantCount(10, 10);
+        List<NsUser> users = new ArrayList<>(){{
+            add(NsUserTest.JAVAJIGI);
+        }};
+        ParticipantCount participantCount = new ParticipantCount(1, new SessionParticipants(users));
         // when
         Price price = new Price(isFree, money, participantCount);
         // then
-        assertThatThrownBy(() -> price.addParticipant(money))
+        assertThatThrownBy(() -> price.addParticipant(money, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -71,7 +79,7 @@ public class PriceTest {
         // when
         Price price = new Price(isFree, money, participantCount);
         // then
-        assertThatThrownBy(() -> price.addParticipant(1000))
+        assertThatThrownBy(() -> price.addParticipant(1000, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
