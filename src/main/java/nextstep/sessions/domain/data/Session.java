@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.type.SessionState;
 import nextstep.sessions.domain.data.vo.*;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -27,9 +28,10 @@ public class Session {
         this.registrations = registrations;
     }
 
-    public Registration registration(Payment payment) {
+    public Registration registration(NsUser user, Payment payment) {
         sessionInfo.validateEnrollment(registrations.size(), payment);
-        return new Registration(this, payment);
+        registrations.validateDuplicateEnrollment(user);
+        return new Registration(this, user, payment);
     }
 
 }

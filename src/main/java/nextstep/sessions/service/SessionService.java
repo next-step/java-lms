@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.Session;
 import nextstep.sessions.domain.data.vo.Registration;
 import nextstep.sessions.repository.SessionRepository;
+import nextstep.users.domain.NsUser;
 
 public class SessionService {
 
@@ -13,9 +14,9 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public void enroll(long sessionId, Payment payment) {
+    public void enroll(long sessionId, NsUser loginUser, Payment payment) {
         Session session = sessionRepository.findById(sessionId);
-        Registration registration = session.registration(payment);
+        Registration registration = session.registration(loginUser, payment);
         sessionRepository.save(registration);
     }
 }
