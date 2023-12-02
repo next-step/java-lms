@@ -18,7 +18,7 @@ class AnswersTest {
 
     @Test
     @DisplayName("삭제를 할 경우 답변들의 삭제 상태를 변경한다.")
-    void 답변들_삭제_상태_변경() throws CannotDeleteException {
+    void 답변들_삭제_상태_변경() {
         Question question = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer1 = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = Answer.of(NsUserTest.JAVAJIGI, question, "Answers Contents2");

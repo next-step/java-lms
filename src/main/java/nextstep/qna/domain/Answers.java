@@ -19,7 +19,7 @@ public class Answers {
         return new Answers(answers);
     }
 
-    public List<DeleteHistory> deleteBy(NsUser user, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user, List<DeleteHistory> deleteHistories) {
         for(Answer answer : answers) {
             answer.deleteBy(user, deleteHistories);
         }

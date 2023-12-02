@@ -25,7 +25,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("로그인 사용자와 질문자가 같은 경우 삭제 가능하다.")
-    void 로그인_사용자와_질문자가_같은_경우_삭제_가능() throws CannotDeleteException {
+    void 로그인_사용자와_질문자가_같은_경우_삭제_가능() {
         Q1.deleteBy(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
@@ -39,7 +39,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("답변이 있을 경우 질문자와 답변글의 모든 답변자가 같으면 질문과 답변의 삭제 상태를 변경한다.")
-    void 질문과_답변_삭제_상태_변경() throws CannotDeleteException {
+    void 질문과_답변_삭제_상태_변경() {
         Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
         Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q3,"Answers Contents1",false));
         Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false));
@@ -66,7 +66,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문을 삭제하면 질문과 답변 이력이 객체로 저장된다.")
-    void 질문_삭제시_질문_답변_이력_객체_저장() throws CannotDeleteException {
+    void 질문_삭제시_질문_답변_이력_객체_저장() {
         Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
         Answer answer1 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",false);
         Answer answer2 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false);

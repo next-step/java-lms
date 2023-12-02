@@ -106,7 +106,7 @@ public class Question {
         this.deleted = true;
     }
 
-    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         if(!isOwner(user)) {
