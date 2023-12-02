@@ -11,7 +11,7 @@ public class ImageName {
 
     private void validate(String name) {
         if (!name.matches("^.*\\.(gif|jpe?g|png|svg)$")) {
-            throw new IllegalArgumentException("Invalid file extension.");
+            throw new IllegalArgumentException("이미지 확장자를 확인하세요.");
         }
     }
 
