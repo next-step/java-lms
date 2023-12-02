@@ -9,7 +9,7 @@ public class Course extends BaseEntity {
 
     private Long creatorId;
 
-    private Sessions sessions;
+    private final Sessions sessions = new Sessions();
 
     public Course() {
     }
@@ -23,6 +23,14 @@ public class Course extends BaseEntity {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
+    }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
+    }
+
+    public Sessions getSessions() {
+        return this.sessions;
     }
 
     public String getTitle() {
