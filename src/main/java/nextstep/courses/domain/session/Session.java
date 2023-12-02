@@ -69,7 +69,7 @@ public abstract class Session {
     }
 
     protected boolean isNotRecruiting() {
-        return this.status != SessionStatus.RECRUITING;
+        return !this.status.isRecruiting();
     }
 
     protected CoverImage getCoverImage() {

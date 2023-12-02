@@ -14,4 +14,8 @@ public enum SessionStatus {
     public String getDisplayName() {
         return this.displayName;
     }
+
+    public boolean isRecruiting() {
+        return this == RECRUITING;
+    }
 }
