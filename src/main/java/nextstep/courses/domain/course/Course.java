@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Course {
     private Long id;
 
-    private int generation;
+    private Integer generation;
 
     private String title;
 
@@ -24,36 +24,30 @@ public class Course {
     private List<Session> sessions = new ArrayList<>();
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, 1, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        validateCourse(id, title, creatorId, createdAt);
+    public Course(final String title, final Integer generation, final Long creatorId) {
+        this(0L, generation, title, creatorId, LocalDateTime.now(), null);
+    }
+
+    public Course(Long id, Integer generation, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        validateCourse(id, generation, title, creatorId, createdAt);
 
         this.id = id;
-        this.generation = 1;
+        this.generation = generation;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Course(final String title, final int generation, final long creatorId) {
-        this(title, creatorId);
-
-        validateGeneration(generation);
-        this.generation = generation;
-    }
-
-    private void validateCourse(final Long id, final String title, final Long creatorId, final LocalDateTime createdAt) {
+    private void validateCourse(final Long id, final Integer generation, final String title, final Long creatorId, final LocalDateTime createdAt) {
         Assert.notNull(id, "id must not be null");
+        Assert.isTrue(generation > 0, "generation must be greater than 0");
         Assert.hasText(title, "title must not be empty");
         Assert.isTrue(creatorId > 0, "creatorId must be greater than 0");
         Assert.notNull(createdAt, "createdAt must not be null");
-    }
-
-    private void validateGeneration(final int generation) {
-        Assert.isTrue(generation > 0, "generation must be greater than 0");
     }
 
     public String getTitle() {
