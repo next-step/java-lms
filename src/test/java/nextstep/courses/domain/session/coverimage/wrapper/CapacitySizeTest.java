@@ -1,4 +1,4 @@
-package nextstep.courses.domain.coverimage.wrapper;
+package nextstep.courses.domain.session.coverimage.wrapper;
 
 import nextstep.courses.exception.ImageCapacitySizeException;
 import org.junit.jupiter.api.DisplayName;
