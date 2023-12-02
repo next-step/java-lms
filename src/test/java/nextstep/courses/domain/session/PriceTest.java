@@ -58,7 +58,7 @@ public class PriceTest {
         // given
         boolean isFree = false;
         int money = 10000;
-        List<NsUser> users = new ArrayList<>(){{
+        List<NsUser> users = new ArrayList<>() {{
             add(NsUserTest.JAVAJIGI);
         }};
         ParticipantCount participantCount = new ParticipantCount(1, new SessionParticipants(users));
