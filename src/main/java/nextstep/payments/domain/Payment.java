@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -25,5 +27,13 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public static Payment of(String id, Long sessionId, Long nsUserId, Long amount) {
+        return new Payment(id, sessionId, nsUserId, amount);
+    }
+
+    public boolean isPaidPriceSame(long price) {
+        return price == this.amount;
     }
 }
