@@ -4,17 +4,12 @@ import nextstep.sessions.domain.data.type.ImageType;
 
 public class CoverImage {
 
-    private Long id;
-    private final String name;
-    private final ImageType type;
-    private final ImageSize size;
-    private final String path;
+    private final ImageType imageType;
+    private final ImageSize imageSize;
 
-    public CoverImage(String name, int size, int width, int height, String path) {
-        this.name = name;
-        this.type = ImageType.valueOfName(name);
-        this.size = new ImageSize(size, width, height);
-        this.path = path;
+    public CoverImage(String fileName, int fileSize, int width, int height) {
+        this.imageType = ImageType.valueOfName(fileName);
+        this.imageSize = new ImageSize(fileSize, width, height);
     }
 
 }

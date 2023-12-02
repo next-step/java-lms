@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PayTypeTest {
+public class PaidTypeTest {
 
     @Test
-    void isPay() {
-        assertThat(PayType.PAID.isPaid()).isTrue();
+    void isPaid() {
+        assertThat(PaidType.PAID.isPaid()).isTrue();
     }
 }
