@@ -15,4 +15,8 @@ public class Students {
     public void addStudent(NsUser nsUser) {
         students.add(nsUser);
     }
+
+    public boolean isRegistrationFull(int maxStudents) {
+        return students.size() == maxStudents;
+    }
 }

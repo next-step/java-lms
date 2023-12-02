@@ -11,7 +11,7 @@ public class Session {
     private final CoverImage coverImage;
     private final Period period;
     private final Status status;
-    private final Students students;
+    protected final Students students;
 
     public Session(Long id, CoverImage coverImage, Status status, LocalDate startDate, LocalDate endDate) {
         this.id = id;

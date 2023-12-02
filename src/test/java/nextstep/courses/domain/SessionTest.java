@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionTest {
 
-    public static final LocalDate START_DATE = LocalDate.of(2023, 12, 01);
-    public static final LocalDate END_DATE = LocalDate.of(2023, 12, 03);
+    private static final LocalDate START_DATE = LocalDate.of(2023, 12, 01);
+    private static final LocalDate END_DATE = LocalDate.of(2023, 12, 03);
 
     @Test
     @DisplayName("수강 신청 시 강의 상태가 모집중이 아니면 예외를 반환한다.")
