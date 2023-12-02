@@ -9,6 +9,10 @@ public class PaidSession extends Session {
         validateTuitionFee(tuition);
     }
 
+    public PaidSession(SessionStatus sessionStatus) {
+        super(sessionStatus);
+    }
+
     public PaidSession(int studentCount, int tuition) {
         super(studentCount, tuition);
         validateStudentCount(studentCount);

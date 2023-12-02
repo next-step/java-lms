@@ -35,6 +35,14 @@ public class Session {
         this.endDate = endDate;
     }
 
+    public SessionStatus isSessionStatus() {
+        return sessionStatus;
+    }
+
+    public void addStudent() {
+        studentCount++;
+    }
+
     public int getStudentCount() {
         return studentCount;
     }
@@ -57,9 +65,5 @@ public class Session {
 
     public LocalDateTime getEndDate() {
         return endDate;
-    }
-
-    public SessionStatus isSessionStatus() {
-        return sessionStatus;
     }
 }
