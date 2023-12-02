@@ -10,4 +10,9 @@ public class FreeSession extends SessionType{
     public boolean isEnrollmentPossible(Integer size) {
         return true;
     }
+
+    @Override
+    public boolean checkSessionFeeEquality(Integer sessionFee) {
+        return true;
+    }
 }

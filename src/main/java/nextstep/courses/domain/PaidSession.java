@@ -31,9 +31,11 @@ public class PaidSession extends SessionType{
 
     @Override
     public boolean isEnrollmentPossible(Integer size) {
-        System.out.println("size = " + size);
-        System.out.println("maxStudents = " + maxStudents);
-        System.out.println("size < maxStudents = " + (size < maxStudents));
         return size < maxStudents;
+    }
+
+    @Override
+    public boolean checkSessionFeeEquality(Integer sessionFee) {
+        return this.sessionFee.equals(sessionFee);
     }
 }

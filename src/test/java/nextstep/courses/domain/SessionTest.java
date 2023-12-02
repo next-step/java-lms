@@ -73,4 +73,27 @@ public class SessionTest {
 
         assertThat(fullSession.isEnrollmentPossible()).isTrue();
     }
+
+    @Test
+    public void checkSessionFeeEquality_수강료_일치_시_True_반환테스트() {
+        Session session = new Session(1, "session", period, thumbnail,
+                sessionType, sessionStatus, students);
+        assertThat(session.checkSessionFeeEquality(100)).isTrue();
+    }
+
+    @Test
+    public void checkSessionFeeEquality_수강료_불일치_시_False_반환테스트() {
+        Session session = new Session(1, "session", period, thumbnail,
+                sessionType, sessionStatus, students);
+        assertThat(session.checkSessionFeeEquality(3000)).isFalse();
+    }
+
+    @Test
+    public void checkSessionFeeEquality_무료강의_수강료_일치여부_관계없이_True_반환테스트() {
+        sessionType = SessionType.determineSessionType(false, 2, 10000);
+
+        Session session = new Session(1, "session", period, thumbnail,
+                sessionType, sessionStatus, students);
+        assertThat(session.checkSessionFeeEquality(3000)).isTrue();
+    }
 }

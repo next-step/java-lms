@@ -16,4 +16,5 @@ public abstract class SessionType {
     }
 
     public abstract boolean isEnrollmentPossible(Integer size);
+    public abstract boolean checkSessionFeeEquality(Integer sessionFee);
 }

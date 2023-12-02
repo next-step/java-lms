@@ -45,4 +45,8 @@ public class Session {
     public boolean isEnrollmentPossible() {
         return this.sessionType.isEnrollmentPossible(this.students.size());
     }
+
+    public boolean checkSessionFeeEquality(Integer sessionFee) {
+        return this.sessionType.checkSessionFeeEquality(sessionFee);
+    }
 }
