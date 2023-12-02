@@ -1,11 +1,13 @@
-package nextstep.qna.domain;
+package nextstep.qna.infrastructure.entity;
 
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.DeletedHistory;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DeleteHistory {
+public class DeletedHistoryEntity {
     private Long id;
 
     private ContentType contentType;
@@ -16,21 +18,32 @@ public class DeleteHistory {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    public DeleteHistory() {
+    public DeletedHistoryEntity() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeletedHistoryEntity(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
     }
 
+    public static DeletedHistoryEntity toEntity(DeletedHistory history) {
+        return new DeletedHistoryEntity(history.getContentType(),
+                                        history.getContentId(),
+                                        history.getDeletedBy(),
+                                        history.getCreatedDate());
+    }
+
+    public DeletedHistory toModel() {
+        return new DeletedHistory(this.contentType, this.contentId, this.deletedBy);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DeleteHistory that = (DeleteHistory) o;
+        DeletedHistoryEntity that = (DeletedHistoryEntity) o;
         return Objects.equals(id, that.id) &&
                 contentType == that.contentType &&
                 Objects.equals(contentId, that.contentId) &&

@@ -2,91 +2,61 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
 
-    private String title;
+    private final Long id;
 
-    private String contents;
+    private final QuestionInformation information;
 
-    private NsUser writer;
+    private final Answers answers;
 
-    private List<Answer> answers = new ArrayList<>();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
-
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, QuestionInformation information) {
         this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.information = information;
+        this.answers = new Answers();
     }
 
-    public Long getId() {
-        return id;
+    public Question(Long id, QuestionInformation information, Answers answers) {
+        this.id = id;
+        this.information = information;
+        this.answers = answers;
     }
 
-    public String getTitle() {
-        return title;
+    public Question delete(NsUser loginUser) {
+        information.validateDeleted();
+        information.validateWriter(loginUser);
+        Answers deletedAnswers = answers.delete(loginUser);
+        QuestionInformation updatedInformation = this.information.delete();
+        return new Question(this.id, updatedInformation, deletedAnswers);
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
+    public List<DeletedHistory> buildHistories() {
+        List<DeletedHistory> result = new ArrayList<>();
+        DeletedHistory history = new DeletedHistory(ContentType.QUESTION,
+                                                    this.id,
+                                                    information.getWriter());
+        List<DeletedHistory> histories = answers.buildHistories();
+        result.add(history);
+        result.addAll(histories);
+        return List.copyOf(result);
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public Question addAnswers(Answers answers) {
+        return new Question(this.id, this.information, answers);
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.information.isDeleted();
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public Long getId() {
+        return this.id;
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    public NsUser getWriter() {
+        return this.information.getWriter();
     }
 }
