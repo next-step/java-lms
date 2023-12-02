@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.NotOpenSessionException;
-import nextstep.users.domain.NsUser;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 
@@ -21,9 +21,9 @@ public class Session {
         this.students = new Students();
     }
 
-    public void register(NsUser nsUser) {
+    public void register(Payment payment) {
         validateStatus();
-        this.students.addStudent(nsUser);
+        this.students.addStudent(payment.findPaidUser());
     }
 
     private void validateStatus() {
