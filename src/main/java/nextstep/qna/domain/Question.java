@@ -28,32 +28,13 @@ public class Question {
     private Question() {
     }
 
-    private Question(NsUser writer, String title, String contents, Answers answers) {
+    public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
-        this.answers = answers;
     }
 
-    private Question(NsUser writer, String title, String contents, Answers answers, boolean deleted) {
+    public Question(NsUser writer, String title, String contents, boolean deleted) {
         this(0L, writer, title, contents);
-        this.answers = answers;
         this.deleted = deleted;
-    }
-
-    private Question(Long id, NsUser writer, String title, String contents, Answers answers){
-        this(id, writer, title, contents);
-        this.answers = answers;
-    }
-
-    public static Question of(NsUser writer, String title, String contents) {
-        return new Question(writer, title, contents, Answers.from(new ArrayList<>()));
-    }
-
-    public static Question of(NsUser writer, String title, String contents, boolean deleted) {
-        return new Question(writer, title, contents, Answers.from(new ArrayList<>()), deleted);
-    }
-
-    public static Question of(Long id, NsUser writer, String title, String contents) {
-        return new Question(id, writer, title, contents, Answers.from(new ArrayList<>()));
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
@@ -61,6 +42,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers(new ArrayList<>());
     }
 
     public Long getId() {
@@ -71,18 +53,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {

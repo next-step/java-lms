@@ -11,12 +11,8 @@ public class Answers {
 
     private Answers() {}
 
-    private Answers(List<Answer> answers) {
+    public Answers(List<Answer> answers) {
         this.answers = answers;
-    }
-
-    public static Answers from(List<Answer> answers) {
-        return new Answers(answers);
     }
 
     public List<DeleteHistory> deleteBy(NsUser user, List<DeleteHistory> deleteHistories) {

@@ -13,8 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    public static final Question Q1 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = Question.of(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
     @DisplayName("삭제할 경우 질문의 삭제 상태를 변경")
@@ -40,15 +40,15 @@ public class QuestionTest {
     @Test
     @DisplayName("답변이 있을 경우 질문자와 답변글의 모든 답변자가 같으면 질문과 답변의 삭제 상태를 변경한다.")
     void 질문과_답변_삭제_상태_변경() {
-        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
-        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q3,"Answers Contents1",false));
-        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false));
+        Question Q3 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Q3.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q3,"Answers Contents1",false));
+        Q3.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false));
 
         Q3.deleteBy(NsUserTest.JAVAJIGI);
 
-        Question Q4 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", true);
-        Q4.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q4, "Answers Contents1", true));
-        Q4.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q4, "Answers Contents2", true));
+        Question Q4 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true);
+        Q4.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q4, "Answers Contents1", true));
+        Q4.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q4, "Answers Contents2", true));
 
         assertThat(Q3).isEqualTo(Q4);
     }
@@ -56,9 +56,9 @@ public class QuestionTest {
     @Test
     @DisplayName("답변이 있는 질문 삭제 시 질문자와 답변글의 모든 답변자가 같지 않은 경우 예외를 반환한다.")
     void 질문자와_답변글의_모든_답변자가_같지_않은_경우_예외_반환() {
-        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
-        Q3.addAnswer(Answer.of(NsUserTest.SANJIGI, Q3, "Answers Contents1", false));
-        Q3.addAnswer(Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false));
+        Question Q3 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Q3.addAnswer(new Answer(NsUserTest.SANJIGI, Q3, "Answers Contents1", false));
+        Q3.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false));
 
         assertThatThrownBy(() -> Q3.deleteBy(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
@@ -67,9 +67,9 @@ public class QuestionTest {
     @Test
     @DisplayName("질문을 삭제하면 질문과 답변 이력이 객체로 저장된다.")
     void 질문_삭제시_질문_답변_이력_객체_저장() {
-        Question Q3 = Question.of(NsUserTest.JAVAJIGI, "title1", "contents1", false);
-        Answer answer1 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",false);
-        Answer answer2 = Answer.of(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false);
+        Question Q3 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", false);
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",false);
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false);
 
         Q3.addAnswer(answer1);
         Q3.addAnswer(answer2);

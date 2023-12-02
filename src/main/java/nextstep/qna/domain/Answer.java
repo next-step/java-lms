@@ -27,27 +27,15 @@ public class Answer {
     private Answer() {
     }
 
-    private Answer(NsUser writer, Question question, String contents, boolean deleted){
+    public Answer(NsUser writer, Question question, String contents) {
+        this(null, writer, question, contents);
+    }
+
+    public Answer(NsUser writer, Question question, String contents, boolean deleted){
         this.writer = writer;
         this.question = question;
         this.contents = contents;
         this.deleted = deleted;
-    }
-
-    private Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
-    }
-
-    public static Answer of(NsUser writer, Question question, String contents) {
-        return new Answer(writer, question, contents);
-    }
-
-    public static Answer of(NsUser writer, Question question, String contents, boolean deleted) {
-        return new Answer(writer, question, contents, deleted);
-    }
-
-    public static Answer of(Long id, NsUser writer, Question question, String contents) {
-        return new Answer(id, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
@@ -67,11 +55,6 @@ public class Answer {
 
     public Long getId() {
         return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
