@@ -24,15 +24,15 @@ public class PaidSession extends Session {
         this.students.addStudent(payment.findPaidUser());
     }
 
-    private void validatePaymentFee(Long paymentAmount) {
-        if (!this.fee.equals(paymentAmount)) {
-            throw new PaymentMismatchException(fee);
-        }
-    }
-
     private void validateMaxStudents() {
         if (this.students.isRegistrationFull(maxStudents)) {
             throw new OverMaxStudentsException(maxStudents);
+        }
+    }
+
+    private void validatePaymentFee(Long paymentAmount) {
+        if (!this.fee.equals(paymentAmount)) {
+            throw new PaymentMismatchException(fee);
         }
     }
 }
