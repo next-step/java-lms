@@ -5,6 +5,7 @@ import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImageFileName;
 import nextstep.courses.domain.CoverImagePixel;
 import nextstep.courses.domain.CoverImageSize;
+import nextstep.courses.domain.CoverImages;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
@@ -103,7 +104,7 @@ class SessionTest {
         SessionStudent sessionStudent = new SessionStudent(students, maxStudentCount);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), false);
 
-        return new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }
 
     private Session createFreeSession(Students students) {
@@ -112,6 +113,6 @@ class SessionTest {
         SessionStudent sessionStudent = new SessionStudent(students);
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.RECRUITMENT, new Amount(0L), true);
 
-        return new Session(1L, sessionDuration, sessionEnrolment, coverImage);
+        return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }
 }
