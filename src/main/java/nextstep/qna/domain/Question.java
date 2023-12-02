@@ -99,10 +99,15 @@ public class Question {
 
     public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         validateDelete(loginUser);
-
         this.deleted = true;
         deleteAnswers(loginUser);
-        return new DeleteHistories(Collections.singletonList(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
+        return makeDeletehistories();
+    }
+
+    private DeleteHistories makeDeletehistories() {
+        DeleteHistories deleteHistories = new DeleteHistories(makeDeleteHistory());
+        deleteHistories.addAllDeleteHistories(answers.deleteAllHistories());
+        return deleteHistories;
     }
 
     private void validateDelete(NsUser loginUser) throws CannotDeleteException {
@@ -117,7 +122,7 @@ public class Question {
         }
     }
 
-    public DeleteHistory getDeleteHistory() {
+    public DeleteHistory makeDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id,  writer, LocalDateTime.now());
     }
 }

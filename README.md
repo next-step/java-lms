@@ -37,3 +37,6 @@
 * [x] validateAnswer 를 delete 메서드 내로 이동
 * [x] 불필요한 @Transactional 어노테이션 제거 
 * [x] Question 삭제시 History 처리 부분 domain 영역으로 이동 
+
+## 2차 리뷰 요청 사항 
+* [x] Question, Answer 삭제 History를 한번에 받아와 처리하도록 수정 

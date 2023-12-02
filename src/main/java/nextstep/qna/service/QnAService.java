@@ -28,13 +28,8 @@ public class QnAService {
         Answers answers = question.getAnswers();
         answers.deleteAnswers(loginUser);
 
-        deleteHistories.addAllDeleteHistories(answers.deleteAllHistories());
-        addDeleteHistories(deleteHistories);
-    }
-
-    @Transactional
-    public void addDeleteHistories(DeleteHistories deleteHistories) {
         deleteHistoryService.saveAll(deleteHistories.getDeleteHistories());
     }
+
 
 }
