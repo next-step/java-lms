@@ -86,7 +86,7 @@ public class Question {
         }
         delete();
         deleteHistories.add(DeleteHistory.QuestionOf( id, writer, LocalDateTime.now()));
-        answers.deleteBy(user, deleteHistories);
+        deleteHistories = answers.deleteBy(user, deleteHistories);
 
         return deleteHistories;
     }

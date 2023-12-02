@@ -17,7 +17,7 @@ public class Answers {
 
     public List<DeleteHistory> deleteBy(NsUser user, List<DeleteHistory> deleteHistories) {
         for(Answer answer : answers) {
-            answer.deleteBy(user, deleteHistories);
+            deleteHistories = answer.deleteBy(user, deleteHistories);
         }
 
         return deleteHistories;
