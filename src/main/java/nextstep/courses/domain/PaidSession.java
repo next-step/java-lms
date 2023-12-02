@@ -18,13 +18,13 @@ public class PaidSession extends SessionType{
     }
 
     private void validateMaxStudents(Integer maxStudents) {
-        if (maxStudents > 0) {
+        if (maxStudents < 0) {
             throw new IllegalArgumentException("최대 수강 인원은 0명 이상이어야 합니다");
         }
     }
 
     private void validateSessionFee(Integer sessionFee) {
-        if (sessionFee > 0) {
+        if (sessionFee < 0) {
             throw new IllegalArgumentException("수강료는 0원 이상이어야 합니다");
         }
     }
