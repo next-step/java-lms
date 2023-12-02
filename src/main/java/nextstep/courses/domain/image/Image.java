@@ -13,4 +13,8 @@ public class Image {
         this.size = size;
         this.pixel = pixel;
     }
+
+    public Image(ImageName name, ImageSize size, ImagePixel pixel) {
+        this(null, name, size, pixel);
+    }
 }
