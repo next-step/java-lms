@@ -2,7 +2,8 @@ package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import nextstep.courses.exception.FileSizeException;
+import nextstep.courses.exception.FileException;
+import nextstep.courses.exception.FileException.FileSizeException;
 import org.junit.jupiter.api.Test;
 
 public class FileSizeTest {

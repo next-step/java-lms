@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.FileSizeException;
+import nextstep.courses.exception.FileException;
 
 public class FileSize {
 
@@ -15,7 +15,7 @@ public class FileSize {
 
     private void validateFileSize(long size) {
         if (size > MAX_THUMBNAIL_FILE_SIZE) {
-            throw new FileSizeException("파일 크기는 1MB가 넘으면 안됩니다.");
+            throw new FileException("파일 크기는 1MB가 넘으면 안됩니다.");
         }
     }
 }
