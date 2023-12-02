@@ -20,15 +20,16 @@ public class SessionEnrolment {
         this.isFree = isFree;
     }
 
-    public void freeEnrolment(NsUser student) {
-        defaultValidate();
-        this.sessionStudent.add(student);
-    }
-
-    public void payEnrolment(NsUser student, Long userPayed) {
+    public void enrolment(Long userPayed) {
+        if (isFree) {
+            defaultValidate();
+            return;
+        }
         defaultValidate();
         validatePay(userPayed);
+    }
 
+    public void addStudent(NsUser student) {
         this.sessionStudent.add(student);
     }
 

@@ -23,10 +23,9 @@ class SessionEnrolmentTest {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(students, 3);
         Amount amount = new Amount(30_000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, amount, false);
-        sessionEnrolment.payEnrolment(newUser, 30_000L);
+        sessionEnrolment.enrolment(30_000L);
 
         boolean actual = sessionStudent.isMaxStudents();
 
@@ -39,10 +38,9 @@ class SessionEnrolmentTest {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(students);
         Amount amount = new Amount();
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, amount, true);
-        sessionEnrolment.freeEnrolment(newUser);
+        sessionEnrolment.enrolment(0L);
     }
 
     @Test
@@ -54,7 +52,7 @@ class SessionEnrolmentTest {
         NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.END, amount, true);
-        Assertions.assertThatThrownBy(() -> sessionEnrolment.freeEnrolment(newUser))
+        Assertions.assertThatThrownBy(() -> sessionEnrolment.enrolment(0L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의가 모집중인 상태가 아닙니다.");
     }
@@ -65,10 +63,9 @@ class SessionEnrolmentTest {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(students, 3);
         Amount amount = new Amount(30_000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, amount, false);;
-        Assertions.assertThatThrownBy(() -> sessionEnrolment.payEnrolment(newUser, 20_000L))
+        Assertions.assertThatThrownBy(() -> sessionEnrolment.enrolment(20_000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제금액과 강의금액이 맞지 않습니다.");
     }
@@ -79,10 +76,9 @@ class SessionEnrolmentTest {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(students, 2);
         Amount amount = new Amount(30_000L);
-        NsUser newUser = new NsUser(3L, "test", "test", "test", "test");
 
         SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, amount, false);;
-        Assertions.assertThatThrownBy(() -> sessionEnrolment.payEnrolment(newUser, 30_000L))
+        Assertions.assertThatThrownBy(() -> sessionEnrolment.enrolment(30_000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("강의 최대 수강 인원이 모두 찼습니다.");
     }

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class Session {
     private Long id;
     private final Long courseId;
+    private Long instructorId;
     private final SessionDuration sessionDuration;
     private final SessionEnrolment sessionEnrolment;
     private final CoverImages coverImages;
@@ -26,13 +27,21 @@ public class Session {
         this.coverImages = coverImages;
     }
 
-    public void enrolment(NsUser student, Long userPayed) {
-        if (isFree()) {
-            sessionEnrolment.freeEnrolment(student);
-            return;
-        }
+    public Apply enrolment(NsUser student, Long userPayed) {
+        sessionEnrolment.enrolment(userPayed);
+        return Apply.defaultApply(this, student);
+    }
 
-        sessionEnrolment.payEnrolment(student, userPayed);
+    public void addStudent(NsUser student) {
+        this.sessionEnrolment.addStudent(student);
+    }
+
+    public boolean isinstructor(Long instructorId) {
+        return this.instructorId.equals(instructorId);
+    }
+
+    public void updateInstructor(Long instructorId) {
+        this.instructorId = instructorId;
     }
 
     public Long id() {
@@ -65,10 +74,6 @@ public class Session {
 
     public int totalStudentCount() {
         return this.sessionEnrolment.totalStudent();
-    }
-
-    public boolean isMaxStudent() {
-        return this.sessionEnrolment.isFullStudents();
     }
 
     public boolean isFree() {

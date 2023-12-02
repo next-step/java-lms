@@ -1,6 +1,7 @@
 package nextstep.courses.domian;
 
 import nextstep.courses.domain.Amount;
+import nextstep.courses.domain.Apply;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImageFileName;
 import nextstep.courses.domain.CoverImagePixel;
@@ -27,32 +28,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionTest {
 
     @Test
-    @DisplayName("무료 강의라면 인원수 제한없이 신청이 가능하다.")
-    void enrolment_무료() {
+    @DisplayName("강의는 싱청하면 신청대기 상태를 가진다.")
+    void enrolment() {
         Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
         Session session = createFreeSession(students);
 
         NsUser newUser = createNewUser();
-        session.enrolment(newUser, 0L);
+        Apply actual = session.enrolment(newUser, 0L);
 
-        int actual = session.totalStudentCount();
-        int expected = 3;
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    @DisplayName("유료 강의라면 인원수 인원수에 맞게만 신청이 가능하다.")
-    void enrolment_유료() {
-        Students students = new Students(new ArrayList<>(List.of(NsUserTest.SANJIGI, NsUserTest.JAVAJIGI)));
-        Session session = createPaySession(students, 3, SessionStatusType.ONGOING, 30_000L);
-
-        NsUser newUser = createNewUser();
-        session.enrolment(newUser, 30_000L);
-
-        boolean actual = session.isMaxStudent();
-
-        assertThat(actual).isTrue();
+        assertThat(actual).isEqualTo(Apply.defaultApply(session, newUser));
     }
 
     @Test

@@ -33,8 +33,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findById(Long id) {
-        return Optional.empty();
+    public NsUser findById(Long id) {
+        return null;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
