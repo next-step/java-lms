@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.image.Image;
 import nextstep.courses.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 
@@ -10,17 +11,19 @@ public class Session {
     private SessionPeriod sessionPeriod;
     private SessionStatus status;
     private Price price;
+    private Image image;
 
-    public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status) {
-        this(null, title, sessionPeriod, price, status);
+    public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image) {
+        this(null, title, sessionPeriod, price, status, image);
     }
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status) {
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image) {
         this.id = id;
         this.title = title;
         this.sessionPeriod = sessionPeriod;
         this.price = price;
         this.status = status;
+        this.image = image;
     }
 
     public String title() {

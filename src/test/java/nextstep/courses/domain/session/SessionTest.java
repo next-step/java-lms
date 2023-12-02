@@ -1,5 +1,9 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.ImageName;
+import nextstep.courses.domain.image.ImagePixel;
+import nextstep.courses.domain.image.ImageSize;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.type.SessionStatus;
@@ -20,7 +24,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(true, 10000, new ParticipantCount(10));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, null);
         // then
         assertThat(session.title()).isEqualTo("TDD");
         assertThat(session.isFree()).isTrue();
@@ -33,7 +37,21 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(10));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, null);
+        // then
+        assertThat(session.title()).isEqualTo("TDD");
+        assertThat(session.isFree()).isFalse();
+    }
+
+    @DisplayName("강의이미지 등록하여 강의 생성")
+    @Test
+    void 강의이미지_등록하여_강의_생성() {
+        // given
+        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
+        Price price = new Price(false, 10000, new ParticipantCount(10));
+        Image image = new Image(new ImageName("image.png"), new ImageSize(1024 * 1024), new ImagePixel(300, 200));
+        // when
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, image);
         // then
         assertThat(session.title()).isEqualTo("TDD");
         assertThat(session.isFree()).isFalse();
@@ -46,7 +64,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(1));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.SANJIGI);
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
@@ -59,7 +77,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(1));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.FINISH);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.FINISH, null);
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -72,7 +90,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(10));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
@@ -85,7 +103,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(1));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
@@ -99,7 +117,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(10));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         // then
         assertThatThrownBy(() -> session.addParticipant(5000, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
