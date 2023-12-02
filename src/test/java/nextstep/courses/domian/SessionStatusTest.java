@@ -1,5 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domian;
 
+import nextstep.courses.domain.SessionStatus;
+import nextstep.courses.domain.SessionStatusType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

@@ -1,5 +1,19 @@
-package nextstep.courses.domain;
+package nextstep.courses.domian;
 
+import nextstep.courses.domain.Amount;
+import nextstep.courses.domain.Apply;
+import nextstep.courses.domain.ApplyStatus;
+import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.CoverImageFileName;
+import nextstep.courses.domain.CoverImagePixel;
+import nextstep.courses.domain.CoverImageSize;
+import nextstep.courses.domain.CoverImages;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionDuration;
+import nextstep.courses.domain.SessionEnrolment;
+import nextstep.courses.domain.SessionStatusType;
+import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
