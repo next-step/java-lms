@@ -41,4 +41,8 @@ public class Session {
     public boolean isRecruiting() {
         return sessionStatus == SessionStatus.RECRUITING;
     }
+
+    public boolean isEnrollmentPossible() {
+        return this.sessionType.isEnrollmentPossible(this.students.size());
+    }
 }

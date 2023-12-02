@@ -28,4 +28,12 @@ public class PaidSession extends SessionType{
             throw new IllegalArgumentException("수강료는 0원 이상이어야 합니다");
         }
     }
+
+    @Override
+    public boolean isEnrollmentPossible(Integer size) {
+        System.out.println("size = " + size);
+        System.out.println("maxStudents = " + maxStudents);
+        System.out.println("size < maxStudents = " + (size < maxStudents));
+        return size < maxStudents;
+    }
 }

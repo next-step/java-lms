@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public class SessionType {
+public abstract class SessionType {
 
     private final boolean isPaid;
 
@@ -14,4 +14,6 @@ public class SessionType {
         }
         return new FreeSession(isPaid);
     }
+
+    public abstract boolean isEnrollmentPossible(Integer size);
 }
