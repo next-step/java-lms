@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Session {
     private int studentCount;
     private int tuition;
+    private SessionStatus sessionStatus;
     private Image image;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -18,6 +19,10 @@ public class Session {
 
     public Session(Image image) {
         this.image = image;
+    }
+
+    public Session(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
     }
 
     public Session(int studentCount, int tuition) {
@@ -38,6 +43,10 @@ public class Session {
         return tuition;
     }
 
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
     public Image getImage() {
         return image;
     }
@@ -48,5 +57,9 @@ public class Session {
 
     public LocalDateTime getEndDate() {
         return endDate;
+    }
+
+    public SessionStatus isSessionStatus() {
+        return sessionStatus;
     }
 }

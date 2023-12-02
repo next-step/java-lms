@@ -25,4 +25,28 @@ public class SessionTest {
         Session session = new Session(new Image("png", 300, 200));
         assertThat(session.getImage()).isNotNull();
     }
+
+    @Test
+    @DisplayName("강의는 준비중 상태를 가진다.")
+    void 강의는_준비중_상태를_가질_수_있다() {
+        Session session = new Session(SessionStatus.PREPARING);
+        SessionStatus result = session.isSessionStatus();
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("강의는 모집중 상태를 가진다.")
+    void 강의는_모집중_상태를_가질_수_있다() {
+        Session session = new Session(SessionStatus.RECRUITING);
+        SessionStatus result = session.isSessionStatus();
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("강의는 종료 상태를 가진다.")
+    void 강의는_종료_상태를_가질_수_있다() {
+        Session session = new Session(SessionStatus.CLOSE);
+        SessionStatus result = session.isSessionStatus();
+        assertThat(result).isNotNull();
+    }
 }
