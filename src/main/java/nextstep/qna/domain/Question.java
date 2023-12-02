@@ -56,18 +56,17 @@ public class Question {
         return deleteAndSaveHistories();
     }
 
-    private List<DeleteHistory> deleteAndSaveHistories() {
+    private List<DeleteHistory> deleteAndSaveHistories() throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.addAll(deleteAnswers());
+        deleteHistories.addAll(deleteAnswers(writer));
+        deleteHistories.add(deleteQuestion());
 
-        deleteQuestion();
-        deleteHistories.add(DeleteHistory.Question(id, writer));
         return deleteHistories;
     }
 
     private void validateQuestionAndAnswerDeleteOwner(NsUser loginUser) throws CannotDeleteException {
         validateQuestionDeleteOwner(loginUser);
-        validateAnswersDeleteOwner();
+        validateAnswersDeleteOwner(loginUser);
     }
 
     private void validateQuestionDeleteOwner(NsUser loginUser) throws CannotDeleteException {
@@ -76,8 +75,8 @@ public class Question {
         }
     }
 
-    private void validateAnswersDeleteOwner() throws CannotDeleteException {
-        if (answers.validateDeleteOwner(writer)) {
+    private void validateAnswersDeleteOwner(NsUser loginUser) throws CannotDeleteException {
+        if (answers.validateDeleteOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
@@ -86,16 +85,17 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    private void deleteQuestion() {
+    private DeleteHistory deleteQuestion() {
         this.deleted = true;
+        return DeleteHistory.Question(id, writer);
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    private List<DeleteHistory> deleteAnswers() {
-        return answers.deleteAll();
+    private List<DeleteHistory> deleteAnswers(NsUser writer) throws CannotDeleteException {
+        return answers.deleteAll(writer);
     }
 
     public Answers getAnswers() {
