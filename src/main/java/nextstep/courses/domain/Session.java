@@ -26,7 +26,7 @@ public class Session {
         this.students.addStudent(payment.findPaidUser());
     }
 
-    private void validateStatus() {
+    protected void validateStatus() {
         if (status != Status.OPEN) {
             throw new NotOpenSessionException();
         }

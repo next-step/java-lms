@@ -21,6 +21,7 @@ public class PaidSession extends Session {
     public void register(Payment payment) {
         validateMaxStudents();
         validatePaymentFee(payment.findAmount());
+        validateStatus();
         this.students.addStudent(payment.findPaidUser());
     }
 
