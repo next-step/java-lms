@@ -20,5 +20,5 @@
   - 커버 이미지 - CoverImage(이름, 확장자, 크기, 용량)
     - 1MB 이하 - Capacity(원시 값 포장)
     - W*H 비율은 3:2, W(300) * H(200)괄호 안은 최소 값 - Size
-    - gif, jpg, jpeg, png, svg만 가능 - Extention(enum) 
+    - gif, jpg, jpeg, png, svg만 가능 - Extension(enum) 
   

@@ -1,5 +1,6 @@
-package nextstep.courses.domain.session.coverimage.wrapper;
+package nextstep.courses.domain.session.coverimage;
 
+import nextstep.courses.domain.session.coverimage.Size;
 import nextstep.courses.exception.ImageSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

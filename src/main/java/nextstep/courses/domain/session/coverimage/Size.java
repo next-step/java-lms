@@ -1,5 +1,7 @@
-package nextstep.courses.domain.session.coverimage.wrapper;
+package nextstep.courses.domain.session.coverimage;
 
+import nextstep.courses.domain.session.coverimage.wrapper.Height;
+import nextstep.courses.domain.session.coverimage.wrapper.Width;
 import nextstep.courses.exception.ImageSizeException;
 
 public class Size {
