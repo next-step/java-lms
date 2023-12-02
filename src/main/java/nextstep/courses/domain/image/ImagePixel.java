@@ -17,10 +17,10 @@ public class ImagePixel {
 
     private void validate(int width, int height) {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("Invalid image size.");
+            throw new IllegalArgumentException("이미지 최소 크기는 300X200입니다.");
         }
         if (width / height != RATIO) {
-            throw new IllegalArgumentException("Invalid image ratio.");
+            throw new IllegalArgumentException("이미지 비율은 3:2여야 합니다.");
         }
     }
 
