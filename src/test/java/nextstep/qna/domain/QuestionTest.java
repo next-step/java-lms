@@ -11,63 +11,68 @@ import java.util.List;
 import static nextstep.fixture.NsUserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-public class QuestionTest {
+class QuestionTest {
 
-    private static final String TEST_TITLE = "Test Title";
-    private static final String TEST_CONTENT = "Test Content";
-    private static final LocalDateTime NOW = LocalDateTime.now();
+    private static final String TEST_TITLE = "test_title";
+    private static final String TEST_CONTENTS = "test_contents";
 
-    @DisplayName("질문자와 로그인 사용자가 동일하지 않다면 삭제할 수 없다.")
+    @DisplayName("질문 소유자가 아닌 사용자가 질문을 삭제할 경우 예외가 발생한다.")
     @Test
-    void if_user_is_not_same_as_login_user_then_can_not_delete_question() {
-        Question givenQuestion = new Question(JAVAJIGI, TEST_TITLE, TEST_CONTENT);
+    void if_user_is_not_question_owner_then_throw_exception() {
+        QuestionTexts questionTexts = new QuestionTexts(TEST_TITLE, TEST_CONTENTS);
+        Times times = new Times(LocalDateTime.now(), null);
+        QuestionInformation information = new QuestionInformation(questionTexts, JAVAJIGI, times, false);
+        Question question = new Question(1L, information);
         NsUser loginUser = SANJIGI;
 
-        assertThatThrownBy(() -> givenQuestion.delete(loginUser))
+        assertThatThrownBy(() -> question.delete(loginUser))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
-    @DisplayName("답변이 없고 질문만 존재할 경우 삭제할 수 있다.")
+    @DisplayName("질문 소유자는 질문을 삭제할 수 있다.")
     @Test
-    void should_delete_if_question_has_no_answer() {
+    void if_user_is_question_owner_then_delete_question() {
+        QuestionTexts questionTexts = new QuestionTexts(TEST_TITLE, TEST_CONTENTS);
+        Times times = new Times(LocalDateTime.now(), null);
+        QuestionInformation information = new QuestionInformation(questionTexts, JAVAJIGI, times, false);
+        Question question = new Question(1L, information);
         NsUser loginUser = JAVAJIGI;
-        Question givenQuestion = new Question(JAVAJIGI, TEST_TITLE, TEST_CONTENT);
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.QUESTION,
-                                                        givenQuestion.getId(),
-                                                        loginUser,
-                                                        NOW);
-        List<DeleteHistory> expected = List.of(deleteHistory);
 
-        List<DeleteHistory> actual = givenQuestion.delete(loginUser);
+        Question deletedQuestion = question.delete(loginUser);
+        boolean actual = deletedQuestion.isDeleted();
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isTrue();
     }
 
-    @DisplayName("질문자와 답변자가 동일하다면 질문 데이터와 답변 데이터 모두 삭제된다.")
+    @DisplayName("질문과 답변 소유자가 동일해야 모두 삭제할 수 있다.")
     @Test
-    void delete_question_and_answers_if_login_user_is_owner() {
+    void if_question_and_answers_owner_is_same_then_delete_question_and_answers() {
+        QuestionTexts questionTexts = new QuestionTexts(TEST_TITLE, TEST_CONTENTS);
+        Times times = new Times(LocalDateTime.now(), null);
+        QuestionInformation information = new QuestionInformation(questionTexts, JAVAJIGI, times, false);
+        Answer answer = new Answer(1L, new AnswerInformation(TEST_CONTENTS, JAVAJIGI, false, times));
+        Answers answers = new Answers(answer);
+        Question question = new Question(1L, information, answers);
         NsUser loginUser = JAVAJIGI;
-        Question givneQuestion = new Question(JAVAJIGI, TEST_TITLE, TEST_CONTENT);
-        Answer givenAnswer1 = new Answer(JAVAJIGI, givneQuestion, TEST_CONTENT);
-        Answer givenAnswer2 = new Answer(JAVAJIGI, givneQuestion, TEST_CONTENT);
-        givneQuestion.addAnswer(givenAnswer1);
-        givneQuestion.addAnswer(givenAnswer2);
-        DeleteHistory deletedQuestion = new DeleteHistory(ContentType.QUESTION,
-                                                          givneQuestion.getId(),
-                                                          loginUser,
-                                                          NOW);
-        DeleteHistory deletedAnswer1 = new DeleteHistory(ContentType.ANSWER,
-                                                        givenAnswer1.getId(),
-                                                        loginUser,
-                                                        NOW);
-        DeleteHistory deletedAnswer2 = new DeleteHistory(ContentType.ANSWER,
-                                                        givenAnswer1.getId(),
-                                                        loginUser,
-                                                        NOW);
-        List<DeleteHistory> expected = List.of(deletedQuestion, deletedAnswer1, deletedAnswer2);
 
-        List<DeleteHistory> actual = givneQuestion.delete(loginUser);
+        Question deletedQuestion = question.delete(loginUser);
+        List<DeletedHistory> actual = deletedQuestion.buildHistories();
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).hasSize(2);
+    }
+
+    @DisplayName("질문과 답변 소유자가 동일하지 않으면 삭제시 예외가 발생한다.")
+    @Test
+    void throw_exception_when_delete_operation_if_question_and_answers_owner_is_not_same() {
+        QuestionTexts questionTexts = new QuestionTexts(TEST_TITLE, TEST_CONTENTS);
+        Times times = new Times(LocalDateTime.now(), null);
+        QuestionInformation information = new QuestionInformation(questionTexts, JAVAJIGI, times, false);
+        Answer answer = new Answer(1L, new AnswerInformation(TEST_CONTENTS, SANJIGI, false, times));
+        Answers answers = new Answers(answer);
+        Question question = new Question(1L, information, answers);
+        NsUser loginUser = JAVAJIGI;
+
+        assertThatThrownBy(() -> question.delete(loginUser))
+                .isInstanceOf(CannotDeleteException.class);
     }
 }
