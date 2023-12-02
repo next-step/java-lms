@@ -49,4 +49,12 @@ public class Session {
     public boolean checkSessionFeeEquality(Integer sessionFee) {
         return this.sessionType.checkSessionFeeEquality(sessionFee);
     }
+
+    public void enroll(NsUser student) {
+        this.students.add(student);
+    }
+
+    public List<NsUser> getStudents() {
+        return students;
+    }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -12,7 +13,7 @@ public class SessionTest {
 
     private final Period period = new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 25));
     private final Thumbnail thumbnail = new Thumbnail(1, "thumbnail.png", 1024L * 1024L, 300, 200);
-    private final List<NsUser> students = List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+    private final List<NsUser> students = new ArrayList<>(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
     private SessionType sessionType = SessionType.determineSessionType(true, 100, 100);
     private SessionStatus sessionStatus = SessionStatus.RECRUITING;
 
@@ -95,5 +96,16 @@ public class SessionTest {
         Session session = new Session(1, "session", period, thumbnail,
                 sessionType, sessionStatus, students);
         assertThat(session.checkSessionFeeEquality(3000)).isTrue();
+    }
+
+    @Test
+    public void enroll_수강생_추가_리스트_테스트() {
+        NsUser yumble = new NsUser();
+        Session session = new Session(1, "session", period, thumbnail,
+                sessionType, sessionStatus, students);
+
+        session.enroll(yumble);
+
+        assertThat(session.getStudents()).isEqualTo(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI, yumble));
     }
 }
