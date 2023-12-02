@@ -9,13 +9,13 @@ public class FileDimensionsTest {
 
     @Test
     public void 파일_너비_300픽셀_미만_시_에러_테스트() {
-        assertThatThrownBy(() -> new FileDimensions(200, 200))
+        assertThatThrownBy(() -> new FileDimensions(299, 200))
                 .isInstanceOf(FileDimensionsException.class);
     }
 
     @Test
     public void 파일_높이_200픽셀_미만_시_에러_테스트() {
-        assertThatThrownBy(() -> new FileDimensions(300, 100))
+        assertThatThrownBy(() -> new FileDimensions(300, 199))
                 .isInstanceOf(FileDimensionsException.class);
     }
 

@@ -17,5 +17,11 @@ public class FileException extends IllegalArgumentException{
             super(message);
         }
     }
+
+    public static class FileExtensionException extends FileException {
+        public FileExtensionException(String message) {
+            super(message);
+        }
+    }
 }
 
