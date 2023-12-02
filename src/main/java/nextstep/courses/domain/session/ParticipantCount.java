@@ -1,27 +1,31 @@
 package nextstep.courses.domain.session;
 
+import nextstep.users.domain.NsUser;
+
+import java.util.ArrayList;
+
 public class ParticipantCount {
 
     private int maxParticipants;
-    private int nowParticipants;
+    private SessionParticipants sessionParticipants;
 
     public ParticipantCount(int maxParticipants) {
-        this(maxParticipants, 0);
+        this(maxParticipants, new SessionParticipants(new ArrayList<>()));
     }
 
-    public ParticipantCount(int maxParticipants, int nowParticipants) {
+    public ParticipantCount(int maxParticipants, SessionParticipants nowParticipants) {
         validateParticipant(maxParticipants, nowParticipants);
         this.maxParticipants = maxParticipants;
-        this.nowParticipants = nowParticipants;
+        this.sessionParticipants = nowParticipants;
     }
 
-    public void add() {
-        nowParticipants++;
-        validateParticipant(maxParticipants, nowParticipants);
+    public void add(NsUser user) {
+        sessionParticipants.add(user);
+        validateParticipant(maxParticipants, sessionParticipants);
     }
 
-    private void validateParticipant(int maxParticipants, int nowParticipants) {
-        if (maxParticipants < nowParticipants) {
+    private void validateParticipant(int maxParticipants, SessionParticipants nowParticipants) {
+        if (maxParticipants < nowParticipants.count()) {
             throw new IllegalArgumentException("최대 참가자 수를 초과하였습니다.");
         }
     }
@@ -31,6 +35,6 @@ public class ParticipantCount {
     }
 
     public int nowCount() {
-        return nowParticipants;
+        return sessionParticipants.count();
     }
 }
