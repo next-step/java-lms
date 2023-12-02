@@ -3,20 +3,26 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class Session {
+    private int studentCount;
+    private int tuition;
     private Image image;
-    SessionType sessionType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
     public Session() {
     }
 
+    public Session(int tuition) {
+        this.tuition = tuition;
+    }
+
     public Session(Image image) {
         this.image = image;
     }
 
-    public Session(SessionType sessionType) {
-        this.sessionType = sessionType;
+    public Session(int studentCount, int tuition) {
+        this.studentCount = studentCount;
+        this.tuition = tuition;
     }
 
     public Session(LocalDateTime startDate, LocalDateTime endDate) {
@@ -24,12 +30,16 @@ public class Session {
         this.endDate = endDate;
     }
 
-    public Image getImage() {
-        return image;
+    public int getStudentCount() {
+        return studentCount;
     }
 
-    public SessionType getSessionType() {
-        return sessionType;
+    public int getTuition() {
+        return tuition;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public LocalDateTime getStartDate() {

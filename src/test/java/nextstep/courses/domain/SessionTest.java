@@ -25,18 +25,4 @@ public class SessionTest {
         Session session = new Session(new Image("png", 300, 200));
         assertThat(session.getImage()).isNotNull();
     }
-
-    @Test
-    @DisplayName("강의는 무료 강의를 가질 수 있다.")
-    void 강의는_무료_강의를_가질_수_있다() {
-        Session session = new Session(SessionType.FREE);
-        assertThat(session.getSessionType()).isEqualTo(SessionType.FREE);
-    }
-
-    @Test
-    @DisplayName("강의는 유료 강의를 가질 수 있다.")
-    void 강의는_유료_강의를_가질_수_있다() {
-        Session session = new Session(SessionType.PAY);
-        assertThat(session.getSessionType()).isEqualTo(SessionType.PAY);
-    }
 }
