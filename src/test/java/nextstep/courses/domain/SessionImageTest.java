@@ -9,7 +9,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SessionImageTest {
+public class SessionImageTest {
+    public static SessionImage normalSessionImage() {
+        return new SessionImage(1000,"jpg",300,200);
+    }
 
     @Test
     @DisplayName("실패 - 강의 커버 이미지 크기가 1MB 이하가 아닐 경우 예외가 발생 한다.")
