@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionPeriodTest {
-    
+
     @DisplayName("강의 기간 생성")
     @Test
     void 강의기간생성() {

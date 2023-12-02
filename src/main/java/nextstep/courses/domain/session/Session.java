@@ -27,7 +27,7 @@ public class Session {
         return this.title;
     }
 
-    public boolean isFree(){
+    public boolean isFree() {
         return price.isFree();
     }
 
