@@ -35,14 +35,14 @@ public class SessionImageTest {
     @DisplayName("이미지 타입이 gif, jpg(jpeg 포함), png, svg 이 아닌 경우 Exception Throw")
     void wrong_ImageType_Test() {
         assertThrows(InvalidImageFormatException.class,
-                () -> SessionImage.valueOf("jjpg"));
+                () -> SessionImage.imageTypeOf("jjpg"));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"gif", "jpg", "jpeg", "png", "svg"})
     @DisplayName("이미지 타입이 gif, jpg(jpeg 포함), png, svg 이 아닌 경우 Exception Throw")
     void Available_ImageType_Test(String input) {
-        assertDoesNotThrow(() -> SessionImage.valueOf(input));
+        assertDoesNotThrow(() -> SessionImage.imageTypeOf(input));
 
     }
 

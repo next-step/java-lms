@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.qna.domain.Answers;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -15,12 +13,20 @@ public class Course {
 
     private Sessions sessions;
 
+    private SessionImage sessionImage;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
+
+    public Course imageOf(SessionImage sessionImage) {
+        Course course = this;
+        course.sessionImage = sessionImage;
+        return course;
+    }
     public Course() {
     }
 
@@ -31,6 +37,7 @@ public class Course {
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
+        this.sessionImage = null;
         this.groups = Collections.emptyList();
         this.sessions = Sessions.initialize();
         this.creatorId = creatorId;
@@ -41,6 +48,10 @@ public class Course {
     public void addSession(Session session) {
         session.toCourse(this);
         this.sessions = sessions.addSession(session);
+    }
+
+    public boolean hasImage() {
+        return !(sessionImage == null);
     }
 
     public String getTitle() {

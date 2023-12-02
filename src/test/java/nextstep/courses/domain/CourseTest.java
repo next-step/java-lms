@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.InvalidImageFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,5 +25,16 @@ public class CourseTest {
         course.addSession(session1);
         course.addSession(session2);
         assertThat(course.getSessions().size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
+    void saveSessionImageTest() throws InvalidImageFormatException {
+        assertThat(course.hasImage()).isFalse();
+
+        SessionImage 강의_이미지 = SessionImage.nameOf("강의 이미지");
+        course.imageOf(강의_이미지);
+
+        assertThat(course.hasImage()).isTrue();
     }
 }

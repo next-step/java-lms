@@ -9,32 +9,39 @@ public class SessionImage {
     public static int MIN_IMAGE_WIDTH_IN_PIXELS = 300;
     public static int MIN_IMAGE_HEIGHT_IN_PIXELS = 200;
     public static double ASPECT_RATIO = (double) MIN_IMAGE_WIDTH_IN_PIXELS / MIN_IMAGE_HEIGHT_IN_PIXELS;
+
+    private String name;
     private int imageSize;
     private int width;
     private int height;
     private ImageType imageType;
 
-    public static SessionImage valueOf(String inputType) throws InvalidImageFormatException {
-        ImageType imageType = validateImageType(inputType);
-        return new SessionImage(1024 * 1024, 300, 200, imageType);
+    public static SessionImage imageTypeOf(String inputImageType) throws InvalidImageFormatException {
+        ImageType imageType = validateImageType(inputImageType);
+        return new SessionImage("tmp", 1024 * 1024, 300, 200, imageType);
     }
 
-    public static SessionImage valueOf(int imageSize, int width, int height, String inputType) throws InvalidImageFormatException {
+    public static SessionImage nameOf(String name) throws InvalidImageFormatException {
+        return new SessionImage(name, 1024*1024, 300, 200, ImageType.PNG);
+    }
+
+    public static SessionImage valueOf(String name, int imageSize, int width, int height, String inputType) throws InvalidImageFormatException {
         ImageType imageType = validateImageType(inputType);
-        return new SessionImage(imageSize, width, height, imageType);
+        return new SessionImage(name, imageSize, width, height, imageType);
     }
 
     public SessionImage(int imageSize) throws InvalidImageFormatException {
-        this(imageSize, 300, 200, ImageType.GIF);
+        this("tmp", imageSize, 300, 200, ImageType.GIF);
     }
     public SessionImage(int width, int height) throws InvalidImageFormatException {
-        this(1024 * 1024, width, height, ImageType.GIF);
+        this("tmp",1024 * 1024, width, height, ImageType.GIF);
     }
 
-    private SessionImage(int imageSize, int width, int height, ImageType imageType) throws InvalidImageFormatException {
+    private SessionImage(String name, int imageSize, int width, int height, ImageType imageType) throws InvalidImageFormatException {
         validateImageSize(imageSize);
         validateWidthHeight(width, height);
 
+        this.name = name;
         this.imageSize = imageSize;
         this.width = width;
         this.height = height;
