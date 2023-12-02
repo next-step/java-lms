@@ -7,7 +7,7 @@ import java.util.Arrays;
 public enum Extension {
     GIF, JPG, JPEG, PNG, SVG;
 
-    public static Extension of(String inputExtension) {
+    public static Extension from(String inputExtension) {
         return Arrays.stream(values())
                 .filter(e -> e.name().equals(inputExtension))
                 .findFirst()

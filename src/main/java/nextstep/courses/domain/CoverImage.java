@@ -20,7 +20,7 @@ public class CoverImage {
         validateImageSize(size);
         validateWidthAndHeight(width, height);
         this.size = size;
-        this.extension = Extension.of(extension);
+        this.extension = Extension.from(extension);
         this.width = width;
         this.height = height;
     }
