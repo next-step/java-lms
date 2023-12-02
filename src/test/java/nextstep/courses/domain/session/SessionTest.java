@@ -46,9 +46,10 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
         Price price = new Price(false, 10000, new ParticipantCount(1));
         // when
-        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY);
+        Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
+        session.addParticipant(10000, NsUserTest.SANJIGI);
         // then
-        assertThat(session.isRecruiting()).isTrue();
+        assertThat(session.nowParticipants()).isEqualTo(1);
     }
 
     @DisplayName("강의가 모집중이 아닐때 신청이 불가능하다")
@@ -74,7 +75,7 @@ public class SessionTest {
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
         // then
-        assertThat(session.nowParticipantCount()).isEqualTo(1);
+        assertThat(session.nowParticipants()).isEqualTo(1);
     }
 
     @DisplayName("유료강의 참여가 최대를 넘기면 예외가 발생한다.")

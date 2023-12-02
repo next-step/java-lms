@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.type.SessionStatus;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -28,5 +29,20 @@ public class Session {
 
     public boolean isFree(){
         return price.isFree();
+    }
+
+    public void addParticipant(int money, NsUser nsUser) {
+        validateRecruiting();
+        price.addParticipant(money, nsUser);
+    }
+
+    public void validateRecruiting() {
+        if (status != SessionStatus.RECRUIT) {
+            throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
+        }
+    }
+
+    public int nowParticipants() {
+        return price.nowParticipants();
     }
 }
