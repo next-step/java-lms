@@ -9,6 +9,8 @@ public class Course {
 
     private Long creatorId;
 
+    private Sessions sessions;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -24,6 +26,7 @@ public class Course {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
+        this.sessions = new Sessions();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
