@@ -19,4 +19,8 @@ public class Period {
             throw new InvalidPeriodRangeException();
         }
     }
+
+    public boolean isDateWithinRange(LocalDate date) {
+        return !date.isBefore(startDate) && !date.isAfter(endDate);
+    }
 }
