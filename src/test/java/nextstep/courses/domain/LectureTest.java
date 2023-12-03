@@ -1,0 +1,37 @@
+package nextstep.courses.domain;
+
+import java.time.LocalDateTime;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class LectureTest {
+
+  @Test
+  @DisplayName("무료 강의 생성")
+  public void free_lecture_test() {
+      // given
+      LocalDateTime startDate = LocalDateTime.of(2023,4,3,11,30);
+      LocalDateTime endDate = LocalDateTime.of(2023,6,3,11,30);
+      // when
+      Lecture lecture = Lecture.freeOf(LectureType.FREE,startDate,endDate);
+      boolean result = lecture.isFree();
+      // then
+      Assertions.assertThat(result).isTrue();
+  }
+
+  @Test
+  @DisplayName("유료 강의 인원 제한 테스트")
+  public void paid_lecture_person_limit_test() {
+    // given
+    LocalDateTime startDate = LocalDateTime.of(2023,4,3,11,30);
+    LocalDateTime endDate = LocalDateTime.of(2023,6,3,11,30);
+    int maxStudent = 70;
+    // when
+    Lecture lecture = Lecture.paidOf(LectureType.PAID,startDate,endDate, maxStudent);
+    boolean result = lecture.isFree();
+    // then
+    Assertions.assertThat(result).isFalse();
+  }
+
+}
