@@ -24,11 +24,19 @@ public class SessionStudents {
         this.students.add(student);
     }
 
-    public boolean isMaxStudents() {
-        return this.students.totalCount() == this.maxStudentCount;
+    public void approve(Student student) {
+        this.students.approve(student);
     }
 
-    public int studentCount() {
-        return this.students.totalCount();
+    public boolean isMaxStudents() {
+        return this.students.approvalStudentsCount() == this.maxStudentCount;
+    }
+
+    public int maxStudentsCount() {
+        return this.maxStudentCount;
+    }
+
+    public int applyStudentsCount() {
+        return this.students.applyStudentsCount();
     }
 }

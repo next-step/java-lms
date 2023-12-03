@@ -20,28 +20,28 @@ public class SessionEnrolment {
         this.isFree = isFree;
     }
 
-    public void enrolment(Long userPayed) {
-        if (isFree) {
-            defaultValidate();
-            return;
-        }
-        defaultValidate();
-        validatePay(userPayed);
+    public void enrolment(NsUser student, Long userPayed) {
+        validate(userPayed);
+        this.sessionStudents.add(student);
     }
 
-    public void addStudent(NsUser student) {
-        this.sessionStudents.add(student);
+    public void approve(Student student) {
+        this.sessionStudents.approve(student);
     }
 
     public boolean isFree() {
         return isFree;
     }
 
-    public int totalStudent() {
-        return this.sessionStudents.studentCount();
+    public int maxStudent() {
+        return this.sessionStudents.maxStudentsCount();
     }
 
     public boolean isFullStudents() {
+        if (this.isFree) {
+            return false;
+        }
+
         return this.sessionStudents.isMaxStudents();
     }
 
@@ -57,23 +57,29 @@ public class SessionEnrolment {
         return this.amount.amount();
     }
 
-    private void defaultValidate() {
-        if (!this.sessionStatus.isRecruitment()) {
-            throw new java.lang.IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
-        }
+    public int applyStudentsCount() {
+        return this.sessionStudents.applyStudentsCount();
     }
 
-    private void validatePay(Long userPayed) {
+    private void validate(Long userPayed) {
+        if (!this.sessionStatus.isRecruitment()) {
+            throw new IllegalArgumentException("현재 강의가 모집중인 상태가 아닙니다.");
+        }
+
         if (isFullStudents()) {
-            throw new java.lang.IllegalArgumentException("강의 최대 수강 인원이 모두 찼습니다.");
+            throw new IllegalArgumentException("강의 최대 수강 인원이 모두 찼습니다.");
         }
 
         if (isInCorrectAmount(userPayed)) {
-            throw new java.lang.IllegalArgumentException("결제금액과 강의금액이 맞지 않습니다.");
+            throw new IllegalArgumentException("결제금액과 강의금액이 맞지 않습니다.");
         }
     }
 
     private boolean isInCorrectAmount(Long userPayed) {
+        if (this.isFree) {
+            return false;
+        }
+
         return !this.amount.isCorrectAmount(userPayed);
     }
 

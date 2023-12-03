@@ -1,7 +1,5 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Apply;
-import nextstep.courses.domain.ApplyRepository;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -21,15 +19,13 @@ public class SessionService {
     @Resource(name = "userRepository")
     private UserRepository userRepository;
 
-    @Resource(name = "applyRepository")
-    private ApplyRepository applyRepository;
-
     @Transactional
     public void enrolment (Payment payment) {
         Session session = sessionRepository.findById(payment.getSessionId());
         NsUser nsUser = userRepository.findById(payment.getNsUserId());
 
-        Apply apply = session.enrolment(nsUser, payment.getAmount());
-        applyRepository.save(apply);
+        session.enrolment(nsUser, payment.getAmount());
+
+        sessionRepository.save(session);
     }
 }

@@ -1,9 +1,6 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Amount;
-import nextstep.courses.domain.Apply;
-import nextstep.courses.domain.ApplyRepository;
-import nextstep.courses.domain.ApplyStatus;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.CoverImageFileName;
 import nextstep.courses.domain.CoverImagePixel;
@@ -42,9 +39,6 @@ class SessionServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private ApplyRepository applyRepository;
-
     @InjectMocks
     private SessionService sessionService;
 
@@ -58,7 +52,7 @@ class SessionServiceTest {
 
         sessionService.enrolment(new Payment("1", 1L, 1L, 10_000L));
 
-        verify(applyRepository).save(new Apply(session, NsUserTest.JAVAJIGI, ApplyStatus.APPLYING));
+        verify(sessionRepository).save(session);
     }
 
     @Test

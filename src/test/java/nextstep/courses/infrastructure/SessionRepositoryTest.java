@@ -57,7 +57,7 @@ class SessionRepositoryTest {
 
         assertAll(
                 () -> assertThat(actual.courseId()).isEqualTo(expected.courseId()),
-                () -> assertThat(actual.totalStudentCount()).isEqualTo(expected.totalStudentCount()),
+                () -> assertThat(actual.maxStudentCount()).isEqualTo(expected.maxStudentCount()),
                 () -> assertThat(actual.sessionStatus()).isEqualTo(expected.sessionStatus()),
                 () -> assertThat(actual.recruitmentStatus()).isEqualTo(expected.recruitmentStatus()),
                 () -> assertThat(actual.sessionAmount()).isEqualTo(expected.sessionAmount()),

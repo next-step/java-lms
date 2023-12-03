@@ -27,21 +27,22 @@ public class Session {
         this.coverImages = coverImages;
     }
 
-    public Apply enrolment(NsUser student, Long userPayed) {
-        sessionEnrolment.enrolment(userPayed);
-        return Apply.defaultApply(this, student);
+    public void enrolment(NsUser student, Long userPayed) {
+        sessionEnrolment.enrolment(student, userPayed);
     }
 
-    public void addStudent(NsUser student) {
-        this.sessionEnrolment.addStudent(student);
-    }
+    public void approve(Student student, Long instructorId) {
+        validate(instructorId);
 
-    public boolean isInstructor(Long instructorId) {
-        return this.instructorId.equals(instructorId);
+        this.sessionEnrolment.approve(student);
     }
 
     public void updateInstructor(Long instructorId) {
         this.instructorId = instructorId;
+    }
+
+    public boolean isFullStudents() {
+        return this.sessionEnrolment.isFullStudents();
     }
 
     public Long id() {
@@ -72,11 +73,21 @@ public class Session {
         return this.sessionEnrolment.amount();
     }
 
-    public int totalStudentCount() {
-        return this.sessionEnrolment.totalStudent();
+    public int maxStudentCount() {
+        return this.sessionEnrolment.maxStudent();
     }
 
     public boolean isFree() {
         return this.sessionEnrolment.isFree();
+    }
+
+    private void validate(Long instructorId) {
+        if (!this.isInstructor(instructorId)) {
+            throw new IllegalArgumentException("해당 강의의 강사만 가능합니다.");
+        }
+    }
+
+    private boolean isInstructor(Long instructorId) {
+        return this.instructorId.equals(instructorId);
     }
 }

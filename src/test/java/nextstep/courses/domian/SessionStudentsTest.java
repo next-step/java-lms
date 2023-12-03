@@ -1,6 +1,8 @@
 package nextstep.courses.domian;
 
+import nextstep.courses.domain.ApplyStatus;
 import nextstep.courses.domain.SessionStudents;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +25,7 @@ class SessionStudentsTest {
     @Test
     @DisplayName("최대 수갱생의 수치가 모두 찼을경우 true를 반환한다.")
     void isMaxStudents_full() {
-        SessionStudents sessionStudents = new SessionStudents(new Students(List.of(NsUserTest.JAVAJIGI)), 1);
+        SessionStudents sessionStudents = new SessionStudents(new Students(List.of(new Student(NsUserTest.JAVAJIGI, ApplyStatus.APPROVAL))), 1);
 
         assertThat(sessionStudents.isMaxStudents()).isTrue();
     }
