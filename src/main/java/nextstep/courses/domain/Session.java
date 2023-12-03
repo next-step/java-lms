@@ -19,9 +19,20 @@ public class Session {
     private SessionStatus sessionStatus;
 
     public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus) {
+        this.id = autoGenId.getAndIncrement();
         this.courseId = courseId;
         this.coverImage = coverImage;
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
+    }
+
+    public Session(Long courseId) {
+        this.id = autoGenId.getAndIncrement();
+        this.courseId = courseId;
+    }
+
+    public void register(Course course) {
+        Long courseId = course.addSession(this);
+        this.courseId = courseId;
     }
 }
