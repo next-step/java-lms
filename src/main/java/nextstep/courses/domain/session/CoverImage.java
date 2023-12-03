@@ -6,18 +6,20 @@ import java.util.Objects;
 
 public class CoverImage {
     public static final int FILE_SIZE_LIMIT_1MB = 1024 * 1024;
+    private final Long id;
     private final int fileSize;
     private final ImageType imageType;
     private final int width;
     private final int height;
 
-    public CoverImage(final int fileSize, final String imageType, final int width, final int height) {
-        this(fileSize, ImageType.fromString(imageType), width, height);
+    public CoverImage(final int fileSize, final ImageType imageType, final int width, final int height) {
+        this(0L, fileSize, imageType, width, height);
     }
 
-    public CoverImage(final int fileSize, final ImageType imageType, final int width, final int height) {
+    public CoverImage(final Long id, final int fileSize, final ImageType imageType, final int width, final int height) {
         validate(fileSize, imageType, width, height);
 
+        this.id = id;
         this.fileSize = fileSize;
         this.imageType = imageType;
         this.width = width;
@@ -35,6 +37,10 @@ public class CoverImage {
         Assert.isTrue(height >= 200, "height must be greater than and equal to 200 pixel");
 
         Assert.isTrue((double) width / height == 1.5, "ratio must be 1.5");
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     @Override
