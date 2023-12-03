@@ -24,7 +24,7 @@ public class NsUser {
     private LocalDateTime updatedAt;
 
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+        this(id, userId, password, name, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {

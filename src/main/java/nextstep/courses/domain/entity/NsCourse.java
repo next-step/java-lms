@@ -1,38 +1,47 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.entity;
 
 import java.time.LocalDateTime;
 
-public class Course {
-    private Long id;
+public class NsCourse {
+
+    public static final NsCourse DEFAULT_COURSE = new NsCourse("TDD, 클린 코드 with Java", 1L);
+
+    private long id;
 
     private String title;
 
-    private Long creatorId;
+    private long creatorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public NsCourse() {}
+
+    public NsCourse(String title, long creatorId) {
+        this(title, creatorId, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public NsCourse(String title,
+                    long creatorId,
+                    LocalDateTime createdAt,
+                    LocalDateTime updatedAt) {
+        this.id = 1;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public Long getCreatorId() {
+    public long getCreatorId() {
         return creatorId;
     }
 

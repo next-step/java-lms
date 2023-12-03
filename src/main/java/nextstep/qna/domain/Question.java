@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import static java.time.LocalDateTime.now;
 import static nextstep.qna.domain.ContentType.QUESTION;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class Question {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(deleteQuestions(loginUser, questionId));
 
-        Answers answerList = Answers.of(answers);
+        Answers answerList = new Answers(answers);
         deleteHistories.addAll(answerList.deleteAnswers(loginUser));
 
         return deleteHistories;
@@ -63,7 +62,7 @@ public class Question {
         }
         deleted();
 
-        return new DeleteHistory(QUESTION, questionId, writer, now());
+        return new DeleteHistory(QUESTION, questionId, writer);
     }
 
     public boolean isDeleted() {
