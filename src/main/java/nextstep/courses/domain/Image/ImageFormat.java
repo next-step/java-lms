@@ -1,0 +1,20 @@
+package nextstep.courses.domain.Image;
+
+import nextstep.courses.exception.ImageException;
+
+import java.util.Arrays;
+
+public enum ImageFormat {
+    GIF, JPG, JPEG, PNG, SVG;
+
+    public static ImageFormat findBy(String value) {
+        return Arrays.stream(ImageFormat.values())
+                .findFirst()
+                .filter((i) -> i.name().equalsIgnoreCase(value))
+                .orElseThrow(() -> new ImageException("이미지 타입은 gif, jpg(jpeg 포함), png, svg 만 가능합니다."));
+
+
+    }
+
+
+}

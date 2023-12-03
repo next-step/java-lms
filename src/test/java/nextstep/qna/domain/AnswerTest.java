@@ -16,23 +16,24 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     private Answer answer;
+
     @BeforeEach
-    void create(){
+    void create() {
         answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     }
 
     @Test
     @DisplayName("질문자와 답변자가 다른면 에러를 던진다")
     void delete_다른_사람이_쓴_글() {
-        assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI)).isInstanceOf(UnAuthorizedException.class);
+        assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI, LocalDateTime.now())).isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test
     @DisplayName("질문자와 답변자가 같은 경우 답변 상태를 변경하고 삭제 히스토리를 리턴")
     void delete_성공() {
-        DeleteHistory deleteHistory = answer.delete(NsUserTest.JAVAJIGI);
+        DeleteHistory deleteHistory = answer.delete(NsUserTest.JAVAJIGI, LocalDateTime.now());
 
-        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI));
+        assertThat(deleteHistory).isEqualTo(DeleteHistory.ofAnswer(null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
         assertThat(answer.isDeleted()).isTrue();
 
     }
