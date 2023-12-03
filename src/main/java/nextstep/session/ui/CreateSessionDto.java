@@ -20,13 +20,14 @@ public class CreateSessionDto {
     private int height;
     private SessionType sessionType;
     private int limitNumberOfStudents;
+    private Long price;
 
     public Long getCourseId() {
         return courseId;
     }
 
     public Session toSession(NsUser nsUser) {
-        return Session.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), sessionType, limitNumberOfStudents);
+        return Session.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), sessionType, limitNumberOfStudents, price);
     }
 
     private SessionImage toSessionImage() {

@@ -61,10 +61,6 @@ public class Session {
         return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.FREE, null);
     }
 
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
-        return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents);
-    }
-
     public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
         return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents, price);
     }

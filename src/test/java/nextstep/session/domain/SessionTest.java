@@ -54,7 +54,7 @@ class SessionTest {
     @DisplayName("수강신청 / 무료 정원 무제한 / 성공")
     void 수강신청_무료_성공() {
         // given
-        Session session = Session.create(1, 1L, today, today.plusDays(1), sessionImageFixture, SessionType.FREE, null);
+        Session session = Session.create(1, 1L, today, today.plusDays(1), sessionImageFixture);
         session.changeStatus(SessionStatus.RECRUITING);
 
         // when
