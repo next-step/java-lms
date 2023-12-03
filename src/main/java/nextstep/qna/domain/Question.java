@@ -86,7 +86,7 @@ public class Question {
         }
         delete();
         deleteHistories.add(DeleteHistory.questionOf( id, writer, LocalDateTime.now()));
-        deleteHistories = answers.deleteBy(user, deleteHistories);
+        deleteHistories.addAll(answers.deleteBy(user));
 
         return deleteHistories;
     }

@@ -24,7 +24,7 @@ class AnswersTest {
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
 
         Answers answers = new Answers(Arrays.asList(answer1, answer2));
-        answers.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>());
+        answers.deleteBy(NsUserTest.JAVAJIGI);
 
         assertAll(
                 () -> assertThat(answer1.isDeleted()).isTrue(),
@@ -40,7 +40,7 @@ class AnswersTest {
         Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "Answers Contents2");
 
         Answers answers = new Answers(Arrays.asList(answer1, answer2));
-        assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>()))
+        assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
