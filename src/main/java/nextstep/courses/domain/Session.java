@@ -34,7 +34,7 @@ public class Session extends BaseTimeEntity{
 		sessionRegistration.register(nsUser);
 	}
 
-	public void canApply() {
+	private void canApply() {
 		if ( !status.isApplying() ) {
 			throw new IllegalArgumentException("강의 신청 기간이 아닙니다.");
 		}
