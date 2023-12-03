@@ -11,13 +11,13 @@ public class QuestionTest {
 
     @Test
     void ownerIs_예외_케이스() {
-        Assertions.assertThatThrownBy(() -> Q1.canDeleteBy(NsUserTest.SANJIGI))
+        Assertions.assertThatThrownBy(() -> Q1.deletedBy(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     void isDeletedBy_정상_케이스() throws CannotDeleteException {
-        Q1.isDeletedBy(NsUserTest.JAVAJIGI);
+        Q1.deletedBy(NsUserTest.JAVAJIGI);
         Assertions.assertThat(Q1.isDeleted()).isTrue();
     }
 }

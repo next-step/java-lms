@@ -56,13 +56,13 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public void isDeletedBy(NsUser writer) throws CannotDeleteException {
-        canDeleteBy(writer);
+    public void deletedBy(NsUser writer) throws CannotDeleteException {
+        checkDeleteAuthorized(writer);
         deleted = true;
     }
 
     // New Method
-    public void canDeleteBy(NsUser writer) throws CannotDeleteException {
+    private void checkDeleteAuthorized(NsUser writer) throws CannotDeleteException {
         if (!this.writer.equals(writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

@@ -67,14 +67,14 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void isDeletedBy(NsUser loginUser) throws CannotDeleteException {
-        answers.isDeleteBy(loginUser);
-        canDeleteBy(loginUser);
+    public void deletedBy(NsUser loginUser) throws CannotDeleteException {
+        answers.deletedBy(loginUser);
+        checkDeleteAuthorized(loginUser);
         deleted = true;
     }
 
     // New method
-    public void canDeleteBy(NsUser loginUser) throws CannotDeleteException {
+    private void checkDeleteAuthorized(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -88,10 +88,6 @@ public class Question {
     public boolean isDeleted() {
         return deleted;
     }
-
-//    public List<Answer> getAnswers() {
-//        return answers;
-//    }
 
     public List<Answer> getAnswers() {
         return answers.getAnswerList();

@@ -13,11 +13,11 @@ public class AnswersTest {
 
     @Test
     void canDeleteAllBy_정상_케이스() {
-        Assertions.assertDoesNotThrow(() -> ANSWERS1.canDeleteBy(NsUserTest.JAVAJIGI));
+        Assertions.assertDoesNotThrow(() -> ANSWERS1.deletedBy(NsUserTest.JAVAJIGI));
     }
 
     @Test
     void canDeleteAllBy_예외_케이스() {
-        Assertions.assertThrows(CannotDeleteException.class, () -> ANSWERS1.canDeleteBy(NsUserTest.SANJIGI));
+        Assertions.assertThrows(CannotDeleteException.class, () -> ANSWERS1.deletedBy(NsUserTest.SANJIGI));
     }
 }
