@@ -50,35 +50,35 @@ public class Session {
         return this.coverImage;
     }
 
-    public long getPrice2() {
+    public long getPrice() {
         return this.enrollment.getPrice();
     }
 
-    public int getCurrentStudentCount2() {
+    public int getCurrentStudentCount() {
         return this.enrollment.getCurrentStudentCount();
     }
 
-    private void setStatus2(SessionStatus status) {
+    private void setStatus(SessionStatus status) {
         enrollment.setStatus(status);
     }
 
-    public boolean isNotRecruiting2() {
+    public boolean isNotRecruiting() {
         return !enrollment.isRecruiting();
     }
 
     public void ready() {
-        setStatus2(SessionStatus.READY);
+        setStatus(SessionStatus.READY);
     }
 
     public void recruit() {
-        setStatus2(SessionStatus.RECRUITING);
+        setStatus(SessionStatus.RECRUITING);
     }
 
     public void close() {
-        setStatus2(SessionStatus.CLOSED);
+        setStatus(SessionStatus.CLOSED);
     }
 
-    public void enroll2(Payment payment, NsUser user) {
+    public void enroll(Payment payment, NsUser user) {
         enrollment.enroll(payment, user);
     }
 }
