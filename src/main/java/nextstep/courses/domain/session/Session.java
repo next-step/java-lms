@@ -36,24 +36,8 @@ public class Session {
         return this.sessionMakingData.getPrice();
     }
 
-    public int getCurrentStudentCount() {
-        return this.sessionStudent.getCurrentStudentCount();
-    }
-
     public int getCurrentStudentCount2() {
         return this.enrollment.getCurrentStudentCount();
-    }
-
-    public boolean isReachedMaxStudentLimit() {
-        return this.sessionStudent.isReachedMaxStudentLimit();
-    }
-
-    public void increaseEnrollment(final NsUser user) {
-        this.sessionStudent.increaseStudentCount(user);
-    }
-
-    private void setStatus(SessionStatus status) {
-        this.status = status;
     }
 
     private void setStatus2(SessionStatus status) {
@@ -69,51 +53,18 @@ public class Session {
     }
 
     public void ready() {
-        setStatus(SessionStatus.READY);
         setStatus2(SessionStatus.READY);
     }
 
     public void recruit() {
-        setStatus(SessionStatus.RECRUITING);
         setStatus2(SessionStatus.RECRUITING);
     }
 
     public void close() {
-        setStatus(SessionStatus.CLOSED);
         setStatus2(SessionStatus.CLOSED);
-    }
-
-    public void changeMaxStudentLimit(final int maxStudentLimit) {
-        this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
-    }
-
-    public void enroll(Payment payment, NsUser user) {
-        if (isNotRecruiting()) {
-            throw new IllegalStateException("session is not recruiting");
-        }
-
-        if (isPaidSession()) {
-            validateIfPaidSession(payment);
-        }
-
-        increaseEnrollment(user);
     }
 
     public void enroll2(Payment payment, NsUser user) {
         enrollment.enroll(payment, user);
-    }
-
-    private boolean isPaidSession() {
-        return this.sessionMakingData.isPaidSession();
-    }
-
-    private void validateIfPaidSession(final Payment payment) {
-        if (payment.isNotPaid(getPrice())) {
-            throw new IllegalStateException("paid amount is different with price");
-        }
-
-        if (isReachedMaxStudentLimit()) {
-            throw new IllegalStateException("max student limit is reached");
-        }
     }
 }
