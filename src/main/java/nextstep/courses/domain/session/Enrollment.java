@@ -77,4 +77,16 @@ public class Enrollment {
     public boolean isRecruiting() {
         return this.status.isRecruiting();
     }
+
+    public ChargeStatus getChargeStatus() {
+        return this.chargeStatus;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return this.status;
+    }
+
+    public int getMaxStudentLimit() {
+        return this.sessionStudent.getMaxStudentLimit();
+    }
 }

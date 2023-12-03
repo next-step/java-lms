@@ -56,6 +56,30 @@ public class Session {
         return coverImage;
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public LocalDateTime getStartDate() {
+        return this.sessionDate.getStartDate();
+    }
+
+    public LocalDateTime getEndDate() {
+        return this.sessionDate.getEndDate();
+    }
+
+    public ChargeStatus getChargeStatus() {
+        return this.enrollment.getChargeStatus();
+    }
+
+    public SessionStatus getSessionStatus() {
+        return this.enrollment.getSessionStatus();
+    }
+
+    public int getMaxStudentLimit() {
+        return this.enrollment.getMaxStudentLimit();
+    }
+
     public Long getId() {
         return this.id;
     }

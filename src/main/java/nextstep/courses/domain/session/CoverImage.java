@@ -55,4 +55,20 @@ public class CoverImage {
     public int hashCode() {
         return Objects.hash(fileSize, imageType, width, height);
     }
+
+    public int getFileSize() {
+        return this.fileSize;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public String getImageTypeString() {
+        return this.imageType.toString();
+    }
 }

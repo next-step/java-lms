@@ -36,4 +36,8 @@ public class SessionStudent {
             throw new IllegalArgumentException("max student limit cannot be less than current student count");
         }
     }
+
+    public int getMaxStudentLimit() {
+        return this.maxStudentLimit;
+    }
 }
