@@ -45,12 +45,28 @@ public class Session {
         this.limitNumberOfStudents = limitNumberOfStudents;
     }
 
+    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
+        validateSessionType(sessionType, limitNumberOfStudents);
+        this.generation = generation;
+        this.creatorId = creatorId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sessionImage = sessionImage;
+        this.sessionType = sessionType;
+        this.limitNumberOfStudents = limitNumberOfStudents;
+        this.price = price;
+    }
+
     public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
         return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.FREE, null);
     }
 
     public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
         return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents);
+    }
+
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
+        return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents, price);
     }
 
     private static void validateSessionType(SessionType sessionType, Integer limitNumberOfStudents) {
@@ -82,8 +98,8 @@ public class Session {
         if (isFree()) {
             return;
         }
-        if (user.getSessionPayment(this).validateSameAmount(price)) {
-            throw new IllegalStateException("강의의 가격과 결제한 가격이 다릅니다.");
+        if (!user.getSessionPayment(this).validateSameAmount(price)) {
+            throw new IllegalArgumentException("강의의 가격과 결제한 가격이 다릅니다.");
         }
     }
 
@@ -102,5 +118,4 @@ public class Session {
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
     }
-
 }

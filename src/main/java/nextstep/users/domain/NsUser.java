@@ -85,6 +85,10 @@ public class NsUser {
         return this;
     }
 
+    public void addPayment(Payment payment) {
+        payments.add(payment);
+    }
+
     public Payment getSessionPayment(Session session) {
         return payments.stream()
                 .filter(payment -> payment.getSession().equals(session))
