@@ -1,14 +1,13 @@
 package nextstep.users.infrastructure;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {

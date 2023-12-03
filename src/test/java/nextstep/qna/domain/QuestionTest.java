@@ -1,8 +1,95 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUserTest;
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import nextstep.qna.CannotDeleteException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(JAVAJIGI, "title1", "contents1");
+    public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
+
+    @Test
+    @DisplayName("사용자와 질문자가 달라 질문을 삭제할 수 없다면 예외를 던진다.")
+    void login_user_is_not_equal_to_NsUser() {
+        // when // then
+        assertThatThrownBy(() -> Q1.delete(SANJIGI))
+                .isExactlyInstanceOf(CannotDeleteException.class)
+                .hasMessage("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("질문자와 답변자가 달라 질문을 삭제할 수 없다면 예외를 던진다.")
+    void question_user_is_not_equal_to_answer_user() {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+        question.addAnswer(new Answer(JAVAJIGI, question, "답변1"));
+        question.addAnswer(new Answer(SANJIGI, question, "답변2"));
+
+        // when // then
+        assertThatThrownBy(() -> question.delete(JAVAJIGI))
+                .isExactlyInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("로그인 사용자, 질문자와 모든 답변자들이 같으면 답변을 삭제 상태로 바꿀 수 있다.")
+    void delete_question_and_answers() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+        Answer answer1 = new Answer(JAVAJIGI, question, "답변1");
+        question.addAnswer(answer1);
+        Answer answer2 = new Answer(JAVAJIGI, question, "답변2");
+        question.addAnswer(answer2);
+
+        // when
+        question.delete(JAVAJIGI);
+
+        // then
+        assertThat(question.isDeleted()).isTrue();
+        assertThat(answer1.isDeleted()).isTrue();
+        assertThat(answer2.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("질문이 삭제되면 질문 삭제 히스토리를 만든다.")
+    void create_question_delete_history() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+
+        // when
+        List<DeleteHistory> result = question.delete(JAVAJIGI);
+
+        // then
+        assertThat(result).isEqualTo(
+                List.of(new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now())));
+    }
+
+    @Test
+    @DisplayName("질문이 삭제되면, 질문에 해당하는 답글 삭제 히스토리를 만든다.")
+    void create_answer_delete_history() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+        Answer answer1 = new Answer(1L, JAVAJIGI, question, "답변1");
+        question.addAnswer(answer1);
+        Answer answer2 = new Answer(2L, JAVAJIGI, question, "답변2");
+        question.addAnswer(answer2);
+
+        // when
+        List<DeleteHistory> result = question.delete(JAVAJIGI);
+
+        // then
+        assertThat(result).isEqualTo(
+                List.of(
+                        new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now()),
+                        new DeleteHistory(ContentType.ANSWER, 1L, JAVAJIGI, LocalDateTime.now()),
+                        new DeleteHistory(ContentType.ANSWER, 2L, JAVAJIGI, LocalDateTime.now()))
+        );
+    }
 }
