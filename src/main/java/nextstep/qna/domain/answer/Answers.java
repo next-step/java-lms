@@ -29,7 +29,7 @@ public class Answers {
         }
     }
 
-    public final List<Answer> getAnswerList() {
+    public List<Answer> getAnswerList() {
         return Collections.unmodifiableList(answerList);
     }
 }

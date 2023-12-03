@@ -25,6 +25,7 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    // New method
     public DeleteHistory has(Object o) {
         if (Question.class.isAssignableFrom(o.getClass())) {
             return hasQuestion((Question) o);
