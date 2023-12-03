@@ -85,7 +85,7 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         delete();
-        deleteHistories.add(DeleteHistory.QuestionOf( id, writer, LocalDateTime.now()));
+        deleteHistories.add(DeleteHistory.questionOf( id, writer, LocalDateTime.now()));
         deleteHistories = answers.deleteBy(user, deleteHistories);
 
         return deleteHistories;
