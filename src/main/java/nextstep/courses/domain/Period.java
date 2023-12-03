@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.NotCorrectPeriodException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Period {
 
@@ -27,5 +28,18 @@ public class Period {
         if (startAt.isAfter(endAt)) {
             throw new NotCorrectPeriodException();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Period period = (Period) o;
+        return Objects.equals(startAt, period.startAt) && Objects.equals(endAt, period.endAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startAt, endAt);
     }
 }
