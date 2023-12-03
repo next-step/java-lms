@@ -1,17 +1,13 @@
 package nextstep.lms.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Parser {
     private Parser() {
 
     }
-    public static List<String> fileNameAndExtensionParsing(String value) {
+
+    public static void fileNameFormatChecking(String value) {
         String[] fileNameAndExtension = value.split("\\.");
         fileNameValidate(fileNameAndExtension);
-        return new ArrayList<>(Arrays.asList(fileNameAndExtension));
     }
 
     private static void fileNameValidate(String[] fileNameAndExtension) {

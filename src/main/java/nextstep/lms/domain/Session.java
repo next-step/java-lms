@@ -1,38 +1,17 @@
 package nextstep.lms.domain;
 
-import nextstep.users.domain.NsUser;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.lms.dto.EnrollApplicationDTO;
 
 public class Session {
-    protected String name;
-    protected LocalDateTime startDate;
-    protected LocalDateTime endDate;
-    protected CoverImage coverImage;
-    protected SessionStatus sessionStatus;
-    protected List<NsUser> students;
+    private final SessionInfo sessionInfo;
+    private final Students students;
 
-    public Session(String name, LocalDateTime startDate, LocalDateTime endDate,
-                   CoverImage coverImage, SessionStatus sessionStatus, List<NsUser> students) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImage = coverImage;
-        this.sessionStatus = sessionStatus;
-        this.students = new ArrayList<>(students) ;
+    public Session(SessionInfo sessionInfo, Students students) {
+        this.sessionInfo = sessionInfo;
+        this.students = students;
     }
 
-    protected void sessionStatusCheck() {
-        if (this.sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalArgumentException("수강신청 기간이 아닙니다.");
-        }
-    }
-
-    protected void studentDuplicationCheck(NsUser nsUser) {
-        if (this.students.contains(nsUser)) {
-            throw new IllegalArgumentException("이미 수강중인 강의입니다.");
-        }
+    public void enroll(EnrollApplicationDTO enrollApplicationDTO) {
+        sessionInfo.enroll(this.students, enrollApplicationDTO);
     }
 }
