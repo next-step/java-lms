@@ -38,5 +38,26 @@ class SessionImageTest {
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    void 이미지는_가로가_300_px보다_작으면_안된다(){
+        assertThatThrownBy(() -> {
+            new SessionImage(1024, "jpg", new ImageSize(200, 200));
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 이미지는_세로가_200_px보다_작으면_안된다(){
+        assertThatThrownBy(() -> {
+            new SessionImage(1024, "jpg", new ImageSize(200, 100));
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 이미지는_비율이_3대2이다(){
+        assertThatThrownBy(() -> {
+            new SessionImage(1024, "jpg", new ImageSize(1920, 1080));
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
 
 }

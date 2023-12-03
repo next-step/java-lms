@@ -1,30 +1,32 @@
 package nextstep.courses.domain;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public class SessionImage {
     public static final int MB = 1024 * 1024;
     public static final List<String> IMG_FILE_TYPE = List.of("gif", "jpg", "jpeg", "png", "svg");
-    private long imageSize;
-    private String imageType;
-    private Integer imageWidth;
-    private Integer imageHeight;
+    private long fileSize;
+    private String fileType;
+    private ImageSize imageSize;
 
 
     public SessionImage() {
     }
 
     public SessionImage(File file) {
-        this.imageSize = validateFileSize(file);
-        this.imageType = validateFileType(file);
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
+        this.fileSize = validateFileSize(file);
+        this.fileType = validateFileType(file);
+        this.imageSize = validateImageSize(file);
+    }
+
+    public SessionImage(long fileSize, String fileType, ImageSize imageSize) {
+        this.fileSize = fileSize;
+        this.fileType = fileType;
+        this.imageSize = imageSize;
     }
 
     private Long validateFileSize(File file) {
@@ -43,19 +45,14 @@ public class SessionImage {
         return fileType;
     }
 
-//    private
-//        try {
-//            BufferedImage image = ImageIO.read(file);
-//            if (image.getHeight() < 200 || image.getWidth() < 300 ) {
-//                throw new IllegalArgumentException();
-//            }
-//            if ((double) image.getWidth()/image.getHeight() != 1.5) {
-//                throw new IllegalArgumentException();
-//            }
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    private ImageSize validateImageSize(File file) {
+        BufferedImage image = null; 
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ImageSize(image);
+    }
 
 }
