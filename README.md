@@ -7,3 +7,8 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## TODO
+* [x] 다른 사람이 작성한 질문 삭제 불가
+* [x] 질문에 대한 답변중 다른 사람이 쓴 답변이 있는 경우 삭제 불가 
+* [x] 다른 사람이 작성한 답변 삭제 불가
