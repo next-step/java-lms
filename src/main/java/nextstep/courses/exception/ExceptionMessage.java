@@ -9,6 +9,7 @@ public enum ExceptionMessage {
     EXCEED_ATTENDEES("해당 강의는 모집인원을 초과했습니다."),
     NEGATIVE_NUMBER("값을 음수로 설정할 수 없습니다."),
     NEGATIVE_OR_ZERO_NUMBER("값을 음수 혹은 0으로 설정할 수 없습니다."),
+    PAYMENT_AMOUNT_NOT_EQUAL("지불된 가겨과 강의 금액이 일치하지 않습니다."),
     ;
 
     private final String message;
