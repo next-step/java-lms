@@ -34,6 +34,7 @@ public class Session {
     private List<NsUser> students = new ArrayList<>();
 
     public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
+        validateSessionType(sessionType, limitNumberOfStudents);
         this.generation = generation;
         this.creatorId = creatorId;
         this.startDate = startDate;
@@ -47,13 +48,32 @@ public class Session {
         return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.FREE, null);
     }
 
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, int limitNumberOfStudents) {
-        return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.PAID, limitNumberOfStudents);
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
+        return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents);
+    }
+
+    private static void validateSessionType(SessionType sessionType, Integer limitNumberOfStudents) {
+        if (sessionType == SessionType.FREE && limitNumberOfStudents != null) {
+            throw new IllegalArgumentException("무료강의는 최대 수강 인원 제한이 없습니다.");
+        }
+        if (sessionType == SessionType.PAID && limitNumberOfStudents == null) {
+            throw new IllegalArgumentException("유료강의는 최대 수강 인원 제한이 있습니다.");
+        }
     }
 
     public void enroll(NsUser user) {
         validateEnroll();
         students.add(user);
+    }
+
+    private void validateEnroll() {
+        if (this.sessionStatus != SessionStatus.RECRUITING) {
+            throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
+        }
+
+        if (this.sessionType == SessionType.PAID && this.limitNumberOfStudents == students.size()) {
+            throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
+        }
     }
 
     public List<NsUser> getStudents() {
@@ -64,13 +84,4 @@ public class Session {
         sessionStatus = status;
     }
 
-    public void validateEnroll() {
-        if (this.sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
-        }
-
-        if (this.sessionType == SessionType.PAID && this.limitNumberOfStudents == students.size()) {
-            throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
-        }
-    }
 }

@@ -26,7 +26,7 @@ public class CreateSessionDto {
     }
 
     public Session toSession(NsUser nsUser) {
-        return Session.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), limitNumberOfStudents);
+        return Session.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), sessionType, limitNumberOfStudents);
     }
 
     private SessionImage toSessionImage() {
