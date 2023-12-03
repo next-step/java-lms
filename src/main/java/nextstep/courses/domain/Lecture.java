@@ -41,5 +41,10 @@ public class Lecture {
 
   public void enrolment(NsUser user) {
     this.canEnrolment();
+    students.add(user);
+  }
+
+  public Integer studentCount() {
+    return students.size();
   }
 }
