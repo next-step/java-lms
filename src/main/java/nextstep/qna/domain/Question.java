@@ -8,98 +8,96 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-	private Long id;
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private String contents;
+    private String contents;
 
-	private NsUser writer;
+    private NsUser writer;
 
-	private Answers answers = new Answers(new ArrayList<>());
+    private Answers answers = new Answers(new ArrayList<>());
 
-	private boolean deleted = false;
+    private boolean deleted = false;
 
-	private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
-	private LocalDateTime updatedDate;
+    private LocalDateTime updatedDate;
 
-	public Question() {
-	}
+    public Question() {
+    }
 
-	public Question(NsUser writer, String title, String contents) {
-		this(0L, writer, title, contents);
-	}
+    public Question(NsUser writer, String title, String contents) {
+        this(0L, writer, title, contents);
+    }
 
-	public Question(Long id, NsUser writer, String title, String contents) {
-		this.id = id;
-		this.writer = writer;
-		this.title = title;
-		this.contents = contents;
-	}
+    public Question(Long id, NsUser writer, String title, String contents) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Question setTitle(String title) {
-		this.title = title;
-		return this;
-	}
+    public Question setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
-	public String getContents() {
-		return contents;
-	}
+    public String getContents() {
+        return contents;
+    }
 
-	public Question setContents(String contents) {
-		this.contents = contents;
-		return this;
-	}
+    public Question setContents(String contents) {
+        this.contents = contents;
+        return this;
+    }
 
-	public NsUser getWriter() {
-		return writer;
-	}
+    public NsUser getWriter() {
+        return writer;
+    }
 
-	public void addAnswer(Answer answer) {
-		answer.toQuestion(this);
-		answers.add(answer);
-	}
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        answers.add(answer);
+    }
 
-	public boolean isDeleted() {
-		return deleted;
-	}
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	@Override
-	public String toString() {
-		return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-	}
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
 
-	public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-		validate(loginUser);
-		answers.delete(loginUser);
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validate(loginUser);
+        List<DeleteHistory> answersDeleteHistories = answers.delete(loginUser);
 
-		deleted = true;
-		return deleteHistories();
-	}
+        deleted = true;
 
-	private void validate(NsUser loginUser) throws CannotDeleteException {
-		if (!isOwner(loginUser)) {
-			throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-		}
-	}
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(answersDeleteHistories);
 
-	private boolean isOwner(NsUser loginUser) {
-		return writer.equals(loginUser);
-	}
+        return deleteHistories;
+    }
 
-	private List<DeleteHistory> deleteHistories() {
-		List<DeleteHistory> deleteHistories = new ArrayList<>();
-		deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+    private void validate(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
 
-		return answers.deleteHistories(deleteHistories);
-	}
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
 }
