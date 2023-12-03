@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -16,10 +15,16 @@ public class Answers {
         this.answers = answers;
     }
 
-    public List<DeleteHistory> deleteBy(NsUser user) {
+    public void deleteBy(NsUser user) {
+        for(Answer answer : answers) {
+            answer.deleteBy(user);
+        }
+    }
+
+    public List<DeleteHistory> addDeleteHistories(NsUser user) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for(Answer answer : answers) {
-            deleteHistories = answer.deleteBy(user, deleteHistories);
+            deleteHistories.add(answer.addDeleteHistory(user));
         }
 
         return deleteHistories;

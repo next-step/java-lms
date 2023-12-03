@@ -5,10 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static nextstep.qna.domain.QuestionTest.Q1;
-import static nextstep.qna.domain.QuestionTest.Q2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -26,14 +23,14 @@ public class AnswerTest {
     @Test
     @DisplayName("질문자와 답변자가 같은 경우 삭제가 가능하다.")
     void 질문자와_답변자가_같으면_답변_삭제() {
-        A1.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>());
+        A1.deleteBy(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
 
     @Test
     @DisplayName("질문자와 답변자가 다른 경우 예외를 반환한다.")
     void 질문자와_답변자가_다르면_예외반환() {
-        assertThatThrownBy(() -> A1.deleteBy(NsUserTest.SANJIGI, new ArrayList<>()))
+        assertThatThrownBy(() -> A1.deleteBy(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
