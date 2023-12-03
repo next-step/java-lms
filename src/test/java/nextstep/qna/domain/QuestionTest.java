@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.verify;
 
 public class QuestionTest {
 
@@ -19,15 +18,15 @@ public class QuestionTest {
     @Test
     void delete_성공() throws Exception {
         // givne
-        Q1.addAnswer(AnswerTest.A1);
+        Q2.addAnswer(AnswerTest.A2);
 
         // when
-        List<DeleteHistory> deleteHistories = Q1.deleteBy(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q2.deleteBy(NsUserTest.SANJIGI);
 
         // then
         assertAll(
-            () -> assertThat(Q1.isDeleted()).isTrue(),
-            () -> assertThat(AnswerTest.A1.isDeleted()).isTrue(),
+            () -> assertThat(Q2.isDeleted()).isTrue(),
+            () -> assertThat(AnswerTest.A2.isDeleted()).isTrue(),
             () -> assertThat(deleteHistories).hasSize(2)
         );
     }

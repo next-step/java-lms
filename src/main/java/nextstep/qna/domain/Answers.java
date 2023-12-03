@@ -15,8 +15,11 @@ public class Answers {
     }
 
     public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+        System.out.println("user = " + user.getUserId());
+        System.out.println("this.answers.size() = " + this.answers.size());
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
+            System.out.println("answer writer = " + answer.getWriter().getUserId());
             deleteHistories.add(answer.deleteBy(user));
         }
         return deleteHistories;
