@@ -15,7 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -68,17 +68,8 @@ public class Question {
         answers.add(answer);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -113,18 +104,7 @@ public class Question {
     }
 
     private List<DeleteHistory> writeDeleteAnswersHistory() throws CannotDeleteException {
-        List<DeleteHistory> deleteAnswersHistories = new ArrayList<>();
-        for (Answer answer : this.answers) {
-            deleteAnswersHistories.add(writeDeleteAnswerHistory(answer));
-        }
-        return deleteAnswersHistories;
-    }
-
-    private DeleteHistory writeDeleteAnswerHistory(Answer answer) throws CannotDeleteException {
-        if (!answer.isOwner(this.writer)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-        return answer.writeDeleteAnswerHistory();
+        return answers.writeDeleteAnswersHistory(this.writer);
     }
 
     @Override
