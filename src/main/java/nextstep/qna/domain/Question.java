@@ -75,14 +75,11 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        if (!isAnswerOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.deleted = true;
         this.updatedDate = LocalDateTime.now();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, this.updatedDate));
-        deleteHistories.addAll(answers.delete());
+        deleteHistories.addAll(answers.delete(loginUser));
         return deleteHistories;
     }
 
