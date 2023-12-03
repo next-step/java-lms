@@ -36,7 +36,7 @@ public class Session {
         this.sessionEnrolment.addStudent(student);
     }
 
-    public boolean isinstructor(Long instructorId) {
+    public boolean isInstructor(Long instructorId) {
         return this.instructorId.equals(instructorId);
     }
 

@@ -38,7 +38,7 @@ public class Apply {
     }
 
     private void validate(Long instructorId) {
-        if (!this.session.isinstructor(instructorId)) {
+        if (!this.session.isInstructor(instructorId)) {
             throw new IllegalArgumentException("해당 강의의 강사만 가능합니다.");
         }
     }
