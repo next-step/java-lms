@@ -10,7 +10,7 @@ public class Lecture {
   private final LocalDateTime startDateTime;
   private final LocalDateTime endDatetime;
   private final Integer limitStudentCount;
-  private final List<NsUser> numberOfStudent = new ArrayList<>();
+  private final List<NsUser> students = new ArrayList<>();
 
   private Lecture(LectureType lectureType, LocalDateTime startDateTime,
       LocalDateTime endDateTime, int limitStudentCount) {
@@ -32,5 +32,14 @@ public class Lecture {
 
   public boolean isFree() {
     return lectureType == LectureType.FREE;
+  }
+  public void canEnrolment() {
+    if (this.lectureType == LectureType.PAID && this.limitStudentCount <= students.size()) {
+      throw new IllegalArgumentException("수강인원이 가득찼습니다.");
+    }
+  }
+
+  public void enrolment(NsUser user) {
+    this.canEnrolment();
   }
 }

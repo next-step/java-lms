@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDateTime;
+import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,12 +29,12 @@ public class LectureTest {
     // given
     LocalDateTime startDate = LocalDateTime.of(2023,4,3,11,30);
     LocalDateTime endDate = LocalDateTime.of(2023,6,3,11,30);
-    int maxStudent = 70;
+    int maxStudent = 0;
     // when
-    Lecture lecture = Lecture.paidOf(LectureType.PAID,startDate,endDate, maxStudent);
-    boolean result = lecture.isFree();
+    Lecture lecture = Lecture.paidOf(LectureType.PAID, startDate, endDate, maxStudent);
     // then
-    Assertions.assertThat(result).isFalse();
+    assertThrows(IllegalArgumentException.class
+                , () -> lecture.enrolment(NsUserTest.SANJIGI));
   }
 
 }
