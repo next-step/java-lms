@@ -18,6 +18,10 @@ class SessionImageTest {
         this.workingDir = Path.of("", "src/test/resources");
     }
 
+    private URI getUri(String fileName) {
+        return workingDir.resolve(fileName).toUri();
+    }
+
     @Test
     void 이미지는_1MB이하여야한다() {
         File file = new File(getUri("test_2mb.jpg"));
@@ -26,7 +30,13 @@ class SessionImageTest {
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
-    private URI getUri(String fileName) {
-        return workingDir.resolve(fileName).toUri();
+    @Test
+    void 이미지는_이미지형식외의_파일은_불가능하다() {
+        File file = new File(getUri("test.txt"));
+        assertThatThrownBy(() -> {
+            new SessionImage(file);
+        }).isInstanceOf(IllegalArgumentException.class);
     }
+
+
 }
