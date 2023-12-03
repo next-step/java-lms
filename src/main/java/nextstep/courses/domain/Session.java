@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDate;
 import java.util.List;
 import nextstep.users.domain.NsUser;
 

@@ -7,7 +7,7 @@ public class FileException extends IllegalArgumentException{
     public FileException(String message) {
         super(message);
     }
-    public class FileSizeException extends FileException {
+    public static class FileSizeException extends FileException {
         public FileSizeException(String message) {
             super(message);
         }
