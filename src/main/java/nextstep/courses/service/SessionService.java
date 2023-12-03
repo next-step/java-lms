@@ -9,7 +9,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 
