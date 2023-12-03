@@ -15,7 +15,7 @@ public class QuestionTest {
     @Test
     void 질문작성자_테스트() {
         Assertions.assertThatThrownBy(() -> {
-           Q1.isValidLoginUser(NsUser.GUEST_USER);
+           Q1.deleted(NsUser.GUEST_USER);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }

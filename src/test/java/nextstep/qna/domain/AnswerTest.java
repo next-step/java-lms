@@ -14,14 +14,9 @@ public class AnswerTest {
     @DisplayName("Answers 작성자 오류 테스트")
     @Test
     void 질문자가_다름() {
-        Answers answers = new Answers();
-        answers.add(A1);
-        answers.add(A1);
-        answers.add(A1);
-        answers.add(A2);
-
-        Assertions.assertThatThrownBy(() -> {
-            answers.isValidLoginUser(NsUserTest.JAVAJIGI);
+        Assertions.assertThatCode(() -> {
+            A1.deleted(NsUserTest.JAVAJIGI);
+            A2.deleted(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }
