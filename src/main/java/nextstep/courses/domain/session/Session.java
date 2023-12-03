@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 public class Session {
     private SessionMakingData sessionMakingData;
-    private SessionStudent sessionStudent;
-    private SessionStatus status;
     private Enrollment enrollment;
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
@@ -25,9 +23,6 @@ public class Session {
 
     public Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
         this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
-
-        this.status = SessionStatus.READY;
-        this.sessionStudent = new SessionStudent(15);
 
         this.enrollment = new Enrollment(sessionInfo.getPrice());
     }
