@@ -15,6 +15,10 @@ public class Period {
     }
 
     private void validatePeriod(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("시작일, 종료일은 필수값입니다.");
+        }
+
         if (endDate.isBefore(startDate)) {
             throw new InvalidPeriodRangeException();
         }
