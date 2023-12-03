@@ -22,10 +22,6 @@ public class Session {
         this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), null);
     }
 
-    public Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), coverImage);
-    }
-
     public Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
         this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
 
