@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Session {
+    private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
 
     private Long id;
 
@@ -11,9 +12,9 @@ public class Session {
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     private LocalDate startDate;
 
@@ -21,19 +22,20 @@ public class Session {
 
     private String imageURL;
 
-    private SessionStatus sessionStatus;
+    private SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
 
     private SessionType sessionType;
 
-    public Session(int generation, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDate startDate, LocalDate endDate, String imageURL, SessionStatus sessionStatus, SessionType sessionType) {
+    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType) {
         this.generation = generation;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.startDate = startDate;
         this.endDate = endDate;
         this.imageURL = imageURL;
-        this.sessionStatus = sessionStatus;
         this.sessionType = sessionType;
+    }
+
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType) {
+        return new Session(generation, creatorId, startDate, endDate, imageURL, sessionType);
     }
 }
