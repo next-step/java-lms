@@ -11,7 +11,6 @@ public class SessionFactory {
                 START_DATE_2023,
                 END_DATE_2023,
                 SessionType.PAID,
-                new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
                 SessionStatus.OPENED,
                 10,
                 1000
@@ -23,7 +22,6 @@ public class SessionFactory {
                 START_DATE_2023,
                 END_DATE_2023,
                 SessionType.FREE,
-                new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
                 SessionStatus.OPENED,
                 0,
                 0
@@ -35,7 +33,6 @@ public class SessionFactory {
                 startDate,
                 endDate,
                 SessionType.PAID,
-                new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
                 SessionStatus.OPENED,
                 10,
                 1000

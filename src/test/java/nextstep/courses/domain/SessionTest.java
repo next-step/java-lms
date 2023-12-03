@@ -26,12 +26,6 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
-    void sessionHasCoverUrl() {
-        assertThat(basePaidSession()).hasFieldOrProperty("coverImage");
-    }
-
-    @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한이 없다.")
     void sessionHasSessionType() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
@@ -39,7 +33,6 @@ public class SessionTest {
                     START_DATE_2023,
                     END_DATE_2023,
                     SessionType.FREE,
-                    new Image(ImageTest.IMAGE_URL, 1024, 1024, ImageType.PNG),
                     SessionStatus.OPENED,
                     1,
                     1000

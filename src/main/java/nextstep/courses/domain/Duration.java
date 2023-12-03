@@ -15,6 +15,14 @@ public class Duration {
         this.endDate = endDate;
     }
 
+    protected LocalDateTime startAt() {
+        return startDate;
+    }
+
+    protected LocalDateTime endAt() {
+        return endDate;
+    }
+
     public boolean isInProgress(LocalDateTime date) {
         return startDate.isBefore(date) && endDate.isAfter(date);
     }

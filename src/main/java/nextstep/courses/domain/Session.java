@@ -3,26 +3,63 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class Session {
 
+    private final Long id;
     private final Duration duration;
     private final SessionType sessionType;
-    private Image coverImage;
     private final SessionStatus sessionStatus;
     private int maximumEnrollmentCount = 0;
     private final Price price;
     private final NsUsers nsUsers = new NsUsers();
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, Image coverImage, SessionStatus sessionStatus, int maximumEnrollmentCount, int fee) {
+    public Session(Long id,
+                   LocalDateTime startDate,
+                   LocalDateTime endDate,
+                   SessionType sessionType,
+                   SessionStatus sessionStatus,
+                   int maximumEnrollmentCount,
+                   int fee) {
         inputValidation(sessionType, maximumEnrollmentCount);
+        this.id = id;
         this.duration = new Duration(startDate, endDate);
         this.sessionType = sessionType;
-        this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
         this.maximumEnrollmentCount = maximumEnrollmentCount;
         this.price = new Price(fee);
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    public LocalDateTime start_at() {
+        return duration.startAt();
+    }
+
+    public LocalDateTime getEndAt() {
+        return duration.endAt();
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public int getMaximumEnrollmentCount() {
+        return maximumEnrollmentCount;
+    }
+
+    public int getPrice() {
+        return price.price();
+    }
+
+    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionStatus sessionStatus, int maximumEnrollmentCount, int fee) {
+        this(0L, startDate, endDate, sessionType, sessionStatus, maximumEnrollmentCount, fee);
     }
 
     private void inputValidation(SessionType sessionType,int maximumEnrollment) {

@@ -19,6 +19,10 @@ public enum ImageType {
         return this.type.equals(type);
     }
 
+    public String type() {
+        return type;
+    }
+
     public ImageType getType(String type) {
         return Arrays.stream(values())
                 .filter(imageType -> imageType.sameType(type))
