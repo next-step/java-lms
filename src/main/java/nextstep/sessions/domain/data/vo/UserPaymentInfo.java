@@ -14,6 +14,14 @@ public class UserPaymentInfo {
     }
 
     public boolean hasEqualUser(NsUser user) {
-        return user.equals(this.user);
+        return user.isEqual(this.user);
+    }
+
+    public NsUser user() {
+        return user;
+    }
+
+    public Payment payment() {
+        return payment;
     }
 }

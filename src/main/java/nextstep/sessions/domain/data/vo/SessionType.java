@@ -31,4 +31,11 @@ public class SessionType {
         return registrationCount < capacity;
     }
 
+    public PayInfo payInfo() {
+        return payInfo;
+    }
+
+    public int capacity() {
+        return capacity;
+    }
 }

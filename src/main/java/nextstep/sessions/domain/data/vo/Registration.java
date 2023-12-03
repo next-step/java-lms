@@ -17,4 +17,8 @@ public class Registration {
     public boolean hasUser(NsUser user) {
         return userPaymentInfo.hasEqualUser(user);
     }
+
+    public UserPaymentInfo userPaymentInfo() {
+        return userPaymentInfo;
+    }
 }

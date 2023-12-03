@@ -20,4 +20,14 @@ public class SessionInfo {
     public void validateEnrollment(int size, Payment payment) {
         enrollmentInfo.validate(size, payment);
     }
+
+    public EnrollmentInfo enrollmentInfo() {
+        return enrollmentInfo;
+    }
+
+    public OpenInfo openInfo() {
+        return openInfo;
+    }
+
+
 }

@@ -40,6 +40,6 @@ public class RegistrationsTest {
     }
 
     private Session session(SessionInfo sessionInfo) {
-        return new Session(sessionInfo, null);
+        return new Session(sessionInfo);
     }
 }

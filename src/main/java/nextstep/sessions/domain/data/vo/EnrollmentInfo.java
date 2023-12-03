@@ -20,4 +20,12 @@ public class EnrollmentInfo {
         }
         sessionType.validateSession(registrationSize, payment);
     }
+
+    public SessionType sessionType() {
+        return sessionType;
+    }
+
+    public SessionState sessionState() {
+        return sessionState;
+    }
 }

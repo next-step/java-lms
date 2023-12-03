@@ -14,9 +14,9 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public void enroll(long sessionId, NsUser loginUser, Payment payment) {
-        Session session = sessionRepository.findById(sessionId);
+    public void enroll(int sessionId, NsUser loginUser, Payment payment) {
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
         Registration registration = session.registration(loginUser, payment);
-        sessionRepository.save(registration);
+        sessionRepository.saveRegistration(sessionId, registration);
     }
 }
