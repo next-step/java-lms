@@ -44,7 +44,7 @@ public class AnswerTest {
         question.addAnswer(answer);
 
         // when
-        answer.delete();
+        answer.writeDeleteAnswerHistory();
 
         // then
         assertThat(answer.isDeleted()).isTrue();

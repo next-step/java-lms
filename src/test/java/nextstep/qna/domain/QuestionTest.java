@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,9 +64,32 @@ public class QuestionTest {
         Question question = new Question(JAVAJIGI, "질문", "질문입니다");
 
         // when
-        DeleteHistory result = question.delete(JAVAJIGI);
+        List<DeleteHistory> result = question.delete(JAVAJIGI);
 
         // then
-        assertThat(result).isEqualTo(new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now()));
+        assertThat(result).isEqualTo(
+                List.of(new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now())));
+    }
+
+    @Test
+    @DisplayName("질문이 삭제되면, 질문에 해당하는 답글 삭제 히스토리를 만든다.")
+    void create_answer_delete_history() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+        Answer answer1 = new Answer(1L, JAVAJIGI, question, "답변1");
+        question.addAnswer(answer1);
+        Answer answer2 = new Answer(2L, JAVAJIGI, question, "답변2");
+        question.addAnswer(answer2);
+
+        // when
+        List<DeleteHistory> result = question.delete(JAVAJIGI);
+
+        // then
+        assertThat(result).isEqualTo(
+                List.of(
+                        new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now()),
+                        new DeleteHistory(ContentType.ANSWER, 1L, JAVAJIGI, LocalDateTime.now()),
+                        new DeleteHistory(ContentType.ANSWER, 2L, JAVAJIGI, LocalDateTime.now()))
+        );
     }
 }

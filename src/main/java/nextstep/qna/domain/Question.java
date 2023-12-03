@@ -68,10 +68,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -85,30 +81,50 @@ public class Question {
         return answers;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+        return writeDeleteHistories();
+    }
+
+    public boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+    }
+
+    private List<DeleteHistory> writeDeleteHistories() throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(writeDeleteQuestionHistory());
+        deleteHistories.addAll(writeDeleteAnswersHistory());
+        return deleteHistories;
+    }
+
+    private DeleteHistory writeDeleteQuestionHistory() {
         deleteQuestion();
-        deleteAnswers();
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+        return createDeleteQuestionHistory();
     }
 
     private void deleteQuestion() {
         this.deleted = true;
     }
 
-    private void deleteAnswers() throws CannotDeleteException {
-        for (Answer answer : this.answers) {
-            deleteAnswer(answer);
-        }
+    private DeleteHistory createDeleteQuestionHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
-    private void deleteAnswer(Answer answer) throws CannotDeleteException {
+    private List<DeleteHistory> writeDeleteAnswersHistory() throws CannotDeleteException {
+        List<DeleteHistory> deleteAnswersHistories = new ArrayList<>();
+        for (Answer answer : this.answers) {
+            deleteAnswersHistories.add(writeDeleteAnswerHistory(answer));
+        }
+        return deleteAnswersHistories;
+    }
+
+    private DeleteHistory writeDeleteAnswerHistory(Answer answer) throws CannotDeleteException {
         if (!answer.isOwner(this.writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        answer.delete();
+        return answer.writeDeleteAnswerHistory();
     }
 
     @Override

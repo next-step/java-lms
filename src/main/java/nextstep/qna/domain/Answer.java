@@ -72,8 +72,17 @@ public class Answer {
         this.question = question;
     }
 
-    public void delete() {
+    public DeleteHistory writeDeleteAnswerHistory() {
+        deleteAnswer();
+        return createDeleteAnswerHistory();
+    }
+
+    private void deleteAnswer() {
         this.deleted = true;
+    }
+
+    private DeleteHistory createDeleteAnswerHistory() {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override
