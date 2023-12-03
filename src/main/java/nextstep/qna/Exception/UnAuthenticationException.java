@@ -1,4 +1,4 @@
-package nextstep.qna;
+package nextstep.qna.Exception;
 
 public class UnAuthenticationException extends Exception {
     private static final long serialVersionUID = 1L;
