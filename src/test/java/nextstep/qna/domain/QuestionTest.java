@@ -5,6 +5,7 @@ import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
 import nextstep.qna.CannotDeleteException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,5 +54,18 @@ public class QuestionTest {
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer1.isDeleted()).isTrue();
         assertThat(answer2.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("질문이 삭제되면 질문 삭제 히스토리를 만든다.")
+    void create_question_delete_history() throws CannotDeleteException {
+        // given
+        Question question = new Question(JAVAJIGI, "질문", "질문입니다");
+
+        // when
+        DeleteHistory result = question.delete(JAVAJIGI);
+
+        // then
+        assertThat(result).isEqualTo(new DeleteHistory(ContentType.QUESTION, 0L, JAVAJIGI, LocalDateTime.now()));
     }
 }
