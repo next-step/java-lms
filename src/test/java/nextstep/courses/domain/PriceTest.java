@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Price;
 import nextstep.courses.exception.NegativeOrZeroNumberException;
 import nextstep.courses.exception.PaymentAmountNotEqualException;
 import nextstep.payments.domain.Payment;

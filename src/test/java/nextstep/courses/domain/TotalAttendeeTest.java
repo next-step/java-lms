@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.TotalAttendee;
 import nextstep.courses.exception.ExceedAttendeesException;
 import nextstep.courses.exception.NegativeNumberException;
 import nextstep.courses.exception.NegativeOrZeroNumberException;

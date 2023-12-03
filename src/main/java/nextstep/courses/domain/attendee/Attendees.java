@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.attendee;
 
 import nextstep.courses.exception.AlreadyTakingSessionException;
 

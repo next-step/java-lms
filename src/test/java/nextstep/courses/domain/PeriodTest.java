@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.exception.NotCorrectPeriodException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

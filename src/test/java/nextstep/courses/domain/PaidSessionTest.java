@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.attendee.Attendees;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.ExceedAttendeesException;
 import nextstep.courses.exception.PaymentAmountNotEqualException;
 import nextstep.payments.domain.Payment;

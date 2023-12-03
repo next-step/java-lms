@@ -1,6 +1,10 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.attendee.Attendee;
+import nextstep.courses.domain.attendee.AttendeeRepository;
+import nextstep.courses.domain.attendee.Attendees;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;

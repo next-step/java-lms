@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.attendee.Attendee;
+import nextstep.courses.domain.attendee.Attendees;
+import nextstep.courses.domain.session.*;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ class FreeSessionTest {
     void can_enroll_session_when_user_is_not_registered() {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
-        Session session = new FreeSession(1L, information,null);
+        Session session = new FreeSession(1L, information, null);
         Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
         Attendees emptyAttendees = new Attendees();
         Attendee expected = new Attendee(JAVAJIGI, session);

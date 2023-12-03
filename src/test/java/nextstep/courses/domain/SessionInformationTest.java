@@ -1,13 +1,15 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Period;
+import nextstep.courses.domain.session.SessionInformation;
 import nextstep.courses.exception.CanNotApplyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.courses.domain.SessionStatus.*;
-import static nextstep.courses.domain.SessionType.*;
+import static nextstep.courses.domain.session.SessionStatus.*;
+import static nextstep.courses.domain.session.SessionType.*;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionInformationTest {
