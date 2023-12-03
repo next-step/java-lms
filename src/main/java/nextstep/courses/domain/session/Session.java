@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public class Session {
     private Long id;
@@ -26,19 +28,19 @@ public class Session {
     }
 
     public Session(final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
-        this(0L, title, price, sessionDate, coverImage);
+        this(0L, title, price, sessionDate, coverImage, Collections.emptyList());
     }
 
-    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        this(id, title, price, new SessionDate(startDate, endDate), coverImage);
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, List<NsUser> nsUsers) {
+        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers);
     }
 
-    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage, List<NsUser> nsUsers) {
         validateSession(title, sessionDate);
 
         this.id = id;
         this.title = title;
-        this.enrollment = new Enrollment(price);
+        this.enrollment = new Enrollment(price, nsUsers);
         this.sessionDate = sessionDate;
         this.coverImage = validateCoverImage(coverImage);
     }
@@ -68,16 +70,12 @@ public class Session {
         return this.sessionDate.getEndDate();
     }
 
-    public ChargeStatus getChargeStatus() {
-        return this.enrollment.getChargeStatus();
-    }
-
-    public SessionStatus getSessionStatus() {
-        return this.enrollment.getSessionStatus();
-    }
-
     public int getMaxStudentLimit() {
         return this.enrollment.getMaxStudentLimit();
+    }
+
+    public void changeMaxStudentLimit(final int maxStudentLimit) {
+        this.enrollment.changeMaxStudentLimit(maxStudentLimit);
     }
 
     public Long getId() {
@@ -118,5 +116,17 @@ public class Session {
 
     public void enroll(Payment payment, NsUser user) {
         enrollment.enroll(payment, user);
+    }
+
+    public String getSessionStatusString() {
+        return this.enrollment.getSessionStatusString();
+    }
+
+    public void changeSessionStatus(final SessionStatus sessionStatus) {
+        setStatus(sessionStatus);
+    }
+
+    public List<NsUser> getUsers() {
+        return this.enrollment.getUsers();
     }
 }

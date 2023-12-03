@@ -4,20 +4,22 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 public class Enrollment {
     private Long price;
     private ChargeStatus chargeStatus;
     private SessionStatus status;
     private SessionStudent sessionStudent;
 
-    public Enrollment(final Long price) {
+    public Enrollment(final Long price, final List<NsUser> nsUsers) {
         validateEnrollment(price);
 
         this.price = price;
 
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
-        this.sessionStudent = new SessionStudent(15);
+        this.sessionStudent = new SessionStudent(15, nsUsers);
     }
 
     private void validateEnrollment(final Long price) {
@@ -78,15 +80,19 @@ public class Enrollment {
         return this.status.isRecruiting();
     }
 
-    public ChargeStatus getChargeStatus() {
-        return this.chargeStatus;
-    }
-
-    public SessionStatus getSessionStatus() {
-        return this.status;
-    }
-
     public int getMaxStudentLimit() {
         return this.sessionStudent.getMaxStudentLimit();
+    }
+
+    public String getSessionStatusString() {
+        return this.status.toString();
+    }
+
+    public List<NsUser> getUsers() {
+        return this.sessionStudent.getUsers();
+    }
+
+    public void changeMaxStudentLimit(final int maxStudentLimit) {
+        this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
     }
 }

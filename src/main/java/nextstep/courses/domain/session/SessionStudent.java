@@ -9,8 +9,9 @@ public class SessionStudent {
     private int maxStudentLimit;
     private List<NsUser> students = new ArrayList<>();
 
-    public SessionStudent(final int maxStudentLimit) {
+    public SessionStudent(final int maxStudentLimit, final List<NsUser> nsUsers) {
         this.maxStudentLimit = maxStudentLimit;
+        this.students.addAll(nsUsers);
     }
 
     public int getCurrentStudentCount() {
@@ -39,5 +40,9 @@ public class SessionStudent {
 
     public int getMaxStudentLimit() {
         return this.maxStudentLimit;
+    }
+
+    public List<NsUser> getUsers() {
+        return this.students;
     }
 }
