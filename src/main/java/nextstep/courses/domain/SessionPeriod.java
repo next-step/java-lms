@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class SessionPeriod {
 
-    private LocalDate startDate;
+    private final LocalDate startDate;
 
-    private LocalDate endDate;
+    private final LocalDate endDate;
 
     public SessionPeriod(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;

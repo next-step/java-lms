@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionImageTest {
+
     public static SessionImage normalSessionImage() {
         return new SessionImage(1000,"jpg",300,200);
     }
