@@ -25,26 +25,14 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
-    // New method
-    public DeleteHistory has(Object o) {
-        if (Question.class.isAssignableFrom(o.getClass())) {
-            return hasQuestion((Question) o);
-        }
-        return hasAnswer((Answer) o);
-    }
-
-    // New method
     public DeleteHistory hasQuestion(Question question) {
-        question.setDeleted(true);
         contentType = ContentType.QUESTION;
         contentId = question.getId();
         deletedBy = question.getWriter();
         return this;
     }
 
-    // New method
     public DeleteHistory hasAnswer(Answer answer) {
-        answer.setDeleted(true);
         contentType = ContentType.ANSWER;
         contentId = answer.getId();
         deletedBy = answer.getWriter();

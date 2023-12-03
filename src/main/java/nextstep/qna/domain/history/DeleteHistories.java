@@ -13,14 +13,14 @@ public class DeleteHistories {
     private List<DeleteHistory> deleteHistoryList = new ArrayList<>();
 
     public void addQuestion(Question question) {
+        deleteHistoryList.add(new DeleteHistory().hasQuestion(question));
         Answers answers = new Answers(question.getAnswers());
-        deleteHistoryList.add(new DeleteHistory().has(question));
         addAnswers(answers);
     }
 
-    public void addAnswers(Answers answers) {
+    private void addAnswers(Answers answers) {
         for (Answer answer : answers.getAnswerList()) {
-            deleteHistoryList.add(new DeleteHistory().has(answer));
+            deleteHistoryList.add(new DeleteHistory().hasAnswer(answer));
         }
     }
 

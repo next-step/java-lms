@@ -6,13 +6,6 @@ import org.junit.jupiter.api.Test;
 public class DeleteHistoryTest {
 
     @Test
-    void has() {
-        DeleteHistory deleteHistory = new DeleteHistory();
-        deleteHistory.has(QuestionTest.Q1);
-        System.out.println(deleteHistory);
-    }
-
-    @Test
     void hasQuestion() {
         DeleteHistory deleteHistory = new DeleteHistory();
         deleteHistory.hasQuestion(QuestionTest.Q1);
