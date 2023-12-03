@@ -1,24 +1,20 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
 public class Answer {
     private Long id;
-
     private NsUser writer;
-
     private Question question;
-
     private String contents;
-
     private boolean deleted = false;
-
     private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
 
     public Answer() {
@@ -47,17 +43,24 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
+    }
+
+    public void deletedBy(NsUser writer) throws CannotDeleteException {
+        checkDeleteAuthorized(writer);
+        deleted = true;
+    }
+
+    // New Method
+    private void checkDeleteAuthorized(NsUser writer) throws CannotDeleteException {
+        if (!this.writer.equals(writer)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 
     public NsUser getWriter() {

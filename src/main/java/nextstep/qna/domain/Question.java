@@ -1,30 +1,25 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.answer.Answers;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
     private Long id;
-
     private String title;
-
     private String contents;
-
     private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
-
+//    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
     private boolean deleted = false;
-
     private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
 
-    public Question() {
-    }
+    public Question() {}
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -72,9 +67,17 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void deletedBy(NsUser loginUser) throws CannotDeleteException {
+        answers.deletedBy(loginUser);
+        checkDeleteAuthorized(loginUser);
+        deleted = true;
+    }
+
+    // New method
+    private void checkDeleteAuthorized(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 
     public boolean isDeleted() {
@@ -82,7 +85,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswerList();
     }
 
     @Override
