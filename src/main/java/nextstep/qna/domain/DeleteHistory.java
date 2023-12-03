@@ -27,10 +27,7 @@ public class DeleteHistory {
     }
 
     public DeleteHistory(ContentType contentType, Question question, LocalDateTime createdDate) {
-        this.contentType = contentType;
-        this.contentId = question.getId();
-        this.deletedBy = question.getWriter();
-        this.createdDate = createdDate;
+        this(contentType, question.getId(), question.getWriter(), createdDate);
     }
 
     @Override

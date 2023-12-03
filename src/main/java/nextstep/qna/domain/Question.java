@@ -96,7 +96,9 @@ public class Question {
         }
     }
 
-    public void deleted() {
+    public void deleted(NsUser loginUser) throws CannotDeleteException {
+        isValidLoginUser(loginUser);
+
         this.deleted = true;
     }
 }
