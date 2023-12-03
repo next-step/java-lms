@@ -69,8 +69,8 @@ public class Session {
         setStatus(SessionStatus.CLOSED);
     }
 
-    private boolean isPaidSession() {
-        return this.sessionMakingData.isPaidSession();
+    public void changeMaxStudentLimit(final int maxStudentLimit) {
+        this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
     }
 
     public void enroll(Payment payment, NsUser user) {
@@ -83,6 +83,10 @@ public class Session {
         }
 
         increaseEnrollment(user);
+    }
+
+    private boolean isPaidSession() {
+        return this.sessionMakingData.isPaidSession();
     }
 
     private void validateIfPaidSession(final Payment payment) {
