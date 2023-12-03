@@ -9,6 +9,7 @@ public class Session {
     private SessionMakingData sessionMakingData;
     private SessionStudent sessionStudent;
     private SessionStatus status;
+    private Enrollment enrollment;
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(new SessionInfo(title, price), new SessionDate(startDate, endDate), null);
@@ -27,6 +28,8 @@ public class Session {
 
         this.status = SessionStatus.READY;
         this.sessionStudent = new SessionStudent(15);
+
+        this.enrollment = new Enrollment(sessionInfo.getPrice());
     }
 
     public long getPrice() {
@@ -35,6 +38,10 @@ public class Session {
 
     public int getCurrentStudentCount() {
         return this.sessionStudent.getCurrentStudentCount();
+    }
+
+    public int getCurrentStudentCount2() {
+        return this.enrollment.getCurrentStudentCount();
     }
 
     public boolean isReachedMaxStudentLimit() {
@@ -49,6 +56,10 @@ public class Session {
         this.status = status;
     }
 
+    private void setStatus2(SessionStatus status) {
+        enrollment.setStatus(status);
+    }
+
     public boolean isNotRecruiting() {
         return !this.status.isRecruiting();
     }
@@ -59,14 +70,17 @@ public class Session {
 
     public void ready() {
         setStatus(SessionStatus.READY);
+        setStatus2(SessionStatus.READY);
     }
 
     public void recruit() {
         setStatus(SessionStatus.RECRUITING);
+        setStatus2(SessionStatus.RECRUITING);
     }
 
     public void close() {
         setStatus(SessionStatus.CLOSED);
+        setStatus2(SessionStatus.CLOSED);
     }
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
@@ -83,6 +97,10 @@ public class Session {
         }
 
         increaseEnrollment(user);
+    }
+
+    public void enroll2(Payment payment, NsUser user) {
+        enrollment.enroll(payment, user);
     }
 
     private boolean isPaidSession() {

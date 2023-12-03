@@ -55,7 +55,7 @@ class SessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 0L);
 
         //when, then
-        assertThatThrownBy(() -> sessionWithNoPrice.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> sessionWithNoPrice.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -69,7 +69,7 @@ class SessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 0L);
 
         //when, then
-        assertThatThrownBy(() -> sessionWithNoPrice.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> sessionWithNoPrice.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -82,11 +82,11 @@ class SessionTest {
         sessionWithNoPrice.recruit();
         Payment payment = new Payment("tddJava", 0L, 0L, 0L);
 
-        final int currentStudentCountBeforeEnroll = sessionWithNoPrice.getCurrentStudentCount();
+        final int currentStudentCountBeforeEnroll = sessionWithNoPrice.getCurrentStudentCount2();
 
         //when
-        sessionWithNoPrice.enroll(payment, NsUserTest.JAVAJIGI);
-        final int currentStudentCountAfterEnroll = sessionWithNoPrice.getCurrentStudentCount();
+        sessionWithNoPrice.enroll2(payment, NsUserTest.JAVAJIGI);
+        final int currentStudentCountAfterEnroll = sessionWithNoPrice.getCurrentStudentCount2();
 
         //then
         assertThat(currentStudentCountAfterEnroll).isEqualTo(currentStudentCountBeforeEnroll + 1);
@@ -119,7 +119,7 @@ class SessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
-        assertThatThrownBy(() -> session.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -133,7 +133,7 @@ class SessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, 3000L);
 
         //when, then
-        assertThatThrownBy(() -> session.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("session is not recruiting");
     }
@@ -150,7 +150,7 @@ class SessionTest {
         Payment payment = new Payment("tddJava", 0L, 0L, price - 1);
 
         //when, then
-        assertThatThrownBy(() -> session.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("paid amount is different with price");
     }
@@ -168,14 +168,14 @@ class SessionTest {
         enrollForMaxLimit(session, payment);
 
         //when, then
-        assertThatThrownBy(() -> session.enroll(payment, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enroll2(payment, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("max student limit is reached");
     }
 
     private void enrollForMaxLimit(final Session session, final Payment payment) {
         for (int count = 0; count < 15; count++) {
-            session.enroll(payment, buildTempUser(count));
+            session.enroll2(payment, buildTempUser(count));
         }
     }
 
@@ -196,13 +196,13 @@ class SessionTest {
 
         final Session session = buildDefaultSessionWithPrice(price);
         session.recruit();
-        final int currentStudentCountBeforeEnroll = session.getCurrentStudentCount();
+        final int currentStudentCountBeforeEnroll = session.getCurrentStudentCount2();
 
         Payment payment = new Payment("tddJava", 0L, 0L, price);
 
         //when
-        session.enroll(payment, NsUserTest.JAVAJIGI);
-        final int currentStudentCountAfterEnroll = session.getCurrentStudentCount();
+        session.enroll2(payment, NsUserTest.JAVAJIGI);
+        final int currentStudentCountAfterEnroll = session.getCurrentStudentCount2();
 
         //then
         assertThat(currentStudentCountAfterEnroll).isEqualTo(currentStudentCountBeforeEnroll + 1);
