@@ -82,7 +82,7 @@ public class Question {
 
         questionUserCheck(user);
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer));
+        deleteHistories.add(DeleteHistory.ofQuestion(id, writer));
         deleteHistories.addAll(answers.delete(user));
         return deleteHistories;
     }

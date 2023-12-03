@@ -46,4 +46,12 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
+
+    public static DeleteHistory ofQuestion(Long questionId, NsUser deletedBy) {
+        return new DeleteHistory(ContentType.QUESTION, questionId, deletedBy);
+    }
+
+    public static DeleteHistory ofAnswer(Long answerId, NsUser deletedBy) {
+        return new DeleteHistory(ContentType.ANSWER, answerId, deletedBy);
+    }
 }
