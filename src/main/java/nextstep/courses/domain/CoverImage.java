@@ -5,9 +5,9 @@ import nextstep.courses.exception.InvalidImageWidthAndHeightException;
 
 public class CoverImage {
 
-    private static final int IMAGE_SIZE = 1;
-    private static final int WIDTH_PIXEL = 300;
-    private static final int HEIGHT_PIXEL = 200;
+    private static final int MAX_MB_OF_IMAGE_SIZE = 1;
+    private static final int MIN_WIDTH_PIXEL = 300;
+    private static final int MIN_HEIGHT_PIXEL = 200;
     private static final int WIDTH_RATIO = 2;
     private static final int HEIGHT_RATIO = 3;
 
@@ -26,7 +26,7 @@ public class CoverImage {
     }
 
     private void validateImageSize(long size) {
-        if (size > IMAGE_SIZE) {
+        if (size > MAX_MB_OF_IMAGE_SIZE) {
             throw new ImageSizeOverException(size);
         }
     }
@@ -38,7 +38,7 @@ public class CoverImage {
     }
 
     private static boolean checkPixel(int width, int height) {
-        return width >= WIDTH_PIXEL && height >= HEIGHT_PIXEL;
+        return width >= MIN_WIDTH_PIXEL && height >= MIN_HEIGHT_PIXEL;
     }
 
     private static boolean checkRatio(int width, int height) {
