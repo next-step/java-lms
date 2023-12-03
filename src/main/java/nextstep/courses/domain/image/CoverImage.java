@@ -20,4 +20,9 @@ public class CoverImage {
             throw new IllegalArgumentException(MAX_SIZE_OVER_MSG);
         }
     }
+
+
+    public static CoverImage emptyImage() {
+        return new CoverImage(0, null, null);
+    }
 }

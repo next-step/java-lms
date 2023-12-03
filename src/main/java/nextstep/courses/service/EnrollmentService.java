@@ -7,8 +7,9 @@ import nextstep.users.domain.NsUser;
 
 public class EnrollmentService {
 
-    public void enrollSession(NsUser nsUser, Session session, Payment payment) {
+    public Enrollment enroll(NsUser nsUser, Session session, Payment payment) {
         session.enroll(payment);
 
+        return new Enrollment(nsUser.getId(), session.id());
     }
 }
