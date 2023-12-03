@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.verify;
 
 public class QuestionTest {
@@ -24,9 +25,11 @@ public class QuestionTest {
         List<DeleteHistory> deleteHistories = Q1.deleteBy(NsUserTest.JAVAJIGI);
 
         // then
-        assertThat(Q1.isDeleted()).isTrue();
-        assertThat(AnswerTest.A1.isDeleted()).isTrue();
-        assertThat(deleteHistories).hasSize(2);
+        assertAll(
+            () -> assertThat(Q1.isDeleted()).isTrue(),
+            () -> assertThat(AnswerTest.A1.isDeleted()).isTrue(),
+            () -> assertThat(deleteHistories).hasSize(2)
+        );
     }
 
     @Test
