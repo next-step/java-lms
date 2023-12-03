@@ -1,14 +1,14 @@
 package nextstep.courses.domain.image;
 
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CoverImageTest {
+class ImageTypeTest {
     @Test
-    void 이미지의_사이즈가_1MB를_초과할때() {
+    void 파일확장자가_올바르지_않을때() {
         assertThatThrownBy(() -> {
-            new CoverImage(1024L * 1024L * 3, "png");
+            ImageType.of("xxx");
         }).isInstanceOf(IllegalArgumentException.class);
     }
-
 }
