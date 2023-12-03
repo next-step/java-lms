@@ -4,22 +4,16 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Answer {
     private Long id;
 
-    private NsUser writer;
+    private AnswerContent answerContent;
 
     private Question question;
 
-    private String contents;
-
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private BaseTime baseTime;
 
     public Answer() {
     }
@@ -30,26 +24,24 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
-
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
+        this.answerContent = new AnswerContent(writer, contents);
         this.question = question;
-        this.contents = contents;
+        this.baseTime = new BaseTime();
     }
 
     public Long getId() {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public NsUser getWriter() {
+        return this.answerContent.writer();
     }
 
     public boolean isDeleted() {
@@ -57,23 +49,25 @@ public class Answer {
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
+        return this.answerContent.equalsWriter(writer);
     }
 
     public void toQuestion(Question question) {
         this.question = question;
     }
 
+    public void changeStatusToDelete() {
+        this.deleted = true;
+    }
+
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" +
+                "id=" + id +
+                ", answerContent=" + answerContent +
+                ", question=" + question +
+                ", deleted=" + deleted +
+                ", baseTime=" + baseTime +
+                '}';
     }
 }
