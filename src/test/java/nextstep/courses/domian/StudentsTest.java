@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class StudentsTest {
 
@@ -37,13 +38,31 @@ class StudentsTest {
     @Test
     @DisplayName("수강신청한 학생의 수강신청을 승인하면 상태가 승인 상태가 된다.")
     void approve_student() {
-        Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI, ApplyStatus.APPLYING)));
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        Students students = new Students(List.of(student));
 
         students.approve(new Student(NsUserTest.JAVAJIGI));
 
         int actual = students.approvalStudentsCount();
+        ApplyStatus actual2 = student.studentApplyStatus();
 
-        assertThat(actual).isEqualTo(1);
+        assertAll(
+                () -> assertThat(actual).isEqualTo(1),
+                () -> assertThat(actual2).isEqualTo(ApplyStatus.APPROVAL)
+        );
+
+    }
+
+    @Test
+    @DisplayName("수강신청한 학생의 수강신청을 거절하면 상태가 거절 상태가 된다.")
+    void refuse_student() {
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        Students students = new Students(List.of(student));
+
+        students.refuse(new Student(NsUserTest.JAVAJIGI));
+        ApplyStatus actual = student.studentApplyStatus();
+
+        assertThat(actual).isEqualTo(ApplyStatus.REFUSAL);
     }
 
     @Test
@@ -52,6 +71,16 @@ class StudentsTest {
         Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI)));
 
         assertThatThrownBy(() -> students.approve(new Student(NsUserTest.SANJIGI)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당하는 학생이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 학생의 수강신청을 거절할 경우 오류가 발생한다.")
+    void refuse_student_fail() {
+        Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI)));
+
+        assertThatThrownBy(() -> students.refuse(new Student(NsUserTest.SANJIGI)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당하는 학생이 없습니다.");
     }

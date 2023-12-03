@@ -28,6 +28,10 @@ public class SessionStudents {
         this.students.approve(student);
     }
 
+    public void refuse(Student student) {
+        this.students.refuse(student);
+    }
+
     public boolean isMaxStudents() {
         return this.students.approvalStudentsCount() == this.maxStudentCount;
     }

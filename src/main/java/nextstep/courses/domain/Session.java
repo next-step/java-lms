@@ -37,6 +37,12 @@ public class Session {
         this.sessionEnrolment.approve(student);
     }
 
+    public void refuse(Student student, Long instructorId) {
+        validate(instructorId);
+
+        this.sessionEnrolment.refuse(student);
+    }
+
     public void updateInstructor(Long instructorId) {
         this.instructorId = instructorId;
     }

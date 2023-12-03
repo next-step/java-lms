@@ -102,6 +102,20 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("최대 수강인원 1명인 강의에 학생이 신청한 강의를 강사가 거절 한다면, 해당 강의 수강인원은 가득찬 상태가 아니다.")
+    void refuse_success() {
+        Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI)));
+        Session session = createPaySession(students, 1, SessionStatusType.READY, 10_000L);
+        session.updateInstructor(1L);
+
+        session.refuse(new Student(NsUserTest.JAVAJIGI), 1L);
+
+        boolean actual = session.isFullStudents();
+
+        assertThat(actual).isFalse();
+    }
+
+    @Test
     @DisplayName("해당 강의의 강사가 아닌사람이 수강승인을 할 경우 오류가 발생한다.")
     void approve_fail() {
         Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI, ApplyStatus.APPLYING)));
@@ -109,6 +123,18 @@ class SessionTest {
         session.updateInstructor(1L);
 
         assertThatThrownBy(() -> session.approve(new Student(NsUserTest.JAVAJIGI), 2L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 강의의 강사만 가능합니다.");
+    }
+
+    @Test
+    @DisplayName("해당 강의의 강사가 아닌사람이 수강거절을 할 경우 오류가 발생한다.")
+    void refuse_fail() {
+        Students students = new Students(List.of(new Student(NsUserTest.JAVAJIGI, ApplyStatus.APPLYING)));
+        Session session = createPaySession(students, 1, SessionStatusType.READY, 10_000L);
+        session.updateInstructor(1L);
+
+        assertThatThrownBy(() -> session.refuse(new Student(NsUserTest.JAVAJIGI), 2L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 강의의 강사만 가능합니다.");
     }

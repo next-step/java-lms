@@ -24,11 +24,11 @@ public class Students {
     }
 
     public void approve(Student approveStudent) {
-        this.students.stream()
-                .filter(student -> student.equals(approveStudent))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 학생이 없습니다."))
-                .approve();
+        findStudent(approveStudent).approve();
+    }
+
+    public void refuse(Student refuseStudent) {
+        findStudent(refuseStudent).refuse();
     }
 
     public int approvalStudentsCount() {
@@ -39,6 +39,13 @@ public class Students {
 
     public int applyStudentsCount() {
         return this.students.size();
+    }
+
+    private Student findStudent(Student findStudent) {
+        return this.students.stream()
+                .filter(student -> student.equals(findStudent))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 학생이 없습니다."));
     }
 
     private void validate(NsUser student) {

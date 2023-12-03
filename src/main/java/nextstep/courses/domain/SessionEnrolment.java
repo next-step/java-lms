@@ -29,6 +29,10 @@ public class SessionEnrolment {
         this.sessionStudents.approve(student);
     }
 
+    public void refuse(Student student) {
+        this.sessionStudents.refuse(student);
+    }
+
     public boolean isFree() {
         return isFree;
     }

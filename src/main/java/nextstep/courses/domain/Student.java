@@ -24,6 +24,14 @@ public class Student {
         this.applyStatus = ApplyStatus.APPROVAL;
     }
 
+    public void refuse() {
+        this.applyStatus = ApplyStatus.REFUSAL;
+    }
+
+    public ApplyStatus studentApplyStatus() {
+        return applyStatus;
+    }
+
     public boolean isApproval() {
         return this.applyStatus == ApplyStatus.APPROVAL;
     }
