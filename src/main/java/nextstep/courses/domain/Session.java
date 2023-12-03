@@ -13,20 +13,6 @@ public class Session {
     private final SessionStatus sessionStatus;
     private final List<NsUser> students;
 
-    public Session(Long sessionId, String sessionName, LocalDate startDate, LocalDate endDate,
-                   Integer thumbnailId, String thumbnailName, long thumbnailSize, int thumbnailWidth, int thumbnailHeight,
-                   boolean isPaid, Integer maxStudents, Integer sessionFee,
-                   SessionStatus sessionStatus, List<NsUser> students) {
-        this(sessionId,
-                sessionName,
-                new Period(startDate, endDate),
-                new Thumbnail(thumbnailId, thumbnailName, new FileSize(thumbnailSize),
-                        new FileDimensions(thumbnailWidth, thumbnailHeight)),
-                SessionType.determineSessionType(isPaid, maxStudents, sessionFee),
-                sessionStatus,
-                students);
-    }
-
     public Session(Long sessionId, String sessionName, Period sessionPeriod, Thumbnail thumbnail,
                    SessionType sessionType, SessionStatus sessionStatus, List<NsUser> students) {
         this.sessionId = sessionId;
