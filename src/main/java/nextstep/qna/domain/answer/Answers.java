@@ -24,8 +24,9 @@ public class Answers {
     }
 
     public void deletedBy(NsUser writer) throws CannotDeleteException {
-        answerList.stream()
-                .forEach(answer -> answer.isDeleted());
+        for (Answer answer : answerList) {
+            answer.deletedBy(writer);
+        }
     }
 
     public final List<Answer> getAnswerList() {
