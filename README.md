@@ -32,4 +32,4 @@
 #### Feedback 23.11.26
 * [x] Wrapper 클래스에서 변수명은 values, value, 값을 가져오는 메서드명은 value(), get()으로 사용해 보기
 * [x] delete 작업 후에 deleteHistories를 즉시 반환하도록 변경
-* [ ] Answer의 delete()가 답변만 삭제하고 싶을 경우에도 대응할 수 있도록 변경
+* [x] Answer의 delete()가 답변만 삭제하고 싶을 경우에도 대응할 수 있도록 변경

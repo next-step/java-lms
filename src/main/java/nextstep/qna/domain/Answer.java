@@ -78,9 +78,6 @@ public class Answer {
         if (!isOwner(loginUser)){
             throw new CannotDeleteException("답변 작성자와 로그인 사용자가 일치하지 않습니다.");
         }
-        if (!writerEqualsQuestionWriter()){
-            throw new CannotDeleteException("답변 작성자와 질문 작성자가 일치하지 않습니다.");
-        }
     }
 
     private boolean isOwner(NsUser writer) {
