@@ -7,6 +7,10 @@ public class Course {
 
     private String title;
 
+    private int cohort; // 기수
+
+    private Sessions sessions;
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
@@ -21,8 +25,14 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, title, 0, null, creatorId, createdAt, updatedAt);
+    }
+
+    public Course(Long id, String title, int cohort, Sessions sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
+        this.cohort = cohort;
+        this.sessions = sessions;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
