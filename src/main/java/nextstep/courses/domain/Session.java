@@ -11,13 +11,17 @@ public class Session {
     private LocalDate startDate;
     private LocalDate endDate;
     private SessionStatus status;
-    private List<NsUser> registeredUser = new ArrayList<>();
+    private List<NsUser> registeredUser;
+
+    private SessionType sessionType;
 
     public Session() {
     }
 
     public Session(SessionStatus status) {
         this.status = status;
+        this.sessionType = new SessionType();
+        this.registeredUser = new ArrayList<>();
     }
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
@@ -29,9 +33,18 @@ public class Session {
         this.endDate = endDate;
     }
 
+    public Session(SessionStatus status, List<NsUser> nsUsers, SessionType sessionType) {
+        this.status = status;
+        this.registeredUser = nsUsers;
+        this.sessionType = sessionType;
+    }
+
     public List<NsUser> register(NsUser user) throws CannotRegisterException {
         if (!SessionStatus.OPEN.equals(status)) {
             throw new CannotRegisterException("모집중이 아닌 경우 신청이 불가합니다");
+        }
+        if (!sessionType.isMaxCapacity(registeredUser)) {
+            throw new IllegalArgumentException();
         }
         registeredUser.add(user);
         return registeredUser;

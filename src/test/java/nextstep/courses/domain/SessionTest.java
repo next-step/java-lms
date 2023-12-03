@@ -1,9 +1,11 @@
 package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,6 +31,15 @@ class SessionTest {
         LocalDate endDate = LocalDate.of(2023, 12, 01);
         assertThatThrownBy(() -> {
             new Session(SessionStatus.WAITING, startDate, endDate);
+        }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 유료강의는_제한인원을_초과할_수_없다() {
+        SessionType type = new SessionType(PayType.PAID, 1000, 1);
+        Session session = new Session(SessionStatus.OPEN, List.of(NsUser.GUEST_USER), type);
+        assertThatThrownBy(() -> {
+            session.register(new NsUser());
         }).isInstanceOf(IllegalArgumentException.class);
     }
 }
