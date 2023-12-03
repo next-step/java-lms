@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.session.domain.Session;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -16,14 +18,24 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
+    private Session session;
+
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
-        this.id = id;
+    public Payment(Long sessionId, Long nsUserId, Long amount, LocalDateTime createdAt, Session session) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.session = session;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public boolean validateSameAmount(Long amount) {
+        return this.amount.equals(amount);
     }
 }

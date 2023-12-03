@@ -2,6 +2,7 @@ package nextstep.session.service;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.service.CourseService;
+import nextstep.payments.service.PaymentService;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.ui.CreateSessionDto;
@@ -16,6 +17,7 @@ public class SessionService {
     private SessionRepository sessionRepository;
     @Resource(name = "courseService")
     private CourseService courseService;
+    private PaymentService paymentService;
 
     public Session createSession(NsUser loginUser, CreateSessionDto dto) {
         Course course = courseService.findById(dto.getCourseId());

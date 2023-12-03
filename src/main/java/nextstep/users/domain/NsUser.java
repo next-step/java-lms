@@ -1,8 +1,12 @@
 package nextstep.users.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.session.domain.Session;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class NsUser {
@@ -21,6 +25,8 @@ public class NsUser {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private List<Payment> payments = new ArrayList<>();
 
     public NsUser() {
     }
@@ -77,6 +83,13 @@ public class NsUser {
     public NsUser setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    public Payment getSessionPayment(Session session) {
+        return payments.stream()
+                .filter(payment -> payment.getSession().equals(session))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("강의에 대한 결제 내역이 없습니다."));
     }
 
     public void update(NsUser loginUser, NsUser target) {

@@ -32,6 +32,7 @@ public class Session {
 
     private Integer limitNumberOfStudents;
     private List<NsUser> students = new ArrayList<>();
+    private Long price;
 
     public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
         validateSessionType(sessionType, limitNumberOfStudents);
@@ -63,6 +64,7 @@ public class Session {
 
     public void enroll(NsUser user) {
         validateEnroll();
+        validatePayment(user);
         students.add(user);
     }
 
@@ -71,9 +73,26 @@ public class Session {
             throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
         }
 
-        if (this.sessionType == SessionType.PAID && this.limitNumberOfStudents == students.size()) {
+        if (isPaid() && this.limitNumberOfStudents == students.size()) {
             throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
+    }
+
+    private void validatePayment(NsUser user) {
+        if (isFree()) {
+            return;
+        }
+        if (user.getSessionPayment(this).validateSameAmount(price)) {
+            throw new IllegalStateException("강의의 가격과 결제한 가격이 다릅니다.");
+        }
+    }
+
+    private boolean isPaid() {
+        return this.sessionType == SessionType.PAID;
+    }
+
+    private boolean isFree() {
+        return this.sessionType == SessionType.FREE;
     }
 
     public List<NsUser> getStudents() {
