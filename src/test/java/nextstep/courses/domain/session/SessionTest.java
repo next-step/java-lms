@@ -6,6 +6,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +26,19 @@ class SessionTest {
 
         defaultSessionWithNoPrice = new Session(title, startDate, endDate);
         defaultSessionWith3000Price = new Session(title, 3000, startDate, endDate);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("제목이 비어있으면, 예외가 발생한다.")
+    void testTitleIsNotBlank(String title) {
+        final LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
+        final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
+
+        //given, when, then
+        assertThatThrownBy(() -> new Session(title, startDate, endDate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("title cannot be blank");
     }
 
     @Test
@@ -104,7 +119,7 @@ class SessionTest {
         final Session session = new Session(title, price, startDate, endDate);
 
         //when
-        final long getPrice = session.getPrice();
+        final long getPrice = session.getPrice2();
 
         //then
         assertThat(getPrice).isEqualTo(price);

@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import org.springframework.util.Assert;
 
 public class Enrollment {
     private Long price;
@@ -10,11 +11,17 @@ public class Enrollment {
     private SessionStudent sessionStudent;
 
     public Enrollment(final Long price) {
+        validateEnrollment(price);
+
         this.price = price;
 
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
         this.sessionStudent = new SessionStudent(15);
+    }
+
+    private void validateEnrollment(final Long price) {
+        Assert.isTrue(price != null && price >= 0, "price cannot be negative");
     }
 
     public void enroll(final Payment payment, final NsUser user) {
@@ -51,7 +58,7 @@ public class Enrollment {
         return this.sessionStudent.isReachedMaxStudentLimit();
     }
 
-    private double getPrice() {
+    public long getPrice() {
         return this.price;
     }
 
