@@ -4,7 +4,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -31,7 +30,7 @@ public class Session {
     private SessionType sessionType;
 
     private Integer limitNumberOfStudents;
-    private List<NsUser> students = new ArrayList<>();
+    private SessionStudents students = new SessionStudents();
     private Long price;
 
     public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
@@ -85,7 +84,7 @@ public class Session {
             throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
         }
 
-        if (isPaid() && this.limitNumberOfStudents == students.size()) {
+        if (isPaid() && this.limitNumberOfStudents <= students.enrolledNumber()) {
             throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
     }
@@ -108,7 +107,7 @@ public class Session {
     }
 
     public List<NsUser> getStudents() {
-        return students;
+        return students.getStudents();
     }
 
     public void changeStatus(SessionStatus status) {
