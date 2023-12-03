@@ -29,19 +29,26 @@ public class Session {
     private SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
 
     private SessionType sessionType;
+
+    private Integer limitNumberOfStudents;
     private List<NsUser> students = new ArrayList<>();
 
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType) {
+    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType, Integer limitNumberOfStudents) {
         this.generation = generation;
         this.creatorId = creatorId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.imageURL = imageURL;
         this.sessionType = sessionType;
+        this.limitNumberOfStudents = limitNumberOfStudents;
     }
 
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType) {
-        return new Session(generation, creatorId, startDate, endDate, imageURL, sessionType);
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL) {
+        return new Session(generation, creatorId, startDate, endDate, imageURL, SessionType.FREE, null);
+    }
+
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, int limitNumberOfStudents) {
+        return new Session(generation, creatorId, startDate, endDate, imageURL, SessionType.PAID, limitNumberOfStudents);
     }
 
     public void enroll(NsUser user) {
@@ -60,6 +67,10 @@ public class Session {
     public void validateEnroll() {
         if (this.sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
+        }
+
+        if (this.sessionType == SessionType.PAID && this.limitNumberOfStudents == students.size()) {
+            throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
     }
 }
