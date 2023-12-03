@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 
 public class Session {
+    private Long id;
     private String title;
     private SessionDate sessionDate;
     private CoverImage coverImage;
@@ -25,8 +26,17 @@ public class Session {
     }
 
     public Session(final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
+        this(0L, title, price, sessionDate, coverImage);
+    }
+
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
+        this(id, title, price, new SessionDate(startDate, endDate), coverImage);
+    }
+
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
         validateSession(title, sessionDate);
 
+        this.id = id;
         this.title = title;
         this.enrollment = new Enrollment(price);
         this.sessionDate = sessionDate;
@@ -44,6 +54,10 @@ public class Session {
         }
 
         return coverImage;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public CoverImage getCoverImage() {
