@@ -44,8 +44,8 @@ public class Session {
         enrollment.setStatus(status);
     }
 
-    public boolean isNotRecruiting() {
-        return !this.status.isRecruiting();
+    public boolean isNotRecruiting2() {
+        return !enrollment.isRecruiting();
     }
 
     public CoverImage getCoverImage() {

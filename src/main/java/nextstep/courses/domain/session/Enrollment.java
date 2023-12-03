@@ -66,4 +66,8 @@ public class Enrollment {
     public int getCurrentStudentCount() {
         return this.sessionStudent.getCurrentStudentCount();
     }
+
+    public boolean isRecruiting() {
+        return this.status.isRecruiting();
+    }
 }

@@ -38,8 +38,8 @@ class SessionTest {
         final Session sessionWithNoPrice = new Session(title, 0, startDate, endDate);
 
         //when
-        final boolean SessionWithPriceIsNotRecruiting = sessionWithPrice.isNotRecruiting();
-        final boolean SessionWithNoPriceNotRecruiting = sessionWithNoPrice.isNotRecruiting();
+        final boolean SessionWithPriceIsNotRecruiting = sessionWithPrice.isNotRecruiting2();
+        final boolean SessionWithNoPriceNotRecruiting = sessionWithNoPrice.isNotRecruiting2();
 
         //then
         assertThat(SessionWithPriceIsNotRecruiting).isTrue();
