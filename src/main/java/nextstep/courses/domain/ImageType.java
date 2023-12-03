@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import java.util.Arrays;
 
 public enum ImageType {
-
     gif("gif"),
     jpg("jpg"),
     jpeg("jpeg"),

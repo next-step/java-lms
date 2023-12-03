@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 public class ImageInfo {
-
     public static final int SIZE_LIMIT = 1048576;
     public static final int WIDTH_LIMIT = 300;
     public static final int HEIGHT_LIMIT = 200;
