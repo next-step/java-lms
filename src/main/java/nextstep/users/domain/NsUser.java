@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.Exception.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

@@ -1,7 +1,8 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.Exception.CannotDeleteException;
+import nextstep.qna.Exception.NotFoundException;
+import nextstep.qna.Exception.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -17,24 +18,17 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Answer() {
-    }
-
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,30 +41,28 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public void checkOwner(NsUser nsUser) throws CannotDeleteException {
+        if (!writer.equals(nsUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    public void deleted() {
+        this.deleted = true;
     }
 
     public NsUser getWriter() {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
+
 
     @Override
     public String toString() {
