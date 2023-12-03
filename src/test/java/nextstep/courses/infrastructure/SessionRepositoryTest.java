@@ -9,7 +9,7 @@ import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -89,18 +89,18 @@ class SessionRepositoryTest {
 
     private Session createSession(int maxStudentCount, SessionStatusType sessionStatusType, RecruitmentStatusType recruitmentStatusType, Long amount, boolean isFree) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        SessionStudent sessionStudent = new SessionStudent(maxStudentCount);
+        SessionStudents sessionStudents = new SessionStudents(maxStudentCount);
         SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, new Amount(amount), isFree);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatus, new Amount(amount), isFree);
 
         return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages());
     }
 
     private Session updateSession(Long id, int maxStudentCount, SessionStatusType sessionStatusType, RecruitmentStatusType recruitmentStatusType, Long amount, boolean isFree) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
-        SessionStudent sessionStudent = new SessionStudent(maxStudentCount);
+        SessionStudents sessionStudents = new SessionStudents(maxStudentCount);
         SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, new Amount(amount), isFree);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatus, new Amount(amount), isFree);
 
         return new Session(id, 1L, sessionDuration, sessionEnrolment, new CoverImages());
     }

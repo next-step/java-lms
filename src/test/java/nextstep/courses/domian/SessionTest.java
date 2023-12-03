@@ -11,7 +11,7 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -85,8 +85,8 @@ class SessionTest {
     private Session createPaySession(Students students, int maxStudentCount, SessionStatusType sessionStatusType, Long amount) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
-        SessionStudent sessionStudent = new SessionStudent(students, maxStudentCount);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), false);
+        SessionStudents sessionStudents = new SessionStudents(students, maxStudentCount);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatusType, new Amount(amount), false);
 
         return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }
@@ -94,8 +94,8 @@ class SessionTest {
     private Session createFreeSession(Students students) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
-        SessionStudent sessionStudent = new SessionStudent(students);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, SessionStatusType.ONGOING, new Amount(0L), true);
+        SessionStudents sessionStudents = new SessionStudents(students);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, SessionStatusType.ONGOING, new Amount(0L), true);
 
         return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }

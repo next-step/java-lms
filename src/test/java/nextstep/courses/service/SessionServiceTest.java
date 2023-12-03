@@ -14,7 +14,7 @@ import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import nextstep.courses.domain.Students;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -103,8 +103,8 @@ class SessionServiceTest {
     private Session mockSession(int maxStudentCount, SessionStatusType sessionStatusType, Long amount, boolean isFree) {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
-        SessionStudent sessionStudent = new SessionStudent(new Students(), maxStudentCount);
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, new Amount(amount), isFree);
+        SessionStudents sessionStudents = new SessionStudents(new Students(), maxStudentCount);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatusType, new Amount(amount), isFree);
 
         return new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
     }

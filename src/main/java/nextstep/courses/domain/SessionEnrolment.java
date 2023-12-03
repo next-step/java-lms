@@ -4,17 +4,17 @@ import nextstep.users.domain.NsUser;
 
 public class SessionEnrolment {
 
-    private SessionStudent sessionStudent;
+    private SessionStudents sessionStudents;
     private SessionStatus sessionStatus;
     private Amount amount;
     private boolean isFree;
 
-    public SessionEnrolment(SessionStudent sessionStudent, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
-        this(sessionStudent, new SessionStatus(sessionStatusType), amount, isFree);
+    public SessionEnrolment(SessionStudents sessionStudents, SessionStatusType sessionStatusType, Amount amount, boolean isFree) {
+        this(sessionStudents, new SessionStatus(sessionStatusType), amount, isFree);
     }
 
-    public SessionEnrolment(SessionStudent sessionStudent, SessionStatus sessionStatus, Amount amount, boolean isFree) {
-        this.sessionStudent = sessionStudent;
+    public SessionEnrolment(SessionStudents sessionStudents, SessionStatus sessionStatus, Amount amount, boolean isFree) {
+        this.sessionStudents = sessionStudents;
         this.sessionStatus = sessionStatus;
         this.amount = amount;
         this.isFree = isFree;
@@ -30,7 +30,7 @@ public class SessionEnrolment {
     }
 
     public void addStudent(NsUser student) {
-        this.sessionStudent.add(student);
+        this.sessionStudents.add(student);
     }
 
     public boolean isFree() {
@@ -38,11 +38,11 @@ public class SessionEnrolment {
     }
 
     public int totalStudent() {
-        return this.sessionStudent.studentCount();
+        return this.sessionStudents.studentCount();
     }
 
     public boolean isFullStudents() {
-        return this.sessionStudent.isMaxStudents();
+        return this.sessionStudents.isMaxStudents();
     }
 
     public String sessionStatusType() {

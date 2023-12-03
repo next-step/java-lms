@@ -12,7 +12,7 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -75,7 +75,7 @@ class ApplyTest {
     private Session createSession() {
         SessionDuration sessionDuration = new SessionDuration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         CoverImage coverImage = new CoverImage(1L, new CoverImageFileName("test.png"), new CoverImageSize(300), new CoverImagePixel(300, 200));
-        SessionEnrolment sessionEnrolment = new SessionEnrolment(new SessionStudent(new Students()), SessionStatusType.ONGOING, new Amount(0L), true);
+        SessionEnrolment sessionEnrolment = new SessionEnrolment(new SessionStudents(new Students()), SessionStatusType.ONGOING, new Amount(0L), true);
 
         Session session = new Session(1L, sessionDuration, sessionEnrolment, new CoverImages(List.of(coverImage)));
         session.updateInstructor(1L);

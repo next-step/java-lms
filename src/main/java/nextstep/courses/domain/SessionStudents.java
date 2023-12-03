@@ -2,21 +2,21 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-public class SessionStudent {
+public class SessionStudents {
     private final Students students;
     private int maxStudentCount;
 
-    public SessionStudent(Students students, int maxStudentCount) {
+    public SessionStudents(Students students, int maxStudentCount) {
         this.students = students;
         this.maxStudentCount = maxStudentCount;
     }
 
-    public SessionStudent(int maxStudentCount) {
+    public SessionStudents(int maxStudentCount) {
         this.students = new Students();
         this.maxStudentCount = maxStudentCount;
     }
 
-    public SessionStudent(Students students) {
+    public SessionStudents(Students students) {
         this.students = students;
     }
 

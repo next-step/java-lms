@@ -9,7 +9,7 @@ import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -53,14 +53,14 @@ public class JdbcSessionRepository implements SessionRepository {
             LocalDateTime startDate = toLocalDateTime(resultSet.getTimestamp(3));
             LocalDateTime endDate = toLocalDateTime(resultSet.getTimestamp(4));
             SessionDuration sessionDuration = new SessionDuration(startDate, endDate);
-            SessionStudent sessionStudent = new SessionStudent(resultSet.getInt(5));
+            SessionStudents sessionStudents = new SessionStudents(resultSet.getInt(5));
             SessionStatusType sessionStatusType = SessionStatusType.valueOf(resultSet.getString(6));
             RecruitmentStatusType recruitmentStatusType = RecruitmentStatusType.valueOf(resultSet.getString(7));
             Amount amount = new Amount(resultSet.getLong(8));
             boolean isFree = resultSet.getBoolean(9);
 
             SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
-            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatus, amount, isFree);
+            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatus, amount, isFree);
             return new Session(sessionId, courseId, sessionDuration, sessionEnrolment, new CoverImages());
         };
 
