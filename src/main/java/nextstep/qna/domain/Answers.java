@@ -16,17 +16,12 @@ public class Answers {
     }
 
     public void deleteBy(NsUser user) {
-        for(Answer answer : answers) {
-            answer.deleteBy(user);
-        }
+        answers.stream().forEach(answer -> answer.deleteBy(user));
     }
 
     public List<DeleteHistory> addDeleteHistories(NsUser user) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for(Answer answer : answers) {
-            deleteHistories.add(answer.addDeleteHistory(user));
-        }
-
+        answers.stream().forEach(answer -> deleteHistories.add(answer.addDeleteHistory(user)));
         return deleteHistories;
     }
 
