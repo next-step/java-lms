@@ -24,7 +24,7 @@ public class Session {
 
     private LocalDate endDate;
 
-    private String imageURL;
+    private SessionImage sessionImage;
 
     private SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
 
@@ -33,22 +33,22 @@ public class Session {
     private Integer limitNumberOfStudents;
     private List<NsUser> students = new ArrayList<>();
 
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, SessionType sessionType, Integer limitNumberOfStudents) {
+    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
         this.generation = generation;
         this.creatorId = creatorId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.imageURL = imageURL;
+        this.sessionImage = sessionImage;
         this.sessionType = sessionType;
         this.limitNumberOfStudents = limitNumberOfStudents;
     }
 
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL) {
-        return new Session(generation, creatorId, startDate, endDate, imageURL, SessionType.FREE, null);
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
+        return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.FREE, null);
     }
 
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, String imageURL, int limitNumberOfStudents) {
-        return new Session(generation, creatorId, startDate, endDate, imageURL, SessionType.PAID, limitNumberOfStudents);
+    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, int limitNumberOfStudents) {
+        return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.PAID, limitNumberOfStudents);
     }
 
     public void enroll(NsUser user) {
