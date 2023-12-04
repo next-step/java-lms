@@ -1,5 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.pay;
 
+import nextstep.courses.domain.session.pay.Amount;
 import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;

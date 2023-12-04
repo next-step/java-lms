@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.pay;
 
 import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.payments.domain.Payment;
