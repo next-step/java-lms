@@ -71,20 +71,18 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            deleteAnswer(writer, answer, deleteHistories);
+            deleteHistories.add(deleteAnswer(writer, answer));
         }
 
         this.deleted = true;
-
         deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer));
 
         return deleteHistories;
     }
 
-    private static void deleteAnswer(NsUser writer, Answer answer, List<DeleteHistory> deleteHistories) {
+    private static DeleteHistory deleteAnswer(NsUser writer, Answer answer) {
         try {
-            DeleteHistory history = answer.deleteIfWriter(writer);
-            deleteHistories.add(history);
+            return answer.deleteIfWriter(writer);
         }
         catch (CannotDeleteException reason) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
