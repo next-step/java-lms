@@ -26,15 +26,14 @@ public class Session {
         this(0L, courseId, 0L, coverImage, startedAt, finishedAt, sessionStatus, sessionPaymentInfo);
     }
 
-    public Session
-            (Long id
-                    , Long courseId
-                    , Long generation
-                    , CoverImage coverImage
-                    , LocalDateTime startedAt
-                    , LocalDateTime finishedAt
-                    , SessionStatus sessionStatus
-                    , SessionPaymentInfo sessionPaymentInfo) {
+    public Session(Long id
+            , Long courseId
+            , Long generation
+            , CoverImage coverImage
+            , LocalDateTime startedAt
+            , LocalDateTime finishedAt
+            , SessionStatus sessionStatus
+            , SessionPaymentInfo sessionPaymentInfo) {
         this.id = id;
         this.courseId = courseId;
         this.generation = generation;
@@ -49,7 +48,7 @@ public class Session {
 
     public NsUserSession enroll(Payment payment) throws CannotEnrollException {
         checkStatus();
-        sessionPaymentInfo.check(payment);
+        sessionPaymentInfo.checkPaidSession(payment);
         return new NsUserSession(payment.getSessionId(), payment.getNsUserId());
     }
 

@@ -14,7 +14,7 @@ public class SessionPaymentInfo {
         this.userNumber = userNumber;
     }
 
-    public void check(Payment payment) throws CannotEnrollException {
+    public void checkPaidSession(Payment payment) throws CannotEnrollException {
         if (isPaidSession()) {
             validatePaidSession(payment);
         }
