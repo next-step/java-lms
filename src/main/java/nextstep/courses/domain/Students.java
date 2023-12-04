@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Students {
-    private final List<NsUser> students;
+    private final List<NsUser> values;
 
     public Students() {
-        this.students = new ArrayList<>();
+        this.values = new ArrayList<>();
     }
 
     public void addStudent(NsUser nsUser) {
-        students.add(nsUser);
+        values.add(nsUser);
     }
 
     public boolean isRegistrationFull(int maxStudents) {
-        return students.size() == maxStudents;
+        return values.size() == maxStudents;
     }
 }

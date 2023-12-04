@@ -27,6 +27,7 @@ public class Course {
         this(id, title, creatorId, LocalDateTime.now(), null);
     }
 
+
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -49,7 +50,7 @@ public class Course {
     }
 
     public List<Session> sessions() {
-        return sessions.findSessions();
+        return sessions.values();
     }
 
     public void addSession(Session session) {
