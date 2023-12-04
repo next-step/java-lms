@@ -30,6 +30,14 @@ public class Answers implements Iterable<Answer> {
         this.answers.add(answer);
     }
 
+    public List<DeleteHistory> toDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.toDeleteHistory());
+        }
+        return deleteHistories;
+    }
+
     @Override
     public Iterator<Answer> iterator() {
         return this.answers.iterator();

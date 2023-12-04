@@ -50,7 +50,6 @@ public class QnaServiceTest {
     @Test
     public void delete_성공() throws Exception {
         when(questionRepository.findById(question.getId())).thenReturn(Optional.of(question));
-        when(answerRepository.findByQuestion(question.getId())).thenReturn(answers);
 
         assertThat(question.isDeleted()).isFalse();
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());

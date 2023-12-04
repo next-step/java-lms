@@ -28,34 +28,6 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
-    public static DeleteHistory from(Question question) {
-        return new DeleteHistory(
-                ContentType.QUESTION,
-                question.getId(),
-                question.getWriter(),
-                LocalDateTime.now()
-        );
-    }
-
-    public static List<DeleteHistory> from(Answers answers) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        for (Answer answer : answers) {
-            deleteHistories.add(from(answer));
-        }
-
-        return deleteHistories;
-    }
-
-    public static DeleteHistory from(Answer answer) {
-        return new DeleteHistory(
-                ContentType.ANSWER,
-                answer.getId(),
-                answer.getWriter(),
-                LocalDateTime.now()
-        );
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

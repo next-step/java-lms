@@ -92,7 +92,7 @@ public class Question {
         validate(loginUser);
 
         this.setDeleted();
-        Answers deletedAnswers = answers.delete(loginUser);
+        this.answers = answers.delete(loginUser);
         return this;
     }
 
@@ -104,5 +104,21 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    public List<DeleteHistory> toDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(toDeleteHistory());
+        deleteHistories.addAll(answers.toDeleteHistories());
+        return deleteHistories;
+    }
+
+    private DeleteHistory toDeleteHistory() {
+        return new DeleteHistory(
+                ContentType.QUESTION,
+                this.id,
+                this.writer,
+                LocalDateTime.now()
+        );
     }
 }
