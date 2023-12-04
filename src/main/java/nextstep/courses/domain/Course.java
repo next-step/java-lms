@@ -1,6 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.qna.domain.Session;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
     private Long id;
@@ -12,6 +16,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private List<Session> sessions = new ArrayList<>();
 
     public Course() {
     }
@@ -49,5 +55,9 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
     }
 }
