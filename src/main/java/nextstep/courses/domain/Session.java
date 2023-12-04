@@ -9,8 +9,7 @@ import java.util.List;
 
 public class Session {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Period period;
     private SessionStatus status;
     private List<NsUser> registeredUser;
 
@@ -27,11 +26,7 @@ public class Session {
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
         this.status = sessionStatus;
-        if(startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException();
-        }
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = new Period(startDate, endDate);
     }
 
     public Session(SessionStatus status, List<NsUser> nsUsers, SessionType sessionType) {
