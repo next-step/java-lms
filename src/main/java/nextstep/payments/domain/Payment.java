@@ -41,7 +41,7 @@ public class Payment {
         return this.nsUser;
     }
 
-    public Long findAmount() {
-        return this.amount;
+    public boolean equalAmount(Long fee) {
+        return amount.equals(fee);
     }
 }

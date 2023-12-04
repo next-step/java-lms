@@ -20,7 +20,7 @@ public class PaidSession extends Session {
     @Override
     public void register(Payment payment) {
         validateMaxStudents();
-        validatePaymentFee(payment.findAmount());
+        validatePaymentFee(payment);
         validateStatus();
         this.students.addStudent(payment.findPaidUser());
     }
@@ -31,8 +31,8 @@ public class PaidSession extends Session {
         }
     }
 
-    private void validatePaymentFee(Long paymentAmount) {
-        if (!this.fee.equals(paymentAmount)) {
+    private void validatePaymentFee(Payment payment) {
+        if (!payment.equalAmount(fee)) {
             throw new PaymentMismatchException(fee);
         }
     }
