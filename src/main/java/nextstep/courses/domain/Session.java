@@ -8,5 +8,6 @@ public class Session {
     private SessionType type;
     private SessionStatus status;
     private int price;
+    private int headCount;
 
 }
