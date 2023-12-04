@@ -92,6 +92,7 @@ public class Question {
         validate(loginUser);
 
         this.setDeleted();
+        Answers deletedAnswers = answers.delete(loginUser);
         return this;
     }
 

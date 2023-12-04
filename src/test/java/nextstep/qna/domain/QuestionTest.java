@@ -14,14 +14,21 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     private static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    private static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+    private static final Answer A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+
     private static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
     @DisplayName("질문 작성자가 로그인한 사용자면 질문을 삭제 상태로 변경하고 해당 질문을 반환한다")
     void delete_success() throws CannotDeleteException {
         Question deletedQuestion = Q1.delete(NsUserTest.JAVAJIGI);
-
         assertThat(deletedQuestion.isDeleted()).isTrue();
+
+        Answers answers = deletedQuestion.getAnswers();
+        for (Answer answer : answers) {
+            assertThat(answer.isDeleted()).isTrue();
+        }
     }
 
     @Test
