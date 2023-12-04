@@ -4,7 +4,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
@@ -25,7 +24,7 @@ public class Session {
         this.students = new Students();
     }
 
-    public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
+    public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
         this.status = sessionStatus;
         this.period = new Period(startDate, endDate);
     }
@@ -36,9 +35,9 @@ public class Session {
         this.sessionType = sessionType;
     }
 
-    public Students register(NsUser user, Payment payment) {
+    public Students register(NsUser user, Payment payment) throws CannotRegisterException {
         if (!sessionType.isEqualPrice(payment)) {
-            throw new IllegalArgumentException();
+            throw new CannotRegisterException("강의 금액과 일치하지 않습니다.");
         }
         students.registerSessionStudent(user, sessionType);
         return students;

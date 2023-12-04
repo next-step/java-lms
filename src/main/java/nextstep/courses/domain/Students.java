@@ -25,7 +25,7 @@ public class Students {
     public Students registerSessionStudent(NsUser nsUser, SessionType sessionType) {
         this.userList.add(nsUser);
         if (sessionType.isMaxCapacity(this)) {
-            throw new IllegalArgumentException();
+            throw new MaxStudentsExceedException("수강인원을 초과하여 신청할 수 없습니다.");
         }
         return this;
     }

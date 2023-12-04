@@ -33,7 +33,7 @@ class SessionTest {
         LocalDate endDate = LocalDate.of(2023, 12, 01);
         assertThatThrownBy(() -> {
             new Session(SessionStatus.WAITING, startDate, endDate);
-        }).isInstanceOf(IllegalArgumentException.class);
+        }).isInstanceOf(PeriodException.class);
     }
 
     @Test
@@ -42,7 +42,7 @@ class SessionTest {
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> {
             session.register(new NsUser());
-        }).isInstanceOf(IllegalArgumentException.class);
+        }).isInstanceOf(MaxStudentsExceedException.class);
     }
 
     @Test
@@ -58,11 +58,11 @@ class SessionTest {
         SessionType type = new SessionType(PayType.PAID, 1000L, 1);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> session.register(new NsUser(), new Payment("id", 1L, 1L, 100L)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CannotRegisterException.class);
     }
 
     @Test
-    void 유료강의는_가격과_지불이_동일하면_결제된다() {
+    void 유료강의는_가격과_지불이_동일하면_결제된다() throws CannotRegisterException {
         SessionType type = new SessionType(PayType.PAID, 1000L, 3);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
