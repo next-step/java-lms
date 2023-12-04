@@ -6,15 +6,17 @@ public class Image {
     private final ImageName name;
     private final ImageSize size;
     private final ImagePixel pixel;
+    private final Long sessionId;
 
-    public Image(Long id, ImageName name, ImageSize size, ImagePixel pixel) {
+    public Image(Long id, ImageName name, ImageSize size, ImagePixel pixel, Long sessionId) {
         this.id = id;
         this.name = name;
         this.size = size;
         this.pixel = pixel;
+        this.sessionId = sessionId;
     }
 
-    public Image(ImageName name, ImageSize size, ImagePixel pixel) {
-        this(null, name, size, pixel);
+    public Image(ImageName name, ImageSize size, ImagePixel pixel, Long sessionId) {
+        this(null, name, size, pixel, sessionId);
     }
 }
