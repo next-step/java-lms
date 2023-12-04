@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AnswersTest {
 
-    @DisplayName("Answers 객체에 Answer를 추가한다.")
+    @DisplayName("답변 객체에 답변 추가")
     @Test
     void 답변_추가() {
         //given
@@ -29,7 +29,7 @@ class AnswersTest {
         assertThat(answers.getAnswers()).containsExactly(answer1, answer2);
     }
 
-    @DisplayName("답변 작성자가 모두 일치한다면 true, 아니면 false리턴.")
+    @DisplayName("답변 작성자가 모두 일치하는지 여부 확인")
     @Test
     void 답변들_작성자_확인() {
         //given
@@ -47,7 +47,7 @@ class AnswersTest {
         assertThat(differentOwner).isFalse();
     }
 
-    @DisplayName("모든 답변을 삭제하면 List<DeleteHistory>를 리턴")
+    @DisplayName("모든 답변을 삭제하면 삭제이력 리턴")
     @Test
     void 모든_답변_삭제() throws CannotDeleteException {
         //given

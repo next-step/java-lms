@@ -21,7 +21,7 @@ public class QuestionTest {
         Q1.addAnswers(AnswerTest.A2);
     }
 
-    @DisplayName("본인이 질문한 질문이 아닌데 삭제하려고 할 경우 CannotDeleteException 발생")
+    @DisplayName("본인이 질문한 질문이 아닌데 삭제하려고 할 경우 예외발생 -> 삭제불가")
     @Test
     void 다른사람_질문을_삭제하려면_예외발생() {
         assertThatThrownBy(() -> Q1.remove(NsUserTest.SANJIGI))
@@ -29,7 +29,7 @@ public class QuestionTest {
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
-    @DisplayName("질문에 답변자가 다른사람이 한명이라도 있다면 CannotDeleteException 발생")
+    @DisplayName("질문에 답변자가 다른사람이 한명이라도 있다면 예외 발생 -> 삭제불가")
     @Test
     void 다른_답변이_있으면_삭제시_예외발생() {
         assertThatThrownBy(() -> Q1.remove(NsUserTest.JAVAJIGI))
@@ -37,7 +37,7 @@ public class QuestionTest {
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    @DisplayName("질문을 삭제하면 List<DeleteHistory>를 리턴")
+    @DisplayName("질문을 삭제하면 삭제이력 리턴")
     @Test
     void 질문_삭제() throws CannotDeleteException {
         //given
