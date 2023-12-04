@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.domain.*;
+import nextstep.qna.domain.collection.DeleteHistoryBulk;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,8 @@ public class QnAService {
     public void deleteQuestion(NsUser loginUser, long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
-        List<DeleteHistory> deleteHistory = question.deleteIfWriter(loginUser);
+        DeleteHistoryBulk deleteHistories = question.deleteIfWriter(loginUser);
 
-        deleteHistoryService.saveAll(deleteHistory);
+        deleteHistoryService.saveAll(deleteHistories.toList());
     }
 }

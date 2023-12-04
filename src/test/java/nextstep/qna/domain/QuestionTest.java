@@ -54,7 +54,7 @@ public class QuestionTest {
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        assertThat(question.deleteIfWriter(NsUserTest.JAVAJIGI))
+        assertThat(question.deleteIfWriter(NsUserTest.JAVAJIGI).toList())
                 .hasSameElementsAs(List.of(questionDelete, answer1Delete, answer2Delete));
     }
 
