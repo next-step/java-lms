@@ -7,5 +7,6 @@ public class Session {
     private SessionImage image;
     private SessionType type;
     private SessionStatus status;
+    private int price;
 
 }
