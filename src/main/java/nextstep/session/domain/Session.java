@@ -1,14 +1,17 @@
 package nextstep.session.domain;
 
 import nextstep.image.domain.Image;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Session {
 
     private Long id;
 
-    private int numberOfMembers;
+    private Set<NsUser> members = new HashSet<>();
 
     private int numberOfMaximumMembers;
 
@@ -22,9 +25,9 @@ public class Session {
 
     private EndAt endAt;
 
-    public Session(Long id, int numberOfMembers, int numberOfMaximumMembers, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
+    public Session(Long id, Set<NsUser> members, int numberOfMaximumMembers, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
         this.id = id;
-        this.numberOfMembers = numberOfMembers;
+        this.members = members;
         this.numberOfMaximumMembers = numberOfMaximumMembers;
         this.sessionType = sessionType;
         this.status = status;
@@ -34,7 +37,6 @@ public class Session {
     }
 
     public static Session create(
-            int numberOfMembers,
             int numberOfMaximumMembers,
             SessionType sessionType,
             Image coverImage,
@@ -43,7 +45,7 @@ public class Session {
     ) {
         return new Session(
                 null,
-                numberOfMembers,
+                new HashSet<>(),
                 numberOfMaximumMembers,
                 sessionType,
                 SessionStatus.PREPARING,

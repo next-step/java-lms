@@ -7,13 +7,14 @@ import nextstep.session.domain.SessionType;
 import nextstep.session.domain.StartAt;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 class TestFixtures {
 
     static Session endSession() {
         return new Session(
                 null,
-                10,
+                Set.of(),
                 30,
                 SessionType.FREE,
                 SessionStatus.END,
@@ -26,7 +27,7 @@ class TestFixtures {
     static Session preparingSession() {
         return new Session(
                 null,
-                10,
+                Set.of(),
                 30,
                 SessionType.FREE,
                 SessionStatus.END,
