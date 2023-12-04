@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.image;
 
 import nextstep.courses.domain.enums.ImageType;
 

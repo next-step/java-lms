@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static nextstep.users.domain.NsUserTest.*;
 import static org.assertj.core.api.Assertions.*;
@@ -10,6 +10,11 @@ import org.junit.jupiter.api.Test;
 
 import nextstep.courses.domain.enums.PaidType;
 import nextstep.courses.domain.enums.Status;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.registration.SessionCapacity;
+import nextstep.courses.domain.session.registration.SessionRegistration;
+import nextstep.courses.domain.session.registration.Students;
+import nextstep.courses.domain.session.registration.Tuition;
 
 public class SessionTest {
 

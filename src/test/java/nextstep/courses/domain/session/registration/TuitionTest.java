@@ -1,9 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.registration;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.courses.domain.session.registration.Tuition;
 
 public class TuitionTest {
 
@@ -18,6 +20,6 @@ public class TuitionTest {
 	@Test
 	void validate_is_equal() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> new Tuition(30000L).isEqual(25000L));
+			.isThrownBy(() -> new Tuition(30000L).validateEqual(25000L));
 	}
 }

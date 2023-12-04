@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.courses.domain.session.Period;
 
 public class PeriodTest {
 	@DisplayName("강의 시작일이 강의 종료일 이후 일 수 없습니다.")

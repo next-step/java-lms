@@ -1,6 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.registration;
 
 import nextstep.courses.domain.enums.PaidType;
+import nextstep.courses.domain.session.registration.SessionCapacity;
+import nextstep.courses.domain.session.registration.Students;
+import nextstep.courses.domain.session.registration.Tuition;
 import nextstep.users.domain.NsUser;
 
 public class SessionRegistration {
@@ -25,12 +28,12 @@ public class SessionRegistration {
 	}
 
 	private void validateAmount(long amount) {
-		tuition.isEqual(amount);
+		tuition.validateEqual(amount);
 	}
 
 	private void validateCapacity() {
 		if (!paidType.isFree()) {
-			maximumCapacity.isGreaterThan(students.number());
+			maximumCapacity.validateGreaterThan(students.number());
 		}
 	}
 

@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import nextstep.courses.domain.session.Session;
+
 public class Sessions {
 	private final List<Session> sessions;
 

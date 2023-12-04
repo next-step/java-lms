@@ -1,9 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.image;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.courses.domain.session.image.ImageSize;
 
 public class ImageSizeTest {
 

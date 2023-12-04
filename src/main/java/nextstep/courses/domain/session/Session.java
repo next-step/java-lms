@@ -1,11 +1,14 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
 
+import nextstep.courses.domain.BaseTimeEntity;
+import nextstep.courses.domain.session.image.Image;
 import nextstep.courses.domain.enums.Status;
+import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.users.domain.NsUser;
 
-public class Session extends BaseTimeEntity{
+public class Session extends BaseTimeEntity {
 	private final Long id;
 	private final String title;
 	private final Period period;

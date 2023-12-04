@@ -1,9 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.image;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.courses.domain.session.image.ImageCapacity;
 
 public class ImageCapacityTest {
 	@DisplayName("이미지 용량 제한을 초과하였습니다.")

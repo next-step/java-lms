@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.image;
 
 public class ImageSize {
 	private static final int WIDTH_MIN = 300;
@@ -15,24 +15,24 @@ public class ImageSize {
 	}
 
 	private void validateImageSize() {
-		isWidthOverMin();
-		isHeightOverMin();
-		isRatioConstant();
+		validateWidthOverMin();
+		validateHeightOverMin();
+		validateRatioConstant();
 	}
 
-	private void isWidthOverMin() {
+	private void validateWidthOverMin() {
 		if (width < WIDTH_MIN) {
 			throw new IllegalArgumentException("이미지의 가로 길이가 최소값 이하입니다.");
 		}
 	}
 
-	private void isHeightOverMin() {
+	private void validateHeightOverMin() {
 		if (height < HEIGHT_MIN) {
 			throw new IllegalArgumentException("이미지의 세로 길이가 최소값 이하입니다.");
 		}
 	}
 
-	private void isRatioConstant() {
+	private void validateRatioConstant() {
 		if ((double) width/height != IMAGE_RATIO) {
 			throw new IllegalArgumentException("이미지의 가로 세로 길이 비율이 알맞지 않습니다.");
 		}

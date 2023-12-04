@@ -1,9 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.registration;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.courses.domain.session.registration.SessionCapacity;
 
 public class SessionCapacityTest {
 	@DisplayName("최대 신청 인원은 0보다 작을 수 없습니다.")
@@ -17,6 +19,6 @@ public class SessionCapacityTest {
 	@Test
 	void validate_is_greater_than() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> new SessionCapacity(100).isGreaterThan(100));
+			.isThrownBy(() -> new SessionCapacity(100).validateGreaterThan(100));
 	}
 }
