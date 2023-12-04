@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class SessionTest {
 
     @Test
     void 유료강의는_제한인원을_초과할_수_없다() {
-        SessionType type = new SessionType(PayType.PAID, 1000, 1);
+        SessionType type = new SessionType(PayType.PAID, 1000L, 1);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> {
             session.register(new NsUser());
@@ -46,9 +47,17 @@ class SessionTest {
 
     @Test
     void 무료강의의_경우_제한_인원이_없다() throws CannotRegisterException {
-        SessionType type = new SessionType(PayType.FREE, 0 , 1);
+        SessionType type = new SessionType(PayType.FREE, 0L , 1);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
         assertThat(session.register(nsUser)).contains(nsUser);
+    }
+
+    @Test
+    void 유료강의는_가격이_맞지_않으면_살수_없다() {
+        SessionType type = new SessionType(PayType.PAID, 1000L, 1);
+        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        assertThatThrownBy(() -> session.register(new NsUser(), new Payment("id", 1L, 1L, 100L)))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

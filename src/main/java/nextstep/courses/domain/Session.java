@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -37,6 +38,14 @@ public class Session {
         this.status = status;
         this.registeredUser = nsUsers;
         this.sessionType = sessionType;
+    }
+
+    public List<NsUser> register(NsUser user, Payment payment) {
+        if (!sessionType.isEqualPrice(payment)) {
+            throw new IllegalArgumentException();
+        }
+        registeredUser.add(user);
+        return registeredUser;
     }
 
     public List<NsUser> register(NsUser user) throws CannotRegisterException {
