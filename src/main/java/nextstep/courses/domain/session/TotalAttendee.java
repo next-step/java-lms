@@ -13,9 +13,7 @@ public class TotalAttendee {
     private final int currentAttendees;
 
     public TotalAttendee(int totalNumber) {
-        validateTotalNumber(totalNumber);
-        this.totalNumber = totalNumber;
-        this.currentAttendees = 0;
+        this(totalNumber, 0);
     }
 
     public TotalAttendee(int totalNumber, int currentAttendees) {
