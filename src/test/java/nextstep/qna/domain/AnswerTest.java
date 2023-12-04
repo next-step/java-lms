@@ -18,7 +18,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("[Answer.deleteIfWriter()] 주어진 사용자가 답변자라면 -> 삭제")
-    public void deleteTest() throws CannotDeleteException {
+    public void deleteTest() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "hello");
         answer.deleteIfWriter(NsUserTest.JAVAJIGI);
 
@@ -38,7 +38,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("[Answer.deleteIfWriter()] 삭제를 요청하면 -> 자기 자신의 삭제 정보를 준다.")
-    public void deleteInfoTest() throws CannotDeleteException {
+    public void deleteInfoTest() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "hello");
 
         assertThat(answer.deleteIfWriter(NsUserTest.JAVAJIGI))

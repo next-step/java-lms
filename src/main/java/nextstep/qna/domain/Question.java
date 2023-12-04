@@ -64,7 +64,7 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> deleteIfWriter(NsUser writer) throws CannotDeleteException {
+    public List<DeleteHistory> deleteIfWriter(NsUser writer) {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -81,7 +81,7 @@ public class Question {
         return deleteHistories;
     }
 
-    private static void deleteAnswer(NsUser writer, Answer answer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    private static void deleteAnswer(NsUser writer, Answer answer, List<DeleteHistory> deleteHistories) {
         try {
             DeleteHistory history = answer.deleteIfWriter(writer);
             deleteHistories.add(history);

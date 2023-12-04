@@ -76,7 +76,7 @@ public class Answer {
      *
      * @return 삭제 정보. 삭제되지 않았다면 null을 반환합니다.
      */
-    public DeleteHistory deleteIfWriter(NsUser writer) throws CannotDeleteException {
+    public DeleteHistory deleteIfWriter(NsUser writer) {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }

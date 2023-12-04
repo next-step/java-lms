@@ -19,7 +19,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자신을 삭제 상태로 만든다.")
-    public void deleteTest() throws CannotDeleteException {
+    public void deleteTest() {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         question.deleteIfWriter(NsUserTest.JAVAJIGI);
 
@@ -29,7 +29,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 질문하지 않은 사용자가 삭제를 요청하면 -> CannotDeleteException을 던진다.")
-    public void deleteWrongWriterTest() throws CannotDeleteException {
+    public void deleteWrongWriterTest() {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
 
         assertThatThrownBy(() -> {
@@ -41,7 +41,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자기 자신과 삭제 상태로 바뀐 답변들의 정보를 준다.")
-    public void deleteInfoTest() throws CannotDeleteException {
+    public void deleteInfoTest() {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
         DeleteHistory questionDelete = new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI);
 
