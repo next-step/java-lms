@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.Image;
 import nextstep.courses.type.SessionStatus;
 import nextstep.users.domain.NsUser;
