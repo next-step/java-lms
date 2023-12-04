@@ -17,8 +17,6 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    private long courseNumber;
-
     private Sessions sessions;
 
     public Course() {
@@ -34,7 +32,6 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.courseNumber = id;
         this.sessions = Sessions.of(new ArrayList<>());
     }
 
