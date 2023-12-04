@@ -1,15 +1,15 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.repository.SessionWithNsUserRepository;
+import nextstep.courses.domain.repository.SessionNsUserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.util.List;
 
-public class JdbcSessionWithNsUserRepository implements SessionWithNsUserRepository {
+public class JdbcSessionNsUserRepository implements SessionNsUserRepository {
 
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionWithNsUserRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionNsUserRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

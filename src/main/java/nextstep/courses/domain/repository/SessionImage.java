@@ -1,14 +1,13 @@
 package nextstep.courses.domain.repository;
 
-public class SessionWithNsUser {
-
+public class SessionImage {
     private final Long id;
     private final Long sessionId;
-    private final Long nsUserId;
+    private final Long imageId;
 
-    public SessionWithNsUser(Long id, Long sessionId, Long nsUserId) {
+    public SessionImage(Long id, Long sessionId, Long imageId) {
         this.id = id;
         this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
+        this.imageId = imageId;
     }
 }

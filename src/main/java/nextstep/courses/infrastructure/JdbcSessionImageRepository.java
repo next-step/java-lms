@@ -1,12 +1,12 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.repository.SessionWithImageRepository;
+import nextstep.courses.domain.repository.SessionImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 
-public class JdbcSessionWithImageRepository implements SessionWithImageRepository {
+public class JdbcSessionImageRepository implements SessionImageRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionWithImageRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

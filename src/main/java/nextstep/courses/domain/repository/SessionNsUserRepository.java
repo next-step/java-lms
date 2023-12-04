@@ -2,7 +2,7 @@ package nextstep.courses.domain.repository;
 
 import java.util.List;
 
-public interface SessionWithNsUserRepository {
+public interface SessionNsUserRepository {
 
 
 
