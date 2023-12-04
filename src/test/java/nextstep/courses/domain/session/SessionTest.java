@@ -8,8 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-
-import static nextstep.courses.domain.image.CoverImage.emptyImage;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,7 +18,7 @@ public class SessionTest {
     void 강의가_준비중이_아닐떄() {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED);
+        final Session tddSession = new FreeSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, null);
 
         assertThatThrownBy(() -> {
             tddSession.enroll(new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -33,7 +31,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
+        final Session tddSession = new PaidSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
                 , new Amount(1000L), 0);
 
         assertThatThrownBy(() -> {
@@ -47,11 +45,12 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
+        final Session tddSession = new PaidSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
                 , new Amount(1500L), 10);
 
         assertThatThrownBy(() -> {
             tddSession.enroll(new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
         }).isInstanceOf(IllegalArgumentException.class);
     }
+
 }
