@@ -16,6 +16,7 @@ create table session
     start_date timestamp   not null,
     end_date   timestamp   not null,
     state      varchar(20) not null,
+    type       varchar(20) not null,
     fee        bigint,
     max_apply  int,
     created_at timestamp   not null,

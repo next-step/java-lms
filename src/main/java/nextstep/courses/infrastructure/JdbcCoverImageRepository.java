@@ -1,7 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.repository.CourseRepository;
+import nextstep.courses.domain.Image.CoverImage;
+import nextstep.courses.repository.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,21 +11,21 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Repository("courseRepository")
-public class JdbcCourseRepository implements CourseRepository {
+public class JdbcCoverImageRepository implements CoverImageRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public JdbcCoverImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+    public int save(CoverImage image) {
+        String sql = "insert into course (file_name, volume, format) values(?, ?, ?)";
+        return 0;
     }
 
     @Override
-    public Course findById(Long id) {
+    public CoverImage findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
@@ -32,7 +33,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return null;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

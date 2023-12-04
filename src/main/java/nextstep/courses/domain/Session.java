@@ -5,9 +5,10 @@ import nextstep.courses.exception.SessionStateException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
-public abstract class Session {
+public abstract class Session extends BaseEntity {
     protected Long sessionId;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
@@ -15,11 +16,16 @@ public abstract class Session {
     protected Participants participants;
 
 
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state) {
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.state = state;
         this.participants = new Participants(new HashSet<>());
+    }
+
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
+        this(id, coverImage, startDate, endDate, state, createdAt, null);
     }
 
 
@@ -29,5 +35,13 @@ public abstract class Session {
         if (state.isNotRecruiting()) {
             throw new SessionStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다");
         }
+    }
+
+    public ProgressPeriod getProgressPeriod() {
+        return progressPeriod;
+    }
+
+    public String getState() {
+        return state.toString();
     }
 }

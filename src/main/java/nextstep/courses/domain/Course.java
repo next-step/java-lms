@@ -16,8 +16,8 @@ public class Course extends BaseEntity {
 
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+    public Course(String title, Long creatorId, LocalDateTime createdAt) {
+        this(0L, title, creatorId, createdAt, null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

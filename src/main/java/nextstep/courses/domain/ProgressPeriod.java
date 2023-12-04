@@ -19,4 +19,12 @@ public class ProgressPeriod {
             throw new ProgressPeriodException("시작일은 종료일보다 미래일 수 없습니다");
         }
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }

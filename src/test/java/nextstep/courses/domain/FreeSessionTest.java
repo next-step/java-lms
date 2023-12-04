@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,7 +21,8 @@ public class FreeSessionTest {
                 new CoverImage(1000_000, "gif", 300, 200),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionState.PREPARING
+                SessionState.PREPARING,
+                LocalDateTime.now()
         );
 
         assertThatThrownBy(() -> freeSession.apply(Payment.ofFree(1L, NsUserTest.SANJIGI)))
