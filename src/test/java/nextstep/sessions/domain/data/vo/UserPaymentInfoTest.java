@@ -12,5 +12,6 @@ public class UserPaymentInfoTest {
     void hasEqualUser() {
         UserPaymentInfo userPaymentInfo = new UserPaymentInfo(NsUserTest.SANJIGI, new Payment());
         assertThat(userPaymentInfo.hasEqualUser(NsUserTest.SANJIGI)).isTrue();
+        assertThat(userPaymentInfo.hasEqualUser(NsUserTest.NEWJIGI)).isFalse();
     }
 }

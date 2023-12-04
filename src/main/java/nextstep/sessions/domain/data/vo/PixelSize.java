@@ -45,4 +45,11 @@ public class PixelSize {
         return (double) width / height == (double) 3 / 2;
     }
 
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
 }

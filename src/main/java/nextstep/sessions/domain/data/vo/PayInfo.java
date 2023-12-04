@@ -27,4 +27,12 @@ public class PayInfo {
     public boolean isPaid() {
         return paidType.isPaid();
     }
+
+    public PaidType paidType() {
+        return paidType;
+    }
+
+    public long fee() {
+        return fee;
+    }
 }

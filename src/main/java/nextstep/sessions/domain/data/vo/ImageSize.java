@@ -24,4 +24,11 @@ public class ImageSize {
         return fileSize <= IMAGE_FILE_SIZE_LIMIT;
     }
 
+    public int fileSize() {
+        return fileSize;
+    }
+
+    public PixelSize pixelSize() {
+        return pixelSize;
+    }
 }

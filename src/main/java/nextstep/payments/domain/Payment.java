@@ -31,4 +31,8 @@ public class Payment {
     public boolean isEqualAmount(long amount) {
         return this.amount == amount;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

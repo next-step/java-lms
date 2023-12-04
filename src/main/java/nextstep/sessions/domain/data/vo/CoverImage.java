@@ -8,8 +8,19 @@ public class CoverImage {
     private final ImageSize imageSize;
 
     public CoverImage(String fileName, int fileSize, int width, int height) {
-        this.imageType = ImageType.valueOfName(fileName);
-        this.imageSize = new ImageSize(fileSize, width, height);
+        this(ImageType.valueOfName(fileName), new ImageSize(fileSize, width, height));
     }
 
+    public CoverImage(ImageType imageType, ImageSize imageSize) {
+        this.imageType = imageType;
+        this.imageSize = imageSize;
+    }
+
+    public ImageType imageType() {
+        return imageType;
+    }
+
+    public ImageSize imageSize() {
+        return imageSize;
+    }
 }
