@@ -14,7 +14,7 @@ public class PaidTypeTest {
 	@DisplayName("강의가 무료인지 확인한다.")
 	@ParameterizedTest
 	@MethodSource("paidTypeAndBoolean")
-	void valid_is_free(PaidType type, boolean expected) {
+	void validate_is_free(PaidType type, boolean expected) {
 		assertThat(type.isFree()).isEqualTo(expected);
 	}
 

@@ -14,7 +14,7 @@ public class QuestionTest {
 
     @DisplayName("질문 등록자와 삭제 요청자가 다르면 CannotDeleteException을 발생시킨다.")
     @Test
-    void valid_question() {
+    void validate_question() {
         assertThatThrownBy(() -> Q1.deleteQuestion(SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
     }

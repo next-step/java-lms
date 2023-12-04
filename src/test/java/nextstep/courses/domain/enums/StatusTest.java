@@ -14,7 +14,7 @@ public class StatusTest {
 	@DisplayName("모집중 상태인지 확인한다.")
 	@ParameterizedTest
 	@MethodSource("statusAndBoolean")
-	void valid_is_applying(Status status, boolean expected) {
+	void validate_is_applying(Status status, boolean expected) {
 		assertThat(status.isApplying()).isEqualTo(expected);
 	}
 

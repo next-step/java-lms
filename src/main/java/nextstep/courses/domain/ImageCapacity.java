@@ -6,10 +6,10 @@ public class ImageCapacity {
 
 	public ImageCapacity(Double capacity) {
 		this.capacity = capacity;
-		valid();
+		validate();
 	}
 
-	private void valid() {
+	private void validate() {
 		isGreaterThanZero();
 		isOverCapacity();
 	}

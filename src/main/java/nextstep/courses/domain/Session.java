@@ -28,7 +28,7 @@ public class Session extends BaseTimeEntity{
 	}
 
 	public void apply(NsUser nsUser, long amount) {
-		sessionRegistration.valid(amount);
+		sessionRegistration.validate(amount);
 		canApply();
 
 		sessionRegistration.register(nsUser);

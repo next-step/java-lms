@@ -11,10 +11,10 @@ public class ImageSize {
 	public ImageSize(int width, int height) {
 		this.width = width;
 		this.height = height;
-		validImageSize();
+		validateImageSize();
 	}
 
-	private void validImageSize() {
+	private void validateImageSize() {
 		isWidthOverMin();
 		isHeightOverMin();
 		isRatioConstant();

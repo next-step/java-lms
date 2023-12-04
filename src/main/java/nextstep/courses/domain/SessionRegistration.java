@@ -19,16 +19,16 @@ public class SessionRegistration {
 		this.students = students;
 	}
 
-	public void valid(long amount) {
-		validAmount(amount);
-		validCapacity();
+	public void validate(long amount) {
+		validateAmount(amount);
+		validateCapacity();
 	}
 
-	private void validAmount(long amount) {
+	private void validateAmount(long amount) {
 		tuition.isEqual(amount);
 	}
 
-	private void validCapacity() {
+	private void validateCapacity() {
 		if (!paidType.isFree()) {
 			maximumCapacity.isGreaterThan(students.number());
 		}

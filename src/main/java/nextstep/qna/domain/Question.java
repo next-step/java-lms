@@ -66,13 +66,13 @@ public class Question {
     }
 
     private void delete(NsUser loginUser) {
-        validQuestion(loginUser);
+        validateQuestion(loginUser);
         this.deleted = true;
 
         createDeleteHistory();
     }
 
-    private void validQuestion(NsUser loginUser) throws CannotDeleteException {
+    private void validateQuestion(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
