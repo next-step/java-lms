@@ -9,4 +9,8 @@ public enum PricingTypeEnum {
     PricingTypeEnum(String type) {
         this.type = type;
     }
+
+    public boolean isFree() {
+        return this == FREE;
+    }
 }
