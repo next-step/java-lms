@@ -16,9 +16,9 @@ public abstract class Session {
     protected CoverImage coverImage;
     protected SessionStudents sessionStudents;
 
-    public Session() {}
+    protected Session() {}
 
-    public Session(Long id, PayType payType, Status status, CoverImage coverImage) {
+    protected Session(Long id, PayType payType, Status status, CoverImage coverImage) {
         this.id = id;
         this.payType = payType;
         this.status = status;
@@ -26,9 +26,11 @@ public abstract class Session {
         this.sessionStudents = new SessionStudents();
     }
 
-    public abstract void register(NsUser nsUser) throws NotRegisterSession;
+    public void isEqual(Long amount) throws NotMatchAmountException {
+        return;
+    }
 
-    public abstract void isEqual(Long amount) throws NotMatchAmountException;
+    public abstract void enroll(NsUser nsUser) throws NotRegisterSession;
 
     @Override
     public boolean equals(Object o) {

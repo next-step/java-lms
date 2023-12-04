@@ -17,7 +17,7 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void register(NsUser student) throws NotRegisterSession {
+    public void enroll(NsUser student) throws NotRegisterSession {
         sessionStudents.validateLimit(limit);
         sessionStudents.add(this, student);
     }

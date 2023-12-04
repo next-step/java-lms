@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.users.domain.NsUser;
 
@@ -14,12 +13,7 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void register(NsUser student) throws NotRegisterSession {
+    public void enroll(NsUser student) throws NotRegisterSession {
         this.sessionStudents.add(this, student);
-    }
-
-    @Override
-    public void isEqual(Long amount) throws NotMatchAmountException {
-        return;
     }
 }
