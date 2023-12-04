@@ -19,9 +19,9 @@ public class PriceTest {
         // given
         boolean isFree = false;
         int money = 10000;
-        ParticipantCount participantCount = new ParticipantCount(10);
+        ParticipantManager participantManager = new ParticipantManager(10);
         // when
-        Price price = new Price(isFree, money, participantCount);
+        Price price = new Price(isFree, money, participantManager);
         // then
         assertThat(price.isFree()).isFalse();
     }
@@ -44,9 +44,9 @@ public class PriceTest {
         // given
         boolean isFree = false;
         int money = 10000;
-        ParticipantCount participantCount = new ParticipantCount(10);
+        ParticipantManager participantManager = new ParticipantManager(10);
         // when
-        Price price = new Price(isFree, money, participantCount);
+        Price price = new Price(isFree, money, participantManager);
         price.addParticipant(money, NsUserTest.JAVAJIGI);
         // then
         assertThat(price.nowParticipants()).isEqualTo(1);
@@ -61,9 +61,9 @@ public class PriceTest {
         List<NsUser> users = new ArrayList<>() {{
             add(NsUserTest.JAVAJIGI);
         }};
-        ParticipantCount participantCount = new ParticipantCount(1, new SessionParticipants(users));
+        ParticipantManager participantManager = new ParticipantManager(1, new SessionParticipants(users));
         // when
-        Price price = new Price(isFree, money, participantCount);
+        Price price = new Price(isFree, money, participantManager);
         // then
         assertThatThrownBy(() -> price.addParticipant(money, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -75,9 +75,9 @@ public class PriceTest {
         // given
         boolean isFree = false;
         int money = 10000;
-        ParticipantCount participantCount = new ParticipantCount(10);
+        ParticipantManager participantManager = new ParticipantManager(10);
         // when
-        Price price = new Price(isFree, money, participantCount);
+        Price price = new Price(isFree, money, participantManager);
         // then
         assertThatThrownBy(() -> price.addParticipant(1000, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
