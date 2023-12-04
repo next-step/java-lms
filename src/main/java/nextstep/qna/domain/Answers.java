@@ -31,8 +31,8 @@ public class Answers implements Iterable<Answer> {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> toDeleteHistories(LocalDateTime time) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    public DeleteHistories toDeleteHistories(LocalDateTime time) {
+        DeleteHistories deleteHistories = new DeleteHistories();
         for (Answer answer : answers) {
             deleteHistories.add(answer.toDeleteHistory(time));
         }

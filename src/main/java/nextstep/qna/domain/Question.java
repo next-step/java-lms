@@ -106,12 +106,12 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> toDeleteHistories(NsUser loginUser, LocalDateTime date) {
+    public DeleteHistories toDeleteHistories(NsUser loginUser, LocalDateTime date) {
         validate(loginUser);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(toDeleteHistory(date));
-        deleteHistories.addAll(answers.toDeleteHistories(date));
+        deleteHistories.add(answers.toDeleteHistories(date));
         return deleteHistories;
     }
 

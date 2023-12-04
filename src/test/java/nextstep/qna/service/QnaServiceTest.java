@@ -10,10 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +89,7 @@ public class QnaServiceTest {
     }
 
     private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        DeleteHistories deleteHistories = new DeleteHistories();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), date));
         deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), date));
 
