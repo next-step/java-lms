@@ -16,4 +16,10 @@ public class PaymentTest {
     void success_payment_price_equal_price() {
         assertThat(paymentOneThousand().isSameBy(1000L)).isTrue();
     }
+
+    @Test
+    @DisplayName("실패 - 결제 금액과 가격이 같지 않을 경우 false를 반환한다.")
+    void fail_payment_price_not_equal_price() {
+        assertThat(paymentOneThousand().isSameBy(2000L)).isFalse();
+    }
 }

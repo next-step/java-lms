@@ -48,7 +48,7 @@ public class Session {
     }
 
     private boolean isOpen() {
-        return sessionState == SessionState.OPEN;
+        return sessionState.isOpen();
     }
 
     private void validateType() {
