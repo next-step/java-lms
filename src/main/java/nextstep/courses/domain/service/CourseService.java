@@ -17,16 +17,16 @@ public class CourseService {
 
     public void registerSession(Long courseId, Session session, NsUser user, Payment payment) {
         Course selectedCourse = courseRepository.findById(courseId);
-        if (session.isFree()) {
+        if (session.isOpen() && session.isFree()) {
             addSessionToCourse(session, selectedCourse);
         }
-        if (!session.isFree() && session.isPaymentCorrect(payment)) {
+        if (session.isOpen() && !session.isFree() && session.isPaymentCorrect(payment)) {
             addSessionToCourse(session, selectedCourse);
         }
     }
 
     private void addSessionToCourse(Session session, Course selectedCourse) {
-        selectedCourse.addSession(session);
+        session.register(selectedCourse);
         courseRepository.save(selectedCourse);
     }
 }

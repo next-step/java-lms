@@ -14,7 +14,7 @@ public enum SessionStatus {
     }
 
     public static SessionStatus of (String status) {
-        return Stream.of(valueOf(status))
+        return Stream.of(SessionStatus.values())
                 .filter(sessionStatus ->
                         sessionStatus.status.equals(status))
                 .findFirst()

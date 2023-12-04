@@ -17,7 +17,7 @@ public enum ImageType {
     }
 
     public static ImageType of (String extension) {
-        return Stream.of(valueOf(extension))
+        return Stream.of(ImageType.values())
                 .filter(imagetype ->
                     imagetype.extension.equals(extension))
                 .findFirst()

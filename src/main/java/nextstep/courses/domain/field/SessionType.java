@@ -14,7 +14,7 @@ public enum SessionType {
     }
 
     public static SessionType of (String type) {
-        return Stream.of(valueOf(type))
+        return Stream.of(SessionType.values())
                 .filter(sessionType ->
                         sessionType.type.equals(type))
                 .findFirst()

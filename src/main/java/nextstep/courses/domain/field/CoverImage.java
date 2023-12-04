@@ -1,7 +1,7 @@
 package nextstep.courses.domain.field;
 
 public class CoverImage {
-    private long size;
+    private double size;
 
     private long width;
 
@@ -9,7 +9,7 @@ public class CoverImage {
 
     private ImageType imageType;
 
-    public CoverImage(long size, long width, long height, ImageType imageType) {
+    public CoverImage(double size, long width, long height, ImageType imageType) {
         verifySize(size);
         verifyWidthHeight(width, height);
 
@@ -25,7 +25,7 @@ public class CoverImage {
         }
     }
 
-    private static void verifySize(long size) {
+    private static void verifySize(double size) {
         if (size > 1) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하만 가능합니다.");
         }

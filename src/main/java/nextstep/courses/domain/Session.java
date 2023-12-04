@@ -28,6 +28,19 @@ public class Session {
         this.sessionStatus = sessionStatus;
     }
 
+    public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int price) {
+        if (SessionType.of("free") == sessionType) {
+            throw new IllegalArgumentException("해당 강의는 무료수업이므로 가격을 정할 수 없습니다.");
+        }
+
+        this.id = autoGenId.getAndIncrement();
+        this.courseId = courseId;
+        this.coverImage = coverImage;
+        this.sessionType = sessionType;
+        this.sessionStatus = sessionStatus;
+        this.price = price;
+    }
+
     public Session(Long courseId) {
         this.id = autoGenId.getAndIncrement();
         this.courseId = courseId;
@@ -44,5 +57,13 @@ public class Session {
 
     public boolean isFree() {
         return this.sessionType.equals(SessionType.FREE);
+    }
+
+    public boolean isOpen() {
+        return this.sessionStatus.equals(SessionStatus.OPEN);
+    }
+
+    public void openSession() {
+        this.sessionStatus = SessionStatus.OPEN;
     }
 }
