@@ -19,6 +19,6 @@ public class Amount {
     }
 
     public boolean isNotSame(final Payment payment) {
-        return amount != payment.amount();
+        return !amount.equals(payment.amount());
     }
 }
