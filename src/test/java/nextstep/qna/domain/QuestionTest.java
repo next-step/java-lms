@@ -17,13 +17,11 @@ public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
-    private static final LocalDateTime FIXED_NOW = LocalDateTime.of(2023, 11, 30, 17, 0, 4);
-
     @Test
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자신을 삭제 상태로 만든다.")
     public void deleteTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
-        question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW);
+        question.deleteIfWriter(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
 
@@ -35,7 +33,7 @@ public class QuestionTest {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
 
         assertThatThrownBy(() -> {
-            question.deleteIfWriter(NsUserTest.SANJIGI, FIXED_NOW);
+            question.deleteIfWriter(NsUserTest.SANJIGI);
         })
                 .isInstanceOf(CannotDeleteException.class);
 
@@ -45,18 +43,18 @@ public class QuestionTest {
     @DisplayName("[Question.deleteIfWriter()] 삭제를 요청하면 -> 자기 자신과 삭제 상태로 바뀐 답변들의 정보를 준다.")
     public void deleteInfoTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "hello", "world!");
-        DeleteHistory questionDelete = new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI, FIXED_NOW);
+        DeleteHistory questionDelete = new DeleteHistory(ContentType.QUESTION, question.getId(), NsUserTest.JAVAJIGI);
 
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "answer1");
-        DeleteHistory answer1Delete = new DeleteHistory(ContentType.ANSWER, answer1.getId(), NsUserTest.JAVAJIGI, FIXED_NOW);
+        DeleteHistory answer1Delete = new DeleteHistory(ContentType.ANSWER, answer1.getId(), NsUserTest.JAVAJIGI);
 
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "answer2");
-        DeleteHistory answer2Delete = new DeleteHistory(ContentType.ANSWER, answer2.getId(), NsUserTest.JAVAJIGI, FIXED_NOW);
+        DeleteHistory answer2Delete = new DeleteHistory(ContentType.ANSWER, answer2.getId(), NsUserTest.JAVAJIGI);
 
         question.addAnswer(answer1);
         question.addAnswer(answer2);
 
-        assertThat(question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW))
+        assertThat(question.deleteIfWriter(NsUserTest.JAVAJIGI))
                 .hasSameElementsAs(List.of(questionDelete, answer1Delete, answer2Delete));
     }
 
@@ -68,7 +66,7 @@ public class QuestionTest {
         question.addAnswer(answer);
 
         assertThatThrownBy(() -> {
-            question.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW);
+            question.deleteIfWriter(NsUserTest.JAVAJIGI);
         })
                 .isInstanceOf(CannotDeleteException.class);
     }

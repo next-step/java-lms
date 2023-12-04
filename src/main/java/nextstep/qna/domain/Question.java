@@ -64,26 +64,26 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> deleteIfWriter(NsUser writer, LocalDateTime deleteTime) throws CannotDeleteException {
+    public List<DeleteHistory> deleteIfWriter(NsUser writer) throws CannotDeleteException {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : this.answers) {
-            deleteAnswer(writer, deleteTime, answer, deleteHistories);
+            deleteAnswer(writer, answer, deleteHistories);
         }
 
         this.deleted = true;
 
-        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer, deleteTime));
+        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, this.id, writer));
 
         return deleteHistories;
     }
 
-    private static void deleteAnswer(NsUser writer, LocalDateTime deleteTime, Answer answer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+    private static void deleteAnswer(NsUser writer, Answer answer, List<DeleteHistory> deleteHistories) throws CannotDeleteException {
         try {
-            DeleteHistory history = answer.deleteIfWriter(writer, deleteTime);
+            DeleteHistory history = answer.deleteIfWriter(writer);
             deleteHistories.add(history);
         }
         catch (CannotDeleteException reason) {

@@ -16,13 +16,11 @@ public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
-    private static final LocalDateTime FIXED_NOW = LocalDateTime.of(2023, 11, 30, 17, 0, 4);
-
     @Test
     @DisplayName("[Answer.deleteIfWriter()] 주어진 사용자가 답변자라면 -> 삭제")
     public void deleteTest() throws CannotDeleteException {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "hello");
-        answer.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW);
+        answer.deleteIfWriter(NsUserTest.JAVAJIGI);
 
         assertThat(answer.isDeleted()).isTrue();
     }
@@ -33,7 +31,7 @@ public class AnswerTest {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "hello");
 
         assertThatThrownBy(() -> {
-            answer.deleteIfWriter(NsUserTest.SANJIGI, FIXED_NOW);
+            answer.deleteIfWriter(NsUserTest.SANJIGI);
         })
         .isInstanceOf(CannotDeleteException.class);
     }
@@ -43,12 +41,11 @@ public class AnswerTest {
     public void deleteInfoTest() throws CannotDeleteException {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "hello");
 
-        assertThat(answer.deleteIfWriter(NsUserTest.JAVAJIGI, FIXED_NOW))
+        assertThat(answer.deleteIfWriter(NsUserTest.JAVAJIGI))
                 .isEqualTo(new DeleteHistory(
                         ContentType.ANSWER,
                         answer.getId(),
-                        NsUserTest.JAVAJIGI,
-                        FIXED_NOW
+                        NsUserTest.JAVAJIGI
                 ));
     }
 }
