@@ -1,5 +1,7 @@
 package nextstep.session.domain;
 
+import nextstep.image.domain.Image;
+
 import java.time.LocalDateTime;
 
 public class Session {
