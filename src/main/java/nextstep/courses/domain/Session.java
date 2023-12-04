@@ -38,11 +38,11 @@ public class Session extends BaseEntity {
 
     public void register(Payment payment) {
         validateStatus();
-        this.students.addStudent(payment.findPaidUser());
+        this.students.addStudent(payment.paidUser());
     }
 
     protected void validateStatus() {
-        if (status != Status.OPEN) {
+        if (!status.isOpen()) {
             throw new NotOpenSessionException();
         }
     }
@@ -55,6 +55,6 @@ public class Session extends BaseEntity {
     }
 
     private void changeStatusOpen() {
-        this.status = Status.OPEN;
+        this.status = status.ofOpen();
     }
 }

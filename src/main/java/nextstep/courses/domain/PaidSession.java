@@ -22,7 +22,7 @@ public class PaidSession extends Session {
         validateMaxStudents();
         validatePaymentFee(payment);
         validateStatus();
-        this.students.addStudent(payment.findPaidUser());
+        this.students.addStudent(payment.paidUser());
     }
 
     private void validateMaxStudents() {
