@@ -25,4 +25,11 @@ class ImageTest {
                 .hasMessage("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
 
     }
+
+    @Test
+    void 이미지_가로_세로_비율은_3대2_이어야_한다() {
+        assertThatThrownBy(() -> Image.of(300, 300, ImageType.JPG, Image.MAXIMUM_SIZE))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미지의 가로 세로 비율은 3:2 이어야_한다");
+    }
 }

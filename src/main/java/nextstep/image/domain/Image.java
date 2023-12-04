@@ -2,6 +2,8 @@ package nextstep.image.domain;
 
 public class Image {
 
+    private static final double ASPECT_RATIO = 1.5;
+
     public static final int MIN_WIDTH = 300;
     public static final int MIN_HEIGHT = 200;
 
@@ -31,6 +33,10 @@ public class Image {
     private static void checkImageSize(int width, int height, long size) {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
+        }
+
+        if ((double) width / height != ASPECT_RATIO) {
+            throw new IllegalArgumentException("이미지의 가로 세로 비율은 3:2 이어야_한다");
         }
 
         if (size > MAXIMUM_SIZE) {
