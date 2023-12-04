@@ -18,6 +18,6 @@ public class SessionService {
     @Transactional
     public void register(long sessionId, NsUser user, Payment payment) {
         Session session = sessionRepository.findById(sessionId);
-        session.register(payment);
+        session.register(user, payment);
     }
 }

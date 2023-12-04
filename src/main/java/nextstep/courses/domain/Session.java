@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -17,6 +18,8 @@ public class Session {
 
     private final SessionType sessionType;
 
+    private final SessionUsers sessionUsers;
+
     private final SessionUserCount sessionUserCount;
 
     public Session(SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUserCount sessionUserCount) {
@@ -25,13 +28,15 @@ public class Session {
         this.sessionPrice = sessionPrice;
         this.sessionState = sessionState;
         this.sessionType = sessionType;
+        this.sessionUsers = new SessionUsers();
         this.sessionUserCount = sessionUserCount;
     }
 
-    public void register(Payment payment) {
+    public void register(NsUser user, Payment payment) {
         validateState();
         validateType();
         validatePriceEqualPayment(payment);
+        sessionUsers.addUser(user);
         sessionUserCount.plusUserCount();
     }
 
