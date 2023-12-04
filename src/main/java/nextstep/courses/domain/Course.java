@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Course {
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;
@@ -11,10 +11,6 @@ public class Course {
     private Long creatorId;
 
     private Sessions sessions;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     private Course() {
     }
@@ -29,12 +25,11 @@ public class Course {
 
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.sessions = new Sessions();
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
@@ -45,9 +40,6 @@ public class Course {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
     public List<Session> sessions() {
         return sessions.values();
@@ -63,8 +55,6 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

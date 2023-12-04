@@ -6,8 +6,9 @@ import nextstep.courses.exception.OutOfSessionException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Session {
+public class Session extends BaseEntity {
 
     private final Long id;
     private final CoverImage coverImage;
@@ -16,20 +17,21 @@ public class Session {
     protected final Students students;
 
     public Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        this(id, coverImage, startDate, endDate, Status.NOT_OPEN, new Students());
+        this(id, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, new Students(), LocalDateTime.now(), null);
     }
 
-    private Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Status status, Students students) {
-        validateNotNull(id, coverImage, startDate, endDate);
+    private Session(Long id, CoverImage coverImage, Period period, Status status, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        validateNotNull(id, coverImage, period);
         this.id = id;
         this.coverImage = coverImage;
-        this.period = new Period(startDate, endDate);
+        this.period = period;
         this.status = status;
         this.students = students;
     }
 
-    private void validateNotNull(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        if (id == null || coverImage == null || startDate == null || endDate == null) {
+    private void validateNotNull(Long id, CoverImage coverImage, Period period) {
+        if (id == null || coverImage == null || period == null) {
             throw new InvalidSessionException();
         }
     }
