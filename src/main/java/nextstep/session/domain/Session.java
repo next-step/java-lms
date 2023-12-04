@@ -18,7 +18,38 @@ public class Session {
 
     private Image coverImage;
 
-    private LocalDateTime startAt;
+    private StartAt startAt;
 
-    private LocalDateTime endAt;
+    private EndAt endAt;
+
+    public Session(Long id, int numberOfMembers, int numberOfMaximumMembers, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
+        this.id = id;
+        this.numberOfMembers = numberOfMembers;
+        this.numberOfMaximumMembers = numberOfMaximumMembers;
+        this.sessionType = sessionType;
+        this.status = status;
+        this.coverImage = coverImage;
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
+
+    public static Session create(
+            int numberOfMembers,
+            int numberOfMaximumMembers,
+            SessionType sessionType,
+            Image coverImage,
+            LocalDateTime startAt,
+            LocalDateTime endAt
+    ) {
+        return new Session(
+                null,
+                numberOfMembers,
+                numberOfMaximumMembers,
+                sessionType,
+                SessionStatus.PREPARING,
+                coverImage,
+                new StartAt(startAt),
+                new EndAt(endAt)
+        );
+    }
 }
