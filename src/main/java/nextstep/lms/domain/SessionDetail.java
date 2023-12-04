@@ -2,6 +2,8 @@ package nextstep.lms.domain;
 
 import nextstep.lms.dto.EnrollApplicationDTO;
 
+import java.time.LocalDateTime;
+
 public class SessionDetail {
     private final SessionEnrollmentManagement sessionEnrollmentManagement;
     private final SessionPeriod sessionPeriod;
@@ -12,6 +14,8 @@ public class SessionDetail {
     }
 
     public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        sessionEnrollmentManagement.enroll(students, enrollApplicationDTO);
+        if (sessionPeriod.canEnroll(LocalDateTime.now())) {
+            sessionEnrollmentManagement.enroll(students, enrollApplicationDTO);
+        }
     }
 }

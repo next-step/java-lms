@@ -10,4 +10,11 @@ public class SessionPeriod {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public boolean canEnroll(LocalDateTime now) {
+        if (!LocalDateTime.now().isBefore(startDate)) {
+            throw new IllegalArgumentException("강의 시작 후에는 수강신청할 수 없습니다.");
+        }
+        return true;
+    }
 }
