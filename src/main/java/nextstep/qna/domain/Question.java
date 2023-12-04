@@ -106,19 +106,21 @@ public class Question {
         }
     }
 
-    public List<DeleteHistory> toDeleteHistories() {
+    public List<DeleteHistory> toDeleteHistories(NsUser loginUser, LocalDateTime date) {
+        validate(loginUser);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(toDeleteHistory());
-        deleteHistories.addAll(answers.toDeleteHistories());
+        deleteHistories.add(toDeleteHistory(date));
+        deleteHistories.addAll(answers.toDeleteHistories(date));
         return deleteHistories;
     }
 
-    private DeleteHistory toDeleteHistory() {
+    private DeleteHistory toDeleteHistory(LocalDateTime date) {
         return new DeleteHistory(
                 ContentType.QUESTION,
                 this.id,
                 this.writer,
-                LocalDateTime.now()
+                date
         );
     }
 }

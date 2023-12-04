@@ -42,12 +42,12 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory toDeleteHistory() {
+    public DeleteHistory toDeleteHistory(LocalDateTime time) {
         return new DeleteHistory(
                 ContentType.ANSWER,
                 this.id,
                 this.writer,
-                LocalDateTime.now()
+                time
         );
     }
 

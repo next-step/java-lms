@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,10 +31,10 @@ public class Answers implements Iterable<Answer> {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> toDeleteHistories() {
+    public List<DeleteHistory> toDeleteHistories(LocalDateTime time) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            deleteHistories.add(answer.toDeleteHistory());
+            deleteHistories.add(answer.toDeleteHistory(time));
         }
         return deleteHistories;
     }
