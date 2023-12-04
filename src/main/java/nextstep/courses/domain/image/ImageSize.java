@@ -6,11 +6,11 @@ public class ImageSize {
 
     private static final int MAX_SIZE = 1024 * 1024;
 
-    private final int value;
+    private final int volume;
 
     public ImageSize(int value) {
         validate(value);
-        this.value = value;
+        this.volume = value;
     }
 
     private void validate(int value) {
@@ -20,7 +20,7 @@ public class ImageSize {
     }
 
     public int value() {
-        return value;
+        return volume;
     }
 
     @Override
@@ -28,11 +28,11 @@ public class ImageSize {
         if ( this == obj ) return true;
         if ( obj == null || getClass() != obj.getClass() ) return false;
         ImageSize imageSize = (ImageSize)obj;
-        return Objects.equals(value, imageSize.value);
+        return Objects.equals(volume, imageSize.volume);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(volume);
     }
 }

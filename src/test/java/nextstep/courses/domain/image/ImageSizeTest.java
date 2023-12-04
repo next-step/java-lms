@@ -12,21 +12,21 @@ public class ImageSizeTest {
     @Test
     void 사이즈를_생성한다() {
         // given
-        int value = 300;
+        int volume = 300;
         // when
-        ImageSize imageSize = new ImageSize(value);
+        ImageSize imageSize = new ImageSize(volume);
         // then
-        assertThat(imageSize).isEqualTo(new ImageSize(value));
+        assertThat(imageSize).isEqualTo(new ImageSize(volume));
     }
 
     @DisplayName("이미지 사이즈가 1MB를 초과하면 예외가 발생한다")
     @Test
     void 이미지_사이즈가_1MB를_초과하면_예외처리한다() {
         // given
-        int value = 1024 * 1024 + 1;
+        int volume = 1024 * 1024 + 1;
         // when
         // then
-        assertThatThrownBy(() -> new ImageSize(value))
+        assertThatThrownBy(() -> new ImageSize(volume))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -34,10 +34,10 @@ public class ImageSizeTest {
     @Test
     void 이미지_사이즈가_0이하면_예외처리한다() {
         // given
-        int value = 0;
+        int volume = 0;
         // when
         // then
-        assertThatThrownBy(() -> new ImageSize(value))
+        assertThatThrownBy(() -> new ImageSize(volume))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
