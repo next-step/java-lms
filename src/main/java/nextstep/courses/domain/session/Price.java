@@ -25,6 +25,10 @@ public class Price {
         return isFree;
     }
 
+    public int money() {
+        return money;
+    }
+
     public void addParticipant(int money, NsUser user) {
         validate(money);
         participantManager.add(user);
@@ -41,5 +45,9 @@ public class Price {
 
     public int nowParticipants() {
         return participantManager.nowCount();
+    }
+
+    public int maxParticipants() {
+        return participantManager.max();
     }
 }
