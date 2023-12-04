@@ -53,6 +53,34 @@ public class CoverImage {
         }
     }
 
+    public long getSize() {
+        return size;
+    }
+
+    public long getWidth() {
+        return width;
+    }
+
+    public long getHeight() {
+        return height;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public void setWidth(long width) {
+        this.width = width;
+    }
+
+    public void setHeight(long height) {
+        this.height = height;
+    }
+
+    public void setImageType(ImageType imageType) {
+        this.imageType = imageType;
+    }
+
     @Override
     public String toString() {
         return "CoverImage{" +
