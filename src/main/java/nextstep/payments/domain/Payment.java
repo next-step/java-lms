@@ -28,6 +28,6 @@ public class Payment {
     }
 
     public boolean isEqualPrice(Long price){
-        return this.amount == price;
+        return this.amount.equals(price);
     }
 }

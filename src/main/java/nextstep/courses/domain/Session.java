@@ -13,6 +13,8 @@ public class Session {
     private SessionStatus status;
     private List<NsUser> registeredUser;
 
+    private Students students;
+
     private SessionType sessionType;
 
     public Session() {
@@ -22,6 +24,7 @@ public class Session {
         this.status = status;
         this.sessionType = new SessionType();
         this.registeredUser = new ArrayList<>();
+        this.students = new Students();
     }
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
@@ -32,15 +35,16 @@ public class Session {
     public Session(SessionStatus status, List<NsUser> nsUsers, SessionType sessionType) {
         this.status = status;
         this.registeredUser = nsUsers;
+        this.students = new Students(nsUsers);
         this.sessionType = sessionType;
     }
 
-    public List<NsUser> register(NsUser user, Payment payment) {
+    public Students register(NsUser user, Payment payment) {
         if (!sessionType.isEqualPrice(payment)) {
             throw new IllegalArgumentException();
         }
-        registeredUser.add(user);
-        return registeredUser;
+        students.registerSessionStudent(user);
+        return students;
     }
 
     public List<NsUser> register(NsUser user) throws CannotRegisterException {

@@ -60,4 +60,13 @@ class SessionTest {
         assertThatThrownBy(() -> session.register(new NsUser(), new Payment("id", 1L, 1L, 100L)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void 유료강의는_가격과_지불이_동일하면_결제된다() {
+        SessionType type = new SessionType(PayType.PAID, 1000L, 1);
+        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        NsUser nsUser = new NsUser();
+        Students students = new Students(List.of(NsUser.GUEST_USER, nsUser));
+        assertThat(session.register(nsUser, new Payment("id", 1L, 1L, 1000L))).isEqualTo(students);
+    }
 }
