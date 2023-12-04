@@ -7,24 +7,45 @@ import java.util.List;
 
 public class Students {
 
-    private final List<NsUser> students;
+    private final List<Student> students;
 
     public Students() {
         this.students = new ArrayList<>();
     }
 
-    public Students(List<NsUser> students) {
+    public Students(List<Student> students) {
         this.students = students;
     }
 
     public void add(NsUser student) {
         validate(student);
 
-        this.students.add(student);
+        this.students.add(new Student(student));
     }
 
-    public int totalCount() {
+    public void approve(Student approveStudent) {
+        findStudent(approveStudent).approve();
+    }
+
+    public void refuse(Student refuseStudent) {
+        findStudent(refuseStudent).refuse();
+    }
+
+    public int approvalStudentsCount() {
+        return (int) this.students.stream()
+                .filter(Student::isApproval)
+                .count();
+    }
+
+    public int applyStudentsCount() {
         return this.students.size();
+    }
+
+    private Student findStudent(Student findStudent) {
+        return this.students.stream()
+                .filter(student -> student.equals(findStudent))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 학생이 없습니다."));
     }
 
     private void validate(NsUser student) {
@@ -34,6 +55,6 @@ public class Students {
     }
 
     public boolean isAlreadyStudent(NsUser student) {
-        return this.students.contains(student);
+        return this.students.contains(new Student(student));
     }
 }

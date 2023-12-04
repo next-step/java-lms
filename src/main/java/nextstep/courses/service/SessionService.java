@@ -22,8 +22,10 @@ public class SessionService {
     @Transactional
     public void enrolment (Payment payment) {
         Session session = sessionRepository.findById(payment.getSessionId());
-        NsUser nsUser = userRepository.findById(payment.getNsUserId()).orElseThrow();
+        NsUser nsUser = userRepository.findById(payment.getNsUserId());
 
         session.enrolment(nsUser, payment.getAmount());
+
+        sessionRepository.save(session);
     }
 }

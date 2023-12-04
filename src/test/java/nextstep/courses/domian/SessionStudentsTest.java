@@ -1,6 +1,8 @@
 package nextstep.courses.domian;
 
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.ApplyStatus;
+import nextstep.courses.domain.SessionStudents;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -10,21 +12,21 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SessionStudentTest {
+class SessionStudentsTest {
 
     @Test
     @DisplayName("최대 수강생의 수치에 미치지 못할경우 false를 반환한다.")
     void isMaxStudents_not_full() {
-        SessionStudent sessionStudent = new SessionStudent(300);
+        SessionStudents sessionStudents = new SessionStudents(300);
 
-        assertThat(sessionStudent.isMaxStudents()).isFalse();
+        assertThat(sessionStudents.isMaxStudents()).isFalse();
     }
 
     @Test
     @DisplayName("최대 수갱생의 수치가 모두 찼을경우 true를 반환한다.")
     void isMaxStudents_full() {
-        SessionStudent sessionStudent = new SessionStudent(new Students(List.of(NsUserTest.JAVAJIGI)), 1);
+        SessionStudents sessionStudents = new SessionStudents(new Students(List.of(new Student(NsUserTest.JAVAJIGI, ApplyStatus.APPROVAL))), 1);
 
-        assertThat(sessionStudent.isMaxStudents()).isTrue();
+        assertThat(sessionStudents.isMaxStudents()).isTrue();
     }
 }

@@ -1,12 +1,15 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Amount;
+import nextstep.courses.domain.CoverImages;
+import nextstep.courses.domain.RecruitmentStatusType;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionEnrolment;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.SessionStatusType;
-import nextstep.courses.domain.SessionStudent;
+import nextstep.courses.domain.SessionStudents;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -25,22 +28,23 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "INSERT INTO session (course_id, start_date, end_date, max_student_count, session_status_type, amount, is_free) VALUES (?, ?, ?, ?, ?, ?, ?) ";
+        String sql = "INSERT INTO session (course_id, start_date, end_date, max_student_count, session_status_type, recruitment_status_type, amount, is_free) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 
         return jdbcTemplate.update(
                 sql,
                 session.courseId(),
                 session.startDate(),
                 session.endDate(),
-                session.totalStudentCount(),
+                session.maxStudentCount(),
                 session.sessionStatus(),
+                session.recruitmentStatus(),
                 session.sessionAmount(),
                 session.isFree());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "SELECT session.id, session.course_id, session.start_date, session.end_date, session.max_student_count, session.session_status_type, session.amount, session.is_free " +
+        String sql = "SELECT session.id, session.course_id, session.start_date, session.end_date, session.max_student_count, session.session_status_type, session.recruitment_status_type, session.amount, session.is_free " +
                 "FROM session WHERE session.id = ? ";
 
         RowMapper<Session> rowMapper = (resultSet, rowNumber) -> {
@@ -49,13 +53,15 @@ public class JdbcSessionRepository implements SessionRepository {
             LocalDateTime startDate = toLocalDateTime(resultSet.getTimestamp(3));
             LocalDateTime endDate = toLocalDateTime(resultSet.getTimestamp(4));
             SessionDuration sessionDuration = new SessionDuration(startDate, endDate);
-            SessionStudent sessionStudent = new SessionStudent(resultSet.getInt(5));
+            SessionStudents sessionStudents = new SessionStudents(resultSet.getInt(5));
             SessionStatusType sessionStatusType = SessionStatusType.valueOf(resultSet.getString(6));
-            Amount amount = new Amount(resultSet.getLong(7));
-            boolean isFree = resultSet.getBoolean(8);
+            RecruitmentStatusType recruitmentStatusType = RecruitmentStatusType.valueOf(resultSet.getString(7));
+            Amount amount = new Amount(resultSet.getLong(8));
+            boolean isFree = resultSet.getBoolean(9);
 
-            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudent, sessionStatusType, amount, isFree);
-            return new Session(sessionId, courseId, sessionDuration, sessionEnrolment);
+            SessionStatus sessionStatus = new SessionStatus(sessionStatusType, recruitmentStatusType);
+            SessionEnrolment sessionEnrolment = new SessionEnrolment(sessionStudents, sessionStatus, amount, isFree);
+            return new Session(sessionId, courseId, sessionDuration, sessionEnrolment, new CoverImages());
         };
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -70,7 +76,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.courseId(),
                 session.startDate(),
                 session.endDate(),
-                session.totalStudentCount(),
+                session.maxStudentCount(),
                 session.sessionStatus(),
                 session.sessionAmount(),
                 session.isFree(),

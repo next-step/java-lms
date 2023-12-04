@@ -1,17 +1,17 @@
 package nextstep.courses.domain;
 
 public enum SessionStatusType {
-    READY(false),
-    RECRUITMENT(true),
-    END(false);
+    READY("준비중"),
+    ONGOING("진행중"),
+    END("종료중");
 
-    private final boolean canApply;
+    private final String description;
 
-    SessionStatusType(boolean canApply) {
-        this.canApply = canApply;
+    SessionStatusType(String description) {
+        this.description = description;
     }
 
-    public boolean isRecruitment() {
-        return this.canApply;
+    public boolean isEndSession() {
+        return this == END;
     }
 }
