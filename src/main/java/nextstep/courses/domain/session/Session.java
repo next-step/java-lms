@@ -65,8 +65,8 @@ public class Session {
         return sessionPeriod.startDate();
     }
 
-    public SessionStatus status() {
-        return status;
+    public String status() {
+        return status.toString();
     }
 
     public int money() {
