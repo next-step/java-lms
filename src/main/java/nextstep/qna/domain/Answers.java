@@ -30,8 +30,8 @@ public class Answers {
     public List<DeleteHistory> deleteAll(NsUser writer) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            answer.delete(writer);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            DeleteHistory deleteHistory = answer.delete(writer);
+            deleteHistories.add(deleteHistory);
         }
         return deleteHistories;
     }

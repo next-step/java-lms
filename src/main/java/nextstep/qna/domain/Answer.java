@@ -48,11 +48,12 @@ public class Answer {
         return id;
     }
 
-    public void delete(NsUser writer) throws CannotDeleteException {
-        if (this.writer != writer) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    public DeleteHistory delete(NsUser writer) throws CannotDeleteException {
+        if (!isOwner(writer)) {
+            throw new CannotDeleteException("답변의 작성자와 일치하지 않아 답변을 삭제할 수 없습니다.");
         }
         this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     public Answer setDeleted(boolean deleted) {
