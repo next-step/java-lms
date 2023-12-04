@@ -4,6 +4,8 @@ import nextstep.courses.domain.image.Image;
 import nextstep.courses.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
+
 public class Session {
 
     private Long id;
@@ -13,6 +15,10 @@ public class Session {
     private Price price;
     private Image image;
     private Long course;
+
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Long course) {
+        this(id, title, sessionPeriod, price, status, null, course);
+    }
 
     public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long course) {
         this(null, title, sessionPeriod, price, status, image, course);
@@ -49,5 +55,29 @@ public class Session {
 
     public int nowParticipants() {
         return price.nowParticipants();
+    }
+
+    public LocalDateTime startDateTime() {
+        return sessionPeriod.startDate();
+    }
+
+    public LocalDateTime endDateTime() {
+        return sessionPeriod.startDate();
+    }
+
+    public SessionStatus status() {
+        return status;
+    }
+
+    public int money() {
+        return price.money();
+    }
+
+    public Long course() {
+        return course;
+    }
+
+    public int maxParticipants() {
+        return price.maxParticipants();
     }
 }
