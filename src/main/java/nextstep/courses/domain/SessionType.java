@@ -21,11 +21,11 @@ public class SessionType {
         this.capacity = capacity;
     }
 
-    public boolean isMaxCapacity(List<NsUser> userList) {
+    public boolean isMaxCapacity(Students students) {
         if (PayType.FREE.equals(type)) {
-            return true;
+            return false;
         }
-        return capacity < userList.size();
+        return capacity < students.size();
     }
 
     public boolean isEqualPrice(Payment payment) {

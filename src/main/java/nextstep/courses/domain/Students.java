@@ -10,6 +10,10 @@ public class Students {
 
     private List<NsUser> userList;
 
+    public Students(NsUser... users) {
+        this.userList = new ArrayList<>(List.of(users));
+    }
+
     public Students(List<NsUser> userList) {
         this.userList = userList;
     }
@@ -18,9 +22,16 @@ public class Students {
         this.userList = new ArrayList<>();
     }
 
-    public Students registerSessionStudent(NsUser nsUser) {
+    public Students registerSessionStudent(NsUser nsUser, SessionType sessionType) {
         this.userList.add(nsUser);
+        if (sessionType.isMaxCapacity(this)) {
+            throw new IllegalArgumentException();
+        }
         return this;
+    }
+
+    public int size(){
+        return this.userList.size();
     }
 
     @Override

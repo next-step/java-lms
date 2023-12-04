@@ -16,7 +16,7 @@ class SessionTest {
     @Test
     void 강의는_모집중일때_신청_가능하다() throws CannotRegisterException {
         Session session = new Session(SessionStatus.OPEN);
-        assertThat(session.register(NsUser.GUEST_USER)).contains(NsUser.GUEST_USER);
+        assertThat(session.register(NsUser.GUEST_USER)).isEqualTo(new Students(NsUser.GUEST_USER));
     }
 
     @Test
@@ -50,7 +50,7 @@ class SessionTest {
         SessionType type = new SessionType(PayType.FREE, 0L , 1);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
-        assertThat(session.register(nsUser)).contains(nsUser);
+        assertThat(session.register(nsUser)).isEqualTo(new Students(List.of(NsUser.GUEST_USER, nsUser)));
     }
 
     @Test
@@ -63,7 +63,7 @@ class SessionTest {
 
     @Test
     void 유료강의는_가격과_지불이_동일하면_결제된다() {
-        SessionType type = new SessionType(PayType.PAID, 1000L, 1);
+        SessionType type = new SessionType(PayType.PAID, 1000L, 3);
         Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
         Students students = new Students(List.of(NsUser.GUEST_USER, nsUser));
