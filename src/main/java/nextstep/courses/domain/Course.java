@@ -60,4 +60,8 @@ public class Course {
     public void addSession(Session session) {
         sessions.add(session);
     }
+
+    public List<Session> sessions() {
+        return sessions;
+    }
 }
