@@ -2,11 +2,11 @@ package nextstep.lms.domain;
 
 import nextstep.lms.dto.EnrollApplicationDTO;
 
-public class SessionManagement {
+public class SessionEnrollmentManagement {
     private final PricingPolicy pricingPolicy;
     private final int capacity;
 
-    public SessionManagement(PricingPolicy pricingPolicy, int capacity) {
+    public SessionEnrollmentManagement(PricingPolicy pricingPolicy, int capacity) {
         this.pricingPolicy = pricingPolicy;
         this.capacity = capacity;
     }

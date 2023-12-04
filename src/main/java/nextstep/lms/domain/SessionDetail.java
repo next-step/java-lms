@@ -3,15 +3,15 @@ package nextstep.lms.domain;
 import nextstep.lms.dto.EnrollApplicationDTO;
 
 public class SessionDetail {
-    private final SessionManagement sessionManagement;
+    private final SessionEnrollmentManagement sessionEnrollmentManagement;
     private final SessionPeriod sessionPeriod;
 
-    public SessionDetail(SessionManagement sessionManagement, SessionPeriod sessionPeriod) {
-        this.sessionManagement = sessionManagement;
+    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionPeriod sessionPeriod) {
+        this.sessionEnrollmentManagement = sessionEnrollmentManagement;
         this.sessionPeriod = sessionPeriod;
     }
 
     public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        sessionManagement.enroll(students, enrollApplicationDTO);
+        sessionEnrollmentManagement.enroll(students, enrollApplicationDTO);
     }
 }
