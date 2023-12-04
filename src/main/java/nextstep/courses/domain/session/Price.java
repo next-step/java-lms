@@ -7,18 +7,18 @@ public class Price {
     private boolean isFree;
     private int money;
 
-    private final ParticipantCount participantCount;
+    private final ParticipantManager participantManager;
 
-    public Price(boolean isFree, int money, ParticipantCount participantCount) {
+    public Price(boolean isFree, int money, ParticipantManager participantManager) {
         this.isFree = isFree;
         this.money = money;
-        this.participantCount = participantCount;
+        this.participantManager = participantManager;
     }
 
     public Price(boolean isFree, int money) {
         this.isFree = isFree;
         this.money = money;
-        this.participantCount = null;
+        this.participantManager = null;
     }
 
     public boolean isFree() {
@@ -27,12 +27,12 @@ public class Price {
 
     public void addParticipant(int money, NsUser user) {
         validate(money);
-        participantCount.add(user);
+        participantManager.add(user);
     }
 
     private void validate(int money) {
         if (!isFree) {
-            participantCount.validateParticipant();
+            participantManager.validateParticipant();
         }
         if (this.money != money) {
             throw new IllegalArgumentException("결제 금액이 다릅니다.");
@@ -40,6 +40,6 @@ public class Price {
     }
 
     public int nowParticipants() {
-        return participantCount.nowCount();
+        return participantManager.nowCount();
     }
 }

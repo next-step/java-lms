@@ -4,10 +4,7 @@ import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.image.ImageName;
 import nextstep.courses.domain.image.ImagePixel;
 import nextstep.courses.domain.image.ImageSize;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionPeriod;
 import nextstep.courses.type.SessionStatus;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +19,7 @@ public class SessionTest {
     void 무료강의생성() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(true, 10000, new ParticipantCount(10));
+        Price price = new Price(true, 10000, new ParticipantManager(10));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, null);
         // then
@@ -35,7 +32,7 @@ public class SessionTest {
     void 유료강의생성() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(10));
+        Price price = new Price(false, 10000, new ParticipantManager(10));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, null);
         // then
@@ -48,7 +45,7 @@ public class SessionTest {
     void 강의이미지_등록하여_강의_생성() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(10));
+        Price price = new Price(false, 10000, new ParticipantManager(10));
         Image image = new Image(new ImageName("image.png"), new ImageSize(1024 * 1024), new ImagePixel(300, 200));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.READY, image);
@@ -62,7 +59,7 @@ public class SessionTest {
     void 강의가_모집중일때_신청이_가능하다() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(1));
+        Price price = new Price(false, 10000, new ParticipantManager(1));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.SANJIGI);
@@ -75,7 +72,7 @@ public class SessionTest {
     void 강의가_모집중이_아닐때_신청이_불가능하다() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(1));
+        Price price = new Price(false, 10000, new ParticipantManager(1));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.FINISH, null);
         // then
@@ -88,7 +85,7 @@ public class SessionTest {
     void 유료강의결제() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(10));
+        Price price = new Price(false, 10000, new ParticipantManager(10));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
@@ -101,7 +98,7 @@ public class SessionTest {
     void 유료강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(1));
+        Price price = new Price(false, 10000, new ParticipantManager(1));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
@@ -115,7 +112,7 @@ public class SessionTest {
     void 유료강의_결제금액이_강의가격과_다르면_예외가_발생한다() {
         // given
         SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Price price = new Price(false, 10000, new ParticipantCount(10));
+        Price price = new Price(false, 10000, new ParticipantManager(10));
         // when
         Session session = new Session("TDD", sessionPeriod, price, SessionStatus.RECRUIT, null);
         // then
