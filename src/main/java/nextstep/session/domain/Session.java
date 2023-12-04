@@ -52,4 +52,10 @@ public class Session {
                 new EndAt(endAt)
         );
     }
+
+    public void register() {
+        if (status != SessionStatus.PREPARING) {
+            throw new IllegalStateException("수강신청은 모집중인 상태일 때만 가능합니다.");
+        }
+    }
 }
