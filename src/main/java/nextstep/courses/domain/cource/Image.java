@@ -30,11 +30,11 @@ public class Image {
 
     private void validate(long width, long height, long fileSize) {
         if(fileSize > FILE_SIZE_MAX){
-            throw new ImageFileSizeExceededException("파일 사이즈는 " + FILE_SIZE_MAX + "KB 이하여야 합니다." );
+            throw new ImageFileSizeExceededException("파일 사이즈는 " + FILE_SIZE_MAX + "KB 이하여야 합니다. 현재 파일 사이즈 : " + fileSize + "KB" );
         }
 
         if(width < WIDTH_MIN || height < HEIGHT_MIN){
-            throw new ImageSizeBelowMinException("이미지 사이즈는 width/height=" + WIDTH_MIN + "/" + HEIGHT_MIN + "px 이상이어야 합니다.");
+            throw new ImageSizeBelowMinException("이미지 사이즈는 width/height=" + WIDTH_MIN + "/" + HEIGHT_MIN + "px 이상이어야 합니다. 현재 width/heihgt : " + width + "/" + height);
         }
 
         if(!allowedRatio(width, height)){
