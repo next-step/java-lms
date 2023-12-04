@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.service.DeleteHistoryService;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -95,9 +96,11 @@ public class Question {
         }
     }
 
-    public void delete() {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        checkDeletable(loginUser);
         this.deleted = true;
-        new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        new DeleteHistoryService()
+                .saveAll(List.of(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now())));
         for (Answer answer: answers) {
             answer.delete();
         }
