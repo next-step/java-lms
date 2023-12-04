@@ -2,9 +2,11 @@ package nextstep.courses.domain;
 
 public class CoverImg {
 
+    private String path;
+
     private String size;
 
-    private String imgType;
+    private ImgType imgType;
 
     private int width;
 
