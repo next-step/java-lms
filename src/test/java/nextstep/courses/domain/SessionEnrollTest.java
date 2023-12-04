@@ -28,6 +28,19 @@ class SessionEnrollTest {
                 .isThrownBy(() -> new SessionEnroll(session, student, payment));
     }
 
+    @Test
+    void 무료강의_수강신청() {
+        Session session = new Session(0L, 0L, date1, date2, null, FREE, null, 10, 0L, APPLYING);
+        Student student = new Student(0L, "test");
+        Payment payment = new Payment(0L);
+
+        SessionEnroll enrolledFree = new SessionEnroll(session, student, payment);
+
+        Student enrolledStudent = enrolledFree.getStudent();
+        assertThat(enrolledStudent).isEqualTo(student);
+        assertThat(session.getAppliedNumber()).isEqualTo(11);
+    }
+
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
     @Test
     void 수강신청_성공_수강료() {
@@ -53,6 +66,7 @@ class SessionEnrollTest {
 
         Student enrolledStudent = enrolled.getStudent();
         assertThat(enrolledStudent).isEqualTo(student);
+        assertThat(session.getAppliedNumber()).isEqualTo(11);
     }
 
     @Test
