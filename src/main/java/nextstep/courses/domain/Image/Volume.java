@@ -1,6 +1,6 @@
 package nextstep.courses.domain.Image;
 
-import nextstep.courses.exception.ImageException;
+import nextstep.courses.exception.FileVolumeException;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class Volume {
 
     private void validate(long value) {
         if (value > 1000_000L) {
-            throw new ImageException("이미지 크기는 1MB 이하여야 합니다");
+            throw new FileVolumeException("이미지 크기는 1MB 이하여야 합니다");
         }
     }
 

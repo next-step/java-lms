@@ -1,6 +1,6 @@
 package nextstep.courses.domain.Image;
 
-import nextstep.courses.exception.ImageException;
+import nextstep.courses.exception.AspectRatioException;
 
 import java.util.Objects;
 
@@ -21,13 +21,13 @@ public class AspectRatio {
 
     private static void validatePixel(int width, int height) {
         if (width < 300 || height < 200) {
-            throw new ImageException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 합니다");
+            throw new AspectRatioException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 합니다");
         }
     }
 
     private void validateRatio(int width, int height) {
         if (isBadRatio(width, height)) {
-            throw new ImageException(" width와 height의 비율은 3:2 이어야 합니다.");
+            throw new AspectRatioException(" width와 height의 비율은 3:2 이어야 합니다.");
         }
     }
 

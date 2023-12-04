@@ -16,7 +16,7 @@ public class ProgressPeriod {
 
     private static void validate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
-            throw new ProgressPeriodException("종료일은 시작일보다 미래일 수 없습니다");
+            throw new ProgressPeriodException("시작일은 종료일보다 미래일 수 없습니다");
         }
     }
 }

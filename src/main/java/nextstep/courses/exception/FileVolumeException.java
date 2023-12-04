@@ -1,9 +1,9 @@
 package nextstep.courses.exception;
 
-public class ImageException extends RuntimeException {
+public class FileVolumeException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public ImageException(String message) {
+    public FileVolumeException(String message) {
         super(message);
     }
 }

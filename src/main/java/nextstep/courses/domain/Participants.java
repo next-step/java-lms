@@ -12,6 +12,10 @@ public class Participants {
         this.values = values;
     }
 
+    public int size() {
+        return values.size();
+    }
+
     public Participants add(NsUser user) {
         isDuplication(user);
         values.add(user);
@@ -21,12 +25,6 @@ public class Participants {
     private void isDuplication(NsUser user) {
         if (values.contains(user)) {
             throw new ParticipantsException("이미 수강 신청한 참여자 입니다.");
-        }
-    }
-
-    public void isMaxCount(int count) {
-        if (values.size() >= count) {
-            throw new ParticipantsException("강의 최대 수강 인원을 초과할 수 없습니다.");
         }
     }
 
