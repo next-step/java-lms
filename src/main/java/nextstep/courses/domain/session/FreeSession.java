@@ -1,19 +1,21 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.exception.NotRegisterSession;
-import nextstep.users.domain.NsUser;
+
+import java.time.LocalDate;
 
 public class FreeSession extends Session {
 
     public FreeSession() {}
 
-    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage) {
-        super(id, payType, status, coverImage);
+    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
+        super(id, payType, status, coverImage, startDate, endDate);
     }
 
     @Override
-    public void enroll(NsUser student) throws NotRegisterSession {
-        this.sessionStudents.add(this, student);
+    public void enroll(SessionStudent sessionStudent) throws NotRegisterSession {
+        this.sessionStudents.add(sessionStudent);
     }
 }

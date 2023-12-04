@@ -11,7 +11,7 @@ public class SessionStudent {
     private Session session;
     private NsUser stuent;
 
-    protected SessionStudent(Session session, NsUser stuent) {
+    public SessionStudent(Session session, NsUser stuent) {
         this.session = session;
         this.stuent = stuent;
     }

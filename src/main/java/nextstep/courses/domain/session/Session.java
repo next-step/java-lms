@@ -1,11 +1,12 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRegisterSession;
-import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Session {
@@ -15,22 +16,24 @@ public abstract class Session {
     protected Status status;
     protected CoverImage coverImage;
     protected SessionStudents sessionStudents;
+    protected LocalDate startDate;
+    protected LocalDate endDate;
 
     protected Session() {}
 
-    protected Session(Long id, PayType payType, Status status, CoverImage coverImage) {
+    public Session(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.payType = payType;
         this.status = status;
         this.coverImage = coverImage;
         this.sessionStudents = new SessionStudents();
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public void isEqual(Long amount) throws NotMatchAmountException {
-        return;
-    }
+    public void isEqual(Long amount) throws NotMatchAmountException {}
 
-    public abstract void enroll(NsUser nsUser) throws NotRegisterSession;
+    public abstract void enroll(SessionStudent sessionStudent) throws NotRegisterSession;
 
     @Override
     public boolean equals(Object o) {

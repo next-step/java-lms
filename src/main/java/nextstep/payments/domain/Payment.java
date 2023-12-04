@@ -30,6 +30,14 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Long sessionId() {
+        return this.sessionId;
+    }
+
+    public Long nsUserId() {
+        return this.nsUserId;
+    }
+
     public void validateAmount(Session session) throws NotMatchAmountException {
         session.isEqual(amount);
     }
