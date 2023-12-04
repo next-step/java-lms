@@ -16,7 +16,7 @@ public class ImageNameTest {
         // when
         ImageName imageName = new ImageName(name);
         // then
-        assertThat(imageName.name()).isEqualTo(name);
+        assertThat(imageName).isEqualTo(new ImageName(name));
     }
 
     @DisplayName("이미지 이름 생성시 확장자가 없으면 예외가 발생한다.")

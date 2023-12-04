@@ -1,5 +1,7 @@
 package nextstep.courses.domain.image;
 
+import java.util.Objects;
+
 public class ImageSize {
 
     private static final int MAX_SIZE = 1024 * 1024;
@@ -19,5 +21,18 @@ public class ImageSize {
 
     public int value() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ( this == obj ) return true;
+        if ( obj == null || getClass() != obj.getClass() ) return false;
+        ImageSize imageSize = (ImageSize)obj;
+        return Objects.equals(value, imageSize.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

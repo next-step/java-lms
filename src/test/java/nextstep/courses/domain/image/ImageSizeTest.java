@@ -16,7 +16,7 @@ public class ImageSizeTest {
         // when
         ImageSize imageSize = new ImageSize(value);
         // then
-        assertThat(imageSize.value()).isEqualTo(value);
+        assertThat(imageSize).isEqualTo(new ImageSize(value));
     }
 
     @DisplayName("이미지 사이즈가 1MB를 초과하면 예외가 발생한다")
