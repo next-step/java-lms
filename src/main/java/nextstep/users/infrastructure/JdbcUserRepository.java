@@ -19,6 +19,11 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<NsUser> findById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<NsUser> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
