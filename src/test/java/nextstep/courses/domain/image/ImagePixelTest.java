@@ -17,7 +17,7 @@ public class ImagePixelTest {
         // when
         ImagePixel imagePixel = new ImagePixel(width, height);
         // then
-        assertThat(imagePixel.width()).isEqualTo(width);
+        assertThat(imagePixel).isEqualTo(new ImagePixel(width, height));
     }
 
     @DisplayName("이미지 사이즈의 너비와 높이의 비율이 3:2가 아니면 예외가 발생한다")
