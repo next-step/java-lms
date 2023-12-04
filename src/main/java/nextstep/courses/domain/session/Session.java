@@ -51,7 +51,7 @@ public class Session {
             throw new InvalidSessionStateException("현재 강의 모집중이 아닙니다.");
         }
 
-        if (!validateEnrollmentMax()) {
+        if (!isFullEnrollment()) {
             throw new EnrollmentMaxExceededException("최대 수강 인원을 초과하였습니다.");
         }
 
@@ -60,7 +60,7 @@ public class Session {
         }
     }
 
-    private boolean validateEnrollmentMax() {
+    private boolean isFullEnrollment() {
         return students.size() < enrollmentMax;
     }
 
