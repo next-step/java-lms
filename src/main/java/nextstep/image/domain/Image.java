@@ -21,6 +21,9 @@ public class Image {
     }
 
     public static Image of(int width, int height, ImageType imageType, long size) {
+        if (size > 1024) {
+            throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 한다.");
+        }
         return new Image(width, height, imageType, size);
     }
 }
