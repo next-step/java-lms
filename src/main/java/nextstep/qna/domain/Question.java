@@ -100,7 +100,7 @@ public class Question {
     }
 
     private DeleteHistory createDeleteQuestionHistory() {
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+        return DeleteHistory.createDeleteHistoryByQuestion(this.id, this.writer, LocalDateTime.now());
     }
 
     private List<DeleteHistory> writeDeleteAnswersHistory() throws CannotDeleteException {
