@@ -25,11 +25,15 @@ public class SessionPaymentInfo {
     }
 
     private void validatePaidSession(Payment payment) throws CannotEnrollException {
-        if (userNumber >= maxUser) {
+        if (isFull()) {
             throw new CannotEnrollException("수강 인원을 초과했습니다.");
         }
         if (!payment.isSameAmount(amount)) {
             throw new CannotEnrollException("결제 금액이 일치하지 않습니다.");
         }
+    }
+
+    private boolean isFull() {
+        return userNumber >= maxUser;
     }
 }
