@@ -3,16 +3,16 @@ package nextstep.lms.domain;
 import nextstep.lms.dto.EnrollApplicationDTO;
 
 public class SessionInfo {
+    private final CoverImage coverImage;
     private final SessionDetail sessionDetail;
-    private final SessionMetadata sessionMetadata;
 
-    public SessionInfo(SessionDetail sessionDetail, SessionMetadata sessionMetadata) {
+    public SessionInfo(CoverImage coverImage, SessionDetail sessionDetail) {
+        this.coverImage = coverImage;
         this.sessionDetail = sessionDetail;
-        this.sessionMetadata = sessionMetadata;
     }
 
     public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        sessionMetadata.sessionStatusCheck();
+        sessionDetail.sessionStatusCheck();
         sessionDetail.enroll(students, enrollApplicationDTO);
     }
 }

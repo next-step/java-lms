@@ -10,4 +10,8 @@ public enum SessionStatusEnum {
     SessionStatusEnum(String status) {
         this.status = status;
     }
+
+    public boolean isRecruiting() {
+        return this == RECRUITING;
+    }
 }

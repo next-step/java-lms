@@ -18,4 +18,8 @@ public class SessionDetail {
             sessionEnrollmentManagement.enroll(students, enrollApplicationDTO);
         }
     }
+
+    public void sessionStatusCheck() {
+        sessionEnrollmentManagement.sessionStatusCheck();
+    }
 }

@@ -16,7 +16,7 @@
 - [x] 최대 수강 인원을 초과한다면 예외 발생
 - [x] 중복 수강 신청 시 예외발생
 
-### SessionMetadata
+### SessionEnrollmentManagement
 - [x] 강의 상태가 모집중이 아닐경우 예외발생
 
 ### FileNameStructure
