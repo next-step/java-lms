@@ -5,6 +5,8 @@ public class Image {
     public static final int MIN_WIDTH = 300;
     public static final int MIN_HEIGHT = 200;
 
+    public static final long MAXIMUM_SIZE = 1024;
+
     private final int width;
 
     private final int height;
@@ -21,9 +23,18 @@ public class Image {
     }
 
     public static Image of(int width, int height, ImageType imageType, long size) {
-        if (size > 1024) {
+        checkImageSize(width, height, size);
+
+        return new Image(width, height, imageType, size);
+    }
+
+    private static void checkImageSize(int width, int height, long size) {
+        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
+            throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
+        }
+
+        if (size > MAXIMUM_SIZE) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 한다.");
         }
-        return new Image(width, height, imageType, size);
     }
 }
