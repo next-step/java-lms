@@ -35,12 +35,17 @@ class SessionTest {
     @Test
     @DisplayName("유료 강의는 최대 수강인원을 초과한 경우 등록이 불가능하다.")
     public void validate_enrollmentMax() {
+        Session session = 세션_최대_수강인원_생성됨();
+
+        Assertions.assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI, new Payment(1_000L)))
+                .isInstanceOf(EnrollmentMaxExceededException.class);
+    }
+
+    private Session 세션_최대_수강인원_생성됨() {
         Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
         Session recruitingSession = session.recruiting();
         recruitingSession.enroll(NsUserTest.JAVAJIGI, new Payment());
-
-        Assertions.assertThatThrownBy(() -> recruitingSession.enroll(NsUserTest.SANJIGI, new Payment(1_000L)))
-                .isInstanceOf(EnrollmentMaxExceededException.class);
+        return recruitingSession;
     }
 
     @Test
