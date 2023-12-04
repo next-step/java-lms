@@ -6,9 +6,8 @@ public class SessionVO {
     private Long id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private ImageInfo imageInfo;
-    private PaidType paidType;
-    private Integer targetNumber;
+    private Image image;
+    private Integer maxStudentNumber;
     private Integer appliedNumber;
     private Long sessionFee;
     private SessionStatus sessionStatus;
@@ -25,16 +24,12 @@ public class SessionVO {
         return endDate;
     }
 
-    public ImageInfo getImageInfo() {
-        return imageInfo;
+    public Image getImage() {
+        return image;
     }
 
-    public PaidType getPaidType() {
-        return paidType;
-    }
-
-    public Integer getTargetNumber() {
-        return targetNumber;
+    public Integer getMaxStudentNumber() {
+        return maxStudentNumber;
     }
 
     public Integer getAppliedNumber() {
