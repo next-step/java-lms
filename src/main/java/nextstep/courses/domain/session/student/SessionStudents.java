@@ -18,4 +18,7 @@ public class SessionStudents {
         return this.sessionStudents.add(new SessionStudent(session, student));
     }
 
+    public boolean isOver(int limit) {
+        return sessionStudents.size() >= limit;
+    }
 }
