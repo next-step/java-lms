@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.InvalidSessionException;
 import nextstep.courses.exception.NotOpenSessionException;
 import nextstep.courses.exception.OutOfSessionException;
 import nextstep.payments.domain.Payment;
@@ -29,7 +30,7 @@ public class Session {
 
     private void validateNotNull(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         if (id == null || coverImage == null || startDate == null || endDate == null) {
-            throw new IllegalArgumentException("id, 커버이미지, 시작일, 종료일은 필수값입니다.");
+            throw new InvalidSessionException();
         }
     }
 

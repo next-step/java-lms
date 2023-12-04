@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.InvalidPeriodException;
 import nextstep.courses.exception.InvalidPeriodRangeException;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class Period {
 
     private void validatePeriod(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("시작일, 종료일은 필수값입니다.");
+            throw new InvalidPeriodException();
         }
 
         if (endDate.isBefore(startDate)) {
