@@ -23,8 +23,8 @@ public class Price {
         return price;
     }
 
-    public boolean samePrice(Price price){
-        return this.equals(price);
+    public boolean samePrice(Price other){
+        return price == other.price;
     }
 
     @Override
