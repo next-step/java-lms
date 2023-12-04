@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.users.domain.NsUser;
 
@@ -26,6 +27,8 @@ public abstract class Session {
     }
 
     public abstract void register(NsUser nsUser) throws NotRegisterSession;
+
+    public abstract void isEqual(Long amount) throws NotMatchAmountException;
 
     @Override
     public boolean equals(Object o) {

@@ -5,21 +5,25 @@ import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.users.domain.NsUser;
 
-public class FreeSession extends Session {
+public class PaySession extends Session {
 
-    public FreeSession() {}
+    private Amount amount;
+    private int limit;
 
-    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage) {
+    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, Amount amount, int limit) {
         super(id, payType, status, coverImage);
+        this.amount = amount;
+        this.limit = limit;
     }
 
     @Override
     public void register(NsUser student) throws NotRegisterSession {
-        this.sessionStudents.add(this, student);
+        sessionStudents.validateLimit(limit);
+        sessionStudents.add(this, student);
     }
 
     @Override
     public void isEqual(Long amount) throws NotMatchAmountException {
-        return;
+        this.amount.validate(amount);
     }
 }
