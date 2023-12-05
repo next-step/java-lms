@@ -22,9 +22,9 @@ public class Session {
 
     private int quota;
 
-    private int applyCount = 0;
+    private int applyCount;
 
-    private Status status = Status.READY;
+    private Status status;
 
     private LocalDateTime createdAt;
 
@@ -58,12 +58,13 @@ public class Session {
 
     public Session(Image image, LocalDate startDate, LocalDate endDate,
                    Type type, Long amount, int quota) {
-        this(0L, image, startDate, endDate, type, amount, quota, LocalDateTime.now(), null);
+        this(0L, image, startDate, endDate, type, amount, quota, 0,
+                Status.READY, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Image image, LocalDate startDate,
-                   LocalDate endDate, Type type, Long amount, int quota,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Image image, LocalDate startDate, LocalDate endDate,
+                   Type type, Long amount, int quota, int applyCount,
+                   Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if(image == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
         }
@@ -75,13 +76,19 @@ public class Session {
         this.type = type;
         this.amount = amount;
         this.quota = quota;
+        this.applyCount = applyCount;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
+    public int applyCount() {
+        return this.applyCount;
+    }
+
     void applySession(Payment payment) {
         if (this.status != Status.RECRUIT) {
-            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능합니다.");
+            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
 
         if (this.type == Type.CHARGE) {
@@ -89,7 +96,7 @@ public class Session {
                 throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
             }
 
-            if(!payment.isPaid(paymentId, amount)) {
+            if(payment == null || !payment.isPaid(paymentId, amount)) {
                 throw new IllegalArgumentException("결제를 진행해 주세요.");
             }
         }
