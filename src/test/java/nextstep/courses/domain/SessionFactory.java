@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static nextstep.courses.domain.ImageTest.IMAGE_URL;
 
 public class SessionFactory {
     public static final LocalDateTime START_DATE_2023 = LocalDateTime.of(2023, 1, 1, 0, 0);
@@ -14,7 +17,8 @@ public class SessionFactory {
                 SessionOpenStatus.OPENED,
                 10,
                 1000,
-                SessionProgressStatus.READY);
+                SessionProgressStatus.READY,
+                List.of(new Image(IMAGE_URL, Size.MAXIMUM_WIDTH, Size.MAXIMUM_HEIGHT, ImageType.PNG)));
     }
 
     public static Session baseFreeSession(){
@@ -25,7 +29,8 @@ public class SessionFactory {
                 SessionOpenStatus.OPENED,
                 0,
                 0,
-                SessionProgressStatus.READY);
+                SessionProgressStatus.READY,
+                List.of(new Image(IMAGE_URL, Size.MAXIMUM_WIDTH, Size.MAXIMUM_HEIGHT, ImageType.PNG)));
     }
 
     public static Session SESSION_유료_모집중_10명_1000원_최대사이즈이미지포함(LocalDateTime startDate, LocalDateTime endDate) {
@@ -36,7 +41,8 @@ public class SessionFactory {
                 SessionOpenStatus.OPENED,
                 10,
                 1000,
-                SessionProgressStatus.READY);
+                SessionProgressStatus.READY,
+                List.of(new Image(IMAGE_URL, Size.MAXIMUM_WIDTH, Size.MAXIMUM_HEIGHT, ImageType.PNG)));
         return session;
     }
 }

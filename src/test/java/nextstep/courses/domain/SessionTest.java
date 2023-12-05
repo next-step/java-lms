@@ -36,7 +36,8 @@ public class SessionTest {
                     SessionOpenStatus.OPENED,
                     1,
                     1000,
-                    SessionProgressStatus.READY);
+                    SessionProgressStatus.READY,
+                    null);
         });
     }
 
