@@ -28,4 +28,13 @@ public class Period {
     public static Period of(LocalDate startDate, LocalDate endDate) {
         return new Period(startDate, endDate);
     }
+
+
+    public LocalDate startDate() {
+        return startDate;
+    }
+
+    public LocalDate endDate() {
+        return endDate;
+    }
 }

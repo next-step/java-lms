@@ -12,29 +12,33 @@ public class Image {
     private final long fileSize;
 
     private Image(Long id, String type, long width, long height, long fileSize) {
-        validate(width, height, fileSize);
+        validate(fileSize);
         this.id = id;
         this.type = ImageType.from(type);
         this.imageSize = ImageSize.of(width, height);
         this.fileSize = fileSize;
     }
 
-    private void validate(long width, long height, long fileSize) {
+    private void validate(long fileSize) {
         if (fileSize > FILE_SIZE_MAX) {
             throw new ImageFileSizeExceededException("파일 사이즈는 " + FILE_SIZE_MAX + "KB 이하여야 합니다. 현재 파일 사이즈 : " + fileSize + "KB");
         }
     }
 
     public static Image from() {
-        return new Image(0L, "jpg", ImageSize.WIDTH_MIN, ImageSize.HEIGHT_MIN, FILE_SIZE_MAX);
+        return new Image(null, "jpg", ImageSize.WIDTH_MIN, ImageSize.HEIGHT_MIN, FILE_SIZE_MAX);
     }
 
     public static Image of(String type, long width, long height, long fileSize) {
-        return of(0L, type, width, height, fileSize);
+        return of(null, type, width, height, fileSize);
     }
 
     public static Image of(Long id, String type, long width, long height, long fileSize) {
         return new Image(id, type, width, height, fileSize);
+    }
+
+    public Long id() {
+        return id;
     }
 
     public String type() {
