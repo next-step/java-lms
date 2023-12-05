@@ -12,4 +12,9 @@ public class JdbcAnswerRepository implements AnswerRepository {
     public List<Answer> findByQuestion(Long questionId) {
         return null;
     }
+
+    @Override
+    public void update(Long answerId, Answer answer) {
+
+    }
 }
