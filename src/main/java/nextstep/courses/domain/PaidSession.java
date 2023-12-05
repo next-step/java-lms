@@ -7,6 +7,7 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class PaidSession extends Session {
 
@@ -52,5 +53,26 @@ public class PaidSession extends Session {
         }
     }
 
+    public long sessionFee() {
+        return sessionFee.value();
+    }
+
+    public int maxApplyCount() {
+        return maxApplyCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PaidSession that = (PaidSession) o;
+        return maxApplyCount == that.maxApplyCount && Objects.equals(sessionFee, that.sessionFee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), sessionFee, maxApplyCount);
+    }
 
 }
