@@ -34,7 +34,7 @@ class JdbcSessionRepositoryTest {
         final LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 0, 0);
 
         final Session session = new Session("저장 세션", 6000, startDate, endDate);
-        int count = sessionRepository.save(session, 1L);
+        int count = sessionRepository.save(session, 2L);
         assertThat(count).isEqualTo(1);
 
         final Session savedSession = sessionRepository.findById(1L);

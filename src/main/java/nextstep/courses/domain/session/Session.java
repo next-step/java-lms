@@ -14,6 +14,10 @@ public class Session {
     private SessionDate sessionDate;
     private CoverImage coverImage;
     private Enrollment enrollment;
+    private Long creatorId;
+    private LocalDateTime createdAt;
+    private Long updatorId;
+    private LocalDateTime updatedAt;
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(title, price, new SessionDate(startDate, endDate), null);
@@ -27,15 +31,15 @@ public class Session {
         this(title, 0L, new SessionDate(startDate, endDate), null);
     }
 
-    public Session(final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
-        this(0L, title, price, sessionDate, coverImage, Collections.emptyList());
+    public Session(final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage) {
+        this(0L, title, price, sessionDate, coverImage, Collections.emptyList(), 1L, LocalDateTime.now());
     }
 
-    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, List<NsUser> nsUsers) {
-        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers);
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, final List<NsUser> nsUsers, final Long creatorId, final LocalDateTime createdAt) {
+        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers, creatorId, createdAt);
     }
 
-    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage, List<NsUser> nsUsers) {
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage, final List<NsUser> nsUsers, final Long creatorId, final LocalDateTime createdAt) {
         validateSession(title, sessionDate);
 
         this.id = id;
@@ -43,6 +47,8 @@ public class Session {
         this.enrollment = new Enrollment(price, nsUsers);
         this.sessionDate = sessionDate;
         this.coverImage = validateCoverImage(coverImage);
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
     }
 
     private void validateSession(final String title, final SessionDate sessionDate) {

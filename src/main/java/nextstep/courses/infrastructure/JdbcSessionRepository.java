@@ -39,8 +39,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private int saveSession(final Session session, final Long courseId) {
-        String sql = "insert into session (title, price, start_date, end_date, session_status, max_student_limit, course_id)" +
-                " values(?, ? ,?, ?, ?, ? ,?)";
+        String sql = "insert into session (title, price, start_date, end_date, session_status, max_student_limit, course_id, creator_id, created_at)" +
+                " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -51,6 +51,9 @@ public class JdbcSessionRepository implements SessionRepository {
                     ps.setString(5, session.getSessionStatusString());
                     ps.setInt(6, session.getMaxStudentLimit());
                     ps.setLong(7, courseId);
+                    ps.setLong(8, 1L);
+                    ps.setTimestamp(9, toTimeStamp(LocalDateTime.now()));
+
                     return ps;
                 },
                 keyHolder
@@ -76,7 +79,7 @@ public class JdbcSessionRepository implements SessionRepository {
         final List<NsUser> nsUsers = sessionUserListRepository.findAllBySessionId(id);
         final CoverImage coverImage = coverImageRepository.findBySessionId(id);
 
-        String sql = "select id, title, price, start_date, end_date, session_status, max_student_limit from session where id = ?";
+        String sql = "select id, title, price, start_date, end_date, session_status, max_student_limit, creator_id, created_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             final Session session = new Session(
                     rs.getLong(1),
@@ -85,7 +88,9 @@ public class JdbcSessionRepository implements SessionRepository {
                     toLocalDateTime(rs.getTimestamp(4)),
                     toLocalDateTime(rs.getTimestamp(5)),
                     coverImage,
-                    nsUsers
+                    nsUsers,
+                    rs.getLong(8),
+                    toLocalDateTime(rs.getTimestamp(9))
             );
 
             session.changeSessionStatus(SessionStatus.valueOf(rs.getString(6)));
