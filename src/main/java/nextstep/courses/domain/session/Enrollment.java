@@ -20,6 +20,7 @@ public class Enrollment {
 
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
+        this.recruitingStatus = RecruitingStatus.RECRUITING;
         this.sessionStudent = new SessionStudent(15, nsUsers);
     }
 
@@ -87,6 +88,10 @@ public class Enrollment {
 
     public String getSessionStatusString() {
         return this.status.toString();
+    }
+
+    public String getRecruitingStatusString() {
+        return this.recruitingStatus.toString();
     }
 
     public List<NsUser> getUsers() {

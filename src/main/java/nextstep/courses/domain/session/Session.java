@@ -101,11 +101,15 @@ public class Session {
     }
 
     private void setStatus(SessionStatus status) {
-        enrollment.setStatus(status);
+        this.enrollment.setStatus(status);
     }
 
     public boolean isNotRecruiting() {
-        return !enrollment.isRecruiting();
+        return !this.enrollment.isRecruiting();
+    }
+
+    public String getRecruitingStatusString() {
+        return this.enrollment.getRecruitingStatusString();
     }
 
     public void ready() {

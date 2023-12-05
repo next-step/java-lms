@@ -39,8 +39,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private int saveSession(final Session session, final Long courseId) {
-        String sql = "insert into session (title, price, start_date, end_date, session_status, max_student_limit, course_id, creator_id, created_at)" +
-                " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (title, price, start_date, end_date, session_status, max_student_limit, course_id, creator_id, created_at, recruiting_status)" +
+                " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -53,6 +53,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     ps.setLong(7, courseId);
                     ps.setLong(8, 1L);
                     ps.setTimestamp(9, toTimeStamp(LocalDateTime.now()));
+                    ps.setString(10, session.getRecruitingStatusString());
 
                     return ps;
                 },

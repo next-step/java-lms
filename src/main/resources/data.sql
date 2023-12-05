@@ -11,4 +11,4 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 INSERT INTO course (id, title, generation ,creator_id, created_at) VALUES(2, '코스 제목1', 1, 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, title, price, start_date, end_date, session_status, max_student_limit, course_id, creator_id, created_at) VALUES (2, '세션 제목1', 1000, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'READY', 20, 2, 1, CURRENT_TIMESTAMP());
+INSERT INTO session (id, title, price, start_date, end_date, session_status, max_student_limit, course_id, creator_id, created_at, recruiting_status) VALUES (2, '세션 제목1', 1000, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'READY', 20, 2, 1, CURRENT_TIMESTAMP(), 'NOT_RECRUITING');

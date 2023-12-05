@@ -16,12 +16,13 @@ create table session
     start_date        timestamp    not null,
     end_date          timestamp    not null,
     session_status    varchar(50)  not null,
+    recruiting_status varchar(50)  not null,
     max_student_limit int          not null,
     course_id         bigint       not null,
     creator_id        bigint       not null,
     created_at        timestamp    not null,
-    updater_id        bigint       ,
-    updated_at        timestamp    ,
+    updater_id        bigint,
+    updated_at        timestamp,
     primary key (id),
     foreign key (course_id) references course (id)
 );
