@@ -23,7 +23,7 @@ public class QuestionTest {
     @Test
     void delete() throws CannotDeleteException {
         assertThat(Q1.delete(NsUserTest.JAVAJIGI))
-                .containsExactly(new DeleteHistory(ContentType.QUESTION, Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
+                .containsExactly(DeleteHistory.ofQuestion(Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
         assertThat(Q1.isDeleted()).isTrue();
     }
 }

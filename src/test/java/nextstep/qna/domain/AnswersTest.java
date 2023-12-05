@@ -17,7 +17,7 @@ class AnswersTest {
     void deleteAnswers() throws CannotDeleteException {
         Answers answers = new Answers(List.of(A1, A2));
         assertThat(answers.deleteAnswers(NsUserTest.JAVAJIGI)).containsExactly(
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, A2.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
+                DeleteHistory.ofAnswer(A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                DeleteHistory.ofAnswer(A2.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }

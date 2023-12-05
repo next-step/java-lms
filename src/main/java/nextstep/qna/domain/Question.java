@@ -73,7 +73,7 @@ public class Question {
         validateDelete(nsUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.add(DeleteHistory.ofQuestion(this.id, this.writer, LocalDateTime.now()));
         deleteHistories.addAll(this.answers.deleteAnswers(nsUser));
 
         this.deleted = true;
