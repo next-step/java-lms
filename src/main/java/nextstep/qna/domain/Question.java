@@ -73,11 +73,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -92,8 +87,33 @@ public class Question {
     }
 
     public void validateDeletable(NsUser user) throws CannotDeleteException {
-        if (!this.isOwner(user)) {
+        if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private DeleteHistory delete() {
+        deleted = true;
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
+    public void validateQuestionAndAnswersDeletable(NsUser user) throws CannotDeleteException {
+        validateDeletable(user);
+
+        for (Answer answer : answers) {
+            answer.validateDeletable(user);
+        }
+    }
+
+    public List<DeleteHistory> deleteQuestionAndAnswers(NsUser loginUser) throws CannotDeleteException {
+        validateQuestionAndAnswersDeletable(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(delete());
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete());
+        }
+
+        return deleteHistories;
     }
 }

@@ -1,29 +1,41 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
-    private static final NsUser Q1Writer = NsUserTest.JAVAJIGI;
-    private static final NsUser Q2Writer = NsUserTest.SANJIGI;
-    public static final Question Q1 = new Question(Q1Writer, "title1", "contents1");
-    public static final Question Q2 = new Question(Q2Writer, "title2", "contents2");
+    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
     void 로그인사용자가_질문작성자가_아닌_경우_CannotDeleteException() {
         assertThatThrownBy(() -> {
-            Q1.validateDeletable(Q2Writer);
+            Q1.validateDeletable(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
 
     @Test
     void 로그인사용자가_질문작성자인_경우_삭제가능() throws CannotDeleteException {
-        Q1.validateDeletable(Q1Writer);
+        Q1.validateDeletable(NsUserTest.JAVAJIGI);
+    }
+
+    @Test
+    void 질문자와_답변자가_다른_경우() {
+        Q1.addAnswer(AnswerTest.A2);
+        assertThatThrownBy(() -> {
+            Q1.validateQuestionAndAnswersDeletable(NsUserTest.JAVAJIGI);
+        }).isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    }
+
+    @Test
+    void 질문자와_답변글의_모든_답변자가_같은_경우_삭제가능() throws CannotDeleteException {
+        Q1.addAnswer(AnswerTest.A1);
+        Q1.validateQuestionAndAnswersDeletable(NsUserTest.JAVAJIGI);
     }
 
 }
