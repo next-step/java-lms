@@ -20,7 +20,7 @@ class SessionTest {
         course = new Course("test", 1L);
         CoverImage coverImage = new CoverImage(0.5, 350, 250, ImageType.GIF);
         freeSession = new Session(1L, coverImage, SessionType.FREE, SessionStatus.CLOSED);
-        paidSession = new Session(1L, coverImage, SessionType.PAID, SessionStatus.CLOSED, 100);
+        paidSession = new Session(1L, coverImage, SessionType.PAID, SessionStatus.CLOSED, 100, 1);
     }
 
 
@@ -52,5 +52,12 @@ class SessionTest {
         Payment payment = new Payment("1", 1L, 123L, 100L);
 
         assertThat(paidSession.isPaymentCorrect(payment)).isEqualTo(true);
+    }
+
+    @Test
+    public void assertAvailableSlots() {
+        paidSession.register(course);
+
+        assertThat(paidSession.isAvailable()).isFalse();
     }
 }

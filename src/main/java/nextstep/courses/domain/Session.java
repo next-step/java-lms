@@ -19,6 +19,7 @@ public class Session {
     private CoverImage coverImage;
     private SessionType sessionType;
     private SessionStatus sessionStatus;
+    private int availableSlots;
 
     public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus) {
         this.id = autoGenId.getAndIncrement();
@@ -28,8 +29,8 @@ public class Session {
         this.sessionStatus = sessionStatus;
     }
 
-    public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int price) {
-        if (SessionType.of("free") == sessionType) {
+    public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int price, int availableSlots) {
+        if (SessionType.FREE.isFree(sessionType)) {
             throw new IllegalArgumentException("해당 강의는 무료수업이므로 가격을 정할 수 없습니다.");
         }
 
@@ -39,6 +40,7 @@ public class Session {
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
         this.price = price;
+        this.availableSlots = availableSlots;
     }
 
     public Session(Long courseId) {
@@ -49,6 +51,10 @@ public class Session {
     public void register(Course course) {
         Long courseId = course.addSession(this);
         this.courseId = courseId;
+
+        if (SessionType.PAID.equals(this.sessionType)) {
+            this.availableSlots--;
+        }
     }
 
     public boolean isPaymentCorrect(Payment payment) {
@@ -65,5 +71,9 @@ public class Session {
 
     public void openSession() {
         this.sessionStatus = SessionStatus.OPEN;
+    }
+
+    public boolean isAvailable() {
+        return this.availableSlots > 0;
     }
 }

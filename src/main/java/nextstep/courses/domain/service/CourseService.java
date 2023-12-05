@@ -20,7 +20,7 @@ public class CourseService {
         if (session.isOpen() && session.isFree()) {
             addSessionToCourse(session, selectedCourse);
         }
-        if (session.isOpen() && !session.isFree() && session.isPaymentCorrect(payment)) {
+        if (session.isOpen() && !session.isFree() && session.isPaymentCorrect(payment) && session.isAvailable()) {
             addSessionToCourse(session, selectedCourse);
         }
     }

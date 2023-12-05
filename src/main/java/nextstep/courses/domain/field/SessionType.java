@@ -20,4 +20,8 @@ public enum SessionType {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("없는 타입입니다."));
     }
+
+    public boolean isFree(SessionType sessionType) {
+        return this == sessionType;
+    }
 }
