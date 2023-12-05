@@ -71,12 +71,10 @@ public class Question {
 		answers.add(answer);
 	}
 
-	public List<DeleteHistory> deleteQuestion(NsUser loginUser, LocalDateTime deletedTime) {
+	public DeleteHistory deleteQuestion(NsUser loginUser) {
 		changeDeleted(loginUser);
-		List<DeleteHistory> deletedHistoryList = new ArrayList<>();
-		deletedHistoryList.add(
-				new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        return deletedHistoryList;
+
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
 	}
 
 	private Question changeDeleted(NsUser loginUser) {

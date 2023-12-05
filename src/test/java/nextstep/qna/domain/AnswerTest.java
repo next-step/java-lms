@@ -8,15 +8,19 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
-    @DisplayName("답변 데이터의 상태를 삭제 상태로 변경한다")
+    @DisplayName("답변을 삭제하면 삭제 히스토리에 담긴다")
     @Test
     void changeDeleted() {
-        A1.changeDeleted(NsUserTest.JAVAJIGI);
-        assertThat(A1.isDeleted()).isTrue();
+        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        DeleteHistory deleteHistory = answer.deleteAnswer(NsUserTest.JAVAJIGI);
+
+        assertThat(deleteHistory).isEqualTo(new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 
     @DisplayName("답변을 삭제할 떄 로그인된 유저와 답변의 작성자가 아닐 경우 예외를 던진다")
