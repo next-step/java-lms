@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Repository("sessionRepository")
 public class JdbcPaidSessionRepository implements PaidSessionRepository {
 
-    private JdbcOperations jdbcTemplate;
-    private CoverImageRepository coverImageRepository;
+    private final JdbcOperations jdbcTemplate;
+    private final CoverImageRepository coverImageRepository;
 
     public JdbcPaidSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -55,6 +55,13 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
         return coverImageRepository.findById(id);
     }
 
+    private LocalDate toLocalDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.toLocalDate();
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;
@@ -62,10 +69,5 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
         return timestamp.toLocalDateTime();
     }
 
-    private LocalDate toLocalDate(Date date) {
-        if (date == null) {
-            return null;
-        }
-        return date.toLocalDate();
-    }
+
 }

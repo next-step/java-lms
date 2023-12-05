@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Repository("courseRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcCoverImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

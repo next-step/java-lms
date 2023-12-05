@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CoverImage extends BaseEntity {
+    /**
+     * 이미지 저장을 url 주소값으로 한다는 전제로 구현
+     */
     private final String url;
     private final Volume volume;
     private final ImageFormat format;
@@ -14,6 +17,7 @@ public class CoverImage extends BaseEntity {
     public CoverImage(String url, long volume, String type, int width, int height, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(0L, url, volume, type, width, height, createdAt, updatedAt);
     }
+
 
     public CoverImage(String url, long volume, String type, int width, int height, LocalDateTime createdAt) {
         this(0L, url, volume, type, width, height, createdAt, null);

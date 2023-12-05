@@ -14,7 +14,7 @@ import java.util.Set;
 @Repository("sessionRepository")
 public class JdbcApplyRepository implements ApplyRepository {
 
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcApplyRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
