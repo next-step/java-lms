@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 public enum SessionStatus {
     READY("준비중"),
-    RECRUITING("모집중"),
     ONGOING("진행중"),
     CLOSED("종료");
 
@@ -16,7 +15,11 @@ public enum SessionStatus {
         return this.displayName;
     }
 
-    public boolean isRecruiting() {
-        return this == RECRUITING;
+    public static SessionStatus of(final String statusName) {
+        if ("RECRUITING".equals(statusName)) {
+            return ONGOING;
+        }
+
+        return SessionStatus.valueOf(statusName);
     }
 }

@@ -117,7 +117,15 @@ public class Session {
     }
 
     public void recruit() {
-        setStatus(SessionStatus.RECRUITING);
+        this.enrollment.setRecruitingStatus(RecruitingStatus.RECRUITING);
+    }
+
+    public void notRecruit() {
+        this.enrollment.setRecruitingStatus(RecruitingStatus.NOT_RECRUITING);
+    }
+
+    public void onGoing() {
+        setStatus(SessionStatus.ONGOING);
     }
 
     public void close() {

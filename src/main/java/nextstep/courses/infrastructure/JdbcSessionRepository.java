@@ -94,7 +94,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     toLocalDateTime(rs.getTimestamp(9))
             );
 
-            session.changeSessionStatus(SessionStatus.valueOf(rs.getString(6)));
+            session.changeSessionStatus(SessionStatus.of(rs.getString(6)));
             session.changeMaxStudentLimit(rs.getInt(7));
 
             return session;

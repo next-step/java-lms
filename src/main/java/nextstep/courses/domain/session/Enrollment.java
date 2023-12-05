@@ -20,7 +20,7 @@ public class Enrollment {
 
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
-        this.recruitingStatus = RecruitingStatus.RECRUITING;
+        this.recruitingStatus = RecruitingStatus.NOT_RECRUITING;
         this.sessionStudent = new SessionStudent(15, nsUsers);
     }
 
@@ -38,10 +38,6 @@ public class Enrollment {
         }
 
         increaseEnrollment(user);
-    }
-
-    private boolean isNotRecruiting() {
-        return !this.status.isRecruiting();
     }
 
     private boolean isPaidSession() {
@@ -79,7 +75,11 @@ public class Enrollment {
     }
 
     public boolean isRecruiting() {
-        return this.status.isRecruiting();
+        return !isNotRecruiting();
+    }
+    
+    private boolean isNotRecruiting() {
+        return !this.recruitingStatus.isRecruiting();
     }
 
     public int getMaxStudentLimit() {
@@ -100,5 +100,9 @@ public class Enrollment {
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
         this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
+    }
+
+    public void setRecruitingStatus(final RecruitingStatus recruitingStatus) {
+        this.recruitingStatus = recruitingStatus;
     }
 }
