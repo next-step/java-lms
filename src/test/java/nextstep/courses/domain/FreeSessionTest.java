@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class FreeSessionTest {
 
-    @DisplayName("수강 중이 아닌 무료 강의는 수강할 수 있다.")
+    @DisplayName("모집 중인 무료 강의는 제한없이 수강할 수 있다.")
     @Test
     void can_enroll_session_when_user_is_not_registered() {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
