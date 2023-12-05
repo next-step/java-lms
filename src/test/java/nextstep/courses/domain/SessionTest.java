@@ -33,10 +33,10 @@ public class SessionTest {
                     START_DATE_2023,
                     END_DATE_2023,
                     SessionType.FREE,
-                    SessionStatus.OPENED,
+                    SessionOpenStatus.OPENED,
                     1,
-                    1000
-            );
+                    1000,
+                    SessionProgressStatus.READY);
         });
     }
 

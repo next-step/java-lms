@@ -25,15 +25,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, start_at, end_at, session_type, session_status, maximum_enrollment_count, price from session where id = ?";
+        String sql = "select id, start_at, end_at, session_type, session_open_status, session_progress_status, maximum_enrollment_count, price from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 toLocalDateTime(rs.getTimestamp(2)),
                 toLocalDateTime(rs.getTimestamp(3)),
                 SessionType.valueOf(rs.getString(4)),
-                SessionStatus.valueOf(rs.getString(5)),
-                rs.getInt(6),
-                rs.getInt(7));
+                SessionOpenStatus.valueOf(rs.getString(5)),
+                SessionProgressStatus.valueOf(rs.getString(6)),
+                rs.getInt(7),
+                rs.getInt(8));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
