@@ -33,4 +33,12 @@ public class FileSize {
             throw new IllegalArgumentException("이미지의 비율이 맞지 않습니다.");
         }
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

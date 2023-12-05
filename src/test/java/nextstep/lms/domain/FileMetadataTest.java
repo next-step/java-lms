@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class FileMetadataTest {
-    static FileMetadata NORMAL_FILE_METADATA = new FileMetadata(1024 * 1024l, FileSizeTest.NORMAL_FILE_SIZE);
+public class FileMetadataTest {
+    public static FileMetadata NORMAL_FILE_METADATA = new FileMetadata(1024 * 1024l, FileSizeTest.NORMAL_FILE_SIZE);
 
     @DisplayName("파일용량이 허용 최대 용량보다 크다면 예외 발생")
     @Test
