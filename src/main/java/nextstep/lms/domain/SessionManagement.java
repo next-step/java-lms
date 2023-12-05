@@ -13,7 +13,7 @@ public class SessionManagement {
 
     public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
         if (pricingPolicy.canEnroll(enrollApplicationDTO.getTuitionFee())) {
-            students.enroll(capacity, enrollApplicationDTO.getNsUser());
+            students.enroll(capacity, enrollApplicationDTO.getUserId());
         }
     }
 }
