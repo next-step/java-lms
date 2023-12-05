@@ -45,7 +45,7 @@ public class Session {
     }
 
     public Students register(NsUser user) throws CannotRegisterException {
-        if (!SessionStatus.OPEN.equals(status)) {
+        if (!SessionStatus.isOpen(status)) {
             throw new CannotRegisterException("모집중이 아닌 경우 신청이 불가합니다");
         }
         students.registerSessionStudent(user, sessionType);

@@ -11,4 +11,8 @@ public enum SessionStatus {
     SessionStatus(String name) {
         this.name = name;
     }
+
+    public static boolean isOpen(SessionStatus status) {
+        return OPEN.equals(status);
+    }
 }
