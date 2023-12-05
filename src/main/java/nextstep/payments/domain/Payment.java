@@ -35,7 +35,7 @@ public class Payment {
         return nsUserId;
     }
 
-    public Long amount() {
-        return amount;
+    public int amount() {
+        return amount.intValue();
     }
 }
