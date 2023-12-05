@@ -60,7 +60,7 @@ public class Answer {
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
-    public Answer changeDeleted(NsUser loginUser) {
+    private Answer changeDeleted(NsUser loginUser) {
         validateOwner(loginUser);
         this.deleted = true;
         return this;

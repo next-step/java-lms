@@ -26,7 +26,7 @@ public class AnswerTest {
     @DisplayName("답변을 삭제할 떄 로그인된 유저와 답변의 작성자가 아닐 경우 예외를 던진다")
     @Test
     void deleteAnswerByWrongUser() {
-        assertThatThrownBy(() -> A1.changeDeleted(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> A1.deleteAnswer(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
