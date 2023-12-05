@@ -41,7 +41,7 @@ public class CostMoneySession extends Session {
     }
 
     private void validateRegister(Payment payment) {
-        super.isSessionRegistering();
+        super.validateSessionIsRegistering();
 
         if (super.getSessionType().equals(SessionType.COST_MONEY) && super.students.isMaxParticipants(this.maxParticipants)) {
             throw new ExceedStudentsCountException("정원이 초과되어 더 이상 신청할 수 없습니다.");

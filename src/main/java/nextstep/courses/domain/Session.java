@@ -60,7 +60,7 @@ public class Session extends BaseEntity {
         }
     }
 
-    protected void isSessionRegistering() {
+    protected void validateSessionIsRegistering() {
         if (!SessionStatus.REGISTERING.equals(this.status)) {
             throw new CanNotRegisterSessionException("강의가 모집중이여야만 신청할 수 있습니다.");
         }

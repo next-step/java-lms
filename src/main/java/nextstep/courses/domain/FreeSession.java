@@ -36,7 +36,7 @@ public class FreeSession extends Session {
     }
 
     public void registerFreeSession(NsUser nsUser) {
-        super.isSessionRegistering();
+        super.validateSessionIsRegistering();
         super.students.add(nsUser);
     }
 
