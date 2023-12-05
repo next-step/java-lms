@@ -23,6 +23,7 @@ public class FreeSession implements Session {
 
     @Override
     public Attendee enroll(Payment payment, NsUser nsUser) {
+        information.validateApply();
         return new Attendee(nsUser.getId(), this.id);
     }
 }

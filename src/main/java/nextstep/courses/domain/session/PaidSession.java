@@ -31,6 +31,7 @@ public class PaidSession implements Session {
 
     @Override
     public Attendee enroll(Payment payment, NsUser nsUser) {
+        information.validateApply();
         amount.validatePrice(payment);
         Session paidSession = new PaidSession(this.id,
                                               this.information,
