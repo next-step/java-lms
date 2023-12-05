@@ -14,6 +14,7 @@ public class SessionTest {
                 LocalDate.now(),
                 LocalDate.now(),
                 Session.Type.FREE,
+                1000L,
                 100,
                 LocalDateTime.now(),
                 LocalDateTime.now()

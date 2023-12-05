@@ -26,4 +26,8 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isPaid(Long paymentId, Long amount) {
+        return Long.parseLong(id) == paymentId && this.amount.equals(amount);
+    }
 }
