@@ -20,12 +20,16 @@ public class Image {
         this(null, name, size, pixel, sessionId);
     }
 
+    public Long id() {
+        return id;
+    }
+
     public String name() {
         return name.name();
     }
 
-    public int size() {
-        return size.value();
+    public int volume() {
+        return size.volume();
     }
 
     public int height() {
@@ -34,5 +38,9 @@ public class Image {
 
     public int width() {
         return pixel.width();
+    }
+
+    public Long sessionId() {
+        return sessionId;
     }
 }
