@@ -20,7 +20,7 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
 	@Override
 	public List<Registration> findRegistrationsBySessionId(Long sessionId) {
-		String sql = "select id, user_id, session_id, created_at, updated_at from registration where session_id = ";
+		String sql = "select id, user_id, session_id, created_at, updated_at from registration where session_id = ?";
 		RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
 			toLocalDateTime(rs.getTimestamp(4)),
 			toLocalDateTime(rs.getTimestamp(5)),

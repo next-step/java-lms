@@ -19,6 +19,7 @@ create table session (
     title varchar(50) not null,
     status varchar(20) not null,
     maximum_capacity bigint not null,
+    paid_type varchar(50) not null,
     tuition bigint not null,
     created_at timestamp not null,
     updated_at timestamp,

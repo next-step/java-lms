@@ -32,18 +32,18 @@ public class JdbcSessionRepository implements SessionRepository {
 	public Optional<Session> findById(Long id) {
 		String sql = "select id, course_id, width, height, type, capacity,"
 			+ "start_at, end_at, title, status, maximum_capacity,"
-			+ "tution, created_at, updated_at from session where id = ?";
+			+ "paid_type, tuition, created_at, updated_at from session where id = ?";
 		RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
-			toLocalDateTime(rs.getTimestamp(13)),
 			toLocalDateTime(rs.getTimestamp(14)),
+			toLocalDateTime(rs.getTimestamp(15)),
 			rs.getLong(1),
 			rs.getString(9),
 			new Period(toLocalDate(rs.getDate(7)), toLocalDate(rs.getDate(8))),
 			new Image(rs.getDouble(6),rs.getString(5), rs.getInt(3), rs.getInt(4)),
 			Status.valueOf(rs.getString(10)),
 			new SessionRegistration(
-				PaidType.valueOf(rs.getString(10)),
-					new Tuition(rs.getInt(12)),
+				PaidType.valueOf(rs.getString(12)),
+					new Tuition(rs.getInt(13)),
 					new SessionCapacity(11)
 			),
 			rs.getLong(2)
@@ -54,11 +54,11 @@ public class JdbcSessionRepository implements SessionRepository {
 	@Override
 	public int save(Session session) {
 		String sql
-			= "insert into registration ("
+			= "insert into session ("
 			+ "course_id, width, height, type, capacity, "
 			+ "start_at, end_at, title, status, maximum_capacity, "
-			+ "tution, created_at, updated_at"
-			+ ") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ "paid_type, tuition, created_at, updated_at"
+			+ ") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		return jdbcTemplate.update(
 			sql,
 			session.getCourseId(),
@@ -71,6 +71,7 @@ public class JdbcSessionRepository implements SessionRepository {
 			session.getTitle(),
 			session.getStatus(),
 			session.getSessionRegistration().getMaximumCapacity().getMaximumCapacity(),
+			session.getSessionRegistration().getPaidType(),
 			session.getSessionRegistration().getTuition().getTuition(),
 			session.getCreatedAt(),
 			session.getUpdatedAt()

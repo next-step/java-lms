@@ -20,6 +20,20 @@ public class Session extends BaseTimeEntity {
 	private final Long courseId;
 
 	public Session(
+		Long id, String title,
+		Period period, Image image, Status status,
+		SessionRegistration sessionRegistration, Long courseId
+	) {
+		this.id = id;
+		this.title = title;
+		this.period = period;
+		this.image = image;
+		this.status = status;
+		this.sessionRegistration = sessionRegistration;
+		this.courseId = courseId;
+	}
+
+	public Session(
 		LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String title,
 		Period period, Image image, Status status,
 		SessionRegistration sessionRegistration, Long courseId
