@@ -6,8 +6,6 @@ import nextstep.qna.domain.collection.DeleteHistoryBulk;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -67,16 +65,25 @@ public class Question {
     }
 
     public DeleteHistoryBulk deleteIfWriter(NsUser writer) {
+        DeleteHistoryBulk deleteHistories = deleteAnswers(writer);
+        DeleteHistory deleteHistory = deleteQuestion(writer);
+
+        deleteHistories.addAtFisrt(deleteHistory);
+
+        return deleteHistories;
+    }
+
+    private DeleteHistoryBulk deleteAnswers(NsUser writer) {
+        return this.answers.markDeletionAllIfWriter(writer);
+    }
+
+    private DeleteHistory deleteQuestion(NsUser writer) {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        DeleteHistoryBulk deleteHistories = this.answers.markDeletionAllIfWriter(writer);
-
         this.deleted = true;
-        deleteHistories.addAtFisrt(new DeleteHistory(ContentType.QUESTION, this.id, writer));
-
-        return deleteHistories;
+        return new DeleteHistory(ContentType.QUESTION, this.id, writer);
     }
 
 }
