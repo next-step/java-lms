@@ -31,7 +31,7 @@ public class JdbcImageRepository implements ImageRepository {
             ImageSize imageSize = new ImageSize(volume);
             int height = rs.getInt(4);
             int width = rs.getInt(5);
-            ImagePixel imagePixel = new ImagePixel(height, width);
+            ImagePixel imagePixel = new ImagePixel(width, height);
             Long sessionId = rs.getLong(6);
             return new Image(imageId, imageName, imageSize, imagePixel, sessionId);
         };
