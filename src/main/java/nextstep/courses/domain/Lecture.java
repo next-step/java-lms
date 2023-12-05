@@ -1,20 +1,24 @@
 package nextstep.courses.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import javax.naming.LimitExceededException;
 import nextstep.users.domain.NsUser;
 
 public class Lecture {
   private final Long id;
-  private final LectureType lectureType;
-  private final LectureStatus lectureStatus;
-  private final LocalDateTime startedAt;
-  private final LocalDateTime endedAt;
-  private final Integer limitStudentCount;
-  private final NsUsers students;
+  private final BigDecimal price; // LectureBasicInformation
+  private final LectureType lectureType; // LectureBasicInformation
+  private final LectureStatus lectureStatus; // LectureBasicInformation
+  private final LocalDateTime startedAt; // LectureBasicInformation
+  private final LocalDateTime endedAt; // LectureBasicInformation
+  private final Integer limitStudentCount; // LectureBasicInformation
+  private final NsUsers students; // 강의 기본정보와는 다름
 
   private Lecture(LectureType lectureType, LocalDateTime startedAt,
       LocalDateTime endDateTime, int limitStudentCount) {
     this.id = 0L;
+    this.price = BigDecimal.ZERO;
     this.lectureType = lectureType;
     this.startedAt = startedAt;
     this.endedAt = endDateTime;
@@ -23,32 +27,46 @@ public class Lecture {
     this.students = NsUsers.defaultOf();
   }
 
-  private Lecture(LectureType lectureType, LectureStatus lectureStatus, LocalDateTime startedAt,
+  private Lecture(BigDecimal price, LectureType lectureType, LectureStatus lectureStatus, LocalDateTime startedAt,
       LocalDateTime endDateTime, int limitStudentCount, NsUsers students) {
     this.id = 0L;
+    this.price = price;
     this.lectureType = lectureType;
     this.startedAt = startedAt;
     this.endedAt = endDateTime;
     this.limitStudentCount = limitStudentCount;
-    this.lectureStatus = lectureStatus;
+    this.lectureStatus = LectureStatus.PREPARING;
     this.students = students;
   }
+
+  private Lecture(BigDecimal price, LectureType lectureType, LocalDateTime startedAt,
+      LocalDateTime endDateTime, int limitStudentCount, NsUsers students) {
+    this.id = 0L;
+    this.price = price;
+    this.lectureType = lectureType;
+    this.startedAt = startedAt;
+    this.endedAt = endDateTime;
+    this.limitStudentCount = limitStudentCount;
+    this.lectureStatus = LectureStatus.PREPARING;
+    this.students = students;
+  }
+
 
   public static Lecture freeOf(LectureType lectureType, LocalDateTime startDateTime,
       LocalDateTime endDateTime) {
     return new Lecture(lectureType, startDateTime, endDateTime, 0);
   }
 
-  public static Lecture paidOf(LectureType lectureType, LocalDateTime startDateTime,
+  public static Lecture paidOf(BigDecimal price,LectureType lectureType, LocalDateTime startDateTime,
       LocalDateTime endDateTime, int maxStudent) {
-    return new Lecture(lectureType, startDateTime, endDateTime, maxStudent);
+    return new Lecture(price, lectureType, startDateTime, endDateTime, maxStudent, NsUsers.defaultOf());
   }
 
   public boolean isFree() {
     return lectureType == LectureType.FREE;
   }
 
-  private void canEnrolment() {
+  private void canEnrolment(NsUser user) {
     if (this.lectureType == LectureType.PAID && this.limitStudentCount <= students.size()) {
       throw new IllegalArgumentException("수강인원이 가득찼습니다.");
     }
@@ -56,10 +74,14 @@ public class Lecture {
     if (this.lectureStatus != LectureStatus.RECRUITING) {
       throw new IllegalArgumentException("이 강의는 수강신청이 불가능합니다.");
     }
+
+    if (!user.hasPayment(this.price)) {
+      throw new IllegalArgumentException("수강료를 지불해야합니다.");
+    }
   }
 
   public void enrolment(NsUser user) {
-    this.canEnrolment();
+    this.canEnrolment(user);
     students.add(user);
   }
 
@@ -68,7 +90,7 @@ public class Lecture {
   }
 
   public Lecture start() {
-    return new Lecture(this.lectureType, LectureStatus.RECRUITING, this.startedAt,
+    return new Lecture(this.price, this.lectureType, LectureStatus.RECRUITING, this.startedAt,
         this.endedAt, this.limitStudentCount, this.students);
   }
 }

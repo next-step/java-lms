@@ -1,5 +1,6 @@
 package nextstep.users.domain;
 
+import java.math.BigDecimal;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class NsUser {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private Payment payment;
 
     public NsUser() {
     }
@@ -115,6 +117,14 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public boolean hasPayment(BigDecimal price) {
+        return this.payment.samePrice(price);
+    }
+
+    public void payment(Payment payment) {
+        this.payment = payment;
     }
 
     private static class GuestNsUser extends NsUser {
