@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.attendee.Attendees;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.ExceedAttendeesException;
 import nextstep.courses.exception.PaymentAmountNotEqualException;
@@ -21,12 +20,11 @@ class PaidSessionTest {
         TotalAttendee total = new TotalAttendee(1);
         Price price = new Price(1000L);
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-        SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
+        SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.PAID, period);
         Session session = new PaidSession(1L, information, null, total, price);
         Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
-        Attendees emptyAttendees = new Attendees();
 
-        assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI, emptyAttendees))
+        assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI))
                 .isInstanceOf(PaymentAmountNotEqualException.class);
     }
 
@@ -36,12 +34,11 @@ class PaidSessionTest {
         TotalAttendee total = new TotalAttendee(1, 1);
         Price price = new Price(1000L);
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-        SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
+        SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.PAID, period);
         Session session = new PaidSession(1L, information, null, total, price);
         Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 1000L);
-        Attendees emptyAttendees = new Attendees();
 
-        assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI, emptyAttendees))
+        assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI))
                 .isInstanceOf(ExceedAttendeesException.class);
     }
 }

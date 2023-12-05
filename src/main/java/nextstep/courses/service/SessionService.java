@@ -28,7 +28,8 @@ public class SessionService {
         Session session = sessionRepository.findBySessionId(sessionId)
                                            .orElseThrow(NotFoundException::new);
         Attendees attendees = attendeeRepository.findAllBySessionId(sessionId);
-        Attendee enrolledAttendee = session.enroll(payment, loginUser, attendees);
+        Attendee enrolledAttendee = session.enroll(payment, loginUser);
+        attendees.checkAlreadyAttend(enrolledAttendee);
         attendeeRepository.save(enrolledAttendee);
     }
 }

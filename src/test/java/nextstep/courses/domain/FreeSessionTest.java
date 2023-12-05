@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.attendee.Attendee;
-import nextstep.courses.domain.attendee.Attendees;
 import nextstep.courses.domain.session.*;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
@@ -21,10 +20,9 @@ class FreeSessionTest {
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
         Session session = new FreeSession(1L, information, null);
         Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
-        Attendees emptyAttendees = new Attendees();
         Attendee expected = new Attendee(JAVAJIGI.getId(), session.getId());
 
-        Attendee actual = session.enroll(payment, JAVAJIGI, emptyAttendees);
+        Attendee actual = session.enroll(payment, JAVAJIGI);
 
         assertThat(actual).isEqualTo(expected);
     }

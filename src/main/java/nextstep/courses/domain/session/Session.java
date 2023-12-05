@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.attendee.Attendee;
-import nextstep.courses.domain.attendee.Attendees;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -22,13 +21,7 @@ public abstract class Session {
         this.image = image;
     }
 
-    public abstract Attendee enroll(Payment payment, NsUser nsUser, Attendees attendees);
-
-    protected Attendee checkAlreadyEnrolled(NsUser nsUser, Attendees attendees) {
-        Attendee attendee = new Attendee(nsUser.getId(), this.id);
-        attendees.checkAlreadyAttend(attendee);
-        return attendee;
-    }
+    public abstract Attendee enroll(Payment payment, NsUser nsUser);
 
     public Long getId() {
         return id;
