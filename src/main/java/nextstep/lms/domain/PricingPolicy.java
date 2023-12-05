@@ -12,7 +12,7 @@ public class PricingPolicy {
     }
 
     public boolean canEnroll(int tuitionFee) {
-        if (pricingTypeEnum == PricingTypeEnum.FREE) {
+        if (pricingTypeEnum.isFree()) {
             return true;
         }
         if (this.tuitionFee != tuitionFee) {

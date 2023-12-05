@@ -3,15 +3,15 @@ package nextstep.lms.dto;
 import nextstep.users.domain.NsUser;
 
 public class EnrollApplicationDTO {
-    private final NsUser nsUser;
+    private final Long userId;
     private final int tuitionFee;
 
-    public EnrollApplicationDTO(NsUser nsUser, int tuitionFee) {
-        this.nsUser = nsUser;
+    public EnrollApplicationDTO(Long userId, int tuitionFee) {
+        this.userId = userId;
         this.tuitionFee = tuitionFee;
     }
-    public NsUser getNsUser() {
-        return nsUser;
+    public Long getUserId() {
+        return userId;
     }
 
     public int getTuitionFee() {

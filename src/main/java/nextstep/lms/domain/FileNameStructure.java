@@ -1,16 +1,14 @@
 package nextstep.lms.domain;
 
 import nextstep.lms.enums.ExtensionEnum;
-import org.apache.commons.io.FilenameUtils;
 
 public class FileNameStructure {
     private final String name;
     private final String extension;
 
     public FileNameStructure(String name) {
-        Parser.fileNameFormatChecking(name);
-        this.name = FilenameUtils.getBaseName(name);
-        this.extension = extensionChecking(FilenameUtils.getExtension(name));
+        this.name = Parser.getBaseName(name);
+        this.extension = extensionChecking(Parser.getExtension(name));
     }
 
     private String extensionChecking(String value) {
