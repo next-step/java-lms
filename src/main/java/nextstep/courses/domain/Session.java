@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.field.CoverImage;
+import nextstep.courses.domain.field.Period;
 import nextstep.courses.domain.field.SessionStatus;
 import nextstep.courses.domain.field.SessionType;
 import nextstep.payments.domain.Payment;
@@ -14,8 +15,7 @@ public class Session {
     private Long id;
     private Long courseId;
     private int price;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Period period;
     private CoverImage coverImage;
     private SessionType sessionType;
     private SessionStatus sessionStatus;
