@@ -35,4 +35,8 @@ public class ImageSize {
     public int hashCode() {
         return Objects.hash(volume);
     }
+
+    public static ImageSize of(int value) {
+        return new ImageSize(value);
+    }
 }

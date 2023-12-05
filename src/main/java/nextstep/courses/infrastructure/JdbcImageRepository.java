@@ -22,18 +22,15 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public Image findById(Long id) {
-        String sql = "select id, name, volume, height, width, session_id from image where  id = ?";
+        String sql = "select id, name, volume, width, height, session_id from image where  id = ?";
         RowMapper<Image> rowMapper = (rs, rowNum) -> {
             Long imageId = rs.getLong(1);
             String name = rs.getString(2);
-            ImageName imageName = new ImageName(name);
             int volume = rs.getInt(3);
-            ImageSize imageSize = new ImageSize(volume);
-            int height = rs.getInt(4);
-            int width = rs.getInt(5);
-            ImagePixel imagePixel = new ImagePixel(width, height);
+            int width = rs.getInt(4);
+            int height = rs.getInt(5);
             Long sessionId = rs.getLong(6);
-            return new Image(imageId, imageName, imageSize, imagePixel, sessionId);
+            return new Image(imageId, ImageName.of(name), ImageSize.of(volume), ImagePixel.of(width, height), sessionId);
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

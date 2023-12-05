@@ -46,4 +46,8 @@ public class ImagePixel {
     public int hashCode() {
         return Objects.hash(width, height);
     }
+
+    public static ImagePixel of(int width, int height) {
+        return new ImagePixel(width, height);
+    }
 }

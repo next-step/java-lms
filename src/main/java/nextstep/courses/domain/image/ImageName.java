@@ -34,4 +34,8 @@ public class ImageName {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    public static ImageName of(String name) {
+        return new ImageName(name);
+    }
 }
