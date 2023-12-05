@@ -24,7 +24,7 @@ class AttendeesTest {
         Attendee attendee = new Attendee(JAVAJIGI, session);
         Attendees attendees = new Attendees(List.of(attendee));
 
-        assertThatThrownBy(() -> attendees.contains(attendee))
+        assertThatThrownBy(() -> attendees.checkAlreadyAttend(attendee))
                 .isInstanceOf(AlreadyTakingSessionException.class);
     }
 

@@ -17,7 +17,7 @@ public class Attendees {
         this.values = values;
     }
 
-    public void contains(Attendee attendee) {
+    public void checkAlreadyAttend(Attendee attendee) {
         if (this.values.contains(attendee)) {
             throw new AlreadyTakingSessionException();
         }

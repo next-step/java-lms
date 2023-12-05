@@ -26,7 +26,7 @@ public abstract class Session {
 
     protected Attendee checkAlreadyEnrolled(NsUser nsUser, Attendees attendees) {
         Attendee attendee = new Attendee(nsUser, this);
-        attendees.contains(attendee);
+        attendees.checkAlreadyAttend(attendee);
         return attendee;
     }
 
