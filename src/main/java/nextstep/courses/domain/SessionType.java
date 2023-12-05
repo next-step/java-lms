@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
-
-import java.util.List;
 
 public class SessionType {
 
@@ -22,13 +19,20 @@ public class SessionType {
     }
 
     public boolean isMaxCapacity(Students students) {
-        if (PayType.FREE.equals(type)) {
+        if (isFreeSession()) {
             return false;
         }
         return capacity < students.size();
     }
 
     public boolean isEqualPrice(Payment payment) {
+        if (isFreeSession()) {
+            return true;
+        }
         return payment.isEqualPrice(price);
+    }
+
+    private boolean isFreeSession() {
+        return PayType.FREE.equals(type);
     }
 }

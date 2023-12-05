@@ -43,7 +43,7 @@ class SessionTest {
         SessionType type = new SessionType(PayType.PAID, 1000L, 1);
         Session session = new Session(SessionStatus.OPEN, new HashSet<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> {
-            session.register(new NsUser());
+            session.register(new NsUser(), new Payment("id", 1L, 1L, 1000L));
         }).isInstanceOf(MaxStudentsExceedException.class);
     }
 

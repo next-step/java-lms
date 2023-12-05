@@ -36,18 +36,19 @@ public class Session {
         this.sessionType = sessionType;
     }
 
-    public Students register(NsUser user, Payment payment) throws CannotRegisterException {
-        if (!sessionType.isEqualPrice(payment)) {
-            throw new CannotRegisterException("강의 금액과 일치하지 않습니다.");
-        }
-        students.registerSessionStudent(user, sessionType);
-        return students;
+    public Students register(NsUser user) throws CannotRegisterException {
+        return register(user, new Payment());
     }
 
-    public Students register(NsUser user) throws CannotRegisterException {
+    public Students register(NsUser user, Payment payment) throws CannotRegisterException {
         if (!SessionStatus.isOpen(status)) {
             throw new CannotRegisterException("모집중이 아닌 경우 신청이 불가합니다");
         }
+
+        if (!sessionType.isEqualPrice(payment)) {
+            throw new CannotRegisterException("강의 금액과 일치하지 않습니다.");
+        }
+
         students.registerSessionStudent(user, sessionType);
         return students;
     }
