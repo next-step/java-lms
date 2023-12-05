@@ -8,7 +8,7 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Session extends BaseEntity {
+public abstract class Session extends BaseEntity {
 
     private final Long id;
     private final CoverImage coverImage;
@@ -36,10 +36,7 @@ public class Session extends BaseEntity {
         }
     }
 
-    public void register(Payment payment) {
-        validateStatus();
-        this.students.addStudent(payment.paidUser());
-    }
+    public abstract void register(Payment payment);
 
     protected void validateStatus() {
         if (!status.isOpen()) {

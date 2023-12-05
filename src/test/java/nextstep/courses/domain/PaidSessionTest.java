@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PaidSessionTest {
     private static final LocalDate START_DATE = LocalDate.of(2023, 12, 01);
-    private static final LocalDate END_DATE = LocalDate.of(2023, 12, 05);
+    private static final LocalDate END_DATE = LocalDate.of(2023, 12, 31);
 
     @Test
     @DisplayName("유료 강의 수강 신청 시 최대 수강 인원을 초과하면 예외를 던진다.")

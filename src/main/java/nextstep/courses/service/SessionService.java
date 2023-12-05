@@ -1,9 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CoverImage;
-import nextstep.courses.domain.PaidSession;
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.*;
 import nextstep.courses.repository.CourseRepository;
 import nextstep.courses.repository.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -24,7 +21,7 @@ public class SessionService {
     public void createFreeSession(Long courseId, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         Course course = courseRepository.findById(courseId);
 
-        Session session = new Session(0L, coverImage, startDate, endDate);
+        Session session = new FreeSession(0L, coverImage, startDate, endDate);
         course.addSession(session);
 
         sessionRepository.save(session);
