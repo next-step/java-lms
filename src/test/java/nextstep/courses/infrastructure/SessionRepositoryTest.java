@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -43,6 +45,17 @@ public class SessionRepositoryTest {
         sessionRepository.save(session);
         Session result = sessionRepository.findById(1L);
         assertThat(result.title()).isEqualTo(session.title());
+    }
+
+    @DisplayName("Couse id로 강의 조회 테스트")
+    @Test
+    void course_id로_조회_테스트() {
+        SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
+        Price price = new Price(false, 10000, new ParticipantManager(10));
+        Session session = new Session("title", sessionPeriod, price, SessionStatus.RECRUIT, null, 1L);
+        sessionRepository.save(session);
+        List<Session> result = sessionRepository.findByCourseId(1L);
+        assertThat(result.get(0).title()).isEqualTo(session.title());
     }
 
 }
