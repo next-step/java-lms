@@ -68,5 +68,6 @@ create table image (
     width int,
     height int,
     volume int,
+    session_id bigint,
     primary key (id)
 );
