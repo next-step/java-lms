@@ -24,4 +24,8 @@ public class ImageCapacity {
 			throw new IllegalArgumentException("이미지 용량은 0보다 작을 수 없습니다.");
 		}
 	}
+
+	public double getCapacity() {
+		return capacity;
+	}
 }

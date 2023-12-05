@@ -1,25 +1,34 @@
 package nextstep.courses.domain.session.registration;
 
+import java.util.List;
+
 import nextstep.courses.domain.enums.PaidType;
-import nextstep.courses.domain.session.registration.SessionCapacity;
-import nextstep.courses.domain.session.registration.Students;
-import nextstep.courses.domain.session.registration.Tuition;
+import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
 public class SessionRegistration {
 	private final PaidType paidType;
 	private final Tuition tuition;
 	private final SessionCapacity maximumCapacity;
-	private final Students students;
+	private Students students;
 
 	public SessionRegistration(
 		PaidType paidType, Tuition tuition,
-		SessionCapacity maximumCapacity,Students students
+		SessionCapacity maximumCapacity, Students students
 	) {
 		this.paidType = paidType;
 		this.tuition = tuition;
 		this.maximumCapacity = maximumCapacity;
 		this.students = students;
+	}
+
+	public SessionRegistration(
+		PaidType paidType, Tuition tuition,
+		SessionCapacity maximumCapacity
+	) {
+		this.paidType = paidType;
+		this.tuition = tuition;
+		this.maximumCapacity = maximumCapacity;
 	}
 
 	public void validate(long amount) {
@@ -37,7 +46,27 @@ public class SessionRegistration {
 		}
 	}
 
-	public void register(NsUser nsUser) {
-		students.add(nsUser);
+	public void register(Session session, NsUser nsUser) {
+		students.add(session, nsUser);
+	}
+
+	public void registerAll(List<Registration> registrations) {
+		students.addAll(registrations);
+	}
+
+	public PaidType getPaidType() {
+		return paidType;
+	}
+
+	public Tuition getTuition() {
+		return tuition;
+	}
+
+	public SessionCapacity getMaximumCapacity() {
+		return maximumCapacity;
+	}
+
+	public Students getStudents() {
+		return students;
 	}
 }

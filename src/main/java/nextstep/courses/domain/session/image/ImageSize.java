@@ -37,4 +37,12 @@ public class ImageSize {
 			throw new IllegalArgumentException("이미지의 가로 세로 길이 비율이 알맞지 않습니다.");
 		}
 	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
 }

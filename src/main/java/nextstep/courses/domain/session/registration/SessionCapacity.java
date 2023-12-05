@@ -19,4 +19,8 @@ public class SessionCapacity {
 			throw new IllegalArgumentException("최대 신청인원은 0보다 작을 수 없습니다.");
 		}
 	}
+
+	public int getMaximumCapacity() {
+		return maximumCapacity;
+	}
 }

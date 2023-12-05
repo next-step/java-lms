@@ -21,15 +21,15 @@ public class StudentsTest {
 	@DisplayName("add 메서드는 사용자를 수강생 리스트에 더하는 행위를 한다.")
 	@Test
 	void validate_add() {
-		students.add(JAVAJIGI);
+		students.add(null, JAVAJIGI);
 		Assertions.assertThat(students.number()).isEqualTo(1);
 	}
 
 	@DisplayName("number메서드는 수강생들의 숫자를 반환하는 행위를 한다.")
 	@Test
 	void validate_number() {
-		students.add(JAVAJIGI);
-		students.add(SANJIGI);
+		students.add(null, JAVAJIGI);
+		students.add(null, SANJIGI);
 		Assertions.assertThat(students.number()).isEqualTo(2);
 	}
 }

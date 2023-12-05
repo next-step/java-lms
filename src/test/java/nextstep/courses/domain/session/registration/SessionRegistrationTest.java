@@ -8,10 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nextstep.courses.domain.enums.PaidType;
-import nextstep.courses.domain.session.registration.SessionCapacity;
-import nextstep.courses.domain.session.registration.SessionRegistration;
-import nextstep.courses.domain.session.registration.Students;
-import nextstep.courses.domain.session.registration.Tuition;
 
 public class SessionRegistrationTest {
 
@@ -37,10 +33,10 @@ public class SessionRegistrationTest {
 	@DisplayName("강의 최대 수용인원이 유료일 때만 최대 수용인원 검사를 한다.")
 	@Test
 	void validate_amount() {
-		freeSession.register(JAVAJIGI);
-		freeSession.register(SANJIGI);
+		freeSession.register(null, JAVAJIGI);
+		freeSession.register(null, SANJIGI);
 
-		paidSession.register(JAVAJIGI);
+		paidSession.register(null, JAVAJIGI);
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> paidSession.validate(50000))
 			.withMessage("최대 수강 인원을 초과했습니다.");

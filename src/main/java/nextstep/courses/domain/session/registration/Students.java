@@ -3,24 +3,33 @@ package nextstep.courses.domain.session.registration;
 import java.util.ArrayList;
 import java.util.List;
 
+import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
 public class Students {
-	private final List<NsUser> students;
+	private final List<Registration> registrations;
 
 	public Students() {
-		this.students = new ArrayList<>();
+		this.registrations = new ArrayList<>();
 	}
 
-	public Students(List<NsUser> students) {
-		this.students = students;
+	public Students(List<Registration> registrations) {
+		this.registrations = registrations;
 	}
 
-	public void add(NsUser nsUser) {
-		students.add(nsUser);
+	public void add(Session session, NsUser nsUser) {
+		registrations.add(new Registration(session.getId(), nsUser.getId()));
+	}
+
+	public void addAll(List<Registration> registrations) {
+		this.registrations.addAll(registrations);
 	}
 
 	public int number() {
-		return students.size();
+		return registrations.size();
+	}
+
+	public List<Registration> getRegistrations() {
+		return registrations;
 	}
 }
