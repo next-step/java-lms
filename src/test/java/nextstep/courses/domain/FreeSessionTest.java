@@ -22,7 +22,7 @@ class FreeSessionTest {
         Session session = new FreeSession(1L, information, null);
         Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
         Attendees emptyAttendees = new Attendees();
-        Attendee expected = new Attendee(JAVAJIGI, session);
+        Attendee expected = new Attendee(JAVAJIGI.getId(), session.getId());
 
         Attendee actual = session.enroll(payment, JAVAJIGI, emptyAttendees);
 

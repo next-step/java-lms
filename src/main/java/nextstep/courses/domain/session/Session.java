@@ -25,7 +25,7 @@ public abstract class Session {
     public abstract Attendee enroll(Payment payment, NsUser nsUser, Attendees attendees);
 
     protected Attendee checkAlreadyEnrolled(NsUser nsUser, Attendees attendees) {
-        Attendee attendee = new Attendee(nsUser, this);
+        Attendee attendee = new Attendee(nsUser.getId(), this.id);
         attendees.checkAlreadyAttend(attendee);
         return attendee;
     }

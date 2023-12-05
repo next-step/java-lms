@@ -31,6 +31,6 @@ public class PaidSession extends Session {
                                               this.image,
                                               totalAttendee.add(),
                                               this.amount);
-        return new Attendee(nsUser, paidSession);
+        return new Attendee(nsUser.getId(), paidSession.id);
     }
 }

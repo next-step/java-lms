@@ -21,7 +21,7 @@ class AttendeesTest {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
         Session session = new FreeSession(1L, information, null);
-        Attendee attendee = new Attendee(JAVAJIGI, session);
+        Attendee attendee = new Attendee(JAVAJIGI.getId(), session.getId());
         Attendees attendees = new Attendees(List.of(attendee));
 
         assertThatThrownBy(() -> attendees.checkAlreadyAttend(attendee))
