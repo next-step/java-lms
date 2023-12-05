@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionTest {
-    public static final Session S1 = PaidSession.of("2023-12-04T00:00:00", "2024-01-04T00:00:00", CoverImage.of("dd", FileSize.valueOf("50kb"), "gif", new Pixel(300), new Pixel(200)), SessionStatus.END, 100, 0, 50000);
-    public static final Session S2 = PaidSession.of("2023-12-03T00:00:00", "2024-01-03T00:00:00", CoverImage.of("dd", FileSize.valueOf("50kb"), "gif", new Pixel(300), new Pixel(200)), SessionStatus.RECRUITING, 50, 0, 100000);
-    public static final Session S3 = PaidSession.of("2023-12-03T00:00:00", "2024-01-03T00:00:00", CoverImage.of("dd", FileSize.valueOf("50kb"), "gif", new Pixel(300), new Pixel(200)), SessionStatus.RECRUITING, 50, 50, 100000);
-    public static final Session S4 = FreeSession.of("2023-12-24T00:00:00", "2004-01-24T00:00:00", CoverImage.of("dd", FileSize.valueOf("50kb"), "gif", new Pixel(300), new Pixel(200)), SessionStatus.READY);
-    public static final Session S5 = FreeSession.of("2024-01-01T00:00:00", "2024-02-01T00:00:00", CoverImage.of("dd", FileSize.valueOf("50kb"), "gif", new Pixel(300), new Pixel(200)), SessionStatus.RECRUITING);
+    public static final Session S1 = PaidSession.of("2023-12-04T00:00:00", "2024-01-04T00:00:00", CoverImage.of("dd", 1024*50, "gif", Pixel.of(300), Pixel.of(200)), SessionStatus.END, 100, 0, 50000);
+    public static final Session S2 = PaidSession.of("2023-12-03T00:00:00", "2024-01-03T00:00:00", CoverImage.of("dd", 1024*50, "gif", Pixel.of(300), Pixel.of(200)), SessionStatus.RECRUITING, 50, 0, 100000);
+    public static final Session S3 = PaidSession.of("2023-12-03T00:00:00", "2024-01-03T00:00:00", CoverImage.of("dd", 1024*50, "gif", Pixel.of(300), Pixel.of(200)), SessionStatus.RECRUITING, 50, 50, 100000);
+    public static final Session S4 = FreeSession.of("2023-12-24T00:00:00", "2004-01-24T00:00:00", CoverImage.of("dd", 1024*50, "gif", Pixel.of(300), Pixel.of(200)), SessionStatus.READY);
+    public static final Session S5 = FreeSession.of("2024-01-01T00:00:00", "2024-02-01T00:00:00", CoverImage.of("dd", 1024*50, "gif", Pixel.of(300), Pixel.of(200)), SessionStatus.RECRUITING);
 
     @Test
     void isFreeSession() {

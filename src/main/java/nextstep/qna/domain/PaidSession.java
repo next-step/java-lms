@@ -51,13 +51,13 @@ public class PaidSession implements Session { // 유료
     }
 
     private void checkMaxNumberOfAttendees() {
-        if(this.maxNumberOfAttendees <= this.currentNumberOfAttendees) { // TODO 후에 트랜젝션 처리 시 주의
+        if (this.maxNumberOfAttendees <= this.currentNumberOfAttendees) { // TODO 후에 트랜젝션 처리 시 주의
             throw new IllegalStateException("수강인원이 초과 되었습니다.");
         }
     }
 
     private void checkPrice(long paidAmount) {
-        if(this.price != paidAmount) {
+        if (this.price != paidAmount) {
             throw new IllegalArgumentException("강의 가격과 다릅니다.");
         }
     }

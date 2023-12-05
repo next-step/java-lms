@@ -1,39 +1,62 @@
 package nextstep.qna.domain;
 
-import ch.qos.logback.core.util.FileSize;
+import java.util.Arrays;
+import java.util.List;
 
 public class CoverImage {
+    private static List<String> POSSIBLE_IMAGE_TYPE = Arrays.asList("gif", "jpg", "JPEG", "png", "svg");
     private String url;
-    private FileSize size;
+    private long sizeInBytes;
     private String type;
     private Pixel width;
     private Pixel height;
 
-    private CoverImage(String url, FileSize size, String type, Pixel width, Pixel height) {
+    private CoverImage(String url, long sizeInBytes, String type, Pixel width, Pixel height) {
+        widthHeightCheck(width, height);
         ratioCheck(width, height);
         typeCheck(type);
-        sizeCheck(size);
-
+        sizeCheck(sizeInBytes);
         this.url = url;
-        this.size = size;
+        this.sizeInBytes = sizeInBytes;
         this.type = type;
         this.width = width;
         this.height = height;
     }
 
-    public static CoverImage of(String url, FileSize size, String type, Pixel width, Pixel height) {
-        return new CoverImage(url, size, type, width, height);
+    private void widthHeightCheck(Pixel width, Pixel height) {
+        if (width.getSize() > 300) {
+            throw new IllegalArgumentException("너비는 300보다 클 수 없습니다.");
+        }
+
+        if (height.getSize() > 200) {
+            throw new IllegalArgumentException("높이는 200보다 클 수 없습니다.");
+        }
+    }
+
+    public static CoverImage of(String url, long sizeInBytes, String type, Pixel width, Pixel height) {
+        return new CoverImage(url, sizeInBytes, type, width, height);
     }
 
     private void ratioCheck(Pixel width, Pixel height) {
-        // TODO check width , height ratio
+        if ((width.getSize() * 2) != (height.getSize() * 3)) {
+            throw new IllegalArgumentException("비율이 맞지 않습니다.");
+        }
     }
 
     private void typeCheck(String type) {
-        // TODO check type
+        if (!POSSIBLE_IMAGE_TYPE.contains(type)) {
+            throw new IllegalArgumentException("이미지 타입이 맞지 않습니다.");
+        }
     }
 
-    private void sizeCheck(FileSize size) {
+    private void sizeCheck(long sizeInBytes) {
         // TODO check size
+        if (sizeInBytes > 1024 * 1024) {
+            throw new IllegalArgumentException("이미지 사이즈가 맞지 않습니다.");
+        }
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
