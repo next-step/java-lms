@@ -14,24 +14,24 @@ public class Session {
     private SessionStatus status;
     private Price price;
     private Image image;
-    private Long course;
+    private Long courseId;
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Long course) {
-        this(id, title, sessionPeriod, price, status, null, course);
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Long courseId) {
+        this(id, title, sessionPeriod, price, status, null, courseId);
     }
 
-    public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long course) {
-        this(null, title, sessionPeriod, price, status, image, course);
+    public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long courseId) {
+        this(null, title, sessionPeriod, price, status, image, courseId);
     }
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long course) {
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long courseId) {
         this.id = id;
         this.title = title;
         this.sessionPeriod = sessionPeriod;
         this.price = price;
         this.status = status;
         this.image = image;
-        this.course = course;
+        this.courseId = courseId;
     }
 
     public String title() {
@@ -73,8 +73,8 @@ public class Session {
         return price.money();
     }
 
-    public Long course() {
-        return course;
+    public Long courseId() {
+        return courseId;
     }
 
     public int maxParticipants() {
