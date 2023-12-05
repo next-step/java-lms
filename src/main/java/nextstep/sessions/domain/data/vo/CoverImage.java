@@ -23,4 +23,20 @@ public class CoverImage {
     public ImageSize imageSize() {
         return imageSize;
     }
+
+    public String imageTypeName() {
+        return imageType.name();
+    }
+
+    public int fileSize() {
+        return imageSize.fileSize();
+    }
+
+    public int width() {
+        return imageSize.pixelSize().width();
+    }
+
+    public int height() {
+        return imageSize().pixelSize().height();
+    }
 }

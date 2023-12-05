@@ -1,0 +1,41 @@
+package nextstep.sessions.infrastructure;
+
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import nextstep.sessions.domain.data.type.ImageType;
+import nextstep.sessions.domain.data.vo.CoverImage;
+import nextstep.sessions.domain.data.vo.ImageSize;
+import nextstep.sessions.repository.CoverImageRepository;
+
+@Repository("sessionRepository")
+public class JdbcCoverImageRepository implements CoverImageRepository {
+
+    private final JdbcOperations jdbcTemplate;
+
+    public JdbcCoverImageRepository(JdbcOperations jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public CoverImage findCoverImageBySessionId(int sessionId) {
+        String sql = "select session_id, type, file_size, width, height from cover_image where session_id = ?";
+        RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
+            ImageType.valueOf(rs.getString(2)),
+            new ImageSize(rs.getInt(3), rs.getInt(4), rs.getInt(5))
+        );
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
+    }
+
+    @Override
+    public int saveCoverImage(int sessionId, CoverImage coverImage) {
+        String sql = "insert into cover_image (session_id, type, file_size, width, height) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql,
+            sessionId,
+            coverImage.imageTypeName(),
+            coverImage.fileSize(),
+            coverImage.width(),
+            coverImage.height()
+        );
+    }
+}

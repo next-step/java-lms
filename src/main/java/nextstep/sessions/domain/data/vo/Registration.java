@@ -21,4 +21,12 @@ public class Registration {
     public UserPaymentInfo userPaymentInfo() {
         return userPaymentInfo;
     }
+
+    public long userId() {
+        return userPaymentInfo().user().getId();
+    }
+
+    public long paymentId() {
+        return userPaymentInfo().payment().getId();
+    }
 }

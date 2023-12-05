@@ -22,21 +22,5 @@ values (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 
 
 insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
 values (6, 'PAID', 800000, 3, 'RECRUITING', '2023-01-01', '2023-12-31');
-insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
-values (7, 'FREE', 0, 9999, 'RECRUITING', '2023-01-01', '2023-12-31');
-insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
-values (8, 'PAID', 800000, 3, 'PREPARING', '2023-01-01', '2023-12-31');
-
-insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
-values (9, 'PAID', 800000, 3, 'RECRUITING', '2023-01-01', '2023-12-31');
 insert into registration (session_id, user_id, payment_id)
-values (9, 1, 1);
-insert into registration (session_id, user_id, payment_id)
-values (9, 2, 2);
-
-insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
-values (10, 'PAID', 800000, 2, 'RECRUITING', '2023-01-01', '2023-12-31');
-insert into registration (session_id, user_id, payment_id)
-values (10, 1, 1);
-insert into registration (session_id, user_id, payment_id)
-values (10, 2, 2);
+values (6, 1, 1);
