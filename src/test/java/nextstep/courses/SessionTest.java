@@ -1,9 +1,6 @@
 package nextstep.courses;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionImage;
-import nextstep.courses.domain.SessionImages;
-import nextstep.courses.enumeration.ExtensionType;
+import nextstep.courses.domain.*;
 import nextstep.courses.enumeration.SessionStatus;
 import nextstep.courses.exception.CanNotRegisterSessionException;
 import nextstep.courses.exception.ExceedStudentsCountException;
@@ -25,33 +22,34 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
-    private Session sessionInReady;
-    private Session freeSession;
-    private Session costMoneySession;
+    private FreeSession sessionInReady;
+    private FreeSession freeSession;
+    private CostMoneySession costMoneySession;
     private Payment paymentMatch;
     private Payment paymentMisMatch;
 
     @BeforeEach
     void setUp() {
-        sessionInReady = Session.ofFree(1L,
+        sessionInReady = FreeSession.of(1L,
+                1L,
                 "무료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
-                0,
+                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 SessionStatus.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        freeSession = Session.ofFree(1L,
+        freeSession = FreeSession.of(1L,
+                1L,
                 "무료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
-                0,
+                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 SessionStatus.REGISTERING,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        costMoneySession = Session.ofCostMoney(1L,
+        costMoneySession = CostMoneySession.of(1L,
+                1L,
                 "유료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
+                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 1,
                 SessionStatus.REGISTERING,
                 2000,
@@ -65,19 +63,20 @@ public class SessionTest {
     @Test
     @DisplayName("강의의 시작일과 종료일이 없다면 예외가 발생한다.")
     void courseWithMultipleSessionTest() {
-        assertThatThrownBy(() -> Session.ofFree(1L,
+        assertThatThrownBy(() -> FreeSession.of(1L,
+                1L,
                 "무료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
-                0,
+                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 SessionStatus.READY,
                 null,
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("강의 시작일이 없습니다.");
 
-        assertThatThrownBy(() -> Session.ofCostMoney(1L,
+        assertThatThrownBy(() -> CostMoneySession.of(1L,
+                1L,
                 "유료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
+                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 10,
                 SessionStatus.READY,
                 2000,
