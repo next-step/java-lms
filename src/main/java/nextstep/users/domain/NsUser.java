@@ -120,6 +120,9 @@ public class NsUser {
     }
 
     public boolean hasPayment(BigDecimal price) {
+        if (Objects.isNull(price)) {
+            return false;
+        }
         return this.payment.samePrice(price);
     }
 
