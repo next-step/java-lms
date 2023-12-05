@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 class SessionChargeTest {
     public static final SessionCharge FREE = new SessionCharge(false, 0, 0);
     public static final SessionCharge CHARGE_1000 = new SessionCharge(true, 1000, 10);
+    public static final SessionCharge CHARGE_100 = new SessionCharge(true, 100, 1);
 
     @DisplayName("무료 강의는 수강료와 수강 인원에 제한이 없이 객체를 생성한다.")
     @Test
@@ -29,5 +30,15 @@ class SessionChargeTest {
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new SessionCharge(true, 10000, 0))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("유료 강의의 모집 인원이 마감되면 IllegalStateException을 던진다.")
+    @Test
+    void addStudentTest() {
+        SessionCharge sessionCharge = new SessionCharge(true, 10000, 1);
+        sessionCharge.addStudent();
+
+        assertThatThrownBy(() -> sessionCharge.addStudent())
+                .isInstanceOf(IllegalStateException.class);
     }
 }
