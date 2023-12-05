@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public Answer changeDeleted(NsUser loginUser) {
         validateOwner(loginUser);
         this.deleted = true;
@@ -63,11 +58,7 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public void validateOwner(NsUser loginUser) {
+    private void validateOwner(NsUser loginUser) {
         if(!writer.equals(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
