@@ -21,4 +21,12 @@ public class SessionDate {
 
         Assert.isTrue(startDate.isBefore(endDate), "start date cannot be after end date");
     }
+
+    public LocalDateTime getStartDate() {
+        return this.startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return this.endDate;
+    }
 }

@@ -2,63 +2,104 @@ package nextstep.courses.domain.session;
 
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public class Session {
-    private SessionMakingData sessionMakingData;
-    private SessionStudent sessionStudent;
-    private SessionStatus status;
+    private Long id;
+    private String title;
+    private SessionDate sessionDate;
+    private CoverImage coverImage;
+    private Enrollment enrollment;
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(new SessionInfo(title, price), new SessionDate(startDate, endDate), null);
+        this(title, price, new SessionDate(startDate, endDate), null);
     }
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        this(new SessionInfo(title, price), new SessionDate(startDate, endDate), coverImage);
+        this(title, price, new SessionDate(startDate, endDate), coverImage);
     }
 
     public Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate) {
-        this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), null);
+        this(title, 0L, new SessionDate(startDate, endDate), null);
     }
 
-    public Session(final String title, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage) {
-        this(new SessionInfo(title, 0L), new SessionDate(startDate, endDate), coverImage);
+    public Session(final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
+        this(0L, title, price, sessionDate, coverImage, Collections.emptyList());
     }
 
-    public Session(final SessionInfo sessionInfo, final SessionDate sessionDate, CoverImage coverImage) {
-        this.sessionMakingData = new SessionMakingData(sessionInfo, sessionDate, coverImage);
-
-        this.status = SessionStatus.READY;
-        this.sessionStudent = new SessionStudent(15);
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, List<NsUser> nsUsers) {
+        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers);
     }
 
-    public long getPrice() {
-        return this.sessionMakingData.getPrice();
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage, List<NsUser> nsUsers) {
+        validateSession(title, sessionDate);
+
+        this.id = id;
+        this.title = title;
+        this.enrollment = new Enrollment(price, nsUsers);
+        this.sessionDate = sessionDate;
+        this.coverImage = validateCoverImage(coverImage);
     }
 
-    public int getCurrentStudentCount() {
-        return this.sessionStudent.getCurrentStudentCount();
+    private void validateSession(final String title, final SessionDate sessionDate) {
+        Assert.hasText(title, "title cannot be blank");
+        Assert.notNull(sessionDate, "session date cannot be null");
     }
 
-    public boolean isReachedMaxStudentLimit() {
-        return this.sessionStudent.isReachedMaxStudentLimit();
+    private CoverImage validateCoverImage(final CoverImage coverImage) {
+        if (coverImage == null) {
+            return CoverImage.defaultCoverImage();
+        }
+
+        return coverImage;
     }
 
-    public void increaseEnrollment(final NsUser user) {
-        this.sessionStudent.increaseStudentCount(user);
+    public String getTitle() {
+        return this.title;
     }
 
-    private void setStatus(SessionStatus status) {
-        this.status = status;
+    public LocalDateTime getStartDate() {
+        return this.sessionDate.getStartDate();
     }
 
-    public boolean isNotRecruiting() {
-        return !this.status.isRecruiting();
+    public LocalDateTime getEndDate() {
+        return this.sessionDate.getEndDate();
+    }
+
+    public int getMaxStudentLimit() {
+        return this.enrollment.getMaxStudentLimit();
+    }
+
+    public void changeMaxStudentLimit(final int maxStudentLimit) {
+        this.enrollment.changeMaxStudentLimit(maxStudentLimit);
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public CoverImage getCoverImage() {
-        return this.sessionMakingData.getCoverImage();
+        return this.coverImage;
+    }
+
+    public long getPrice() {
+        return this.enrollment.getPrice();
+    }
+
+    public int getCurrentStudentCount() {
+        return this.enrollment.getCurrentStudentCount();
+    }
+
+    private void setStatus(SessionStatus status) {
+        enrollment.setStatus(status);
+    }
+
+    public boolean isNotRecruiting() {
+        return !enrollment.isRecruiting();
     }
 
     public void ready() {
@@ -73,29 +114,19 @@ public class Session {
         setStatus(SessionStatus.CLOSED);
     }
 
-    private boolean isPaidSession() {
-        return this.sessionMakingData.isPaidSession();
-    }
-
     public void enroll(Payment payment, NsUser user) {
-        if (isNotRecruiting()) {
-            throw new IllegalStateException("session is not recruiting");
-        }
-
-        if (isPaidSession()) {
-            validateIfPaidSession(payment);
-        }
-
-        increaseEnrollment(user);
+        enrollment.enroll(payment, user);
     }
 
-    private void validateIfPaidSession(final Payment payment) {
-        if (payment.isNotPaid(getPrice())) {
-            throw new IllegalStateException("paid amount is different with price");
-        }
+    public String getSessionStatusString() {
+        return this.enrollment.getSessionStatusString();
+    }
 
-        if (isReachedMaxStudentLimit()) {
-            throw new IllegalStateException("max student limit is reached");
-        }
+    public void changeSessionStatus(final SessionStatus sessionStatus) {
+        setStatus(sessionStatus);
+    }
+
+    public List<NsUser> getUsers() {
+        return this.enrollment.getUsers();
     }
 }
