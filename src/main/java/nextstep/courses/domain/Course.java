@@ -13,6 +13,8 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
+    private Lectures lectures = new Lectures();
+
     public Course() {
     }
 
@@ -49,5 +51,13 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addLecture(Lecture lecture) {
+        this.lectures.add(lecture);
+    }
+
+    public int numberOfLecture() {
+        return this.lectures.size();
     }
 }
