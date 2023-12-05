@@ -10,34 +10,36 @@ public class ImageTest {
     public static final String IMAGE_URL = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
 
     @Test
-    @DisplayName("이미지 크기는 1MB 이하여야 한다.")
-    void imageSizeLessThan1MB() {
+    @DisplayName("이미지 크기는 최대 크기 이하 여야 한다.")
+    void imageSizeLessThanMaximumSize() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            new Image(IMAGE_URL, 1024, 1025, ImageType.PNG);
+            new Image(IMAGE_URL, Size.MAXIMUM_WIDTH, Size.MAXIMUM_HEIGHT+1, ImageType.PNG);
+            new Image(IMAGE_URL, Size.MAXIMUM_WIDTH+1, Size.MAXIMUM_HEIGHT, ImageType.PNG);
         });
     }
 
     @Test
-    @DisplayName("이미지의 가로는 300픽셀 이상이어야한다.")
-    void imageWidthSizeEqualsOrMoreThan300() {
+    @DisplayName("이미지의 가로는 최소 픽셀 이상이어야한다.")
+    void imageWidthSizeEqualsOrMoreThanMinimumPixel() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            new Image(IMAGE_URL,299, 1024, ImageType.PNG);
+            new Image(IMAGE_URL,Size.MINIMUM_WIDTH-1, Size.MINIMUM_HEIGHT, ImageType.PNG);
         });
     }
 
     @Test
-    @DisplayName("이미지의 세로는 200픽셀 이상이어야한다.")
-    void imageHeightSizeEqualsOrMoreThan200() {
+    @DisplayName("이미지의 세로는 최소 픽셀 이상이어야한다.")
+    void imageHeightSizeEqualsOrMoreThanMinimumPixel() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            new Image(IMAGE_URL, 1024, 199, ImageType.PNG);
+            new Image(IMAGE_URL, Size.MINIMUM_WIDTH, Size.MAXIMUM_HEIGHT-1, ImageType.PNG);
         });
     }
 
     @Test
-    @DisplayName("이미지의 가로와 세율의 비율은 2/3 여야한다.")
-    void imageRateBetweenWidthAndHeightShouldBe_TwoDividesThree() {
+    @DisplayName("이미지의 가로와 세율의 비율은 정해진 비율이어야한다.")
+    void imageRateBetweenWidthAndHeightShouldBe_FixedRate() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            new Image(IMAGE_URL ,400, 200, ImageType.PNG);
+            new Image(IMAGE_URL , new Size(Size.RATE_OF_WIDTH+1, Size.RATE_OF_HEIGHT), ImageType.PNG);
+            new Image(IMAGE_URL , new Size(Size.RATE_OF_WIDTH, Size.RATE_OF_HEIGHT+1), ImageType.PNG);
         });
     }
 }

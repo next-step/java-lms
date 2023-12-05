@@ -1,27 +1,32 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private Long creatorId;
+    private final Long creatorId;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
-    private List<Session> sessions;
-
-    public Course() {
-    }
-
+    private List<Session> sessions = new ArrayList<>();
 
     public List<Session> sessions() {
         return sessions;
+    }
+
+    public boolean contains(Session session) {
+        return sessions.contains(session);
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
     }
 
     public Course(String title, Long creatorId) {
