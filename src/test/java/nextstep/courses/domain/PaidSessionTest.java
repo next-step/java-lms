@@ -30,7 +30,7 @@ class PaidSessionTest {
 
     @DisplayName("강의 인원을 초과했을 때 수강신청을 할 경우 예외가 발생한다.")
     @Test
-    void test() {
+    void if_attendees_number_are_exceed_then_throw_exception() {
         TotalAttendee total = new TotalAttendee(1, 1);
         Price price = new Price(1000L);
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
