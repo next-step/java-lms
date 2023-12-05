@@ -34,7 +34,7 @@ public class ImageRepositoryTest {
         assertThat(result).isOne();
     }
 
-    @DisplayName("id로 조회 테스트")
+    @DisplayName("id로 이미지 조회 테스트")
     @Test
     void id로_조회_테스트() {
         ImageName imageName = new ImageName("image.png");

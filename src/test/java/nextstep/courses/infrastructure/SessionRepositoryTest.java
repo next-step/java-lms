@@ -24,6 +24,7 @@ public class SessionRepositoryTest {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     }
 
+    @DisplayName("강의 저장 테스트")
     @Test
     void 생성테스트() {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
@@ -33,7 +34,7 @@ public class SessionRepositoryTest {
         assertThat(result).isOne();
     }
 
-    @DisplayName("id로 조회 테스트")
+    @DisplayName("id로 강의 조회 테스트")
     @Test
     void id로_조회_테스트() {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
