@@ -50,4 +50,8 @@ public class Price {
     public int maxParticipants() {
         return participantManager.max();
     }
+
+    public static Price of(boolean isFree, int money, ParticipantManager participantManager) {
+        return new Price(isFree, money, participantManager);
+    }
 }

@@ -30,4 +30,8 @@ public class SessionPeriod {
     public LocalDateTime endDate() {
         return endDateTime;
     }
+
+    public static SessionPeriod of(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return new SessionPeriod(startDateTime, endDateTime);
+    }
 }

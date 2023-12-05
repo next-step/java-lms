@@ -35,4 +35,8 @@ public class ParticipantManager {
     public int nowCount() {
         return sessionParticipants.count();
     }
+
+    public static ParticipantManager of(int maxParticipants) {
+        return new ParticipantManager(maxParticipants);
+    }
 }

@@ -32,15 +32,13 @@ public class JdbcSessionRepository implements SessionRepository {
             String title = rs.getString(2);
             LocalDateTime startDateTime = toLocalDateTime(rs.getTimestamp(3));
             LocalDateTime endDateTime = toLocalDateTime(rs.getTimestamp(4));
-            SessionPeriod sessionPeriod = new SessionPeriod(startDateTime, endDateTime);
             String status = rs.getString(5);
             boolean isFree = rs.getBoolean(6);
             int money = rs.getInt(7);
             int maxParticipants = rs.getInt(8);
-            ParticipantManager participantManager = new ParticipantManager(maxParticipants);
-            Price price = new Price(isFree, money, participantManager);
             Long courseId = rs.getLong(9);
-            return new Session(sessionId, title, sessionPeriod, price, SessionStatus.valueOf(status), courseId);
+            return new Session(sessionId, title, SessionPeriod.of(startDateTime, endDateTime),
+                    Price.of(isFree, money, ParticipantManager.of(maxParticipants)), SessionStatus.valueOf(status), courseId);
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
