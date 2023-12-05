@@ -20,6 +20,7 @@ public class Answers {
 
     /**
      * 모든 Answer의 작성자가 주어진 writer와 일치할 경우에 삭제 표식을 남깁니다.
+     * 주의! 컬렉션에서 제거하는 것을 의미하지 않습니다! 삭제 표식만 남깁니다.
      * 일치하지 않을 경우 예외가 던져집니다.
      * @param writer 검사 조건
      * @return 삭제 후 생성된 DeleteHistroy 목록

@@ -69,13 +69,6 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    /**
-     * 이 질문을 삭제합니다.
-     *
-     * @param writer 질문을 작성한 사람과 writer가 일치할 경우에만 삭제합니다.
-     *
-     * @return 삭제 정보. 삭제되지 않았다면 null을 반환합니다.
-     */
     public DeleteHistory deleteIfWriter(NsUser writer) {
         if (!isOwner(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
