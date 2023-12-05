@@ -34,4 +34,19 @@ public class JdbcImageRepository implements ImageRepository {
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
+
+    @Override
+    public Image findBySessionId(Long findSessionId) {
+        String sql = "select id, name, volume, width, height, session_id from image where session_id = ?";
+        RowMapper<Image> rowMapper = (rs, rowNum) -> {
+            Long imageId = rs.getLong(1);
+            String name = rs.getString(2);
+            int volume = rs.getInt(3);
+            int width = rs.getInt(4);
+            int height = rs.getInt(5);
+            Long sessionId = rs.getLong(6);
+            return new Image(imageId, ImageName.of(name), ImageSize.of(volume), ImagePixel.of(width, height), sessionId);
+        };
+        return jdbcTemplate.queryForObject(sql, rowMapper, findSessionId);
+    }
 }
