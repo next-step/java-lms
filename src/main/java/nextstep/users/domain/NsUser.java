@@ -55,6 +55,10 @@ public class NsUser {
         return name;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void update(NsUser loginUser, NsUser target) {
         if (!matchUserId(loginUser.getUserId())) {
             throw new UnAuthorizedException();
