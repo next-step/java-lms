@@ -11,29 +11,31 @@ public class Session {
 
     private Period period;
     private SessionStatus status;
-
     private Students students;
-
     private SessionType sessionType;
+    private SessionImage sessionImage;
 
     public Session() {
     }
 
-    public Session(SessionStatus status) {
-        this.status = status;
-        this.sessionType = new SessionType();
-        this.students = new Students();
+    public Session(SessionStatus status) throws PeriodException {
+        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
     }
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
-        this.status = sessionStatus;
-        this.period = new Period(startDate, endDate);
+        this(new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), new SessionImage());
     }
 
-    public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) {
+    public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) throws PeriodException {
+        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, new SessionImage());
+    }
+
+    public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this.period = period;
         this.status = status;
-        this.students = new Students(nsUsers);
+        this.students = students;
         this.sessionType = sessionType;
+        this.sessionImage = sessionImage;
     }
 
     public Students register(NsUser user) throws CannotRegisterException {
