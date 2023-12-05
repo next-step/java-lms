@@ -80,4 +80,8 @@ public class Session {
     public int maxParticipants() {
         return price.maxParticipants();
     }
+
+    public Image image() {
+        return image;
+    }
 }

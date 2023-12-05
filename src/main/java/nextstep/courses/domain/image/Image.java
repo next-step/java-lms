@@ -19,6 +19,9 @@ public class Image {
     public Image(ImageName name, ImageSize size, ImagePixel pixel, Long sessionId) {
         this(null, name, size, pixel, sessionId);
     }
+    public Image(Image image) {
+        this(image.id, image.name, image.size, image.pixel, image.sessionId);
+    }
 
     public Long id() {
         return id;

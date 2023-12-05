@@ -2,7 +2,7 @@ package nextstep.courses.domain.image;
 
 public interface ImageRepository {
 
-    int save(Image course);
+    int save(Image image);
 
     Image findById(Long id);
 
