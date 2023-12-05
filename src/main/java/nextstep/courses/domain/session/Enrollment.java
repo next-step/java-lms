@@ -9,6 +9,7 @@ import java.util.List;
 public class Enrollment {
     private Long price;
     private ChargeStatus chargeStatus;
+    private RecruitingStatus recruitingStatus;
     private SessionStatus status;
     private SessionStudent sessionStudent;
 
