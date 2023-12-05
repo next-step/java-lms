@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.NotCorrectPeriodException;
+import nextstep.courses.exception.NotCorrectTimeException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,20 +13,13 @@ public class Period {
 
     public Period(LocalDateTime startAt, LocalDateTime endAt) {
         validateStartAt(startAt, endAt);
-        validateEndAt(startAt, endAt);
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
-    private void validateEndAt(LocalDateTime startAt, LocalDateTime endAt) {
-        if (endAt.isBefore(startAt)) {
-            throw new NotCorrectPeriodException();
-        }
-    }
-
     private void validateStartAt(LocalDateTime startAt, LocalDateTime endAt) {
         if (startAt.isAfter(endAt)) {
-            throw new NotCorrectPeriodException();
+            throw new NotCorrectTimeException(startAt, endAt);
         }
     }
 
