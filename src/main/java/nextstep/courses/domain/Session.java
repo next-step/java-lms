@@ -7,25 +7,29 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
-    protected Long sessionId;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
     protected SessionState state;
     protected Participants participants;
 
 
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(createdAt, updatedAt);
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
+        this(1L, coverImage, startDate, endDate, state, createdAt, null);
+    }
+
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(1L, coverImage, startDate, endDate, state, createdAt, updatedAt);
+    }
+
+    protected Session(long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.state = state;
         this.participants = new Participants(new HashSet<>());
-    }
-
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
-        this(id, coverImage, startDate, endDate, state, createdAt, null);
     }
 
 
@@ -41,7 +45,38 @@ public abstract class Session extends BaseEntity {
         return progressPeriod;
     }
 
-    public String getState() {
+    public String state() {
         return state.toString();
+    }
+
+    public CoverImage coverImage() {
+        return coverImage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Session session = (Session) o;
+        return Objects.equals(coverImage, session.coverImage) && Objects.equals(progressPeriod, session.progressPeriod) && state == session.state && Objects.equals(participants, session.participants);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), coverImage, progressPeriod, state, participants);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id() +
+                "coverImage=" + coverImage +
+                ", progressPeriod=" + progressPeriod +
+                ", state=" + state +
+                ", participants=" + participants +
+                ", createdAt= " + createdAt() +
+                ", updateAt=" + updatedAt() +
+                '}';
     }
 }

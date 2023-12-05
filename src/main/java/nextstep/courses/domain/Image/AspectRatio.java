@@ -14,7 +14,6 @@ public class AspectRatio {
     public AspectRatio(int width, int height) {
         validatePixel(width, height);
         validateRatio(width, height);
-
         this.width = width;
         this.height = height;
     }
@@ -35,6 +34,14 @@ public class AspectRatio {
         return width * WIDTH_RATIO != height * HEIGHT_RATIO;
     }
 
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,5 +53,14 @@ public class AspectRatio {
     @Override
     public int hashCode() {
         return Objects.hash(width, height);
+    }
+
+
+    @Override
+    public String toString() {
+        return "AspectRatio{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
     }
 }

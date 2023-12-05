@@ -12,8 +12,12 @@ public class FreeSession extends Session {
         super(id, image, start, end, state, createdAt, updatedAt);
     }
 
-    public FreeSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt) {
-        super(id, image, start, end, state, createdAt, null);
+    public FreeSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt) {
+        super(image, start, end, state, createdAt);
+    }
+
+    public FreeSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(image, start, end, state, createdAt, updatedAt);
     }
 
 

@@ -15,21 +15,20 @@ public class CourseTest {
     void add_session() {
         LocalDateTime now = LocalDateTime.now();
         FreeSession freeSession = new FreeSession(
-                1L,
-                new CoverImage(1000_000, "gif", 300, 200),
+                new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionState.PREPARING,
                 now
         );
         PaidSession paidSession = new PaidSession(
-                2L,
-                new CoverImage(1000_000, "gif", 300, 200),
+                new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionState.RECRUITING,
                 800_000L,
                 1
+                , now
         );
 
         Course course = new Course("TDD, 클린 코드 with Java", 1L, now);

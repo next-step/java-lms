@@ -6,23 +6,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class Course extends BaseEntity {
-    private Long id;
     private String title;
     private Long creatorId;
     private List<Session> sessions = new ArrayList<>();
 
 
-    public Course() {
-
-    }
-
     public Course(String title, Long creatorId, LocalDateTime createdAt) {
-        this(0L, title, creatorId, createdAt, null);
+        this(1L, title, creatorId, createdAt, null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(createdAt, updatedAt);
-        this.id = id;
+    public Course(String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(1L, title, creatorId, createdAt, updatedAt);
+
+    }
+
+    public Course(long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
 
@@ -48,9 +47,12 @@ public class Course extends BaseEntity {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
+                "id=" + id() +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
+                ", sessions=" + sessions +
+                ", createAt=" + createdAt() +
+                ", updateAt=" + updatedAt() +
                 '}';
     }
 }

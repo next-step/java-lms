@@ -6,14 +6,27 @@ import nextstep.courses.exception.ParticipantsException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PaidSession extends Session {
 
     private Amount sessionFee;
     private int maxApplyCount;
 
-    public PaidSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max) {
-        super(id, image, start, end, state);
+    public PaidSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, image, start, end, state, createdAt, updatedAt);
+        this.sessionFee = new Amount(fee);
+        this.maxApplyCount = max;
+    }
+
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(image, start, end, state, createdAt, updatedAt);
+        this.sessionFee = new Amount(fee);
+        this.maxApplyCount = max;
+    }
+
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt) {
+        super(image, start, end, state, createdAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }

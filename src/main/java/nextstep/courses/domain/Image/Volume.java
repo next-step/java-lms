@@ -18,6 +18,10 @@ public class Volume {
         }
     }
 
+    public long find() {
+        return value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,5 +33,10 @@ public class Volume {
     @Override
     public int hashCode() {
         return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 }
