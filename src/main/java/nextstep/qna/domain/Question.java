@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.collection.Answers;
 import nextstep.qna.domain.collection.DeleteHistoryBulk;
 import nextstep.users.domain.NsUser;
 
@@ -17,7 +18,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -49,7 +50,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -70,10 +71,7 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        DeleteHistoryBulk deleteHistories = new DeleteHistoryBulk();
-        for (Answer answer : this.answers) {
-            deleteHistories.add(deleteAnswer(writer, answer));
-        }
+        DeleteHistoryBulk deleteHistories = this.answers.markDeletionAllIfWriter(writer);
 
         this.deleted = true;
         deleteHistories.addAtFisrt(new DeleteHistory(ContentType.QUESTION, this.id, writer));
@@ -81,12 +79,4 @@ public class Question {
         return deleteHistories;
     }
 
-    private static DeleteHistory deleteAnswer(NsUser writer, Answer answer) {
-        try {
-            return answer.deleteIfWriter(writer);
-        }
-        catch (CannotDeleteException reason) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
 }
