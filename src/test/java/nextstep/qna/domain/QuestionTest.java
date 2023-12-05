@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ public class QuestionTest {
     @Test
     void canDeleteIfYouHavePermission() throws CannotDeleteException {
         NsUser writer = Q1.getWriter();
-        assertThatNoException().isThrownBy(() -> Q1.delete(writer));
+        assertThatNoException().isThrownBy(() -> Q1.deleteQuestionAndRelatedAnswer(writer, LocalDateTime.now()));
         assertThat(Q1.isDeleted()).isTrue();
     }
 
@@ -28,7 +28,7 @@ public class QuestionTest {
     @Test
     void canNotDeleteIfYouDontHavePermission() throws CannotDeleteException {
         NsUser writer = Q1.getWriter();
-        assertThatThrownBy(() -> Q2.delete(writer)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> Q2.deleteQuestionAndRelatedAnswer(writer, LocalDateTime.now())).isInstanceOf(CannotDeleteException.class);
         assertThat(Q2.isDeleted()).isFalse();
     }
 
