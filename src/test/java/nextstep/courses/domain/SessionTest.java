@@ -13,6 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SessionTest {
 
+
+    @Test
+    void 강의는_이미지_정보가_등록되어야한다() {
+        assertThatThrownBy(() -> {
+            new Session(new SessionImage());
+        }).isInstanceOf(IllegalArgumentException.class);
+
+    }
     @Test
     void 강의는_모집중일때_신청_가능하다() throws CannotRegisterException, PeriodException {
         Session session = new Session(SessionStatus.OPEN);
@@ -69,4 +77,6 @@ class SessionTest {
         Students students = new Students(Set.of(NsUser.GUEST_USER, nsUser));
         assertThat(session.register(nsUser, new Payment("id", 1L, 1L, 1000L))).isEqualTo(students);
     }
+
+
 }

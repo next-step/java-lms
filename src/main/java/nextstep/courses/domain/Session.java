@@ -4,7 +4,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 public class Session {
@@ -18,6 +17,9 @@ public class Session {
     public Session() {
     }
 
+    public Session(SessionImage image) throws PeriodException {
+        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), SessionStatus.WAITING, new Students(), new SessionType(), image);
+    }
     public Session(SessionStatus status) throws PeriodException {
         this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
     }
@@ -35,6 +37,9 @@ public class Session {
         this.status = status;
         this.students = students;
         this.sessionType = sessionType;
+        if (sessionImage == null) {
+            throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
+        }
         this.sessionImage = sessionImage;
     }
 
