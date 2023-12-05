@@ -10,7 +10,7 @@ public class SessionTest {
     void success() {
         Session session = new Session(
                 1L,
-                new Image(1000, Image.Type.JPEG, 300, 200),
+                new Image(1000, "jpeg", 300, 200),
                 LocalDate.now(),
                 LocalDate.now(),
                 Session.Type.FREE,

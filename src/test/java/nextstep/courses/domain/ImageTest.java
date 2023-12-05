@@ -10,7 +10,7 @@ public class ImageTest {
         Image image = new Image(
                 1000L,
                 1000,
-                Image.Type.GIF,
+                "gif",
                 300,
                 200,
                 LocalDateTime.now(),
