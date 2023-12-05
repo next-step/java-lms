@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import nextstep.courses.domain.enums.PaidType;
 import nextstep.courses.domain.enums.Status;
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.registration.SessionCapacity;
 import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.courses.domain.session.registration.Students;
@@ -24,6 +23,7 @@ public class SessionTest {
 		Session session = new Session(
 			LocalDateTime.now(), LocalDateTime.now(), 1L, "임시 강의",null,null, Status.READY,
 			new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(1), new Students())
+			,null
 		);
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> session.apply(JAVAJIGI, 50000))

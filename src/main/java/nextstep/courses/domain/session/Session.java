@@ -15,11 +15,12 @@ public class Session extends BaseTimeEntity {
 	private final Image image;
 	private final Status status;
 	private final SessionRegistration sessionRegistration;
+	private final Long courseId;
 
 	public Session(
-		LocalDateTime createdAt, LocalDateTime updatedAt,
-		Long id, String title, Period period, Image image,
-		Status status, SessionRegistration sessionRegistration
+		LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String title,
+		Period period, Image image, Status status,
+		SessionRegistration sessionRegistration, Long courseId
 	) {
 		super(createdAt, updatedAt);
 		this.id = id;
@@ -28,6 +29,7 @@ public class Session extends BaseTimeEntity {
 		this.image = image;
 		this.status = status;
 		this.sessionRegistration = sessionRegistration;
+		this.courseId = courseId;
 	}
 
 	public void apply(NsUser nsUser, long amount) {
