@@ -1,7 +1,9 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.image.ImageSize;
-import nextstep.courses.exception.NotValidSizeException;
+import nextstep.courses.exception.NotValidHeightException;
+import nextstep.courses.exception.NotValidRatioException;
+import nextstep.courses.exception.NotValidWidthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +18,7 @@ class ImageSizeTest {
         double width = 200;
 
         assertThatThrownBy(() ->  new ImageSize(height, width))
-                .isInstanceOf(NotValidSizeException.class);
+                .isInstanceOf(NotValidHeightException.class);
     }
 
     @DisplayName("이미지 가로가 200px 이하일 경우 예외가 발생한다.")
@@ -26,7 +28,7 @@ class ImageSizeTest {
         double width = 199;
 
         assertThatThrownBy(() ->  new ImageSize(height, width))
-                .isInstanceOf(NotValidSizeException.class);
+                .isInstanceOf(NotValidWidthException.class);
     }
 
     @DisplayName("이미지 비율이 3:2가 아닐 경우 예외가 발생한다.")
@@ -36,6 +38,6 @@ class ImageSizeTest {
         double width = 200;
 
         assertThatThrownBy(() ->  new ImageSize(height, width))
-                .isInstanceOf(NotValidSizeException.class);
+                .isInstanceOf(NotValidRatioException.class);
     }
 }

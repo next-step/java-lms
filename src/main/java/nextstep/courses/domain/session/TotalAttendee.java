@@ -42,7 +42,7 @@ public class TotalAttendee {
 
     private void validateExceedTotalNumber() {
         if (this.currentAttendees >= this.totalNumber) {
-            throw new ExceedAttendeesException();
+            throw new ExceedAttendeesException(this.currentAttendees);
         }
     }
 

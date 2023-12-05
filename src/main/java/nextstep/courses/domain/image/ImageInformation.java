@@ -21,7 +21,7 @@ public class ImageInformation {
 
     private void validateVolume(long volume) {
         if (volume > MAXIMUM_VOLUME) {
-            throw new ExceedLimitedVolumeException();
+            throw new ExceedLimitedVolumeException(volume);
         }
     }
 }

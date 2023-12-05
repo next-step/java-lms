@@ -1,6 +1,8 @@
 package nextstep.courses.domain.image;
 
-import nextstep.courses.exception.NotValidSizeException;
+import nextstep.courses.exception.NotValidHeightException;
+import nextstep.courses.exception.NotValidRatioException;
+import nextstep.courses.exception.NotValidWidthException;
 
 public class ImageSize {
 
@@ -23,13 +25,24 @@ public class ImageSize {
     private void validateRatio(double height, double width) {
         double ratio = height / width;
         if (Math.abs(ratio - RATIO) > FLOATING_POINT_ERROR_RATIO) {
-            throw new NotValidSizeException();
+            throw new NotValidRatioException(ratio);
         }
     }
 
     private void validateSize(double height, double width) {
-        if (height < MINIMUM_HEIGHT || width < MINIMUM_WIDTH) {
-            throw new NotValidSizeException();
+        validateHeight(height);
+        validateWidth(width);
+    }
+
+    private void validateWidth(double width) {
+        if (width < MINIMUM_WIDTH) {
+            throw new NotValidWidthException(width);
+        }
+    }
+
+    private void validateHeight(double height) {
+        if (height < MINIMUM_HEIGHT) {
+            throw new NotValidHeightException(height);
         }
     }
 }
