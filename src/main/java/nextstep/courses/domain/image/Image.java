@@ -19,4 +19,20 @@ public class Image {
     public Image(ImageName name, ImageSize size, ImagePixel pixel, Long sessionId) {
         this(null, name, size, pixel, sessionId);
     }
+
+    public String name() {
+        return name.name();
+    }
+
+    public int size() {
+        return size.value();
+    }
+
+    public int height() {
+        return pixel.height();
+    }
+
+    public int width() {
+        return pixel.width();
+    }
 }
