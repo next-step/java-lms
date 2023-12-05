@@ -41,6 +41,12 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
         return new SessionUsers(userSet);
     }
 
+    @Override
+    public void addUserFor(long sessionId, long userId) {
+        String sql = "insert into user_session(session_id, user_id) values(?,?)";
+        this.jdbcTemplate.update(sql, sessionId, userId);
+    }
+
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

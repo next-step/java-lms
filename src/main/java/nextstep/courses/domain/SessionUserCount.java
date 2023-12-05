@@ -28,4 +28,5 @@ public class SessionUserCount {
             throw new SessionUserCountException("제한된 수강 신청 인원을 초과 하였습니다.");
         }
     }
+
 }

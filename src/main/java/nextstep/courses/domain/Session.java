@@ -80,6 +80,10 @@ public class Session {
         return sessionType == SessionType.PAID;
     }
 
+    public int userCount(){
+        return sessionUserCount.userCount();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

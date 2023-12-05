@@ -19,7 +19,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<Session> findBy(long sessionId) {
+    public Optional<Session> findBy(long sessionId, SessionUsers sessionUsers) {
         String sql = "select id, course_id, start_date, end_date, price, " +
                 "state, type, user_count, max_user_count, image_size, image_extension, image_width, " +
                 "image_height " +
@@ -42,7 +42,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 ),
                 SessionState.valueOf(rs.getString(6)),
                 SessionType.valueOf(rs.getString(7)),
-//                sessionUsers,
+                sessionUsers,
                 new SessionUserCount(
                         rs.getInt(8),
                         rs.getInt(9)
@@ -57,4 +57,11 @@ public class JdbcSessionRepository implements SessionRepository {
         }
         return date.toLocalDate();
     }
+
+    @Override
+    public void updateCountBy(int userCount, long sessionId) {
+        String sql = "update session set user_count=? where id=?";
+        this.jdbcTemplate.update(sql, userCount, sessionId);
+    }
+
 }

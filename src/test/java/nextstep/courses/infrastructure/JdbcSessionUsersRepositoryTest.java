@@ -36,4 +36,16 @@ class JdbcSessionUsersRepositoryTest {
                 .extracting("id")
                 .containsExactly(1L, 2L);
     }
+
+    @Test
+    @DisplayName("성공 - 유저를 강의에 등록 한다.")
+    void success_register_user() {
+        sessionUsersRepository.addUserFor(1L, 3L);
+        SessionUsers sessionUsers = sessionUsersRepository.findBy(1L);
+        Set<NsUser> users = sessionUsers.users();
+
+        assertThat(users).hasSize(3)
+                .extracting("id")
+                .containsExactly(1L, 2L, 3L);
+    }
 }
