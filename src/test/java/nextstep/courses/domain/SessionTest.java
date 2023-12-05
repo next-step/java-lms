@@ -28,7 +28,7 @@ class SessionTest {
     public void assertSessionRegister() {
         freeSession.register(course);
 
-        assertThat(course.sessionList().size()).isEqualTo(1);
+        assertThat(course.sessionList().numbOfSessions()).isEqualTo(1);
     }
 
     @Test
@@ -59,5 +59,6 @@ class SessionTest {
         paidSession.register(course);
 
         assertThat(paidSession.isAvailable()).isFalse();
+        System.out.println(course.sessionList());
     }
 }

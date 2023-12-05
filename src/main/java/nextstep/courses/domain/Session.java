@@ -49,12 +49,12 @@ public class Session {
     }
 
     public void register(Course course) {
-        Long courseId = course.addSession(this);
-        this.courseId = courseId;
-
         if (SessionType.PAID.equals(this.sessionType)) {
             this.availableSlots--;
         }
+
+        Long courseId = course.addSession(this);
+        this.courseId = courseId;
     }
 
     public boolean isPaymentCorrect(Payment payment) {
