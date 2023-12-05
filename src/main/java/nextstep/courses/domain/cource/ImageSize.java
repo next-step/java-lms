@@ -38,4 +38,20 @@ public class ImageSize {
         return new ImageSize(width, height);
     }
 
+
+    public long width() {
+        return width;
+    }
+
+    public long height() {
+        return height;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSize{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }
