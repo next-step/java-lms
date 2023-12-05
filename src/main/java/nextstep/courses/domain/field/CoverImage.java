@@ -23,7 +23,7 @@ public class CoverImage {
     }
 
     private void verifyWidthHeight(long width, long height) {
-        if (width < this.MIN_WIDTH && height < this.MIN_HEIGHT) {
+        if (width < this.MIN_WIDTH || height < this.MIN_HEIGHT) {
             throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상만 가능합니다.");
         }
     }
