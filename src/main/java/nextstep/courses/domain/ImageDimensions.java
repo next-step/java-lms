@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.courses.exception.InvalidImageWidthAndHeightException;
 
+import java.util.Objects;
+
 public class ImageDimensions {
     private static final int MIN_WIDTH_PIXEL = 300;
     private static final int MIN_HEIGHT_PIXEL = 200;
@@ -29,5 +31,26 @@ public class ImageDimensions {
 
     private static boolean checkRatio(int width, int height) {
         return width * WIDTH_RATIO == height * HEIGHT_RATIO;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageDimensions that = (ImageDimensions) o;
+        return width == that.width && height == that.height;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height);
     }
 }

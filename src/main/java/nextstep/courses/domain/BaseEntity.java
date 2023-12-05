@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class BaseEntity {
 
@@ -20,4 +21,16 @@ public abstract class BaseEntity {
         return createdAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseEntity that = (BaseEntity) o;
+        return Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(createdAt, updatedAt);
+    }
 }
