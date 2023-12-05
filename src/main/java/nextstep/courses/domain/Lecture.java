@@ -1,11 +1,10 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import nextstep.users.domain.NsUser;
 
 public class Lecture {
-
+  private final Long id;
   private final LectureType lectureType;
   private final LectureStatus lectureStatus;
   private final LocalDateTime startedAt;
@@ -15,6 +14,7 @@ public class Lecture {
 
   private Lecture(LectureType lectureType, LocalDateTime startedAt,
       LocalDateTime endDateTime, int limitStudentCount) {
+    this.id = 0L;
     this.lectureType = lectureType;
     this.startedAt = startedAt;
     this.endedAt = endDateTime;
@@ -25,6 +25,7 @@ public class Lecture {
 
   private Lecture(LectureType lectureType, LectureStatus lectureStatus, LocalDateTime startedAt,
       LocalDateTime endDateTime, int limitStudentCount, NsUsers students) {
+    this.id = 0L;
     this.lectureType = lectureType;
     this.startedAt = startedAt;
     this.endedAt = endDateTime;
@@ -62,11 +63,11 @@ public class Lecture {
     students.add(user);
   }
 
-  public Integer studentCount() {
+  public Integer numberOfStudent() {
     return students.size();
   }
 
-  public Lecture recruit() {
+  public Lecture start() {
     return new Lecture(this.lectureType, LectureStatus.RECRUITING, this.startedAt,
         this.endedAt, this.limitStudentCount, this.students);
   }

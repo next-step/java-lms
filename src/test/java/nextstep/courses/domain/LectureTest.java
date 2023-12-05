@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -49,11 +48,11 @@ public class LectureTest {
 
     // when
     Lecture lecture = Lecture.paidOf(LectureType.PAID, startDate, endDate, maxStudent);
-    lecture = lecture.recruit();
+    lecture = lecture.start();
     lecture.enrolment(NsUserTest.JAVAJIGI);
 
     // then
-    assertThat(lecture.studentCount()).isEqualTo(1);
+    assertThat(lecture.numberOfStudent()).isEqualTo(1);
   }
 
   @Test
