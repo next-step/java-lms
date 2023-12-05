@@ -34,7 +34,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionOpenStatus.valueOf(rs.getString(5)),
                 SessionProgressStatus.valueOf(rs.getString(6)),
                 rs.getInt(7),
-                rs.getInt(8));
+                rs.getInt(8),
+                null);
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

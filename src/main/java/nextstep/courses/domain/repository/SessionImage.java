@@ -10,4 +10,12 @@ public class SessionImage {
         this.sessionId = sessionId;
         this.imageId = imageId;
     }
+
+    public Long sessionId(){
+        return sessionId;
+    }
+
+    public Long imageId(){
+        return imageId;
+    }
 }

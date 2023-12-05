@@ -1,2 +1,5 @@
-package nextstep.courses.domain.repository;public enum ApprovalStatus {
+package nextstep.courses.domain;
+
+public enum ApprovalStatus {
+    APPROVED, REJECTED, WAITING
 }
