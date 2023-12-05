@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.qna.domain.session.SessionStatus;
 
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class FreeSession implements Session { // 무료
     }
 
     @Override
-    public boolean checkForRegister(long paidAmount) {
+    public boolean isPossibleToRegister(Payment payment) {
         checkSessionStatus();
         return true;
     }

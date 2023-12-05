@@ -1,7 +1,8 @@
 package nextstep.qna.domain;
 
-import ch.qos.logback.core.util.FileSize;
+import nextstep.payments.domain.Payment;
 import nextstep.qna.domain.session.SessionStatus;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,31 +26,37 @@ public class SessionTest {
 
     @Test
     void 유료강의_checkSessionStatus_실패_상태오류() {
-        assertThrowsExactly(IllegalStateException.class, () -> S1.checkForRegister(50000), "강의 상태가 모집중이 아닙니다.");
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 50000L);
+        assertThrowsExactly(IllegalStateException.class, () -> S1.isPossibleToRegister(panyment), "강의 상태가 모집중이 아닙니다.");
     }
 
     @Test
     void 유료강의_checkSessionStatus_실패_가격오류() {
-        assertThrowsExactly(IllegalArgumentException.class, () -> S2.checkForRegister(50000), "강의 가격과 다릅니다.");
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 50000L);
+        assertThrowsExactly(IllegalArgumentException.class, () -> S2.isPossibleToRegister(panyment), "강의 가격과 다릅니다.");
     }
 
     @Test
     void 유료강의_checkSessionStatus_실패_수강인원초과() {
-        assertThrowsExactly(IllegalStateException.class, () -> S3.checkForRegister(100000), "수강인원이 초과 되었습니다.");
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 100000L);
+        assertThrowsExactly(IllegalStateException.class, () -> S3.isPossibleToRegister(panyment), "수강인원이 초과 되었습니다.");
     }
 
     @Test
     void 유료강의_checkSessionStatus_성공() {
-        assertTrue(S2.checkForRegister(100000));
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 100000L);
+        assertTrue(S2.isPossibleToRegister(panyment));
     }
 
     @Test
     void 무료강의_checkSessionStatus_실패_상태오류() {
-        assertThrowsExactly(IllegalStateException.class, () -> S4.checkForRegister(0), "강의 상태가 모집중이 아닙니다.");
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 0L);
+        assertThrowsExactly(IllegalStateException.class, () -> S4.isPossibleToRegister(panyment), "강의 상태가 모집중이 아닙니다.");
     }
 
     @Test
     void 무료강의_checkSessionStatus_성공() {
-        assertTrue(S5.checkForRegister(0));
+        Payment panyment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 0L);
+        assertTrue(S5.isPossibleToRegister(panyment));
     }
 }

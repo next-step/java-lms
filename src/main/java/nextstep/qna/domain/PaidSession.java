@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.qna.domain.session.SessionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +14,9 @@ public class PaidSession implements Session { // 유료
     private LocalDateTime endDateTime;
     private CoverImage coverImage;
     private SessionStatus status;
-    private long maxNumberOfAttendees;
-    private long currentNumberOfAttendees;
-    private long price;
+    private Long maxNumberOfAttendees;
+    private Long currentNumberOfAttendees;
+    private Long price;
 
     private PaidSession() {
     }
@@ -43,9 +44,9 @@ public class PaidSession implements Session { // 유료
     }
 
     @Override
-    public boolean checkForRegister(long paidAmount) {
+    public boolean isPossibleToRegister(Payment payment) {
         checkSessionStatus();
-        checkPrice(paidAmount);
+        checkPrice(payment.amounts());
         checkMaxNumberOfAttendees();
         return true;
     }
@@ -56,8 +57,8 @@ public class PaidSession implements Session { // 유료
         }
     }
 
-    private void checkPrice(long paidAmount) {
-        if (this.price != paidAmount) {
+    private void checkPrice(Long paidAmount) {
+        if (!this.price.equals(paidAmount)) {
             throw new IllegalArgumentException("강의 가격과 다릅니다.");
         }
     }
