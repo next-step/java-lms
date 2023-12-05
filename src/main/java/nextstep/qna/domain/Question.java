@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import java.util.Objects;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -72,8 +74,20 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    private void validateOwner(NsUser loginUser) {
+        if(!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
+        return this;
+    }
+
+    public Question changeDeleted(NsUser loginUser) {
+        validateOwner(loginUser);
+        this.deleted = true;
         return this;
     }
 
@@ -88,5 +102,28 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Question question = (Question) o;
+        return deleted == question.deleted && Objects.equals(id, question.id)
+                && Objects.equals(title, question.title) && Objects.equals(contents,
+                question.contents) && Objects.equals(writer, question.writer)
+                && Objects.equals(answers, question.answers) && Objects.equals(
+                createdDate, question.createdDate) && Objects.equals(updatedDate,
+                question.updatedDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, contents, writer, answers, deleted, createdDate,
+                updatedDate);
     }
 }
