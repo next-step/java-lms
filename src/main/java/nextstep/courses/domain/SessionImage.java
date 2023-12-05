@@ -17,7 +17,7 @@ public class SessionImage {
     public SessionImage() {
     }
 
-    public SessionImage(File file) {
+    public SessionImage(File file) throws ImageException {
         this.fileSize = validateFileSize(file);
         this.fileType = validateFileType(file);
         this.imageSize = validateImageSize(file);
@@ -29,18 +29,18 @@ public class SessionImage {
         this.imageSize = imageSize;
     }
 
-    private Long validateFileSize(File file) {
-        if (file.getTotalSpace() > 1*MB) {
-            throw new IllegalArgumentException();
+    private Long validateFileSize(File file) throws ImageException {
+        if (file.getTotalSpace() > 1 * MB) {
+            throw new ImageException("용량은 1MB를 초과할 수 없습니다.");
         }
         return file.getTotalSpace();
     }
 
-    private String validateFileType(File file) {
+    private String validateFileType(File file) throws ImageException {
         String fileName = file.getName();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         if (!IMG_FILE_TYPE.contains(fileType)) {
-            throw new IllegalArgumentException();
+            throw new ImageException("이미지 형식 타입이 아닙니다.");
         }
         return fileType;
     }

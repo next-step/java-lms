@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class ImageSize {
 
