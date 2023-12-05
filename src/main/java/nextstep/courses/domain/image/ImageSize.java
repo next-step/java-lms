@@ -19,7 +19,7 @@ public class ImageSize {
         }
     }
 
-    public int value() {
+    public int volume() {
         return volume;
     }
 
