@@ -49,10 +49,27 @@ public class LectureTest {
 
     // when
     Lecture lecture = Lecture.paidOf(LectureType.PAID, startDate, endDate, maxStudent);
+    lecture = lecture.recruit();
     lecture.enrolment(NsUserTest.JAVAJIGI);
 
     // then
     assertThat(lecture.studentCount()).isEqualTo(1);
+  }
+
+  @Test
+  @DisplayName("모집중이지 않은 강의 수강신청 테스트")
+  public void lecture_enrolment_status() {
+    // given
+    LocalDateTime startDate = LocalDateTime.of(2023,4,3,11,30);
+    LocalDateTime endDate = LocalDateTime.of(2023,6,3,11,30);
+    int maxStudent = 1;
+
+    // when
+    Lecture lecture = Lecture.paidOf(LectureType.PAID, startDate, endDate, maxStudent);
+
+    // then
+    assertThrows(IllegalArgumentException.class
+        , () -> lecture.enrolment(NsUserTest.SANJIGI));
   }
 
 }
