@@ -26,7 +26,8 @@ class SessionTest {
 
     @Test
     public void assertSessionRegister() {
-        freeSession.register(course);
+        freeSession.openSession();
+        freeSession.registerForFreeSession(course);
 
         assertThat(course.sessionList().numbOfSessions()).isEqualTo(1);
     }
@@ -34,29 +35,30 @@ class SessionTest {
     @Test
     public void assertIsSessionOpen() {
         freeSession.openSession();
-        freeSession.register(course);
+        freeSession.registerForFreeSession(course);
 
         assertThat(freeSession.isOpen()).isEqualTo(true);
     }
 
     @Test
     public void assertFreeSession() {
-        freeSession.register(course);
+        freeSession.registerForFreeSession(course);
 
         assertThat(freeSession.isFree()).isEqualTo(true);
     }
 
     @Test
     public void assertPaidSession() {
-        paidSession.register(course);
         Payment payment = new Payment("1", 1L, 123L, 100L);
+        paidSession.registerForPaidSession(course, payment);
 
         assertThat(paidSession.isPaymentCorrect(payment)).isEqualTo(true);
     }
 
     @Test
     public void assertAvailableSlots() {
-        paidSession.register(course);
+        Payment payment = new Payment("1", 1L, 123L, 100L);
+        paidSession.registerForPaidSession(course, payment);
 
         assertThat(paidSession.isAvailable()).isFalse();
         System.out.println(course.sessionList());

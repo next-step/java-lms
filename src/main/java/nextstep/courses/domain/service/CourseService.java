@@ -15,18 +15,17 @@ public class CourseService {
     @Resource(name = "courseRepository")
     private CourseRepository courseRepository;
 
-    public void registerSession(Long courseId, Session session, NsUser user, Payment payment) {
+    public void registerFreeSession(Long courseId, Session session, NsUser user) {
         Course selectedCourse = courseRepository.findById(courseId);
-        if (session.isOpen() && session.isFree()) {
-            addSessionToCourse(session, selectedCourse);
-        }
-        if (session.isOpen() && !session.isFree() && session.isPaymentCorrect(payment) && session.isAvailable()) {
-            addSessionToCourse(session, selectedCourse);
-        }
+
+        session.registerForFreeSession(selectedCourse);
+        courseRepository.save(selectedCourse);
     }
 
-    private void addSessionToCourse(Session session, Course selectedCourse) {
-        session.register(selectedCourse);
+    public void registerPaidSession(Long courseId, Session session, NsUser user, Payment payment) {
+        Course selectedCourse = courseRepository.findById(courseId);
+
+        session.registerForPaidSession(selectedCourse, payment);
         courseRepository.save(selectedCourse);
     }
 }
