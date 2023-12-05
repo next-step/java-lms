@@ -5,7 +5,13 @@ import nextstep.courses.domain.attendee.Attendee;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class PaidSession extends Session {
+public class PaidSession implements Session {
+
+    private final Long id;
+
+    private final SessionInformation information;
+
+    private final Image image;
 
     private final TotalAttendee totalAttendee;
 
@@ -16,7 +22,9 @@ public class PaidSession extends Session {
                        Image image,
                        TotalAttendee totalAttendee,
                        Price amount) {
-        super(id, information, image);
+        this.id = id;
+        this.information = information;
+        this.image = image;
         this.totalAttendee = totalAttendee;
         this.amount = amount;
     }
@@ -29,6 +37,6 @@ public class PaidSession extends Session {
                                               this.image,
                                               totalAttendee.add(),
                                               this.amount);
-        return new Attendee(nsUser.getId(), paidSession.id);
+        return new Attendee(nsUser.getId(), this.id);
     }
 }

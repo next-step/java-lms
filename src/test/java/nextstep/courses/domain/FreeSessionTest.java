@@ -19,8 +19,8 @@ class FreeSessionTest {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.FREE, period);
         Session session = new FreeSession(1L, information, null);
-        Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
-        Attendee expected = new Attendee(JAVAJIGI.getId(), session.getId());
+        Payment payment = new Payment("1L", 1L, JAVAJIGI.getId(), 0L);
+        Attendee expected = new Attendee(JAVAJIGI.getId(), 1L);
 
         Attendee actual = session.enroll(payment, JAVAJIGI);
 

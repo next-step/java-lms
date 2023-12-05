@@ -22,7 +22,7 @@ class PaidSessionTest {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.PAID, period);
         Session session = new PaidSession(1L, information, null, total, price);
-        Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 0L);
+        Payment payment = new Payment("1L", 1L, JAVAJIGI.getId(), 0L);
 
         assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI))
                 .isInstanceOf(PaymentAmountNotEqualException.class);
@@ -36,7 +36,7 @@ class PaidSessionTest {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         SessionInformation information = new SessionInformation(SessionStatus.RECRUITING, SessionType.PAID, period);
         Session session = new PaidSession(1L, information, null, total, price);
-        Payment payment = new Payment("1L", session.getId(), JAVAJIGI.getId(), 1000L);
+        Payment payment = new Payment("1L", 1L, JAVAJIGI.getId(), 1000L);
 
         assertThatThrownBy(() -> session.enroll(payment, JAVAJIGI))
                 .isInstanceOf(ExceedAttendeesException.class);

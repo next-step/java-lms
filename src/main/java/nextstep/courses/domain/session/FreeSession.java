@@ -5,12 +5,20 @@ import nextstep.courses.domain.attendee.Attendee;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class FreeSession extends Session {
+public class FreeSession implements Session {
+
+    private final Long id;
+
+    private final SessionInformation information;
+
+    private final Image image;
 
     public FreeSession(Long id,
                        SessionInformation information,
                        Image image) {
-        super(id, information, image);
+        this.id = id;
+        this.information = information;
+        this.image = image;
     }
 
     @Override
