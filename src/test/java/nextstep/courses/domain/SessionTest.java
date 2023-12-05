@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,7 +41,7 @@ class SessionTest {
     @Test
     void 유료강의는_제한인원을_초과할_수_없다() {
         SessionType type = new SessionType(PayType.PAID, 1000L, 1);
-        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        Session session = new Session(SessionStatus.OPEN, new HashSet<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> {
             session.register(new NsUser());
         }).isInstanceOf(MaxStudentsExceedException.class);
@@ -48,15 +50,15 @@ class SessionTest {
     @Test
     void 무료강의의_경우_제한_인원이_없다() throws CannotRegisterException {
         SessionType type = new SessionType(PayType.FREE, 0L , 1);
-        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        Session session = new Session(SessionStatus.OPEN, new HashSet<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
-        assertThat(session.register(nsUser)).isEqualTo(new Students(List.of(NsUser.GUEST_USER, nsUser)));
+        assertThat(session.register(nsUser)).isEqualTo(new Students(Set.of(NsUser.GUEST_USER, nsUser)));
     }
 
     @Test
     void 유료강의는_가격이_맞지_않으면_살수_없다() {
         SessionType type = new SessionType(PayType.PAID, 1000L, 1);
-        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        Session session = new Session(SessionStatus.OPEN, new HashSet<>(List.of(NsUser.GUEST_USER)), type);
         assertThatThrownBy(() -> session.register(new NsUser(), new Payment("id", 1L, 1L, 100L)))
                 .isInstanceOf(CannotRegisterException.class);
     }
@@ -64,9 +66,9 @@ class SessionTest {
     @Test
     void 유료강의는_가격과_지불이_동일하면_결제된다() throws CannotRegisterException {
         SessionType type = new SessionType(PayType.PAID, 1000L, 3);
-        Session session = new Session(SessionStatus.OPEN, new ArrayList<>(List.of(NsUser.GUEST_USER)), type);
+        Session session = new Session(SessionStatus.OPEN, new HashSet<>(List.of(NsUser.GUEST_USER)), type);
         NsUser nsUser = new NsUser();
-        Students students = new Students(List.of(NsUser.GUEST_USER, nsUser));
+        Students students = new Students(Set.of(NsUser.GUEST_USER, nsUser));
         assertThat(session.register(nsUser, new Payment("id", 1L, 1L, 1000L))).isEqualTo(students);
     }
 }

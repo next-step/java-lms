@@ -2,24 +2,22 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Students {
 
-    private List<NsUser> userList;
+    private Set<NsUser> userList;
 
     public Students(NsUser... users) {
-        this.userList = new ArrayList<>(List.of(users));
+        this.userList = new HashSet<>(List.of(users));
     }
 
-    public Students(List<NsUser> userList) {
+    public Students(Set<NsUser> userList) {
         this.userList = userList;
     }
 
     public Students() {
-        this.userList = new ArrayList<>();
+        this.userList = new HashSet<>();
     }
 
     public Students registerSessionStudent(NsUser nsUser, SessionType sessionType) {

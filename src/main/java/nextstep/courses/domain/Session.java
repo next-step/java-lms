@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class Session {
 
@@ -29,7 +30,7 @@ public class Session {
         this.period = new Period(startDate, endDate);
     }
 
-    public Session(SessionStatus status, List<NsUser> nsUsers, SessionType sessionType) {
+    public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) {
         this.status = status;
         this.students = new Students(nsUsers);
         this.sessionType = sessionType;
