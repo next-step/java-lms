@@ -32,4 +32,7 @@ public class SessionUsers {
         return users.size();
     }
 
+    public Set<NsUser> users() {
+        return users;
+    }
 }

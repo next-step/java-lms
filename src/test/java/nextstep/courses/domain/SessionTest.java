@@ -24,6 +24,8 @@ public class SessionTest {
 
     public static Session zeroAndOneThousandSession(SessionState sessionState, SessionType sessionType) {
         return new Session(
+                1L,
+                1L,
                 normalSessionImage(),
                 normalSessionPeriod(),
                 sessionPriceOneThousand(),
@@ -35,6 +37,8 @@ public class SessionTest {
 
     public static Session zeroAndTenThousandSession(SessionState sessionState, SessionType sessionType) {
         return new Session(
+                1L,
+                1L,
                 normalSessionImage(),
                 normalSessionPeriod(),
                 sessionPriceTenThousand(),
@@ -46,6 +50,8 @@ public class SessionTest {
 
     public static Session maxAndOneThousandSession(SessionState sessionState, SessionType sessionType) {
         return new Session(
+                1L,
+                1L,
                 normalSessionImage(),
                 normalSessionPeriod(),
                 sessionPriceOneThousand(),
@@ -57,6 +63,8 @@ public class SessionTest {
 
     public static Session test(SessionState sessionState, SessionType sessionType) {
         return new Session(
+                1L,
+                1L,
                 normalSessionImage(),
                 normalSessionPeriod(),
                 sessionPriceOneThousand(),

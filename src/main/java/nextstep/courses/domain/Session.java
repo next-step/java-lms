@@ -4,9 +4,13 @@ import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.Objects;
+
 public class Session {
 
-    private Long sessionId;
+    private Long id;
+
+    private Long courseId;
 
     private final SessionImage sessionImage;
 
@@ -22,13 +26,23 @@ public class Session {
 
     private final SessionUserCount sessionUserCount;
 
-    public Session(SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUserCount sessionUserCount) {
+    public Session(Long id) {
+        this(id, null, null, null, null, null, null, null, null);
+    }
+
+    public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUserCount sessionUserCount) {
+        this(id, courseId, sessionImage, sessionPeriod, sessionPrice, sessionState, sessionType, new SessionUsers(), sessionUserCount);
+    }
+
+    public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUsers sessionUsers, SessionUserCount sessionUserCount) {
+        this.id = id;
+        this.courseId = courseId;
         this.sessionImage = sessionImage;
         this.sessionPeriod = sessionPeriod;
         this.sessionPrice = sessionPrice;
         this.sessionState = sessionState;
         this.sessionType = sessionType;
-        this.sessionUsers = new SessionUsers();
+        this.sessionUsers = sessionUsers;
         this.sessionUserCount = sessionUserCount;
     }
 
@@ -66,4 +80,16 @@ public class Session {
         return sessionType == SessionType.PAID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
