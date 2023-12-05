@@ -18,7 +18,7 @@
 - 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
   - `Long` id(PK) 
   - `LocalDateTime` startedDate(시작일)
-  - `LocalDateTime` startedDate(종료일)
+  - `LocalDateTime` endedDate(종료일)
   - `Image` image(커버 이미지)
   - `int` fee(강의료)
   - `int` limit(인원제한)
@@ -30,7 +30,7 @@
 - 이미지 크기는 1MB 이하여야 한다.
 - 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
 - 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
-  - `Long` id(PK) 
+  - `Long` id(PK)
   - `long` size(크기)
   - `int` width(가로)
   - `int` height(세로)
