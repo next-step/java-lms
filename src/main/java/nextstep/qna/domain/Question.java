@@ -86,32 +86,24 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void validateDeletable(NsUser user) throws CannotDeleteException {
+    private void validateDeletable(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    private DeleteHistory delete() {
+    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+        validateDeletable(user);
+
         deleted = true;
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
-    public void validateQuestionAndAnswersDeletable(NsUser user) throws CannotDeleteException {
-        validateDeletable(user);
-
-        for (Answer answer : answers) {
-            answer.validateDeletable(user);
-        }
-    }
-
     public List<DeleteHistory> deleteQuestionAndAnswers(NsUser loginUser) throws CannotDeleteException {
-        validateQuestionAndAnswersDeletable(loginUser);
-
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(delete());
+        deleteHistories.add(delete(loginUser));
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete());
+            deleteHistories.add(answer.delete(loginUser));
         }
 
         return deleteHistories;

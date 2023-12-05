@@ -73,13 +73,15 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+    private void validateDeletable(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 
-    public DeleteHistory delete() {
+    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+        validateDeletable(user);
+
         deleted = true;
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
