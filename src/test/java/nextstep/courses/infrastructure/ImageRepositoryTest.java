@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.cource.Image;
-import nextstep.courses.domain.cource.ImageRepository;
+import nextstep.courses.domain.session.Image;
+import nextstep.courses.domain.session.ImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

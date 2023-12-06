@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.cource.Image;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidSessionStateException;
 import nextstep.courses.type.SessionState;

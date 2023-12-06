@@ -1,11 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.cource.Image;
-import nextstep.courses.domain.cource.ImageRepository;
-import nextstep.courses.domain.session.Period;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.StudentsRepository;
+import nextstep.courses.domain.session.*;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
