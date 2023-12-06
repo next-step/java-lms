@@ -10,7 +10,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 
-public class CreateSessionDto {
+public class CreateSessionRequest {
     private Long courseId;
     private int generation;
     private LocalDate startDate;

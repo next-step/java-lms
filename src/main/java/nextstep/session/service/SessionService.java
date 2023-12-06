@@ -5,7 +5,7 @@ import nextstep.courses.service.CourseService;
 import nextstep.payments.service.PaymentService;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.ui.CreateSessionDto;
+import nextstep.session.ui.CreateSessionRequest;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class SessionService {
     private CourseService courseService;
     private PaymentService paymentService;
 
-    public Session createSession(NsUser loginUser, CreateSessionDto dto) {
+    public Session createSession(NsUser loginUser, CreateSessionRequest dto) {
         Course course = courseService.findById(dto.getCourseId());
         Session session = dto.toSession(loginUser);
         sessionRepository.save(session);
