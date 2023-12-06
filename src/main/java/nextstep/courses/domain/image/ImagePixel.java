@@ -27,4 +27,12 @@ public class ImagePixel {
             throw new IllegalArgumentException(INVALID_PIXEL_MSG);
         }
     }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
 }

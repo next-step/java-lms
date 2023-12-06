@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 public class Course extends BaseEntity {
     private String title;
     private Long creatorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Sessions sessions;
 
     public Course(String title, Long creatorId) {
@@ -21,11 +19,9 @@ public class Course extends BaseEntity {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, Sessions sessions) {
-        super(id);
+        super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.sessions = sessions;
     }
 
@@ -35,10 +31,6 @@ public class Course extends BaseEntity {
 
     public Long getCreatorId() {
         return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     @Override
