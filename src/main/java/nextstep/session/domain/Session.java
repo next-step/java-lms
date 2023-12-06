@@ -56,7 +56,7 @@ public class Session {
     }
 
     public void register() {
-        if (status != SessionStatus.PREPARING) {
+        if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("수강신청은 모집중인 상태일 때만 가능합니다.");
         }
     }

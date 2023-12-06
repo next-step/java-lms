@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import static nextstep.session.TestFixtures.endSession;
 import static nextstep.session.TestFixtures.preparingSession;
+import static nextstep.session.TestFixtures.recrutingPaidSession;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,5 +38,13 @@ class SessionTest {
 
     static Stream<Session> nonRegistrableSessions() {
         return Stream.of(endSession(), preparingSession());
+    }
+
+    @Test
+    void 유료강의는_최대_수강_인원을_초과할_수_없다() {
+        Session recrutingPaidSession = recrutingPaidSession();
+        assertThatThrownBy(recrutingPaidSession::register)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("최대 수강 인원을 초과하였습니다.");
     }
 }
