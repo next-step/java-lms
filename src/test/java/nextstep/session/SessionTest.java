@@ -2,6 +2,7 @@ package nextstep.session;
 
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionStatus;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -31,7 +32,7 @@ class SessionTest {
     @ParameterizedTest
     @MethodSource(value = "nonRegistrableSessions")
     void 강의는_모집중인_상태일_때만_수강신청_할_수_있다(Session session) {
-        assertThatThrownBy(session::register)
+        assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("수강신청은 모집중인 상태일 때만 가능합니다.");
     }
@@ -43,7 +44,7 @@ class SessionTest {
     @Test
     void 유료강의는_최대_수강_인원을_초과할_수_없다() {
         Session recrutingPaidSession = recrutingPaidSession();
-        assertThatThrownBy(recrutingPaidSession::register)
+        assertThatThrownBy(() -> recrutingPaidSession.register(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("최대 수강 인원을 초과하였습니다.");
     }

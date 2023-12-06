@@ -69,7 +69,9 @@ public class Session {
         }
     }
 
-    public void register() {
+    public void register(NsUser user) {
         isRegistrable();
+
+        members.add(user);
     }
 }
