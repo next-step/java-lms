@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImageShapeTest {
+	public static final ImageShape NORMAL_IMAGE_SHAPE = new ImageShape(300L, 200L);
+
 	@Test
 	@DisplayName("생성_이미지 width height 300, 200 미만_throw IllegalArgumentException")
 	void 이미지_width_height_값() {
