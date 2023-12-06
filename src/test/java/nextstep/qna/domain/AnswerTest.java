@@ -17,7 +17,7 @@ public class AnswerTest {
 
     @Test
     void deleted_상태로_변경_테스트() {
-        A1.changeStatusToDelete();
+        A1.delete();
         assertThat(A1.isDeleted()).isTrue();
         assertThat(A2.isDeleted()).isFalse();
     }
