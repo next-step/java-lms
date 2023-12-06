@@ -44,11 +44,11 @@
   * [X] 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
 
 # STEP 3 기능분석
-* [ ] schema sql 작성
+* [X] schema sql 작성
   * [X] Session Schema sql 작성
   * [X] SessionType Schema sql 작성
   * [X] Thumbnail Schema sql 작성
-  * [ ] Students Schema sql 작성
+  * [X] Students Schema sql 작성
 * [ ] data sql 작성
   * [ ] Session 예시 데이터 data.sql 작성
   * [ ] Thumbnail 예시 데이터 data.sql 작성
