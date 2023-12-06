@@ -1,7 +1,7 @@
-package nextstep.courses.repository;
+package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.CoverImage;
-import nextstep.courses.infrastructure.JdbcCoverImageRepository;
+import nextstep.courses.repository.CoverImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -35,5 +35,10 @@ class CoverImageRepositoryTest {
         CoverImage savedImage = coverImageRepository.findById(1L);
         assertThat(savedImage.getId()).isEqualTo(image.getId());
         LOGGER.debug("CoverImage: {}", savedImage);
+    }
+
+    @Test
+    void find() {
+        assertThat(coverImageRepository.findById(2L).getId()).isEqualTo(2L);
     }
 }
