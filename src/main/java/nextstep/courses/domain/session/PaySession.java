@@ -2,10 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.exception.NotMatchAmountException;
-import nextstep.courses.exception.NotRecruitingException;
-import nextstep.courses.exception.NotRegisterSession;
-import nextstep.courses.exception.SessionEnrollException;
 import nextstep.payments.domain.Payment;
 
 import java.text.DecimalFormat;
@@ -27,7 +23,7 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException {
+    public void enroll(SessionStudent sessionStudent, Payment payment) {
         validateStatus();
         validatePayAmount(payment);
         validateCapacity();
@@ -35,21 +31,21 @@ public class PaySession extends Session {
         sessionStudents.add(sessionStudent);
     }
 
-    private void validateStatus() throws NotRecruitingException {
+    private void validateStatus() {
         if (isNotRecruiting(status)) {
-            throw new NotRecruitingException(String.format("해당 강의의 현재 %s입니다.", status.description()));
+            throw new IllegalArgumentException(String.format("해당 강의는 현재 %s입니다.", status.description()));
         }
     }
 
-    private void validatePayAmount(Payment payment) throws NotMatchAmountException {
+    private void validatePayAmount(Payment payment) {
         if (payment.isNotSameAmount(amount)) {
-            throw new NotMatchAmountException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
+            throw new IllegalArgumentException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
         }
     }
 
-    private void validateCapacity() throws NotRegisterSession {
+    private void validateCapacity() {
         if (sessionStudents.isExceed(studentsCapacity)) {
-            throw new NotRegisterSession("현재 수강 가능한 모든 인원수가 채워졌습니다.");
+            throw new IllegalArgumentException("현재 수강 가능한 모든 인원수가 채워졌습니다.");
         }
     }
 }

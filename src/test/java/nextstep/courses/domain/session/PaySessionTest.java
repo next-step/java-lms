@@ -2,10 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.exception.NotMatchAmountException;
-import nextstep.courses.exception.NotRecruitingException;
-import nextstep.courses.exception.NotRegisterSession;
-import nextstep.courses.exception.SessionEnrollException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +25,8 @@ class PaySessionTest {
         Payment payment = createPayment(10000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(NotRecruitingException.class)
-            .hasMessage("해당 강의의 현재 준비중입니다.");
+        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("해당 강의는 현재 준비중입니다.");
     }
 
     @DisplayName("결제 금액이 강의 금액과 일치하지 않으면 예외를 발생시킨다.")
@@ -41,13 +37,13 @@ class PaySessionTest {
         Payment payment = createPayment(8000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(NotMatchAmountException.class)
+        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: 10,000원");
     }
 
     @DisplayName("현재 수강인원이 제한 인원을 초과하면 예외를 발생시킨다.")
     @Test
-    void validateCapacity() throws SessionEnrollException {
+    void validateCapacity() {
         // given
         PaySession paySession = createPaySession(RECRUIT);
         Payment payment = createPayment(10000L);
@@ -60,7 +56,7 @@ class PaySessionTest {
         // when & then
         SessionStudent sessionStudent3 = new SessionStudent(paySession, new NsUser());
 
-        assertThatThrownBy(() -> paySession.enroll(sessionStudent3, payment)).isInstanceOf(NotRegisterSession.class)
+        assertThatThrownBy(() -> paySession.enroll(sessionStudent3, payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 

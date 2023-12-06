@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session.coverimage;
 
-import nextstep.courses.exception.NotFindExtensionException;
+import nextstep.courses.exception.ImageFileInfoException;
 
 import java.util.Arrays;
 
@@ -18,10 +18,10 @@ public enum Extension {
         this.val = val;
     }
 
-    public static Extension extension(String extension) throws NotFindExtensionException {
+    public static Extension extension(String extension) throws ImageFileInfoException {
         return Arrays.stream(values())
             .filter(ext -> ext.val.equals(extension))
             .findFirst()
-            .orElseThrow(() -> new NotFindExtensionException(String.format("해당 확장자는 사용할 수 없는 이미지 파일입니다. 현재 확장자 :: %s", extension)));
+            .orElseThrow(() -> new ImageFileInfoException(String.format("해당 확장자는 사용할 수 없는 이미지 파일입니다. 현재 확장자 :: %s", extension)));
     }
 }

@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session.coverimage.wrapper;
 
-import nextstep.courses.exception.ImageSizeException;
+import nextstep.courses.exception.ImageFileInfoException;
 
 public class Height {
 
@@ -8,14 +8,14 @@ public class Height {
 
     private int px;
 
-    public Height(int px) throws ImageSizeException {
+    public Height(int px) throws ImageFileInfoException {
         validate(px);
         this.px = px;
     }
 
-    private void validate(int px) throws ImageSizeException {
+    private void validate(int px) throws ImageFileInfoException {
         if (px < MINIMUM) {
-            throw new ImageSizeException(String.format("이미지의 높이는 %s이상 이어야 합니다. 현재 높이 :: %spx", MINIMUM, px));
+            throw new ImageFileInfoException(String.format("이미지의 높이는 %s이상 이어야 합니다. 현재 높이 :: %spx", MINIMUM, px));
         }
     }
 }

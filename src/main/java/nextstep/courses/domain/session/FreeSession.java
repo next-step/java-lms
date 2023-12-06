@@ -2,8 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.exception.NotRecruitingException;
-import nextstep.courses.exception.SessionEnrollException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
@@ -19,14 +17,14 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException {
+    public void enroll(SessionStudent sessionStudent, Payment payment) {
         validateStatus();
         this.sessionStudents.add(sessionStudent);
     }
 
-    private void validateStatus() throws NotRecruitingException {
+    private void validateStatus() {
         if (isNotRecruiting(status)) {
-            throw new NotRecruitingException(String.format("해당 강의의 현재 %s입니다.", status.description()));
+            throw new IllegalArgumentException(String.format("해당 강의의 현재 %s입니다.", status.description()));
         }
     }
 }

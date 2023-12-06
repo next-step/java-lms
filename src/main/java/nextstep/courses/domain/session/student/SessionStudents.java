@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session.student;
 
-import nextstep.courses.exception.NotRegisterSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +11,15 @@ public class SessionStudents {
         this.sessionStudents = new ArrayList<>();
     }
 
-    public boolean add(SessionStudent sessionStudent) throws NotRegisterSession {
+    public boolean add(SessionStudent sessionStudent) {
         validateDuplicate(sessionStudent);
 
         return this.sessionStudents.add(sessionStudent);
     }
 
-    private void validateDuplicate(SessionStudent sessionStudent) throws NotRegisterSession {
+    private void validateDuplicate(SessionStudent sessionStudent) {
         if (sessionStudents.contains(sessionStudent)) {
-            throw new NotRegisterSession("이미 해당 강의를 수강 중 입니다.");
+            throw new IllegalArgumentException("이미 해당 강의를 수강 중 입니다.");
         }
     }
 

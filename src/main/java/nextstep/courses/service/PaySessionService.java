@@ -5,7 +5,6 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudentRepository;
-import nextstep.courses.exception.SessionEnrollException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -31,7 +30,7 @@ public class PaySessionService implements SessionService {
     }
 
     @Override
-    public void enroll(Payment payment) throws SessionEnrollException {
+    public void enroll(Payment payment) {
         NsUser student = userRepository.findByUserId(String.valueOf(payment.nsUserId()))
             .orElseThrow(() -> new IllegalArgumentException("일치하는 사용자가 없습니다. 사용자 아이디 :: " + payment.nsUserId()));
 
