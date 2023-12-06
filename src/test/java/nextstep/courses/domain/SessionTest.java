@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.domain.SessionState.READY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ class SessionTest {
 
     @BeforeEach
     public void sampleDataSetUp() {
-        session = new Session();
+        session = Session.createNewSession(new SessionImage(100, 300, 200, ImageExtension.jpg));
     }
 
     @Test
