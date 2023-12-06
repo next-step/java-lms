@@ -1,7 +1,5 @@
 package nextstep.sessions.domain;
 
-import java.time.LocalDate;
-
 public class Session {
 
     // id
@@ -12,21 +10,26 @@ public class Session {
 
     // 날짜
     private SessionDate date;
+
     // 이미지
     private SessionImage image;
 
     // 가격
     private SessionCharge charge;
 
+    // 인원수
+    private SessionStudent student;
+
     // 상태
     private SessionStatus status;
 
-    public Session(String name, SessionDate date, SessionImage image, SessionCharge charge, SessionStatus status) {
+    public Session(String name, SessionDate date, SessionImage image, SessionCharge charge, SessionStudent student, SessionStatus status) {
         this.id = 0l;
         this.name = name;
         this.date = date;
         this.image = image;
         this.charge = charge;
+        this.student = student;
         this.status = status;
     }
 
@@ -54,7 +57,7 @@ public class Session {
 
     public void addStudent() {
         checkSessionStatus();
-        this.charge.addStudent();
+        this.student.addStudent();
     }
 
 

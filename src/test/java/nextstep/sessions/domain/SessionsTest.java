@@ -35,10 +35,9 @@ class SessionsTest {
     @DisplayName("모집 인원이 마감된 강의를 전달하면 IllegalStateException을 던진다.")
     @Test
     void addSessionExceptionTest2() {
-        SessionTest.COMPUTER.addStudent();
-
         Sessions sessions = new Sessions();
-        assertThatThrownBy(() -> sessions.addSession(SessionTest.COMPUTER))
+        Session computer = new Session("COMPUTER", SessionDateTest.DEC, SessionImageTest.IMAGE_JPG, SessionChargeTest.CHARGE_100, SessionStudentTest.ONE, SessionStatus.RECRUITING);
+        assertThatThrownBy(() -> sessions.addSession(computer))
                 .isInstanceOf(IllegalStateException.class);
     }
 
