@@ -3,6 +3,7 @@ package nextstep.lms.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Students {
@@ -24,5 +25,9 @@ public class Students {
             throw new IllegalArgumentException("최대 수강 인원을 초과할 수 없습니다.");
         }
         this.students.add(userId);
+    }
+
+    public List<Long> getStudents() {
+        return Collections.unmodifiableList(students);
     }
 }
