@@ -3,25 +3,20 @@ package nextstep.qna.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import nextstep.users.domain.NsUser;
 
 public class Answers {
 
-	private final List<Answer> answerList;
+	private final List<Answer> answers = new ArrayList<>();
 
-	public Answers() {
-		this.answerList = new ArrayList<>();
-	}
-
-	public List<DeleteHistory> deleteAnswer(NsUser loginUser) {
-		List<DeleteHistory> deleteHistories = new ArrayList<>();
-		for (Answer answer : answerList) {
-			deleteHistories.add(answer.deleteAnswer(loginUser));
-		}
-		return deleteHistories;
+	public List<DeleteHistory> delete(NsUser loginUser) {
+		return answers.stream()
+				.map(answer -> answer.deleteAnswer(loginUser))
+				.collect(Collectors.toList());
 	}
 
 	public void add(Answer answer) {
-		this.answerList.add(answer);
+		this.answers.add(answer);
 	}
 }

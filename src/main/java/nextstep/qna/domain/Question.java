@@ -72,18 +72,13 @@ public class Question {
         answers.add(answer);
     }
 
-    public List<DeleteHistory> makeDeleteHistories(NsUser loginUser) {
+    public List<DeleteHistory> deleteQuestion(NsUser loginUser) {
+        changeDeleted(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(deleteQuestion(loginUser));
-        deleteHistories.addAll(answers.deleteAnswer(loginUser));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.delete(loginUser));
 
         return deleteHistories;
-    }
-
-    public DeleteHistory deleteQuestion(NsUser loginUser) {
-        changeDeleted(loginUser);
-
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     private void changeDeleted(NsUser loginUser) {

@@ -55,21 +55,12 @@ public class Answer {
     }
 
     public DeleteHistory deleteAnswer(NsUser loginUser) {
-        changeDeleted(loginUser);
-
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
-    }
-
-    private Answer changeDeleted(NsUser loginUser) {
-        validateOwner(loginUser);
-        this.deleted = true;
-        return this;
-    }
-
-    private void validateOwner(NsUser loginUser) {
-        if (!writer.equals(loginUser)) {
+        if(!writer.equals(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+        this.deleted = true;
+
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public NsUser getWriter() {
