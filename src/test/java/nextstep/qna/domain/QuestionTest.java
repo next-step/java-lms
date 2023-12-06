@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
@@ -22,7 +24,8 @@ public class QuestionTest {
         Q2.addAnswer(A2);
         Q2.addAnswer(A3);
 
-        Assertions.assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> Q1.checkCanDelete(NsUserTest.SANJIGI));
-        Assertions.assertThat(Q2.checkCanDelete(NsUserTest.SANJIGI)).isTrue();
+        assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> Q1.checkCanDelete(NsUserTest.SANJIGI));
+        // 예외를 발생시키지 않고 정상적으로 수행되는지 확인하는 테스트 코드 생성
+        assertThatNoException().isThrownBy(() -> Q1.checkCanDelete(NsUserTest.JAVAJIGI));
     }
 }

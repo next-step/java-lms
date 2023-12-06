@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers = new Answers(null);
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -38,20 +38,18 @@ public class Question {
         this.contents = contents;
     }
 
-    boolean checkCanDelete(NsUser loginUser) throws CannotDeleteException {
+    void checkCanDelete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        answers.checkDelete(loginUser);
-        return true;
     }
 
-    public List<DeleteHistory> makeDeleteHistory(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> makeDelete(NsUser loginUser) throws CannotDeleteException {
         checkCanDelete(loginUser);
         setDeleted();
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleteHistories.addAll(answers.makeDeleteHistory(loginUser));
+        deleteHistories.addAll(answers.makeDelete(loginUser));
         return deleteHistories;
     }
 
