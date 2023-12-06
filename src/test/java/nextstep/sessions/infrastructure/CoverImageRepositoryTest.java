@@ -27,18 +27,6 @@ public class CoverImageRepositoryTest {
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
     }
 
-
-    @Test
-    void 커버_이미지_생성_및_조회() {
-        CoverImage coverImage = new CoverImage("image.png", 102400, 300, 200);
-
-        int count = coverImageRepository.saveCoverImage(1, coverImage);
-        assertThat(count).isEqualTo(1);
-
-        CoverImage savedCoverImage = coverImageRepository.findCoverImageBySessionId(1);
-        assertThat(savedCoverImage.imageType()).isEqualTo(coverImage.imageType());
-    }
-
     @Test
     void 커버_이미지_여러개_생성_및_조회() {
         List<CoverImage> coverImages = List.of(

@@ -20,16 +20,6 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public CoverImage findCoverImageBySessionId(int sessionId) {
-        String sql = "select session_id, type, file_size, width, height from cover_image where session_id = ?";
-        RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
-            ImageType.valueOf(rs.getString(2)),
-            new ImageSize(rs.getInt(3), rs.getInt(4), rs.getInt(5))
-        );
-        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
-    }
-
-    @Override
     public List<CoverImage> findCoverImagesBySessionId(int sessionId) {
         String sql = "select session_id, type, file_size, width, height from cover_image where session_id = ?";
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
@@ -37,18 +27,6 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
             new ImageSize(rs.getInt(3), rs.getInt(4), rs.getInt(5))
         );
         return jdbcTemplate.query(sql, rowMapper, sessionId);
-    }
-
-    @Override
-    public int saveCoverImage(int sessionId, CoverImage coverImage) {
-        String sql = "insert into cover_image (session_id, type, file_size, width, height) values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
-            sessionId,
-            coverImage.imageTypeName(),
-            coverImage.fileSize(),
-            coverImage.width(),
-            coverImage.height()
-        );
     }
 
     @Override
