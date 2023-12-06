@@ -49,14 +49,10 @@ public class Session {
         );
     }
 
-    private void isRegistrable() {
-        if (status != SessionStatus.RECRUITING) {
-            throw new IllegalStateException("수강신청은 모집중인 상태일 때만 가능합니다.");
-        }
-    }
-
     public void register(NsUser user) {
-        isRegistrable();
+        if (!status.isRegistrable()) {
+            throw new IllegalStateException("수강 신청 불가능한 상태입니다.");
+        }
         members.register(user, sessionType);
     }
 }
