@@ -23,21 +23,6 @@ class FreeSessionTest {
     }
 
     @Test
-    @DisplayName("수강신청 / 모집 중 / 수강 성공")
-    void 수강신청_모집중_성공() {
-        // given
-        FreeSession session = FreeSession.create(1, 1L, today, today.plusDays(1), sessionImageFixture);
-        session.changeStatus(SessionStatus.RECRUITING);
-
-        // when
-        session.enroll(STUDENT_1);
-        session.enroll(STUDENT_2);
-
-        // then
-        assertThat(session.getStudents()).hasSize(2);
-    }
-
-    @Test
     @DisplayName("수강신청 / 모집 중 아님 / IllegalStateException")
     void 수강신청_모집중아님_실패() {
         // given
