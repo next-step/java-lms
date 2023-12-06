@@ -22,42 +22,24 @@ public class SessionStudent {
     }
 
     public int getCurrentStudentCount() {
-        return this.students.size();
-    }
-
-    public int getCurrentStudentCount2() {
         return this.selectionStudents.size();
     }
 
     public boolean isReachedMaxStudentLimit() {
-        return this.students.size() >= this.maxStudentLimit;
-    }
-
-    public boolean isReachedMaxStudentLimit2() {
         return this.selectionStudents.size() >= this.maxStudentLimit;
     }
 
     public void increaseStudentCount(final NsUser user) {
-        this.students.add(user);
-    }
-
-    public void increaseStudentCount2(final NsUser user) {
         this.selectionStudents.add(user);
     }
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
-        validateMaxStudentLimit2(maxStudentLimit);
+        validateMaxStudentLimit(maxStudentLimit);
 
         this.maxStudentLimit = maxStudentLimit;
     }
 
     private void validateMaxStudentLimit(final int maxStudentLimit) {
-        if (maxStudentLimit < this.students.size()) {
-            throw new IllegalArgumentException("max student limit cannot be less than current student count");
-        }
-    }
-
-    private void validateMaxStudentLimit2(final int maxStudentLimit) {
         if (maxStudentLimit < this.selectionStudents.size()) {
             throw new IllegalArgumentException("max student limit cannot be less than current student count");
         }

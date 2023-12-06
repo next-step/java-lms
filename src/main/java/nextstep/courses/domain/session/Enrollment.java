@@ -55,7 +55,7 @@ public class Enrollment {
     }
 
     private boolean isReachedMaxStudentLimit() {
-        return this.sessionStudent.isReachedMaxStudentLimit2();
+        return this.sessionStudent.isReachedMaxStudentLimit();
     }
 
     public long getPrice() {
@@ -63,7 +63,7 @@ public class Enrollment {
     }
 
     private void increaseEnrollment(final NsUser user) {
-        this.sessionStudent.increaseStudentCount2(user);
+        this.sessionStudent.increaseStudentCount(user);
     }
 
     public void setStatus(final SessionStatus status) {
@@ -71,7 +71,7 @@ public class Enrollment {
     }
 
     public int getCurrentStudentCount() {
-        return this.sessionStudent.getCurrentStudentCount2();
+        return this.sessionStudent.getCurrentStudentCount();
     }
 
     public boolean isRecruiting() {
