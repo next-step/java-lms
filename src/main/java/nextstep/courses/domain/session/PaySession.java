@@ -29,7 +29,7 @@ public class PaySession extends Session {
     @Override
     public void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException {
         validateStatus();
-        validateAmount(payment);
+        validatePayAmount(payment);
         validateCapacity();
 
         sessionStudents.add(sessionStudent);
@@ -41,7 +41,7 @@ public class PaySession extends Session {
         }
     }
 
-    private void validateAmount(Payment payment) throws NotMatchAmountException {
+    private void validatePayAmount(Payment payment) throws NotMatchAmountException {
         if (payment.isNotSameAmount(amount)) {
             throw new NotMatchAmountException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
         }

@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
-import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.SessionEnrollException;
 import nextstep.payments.domain.Payment;
 

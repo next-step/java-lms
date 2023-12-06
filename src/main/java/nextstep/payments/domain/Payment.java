@@ -1,8 +1,5 @@
 package nextstep.payments.domain;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.exception.NotMatchAmountException;
-
 import java.time.LocalDateTime;
 
 public class Payment {

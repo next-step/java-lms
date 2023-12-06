@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.courses.exception.SessionEnrollException;
@@ -32,11 +33,23 @@ class PaySessionTest {
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
+    @DisplayName("결제 금액이 강의 금액과 일치하지 않으면 예외를 발생시킨다.")
+    @Test
+    void validatePayAmount() {
+        // given
+        PaySession paySession = createPaySession(RECRUIT);
+        Payment payment = createPayment(8000L);
+
+        // when & then
+        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(NotMatchAmountException.class)
+            .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: 10,000원");
+    }
+
     @DisplayName("현재 수강인원이 제한 인원을 초과하면 예외를 발생시킨다.")
     @Test
     void validateCapacity() throws SessionEnrollException {
         // given
-        Session paySession = createPaySession(RECRUIT);
+        PaySession paySession = createPaySession(RECRUIT);
         Payment payment = createPayment(10000L);
         SessionStudent sessionStudent1 = new SessionStudent(paySession, JAVAJIGI);
         SessionStudent sessionStudent2 = new SessionStudent(paySession, SANJIGI);
@@ -64,7 +77,6 @@ class PaySessionTest {
     }
 
     private Payment createPayment(Long amount) {
-        return new Payment("1", 1L, 1L, 10000L);
+        return new Payment("1", 1L, 1L, amount);
     }
-
 }
