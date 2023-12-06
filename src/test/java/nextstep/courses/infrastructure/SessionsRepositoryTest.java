@@ -42,12 +42,9 @@ public class SessionsRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void create() {
         int count = sessionsRepository.save(1L, Sessions.of(강의_목록_조회()));
         assertThat(count).isEqualTo(2);
-        Sessions findSessions = sessionsRepository.findByCourseId(1L);
-        assertThat(findSessions.size()).isEqualTo(2);
-        LOGGER.debug("findSessions: {}", findSessions);
     }
 
     private List<Session> 강의_목록_조회() {
@@ -55,5 +52,11 @@ public class SessionsRepositoryTest {
         Session findFreeSession = sessionRepository.findById(2000L);
 
         return List.of(findPaidSession, findFreeSession);
+    }
+
+    @Test
+    void find() {
+        Sessions findSessions = sessionsRepository.findByCourseId(1000L);
+        assertThat(findSessions.size()).isEqualTo(2);
     }
 }
