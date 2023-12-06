@@ -5,6 +5,7 @@ import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
 import nextstep.session.domain.StartAt;
+import nextstep.session.domain.Users;
 import nextstep.users.domain.NsUserTest;
 
 import java.time.LocalDateTime;
@@ -15,8 +16,7 @@ class TestFixtures {
     static Session endSession() {
         return new Session(
                 null,
-                Set.of(),
-                30,
+                new Users(30, Set.of()),
                 SessionType.FREE,
                 SessionStatus.END,
                 null,
@@ -28,8 +28,7 @@ class TestFixtures {
     static Session preparingSession() {
         return new Session(
                 null,
-                Set.of(),
-                30,
+                new Users(30, Set.of()),
                 SessionType.FREE,
                 SessionStatus.PREPARING,
                 null,
@@ -41,8 +40,7 @@ class TestFixtures {
     static Session recrutingPaidSession() {
         return new Session(
                 null,
-                Set.of(NsUserTest.JAVAJIGI),
-                1,
+                new Users(1, Set.of(NsUserTest.JAVAJIGI)),
                 SessionType.PAID,
                 SessionStatus.RECRUITING,
                 null,
