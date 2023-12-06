@@ -1,7 +1,10 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
-import nextstep.courses.infrastructure.SessionRepository;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionUsers;
+import nextstep.courses.domain.SessionUsersRepository;
+import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,16 @@ public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
+    @Resource(name = "sessionUsersRepository")
+    private SessionUsersRepository sessionUsersRepository;
+
     @Transactional
     public void register(long sessionId, NsUser user, Payment payment) {
-        Session session = sessionRepository.findById(sessionId);
-        session.register(payment);
+        SessionUsers sessionUsers = sessionUsersRepository.findBy(sessionId);
+        Session session = sessionRepository.findBy(sessionId, sessionUsers)
+                .orElseThrow(() -> new SessionException("강의 정보를 찾을 수 없습니다."));
+        session.register(user, payment);
+        sessionUsersRepository.addUserFor(sessionId, user.getId());
+        sessionRepository.updateCountBy(session.userCount(), sessionId);
     }
 }
