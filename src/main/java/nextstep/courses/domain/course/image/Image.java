@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course.image;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

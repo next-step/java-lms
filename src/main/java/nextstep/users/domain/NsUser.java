@@ -117,6 +117,10 @@ public class NsUser {
         return false;
     }
 
+    public boolean isSame(Long nsUserId) {
+        return Objects.equals(this.id, nsUserId);
+    }
+
     private static class GuestNsUser extends NsUser {
         @Override
         public boolean isGuestUser() {

@@ -1,5 +1,8 @@
 package nextstep.payments.domain;
 
+import nextstep.courses.domain.course.session.Session;
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -27,7 +30,7 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public boolean isPaid(Long paymentId, Long amount) {
-        return Long.parseLong(id) == paymentId && this.amount.equals(amount);
+    public boolean isPaid(NsUser nsUser, Session session) {
+        return nsUser.isSame(this.nsUserId) && session.isSame(this.sessionId);
     }
 }
