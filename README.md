@@ -46,13 +46,14 @@
 # STEP 3 기능분석
 * [ ] schema sql 작성
   * [X] Session Schema sql 작성
+  * [X] SessionType Schema sql 작성
   * [X] Thumbnail Schema sql 작성
-  * [ ] SessionStudents Schema sql 작성
+  * [ ] Students Schema sql 작성
 * [ ] data sql 작성
   * [ ] Session 예시 데이터 data.sql 작성
   * [ ] Thumbnail 예시 데이터 data.sql 작성
-  * [ ] SessionStudents 예시 데이터 data.sql 작성
+  * [ ] Students 예시 데이터 data.sql 작성
 * [ ] repository query 작성
   * [ ] Session Read,Update 쿼리 작성
-  * [ ] SessionStudents Create, Read, Update 쿼리 작성
+  * [ ] Students Create, Read, Update 쿼리 작성
 * [ ] service enroll 코드 작성
