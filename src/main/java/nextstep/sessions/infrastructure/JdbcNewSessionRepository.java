@@ -26,7 +26,7 @@ public class JdbcNewSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
     }
 
-    private Session session(ResultSet rs) throws SQLException {
+    public static Session session(ResultSet rs) throws SQLException {
         return new Session(
             PaidType.valueOf(rs.getString(1)),
             rs.getLong(2),

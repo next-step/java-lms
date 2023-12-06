@@ -41,6 +41,6 @@ public class NewSessionRepositoryTest {
         assertThat(count).isEqualTo(1);
 
         Session savedSession = sessionRepository.findSessionBySessionId(1);
-        assertThat(savedSession.sessionInfo().enrollmentInfo().sessionState()).isEqualTo(session.sessionInfo().enrollmentInfo().sessionState());
+        assertThat(savedSession.sessionInfo().enrollmentInfo().newSessionState()).isEqualTo(session.sessionInfo().enrollmentInfo().newSessionState());
     }
 }

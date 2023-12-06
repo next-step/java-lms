@@ -28,7 +28,7 @@ public class RegistrationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcNewSessionRepository(jdbcTemplate);
         registrationRepository = new JdbcRegistrationRepository(jdbcTemplate);
     }
 

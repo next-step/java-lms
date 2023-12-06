@@ -17,10 +17,6 @@ public class Session {
         this.sessionInfo = sessionInfo;
     }
 
-    public Session(PaidType paidType, Long fee, int capacity, SessionState sessionState, LocalDateTime startDate, LocalDateTime endDate) {
-        this.sessionInfo = new SessionInfo(new EnrollmentInfo(new SessionType(paidType, fee, capacity), sessionState), new OpenInfo(new Duration(startDate, endDate)));
-    }
-
     public Session(
         PaidType paidType,
         Long fee,
@@ -64,10 +60,6 @@ public class Session {
 
     public int capacity() {
         return sessionInfo().enrollmentInfo().sessionType().capacity();
-    }
-
-    public String sessionState() {
-        return sessionInfo().enrollmentInfo().sessionState().name();
     }
 
     public String sessionRunningState() {
