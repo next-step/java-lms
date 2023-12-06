@@ -24,3 +24,16 @@ insert into session (id, paid_type, fee, capacity, state, start_date, end_date)
 values (6, 'PAID', 800000, 3, 'RECRUITING', '2023-01-01', '2023-12-31');
 insert into registration (session_id, user_id, payment_id)
 values (6, 1, 1);
+
+/*
+Table에 ALTER DDL를 하게되면 Downtime이 생기므로 새로운 테이블을 생성하고 기존 테이블에서 CUD 발생 시 데이터를 마이그레이션 한다.
+스트랭글러 패턴을 적용하여 as-is 서비스는 기존 테이블을 바라보고, 새로운 애플레이션은 새로운 테이블을 바라본다.
+트래픽 전환이 완전히 될 때 까지는 데이터 마이그레이션(Data sync)을 아래와 같이 진행한다.
+state=RECRUITING 인 경우 running_state=RUNNING, recruiting_state=RECRUITING
+state=PREPARING 인 경우 running_state=PREPARING, recruiting_state=NO_RECRUITING
+state=DONE 인 경우 running_state=DONE, recruiting_state=NO_RECRUITING
+*/
+insert into new_session (id, paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date)
+values (6, 'PAID', 800000, 3, 'RUNNING', 'RECRUITING', '2023-01-01', '2023-12-31');
+insert into registration (session_id, user_id, payment_id)
+values (6, 1, 1);

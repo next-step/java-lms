@@ -7,17 +7,24 @@ import nextstep.sessions.domain.exception.SessionsException;
 public class EnrollmentInfo {
 
     private final SessionType sessionType;
-    private final SessionState sessionState;
+    private SessionState sessionState;
+    private NewSessionState newSessionState;
 
     public EnrollmentInfo(SessionType sessionType, SessionState sessionState) {
         this.sessionType = sessionType;
         this.sessionState = sessionState;
     }
 
+    public EnrollmentInfo(SessionType sessionType, NewSessionState newSessionState) {
+        this.sessionType = sessionType;
+        this.newSessionState = newSessionState;
+    }
+
     public void validate(int registrationSize, Payment payment) {
         if (!sessionState.isRecruiting()) {
             throw new SessionsException("모집중이 아닌 강의입니다.");
         }
+        newSessionState.validateState();
         sessionType.validateSession(registrationSize, payment);
     }
 
@@ -27,5 +34,9 @@ public class EnrollmentInfo {
 
     public SessionState sessionState() {
         return sessionState;
+    }
+
+    public NewSessionState newSessionState() {
+        return newSessionState;
     }
 }

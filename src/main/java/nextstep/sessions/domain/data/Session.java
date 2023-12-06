@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.type.PaidType;
-import nextstep.sessions.domain.data.type.SessionState;
+import nextstep.sessions.domain.data.type.*;
 import nextstep.sessions.domain.data.vo.*;
 import nextstep.users.domain.NsUser;
 
@@ -20,6 +19,20 @@ public class Session {
 
     public Session(PaidType paidType, Long fee, int capacity, SessionState sessionState, LocalDateTime startDate, LocalDateTime endDate) {
         this.sessionInfo = new SessionInfo(new EnrollmentInfo(new SessionType(paidType, fee, capacity), sessionState), new OpenInfo(new Duration(startDate, endDate)));
+    }
+
+    public Session(
+        PaidType paidType,
+        Long fee,
+        int capacity,
+        SessionRunningState sessionRunningStateState,
+        SessionRecruitingState sessionRecruitingState,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    ) {
+        this.sessionInfo = new SessionInfo(
+            new EnrollmentInfo(new SessionType(paidType, fee, capacity), new NewSessionState(sessionRunningStateState, sessionRecruitingState)),
+            new OpenInfo(new Duration(startDate, endDate)));
     }
 
     public Session(SessionInfo sessionInfo, List<Registration> registrations) {
@@ -55,6 +68,14 @@ public class Session {
 
     public String sessionState() {
         return sessionInfo().enrollmentInfo().sessionState().name();
+    }
+
+    public String sessionRunningState() {
+        return sessionInfo().enrollmentInfo().newSessionState().sessionRunningState().name();
+    }
+
+    public String sessionRecruitingState() {
+        return sessionInfo().enrollmentInfo().newSessionState().sessionRecruitingState().name();
     }
 
     public LocalDateTime startDate() {
