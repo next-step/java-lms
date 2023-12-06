@@ -4,7 +4,7 @@ import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.NotMatchAmountException;
-import nextstep.courses.exception.NotRegisterSession;
+import nextstep.courses.exception.SessionEnrollException;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public abstract class Session {
 
     public void isEqual(Long amount) throws NotMatchAmountException {}
 
-    public abstract void enroll(SessionStudent sessionStudent) throws NotRegisterSession;
+    public abstract void enroll(SessionStudent sessionStudent) throws SessionEnrollException;
 
     @Override
     public boolean equals(Object o) {

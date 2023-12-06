@@ -11,8 +11,8 @@ public class StatusTest {
     @DisplayName("인자로 강의 상태를 전달 받아 모집중 상태이면 true를 반환 하고 아니면 false를 반환한다.")
     @Test
     void validateStatus() {
-        assertThat(isRecruiting(RECRUIT)).isTrue();
-        assertThat(isRecruiting(PREPARE)).isFalse();
-        assertThat(isRecruiting(FINISH)).isFalse();
+        assertThat(isNotRecruiting(RECRUIT)).isTrue();
+        assertThat(isNotRecruiting(PREPARE)).isFalse();
+        assertThat(isNotRecruiting(FINISH)).isFalse();
     }
 }

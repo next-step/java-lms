@@ -12,8 +12,8 @@ public enum Status {
         this.description = description;
     }
 
-    public static boolean isRecruiting(Status status) {
-        return RECRUIT.equals(status);
+    public static boolean isNotRecruiting(Status status) {
+        return !RECRUIT.equals(status);
     }
 
     public String description() {
