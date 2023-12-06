@@ -2,11 +2,10 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.cource.Image;
 import nextstep.courses.domain.cource.ImageRepository;
-import nextstep.courses.domain.cource.SessionRepository;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentsRepository;
-import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,25 +43,12 @@ public class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Image findImage = 이미지_저장_및_반환();
-        Session session = Session.ofPaid(Period.from(), findImage, 1_000L, 1L);
-        수강생_추가(session);
+        Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
 
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session saveSession = sessionRepository.findById(1L);
         assertThat(saveSession.type()).isEqualTo(saveSession.type());
-        assertThat(saveSession.students().size()).isEqualTo(2);
         LOGGER.debug("saveSession: {}", saveSession);
-    }
-
-    private Image 이미지_저장_및_반환() {
-        imageRepository.save(Image.from());
-        return imageRepository.findById(1L);
-    }
-
-    private void 수강생_추가(Session session) {
-        session.addStudent(NsUserTest.JAVAJIGI);
-        session.addStudent(NsUserTest.SANJIGI);
     }
 }

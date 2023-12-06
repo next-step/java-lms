@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.cource.Image;
 import nextstep.courses.domain.cource.ImageRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,15 @@ public class JdbcImageRepository implements ImageRepository {
                 rs.getLong(3),
                 rs.getLong(4),
                 rs.getLong(5));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+
+        return preventNull(id, sql, rowMapper);
+    }
+
+    private Image preventNull(Long id, String sql, RowMapper<Image> rowMapper) {
+        try {
+            return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.cource.ImageRepository;
-import nextstep.courses.domain.cource.SessionRepository;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -41,7 +41,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(6),
                 rs.getLong(7),
                 imageRepository.findById(rs.getLong(8)),
-                studentsRepository.findBySessionId(rs.getLong(8)));
+                studentsRepository.findBySessionId(rs.getLong(1)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }
