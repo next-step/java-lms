@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.repository.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +11,10 @@ import java.time.LocalDateTime;
 
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
-    private JdbcOperations jdbcTemplate;
 
-    public JdbcCoverImageRepository(JdbcTemplate jdbcTemplate) {
+    private final JdbcOperations jdbcTemplate;
+
+    public JdbcCoverImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
