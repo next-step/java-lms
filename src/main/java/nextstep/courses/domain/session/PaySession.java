@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.exception.NotRegisterSession;
@@ -32,11 +31,9 @@ public class PaySession extends Session {
     }
 
     private void validateStatus() throws NotRecruitingException {
-        if (isRecruiting(status)) {
-            return;
+        if (isNotRecruiting(status)) {
+            throw new NotRecruitingException(String.format("해당 강의의 현재 %s입니다.", status.description()));
         }
-
-        throw new NotRecruitingException(String.format("해당 강의의 현재 상태는 %s입니다.", status.description()));
     }
 
     private void validateCapacity() throws NotRegisterSession {

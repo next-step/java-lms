@@ -27,7 +27,7 @@ class PaySessionTest {
 
         // when & then
         assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI))).isInstanceOf(NotRecruitingException.class)
-            .hasMessage("해당 강의의 현재 상태는 준비중입니다.");
+            .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
     @DisplayName("현재 수강인원이 제한 인원을 초과하면 예외를 발생시킨다.")
