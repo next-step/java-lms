@@ -31,4 +31,7 @@ public class SelectionUsers {
         return this.selectionUsers.size();
     }
 
+    public void add(final NsUser user) {
+        this.selectionUsers.add(new SelectionUser(SelectStatus.UNDECIDED, user));
+    }
 }

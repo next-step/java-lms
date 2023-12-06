@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository("sessionUserListRepository")
+@Repository("sessionSelectionUserListRepository")
 public class JdbcSessionSelectionUserListRepository implements SessionSelectionUserListRepository {
     private JdbcOperations jdbcTemplate;
 
