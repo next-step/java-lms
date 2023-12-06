@@ -21,16 +21,10 @@ public class PaidSession extends Session {
 
     @Override
     public void enroll(NsUser user) {
-        validateStatus();
+        validateCommonEnroll();
         validateLimitNumberOfStudents();
         validatePayment(user);
         students.add(user);
-    }
-
-    private void validateStatus() {
-        if (sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
-        }
     }
 
     private void validateLimitNumberOfStudents() {
