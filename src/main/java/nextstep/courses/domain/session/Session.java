@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.session.EnrollmentMaxExceededException;
-import nextstep.courses.exception.session.InvalidSessionStateException;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
@@ -25,6 +24,8 @@ public class Session {
 
     private final Students students;
 
+    private final Enrollment enrollment;
+
 
     public Session(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
         this.id = id;
@@ -35,6 +36,7 @@ public class Session {
         this.enrollmentMax = enrollmentMax;
         this.image = image;
         this.students = students;
+        this.enrollment = Enrollment.from(sessionType, this);
     }
 
     public static Session ofFree(Period period, Image image) {
@@ -55,30 +57,11 @@ public class Session {
 
 
     public void enroll(NsUser student, Payment payment) {
-        validateEnroll(payment);
-        addStudents(student);
+        enrollment.enroll(student, payment);
     }
 
-    private void validateEnroll(Payment payment) {
-        if (!SessionState.recruiting(sessionState)) {
-            throw new InvalidSessionStateException("현재 강의 모집중이 아닙니다.");
-        }
-
-        if (!isFullEnrollment()) {
-            throw new EnrollmentMaxExceededException("최대 수강 인원을 초과하였습니다.");
-        }
-
-        if (SessionType.paid(sessionType)) {
-            payment.complete(amount);
-        }
-    }
-
-    private boolean isFullEnrollment() {
+    public boolean isFullEnrollment() {
         return students.size() < enrollmentMax;
-    }
-
-    private void addStudents(NsUser student) {
-        students.add(student);
     }
 
     public Session preparing() {
@@ -103,6 +86,10 @@ public class Session {
 
     public String type() {
         return sessionType.name();
+    }
+
+    public SessionState sessionState() {
+        return sessionState;
     }
 
     public String state() {
