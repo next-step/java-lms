@@ -13,7 +13,7 @@ public class Amount {
         this.amount = amount;
     }
 
-    public void validate(Long amount) throws NotMatchAmountException {
+    public void validatePayAmount(Long amount) throws NotMatchAmountException {
         if (this.amount.equals(amount)) {
             return;
         }

@@ -4,11 +4,11 @@ import nextstep.courses.domain.session.PayType;
 
 import java.util.List;
 
-public class SessionFactory {
+public class SessionServiceFactory {
 
     private final List<SessionService> sessionServices;
 
-    public SessionFactory(FreeSessionService freeSessionService, PaySessionService paySessionService) {
+    public SessionServiceFactory(FreeSessionService freeSessionService, PaySessionService paySessionService) {
         this.sessionServices = List.of(freeSessionService, paySessionService);
     }
 

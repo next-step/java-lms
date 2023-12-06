@@ -15,7 +15,7 @@ public class AmountTest {
         Amount amount = new Amount(12000L);
 
         // when & then
-        assertThatThrownBy(() -> amount.validate(10000L)).isInstanceOf(NotMatchAmountException.class)
+        assertThatThrownBy(() -> amount.validatePayAmount(10000L)).isInstanceOf(NotMatchAmountException.class)
             .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 결제 금액 :: 10,000원");
     }
 }
