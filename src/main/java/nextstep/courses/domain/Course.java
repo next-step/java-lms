@@ -12,6 +12,7 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private Sessions sessions = new Sessions();
 
     public Course() {
     }
@@ -49,5 +50,14 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public Long addSession(Session session) {
+        this.sessions.add(session);
+        return this.id;
+    }
+
+    public Sessions sessionList() {
+        return this.sessions;
     }
 }
