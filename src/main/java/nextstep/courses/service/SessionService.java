@@ -2,7 +2,6 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.attendee.Attendee;
 import nextstep.courses.domain.attendee.AttendeeRepository;
-import nextstep.courses.domain.attendee.Attendees;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -27,9 +26,7 @@ public class SessionService {
     public void enroll(Payment payment, NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findBySessionId(sessionId)
                                            .orElseThrow(NotFoundException::new);
-        Attendees attendees = attendeeRepository.findAllBySessionId(sessionId);
-        Attendee enrolledAttendee = session.enroll(payment, loginUser);
-        attendees.checkAlreadyAttend(enrolledAttendee);
+        Attendee enrolledAttendee = session.enroll(payment.getAmount(), loginUser.getId());
         attendeeRepository.save(enrolledAttendee);
     }
 }

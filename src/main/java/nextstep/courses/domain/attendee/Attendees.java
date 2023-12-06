@@ -22,4 +22,8 @@ public class Attendees {
             throw new AlreadyTakingSessionException();
         }
     }
+
+    public int size() {
+        return this.values.size();
+    }
 }
