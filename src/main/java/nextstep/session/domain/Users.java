@@ -31,4 +31,8 @@ public class Users {
 
         value.add(user);
     }
+
+    public int size() {
+        return value.size();
+    }
 }
