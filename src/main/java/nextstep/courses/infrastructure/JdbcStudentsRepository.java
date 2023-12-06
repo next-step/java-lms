@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository("studentsRepository")
 public class JdbcStudentsRepository implements StudentsRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     private final UserRepository userRepository;
 

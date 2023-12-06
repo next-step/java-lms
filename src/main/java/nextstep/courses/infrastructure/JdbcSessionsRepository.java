@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository("sessionsRepository")
 public class JdbcSessionsRepository implements SessionsRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     private final SessionRepository sessionRepository;
 

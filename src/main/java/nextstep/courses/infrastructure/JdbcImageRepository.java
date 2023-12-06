@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("imageRepository")
 public class JdbcImageRepository implements ImageRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

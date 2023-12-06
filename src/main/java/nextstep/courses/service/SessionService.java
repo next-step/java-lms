@@ -6,7 +6,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class SessionService {
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
 
     public SessionService(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;

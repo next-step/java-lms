@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     private final ImageRepository imageRepository;
     private final StudentsRepository studentsRepository;
