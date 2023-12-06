@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.session.Price;
 import nextstep.courses.exception.NegativeOrZeroNumberException;
 import nextstep.courses.exception.PaymentAmountNotEqualException;
-import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,10 +24,9 @@ class PriceTest {
     @Test
     void throw_exception_when_payment_amount_is_not_same_as_price() {
         Long givenAmount = 1000L;
-        Payment payment = new Payment("1L", 1L, 1L, givenAmount);
         Price price = new Price(999L);
 
-        assertThatThrownBy(() -> price.validatePrice(payment))
+        assertThatThrownBy(() -> price.validatePrice(givenAmount))
                 .isInstanceOf(PaymentAmountNotEqualException.class);
     }
 }

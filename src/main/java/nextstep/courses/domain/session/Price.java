@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.NegativeOrZeroNumberException;
 import nextstep.courses.exception.PaymentAmountNotEqualException;
-import nextstep.payments.domain.Payment;
 
 public class Price {
 
@@ -19,13 +18,13 @@ public class Price {
         }
     }
 
-    public void validatePrice(Payment payment) {
-        if (isNotEqualAmount(payment)) {
+    public void validatePrice(Long amount) {
+        if (isNotEqualAmount(amount)){
             throw new PaymentAmountNotEqualException();
         }
     }
 
-    private boolean isNotEqualAmount(Payment payment) {
-        return !payment.getAmount().equals(this.amount);
+    private boolean isNotEqualAmount(Long amount) {
+        return !amount.equals(this.amount);
     }
 }
