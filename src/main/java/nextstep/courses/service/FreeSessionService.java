@@ -39,6 +39,6 @@ public class FreeSessionService implements SessionService {
 
         SessionStudent sessionStudent = new SessionStudent(session, student);
         sessionStudentRepository.save(sessionStudent);
-        session.enroll(sessionStudent);
+        session.enroll(sessionStudent, payment);
     }
 }

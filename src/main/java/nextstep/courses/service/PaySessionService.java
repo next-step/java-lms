@@ -38,10 +38,8 @@ public class PaySessionService implements SessionService {
         Session session = sessionRepository.findBy(payment.sessionId())
             .orElseThrow(() -> new IllegalArgumentException("일치하는 강의가 없습니다. 강의 아이디 :: " + payment.nsUserId()));
 
-        payment.validateAmount(session);
-
         SessionStudent sessionStudent = new SessionStudent(session, student);
         sessionStudentRepository.save(sessionStudent);
-        session.enroll(sessionStudent);
+        session.enroll(sessionStudent, payment);
     }
 }

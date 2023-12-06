@@ -4,6 +4,7 @@ import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.exception.SessionEnrollException;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 
@@ -18,7 +19,7 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent) throws SessionEnrollException {
+    public void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException {
         validateStatus();
         this.sessionStudents.add(sessionStudent);
     }

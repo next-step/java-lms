@@ -24,7 +24,7 @@ public class SessionStudents {
         }
     }
 
-    public boolean isExceed(int enrollmentCapacity) {
-        return sessionStudents.size() >= enrollmentCapacity;
+    public boolean isExceed(int studentsCapacity) {
+        return sessionStudents.size() >= studentsCapacity;
     }
 }

@@ -38,7 +38,7 @@ public class Payment {
         return this.nsUserId;
     }
 
-    public void validateAmount(Session session) throws NotMatchAmountException {
-        session.isEqual(amount);
+    public boolean isNotSameAmount(Long amount) {
+        return !this.amount.equals(amount);
     }
 }

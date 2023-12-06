@@ -5,6 +5,7 @@ import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.SessionEnrollException;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -31,9 +32,7 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public void isEqual(Long amount) throws NotMatchAmountException {}
-
-    public abstract void enroll(SessionStudent sessionStudent) throws SessionEnrollException;
+    public abstract void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException;
 
     @Override
     public boolean equals(Object o) {

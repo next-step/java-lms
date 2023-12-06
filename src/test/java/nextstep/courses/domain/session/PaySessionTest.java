@@ -5,6 +5,7 @@ import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.courses.exception.SessionEnrollException;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,10 @@ class PaySessionTest {
     void validateStatus() {
         // given
         PaySession paySession = createPaySession(PREPARE);
+        Payment payment = createPayment(10000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI))).isInstanceOf(NotRecruitingException.class)
+        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(NotRecruitingException.class)
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
@@ -35,16 +37,17 @@ class PaySessionTest {
     void validateCapacity() throws SessionEnrollException {
         // given
         Session paySession = createPaySession(RECRUIT);
+        Payment payment = createPayment(10000L);
         SessionStudent sessionStudent1 = new SessionStudent(paySession, JAVAJIGI);
         SessionStudent sessionStudent2 = new SessionStudent(paySession, SANJIGI);
 
-        paySession.enroll(sessionStudent1);
-        paySession.enroll(sessionStudent2);
+        paySession.enroll(sessionStudent1, payment);
+        paySession.enroll(sessionStudent2, payment);
 
         // when & then
         SessionStudent sessionStudent3 = new SessionStudent(paySession, new NsUser());
 
-        assertThatThrownBy(() -> paySession.enroll(sessionStudent3)).isInstanceOf(NotRegisterSession.class)
+        assertThatThrownBy(() -> paySession.enroll(sessionStudent3, payment)).isInstanceOf(NotRegisterSession.class)
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 
@@ -56,8 +59,12 @@ class PaySessionTest {
             new CoverImage(),
             LocalDate.of(2023, 12, 5),
             LocalDate.now(),
-            new Amount(10000L),
+            10000L,
             2);
+    }
+
+    private Payment createPayment(Long amount) {
+        return new Payment("1", 1L, 1L, 10000L);
     }
 
 }

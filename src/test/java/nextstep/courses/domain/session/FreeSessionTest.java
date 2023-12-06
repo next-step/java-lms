@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.exception.NotRecruitingException;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +20,11 @@ class FreeSessionTest {
     @Test
     void validateStatus() {
         // given
-        FreeSession paySession = createFreeSession(PREPARE);
+        FreeSession freeSession = createFreeSession(PREPARE);
+        Payment payment = new Payment();
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI))).isInstanceOf(NotRecruitingException.class)
+        assertThatThrownBy(() -> freeSession.enroll(new SessionStudent(freeSession, JAVAJIGI), payment)).isInstanceOf(NotRecruitingException.class)
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 

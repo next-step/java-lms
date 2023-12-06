@@ -6,25 +6,30 @@ import nextstep.courses.exception.NotMatchAmountException;
 import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.exception.NotRegisterSession;
 import nextstep.courses.exception.SessionEnrollException;
+import nextstep.payments.domain.Payment;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.Status.*;
 
 public class PaySession extends Session {
 
-    private Amount amount;
-    private int enrollmentCapacity;
+    private static final DecimalFormat formatter = new DecimalFormat("###,###");
 
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Amount amount, int enrollmentCapacity) {
+    private Long amount;
+    private int studentsCapacity;
+
+    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
         super(id, payType, status, coverImage, startDate, endDate);
         this.amount = amount;
-        this.enrollmentCapacity = enrollmentCapacity;
+        this.studentsCapacity = studentsCapacity;
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent) throws SessionEnrollException {
+    public void enroll(SessionStudent sessionStudent, Payment payment) throws SessionEnrollException {
         validateStatus();
+        validateAmount(payment);
         validateCapacity();
 
         sessionStudents.add(sessionStudent);
@@ -36,14 +41,15 @@ public class PaySession extends Session {
         }
     }
 
-    private void validateCapacity() throws NotRegisterSession {
-        if (sessionStudents.isExceed(enrollmentCapacity)) {
-            throw new NotRegisterSession("현재 수강 가능한 모든 인원수가 채워졌습니다.");
+    private void validateAmount(Payment payment) throws NotMatchAmountException {
+        if (payment.isNotSameAmount(amount)) {
+            throw new NotMatchAmountException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
         }
     }
 
-    @Override
-    public void isEqual(Long amount) throws NotMatchAmountException {
-        this.amount.validatePayAmount(amount);
+    private void validateCapacity() throws NotRegisterSession {
+        if (sessionStudents.isExceed(studentsCapacity)) {
+            throw new NotRegisterSession("현재 수강 가능한 모든 인원수가 채워졌습니다.");
+        }
     }
 }
