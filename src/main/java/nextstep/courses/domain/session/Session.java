@@ -97,6 +97,10 @@ public class Session {
         students.add(student);
     }
 
+    public Long id() {
+        return id;
+    }
+
     public String type() {
         return sessionType.name();
     }

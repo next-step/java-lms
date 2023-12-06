@@ -27,12 +27,16 @@ public class ImageRepositoryTest {
     }
 
     @Test
-    void crud() {
+    void create() {
         Image image = Image.of("JPG", 300L, 200L, 1024);
         int count = imageRepository.save(image);
         assertThat(count).isEqualTo(1);
-        Image saveImage = imageRepository.findById(1L);
-        assertThat(saveImage.type()).isEqualTo(image.type());
+    }
+
+    @Test
+    void find() {
+        Image saveImage = imageRepository.findById(1000L);
+        assertThat(saveImage.type()).isEqualTo("JPG");
         LOGGER.debug("Image: {}", saveImage);
     }
 }

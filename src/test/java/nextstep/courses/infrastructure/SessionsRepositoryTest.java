@@ -11,14 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class SessionRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
+public class SessionsRepositoryTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionsRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private SessionsRepository sessionsRepository;
 
     private SessionRepository sessionRepository;
 
@@ -34,19 +38,22 @@ public class SessionRepositoryTest {
         userRepository = new JdbcUserRepository(jdbcTemplate);
         studentsRepository = new JdbcStudentsRepository(jdbcTemplate, userRepository);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, imageRepository, studentsRepository);
+        sessionsRepository = new JdbcSessionsRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test
-    void create() {
-        Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
+    void crud() {
+        int count = sessionsRepository.save(1L, Sessions.of(강의_목록_조회()));
+        assertThat(count).isEqualTo(2);
+        Sessions findSessions = sessionsRepository.findByCourseId(1L);
+        assertThat(findSessions.size()).isEqualTo(2);
+        LOGGER.debug("findSessions: {}", findSessions);
     }
 
-    @Test
-    void find() {
-        Session findSession = sessionRepository.findById(1000L);
-        assertThat(findSession.type()).isEqualTo("PAID");
-        LOGGER.debug("saveSession: {}", findSession);
+    private List<Session> 강의_목록_조회() {
+        Session findPaidSession = sessionRepository.findById(1000L);
+        Session findFreeSession = sessionRepository.findById(2000L);
+
+        return List.of(findPaidSession, findFreeSession);
     }
 }

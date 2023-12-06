@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Sessions {
@@ -16,5 +17,13 @@ public class Sessions {
 
     public void add(Session session) {
         sessions.add(session);
+    }
+
+    public int size() {
+        return sessions.size();
+    }
+
+    public List<Session> values() {
+        return Collections.unmodifiableList(sessions);
     }
 }
