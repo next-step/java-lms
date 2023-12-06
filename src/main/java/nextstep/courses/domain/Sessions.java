@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sessions {
-    private final List<Session> sessions;
+    private final List<Session> values;
 
     public Sessions() {
-        this.sessions = new ArrayList<>();
+        this.values = new ArrayList<>();
     }
 
     public void add (Session session) {
-        this.sessions.add(session);
+        this.values.add(session);
     }
 
     public int numbOfSessions() {
-        return this.sessions.size();
+        return this.values.size();
     }
 }
