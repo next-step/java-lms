@@ -1,9 +1,8 @@
 package nextstep.courses.domain;
 
-public class FreeSession extends SessionType{
+public class FreeSession implements SessionType{
 
     public FreeSession() {
-        super();
     }
 
     @Override
