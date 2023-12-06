@@ -14,7 +14,7 @@ public class SessionTest {
     private final Period period = new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 25));
     private final Thumbnail thumbnail = new Thumbnail(1, "thumbnail.png", 1024L * 1024L, 300, 200);
     private final List<NsUser> students = new ArrayList<>(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
-    private SessionType sessionType = SessionType.determineSessionType(true, 100, 100);
+    private SessionType sessionType = SessionType.determineSessionType(true, 1L, 100, 100);
     private SessionStatus sessionStatus = SessionStatus.RECRUITING;
 
     @Test
@@ -47,7 +47,7 @@ public class SessionTest {
 
     @Test
     public void isWithinCapacity_유료강의_정원_마감_시_False_반환테스트() {
-        sessionType = SessionType.determineSessionType(true, 2, 10000);
+        sessionType = SessionType.determineSessionType(true, 1L, 2, 10000);
 
         Session fullSession = new Session(1L, "session", period, thumbnail,
                 sessionType, sessionStatus, students);
@@ -57,7 +57,7 @@ public class SessionTest {
 
     @Test
     public void isWithinCapacity_유료강의_정원_남을_시_True_반환테스트() {
-        sessionType = SessionType.determineSessionType(true, 3, 10000);
+        sessionType = SessionType.determineSessionType(true, 1L, 3, 10000);
 
         Session fullSession = new Session(1L, "session", period, thumbnail,
                 sessionType, sessionStatus, students);
@@ -67,7 +67,7 @@ public class SessionTest {
 
     @Test
     public void isWithinCapacity_무료강의_정원_마감되어도_True_반환테스트() {
-        sessionType = SessionType.determineSessionType(false, 2, 10000);
+        sessionType = SessionType.determineSessionType(false, 1L, 2, 10000);
 
         Session fullSession = new Session(1L, "session", period, thumbnail,
                 sessionType, sessionStatus, students);
@@ -91,7 +91,7 @@ public class SessionTest {
 
     @Test
     public void checkSessionFeeEquality_무료강의_수강료_일치여부_관계없이_True_반환테스트() {
-        sessionType = SessionType.determineSessionType(false, 2, 10000);
+        sessionType = SessionType.determineSessionType(false, 1L, 2, 10000);
 
         Session session = new Session(1L, "session", period, thumbnail,
                 sessionType, sessionStatus, students);

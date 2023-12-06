@@ -2,7 +2,10 @@ package nextstep.courses.domain;
 
 public class FreeSession implements SessionType{
 
-    public FreeSession() {
+    private final Long sessionTypeId;
+
+    public FreeSession(Long sessionTypeId) {
+        this.sessionTypeId = sessionTypeId;
     }
 
     @Override

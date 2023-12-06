@@ -2,11 +2,13 @@ package nextstep.courses.domain;
 
 public class PaidSession implements SessionType{
 
+    private final Long sessionTypeId;
     private final Integer maxStudents;
     private final Integer sessionFee;
 
-    public PaidSession(Integer maxStudents, Integer sessionFee) {
+    public PaidSession(Long sessionTypeId, Integer maxStudents, Integer sessionFee) {
         validatePaidValue(maxStudents, sessionFee);
+        this.sessionTypeId = sessionTypeId;
         this.maxStudents = maxStudents;
         this.sessionFee = sessionFee;
     }
