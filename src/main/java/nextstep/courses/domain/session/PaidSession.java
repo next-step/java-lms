@@ -5,8 +5,8 @@ import nextstep.payments.domain.Payment;
 
 public class PaidSession extends Session {
     public static final String INVALID_AMOUNT_MSG = "결제한 금액과 강의의 금액이 다릅니다.";
-    private final Amount amount;
-    private final EnrollmentCount enrollmentCount;
+    private Amount amount;
+    private EnrollmentCount enrollmentCount;
 
     public PaidSession(final Long id, final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus, final CoverImage coverImage, final Amount amount, final int enrollmentCount) {
         super(id, title, sessionPeriod, sessionStatus, coverImage);

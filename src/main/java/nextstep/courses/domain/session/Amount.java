@@ -4,7 +4,7 @@ import nextstep.payments.domain.Payment;
 
 public class Amount {
     public static final String NEGATIVE_AMOUNT_MSG = "금액은 음수 일 수 없습니다.";
-    private final Long amount;
+    private Long amount;
 
     public Amount(final Long amount) {
         if (amount < 0) {

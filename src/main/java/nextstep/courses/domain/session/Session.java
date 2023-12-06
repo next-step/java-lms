@@ -6,11 +6,11 @@ import nextstep.payments.domain.Payment;
 public abstract class Session {
     public static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
     public static final String NOT_RECRUITING_MSG = "강의 모집중인 강의가 아닙니다.";
-    private final Long id;
-    private final String title;
-    private final SessionPeriod sessionPeriod;
-    private final SessionStatus sessionStatus;
-    private final CoverImage coverImage;
+    private Long id;
+    private String title;
+    private SessionPeriod sessionPeriod;
+    private SessionStatus sessionStatus;
+    private CoverImage coverImage;
 
     public Session(final Long id, final String title, final SessionPeriod sessionPeriod,
                    final SessionStatus sessionStatus, final CoverImage coverImage) {
