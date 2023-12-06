@@ -5,6 +5,7 @@ import nextstep.courses.exception.PaymentMismatchException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PaidSession extends Session {
 
@@ -12,7 +13,13 @@ public class PaidSession extends Session {
     private final Long fee;
 
     public PaidSession(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
-        super(id, coverImage, startDate, endDate);
+        super(id, SessionType.PAID, coverImage, startDate, endDate);
+        this.maxStudents = maxStudents;
+        this.fee = fee;
+    }
+
+    public PaidSession(Long id, SessionType type, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, type, coverImage, startDate, endDate, createdAt, updatedAt);
         this.maxStudents = maxStudents;
         this.fee = fee;
     }
@@ -35,5 +42,13 @@ public class PaidSession extends Session {
         if (!payment.equalAmount(fee)) {
             throw new PaymentMismatchException(fee);
         }
+    }
+
+    public int maxStudents() {
+        return maxStudents;
+    }
+
+    public Long fee() {
+        return fee;
     }
 }
