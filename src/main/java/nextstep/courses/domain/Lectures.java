@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Lectures {
 
-  Set<Lecture> lectures = new HashSet<>();
+  private final Set<Lecture> lectures = new HashSet<>();
 
   public Lectures() {
   }
