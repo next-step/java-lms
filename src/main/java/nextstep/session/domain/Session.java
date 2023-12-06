@@ -93,7 +93,7 @@ public class Session {
         if (isFree()) {
             return;
         }
-        if (!user.getSessionPayment(this).validateSameAmount(price)) {
+        if (!user.getSessionPayment(this).getAmount().equals(price)) {
             throw new IllegalArgumentException("강의의 가격과 결제한 가격이 다릅니다.");
         }
     }

@@ -28,7 +28,7 @@ public class Payment {
         return session;
     }
 
-    public boolean validateSameAmount(Long amount) {
-        return this.amount.equals(amount);
+    public Long getAmount() {
+        return amount;
     }
 }
