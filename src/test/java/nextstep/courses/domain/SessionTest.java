@@ -16,7 +16,10 @@ class SessionTest {
 
     @BeforeEach
     public void sampleDataSetUp() {
-        session = Session.createNewSession(new SessionImage(100, 300, 200, ImageExtension.jpg));
+        SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
+        SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000+09:00", "2023-12-07T10:00:00.000+09:00");
+
+        session = Session.createNewSession(image, duration);
     }
 
     @Test
