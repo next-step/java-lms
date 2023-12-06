@@ -4,6 +4,7 @@ import nextstep.courses.domain.attendee.Attendee;
 import nextstep.courses.domain.attendee.AttendeeRepository;
 import nextstep.courses.domain.session.EnrollmentSession;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.Student;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
@@ -23,10 +24,10 @@ public class SessionService {
         this.attendeeRepository = attendeeRepository;
     }
 
-    public void enroll(Payment payment, NsUser loginUser, Long sessionId) {
+    public void enroll(Payment payment, Student student, Long sessionId) {
         EnrollmentSession session = sessionRepository.findBySessionId(sessionId)
                                                      .orElseThrow(NotFoundException::new);
-        Attendee enrolledAttendee = session.enroll(payment.getAmount(), loginUser.getId());
+        Attendee enrolledAttendee = session.enroll(payment.getAmount(), student.getId());
         attendeeRepository.save(enrolledAttendee);
     }
 }
