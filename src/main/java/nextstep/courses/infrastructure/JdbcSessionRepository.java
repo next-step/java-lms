@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.cource.ImageRepository;
 import nextstep.courses.domain.cource.SessionRepository;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,11 +12,14 @@ import org.springframework.stereotype.Repository;
 public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
 
-    private final ImageRepository jdbcImageRepository;
+    private final ImageRepository imageRepository;
+    private final StudentsRepository studentsRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, ImageRepository jdbcImageRepository) {
+
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, ImageRepository imageRepository, StudentsRepository studentsRepository) {
         this.jdbcTemplate = jdbcTemplate;
-        this.jdbcImageRepository = jdbcImageRepository;
+        this.imageRepository = imageRepository;
+        this.studentsRepository = studentsRepository;
     }
 
 
@@ -36,8 +40,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getDate(5).toLocalDate(),
                 rs.getLong(6),
                 rs.getLong(7),
-                jdbcImageRepository.findById(rs.getLong(8)),
-                null);
+                imageRepository.findById(rs.getLong(8)),
+                studentsRepository.findBySessionId(rs.getLong(8)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }

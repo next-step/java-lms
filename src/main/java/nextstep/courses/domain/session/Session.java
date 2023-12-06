@@ -94,6 +94,10 @@ public class Session {
         return of(id, sessionType, SessionState.END, period, amount, enrollmentMax, image, students);
     }
 
+    public void addStudent(NsUser student) {
+        students.add(student);
+    }
+
     public String type() {
         return sessionType.name();
     }
