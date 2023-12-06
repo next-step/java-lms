@@ -27,21 +27,10 @@ public class Answers {
         values.add(answer);
     }
 
-    public boolean isAnswerOwner(NsUser loginUser) {
-        long answerOwnerCount = values.stream().filter(answer -> answer.isOwner(loginUser)).count();
-        if (this.values.size() == answerOwnerCount) {
-            return true;
-        }
-        return false;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (!isAnswerOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : values) {
-            deleteHistories.add(answer.delete());
+            deleteHistories.add(answer.delete(loginUser));
         }
         return deleteHistories;
     }

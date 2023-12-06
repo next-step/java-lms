@@ -63,10 +63,6 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    private boolean isAnswerOwner(NsUser loginUser) {
-        return answers.isAnswerOwner(loginUser);
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
