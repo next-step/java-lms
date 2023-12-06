@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.SessionException;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,16 +38,43 @@ class SessionTest {
     @Test
     @DisplayName("무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
     void 무료강의_수강신청() {
-        Session session = new Session(0L, SessionType.FREE, 10, new ArrayList<>(), 15);
+        Session session = new Session(0L, SessionType.FREE, SessionState.RECRUITING,10, new ArrayList<>(), 15);
         session.enrollStudent(NsUserTest.JAVAJIGI);
 
-        assertThat(session.equals(new Session(0L, SessionType.FREE, 10, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
+        assertThat(session.equals(new Session(0L, SessionType.FREE, SessionState.RECRUITING,10, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
     }
 
     @Test
     @DisplayName("유료강의는 최대 수강 인원을 초과하면 예외가 발생한다.")
     void 유료강의_수강신청() {
-        Session session = new Session(0L, SessionType.PAID, 10, new ArrayList<>(), 10);
+        Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING,10, new ArrayList<>(), 10);
+
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+                .isInstanceOf(SessionException.class);
+    }
+
+    @Test
+    @DisplayName("강의 상태가 모집중일 때 수강신청을 할 수 있다.")
+    void 수강신청_모집중_상태() {
+        Session session = new Session(0L, SessionState.RECRUITING, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+        session.enrollStudent(NsUserTest.JAVAJIGI);
+
+        assertThat(session.getEnrollCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("강의 상태가 준비중일 때 수강신청을 하면 예외가 발생한다.")
+    void 수강신청_준비중_상태() {
+        Session session = new Session(0L, SessionState.PREPARING, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+                .isInstanceOf(SessionException.class);
+    }
+
+    @Test
+    @DisplayName("강의 상태가 종료일 때 수강신청을 하면 예외가 발생한다.")
+    void 수강신청_종료_상태() {
+        Session session = new Session(0L, SessionState.END, LocalDate.now().minusDays(10), LocalDate.now().minusDays(3));
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
                 .isInstanceOf(SessionException.class);

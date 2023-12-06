@@ -21,6 +21,7 @@ public enum SessionState {
         return this.sessionStateStrategy.checkStatus(startDate, endDate, currentDate);
     }
 
-
-
+    public static boolean isAbleToEnroll(SessionState sessionState) {
+        return sessionState == RECRUITING;
+    }
 }

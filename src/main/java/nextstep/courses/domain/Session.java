@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,11 +44,14 @@ public class Session {
         this.sessionState = sessionState;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.enrollCount = 0;
+        this.students = new ArrayList<>();
     }
 
-    public Session(long id, SessionType sessionType, int maxPersonnel, List<NsUser> students, int enrollCount) {
+    public Session(long id, SessionType sessionType, SessionState sessionState, int maxPersonnel, List<NsUser> students, int enrollCount) {
         this.id = id;
         this.sessionType = sessionType;
+        this.sessionState = sessionState;
         this.maxPersonnel = maxPersonnel;
         this.students = students;
         this.enrollCount = enrollCount;
@@ -63,8 +67,17 @@ public class Session {
         if(sessionType == SessionType.PAID && enrollCount >= maxPersonnel){
             throw new SessionException("최대 수강 인원을 초과하였습니다.");
         }
+
+        if(!SessionState.isAbleToEnroll(sessionState)){
+            throw new SessionException("모집중인 강의가 아닙니다.");
+        }
+
         students.add(student);
         enrollCount++;
+    }
+
+    public int getEnrollCount() {
+        return enrollCount;
     }
 
     @Override
