@@ -74,25 +74,6 @@ public class Session {
     }
 
     public void enroll(NsUser user) {
-        validateEnroll();
-        validatePayment(user);
-        students.add(user);
-    }
-
-    private void validateEnroll() {
-        if (isPaid() && this.limitNumberOfStudents <= students.enrolledNumber()) {
-            throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
-        }
-    }
-
-    private void validatePayment(NsUser user) {
-        if (!user.getSessionPayment(this).getAmount().equals(price)) {
-            throw new IllegalArgumentException("강의의 가격과 결제한 가격이 다릅니다.");
-        }
-    }
-
-    private boolean isPaid() {
-        return this.sessionType == SessionType.PAID;
     }
 
     public List<NsUser> getStudents() {
