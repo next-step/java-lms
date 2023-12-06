@@ -30,7 +30,7 @@ public class Session {
     }
 
     public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus, int price, int availableSlots) {
-        if (SessionType.FREE.isFree(sessionType)) {
+        if (sessionType.isFree()) {
             throw new IllegalArgumentException("해당 강의는 무료수업이므로 가격을 정할 수 없습니다.");
         }
 
