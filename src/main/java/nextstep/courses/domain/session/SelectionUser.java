@@ -26,4 +26,12 @@ public class SelectionUser {
     public String getSelectStatusString() {
         return this.status.toString();
     }
+
+    public void selected() {
+        this.status = SelectStatus.SELECTED;
+    }
+
+    public void unselected() {
+        this.status = SelectStatus.UNDECIDED;
+    }
 }
