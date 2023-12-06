@@ -4,6 +4,7 @@ import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Session {
@@ -27,7 +28,17 @@ public class Session {
     private final SessionUserCount sessionUserCount;
 
     public Session(Long id) {
-        this(id, null, null, null, null, null, null, null, null);
+        this(id, 1L,
+                new SessionImage(0, "jpg", 300, 200),
+                new SessionPeriod(
+                        LocalDate.of(2023, 1, 1),
+                        LocalDate.of(2023, 1, 30)
+                ),
+                new SessionPrice(1000),
+                SessionState.PREPARE,
+                SessionType.PAID,
+                new SessionUserCount(0, 0)
+        );
     }
 
     public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUserCount sessionUserCount) {
@@ -80,7 +91,7 @@ public class Session {
         return sessionType == SessionType.PAID;
     }
 
-    public int userCount(){
+    public int userCount() {
         return sessionUserCount.userCount();
     }
 

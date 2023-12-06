@@ -24,7 +24,7 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
     @Override
     public SessionUsers findBy(long sessionId) {
         String sql = "select ns.id, ns.user_id, ns.password, ns.name, ns.email, ns.created_at, ns.updated_at " +
-                "from user_session us " +
+                "from session_users us " +
                 "join ns_user ns on ns.id = us.user_id " +
                 "where us.session_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
@@ -43,7 +43,7 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
 
     @Override
     public void addUserFor(long sessionId, long userId) {
-        String sql = "insert into user_session(session_id, user_id) values(?,?)";
+        String sql = "insert into session_users(session_id, user_id) values(?,?)";
         this.jdbcTemplate.update(sql, sessionId, userId);
     }
 

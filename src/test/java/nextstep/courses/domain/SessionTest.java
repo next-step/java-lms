@@ -4,6 +4,7 @@ import nextstep.courses.exception.SessionException;
 import nextstep.courses.exception.SessionPriceException;
 import nextstep.courses.exception.SessionUserCountException;
 import nextstep.courses.exception.SessionUserException;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -130,15 +131,13 @@ public class SessionTest {
     @DisplayName("실패 - 유저가 기존에 신청한 강의일 경우 중복으로 수강 신청을 할 수 없다.")
     void fail_session_register_user() {
         Session session = zeroAndOneThousandSession(SessionState.OPEN, SessionType.PAID);
-        assertThatThrownBy(() -> duplicateAddSessionRegister(session))
+
+        final Payment payment = paymentOneThousand();
+        session.register(JAVAJIGI, payment);
+
+        assertThatThrownBy(() -> session.register(JAVAJIGI, payment))
                 .isInstanceOf(SessionUserException.class)
                 .hasMessage("강의를 이미 신청한 유저이므로 중복으로 신청할 수 없습니다.");
-    }
-
-    private void duplicateAddSessionRegister(Session session ) {
-        for (int i = 0; i < 2; i++) {
-            session.register(JAVAJIGI, paymentOneThousand());
-        }
     }
 
 }

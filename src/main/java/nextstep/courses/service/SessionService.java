@@ -24,10 +24,9 @@ public class SessionService {
     @Transactional
     public void register(long sessionId, NsUser user, Payment payment) {
         SessionUsers sessionUsers = sessionUsersRepository.findBy(sessionId);
-        Session session = sessionRepository.findBy(sessionId, sessionUsers)
+        Session session = sessionRepository.findBy(sessionId)
                 .orElseThrow(() -> new SessionException("강의 정보를 찾을 수 없습니다."));
         session.register(user, payment);
         sessionUsersRepository.addUserFor(sessionId, user.getId());
-        sessionRepository.updateCountBy(session.userCount(), sessionId);
     }
 }

@@ -17,7 +17,6 @@ create table session
     price           int         not null,
     state           varchar(10) not null,
     type            varchar(10) not null,
-    user_count      int default 0,
     max_user_count  int default 0,
     image_size      int         not null,
     image_extension varchar(10) not null,
@@ -26,7 +25,7 @@ create table session
     primary key (id)
 );
 
-create table user_session
+create table session_users
 (
     id         bigint AUTO_INCREMENT(3),
     session_id bigint not null,
