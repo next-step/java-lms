@@ -55,9 +55,21 @@ public class Session {
         );
     }
 
-    public void register() {
+    private void isRegistrable() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("수강신청은 모집중인 상태일 때만 가능합니다.");
         }
+
+        if (sessionType == SessionType.FREE) {
+            return;
+        }
+
+        if (numberOfMaximumMembers >= members.size()) {
+            throw new IllegalStateException("최대 수강 인원을 초과하였습니다.");
+        }
+    }
+
+    public void register() {
+        isRegistrable();
     }
 }
