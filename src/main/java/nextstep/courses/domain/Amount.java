@@ -23,6 +23,10 @@ public class Amount {
         return value != amount;
     }
 
+    public long value() {
+        return value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,4 +40,8 @@ public class Amount {
         return Objects.hash(value);
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

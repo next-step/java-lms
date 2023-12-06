@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.ParticipantsException;
 import nextstep.users.domain.NsUser;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Participants {
@@ -10,6 +11,10 @@ public class Participants {
 
     public Participants(Set<NsUser> values) {
         this.values = values;
+    }
+
+    public int size() {
+        return values.size();
     }
 
     public Participants add(NsUser user) {
@@ -24,11 +29,23 @@ public class Participants {
         }
     }
 
-    public void isMaxCount(int count) {
-        if (values.size() >= count) {
-            throw new ParticipantsException("강의 최대 수강 인원을 초과할 수 없습니다.");
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Participants that = (Participants) o;
+        return Objects.equals(values, that.values);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(values);
+    }
 
+    @Override
+    public String toString() {
+        return "Participants{" +
+                "values=" + values +
+                '}';
+    }
 }

@@ -1,6 +1,5 @@
 package nextstep.payments.domain;
 
-import nextstep.courses.domain.Amount;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -42,7 +41,7 @@ public class Payment {
         return nsUserId;
     }
 
-    public boolean isNotSameAmount(Amount fee) {
-        return fee.isNotSameByLong(amount);
+    public long findAmount() {
+        return amount;
     }
 }

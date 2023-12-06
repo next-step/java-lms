@@ -1,6 +1,6 @@
 package nextstep.courses.domain.Image;
 
-import nextstep.courses.exception.ImageException;
+import nextstep.courses.exception.ImageFormatException;
 
 import java.util.Arrays;
 
@@ -11,9 +11,7 @@ public enum ImageFormat {
         return Arrays.stream(ImageFormat.values())
                 .findFirst()
                 .filter((i) -> i.name().equalsIgnoreCase(value))
-                .orElseThrow(() -> new ImageException("이미지 타입은 gif, jpg(jpeg 포함), png, svg 만 가능합니다."));
-
-
+                .orElseThrow(() -> new ImageFormatException("이미지 타입은 gif, jpg(jpeg 포함), png, svg 만 가능합니다."));
     }
 
 

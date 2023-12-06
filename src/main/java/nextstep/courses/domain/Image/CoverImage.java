@@ -1,18 +1,52 @@
 package nextstep.courses.domain.Image;
 
+import nextstep.courses.domain.BaseEntity;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class CoverImage {
+public class CoverImage extends BaseEntity {
+    /**
+     * 이미지 저장을 url 주소값으로 한다는 전제로 구현
+     */
+    private final String url;
     private final Volume volume;
     private final ImageFormat format;
     private final AspectRatio aspectRatio;
 
-    public CoverImage(long volume, String type, int width, int height) {
+    public CoverImage(String url, long volume, String type, int width, int height, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(0L, url, volume, type, width, height, createdAt, updatedAt);
+    }
 
+
+    public CoverImage(String url, long volume, String type, int width, int height, LocalDateTime createdAt) {
+        this(0L, url, volume, type, width, height, createdAt, null);
+    }
+
+    public CoverImage(long id, String url, long volume, String type, int width, int height, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, createdAt, updatedAt);
+        this.url = url;
         this.volume = new Volume(volume);
         this.format = ImageFormat.findBy(type);
         this.aspectRatio = new AspectRatio(width, height);
     }
+
+    public String url() {
+        return url;
+    }
+
+    public long volume() {
+        return volume.find();
+    }
+
+    public String format() {
+        return format.toString();
+    }
+
+    public AspectRatio aspectRatio() {
+        return aspectRatio;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -25,5 +59,18 @@ public class CoverImage {
     @Override
     public int hashCode() {
         return Objects.hash(volume, format, aspectRatio);
+    }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id() +
+                ", url='" + url + '\'' +
+                ", volume=" + volume +
+                ", format=" + format +
+                ", aspectRatio=" + aspectRatio +
+                ", createdAt= " + createdAt() +
+                ", updateAt=" + updatedAt() +
+                '}';
     }
 }
