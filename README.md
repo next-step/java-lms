@@ -46,7 +46,7 @@
 # STEP 3 기능분석
 * [ ] schema sql 작성
   * [ ] Session Schema sql 작성
-  * [ ] Thumbnail Schema sql 작성
+  * [X] Thumbnail Schema sql 작성
   * [ ] SessionStudents Schema sql 작성
 * [ ] data sql 작성
   * [ ] Session 예시 데이터 data.sql 작성
