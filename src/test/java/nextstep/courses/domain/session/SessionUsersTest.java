@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.ExceedMaxAttendanceCountException;
+import nextstep.courses.domain.session.SessionUsers;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
