@@ -1,4 +1,4 @@
-package nextstep.qna.domain.step2;
+package nextstep.session.domain;
 
 public enum SessionStatus {
     PREPARE, OPEN, CLOSED

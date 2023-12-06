@@ -1,4 +1,4 @@
-package nextstep.qna.domain.step2;
+package nextstep.session.domain;
 
 public enum SessionType {
     FREE, CHARGE
