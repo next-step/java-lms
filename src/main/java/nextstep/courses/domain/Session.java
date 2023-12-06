@@ -35,15 +35,15 @@ public class Session {
         }
         return true;
     }
-    boolean isRecruiting() {
+    protected boolean isRecruiting() {
         return sessionStatus == SessionStatus.RECRUITING;
     }
 
-    boolean isWithinCapacity() {
+    protected boolean isWithinCapacity() {
         return this.sessionType.isWithinCapacity(this.students.size());
     }
 
-    boolean checkSessionFeeEquality(Integer sessionFee) {
+    protected boolean checkSessionFeeEquality(Integer sessionFee) {
         return this.sessionType.checkSessionFeeEquality(sessionFee);
     }
 
