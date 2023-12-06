@@ -7,31 +7,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Session {
-    private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
+    protected static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
 
-    private Long id;
+    protected Long id;
 
-    private int generation;
+    protected int generation;
 
-    private Long creatorId;
+    protected Long creatorId;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    protected LocalDateTime createdAt = LocalDateTime.now();
 
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    protected LocalDateTime updatedAt = LocalDateTime.now();
 
-    private LocalDate startDate;
+    protected LocalDate startDate;
 
-    private LocalDate endDate;
+    protected LocalDate endDate;
 
-    private SessionImage sessionImage;
+    protected SessionImage sessionImage;
 
-    private SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
+    protected SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
 
-    private SessionType sessionType;
+    protected SessionType sessionType;
 
-    private Integer limitNumberOfStudents;
-    private SessionStudents students = new SessionStudents();
-    private Long price;
+    protected Integer limitNumberOfStudents;
+    protected SessionStudents students = new SessionStudents();
+    protected Long price;
 
     public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
         validateSessionType(sessionType, limitNumberOfStudents);
@@ -80,19 +80,12 @@ public class Session {
     }
 
     private void validateEnroll() {
-        if (this.sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
-        }
-
         if (isPaid() && this.limitNumberOfStudents <= students.enrolledNumber()) {
             throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
     }
 
     private void validatePayment(NsUser user) {
-        if (isFree()) {
-            return;
-        }
         if (!user.getSessionPayment(this).getAmount().equals(price)) {
             throw new IllegalArgumentException("강의의 가격과 결제한 가격이 다릅니다.");
         }
@@ -100,10 +93,6 @@ public class Session {
 
     private boolean isPaid() {
         return this.sessionType == SessionType.PAID;
-    }
-
-    private boolean isFree() {
-        return this.sessionType == SessionType.FREE;
     }
 
     public List<NsUser> getStudents() {

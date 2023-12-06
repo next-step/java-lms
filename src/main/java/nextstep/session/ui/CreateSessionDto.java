@@ -1,5 +1,6 @@
 package nextstep.session.ui;
 
+import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.ImageType;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionImage;
