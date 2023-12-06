@@ -2,17 +2,14 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SessionStudent {
     private int maxStudentLimit;
-    private List<NsUser> students = new ArrayList<>();
     private SelectionUsers selectionStudents;
 
     public SessionStudent(final int maxStudentLimit, final List<NsUser> nsUsers) {
         this.maxStudentLimit = maxStudentLimit;
-        this.students.addAll(nsUsers);
         this.selectionStudents = SelectionUsers.convert(nsUsers);
     }
 
@@ -49,7 +46,7 @@ public class SessionStudent {
         return this.maxStudentLimit;
     }
 
-    public List<NsUser> getUsers() {
-        return this.students;
+    public SelectionUsers getSelectionUsers() {
+        return this.selectionStudents;
     }
 }

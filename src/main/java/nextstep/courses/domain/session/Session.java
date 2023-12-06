@@ -153,7 +153,7 @@ public class Session {
         setStatus(sessionStatus);
     }
 
-    public List<NsUser> getUsers() {
-        return this.enrollment.getUsers();
+    public SelectionUsers getSelectionUsers() {
+        return this.enrollment.getSelectionUsers();
     }
 }

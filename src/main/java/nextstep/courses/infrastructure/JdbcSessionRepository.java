@@ -20,11 +20,13 @@ public class JdbcSessionRepository implements SessionRepository {
     private CoverImageRepository coverImageRepository;
     private SessionUserListRepository sessionUserListRepository;
     private KeyHolder keyHolder = new GeneratedKeyHolder();
+    private JdbcSessionSelectionUserListRepository sessionSelectionUserListRepository;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
         this.sessionUserListRepository = new JdbcSessionUserListRepository(jdbcTemplate);
+        this.sessionSelectionUserListRepository = new JdbcSessionSelectionUserListRepository(jdbcTemplate);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class JdbcSessionRepository implements SessionRepository {
         final int updateCount = saveSession(session, courseId);
         Long sessionId = keyHolder.getKey().longValue();
 
-        saveUsers(session.getUsers(), sessionId);
+        saveUsers(session.getSelectionUsers(), sessionId);
 
         for (final CoverImage coverImage : session.getCoverImages()) {
             coverImageRepository.save(coverImage, sessionId);
@@ -64,9 +66,9 @@ public class JdbcSessionRepository implements SessionRepository {
         );
     }
 
-    private void saveUsers(final List<NsUser> users, final Long sessionId) {
-        for (NsUser user : users) {
-            sessionUserListRepository.save(user.getId(), sessionId);
+    private void saveUsers(final SelectionUsers users, final Long sessionId) {
+        for (SelectionUser user : users.getSelectionUsers()) {
+            sessionSelectionUserListRepository.save(user, sessionId);
         }
     }
 

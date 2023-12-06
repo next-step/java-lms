@@ -94,15 +94,15 @@ public class Enrollment {
         return this.recruitingStatus.toString();
     }
 
-    public List<NsUser> getUsers() {
-        return this.sessionStudent.getUsers();
-    }
-
     public void changeMaxStudentLimit(final int maxStudentLimit) {
         this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
     }
 
     public void setRecruitingStatus(final RecruitingStatus recruitingStatus) {
         this.recruitingStatus = recruitingStatus;
+    }
+
+    public SelectionUsers getSelectionUsers() {
+        return this.sessionStudent.getSelectionUsers();
     }
 }
