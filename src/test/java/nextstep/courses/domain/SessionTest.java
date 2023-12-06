@@ -14,7 +14,9 @@ class SessionTest {
     private static final LocalDateTime FINISHED_AT = LocalDateTime.of(2023, 11, 30, 23, 59, 59);
 
     private Session makeSession(SessionPaymentInfo sessionPaymentInfo) {
-        return new Session(0L, new CoverImage(), STARTED_AT, FINISHED_AT, SessionStatus.RECRUITING, sessionPaymentInfo);
+        ImageShape imageShape = new ImageShape();
+        CoverImage coverImage = new CoverImage(0L, 1024L*1024L, "jpg", imageShape);
+        return new Session(0L, coverImage,  STARTED_AT, FINISHED_AT, SessionStatus.RECRUITING, sessionPaymentInfo);
     }
 
     @Test
