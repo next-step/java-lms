@@ -46,14 +46,14 @@ public class Session {
         return charge;
     }
 
-    public void check() {
+    public void checkSessionStatus() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강할 수 있습니다.");
         }
     }
 
     public void addStudent() {
-        check();
+        checkSessionStatus();
         this.charge.addStudent();
     }
 

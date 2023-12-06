@@ -22,7 +22,7 @@ public class Sessions {
 
     private void checkSession(List<Session> sessions) {
         for (Session session : sessions) {
-            session.check();
+            session.checkSessionStatus();
         }
     }
 
