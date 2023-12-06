@@ -48,16 +48,18 @@ public class Session {
     }
 
     public void registerForPaidSession(Course course, Payment payment) {
-        this.availableSlots--;
+        boolean isPaidSessionAvailable = !isFree() && isOpen() && isAvailable() && isPaymentCorrect(payment);
 
-        if (!isFree() && isOpen() && isAvailable() && isPaymentCorrect(payment)) {
+        if (isPaidSessionAvailable) {
+            this.availableSlots--;
             Long courseId = course.addSession(this);
             this.courseId = courseId;
         }
     }
 
     public void registerForFreeSession(Course course) {
-        if (isOpen() && isFree()) {
+        boolean isFreeSessionOpen = isOpen() && isFree();
+        if (isFreeSessionOpen) {
             Long courseId = course.addSession(this);
             this.courseId = courseId;
         }
