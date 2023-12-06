@@ -21,7 +21,7 @@ public class PaymentService {
 //        Session session = SessionRepository.findById(payment.getSessionId());
         Session session = TEMPORARY_SESSION;
         if (session.isPossibleToRegister(payment)) {
-            // 수강 신청 성공 후 로직 구현
+            // TODO 수강 신청 성공 후 로직 구현 - payment의 sessionId, nsUserId를 update
         }
     }
 }

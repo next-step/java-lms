@@ -25,11 +25,11 @@ public class CoverImage {
 
     private void widthHeightCheck(Pixel width, Pixel height) {
         if (width.getSize() > 300) {
-            throw new IllegalArgumentException("너비는 300보다 클 수 없습니다.");
+            throw new IllegalArgumentException("너비는 300보다 클 수 없습니다. width:: " + width.getSize());
         }
 
         if (height.getSize() > 200) {
-            throw new IllegalArgumentException("높이는 200보다 클 수 없습니다.");
+            throw new IllegalArgumentException("높이는 200보다 클 수 없습니다. height:: " + height.getSize());
         }
     }
 
@@ -39,20 +39,20 @@ public class CoverImage {
 
     private void ratioCheck(Pixel width, Pixel height) {
         if ((width.getSize() * 2) != (height.getSize() * 3)) {
-            throw new IllegalArgumentException("비율이 맞지 않습니다.");
+            throw new IllegalArgumentException("비율이 맞지 않습니다. width:: " + width.getSize() + ", height:: " + height.getSize());
         }
     }
 
     private void typeCheck(String type) {
         if (!POSSIBLE_IMAGE_TYPE.contains(type)) {
-            throw new IllegalArgumentException("이미지 타입이 맞지 않습니다.");
+            throw new IllegalArgumentException("이미지 타입이 맞지 않습니다. type:: " + type);
         }
     }
 
     private void sizeCheck(long sizeInBytes) {
         // TODO check size
         if (sizeInBytes > 1024 * 1024) {
-            throw new IllegalArgumentException("이미지 사이즈가 맞지 않습니다.");
+            throw new IllegalArgumentException("이미지 사이즈가 맞지 않습니다. sizeInBytes:: " + sizeInBytes);
         }
     }
 

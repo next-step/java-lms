@@ -1,7 +1,7 @@
 package nextstep.qna.domain;
 
 public class Pixel {
-    private double size;
+    private final double size;
 
     private Pixel(double size) {
         this.size = size;

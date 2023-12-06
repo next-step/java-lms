@@ -1,17 +1,14 @@
 package nextstep.qna.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.qna.domain.session.SessionPeriod;
 import nextstep.qna.domain.session.SessionStatus;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 import static nextstep.qna.domain.session.SessionStatus.END;
 import static nextstep.qna.domain.session.SessionStatus.RECRUITING;
 
 public class PaidSession implements Session { // 유료
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private SessionPeriod sessionPeriod;
     private CoverImage coverImage;
     private SessionStatus status;
     private Long maxNumberOfAttendees;
@@ -23,8 +20,7 @@ public class PaidSession implements Session { // 유료
 
     public static PaidSession of(String startDateTime, String endDateTime, CoverImage coverImage, SessionStatus status, long maxNumberOfAttendees, long currentNumberOfAttendees, long price) {
         PaidSession paidSession = new PaidSession();
-        paidSession.startDateTime = LocalDateTime.parse(startDateTime);
-        paidSession.endDateTime = LocalDateTime.parse(endDateTime);
+        paidSession.sessionPeriod = SessionPeriod.of(startDateTime, endDateTime);
         paidSession.coverImage = coverImage;
         paidSession.status = status;
         paidSession.maxNumberOfAttendees = maxNumberOfAttendees;

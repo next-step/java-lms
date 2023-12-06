@@ -1,15 +1,13 @@
 package nextstep.qna.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.qna.domain.session.SessionPeriod;
 import nextstep.qna.domain.session.SessionStatus;
-
-import java.time.LocalDateTime;
 
 import static nextstep.qna.domain.session.SessionStatus.*;
 
 public class FreeSession implements Session { // 무료
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private SessionPeriod sessionPeriod;
     private CoverImage coverImage;
     private SessionStatus status;
 
@@ -18,8 +16,7 @@ public class FreeSession implements Session { // 무료
 
     public static FreeSession of(String startDateTime, String endDateTime, CoverImage coverImage, SessionStatus status) {
         FreeSession freeSession = new FreeSession();
-        freeSession.startDateTime = LocalDateTime.parse(startDateTime);
-        freeSession.endDateTime = LocalDateTime.parse(endDateTime);
+        freeSession.sessionPeriod = SessionPeriod.of(startDateTime, endDateTime);
         freeSession.coverImage = coverImage;
         freeSession.status = status;
         return freeSession;
