@@ -1,8 +1,11 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DeleteHistory {
@@ -10,20 +13,27 @@ public class DeleteHistory {
 
     private ContentType contentType;
 
-    private Long contentId;
-
-    private NsUser deletedBy;
+    private Contents contents;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType, Contents contents, LocalDateTime createdDate) {
         this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
+        this.contents = contents;
         this.createdDate = createdDate;
+    }
+
+    public List<DeleteHistory> makeDeleteHistorys(Answers answers, Contents contents, NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, contents, LocalDateTime.now()));
+        for (Answer answer : answers.getAnswers()) {
+            DeleteHistory deleteHistory = answer.delete(loginUser);
+            deleteHistories.add(deleteHistory);
+        }
+        return deleteHistories;
     }
 
     @Override
@@ -33,18 +43,17 @@ public class DeleteHistory {
         DeleteHistory that = (DeleteHistory) o;
         return Objects.equals(id, that.id) &&
                 contentType == that.contentType &&
-                Objects.equals(contentId, that.contentId) &&
-                Objects.equals(deletedBy, that.deletedBy);
+                Objects.equals(contents, that.contents);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, contentType, contents);
     }
 
     @Override
     public String toString() {
-        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
-                + deletedBy + ", createdDate=" + createdDate + "]";
+        return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contents.getId() + ", deletedBy="
+                + contents.getWriter() + ", createdDate=" + createdDate + "]";
     }
 }
