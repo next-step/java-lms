@@ -9,7 +9,7 @@ public class SelectionUser {
 
     public SelectionUser(SelectStatus status, NsUser user) {
         validate(status, user);
-        
+
         this.status = status;
         this.user = user;
     }
@@ -17,5 +17,13 @@ public class SelectionUser {
     private void validate(final SelectStatus status, final NsUser user) {
         Assert.notNull(status, "status must not be null");
         Assert.notNull(user, "user must not be null");
+    }
+
+    public Long getUserId() {
+        return this.user.getId();
+    }
+
+    public String getSelectStatusString() {
+        return this.status.toString();
     }
 }
