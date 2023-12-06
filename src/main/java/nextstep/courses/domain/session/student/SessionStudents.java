@@ -24,9 +24,7 @@ public class SessionStudents {
         }
     }
 
-    public void validateLimit(int limit) throws NotRegisterSession {
-        if (sessionStudents.size() >= limit) {
-            throw new NotRegisterSession("현재 수강 가능한 모든 인원수가 채워졌습니다.");
-        }
+    public boolean isExceed(int enrollmentCapacity) {
+        return sessionStudents.size() >= enrollmentCapacity;
     }
 }

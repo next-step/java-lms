@@ -1,7 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.NotRecruitingException;
-
 public enum Status {
 
     PREPARE("준비중"),
@@ -14,11 +12,11 @@ public enum Status {
         this.description = description;
     }
 
-    public static void validate(Status status) throws NotRecruitingException {
-        if (RECRUIT.equals(status)) {
-            return;
-        }
+    public static boolean isRecruiting(Status status) {
+        return RECRUIT.equals(status);
+    }
 
-        throw new NotRecruitingException(String.format("해당 강의의 현재 상태는 %s입니다.", status.description));
+    public String description() {
+        return this.description;
     }
 }

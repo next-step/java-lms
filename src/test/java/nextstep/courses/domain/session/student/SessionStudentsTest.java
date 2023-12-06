@@ -37,7 +37,7 @@ class SessionStudentsTest {
             .hasMessage("이미 해당 강의를 수강 중 입니다.");
     }
 
-    @DisplayName("강의 인원 제한 수를 인자로 받아 현재 수강인원을 초과하면 예외를 발생시킨다.")
+    @DisplayName("강의 인원 제한 수를 인자로 받아 현재 수강인원과 비교한다.")
     @Test
     void validateLimit() throws NotRegisterSession {
         // given
@@ -50,7 +50,6 @@ class SessionStudentsTest {
         sessionStudents.add(sessionStudent2);
 
         // when & then
-        assertThatThrownBy(() -> sessionStudents.validateLimit(2)).isInstanceOf(NotRegisterSession.class)
-                .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
+        assertThat(sessionStudents.isExceed(2)).isTrue();
     }
 }
