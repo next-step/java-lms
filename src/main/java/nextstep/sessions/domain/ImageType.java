@@ -13,6 +13,6 @@ public enum ImageType {
         return Arrays.stream(values())
                 .filter(imageType -> imageType.toString().toLowerCase().equals(type))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new IllegalArgumentException(String.format("%s는 허용하지 않는 이미지 타입입니다.", type)));
     }
 }
