@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service("sessionService")
+@Service
 public class SessionService {
-
     private SessionRepository sessionRepository;
     @Resource(name = "courseService")
     private CourseService courseService;
