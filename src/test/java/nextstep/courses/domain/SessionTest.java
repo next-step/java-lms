@@ -45,4 +45,12 @@ class SessionTest {
         assertThat(session.equals(new Session(0L, SessionType.FREE, 10, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
     }
 
+    @Test
+    @DisplayName("유료강의는 최대 수강 인원을 초과하면 예외가 발생한다.")
+    void 유료강의_수강신청() {
+        Session session = new Session(0L, SessionType.PAID, 10, new ArrayList<>(), 10);
+
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+                .isInstanceOf(SessionException.class);
+    }
 }

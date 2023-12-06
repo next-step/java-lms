@@ -60,6 +60,9 @@ public class Session {
     }
 
     public void enrollStudent(NsUser student) {
+        if(sessionType == SessionType.PAID && enrollCount >= maxPersonnel){
+            throw new SessionException("최대 수강 인원을 초과하였습니다.");
+        }
         students.add(student);
         enrollCount++;
     }
