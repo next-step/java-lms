@@ -5,8 +5,7 @@ public class PaidSession extends SessionType{
     private final Integer maxStudents;
     private final Integer sessionFee;
 
-    public PaidSession(boolean isPaid, Integer maxStudents, Integer sessionFee) {
-        super(isPaid);
+    public PaidSession(Integer maxStudents, Integer sessionFee) {
         validatePaidValue(maxStudents, sessionFee);
         this.maxStudents = maxStudents;
         this.sessionFee = sessionFee;
