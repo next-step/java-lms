@@ -12,9 +12,10 @@ public class SessionEnrollmentManagement {
     public SessionEnrollmentManagement(String pricingType, int tuitionFee, String sessionStatus, int capacity) {
         this(new PricingPolicy(PricingTypeEnum.valueOf(pricingType), tuitionFee), SessionStatusEnum.valueOf(sessionStatus), capacity);
     }
+
     public SessionEnrollmentManagement(PricingPolicy pricingPolicy, SessionStatusEnum sessionStatusEnum, int capacity) {
         this.pricingPolicy = pricingPolicy;
-        this.sessionStatusEnum =sessionStatusEnum;
+        this.sessionStatusEnum = sessionStatusEnum;
         this.capacity = capacity;
     }
 
@@ -33,22 +34,17 @@ public class SessionEnrollmentManagement {
     public String getPricingType() {
         return pricingPolicy.getPricingType();
     }
+
     public int getTuitionFee() {
         return pricingPolicy.getTuitionFee();
     }
+
     public String getSessionStatus() {
         return sessionStatusEnum.name();
     }
+
     public int getCapacity() {
         return capacity;
     }
 
-    @Override
-    public String toString() {
-        return "SessionEnrollmentManagement{" +
-                "pricingPolicy=" + pricingPolicy +
-                ", sessionStatusEnum=" + sessionStatusEnum +
-                ", capacity=" + capacity +
-                '}';
-    }
 }

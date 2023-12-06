@@ -20,14 +20,14 @@ class JdbcStudentsRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        studentsRepository = new JdbcStudentsRepository(jdbcTemplate) ;
+        studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
     }
 
     @Test
     void create_read() {
-        int count = studentsRepository.save(1l,1l);
-        count += studentsRepository.save(2l,1l);
-        count += studentsRepository.save(3l,1l);
+        int count = studentsRepository.save(1l, 1l);
+        count += studentsRepository.save(2l, 1l);
+        count += studentsRepository.save(3l, 1l);
         assertThat(count).isEqualTo(3);
         Students savedStudents = studentsRepository.findBySession(1l);
         assertThat(savedStudents.getStudents()).contains(1l, 2l, 3l);

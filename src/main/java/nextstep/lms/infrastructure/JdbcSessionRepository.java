@@ -1,8 +1,6 @@
 package nextstep.lms.infrastructure;
 
 import nextstep.lms.domain.*;
-import nextstep.lms.enums.PricingTypeEnum;
-import nextstep.lms.enums.SessionStatusEnum;
 import nextstep.lms.repository.CoverImageRepository;
 import nextstep.lms.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -17,6 +15,7 @@ public class JdbcSessionRepository implements SessionRepository {
     private JdbcOperations jdbcTemplate;
 
     private CoverImageRepository coverImageRepository;
+
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
@@ -56,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private CoverImage getCoverImage(Long id) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>id : "+id);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>id : " + id);
         return coverImageRepository.findById(id);
     }
 

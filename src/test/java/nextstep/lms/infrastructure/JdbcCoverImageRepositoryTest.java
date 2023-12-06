@@ -1,7 +1,5 @@
 package nextstep.lms.infrastructure;
 
-import nextstep.courses.domain.CourseRepository;
-import nextstep.courses.infrastructure.JdbcCourseRepository;
 import nextstep.lms.domain.CoverImage;
 import nextstep.lms.domain.FileMetadataTest;
 import nextstep.lms.domain.FileNameStructureTest;

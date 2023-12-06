@@ -11,6 +11,7 @@ public class SessionDetail {
     public SessionDetail(String pricingType, int tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
         this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionStatus, capacity), new SessionPeriod(startDate, endDate));
     }
+
     public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionPeriod sessionPeriod) {
         this.sessionEnrollmentManagement = sessionEnrollmentManagement;
         this.sessionPeriod = sessionPeriod;
@@ -29,29 +30,27 @@ public class SessionDetail {
     public String getPricingType() {
         return sessionEnrollmentManagement.getPricingType();
     }
+
     public int getTuitionFee() {
         return sessionEnrollmentManagement.getTuitionFee();
     }
+
     public String getSessionStatus() {
         return sessionEnrollmentManagement.getSessionStatus();
     }
+
     public int getCapacity() {
         return sessionEnrollmentManagement.getCapacity();
     }
+
     public LocalDateTime getStartDate() {
         return sessionPeriod.getStartDate();
     }
+
     public LocalDateTime getEndDate() {
         return sessionPeriod.getEndDate();
     }
 
-    @Override
-    public String toString() {
-        return "SessionDetail{" +
-                "sessionEnrollmentManagement=" + sessionEnrollmentManagement +
-                ", sessionPeriod=" + sessionPeriod +
-                '}';
-    }
 }
 
 

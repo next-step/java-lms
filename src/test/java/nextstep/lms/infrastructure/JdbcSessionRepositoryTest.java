@@ -1,8 +1,5 @@
 package nextstep.lms.infrastructure;
 
-import nextstep.lms.domain.CoverImage;
-import nextstep.lms.domain.FileMetadataTest;
-import nextstep.lms.domain.FileNameStructureTest;
 import nextstep.lms.domain.Session;
 import nextstep.lms.enums.PricingTypeEnum;
 import nextstep.lms.enums.SessionStatusEnum;
@@ -17,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @JdbcTest
 class JdbcSessionRepositoryTest {
     @Autowired

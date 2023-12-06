@@ -1,7 +1,5 @@
 package nextstep.lms.dto;
 
-import nextstep.users.domain.NsUser;
-
 public class EnrollApplicationDTO {
     private final Long userId;
     private final int tuitionFee;
@@ -10,6 +8,7 @@ public class EnrollApplicationDTO {
         this.userId = userId;
         this.tuitionFee = tuitionFee;
     }
+
     public Long getUserId() {
         return userId;
     }

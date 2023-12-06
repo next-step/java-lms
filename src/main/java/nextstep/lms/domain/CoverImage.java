@@ -24,6 +24,7 @@ public class CoverImage {
     public Long getId() {
         return id;
     }
+
     public String getName() {
         return fileNameStructure.getName();
     }
@@ -52,14 +53,4 @@ public class CoverImage {
         return updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "CoverImage{" +
-                "id=" + id +
-                ", fileNameStructure=" + fileNameStructure +
-                ", fileMetadata=" + fileMetadata +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

@@ -24,6 +24,7 @@ public class PricingPolicy {
     public String getPricingType() {
         return pricingTypeEnum.name();
     }
+
     public int getTuitionFee() {
         return tuitionFee;
     }

@@ -12,6 +12,7 @@ import java.util.List;
 @Repository("studentsRepository")
 public class JdbcStudentsRepository implements StudentsRepository {
     private JdbcOperations jdbcTemplate;
+
     public JdbcStudentsRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
