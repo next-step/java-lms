@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.qna.domain.DeleteHistory.ofQuestion;
+
 public class Question {
     private Long id;
 
@@ -96,7 +98,7 @@ public class Question {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(this.softDelete());
-        for(Answer answer : this.answers) {
+        for (Answer answer : this.answers) {
             deleteHistories.add(answer.softDelete());
         }
 
@@ -104,8 +106,8 @@ public class Question {
     }
 
     private DeleteHistory softDelete() {
-        this.setDeleted(true);
-        return new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), LocalDateTime.now());
+        this.deleted = true;
+        return ofQuestion(this.getId(), this.getWriter(), LocalDateTime.now());
     }
 
     private void deletePreCheck(NsUser loginUser, List<Answer> answers) throws CannotDeleteException {

@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static nextstep.qna.domain.DeleteHistory.ofAnswer;
+import static nextstep.qna.domain.DeleteHistory.ofQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -83,8 +85,8 @@ public class QnaServiceTest {
 
     private void verifyDeleteHistories() {
         List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+                ofQuestion(question.getId(), question.getWriter(), LocalDateTime.now()),
+                ofAnswer(answer.getId(), answer.getWriter(), LocalDateTime.now()));
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
