@@ -6,6 +6,7 @@ import nextstep.courses.domain.field.SessionStatus;
 import nextstep.courses.domain.field.SessionType;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,7 @@ class SessionTest {
 
 
     @Test
+    @DisplayName("세션 강의 등록시 코스에 포함된 세션 강의 숫자 검증")
     public void assertSessionRegister() {
         freeSession.openSession();
         freeSession.registerForFreeSession(course);
@@ -33,6 +35,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("무료 강의 상태가 open인지 검증")
     public void assertIsSessionOpen() {
         freeSession.openSession();
         freeSession.registerForFreeSession(course);
@@ -41,6 +44,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("무료 세션 강의가 무료 강의인지 검증")
     public void assertFreeSession() {
         freeSession.registerForFreeSession(course);
 
@@ -48,6 +52,7 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("유료 세션 강의에 대한 강의료가 일치하는지 검증")
     public void assertPaidSession() {
         Payment payment = new Payment("1", 1L, 123L, 100L);
         paidSession.registerForPaidSession(course, payment);
@@ -56,11 +61,11 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("세션 강의 오픈 슬랏이 세션 등록할때 감소하는지에 대한 검증")
     public void assertAvailableSlots() {
         Payment payment = new Payment("1", 1L, 123L, 100L);
         paidSession.registerForPaidSession(course, payment);
 
         assertThat(paidSession.isAvailable()).isFalse();
-        System.out.println(course.sessionList());
     }
 }
