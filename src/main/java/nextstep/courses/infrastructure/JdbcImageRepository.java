@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.image.ImagePixel;
 import nextstep.courses.domain.image.ImageRepository;
