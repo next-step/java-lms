@@ -39,4 +39,8 @@ public class Session {
 
         this.state = state;
     }
+
+    protected boolean isTheNumberOfRegisteredUserLessThan(int maxUserCount) {
+        return this.registeredUsers.theNumberOfUsers() < maxUserCount;
+    }
 }

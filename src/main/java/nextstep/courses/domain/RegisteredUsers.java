@@ -22,4 +22,8 @@ public class RegisteredUsers {
 
         users.add(user);
     }
+
+    public int theNumberOfUsers() {
+        return this.users.size();
+    }
 }
