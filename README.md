@@ -42,3 +42,17 @@
 * [X] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다. 
 * [X] 유료 강의의 경우 결제는 이미 완료한 것으로 가정하고 이후 과정을 구현한다. 
   * [X] 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
+
+# STEP 3 기능분석
+* [ ] schema sql 작성
+  * [ ] Session Schema sql 작성
+  * [ ] Thumbnail Schema sql 작성
+  * [ ] SessionStudents Schema sql 작성
+* [ ] data sql 작성
+  * [ ] Session 예시 데이터 data.sql 작성
+  * [ ] Thumbnail 예시 데이터 data.sql 작성
+  * [ ] SessionStudents 예시 데이터 data.sql 작성
+* [ ] repository query 작성
+  * [ ] Session Read,Update 쿼리 작성
+  * [ ] SessionStudents Create, Read, Update 쿼리 작성
+* [ ] service enroll 코드 작성
