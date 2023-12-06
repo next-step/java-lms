@@ -10,12 +10,8 @@ public class Session {
     // 강의 이름
     private String name;
 
-    // 시작일
-    private LocalDate startAt;
-
-    // 종료일
-    private LocalDate endAt;
-
+    // 날짜
+    private SessionDate date;
     // 이미지
     private SessionImage image;
 
@@ -25,11 +21,10 @@ public class Session {
     // 상태
     private SessionStatus status;
 
-    public Session(String name, LocalDate startAt, LocalDate endAt, SessionImage image, SessionCharge charge, SessionStatus status) {
+    public Session(String name, SessionDate date, SessionImage image, SessionCharge charge, SessionStatus status) {
         this.id = 0l;
         this.name = name;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.date = date;
         this.image = image;
         this.charge = charge;
         this.status = status;
@@ -43,12 +38,8 @@ public class Session {
         return name;
     }
 
-    public LocalDate getStartAt() {
-        return startAt;
-    }
-
-    public LocalDate getEndAt() {
-        return endAt;
+    public SessionDate getDate() {
+        return date;
     }
 
     public SessionCharge getCharge() {
