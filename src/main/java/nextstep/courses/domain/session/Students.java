@@ -15,6 +15,10 @@ public class Students {
         return new Students(students);
     }
 
+    public static Students of(NsUser... students) {
+        return new Students(List.of(students));
+    }
+
     public void add(NsUser student) {
         students.add(student);
     }
@@ -23,5 +27,7 @@ public class Students {
         return students.size();
     }
 
-
+    public List<NsUser> values() {
+        return students;
+    }
 }
