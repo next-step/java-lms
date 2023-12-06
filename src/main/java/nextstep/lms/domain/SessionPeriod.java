@@ -17,4 +17,11 @@ public class SessionPeriod {
         }
         return true;
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
 }

@@ -29,7 +29,7 @@ class JdbcStudentsRepositoryTest {
         count += studentsRepository.save(2l,1l);
         count += studentsRepository.save(3l,1l);
         assertThat(count).isEqualTo(3);
-        Students savedStudents = studentsRepository.findBySessionId(1l);
+        Students savedStudents = studentsRepository.findBySession(1l);
         assertThat(savedStudents.getStudents()).contains(1l, 2l, 3l);
     }
 }

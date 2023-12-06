@@ -20,4 +20,11 @@ public class PricingPolicy {
         }
         return true;
     }
+
+    public String getPricingType() {
+        return pricingTypeEnum.name();
+    }
+    public int getTuitionFee() {
+        return tuitionFee;
+    }
 }

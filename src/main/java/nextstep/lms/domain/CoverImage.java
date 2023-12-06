@@ -9,8 +9,8 @@ public class CoverImage {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public CoverImage(Long id, FileNameStructure fileNameStructure, FileMetadata fileMetadata) {
-        this(id, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
+    public CoverImage(FileNameStructure fileNameStructure, FileMetadata fileMetadata) {
+        this(0l, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
     }
 
     public CoverImage(Long id, FileNameStructure fileNameStructure, FileMetadata fileMetadata, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -21,6 +21,9 @@ public class CoverImage {
         this.updatedAt = updatedAt;
     }
 
+    public Long getId() {
+        return id;
+    }
     public String getName() {
         return fileNameStructure.getName();
     }
@@ -47,5 +50,16 @@ public class CoverImage {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id +
+                ", fileNameStructure=" + fileNameStructure +
+                ", fileMetadata=" + fileMetadata +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

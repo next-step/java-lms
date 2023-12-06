@@ -27,7 +27,7 @@ public class JdbcStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public Students findBySessionId(Long sessionId) {
+    public Students findBySession(Long sessionId) {
         String sql = "select user_id from students where session_id = ?";
         RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
         List<Long> userIds = jdbcTemplate.query(sql, rowMapper, sessionId);

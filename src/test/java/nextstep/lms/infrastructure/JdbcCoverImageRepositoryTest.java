@@ -28,10 +28,10 @@ class JdbcCoverImageRepositoryTest {
 
     @Test
     void create_read() {
-        CoverImage coverImage = new CoverImage(1L, FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA);
+        CoverImage coverImage = new CoverImage(FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA);
         int count = coverImageRepository.save(coverImage);
         assertThat(count).isEqualTo(1);
-        CoverImage savedCoverImage = coverImageRepository.findById(1L);
+        CoverImage savedCoverImage = coverImageRepository.findById(2L);
         assertThat(coverImage.getName()).isEqualTo(savedCoverImage.getName());
         assertThat(coverImage.getExtension()).isEqualTo(savedCoverImage.getExtension());
         assertThat(coverImage.getFileVolume()).isEqualTo(savedCoverImage.getFileVolume());

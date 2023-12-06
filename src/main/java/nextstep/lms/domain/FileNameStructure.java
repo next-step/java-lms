@@ -8,7 +8,7 @@ public class FileNameStructure {
 
     public FileNameStructure(String name, String extension) {
         this.name = name;
-        this.extension = extension;
+        this.extension = extensionChecking(extension);
     }
 
     private String extensionChecking(String value) {
