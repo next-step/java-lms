@@ -6,71 +6,34 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Session {
-    protected static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
+public abstract class Session {
+    private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
 
-    protected Long id;
+    private Long id;
 
-    protected int generation;
+    private int generation;
 
-    protected Long creatorId;
+    private Long creatorId;
 
-    protected LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    protected LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-    protected LocalDate startDate;
+    private LocalDate startDate;
 
-    protected LocalDate endDate;
+    private LocalDate endDate;
 
-    protected SessionImage sessionImage;
+    private SessionImage sessionImage;
 
     protected SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
-
-    protected SessionType sessionType;
-
-    protected Integer limitNumberOfStudents;
     protected SessionStudents students = new SessionStudents();
-    protected Long price;
 
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents) {
-        validateSessionType(sessionType, limitNumberOfStudents);
+    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
         this.generation = generation;
         this.creatorId = creatorId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.sessionImage = sessionImage;
-        this.sessionType = sessionType;
-        this.limitNumberOfStudents = limitNumberOfStudents;
-    }
-
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
-        validateSessionType(sessionType, limitNumberOfStudents);
-        this.generation = generation;
-        this.creatorId = creatorId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.sessionImage = sessionImage;
-        this.sessionType = sessionType;
-        this.limitNumberOfStudents = limitNumberOfStudents;
-        this.price = price;
-    }
-
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        return new Session(generation, creatorId, startDate, endDate, sessionImage, SessionType.FREE, null);
-    }
-
-    public static Session create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
-        return new Session(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents, price);
-    }
-
-    private static void validateSessionType(SessionType sessionType, Integer limitNumberOfStudents) {
-        if (sessionType == SessionType.FREE && limitNumberOfStudents != null) {
-            throw new IllegalArgumentException("무료강의는 최대 수강 인원 제한이 없습니다.");
-        }
-        if (sessionType == SessionType.PAID && limitNumberOfStudents == null) {
-            throw new IllegalArgumentException("유료강의는 최대 수강 인원 제한이 있습니다.");
-        }
     }
 
     public void enroll(NsUser user) {

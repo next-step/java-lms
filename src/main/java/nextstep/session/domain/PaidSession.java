@@ -5,12 +5,18 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDate;
 
 public class PaidSession extends Session {
-    public PaidSession(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
-        super(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents, price);
+    private final Integer limitNumberOfStudents;
+    private final Long price;
+
+    public PaidSession(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
+        super(generation, creatorId, startDate, endDate, sessionImage);
+        this.limitNumberOfStudents = limitNumberOfStudents;
+        this.price = price;
     }
 
-    public static PaidSession create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType, Integer limitNumberOfStudents, Long price) {
-        return new PaidSession(generation, creatorId, startDate, endDate, sessionImage, sessionType, limitNumberOfStudents, price);
+    public static PaidSession create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
+        return new PaidSession(generation, creatorId, startDate, endDate, sessionImage, limitNumberOfStudents, price);
+
     }
 
     @Override

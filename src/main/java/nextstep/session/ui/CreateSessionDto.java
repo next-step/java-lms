@@ -2,6 +2,7 @@ package nextstep.session.ui;
 
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.ImageType;
+import nextstep.session.domain.PaidSession;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionImage;
 import nextstep.session.domain.SessionType;
@@ -28,7 +29,10 @@ public class CreateSessionDto {
     }
 
     public Session toSession(NsUser nsUser) {
-        return Session.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), sessionType, limitNumberOfStudents, price);
+        if (sessionType.equals(SessionType.FREE)) {
+            return FreeSession.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage());
+        }
+        return PaidSession.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), limitNumberOfStudents, price);
     }
 
     private SessionImage toSessionImage() {
