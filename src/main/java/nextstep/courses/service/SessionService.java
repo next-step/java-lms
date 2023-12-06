@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.session.CoverImg;
+import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.dto.CoverImgDto;
@@ -22,18 +23,18 @@ public class SessionService {
     }
 
     // 무료 세션 생성
-    public void createFreeSession(Long courseId, CoverImgDto coverImgDto) {
+    public void createFreeSession(Long courseId, CoverImgDto coverImgDto, Period period) {
         Course course = courseRepository.findById(courseId);
         CoverImg coverImg = CoverImg.from(coverImgDto);
-        Session session = Session.FreeSession(coverImg, course);
+        Session session = Session.FreeSession(coverImg, course, period);
         sessionRepository.save(session);
     }
 
     // 유료 세션 생성
-    public void createNotFreeSession(Long courseId, int maxAttendance, CoverImgDto coverImgDto) {
+    public void createNotFreeSession(Long courseId, int maxAttendance, CoverImgDto coverImgDto, Period period) {
         Course course = courseRepository.findById(courseId);
         CoverImg coverImg = CoverImg.from(coverImgDto);
-        Session session = Session.notFreeSession(coverImg, maxAttendance, course);
+        Session session = Session.notFreeSession(coverImg, maxAttendance, course, period);
         sessionRepository.save(session);
     }
 

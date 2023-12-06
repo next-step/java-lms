@@ -18,7 +18,7 @@ class SessionTest {
     @EnumSource(names = {"FINISH", "PREPARE"})
     void canNotEnroll(SessionStatus status) {
         // given
-        Session session = new Session(null, false, status, 1, new Course());
+        Session session = new Session(null, false, status, 1, new Course(), new Period());
         // when
         // then
         Assertions.assertThatThrownBy(() -> session.addUser(NsUserTest.JAVAJIGI))
@@ -30,7 +30,7 @@ class SessionTest {
     @Test
     void freeSession() {
         // given
-        Session session = new Session(null, true, SessionStatus.ENROLL, new Course());
+        Session session = new Session(null, true, SessionStatus.ENROLL, new Course(), new Period());
         // when
         session.addUser(NsUserTest.JAVAJIGI);
         // then
@@ -41,7 +41,7 @@ class SessionTest {
     @Test
     void exceedMaxAttendance() {
         // given
-        Session session = new Session(null, false, SessionStatus.ENROLL, 1, new Course());
+        Session session = new Session(null, false, SessionStatus.ENROLL, 1, new Course(), new Period());
         session.addUser(NsUserTest.JAVAJIGI);
         // when
         // then
@@ -54,7 +54,7 @@ class SessionTest {
     @Test
     void successEnroll() {
         // given
-        Session session = new Session(null, false, SessionStatus.ENROLL, 2, new Course());
+        Session session = new Session(null, false, SessionStatus.ENROLL, 2, new Course(), new Period());
         session.addUser(NsUserTest.JAVAJIGI);
         // when
         session.addUser(NsUserTest.SANJIGI);
