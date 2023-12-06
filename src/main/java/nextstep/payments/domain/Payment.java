@@ -29,4 +29,12 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isSameAmountWith(long amount) {
+        return this.amount == amount;
+    }
+
+    public boolean isSameUser(NsUser user) {
+        return this.nsUser.matchUser(user);
+    }
 }
