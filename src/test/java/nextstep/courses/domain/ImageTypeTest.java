@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,4 +15,5 @@ class ImageTypeTest {
     void 이미지_타입_체크(String type) {
         assertThat(ImageType.isSupportImageType(type)).isTrue();
     }
+
 }
