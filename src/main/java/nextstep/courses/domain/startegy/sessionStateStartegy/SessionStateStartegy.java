@@ -4,5 +4,5 @@ import java.time.LocalDate;
 
 @FunctionalInterface
 public interface SessionStateStartegy {
-    boolean checkStatus(LocalDate comparedDate, LocalDate currentDate);
+    boolean checkStatus(LocalDate startDate, LocalDate endDate, LocalDate currentDate);
 }
