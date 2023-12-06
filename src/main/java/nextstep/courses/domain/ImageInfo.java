@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.courses.exception.ImageException;
 
+import java.util.Objects;
+
 public class ImageInfo {
     private static final Long MAXIMUM_FILE_SIZE_MB = 1L;
     private static final int MINIMUM_WIDTH_PX = 300;
@@ -43,6 +45,19 @@ public class ImageInfo {
 
     private boolean isSupportImageRatio(int width, int height) {
         return width * 2 != height * 3;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageInfo imageInfo = (ImageInfo) o;
+        return width == imageInfo.width && height == imageInfo.height && type == imageInfo.type && Objects.equals(size, imageInfo.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, size, width, height);
     }
 
     @Override
