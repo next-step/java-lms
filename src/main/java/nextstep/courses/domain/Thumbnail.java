@@ -8,17 +8,17 @@ public class Thumbnail {
     private static final Pattern IMAGE_EXTENSION_PATTERN = Pattern.compile(".*\\.(gif|jpe?g|png|svg)$", Pattern.CASE_INSENSITIVE);
     private final Integer thumbnailId;
     private final String thumbnailName;
-    private final FileSize thumbnailSize;
-    private final FileDimensions thumbnailDimensions;
+    private final ThumbnailSize thumbnailSize;
+    private final ThumbnailDimensions thumbnailDimensions;
 
     public Thumbnail(Integer thumbnailId, String thumbnailName,
                      long thumbnailSize, int thumbnailWidth, int thumbnailHeight) {
-        this(thumbnailId, thumbnailName, new FileSize(thumbnailSize),
-                new FileDimensions(thumbnailWidth, thumbnailHeight));
+        this(thumbnailId, thumbnailName, new ThumbnailSize(thumbnailSize),
+                new ThumbnailDimensions(thumbnailWidth, thumbnailHeight));
     }
 
     public Thumbnail(Integer thumbnailId, String thumbnailName,
-                     FileSize thumbnailSize, FileDimensions thumbnailDimensions) {
+                     ThumbnailSize thumbnailSize, ThumbnailDimensions thumbnailDimensions) {
         validateThumbnailExt(thumbnailName);
         this.thumbnailId = thumbnailId;
         this.thumbnailName = thumbnailName;
