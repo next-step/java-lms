@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Session {
     private Long id;
     private String title;
     private SessionDate sessionDate;
-    private CoverImage coverImage;
+    private List<CoverImage> coverImages;
     private Enrollment enrollment;
     private Long creatorId;
     private LocalDateTime createdAt;
@@ -46,7 +47,7 @@ public class Session {
         this.title = title;
         this.enrollment = new Enrollment(price, nsUsers);
         this.sessionDate = sessionDate;
-        this.coverImage = validateCoverImage(coverImage);
+        this.coverImages = validateCoverImage(coverImage);
         this.creatorId = creatorId;
         this.createdAt = createdAt;
     }
@@ -56,12 +57,16 @@ public class Session {
         Assert.notNull(sessionDate, "session date cannot be null");
     }
 
-    private CoverImage validateCoverImage(final CoverImage coverImage) {
+    private List<CoverImage> validateCoverImage(CoverImage coverImage) {
+        final List<CoverImage> list = new ArrayList<>();
+
         if (coverImage == null) {
-            return CoverImage.defaultCoverImage();
+            coverImage = CoverImage.defaultCoverImage();
         }
 
-        return coverImage;
+        list.add(coverImage);
+
+        return list;
     }
 
     public String getTitle() {
@@ -88,8 +93,12 @@ public class Session {
         return this.id;
     }
 
-    public CoverImage getCoverImage() {
-        return this.coverImage;
+    public List<CoverImage> getCoverImages() {
+        return this.coverImages;
+    }
+
+    public void setCoverImages(final List<CoverImage> coverImages) {
+        this.coverImages = coverImages;
     }
 
     public long getPrice() {

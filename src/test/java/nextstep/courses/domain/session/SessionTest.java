@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -245,10 +246,10 @@ class SessionTest {
         );
 
         //when
-        final CoverImage getCoverImage = session.getCoverImage();
+        final List<CoverImage> getCoverImage = session.getCoverImages();
 
         //then
-        assertThat(getCoverImage).isEqualTo(coverImage);
+        assertThat(getCoverImage).contains(coverImage);
     }
 
     @Test
@@ -264,9 +265,9 @@ class SessionTest {
         final CoverImage defaultCoverImage = CoverImage.defaultCoverImage();
 
         //when
-        final CoverImage getCoverImage = sessionWithPrice.getCoverImage();
+        final List<CoverImage> getCoverImage = sessionWithPrice.getCoverImages();
 
         //then
-        assertThat(getCoverImage).isEqualTo(defaultCoverImage);
+        assertThat(getCoverImage).contains(defaultCoverImage);
     }
 }

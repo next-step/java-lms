@@ -33,7 +33,10 @@ public class JdbcSessionRepository implements SessionRepository {
         Long sessionId = keyHolder.getKey().longValue();
 
         saveUsers(session.getUsers(), sessionId);
-        coverImageRepository.save(session.getCoverImage(), sessionId);
+
+        for (final CoverImage coverImage : session.getCoverImages()) {
+            coverImageRepository.save(coverImage, sessionId);
+        }
 
         return updateCount;
     }
@@ -78,7 +81,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         final List<NsUser> nsUsers = sessionUserListRepository.findAllBySessionId(id);
-        final CoverImage coverImage = coverImageRepository.findBySessionId(id);
+        final List<CoverImage> coverImages = coverImageRepository.findBySessionId(id);
 
         String sql = "select id, title, price, start_date, end_date, session_status, max_student_limit, creator_id, created_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
@@ -88,7 +91,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong(3),
                     toLocalDateTime(rs.getTimestamp(4)),
                     toLocalDateTime(rs.getTimestamp(5)),
-                    coverImage,
+                    null,
                     nsUsers,
                     rs.getLong(8),
                     toLocalDateTime(rs.getTimestamp(9))
@@ -96,6 +99,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
             session.changeSessionStatus(SessionStatus.of(rs.getString(6)));
             session.changeMaxStudentLimit(rs.getInt(7));
+            session.setCoverImages(coverImages);
 
             return session;
         };

@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
     private JdbcOperations jdbcTemplate;
@@ -22,7 +24,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public CoverImage findBySessionId(final Long sessionId) {
+    public List<CoverImage> findBySessionId(final Long sessionId) {
         String sql = "select id, file_size, image_type , width, height,  from cover_image where session_id =?";
 
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
@@ -32,6 +34,6 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 rs.getInt(4),
                 rs.getInt(5));
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }
