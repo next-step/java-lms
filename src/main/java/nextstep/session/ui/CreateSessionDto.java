@@ -36,6 +36,6 @@ public class CreateSessionDto {
     }
 
     private SessionImage toSessionImage() {
-        return SessionImage.of(imageURL, imageSize, imageType, width, height);
+        return SessionImage.of(imageURL, imageSize, width, height);
     }
 }
