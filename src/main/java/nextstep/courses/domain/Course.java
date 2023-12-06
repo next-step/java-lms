@@ -32,6 +32,10 @@ public class Course extends BaseEntity {
         this.sessions = new Sessions();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
