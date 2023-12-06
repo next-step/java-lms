@@ -22,7 +22,7 @@ class SessionTest {
                                                                      .plusDays(1));
         SessionInformation information = new SessionInformation(PREPARING, FREE, period);
         Enrollment freeEnrollment = new FreeEnrollment(new Attendees());
-        Session session = new Session(1L, information, freeEnrollment, null);
+        EnrollmentSession session = new EnrollmentSession(1L, information, freeEnrollment);
 
         assertThatThrownBy(() -> session.enroll(100L, 1L))
                 .isInstanceOf(CanNotApplyException.class);
