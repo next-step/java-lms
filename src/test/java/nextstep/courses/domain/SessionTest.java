@@ -18,7 +18,7 @@ class SessionTest {
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000+09:00", "2023-12-07T10:00:00.000+09:00");
 
-        session = Session.createNewSession(image, duration);
+        session = new FreeSession(duration, image);
     }
 
     @Test
@@ -36,9 +36,9 @@ class SessionTest {
     public void reigsterStateTest() {
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000+09:00", "2023-12-07T10:00:00.000+09:00");
-        Session readySession = Session.createNewSession(image, duration);
-        Session recruitSession = Session.createNewSession(image, duration);
-        Session endSession = Session.createNewSession(image, duration);
+        Session readySession = new FreeSession(duration, image);
+        Session recruitSession = new FreeSession(duration, image);
+        Session endSession = new FreeSession(duration, image);
 
         readySession.updateStateTo(READY);
         recruitSession.updateStateTo(RECRUIT);

@@ -14,7 +14,8 @@ public class PaidSession extends Session {
 
     private List<Payment> paymentHistory;
 
-    private PaidSession(SessionState state, RegisteredUsers registeredUsers, SessionImage coverImage, SessionDuration duration, int maxUserCount, int fee, List<Payment> paymentHistory) {
+    private PaidSession(SessionState state, RegisteredUsers registeredUsers, SessionImage coverImage, SessionDuration duration,
+                        int maxUserCount, int fee, List<Payment> paymentHistory) {
         super(state, registeredUsers, coverImage, duration);
 
         validateMaxUserCount(maxUserCount);
@@ -22,12 +23,19 @@ public class PaidSession extends Session {
 
         this.maxUserCount = maxUserCount;
         this.fee = fee;
-
         this.paymentHistory = paymentHistory;
     }
 
-    public static PaidSession createNewSession(SessionImage coverImage, SessionDuration duration, int maxUserCount, int fee) {
-        return new PaidSession(READY, new RegisteredUsers(), coverImage, duration, maxUserCount, fee, new ArrayList<>());
+    public PaidSession(SessionDuration duration, SessionImage coverImage, int maxUserCount, int fee) {
+        this(
+                READY,
+                new RegisteredUsers(),
+                coverImage,
+                duration,
+                maxUserCount,
+                fee,
+                new ArrayList<>()
+        );
     }
 
     private static void validateMaxUserCount(int maxUserCount) {
