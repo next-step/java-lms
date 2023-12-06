@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class Course {
+
     private Long id;
 
     private String title;
@@ -12,6 +13,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private int no;
 
     public Course() {
     }
@@ -26,6 +29,15 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, int no) {
+        this.id = id;
+        this.title = title;
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.no = no;
     }
 
     public String getTitle() {
@@ -43,11 +55,15 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", creatorId=" + creatorId +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
+
+    public int getNo() {
+        return no;
     }
 }
