@@ -6,11 +6,10 @@ import nextstep.courses.domain.field.SessionStatus;
 import nextstep.courses.domain.field.SessionType;
 import nextstep.payments.domain.Payment;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Session {
-    private static AtomicLong autoGenId = new AtomicLong(1L);
+    private static AtomicLong AUTO_GENERATED_ID = new AtomicLong(1L);
 
     private Long id;
     private Long courseId;
@@ -22,7 +21,7 @@ public class Session {
     private int availableSlots;
 
     public Session(Long courseId, CoverImage coverImage, SessionType sessionType, SessionStatus sessionStatus) {
-        this.id = autoGenId.getAndIncrement();
+        this.id = AUTO_GENERATED_ID.getAndIncrement();
         this.courseId = courseId;
         this.coverImage = coverImage;
         this.sessionType = sessionType;
@@ -34,7 +33,7 @@ public class Session {
             throw new IllegalArgumentException("해당 강의는 무료수업이므로 가격을 정할 수 없습니다.");
         }
 
-        this.id = autoGenId.getAndIncrement();
+        this.id = AUTO_GENERATED_ID.getAndIncrement();
         this.courseId = courseId;
         this.coverImage = coverImage;
         this.sessionType = sessionType;
@@ -44,7 +43,7 @@ public class Session {
     }
 
     public Session(Long courseId) {
-        this.id = autoGenId.getAndIncrement();
+        this.id = AUTO_GENERATED_ID.getAndIncrement();
         this.courseId = courseId;
     }
 
