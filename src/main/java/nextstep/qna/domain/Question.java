@@ -19,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -72,22 +72,18 @@ public class Question {
         answers.add(answer);
     }
 
+    public List<DeleteHistory> makeDeleteHistories(NsUser loginUser) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(deleteQuestion(loginUser));
+        deleteHistories.addAll(answers.deleteAnswer(loginUser));
+
+        return deleteHistories;
+    }
+
     public DeleteHistory deleteQuestion(NsUser loginUser) {
         changeDeleted(loginUser);
 
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
-    }
-
-    public List<DeleteHistory> deleteQuestion2(NsUser loginUser) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(deleteQuestion(loginUser));
-
-        List<Answer> answers = getAnswers();
-        for (Answer answer : answers) {
-            deleteHistories.add(answer.deleteAnswer(loginUser));
-        }
-
-        return deleteHistories;
     }
 
     private void changeDeleted(NsUser loginUser) {
@@ -105,7 +101,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
