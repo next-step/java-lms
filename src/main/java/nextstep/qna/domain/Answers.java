@@ -19,8 +19,8 @@ public class Answers {
         answers.add(answer);
     }
 
-    public void changeStatusToDelete() {
-        answers.stream().forEach(answer -> answer.changeStatusToDelete());
+    public void deleteAll() {
+        answers.stream().forEach(answer -> answer.delete());
     }
 
     public boolean isNotOwner(NsUser loginUser) {

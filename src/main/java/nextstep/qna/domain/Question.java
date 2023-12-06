@@ -56,13 +56,13 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteQuestion(NsUser loginUser) throws CannotDeleteException {
-        canDeleteQuestionAndAnswers(loginUser);
-        changeStatusToDelete(true);
-        answers.changeStatusToDelete();
+        validateQuestionAndAnswers(loginUser);
+        delete(true);
+        answers.deleteAll();
         return createDeleteHistories();
     }
 
-    private void canDeleteQuestionAndAnswers(NsUser loginUser) throws CannotDeleteException {
+    private void validateQuestionAndAnswers(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -72,7 +72,7 @@ public class Question {
         }
     }
 
-    private void changeStatusToDelete(boolean deleted) {
+    private void delete(boolean deleted) {
         this.deleted = deleted;
     }
 

@@ -56,7 +56,7 @@ public class Answer {
         this.question = question;
     }
 
-    public void changeStatusToDelete() {
+    public void delete() {
         this.deleted = true;
     }
 
