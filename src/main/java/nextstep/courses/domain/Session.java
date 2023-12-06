@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class Session {
 
     private Long fee;
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     private Long creatorId;
 
