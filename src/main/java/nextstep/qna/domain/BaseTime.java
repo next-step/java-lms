@@ -12,4 +12,3 @@ public class BaseTime {
         this.createdDate = LocalDateTime.now();
     }
 }
-
