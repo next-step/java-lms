@@ -13,6 +13,14 @@ public class Attendee {
         this.sessionId = sessionId;
     }
 
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
     @Override
     public boolean equals(Object o) {
 
