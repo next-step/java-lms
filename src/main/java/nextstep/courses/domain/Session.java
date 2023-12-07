@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
-    protected long id;
+    protected Long id;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
     protected SessionState state;
@@ -18,14 +18,14 @@ public abstract class Session extends BaseEntity {
 
 
     protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
-        this(1L, coverImage, startDate, endDate, state, createdAt, null);
+        this(null, coverImage, startDate, endDate, state, createdAt, null);
     }
 
     protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(1L, coverImage, startDate, endDate, state, createdAt, updatedAt);
+        this(null, coverImage, startDate, endDate, state, createdAt, updatedAt);
     }
 
-    protected Session(long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.coverImage = coverImage;

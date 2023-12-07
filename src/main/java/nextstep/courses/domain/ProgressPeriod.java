@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class ProgressPeriod {
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     public ProgressPeriod(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);

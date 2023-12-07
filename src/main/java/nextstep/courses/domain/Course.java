@@ -7,22 +7,22 @@ import java.util.List;
 
 public class Course extends BaseEntity {
 
+    private final Long id;
     private final String title;
     private final Long creatorId;
     private final List<Session> sessions = new ArrayList<>();
-    private long id;
 
 
     public Course(String title, Long creatorId, LocalDateTime createdAt) {
-        this(1L, title, creatorId, createdAt, null);
+        this(null, title, creatorId, createdAt, null);
     }
 
     public Course(String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(1L, title, creatorId, createdAt, updatedAt);
+        this(null, title, creatorId, createdAt, updatedAt);
 
     }
 
-    public Course(long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.title = title;
