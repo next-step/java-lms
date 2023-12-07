@@ -23,7 +23,9 @@ public class SessionService {
     }
 
     public long save(Session session) {
-        return sessionRepository.save(session);
+        long sessionId = sessionRepository.save(session);
+        imageRepository.save(session.image(), sessionId);
+        return sessionId;
     }
 
     public Session findById(long id) {
