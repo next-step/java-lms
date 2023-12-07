@@ -79,10 +79,12 @@ public class Answer {
         }
     }
 
-    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
         validateDeletable(user);
-
         deleted = true;
+    }
+
+    public DeleteHistory generateDeleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 }

@@ -92,18 +92,24 @@ public class Question {
         }
     }
 
-    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
         validateDeletable(user);
-
         deleted = true;
+    }
+
+    private DeleteHistory generateDeleteHistory() {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public List<DeleteHistory> deleteQuestionAndAnswers(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(delete(loginUser));
+
+        delete(loginUser);
+        deleteHistories.add(generateDeleteHistory());
+
         for (Answer answer : answers) {
-            deleteHistories.add(answer.delete(loginUser));
+            answer.delete(loginUser);
+            deleteHistories.add(answer.generateDeleteHistory());
         }
 
         return deleteHistories;
