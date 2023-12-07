@@ -98,20 +98,35 @@ public class Session {
     }
 
     public void apply(NsUser loginUser, Payment payment) {
-        if (this.status != Status.RECRUIT) {
-            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
-        }
+        checkStatusOnRecruit();
 
-        if (this.type == Type.CHARGE) {
-            if (applyCount() + 1 > quota) {
-                throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
-            }
-
-            if (payment == null || !payment.isPaid(loginUser, this)) {
-                throw new IllegalArgumentException("결제를 진행해 주세요.");
-            }
+        if (typeCharged()) {
+            checkApplySizeIsValid();
+            checkPaymentIsPaid(loginUser, payment);
         }
 
         this.users.add(loginUser);
+    }
+
+    private boolean typeCharged() {
+        return this.type == Type.CHARGE;
+    }
+
+    private void checkStatusOnRecruit() {
+        if (this.status != Status.RECRUIT) {
+            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
+        }
+    }
+
+    private void checkApplySizeIsValid() {
+        if (applyCount() + 1 > quota) {
+            throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
+        }
+    }
+
+    private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
+        if (payment == null || !payment.isPaid(loginUser, this)) {
+            throw new IllegalArgumentException("결제를 진행해 주세요.");
+        }
     }
 }
