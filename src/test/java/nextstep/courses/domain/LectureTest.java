@@ -5,9 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import nextstep.courses.domain.lectures.FreeLecture;
+import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.PaidLecture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.Payment;
+import nextstep.users.domain.Price;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +47,7 @@ public class LectureTest {
     // given
     int maxStudent = 0;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureStatus.PREPARING,
-        new RegistrationPeriod(startDate, endDate), BigDecimal.TEN, maxStudent);
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -56,9 +60,9 @@ public class LectureTest {
     // given
     int maxStudent = 1;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureStatus.PREPARING,
-        new RegistrationPeriod(startDate, endDate), BigDecimal.TEN, maxStudent);
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
     NsUser javajigi = NsUserTest.JAVAJIGI;
-    javajigi.payment(new Payment(BigDecimal.TEN));
+    javajigi.payment(new Payment(new Price(BigDecimal.TEN)));
 
     // when
     Lecture newLecture = lecture.start();
@@ -74,7 +78,7 @@ public class LectureTest {
     // given
     int maxStudent = 1;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureStatus.PREPARING,
-        new RegistrationPeriod(startDate, endDate), BigDecimal.TEN, maxStudent);
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -86,9 +90,9 @@ public class LectureTest {
   public void lecture_enrolment_different_fail() {
     int maxStudent = 1;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureStatus.PREPARING,
-        new RegistrationPeriod(startDate, endDate), BigDecimal.TEN, maxStudent);
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
     NsUser javajigi = NsUserTest.JAVAJIGI;
-    javajigi.payment(new Payment(BigDecimal.ONE));
+    javajigi.payment(new Payment(new Price(BigDecimal.ONE)));
     Lecture startLecture = lecture.start();
 
     assertThrows(IllegalArgumentException.class

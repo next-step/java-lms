@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.lectures;
 
 import nextstep.users.domain.NsUser;
 

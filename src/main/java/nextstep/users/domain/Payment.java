@@ -1,20 +1,19 @@
 package nextstep.users.domain;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Payment {
 
-  private BigDecimal price;
+  private Price price;
 
   public Payment() {
   }
 
-  public Payment(BigDecimal price) {
+  public Payment(Price price) {
     this.price = price;
   }
 
-  public boolean samePrice(BigDecimal price) {
+  public boolean samePrice(Price price) {
     return Objects.equals(this.price, price);
   }
 }

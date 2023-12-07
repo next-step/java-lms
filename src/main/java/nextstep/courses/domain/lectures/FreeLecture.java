@@ -1,5 +1,10 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.lectures;
 
+import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.LectureStatus;
+import nextstep.courses.domain.LectureType;
+import nextstep.courses.domain.RegistrationPeriod;
+import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 
 public class FreeLecture implements Lecture {

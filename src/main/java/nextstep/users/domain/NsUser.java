@@ -1,10 +1,8 @@
 package nextstep.users.domain;
 
-import java.math.BigDecimal;
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
@@ -119,7 +117,7 @@ public class NsUser {
         return false;
     }
 
-    public void hasPayment(BigDecimal price) {
+    public void hasPayment(Price price) {
         if (!this.payment.samePrice(price)) {
             throw new IllegalArgumentException("결제 정보가 없습니다.");
         }

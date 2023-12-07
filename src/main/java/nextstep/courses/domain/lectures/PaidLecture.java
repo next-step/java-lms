@@ -1,7 +1,12 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.lectures;
 
-import java.math.BigDecimal;
+import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.LectureStatus;
+import nextstep.courses.domain.LectureType;
+import nextstep.courses.domain.RegistrationPeriod;
+import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Price;
 
 public class PaidLecture implements Lecture {
   private final LectureType lectureType = LectureType.PAID;
@@ -10,13 +15,13 @@ public class PaidLecture implements Lecture {
   private final CoverImage coverImage;
   private final LectureStatus lectureStatus;
   private final RegistrationPeriod registrationPeriod;
-  private final BigDecimal price;
+  private final Price price;
   private final Integer limitStudentCount;
   private final Students students = Students.defaultOf();; // 강의 기본정보와는 다름
 
 
   public PaidLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
-      RegistrationPeriod registrationPeriod, BigDecimal price, Integer limitStudentCount) {
+      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
     this.id = id;
     this.title = title;
     this.coverImage = coverImage;

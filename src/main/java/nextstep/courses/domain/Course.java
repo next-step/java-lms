@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.Lectures;
 
 public class Course {
     private Long id;

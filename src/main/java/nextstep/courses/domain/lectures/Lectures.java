@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.lectures;
 
 import java.util.HashSet;
 import java.util.Set;
