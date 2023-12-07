@@ -3,11 +3,11 @@ package nextstep.sessions.domain;
 import java.time.LocalDateTime;
 
 public class SessionPeriod {
-    LocalDateTime startDay;
-    LocalDateTime endDay;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
 
-    public SessionPeriod(LocalDateTime startDay, LocalDateTime endDay) {
-        this.startDay = startDay;
-        this.endDay = endDay;
+    public SessionPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

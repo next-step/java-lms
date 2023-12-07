@@ -6,7 +6,7 @@ public class Image {
     private static final int MAXIMUN_SIZE = 1024;
     private static final int MINIMUM_WIDTH = 300;
     private static final int MINIMUM_HEIGHT = 200;
-    private static final List<Integer> RATIO = List.of(2,3);
+    private static final List<Integer> RATIO = List.of(2, 3);
 
     private long id;
     private int size;
@@ -25,8 +25,8 @@ public class Image {
 
     private void validateImage(int size, int width, int height) {
         validateMaximumSize(size);
-        validateMimimumHeight(height);
         validateMinimumWidth(width);
+        validateMimimumHeight(height);
         validateRatio(width, height);
     }
 
@@ -37,13 +37,13 @@ public class Image {
     }
 
     private void validateMinimumWidth(int width) {
-        if (size < MINIMUM_WIDTH) {
-            throw new IllegalArgumentException("이미지 너비가 300픽셀미만입니다.");
+        if (width < MINIMUM_WIDTH) {
+            throw new IllegalArgumentException("이미지 너비가 300픽셀 미만입니다.");
         }
     }
 
     private void validateMimimumHeight(int height) {
-        if (size > MINIMUM_HEIGHT) {
+        if (height < MINIMUM_HEIGHT) {
             throw new IllegalArgumentException("이미지 높이가 200픽셀 미만입니다.");
         }
     }

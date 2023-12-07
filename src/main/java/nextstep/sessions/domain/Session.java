@@ -15,10 +15,10 @@ public class Session {
     private Long teacher;
     private String title;
 
-    public Session(Long id, LocalDateTime startDay, LocalDateTime endDay, SessionState sessionState,
+    public Session(Long id, LocalDateTime startedDate, LocalDateTime endDate, SessionState sessionState,
                    Image image, boolean isFree, NsUser teacher, String title, Enrollment enrollment) {
         this.id = id;
-        this.sessionPeriod = new SessionPeriod(startDay, endDay);
+        this.sessionPeriod = new SessionPeriod(startedDate, endDate);
         this.sessionState = sessionState;
         this.image = image;
         this.isFree = isFree;

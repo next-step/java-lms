@@ -6,8 +6,8 @@ public class NotFreeEnrollment implements EnrollmentCondition {
     private final int limit;
     private int studentCount;
 
-    public NotFreeEnrollment(int payMoney, int limit) {
-        this.cost = payMoney;
+    public NotFreeEnrollment(int cost, int limit) {
+        this.cost = cost;
         this.limit = limit;
         this.studentCount = INIT_COUNT;
     }
