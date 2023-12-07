@@ -2,7 +2,7 @@ package nextstep.image.domain;
 
 public class Image {
 
-    private long imageCapacity;
+    private ImageCapacity imageCapacity;
 
     private ImageType imageType;
 
