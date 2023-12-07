@@ -30,7 +30,7 @@ public class SessionsRepositoryTest {
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        sessionsRepository = new JdbcSessionsRepository(jdbcTemplate, sessionRepository);
+        sessionsRepository = new JdbcSessionsRepository(jdbcTemplate);
     }
 
     @Test
