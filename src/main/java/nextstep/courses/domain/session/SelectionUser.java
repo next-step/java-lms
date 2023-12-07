@@ -4,8 +4,8 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
 public class SelectionUser {
-    SelectStatus status;
-    NsUser user;
+    private SelectStatus status;
+    private NsUser user;
 
     public SelectionUser(SelectStatus status, NsUser user) {
         validate(status, user);
