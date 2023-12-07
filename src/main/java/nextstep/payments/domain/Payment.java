@@ -9,10 +9,10 @@ public class Payment {
     private String id;
 
     // 결제한 강의
-    private Session session;
+    private Long sessionId;
 
     // 결제한 사용자
-    private NsUser nsUser;
+    private Long nsUserId;
 
     // 결제 금액
     private Long amount;
@@ -22,19 +22,24 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, Session session, NsUser nsUser, Long amount) {
+    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
-        this.session = session;
-        this.nsUser = nsUser;
+        this.sessionId = sessionId;
+        this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public Payment(String id, Session session, NsUser nsUser, Long amount) {
+        this(id, session.getId(), nsUser.getId(), amount);
+    }
+
 
     public boolean isSameAmountWith(long amount) {
         return this.amount == amount;
     }
 
     public boolean isSameUser(NsUser user) {
-        return this.nsUser.matchUser(user);
+        return user.matchUser(this.nsUserId);
     }
 }

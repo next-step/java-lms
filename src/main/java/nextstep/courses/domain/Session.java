@@ -11,6 +11,8 @@ import static nextstep.courses.domain.SessionState.READY;
  * 가변 객체입니다.
  */
 public abstract class Session {
+    private Long id;
+
     private SessionState state;
     private final RegisteredUsers registeredUsers;
     private SessionImage coverImage;
@@ -49,5 +51,9 @@ public abstract class Session {
 
     protected boolean isTheNumberOfRegisteredUserLessThan(int maxUserCount) {
         return this.registeredUsers.theNumberOfUsers() < maxUserCount;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 }
