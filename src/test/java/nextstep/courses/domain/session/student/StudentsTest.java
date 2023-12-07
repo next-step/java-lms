@@ -8,31 +8,28 @@ import org.junit.jupiter.api.Test;
 import static nextstep.users.domain.fixture.DomainFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-class SessionStudentsTest {
+class StudentsTest {
 
     @DisplayName("강의-학생을 추가한다.")
     @Test
     void add() {
         // given
-        SessionStudents sessionStudents = new SessionStudents();
-        Session session = new FreeSession();
-        SessionStudent sessionStudent = new SessionStudent(session, JAVAJIGI);
+        Students students = new Students();
 
         // when & then
-        assertThat(sessionStudents.add(sessionStudent)).isTrue();
+        assertThat(students.add(JAVAJIGI)).isTrue();
     }
 
     @DisplayName("수강 인원을 추가하기 전에 해당 학생이 이미 수강신청이 된 상태이면 예외를 발생시킨다.")
     @Test
     void validateDuplicate() {
         // given
-        SessionStudents sessionStudents = new SessionStudents();
+        Students students = new Students();
         Session session = new FreeSession();
-        SessionStudent sessionStudent = new SessionStudent(session, JAVAJIGI);
-        sessionStudents.add(sessionStudent);
+        students.add(JAVAJIGI);
 
         // when & then
-        assertThatThrownBy(() -> sessionStudents.add(sessionStudent)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> students.add(JAVAJIGI)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("이미 해당 강의를 수강 중 입니다.");
     }
 }

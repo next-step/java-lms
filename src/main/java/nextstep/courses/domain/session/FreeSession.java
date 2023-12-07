@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 
@@ -17,9 +17,9 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent, Payment payment) {
+    public void enroll(NsUser student, Payment payment) {
         validateStatus();
-        this.sessionStudents.add(sessionStudent);
+        this.students.add(student);
     }
 
     private void validateStatus() {

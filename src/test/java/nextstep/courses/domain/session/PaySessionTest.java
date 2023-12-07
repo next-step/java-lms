@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +24,7 @@ class PaySessionTest {
         Payment payment = createPayment(10000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> paySession.enroll(JAVAJIGI, payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의는 현재 준비중입니다.");
     }
 
@@ -37,7 +36,7 @@ class PaySessionTest {
         Payment payment = createPayment(8000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(new SessionStudent(paySession, JAVAJIGI), payment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> paySession.enroll(JAVAJIGI, payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: 10,000원");
     }
 
@@ -47,16 +46,12 @@ class PaySessionTest {
         // given
         PaySession paySession = createPaySession(RECRUIT);
         Payment payment = createPayment(10000L);
-        SessionStudent sessionStudent1 = new SessionStudent(paySession, JAVAJIGI);
-        SessionStudent sessionStudent2 = new SessionStudent(paySession, SANJIGI);
 
-        paySession.enroll(sessionStudent1, payment);
-        paySession.enroll(sessionStudent2, payment);
+        paySession.enroll(JAVAJIGI, payment);
+        paySession.enroll(SANJIGI, payment);
 
         // when & then
-        SessionStudent sessionStudent3 = new SessionStudent(paySession, new NsUser());
-
-        assertThatThrownBy(() -> paySession.enroll(sessionStudent3, payment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> paySession.enroll(new NsUser(), payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 

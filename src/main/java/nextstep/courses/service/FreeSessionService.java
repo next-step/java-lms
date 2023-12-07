@@ -3,8 +3,6 @@ package nextstep.courses.service;
 import nextstep.courses.domain.session.PayType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.student.SessionStudent;
-import nextstep.courses.domain.session.student.SessionStudentRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -15,12 +13,10 @@ public class FreeSessionService implements SessionService {
 
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
-    private final SessionStudentRepository sessionStudentRepository;
 
-    public FreeSessionService(UserRepository userRepository, SessionRepository sessionRepository, SessionStudentRepository sessionStudentRepository) {
+    public FreeSessionService(UserRepository userRepository, SessionRepository sessionRepository) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
-        this.sessionStudentRepository = sessionStudentRepository;
     }
 
     @Override
@@ -36,8 +32,6 @@ public class FreeSessionService implements SessionService {
         Session session = sessionRepository.findBy(payment.sessionId())
             .orElseThrow(() -> new IllegalArgumentException("일치하는 강의가 없습니다. 강의 아이디 :: " + payment.nsUserId()));
 
-        SessionStudent sessionStudent = new SessionStudent(session, student);
-        sessionStudentRepository.save(sessionStudent);
-        session.enroll(sessionStudent, payment);
+        session.enroll(student, payment);
     }
 }

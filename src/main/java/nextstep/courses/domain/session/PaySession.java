@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -23,12 +23,12 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void enroll(SessionStudent sessionStudent, Payment payment) {
+    public void enroll(NsUser student, Payment payment) {
         validateStatus();
         validatePayAmount(payment);
         validateCapacity();
 
-        sessionStudents.add(sessionStudent);
+        students.add(student);
     }
 
     private void validateStatus() {
@@ -50,6 +50,6 @@ public class PaySession extends Session {
     }
 
     private boolean isExceed() {
-        return sessionStudents.size() >= studentsCapacity;
+        return students.size() >= studentsCapacity;
     }
 }
