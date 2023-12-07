@@ -21,7 +21,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(FreeSession session) {
+    public int save(Session session) {
         String sql = "insert into session " +
                      "(id, course_id, title, session_type, max_participants, price, status, start_at, end_at, created_at, updated_at) " +
                      "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -58,7 +58,7 @@ public class JdbcSessionRepository implements SessionRepository {
     public Optional<Session> findById(Long id) {
         String sql = "select id, course_id, title, session_type, max_participants, price,"
                 + "status, start_at, end_at, created_at, updated_at from session where id = ?";
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
+        RowMapper<Session> rowMapper = (rs, rowNum) -> FreeSession.of(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),

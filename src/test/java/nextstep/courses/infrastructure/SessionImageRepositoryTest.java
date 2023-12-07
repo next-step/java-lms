@@ -50,7 +50,7 @@ public class SessionImageRepositoryTest {
     @DisplayName("이미지 url을 수정 한다.")
     void updateSessionImageUrlTest() {
         sessionImageRepository.save(sessionImage);
-        int count = sessionImageRepository.updateImageUrl("files.url", 1L);
+        int count = sessionImageRepository.update("files.url", ExtensionType.JPEG, 20488888L, 1L);
         assertThat(count).isEqualTo(1);
 
         Optional<SessionImage> sessionImageOptional = sessionImageRepository.findById(1L);

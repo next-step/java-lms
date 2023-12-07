@@ -1,6 +1,7 @@
 package nextstep.courses.repository;
 
 import nextstep.courses.domain.SessionImage;
+import nextstep.courses.enumeration.ExtensionType;
 
 import java.util.Optional;
 
@@ -8,7 +9,7 @@ public interface SessionImageRepository {
 
     int save(SessionImage sessionImage);
 
-    int updateImageUrl(String title, Long id);
+    int update(String imageUrl, ExtensionType extensionType, Long size, Long id);
 
     int delete(Long id);
 

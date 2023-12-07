@@ -4,9 +4,7 @@ import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionImage;
 import nextstep.courses.domain.SessionImages;
-import nextstep.courses.enumeration.ExtensionType;
 import nextstep.courses.enumeration.SessionStatus;
-import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.courses.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +29,7 @@ public class SessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private SessionRepository sessionRepository;
-    private FreeSession freeSession;
+    private Session freeSession;
 
     @BeforeEach
     void setUp() {

@@ -22,11 +22,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
-    private FreeSession sessionInReady;
-    private FreeSession freeSession;
-    private CostMoneySession costMoneySession;
+    private Session sessionInReady;
+    private Session freeSession;
+    private Session costMoneySession;
     private Payment paymentMatch;
     private Payment paymentMisMatch;
+    private Payment freePayment;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +59,7 @@ public class SessionTest {
 
         paymentMatch = Payment.of("1", 1L, 1L, 2000L);
         paymentMisMatch = Payment.of("1", 1L, 1L, 1000L);
+        freePayment = Payment.of("1", 1L, 1L, 0L);
     }
 
     @Test
@@ -89,8 +91,8 @@ public class SessionTest {
     @Test
     @DisplayName("무료강의는 인원제한 없이 등록할 수 있다.")
     void freeSessionTest() {
-        freeSession.registerFreeSession(JAVAJIGI);
-        freeSession.registerFreeSession(SANJIGI);
+        freeSession.register(JAVAJIGI, freePayment);
+        freeSession.register(SANJIGI, freePayment);
         assertThat(freeSession.getStudents().contains(JAVAJIGI)).isTrue();
         assertThat(freeSession.getStudents().contains(SANJIGI)).isTrue();
     }
@@ -98,9 +100,9 @@ public class SessionTest {
     @Test
     @DisplayName("유료강의는 인원이 다 차면 더 이상 신청할 수 없다.")
     void costMoneySessionExceedStudentsTest() {
-        costMoneySession.registerCostMoneySession(JAVAJIGI, paymentMatch);
+        costMoneySession.register(JAVAJIGI, paymentMatch);
 
-        assertThatThrownBy(() -> costMoneySession.registerCostMoneySession(SANJIGI, paymentMatch))
+        assertThatThrownBy(() -> costMoneySession.register(SANJIGI, paymentMatch))
                 .isInstanceOf(ExceedStudentsCountException.class)
                 .hasMessage("정원이 초과되어 더 이상 신청할 수 없습니다.");
     }
@@ -108,7 +110,7 @@ public class SessionTest {
     @Test
     @DisplayName("유료강의를 신청할 때 지불한 금액이 다르면 신청할 수 없다.")
     void paymentPriceMisMatchTest() {
-        assertThatThrownBy(() -> costMoneySession.registerCostMoneySession(JAVAJIGI, paymentMisMatch))
+        assertThatThrownBy(() -> costMoneySession.register(JAVAJIGI, paymentMisMatch))
                 .isInstanceOf(PaymentMisMatchException.class)
                 .hasMessage("지불한 금액이 강의 가격과 일치하지 않습니다.");
     }
@@ -116,14 +118,14 @@ public class SessionTest {
     @Test
     @DisplayName("유료강의를 신청할 때 지불한 금액이 일치하면 강의를 등록할 수 있다.")
     void paymentPriceMatchTest() {
-        costMoneySession.registerCostMoneySession(JAVAJIGI, paymentMatch);
+        costMoneySession.register(JAVAJIGI, paymentMatch);
         assertThat(costMoneySession.getStudents().contains(JAVAJIGI)).isTrue();
     }
 
     @Test
     @DisplayName("강의가 모집 중 상태가 아니라면 등록이 불가능하다.")
     void sessionCanNotRegisterTest() {
-        assertThatThrownBy(() -> sessionInReady.registerFreeSession(JAVAJIGI))
+        assertThatThrownBy(() -> sessionInReady.register(JAVAJIGI, freePayment))
                 .isInstanceOf(CanNotRegisterSessionException.class)
                 .hasMessage("강의가 모집중이여야만 신청할 수 있습니다.");
     }
@@ -131,9 +133,9 @@ public class SessionTest {
     @Test
     @DisplayName("이미 등록한 학생은 다시 등록할 수 없다.")
     void alreadyRegisterStudentTest() {
-        freeSession.registerFreeSession(JAVAJIGI);
+        freeSession.register(JAVAJIGI, freePayment);
 
-        assertThatThrownBy(() -> freeSession.registerFreeSession(JAVAJIGI))
+        assertThatThrownBy(() -> freeSession.register(JAVAJIGI, freePayment))
                 .isInstanceOf(StudentAlreadyApplyException.class)
                 .hasMessage("이미 신청완료한 학생입니다.");
     }

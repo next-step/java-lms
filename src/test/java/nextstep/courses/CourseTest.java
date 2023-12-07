@@ -17,7 +17,7 @@ public class CourseTest {
     @Test
     @DisplayName("과정은 여러개의 강의를 가질 수 있다.")
     void courseWithMultipleSessionTest() {
-        FreeSession freeSession = FreeSession.of(1L,
+        Session freeSession = FreeSession.of(1L,
                 1L,
                 "무료강의",
                 new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),

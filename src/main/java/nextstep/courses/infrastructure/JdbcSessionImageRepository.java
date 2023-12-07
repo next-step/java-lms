@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository("sessionImageRepository")
@@ -34,10 +35,13 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
     }
 
     @Override
-    public int updateImageUrl(String imageUrl, Long id) {
-        String sql = "update session_image set image_url = ? where id = ?";
+    public int update(String imageUrl, ExtensionType extensionType, Long size, Long id) {
+        String sql = "update session_image set image_url = ?, extension_type = ?, size = ?, updated_at = ? where id = ?";
         return jdbcTemplate.update(sql,
                 imageUrl,
+                extensionType.name(),
+                size,
+                LocalDateTime.now(),
                 id);
     }
 
