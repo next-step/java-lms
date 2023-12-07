@@ -5,19 +5,19 @@ import nextstep.courses.exception.ImageException;
 import java.util.Objects;
 
 public class ImageInfo {
-    private static final Long MAXIMUM_FILE_SIZE_MB = 1L;
+    private static final double MAXIMUM_FILE_SIZE_MB = 1;
     private static final int MINIMUM_WIDTH_PX = 300;
     private static final int MINIMUM_HEIGHT_PX = 200;
 
     private ImageType type;
 
-    private Long size;
+    private double size;
 
     private int width;
 
     private int height;
 
-    public ImageInfo(String type, Long size, int width, int height) {
+    public ImageInfo(String type, double size, int width, int height) {
         isSupportFileSize(size);
         isSupportImageSize(width, height);
         ImageType.isSupportImageType(type);
@@ -28,7 +28,7 @@ public class ImageInfo {
         this.height = height;
     }
 
-    private void isSupportFileSize(Long size) {
+    private void isSupportFileSize(double size) {
         if (size > MAXIMUM_FILE_SIZE_MB) {
             throw new ImageException("이미지 크기가 1MB를 초과하였습니다.");
         }

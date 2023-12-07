@@ -38,10 +38,11 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(long id, SessionState sessionState, LocalDate startDate, LocalDate endDate) {
+    public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
         checkSessionStatus(sessionState, startDate, endDate);
         this.id = id;
         this.sessionState = sessionState;
+        this.coverImage = imageInfo;
         this.startDate = startDate;
         this.endDate = endDate;
         this.enrollCount = 0;
