@@ -17,6 +17,8 @@ import static nextstep.courses.type.SessionState.READY;
 public class Session {
     private Long id;
 
+    private Course course;
+
     private SessionState state;
     private RegisteredUsers registeredUsers;
     private SessionImage coverImage;
@@ -29,10 +31,11 @@ public class Session {
 
     }
 
-    public static Session createFreeSession(Long id, SessionImage coverImage, SessionDuration duration) {
+    public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
         Session session = new Session();
 
         session.id = id;
+        session.course = course;
         session.state = READY;
         session.registeredUsers = new RegisteredUsers();
         session.coverImage = coverImage;
@@ -44,10 +47,11 @@ public class Session {
         return session;
     }
 
-    public static Session createPaidSession(Long id, SessionImage coverImage, SessionDuration duration, InfinitablePositiveInteger maxUserCount, int fee) {
+    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, InfinitablePositiveInteger maxUserCount, int fee) {
         Session session = new Session();
 
         session.id = id;
+        session.course = course;
         session.state = READY;
         session.registeredUsers = new RegisteredUsers();
         session.coverImage = coverImage;

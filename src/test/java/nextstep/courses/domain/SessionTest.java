@@ -16,13 +16,18 @@ class SessionTest {
     private Session session;
     private Session paidSession;
 
+    private Course sampleCourse;
+
+
     @BeforeEach
     public void sampleDataSetUp() {
+        sampleCourse = new Course();
+
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.JPG);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
 
-        session = Session.createFreeSession(1L, image, duration);
-        paidSession = Session.createPaidSession(2L, image, duration, InfinitablePositiveInteger.of(1), 100);
+        session = Session.createFreeSession(1L, sampleCourse, image, duration);
+        paidSession = Session.createPaidSession(2L, sampleCourse, image, duration, InfinitablePositiveInteger.of(1), 100);
     }
 
     @Test
@@ -40,9 +45,9 @@ class SessionTest {
     public void reigsterStateTest() {
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.JPG);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
-        Session readySession = Session.createFreeSession(1L, image, duration);
-        Session recruitSession = Session.createFreeSession(2L, image, duration);
-        Session endSession = Session.createFreeSession(3L, image, duration);
+        Session readySession = Session.createFreeSession(1L, sampleCourse, image, duration);
+        Session recruitSession = Session.createFreeSession(2L, sampleCourse, image, duration);
+        Session endSession = Session.createFreeSession(3L, sampleCourse, image, duration);
 
         readySession.updateStateTo(READY);
         recruitSession.updateStateTo(RECRUIT);
