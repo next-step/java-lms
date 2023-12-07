@@ -3,13 +3,16 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session {
 
     private final Long id;
     private final Duration duration;
     private final SessionType sessionType;
-    private final SessionStatus sessionStatus;
+    private final SessionOpenStatus sessionOpenStatus;
+    private final SessionProgressStatus sessionProgressStatus;
+    private List<Image> coverImages;
     private int maximumEnrollmentCount = 0;
     private final Price price;
     private final NsUsers nsUsers = new NsUsers();
@@ -18,20 +21,26 @@ public class Session {
                    LocalDateTime startDate,
                    LocalDateTime endDate,
                    SessionType sessionType,
-                   SessionStatus sessionStatus,
-                   int maximumEnrollmentCount,
-                   int fee) {
+                   SessionOpenStatus sessionOpenStatus,
+                   SessionProgressStatus sessionProgressStatus, int maximumEnrollmentCount,
+                   int fee,List<Image> coverImages) {
         inputValidation(sessionType, maximumEnrollmentCount);
+        this.sessionProgressStatus = sessionProgressStatus;
         this.id = id;
         this.duration = new Duration(startDate, endDate);
         this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
+        this.sessionOpenStatus = sessionOpenStatus;
         this.maximumEnrollmentCount = maximumEnrollmentCount;
         this.price = new Price(fee);
+        this.coverImages = coverImages;
     }
 
     public Long id() {
         return id;
+    }
+
+    public List<Image> coverImages() {
+        return coverImages;
     }
 
     public LocalDateTime start_at() {
@@ -46,8 +55,8 @@ public class Session {
         return sessionType;
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public SessionOpenStatus getSessionStatus() {
+        return sessionOpenStatus;
     }
 
     public int getMaximumEnrollmentCount() {
@@ -58,8 +67,8 @@ public class Session {
         return price.price();
     }
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionStatus sessionStatus, int maximumEnrollmentCount, int fee) {
-        this(0L, startDate, endDate, sessionType, sessionStatus, maximumEnrollmentCount, fee);
+    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionType sessionType, SessionOpenStatus sessionOpenStatus, int maximumEnrollmentCount, int fee, SessionProgressStatus sessionProgressStatus, List<Image> coverImages) {
+        this(0L, startDate, endDate, sessionType, sessionOpenStatus, sessionProgressStatus, maximumEnrollmentCount, fee, coverImages);
     }
 
     private void inputValidation(SessionType sessionType,int maximumEnrollment) {
@@ -69,11 +78,15 @@ public class Session {
     }
 
     private boolean canEnroll(Price paidFee){
-        return isOpened() && !isFullEnrollment() && possibleFee(paidFee);
+        return (isOpened() || isInProgress()) && !isFullEnrollment() && possibleFee(paidFee);
     }
 
     private boolean isOpened(){
-        return sessionStatus.isOpened();
+        return sessionOpenStatus.isOpened();
+    }
+
+    private boolean isInProgress(){
+        return sessionProgressStatus.isInProgress();
     }
 
     private boolean isFullEnrollment() {
@@ -92,6 +105,10 @@ public class Session {
             throw new IllegalArgumentException("수강 신청 기간이 아닙니다.");
         }
         return nsUsers.enroll(nsUser);
+    }
+
+    public NsUsers getNsUsers() {
+        return nsUsers;
     }
 
     public boolean isInProgress(LocalDateTime date) {

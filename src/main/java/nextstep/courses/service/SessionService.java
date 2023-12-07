@@ -2,9 +2,12 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.Price;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.repository.SessionNsUser;
 import nextstep.courses.domain.repository.SessionRepository;
 import nextstep.courses.domain.repository.SessionNsUserRepository;
 import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
 
 public class SessionService {
 
@@ -18,7 +21,8 @@ public class SessionService {
 
     public boolean enrollSession(NsUser nsUser, Long sessionId, Price paidFee) {
         Session session = sessionRepository.findById(sessionId);
-        return sessionNsUserRepository.save(session.id(), nsUser.getId());
+        session.enroll(nsUser, paidFee, LocalDateTime.now());
+        return sessionNsUserRepository.save(new SessionNsUser(0L, session.id(), nsUser.getId()));
     }
 
     public void createSession(Session session) {

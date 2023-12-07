@@ -1,7 +1,7 @@
 package nextstep.courses.domain.repository;
 
 public interface SessionImageRepository {
-    int save(Long sessionId, Long imageId);
+    int save(SessionImage sessionImage);
 
     int findBySessionId(Long sessionId);
 

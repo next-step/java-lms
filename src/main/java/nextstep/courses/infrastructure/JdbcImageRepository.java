@@ -4,7 +4,9 @@ import nextstep.courses.domain.*;
 import nextstep.courses.domain.repository.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository("imageRepository")
 public class JdbcImageRepository implements ImageRepository {
 
     private JdbcOperations jdbcTemplate;

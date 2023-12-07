@@ -10,4 +10,12 @@ public class CourseSession {
         this.courseId = courseId;
         this.sessionId = sessionId;
     }
+
+    public Long courseId(){
+        return courseId;
+    }
+
+    public Long sessionId(){
+        return sessionId;
+    }
 }

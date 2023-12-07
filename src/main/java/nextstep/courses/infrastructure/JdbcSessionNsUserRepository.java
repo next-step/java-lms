@@ -1,10 +1,13 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.repository.SessionNsUser;
 import nextstep.courses.domain.repository.SessionNsUserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository("sessionNsUserRepository")
 public class JdbcSessionNsUserRepository implements SessionNsUserRepository {
 
     private JdbcOperations jdbcTemplate;
@@ -14,9 +17,9 @@ public class JdbcSessionNsUserRepository implements SessionNsUserRepository {
     }
 
     @Override
-    public boolean save(Long sessionId, Long nsUserId) {
+    public boolean save(SessionNsUser sessionNsUser) {
         String sql = "insert into session_ns_user (session_id, ns_user_id) values(? , ?)";
-        return jdbcTemplate.update(sql, sessionId, nsUserId) > 0;
+        return jdbcTemplate.update(sql, sessionNsUser.sessionId(), sessionNsUser.nsUserId()) > 0;
     }
 
     @Override

@@ -4,9 +4,7 @@ import java.util.List;
 
 public interface SessionNsUserRepository {
 
-
-
-    boolean save(Long sessionId, Long nsUserId);
+    boolean save(SessionNsUser sessionNsUser);
 
     List<Integer> findBySessionId(Long sessionId);
 
