@@ -22,4 +22,13 @@ class UsersTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("최대 수강 인원을 초과하였습니다.");
     }
+
+    @Test
+    void 무료강의는_최대_수강_인원을_초과할_수_있다() {
+        Users users = new Users(0, Set.of());
+
+        users.register(NsUserTest.JAVAJIGI, SessionType.FREE);
+
+        assertThat(users.size()).isEqualTo(1L);
+    }
 }
