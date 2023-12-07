@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
@@ -33,5 +35,21 @@ class JdbcAttendeeRepositoryTest {
         Attendee actual = attendeeRepository.findById(1L)
                                                .orElseThrow(NotFoundException::new);
         assertThat(actual).isEqualTo(attendee);
+    }
+
+    @DisplayName("session id 값으로 Attendee 목록을 조회한다.")
+    @Test
+    void find_all_by_session_id() {
+        Attendee attendee1 = new Attendee(1L, 1L);
+        Attendee attendee2 = new Attendee(2L, 1L);
+        Attendee attendee3 = new Attendee(3L, 1L);
+        attendeeRepository.save(attendee1);
+        attendeeRepository.save(attendee2);
+        attendeeRepository.save(attendee3);
+        List<Attendee> expected = List.of(attendee1, attendee2, attendee3);
+
+        List<Attendee> actual = attendeeRepository.findAllBySeesionId(1L);
+
+        assertThat(actual).isEqualTo(expected);
     }
 }

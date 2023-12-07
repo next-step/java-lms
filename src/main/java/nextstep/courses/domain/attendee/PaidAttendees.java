@@ -6,6 +6,7 @@ import nextstep.courses.exception.NegativeOrZeroNumberException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PaidAttendees {
 
@@ -44,5 +45,18 @@ public class PaidAttendees {
         if (this.values.size() + 1 > maxCapacity) {
             throw new ExceedAttendeesException(this.values.size());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaidAttendees attendees = (PaidAttendees) o;
+        return maxCapacity == attendees.maxCapacity && Objects.equals(values, attendees.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(values, maxCapacity);
     }
 }

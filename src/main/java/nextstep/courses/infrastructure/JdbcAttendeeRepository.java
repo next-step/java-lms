@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +35,17 @@ public class JdbcAttendeeRepository implements AttendeeRepository {
         String sql = "insert into enrollment (user_id, session_id)" +
                 " values (?, ?)";
         jdbcTemplate.update(sql, attendee.getStudentId(), attendee.getSessionId());
+    }
+
+    @Override
+    public List<Attendee> findAllBySeesionId(Long sessionId) {
+        String sql = "select user_id, session_id" +
+                " from enrollment" +
+                " where session_id = ?";
+        RowMapper<Attendee> rowMapper = (rs, rowNum) -> new Attendee(
+                rs.getLong(1),
+                rs.getLong(2)
+        );
+        return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 }
