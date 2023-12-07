@@ -4,8 +4,8 @@ INSERT INTO ns_user (id, user_id, password, name, email, created_at) values (3, 
 
 INSERT INTO course (id, title, creator_id, created_at) values (2, 'TDD, 클린 코드 with Java 17기', 2, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, start_date, end_date, price, state, type, max_user_count, image_size, image_extension, image_width, image_height)
-values (1, 2, '2023-01-01', '2023-01-31', 1000, 'OPEN', 'FREE', 3, 1000, 'jpg', 300, 200);
+INSERT INTO session (id, course_id, start_date, end_date, price, type, status, recruitment, max_user_count, image_size, image_extension, image_width, image_height)
+values (1, 2, '2023-01-01', '2023-01-31', 1000, 'FREE', 'PROGRESS', 'OPEN', 3, 1000, 'jpg', 300, 200);
 
 INSERT INTO session_users (id, session_id, user_id)
 values (1, 1, 1);

@@ -27,7 +27,8 @@ public class Session {
                 ),
                 new Enrollment(
                         new SessionPrice(1000),
-                        SessionState.PREPARE,
+                        SessionStatus.PREPARE,
+                        SessionRecruitment.OPEN,
                         SessionType.PAID,
                         new SessionUserCount(0, 0)
                 )

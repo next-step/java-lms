@@ -26,17 +26,17 @@ public class JdbcSessionRepository implements SessionRepository {
         final SessionUsers sessionUsers = sessionUsersRepository.findBy(sessionId);
 
         String sql = "select id, course_id, start_date, end_date, price, " +
-                "state, type, max_user_count, image_size, image_extension, image_width, " +
+                "type, status, recruitment, max_user_count, image_size, image_extension, image_width, " +
                 "image_height " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
                 new SessionImage(
-                        rs.getInt(9),
-                        rs.getString(10),
-                        rs.getInt(11),
-                        rs.getInt(12)
+                        rs.getInt(10),
+                        rs.getString(11),
+                        rs.getInt(12),
+                        rs.getInt(13)
                 ),
                 new SessionPeriod(
                         toLocalDate(rs.getDate(3)),
@@ -46,11 +46,12 @@ public class JdbcSessionRepository implements SessionRepository {
                         new SessionPrice(
                                 rs.getInt(5)
                         ),
-                        SessionState.valueOf(rs.getString(6)),
-                        SessionType.valueOf(rs.getString(7)),
+                        SessionStatus.valueOf(rs.getString(7)),
+                        SessionRecruitment.valueOf(rs.getString(8)),
+                        SessionType.valueOf(rs.getString(6)),
                         new SessionUserCount(
                                 sessionUsers.size(),
-                                rs.getInt(8)
+                                rs.getInt(9)
                         ),
                         sessionUsers
                 )

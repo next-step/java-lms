@@ -21,64 +21,100 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EnrollmentTest {
 
-    public static Enrollment zeroAndOneThousandSession(SessionState sessionState, SessionType sessionType) {
+    public static Enrollment zeroAndOneThousandSession(SessionStatus sessionStatus, SessionRecruitment sessionRecruitment, SessionType sessionType) {
         return new Enrollment(
                 sessionPriceOneThousand(),
-                sessionState,
+                sessionStatus,
+                sessionRecruitment,
                 sessionType,
                 zeroSessionUserCount()
         );
     }
 
-    public static Enrollment zeroAndTenThousandSession(SessionState sessionState, SessionType sessionType) {
+    public static Enrollment zeroAndTenThousandSession(SessionStatus sessionStatus, SessionRecruitment sessionRecruitment, SessionType sessionType) {
         return new Enrollment(
                 sessionPriceTenThousand(),
-                sessionState,
+                sessionStatus,
+                sessionRecruitment,
                 sessionType,
                 zeroSessionUserCount()
         );
     }
 
-    public static Enrollment maxAndOneThousandSession(SessionState sessionState, SessionType sessionType) {
+    public static Enrollment maxAndOneThousandSession(SessionStatus sessionStatus, SessionRecruitment sessionRecruitment, SessionType sessionType) {
         return new Enrollment(
                 sessionPriceOneThousand(),
-                sessionState,
+                sessionStatus,
+                sessionRecruitment,
                 sessionType,
                 maxSessionUserCount()
         );
     }
 
-    public static Enrollment test(SessionState sessionState, SessionType sessionType) {
+    public static Enrollment test(SessionStatus sessionStatus, SessionRecruitment sessionRecruitment, SessionType sessionType) {
         return new Enrollment(
                 sessionPriceOneThousand(),
-                sessionState,
+                sessionStatus,
+                sessionRecruitment,
                 sessionType,
                 maxSessionUserCount()
         );
     }
+
+//    @ParameterizedTest
+//    @EnumSource(value = SessionState.class, names = {"PREPARE", "CLOSE"})
+//    @DisplayName("실패 - 수강 신청시 모집중이 아닌 경우 수강 신청을 할 수 없다.")
+//    void fail_session_register_not_open(SessionState sessionState) {
+//        Enrollment enrollment = zeroAndOneThousandSession(sessionState, SessionType.FREE);
+//        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+//                .isInstanceOf(SessionException.class)
+//                .hasMessage("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
+//    }
+//
+//    @Test
+//    @DisplayName("성공 - 수강 신청시 모집중인 경우 수강 신청을 할 수 있다.")
+//    void success_session_register_open() {
+//        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.FREE);
+//        assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+//                .doesNotThrowAnyException();
+//    }
 
     @ParameterizedTest
-    @EnumSource(value = SessionState.class, names = {"PREPARE", "CLOSE"})
+    @EnumSource(value = SessionStatus.class, names = {"PREPARE", "PROGRESS", "COMPLETE"})
     @DisplayName("실패 - 수강 신청시 모집중이 아닌 경우 수강 신청을 할 수 없다.")
-    void fail_session_register_not_open(SessionState sessionState) {
-        Enrollment enrollment = zeroAndOneThousandSession(sessionState, SessionType.FREE);
+    void fail_session_register_not_open(SessionStatus sessionStatus) {
+        Enrollment enrollment = zeroAndOneThousandSession(sessionStatus, SessionRecruitment.CLOSE, SessionType.FREE);
         assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionException.class)
                 .hasMessage("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
     }
 
+//    @ParameterizedTest
+//    @EnumSource(value = SessionRecruitment.class, names = {"CLOSE"})
     @Test
-    @DisplayName("성공 - 수강 신청시 모집중인 경우 수강 신청을 할 수 있다.")
-    void success_session_register_open() {
-        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.FREE);
+    @DisplayName("실패 - 수강 신청시 모집중 이더라도 강의가 종료된 경우 수강 신청을 할 수 없다.")
+    void fail_session_register_not_open() {
+        Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.COMPLETE, SessionRecruitment.OPEN, SessionType.FREE);
+        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+                .isInstanceOf(SessionException.class)
+                .hasMessage("현재 강의가 종료되어 수강 신청을 할 수가 없습니다.");
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = SessionStatus.class, names = {"PREPARE", "PROGRESS"})
+    @DisplayName("성공 - 수강 신청시 모집중이고 강의 진행 상태가 준비중, 진행중 일경우 수강 신청을 할 수 있다.")
+    void success_session_register_open(SessionStatus sessionStatus) {
+        Enrollment enrollment = zeroAndOneThousandSession(sessionStatus, SessionRecruitment.OPEN, SessionType.FREE);
         assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
 
+    // ===================================
+
     @Test
     @DisplayName("실패 - 유료 강의는 지정된 수강 인원 제한을 초과할 경우 신청할 수 없다.")
     void fail_paid_session_register_user_count_over() {
-        Enrollment enrollment = maxAndOneThousandSession(SessionState.OPEN, SessionType.PAID);
+        Enrollment enrollment = maxAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
         assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionUserCountException.class)
                 .hasMessage("제한된 수강 신청 인원을 초과 하였습니다.");
@@ -87,7 +123,7 @@ class EnrollmentTest {
     @Test
     @DisplayName("성공 - 유료 강의는 지정된 수강 인원 제한을 초과하지 않았을 경우 경우 신청할 수 있다.")
     void success_paid_session_register_user_count_not_over() {
-        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.PAID);
+        Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
         assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
@@ -95,7 +131,7 @@ class EnrollmentTest {
     @Test
     @DisplayName("실패 - 유료 강의는 강의 금액과 수강료가 일치하지 않으면 수강 신청을 할 수 없다.")
     void test() {
-        Enrollment enrollment = zeroAndTenThousandSession(SessionState.OPEN, SessionType.PAID);
+        Enrollment enrollment = zeroAndTenThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
         assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionPriceException.class)
                 .hasMessage("결제 금액과 강의 금액이 일치 하지 않습니다.");
@@ -104,7 +140,7 @@ class EnrollmentTest {
     @Test
     @DisplayName("성공 - 유저가 기존에 신청 하지 않은 강의일 경우 수강 신청을 할 수 있다.")
     void success_session_register_user() {
-        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.PAID);
+        Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
         assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
@@ -112,7 +148,7 @@ class EnrollmentTest {
     @Test
     @DisplayName("실패 - 유저가 기존에 신청한 강의일 경우 중복으로 수강 신청을 할 수 없다.")
     void fail_session_register_user() {
-        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.PAID);
+        Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
 
         final Payment payment = paymentOneThousand();
         enrollment.enroll(JAVAJIGI, payment);

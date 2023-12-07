@@ -34,7 +34,7 @@
     * [X] 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
 * [X] 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
 * [X] 강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
-* [ ] 강의 수강신청은 강의가 진행중일때도 가능하다.
+* [X] 강의 수강신청은 강의가 진행중일때도 가능하다.
 * [X] 강의는 중복 신청 할 수 없다
 * [ ] 강사가 승인하지 않아도 수강 신청하는 모든 사람이 수강 가능하다.
     * [ ] 강사는 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인이 가능해야 한다.
@@ -76,7 +76,7 @@
         - [X] 강의 최대 수강 인원 초과 불가능
         - [X] 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청 가능
     - [X] 강의 수강 신청은 강의 상태가 모집중일 때만 가능
-    - [ ] 강의 수강 신청은 강의가 진행중일 때도 가능
+    - [X] 강의 수강 신청은 강의가 진행중일 때도 가능
     - [X] 강의 중복 신청 불가능
 
 ---
@@ -102,9 +102,9 @@ erDiagram
         date start_date "not null"
         date end_date "not null"
         int price "not null"
-        varchar(10) state "not null"
         varchar(10) type "not null"
-        int user_count "default 0"
+        varchar(10) status "not null"
+        varchar(10) recruitment "not null"
         int max_user_count "default 0"
         int image_size "not null"
         varchar(10) image_extension "not null"
