@@ -13,14 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("sessionService")
 public class SessionService {
 
-    @Autowired
     private SessionRepository sessionRepository;
 
-    @Autowired
     private ImageRepository imageRepository;
 
-    @Autowired
     private UserRepository userRepository;
+
+    public SessionService(SessionRepository sessionRepository, ImageRepository imageRepository, UserRepository userRepository) {
+        this.sessionRepository = sessionRepository;
+        this.imageRepository = imageRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public void saveSession(Session session) {
