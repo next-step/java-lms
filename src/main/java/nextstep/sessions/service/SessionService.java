@@ -4,6 +4,7 @@ import java.util.List;
 
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.Session;
+import nextstep.sessions.domain.data.type.ApprovalType;
 import nextstep.sessions.domain.data.type.SelectionType;
 import nextstep.sessions.domain.data.vo.Registration;
 import nextstep.sessions.domain.exception.SessionsException;
@@ -36,7 +37,7 @@ public class SessionService {
 
     public void approve(int registrationId) {
         registration(registrationId).validateApproval();
-        registrationRepository.updateSelectionType(registrationId, SelectionType.SELECTION);
+        registrationRepository.updateApprovalType(registrationId, ApprovalType.APPROVAL);
     }
 
     public void cancel(int registrationId) {

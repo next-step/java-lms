@@ -11,4 +11,8 @@ public class RegistrationInfo {
         this.session = session;
         this.userPaymentInfo = userPaymentInfo;
     }
+
+    public UserPaymentInfo userPaymentInfo() {
+        return userPaymentInfo;
+    }
 }

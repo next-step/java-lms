@@ -9,16 +9,11 @@ import nextstep.users.domain.NsUser;
 
 public class Registration {
 
-    private final Session session;
-    private final UserPaymentInfo userPaymentInfo;
-
     private final RegistrationInfo registrationInfo;
     private final RegistrationProcedure registrationProcedure;
 
     public Registration(Session session, NsUser user, Payment payment) {
         this(
-            session,
-            new UserPaymentInfo(user, payment),
             new RegistrationInfo(session, new UserPaymentInfo(user, payment)),
             new RegistrationProcedure(SelectionType.BEFORE_SELECTION, ApprovalType.BEFORE_APPROVAL)
         );
@@ -26,26 +21,22 @@ public class Registration {
 
     public Registration(Session session, NsUser user, Payment payment, SelectionType selectionType, ApprovalType approvalType) {
         this(
-            session,
-            new UserPaymentInfo(user, payment),
             new RegistrationInfo(session, new UserPaymentInfo(user, payment)),
             new RegistrationProcedure(selectionType, approvalType)
         );
     }
 
-    public Registration(Session session, UserPaymentInfo userPaymentInfo, RegistrationInfo registrationInfo, RegistrationProcedure registrationProcedure) {
-        this.session = session;
-        this.userPaymentInfo = userPaymentInfo;
+    public Registration(RegistrationInfo registrationInfo, RegistrationProcedure registrationProcedure) {
         this.registrationInfo = registrationInfo;
         this.registrationProcedure = registrationProcedure;
     }
 
     public boolean hasUser(NsUser user) {
-        return userPaymentInfo.hasEqualUser(user);
+        return registrationInfo.userPaymentInfo().hasEqualUser(user);
     }
 
     public UserPaymentInfo userPaymentInfo() {
-        return userPaymentInfo;
+        return registrationInfo.userPaymentInfo();
     }
 
     public long userId() {
