@@ -42,46 +42,48 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("applySession은 수강신청을 하면 수강 신청 인원이 1 증가한다.")
-    void applySession_success() {
+    @DisplayName("수강 신청은 수강 신청 인원에 해당 인원이 추가된다.")
+    void apply_success() {
         Session session = new Session(1L, IMAGE, localDate, localDate, Session.Type.FREE,
                 1000L, 10, nsUsers, Session.Status.RECRUIT, localDateTime, localDateTime);
 
-        session.applySession(APPLE, PAYMENT);
+        assertThat(session.applyCount()).isEqualTo(2);
+
+        session.apply(APPLE, PAYMENT);
 
         assertThat(session.applyCount()).isEqualTo(3);
     }
 
     @Test
-    @DisplayName("applySession은 모집 중이 아니면 신청할 수 없다는 예외를 반환한다.")
-    void applySession_notRecruitStatus_throwsException() {
+    @DisplayName("수강 신청은 모집 중이 아니면 신청할 수 없다는 예외를 반환한다.")
+    void apply_notRecruitStatus_throwsException() {
         Session session = new Session(1L, IMAGE, localDate, localDate, Session.Type.FREE,
                 1000L, 10, nsUsers, Session.Status.READY, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.applySession(APPLE, PAYMENT)
+                () -> session.apply(APPLE, PAYMENT)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("applySession은 유료 강의 수강 인원 정원을 초과하면 신청할 수 없다는 예외를 반환한다.")
-    void applySession_chargeSession_overQuota_throwsException() {
+    @DisplayName("수강 신청은 유료 강의 수강 인원 정원을 초과하면 신청할 수 없다는 예외를 반환한다.")
+    void apply_chargeSession_overQuota_throwsException() {
         Session session = new Session(1L, IMAGE, localDate, localDate, Session.Type.CHARGE,
                 1000L, 2, nsUsers, Session.Status.RECRUIT, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.applySession(APPLE, PAYMENT)
+                () -> session.apply(APPLE, PAYMENT)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("applySession은 유료 강의 결제가 안되었다면 신청할 수 없다는 예외를 반환한다..")
-    void applySession_chargeSession_notPaid_throwsException() {
+    @DisplayName("수강 신청은 유료 강의 결제가 안되었다면 신청할 수 없다는 예외를 반환한다.")
+    void apply_chargeSession_notPaid_throwsException() {
         Session session = new Session(1L, IMAGE, localDate, localDate, Session.Type.CHARGE,
                 1000L, 10, nsUsers, Session.Status.RECRUIT, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.applySession(APPLE, null)
+                () -> session.apply(APPLE, null)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

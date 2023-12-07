@@ -89,11 +89,15 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public int applyCount() {
         return this.users.size();
     }
 
-    void applySession(NsUser loginUser, Payment payment) {
+    public void apply(NsUser loginUser, Payment payment) {
         if (this.status != Status.RECRUIT) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
