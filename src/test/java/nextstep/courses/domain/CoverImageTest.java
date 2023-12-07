@@ -56,7 +56,7 @@ public class CoverImageTest {
   @DisplayName("커버 이미지 너비 제한")
   public void 커버_이미지_너비_제한_생성() {
     // given
-    String fileName = "filetest.txt";
+    String fileName = "filetest.png";
     long size = 1024L;
     double width = 299;
     double height = 200;
@@ -70,7 +70,7 @@ public class CoverImageTest {
   @DisplayName("커버 이미지 높이 제한")
   public void 커버_이미지_높이_제한_생성() {
     // given
-    String fileName = "filetest.txt";
+    String fileName = "filetest.png";
     long size = 1024L;
     double width = 300;
     double height = 199;

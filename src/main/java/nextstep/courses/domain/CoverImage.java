@@ -1,19 +1,15 @@
 package nextstep.courses.domain;
 
 public class CoverImage {
-    private static final Long FILE_MAX_SIZE = 1024L*1024L;
     private final String name;
     private final CoverImageType coverImageType;
-    private final long size;
+    private final ImageFileSize imageFileSize;
     private final ImageSize imageSize;
 
     private CoverImage(String name, CoverImageType coverImageType, long size, double width, double height) {
-        if (size >= FILE_MAX_SIZE) {
-            throw new IllegalArgumentException("사이즈가 너무 큽니다.");
-        }
         this.name = name;
         this.coverImageType = coverImageType;
-        this.size = size;
+        this.imageFileSize = new ImageFileSize(size);
         this.imageSize = new ImageSize(width,height);
     }
 
