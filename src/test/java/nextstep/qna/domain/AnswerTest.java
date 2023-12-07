@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
@@ -33,12 +35,24 @@ public class AnswerTest {
 
     @DisplayName("답글의 삭제 상태를 변경합니다.")
     @Test
-    void changeDelete() {
+    void deleteSuccess() throws CannotDeleteException {
         // given
         // when
-        A1.changeStatus(true);
+        A1.delete(NsUserTest.JAVAJIGI);
         // then
         assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @DisplayName("답글 작성자와 일치하지 않는다면 에러를 발생합니다.")
+    @Test
+    void deleteFail() {
+        // given
+        // when
+        // then
+        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("작성자만 삭제할 수 있습니다.");
+
     }
 
     @DisplayName("deleteHistory 목록을 생성합니다.")
