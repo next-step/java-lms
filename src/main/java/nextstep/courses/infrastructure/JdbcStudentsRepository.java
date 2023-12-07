@@ -2,22 +2,19 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Students;
 import nextstep.courses.domain.session.StudentsRepository;
-import nextstep.users.domain.UserRepository;
+import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Repository("studentsRepository")
 public class JdbcStudentsRepository implements StudentsRepository {
     private final JdbcOperations jdbcTemplate;
 
-    private final UserRepository userRepository;
-
-    public JdbcStudentsRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
+    public JdbcStudentsRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userRepository = userRepository;
     }
 
 
@@ -33,10 +30,26 @@ public class JdbcStudentsRepository implements StudentsRepository {
 
     @Override
     public Students findBySessionId(Long sessionId) {
-        String sql = "select user_id from session_student where session_id = ?";
-        List<String> userIds = jdbcTemplate.queryForList(sql, String.class, sessionId);
-        return userIds.stream()
-                .map(userId -> userRepository.findByUserId(userId).get())
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Students::of));
+        String sql = "select a.id, a.user_id, a.password, a.name, a.email, a.created_at, a.updated_at from ns_user a inner join session_student b on a.user_id = b.user_id where b.session_id = ?";
+
+        return Students.of(
+                jdbcTemplate.query(
+                        sql,
+                        (rs, rowNum) -> new NsUser(
+                                rs.getLong(1),
+                                rs.getString(2),
+                                rs.getString(3),
+                                rs.getString(4),
+                                rs.getString(5),
+                                toLocalDateTime(rs.getTimestamp(6)),
+                                toLocalDateTime(rs.getTimestamp(7))),
+                        sessionId));
+    }
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return timestamp.toLocalDateTime();
     }
 }

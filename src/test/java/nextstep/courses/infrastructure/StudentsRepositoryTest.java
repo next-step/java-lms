@@ -3,8 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Students;
 import nextstep.courses.domain.session.StudentsRepository;
 import nextstep.users.domain.NsUserTest;
-import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.JdbcUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,12 +22,9 @@ public class StudentsRepositoryTest {
 
     private StudentsRepository studentsRepository;
 
-    private UserRepository userRepository;
-
     @BeforeEach
     void setUp() {
-        userRepository = new JdbcUserRepository(jdbcTemplate);
-        studentsRepository = new JdbcStudentsRepository(jdbcTemplate, userRepository);
+        studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
     }
 
     @Test

@@ -20,9 +20,9 @@ public class Session {
     private final Long amount;
     private final Long enrollmentMax;
 
-    private final Image image;
+    private Image image;
 
-    private final Students students;
+    private Students students;
 
     private final Enrollment enrollment;
 
@@ -76,10 +76,6 @@ public class Session {
         return of(id, sessionType, SessionState.END, period, amount, enrollmentMax, image, students);
     }
 
-    public void addStudent(NsUser student) {
-        students.add(student);
-    }
-
     public Long id() {
         return id;
     }
@@ -112,17 +108,26 @@ public class Session {
         return enrollmentMax;
     }
 
-    public Long imageId() {
-        if (image == null) {
-            return null;
-        }
+    public Image image() {
+        return image;
+    }
 
-        return image.id();
+    public void changeImage(Image image) {
+        this.image = image;
     }
 
     public Students students() {
         return students;
     }
+
+    public void changeStudents(Students students) {
+        this.students = students;
+    }
+
+    public void addStudent(NsUser student) {
+        students.add(student);
+    }
+
 
     @Override
     public String toString() {

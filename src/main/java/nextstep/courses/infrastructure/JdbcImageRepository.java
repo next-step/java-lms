@@ -22,7 +22,7 @@ public class JdbcImageRepository implements ImageRepository {
     }
 
     @Override
-    public Image findById(Long id) {
+    public Image findBySessionId(Long id) {
         String sql = "select id, type, width, height, file_size from image where id = ?";
         RowMapper<Image> rowMapper = (rs, rowNum) -> Image.of(
                 rs.getLong(1),

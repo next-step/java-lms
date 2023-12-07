@@ -35,7 +35,7 @@ public class ImageRepositoryTest {
 
     @Test
     void find() {
-        Image saveImage = imageRepository.findById(1000L);
+        Image saveImage = imageRepository.findBySessionId(1000L);
         assertThat(saveImage.type()).isEqualTo("JPG");
         LOGGER.debug("Image: {}", saveImage);
     }
