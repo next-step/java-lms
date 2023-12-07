@@ -14,14 +14,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
+    private static Session createSession(ParticipantManager participantManager, boolean isFree, SessionStatus ready) {
+        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
+        Enrolment enrolment = new Enrolment(participantManager, new Price(isFree, 10000));
+        // when
+        Session session = new Session("TDD", sessionPeriod, enrolment, ready, null, null);
+        return session;
+    }
+
     @DisplayName("무료강의 생성")
     @Test
     void 무료강의생성() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(), new Price(true, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.READY, null, null);
+        Session session = createSession(new ParticipantManager(), true, SessionStatus.READY);
         // then
         assertThat(session.title()).isEqualTo("TDD");
         assertThat(session.isFree()).isTrue();
@@ -31,10 +36,7 @@ public class SessionTest {
     @Test
     void 유료강의생성() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.READY, null, null);
+        Session session = createSession(new ParticipantManager(10), false, SessionStatus.READY);
         // then
         assertThat(session.title()).isEqualTo("TDD");
         assertThat(session.isFree()).isFalse();
@@ -48,7 +50,7 @@ public class SessionTest {
         Enrolment enrolment = new Enrolment(new ParticipantManager(10), new Price(false, 10000));
         Image image = new Image(new ImageName("image.png"), new ImageSize(1024 * 1024), new ImagePixel(300, 200), null);
         // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.READY, image, null);
+        Session session = createSession(new ParticipantManager(10), false, SessionStatus.READY);
         // then
         assertThat(session.title()).isEqualTo("TDD");
         assertThat(session.isFree()).isFalse();
@@ -58,10 +60,7 @@ public class SessionTest {
     @Test
     void 강의가_모집중일때_신청이_가능하다() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(1), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, null);
+        Session session = createSession(new ParticipantManager(1), false, SessionStatus.RECRUIT);
         session.addParticipant(10000, NsUserTest.SANJIGI);
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
@@ -71,10 +70,7 @@ public class SessionTest {
     @Test
     void 강의가_모집중이_아닐때_신청이_불가능하다() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(1), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.FINISH, null, null);
+        Session session = createSession(new ParticipantManager(1), false, SessionStatus.FINISH);
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -84,10 +80,7 @@ public class SessionTest {
     @Test
     void 유료강의결제() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, null);
+        Session session = createSession(new ParticipantManager(10), false, SessionStatus.RECRUIT);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
@@ -97,10 +90,7 @@ public class SessionTest {
     @Test
     void 유료강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(1), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, null);
+        Session session = createSession(new ParticipantManager(1), false, SessionStatus.RECRUIT);
         session.addParticipant(10000, NsUserTest.JAVAJIGI);
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
@@ -111,10 +101,7 @@ public class SessionTest {
     @Test
     void 유료강의_결제금액이_강의가격과_다르면_예외가_발생한다() {
         // given
-        SessionPeriod sessionPeriod = new SessionPeriod("2023-01-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), new Price(false, 10000));
-        // when
-        Session session = new Session("TDD", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, null);
+        Session session = createSession(new ParticipantManager(10), false, SessionStatus.RECRUIT);
         // then
         assertThatThrownBy(() -> session.addParticipant(5000, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
