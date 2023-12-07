@@ -35,5 +35,15 @@ state=DONE 인 경우 running_state=DONE, recruiting_state=NO_RECRUITING
 */
 insert into new_session (id, paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date)
 values (6, 'PAID', 800000, 3, 'RUNNING', 'RECRUITING', '2023-01-01', '2023-12-31');
-insert into registration (session_id, user_id, payment_id)
-values (6, 1, 1);
+
+/*
+위와 동일하게 새로운 테이블에 마이그레이션 한다.
+추가된 필드 selection_type, approval_type은 'Y'로 저장한다.
+*/
+insert into new_registration (session_id, user_id, payment_id, selection_type, approval_type)
+values (6, 1, 1, 'Y', 'Y');
+
+insert into new_registration (session_id, user_id, payment_id, selection_type, approval_type)
+values (6, 1, 2, 'N', 'N');
+insert into new_registration (session_id, user_id, payment_id, selection_type, approval_type)
+values (6, 1, 3, 'N', 'N');

@@ -40,6 +40,10 @@ public class Session {
         this.registrations = registrations;
     }
 
+    public Session with(List<Registration> registrations) {
+        return new Session(sessionInfo, registrations);
+    }
+
     public Registration registration(NsUser user, Payment payment) {
         sessionInfo.validateEnrollment(registrations.size(), payment);
         registrations.validateDuplicateEnrollment(user);

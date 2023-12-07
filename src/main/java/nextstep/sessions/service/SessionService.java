@@ -1,8 +1,12 @@
 package nextstep.sessions.service;
 
+import java.util.List;
+
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.Session;
+import nextstep.sessions.domain.data.type.SelectionType;
 import nextstep.sessions.domain.data.vo.Registration;
+import nextstep.sessions.domain.exception.SessionsException;
 import nextstep.sessions.repository.RegistrationRepository;
 import nextstep.sessions.repository.SessionRepository;
 import nextstep.users.domain.NsUser;
@@ -19,7 +23,30 @@ public class SessionService {
 
     public void enroll(int sessionId, NsUser loginUser, Payment payment) {
         Session session = sessionRepository.findSessionBySessionId(sessionId);
-        Registration registration = session.registration(loginUser, payment);
+        List<Registration> registrations = registrationRepository.findAllRegistrations(sessionId);
+        Session sessionWithRegistrations = session.with(registrations);
+        Registration registration = sessionWithRegistrations.registration(loginUser, payment);
         registrationRepository.saveRegistration(sessionId, registration);
     }
+
+    public void select(int registrationId) {
+        registration(registrationId).validateSelection();
+        registrationRepository.updateSelectionType(registrationId, SelectionType.SELECTION);
+    }
+
+    public void approve(int registrationId) {
+        registration(registrationId).validateApproval();
+        registrationRepository.updateSelectionType(registrationId, SelectionType.SELECTION);
+    }
+
+    public void cancel(int registrationId) {
+        registration(registrationId).validateCancel();
+        registrationRepository.deleteRegistration(registrationId);
+    }
+
+    private Registration registration(int registrationId) {
+        return registrationRepository.findRegistrationByRegistrationId(registrationId)
+            .orElseThrow(() -> new SessionsException("등록된 수강 정보가 없습니다."));
+    }
+
 }
