@@ -3,7 +3,6 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.ImageSizeOverException;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class CoverImage extends BaseEntity {
     private static final int MAX_MB_OF_IMAGE_SIZE = 1;
@@ -50,19 +49,5 @@ public class CoverImage extends BaseEntity {
 
     public int getHeight() {
         return dimensions.getHeight();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        CoverImage image = (CoverImage) o;
-        return Objects.equals(size, image.size) && extension == image.extension && Objects.equals(dimensions, image.dimensions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), size, extension, dimensions);
     }
 }
