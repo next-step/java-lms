@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.PaymentException;
 import nextstep.courses.exception.SessionException;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Session {
-    private long id;
+    private Long id;
 
     private String title;
 
@@ -22,9 +24,9 @@ public class Session {
 
     private Integer maxPersonnel;
 
-    private int enrollCount;
+    private int enrollCount = 0;
 
-    private List<NsUser> students;
+    private List<NsUser> students = new ArrayList<>();
 
     private Long fee;
 
@@ -38,6 +40,13 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
+    public Session(Long id, SessionType sessionType,SessionState sessionState, Long fee) {
+        this.id = id;
+        this.sessionType = sessionType;
+        this.sessionState = sessionState;
+        this.fee = fee;
+    }
+
     public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
         checkSessionStatus(sessionState, startDate, endDate);
         this.id = id;
@@ -45,8 +54,6 @@ public class Session {
         this.coverImage = imageInfo;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.enrollCount = 0;
-        this.students = new ArrayList<>();
     }
 
     public Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
@@ -64,13 +71,17 @@ public class Session {
         }
     }
 
-    public void enrollStudent(NsUser student) {
-        if(sessionType == SessionType.PAID && enrollCount >= maxPersonnel){
+    public void enrollStudent(NsUser student, Payment payment) {
+        if(sessionType == SessionType.PAID && enrollCount >= maxPersonnel) {
             throw new SessionException("최대 수강 인원을 초과하였습니다.");
         }
 
-        if(!SessionState.isAbleToEnroll(sessionState)){
+        if(!SessionState.isAbleToEnroll(sessionState)) {
             throw new SessionException("모집중인 강의가 아닙니다.");
+        }
+
+        if(payment != null && !payment.isEqualPaidFee(fee)) {
+            throw new PaymentException("수강료가 지불한 금액과 일치하지 않습니다.");
         }
 
         students.add(student);

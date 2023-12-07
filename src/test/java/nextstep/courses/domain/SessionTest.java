@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.PaymentException;
 import nextstep.courses.exception.SessionException;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,9 +40,9 @@ class SessionTest {
     @DisplayName("모집중인 무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
     void 무료강의_수강신청() {
         Session session = new Session(0L, SessionType.FREE, SessionState.RECRUITING,null, new ArrayList<>(), 15);
-        session.enrollStudent(NsUserTest.JAVAJIGI);
+        session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
-        assertThat(session.equals(new Session(0L, SessionType.FREE, SessionState.RECRUITING,10, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
+        assertThat(session.equals(new Session(0L, SessionType.FREE, SessionState.RECRUITING,null, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
     }
 
     @Test
@@ -48,7 +50,7 @@ class SessionTest {
     void 유료강의_수강신청() {
         Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING,10, new ArrayList<>(), 10);
 
-        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
     }
 
@@ -56,7 +58,7 @@ class SessionTest {
     @DisplayName("강의 상태가 모집중일 때 수강신청을 할 수 있다.")
     void 수강신청_모집중_상태() {
         Session session = new Session(0L, SessionState.RECRUITING, null, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
-        session.enrollStudent(NsUserTest.JAVAJIGI);
+        session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
         assertThat(session.getEnrollCount()).isEqualTo(1);
     }
@@ -66,7 +68,7 @@ class SessionTest {
     void 수강신청_준비중_상태() {
         Session session = new Session(0L, SessionState.PREPARING, null, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
 
-        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
     }
 
@@ -75,7 +77,7 @@ class SessionTest {
     void 수강신청_종료_상태() {
         Session session = new Session(0L, SessionState.END, null, LocalDate.now().minusDays(10), LocalDate.now().minusDays(3));
 
-        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
     }
 
@@ -85,5 +87,15 @@ class SessionTest {
         ImageInfo imageInfo = new ImageInfo("JPG", 0.5, 300, 200);
         assertThatCode(() -> new Session(0L, SessionState.PREPARING, imageInfo, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)))
                 .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("수강생이 결제한 금액과 유료 강의의 수강료가 일치하지 않으면 예외가 발생한다.")
+    void 수강료_일치하지_않으면_예외_발생() {
+        Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING, 20000L);
+        Payment payment = new Payment("ID", 0L, 0L, 10000L);
+
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, payment))
+                .isInstanceOf(PaymentException.class);
     }
 }
