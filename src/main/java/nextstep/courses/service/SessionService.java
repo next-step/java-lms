@@ -22,8 +22,8 @@ public class SessionService {
         session.enroll(nsUser, payment);
     }
 
-    public void create(Session session) {
-        sessionRepository.save(session);
+    public int save(Session session) {
+        return sessionRepository.save(session);
     }
 
     public Session findById(long id) {
