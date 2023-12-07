@@ -17,11 +17,12 @@ public class ImageInfo {
 
     private int height;
 
-    public ImageInfo(ImageType type, Long size, int width, int height) {
+    public ImageInfo(String type, Long size, int width, int height) {
         isSupportFileSize(size);
         isSupportImageSize(width, height);
+        ImageType.isSupportImageType(type);
 
-        this.type = type;
+        this.type = ImageType.valueOf(type);
         this.size = size;
         this.width = width;
         this.height = height;
