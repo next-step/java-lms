@@ -37,7 +37,7 @@ public class NewRegistrationRepositoryTest {
     @Test
     void 수강_신청_및_신청_내역_조회() {
         int sessionId = 6;
-        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        Session session = sessionRepository.findSessionBySessionId(sessionId).get();
         List<Registration> registrations = registrationRepository.findAllRegistrations(sessionId);
 
         Registration registration = new Registration(session, NsUserTest.SANJIGI, new Payment(1L, 2L, 3L, 800000L));

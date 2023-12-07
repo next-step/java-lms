@@ -2,7 +2,9 @@ package nextstep.sessions.infrastructure;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,10 +22,14 @@ public class JdbcNewSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findSessionBySessionId(int sessionId) {
-        String sql = "select paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date from new_session where id = ?";
-        RowMapper<Session> rowMapper = (rs, rowNum) -> session(rs);
-        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
+    public Optional<Session> findSessionBySessionId(int sessionId) {
+        try {
+            String sql = "select paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date from new_session where id = ?";
+            RowMapper<Session> rowMapper = (rs, rowNum) -> session(rs);
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public static Session session(ResultSet rs) throws SQLException {

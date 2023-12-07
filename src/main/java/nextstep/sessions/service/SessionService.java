@@ -23,7 +23,8 @@ public class SessionService {
     }
 
     public void enroll(int sessionId, NsUser loginUser, Payment payment) {
-        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        Session session = sessionRepository.findSessionBySessionId(sessionId)
+            .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllRegistrations(sessionId);
         Session sessionWithRegistrations = session.with(registrations);
         Registration registration = sessionWithRegistrations.registration(loginUser, payment);
