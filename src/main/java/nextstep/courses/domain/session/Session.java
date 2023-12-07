@@ -12,23 +12,23 @@ public class Session {
     private String title;
     private SessionPeriod sessionPeriod;
     private SessionStatus status;
-    private Price price;
+    private Enrolment enrolment;
     private Image image;
     private Long courseId;
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Long courseId) {
-        this(id, title, sessionPeriod, price, status, null, courseId);
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Long courseId) {
+        this(id, title, sessionPeriod, enrolment, status, null, courseId);
     }
 
-    public Session(String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long courseId) {
-        this(null, title, sessionPeriod, price, status, image, courseId);
+    public Session(String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Image image, Long courseId) {
+        this(null, title, sessionPeriod, enrolment, status, image, courseId);
     }
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Price price, SessionStatus status, Image image, Long courseId) {
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Image image, Long courseId) {
         this.id = id;
         this.title = title;
         this.sessionPeriod = sessionPeriod;
-        this.price = price;
+        this.enrolment = enrolment;
         this.status = status;
         this.image = image;
         this.courseId = courseId;
@@ -39,12 +39,12 @@ public class Session {
     }
 
     public boolean isFree() {
-        return price.isFree();
+        return enrolment.isFree();
     }
 
     public void addParticipant(int money, NsUser nsUser) {
         validateRecruiting();
-        price.addParticipant(money, nsUser);
+        enrolment.addParticipant(money, nsUser);
     }
 
     public void validateRecruiting() {
@@ -54,7 +54,7 @@ public class Session {
     }
 
     public int nowParticipants() {
-        return price.nowParticipants();
+        return enrolment.nowParticipants();
     }
 
     public LocalDateTime startDateTime() {
@@ -69,8 +69,8 @@ public class Session {
         return status.toString();
     }
 
-    public int money() {
-        return price.money();
+    public int price() {
+        return enrolment.price();
     }
 
     public Long courseId() {
@@ -78,7 +78,7 @@ public class Session {
     }
 
     public int maxParticipants() {
-        return price.maxParticipants();
+        return enrolment.maxParticipants();
     }
 
     public Image image() {

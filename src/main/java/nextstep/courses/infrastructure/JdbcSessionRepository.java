@@ -22,7 +22,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into session (title, start_date_time, end_date_time, status, is_free, money, max_participants, course_id) values(?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.title(), session.startDateTime(), session.endDateTime(), session.status(), session.isFree(), session.money(), session.maxParticipants(), session.courseId());
+        return jdbcTemplate.update(sql, session.title(), session.startDateTime(), session.endDateTime(), session.status(), session.isFree(), session.price(), session.maxParticipants(), session.courseId());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class JdbcSessionRepository implements SessionRepository {
             int maxParticipants = rs.getInt(8);
             Long courseId = rs.getLong(9);
             return new Session(sessionId, title, SessionPeriod.of(startDateTime, endDateTime),
-                    Price.of(isFree, money, ParticipantManager.of(maxParticipants)), SessionStatus.valueOf(status), courseId);
+                    Enrolment.of(maxParticipants, Price.of(isFree, money)), SessionStatus.valueOf(status), courseId);
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
@@ -58,7 +58,7 @@ public class JdbcSessionRepository implements SessionRepository {
             int maxParticipants = rs.getInt(8);
             Long courseId = rs.getLong(9);
             return new Session(sessionId, title, SessionPeriod.of(startDateTime, endDateTime),
-                    Price.of(isFree, money, ParticipantManager.of(maxParticipants)), SessionStatus.valueOf(status), courseId);
+                    Enrolment.of(maxParticipants, Price.of(isFree, money)), SessionStatus.valueOf(status), courseId);
         };
         return jdbcTemplate.query(sql, rowMapper, findCourseId);
     }

@@ -9,6 +9,10 @@ public class ParticipantManager {
     private int maxParticipants;
     private SessionParticipants sessionParticipants;
 
+    public ParticipantManager() {
+        this(0, new SessionParticipants(new ArrayList<>()));
+    }
+
     public ParticipantManager(int maxParticipants) {
         this(maxParticipants, new SessionParticipants(new ArrayList<>()));
     }
