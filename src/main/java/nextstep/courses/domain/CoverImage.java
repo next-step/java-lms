@@ -11,10 +11,6 @@ public class CoverImage {
         if (size >= FILE_MAX_SIZE) {
             throw new IllegalArgumentException("사이즈가 너무 큽니다.");
         }
-        if (coverImageType.equals(CoverImageType.NO_MATCH)) {
-            throw new IllegalArgumentException("확장자를 확인해주세요.");
-        }
-
         this.name = name;
         this.coverImageType = coverImageType;
         this.size = size;

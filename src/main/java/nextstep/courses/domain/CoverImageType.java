@@ -21,6 +21,6 @@ public enum CoverImageType {
     return Arrays.stream(values())
           .filter(it -> it.name.equals(name))
           .findFirst()
-          .orElseGet(() -> CoverImageType.NO_MATCH);
+          .orElseThrow(() -> new IllegalArgumentException("확장자를 확인해주세요."));
     }
 }
