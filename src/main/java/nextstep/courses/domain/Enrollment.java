@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,9 +9,20 @@ public class Enrollment {
 
     private final SessionStatus sessionStatus;
 
+    private final List<Student> students;
+
     public Enrollment(int capacity, SessionStatus sessionStatus) {
+        this(capacity, sessionStatus, new ArrayList<>());
+    }
+
+    public Enrollment(int capacity, SessionStatus sessionStatus, List<Student> students) {
         this.capacity = capacity;
         this.sessionStatus = sessionStatus;
+        this.students = students;
+    }
+
+    public void enroll(Student student) throws AlreadyEnrollmentException {
+        enroll(student, this.students);
     }
 
     public void enroll(Student student, List<Student> value) throws AlreadyEnrollmentException {
