@@ -12,7 +12,7 @@ public class SessionsTest {
     @ParameterizedTest
     @NullSource
     @DisplayName("Sessions 은 빈 값이 주어지면 예외를 던진다.")
-    void newObject_empty_throwsException(List<Session> sessions) {
+    void newObject_null_throwsException(List<Session> sessions) {
         assertThatThrownBy(
                 () -> new Sessions(sessions)
         ).isInstanceOf(IllegalArgumentException.class);

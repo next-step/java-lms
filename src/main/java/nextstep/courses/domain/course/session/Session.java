@@ -4,10 +4,7 @@ import nextstep.courses.domain.course.image.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -15,9 +12,7 @@ public class Session {
 
     private Image image;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private Duration duration;
 
     private Type type;
 
@@ -33,53 +28,29 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public boolean isSame(Long sessionId) {
-        return Objects.equals(this.id, sessionId);
-    }
-
-    public enum Type {
-        FREE("무료"),
-        CHARGE("유료");
-
-        Type(String description) {
-            this.description = description;
-        }
-
-        private final String description;
-    }
-
     public Session() {
     }
 
-    public enum Status {
-        READY("준비중"),
-        RECRUIT("모집중"),
-        END("종료");
-
-        Status(String description) {
-            this.description = description;
-        }
-
-        private final String description;
-    }
-
-    public Session(Image image, LocalDate startDate, LocalDate endDate,
+    public Session(Image image, Duration duration,
                    Type type, Long amount, int quota) {
-        this(0L, image, startDate, endDate, type, amount, quota, new Applicants(),
+        this(0L, image, duration, type, amount, quota, new Applicants(),
                 Status.READY, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Image image, LocalDate startDate, LocalDate endDate,
+    public Session(Long id, Image image, Duration duration,
                    Type type, Long amount, int quota, Applicants applicants,
                    Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        if(image == null) {
+        if (image == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
+        }
+
+        if (duration == null) {
+            throw new IllegalArgumentException("기간을 추가해야 합니다.");
         }
 
         this.id = id;
         this.image = image;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.duration = duration;
         this.type = type;
         this.amount = amount;
         this.quota = quota;
@@ -87,6 +58,10 @@ public class Session {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isSame(Long sessionId) {
+        return Objects.equals(this.id, sessionId);
     }
 
     public Long getId() {
@@ -127,6 +102,29 @@ public class Session {
     private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
         if (payment == null || !payment.isPaid(loginUser, this)) {
             throw new IllegalArgumentException("결제를 진행해 주세요.");
+        }
+    }
+
+    public enum Type {
+        FREE("무료"),
+        CHARGE("유료");
+
+        private final String description;
+
+        Type(String description) {
+            this.description = description;
+        }
+    }
+
+    public enum Status {
+        READY("준비중"),
+        RECRUIT("모집중"),
+        END("종료");
+
+        private final String description;
+
+        Status(String description) {
+            this.description = description;
         }
     }
 }
