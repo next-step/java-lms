@@ -18,7 +18,7 @@ public class SessionTest {
     void 강의가_준비중이_아닐떄() {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
-        final Session tddSession = new FreeSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, null);
+        final Session tddSession = new FreeSession("tdd", sessionPeriod, SessionStatus.FINISHED, null);
 
         assertThatThrownBy(() -> {
             tddSession.enroll(new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -31,8 +31,8 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new PaidSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
-                , new Amount(1000L), 0);
+        final Session tddSession = new PaidSession("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
+                , new Amount(1000L), new EnrollmentCount(0));
 
         assertThatThrownBy(() -> {
             tddSession.enroll(new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -45,8 +45,8 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new PaidSession(1L, "tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
-                , new Amount(1500L), 10);
+        final Session tddSession = new PaidSession("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
+                , new Amount(1500L), new EnrollmentCount(10));
 
         assertThatThrownBy(() -> {
             tddSession.enroll(new Payment("1", 1L, JAVAJIGI.getId(), 1000L));

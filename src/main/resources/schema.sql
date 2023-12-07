@@ -35,11 +35,16 @@ create table session (
     start_data_time DATETIME not null,
     end_date_time DATETIME not null,
     status varchar(10) not null,
+    course_id bigint not null,
     image_id bigint not null,
+    amount bigint null,
+    max_enrollment_count bigint null,
+    remain_enrollment_count bigint null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id),
-    foreign key (image_id) references image (id)
+    foreign key (image_id) references image (id),
+    foreign key (course_id) references course (id)
 );
 
 create table enrollment (

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +24,7 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        autoincrementReset();
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
     }
 
@@ -34,5 +36,12 @@ public class CourseRepositoryTest {
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
+    }
+
+    private void autoincrementReset() {
+        jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE image ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
+        jdbcTemplate.execute("ALTER TABLE enrollment ALTER COLUMN id RESTART WITH 1");
     }
 }
