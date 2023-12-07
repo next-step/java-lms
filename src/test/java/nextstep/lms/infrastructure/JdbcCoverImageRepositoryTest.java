@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -26,7 +28,7 @@ class JdbcCoverImageRepositoryTest {
 
     @Test
     void create_read() {
-        CoverImage coverImage = new CoverImage(FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA);
+        CoverImage coverImage = this.coverImage();
         int count = coverImageRepository.save(coverImage);
         assertThat(count).isEqualTo(1);
         CoverImage savedCoverImage = coverImageRepository.findById(2L);
@@ -35,5 +37,9 @@ class JdbcCoverImageRepositoryTest {
         assertThat(coverImage.getFileVolume()).isEqualTo(savedCoverImage.getFileVolume());
         assertThat(coverImage.getWidth()).isEqualTo(savedCoverImage.getWidth());
         assertThat(coverImage.getHeight()).isEqualTo(savedCoverImage.getHeight());
+    }
+
+    private CoverImage coverImage() {
+        return new CoverImage(0L, FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA, LocalDateTime.now(), null);
     }
 }

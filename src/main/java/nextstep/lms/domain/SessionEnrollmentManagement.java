@@ -1,15 +1,15 @@
 package nextstep.lms.domain;
 
-import nextstep.lms.dto.EnrollApplicationDTO;
 import nextstep.lms.enums.PricingTypeEnum;
 import nextstep.lms.enums.SessionStatusEnum;
+import nextstep.payments.domain.Payment;
 
 public class SessionEnrollmentManagement {
     private final PricingPolicy pricingPolicy;
     private final SessionStatusEnum sessionStatusEnum;
     private final int capacity;
 
-    public SessionEnrollmentManagement(String pricingType, int tuitionFee, String sessionStatus, int capacity) {
+    public SessionEnrollmentManagement(String pricingType, Long tuitionFee, String sessionStatus, int capacity) {
         this(new PricingPolicy(PricingTypeEnum.valueOf(pricingType), tuitionFee), SessionStatusEnum.valueOf(sessionStatus), capacity);
     }
 
@@ -19,13 +19,20 @@ public class SessionEnrollmentManagement {
         this.capacity = capacity;
     }
 
-    public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        if (pricingPolicy.canEnroll(enrollApplicationDTO.getTuitionFee())) {
-            students.enroll(capacity, enrollApplicationDTO.getUserId());
+    public boolean enroll(Students students, Payment payment) {
+        sessionStatusCheck();
+        if (!pricingPolicy.canEnroll(payment)) {
+            return false;
         }
+        if (pricingPolicy.isFree()) {
+            students.freeSessionEnroll(payment.getNsUserId());
+            return true;
+        }
+        students.paidSessionEnroll(capacity, payment.getNsUserId());
+        return true;
     }
 
-    public void sessionStatusCheck() {
+    private void sessionStatusCheck() {
         if (!sessionStatusEnum.isRecruiting()) {
             throw new IllegalArgumentException("모집중이 아닙니다.");
         }
@@ -35,7 +42,7 @@ public class SessionEnrollmentManagement {
         return pricingPolicy.getPricingType();
     }
 
-    public int getTuitionFee() {
+    public Long getTuitionFee() {
         return pricingPolicy.getTuitionFee();
     }
 

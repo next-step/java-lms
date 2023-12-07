@@ -1,6 +1,6 @@
 package nextstep.lms.domain;
 
-import nextstep.lms.dto.EnrollApplicationDTO;
+import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ public class SessionInfo {
     private final CoverImage coverImage;
     private final SessionDetail sessionDetail;
 
-    public SessionInfo(CoverImage coverImage, String pricingType, int tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+    public SessionInfo(CoverImage coverImage, String pricingType, Long tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
         this(coverImage, new SessionDetail(pricingType, tuitionFee, sessionStatus, capacity, startDate, endDate));
     }
 
@@ -17,9 +17,8 @@ public class SessionInfo {
         this.sessionDetail = sessionDetail;
     }
 
-    public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        sessionDetail.sessionStatusCheck();
-        sessionDetail.enroll(students, enrollApplicationDTO);
+    public boolean enroll(Students students, Payment payment) {
+        return sessionDetail.enroll(students, payment);
     }
 
     public Long getImageId() {
@@ -30,7 +29,7 @@ public class SessionInfo {
         return sessionDetail.getPricingType();
     }
 
-    public int getTuitionFee() {
+    public Long getTuitionFee() {
         return sessionDetail.getTuitionFee();
     }
 

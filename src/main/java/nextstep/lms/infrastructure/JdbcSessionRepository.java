@@ -25,6 +25,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Session session) {
         String sql = "insert into session (image_id, pricing_type, tuition_fee, session_status, capacity, start_date, end_date, created_at) values(?,?,?,?,?,?,?,?)";
+
         return jdbcTemplate.update(sql,
                 session.getImageId(),
                 session.getPricingType(),
@@ -44,7 +45,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 getCoverImage(rs.getLong(2)),
                 rs.getString(3),
-                rs.getInt(4),
+                rs.getLong(4),
                 rs.getString(5),
                 rs.getInt(6),
                 toLocalDateTime(rs.getTimestamp(7)),
@@ -55,7 +56,6 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private CoverImage getCoverImage(Long id) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>id : " + id);
         return coverImageRepository.findById(id);
     }
 

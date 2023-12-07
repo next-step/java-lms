@@ -1,7 +1,7 @@
 package nextstep.lms.domain;
 
 public class FileMetadata {
-    private static final long MAX_FILE_MB_SIZE = 1024 * 1024;
+    private static final long MAX_FILE_MB_SIZE = 1_024 * 1_024L;
 
     private final long fileVolume;
     private final FileSize fileSize;
