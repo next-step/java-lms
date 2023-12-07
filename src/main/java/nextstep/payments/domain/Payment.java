@@ -28,6 +28,6 @@ public class Payment {
     }
 
     public boolean isEqualPaidFee(Long fee) {
-        return amount == fee;
+        return amount.equals(fee);
     }
 }

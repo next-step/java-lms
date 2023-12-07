@@ -40,10 +40,11 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(Long id, SessionType sessionType,SessionState sessionState, Long fee) {
+    public Session(Long id, SessionType sessionType,SessionState sessionState, Integer maxPersonnel, Long fee) {
         this.id = id;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
+        this.maxPersonnel = maxPersonnel;
         this.fee = fee;
     }
 

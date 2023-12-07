@@ -91,11 +91,21 @@ class SessionTest {
 
     @Test
     @DisplayName("수강생이 결제한 금액과 유료 강의의 수강료가 일치하지 않으면 예외가 발생한다.")
-    void 수강료_일치하지_않으면_예외_발생() {
-        Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING, 20000L);
+    void 수강료와_결제금액_일치하지_않으면_예외_발생() {
+        Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING, 10, 20000L);
         Payment payment = new Payment("ID", 0L, 0L, 10000L);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, payment))
                 .isInstanceOf(PaymentException.class);
+    }
+
+    @Test
+    @DisplayName("수강생이 결제한 금액과 유료강의의 수강료가 일치하면 수강신청이 완료된다.")
+    void 수강료와_결제금액_일치시_수강신청_완료() {
+        Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING, 10, 10000L);
+        Payment payment = new Payment("ID", 0L, 0L, 10000L);
+        session.enrollStudent(NsUserTest.JAVAJIGI, payment);
+
+        assertThat(session.equals(new Session(0L, SessionType.PAID, SessionState.RECRUITING,10, List.of(NsUserTest.JAVAJIGI), 1)));
     }
 }
