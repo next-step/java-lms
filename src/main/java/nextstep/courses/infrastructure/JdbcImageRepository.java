@@ -16,9 +16,9 @@ public class JdbcImageRepository implements ImageRepository {
     }
 
     @Override
-    public int save(Image image) {
-        String sql = "insert into image (type, width, height, file_size) values(?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, image.type(), image.width(), image.height(), image.fileSize());
+    public int save(Image image, long sessionId) {
+        String sql = "insert into image (type, session_id, width, height, file_size) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, image.type(), sessionId, image.width(), image.height(), image.fileSize());
     }
 
     @Override

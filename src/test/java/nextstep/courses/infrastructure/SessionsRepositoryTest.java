@@ -1,8 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.*;
-import nextstep.users.domain.UserRepository;
-import nextstep.users.infrastructure.JdbcUserRepository;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.SessionsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -26,18 +27,9 @@ public class SessionsRepositoryTest {
 
     private SessionRepository sessionRepository;
 
-    private ImageRepository imageRepository;
-
-    private UserRepository userRepository;
-
-    private StudentsRepository studentsRepository;
-
     @BeforeEach
     void setUp() {
-        imageRepository = new JdbcImageRepository(jdbcTemplate);
-        userRepository = new JdbcUserRepository(jdbcTemplate);
-        studentsRepository = new JdbcStudentsRepository(jdbcTemplate, userRepository);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, imageRepository, studentsRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         sessionsRepository = new JdbcSessionsRepository(jdbcTemplate, sessionRepository);
     }
 

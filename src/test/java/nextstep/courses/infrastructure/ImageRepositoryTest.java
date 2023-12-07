@@ -29,7 +29,7 @@ public class ImageRepositoryTest {
     @Test
     void create() {
         Image image = Image.of("JPG", 300L, 200L, 1024);
-        int count = imageRepository.save(image);
+        int count = imageRepository.save(image, 1000L);
         assertThat(count).isEqualTo(1);
     }
 

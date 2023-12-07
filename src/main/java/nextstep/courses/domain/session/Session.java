@@ -47,8 +47,8 @@ public class Session {
         return of(null, SessionType.PAID, SessionState.PREPARING, period, amount, enrollmentMax, image, Students.of(new ArrayList<>()));
     }
 
-    public static Session of(Long id, String sessionType, String sessionState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax, Image image, Students students) {
-        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), Period.of(startDate, endDate), amount, enrollmentMax, image, students);
+    public static Session of(Long id, String sessionType, String sessionState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
+        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
     }
 
     public static Session of(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
