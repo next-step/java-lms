@@ -36,7 +36,7 @@ public class Session {
         this.enrollmentMax = enrollmentMax;
         this.image = image;
         this.students = students;
-        this.enrollment = Enrollment.from(sessionType, this);
+        this.enrollment = Enrollment.from(sessionType);
     }
 
     public static Session ofFree(Period period, Image image) {
@@ -57,7 +57,7 @@ public class Session {
 
 
     public void enroll(NsUser student, Payment payment) {
-        enrollment.enroll(student, payment);
+        enrollment.enroll(this, student, payment);
     }
 
     public boolean isFullEnrollment() {

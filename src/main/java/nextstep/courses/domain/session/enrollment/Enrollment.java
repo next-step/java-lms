@@ -9,22 +9,22 @@ import nextstep.users.domain.NsUser;
 
 public interface Enrollment {
 
-    void enroll(NsUser student, Payment payment);
+    void enroll(Session session, NsUser student, Payment payment);
 
-    static Enrollment from(SessionType sessionType, Session session) {
+    static Enrollment from(SessionType sessionType) {
         if (sessionType == SessionType.PAID) {
-            return paidEnrollment(session);
+            return fromPaid();
         }
 
-        return freeEnrollment(session);
+        return fromFree();
     }
 
-    static PaidEnrollment paidEnrollment(Session session) {
-        return PaidEnrollment.from(session);
+    static PaidEnrollment fromPaid() {
+        return PaidEnrollment.from();
     }
 
-    static FreeEnrollment freeEnrollment(Session session) {
-        return FreeEnrollment.from(session);
+    static FreeEnrollment fromFree() {
+        return FreeEnrollment.from();
     }
 
     default void noRecruiting(Session session) {

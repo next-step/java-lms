@@ -6,23 +6,21 @@ import nextstep.users.domain.NsUser;
 
 public class FreeEnrollment implements Enrollment {
 
-    private final Session session;
+    private FreeEnrollment() {
 
-    private FreeEnrollment(Session session) {
-        this.session = session;
     }
 
-    public static FreeEnrollment from(Session session) {
-        return new FreeEnrollment(session);
+    public static FreeEnrollment from() {
+        return new FreeEnrollment();
     }
 
     @Override
-    public void enroll(NsUser student, Payment payment) {
-        validate();
+    public void enroll(Session session, NsUser student, Payment payment) {
+        validate(session);
         session.addStudent(student);
     }
 
-    private void validate() {
+    private void validate(Session session) {
         noRecruiting(session);
     }
 }

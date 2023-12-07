@@ -7,29 +7,27 @@ import nextstep.users.domain.NsUser;
 
 public class PaidEnrollment implements Enrollment {
 
-    private final Session session;
+    private PaidEnrollment() {
 
-    private PaidEnrollment(Session session) {
-        this.session = session;
     }
 
-    public static PaidEnrollment from(Session session) {
-        return new PaidEnrollment(session);
+    public static PaidEnrollment from() {
+        return new PaidEnrollment();
     }
 
     @Override
-    public void enroll(NsUser student, Payment payment) {
-        validate(payment);
+    public void enroll(Session session, NsUser student, Payment payment) {
+        validate(session, payment);
         session.addStudent(student);
     }
 
-    private void validate(Payment payment) {
+    private void validate(Session session, Payment payment) {
         noRecruiting(session);
-        fullEnrollment();
+        fullEnrollment(session);
         payment.complete(session.amount());
     }
 
-    private void fullEnrollment() {
+    private void fullEnrollment(Session session) {
         if (!session.isFullEnrollment()) {
             throw new EnrollmentMaxExceededException("최대 수강 인원을 초과하였습니다.");
         }
