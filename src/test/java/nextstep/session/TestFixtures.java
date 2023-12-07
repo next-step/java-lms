@@ -8,7 +8,6 @@ import nextstep.session.domain.StartAt;
 import nextstep.session.domain.Users;
 import nextstep.users.domain.NsUserTest;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -16,9 +15,9 @@ class TestFixtures {
 
     static Session endSession() {
         return new Session(
-                null,
+                1L,
                 new Users(30, Set.of()),
-                BigDecimal.valueOf(1000),
+                1000L,
                 SessionType.FREE,
                 SessionStatus.END,
                 null,
@@ -29,24 +28,11 @@ class TestFixtures {
 
     static Session preparingSession() {
         return new Session(
-                null,
+                2L,
                 new Users(30, Set.of()),
-                BigDecimal.valueOf(1000),
+                1000L,
                 SessionType.FREE,
                 SessionStatus.PREPARING,
-                null,
-                new StartAt(LocalDateTime.now().plusDays(2)),
-                new EndAt(LocalDateTime.now().plusDays(7))
-        );
-    }
-
-    static Session recrutingPaidSession() {
-        return new Session(
-                null,
-                new Users(1, Set.of(NsUserTest.JAVAJIGI)),
-                BigDecimal.valueOf(1000),
-                SessionType.PAID,
-                SessionStatus.RECRUITING,
                 null,
                 new StartAt(LocalDateTime.now().plusDays(2)),
                 new EndAt(LocalDateTime.now().plusDays(7))
@@ -57,7 +43,7 @@ class TestFixtures {
         return new Session(
                 null,
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
-                BigDecimal.valueOf(1000),
+                1000L,
                 SessionType.PAID,
                 SessionStatus.RECRUITING,
                 null,
@@ -70,7 +56,7 @@ class TestFixtures {
         return new Session(
                 null,
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
-                BigDecimal.valueOf(999),
+                0L,
                 SessionType.FREE,
                 SessionStatus.RECRUITING,
                 null,

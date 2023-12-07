@@ -1,10 +1,11 @@
 package nextstep.session.domain;
 
 import nextstep.image.domain.Image;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Session {
 
@@ -12,7 +13,7 @@ public class Session {
 
     private Users members;
 
-    private BigDecimal price;
+    private Long amount = 0L;
 
     private SessionType sessionType;
 
@@ -24,10 +25,10 @@ public class Session {
 
     private EndAt endAt;
 
-    public Session(Long id, Users members, BigDecimal price, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
+    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
         this.id = id;
         this.members = members;
-        this.price = price;
+        this.amount = amount;
         this.sessionType = sessionType;
         this.status = status;
         this.coverImage = coverImage;
@@ -37,7 +38,7 @@ public class Session {
 
     public static Session create(
             Users members,
-            BigDecimal price,
+            Long amount,
             SessionType sessionType,
             Image coverImage,
             LocalDateTime startAt,
@@ -46,7 +47,7 @@ public class Session {
         return new Session(
                 null,
                 members,
-                price,
+                amount,
                 sessionType,
                 SessionStatus.PREPARING,
                 coverImage,
@@ -55,22 +56,26 @@ public class Session {
         );
     }
 
-    private void validatePaid(BigDecimal price) {
-        if (this.price.compareTo(price) != 0) {
+    private void validatePaid(Payment payment) {
+        if (Objects.nonNull(payment) && this.amount.equals(payment.amount())) {
             throw new IllegalArgumentException("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능합니다.");
         }
     }
 
-    public void register(NsUser user, BigDecimal price) {
+    public void register(NsUser user, Payment payment) {
         if (!status.isRegistrable()) {
             throw new IllegalStateException("수강 신청 불가능한 상태입니다.");
         }
 
         if (sessionType == SessionType.PAID) {
-            validatePaid(price);
+            validatePaid(payment);
         }
 
         members.register(user, sessionType);
+    }
+
+    public Long id() {
+        return id;
     }
 
     public int memberSize() {

@@ -26,4 +26,12 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public static Payment empty() {
+        return new Payment();
+    }
+
+    public Long amount() {
+        return amount;
+    }
 }
