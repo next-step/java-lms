@@ -10,7 +10,7 @@ class SessionDurationTest {
     @DisplayName("[SessionDuration.of()] 종료 시각이 생성 시각보다 빠를 수 없음")
     public void validationTest() {
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            SessionDuration.fromIso8601("2023-12-06T10:20:00.000+09:00", "2023-12-06T10:19:59.000+09:00");
+            SessionDuration.fromIso8601("2023-12-06T10:20:00.000", "2023-12-06T10:19:59.000");
         });
     }
 }

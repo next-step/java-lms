@@ -16,7 +16,7 @@ class SessionTest {
     @BeforeEach
     public void sampleDataSetUp() {
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
-        SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000+09:00", "2023-12-07T10:00:00.000+09:00");
+        SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
 
         session = new FreeSession(duration, image);
     }
@@ -35,7 +35,7 @@ class SessionTest {
     @DisplayName("[Session.registerUser()] 강의는 모집중 상태에서만 수강생 등록 가능")
     public void reigsterStateTest() {
         SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
-        SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000+09:00", "2023-12-07T10:00:00.000+09:00");
+        SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
         Session readySession = new FreeSession(duration, image);
         Session recruitSession = new FreeSession(duration, image);
         Session endSession = new FreeSession(duration, image);
