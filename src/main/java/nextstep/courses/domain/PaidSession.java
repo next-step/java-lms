@@ -12,10 +12,8 @@ public class PaidSession extends Session {
     private int maxUserCount;
     private int fee;
 
-    private List<Payment> paymentHistory;
-
     private PaidSession(SessionState state, RegisteredUsers registeredUsers, SessionImage coverImage, SessionDuration duration,
-                        int maxUserCount, int fee, List<Payment> paymentHistory) {
+                        int maxUserCount, int fee) {
         super(state, registeredUsers, coverImage, duration);
 
         validateMaxUserCount(maxUserCount);
@@ -23,7 +21,6 @@ public class PaidSession extends Session {
 
         this.maxUserCount = maxUserCount;
         this.fee = fee;
-        this.paymentHistory = paymentHistory;
     }
 
     public PaidSession(SessionDuration duration, SessionImage coverImage, int maxUserCount, int fee) {
@@ -33,8 +30,7 @@ public class PaidSession extends Session {
                 coverImage,
                 duration,
                 maxUserCount,
-                fee,
-                new ArrayList<>()
+                fee
         );
     }
 
@@ -72,8 +68,6 @@ public class PaidSession extends Session {
             throw new IllegalStateException("이 강의의 최대 등록 가능 인원에 도달했습니다. 더 이상 사용자를 추가할 수 없습니다.");
         }
 
-
         super.registerUser(user);
-        this.paymentHistory.add(payment);
     }
 }
