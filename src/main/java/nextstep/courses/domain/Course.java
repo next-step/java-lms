@@ -1,5 +1,9 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payments;
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.Sessions;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -12,6 +16,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Sessions sessions;
 
     public Course() {
     }
@@ -26,6 +32,16 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sessions = new Sessions();
+    }
+
+    public Course(String title, Long creatorId, Sessions sessions) {
+        this.id = 0L;
+        this.title = title;
+        this.creatorId = creatorId;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = null;
+        this.sessions = sessions;
     }
 
     public String getTitle() {
@@ -38,6 +54,14 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(Session addSession) {
+        sessions.addSession(addSession);
+    }
+
+    public Payments pay() {
+        return sessions.pay(creatorId);
     }
 
     @Override
