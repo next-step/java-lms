@@ -16,13 +16,9 @@ public class Course {
     private LocalDateTime updatedAt;
 
     private int season;
-    private List<Session> sessions = new ArrayList<>();
+    private CourseSessions sessions;
 
     public Course() {
-    }
-
-    public Course(String title, Long creatorId, int season, List<Session> sessions) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, season, sessions);
     }
 
     public Course(String title, Long creatorId) {
@@ -30,17 +26,17 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, title, creatorId, createdAt, null, 0, new ArrayList<>());
+        this(id, title, creatorId, createdAt, null, 0, new CourseSessions());
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, int season, List<Session> sessions) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, int season, CourseSessions sessions) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.season = season;
-        this.sessions = List.copyOf(sessions);
+        this.sessions = sessions;
     }
 
     public String getTitle() {
