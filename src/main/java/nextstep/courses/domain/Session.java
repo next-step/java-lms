@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -12,7 +13,7 @@ public class Session {
 
     private Long courseId;
 
-    private final SessionImage sessionImage;
+    private final SessionImages sessionImages;
 
     private final SessionPeriod sessionPeriod;
 
@@ -20,7 +21,9 @@ public class Session {
 
     public Session(Long id) {
         this(id, 1L,
-                new SessionImage(0, "jpg", 300, 200),
+                new SessionImages(
+                        List.of(new SessionImage(0, "jpg", 300, 200))
+                ),
                 new SessionPeriod(
                         LocalDate.of(2023, 1, 1),
                         LocalDate.of(2023, 1, 30)
@@ -35,10 +38,10 @@ public class Session {
         );
     }
 
-    public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, Enrollment enrollment) {
+    public Session(Long id, Long courseId, SessionImages sessionImages, SessionPeriod sessionPeriod, Enrollment enrollment) {
         this.id = id;
         this.courseId = courseId;
-        this.sessionImage = sessionImage;
+        this.sessionImages = sessionImages;
         this.sessionPeriod = sessionPeriod;
         this.enrollment = enrollment;
     }

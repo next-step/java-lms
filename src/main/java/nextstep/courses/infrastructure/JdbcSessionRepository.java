@@ -14,9 +14,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private SessionUsersRepository sessionUsersRepository;
 
+    private SessionImageRepository sessionImageRepository;
+
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(SessionUsersRepository sessionUsersRepository, JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(SessionImageRepository sessionImageRepository, SessionUsersRepository sessionUsersRepository, JdbcOperations jdbcTemplate) {
+        this.sessionImageRepository = sessionImageRepository;
         this.sessionUsersRepository = sessionUsersRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -24,20 +27,15 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findBy(long sessionId) {
         final SessionUsers sessionUsers = sessionUsersRepository.findBy(sessionId);
+        final SessionImages sessionImages = sessionImageRepository.findBy(sessionId);
 
         String sql = "select id, course_id, start_date, end_date, price, " +
-                "type, status, recruitment, max_user_count, image_size, image_extension, image_width, " +
-                "image_height " +
+                "type, status, recruitment, max_user_count " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
-                new SessionImage(
-                        rs.getInt(10),
-                        rs.getString(11),
-                        rs.getInt(12),
-                        rs.getInt(13)
-                ),
+                sessionImages,
                 new SessionPeriod(
                         toLocalDate(rs.getDate(3)),
                         toLocalDate(rs.getDate(4))

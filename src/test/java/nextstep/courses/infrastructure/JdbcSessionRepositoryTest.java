@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionImageRepository;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionUsersRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Import({JdbcSessionUsersRepository.class})
+@Import({JdbcSessionUsersRepository.class, JdbcSessionImageRepository.class})
 class JdbcSessionRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,9 +25,12 @@ class JdbcSessionRepositoryTest {
     @Autowired
     private SessionUsersRepository sessionUsersRepository;
 
+    @Autowired
+    private SessionImageRepository sessionImageRepository;
+
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(sessionUsersRepository, jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(sessionImageRepository, sessionUsersRepository, jdbcTemplate);
     }
 
     @Test
