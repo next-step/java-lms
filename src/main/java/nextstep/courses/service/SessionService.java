@@ -1,15 +1,23 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionEnroll;
-import nextstep.courses.domain.SessionVO;
-import nextstep.courses.domain.Student;
+import nextstep.courses.domain.*;
 import nextstep.payments.domain.Payment;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
+@Service("sessionService")
 public class SessionService {
+    @Resource(name = "sessionRepository")
+    private SessionRepository sessionRepository;
 
-    public Session makeFreeSession(Long courseId, SessionVO sessionVO) {
-        return Session.freeSession(
+    @Resource(name = "sessionEnrollRepository")
+    private SessionEnrollRepository sessionEnrollRepository;
+
+    @Transactional
+    public void makeFreeSession(Long courseId, SessionVO sessionVO) {
+        Session freeSession = Session.freeSession(
                 sessionVO.getId(),
                 courseId,
                 sessionVO.getStartDate(),
@@ -17,10 +25,11 @@ public class SessionService {
                 sessionVO.getImage(),
                 sessionVO.getAppliedNumber(),
                 sessionVO.getSessionStatus());
+        sessionRepository.save(freeSession);
     }
 
-    public Session makePaidSession(Long courseId, SessionVO sessionVO) {
-        return Session.paidSession(
+    public void makePaidSession(Long courseId, SessionVO sessionVO) {
+        Session paidSession = Session.paidSession(
                 sessionVO.getId(),
                 courseId,
                 sessionVO.getStartDate(),
@@ -30,10 +39,12 @@ public class SessionService {
                 sessionVO.getAppliedNumber(),
                 sessionVO.getSessionFee(),
                 sessionVO.getSessionStatus());
+        sessionRepository.save(paidSession);
     }
 
-    public SessionEnroll enrollStudent(Session session, Student student, Payment payment) {
+    public void enrollStudent(Session session, Student student, Payment payment) {
         session.enroll(payment);
-        return new SessionEnroll(session.getId(), student.getId(), payment.getId());
+        SessionEnroll sessionEnroll = new SessionEnroll(session.getId(), student.getId(), payment.getId());
+        sessionEnrollRepository.save(sessionEnroll);
     }
 }
