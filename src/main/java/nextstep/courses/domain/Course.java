@@ -19,7 +19,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    private Course() {
     }
 
     public Course(String title, Long creatorId) {
