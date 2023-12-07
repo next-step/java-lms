@@ -8,8 +8,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SessionTest {
 
-    public static Session session = new Session("과제4 - 레거시 리팩토링");
+    public static Session session = Session.titleOf("과제4 - 레거시 리팩토링");
 
+    @Test
+    @DisplayName("강의는 시작일과 종료일이 없는 경우 Exception Throw")
+    void notHave_StartAndEndDate_Test() {
+
+
+    }
+    @Test
+    @DisplayName("강의는 시작일과 종료일을 가진다.")
+    void haveDateTest() {
+
+    }
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     void saveSessionImageTest() throws InvalidImageFormatException {

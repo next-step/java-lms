@@ -14,14 +14,13 @@ public class Answers {
         return new Answers(Collections.emptyList());
     }
 
-    public Answers addAnswer(Answer newAnswer) {
-        List<Answer> answers = new ArrayList<>(this.answers);
+    public void addAnswer(Answer newAnswer) {
         answers.add(newAnswer);
-        return new Answers(answers);
+        new Answers(answers);
     }
 
     private Answers(List<Answer> answers) {
-        this.answers = answers;
+        this.answers = new ArrayList<>(answers);
     }
 
     public boolean validateDeleteOwner(NsUser questionWriter) {
@@ -37,6 +36,10 @@ public class Answers {
             deleteHistories.add(answer.delete(writer));
         }
         return deleteHistories;
+    }
+
+    public List<Answer> getAnswers() {
+        return Collections.unmodifiableList(answers);
     }
 
     public int size() {

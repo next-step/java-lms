@@ -20,8 +20,8 @@ public class CourseTest {
     @DisplayName("과정은 강의가 추가될 수 있다.")
     void course_AddSession_Test() {
         assertThat(course.getSessions().size()).isEqualTo(0);
-        Session session1 = new Session("과제3 - 사다리게임");
-        Session session2 = new Session("과제4 - 레거시 리팩토링");
+        Session session1 = Session.titleOf("과제3 - 사다리게임");
+        Session session2 = Session.titleOf("과제4 - 레거시 리팩토링");
         course.addSession(session1);
         course.addSession(session2);
         assertThat(course.getSessions().size()).isEqualTo(2);

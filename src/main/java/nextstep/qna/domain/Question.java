@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -47,7 +48,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        this.answers = answers.addAnswer(answer);
+        answers.addAnswer(answer);
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -98,8 +99,8 @@ public class Question {
         return answers.deleteAll(writer);
     }
 
-    public Answers getAnswers() {
-        return answers;
+    public List<Answer> getAnswers() {
+        return answers.getAnswers();
     }
 
     @Override
