@@ -29,7 +29,7 @@ public class StudentsRepositoryTest {
 
     @Test
     void crud() {
-        int count = studentsRepository.save(1L, Students.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
+        int count = studentsRepository.saveAll(1L, Students.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
         assertThat(count).isEqualTo(2);
         Students saveStudents = studentsRepository.findBySessionId(1L);
         assertThat(saveStudents.size()).isEqualTo(2);

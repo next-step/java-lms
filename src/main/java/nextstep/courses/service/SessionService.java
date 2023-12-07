@@ -17,9 +17,9 @@ public class SessionService {
         this.studentsRepository = studentsRepository;
     }
 
-    public void enroll(NsUser nsUser, Long sessionId, Payment payment) {
-        Session session = sessionRepository.findById(sessionId);
-        session.enroll(nsUser, payment);
+    public void enroll(Session session, NsUser student, Payment payment) {
+        session.enroll(student, payment);
+        studentsRepository.save(session.id(), student);
     }
 
     public long save(Session session) {

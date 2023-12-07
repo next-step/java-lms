@@ -17,9 +17,14 @@ public class JdbcStudentsRepository implements StudentsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
+    public int save(long sessionId, NsUser student) {
+        String sql = "insert into session_student (session_id, user_id) values(?, ?)";
+        return jdbcTemplate.update(sql, sessionId, student.getUserId());
+    }
 
     @Override
-    public int save(long sessionId, Students students) {
+    public int saveAll(long sessionId, Students students) {
         String sql = "insert into session_student (session_id, user_id) values(?, ?)";
 
         return students.values()
