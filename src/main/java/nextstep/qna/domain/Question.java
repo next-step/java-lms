@@ -51,11 +51,11 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        if (contents.isNotOwner(loginUser)) {
+        if (contents.isNotOwner(loginUser.getUserId())) {
             throw new CannotDeleteException(NO_PERMISSION_TO_DELETE_QUESTIONS);
         }
         this.deleted = true;
-        List<DeleteHistory> deleteHistories = new DeleteHistory().makeDeleteHistorys(this.answers, contents, loginUser);
+        List<DeleteHistory> deleteHistories = new DeleteHistory().makeDeleteHistorys(this.answers, contents, loginUser.getUserId());
 
         return deleteHistories;
     }

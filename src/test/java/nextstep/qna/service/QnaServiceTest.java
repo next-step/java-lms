@@ -39,10 +39,10 @@ public class QnaServiceTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI, "contents1"));
-        questionContents = new Contents(1L, NsUserTest.JAVAJIGI, "contents1");
+        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI.getUserId(), "contents1"));
+        questionContents = new Contents(1L, NsUserTest.JAVAJIGI.getUserId(), "contents1");
         question = new Question("title1", questionContents);
-        answerContents = new Contents(11L, NsUserTest.JAVAJIGI, "Answers Contents1");
+        answerContents = new Contents(11L, NsUserTest.JAVAJIGI.getUserId(), "Answers Contents1");
         answer = new Answer(Q1, answerContents);
         question.addAnswer(answer);
     }

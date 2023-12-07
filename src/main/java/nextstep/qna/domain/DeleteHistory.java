@@ -26,11 +26,11 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
-    public List<DeleteHistory> makeDeleteHistorys(Answers answers, Contents contents, NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> makeDeleteHistorys(Answers answers, Contents contents, String loginUserId) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, contents, LocalDateTime.now()));
         for (Answer answer : answers.getAnswers()) {
-            DeleteHistory deleteHistory = answer.delete(loginUser);
+            DeleteHistory deleteHistory = answer.delete(loginUserId);
             deleteHistories.add(deleteHistory);
         }
         return deleteHistories;

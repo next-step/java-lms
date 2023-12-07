@@ -19,7 +19,7 @@ public class Answer {
 
     public Answer(Question question, Contents contents) {
 
-        if(contents.getWriter() == null) {
+        if(contents.getWriter().isBlank()) {
             throw new UnAuthorizedException();
         }
 
@@ -44,8 +44,8 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
-        if (contents.isNotOwner(loginUser)) {
+    public DeleteHistory delete(String loginUserId) throws CannotDeleteException {
+        if (contents.isNotOwner(loginUserId)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         this.deleted = true;

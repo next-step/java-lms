@@ -13,8 +13,8 @@ public class QuestionTest {
     @DisplayName("질문자와 로그인 유저가 같음")
     @Test
     public void writerAndLoginEquals() throws CannotDeleteException {
-        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI, "contents1"));
-        Question Q2 = new Question("title2", new Contents(NsUserTest.SANJIGI, "contents2"));
+        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI.getUserId(), "contents1"));
+        Question Q2 = new Question("title2", new Contents(NsUserTest.SANJIGI.getUserId(), "contents2"));
 
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
@@ -26,8 +26,8 @@ public class QuestionTest {
     @DisplayName("질문자와 로그인 유저가 다름")
     @Test
     public void writerAndLoginNotEquals() {
-        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI, "contents1"));
-        Question Q2 = new Question("title2", new Contents(NsUserTest.SANJIGI, "contents2"));
+        Question Q1 = new Question("title1", new Contents(NsUserTest.JAVAJIGI.getUserId(), "contents1"));
+        Question Q2 = new Question("title2", new Contents(NsUserTest.SANJIGI.getUserId(), "contents2"));
 
         assertThatThrownBy(() -> {
             Q1.delete(NsUserTest.SANJIGI);

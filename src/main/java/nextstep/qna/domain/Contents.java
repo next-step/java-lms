@@ -6,15 +6,15 @@ public class Contents {
 
     private Long id;
 
-    private NsUser writer;
+    private String writer;
 
     private String contents;
 
-    public Contents(NsUser writer, String contents){
+    public Contents(String writer, String contents){
         this(0L, writer, contents);
     }
 
-    public Contents(Long id, NsUser writer, String contents){
+    public Contents(Long id, String writer, String contents){
         this.id = id;
         this.writer = writer;
         this.contents = contents;
@@ -24,7 +24,7 @@ public class Contents {
         return id;
     }
 
-    public NsUser getWriter() {
+    public String getWriter() {
         return writer;
     }
 
@@ -32,11 +32,7 @@ public class Contents {
         return contents;
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public boolean isNotOwner(NsUser loginUser) {
-        return !writer.equals(loginUser);
+    public boolean isNotOwner(String loginUserId) {
+        return !writer.equals(loginUserId);
     }
 }
