@@ -17,13 +17,6 @@ class SessionsTest {
         assertThat(new Sessions(List.of(SessionTest.JAVA, SessionTest.JAVA_TDD_17))).isInstanceOf(Sessions.class);
     }
 
-    @DisplayName("강의 리스트 중 모집 종료된 강의가 있다면 IllegalStateException을 던진다.")
-    @Test
-    void sessionExceptionTest() {
-        assertThatThrownBy(() -> new Sessions(List.of(SessionTest.JAVA_TDD_16)))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
     @DisplayName("만료된 강의를 전달하면 IllegalStateException을 던진다.")
     @Test
     void addSessionExceptionTest() {
@@ -36,7 +29,8 @@ class SessionsTest {
     @Test
     void addSessionExceptionTest2() {
         Sessions sessions = new Sessions();
-        Session computer = new Session("COMPUTER", SessionDateTest.DEC, SessionImageTest.IMAGE_JPG, SessionChargeTest.CHARGE_100, SessionStudentTest.ONE, SessionStatus.RECRUITING);
+        Session computer = new Session("COMPUTER", SessionDateTest.DEC, SessionImageTest.IMAGE_JPG, SessionChargeTest.CHARGE_100, new SessionStudent(1000, 1), SessionStatus.RECRUITING);
+        computer.addStudent();
         assertThatThrownBy(() -> sessions.addSession(computer))
                 .isInstanceOf(IllegalStateException.class);
     }
@@ -44,7 +38,7 @@ class SessionsTest {
     @DisplayName("강의 결제를 하면 Payments를 반환한다.")
     @Test
     void payTest() {
-        Sessions sessions = new Sessions(List.of(SessionTest.JAVA, SessionTest.JAVA_TDD_17));
+        Sessions sessions = new Sessions(List.of(new Session("JAVA_TDD", SessionDateTest.DEC, SessionImageTest.IMAGE_PNG, SessionChargeTest.CHARGE_1000, new SessionStudent(1000, 1), SessionStatus.RECRUITING)));
         assertThat(sessions.pay(NsUserTest.JAVAJIGI.getId())).isInstanceOf(Payments.class);
     }
 }

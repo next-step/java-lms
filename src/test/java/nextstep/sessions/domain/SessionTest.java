@@ -11,28 +11,28 @@ public class SessionTest {
             SessionDateTest.DEC,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.FREE,
-            SessionStudentTest.NONE,
+            new SessionStudent(0, 0),
             SessionStatus.RECRUITING);
     public static final Session JAVA_TDD_17 = new Session(
             "JAVA_TDD",
             SessionDateTest.DEC,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.CHARGE_1000,
-            SessionStudentTest.ONE,
+            new SessionStudent(1000, 10),
             SessionStatus.RECRUITING);
     public static final Session JAVA_TDD_16 = new Session(
             "JAVA_TDD",
             SessionDateTest.NOV,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.CHARGE_1000,
-            SessionStudentTest.ONE,
+            new SessionStudent(1000, 1),
             SessionStatus.END);
     public static final Session COMPUTER = new Session(
             "COMPUTER",
             SessionDateTest.DEC,
             SessionImageTest.IMAGE_JPG,
             SessionChargeTest.CHARGE_100,
-            SessionStudentTest.ONE,
+            new SessionStudent(1000, 1),
             SessionStatus.RECRUITING);
 
     @DisplayName("시작일, 종료일, 이미지, 가격, 상태를 전달하면 강의 객체를 생성한다.")
@@ -42,13 +42,13 @@ public class SessionTest {
                 SessionDateTest.NOV,
                 SessionImageTest.IMAGE_JPG,
                 SessionChargeTest.FREE,
-                SessionStudentTest.NONE,
+                new SessionStudent(0, 0),
                 SessionStatus.END)).isInstanceOf(Session.class);
         assertThat(new Session("강의2",
                 SessionDateTest.DEC,
                 SessionImageTest.IMAGE_PNG,
                 SessionChargeTest.CHARGE_1000,
-                SessionStudentTest.ONE,
+                new SessionStudent(1000, 1),
                 SessionStatus.RECRUITING)).isInstanceOf(Session.class);
     }
 

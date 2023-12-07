@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionStudentTest {
-    public static final SessionStudent NONE = new SessionStudent(0, 0);
-    public static final SessionStudent ONE = new SessionStudent(1000, 1);
-
     @DisplayName("강의 금액과 최대 인원 수를 전달하면 SessionStudent 객체를 생성한다.")
     @Test
     void sessionStudentTest(){
