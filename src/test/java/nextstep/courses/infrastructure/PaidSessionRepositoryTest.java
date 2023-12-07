@@ -46,7 +46,7 @@ class PaidSessionRepositoryTest {
 
         final CoverImage coverImage = new CoverImage(1024L, new ImagePixel(300, 200), ImageType.GIF);
         imageRepository.save(coverImage);
-        CoverImage savedCoverImage = imageRepository.findById(1L);
+        CoverImage savedCoverImage = imageRepository.findById(1L).get();
 
         final Amount amount = new Amount(100L);
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
@@ -54,7 +54,7 @@ class PaidSessionRepositoryTest {
         int count = paidSessionRepository.save(1L, tddSession);
         assertThat(count).isEqualTo(1);
 
-        PaidSession savedTddSession = paidSessionRepository.findById(1L);
+        PaidSession savedTddSession = paidSessionRepository.findById(1L).get();
         assertThat(savedTddSession.title()).isEqualTo("tdd");
         assertThat(savedTddSession.sessionStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(savedTddSession.amount()).isEqualTo(new Amount(100L));

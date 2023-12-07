@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("enrollmentRepository")
 public class JdbcEnrollmentRepository implements EnrollmentRepository {
@@ -25,7 +26,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public Enrollment findById(final Long id) {
+    public Optional<Enrollment> findById(final Long id) {
         String sql = "select id, user_id, session_id, created_at, updated_at from enrollment where id = ?";
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),
@@ -33,7 +34,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return  Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

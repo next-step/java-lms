@@ -1,7 +1,8 @@
 package nextstep.courses.domain.enrollment;
 
+import java.util.Optional;
+
 public interface EnrollmentRepository {
     int save(Enrollment enrollment);
-
-    Enrollment findById(Long id);
+    Optional<Enrollment> findById(Long id);
 }

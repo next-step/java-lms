@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("freeSessionRepository")
 public class JdbcFreeSessionRepository implements FreeSessionRepository {
@@ -33,7 +34,7 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     }
 
     @Override
-    public FreeSession findById(final Long id) {
+    public Optional<FreeSession> findById(final Long id) {
         String sql = "select id, title, start_data_time, end_date_time, status, course_id, image_id, created_at, updated_at " +
                      " from session where id = ?";
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
@@ -44,7 +45,7 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
                 findByCoverImage(rs.getLong(7)),
                 toLocalDateTime(rs.getTimestamp(8)),
                 toLocalDateTime(rs.getTimestamp(9)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return  Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -55,6 +56,6 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     }
 
     private CoverImage findByCoverImage(final Long id) {
-        return imageRepository.findById(id);
+        return imageRepository.findById(id).get();
     }
 }

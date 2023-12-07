@@ -34,7 +34,7 @@ public class ImageRepositoryTest {
         final CoverImage coverImage = new CoverImage(1024L, new ImagePixel(300, 200), ImageType.GIF);
         int count = imageRepository.save(coverImage);
         assertThat(count).isEqualTo(1);
-        CoverImage savedImage = imageRepository.findById(1L);
+        CoverImage savedImage = imageRepository.findById(1L).get();
         assertThat(savedImage.size()).isEqualTo(1024L);
         assertThat(savedImage.imagePixel().width()).isEqualTo(300);
         assertThat(savedImage.imagePixel().height()).isEqualTo(200);

@@ -46,14 +46,14 @@ class FreeSessionRepositoryTest {
 
         final CoverImage coverImage = new CoverImage(1024L, new ImagePixel(300, 200), ImageType.GIF);
         imageRepository.save(coverImage);
-        CoverImage savedCoverImage = imageRepository.findById(1L);
+        CoverImage savedCoverImage = imageRepository.findById(1L).get();
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final FreeSession tddSession = new FreeSession("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage);
         int count = freeSessionRepository.save(1L, tddSession);
         assertThat(count).isEqualTo(1);
 
-        FreeSession savedTddSession = freeSessionRepository.findById(1L);
+        FreeSession savedTddSession = freeSessionRepository.findById(1L).get();
         assertThat(savedTddSession.title()).isEqualTo("tdd");
         assertThat(savedTddSession.sessionStatus()).isEqualTo(SessionStatus.PREPARING);
     }

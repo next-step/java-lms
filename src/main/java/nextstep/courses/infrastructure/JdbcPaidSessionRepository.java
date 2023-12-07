@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("paidSessionRepository")
 public class JdbcPaidSessionRepository implements PaidSessionRepository {
@@ -36,7 +37,7 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
     }
 
     @Override
-    public PaidSession findById(final Long id) {
+    public Optional<PaidSession> findById(final Long id) {
         String sql = "select id, title, start_data_time, end_date_time, status, course_id, image_id," +
                 " amount, max_enrollment_count, remain_enrollment_count, created_at, updated_at from session where id = ?";
         RowMapper<PaidSession> rowMapper = (rs, rowNum) -> new PaidSession(
@@ -49,7 +50,7 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
                 new EnrollmentCount(rs.getInt(9), rs.getInt(10)),
                 toLocalDateTime(rs.getTimestamp(11)),
                 toLocalDateTime(rs.getTimestamp(12)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -60,6 +61,6 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
     }
 
     private CoverImage findByCoverImage(final Long id) {
-        return imageRepository.findById(id);
+        return imageRepository.findById(id).get();
     }
 }
