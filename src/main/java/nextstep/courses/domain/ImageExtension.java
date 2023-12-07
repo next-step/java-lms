@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
 public enum ImageExtension {
-    gif,
-    jpg,
-    png,
-    svg
+    GIF,
+    JPG,
+    PNG,
+    SVG
 }

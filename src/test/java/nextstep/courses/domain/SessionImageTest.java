@@ -12,11 +12,11 @@ class SessionImageTest {
     @DisplayName("[SessionImage.new] 이미지 크기는 1MB 이하")
     public void sizeTest() {
         assertThatCode(() -> {
-            new SessionImage(1024, 300, 200, jpg);
+            new SessionImage(1024, 300, 200, JPG);
         }).doesNotThrowAnyException();
 
         assertThatThrownBy(() -> {
-            new SessionImage(1025, 300, 200, jpg);
+            new SessionImage(1025, 300, 200, JPG);
         }).isInstanceOf(Exception.class);
     }
 
@@ -25,11 +25,11 @@ class SessionImageTest {
     public void widthTest() {
 
         assertThatCode(() -> {
-            new SessionImage(50, 300, 200, jpg);
+            new SessionImage(50, 300, 200, JPG);
         }).doesNotThrowAnyException();
 
         assertThatThrownBy(() -> {
-            new SessionImage(50, 299, 200, jpg);
+            new SessionImage(50, 299, 200, JPG);
         }).isInstanceOf(Exception.class);
     }
     @Test
@@ -37,11 +37,11 @@ class SessionImageTest {
     public void heightTest() {
 
         assertThatCode(() -> {
-            new SessionImage(50, 300, 200, jpg);
+            new SessionImage(50, 300, 200, JPG);
         }).doesNotThrowAnyException();
 
         assertThatThrownBy(() -> {
-            new SessionImage(50, 300, 199, jpg);
+            new SessionImage(50, 300, 199, JPG);
         }).isInstanceOf(Exception.class);
     }
 
@@ -50,11 +50,11 @@ class SessionImageTest {
     public void ratioTest() {
 
         assertThatCode(() -> {
-            new SessionImage(50, 600, 400, jpg);
+            new SessionImage(50, 600, 400, JPG);
         }).doesNotThrowAnyException();
 
         assertThatThrownBy(() -> {
-            new SessionImage(50, 900, 1000, jpg);
+            new SessionImage(50, 900, 1000, JPG);
         }).isInstanceOf(Exception.class);
     }
 }

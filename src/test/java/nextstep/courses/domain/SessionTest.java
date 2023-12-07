@@ -1,21 +1,19 @@
 package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.SessionState.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SessionTest {
     private Session session;
 
     @BeforeEach
     public void sampleDataSetUp() {
-        SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
+        SessionImage image = new SessionImage(100, 300, 200, ImageExtension.JPG);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
 
         session = new FreeSession(duration, image);
@@ -34,7 +32,7 @@ class SessionTest {
     @Test
     @DisplayName("[Session.registerUser()] 강의는 모집중 상태에서만 수강생 등록 가능")
     public void reigsterStateTest() {
-        SessionImage image = new SessionImage(100, 300, 200, ImageExtension.jpg);
+        SessionImage image = new SessionImage(100, 300, 200, ImageExtension.JPG);
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
         Session readySession = new FreeSession(duration, image);
         Session recruitSession = new FreeSession(duration, image);
