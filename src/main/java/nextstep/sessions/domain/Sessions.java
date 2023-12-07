@@ -16,13 +16,8 @@ public class Sessions {
     }
 
     public Sessions(List<Session> sessions) {
-        checkSession(sessions);
-        this.values = sessions;
-    }
-
-    private void checkSession(List<Session> sessions) {
         for (Session session : sessions) {
-            session.checkSessionStatus();
+            addSession(session);
         }
     }
 
