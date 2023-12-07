@@ -4,8 +4,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 public class Enrollment {
     private Long price;
     private ChargeStatus chargeStatus;
@@ -13,7 +11,7 @@ public class Enrollment {
     private SessionStatus status;
     private SessionStudent sessionStudent;
 
-    public Enrollment(final Long price, final List<NsUser> nsUsers) {
+    public Enrollment(final Long price, final TotalSelectStatusUsers totalSelectStatusUsers) {
         validateEnrollment(price);
 
         this.price = price;
@@ -21,7 +19,7 @@ public class Enrollment {
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
         this.recruitingStatus = RecruitingStatus.NOT_RECRUITING;
-        this.sessionStudent = new SessionStudent(15, nsUsers);
+        this.sessionStudent = new SessionStudent(15, totalSelectStatusUsers);
     }
 
     private void validateEnrollment(final Long price) {
@@ -102,7 +100,7 @@ public class Enrollment {
         this.recruitingStatus = recruitingStatus;
     }
 
-    public SelectionUsers getSelectionUsers() {
+    public TotalSelectStatusUsers getSelectionUsers() {
         return this.sessionStudent.getSelectionUsers();
     }
 }

@@ -2,18 +2,11 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.List;
-
 public class SessionStudent {
     private int maxStudentLimit;
-    private SelectionUsers selectionStudents;
+    private TotalSelectStatusUsers selectionStudents;
 
-    public SessionStudent(final int maxStudentLimit, final List<NsUser> nsUsers) {
-        this.maxStudentLimit = maxStudentLimit;
-        this.selectionStudents = SelectionUsers.convert(nsUsers);
-    }
-
-    public SessionStudent(final int maxStudentLimit, final SelectionUsers selectionStudents) {
+    public SessionStudent(final int maxStudentLimit, final TotalSelectStatusUsers selectionStudents) {
         this.maxStudentLimit = maxStudentLimit;
         this.selectionStudents = selectionStudents;
     }
@@ -27,7 +20,7 @@ public class SessionStudent {
     }
 
     public void increaseStudentCount(final NsUser user) {
-        this.selectionStudents.add(user);
+        this.selectionStudents.addUndecideUser(user);
     }
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
@@ -46,7 +39,7 @@ public class SessionStudent {
         return this.maxStudentLimit;
     }
 
-    public SelectionUsers getSelectionUsers() {
+    public TotalSelectStatusUsers getSelectionUsers() {
         return this.selectionStudents;
     }
 }

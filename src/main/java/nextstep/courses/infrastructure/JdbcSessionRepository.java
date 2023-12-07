@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -66,8 +65,8 @@ public class JdbcSessionRepository implements SessionRepository {
         );
     }
 
-    private void saveUsers(final SelectionUsers users, final Long sessionId) {
-        for (SelectionUser user : users.getSelectionUsers()) {
+    private void saveUsers(final TotalSelectStatusUsers users, final Long sessionId) {
+        for (SelectionUser user : users.getTotalUsers()) {
             sessionSelectionUserListRepository.save(user, sessionId);
         }
     }
@@ -82,7 +81,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        final List<NsUser> nsUsers = sessionUserListRepository.findAllBySessionId(id);
+        final List<SelectionUser> nsUsers = sessionSelectionUserListRepository.findAllBySessionId(id);
         final List<CoverImage> coverImages = coverImageRepository.findBySessionId(id);
 
         String sql = "select id, title, price, start_date, end_date, session_status, max_student_limit, creator_id, created_at from session where id = ?";
@@ -94,7 +93,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     toLocalDateTime(rs.getTimestamp(4)),
                     toLocalDateTime(rs.getTimestamp(5)),
                     null,
-                    nsUsers,
+                    new TotalSelectStatusUsers(nsUsers),
                     rs.getLong(8),
                     toLocalDateTime(rs.getTimestamp(9))
             );

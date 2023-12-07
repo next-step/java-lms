@@ -36,11 +36,15 @@ public class Session {
         this(0L, title, price, sessionDate, coverImage, Collections.emptyList(), 1L, LocalDateTime.now());
     }
 
-    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, final List<NsUser> nsUsers, final Long creatorId, final LocalDateTime createdAt) {
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, final TotalSelectStatusUsers nsUsers, final Long creatorId, final LocalDateTime createdAt) {
         this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers, creatorId, createdAt);
     }
 
     public Session(final long id, final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage, final List<NsUser> nsUsers, final Long creatorId, final LocalDateTime createdAt) {
+        this(id, title, price, sessionDate, coverImage, new TotalSelectStatusUsers(UndecidedUsers.of(nsUsers)), creatorId, createdAt);
+    }
+
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage, final TotalSelectStatusUsers nsUsers, final Long creatorId, final LocalDateTime createdAt) {
         validateSession(title, sessionDate);
 
         this.id = id;
@@ -153,7 +157,7 @@ public class Session {
         setStatus(sessionStatus);
     }
 
-    public SelectionUsers getSelectionUsers() {
+    public TotalSelectStatusUsers getSelectionUsers() {
         return this.enrollment.getSelectionUsers();
     }
 }

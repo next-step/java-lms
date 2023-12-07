@@ -34,4 +34,9 @@ public class SelectionUser {
     public void unselected() {
         this.status = SelectStatus.UNDECIDED;
     }
+
+    public SelectStatus getStatus() {
+        return this.status;
+    }
+
 }

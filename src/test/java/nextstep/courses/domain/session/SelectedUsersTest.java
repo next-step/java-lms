@@ -9,18 +9,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SelectionUsersTest {
+class SelectedUsersTest {
     @Test
-    @DisplayName("convert 메서드를 쓰면, List<NsUser>를 SelectionUsers로 변환한다.")
-    void testConvert() {
+    @DisplayName("of 메서드를 쓰면, List<NsUser>를 SelectedUsers로 변환한다.")
+    void of() {
         //given
         final List<NsUser> nsUsers = new ArrayList<>();
 
         //when
-        final SelectionUsers selectionUsers = SelectionUsers.convert(nsUsers);
+        final SelectedUsers totalSelectStatusUsers = SelectedUsers.of(nsUsers);
 
         //then
-        assertThat(selectionUsers).isNotNull();
+        assertThat(totalSelectStatusUsers).isNotNull();
     }
-
 }
