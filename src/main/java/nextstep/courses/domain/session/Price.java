@@ -16,9 +16,7 @@ public class Price {
     }
 
     public Price(boolean isFree, int money) {
-        this.isFree = isFree;
-        this.money = money;
-        this.participantManager = null;
+        this(isFree, money, null);
     }
 
     public boolean isFree() {
