@@ -14,9 +14,7 @@ public class RegisteredUsers {
     private List<NsUser> users = new ArrayList<>();
 
     public void add(NsUser user) {
-        Optional<NsUser> searchResult = users.stream().filter(u -> u.equals(user)).findFirst();
-
-        if (searchResult.isPresent()) {
+        if (this.users.contains(user)) {
             throw new IllegalArgumentException("중복되어 추가되는 유저: " + user);
         }
 
