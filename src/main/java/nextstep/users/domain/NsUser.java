@@ -119,11 +119,10 @@ public class NsUser {
         return false;
     }
 
-    public boolean hasPayment(BigDecimal price) {
-        if (Objects.isNull(price)) {
-            return false;
+    public void hasPayment(BigDecimal price) {
+        if (!this.payment.samePrice(price)) {
+            throw new IllegalArgumentException("결제 정보가 없습니다.");
         }
-        return this.payment.samePrice(price);
     }
 
     public void payment(Payment payment) {
