@@ -26,4 +26,16 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public Long sessionId() {
+        return this.sessionId;
+    }
+
+    public Long nsUserId() {
+        return this.nsUserId;
+    }
+
+    public boolean isNotSameAmount(Long amount) {
+        return !this.amount.equals(amount);
+    }
 }
