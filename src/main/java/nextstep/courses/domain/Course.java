@@ -42,4 +42,8 @@ public class Course extends BaseTimeEntity{
             ", creatorId=" + creatorId +
             '}';
     }
+
+    public Long getId() {
+        return id;
+    }
 }

@@ -1,12 +1,9 @@
 package nextstep.courses.service;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import nextstep.courses.domain.session.registration.Registration;
 import nextstep.courses.domain.session.registration.RegistrationRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
@@ -28,11 +25,8 @@ public class SessionService {
 			.orElseThrow(() -> new IllegalArgumentException("일치하는 강의 id가 없습니다."));
 		NsUser nsUser = userRepository.findById(payment.getNsUserId())
 			.orElseThrow(() -> new IllegalArgumentException("일치하는 사용자 id가 없습니다."));
-		List<Registration> registrations= registrationRepository.findRegistrationsBySessionId(session.getId());
-		session.registerAll(registrations);
 
 		session.apply(nsUser, payment.getAmount());
 		sessionRepository.save(session);
-		registrationRepository.save(new Registration(nsUser.getId(), session.getId()));
 	}
 }

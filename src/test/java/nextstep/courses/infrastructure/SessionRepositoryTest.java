@@ -26,12 +26,12 @@ public class SessionRepositoryTest {
 		1L, "자바 마스터리 30선",
 		new Period(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 12, 14)),
 		new Image(0.9d, "PNG", 300, 200), Status.READY,
-		new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(100)), 1L);
+		new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(100), null), null);
 	private final static Session session2 = new Session(
 		2L, "자바 마스터리 30선 ver 2.0",
 		new Period(LocalDate.of(2023, 12, 15), LocalDate.of(2024, 1, 31)),
 		new Image(0.9d, "PNG", 300, 200), Status.READY,
-		new SessionRegistration(PaidType.PAID, new Tuition(100000), new SessionCapacity(100)), 1L);
+		new SessionRegistration(PaidType.PAID, new Tuition(100000), new SessionCapacity(100), null), null);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 

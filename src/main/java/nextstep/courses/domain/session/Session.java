@@ -1,12 +1,11 @@
 package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import nextstep.courses.domain.BaseTimeEntity;
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.session.image.Image;
 import nextstep.courses.domain.enums.Status;
-import nextstep.courses.domain.session.registration.Registration;
 import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.users.domain.NsUser;
 
@@ -17,27 +16,14 @@ public class Session extends BaseTimeEntity {
 	private final Image image;
 	private final Status status;
 	private final SessionRegistration sessionRegistration;
-	private final Long courseId;
+	private final Course course;
 
 	public Session(
 		Long id, String title,
 		Period period, Image image, Status status,
-		SessionRegistration sessionRegistration, Long courseId
-	) {
-		this.id = id;
-		this.title = title;
-		this.period = period;
-		this.image = image;
-		this.status = status;
-		this.sessionRegistration = sessionRegistration;
-		this.courseId = courseId;
-	}
-
-	public Session(
-		LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String title,
-		Period period, Image image, Status status,
-		SessionRegistration sessionRegistration, Long courseId
-	) {
+		SessionRegistration sessionRegistration, Course course,
+		LocalDateTime createdAt, LocalDateTime updatedAt
+		) {
 		super(createdAt, updatedAt);
 		this.id = id;
 		this.title = title;
@@ -45,18 +31,28 @@ public class Session extends BaseTimeEntity {
 		this.image = image;
 		this.status = status;
 		this.sessionRegistration = sessionRegistration;
-		this.courseId = courseId;
+		this.course = course;
+	}
+
+	public Session(
+		Long id, String title,
+		Period period, Image image, Status status,
+		SessionRegistration sessionRegistration, Course course
+	) {
+		this.id = id;
+		this.title = title;
+		this.period = period;
+		this.image = image;
+		this.status = status;
+		this.sessionRegistration = sessionRegistration;
+		this.course = course;
 	}
 
 	public void apply(NsUser nsUser, long amount) {
 		sessionRegistration.validate(amount);
 		canApply();
 
-		sessionRegistration.register(this, nsUser);
-	}
-
-	public void registerAll(List<Registration> registrations) {
-		sessionRegistration.registerAll(registrations);
+		sessionRegistration.register(nsUser, this);
 	}
 
 	private void canApply() {
@@ -89,7 +85,7 @@ public class Session extends BaseTimeEntity {
 		return sessionRegistration;
 	}
 
-	public Long getCourseId() {
-		return courseId;
+	public Course getCourse() {
+		return course;
 	}
 }

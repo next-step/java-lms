@@ -1,7 +1,5 @@
 package nextstep.courses.domain.session.registration;
 
-import java.util.List;
-
 import nextstep.courses.domain.enums.PaidType;
 import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
@@ -10,7 +8,7 @@ public class SessionRegistration {
 	private final PaidType paidType;
 	private final Tuition tuition;
 	private final SessionCapacity maximumCapacity;
-	private Students students;
+	private final Students students;
 
 	public SessionRegistration(
 		PaidType paidType, Tuition tuition,
@@ -20,15 +18,6 @@ public class SessionRegistration {
 		this.tuition = tuition;
 		this.maximumCapacity = maximumCapacity;
 		this.students = students;
-	}
-
-	public SessionRegistration(
-		PaidType paidType, Tuition tuition,
-		SessionCapacity maximumCapacity
-	) {
-		this.paidType = paidType;
-		this.tuition = tuition;
-		this.maximumCapacity = maximumCapacity;
 	}
 
 	public void validate(long amount) {
@@ -46,12 +35,8 @@ public class SessionRegistration {
 		}
 	}
 
-	public void register(Session session, NsUser nsUser) {
+	public void register(NsUser nsUser, Session session) {
 		students.add(session, nsUser);
-	}
-
-	public void registerAll(List<Registration> registrations) {
-		students.addAll(registrations);
 	}
 
 	public PaidType getPaidType() {

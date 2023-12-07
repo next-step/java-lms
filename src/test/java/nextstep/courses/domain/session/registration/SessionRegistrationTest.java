@@ -33,10 +33,10 @@ public class SessionRegistrationTest {
 	@DisplayName("강의 최대 수용인원이 유료일 때만 최대 수용인원 검사를 한다.")
 	@Test
 	void validate_amount() {
-		freeSession.register(null, JAVAJIGI);
-		freeSession.register(null, SANJIGI);
+		freeSession.register(JAVAJIGI, null);
+		freeSession.register(SANJIGI, null);
 
-		paidSession.register(null, JAVAJIGI);
+		paidSession.register(JAVAJIGI, null);
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> paidSession.validate(50000))
 			.withMessage("최대 수강 인원을 초과했습니다.");

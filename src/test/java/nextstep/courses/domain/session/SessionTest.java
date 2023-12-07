@@ -21,9 +21,9 @@ public class SessionTest {
 	@Test
 	void validate_amount() {
 		Session session = new Session(
-			LocalDateTime.now(), LocalDateTime.now(), 1L, "임시 강의",null,null, Status.READY,
+			1L, "임시 강의",null,null, Status.READY,
 			new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(1), new Students())
-			,null
+			,null, LocalDateTime.now(), LocalDateTime.now()
 		);
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> session.apply(JAVAJIGI, 50000))

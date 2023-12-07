@@ -3,38 +3,40 @@ package nextstep.courses.domain.session.registration;
 import java.time.LocalDateTime;
 
 import nextstep.courses.domain.BaseTimeEntity;
+import nextstep.courses.domain.session.Session;
+import nextstep.users.domain.NsUser;
 
 public class Registration extends BaseTimeEntity {
 	private Long id;
-	private final Long userId;
-	private final Long sessionId;
+	private final NsUser user;
+	private final Session session;
 
 	public Registration(
-		Long userId, Long sessionId
+		NsUser user, Session session
 	) {
-		this.userId = userId;
-		this.sessionId = sessionId;
+		this.user = user;
+		this.session = session;
 	}
 
 	public Registration(
-		LocalDateTime createdAt, LocalDateTime updatedAt,
-		Long id, Long userId, Long sessionId
+		Long id, NsUser user, Session session,
+		LocalDateTime createdAt, LocalDateTime updatedAt
 	) {
 		super(createdAt, updatedAt);
 		this.id = id;
-		this.userId = userId;
-		this.sessionId = sessionId;
+		this.user = user;
+		this.session = session;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public NsUser getUser() {
+		return user;
 	}
 
-	public Long getSessionId() {
-		return sessionId;
+	public Session getSession() {
+		return session;
 	}
 }

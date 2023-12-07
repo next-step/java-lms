@@ -18,7 +18,7 @@ public class Students {
 	}
 
 	public void add(Session session, NsUser nsUser) {
-		registrations.add(new Registration(session.getId(), nsUser.getId()));
+		registrations.add(new Registration(nsUser, session));
 	}
 
 	public void addAll(List<Registration> registrations) {
