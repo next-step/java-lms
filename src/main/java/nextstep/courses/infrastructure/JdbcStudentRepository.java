@@ -4,7 +4,11 @@ import nextstep.courses.domain.Student;
 import nextstep.courses.domain.StudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
@@ -15,9 +19,15 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int save(Student student) {
+    public Long save(Student student) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into student (name) values(?)";
-        return jdbcTemplates.update(sql, student.getName());
+        jdbcTemplates.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, student.getName());
+            return ps;
+        }, keyHolder);
+        return (Long) keyHolder.getKey();
     }
 
     @Override

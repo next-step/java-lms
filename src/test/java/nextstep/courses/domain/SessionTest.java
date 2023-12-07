@@ -41,7 +41,7 @@ class SessionTest {
         Payment payment = new Payment(100000L);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(payment));
+                .isThrownBy(() -> session.enroll(payment, null));
     }
 
     @Test
@@ -50,7 +50,7 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(0L);
 
-        session.enroll(payment);
+        session.enroll(payment, null);
         SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
         Long enrolledStudent = sessionEnroll.getStudentId();
 
@@ -65,7 +65,7 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(100000L);
 
-        session.enroll(payment);
+        session.enroll(payment, null);
         SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
         Long enrolledStudent = sessionEnroll.getStudentId();
 
@@ -80,7 +80,7 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(100000L);
 
-        session.enroll(payment);
+        session.enroll(payment, null);
         SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
         Long enrolledStudent = sessionEnroll.getStudentId();
 
@@ -95,8 +95,8 @@ class SessionTest {
         Payment payment = new Payment(0L);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session1.enroll(payment));
+                .isThrownBy(() -> session1.enroll(payment, null));
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session2.enroll(payment));
+                .isThrownBy(() -> session2.enroll(payment, null));
     }
 }

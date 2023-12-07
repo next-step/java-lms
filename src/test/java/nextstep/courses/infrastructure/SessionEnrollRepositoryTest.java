@@ -26,8 +26,8 @@ class SessionEnrollRepositoryTest {
     @Test
     void crud() {
         SessionEnroll sessionEnroll = new SessionEnroll(1L, 1L, "1L");
-        int save = sessionEnrollRepository.save(sessionEnroll);
-        assertThat(save).isEqualTo(1);
+        Long id = sessionEnrollRepository.save(sessionEnroll);
+        assertThat(id).isEqualTo(1L);
         SessionEnroll savedEnroll = sessionEnrollRepository.findById(1L);
         assertThat(sessionEnroll.getSessionId()).isEqualTo(savedEnroll.getSessionId());
     }

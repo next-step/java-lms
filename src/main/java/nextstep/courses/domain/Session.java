@@ -20,16 +20,32 @@ public class Session {
     private Integer appliedNumber;
     private Long sessionFee;
     private SessionStatus sessionStatus;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Session(Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus) {
-        this(0L, courseId, startDate, endDate, imageId, paidType, maxStudentNumber, appliedNumber, sessionFee, sessionStatus);
+        this(0L, courseId, startDate, endDate, imageId, paidType, maxStudentNumber, appliedNumber, sessionFee, sessionStatus, LocalDateTime.now());
     }
 
-    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus) {
-        this(id, courseId, startDate, endDate, Image.newImage(imageId), PaidType.valueOf(paidType.toUpperCase()), maxStudentNumber, appliedNumber, sessionFee, SessionStatus.valueOf(sessionStatus.toUpperCase()));
+    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus, LocalDateTime createdAt) {
+        this(id, courseId, startDate, endDate, Image.newImage(imageId), PaidType.valueOf(paidType.toUpperCase()), maxStudentNumber, appliedNumber, sessionFee, SessionStatus.valueOf(sessionStatus.toUpperCase()), createdAt, null);
     }
 
-    private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Image image, PaidType paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, SessionStatus sessionStatus) {
+    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.courseId = courseId;
+        this.period = new Period(startDate, endDate);
+        this.image = new Image(imageId);
+        this.paidType = PaidType.valueOf(paidType);
+        this.maxStudentNumber = maxStudentNumber;
+        this.appliedNumber = appliedNumber;
+        this.sessionFee = sessionFee;
+        this.sessionStatus = SessionStatus.valueOf(sessionStatus);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Image image, PaidType paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, SessionStatus sessionStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.courseId = courseId;
         this.period = new Period(startDate, endDate);
@@ -39,17 +55,28 @@ public class Session {
         this.appliedNumber = appliedNumber;
         this.sessionFee = sessionFee;
         this.sessionStatus = sessionStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Session(Long courseId, SessionVO sessionVO) {
+        if (sessionVO.getPaidType() == FREE) {
+            freeSession(0L, courseId, sessionVO.getStartDate(), sessionVO.getEndDate(), sessionVO.getImage(), sessionVO.getAppliedNumber(), sessionVO.getSessionStatus());
+        }
+        if (sessionVO.getPaidType() == PAID) {
+            paidSession(0L, courseId, sessionVO.getStartDate(), sessionVO.getEndDate(), sessionVO.getImage(), sessionVO.getMaxStudentNumber(), sessionVO.getAppliedNumber(), sessionVO.getSessionFee(), sessionVO.getSessionStatus());
+        }
     }
 
     public static Session freeSession(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Image image, Integer appliedNumber, SessionStatus sessionStatus) {
-        return new Session(id, courseId, startDate, endDate, image, FREE, null, appliedNumber, null, sessionStatus);
+        return new Session(id, courseId, startDate, endDate, image, FREE, null, appliedNumber, null, sessionStatus, LocalDateTime.now(), null);
     }
 
     public static Session paidSession(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Image image, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, SessionStatus sessionStatus) {
-        return new Session(id, courseId, startDate, endDate, image, PAID, maxStudentNumber, appliedNumber, sessionFee, sessionStatus);
+        return new Session(id, courseId, startDate, endDate, image, PAID, maxStudentNumber, appliedNumber, sessionFee, sessionStatus, LocalDateTime.now(), null);
     }
 
-    public void enroll(Payment payment) {
+    public void enroll(Payment payment, LocalDateTime enrollTime) {
         if (isFullOfStudents()) {
             throw new IllegalArgumentException("유료 강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
         }
@@ -61,6 +88,7 @@ public class Session {
         }
 
         increaseAppNumber();
+        this.updatedAt = enrollTime;
     }
 
     public boolean isFullOfStudents() {
@@ -113,5 +141,13 @@ public class Session {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

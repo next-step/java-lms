@@ -9,6 +9,8 @@ create table session (
     applied_number int,
     session_fee bigint,
     session_status varchar(20) not null,
+    created_at timestamp not null,
+    updated_at timestamp,
     primary key (id)
 );
 
@@ -43,7 +45,6 @@ create table course (
     creator_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,
-    ordinal int,
     primary key (id)
 );
 

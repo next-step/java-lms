@@ -4,7 +4,11 @@ import nextstep.courses.domain.Image;
 import nextstep.courses.domain.ImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
 
 @Repository("imageRepository")
 public class JdbcImageRepository implements ImageRepository {
@@ -15,9 +19,19 @@ public class JdbcImageRepository implements ImageRepository {
     }
 
     @Override
-    public int save(Image image) {
+    public Long save(Image image) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into image (title, image_size, image_type, width, height) values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, image.getTitle(), image.getImageSize(), image.getImageType().toString(), image.getWidth(), image.getHeight());
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, image.getTitle());
+            ps.setLong(2, image.getImageSize());
+            ps.setString(3, image.getImageType().toString());
+            ps.setInt(4, image.getWidth());
+            ps.setInt(5, image.getHeight());
+            return ps;
+        }, keyHolder);
+        return (Long) keyHolder.getKey();
     }
 
     @Override

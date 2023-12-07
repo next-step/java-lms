@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 public interface StudentRepository {
-    int save(Student student);
+    Long save(Student student);
 
     Student findById(Long id);
 }

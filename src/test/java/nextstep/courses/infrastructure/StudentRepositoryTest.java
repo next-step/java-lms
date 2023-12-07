@@ -26,8 +26,8 @@ class StudentRepositoryTest {
     @Test
     void crud() {
         Student student = new Student("test");
-        int save = studentRepository.save(student);
-        assertThat(save).isEqualTo(1);
+        Long id = studentRepository.save(student);
+        assertThat(id).isEqualTo(1L);
         Student savedStudent = studentRepository.findById(1L);
         assertThat(student.getName()).isEqualTo(savedStudent.getName());
     }

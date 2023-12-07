@@ -27,10 +27,10 @@ public class CourseRepositoryTest {
     }
 
     @Test
-    void crud_ordinal() {
-        Course course = new Course("test", 1L, 1);
-        int count = courseRepository.save(course);
-        assertThat(count).isEqualTo(1);
+    void crud() {
+        Course course = new Course("test", 1L);
+        Long id = courseRepository.save(course);
+        assertThat(id).isEqualTo(1L);
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);

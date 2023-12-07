@@ -29,9 +29,9 @@ class SessionRepositoryTest {
 
     @Test
     void crud() {
-        Session session = new Session(1L, date1, date2, 1L, "free", null, null, 0L, "applying");
-        int save = sessionRepository.save(session);
-        assertThat(save).isEqualTo(1);
+        Session session = new Session(1L, date1, date2, 1L, "free", 0, 0, 0L, "applying");
+        Long id = sessionRepository.save(session);
+        assertThat(id).isEqualTo(1L);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(session.getCourseId()).isEqualTo(savedSession.getCourseId());
     }

@@ -4,8 +4,11 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -18,22 +21,28 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at, ordinal) values(?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(),
-                course.getOrdinal());
+    public Long save(Course course) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, course.getTitle());
+            ps.setLong(2, course.getCreatorId());
+            ps.setTimestamp(3, Timestamp.valueOf(course.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+        return (Long) keyHolder.getKey();
     }
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at, ordinal from course where id = ?";
+        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)),
-                rs.getInt(6));
+                toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

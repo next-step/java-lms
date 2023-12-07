@@ -26,8 +26,8 @@ class ImageRepositoryTest {
     @Test
     void crud() {
         Image image = new Image("test", 10000, "jpg", 300, 200);
-        int save = imageRepository.save(image);
-        assertThat(save).isEqualTo(1);
+        Long id = imageRepository.save(image);
+        assertThat(id).isEqualTo(1L);
         Image savedImage = imageRepository.findById(1L);
         assertThat(image.getTitle()).isEqualTo(savedImage.getTitle());
     }

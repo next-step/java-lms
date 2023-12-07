@@ -14,8 +14,8 @@ public class CourseService {
     private CourseRepository courseRepository;
 
     @Transactional
-    public void makeCourse(String title, NsUser loginUser, int ordinal) {
-        Course course = new Course(title, loginUser.getId(), ordinal);
-        courseRepository.save(course);
+    public Long makeCourse(String title, NsUser loginUser) {
+        Course course = new Course(title, loginUser.getId());
+        return courseRepository.save(course);
     }
 }

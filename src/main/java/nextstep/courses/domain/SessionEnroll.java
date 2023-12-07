@@ -11,6 +11,10 @@ public class SessionEnroll {
     private final String paymentId;
     private final LocalDateTime createdAt;
 
+    public SessionEnroll(Long sessionId, Long studentId, String paymentId, LocalDateTime createdAt) {
+        this(0L, sessionId, studentId, paymentId, createdAt);
+    }
+
     public SessionEnroll(Long sessionId, Long studentId, String paymentId) {
         this(0L, sessionId, studentId, paymentId, LocalDateTime.now());
     }

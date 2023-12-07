@@ -41,7 +41,7 @@ public class Image {
     }
 
     private boolean isNotValidRatio(int width, int height) {
-        return width != height * 1.5;
+        return width * 2 != height * 3;
     }
 
     public Long getId() {
