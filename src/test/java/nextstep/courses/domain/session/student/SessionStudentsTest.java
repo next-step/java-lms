@@ -35,20 +35,4 @@ class SessionStudentsTest {
         assertThatThrownBy(() -> sessionStudents.add(sessionStudent)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("이미 해당 강의를 수강 중 입니다.");
     }
-
-    @DisplayName("강의 인원 제한 수를 인자로 받아 현재 수강인원과 비교한다.")
-    @Test
-    void validateLimit() {
-        // given
-        SessionStudents sessionStudents = new SessionStudents();
-        Session session = new FreeSession();
-        
-        SessionStudent sessionStudent1 = new SessionStudent(session, JAVAJIGI);
-        sessionStudents.add(sessionStudent1);
-        SessionStudent sessionStudent2 = new SessionStudent(session, SANJIGI);
-        sessionStudents.add(sessionStudent2);
-
-        // when & then
-        assertThat(sessionStudents.isExceed(2)).isTrue();
-    }
 }

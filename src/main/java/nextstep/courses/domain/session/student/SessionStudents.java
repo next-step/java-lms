@@ -23,7 +23,7 @@ public class SessionStudents {
         }
     }
 
-    public boolean isExceed(int studentsCapacity) {
-        return sessionStudents.size() >= studentsCapacity;
+    public int size() {
+        return this.sessionStudents.size();
     }
 }

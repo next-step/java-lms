@@ -44,8 +44,12 @@ public class PaySession extends Session {
     }
 
     private void validateCapacity() {
-        if (sessionStudents.isExceed(studentsCapacity)) {
+        if (isExceed()) {
             throw new IllegalArgumentException("현재 수강 가능한 모든 인원수가 채워졌습니다.");
         }
+    }
+
+    private boolean isExceed() {
+        return sessionStudents.size() >= studentsCapacity;
     }
 }
