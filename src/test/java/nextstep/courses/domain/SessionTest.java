@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.attendee.Attendees;
+import nextstep.courses.domain.attendee.FreeAttendees;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.CanNotApplyException;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ class SessionTest {
         Period period = new Period(LocalDateTime.now(), LocalDateTime.now()
                                                                      .plusDays(1));
         SessionInformation information = new SessionInformation(PREPARING, FREE, period);
-        Enrollment freeEnrollment = new FreeEnrollment(new Attendees());
+        Enrollment freeEnrollment = new FreeEnrollment(new FreeAttendees());
         EnrollmentSession session = new EnrollmentSession(1L, information, freeEnrollment);
 
         assertThatThrownBy(() -> session.enroll(100L, 1L))

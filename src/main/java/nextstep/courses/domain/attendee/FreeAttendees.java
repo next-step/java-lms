@@ -5,15 +5,15 @@ import nextstep.courses.exception.AlreadyTakingSessionException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attendees {
+public class FreeAttendees {
 
     private final List<Attendee> values;
 
-    public Attendees() {
+    public FreeAttendees() {
         this(new ArrayList<>());
     }
 
-    public Attendees(List<Attendee> values) {
+    public FreeAttendees(List<Attendee> values) {
         this.values = values;
     }
 
@@ -21,9 +21,5 @@ public class Attendees {
         if (this.values.contains(attendee)) {
             throw new AlreadyTakingSessionException();
         }
-    }
-
-    public int size() {
-        return this.values.size();
     }
 }
