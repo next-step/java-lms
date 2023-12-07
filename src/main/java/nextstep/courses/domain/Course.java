@@ -6,9 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class Course extends BaseEntity {
-    private String title;
-    private Long creatorId;
-    private List<Session> sessions = new ArrayList<>();
+
+    private final String title;
+    private final Long creatorId;
+    private final List<Session> sessions = new ArrayList<>();
+    private long id;
 
 
     public Course(String title, Long creatorId, LocalDateTime createdAt) {
@@ -21,7 +23,8 @@ public class Course extends BaseEntity {
     }
 
     public Course(long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, createdAt, updatedAt);
+        super(createdAt, updatedAt);
+        this.id = id;
         this.title = title;
         this.creatorId = creatorId;
 
@@ -42,6 +45,10 @@ public class Course extends BaseEntity {
 
     public List<Session> sessions() {
         return Collections.unmodifiableList(sessions);
+    }
+
+    public long id() {
+        return id;
     }
 
     @Override

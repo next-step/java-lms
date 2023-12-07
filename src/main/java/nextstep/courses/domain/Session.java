@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
+    protected long id;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
     protected SessionState state;
@@ -25,13 +26,18 @@ public abstract class Session extends BaseEntity {
     }
 
     protected Session(long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, createdAt, updatedAt);
+        super(createdAt, updatedAt);
+        this.id = id;
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.state = state;
         this.participants = new Participants(new HashSet<>());
     }
 
+
+    public long id() {
+        return id;
+    }
 
     public abstract void apply(Payment payment);
 
