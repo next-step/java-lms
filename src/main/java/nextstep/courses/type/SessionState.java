@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.type;
 
 public enum SessionState {
     READY,

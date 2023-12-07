@@ -1,12 +1,15 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.type.ImageExtension;
+import nextstep.courses.type.InfinitablePositiveInteger;
+import nextstep.courses.type.SessionDuration;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.SessionState.*;
+import static nextstep.courses.type.SessionState.*;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {

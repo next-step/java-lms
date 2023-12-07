@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.type.*;
+
 public class SessionImage {
     private static final Capacity MAX_CAPACITY = new Capacity(1024, CapacityUnit.KB);
     private static final Rectangle MIN_SIZE = new Rectangle(300, 200, LengthUnit.PIXEL);

@@ -1,7 +1,6 @@
-package nextstep.courses.domain;
+package nextstep.courses.type;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 /**
  * 강의 기간을 나타냅니다.

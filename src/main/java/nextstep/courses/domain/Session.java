@@ -1,11 +1,14 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.type.InfinitablePositiveInteger;
+import nextstep.courses.type.SessionDuration;
+import nextstep.courses.type.SessionState;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.util.Objects;
 
-import static nextstep.courses.domain.SessionState.READY;
+import static nextstep.courses.type.SessionState.READY;
 
 /**
  * 강의를 나타내는 객체
