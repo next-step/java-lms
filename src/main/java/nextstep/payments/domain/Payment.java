@@ -30,4 +30,12 @@ public class Payment {
     public Long amount() {
         return this.amount;
     }
+
+    public Long sessionId() {
+        return sessionId;
+    }
+
+    public Long nsUserId() {
+        return nsUserId;
+    }
 }
