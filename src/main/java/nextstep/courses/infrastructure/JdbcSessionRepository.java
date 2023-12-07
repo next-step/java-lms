@@ -42,15 +42,17 @@ public class JdbcSessionRepository implements SessionRepository {
                         toLocalDate(rs.getDate(3)),
                         toLocalDate(rs.getDate(4))
                 ),
-                new SessionPrice(
-                        rs.getInt(5)
-                ),
-                SessionState.valueOf(rs.getString(6)),
-                SessionType.valueOf(rs.getString(7)),
-                sessionUsers,
-                new SessionUserCount(
-                        sessionUsers.size(),
-                        rs.getInt(8)
+                new Enrollment(
+                        new SessionPrice(
+                                rs.getInt(5)
+                        ),
+                        SessionState.valueOf(rs.getString(6)),
+                        SessionType.valueOf(rs.getString(7)),
+                        new SessionUserCount(
+                                sessionUsers.size(),
+                                rs.getInt(8)
+                        ),
+                        sessionUsers
                 )
         );
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
