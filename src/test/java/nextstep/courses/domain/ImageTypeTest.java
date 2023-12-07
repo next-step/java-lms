@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 class ImageTypeTest {
@@ -13,7 +13,8 @@ class ImageTypeTest {
     @ValueSource(strings = {"gif", "jpg", "jpeg", "png", "svg"})
     @DisplayName("이미지 타입은 gif, jpg(jpeg 포함), png, svg만 허용한다.")
     void 이미지_타입_체크(String type) {
-        assertThat(ImageType.isSupportImageType(type)).isTrue();
+        assertThatCode(() -> ImageType.isSupportImageType(type))
+                .doesNotThrowAnyException();
     }
 
 }

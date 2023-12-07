@@ -1,17 +1,28 @@
 package nextstep.courses.domain;
 
-import java.util.List;
+import nextstep.courses.exception.ImageException;
+
+import static java.util.Arrays.*;
 
 public enum ImageType {
-    GIF,
-    JPG,
-    JPEG,
-    PNG,
-    SVG;
+    GIF("GIF"),
+    JPG("JPG"),
+    JPEG("JPEG"),
+    PNG("PNG"),
+    SVG("SVG");
 
-    public static boolean isSupportImageType(String imageType) {
-        return List.of(ImageType.values()).contains(ImageType.valueOf(imageType.toUpperCase()));
+    private String type;
+
+    ImageType(String type) {
+        this.type = type;
     }
 
+    public static void isSupportImageType(String imageType) {
+        stream(ImageType.values())
+                .filter(i -> i.type.equals(imageType.toUpperCase()))
+                .findAny()
+                .orElseThrow(() -> new ImageException("지원하는 이미지 형식이 아닙니다."));
+
+    }
 
 }
