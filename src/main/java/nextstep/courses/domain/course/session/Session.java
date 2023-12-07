@@ -20,13 +20,36 @@ public class Session {
 
     private int quota;
 
-    private Applicants applicants = new Applicants();
+    private Applicants applicants;
 
     private Status status;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public enum Type {
+        FREE("무료"),
+        CHARGE("유료");
+
+        private final String description;
+
+        Type(String description) {
+            this.description = description;
+        }
+    }
+
+    public enum Status {
+        READY("준비중"),
+        RECRUIT("모집중"),
+        END("종료");
+
+        private final String description;
+
+        Status(String description) {
+            this.description = description;
+        }
+    }
 
     public Session() {
     }
@@ -102,29 +125,6 @@ public class Session {
     private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
         if (payment == null || !payment.isPaid(loginUser, this)) {
             throw new IllegalArgumentException("결제를 진행해 주세요.");
-        }
-    }
-
-    public enum Type {
-        FREE("무료"),
-        CHARGE("유료");
-
-        private final String description;
-
-        Type(String description) {
-            this.description = description;
-        }
-    }
-
-    public enum Status {
-        READY("준비중"),
-        RECRUIT("모집중"),
-        END("종료");
-
-        private final String description;
-
-        Status(String description) {
-            this.description = description;
         }
     }
 }
