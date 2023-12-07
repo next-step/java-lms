@@ -14,14 +14,16 @@ public class Session {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private SessionStatus sessionStatus;
-	private SessionPaymentInfo sessionPaymentInfo;
+	private SessionPaymentCondition sessionPaymentCondition;
+	private Long userNumber;
 
 	public Session(Long courseId
 			, CoverImage coverImage
 			, SessionPeriod sessionPeriod
 			, SessionStatus sessionStatus
-			, SessionPaymentInfo sessionPaymentInfo) {
-		this(0L, courseId, 0L, coverImage, sessionPeriod, sessionStatus, sessionPaymentInfo);
+			, SessionPaymentCondition sessionPaymentCondition
+			, Long userNumber) {
+		this(0L, courseId, 0L, coverImage, sessionPeriod, sessionStatus, sessionPaymentCondition, userNumber);
 	}
 
 	public Session(Long id
@@ -30,7 +32,8 @@ public class Session {
 			, CoverImage coverImage
 			, SessionPeriod sessionPeriod
 			, SessionStatus sessionStatus
-			, SessionPaymentInfo sessionPaymentInfo) {
+			, SessionPaymentCondition sessionPaymentCondition
+			, Long userNumber) {
 		validate(courseId);
 		this.id = id;
 		this.courseId = courseId;
@@ -40,18 +43,20 @@ public class Session {
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = null;
 		this.sessionStatus = sessionStatus;
-		this.sessionPaymentInfo = sessionPaymentInfo;
+		this.sessionPaymentCondition = sessionPaymentCondition;
+		this.userNumber = userNumber;
 	}
 
 	private void validate(Long courseId) {
-		if (courseId == null || courseId == 0L){
+		if (courseId == null || courseId == 0L) {
 			throw new IllegalArgumentException("과정 ID 값은 빈 값이거나 0이 올 수 없습니다.");
 		}
 	}
 
 	public NsUserSession enroll(Payment payment) throws CannotEnrollException {
 		checkStatus();
-		sessionPaymentInfo.checkPaidSession(payment);
+		sessionPaymentCondition.checkPaidSession(payment, userNumber);
+		userNumber++;
 		return new NsUserSession(payment.getSessionId(), payment.getNsUserId());
 	}
 

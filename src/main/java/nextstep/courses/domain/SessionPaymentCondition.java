@@ -3,20 +3,18 @@ package nextstep.courses.domain;
 import nextstep.courses.CannotEnrollException;
 import nextstep.payments.domain.Payment;
 
-public class SessionPaymentInfo {
+public class SessionPaymentCondition {
     private Long amount;
     private Long maxUser;
-    private Long userNumber;
 
-    public SessionPaymentInfo(Long amount, Long maxUser, Long userNumber) {
+    public SessionPaymentCondition(Long amount, Long maxUser) {
         this.amount = amount;
         this.maxUser = maxUser;
-        this.userNumber = userNumber;
     }
 
-    public void checkPaidSession(Payment payment) throws CannotEnrollException {
+    public void checkPaidSession(Payment payment, Long userNumber) throws CannotEnrollException {
         if (isPaidSession()) {
-            validatePaidSession(payment);
+            validatePaidSession(payment, userNumber);
         }
     }
 
@@ -24,8 +22,8 @@ public class SessionPaymentInfo {
         return amount > 0;
     }
 
-    private void validatePaidSession(Payment payment) throws CannotEnrollException {
-        if (isFull()) {
+    private void validatePaidSession(Payment payment, Long userNumber) throws CannotEnrollException {
+        if (isFull(userNumber)) {
             throw new CannotEnrollException("수강 인원을 초과했습니다.");
         }
         if (!payment.isSameAmount(amount)) {
@@ -33,7 +31,7 @@ public class SessionPaymentInfo {
         }
     }
 
-    private boolean isFull() {
+    private boolean isFull(Long userNumber) {
         return userNumber >= maxUser;
     }
 }
