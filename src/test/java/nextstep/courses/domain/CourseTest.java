@@ -11,7 +11,7 @@ class CourseTest {
     @DisplayName("과정은 기수 단위로 운영")
     @Test
     void 과정_기수() {
-        Course course = new Course(0L, "Course Test", 10000L, 1);
+        Course course = new Course("Course Test", 10000L, 1);
         int ordinal = course.getOrdinal();
 
         assertThat(ordinal).isEqualTo(1);

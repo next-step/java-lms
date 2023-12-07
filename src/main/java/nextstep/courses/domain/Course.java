@@ -10,27 +10,16 @@ public class Course {
     private LocalDateTime updatedAt;
     private int ordinal;
 
-    public Course() {
+    public Course(String title, Long creatorId, int ordinal) {
+        this(0L, title, creatorId, LocalDateTime.now(), null, ordinal);
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, int ordinal) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public Course(Long id, String title, Long creatorId, int ordinal) {
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = null;
         this.ordinal = ordinal;
     }
 

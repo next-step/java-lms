@@ -38,11 +38,10 @@ class SessionTest {
     @Test
     void 유료강의_최대인원() {
         Session session = Session.paidSession(0L, 0L, date1, date2, null, 100, 100, 100000L, APPLYING);
-        Student student = new Student(0L, "test");
         Payment payment = new Payment(100000L);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session.enroll(student, payment));
+                .isThrownBy(() -> session.enroll(payment));
     }
 
     @Test
@@ -51,10 +50,11 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(0L);
 
-        SessionEnroll enrolledFree = session.enroll(student, payment);
-        Student enrolledStudent = enrolledFree.getStudent();
+        session.enroll(payment);
+        SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
+        Long enrolledStudent = sessionEnroll.getStudentId();
 
-        assertThat(enrolledStudent).isEqualTo(student);
+        assertThat(enrolledStudent).isEqualTo(0L);
         assertThat(session.getAppliedNumber()).isEqualTo(11);
     }
 
@@ -65,10 +65,11 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(100000L);
 
-        SessionEnroll enrolled = session.enroll(student, payment);
-        Student enrolledStudent = enrolled.getStudent();
+        session.enroll(payment);
+        SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
+        Long enrolledStudent = sessionEnroll.getStudentId();
 
-        assertThat(enrolledStudent).isEqualTo(student);
+        assertThat(enrolledStudent).isEqualTo(0L);
         assertThat(session.getAppliedNumber()).isEqualTo(11);
     }
 
@@ -79,10 +80,11 @@ class SessionTest {
         Student student = new Student(0L, "test");
         Payment payment = new Payment(100000L);
 
-        SessionEnroll enrolled = session.enroll(student, payment);
-        Student enrolledStudent = enrolled.getStudent();
+        session.enroll(payment);
+        SessionEnroll sessionEnroll = new SessionEnroll(0L, session.getId(), student.getId(), payment.getId());
+        Long enrolledStudent = sessionEnroll.getStudentId();
 
-        assertThat(enrolledStudent).isEqualTo(student);
+        assertThat(enrolledStudent).isEqualTo(0L);
         assertThat(session.getAppliedNumber()).isEqualTo(11);
     }
 
@@ -90,12 +92,11 @@ class SessionTest {
     void 강의상태_불가() {
         Session session1 = Session.freeSession(0L, 0L, date1, date2, null, null, PREPARING);
         Session session2 = Session.freeSession(0L, 0L, date1, date2, null, null, CLOSED);
-        Student student = new Student(0L, "test");
         Payment payment = new Payment(0L);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session1.enroll(student, payment));
+                .isThrownBy(() -> session1.enroll(payment));
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> session2.enroll(student, payment));
+                .isThrownBy(() -> session2.enroll(payment));
     }
 }

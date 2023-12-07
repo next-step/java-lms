@@ -19,19 +19,21 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        String sql = "insert into course (title, creator_id, created_at, ordinal) values(?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(),
+                course.getOrdinal());
     }
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
+        String sql = "select id, title, creator_id, created_at, updated_at, ordinal from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                toLocalDateTime(rs.getTimestamp(5)),
+                rs.getInt(6));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

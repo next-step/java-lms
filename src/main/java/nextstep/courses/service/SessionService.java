@@ -33,6 +33,7 @@ public class SessionService {
     }
 
     public SessionEnroll enrollStudent(Session session, Student student, Payment payment) {
-        return session.enroll(student, payment);
+        session.enroll(payment);
+        return new SessionEnroll(session.getId(), student.getId(), payment.getId());
     }
 }

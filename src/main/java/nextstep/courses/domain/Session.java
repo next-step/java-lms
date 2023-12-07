@@ -21,6 +21,13 @@ public class Session {
     private Long sessionFee;
     private SessionStatus sessionStatus;
 
+    public Session(Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus) {
+        this(0L, courseId, startDate, endDate, imageId, paidType, maxStudentNumber, appliedNumber, sessionFee, sessionStatus);
+    }
+
+    public Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Long imageId, String paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, String sessionStatus) {
+        this(id, courseId, startDate, endDate, Image.newImage(imageId), PaidType.valueOf(paidType.toUpperCase()), maxStudentNumber, appliedNumber, sessionFee, SessionStatus.valueOf(sessionStatus.toUpperCase()));
+    }
 
     private Session(Long id, Long courseId, LocalDateTime startDate, LocalDateTime endDate, Image image, PaidType paidType, Integer maxStudentNumber, Integer appliedNumber, Long sessionFee, SessionStatus sessionStatus) {
         this.id = id;
@@ -42,7 +49,7 @@ public class Session {
         return new Session(id, courseId, startDate, endDate, image, PAID, maxStudentNumber, appliedNumber, sessionFee, sessionStatus);
     }
 
-    public SessionEnroll enroll(Student student, Payment payment) {
+    public void enroll(Payment payment) {
         if (isFullOfStudents()) {
             throw new IllegalArgumentException("유료 강의는 강의 최대 수강 인원을 초과할 수 없습니다.");
         }
@@ -52,9 +59,8 @@ public class Session {
         if (isNotStatusToSignUp()) {
             throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집 중일 때만 가능합니다.");
         }
-        increaseAppNumber();
 
-        return new SessionEnroll(this, student, payment);
+        increaseAppNumber();
     }
 
     public boolean isFullOfStudents() {
