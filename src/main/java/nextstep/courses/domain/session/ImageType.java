@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 import java.util.Arrays;
 
-public enum ImgType {
+public enum ImageType {
     GIF("gif"),
     JPG("jpg"),
     JPEG("jpeg"),
@@ -11,13 +11,13 @@ public enum ImgType {
 
     private final String type;
 
-    ImgType(String type) {
+    ImageType(String type) {
         this.type = type;
     }
 
-    public static ImgType findType(String type) {
-        return Arrays.stream(ImgType.values())
-                .filter(imgType -> imgType.type.equals(type.toLowerCase()))
+    public static ImageType findType(String type) {
+        return Arrays.stream(ImageType.values())
+                .filter(imageType -> imageType.type.equals(type.toLowerCase()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 데이터 타입입니다."));
     }

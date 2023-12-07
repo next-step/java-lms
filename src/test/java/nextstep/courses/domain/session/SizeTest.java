@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class SizeTest {
 
-    @DisplayName("width 값이 300보다 작으면 안됩니다.")
+    @DisplayName("width 값이 특정 값보다 작으면 안됩니다.")
     @Test
     void underWidth() {
         // given
@@ -19,7 +19,7 @@ class SizeTest {
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }
 
-    @DisplayName("height 값이 200보다 작으면 안됩니다.")
+    @DisplayName("height 값이 특정 값보다 작으면 안됩니다.")
     @Test
     void underHeight() {
         // given
@@ -31,7 +31,7 @@ class SizeTest {
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }
 
-    @DisplayName("width : height 비율이 3:2 어야 합니다.")
+    @DisplayName("width : height 비율이 특정 비율이어야 합니다.")
     @Test
     void widthHeight() {
         // given

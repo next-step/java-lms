@@ -13,14 +13,12 @@ class PeriodTest {
     @Test
     void preSession() {
         // given
-        LocalDateTime startDate = LocalDateTime.of(2023, 11, 1, 14, 0);
-        LocalDateTime endDate = LocalDateTime.of(2023, 11, 20, 0, 0);
-        Period period = new Period(startDate, endDate);
+        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0), LocalDateTime.of(2023, 11, 20, 0, 0));
         Course course = new Course(1L, "course", 1L,
                 LocalDateTime.of(2023, 12, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isValidDate(course);
+        boolean result = period.isAfterCourseCreatedDate(course);
         // then
         Assertions.assertThat(result).isFalse();
     }
@@ -29,14 +27,13 @@ class PeriodTest {
     @Test
     void afterSession() {
         // given
-        LocalDateTime startDate = LocalDateTime.of(2023, 11, 1, 14, 0);
-        LocalDateTime endDate = LocalDateTime.of(2023, 11, 20, 0, 0);
-        Period period = new Period(startDate, endDate);
+        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
+                LocalDateTime.of(2023, 11, 20, 0, 0));
         Course course = new Course(1L, "course", 1L,
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isValidDate(course);
+        boolean result = period.isAfterCourseCreatedDate(course);
         // then
         Assertions.assertThat(result).isTrue();
     }
@@ -45,14 +42,13 @@ class PeriodTest {
     @Test
     void preEnd() {
         // given
-        LocalDateTime startDate = LocalDateTime.of(2023, 11, 1, 14, 0);
-        LocalDateTime endDate = LocalDateTime.of(2023, 11, 20, 0, 0);
-        Period period = new Period(startDate, endDate);
+        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
+                LocalDateTime.of(2023, 11, 20, 0, 0));
         Course course = new Course(1L, "course", 1L,
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isValidDate(course);
+        boolean result = period.isAfterCourseCreatedDate(course);
         // then
         Assertions.assertThat(result).isTrue();
     }
@@ -61,15 +57,18 @@ class PeriodTest {
     @Test
     void afterEnd() {
         // given
-        LocalDateTime startDate = LocalDateTime.of(2023, 11, 1, 14, 0);
-        LocalDateTime endDate = LocalDateTime.of(2023, 10, 20, 0, 0);
-        Period period = new Period(startDate, endDate);
+        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
+                LocalDateTime.of(2023, 10, 20, 0, 0));
         Course course = new Course(1L, "course", 1L,
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isValidDate(course);
+        boolean result = period.isAfterCourseCreatedDate(course);
         // then
         Assertions.assertThat(result).isFalse();
+    }
+
+    private Period createPeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return new Period(startDateTime, endDateTime);
     }
 }

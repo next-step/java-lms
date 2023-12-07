@@ -16,7 +16,7 @@ public class Period {
         this.endDateTime = endDateTime;
     }
 
-    public boolean isValidDate(Course course) {
+    public boolean isAfterCourseCreatedDate(Course course) {
         return startDateTime.isBefore(endDateTime) && startDateTime.isAfter(course.getCreatedAt());
     }
 }

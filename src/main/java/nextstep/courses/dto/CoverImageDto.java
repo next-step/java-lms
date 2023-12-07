@@ -1,6 +1,6 @@
 package nextstep.courses.dto;
 
-public class CoverImgDto {
+public class CoverImageDto {
 
     private String path;
     private int size;
@@ -8,7 +8,7 @@ public class CoverImgDto {
     private int width;
     private int height;
 
-    public CoverImgDto(String path, int size, String imgType, int width, int height) {
+    public CoverImageDto(String path, int size, String imgType, int width, int height) {
         this.path = path;
         this.size = size;
         this.imgType = imgType;
