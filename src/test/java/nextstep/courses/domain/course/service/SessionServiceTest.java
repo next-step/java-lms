@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course.service;
 
 import nextstep.courses.domain.course.image.Image;
+import nextstep.courses.domain.course.session.Applicants;
 import nextstep.courses.domain.course.session.Session;
 import nextstep.courses.domain.course.session.SessionRepository;
 import nextstep.courses.service.SessionService;
@@ -16,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +31,7 @@ public class SessionServiceTest {
     private Payment payment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
-    private List<NsUser> users = new ArrayList<>();
+    private Applicants applicants = new Applicants();
     private Session session;
 
     @Mock
@@ -47,9 +46,9 @@ public class SessionServiceTest {
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        users.add(JAVAJIGI);
+        applicants.add(JAVAJIGI);
         session = new Session(1L, image, localDate, localDate, Session.Type.FREE,
-                1000L, 10, users, Session.Status.RECRUIT, localDateTime, localDateTime);
+                1000L, 10, applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
     }
 
     @Test

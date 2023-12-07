@@ -25,7 +25,7 @@ public class Session {
 
     private int quota;
 
-    private List<NsUser> users = new ArrayList<>();
+    private Applicants applicants = new Applicants();
 
     private Status status;
 
@@ -65,12 +65,12 @@ public class Session {
 
     public Session(Image image, LocalDate startDate, LocalDate endDate,
                    Type type, Long amount, int quota) {
-        this(0L, image, startDate, endDate, type, amount, quota, new ArrayList<NsUser>(),
+        this(0L, image, startDate, endDate, type, amount, quota, new Applicants(),
                 Status.READY, LocalDateTime.now(), null);
     }
 
     public Session(Long id, Image image, LocalDate startDate, LocalDate endDate,
-                   Type type, Long amount, int quota, List<NsUser> users,
+                   Type type, Long amount, int quota, Applicants applicants,
                    Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if(image == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
@@ -83,7 +83,7 @@ public class Session {
         this.type = type;
         this.amount = amount;
         this.quota = quota;
-        this.users = users;
+        this.applicants = applicants;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -94,7 +94,7 @@ public class Session {
     }
 
     public int applyCount() {
-        return this.users.size();
+        return this.applicants.size();
     }
 
     public void apply(NsUser loginUser, Payment payment) {
@@ -105,7 +105,7 @@ public class Session {
             checkPaymentIsPaid(loginUser, payment);
         }
 
-        this.users.add(loginUser);
+        this.applicants.add(loginUser);
     }
 
     private boolean typeCharged() {

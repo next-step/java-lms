@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course;
 
 import nextstep.courses.domain.course.session.Session;
+import nextstep.courses.domain.course.session.Sessions;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Course {
 
     private Long creatorId;
 
-    private List<Session> sessions;
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 
