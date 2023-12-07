@@ -25,4 +25,12 @@ public class SessionDate {
     public LocalDate getEndAt() {
         return endAt;
     }
+
+    public boolean isInProgress() {
+        LocalDate nowDate = LocalDate.now();
+        if ((startAt.isEqual(nowDate) || startAt.isBefore(nowDate)) && (endAt.isEqual(nowDate) || endAt.isAfter(nowDate))) {
+            return true;
+        }
+        return false;
+    }
 }

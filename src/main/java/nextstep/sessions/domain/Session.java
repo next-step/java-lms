@@ -49,6 +49,14 @@ public class Session {
         return charge;
     }
 
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public boolean isInProgress() {
+        return this.date.isInProgress();
+    }
+
     public void checkSessionStatus() {
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강할 수 있습니다.");

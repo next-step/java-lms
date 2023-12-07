@@ -39,6 +39,7 @@ public class Sessions {
     public Payments pay(Long creatorId) {
         List<Payment> payments = new ArrayList<>();
         values.stream()
+                .filter(session -> session.isInProgress() && session.getStatus() == SessionStatus.RECRUITING)
                 .forEach(session -> payments.add(new Payment(session.getName(), session.getId(), creatorId, totalPrice())));
         return new Payments(payments);
     }
