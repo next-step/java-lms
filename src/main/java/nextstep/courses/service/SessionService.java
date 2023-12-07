@@ -32,7 +32,9 @@ public class SessionService {
 
     @Transactional(readOnly = true)
     public Session findById(Long id) {
-        return sessionRepository.findById(id);
+        Session findSession = sessionRepository.findById(id);
+        findSession.mappadByImage(imageRepository.findBySessionId(id));
+        return findSession;
     }
 
     @Transactional
@@ -40,5 +42,6 @@ public class SessionService {
         Session session = sessionRepository.findById(payment.sessionId());
         NsUser nsUser = userRepository.findById(payment.nsUserId()).orElseThrow(IllegalArgumentException::new);
         session.addParticipant(payment.amount(), nsUser);
+        sessionRepository.save(session);
     }
 }

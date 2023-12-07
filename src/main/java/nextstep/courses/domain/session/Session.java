@@ -84,4 +84,8 @@ public class Session {
     public Image image() {
         return image;
     }
+
+    public void mappadByImage(Image image) {
+        this.image = image;
+    }
 }
