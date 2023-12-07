@@ -1,55 +1,31 @@
 package nextstep.sessions.domain;
 
 import nextstep.images.domain.Image;
-import nextstep.sessions.strategy.EnrolmentStrategy;
+import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
-public abstract class Session {
-    public static final int INIT_COUNT = 0;
+public class Session {
 
     private final Long id;
-    private final LocalDateTime startedDate;
-    private final LocalDateTime endedDate;
+    private final Subject subject;
+    private final Enrollment enrollment;
+    private final SessionPeriod sessionPeriod;
     private final Image image;
-    private Status status;
     private final SessionType sessionType;
 
-    public Session(Long id, LocalDateTime startedDate, LocalDateTime endedDate, Image image, SessionType sessionType) {
-        validateDate(startedDate, endedDate);
+    public Session(Long id, Subject subject, Enrollment enrollment, SessionPeriod sessionPeriod, Image image, SessionType sessionType) {
         this.id = id;
-        this.startedDate = startedDate;
-        this.endedDate = endedDate;
+        this.subject = subject;
+        this.enrollment = enrollment;
+        this.sessionPeriod = sessionPeriod;
         this.image = image;
-        this.status = getSessionStatus(startedDate, endedDate);
         this.sessionType = sessionType;
     }
 
-    private void validateDate(LocalDateTime startedDate, LocalDateTime endedDate) {
-        if (startedDate.isAfter(endedDate)) {
-            throw new IllegalArgumentException("강의 시작일은 종료일을 넘을 수 없습니다.");
-        }
+    public void enroll(NsUser user, int payMoney) {
+        enrollment.enroll(user, payMoney);
     }
 
-    private Status getSessionStatus(LocalDateTime startedDate, LocalDateTime endedDate) {
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(startedDate)) {
-            return Status.PREPARE;
-        }
-        if (now.isAfter(endedDate)) {
-            return Status.CLOSED;
-        }
-        return Status.RECRUITING;
+    public void recruiting() {
+        this.enrollment.recruiting();
     }
-
-    public void changeSessionStatus(Status status) {
-        this.status = status;
-    }
-
-    public void isEnrolmentPossible(){
-        if (!status.equals(Status.RECRUITING)) {
-            throw new IllegalArgumentException("강의가 모집중이 아닙니다.");
-        }
-    }
-
 }
