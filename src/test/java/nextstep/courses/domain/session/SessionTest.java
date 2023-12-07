@@ -2,9 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.ExceedMaxAttendanceCountException;
-import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +15,7 @@ class SessionTest {
     @EnumSource(names = {"FINISH", "PREPARE"})
     void canNotEnroll(SessionStatus status) {
         // given
-        Session session = new Session(null, false, status, 1, new Course(), new Period());
+        Session session = new Session(status);
         // when
         // then
         Assertions.assertThatThrownBy(() -> session.addUser(NsUserTest.JAVAJIGI))
@@ -30,7 +27,7 @@ class SessionTest {
     @Test
     void freeSession() {
         // given
-        Session session = new Session(null, true, SessionStatus.ENROLL, new Course(), new Period());
+        Session session = new Session(SessionStatus.ENROLL);
         // when
         session.addUser(NsUserTest.JAVAJIGI);
         // then
@@ -41,7 +38,7 @@ class SessionTest {
     @Test
     void exceedMaxAttendance() {
         // given
-        Session session = new Session(null, false, SessionStatus.ENROLL, 1, new Course(), new Period());
+        Session session = new Session(SessionStatus.ENROLL, 1);
         session.addUser(NsUserTest.JAVAJIGI);
         // when
         // then
@@ -54,12 +51,11 @@ class SessionTest {
     @Test
     void successEnroll() {
         // given
-        Session session = new Session(null, false, SessionStatus.ENROLL, 2, new Course(), new Period());
+        Session session = new Session(SessionStatus.ENROLL, 2);
         session.addUser(NsUserTest.JAVAJIGI);
         // when
         session.addUser(NsUserTest.SANJIGI);
         // then
         Assertions.assertThat(session.attendUserCount()).isEqualTo(2);
     }
-
 }

@@ -10,47 +10,54 @@ public class Session {
 
     private CoverImage coverImg;
 
-    private SessionStatus sessionStatus;
+    private SessionStatus sessionStatus = SessionStatus.PREPARE;
 
     private Period period;
 
-    private SessionUsers sessionUsers;
+    private SessionUsers sessionUsers = new SessionUsers();
+
+    private SessionType sessionType;
 
     private Course course;
 
-    public Session() {}
-
-    public Session(CoverImage coverImg, boolean isFree, SessionStatus sessionStatus, Integer maxAttendance, Course course, Period period) {
-        this.coverImg = coverImg;
+    protected Session(SessionStatus sessionStatus, Integer maxAttendance) {
         this.sessionStatus = sessionStatus;
-        this.sessionUsers = new SessionUsers(isFree, maxAttendance);
-        this.course = course;
-        this.period = period;
+        this.sessionType = SessionType.notFreeSession(maxAttendance);
     }
 
-    public Session(CoverImage coverImg, boolean isFree, SessionStatus sessionStatus, Course course, Period period) {
-        this(coverImg, isFree, sessionStatus, null, course, period);
+    protected Session(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
+        this.sessionType = SessionType.freeSession();
+    }
+
+    public Session(CoverImage coverImage, Period period, SessionType sessionType, Course course) {
+        this.coverImg = coverImage;
+        this.period = period;
+        this.sessionType = sessionType;
+        this.course = course;
     }
 
     public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {
         if (!period.isAfterCourseCreatedDate(course)) {
             throw new IllegalArgumentException("유효하지 않는 세션 일정입니다.");
         }
-        return new Session(coverImg,false, SessionStatus.PREPARE, maxAttendance, course, period);
+        SessionType sessionType = SessionType.notFreeSession(maxAttendance);
+        return new Session(coverImg, period, sessionType, course);
     }
 
     public static Session freeSession(CoverImage coverImg, Course course, Period period) {
         if (!period.isAfterCourseCreatedDate(course)) {
             throw new IllegalArgumentException("유효하지 않는 세션 일정입니다.");
         }
-        return new Session(coverImg, true, SessionStatus.PREPARE, course, period);
+        SessionType sessionType = SessionType.freeSession();
+        return new Session(coverImg, period, sessionType, course);
     }
 
     public void addUser(NsUser nsUser) {
         if (!sessionStatus.equals(SessionStatus.ENROLL)) {
             throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
         }
-        sessionUsers.addUser(nsUser);
+        sessionUsers.addUser(nsUser, sessionType);
     }
 
     public int attendUserCount() {

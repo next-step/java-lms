@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.Size;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
