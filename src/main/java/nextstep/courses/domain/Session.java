@@ -20,7 +20,7 @@ public class Session {
 
     private ImageInfo coverImage;
 
-    private int maxPersonnel;
+    private Integer maxPersonnel;
 
     private int enrollCount;
 
@@ -49,7 +49,7 @@ public class Session {
         this.students = new ArrayList<>();
     }
 
-    public Session(long id, SessionType sessionType, SessionState sessionState, int maxPersonnel, List<NsUser> students, int enrollCount) {
+    public Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
         this.id = id;
         this.sessionType = sessionType;
         this.sessionState = sessionState;

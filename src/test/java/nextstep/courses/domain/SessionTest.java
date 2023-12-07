@@ -35,16 +35,16 @@ class SessionTest {
     }
 
     @Test
-    @DisplayName("무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
+    @DisplayName("모집중인 무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
     void 무료강의_수강신청() {
-        Session session = new Session(0L, SessionType.FREE, SessionState.RECRUITING,10, new ArrayList<>(), 15);
+        Session session = new Session(0L, SessionType.FREE, SessionState.RECRUITING,null, new ArrayList<>(), 15);
         session.enrollStudent(NsUserTest.JAVAJIGI);
 
         assertThat(session.equals(new Session(0L, SessionType.FREE, SessionState.RECRUITING,10, List.of(NsUserTest.JAVAJIGI), 16))).isTrue();
     }
 
     @Test
-    @DisplayName("유료강의는 최대 수강 인원을 초과하면 예외가 발생한다.")
+    @DisplayName("모집중인 유료강의에 수강신청 시 최대 수강 인원을 초과하면 예외가 발생한다.")
     void 유료강의_수강신청() {
         Session session = new Session(0L, SessionType.PAID, SessionState.RECRUITING,10, new ArrayList<>(), 10);
 
