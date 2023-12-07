@@ -21,6 +21,10 @@ public abstract class BaseEntity {
         return createdAt;
     }
 
+    public void changeUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
