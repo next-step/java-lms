@@ -4,20 +4,39 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
+
+    private final GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
         String sql = "insert into session (type, state, start_date, end_date, amount, enrollment_max) values(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.type(), session.state(), session.startDate(), session.endDate(), session.amount(), session.enrollmentMax());
+
+        jdbcTemplate.update(conn -> {
+            PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setObject(1, session.type());
+            preparedStatement.setObject(2, session.state());
+            preparedStatement.setObject(3, session.startDate());
+            preparedStatement.setObject(4, session.endDate());
+            preparedStatement.setObject(5, session.amount());
+            preparedStatement.setObject(6, session.enrollmentMax());
+
+            return preparedStatement;
+        }, generatedKeyHolder);
+
+        return generatedKeyHolder.getKey().longValue();
     }
 
     @Override

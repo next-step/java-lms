@@ -31,8 +31,8 @@ public class SessionRepositoryTest {
     @Test
     void create() {
         Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
+        long id = sessionRepository.save(session);
+        assertThat(id).isEqualTo(1);
     }
 
     @Test

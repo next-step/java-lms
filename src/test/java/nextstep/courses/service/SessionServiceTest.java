@@ -25,7 +25,7 @@ public class SessionServiceTest {
         Session freeSession = Session.ofFree(Period.from(), Image.from());
 
         assertThat(sessionService.save(paidSession)).isEqualTo(1);
-        assertThat(sessionService.save(freeSession)).isEqualTo(1);
+        assertThat(sessionService.save(freeSession)).isEqualTo(2);
     }
 
     @Test

@@ -22,7 +22,7 @@ public class SessionService {
         session.enroll(nsUser, payment);
     }
 
-    public int save(Session session) {
+    public long save(Session session) {
         return sessionRepository.save(session);
     }
 
