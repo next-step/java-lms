@@ -1,12 +1,15 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question implements Content {
+    private static final String DELETE_NOT_PERMITTED_MESSAGE = "질문을 삭제할 권한이 없습니다.";
+
     private Long id;
 
     private String title;
@@ -83,6 +86,12 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public void validatePermission(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException(DELETE_NOT_PERMITTED_MESSAGE);
+        }
     }
 
     @Override
