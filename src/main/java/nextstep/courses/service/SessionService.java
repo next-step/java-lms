@@ -1,13 +1,20 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class SessionService {
 
-    public void enroll(NsUser student, Integer sessionFee) {
-        Session session = null; //Todo Session DB코드 추가필요.
+    private final SessionRepository sessionRepository;
+
+    public SessionService(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
+    }
+
+    public void enroll(Long sessionId, NsUser student, Integer sessionFee) {
+        Session session = sessionRepository.findById(sessionId);
 
         if (session.isEnrollmentPossible(sessionFee)) {
             session.enroll(student);
