@@ -34,10 +34,10 @@ public class CoverImageRepositoryTest {
             new CoverImage("image.gif", 102400, 300, 200)
         );
 
-        int count = coverImageRepository.saveCoverImages(1, coverImages);
+        int count = coverImageRepository.saveAll(1, coverImages);
         assertThat(count).isEqualTo(2);
 
-        List<CoverImage> savedCoverImages = coverImageRepository.findCoverImagesBySessionId(1);
+        List<CoverImage> savedCoverImages = coverImageRepository.findById(1);
         List<ImageType> imageTypes = savedCoverImages.stream()
             .map(CoverImage::imageType)
             .collect(Collectors.toList());

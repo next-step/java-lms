@@ -22,14 +22,14 @@ public class RegistrationProcedure {
     }
 
     public boolean isBeforeSelection() {
-        return selectionType == SelectionType.BEFORE_SELECTION;
+        return selectionType.isBeforeSelection();
     }
 
     public boolean isSelected() {
-        return selectionType == SelectionType.SELECTION;
+        return selectionType.isSelected();
     }
 
     public boolean isApproved() {
-        return approvalType == ApprovalType.APPROVAL;
+        return approvalType.isApproved();
     }
 }

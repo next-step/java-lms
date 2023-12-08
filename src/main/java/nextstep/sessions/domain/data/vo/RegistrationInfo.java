@@ -1,6 +1,7 @@
 package nextstep.sessions.domain.data.vo;
 
 import nextstep.sessions.domain.data.Session;
+import nextstep.users.domain.NsUser;
 
 public class RegistrationInfo {
 
@@ -14,5 +15,17 @@ public class RegistrationInfo {
 
     public UserPaymentInfo userPaymentInfo() {
         return userPaymentInfo;
+    }
+
+    public long userId() {
+        return userPaymentInfo.userId();
+    }
+
+    public long paymentId() {
+        return userPaymentInfo.paymentId();
+    }
+
+    public boolean hasEqualUser(NsUser user) {
+        return userPaymentInfo.hasEqualUser(user);
     }
 }

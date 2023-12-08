@@ -37,10 +37,11 @@ public class NewSessionRepositoryTest {
         SessionInfo sessionInfo = new SessionInfo(enrollmentInfo, openInfo);
         Session session = new Session(sessionInfo);
 
-        int count = sessionRepository.saveSession(session);
+        int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findSessionBySessionId(1).get();
-        assertThat(savedSession.sessionInfo().enrollmentInfo().newSessionState()).isEqualTo(session.sessionInfo().enrollmentInfo().newSessionState());
+        Session savedSession = sessionRepository.findById(1).get();
+        assertThat(savedSession.sessionRunningState()).isEqualTo(session.sessionRunningState());
+        assertThat(savedSession.sessionRecruitingState()).isEqualTo(session.sessionRecruitingState());
     }
 }

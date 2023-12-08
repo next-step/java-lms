@@ -25,11 +25,11 @@ public class PayInfo {
     }
 
     public boolean isPaid() {
-        return paidType.isPaid();
+        return paidType == PaidType.PAID;
     }
 
-    public PaidType paidType() {
-        return paidType;
+    public String paidTypeName() {
+        return paidType.name();
     }
 
     public long fee() {

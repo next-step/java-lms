@@ -23,35 +23,12 @@ public class NewSessionState {
         }
     }
 
-    public SessionRecruitingState sessionRecruitingState() {
-        return sessionRecruitingState;
+    public String sessionRecruitingStateName() {
+        return sessionRecruitingState.name();
     }
 
-    public SessionRunningState sessionRunningState() {
-        return sessionRunningState;
+    public String sessionRunningStateName() {
+        return sessionRunningState.name();
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-
-        NewSessionState that = (NewSessionState) object;
-
-        if (sessionRecruitingState != that.sessionRecruitingState) {
-            return false;
-        }
-        return sessionRunningState == that.sessionRunningState;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = sessionRecruitingState != null ? sessionRecruitingState.hashCode() : 0;
-        result = 31 * result + (sessionRunningState != null ? sessionRunningState.hashCode() : 0);
-        return result;
-    }
 }

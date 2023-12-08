@@ -23,12 +23,12 @@ public class SessionService {
     }
 
     public void enroll(int sessionId, NsUser loginUser, Payment payment) {
-        Session session = sessionRepository.findSessionBySessionId(sessionId)
+        Session session = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
-        List<Registration> registrations = registrationRepository.findAllRegistrations(sessionId);
+        List<Registration> registrations = registrationRepository.findAllById(sessionId);
         Session sessionWithRegistrations = session.with(registrations);
         Registration registration = sessionWithRegistrations.registration(loginUser, payment);
-        registrationRepository.saveRegistration(sessionId, registration);
+        registrationRepository.save(sessionId, registration);
     }
 
     public void select(int registrationId) {
@@ -43,11 +43,11 @@ public class SessionService {
 
     public void cancel(int registrationId) {
         registration(registrationId).validateCancel();
-        registrationRepository.deleteRegistration(registrationId);
+        registrationRepository.deleteById(registrationId);
     }
 
     private Registration registration(int registrationId) {
-        return registrationRepository.findRegistrationByRegistrationId(registrationId)
+        return registrationRepository.findById(registrationId)
             .orElseThrow(() -> new SessionsException("등록된 수강 정보가 없습니다."));
     }
 

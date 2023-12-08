@@ -20,10 +20,6 @@ public class CoverImage {
         return imageType;
     }
 
-    public ImageSize imageSize() {
-        return imageSize;
-    }
-
     public String imageTypeName() {
         return imageType.name();
     }
@@ -33,10 +29,10 @@ public class CoverImage {
     }
 
     public int width() {
-        return imageSize.pixelSize().width();
+        return imageSize.width();
     }
 
     public int height() {
-        return imageSize().pixelSize().height();
+        return imageSize.height();
     }
 }

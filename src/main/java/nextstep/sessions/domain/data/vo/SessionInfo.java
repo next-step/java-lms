@@ -1,5 +1,7 @@
 package nextstep.sessions.domain.data.vo;
 
+import java.time.LocalDateTime;
+
 import nextstep.payments.domain.Payment;
 
 public class SessionInfo {
@@ -19,14 +21,32 @@ public class SessionInfo {
     public void validateEnrollment(int size, Payment payment) {
         enrollmentInfo.validate(size, payment);
     }
-
-    public EnrollmentInfo enrollmentInfo() {
-        return enrollmentInfo;
+    
+    public String paidType() {
+        return enrollmentInfo.paidType();
     }
 
-    public OpenInfo openInfo() {
-        return openInfo;
+    public long fee() {
+        return enrollmentInfo.fee();
     }
 
+    public int capacity() {
+        return enrollmentInfo.capacity();
+    }
 
+    public String sessionRunningState() {
+        return enrollmentInfo.sessionRunningState();
+    }
+
+    public String sessionRecruitingState() {
+        return enrollmentInfo.sessionRecruitingState();
+    }
+
+    public LocalDateTime startDate() {
+        return openInfo.startDate();
+    }
+
+    public LocalDateTime endDate() {
+        return openInfo.endDate();
+    }
 }

@@ -31,8 +31,12 @@ public class SessionType {
         return registrationCount < capacity;
     }
 
-    public PayInfo payInfo() {
-        return payInfo;
+    public String paidType() {
+        return payInfo.paidTypeName();
+    }
+
+    public long fee() {
+        return payInfo.fee();
     }
 
     public int capacity() {

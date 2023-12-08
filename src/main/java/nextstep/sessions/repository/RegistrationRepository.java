@@ -9,15 +9,15 @@ import nextstep.sessions.domain.data.vo.Registration;
 
 public interface RegistrationRepository {
 
-    List<Registration> findAllRegistrations(int sessionId);
+    List<Registration> findAllById(int sessionId);
 
-    void saveRegistration(int sessionId, Registration registration);
+    void save(int sessionId, Registration registration);
 
-    Optional<Registration> findRegistrationByRegistrationId(int registrationId);
+    Optional<Registration> findById(int registrationId);
 
     void updateSelectionType(int registrationId, SelectionType selectionType);
 
     void updateApprovalType(int registrationId, ApprovalType approvalType);
 
-    void deleteRegistration(int registrationId);
+    void deleteById(int registrationId);
 }

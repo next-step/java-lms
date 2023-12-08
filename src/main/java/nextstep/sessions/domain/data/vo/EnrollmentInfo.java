@@ -17,11 +17,23 @@ public class EnrollmentInfo {
         sessionType.validateSession(registrationSize, payment);
     }
 
-    public SessionType sessionType() {
-        return sessionType;
+    public String paidType() {
+        return sessionType.paidType();
     }
 
-    public NewSessionState newSessionState() {
-        return newSessionState;
+    public long fee() {
+        return sessionType.fee();
+    }
+
+    public int capacity() {
+        return sessionType.capacity();
+    }
+
+    public String sessionRunningState() {
+        return newSessionState.sessionRunningStateName();
+    }
+
+    public String sessionRecruitingState() {
+        return newSessionState.sessionRecruitingStateName();
     }
 }

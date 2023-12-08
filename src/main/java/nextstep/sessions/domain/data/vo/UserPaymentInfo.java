@@ -17,11 +17,11 @@ public class UserPaymentInfo {
         return user.isEqual(this.user);
     }
 
-    public NsUser user() {
-        return user;
+    public long userId() {
+        return user.getId();
     }
 
-    public Payment payment() {
-        return payment;
+    public long paymentId() {
+        return payment.getId();
     }
 }

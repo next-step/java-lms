@@ -37,12 +37,12 @@ public class NewRegistrationRepositoryTest {
     @Test
     void 수강_신청_및_신청_내역_조회() {
         int sessionId = 6;
-        Session session = sessionRepository.findSessionBySessionId(sessionId).get();
-        List<Registration> registrations = registrationRepository.findAllRegistrations(sessionId);
+        Session session = sessionRepository.findById(sessionId).get();
+        List<Registration> registrations = registrationRepository.findAllById(sessionId);
 
         Registration registration = new Registration(session, NsUserTest.SANJIGI, new Payment(1L, 2L, 3L, 800000L));
-        registrationRepository.saveRegistration(sessionId, registration);
-        List<Registration> currentRegistrations = registrationRepository.findAllRegistrations(sessionId);
+        registrationRepository.save(sessionId, registration);
+        List<Registration> currentRegistrations = registrationRepository.findAllById(sessionId);
         assertThat(currentRegistrations).hasSize(registrations.size() + 1);
         assertThat(currentRegistrations.stream()
             .map(Registration::userId)
@@ -53,32 +53,32 @@ public class NewRegistrationRepositoryTest {
     @Test
     void 수강생_선발_처리() {
         int registrationId = 2;
-        Registration registration = registrationRepository.findRegistrationByRegistrationId(registrationId).get();
+        Registration registration = registrationRepository.findById(registrationId).get();
         assertThat(registration.selectionType()).isEqualTo(SelectionType.BEFORE_SELECTION);
 
         registrationRepository.updateSelectionType(registrationId, SelectionType.SELECTION);
-        Registration currentRegistration = registrationRepository.findRegistrationByRegistrationId(registrationId).get();
+        Registration currentRegistration = registrationRepository.findById(registrationId).get();
         assertThat(currentRegistration.selectionType()).isEqualTo(SelectionType.SELECTION);
     }
 
     @Test
     void 수강생_승인_처리() {
         int registrationId = 2;
-        Registration registration = registrationRepository.findRegistrationByRegistrationId(registrationId).get();
+        Registration registration = registrationRepository.findById(registrationId).get();
         assertThat(registration.approvalType()).isEqualTo(ApprovalType.BEFORE_APPROVAL);
 
         registrationRepository.updateApprovalType(registrationId, ApprovalType.APPROVAL);
-        Registration currentRegistration = registrationRepository.findRegistrationByRegistrationId(registrationId).get();
+        Registration currentRegistration = registrationRepository.findById(registrationId).get();
         assertThat(currentRegistration.approvalType()).isEqualTo(ApprovalType.APPROVAL);
     }
 
     @Test
     void 수강_취소_처리() {
         int registrationId = 2;
-        assertThat(registrationRepository.findRegistrationByRegistrationId(registrationId).isPresent()).isTrue();
+        assertThat(registrationRepository.findById(registrationId)).isPresent();
 
-        registrationRepository.deleteRegistration(registrationId);
-        assertThat(registrationRepository.findRegistrationByRegistrationId(registrationId).isEmpty()).isTrue();
+        registrationRepository.deleteById(registrationId);
+        assertThat(registrationRepository.findById(registrationId)).isEmpty();
     }
 
 }

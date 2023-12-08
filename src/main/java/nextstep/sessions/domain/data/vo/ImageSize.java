@@ -28,7 +28,11 @@ public class ImageSize {
         return fileSize;
     }
 
-    public PixelSize pixelSize() {
-        return pixelSize;
+    public int width() {
+        return pixelSize.width();
+    }
+
+    public int height() {
+        return pixelSize.height();
     }
 }

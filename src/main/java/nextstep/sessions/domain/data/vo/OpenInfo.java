@@ -1,5 +1,7 @@
 package nextstep.sessions.domain.data.vo;
 
+import java.time.LocalDateTime;
+
 public class OpenInfo {
 
     private CoverImage coverImage;
@@ -8,8 +10,12 @@ public class OpenInfo {
     public OpenInfo(Duration duration) {
         this.duration = duration;
     }
+    
+    public LocalDateTime startDate() {
+        return duration.startDate();
+    }
 
-    public Duration duration() {
-        return duration;
+    public LocalDateTime endDate() {
+        return duration.endDate();
     }
 }

@@ -20,7 +20,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public List<CoverImage> findCoverImagesBySessionId(int sessionId) {
+    public List<CoverImage> findById(int sessionId) {
         String sql = "select session_id, type, file_size, width, height from cover_image where session_id = ?";
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
             ImageType.valueOf(rs.getString(2)),
@@ -30,7 +30,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public int saveCoverImages(int sessionId, List<CoverImage> coverImages) {
+    public int saveAll(int sessionId, List<CoverImage> coverImages) {
         int count = 0;
         for (CoverImage coverImage: coverImages) {
             String sql = "insert into cover_image (session_id, type, file_size, width, height) values(?, ?, ?, ?, ?)";

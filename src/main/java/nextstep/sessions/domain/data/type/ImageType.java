@@ -21,7 +21,7 @@ public enum ImageType {
     public static ImageType valueOfName(String name) {
         String ext = StringUtils.getFilenameExtension(name);
         return Arrays.stream(values())
-            .filter(v -> v.name.equals(ext))
+            .filter(imageType -> imageType.name.equals(ext))
             .findFirst()
             .orElseThrow(() -> new SessionsException("지원하지 않는 이미지 타입입니다."));
     }

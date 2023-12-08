@@ -32,7 +32,7 @@ public class Registration {
     }
 
     public boolean hasUser(NsUser user) {
-        return registrationInfo.userPaymentInfo().hasEqualUser(user);
+        return registrationInfo.hasEqualUser(user);
     }
 
     public UserPaymentInfo userPaymentInfo() {
@@ -40,11 +40,11 @@ public class Registration {
     }
 
     public long userId() {
-        return userPaymentInfo().user().getId();
+        return registrationInfo.userId();
     }
 
     public long paymentId() {
-        return userPaymentInfo().payment().getId();
+        return registrationInfo.paymentId();
     }
 
     public void validateSelection() {

@@ -24,7 +24,7 @@ public class JdbcNewRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public List<Registration> findAllRegistrations(int sessionId) {
+    public List<Registration> findAllById(int sessionId) {
         String sql = "select s.paid_type, s.fee, s.capacity, s.running_state, s.recruiting_state, s.start_date, s.end_date, u.id, u.user_id, u.password, u.name, u.email, r.selection_type, r.approval_type from new_registration r join new_session s on r.session_id = s.id left join ns_user u on r.user_id = u.id where r.session_id = ?";
         RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
             JdbcNewSessionRepository.session(rs),
@@ -37,13 +37,13 @@ public class JdbcNewRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public void saveRegistration(int sessionId, Registration registration) {
-        String sql = "insert into new_registration (session_id, user_id, payment_id, selection_type, approval_type) values(?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, sessionId, registration.userId(), registration.paymentId(), registration.selectionType().code(), registration.approvalType().code());
+    public void save(int sessionId, Registration registration) {
+        String sql = "insert into new_registration (session_id, user_id, payment_id) values(?, ?, ?)";
+        jdbcTemplate.update(sql, sessionId, registration.userId(), registration.paymentId());
     }
 
     @Override
-    public Optional<Registration> findRegistrationByRegistrationId(int registrationId) {
+    public Optional<Registration> findById(int registrationId) {
         String sql = "select s.paid_type, s.fee, s.capacity, s.running_state, s.recruiting_state, s.start_date, s.end_date, u.id, u.user_id, u.password, u.name, u.email, r.selection_type, r.approval_type from new_registration r join new_session s on r.session_id = s.id left join ns_user u on r.user_id = u.id where r.id = ?";
         RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
             JdbcNewSessionRepository.session(rs),
@@ -73,7 +73,7 @@ public class JdbcNewRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public void deleteRegistration(int registrationId) {
+    public void deleteById(int registrationId) {
         String sql = "delete from new_registration where id = ?";
         jdbcTemplate.update(sql, registrationId);
     }

@@ -50,35 +50,32 @@ public class Session {
         return new Registration(this, user, payment);
     }
 
-    public SessionInfo sessionInfo() {
-        return sessionInfo;
-    }
-
     public String paidType() {
-        return sessionInfo().enrollmentInfo().sessionType().payInfo().paidType().name();
+        return sessionInfo.paidType();
     }
 
     public long fee() {
-        return sessionInfo().enrollmentInfo().sessionType().payInfo().fee();
+        return sessionInfo.fee();
     }
 
     public int capacity() {
-        return sessionInfo().enrollmentInfo().sessionType().capacity();
+        return sessionInfo.capacity();
     }
 
     public String sessionRunningState() {
-        return sessionInfo().enrollmentInfo().newSessionState().sessionRunningState().name();
+        return sessionInfo.sessionRunningState();
     }
 
     public String sessionRecruitingState() {
-        return sessionInfo().enrollmentInfo().newSessionState().sessionRecruitingState().name();
+        return sessionInfo.sessionRecruitingState();
     }
 
     public LocalDateTime startDate() {
-        return sessionInfo().openInfo().duration().startDate();
+        return sessionInfo.startDate();
     }
 
     public LocalDateTime endDate() {
-        return sessionInfo().openInfo().duration().endDate();
+        return sessionInfo.endDate();
     }
+
 }

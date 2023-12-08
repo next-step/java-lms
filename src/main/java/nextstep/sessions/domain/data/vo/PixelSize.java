@@ -42,7 +42,7 @@ public class PixelSize {
     }
 
     private boolean isValidRatio(int width, int height) {
-        return (double) width / height == (double) 3 / 2;
+        return width * IMAGE_HEIGHT_RATIO == height * IMAGE_WIDTH_RATIO;
     }
 
     public int width() {

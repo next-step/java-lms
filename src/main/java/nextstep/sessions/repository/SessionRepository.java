@@ -6,8 +6,8 @@ import nextstep.sessions.domain.data.Session;
 
 public interface SessionRepository {
 
-    int saveSession(Session session);
+    int save(Session session);
 
-    Optional<Session> findSessionBySessionId(int sessionId);
+    Optional<Session> findById(int sessionId);
 
 }

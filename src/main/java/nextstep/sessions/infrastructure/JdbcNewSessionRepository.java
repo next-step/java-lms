@@ -22,7 +22,7 @@ public class JdbcNewSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Optional<Session> findSessionBySessionId(int sessionId) {
+    public Optional<Session> findById(int sessionId) {
         try {
             String sql = "select paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date from new_session where id = ?";
             RowMapper<Session> rowMapper = (rs, rowNum) -> session(rs);
@@ -45,7 +45,7 @@ public class JdbcNewSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int saveSession(Session session) {
+    public int save(Session session) {
         String sql = "insert into new_session (paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date) values(?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             session.paidType(),
