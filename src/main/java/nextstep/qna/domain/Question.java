@@ -41,24 +41,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -100,7 +82,7 @@ public class Question {
     }
 
     private DeleteHistory createDeleteQuestionHistory() {
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+        return DeleteHistory.createDeleteHistoryByQuestion(this.id, this.writer, LocalDateTime.now());
     }
 
     private List<DeleteHistory> writeDeleteAnswersHistory() throws CannotDeleteException {
