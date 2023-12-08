@@ -11,6 +11,10 @@ public class Students {
         this.students = new ArrayList<>();
     }
 
+    public Students(List<Student> students) {
+        this.students = students;
+    }
+
     public boolean add(Student student) {
         validateDuplicate(student);
 

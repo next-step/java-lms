@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.domain.session.student.Students;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 
@@ -16,10 +15,10 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public Student enroll(NsUser user, EnrolmentInfo enrolmentInfo) {
+    public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
 
-        Student student = new Student(this, user);
+        Student student = new Student(id, Long.parseLong(enrolmentInfo.nsUserId()));
         this.students.add(student);
 
         return student;

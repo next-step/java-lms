@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface SessionRepository {
 
-    Optional<Session> findBy(Long sessionId);
+    Optional<Session> findById(Long sessionId);
 }

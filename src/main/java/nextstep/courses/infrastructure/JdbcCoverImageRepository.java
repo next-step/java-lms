@@ -4,7 +4,9 @@ import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
 
     private final JdbcOperations jdbcTemplate;

@@ -1,27 +1,29 @@
 package nextstep.courses.domain.session.student;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.users.domain.NsUser;
-
 import java.util.Objects;
 
 public class Student {
 
     private Long id;
-    private Session session;
-    private NsUser user;
+    private Long sessionId;
+    private Long nsUserId;
 
-    public Student(Session session, NsUser user) {
-        this.session = session;
-        this.user = user;
+    public Student(Long sessionId, Long nsUserId) {
+        this.sessionId = sessionId;
+        this.nsUserId = nsUserId;
+    }
+
+    public Student(Long id, Long sessionId, Long nsUserId) {
+        this(sessionId, nsUserId);
+        this.id = id;
     }
 
     public Long sessionId() {
-        return this.session.id();
+        return this.sessionId;
     }
 
     public Long nsUserId() {
-        return this.user.getId();
+        return this.nsUserId;
     }
 
     @Override
@@ -29,11 +31,11 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(session, student.session) && Objects.equals(user, student.user);
+        return Objects.equals(id, student.id) && Objects.equals(sessionId, student.sessionId) && Objects.equals(nsUserId, student.nsUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, session, user);
+        return Objects.hash(id, sessionId, nsUserId);
     }
 }
