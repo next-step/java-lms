@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.sessionuser.SessionUsers;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -23,12 +24,12 @@ public class Session {
 
     private Course course;
 
-    protected Session(SessionStatus sessionStatus, Integer maxAttendance) {
+    public Session(SessionStatus sessionStatus, Integer maxAttendance) {
         this.sessionStatus = sessionStatus;
         this.sessionType = SessionType.notFreeSession(maxAttendance);
     }
 
-    protected Session(SessionStatus sessionStatus) {
+    public Session(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
         this.sessionType = SessionType.freeSession();
     }
@@ -64,15 +65,16 @@ public class Session {
         return new Session(coverImg, period, sessionType, course);
     }
 
-    public void addUser(NsUser nsUser) {
+    public int attendUserCount() {
+        return sessionUsers.totalAttendUsersCount();
+    }
+
+    public boolean canRegisterNewUser(int currentUserSize) {
         if (!sessionStatus.equals(SessionStatus.ENROLL)) {
             throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
         }
-        sessionUsers.addUser(nsUser, sessionType);
-    }
 
-    public int attendUserCount() {
-        return sessionUsers.totalAttendUsersCount();
+        return sessionType.canRegisterNewUser(currentUserSize);
     }
 
     public SessionStatus getSessionStatus() {
@@ -94,4 +96,6 @@ public class Session {
     public CoverImage getCoverImg() {
         return coverImg;
     }
+
+
 }

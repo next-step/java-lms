@@ -7,22 +7,24 @@ import nextstep.courses.domain.coverImage.CoverImageRepository;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.sessionuser.SessionUser;
+import nextstep.courses.domain.sessionuser.SessionUsers;
+import nextstep.courses.domain.sessionuser.SessionUsersRepository;
 import nextstep.courses.dto.CoverImageDto;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 
 public class SessionService {
 
     private final SessionRepository sessionRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
     private final CoverImageRepository coverImageRepository;
+    private final SessionUsersRepository sessionUsersRepository;
 
-    public SessionService(SessionRepository sessionRepository, CourseRepository courseRepository, UserRepository userRepository, CoverImageRepository coverImageRepository) {
+    public SessionService(SessionRepository sessionRepository, CourseRepository courseRepository, CoverImageRepository coverImageRepository, SessionUsersRepository sessionUsersRepository) {
         this.sessionRepository = sessionRepository;
         this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
         this.coverImageRepository = coverImageRepository;
+        this.sessionUsersRepository = sessionUsersRepository;
     }
 
     // 무료 세션 생성
@@ -46,7 +48,8 @@ public class SessionService {
     // 세션 참여자 등록
     public void attendSession(NsUser nsUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        session.addUser(nsUser);
-        sessionRepository.enrollNsUser(session, nsUser);
+        SessionUsers sessionusers = sessionUsersRepository.findBySession(session);
+        SessionUser sessionUser = sessionusers.addUser(nsUser, session);
+        sessionUsersRepository.save(sessionUser);
     }
 }
