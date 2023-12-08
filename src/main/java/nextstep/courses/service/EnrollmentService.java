@@ -7,38 +7,24 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EnrollmentService {
-    private PaidSessionRepository paidSessionRepository;
-    private FreeSessionRepository freeSessionRepository;
+    private SessionRepository sessionRepository;
     private EnrollmentRepository enrollmentRepository;
     private UserRepository userRepository;
 
-    public void freeSessionEnroll(Payment payment) {
-        FreeSession freeSession = freeSessionRepository.findById(payment.sessionId())
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의 입니다."));
-        NsUser user = userRepository.findById(payment.nsUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 유저 입니다."));
-
-        freeSession.enroll(payment);
-
-        Enrollment enrollment = new Enrollment(user.getId(), freeSession.id());
-        enrollmentRepository.save(enrollment);
-    }
-
-    public void paidSessionEnroll(Long courseId, Payment payment) {
-        PaidSession paidSession = paidSessionRepository.findById(payment.sessionId())
+    @Transactional
+    public void enroll(Long courseId, Payment payment) {
+        Session session = sessionRepository.findById(payment.sessionId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강의 입니다."));
         NsUser user = userRepository.findById(payment.nsUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 유저 입니다."));
 
-        paidSession.enroll(payment);
-        paidSessionRepository.save(courseId, paidSession);
+        Enrollment enroll = session.enroll(user, payment);
 
-        Enrollment enrollment = new Enrollment(user.getId(), paidSession.id());
-        enrollmentRepository.save(enrollment);
+        sessionRepository.save(courseId, session);
+        enrollmentRepository.save(enroll);
     }
 }

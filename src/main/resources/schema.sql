@@ -37,6 +37,7 @@ create table session (
     status varchar(10) not null,
     course_id bigint not null,
     image_id bigint not null,
+    `type` varchar(10) not null,
     amount bigint null,
     max_enrollment_count bigint null,
     remain_enrollment_count bigint null,

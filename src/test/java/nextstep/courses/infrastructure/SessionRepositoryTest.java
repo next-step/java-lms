@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class FreeSessionRepositoryTest {
+class SessionRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private FreeSessionRepository freeSessionRepository;
+    private SessionRepository sessionRepository;
 
     private CourseRepository courseRepository;
     private ImageRepository imageRepository;
@@ -34,7 +34,7 @@ class FreeSessionRepositoryTest {
     @BeforeEach
     void setUp() {
         autoincrementReset();
-        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
         imageRepository = new JdbcImageRepository(jdbcTemplate);
     }
@@ -48,14 +48,16 @@ class FreeSessionRepositoryTest {
         imageRepository.save(coverImage);
         CoverImage savedCoverImage = imageRepository.findById(1L).get();
 
+        final Amount amount = Amount.of(100L);
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        final FreeSession tddSession = new FreeSession("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage);
-        int count = freeSessionRepository.save(1L, tddSession);
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, amount, new EnrollmentCount(20));
+        int count = sessionRepository.save(1L, tddSession);
         assertThat(count).isEqualTo(1);
 
-        FreeSession savedTddSession = freeSessionRepository.findById(1L).get();
+        Session savedTddSession = sessionRepository.findById(1L).get();
         assertThat(savedTddSession.title()).isEqualTo("tdd");
         assertThat(savedTddSession.sessionStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(savedTddSession.amount()).isEqualTo(Amount.of(100L));
     }
 
     private void autoincrementReset() {

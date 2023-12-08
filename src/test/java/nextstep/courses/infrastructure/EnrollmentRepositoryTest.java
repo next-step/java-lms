@@ -33,7 +33,7 @@ public class EnrollmentRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private EnrollmentRepository enrollmentRepository;
-    private FreeSessionRepository freeSessionRepository;
+    private SessionRepository sessionRepository;
     private CourseRepository courseRepository;
     private ImageRepository imageRepository;
     private UserRepository userRepository;
@@ -42,7 +42,7 @@ public class EnrollmentRepositoryTest {
     void setUp() {
         autoincrementReset();
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
-        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
         imageRepository = new JdbcImageRepository(jdbcTemplate);
         userRepository = new JdbcUserRepository(jdbcTemplate);
@@ -58,13 +58,13 @@ public class EnrollmentRepositoryTest {
         CoverImage savedCoverImage = imageRepository.findById(1L).get();
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        final FreeSession tddSession = new FreeSession("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage);
-        int count = freeSessionRepository.save(1L, tddSession);
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, Amount.ZERO(), null);
+        int count = sessionRepository.save(1L, tddSession);
         Optional<NsUser> javajigi = userRepository.findByUserId("javajigi");
 
         final Enrollment enrollment = new Enrollment(javajigi.get().getId(), 1L);
         enrollmentRepository.save(enrollment);
-//        assertThat(count).isEqualTo(1);
+        assertThat(count).isEqualTo(1);
         Enrollment savedEnrollment = enrollmentRepository.findById(1L).get();
         assertThat(savedEnrollment.nsUserId()).isEqualTo(1L);
         assertThat(savedEnrollment.sessionId()).isEqualTo(1L);
