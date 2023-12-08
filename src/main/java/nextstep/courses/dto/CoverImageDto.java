@@ -1,5 +1,7 @@
 package nextstep.courses.dto;
 
+import nextstep.courses.domain.session.CoverImage;
+
 public class CoverImageDto {
 
     private String path;
@@ -16,23 +18,7 @@ public class CoverImageDto {
         this.height = height;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public String getImgType() {
-        return imgType;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public CoverImage toCoverImage() {
+        return new CoverImage(path, size, imgType, width, height);
     }
 }

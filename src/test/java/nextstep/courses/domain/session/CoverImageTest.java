@@ -15,7 +15,7 @@ class CoverImageTest {
         CoverImageDto dto = new CoverImageDto("path", size, "gif", 300, 200);
         // when
         // then
-        Assertions.assertThatThrownBy(() -> CoverImage.from(dto))
+        Assertions.assertThatThrownBy(dto::toCoverImage)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지 크기는 1MB 이하입니다.");
     }
@@ -27,7 +27,7 @@ class CoverImageTest {
         CoverImageDto dto = new CoverImageDto("path", 100, type, 300, 200);
         // when
         // then
-        Assertions.assertThatThrownBy(() -> CoverImage.from(dto))
+        Assertions.assertThatThrownBy(dto::toCoverImage)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("지원하지 않는 데이터 타입입니다.");
     }
@@ -39,7 +39,7 @@ class CoverImageTest {
         CoverImageDto dto = new CoverImageDto("path", 100, "gif", width, height);
         // when
         // then
-        Assertions.assertThatThrownBy(() -> CoverImage.from(dto))
+        Assertions.assertThatThrownBy(dto::toCoverImage)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }

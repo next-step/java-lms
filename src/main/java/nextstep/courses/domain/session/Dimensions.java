@@ -2,11 +2,11 @@ package nextstep.courses.domain.session;
 
 import java.util.Objects;
 
-public class Size {
+public class Dimensions {
     private int width;
     private int height;
 
-    public Size(int width, int height) {
+    public Dimensions(int width, int height) {
         if (!isValidSize(width, height)) {
             throw new IllegalArgumentException("적절한 이미지 사이즈가 아닙니다.");
         }
@@ -22,8 +22,8 @@ public class Size {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Size size = (Size) o;
-        return width == size.width && height == size.height;
+        Dimensions dimensions = (Dimensions) o;
+        return width == dimensions.width && height == dimensions.height;
     }
 
     @Override

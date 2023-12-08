@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class SizeTest {
+class DimensionsTest {
 
     @DisplayName("width 값이 특정 값보다 작으면 안됩니다.")
     @Test
@@ -13,7 +13,7 @@ class SizeTest {
         int width = 299;
         // when
         // then
-        Assertions.assertThatThrownBy(() -> new Size(width, 200))
+        Assertions.assertThatThrownBy(() -> new Dimensions(width, 200))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }
@@ -25,7 +25,7 @@ class SizeTest {
         int height = 199;
         // when
         // then
-        Assertions.assertThatThrownBy(() -> new Size(300, height))
+        Assertions.assertThatThrownBy(() -> new Dimensions(300, height))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }
@@ -38,7 +38,7 @@ class SizeTest {
         int height = 200;
         // when
         // then
-        Assertions.assertThatThrownBy(() -> new Size(width, height))
+        Assertions.assertThatThrownBy(() -> new Dimensions(width, height))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("적절한 이미지 사이즈가 아닙니다.");
     }
@@ -50,8 +50,8 @@ class SizeTest {
         int width = 300;
         int height = 200;
         // when
-        Size size = new Size(width, height);
+        Dimensions dimensions = new Dimensions(width, height);
         // then
-        Assertions.assertThat(size).isEqualTo(new Size(300, 200));
+        Assertions.assertThat(dimensions).isEqualTo(new Dimensions(300, 200));
     }
 }

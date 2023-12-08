@@ -25,16 +25,16 @@ public class SessionService {
     // 무료 세션 생성
     public void createFreeSession(Long courseId, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
-        CoverImage coverImg = CoverImage.from(coverImageDto);
-        Session session = Session.freeSession(coverImg, course, period);
+        CoverImage coverImage = coverImageDto.toCoverImage();
+        Session session = Session.freeSession(coverImage, course, period);
         sessionRepository.save(session);
     }
 
     // 유료 세션 생성
     public void createNotFreeSession(Long courseId, int maxAttendance, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
-        CoverImage coverImg = CoverImage.from(coverImageDto);
-        Session session = Session.notFreeSession(coverImg, maxAttendance, course, period);
+        CoverImage coverImage = coverImageDto.toCoverImage();
+        Session session = Session.notFreeSession(coverImage, maxAttendance, course, period);
         sessionRepository.save(session);
     }
 

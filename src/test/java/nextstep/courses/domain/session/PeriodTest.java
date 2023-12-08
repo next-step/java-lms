@@ -18,7 +18,7 @@ class PeriodTest {
                 LocalDateTime.of(2023, 12, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isAfterCourseCreatedDate(course);
+        boolean result = period.isAfterStartDateTime(course);
         // then
         Assertions.assertThat(result).isFalse();
     }
@@ -33,22 +33,7 @@ class PeriodTest {
                 LocalDateTime.of(2023, 10, 1, 0, 0),
                 LocalDateTime.of(2023, 12, 1, 0, 0));
         // when
-        boolean result = period.isAfterCourseCreatedDate(course);
-        // then
-        Assertions.assertThat(result).isTrue();
-    }
-
-    @DisplayName("입력받은 세션의 시작날짜가 종료날짜보다 이전이면 true를 반환합니다.")
-    @Test
-    void preEnd() {
-        // given
-        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
-                LocalDateTime.of(2023, 11, 20, 0, 0));
-        Course course = new Course(1L, "course", 1L,
-                LocalDateTime.of(2023, 10, 1, 0, 0),
-                LocalDateTime.of(2023, 12, 1, 0, 0));
-        // when
-        boolean result = period.isAfterCourseCreatedDate(course);
+        boolean result = period.isAfterStartDateTime(course);
         // then
         Assertions.assertThat(result).isTrue();
     }
@@ -56,16 +41,10 @@ class PeriodTest {
     @DisplayName("입력받은 세션의 시작날짜가 종료날짜보다 이후면 false를 반환합니다.")
     @Test
     void afterEnd() {
-        // given
-        Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
-                LocalDateTime.of(2023, 10, 20, 0, 0));
-        Course course = new Course(1L, "course", 1L,
-                LocalDateTime.of(2023, 10, 1, 0, 0),
-                LocalDateTime.of(2023, 12, 1, 0, 0));
-        // when
-        boolean result = period.isAfterCourseCreatedDate(course);
-        // then
-        Assertions.assertThat(result).isFalse();
+        Assertions.assertThatThrownBy(() -> createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
+                        LocalDateTime.of(2023, 10, 20, 0, 0)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("시작 날짜가 종료 날짜 보다 이후일 수 없습니다.");
     }
 
     private Period createPeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
