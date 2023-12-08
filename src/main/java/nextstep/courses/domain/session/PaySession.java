@@ -2,9 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Student;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
-
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 

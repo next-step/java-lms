@@ -1,9 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
