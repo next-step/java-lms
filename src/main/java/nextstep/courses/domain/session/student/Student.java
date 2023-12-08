@@ -4,12 +4,21 @@ import java.util.Objects;
 
 public class Student {
 
+    private Long id;
     private Long sessionId;
-    private Long userId;
+    private Long nsUserId;
 
-    public Student(Long sessionId, Long userId) {
+    public Student(Long sessionId, Long nsUserId) {
         this.sessionId = sessionId;
-        this.userId = userId;
+        this.nsUserId = nsUserId;
+    }
+
+    public Long sessionId() {
+        return this.sessionId;
+    }
+
+    public Long nsUserId() {
+        return this.nsUserId;
     }
 
     @Override
@@ -17,11 +26,11 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(sessionId, student.sessionId) && Objects.equals(userId, student.userId);
+        return Objects.equals(sessionId, student.sessionId) && Objects.equals(nsUserId, student.nsUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionId, userId);
+        return Objects.hash(sessionId, nsUserId);
     }
 }
