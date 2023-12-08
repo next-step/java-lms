@@ -11,4 +11,12 @@ public class SessionUser {
         this.nsUser = nsUser;
         this.session = session;
     }
+
+    public NsUser getNsUser() {
+        return nsUser;
+    }
+
+    public Session getSession() {
+        return session;
+    }
 }

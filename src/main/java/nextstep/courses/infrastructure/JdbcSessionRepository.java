@@ -36,9 +36,4 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.getSessionStatus().name(), session.getPeriod().getStartDateTime(),
                 session.getPeriod().getEndDateTime(), session.getSessionType().isFree(), session.getSessionType().getMaxAttendance());
     }
-
-    @Override
-    public void enrollNsUser(Session session, NsUser nsUser) {
-
-    }
 }

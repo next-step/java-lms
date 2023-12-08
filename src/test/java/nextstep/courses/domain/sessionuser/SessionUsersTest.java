@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 class SessionUsersTest {
 
@@ -32,7 +33,7 @@ class SessionUsersTest {
     void exceed() {
         // given
         Session session = new Session(SessionStatus.ENROLL, 1);
-        SessionUsers sessionUsers = new SessionUsers();
+        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
         sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // when
         // then
@@ -46,7 +47,7 @@ class SessionUsersTest {
     void addNotFreeUser() {
         // given
         Session session = new Session(SessionStatus.ENROLL, 1);
-        SessionUsers sessionUsers = new SessionUsers();
+        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
         // when
         sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // then
@@ -58,7 +59,7 @@ class SessionUsersTest {
     void addUser() {
         // given
         Session session = new Session(SessionStatus.ENROLL);
-        SessionUsers sessionUsers = new SessionUsers();
+        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
         // when
         sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // then
@@ -70,7 +71,7 @@ class SessionUsersTest {
     void canNotEnroll(SessionStatus status) {
         // given
         Session session = new Session(status, 1);
-        SessionUsers sessionUsers = new SessionUsers();
+        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
         // when
         // then
         Assertions.assertThatThrownBy(() -> sessionUsers.addUser(NsUserTest.JAVAJIGI, session))

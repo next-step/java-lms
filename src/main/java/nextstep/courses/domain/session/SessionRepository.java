@@ -8,5 +8,4 @@ public interface SessionRepository {
 
     void save(Session session);
 
-    void enrollNsUser(Session session, NsUser nsUser);
 }

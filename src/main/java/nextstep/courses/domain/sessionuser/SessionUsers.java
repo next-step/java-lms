@@ -13,6 +13,13 @@ public class SessionUsers {
 
     private List<SessionUser> sessionUsers = new ArrayList<>();
 
+    public SessionUsers() {
+    }
+
+    public SessionUsers(List<SessionUser> sessionUsers) {
+        this.sessionUsers = sessionUsers;
+    }
+
     public SessionUser addUser(NsUser nsUser, Session session) {
         if (!session.canRegisterNewUser(sessionUsers.size())) {
             throw new ExceedMaxAttendanceCountException("이미 최대 수강 인원이 다 찼습니다.");

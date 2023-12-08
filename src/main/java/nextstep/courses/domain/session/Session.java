@@ -7,6 +7,7 @@ import nextstep.courses.domain.sessionuser.SessionUsers;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Session {
 
@@ -23,6 +24,10 @@ public class Session {
     private SessionType sessionType;
 
     private Course course;
+
+    public Session(Long id) {
+        this.id = id;
+    }
 
     public Session(SessionStatus sessionStatus, Integer maxAttendance) {
         this.sessionStatus = sessionStatus;
@@ -97,5 +102,7 @@ public class Session {
         return coverImg;
     }
 
-
+    public Long getId() {
+        return id;
+    }
 }
