@@ -26,7 +26,7 @@ class FreeSessionTest {
     @DisplayName("수강신청 / 모집 중 아님 / IllegalStateException")
     void 수강신청_모집중아님_실패() {
         // given
-        FreeSession session = FreeSession.create(1, 1L, today, today.plusDays(1), sessionImageFixture);
+        FreeSession session = FreeSession.create(1L, today, today.plusDays(1), sessionImageFixture);
 
         // expect
         assertThatThrownBy(() -> session.enroll(STUDENT_1))
@@ -37,7 +37,7 @@ class FreeSessionTest {
     @DisplayName("수강신청 / 정원 무제한 / 성공")
     void 수강신청_정원무제한_성공() {
         // given
-        FreeSession session = FreeSession.create(1, 1L, today, today.plusDays(1), sessionImageFixture);
+        FreeSession session = FreeSession.create(1L, today, today.plusDays(1), sessionImageFixture);
         session.changeStatus(SessionStatus.RECRUITING);
 
         // when

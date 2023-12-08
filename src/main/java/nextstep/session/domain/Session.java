@@ -11,8 +11,6 @@ public abstract class Session {
 
     private Long id;
 
-    private int generation;
-
     private Long creatorId;
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -28,8 +26,7 @@ public abstract class Session {
     protected SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
     protected SessionStudents students = new SessionStudents();
 
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        this.generation = generation;
+    public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
         this.creatorId = creatorId;
         this.startDate = startDate;
         this.endDate = endDate;

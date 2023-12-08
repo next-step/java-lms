@@ -8,14 +8,14 @@ public class PaidSession extends Session {
     private final Integer limitNumberOfStudents;
     private final Long price;
 
-    public PaidSession(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
-        super(generation, creatorId, startDate, endDate, sessionImage);
+    public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
+        super(creatorId, startDate, endDate, sessionImage);
         this.limitNumberOfStudents = limitNumberOfStudents;
         this.price = price;
     }
 
-    public static PaidSession create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
-        return new PaidSession(generation, creatorId, startDate, endDate, sessionImage, limitNumberOfStudents, price);
+    public static PaidSession create(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
+        return new PaidSession(creatorId, startDate, endDate, sessionImage, limitNumberOfStudents, price);
 
     }
 
