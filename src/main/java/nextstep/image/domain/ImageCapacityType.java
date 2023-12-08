@@ -4,6 +4,8 @@ import java.util.Arrays;
 import nextstep.image.exception.CannotFindImageCapacityTypeException;
 
 public enum ImageCapacityType {
+
+    KB("kb"),
     MB("mb"),
     GB("gb");
 
@@ -23,7 +25,7 @@ public enum ImageCapacityType {
     }
 
     public boolean isLessThanMB() {
-        return this.equals(MB);
+        return !this.equals(KB);
     }
 
     public boolean isGreaterThanMB() {

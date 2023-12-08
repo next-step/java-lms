@@ -7,4 +7,10 @@ public class Image {
     private ImageType imageType;
 
     private ImageSize imageSize;
+
+    public Image(ImageCapacity imageCapacity, ImageType imageType, ImageSize imageSize) {
+        this.imageCapacity = imageCapacity;
+        this.imageType = imageType;
+        this.imageSize = imageSize;
+    }
 }

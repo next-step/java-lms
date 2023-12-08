@@ -17,7 +17,7 @@ public class ImageSize {
 
     }
 
-    public ImageSize(int width, int height) {
+    public ImageSize(long width, long height) {
         validateWidth(width);
         validateHeight(height);
         validateRatio(width, height);
@@ -25,19 +25,19 @@ public class ImageSize {
         this.height = height;
     }
 
-    private void validateWidth(int width) {
+    private void validateWidth(long width) {
         if (width < 300) {
             throw new WidthValidationException(WIDTH_VALIDATION_EXCEPTION);
         }
     }
 
-    private void validateHeight(int height) {
+    private void validateHeight(long height) {
         if (height < 200) {
             throw new HeightValidationException(HEIGHT_VALIATION_EXCEPTION);
         }
     }
 
-    private void validateRatio(int width, int height) {
+    private void validateRatio(long width, long height) {
         if (width / height == 3 / 2) {
             throw new RatioValidationException(RATIO_VALIDATION_EXCEPTION);
         }
