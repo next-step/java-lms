@@ -15,7 +15,7 @@ class CourseTest {
         Course course = new Course(0L, "TDD, 클린 코드 with Java 17기", 1L);
         CoverImage coverImage = new CoverImage(1, "jpg", 300, 200);
         LocalDate now = LocalDate.now();
-        Session session = new FreeSession(0L, coverImage, now, now);
+        Session session = Session.ofFree(0L, 1L, coverImage, now, now);
 
         course.addSession(session);
 
