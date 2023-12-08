@@ -41,21 +41,21 @@ public class Session {
     private LocalDateTime updatedAt;
 
     private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee, LocalDate startDate, LocalDate endDate) {
-        this(id, sessionType, sessionState, maxPersonnel, null, fee, startDate, endDate);
+        this(id, null, sessionType, sessionState, maxPersonnel, null, fee, startDate, endDate);
     }
 
     private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount, LocalDate startDate, LocalDate endDate) {
-        this(id, sessionType, sessionState, maxPersonnel, null, null, startDate, endDate);
+        this(id, null,sessionType, sessionState, maxPersonnel, null, null, startDate, endDate);
         this.students = students;
         this.enrollCount = enrollCount;
     }
 
     public Session(long id, SessionState sessionState, LocalDate startDate, LocalDate endDate) {
-        this(id, null, sessionState, null, null, null, startDate, endDate);
+        this(id, null,null, sessionState, null, null, null, startDate, endDate);
     }
 
     public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
-        this(id, null, sessionState, null, imageInfo, null, startDate, endDate);
+        this(id, null,null, sessionState, null, imageInfo, null, startDate, endDate);
     }
 
     public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee) {
@@ -66,7 +66,7 @@ public class Session {
         return new Session(id, sessionType, sessionState, maxPersonnel, students, enrollCount, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
     }
 
-    public Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, LocalDate startDate, LocalDate endDate) {
+    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, LocalDate startDate, LocalDate endDate) {
 
         checkSessionStatus(sessionState, startDate, endDate);
 
@@ -78,6 +78,9 @@ public class Session {
         this.coverImage = imageInfo;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.creatorId = null;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     private void checkSessionStatus(SessionState sessionState, LocalDate startDate, LocalDate endDate) {
