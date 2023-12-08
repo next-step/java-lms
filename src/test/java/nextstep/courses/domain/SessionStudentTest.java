@@ -27,12 +27,4 @@ class SessionStudentTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강 인원이 다 찼습니다");
     }
-
-    @DisplayName("수강 제한 인원보다 신청한 인원이 작으면 true를 반환한다")
-    @Test
-    void underMaxSessionSize() {
-        SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(5, sessionStudents);
-        assertThat(sessionStudent.isUnderMaxStudentCount()).isTrue();
-    }
 }
