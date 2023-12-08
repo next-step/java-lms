@@ -13,6 +13,7 @@ public class Session {
     public static int MAX_CAPACITY = Integer.MAX_VALUE;
     public static Long SEQ = 0L;
 
+
     public final Long id;
     private final LocalDateTime beginDt;
     private final LocalDateTime endDt;
@@ -21,22 +22,24 @@ public class Session {
     private SessionStatus status = SessionStatus.CLOSED;
     private final List<NsUser> participants = new ArrayList<>();
     private final SessionCover sessionCover;
+    private final Course course;
 
-    private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
+    private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover, Course course) {
         this.id = SEQ++;
         this.beginDt = beginDt;
         this.endDt = endDt;
         this.price = price;
         this.capacity = capacity;
         this.sessionCover = sessionCover;
+        this.course = course;
     }
 
-    public static Session ofFree(LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover) {
-        return new Session(beginDt, endDt, FREE_PRICE, MAX_CAPACITY, sessionCover);
+    public static Session ofFree(LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {
+        return new Session(beginDt, endDt, FREE_PRICE, MAX_CAPACITY, sessionCover, course);
     }
 
-    public static Session ofPaid(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
-        return new Session(beginDt, endDt, price, capacity, sessionCover);
+    public static Session ofPaid(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover, Course course) {
+        return new Session(beginDt, endDt, price, capacity, sessionCover, course);
     }
 
     public void enroll(NsUser participant, Long amount) {
