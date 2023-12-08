@@ -1,9 +1,7 @@
 package nextstep.courses.domain.sessionuser;
 
-import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.ExceedMaxAttendanceCountException;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStatus;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;

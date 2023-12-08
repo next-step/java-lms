@@ -38,9 +38,11 @@ public class SessionService {
     // 유료 세션 생성
     public void createNotFreeSession(Long courseId, int maxAttendance, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
+
         CoverImage coverImage = coverImageDto.toCoverImage();
         Long coverImageId = coverImageRepository.save(coverImage);
         CoverImage savedCoverImage = coverImage.toSavedCoverImage(coverImageId);
+
         Session session = Session.notFreeSession(savedCoverImage, maxAttendance, course, period);
         sessionRepository.save(session);
     }

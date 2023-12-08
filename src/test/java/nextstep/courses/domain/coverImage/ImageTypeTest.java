@@ -1,6 +1,5 @@
 package nextstep.courses.domain.coverImage;
 
-import nextstep.courses.domain.coverImage.ImageType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

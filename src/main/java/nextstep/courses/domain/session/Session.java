@@ -1,13 +1,11 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
-import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.sessionuser.SessionUsers;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Session {
 
