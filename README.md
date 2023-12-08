@@ -56,5 +56,6 @@
   * [X] Students 예시 데이터 data.sql 작성
 * [ ] repository query 작성
   * [ ] Session Read,Update 쿼리 작성
+  * [X] Thumbnail Read 쿼리 작성
   * [ ] Students Create, Read, Update 쿼리 작성
 * [ ] service enroll 코드 작성
