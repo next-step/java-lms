@@ -8,6 +8,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+
     private Long id;
 
     private NsUser writer;
@@ -31,11 +32,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -73,11 +74,15 @@ public class Answer {
         this.question = question;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException{
+    public void delete(final NsUser loginUser) throws CannotDeleteException {
+        validateIsOwner(loginUser);
+        this.deleted = true;
+    }
+
+    private void validateIsOwner(final NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
-        this.deleted = true;
     }
 
     @Override
