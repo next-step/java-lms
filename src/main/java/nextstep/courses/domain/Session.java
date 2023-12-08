@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.tutor.domain.NsTutor;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -20,10 +21,6 @@ public class Session {
     private final SessionPeriod sessionPeriod;
 
     private final Enrollment enrollment;
-
-    public boolean isTutor(Long tutorId){
-        return Objects.equals(this.tutorId, tutorId);
-    }
 
     public Session(Long id) {
         this(id, 1L, 1L,
@@ -53,8 +50,18 @@ public class Session {
         this.enrollment = enrollment;
     }
 
-    public void register(NsUser user, Payment payment) {
-        enrollment.enroll(user, payment);
+    public SessionUser register(SelectionStatus selectionStatus, NsUser user, Payment payment) {
+        return enrollment.enroll(this.id, selectionStatus, user, payment);
+    }
+
+    public SessionUser approve(NsTutor tutor, NsUser user) {
+        tutor.isSameTutor(this.tutorId);
+        return enrollment.approve(user);
+    }
+
+    public SessionUser cancel(NsTutor tutor, NsUser user) {
+        tutor.isSameTutor(this.tutorId);
+        return enrollment.cancel(user);
     }
 
     @Override
@@ -69,4 +76,5 @@ public class Session {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

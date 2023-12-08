@@ -26,13 +26,13 @@ public class Enrollment {
         this.sessionUsers = sessionUsers;
     }
 
-    public void enroll(NsUser user, Payment payment) {
+    public SessionUser enroll(long sessionId, SelectionStatus selectionStatus, NsUser user, Payment payment) {
         validateRecruitment();
         validateStatus();
         validateType();
         validatePriceEqualPayment(payment);
-        sessionUsers.addUser(user);
         sessionUserCount.plusUserCount();
+        return sessionUsers.addUser(sessionId, selectionStatus, user);
     }
 
     private void validatePriceEqualPayment(Payment payment) {
@@ -63,4 +63,11 @@ public class Enrollment {
         return sessionType == SessionType.PAID;
     }
 
+    public SessionUser approve(NsUser user) {
+        return sessionUsers.approve(user);
+    }
+
+    public SessionUser cancel(NsUser user) {
+        return sessionUsers.cancel(user);
+    }
 }

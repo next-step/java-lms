@@ -66,7 +66,7 @@ class EnrollmentTest {
     @DisplayName("실패 - 수강 신청시 모집중이 아닌 경우 수강 신청을 할 수 없다.")
     void fail_session_register_not_open(SessionStatus sessionStatus) {
         Enrollment enrollment = zeroAndOneThousandSession(sessionStatus, SessionRecruitment.CLOSE, SessionType.FREE);
-        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatThrownBy(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionException.class)
                 .hasMessage("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
     }
@@ -75,7 +75,7 @@ class EnrollmentTest {
     @DisplayName("실패 - 수강 신청시 모집중 이더라도 강의가 종료된 경우 수강 신청을 할 수 없다.")
     void fail_session_register_not_open() {
         Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.COMPLETE, SessionRecruitment.OPEN, SessionType.FREE);
-        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatThrownBy(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionException.class)
                 .hasMessage("현재 강의가 종료되어 수강 신청을 할 수가 없습니다.");
     }
@@ -85,7 +85,7 @@ class EnrollmentTest {
     @DisplayName("성공 - 수강 신청시 모집중이고 강의 진행 상태가 준비중, 진행중 일경우 수강 신청을 할 수 있다.")
     void success_session_register_open(SessionStatus sessionStatus) {
         Enrollment enrollment = zeroAndOneThousandSession(sessionStatus, SessionRecruitment.OPEN, SessionType.FREE);
-        assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatCode(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
 
@@ -93,7 +93,7 @@ class EnrollmentTest {
     @DisplayName("실패 - 유료 강의는 지정된 수강 인원 제한을 초과할 경우 신청할 수 없다.")
     void fail_paid_session_register_user_count_over() {
         Enrollment enrollment = maxAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
-        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatThrownBy(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionUserCountException.class)
                 .hasMessage("제한된 수강 신청 인원을 초과 하였습니다.");
     }
@@ -102,7 +102,7 @@ class EnrollmentTest {
     @DisplayName("성공 - 유료 강의는 지정된 수강 인원 제한을 초과하지 않았을 경우 경우 신청할 수 있다.")
     void success_paid_session_register_user_count_not_over() {
         Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
-        assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatCode(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
 
@@ -110,7 +110,7 @@ class EnrollmentTest {
     @DisplayName("실패 - 유료 강의는 강의 금액과 수강료가 일치하지 않으면 수강 신청을 할 수 없다.")
     void test() {
         Enrollment enrollment = zeroAndTenThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
-        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatThrownBy(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .isInstanceOf(SessionPriceException.class)
                 .hasMessage("결제 금액과 강의 금액이 일치 하지 않습니다.");
     }
@@ -119,7 +119,7 @@ class EnrollmentTest {
     @DisplayName("성공 - 유저가 기존에 신청 하지 않은 강의일 경우 수강 신청을 할 수 있다.")
     void success_session_register_user() {
         Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
-        assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
+        assertThatCode(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
 
@@ -129,9 +129,9 @@ class EnrollmentTest {
         Enrollment enrollment = zeroAndOneThousandSession(SessionStatus.PREPARE, SessionRecruitment.OPEN, SessionType.PAID);
 
         final Payment payment = paymentOneThousand();
-        enrollment.enroll(JAVAJIGI, payment);
+        enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, payment);
 
-        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, payment))
+        assertThatThrownBy(() -> enrollment.enroll(1L, SelectionStatus.SELECTED, JAVAJIGI, payment))
                 .isInstanceOf(SessionUserException.class)
                 .hasMessage("강의를 이미 신청한 유저이므로 중복으로 신청할 수 없습니다.");
     }

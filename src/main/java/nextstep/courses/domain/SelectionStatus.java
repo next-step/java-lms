@@ -1,4 +1,4 @@
-package nextstep.users.domain;
+package nextstep.courses.domain;
 
 public enum SelectionStatus {
     SELECTED, NOT_SELECTED;

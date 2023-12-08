@@ -1,12 +1,9 @@
 package nextstep.tutor.domain;
 
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionUserStatus;
-import nextstep.tutor.exception.SessionApproveException;
-import nextstep.tutor.exception.SessionCancelException;
-import nextstep.users.domain.NsUser;
+import nextstep.tutor.exception.TutorException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class NsTutor {
 
@@ -41,22 +38,10 @@ public class NsTutor {
         this.updatedAt = updatedAt;
     }
 
-    public SessionUserStatus approve(Session session, NsUser nsUser) {
-        if (!session.isTutor(this.id)) {
-            throw new SessionApproveException("본인 담당 강의만 수강 승인 할 수 있습니다.");
+    public void isSameTutor(Long tutorId){
+        if (!Objects.equals(tutorId, this.id)) {
+            throw new TutorException("강사가 일치 하지 않습니다.");
         }
-
-        if (!nsUser.isSelected()) {
-            throw new SessionApproveException("선발 되지 않은 유저는 수강 승인 할 수 없습니다.");
-        }
-        return SessionUserStatus.APPROVE;
-    }
-
-    public SessionUserStatus cancel(Session session) {
-        if (!session.isTutor(this.id)) {
-            throw new SessionCancelException("본인 담당 강의만 수강 취소 할 수 있습니다.");
-        }
-        return SessionUserStatus.CANCEL;
     }
 
 }

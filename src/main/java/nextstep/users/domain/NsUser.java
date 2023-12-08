@@ -18,15 +18,9 @@ public class NsUser {
 
     private String email;
 
-    private SelectionStatus selectionStatus;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    public boolean isSelected(){
-        return selectionStatus.isSelected();
-    }
 
     public NsUser() {
     }
@@ -36,20 +30,11 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, userId, password, name, email, SelectionStatus.SELECTED, createdAt, updatedAt);
-    }
-
-    public NsUser(Long id, String userId, String password, String name, String email, SelectionStatus selectionStatus) {
-        this(id, userId, password, name, email, selectionStatus, LocalDateTime.now(), null);
-    }
-
-    public NsUser(Long id, String userId, String password, String name, String email, SelectionStatus selectionStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.selectionStatus = selectionStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -105,6 +90,10 @@ public class NsUser {
 
         this.name = target.name;
         this.email = target.email;
+    }
+
+    public boolean matchId(Long userId) {
+        return Objects.equals(this.id, userId);
     }
 
     public boolean matchUser(NsUser target) {

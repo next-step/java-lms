@@ -39,6 +39,7 @@ create table session_users
     id         bigint AUTO_INCREMENT(3),
     session_id bigint      not null,
     user_id    bigint      not null,
+    selection_status varchar(50) not null,
     status     varchar(10) not null,
     primary key (id)
 );
@@ -50,7 +51,7 @@ create table ns_user
     password         varchar(20) not null,
     name             varchar(20) not null,
     email            varchar(50),
-    selection_status varchar(50) not null,
+
     created_at       timestamp   not null,
     updated_at       timestamp,
     primary key (id)
