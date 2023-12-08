@@ -1,10 +1,6 @@
 package nextstep.courses;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionImage;
-import nextstep.courses.domain.SessionImages;
-import nextstep.courses.enumeration.ExtensionType;
+import nextstep.courses.domain.*;
 import nextstep.courses.enumeration.SessionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,17 +17,18 @@ public class CourseTest {
     @Test
     @DisplayName("과정은 여러개의 강의를 가질 수 있다.")
     void courseWithMultipleSessionTest() {
-        Session freeSession = Session.ofFree(1L,
+        Session freeSession = FreeSession.of(1L,
+                1L,
                 "무료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
-                0,
+                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 SessionStatus.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        Session costMoneySession = Session.ofCostMoney(1L,
+        Session costMoneySession = CostMoneySession.of(1L,
+                1L,
                 "유료강의",
-                new SessionImages(List.of(new SessionImage(1L, "url", ExtensionType.GIF, 1000L, 300L, 200L))),
+                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 10,
                 SessionStatus.READY,
                 2000,

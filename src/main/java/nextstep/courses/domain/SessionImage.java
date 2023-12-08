@@ -5,27 +5,45 @@ import nextstep.courses.exception.ExceedImageRatioException;
 import nextstep.courses.exception.ExceedImageSizeException;
 import nextstep.courses.exception.ExceedImageWidthHeightException;
 
-import static nextstep.courses.constants.ImageSize.*;
+import java.time.LocalDateTime;
 
 public class SessionImage extends BaseEntity {
 
+    private static final Integer ONE_MB = 1024 * 1024;
+    private static final Integer MINIMUM_WIDTH = 300;
+    private static final Integer MINIMUM_HEIGHT = 200;
+    private static final Integer WIDTH_RATIO = 3;
+    private static final Integer HEIGHT_RATIO = 2;
+
     private final Long id;
+    private final Long sessionId;
     private final String imageUrl;
     private final ExtensionType extensionType;
     private final Long size;
 
-    public SessionImage(Long id, String imageUrl, ExtensionType extensionType, Long size, Long width, Long height) {
-        super();
+    private SessionImage(Long id, Long sessionId, String imageUrl, ExtensionType extensionType, Long size, Long width, Long height) {
+        super(LocalDateTime.now(), LocalDateTime.now());
 
         validate(size, width, height);
         this.id = id;
+        this.sessionId = sessionId;
         this.imageUrl = imageUrl;
         this.extensionType = extensionType;
         this.size = size;
     }
 
-    public static SessionImage of(Long id, String imageUrl, String extensionType, Long size, Long width, Long height) {
-        return new SessionImage(id, imageUrl, ExtensionType.findType(extensionType), size, width, height);
+    public SessionImage(Long id, Long sessionId, String imageUrl, ExtensionType extensionType, Long size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+
+        this.id = id;
+        this.sessionId = sessionId;
+        this.imageUrl = imageUrl;
+        this.extensionType = extensionType;
+        this.size = size;
+    }
+
+    public static SessionImage of(Long id, Long sessionId, String imageUrl, String extensionType, Long size, Long width, Long height) {
+        return new SessionImage(id, sessionId, imageUrl, ExtensionType.findType(extensionType), size, width, height);
     }
 
     private void validate(long size, long width, long height) {
@@ -46,6 +64,14 @@ public class SessionImage extends BaseEntity {
         return width * HEIGHT_RATIO == height * WIDTH_RATIO;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
+    public long getSessionId() {
+        return this.sessionId;
+    }
+
     public ExtensionType getExtensionType() {
         return this.extensionType;
     }
@@ -54,7 +80,7 @@ public class SessionImage extends BaseEntity {
         return this.size;
     }
 
-    public String getUrl() {
+    public String getImageUrl() {
         return this.imageUrl;
     }
 }
