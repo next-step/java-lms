@@ -20,4 +20,12 @@ public class Period {
     public boolean isAfterStartDateTime(Course course) {
         return startDateTime.isAfter(course.getCreatedAt());
     }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
 }

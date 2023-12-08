@@ -31,7 +31,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void save(Session session) {
-
+        String sql = "insert into session (status, start_date_time, end_date_time, free, max_attendance) values (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, session.getSessionStatus().name(), session.getPeriod().getStartDateTime(),
+                session.getPeriod().getEndDateTime(), session.getSessionType().isFree(), session.getSessionType().getMaxAttendance());
     }
 
     @Override

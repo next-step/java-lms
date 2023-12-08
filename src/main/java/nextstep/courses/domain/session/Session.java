@@ -75,4 +75,15 @@ public class Session {
         return sessionUsers.totalAttendUsersCount();
     }
 
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
 }
