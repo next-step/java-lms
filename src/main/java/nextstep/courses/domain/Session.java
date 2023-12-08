@@ -16,20 +16,22 @@ public class Session {
     private final Integer capacity;
     private final SessionStatus status = SessionStatus.CLOSED;
     private final List<String> participants = new ArrayList<>();
+    private final SessionCover sessionCover;
 
-    private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity) {
+    private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
         this.beginDt = beginDt;
         this.endDt = endDt;
         this.price = price;
         this.capacity = capacity;
+        this.sessionCover = sessionCover;
     }
 
-    public static Session ofFree(LocalDateTime beginDt, LocalDateTime endDt) {
-        return new Session(beginDt, endDt, FREE_PRICE, MAX_CAPACITY);
+    public static Session ofFree(LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover) {
+        return new Session(beginDt, endDt, FREE_PRICE, MAX_CAPACITY, sessionCover);
     }
 
-    public static Session ofPaid(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity) {
-        return new Session(beginDt, endDt, price, capacity);
+    public static Session ofPaid(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
+        return new Session(beginDt, endDt, price, capacity, sessionCover);
     }
 
     public Long price() {
