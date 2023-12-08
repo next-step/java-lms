@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import nextstep.common.Period;
+
 public class Session {
 
     // id
@@ -9,7 +11,7 @@ public class Session {
     private String name;
 
     // 날짜
-    private SessionDate date;
+    private Period date;
 
     // 이미지
     private SessionImage image;
@@ -23,7 +25,7 @@ public class Session {
     // 상태
     private SessionStatus status;
 
-    public Session(String name, SessionDate date, SessionImage image, SessionCharge charge, SessionStudent student, SessionStatus status) {
+    public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStudent student, SessionStatus status) {
         this.id = 0l;
         this.name = name;
         this.date = date;
@@ -41,7 +43,7 @@ public class Session {
         return name;
     }
 
-    public SessionDate getDate() {
+    public Period getDate() {
         return date;
     }
 

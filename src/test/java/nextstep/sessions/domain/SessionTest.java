@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.common.PeriodTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,28 +9,28 @@ import static org.assertj.core.api.Assertions.*;
 public class SessionTest {
     public static final Session JAVA = new Session(
             "JAVA",
-            SessionDateTest.DEC,
+            PeriodTest.DEC,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.FREE,
             new SessionStudent(0, 0),
             SessionStatus.RECRUITING);
     public static final Session JAVA_TDD_17 = new Session(
             "JAVA_TDD",
-            SessionDateTest.DEC,
+            PeriodTest.DEC,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.CHARGE_1000,
             new SessionStudent(1000, 10),
             SessionStatus.RECRUITING);
     public static final Session JAVA_TDD_16 = new Session(
             "JAVA_TDD",
-            SessionDateTest.NOV,
+            PeriodTest.NOV,
             SessionImageTest.IMAGE_PNG,
             SessionChargeTest.CHARGE_1000,
             new SessionStudent(1000, 1),
             SessionStatus.END);
     public static final Session COMPUTER = new Session(
             "COMPUTER",
-            SessionDateTest.DEC,
+            PeriodTest.DEC,
             SessionImageTest.IMAGE_JPG,
             SessionChargeTest.CHARGE_100,
             new SessionStudent(1000, 1),
@@ -39,13 +40,13 @@ public class SessionTest {
     @Test
     void sessionTest() {
         assertThat(new Session("강의1",
-                SessionDateTest.NOV,
+                PeriodTest.NOV,
                 SessionImageTest.IMAGE_JPG,
                 SessionChargeTest.FREE,
                 new SessionStudent(0, 0),
                 SessionStatus.END)).isInstanceOf(Session.class);
         assertThat(new Session("강의2",
-                SessionDateTest.DEC,
+                PeriodTest.DEC,
                 SessionImageTest.IMAGE_PNG,
                 SessionChargeTest.CHARGE_1000,
                 new SessionStudent(1000, 1),
