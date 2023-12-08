@@ -32,10 +32,22 @@ public class Session {
         this.price = price;
     }
 
+    public Session(SessionPeriod sessionPeriod, Image image, SessionType type, SessionStatus status,
+                   Enrollment enrollment,
+                   long price) {
+        this.sessionPeriod = sessionPeriod;
+        this.image = image;
+        this.type = type;
+        this.status = status;
+        this.enrollment = enrollment;
+        this.price = price;
+    }
+
     public void enrollSession(long fee, NsUser user) {
         checkSessionIsStart();
         if (type.isPaid()) {
             enrollment.enrollPaidSession(fee, user);
+            return;
         }
         enrollment.enrollFreeSession(user);
     }
@@ -44,5 +56,29 @@ public class Session {
         if (sessionPeriod.isStart(new CurrentPeriodStrategy())) {
             throw new SessionOutOfDateException(SESSION_OUT_OF_DATE_EXCEPTION);
         }
+    }
+
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public long getPrice() {
+        return price;
     }
 }

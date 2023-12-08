@@ -29,5 +29,6 @@ public class SessionService {
         Session session = findSession(request.getSessionId());
         NsUser user = userService.findUser(request.getUserId());
         session.enrollSession(request.getFee(), user);
+        sessionRepository.save(session);
     }
 }

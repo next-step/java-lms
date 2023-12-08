@@ -118,6 +118,24 @@ public class NsUser {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password)
+                && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, password, name, email);
+    }
+
+    @Override
     public String toString() {
         return "NsUser{" +
                 "id=" + id +
@@ -134,25 +152,5 @@ public class NsUser {
         public boolean isGuestUser() {
             return true;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        NsUser nsUser = (NsUser) o;
-        return Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password)
-                && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email)
-                && Objects.equals(createdAt, nsUser.createdAt) && Objects.equals(updatedAt,
-                nsUser.updatedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, password, name, email, createdAt, updatedAt);
     }
 }

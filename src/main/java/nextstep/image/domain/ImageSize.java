@@ -38,7 +38,7 @@ public class ImageSize {
     }
 
     private void validateRatio(long width, long height) {
-        if (width / height == 3 / 2) {
+        if (width / height != 3 / 2) {
             throw new RatioValidationException(RATIO_VALIDATION_EXCEPTION);
         }
     }

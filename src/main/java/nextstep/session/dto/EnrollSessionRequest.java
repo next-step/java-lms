@@ -8,6 +8,12 @@ public class EnrollSessionRequest {
 
     private String userId;
 
+    public EnrollSessionRequest(Long sessionId, long fee, String userId) {
+        this.sessionId = sessionId;
+        this.fee = fee;
+        this.userId = userId;
+    }
+
     public Long getSessionId() {
         return sessionId;
     }
