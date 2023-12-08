@@ -1,6 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.qna.UnAuthorizedException;
+import org.apache.commons.logging.Log;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -96,6 +97,10 @@ public class NsUser {
         return matchUserId(target.getUserId());
     }
 
+    public boolean matchUser(Long targetNsUserPkId) {
+        return Objects.equals(this.id, targetNsUserPkId);
+    }
+
     private boolean matchUserId(String userId) {
         return this.userId.equals(userId);
     }
@@ -117,6 +122,7 @@ public class NsUser {
         return false;
     }
 
+
     private static class GuestNsUser extends NsUser {
         @Override
         public boolean isGuestUser() {
@@ -134,5 +140,18 @@ public class NsUser {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(id, nsUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
