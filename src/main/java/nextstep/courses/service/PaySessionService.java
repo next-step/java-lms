@@ -26,7 +26,7 @@ public class PaySessionService implements SessionService {
 
     @Override
     public void enroll(EnrolmentInfo enrolmentInfo) {
-        Session session = sessionRepository.findBy(enrolmentInfo.sessionId())
+        Session session = sessionRepository.findById(enrolmentInfo.sessionId())
             .orElseThrow(() -> new IllegalArgumentException("일치하는 강의가 없습니다. 강의 아이디 :: " + enrolmentInfo.sessionId()));
 
         Student student = session.enroll(enrolmentInfo);
