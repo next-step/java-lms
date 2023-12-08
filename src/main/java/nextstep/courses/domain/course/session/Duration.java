@@ -29,4 +29,12 @@ public class Duration {
             throw new IllegalArgumentException("시작 날짜가 종료 날짜보다 늦을 수 없습니다.");
         }
     }
+
+    public boolean startDateIsSameOrBefore(LocalDate date) {
+        return this.startDate == date || this.startDate.isBefore(date);
+    }
+
+    public boolean endDateIsSameOrAfter(LocalDate date) {
+        return this.endDate == date || this.endDate.isAfter(date);
+    }
 }

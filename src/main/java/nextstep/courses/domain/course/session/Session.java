@@ -4,6 +4,7 @@ import nextstep.courses.domain.course.image.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -131,4 +132,32 @@ public class Session {
             throw new IllegalArgumentException("결제를 진행해 주세요.");
         }
     }
+
+    public void changeOnReady(LocalDate date) {
+        checkStartDateIsSameOrBefore(date);
+        this.status = Status.READY;
+    }
+
+    public void changeOnRecruit(LocalDate date) {
+        checkStartDateIsSameOrBefore(date);
+        this.status = Status.RECRUIT;
+    }
+
+    private void checkStartDateIsSameOrBefore(LocalDate date) {
+        if (duration.startDateIsSameOrBefore(date)) {
+            throw new IllegalArgumentException("강의 시작일 이전에 변경 가능합니다.");
+        }
+    }
+
+    public void changeOnEnd(LocalDate date) {
+        checkEndDateIsSameOrAfter(date);
+        this.status = Status.END;
+    }
+
+    private void checkEndDateIsSameOrAfter(LocalDate date) {
+        if (duration.endDateIsSameOrAfter(date)) {
+            throw new IllegalArgumentException("강의 종료일 이후 변경 가능합니다.");
+        }
+    }
+
 }

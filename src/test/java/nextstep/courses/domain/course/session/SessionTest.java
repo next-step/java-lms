@@ -17,6 +17,10 @@ public class SessionTest {
     private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
     private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
     private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net");
+    private static final LocalDate DATE_2023_12_5 = LocalDate.of(2023, 12, 5);
+    private static final LocalDate DATE_2023_12_6 = LocalDate.of(2023, 12, 6);
+    private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
+    private static final LocalDate DATE_2023_12_12 = LocalDate.of(2023, 12, 12);
 
     private Image image;
     private Payment payment;
@@ -111,6 +115,54 @@ public class SessionTest {
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, differentPayment)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("changeOnReady는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
+    void changeOnReady_startDateIsBeforeOrSame_throwsException() {
+        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
+        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
+                10, applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.changeOnReady(DATE_2023_12_5)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(
+                () -> session.changeOnReady(DATE_2023_12_6)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("changeOnRecruit는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
+    void changeOnRecruit_startDateIsBeforeOrSame_throwsException() {
+        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
+        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
+                10, applicants, Session.Status.READY, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.changeOnRecruit(DATE_2023_12_5)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(
+                () -> session.changeOnRecruit(DATE_2023_12_6)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("changeOnRecruit는 강의 종료 날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
+    void changeOnEnd_EndDateIsSameOrAfter_throwsException() {
+        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_12);
+        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
+                10, applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.changeOnEnd(DATE_2023_12_6)
+        ).isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(
+                () -> session.changeOnEnd(DATE_2023_12_12)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }
