@@ -35,10 +35,6 @@ public class Registration {
         return registrationInfo.hasEqualUser(user);
     }
 
-    public UserPaymentInfo userPaymentInfo() {
-        return registrationInfo.userPaymentInfo();
-    }
-
     public long userId() {
         return registrationInfo.userId();
     }
@@ -74,5 +70,13 @@ public class Registration {
 
     public SelectionType selectionType() {
         return registrationProcedure.selectionType();
+    }
+
+    public Payment payment() {
+        return registrationInfo.payment();
+    }
+
+    public NsUser user() {
+        return registrationInfo.user();
     }
 }

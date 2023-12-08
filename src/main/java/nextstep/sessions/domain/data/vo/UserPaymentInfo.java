@@ -24,4 +24,12 @@ public class UserPaymentInfo {
     public long paymentId() {
         return payment.getId();
     }
+
+    public NsUser user() {
+        return user;
+    }
+
+    public Payment payment() {
+        return payment;
+    }
 }

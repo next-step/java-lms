@@ -3,6 +3,7 @@ package nextstep.sessions.service;
 import java.util.List;
 
 import nextstep.payments.domain.Payment;
+import nextstep.sessions.domain.data.Enrollment;
 import nextstep.sessions.domain.data.Session;
 import nextstep.sessions.domain.data.type.ApprovalType;
 import nextstep.sessions.domain.data.type.SelectionType;
@@ -26,8 +27,9 @@ public class SessionService {
         Session session = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllById(sessionId);
-        Session sessionWithRegistrations = session.with(registrations);
-        Registration registration = sessionWithRegistrations.registration(loginUser, payment);
+        Enrollment enrollment = session.enrollment(registrations);
+        Registration registration = new Registration(session, loginUser, payment);
+        enrollment.enroll(registration);
         registrationRepository.save(sessionId, registration);
     }
 
