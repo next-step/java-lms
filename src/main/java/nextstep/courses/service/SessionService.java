@@ -7,7 +7,6 @@ import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.Student;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
-import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
