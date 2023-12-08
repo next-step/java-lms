@@ -18,6 +18,14 @@ public class Dimensions {
         return width >= 300 && height >= 200 && (double) width / height == 1.5;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

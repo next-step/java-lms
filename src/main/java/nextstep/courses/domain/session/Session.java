@@ -86,4 +86,12 @@ public class Session {
     public SessionType getSessionType() {
         return sessionType;
     }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public CoverImage getCoverImg() {
+        return coverImg;
+    }
 }
