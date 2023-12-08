@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.Lectures;
 
 public class Course {
     private Long id;
@@ -12,6 +14,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Lectures lectures = new Lectures();
 
     public Course() {
     }
@@ -49,5 +53,13 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addLecture(Lecture lecture) {
+        this.lectures.add(lecture);
+    }
+
+    public int numberOfLecture() {
+        return this.lectures.size();
     }
 }

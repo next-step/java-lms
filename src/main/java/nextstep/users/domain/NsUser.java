@@ -1,9 +1,8 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
@@ -21,6 +20,7 @@ public class NsUser {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private Payment payment;
 
     public NsUser() {
     }
@@ -115,6 +115,16 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public void hasPayment(Price price) {
+        if (!this.payment.samePrice(price)) {
+            throw new IllegalArgumentException("결제 정보가 없습니다.");
+        }
+    }
+
+    public void payment(Payment payment) {
+        this.payment = payment;
     }
 
     private static class GuestNsUser extends NsUser {
