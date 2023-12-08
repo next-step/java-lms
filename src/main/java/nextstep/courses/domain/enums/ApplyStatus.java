@@ -1,9 +1,9 @@
 package nextstep.courses.domain.enums;
 
-public enum Status {
-	READY,
+public enum ApplyStatus {
 	APPLYING,
-	END;
+	CLOSED
+	;
 
 	public boolean isApplying() {
 		return this == APPLYING;

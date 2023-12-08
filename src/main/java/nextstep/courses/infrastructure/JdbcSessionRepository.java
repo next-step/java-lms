@@ -7,14 +7,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.enums.ApplyStatus;
 import nextstep.courses.domain.enums.PaidType;
-import nextstep.courses.domain.enums.Status;
+import nextstep.courses.domain.enums.ProgressStatus;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
@@ -29,12 +31,10 @@ import nextstep.courses.domain.session.registration.Tuition;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 	private final JdbcOperations jdbcTemplate;
-	private final CourseRepository courseRepository;
 	private final RegistrationRepository registrationRepository;
 
 	public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-		this.courseRepository = new JdbcCourseRepository(jdbcTemplate);
 		this.registrationRepository = new JdbcRegistrationRepository(jdbcTemplate);
 	}
 
@@ -48,22 +48,23 @@ public class JdbcSessionRepository implements SessionRepository {
 		String sql
 			= "insert into session ("
 			+ "course_id, width, height, type, capacity, "
-			+ "start_at, end_at, title, status, maximum_capacity, "
+			+ "start_at, end_at, title, progress_status, apply_status, maximum_capacity, "
 			+ "paid_type, tuition, created_at, updated_at"
-			+ ") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ ") values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		return jdbcTemplate.update(
 			sql,
 			session.getCourse().getId(),
 			session.getImage().getSize().getWidth(),
 			session.getImage().getSize().getHeight(),
-			session.getImage().getType(),
+			session.getImage().getType().name(),
 			session.getImage().getImageCapacity().getCapacity(),
 			session.getPeriod().getStartAt(),
 			session.getPeriod().getEndAt(),
 			session.getTitle(),
-			session.getStatus(),
+			session.getProgressStatus().name(),
+			session.getApplyStatus().name(),
 			session.getSessionRegistration().getMaximumCapacity().getMaximumCapacity(),
-			session.getSessionRegistration().getPaidType(),
+			session.getSessionRegistration().getPaidType().name(),
 			session.getSessionRegistration().getTuition().getTuition(),
 			session.getCreatedAt(),
 			session.getUpdatedAt()
@@ -75,7 +76,7 @@ public class JdbcSessionRepository implements SessionRepository {
 		List<Registration> registrations = registrationRepository.findRegistrationsBySessionId(id);
 
 		String sql = "select id, course_id, width, height, type, capacity,"
-			+ "start_at, end_at, title, status, maximum_capacity,"
+			+ "start_at, end_at, title, progress_status, apply_status, maximum_capacity,"
 			+ "paid_type, tuition, created_at, updated_at from session where id = ?";
 		RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
 			rs.getLong(1),
@@ -90,16 +91,17 @@ public class JdbcSessionRepository implements SessionRepository {
 				rs.getInt(3),
 				rs.getInt(4)
 			),
-			Status.valueOf(rs.getString(10)),
+			ProgressStatus.valueOf(rs.getString(10)),
+			ApplyStatus.valueOf(rs.getString(11)),
 			new SessionRegistration(
-				PaidType.valueOf(rs.getString(12)),
-				new Tuition(rs.getInt(13)),
-				new SessionCapacity(11),
+				PaidType.valueOf(rs.getString(13)),
+				new Tuition(rs.getInt(14)),
+				new SessionCapacity(12),
 				new Students(registrations)
 			),
-			findCourse(rs.getLong(2)),
-			toLocalDateTime(rs.getTimestamp(14)),
-			toLocalDateTime(rs.getTimestamp(15))
+			null,
+			toLocalDateTime(rs.getTimestamp(15)),
+			toLocalDateTime(rs.getTimestamp(16))
 		);
 
 		return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
@@ -117,9 +119,5 @@ public class JdbcSessionRepository implements SessionRepository {
 			return null;
 		}
 		return date.toLocalDate();
-	}
-
-	private Course findCourse(Long courseId) {
-		return courseRepository.findById(courseId);
 	}
 }

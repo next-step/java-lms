@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 
 import nextstep.courses.domain.BaseTimeEntity;
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.enums.ApplyStatus;
 import nextstep.courses.domain.session.image.Image;
-import nextstep.courses.domain.enums.Status;
+import nextstep.courses.domain.enums.ProgressStatus;
 import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.users.domain.NsUser;
 
@@ -14,36 +15,38 @@ public class Session extends BaseTimeEntity {
 	private final String title;
 	private final Period period;
 	private final Image image;
-	private final Status status;
+	private final ProgressStatus progressStatus;
+	private final ApplyStatus applyStatus;
 	private final SessionRegistration sessionRegistration;
 	private final Course course;
 
 	public Session(
 		Long id, String title,
-		Period period, Image image, Status status,
-		SessionRegistration sessionRegistration, Course course,
-		LocalDateTime createdAt, LocalDateTime updatedAt
+		Period period, Image image, ProgressStatus progressStatus,
+		ApplyStatus applyStatus, SessionRegistration sessionRegistration,
+		Course course, LocalDateTime createdAt, LocalDateTime updatedAt
 		) {
 		super(createdAt, updatedAt);
 		this.id = id;
 		this.title = title;
 		this.period = period;
 		this.image = image;
-		this.status = status;
+		this.progressStatus = progressStatus;
+		this.applyStatus = applyStatus;
 		this.sessionRegistration = sessionRegistration;
 		this.course = course;
 	}
 
 	public Session(
-		Long id, String title,
-		Period period, Image image, Status status,
-		SessionRegistration sessionRegistration, Course course
+		Long id, String title, Period period, Image image, ProgressStatus progressStatus,
+		ApplyStatus applyStatus, SessionRegistration sessionRegistration, Course course
 	) {
 		this.id = id;
 		this.title = title;
 		this.period = period;
 		this.image = image;
-		this.status = status;
+		this.progressStatus = progressStatus;
+		this.applyStatus = applyStatus;
 		this.sessionRegistration = sessionRegistration;
 		this.course = course;
 	}
@@ -56,8 +59,11 @@ public class Session extends BaseTimeEntity {
 	}
 
 	private void canApply() {
-		if ( !status.isApplying() ) {
+		if ( !applyStatus.isApplying() ) {
 			throw new IllegalArgumentException("강의 신청 기간이 아닙니다.");
+		}
+		if ( progressStatus.isFinish() ) {
+			throw new IllegalArgumentException("종료된 강의는 신청할 수 없습니다.");
 		}
 	}
 
@@ -77,8 +83,12 @@ public class Session extends BaseTimeEntity {
 		return image;
 	}
 
-	public Status getStatus() {
-		return status;
+	public ProgressStatus getProgressStatus() {
+		return progressStatus;
+	}
+
+	public ApplyStatus getApplyStatus() {
+		return applyStatus;
 	}
 
 	public SessionRegistration getSessionRegistration() {

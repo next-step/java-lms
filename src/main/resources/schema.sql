@@ -17,7 +17,8 @@ create table session (
     start_at date not null,
     end_at date not null,
     title varchar(50) not null,
-    status varchar(20) not null,
+    progress_status varchar(20) not null,
+    apply_status varchar(20) not null,
     maximum_capacity bigint not null,
     paid_type varchar(50) not null,
     tuition bigint not null,
@@ -32,7 +33,6 @@ create table registration (
     session_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,
-
     primary key (id)
 );
 

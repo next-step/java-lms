@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import nextstep.courses.domain.enums.ApplyStatus;
 import nextstep.courses.domain.enums.PaidType;
-import nextstep.courses.domain.enums.Status;
+import nextstep.courses.domain.enums.ProgressStatus;
 import nextstep.courses.domain.session.registration.SessionCapacity;
 import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.courses.domain.session.registration.Students;
@@ -21,7 +22,7 @@ public class SessionTest {
 	@Test
 	void validate_amount() {
 		Session session = new Session(
-			1L, "임시 강의",null,null, Status.READY,
+			1L, "임시 강의",null,null, ProgressStatus.READY, ApplyStatus.APPLYING,
 			new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(1), new Students())
 			,null, LocalDateTime.now(), LocalDateTime.now()
 		);
