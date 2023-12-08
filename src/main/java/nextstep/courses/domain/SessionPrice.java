@@ -1,12 +1,12 @@
 package nextstep.courses.domain;
 
-public class Price {
+public class SessionPrice {
 
     private static final int ZERO_PRICE = 0;
 
     private int price;
 
-    public Price(int price) {
+    public SessionPrice(int price) {
         validate(price);
         this.price = price;
     }
