@@ -15,4 +15,8 @@ public enum SessionStatus {
     public static boolean isOpen(SessionStatus status) {
         return OPEN.equals(status);
     }
+
+    public static boolean isClose(SessionStatus status) {
+        return CLOSE.equals(status);
+    }
 }

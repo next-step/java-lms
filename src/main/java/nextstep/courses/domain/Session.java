@@ -61,6 +61,11 @@ public class Session {
         return students;
     }
 
+    public Session updateStatus(SessionStatus status) throws PeriodException {
+        this.status = period.validate(status);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

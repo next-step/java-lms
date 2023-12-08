@@ -14,4 +14,15 @@ public class Period {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public SessionStatus validate(SessionStatus status) throws PeriodException {
+        if (SessionStatus.isClose(status) && endDate.isBefore(LocalDate.now())) {
+            throw new PeriodException("종료는 강의 종료일 보다 뒤에 있어야합니다.");
+        }
+
+        if (!SessionStatus.isClose(status) && startDate.isAfter(LocalDate.now())) {
+            throw new PeriodException("준비중과 모집일은 강의 시작일 전이여야한다.");
+        }
+        return status;
+    }
 }
