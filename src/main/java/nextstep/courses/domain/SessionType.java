@@ -24,4 +24,8 @@ public enum SessionType {
                 .findFirst()
                 .orElseThrow(() -> new InvalidSessionTypeException(code));
     }
+
+    public boolean isPaid() {
+        return this == PAID;
+    }
 }
