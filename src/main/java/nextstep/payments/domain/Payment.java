@@ -19,11 +19,26 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(Long sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id='" + id + '\'' +
+                ", sessionId=" + sessionId +
+                ", nsUserId=" + nsUserId +
+                ", amount=" + amount +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

@@ -11,6 +11,9 @@ import java.util.List;
 public class Session {
     public static long FREE_PRICE = 0L;
     public static int MAX_CAPACITY = Integer.MAX_VALUE;
+    public static Long SEQ = 0L;
+
+    public final Long id;
     private final LocalDateTime beginDt;
     private final LocalDateTime endDt;
     private final Long price;
@@ -20,6 +23,7 @@ public class Session {
     private final SessionCover sessionCover;
 
     private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
+        this.id = SEQ++;
         this.beginDt = beginDt;
         this.endDt = endDt;
         this.price = price;
@@ -35,20 +39,15 @@ public class Session {
         return new Session(beginDt, endDt, price, capacity, sessionCover);
     }
 
-    public void addParticipant(NsUser participant) {
+    public void enroll(NsUser participant, Long amount) {
         validateStatus();
         validateCapacity();
+        validatePrice(amount);
         this.participants.add(participant);
     }
 
     public void startEnrollment() {
         this.status = SessionStatus.ENROLL;
-    }
-
-    public void validatePrice(long price) {
-        if(this.price != price) {
-            throw new BusinessInvalidValueException("강의 가격이 변동되었습니다.");
-        }
     }
 
     public Long price() {
@@ -68,6 +67,12 @@ public class Session {
     private void validateCapacity() {
         if (this.participants.size() >= capacity) {
             throw new BusinessInvalidValueException("최대수강인원을 초과했습니다.");
+        }
+    }
+
+    private void validatePrice(long price) {
+        if (this.price != price) {
+            throw new BusinessInvalidValueException("강의 가격이 변동되었습니다.");
         }
     }
 }
