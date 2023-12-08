@@ -1,9 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import nextstep.courses.domain.session.SessionStudent;
+import nextstep.courses.domain.session.SessionStudents;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +12,6 @@ import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SessionStudentTest {
 

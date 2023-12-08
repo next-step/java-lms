@@ -1,14 +1,13 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
+import nextstep.courses.domain.session.SessionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static nextstep.courses.domain.SessionStatus.OPEN;
+import static nextstep.courses.domain.session.SessionStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SessionStatusTest {
 

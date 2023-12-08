@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Image;
 
 import nextstep.courses.domain.Image.ImageSize;
 import nextstep.courses.domain.Image.ImageType;
