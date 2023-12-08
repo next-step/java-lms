@@ -1,5 +1,6 @@
 package nextstep.image.domain;
 
+import java.util.Objects;
 import nextstep.image.exception.HeightValidationException;
 import nextstep.image.exception.RatioValidationException;
 import nextstep.image.exception.WidthValidationException;
@@ -41,5 +42,22 @@ public class ImageSize {
         if (width / height != 3 / 2) {
             throw new RatioValidationException(RATIO_VALIDATION_EXCEPTION);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ImageSize imageSize = (ImageSize) o;
+        return width == imageSize.width && height == imageSize.height;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height);
     }
 }

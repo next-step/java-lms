@@ -39,9 +39,11 @@ public class MockSessionRepository implements SessionRepository {
     }
 
     @Override
-    public void save(Session session) {
+    public Long save(Session session) {
         long size = sessionStorage.size();
-        sessionStorage.put(size + 1, session);
+        long sessionId = size + 1;
+        sessionStorage.put(sessionId, session);
+        return sessionId;
     }
 
     @Override

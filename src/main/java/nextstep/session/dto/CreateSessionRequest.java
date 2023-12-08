@@ -6,7 +6,6 @@ import nextstep.image.domain.ImageCapacity;
 import nextstep.image.domain.ImageCapacityType;
 import nextstep.image.domain.ImageSize;
 import nextstep.image.domain.ImageType;
-import nextstep.session.domain.Enrollment;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionPeriod;
 import nextstep.session.domain.SessionStatus;
@@ -35,6 +34,22 @@ public class CreateSessionRequest {
 
     private long price;
 
+    public CreateSessionRequest(Long courseId, LocalDate startDate, LocalDate endDate, long value,
+                                ImageCapacityType imageCapacityType, ImageType imageType, long width, long height,
+                                SessionType type, SessionStatus status, long price) {
+        this.courseId = courseId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.value = value;
+        this.imageCapacityType = imageCapacityType;
+        this.imageType = imageType;
+        this.width = width;
+        this.height = height;
+        this.type = type;
+        this.status = status;
+        this.price = price;
+    }
+
     public Session toEntity() {
         SessionPeriod sessionPeriod = new SessionPeriod(startDate, endDate);
         ImageCapacity imageCapacity = new ImageCapacity(value, imageCapacityType);
@@ -46,5 +61,9 @@ public class CreateSessionRequest {
                 status,
                 price
         );
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 }

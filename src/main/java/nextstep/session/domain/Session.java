@@ -1,6 +1,6 @@
 package nextstep.session.domain;
 
-import java.util.List;
+import java.util.Objects;
 import nextstep.image.domain.Image;
 import nextstep.session.exception.SessionOutOfDateException;
 import nextstep.users.domain.NsUser;
@@ -8,6 +8,8 @@ import nextstep.users.domain.NsUser;
 public class Session {
 
     public static final String SESSION_OUT_OF_DATE_EXCEPTION = "강의가 시작되어 수강 신청할 수 없습니다.";
+
+    private Long sessionId;
 
     private SessionPeriod sessionPeriod;
 
@@ -58,27 +60,42 @@ public class Session {
         }
     }
 
-    public SessionPeriod getSessionPeriod() {
-        return sessionPeriod;
-    }
-
     public Image getImage() {
         return image;
-    }
-
-    public SessionType getType() {
-        return type;
-    }
-
-    public SessionStatus getStatus() {
-        return status;
     }
 
     public Enrollment getEnrollment() {
         return enrollment;
     }
 
-    public long getPrice() {
-        return price;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Session session = (Session) o;
+        return price == session.price && Objects.equals(image, session.image) && type == session.type
+                && status == session.status && Objects.equals(enrollment, session.enrollment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(image, type, status, enrollment, price);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "sessionId=" + sessionId +
+                ", sessionPeriod=" + sessionPeriod +
+                ", image=" + image +
+                ", type=" + type +
+                ", status=" + status +
+                ", enrollment=" + enrollment +
+                ", price=" + price +
+                '}';
     }
 }

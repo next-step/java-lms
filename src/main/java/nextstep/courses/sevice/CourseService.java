@@ -12,8 +12,12 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public void saveCourse(CreateCourseRequest request) {
-        courseRepository.save(request.toEntity());
+    public int saveCourse(CreateCourseRequest request) {
+        return courseRepository.save(request.toEntity());
+    }
+
+    public void saveCourse(Course course) {
+        courseRepository.save(course);
     }
 
     public Course findCourse(Long courseId) {
