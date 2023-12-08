@@ -1,6 +1,6 @@
 package nextstep.courses.exception;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static nextstep.courses.exception.ExceptionMessage.*;
 
@@ -12,7 +12,7 @@ public class NotCorrectTimeException extends IllegalArgumentException {
         this(MESSAGE);
     }
 
-    public NotCorrectTimeException(LocalDateTime startAt, LocalDateTime endAt) {
+    public NotCorrectTimeException(LocalDate startAt, LocalDate endAt) {
         this(String.format("%s\n%s\n%s", MESSAGE, startAt, endAt));
     }
 

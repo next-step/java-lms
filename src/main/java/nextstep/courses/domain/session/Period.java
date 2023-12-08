@@ -2,22 +2,22 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.NotCorrectTimeException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period {
 
-    private final LocalDateTime startAt;
+    private final LocalDate startAt;
 
-    private final LocalDateTime endAt;
+    private final LocalDate endAt;
 
-    public Period(LocalDateTime startAt, LocalDateTime endAt) {
+    public Period(LocalDate startAt, LocalDate endAt) {
         validateStartAt(startAt, endAt);
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
-    private void validateStartAt(LocalDateTime startAt, LocalDateTime endAt) {
+    private void validateStartAt(LocalDate startAt, LocalDate endAt) {
         if (startAt.isAfter(endAt)) {
             throw new NotCorrectTimeException(startAt, endAt);
         }
