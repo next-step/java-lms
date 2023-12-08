@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 public class Session {
@@ -58,5 +59,18 @@ public class Session {
 
         students.registerSessionStudent(user, sessionType);
         return students;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(period, session.period) && status == session.status && Objects.equals(sessionType, session.sessionType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(period, status, sessionType);
     }
 }
