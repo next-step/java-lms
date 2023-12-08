@@ -30,4 +30,12 @@ public class PaidCondition {
             throw new PaymentMismatchException(fee);
         }
     }
+
+    public int maxStudents() {
+        return this.maxStudents;
+    }
+
+    public Long fee() {
+        return this.fee;
+    }
 }

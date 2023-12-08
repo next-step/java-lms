@@ -2,7 +2,7 @@ package nextstep.courses.repository;
 
 import nextstep.courses.domain.Session;
 
-public interface FreeSessionRepository {
+public interface SessionRepository {
 
     int save(Session session, Long courseId);
 

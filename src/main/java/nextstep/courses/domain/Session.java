@@ -15,8 +15,8 @@ public class Session extends BaseEntity {
     private final CoverImage coverImage;
     private final Period period;
     private Status status;
-    private final PaidCondition paidCondition;
     private final Students students;
+    private final PaidCondition paidCondition;
 
     public static Session ofFree(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         return new Session(id, SessionType.FREE, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, 0, 0L, LocalDateTime.now(), null);
@@ -24,6 +24,10 @@ public class Session extends BaseEntity {
 
     public static Session ofPaid(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
         return new Session(id, SessionType.PAID, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, maxStudents, fee, LocalDateTime.now(), null);
+    }
+
+    public static Session of(Long id, SessionType type, CoverImage coverImage, Status status, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, type, coverImage, new Period(startDate, endDate), status, maxStudents, fee, createdAt, updatedAt);
     }
 
     private Session(Long id, SessionType type, CoverImage coverImage, Period period, Status status, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -34,8 +38,8 @@ public class Session extends BaseEntity {
         this.coverImage = coverImage;
         this.period = period;
         this.status = status;
-        this.paidCondition = new PaidCondition(maxStudents, fee);
         this.students = new Students();
+        this.paidCondition = new PaidCondition(maxStudents, fee);
     }
 
     private void validateNotNull(Long id, CoverImage coverImage, Period period) {
@@ -73,7 +77,7 @@ public class Session extends BaseEntity {
         return id;
     }
 
-    public Long ImageId() {
+    public Long imageId() {
         return coverImage.getId();
     }
 
@@ -91,5 +95,13 @@ public class Session extends BaseEntity {
 
     public LocalDate endDate() {
         return period.endDate();
+    }
+
+    public int maxStudents() {
+        return this.paidCondition.maxStudents();
+    }
+
+    public Long fee() {
+        return this.paidCondition.fee();
     }
 }
