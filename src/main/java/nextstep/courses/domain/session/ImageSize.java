@@ -1,4 +1,4 @@
-package nextstep.courses.domain.cource;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.image.ImageSizeBelowMinException;
 import nextstep.courses.exception.image.UnsupportedImageRatioException;
@@ -21,11 +21,11 @@ public class ImageSize {
     }
 
     private void validate(long width, long height) {
-        if(width < WIDTH_MIN || height < HEIGHT_MIN){
+        if (width < WIDTH_MIN || height < HEIGHT_MIN) {
             throw new ImageSizeBelowMinException("이미지 사이즈는 width/height=" + WIDTH_MIN + "/" + HEIGHT_MIN + "px 이상이어야 합니다. 현재 width/heihgt : " + width + "/" + height);
         }
 
-        if(!allowedRatio(width, height)){
+        if (!allowedRatio(width, height)) {
             throw new UnsupportedImageRatioException("이미지 비율은 " + WIDTH_RATIO + ":" + HEIGHT_RATIO + "이어야 합니다.");
         }
     }
@@ -38,4 +38,20 @@ public class ImageSize {
         return new ImageSize(width, height);
     }
 
+
+    public long width() {
+        return width;
+    }
+
+    public long height() {
+        return height;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSize{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

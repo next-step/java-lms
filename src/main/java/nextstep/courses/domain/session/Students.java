@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Students {
@@ -15,6 +16,10 @@ public class Students {
         return new Students(students);
     }
 
+    public static Students of(NsUser... students) {
+        return new Students(List.of(students));
+    }
+
     public void add(NsUser student) {
         students.add(student);
     }
@@ -23,5 +28,7 @@ public class Students {
         return students.size();
     }
 
-
+    public List<NsUser> values() {
+        return Collections.unmodifiableList(students);
+    }
 }
