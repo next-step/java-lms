@@ -4,16 +4,20 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 
-public class ParticipantCount {
+public class ParticipantManager {
 
     private int maxParticipants;
     private SessionParticipants sessionParticipants;
 
-    public ParticipantCount(int maxParticipants) {
+    public ParticipantManager() {
+        this(0, new SessionParticipants(new ArrayList<>()));
+    }
+
+    public ParticipantManager(int maxParticipants) {
         this(maxParticipants, new SessionParticipants(new ArrayList<>()));
     }
 
-    public ParticipantCount(int maxParticipants, SessionParticipants nowParticipants) {
+    public ParticipantManager(int maxParticipants, SessionParticipants nowParticipants) {
         this.maxParticipants = maxParticipants;
         this.sessionParticipants = nowParticipants;
     }
@@ -34,5 +38,9 @@ public class ParticipantCount {
 
     public int nowCount() {
         return sessionParticipants.count();
+    }
+
+    public static ParticipantManager of(int maxParticipants) {
+        return new ParticipantManager(maxParticipants);
     }
 }
