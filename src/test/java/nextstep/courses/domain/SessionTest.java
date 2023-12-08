@@ -60,6 +60,18 @@ class SessionTest {
                 .isInstanceOf(NegativePaidConditionException.class);
     }
 
+    @Test
+    @DisplayName("중복 수강 신청 시 예외를 던진다.")
+    void duplicate_register() {
+        Session paidSession = Session.ofPaid(1L, 2L, coverImage(), START_DATE, END_DATE, 2, 10_000L);
+        paidSession.openSession();
+
+        paidSession.register(Payment.ofPaid(1L, 1L, NsUserTest.SANJIGI, 10_000L));
+
+        assertThatThrownBy(() -> paidSession.register(Payment.ofPaid(2L, 1L, NsUserTest.SANJIGI, 10_000L)))
+                .isInstanceOf(DuplicateStudentsException.class);
+    }
+
     private static CoverImage coverImage() {
         return new CoverImage(1, "gif", 300, 200);
     }
