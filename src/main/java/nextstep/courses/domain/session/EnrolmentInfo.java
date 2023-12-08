@@ -3,12 +3,12 @@ package nextstep.courses.domain.session;
 public class EnrolmentInfo {
 
     private Long sessionId;
-    private Long userId;
+    private String nsUserId;
     private Long payAmount;
 
-    public EnrolmentInfo(Long sessionId, Long userId, Long payAmount) {
+    public EnrolmentInfo(Long sessionId, String nsUserId, Long payAmount) {
         this.sessionId = sessionId;
-        this.userId = userId;
+        this.nsUserId = nsUserId;
         this.payAmount = payAmount;
     }
 
@@ -16,8 +16,8 @@ public class EnrolmentInfo {
         return sessionId;
     }
 
-    public Long userId() {
-        return userId;
+    public String nsUserId() {
+        return this.nsUserId;
     }
 
     public boolean isNotSameAmount(Long amount) {

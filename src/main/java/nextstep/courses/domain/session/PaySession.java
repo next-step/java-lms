@@ -2,6 +2,9 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.Students;
+import nextstep.users.domain.NsUser;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
@@ -14,19 +17,19 @@ public class PaySession extends Session {
     private Long amount;
     private int studentsCapacity;
 
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
-        super(id, payType, status, coverImage, startDate, endDate);
+    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, Students students, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
+        super(id, payType, status, coverImage, students, startDate, endDate);
         this.amount = amount;
         this.studentsCapacity = studentsCapacity;
     }
 
     @Override
-    public Student enroll(EnrolmentInfo enrolmentInfo) {
+    public Student enroll(NsUser user, EnrolmentInfo enrolmentInfo) {
         validateStatus();
         validatePayAmount(enrolmentInfo);
         validateCapacity();
 
-        Student student = new Student(id, enrolmentInfo.userId());
+        Student student = new Student(this, user);
         students.add(student);
 
         return student;
