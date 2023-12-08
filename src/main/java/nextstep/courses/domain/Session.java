@@ -14,7 +14,7 @@ public class Session {
     private final LocalDateTime endDt;
     private final Long price;
     private final Integer capacity;
-    private final SessionStatus status = SessionStatus.CLOSED;
+    private SessionStatus status = SessionStatus.CLOSED;
     private final List<String> participants = new ArrayList<>();
     private final SessionCover sessionCover;
 
@@ -34,18 +34,33 @@ public class Session {
         return new Session(beginDt, endDt, price, capacity, sessionCover);
     }
 
+    public void register(String participant) {
+        validateStatus();
+        validateCapacity();
+        this.participants.add(participant);
+    }
+
+    public void startEnrollment() {
+        this.status = SessionStatus.ENROLL;
+    }
+
+    private void validateStatus() {
+        if (SessionStatus.ENROLL != this.status) {
+            throw new BusinessInvalidValueException("수강신청 가능한 상태가 아닙니다.");
+        }
+    }
+
+    private void validateCapacity() {
+        if (this.participants.size() >= capacity) {
+            throw new BusinessInvalidValueException("최대수강인원을 초과했습니다.");
+        }
+    }
+
     public Long price() {
         return price;
     }
 
     public Integer capacity() {
         return capacity;
-    }
-
-    public void addParticipant(String participant) {
-        if (this.participants.size() >= capacity) {
-            throw new BusinessInvalidValueException("최대수강인원을 초과했습니다.");
-        }
-        this.participants.add(participant);
     }
 }
