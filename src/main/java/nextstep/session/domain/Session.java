@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import java.util.List;
 import nextstep.image.domain.Image;
 import nextstep.session.exception.SessionOutOfDateException;
 import nextstep.users.domain.NsUser;
@@ -28,17 +29,6 @@ public class Session {
         this.image = image;
         this.type = type;
         this.status = status;
-        this.price = price;
-    }
-
-    public Session(SessionPeriod sessionPeriod, Image image, SessionType type, SessionStatus status,
-                   Enrollment enrollment,
-                   long price) {
-        this.sessionPeriod = sessionPeriod;
-        this.image = image;
-        this.type = type;
-        this.status = status;
-        this.enrollment = enrollment;
         this.price = price;
     }
 

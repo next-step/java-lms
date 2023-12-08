@@ -10,6 +10,7 @@ import nextstep.users.domain.NsUser;
 public class Enrollment {
 
     public static final String SESSION_FULL_OF_PARTICIPANTS_EXCEPTION = "강의 수강 인원이 모두 채워져 수강 신청을 할 수 없습니다.";
+
     private SessionParticipants participants = new SessionParticipants();
 
     private List<SessionPayment> payments = new ArrayList<>();
