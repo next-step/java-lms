@@ -22,7 +22,14 @@ public class Applicants implements Iterable<NsUser> {
     }
 
     public void add(NsUser applicant) {
+        checkApplicantAlreadyExisted(applicant);
         this.applicants.add(applicant);
+    }
+
+    private void checkApplicantAlreadyExisted(NsUser applicant) {
+        if (this.applicants.contains(applicant)) {
+            throw new IllegalArgumentException("이미 강의를 신청하였습니다.");
+        }
     }
 
     @Override

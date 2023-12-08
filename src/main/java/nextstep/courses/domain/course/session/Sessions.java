@@ -32,7 +32,14 @@ public class Sessions implements Iterable<Session> {
     }
 
     public void add(Session session) {
+        checkSessionAlreadyExisted(session);
         this.sessions.add(session);
+    }
+
+    private void checkSessionAlreadyExisted(Session session) {
+        if (this.sessions.contains(session)) {
+            throw new IllegalArgumentException("이미 강의를 추가하였습니다.");
+        }
     }
 
     @Override
