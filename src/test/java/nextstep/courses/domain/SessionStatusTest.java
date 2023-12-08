@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionStatusTest {
 
-    @DisplayName("강의가 준비중이거나 종료상태면 신청을 하지 못한다")
+    @DisplayName("강의가 준비중이거나 종료상태면 false를 반환한다")
     @ParameterizedTest
     @CsvSource({"PREPARING, false", "CLOSED, false"})
     void prepareOrClosed(SessionStatus sessionStatus, boolean expected) {
         assertThat(sessionStatus.canApply()).isEqualTo(expected);
     }
 
-    @DisplayName("강의가 모집중이면 신청이 가능하다")
+    @DisplayName("강의가 모집중이면 true를 반환한다")
     @Test
     void openStatus() {
         assertThat(OPEN.canApply()).isTrue();
