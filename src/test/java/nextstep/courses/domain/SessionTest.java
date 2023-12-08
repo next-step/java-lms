@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.type.ImageExtension;
-import nextstep.courses.type.InfinitablePositiveInteger;
+import nextstep.courses.type.MaxRegister;
 import nextstep.courses.type.SessionDuration;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -27,7 +27,7 @@ class SessionTest {
         SessionDuration duration = SessionDuration.fromIso8601("2023-12-06T10:23:10.000", "2023-12-07T10:00:00.000");
 
         session = Session.createFreeSession(1L, sampleCourse, image, duration);
-        paidSession = Session.createPaidSession(2L, sampleCourse, image, duration, InfinitablePositiveInteger.of(1), 100);
+        paidSession = Session.createPaidSession(2L, sampleCourse, image, duration, MaxRegister.of(1), 100);
     }
 
     @Test

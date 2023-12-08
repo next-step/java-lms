@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.type.InfinitablePositiveInteger;
+import nextstep.courses.type.MaxRegister;
 import nextstep.courses.type.SessionDuration;
 import nextstep.courses.type.SessionState;
 import nextstep.payments.domain.Payment;
@@ -24,7 +24,7 @@ public class Session {
     private SessionImage coverImage;
     private SessionDuration duration;
 
-    private InfinitablePositiveInteger maxUserCount;
+    private MaxRegister maxUserCount;
     private int fee;
 
     private Session() {
@@ -40,14 +40,14 @@ public class Session {
         session.registeredUsers = new RegisteredUsers();
         session.coverImage = coverImage;
         session.duration = duration;
-        session.maxUserCount = InfinitablePositiveInteger.infinite();
+        session.maxUserCount = MaxRegister.infinite();
         session.fee = 0;
 
         validateSession(session);
         return session;
     }
 
-    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, InfinitablePositiveInteger maxUserCount, int fee) {
+    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
         Session session = new Session();
 
         session.id = id;
