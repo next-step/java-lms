@@ -27,7 +27,7 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public abstract void enroll(Payment payment);
+    public abstract void enroll(Enrolment enrolment);
 
     @Override
     public boolean equals(Object o) {

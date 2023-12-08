@@ -24,12 +24,12 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void enroll(Payment payment) {
+    public void enroll(Enrolment enrolment) {
         validateStatus();
-        validatePayAmount(payment);
+        validatePayAmount(enrolment);
         validateCapacity();
 
-        students.add(new Student(id, payment.nsUserId()));
+        students.add(new Student(id, enrolment.userId()));
     }
 
     private void validateStatus() {
@@ -38,8 +38,8 @@ public class PaySession extends Session {
         }
     }
 
-    private void validatePayAmount(Payment payment) {
-        if (payment.isNotSameAmount(amount)) {
+    private void validatePayAmount(Enrolment enrolment) {
+        if (enrolment.isNotSameAmount(amount)) {
             throw new IllegalArgumentException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
         }
     }

@@ -15,10 +15,10 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(Payment payment) {
+    public void enroll(Enrolment enrolment) {
         validateStatus();
 
-        this.students.add(new Student(id, payment.nsUserId()));
+        this.students.add(new Student(id, enrolment.userId()));
     }
 
     private void validateStatus() {
