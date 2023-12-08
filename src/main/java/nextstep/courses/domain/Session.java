@@ -40,30 +40,44 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(Long id, SessionType sessionType,SessionState sessionState, Integer maxPersonnel, Long fee) {
+    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee, LocalDate startDate, LocalDate endDate) {
+        this(id, sessionType, sessionState, maxPersonnel, null, fee, startDate, endDate);
+    }
+
+    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount, LocalDate startDate, LocalDate endDate) {
+        this(id, sessionType, sessionState, maxPersonnel, null, null, startDate, endDate);
+        this.students = students;
+        this.enrollCount = enrollCount;
+    }
+
+    public Session(long id, SessionState sessionState, LocalDate startDate, LocalDate endDate) {
+        this(id, null, sessionState, null, null, null, startDate, endDate);
+    }
+
+    public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
+        this(id, null, sessionState, null, imageInfo, null, startDate, endDate);
+    }
+
+    public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee) {
+        return new Session(id, sessionType, sessionState, maxPersonnel, fee, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+    }
+
+    public static Session recruitingSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
+        return new Session(id, sessionType, sessionState, maxPersonnel, students, enrollCount, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+    }
+
+    public Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, LocalDate startDate, LocalDate endDate) {
+
+        checkSessionStatus(sessionState, startDate, endDate);
+
         this.id = id;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
         this.maxPersonnel = maxPersonnel;
         this.fee = fee;
-    }
-
-    public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
-        checkSessionStatus(sessionState, startDate, endDate);
-        this.id = id;
-        this.sessionState = sessionState;
         this.coverImage = imageInfo;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
-        this.id = id;
-        this.sessionType = sessionType;
-        this.sessionState = sessionState;
-        this.maxPersonnel = maxPersonnel;
-        this.students = students;
-        this.enrollCount = enrollCount;
     }
 
     private void checkSessionStatus(SessionState sessionState, LocalDate startDate, LocalDate endDate) {
