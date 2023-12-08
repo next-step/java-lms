@@ -19,7 +19,6 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 	private final JdbcOperations jdbcTemplate;
 	private final UserRepository userRepository;
 
-
 	public JdbcRegistrationRepository(JdbcOperations jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 		this.userRepository = new JdbcUserRepository(jdbcTemplate);

@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import nextstep.courses.domain.BaseTimeEntity;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.enums.ApplyStatus;
-import nextstep.courses.domain.session.image.Image;
 import nextstep.courses.domain.enums.ProgressStatus;
+import nextstep.courses.domain.session.image.Images;
 import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.users.domain.NsUser;
 
@@ -14,41 +14,41 @@ public class Session extends BaseTimeEntity {
 	private final Long id;
 	private final String title;
 	private final Period period;
-	private final Image image;
 	private final ProgressStatus progressStatus;
 	private final ApplyStatus applyStatus;
 	private final SessionRegistration sessionRegistration;
 	private final Course course;
+	private final Images images;
 
 	public Session(
 		Long id, String title,
-		Period period, Image image, ProgressStatus progressStatus,
+		Period period, ProgressStatus progressStatus,
 		ApplyStatus applyStatus, SessionRegistration sessionRegistration,
-		Course course, LocalDateTime createdAt, LocalDateTime updatedAt
+		Course course, Images images, LocalDateTime createdAt, LocalDateTime updatedAt
 		) {
 		super(createdAt, updatedAt);
 		this.id = id;
 		this.title = title;
 		this.period = period;
-		this.image = image;
 		this.progressStatus = progressStatus;
 		this.applyStatus = applyStatus;
 		this.sessionRegistration = sessionRegistration;
 		this.course = course;
+		this.images = images;
 	}
 
 	public Session(
-		Long id, String title, Period period, Image image, ProgressStatus progressStatus,
-		ApplyStatus applyStatus, SessionRegistration sessionRegistration, Course course
+		Long id, String title, Period period, ProgressStatus progressStatus,
+		ApplyStatus applyStatus, SessionRegistration sessionRegistration, Course course, Images images
 	) {
 		this.id = id;
 		this.title = title;
 		this.period = period;
-		this.image = image;
 		this.progressStatus = progressStatus;
 		this.applyStatus = applyStatus;
 		this.sessionRegistration = sessionRegistration;
 		this.course = course;
+		this.images = images;
 	}
 
 	public void apply(NsUser nsUser, long amount) {
@@ -79,10 +79,6 @@ public class Session extends BaseTimeEntity {
 		return period;
 	}
 
-	public Image getImage() {
-		return image;
-	}
-
 	public ProgressStatus getProgressStatus() {
 		return progressStatus;
 	}
@@ -97,5 +93,9 @@ public class Session extends BaseTimeEntity {
 
 	public Course getCourse() {
 		return course;
+	}
+
+	public Images getImages() {
+		return images;
 	}
 }
