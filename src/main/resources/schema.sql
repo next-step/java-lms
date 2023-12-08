@@ -64,7 +64,7 @@ create table session (
     id bigint not null,
     course_id bigint not null,
     image_id bigint not null,
-    type char not null,
+    type varchar(10) not null,
     status varchar(10) not null,
     start_date timestamp not null,
     end_date timestamp not null,

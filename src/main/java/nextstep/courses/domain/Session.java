@@ -82,7 +82,7 @@ public class Session extends BaseEntity {
     }
 
     public String type() {
-        return type.code();
+        return type.name();
     }
 
     public String status() {
@@ -103,5 +103,18 @@ public class Session extends BaseEntity {
 
     public Long fee() {
         return this.paidCondition.fee();
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", type=" + type +
+                ", coverImage=" + coverImage +
+                ", period=" + period +
+                ", status=" + status +
+                ", students=" + students +
+                ", paidCondition=" + paidCondition +
+                '}';
     }
 }

@@ -13,6 +13,6 @@ INSERT INTO course (id, title, creator_id, created_at) VALUES (2, 'JPA 활용편
 
 INSERT INTO cover_image (id, size, extension, width, height, created_at) VALUES (2, 1, 'jpg', 300, 200, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, image_id, type, status, start_date, end_date, max_students, fee, created_at) VALUES (2, 2, 2, 'F', 'NOT_OPEN', '2023-12-01', '2023-12-31', 0, 0, CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, image_id, type, status, start_date, end_date, max_students, fee, created_at) VALUES (3, 2, 2, 'P', 'NOT_OPEN', '2023-12-01', '2023-12-31', 30, 20000, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, image_id, type, status, start_date, end_date, max_students, fee, created_at) VALUES (2, 2, 2, 'FREE', 'NOT_OPEN', '2023-12-01', '2023-12-31', 0, 0, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, image_id, type, status, start_date, end_date, max_students, fee, created_at) VALUES (3, 2, 2, 'PAID', 'NOT_OPEN', '2023-12-01', '2023-12-31', 30, 20000, CURRENT_TIMESTAMP());
 

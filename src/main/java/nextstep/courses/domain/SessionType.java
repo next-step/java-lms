@@ -5,22 +5,12 @@ import nextstep.courses.exception.InvalidSessionTypeException;
 import java.util.Arrays;
 
 public enum SessionType {
-    FREE("F"),
-    PAID("P");
-
-    private final String code;
-
-    SessionType(String code) {
-        this.code = code;
-    }
-
-    public String code() {
-        return code;
-    }
+    FREE,
+    PAID;
 
     public static SessionType findByCode(String code) {
         return Arrays.stream(values())
-                .filter(sessionType -> sessionType.code.equals(code))
+                .filter(sessionType -> sessionType.name().equals(code))
                 .findFirst()
                 .orElseThrow(() -> new InvalidSessionTypeException(code));
     }

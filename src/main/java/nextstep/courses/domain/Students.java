@@ -19,4 +19,11 @@ public class Students {
     public boolean isRegistrationFull(int maxStudents) {
         return values.size() == maxStudents;
     }
+
+    @Override
+    public String toString() {
+        return "Students{" +
+                "values=" + values +
+                '}';
+    }
 }

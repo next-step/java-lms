@@ -36,4 +36,12 @@ public class Period {
     public LocalDate endDate() {
         return endDate;
     }
+
+    @Override
+    public String toString() {
+        return "Period{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

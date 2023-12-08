@@ -50,4 +50,14 @@ public class CoverImage extends BaseEntity {
     public int getHeight() {
         return dimensions.getHeight();
     }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id +
+                ", size=" + size +
+                ", extension=" + extension +
+                ", dimensions=" + dimensions +
+                '}';
+    }
 }

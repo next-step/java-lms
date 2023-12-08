@@ -42,7 +42,7 @@ class SessionRepositoryTest {
 
         Session freeSession = sessionRepository.findById(2L);
         assertThat(freeSession.id()).isEqualTo(2L);
-        assertThat(freeSession.type()).isEqualTo("F");
+        assertThat(freeSession.type()).isEqualTo("FREE");
     }
 
     @Test
@@ -54,9 +54,10 @@ class SessionRepositoryTest {
         Session paidSession = sessionRepository.findById(3L);
         assertAll(
                 () -> assertThat(paidSession.id()).isEqualTo(3L),
-                () -> assertThat(paidSession.type()).isEqualTo("P"),
+                () -> assertThat(paidSession.type()).isEqualTo("PAID"),
                 () -> assertThat(paidSession.fee()).isEqualTo(20_000L)
         );
+        LOGGER.debug("Session: {}", paidSession);
     }
 
     private CoverImage coverImage() {

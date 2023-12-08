@@ -38,4 +38,12 @@ public class PaidCondition {
     public Long fee() {
         return this.fee;
     }
+
+    @Override
+    public String toString() {
+        return "PaidCondition{" +
+                "maxStudents=" + maxStudents +
+                ", fee=" + fee +
+                '}';
+    }
 }
