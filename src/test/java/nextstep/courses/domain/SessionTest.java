@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.BusinessInvalidValueException;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ class SessionTest {
     void 수강신청상태_exception() {
         Session session = Session.ofFree(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, null));
         assertThatExceptionOfType(BusinessInvalidValueException.class)
-                .isThrownBy(() -> session.addParticipant("김혜수"))
+                .isThrownBy(() -> session.addParticipant(new NsUser()))
                 .withMessage("수강신청 가능한 상태가 아닙니다.");
     }
 
@@ -43,7 +44,7 @@ class SessionTest {
         paidSession.startEnrollment();
 
         assertThatExceptionOfType(BusinessInvalidValueException.class)
-                .isThrownBy(() -> paidSession.addParticipant("김혜수"))
+                .isThrownBy(() -> paidSession.addParticipant(new NsUser()))
                 .withMessage("최대수강인원을 초과했습니다.");
     }
 

@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.enums.SessionStatus;
 import nextstep.courses.exception.BusinessInvalidValueException;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Session {
     private final Long price;
     private final Integer capacity;
     private SessionStatus status = SessionStatus.CLOSED;
-    private final List<String> participants = new ArrayList<>();
+    private final List<NsUser> participants = new ArrayList<>();
     private final SessionCover sessionCover;
 
     private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover) {
@@ -34,7 +35,7 @@ public class Session {
         return new Session(beginDt, endDt, price, capacity, sessionCover);
     }
 
-    public void addParticipant(String participant) {
+    public void addParticipant(NsUser participant) {
         validateStatus();
         validateCapacity();
         this.participants.add(participant);
