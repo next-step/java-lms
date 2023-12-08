@@ -17,7 +17,7 @@ public class FreeSession extends Session {
     public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
 
-        Student student = new Student(id, Long.parseLong(enrolmentInfo.nsUserId()));
+        Student student = new Student(id, enrolmentInfo.nsUserId());
         this.students.add(student);
 
         return student;

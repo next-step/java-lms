@@ -28,7 +28,7 @@ public class PaySession extends Session {
         validatePayAmount(enrolmentInfo);
         validateCapacity();
 
-        Student student = new Student(id, Long.parseLong(enrolmentInfo.nsUserId()));
+        Student student = new Student(id, enrolmentInfo.nsUserId());
         students.add(student);
 
         return student;
