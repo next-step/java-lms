@@ -34,16 +34,18 @@ public abstract class Session {
     }
 
     public void enroll(NsUser user) {
-    }
-
-    protected void validateCommonEnroll() {
         validateStatus();
+        validateCommonEnroll(user);
+        students.add(user);
     }
 
     private void validateStatus() {
         if (sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
         }
+    }
+
+    protected void validateCommonEnroll(NsUser nsUser) {
     }
 
     public List<NsUser> getStudents() {

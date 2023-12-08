@@ -20,11 +20,9 @@ public class PaidSession extends Session {
     }
 
     @Override
-    public void enroll(NsUser user) {
-        validateCommonEnroll();
+    protected void validateCommonEnroll(NsUser nsUser) {
         validateLimitNumberOfStudents();
-        validatePayment(user);
-        students.add(user);
+        validatePayment(nsUser);
     }
 
     private void validateLimitNumberOfStudents() {
