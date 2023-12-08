@@ -4,20 +4,19 @@ import java.util.Objects;
 
 /**
  * 직사각형 물체의 크기를 정의합니다.
+ * 단위는 픽셀입니다.
  * 불변 객체입니다.
  */
 public class Rectangle {
     private final int width;
     private final int height;
-    private final LengthUnit unit;
 
-    public Rectangle(int width, int height, LengthUnit unit) {
+    public Rectangle(int width, int height) {
         validateValue(width);
         validateValue(height);
 
         this.width = width;
         this.height = height;
-        this.unit = unit;
     }
 
     private static void validateValue(int value) {
@@ -30,10 +29,6 @@ public class Rectangle {
      * 가로나 세로 둘 중 하나라도 주어진 크기보다 작다면 예외를 던집니다.
      */
     public void throwIfSizeIsSmallerThan(Rectangle size) {
-        if (unit != size.unit) {
-            throw new IllegalArgumentException("비교하려는 두 대상의 단위가 다릅니다.");
-        }
-
         if (width < size.width) {
             throw new IllegalArgumentException("이미지 가로 크기가 " + size.width + "보다 작습니다.");
         }
@@ -66,19 +61,19 @@ public class Rectangle {
             return false;
         }
         Rectangle rectangle = (Rectangle) o;
-        return width == rectangle.width && height == rectangle.height && unit == rectangle.unit;
+        return width == rectangle.width && height == rectangle.height;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(width, height, unit);
+        return Objects.hash(width, height);
     }
 
     @Override
     public String toString() {
         return "Rectangle{" +
-                "width=" + width + unit.toString() +
-                ", height=" + height + unit.toSymbol() +
+                "width=" + width + "px" +
+                ", height=" + height + "px" +
                 '}';
     }
 

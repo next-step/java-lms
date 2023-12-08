@@ -4,7 +4,7 @@ import nextstep.courses.type.*;
 
 public class SessionImage {
     private static final Capacity MAX_CAPACITY = new Capacity(1024, CapacityUnit.KB);
-    private static final Rectangle MIN_SIZE = new Rectangle(300, 200, LengthUnit.PIXEL);
+    private static final Rectangle MIN_SIZE = new Rectangle(300, 200);
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
@@ -33,7 +33,7 @@ public class SessionImage {
     public SessionImage(int capacity, int width, int height, ImageExtension type) {
         this(
                 new Capacity(capacity, CapacityUnit.KB),
-                new Rectangle(width, height, LengthUnit.PIXEL),
+                new Rectangle(width, height),
                 type
         );
     }
