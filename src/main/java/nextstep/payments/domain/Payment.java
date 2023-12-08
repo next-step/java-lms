@@ -34,4 +34,8 @@ public class Payment {
     public Long getAmount() {
         return amount;
     }
+
+    public String getId() {
+        return id;
+    }
 }

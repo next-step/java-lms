@@ -3,9 +3,17 @@ package nextstep.courses.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class ImageTest {
+
+    @Test
+    void 이미지_정상() {
+        Image image = new Image("success", 10000, "jpg", 300, 200);
+        assertThat(image.getTitle()).isEqualTo("success");
+    }
+
     @DisplayName("이미지 크기는 1MB 이하여야 한다")
     @Test
     void 이미지_크기() {
