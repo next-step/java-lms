@@ -32,7 +32,7 @@ class SessionTest {
     void 수강신청상태_exception() {
         Session session = Session.ofFree(LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, null));
         assertThatExceptionOfType(BusinessInvalidValueException.class)
-                .isThrownBy(() -> session.register("김혜수"))
+                .isThrownBy(() -> session.addParticipant("김혜수"))
                 .withMessage("수강신청 가능한 상태가 아닙니다.");
     }
 
@@ -43,7 +43,17 @@ class SessionTest {
         paidSession.startEnrollment();
 
         assertThatExceptionOfType(BusinessInvalidValueException.class)
-                .isThrownBy(() -> paidSession.register("김혜수"))
+                .isThrownBy(() -> paidSession.addParticipant("김혜수"))
                 .withMessage("최대수강인원을 초과했습니다.");
+    }
+
+    @Test
+    void 가격비교_exception() {
+        Session paidSession = Session.ofPaid(LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+                1_000_000L, 0, new SessionCover(300, 200, 1024, null));
+
+        assertThatExceptionOfType(BusinessInvalidValueException.class)
+                .isThrownBy(() -> paidSession.validatePrice(2_000_000L))
+                .withMessage("강의 가격이 변동되었습니다.");
     }
 }

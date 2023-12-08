@@ -34,7 +34,7 @@ public class Session {
         return new Session(beginDt, endDt, price, capacity, sessionCover);
     }
 
-    public void register(String participant) {
+    public void addParticipant(String participant) {
         validateStatus();
         validateCapacity();
         this.participants.add(participant);
@@ -42,6 +42,20 @@ public class Session {
 
     public void startEnrollment() {
         this.status = SessionStatus.ENROLL;
+    }
+
+    public void validatePrice(long price) {
+        if(this.price != price) {
+            throw new BusinessInvalidValueException("강의 가격이 변동되었습니다.");
+        }
+    }
+
+    public Long price() {
+        return price;
+    }
+
+    public Integer capacity() {
+        return capacity;
     }
 
     private void validateStatus() {
@@ -54,13 +68,5 @@ public class Session {
         if (this.participants.size() >= capacity) {
             throw new BusinessInvalidValueException("최대수강인원을 초과했습니다.");
         }
-    }
-
-    public Long price() {
-        return price;
-    }
-
-    public Integer capacity() {
-        return capacity;
     }
 }
