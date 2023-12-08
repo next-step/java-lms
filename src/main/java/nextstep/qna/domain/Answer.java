@@ -64,11 +64,15 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
+    public boolean isDeletable(NsUser nsUser) {
+        return writer.matchUser(nsUser);
+    }
+
     public DeleteHistory delete(NsUser nsUser) {
-        if (!writer.matchUser(nsUser)) {
+        if (!isDeletable(nsUser)) {
             throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
         }
-
+        System.out.println("a");
         this.deleted = true;
 
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());

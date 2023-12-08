@@ -22,6 +22,13 @@ public class AnswerTest {
     }
 
     @Test
+    void 작성자의_경우_삭제할_수_있다() {
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        boolean isDeletable = answer.isDeletable(NsUserTest.JAVAJIGI);
+        assertThat(isDeletable).isTrue();
+    }
+
+    @Test
     void 답이_삭제되면_DeleteHistory를_반환한다() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.ANSWER, answer.getId(),

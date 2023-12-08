@@ -57,11 +57,12 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         if (!writer.matchUser(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        List<DeleteHistory> deleteHistories = answers.deleteAll(loginUser);
-        deleteHistories.add(0, new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deleteAll(writer));
         this.deleted = true;
 
         return deleteHistories;

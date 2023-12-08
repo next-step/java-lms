@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
@@ -23,13 +22,17 @@ public class Answers {
         values.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser nsUser) {
-        try {
-            return values.stream()
-                    .map(answer -> answer.delete(nsUser))
-                    .collect(Collectors.toList());
-        } catch (UnAuthorizedException e) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.", e);
+    private DeleteHistory deleteAnswer(Answer answer, NsUser nsUser) {
+        if (!answer.isDeletable(nsUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+
+        return answer.delete(nsUser);
+    }
+
+    public List<DeleteHistory> deleteAll(NsUser nsUser) {
+        return values.stream()
+                .map(answer -> deleteAnswer(answer, nsUser))
+                .collect(Collectors.toList());
     }
 }
