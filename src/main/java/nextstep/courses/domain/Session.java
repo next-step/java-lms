@@ -88,15 +88,15 @@ public class Session {
     }
 
     public void registerUser(NsUser user, Payment payment) {
-        if (payment.isSameUser(user) == false) {
+        if (!payment.isSameUser(user)) {
             throw new IllegalArgumentException("지불 정보와 등록하는 유저가 일치하지 않습니다.");
         }
 
-        if (payment.isSameAmountWith(this.fee) == false) {
+        if (!payment.isSameAmountWith(this.fee)) {
             throw new IllegalArgumentException("수강료와 지불 금액이 동일하지 않습니다.");
         }
 
-        if (this.maxUserCount.isLargerThan(this.registeredUsers.theNumberOfUsers()) == false) {
+        if (!this.maxUserCount.isLargerThan(this.registeredUsers.theNumberOfUsers())) {
             throw new IllegalStateException("이 강의의 최대 등록 가능 인원에 도달했습니다. 더 이상 사용자를 추가할 수 없습니다.");
         }
 
