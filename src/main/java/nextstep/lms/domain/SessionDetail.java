@@ -1,17 +1,53 @@
 package nextstep.lms.domain;
 
-import nextstep.lms.dto.EnrollApplicationDTO;
+import nextstep.payments.domain.Payment;
+
+import java.time.LocalDateTime;
 
 public class SessionDetail {
-    private final SessionManagement sessionManagement;
+    private final SessionEnrollmentManagement sessionEnrollmentManagement;
     private final SessionPeriod sessionPeriod;
 
-    public SessionDetail(SessionManagement sessionManagement, SessionPeriod sessionPeriod) {
-        this.sessionManagement = sessionManagement;
+    public SessionDetail(String pricingType, Long tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionStatus, capacity), new SessionPeriod(startDate, endDate));
+    }
+
+    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionPeriod sessionPeriod) {
+        this.sessionEnrollmentManagement = sessionEnrollmentManagement;
         this.sessionPeriod = sessionPeriod;
     }
 
-    public void enroll(Students students, EnrollApplicationDTO enrollApplicationDTO) {
-        sessionManagement.enroll(students, enrollApplicationDTO);
+    public boolean enroll(Students students, Payment payment) {
+        if (sessionPeriod.canEnroll(LocalDateTime.now())) {
+            return sessionEnrollmentManagement.enroll(students, payment);
+        }
+        return false;
     }
+
+    public String getPricingType() {
+        return sessionEnrollmentManagement.getPricingType();
+    }
+
+    public Long getTuitionFee() {
+        return sessionEnrollmentManagement.getTuitionFee();
+    }
+
+    public String getSessionStatus() {
+        return sessionEnrollmentManagement.getSessionStatus();
+    }
+
+    public int getCapacity() {
+        return sessionEnrollmentManagement.getCapacity();
+    }
+
+    public LocalDateTime getStartDate() {
+        return sessionPeriod.getStartDate();
+    }
+
+    public LocalDateTime getEndDate() {
+        return sessionPeriod.getEndDate();
+    }
+
 }
+
+
