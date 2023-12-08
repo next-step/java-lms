@@ -31,6 +31,8 @@ public class Payment {
     }
 
     public boolean isPaid(NsUser nsUser, Session session) {
-        return nsUser.isSame(this.nsUserId) && session.isSame(this.sessionId);
+        return nsUser.isSame(this.nsUserId)
+                && session.sameId(this.sessionId)
+                && session.sameAmount(this.amount);
     }
 }

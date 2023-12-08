@@ -83,7 +83,11 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isSame(Long sessionId) {
+    public boolean sameAmount(Long amount) {
+        return Objects.equals(this.amount, amount);
+    }
+
+    public boolean sameId(Long sessionId) {
         return Objects.equals(this.id, sessionId);
     }
 

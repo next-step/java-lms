@@ -20,6 +20,7 @@ public class SessionTest {
 
     private Image image;
     private Payment payment;
+    private Payment differentPayment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private Applicants applicants = new Applicants();
@@ -30,6 +31,7 @@ public class SessionTest {
     void setUp() {
         image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN);
         payment = new Payment("1", 1L, 3L, 1000L);
+        differentPayment = new Payment("1", 1L, 3L, 500L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         this.applicants.add(JAVAJIGI);
@@ -98,6 +100,17 @@ public class SessionTest {
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, null)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("수강 신청은 수강 금액과 지불 금액이 다르면 신청할 수 없다는 예외를 던진다.")
+    void apply_chargeSession_differentAmount_throwsException() {
+        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
+                10, applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.apply(APPLE, differentPayment)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }
