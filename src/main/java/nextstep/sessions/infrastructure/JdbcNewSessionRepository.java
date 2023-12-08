@@ -24,7 +24,18 @@ public class JdbcNewSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(int sessionId) {
         try {
-            String sql = "select paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date from new_session where id = ?";
+            String sql =
+                "    select " +
+                    "  paid_type, " +
+                    "  fee, " +
+                    "  capacity, " +
+                    "  running_state, " +
+                    "  recruiting_state, " +
+                    "  start_date, " +
+                    "  end_date " +
+                    "from new_session " +
+                    "where id = ? ";
+
             RowMapper<Session> rowMapper = (rs, rowNum) -> session(rs);
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
         } catch (EmptyResultDataAccessException e) {
@@ -46,7 +57,25 @@ public class JdbcNewSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into new_session (paid_type, fee, capacity, running_state, recruiting_state, start_date, end_date) values(?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+            "    insert into new_session ( " +
+                "  paid_type, " +
+                "  fee, " +
+                "  capacity, " +
+                "  running_state, " +
+                "  recruiting_state, " +
+                "  start_date, " +
+                "  end_date " +
+                ") values( " +
+                "  ?, " +
+                "  ?, " +
+                "  ?, " +
+                "  ?, " +
+                "  ?, " +
+                "  ?, " +
+                "  ?" +
+                ") ";
+
         return jdbcTemplate.update(sql,
             session.paidType(),
             session.fee(),

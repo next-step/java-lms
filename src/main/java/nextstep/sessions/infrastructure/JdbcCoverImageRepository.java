@@ -21,19 +21,46 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public List<CoverImage> findById(int sessionId) {
-        String sql = "select session_id, type, file_size, width, height from cover_image where session_id = ?";
+        String sql =
+            "    select " +
+                "  session_id, " +
+                "  type, " +
+                "  file_size, " +
+                "  width, " +
+                "  height " +
+                "from cover_image " +
+                "where session_id = ? ";
+
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
             ImageType.valueOf(rs.getString(2)),
-            new ImageSize(rs.getInt(3), rs.getInt(4), rs.getInt(5))
+            new ImageSize(rs.getInt(3),
+                rs.getInt(4),
+                rs.getInt(5))
         );
+
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
     @Override
     public int saveAll(int sessionId, List<CoverImage> coverImages) {
         int count = 0;
+
         for (CoverImage coverImage: coverImages) {
-            String sql = "insert into cover_image (session_id, type, file_size, width, height) values(?, ?, ?, ?, ?)";
+            String sql =
+                "    insert into cover_image (" +
+                    "  session_id, " +
+                    "  type, " +
+                    "  file_size, " +
+                    "  width, " +
+                    "  height " +
+                    ") values( " +
+                    "  ?, " +
+                    "  ?, " +
+                    "  ?, " +
+                    "  ?, " +
+                    "  ?" +
+                    ") ";
+
             count += jdbcTemplate.update(sql,
                 sessionId,
                 coverImage.imageTypeName(),
@@ -42,6 +69,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 coverImage.height()
             );
         }
+        
         return count;
     }
 }
