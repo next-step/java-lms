@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 
@@ -9,7 +9,7 @@ public class Period {
 	public Period(LocalDate startAt, LocalDate endAt) {
 		this.startAt = startAt;
 		this.endAt = endAt;
-		validDate();
+		validateDate();
 	}
 
 	public LocalDate getStartAt() {
@@ -20,7 +20,7 @@ public class Period {
 		return endAt;
 	}
 
-	public void validDate() {
+	public void validateDate() {
 		if (startAt.isAfter(endAt)) {
 			throw new IllegalArgumentException("강의 시작일이 강의 종료일 이후일 수 없습니다.");
 		}

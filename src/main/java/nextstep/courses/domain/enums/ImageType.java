@@ -10,8 +10,6 @@ public enum ImageType {
 	SVG
 	;
 
-	ImageType() {}
-
 	public static ImageType of(String imageType) {
 		return Arrays.stream(values())
 			.filter(e -> e.name().equals(imageType))

@@ -61,13 +61,13 @@ public class Answer {
     }
 
     public DeleteHistory deleteAnswer(NsUser loginUser) {
-        validAnswer(loginUser);
+        validateAnswer(loginUser);
         this.deleted = true;
 
         return createDeleteHistory();
     }
 
-    private void validAnswer(NsUser loginUser) {
+    private void validateAnswer(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

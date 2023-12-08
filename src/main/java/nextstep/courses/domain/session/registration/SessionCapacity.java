@@ -1,22 +1,26 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.registration;
 
 public class SessionCapacity {
 	private final int maximumCapacity;
 
 	public SessionCapacity(int maximumCapacity) {
 		this.maximumCapacity = maximumCapacity;
-		isGreaterThanZero();
+		validateGreaterThanZero();
 	}
 
-	public void isGreaterThan(int numberOfStudents) {
+	public void validateGreaterThan(int numberOfStudents) {
 		if (numberOfStudents >= maximumCapacity) {
 			throw new IllegalArgumentException("최대 수강 인원을 초과했습니다.");
 		}
 	}
 
-	private void isGreaterThanZero() {
+	private void validateGreaterThanZero() {
 		if (maximumCapacity < 0) {
 			throw new IllegalArgumentException("최대 신청인원은 0보다 작을 수 없습니다.");
 		}
+	}
+
+	public int getMaximumCapacity() {
+		return maximumCapacity;
 	}
 }

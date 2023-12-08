@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
+import nextstep.courses.domain.session.Sessions;
+
 public class Course extends BaseTimeEntity{
     private final Long id;
 
@@ -39,5 +41,9 @@ public class Course extends BaseTimeEntity{
             ", title='" + title + '\'' +
             ", creatorId=" + creatorId +
             '}';
+    }
+
+    public Long getId() {
+        return id;
     }
 }
