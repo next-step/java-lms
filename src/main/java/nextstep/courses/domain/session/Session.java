@@ -27,6 +27,16 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
+    public Session(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
+        this.payType = payType;
+        this.status = status;
+        this.coverImage = coverImage;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.students = new Students();
+    }
+
     public abstract Student enroll(EnrolmentInfo enrolmentInfo);
 
     @Override

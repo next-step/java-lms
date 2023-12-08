@@ -16,8 +16,8 @@ public class PaySession extends Session {
     private Long amount;
     private int studentsCapacity;
 
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, Students students, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
-        super(id, payType, status, coverImage, students, startDate, endDate);
+    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
+        super(id, payType, status, coverImage, startDate, endDate);
         this.amount = amount;
         this.studentsCapacity = studentsCapacity;
     }

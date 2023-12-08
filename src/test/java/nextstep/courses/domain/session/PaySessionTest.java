@@ -68,6 +68,6 @@ class PaySessionTest {
     }
 
     private EnrolmentInfo createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
-        return new EnrolmentInfo(sessionId, nsUserId, payAmount);
+        return new EnrolmentInfo(sessionId, String.valueOf(nsUserId), payAmount);
     }
 }
