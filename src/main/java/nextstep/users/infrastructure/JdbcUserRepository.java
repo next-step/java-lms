@@ -1,6 +1,7 @@
 package nextstep.users.infrastructure;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.SelectionStatus;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,15 +21,16 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<NsUser> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
+        String sql = "select id, user_id, password, name, email, selection_status, created_at, updated_at from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getString(3),
                 rs.getString(4),
                 rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
+                SelectionStatus.valueOf(rs.getString(6)),
+                toLocalDateTime(rs.getTimestamp(7)),
+                toLocalDateTime(rs.getTimestamp(8)));
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
     }
 

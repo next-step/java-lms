@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.SessionUserException;
 import nextstep.users.domain.NsUser;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,6 @@ public class SessionUsers {
     }
 
     public Set<NsUser> users() {
-        return users;
+        return Collections.unmodifiableSet(users);
     }
 }

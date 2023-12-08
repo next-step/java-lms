@@ -13,14 +13,20 @@ public class Session {
 
     private Long courseId;
 
+    private Long tutorId;
+
     private final SessionImages sessionImages;
 
     private final SessionPeriod sessionPeriod;
 
     private final Enrollment enrollment;
 
+    public boolean isTutor(Long tutorId){
+        return Objects.equals(this.tutorId, tutorId);
+    }
+
     public Session(Long id) {
-        this(id, 1L,
+        this(id, 1L, 1L,
                 new SessionImages(
                         List.of(new SessionImage(0, "jpg", 300, 200))
                 ),
@@ -38,9 +44,10 @@ public class Session {
         );
     }
 
-    public Session(Long id, Long courseId, SessionImages sessionImages, SessionPeriod sessionPeriod, Enrollment enrollment) {
+    public Session(Long id, Long courseId, Long tutorId, SessionImages sessionImages, SessionPeriod sessionPeriod, Enrollment enrollment) {
         this.id = id;
         this.courseId = courseId;
+        this.tutorId = tutorId;
         this.sessionImages = sessionImages;
         this.sessionPeriod = sessionPeriod;
         this.enrollment = enrollment;

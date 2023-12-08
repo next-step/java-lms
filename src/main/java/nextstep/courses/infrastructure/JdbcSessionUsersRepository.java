@@ -43,8 +43,14 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
 
     @Override
     public void addUserFor(long sessionId, long userId) {
-        String sql = "insert into session_users(session_id, user_id) values(?,?)";
-        this.jdbcTemplate.update(sql, sessionId, userId);
+        String sql = "insert into session_users(session_id, user_id, status) values(?,?,?)";
+        this.jdbcTemplate.update(sql, sessionId, userId, SessionUserStatus.WAITING.toString());
+    }
+
+    @Override
+    public void updateSessionUserStatus(long sessionId, long userId, SessionUserStatus sessionUserStatus) {
+        String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
+        this.jdbcTemplate.update(sql, sessionUserStatus.toString(), sessionId, userId);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -61,24 +61,6 @@ class EnrollmentTest {
         );
     }
 
-//    @ParameterizedTest
-//    @EnumSource(value = SessionState.class, names = {"PREPARE", "CLOSE"})
-//    @DisplayName("실패 - 수강 신청시 모집중이 아닌 경우 수강 신청을 할 수 없다.")
-//    void fail_session_register_not_open(SessionState sessionState) {
-//        Enrollment enrollment = zeroAndOneThousandSession(sessionState, SessionType.FREE);
-//        assertThatThrownBy(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
-//                .isInstanceOf(SessionException.class)
-//                .hasMessage("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
-//    }
-//
-//    @Test
-//    @DisplayName("성공 - 수강 신청시 모집중인 경우 수강 신청을 할 수 있다.")
-//    void success_session_register_open() {
-//        Enrollment enrollment = zeroAndOneThousandSession(SessionState.OPEN, SessionType.FREE);
-//        assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
-//                .doesNotThrowAnyException();
-//    }
-
     @ParameterizedTest
     @EnumSource(value = SessionStatus.class, names = {"PREPARE", "PROGRESS", "COMPLETE"})
     @DisplayName("실패 - 수강 신청시 모집중이 아닌 경우 수강 신청을 할 수 없다.")
@@ -89,8 +71,6 @@ class EnrollmentTest {
                 .hasMessage("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
     }
 
-//    @ParameterizedTest
-//    @EnumSource(value = SessionRecruitment.class, names = {"CLOSE"})
     @Test
     @DisplayName("실패 - 수강 신청시 모집중 이더라도 강의가 종료된 경우 수강 신청을 할 수 없다.")
     void fail_session_register_not_open() {
@@ -108,8 +88,6 @@ class EnrollmentTest {
         assertThatCode(() -> enrollment.enroll(JAVAJIGI, paymentOneThousand()))
                 .doesNotThrowAnyException();
     }
-
-    // ===================================
 
     @Test
     @DisplayName("실패 - 유료 강의는 지정된 수강 인원 제한을 초과할 경우 신청할 수 없다.")
