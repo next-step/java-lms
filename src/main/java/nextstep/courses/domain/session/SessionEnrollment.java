@@ -24,7 +24,7 @@ public class SessionEnrollment {
         sessionStudent.add(studnet);
     }
 
-    public void enrollPaySession(NsUser student, int userPay) {
+    public void enrollPaySession(NsUser student, Long userPay) {
         validateStatus();
         sessionStudent.isUnderMaxStudentCount();
         sessionPrice.validatePrice(userPay);

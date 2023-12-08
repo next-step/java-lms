@@ -19,7 +19,7 @@ class SessionEnrollmentTest {
     void notOpenFreeSessionException() {
         SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(4, sessionStudents);
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(true, sessionStudent, new SessionPrice(0), SessionStatus.PREPARING);
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(true, sessionStudent, new SessionPrice(0L), SessionStatus.PREPARING);
 
         assertThatThrownBy(() -> sessionEnrollment.enrollFreeSession(new NsUser()))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -31,9 +31,9 @@ class SessionEnrollmentTest {
     void notOpenPaySessionException() {
         SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
         SessionStudent sessionStudent = new SessionStudent(4, sessionStudents);
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(false, sessionStudent, new SessionPrice(50000), SessionStatus.PREPARING);
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(false, sessionStudent, new SessionPrice(50000L), SessionStatus.PREPARING);
 
-        assertThatThrownBy(() -> sessionEnrollment.enrollPaySession(new NsUser(), 50000))
+        assertThatThrownBy(() -> sessionEnrollment.enrollPaySession(new NsUser(), 50000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의는 모집중이 아닙니다");
     }
