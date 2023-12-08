@@ -14,10 +14,13 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void enroll(Enrolment enrolment) {
+    public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
 
-        this.students.add(new Student(id, enrolment.userId()));
+        Student student = new Student(id, enrolmentInfo.userId());
+        this.students.add(student);
+
+        return student;
     }
 
     private void validateStatus() {

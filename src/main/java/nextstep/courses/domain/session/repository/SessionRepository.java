@@ -1,4 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.repository;
+
+import nextstep.courses.domain.session.Session;
 
 import java.util.Optional;
 

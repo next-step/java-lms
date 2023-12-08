@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.domain.session.student.Students;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -25,7 +26,7 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public abstract void enroll(Enrolment enrolment);
+    public abstract Student enroll(EnrolmentInfo enrolmentInfo);
 
     @Override
     public boolean equals(Object o) {

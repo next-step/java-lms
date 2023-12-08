@@ -18,10 +18,10 @@ class FreeSessionTest {
     void validateStatus() {
         // given
         FreeSession freeSession = createFreeSession(PREPARE);
-        Enrolment enrolment = createEnrolment(freeSession.id, JAVAJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo = createEnrolment(freeSession.id, JAVAJIGI.getId(), 10000L);
 
         // when & then
-        assertThatThrownBy(() -> freeSession.enroll(enrolment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> freeSession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
@@ -36,7 +36,7 @@ class FreeSessionTest {
             );
     }
 
-    private Enrolment createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
-        return new Enrolment(sessionId, nsUserId, payAmount);
+    private EnrolmentInfo createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
+        return new EnrolmentInfo(sessionId, nsUserId, payAmount);
     }
 }

@@ -19,10 +19,10 @@ class PaySessionTest {
     void validateStatus() {
         // given
         PaySession paySession = createPaySession(PREPARE);
-        Enrolment enrolment = createEnrolment(paySession.id, JAVAJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo = createEnrolment(paySession.id, JAVAJIGI.getId(), 10000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(enrolment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> paySession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의는 현재 준비중입니다.");
     }
 
@@ -31,10 +31,10 @@ class PaySessionTest {
     void validatePayAmount() {
         // given
         PaySession paySession = createPaySession(RECRUIT);
-        Enrolment enrolment = createEnrolment(paySession.id, JAVAJIGI.getId(), 12000L);
+        EnrolmentInfo enrolmentInfo = createEnrolment(paySession.id, JAVAJIGI.getId(), 12000L);
 
         // when & then
-        assertThatThrownBy(() -> paySession.enroll(enrolment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> paySession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: 10,000원");
     }
 
@@ -43,15 +43,15 @@ class PaySessionTest {
     void validateCapacity() {
         // given
         PaySession paySession = createPaySession(RECRUIT);
-        Enrolment enrolment1 = createEnrolment(paySession.id, JAVAJIGI.getId(), 10000L);
-        Enrolment enrolment2 = createEnrolment(paySession.id, SANJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo1 = createEnrolment(paySession.id, JAVAJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo2 = createEnrolment(paySession.id, SANJIGI.getId(), 10000L);
 
-        paySession.enroll(enrolment1);
-        paySession.enroll(enrolment2);
+        paySession.enroll(enrolmentInfo1);
+        paySession.enroll(enrolmentInfo2);
 
         // when & then
-        Enrolment enrolment3 = createEnrolment(paySession.id, 1L, 10000L);
-        assertThatThrownBy(() -> paySession.enroll(enrolment3)).isInstanceOf(IllegalArgumentException.class)
+        EnrolmentInfo enrolmentInfo3 = createEnrolment(paySession.id, 1L, 10000L);
+        assertThatThrownBy(() -> paySession.enroll(enrolmentInfo3)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 
@@ -67,7 +67,7 @@ class PaySessionTest {
             2);
     }
 
-    private Enrolment createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
-        return new Enrolment(sessionId, nsUserId, payAmount);
+    private EnrolmentInfo createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
+        return new EnrolmentInfo(sessionId, nsUserId, payAmount);
     }
 }

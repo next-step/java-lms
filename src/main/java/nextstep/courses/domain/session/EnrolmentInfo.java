@@ -1,12 +1,12 @@
 package nextstep.courses.domain.session;
 
-public class Enrolment {
+public class EnrolmentInfo {
 
     private Long sessionId;
     private Long userId;
     private Long payAmount;
 
-    public Enrolment(Long sessionId, Long userId, Long payAmount) {
+    public EnrolmentInfo(Long sessionId, Long userId, Long payAmount) {
         this.sessionId = sessionId;
         this.userId = userId;
         this.payAmount = payAmount;
