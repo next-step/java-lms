@@ -11,14 +11,14 @@ public class ImageSize {
     public static final String HEIGHT_VALIATION_EXCEPTION = "이미지의 높이는 300픽셀 이상이어야 합니다.";
     public static final String RATIO_VALIDATION_EXCEPTION = "너비 대 높이 비는 3 : 2 이어야 합니다.";
 
-    private long width;
-    private long height;
+    private double width;
+    private double height;
 
     public ImageSize() {
 
     }
 
-    public ImageSize(long width, long height) {
+    public ImageSize(double width, double height) {
         validateWidth(width);
         validateHeight(height);
         validateRatio(width, height);
@@ -26,20 +26,20 @@ public class ImageSize {
         this.height = height;
     }
 
-    private void validateWidth(long width) {
+    private void validateWidth(double width) {
         if (width < 300) {
             throw new WidthValidationException(WIDTH_VALIDATION_EXCEPTION);
         }
     }
 
-    private void validateHeight(long height) {
+    private void validateHeight(double height) {
         if (height < 200) {
             throw new HeightValidationException(HEIGHT_VALIATION_EXCEPTION);
         }
     }
 
-    private void validateRatio(long width, long height) {
-        if (width / height != 3 / 2) {
+    private void validateRatio(double width, double height) {
+        if (width / height != (double) 3 / 2) {
             throw new RatioValidationException(RATIO_VALIDATION_EXCEPTION);
         }
     }

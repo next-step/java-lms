@@ -27,7 +27,7 @@ public class SessionParticipants {
     }
 
     public boolean isFull() {
-        return maxNumberOfParticipants - participants.size() < 0;
+        return maxNumberOfParticipants - participants.size() <= 0;
     }
 
     public List<NsUser> getParticipants() {
