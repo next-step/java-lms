@@ -27,10 +27,6 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public Long id() {
-        return this.id;
-    }
-
     public abstract Student enroll(EnrolmentInfo enrolmentInfo);
 
     @Override
