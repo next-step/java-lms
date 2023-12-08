@@ -1,9 +1,10 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.Session;
 import nextstep.courses.repository.CourseRepository;
-import nextstep.courses.repository.FreeSessionRepository;
-import nextstep.courses.repository.PaidSessionRepository;
+import nextstep.courses.repository.SessionRepository;
 import nextstep.payments.domain.Payment;
 import org.springframework.stereotype.Service;
 
@@ -16,32 +17,29 @@ public class SessionService {
     @Resource(name = "courseRepository")
     private CourseRepository courseRepository;
 
-    @Resource(name = "freeSessionRepository")
-    private FreeSessionRepository freeSessionRepository;
-
-    @Resource(name = "paidSessionRepository")
-    private PaidSessionRepository paidSessionRepository;
+    @Resource(name = "sessionRepository")
+    private SessionRepository sessionRepository;
 
     public void createFreeSession(Long courseId, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         Course course = courseRepository.findById(courseId);
 
-        Session session = new FreeSession(0L, coverImage, startDate, endDate);
+        Session session = Session.ofFree(0L, 2L, coverImage, startDate, endDate);
         course.addSession(session);
 
-        freeSessionRepository.save(session, courseId);
+        sessionRepository.save(session);
     }
 
     public void createPaidSession(Long courseId, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
         Course course = courseRepository.findById(courseId);
 
-        PaidSession session = new PaidSession(0L, coverImage, startDate, endDate, maxStudents, fee);
+        Session session = Session.ofPaid(0L, 2L, coverImage, startDate, endDate, maxStudents, fee);
         course.addSession(session);
 
-        paidSessionRepository.save(session, courseId);
+        sessionRepository.save(session);
     }
 
     public void registerSession(Long sessionId, Payment payment) {
-        Session session = freeSessionRepository.findById(sessionId);
+        Session session = sessionRepository.findById(sessionId);
         session.register(payment);
     }
 }

@@ -36,8 +36,8 @@ class SessionRepositoryTest {
 
     @Test
     void free_crud() {
-        Session session = Session.ofFree(1L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31));
-        int count = sessionRepository.save(session, 2L);
+        Session session = Session.ofFree(1L, 2L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31));
+        int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
         Session freeSession = sessionRepository.findById(2L);
@@ -47,8 +47,8 @@ class SessionRepositoryTest {
 
     @Test
     void paid_crud() {
-        Session session = Session.ofPaid(1L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31), 10, 10_000L);
-        int count = sessionRepository.save(session, 2L);
+        Session session = Session.ofPaid(1L, 2L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31), 10, 10_000L);
+        int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
         Session paidSession = sessionRepository.findById(3L);

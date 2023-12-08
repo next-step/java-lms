@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Session extends BaseEntity {
 
     private final Long id;
+    private final Long courseId;
     private final SessionType type;
     private final CoverImage coverImage;
     private final Period period;
@@ -18,22 +19,23 @@ public class Session extends BaseEntity {
     private final Students students;
     private final PaidCondition paidCondition;
 
-    public static Session ofFree(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        return new Session(id, SessionType.FREE, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, 0, 0L, LocalDateTime.now(), null);
+    public static Session ofFree(Long id, Long courseId, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
+        return new Session(id, courseId, SessionType.FREE, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, 0, 0L, LocalDateTime.now(), null);
     }
 
-    public static Session ofPaid(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
-        return new Session(id, SessionType.PAID, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, maxStudents, fee, LocalDateTime.now(), null);
+    public static Session ofPaid(Long id, Long courseId, CoverImage coverImage, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
+        return new Session(id, courseId, SessionType.PAID, coverImage, new Period(startDate, endDate), Status.NOT_OPEN, maxStudents, fee, LocalDateTime.now(), null);
     }
 
-    public static Session of(Long id, SessionType type, CoverImage coverImage, Status status, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, type, coverImage, new Period(startDate, endDate), status, maxStudents, fee, createdAt, updatedAt);
+    public static Session of(Long id, Long courseId, SessionType type, CoverImage coverImage, Status status, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, courseId, type, coverImage, new Period(startDate, endDate), status, maxStudents, fee, createdAt, updatedAt);
     }
 
-    private Session(Long id, SessionType type, CoverImage coverImage, Period period, Status status, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Session(Long id, Long courseId, SessionType type, CoverImage coverImage, Period period, Status status, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         validateNotNull(id, coverImage, period);
         this.id = id;
+        this.courseId = courseId;
         this.type = type;
         this.coverImage = coverImage;
         this.period = period;
@@ -75,6 +77,10 @@ public class Session extends BaseEntity {
 
     public Long id() {
         return id;
+    }
+
+    public Long courseId() {
+        return courseId;
     }
 
     public Long imageId() {
