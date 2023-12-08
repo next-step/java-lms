@@ -18,6 +18,30 @@ public class Session {
 
     private Enrollment enrollment;
 
+    private long price;
+
+    public Session() {
+    }
+
+    public Session(SessionPeriod sessionPeriod, Image image, SessionType type, SessionStatus status, long price) {
+        this.sessionPeriod = sessionPeriod;
+        this.image = image;
+        this.type = type;
+        this.status = status;
+        this.price = price;
+    }
+
+    public Session(SessionPeriod sessionPeriod, Image image, SessionType type, SessionStatus status,
+                   Enrollment enrollment,
+                   long price) {
+        this.sessionPeriod = sessionPeriod;
+        this.image = image;
+        this.type = type;
+        this.status = status;
+        this.enrollment = enrollment;
+        this.price = price;
+    }
+
     public void enrollSession(long fee, NsUser user) {
         checkSessionIsStart();
         if (type.isPaid()) {
