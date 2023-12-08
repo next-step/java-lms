@@ -1,8 +1,11 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
+import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.course.Course;
 import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
 
 public class Session {
 
@@ -35,6 +38,14 @@ public class Session {
         this.period = period;
         this.sessionType = sessionType;
         this.course = course;
+    }
+
+    public Session(Long id, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                   boolean free, Integer maxAttendance) {
+        this.id = id;
+        this.sessionStatus = status;
+        this.period = new Period(startDateTime, endDateTime);
+        this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
     }
 
     public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {

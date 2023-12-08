@@ -2,7 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
-import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;

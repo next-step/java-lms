@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.coverImage;
 
 import nextstep.courses.dto.CoverImageDto;
 import org.assertj.core.api.Assertions;

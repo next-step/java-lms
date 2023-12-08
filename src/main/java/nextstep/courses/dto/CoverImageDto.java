@@ -1,6 +1,6 @@
 package nextstep.courses.dto;
 
-import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.coverImage.CoverImage;
 
 public class CoverImageDto {
 

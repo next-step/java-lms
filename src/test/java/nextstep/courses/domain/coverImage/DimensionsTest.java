@@ -1,5 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.coverImage;
 
+import nextstep.courses.domain.coverImage.Dimensions;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
