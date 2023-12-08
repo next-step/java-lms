@@ -9,8 +9,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
-    protected static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
-    protected static final String NOT_RECRUITING_MSG = "강의 모집중인 강의가 아닙니다.";
+    private static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
+    private static final String NOT_RECRUITING_MSG = "강의 모집중인 강의가 아닙니다.";
     public static final String INVALID_AMOUNT_MSG = "결제한 금액과 강의의 금액이 다릅니다.";
     private String title;
     private SessionPeriod sessionPeriod;
@@ -38,15 +38,13 @@ public class Session extends BaseEntity {
         this.enrollmentCount = enrollmentCount;
     }
 
-    protected void checkRecruiting() {
+    private void checkRecruiting() {
         if (sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalArgumentException(NOT_RECRUITING_MSG);
         }
     }
     public Enrollment enroll(NsUser user, final Payment payment) {
         checkAvailableEnroll(payment);
-
-        checkRecruiting();
 
         enrollmentCount.decrease();
 
@@ -57,6 +55,8 @@ public class Session extends BaseEntity {
         if (sessionType.isFree()) {
             return;
         }
+
+        checkRecruiting();
 
         if (enrollmentCount.isNotRemain()) {
             throw new IllegalArgumentException(NOT_REMAIN_MSG);

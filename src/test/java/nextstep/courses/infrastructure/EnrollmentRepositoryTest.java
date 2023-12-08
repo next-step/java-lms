@@ -26,7 +26,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class EnrollmentRepositoryTest {
+public class EnrollmentRepositoryTest extends TestUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnrollmentRepositoryTest.class);
 
     @Autowired
@@ -40,7 +40,7 @@ public class EnrollmentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        autoincrementReset();
+        autoincrementReset(jdbcTemplate);
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
@@ -68,13 +68,5 @@ public class EnrollmentRepositoryTest {
         Enrollment savedEnrollment = enrollmentRepository.findById(1L).get();
         assertThat(savedEnrollment.nsUserId()).isEqualTo(1L);
         assertThat(savedEnrollment.sessionId()).isEqualTo(1L);
-    }
-
-    private void autoincrementReset() {
-        jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE image ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE enrollment ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE ns_user ALTER COLUMN id RESTART WITH 1");
     }
 }

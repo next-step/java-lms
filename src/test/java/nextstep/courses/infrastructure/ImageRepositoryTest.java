@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class ImageRepositoryTest {
+public class ImageRepositoryTest extends TestUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired
@@ -25,7 +25,7 @@ public class ImageRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        autoincrementReset();
+        autoincrementReset(jdbcTemplate);
         imageRepository = new JdbcImageRepository(jdbcTemplate);
     }
 
@@ -38,12 +38,5 @@ public class ImageRepositoryTest {
         assertThat(savedImage.size()).isEqualTo(1024L);
         assertThat(savedImage.imagePixel().width()).isEqualTo(300);
         assertThat(savedImage.imagePixel().height()).isEqualTo(200);
-    }
-
-    private void autoincrementReset() {
-        jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE image ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE enrollment ALTER COLUMN id RESTART WITH 1");
     }
 }

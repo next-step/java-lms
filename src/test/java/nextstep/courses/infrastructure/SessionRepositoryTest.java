@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class SessionRepositoryTest {
+class SessionRepositoryTest extends TestUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired
@@ -33,7 +33,7 @@ class SessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        autoincrementReset();
+        autoincrementReset(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
         imageRepository = new JdbcImageRepository(jdbcTemplate);
@@ -58,12 +58,5 @@ class SessionRepositoryTest {
         assertThat(savedTddSession.title()).isEqualTo("tdd");
         assertThat(savedTddSession.sessionStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(savedTddSession.amount()).isEqualTo(Amount.of(100L));
-    }
-
-    private void autoincrementReset() {
-        jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE image ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE session ALTER COLUMN id RESTART WITH 1");
-        jdbcTemplate.execute("ALTER TABLE enrollment ALTER COLUMN id RESTART WITH 1");
     }
 }
