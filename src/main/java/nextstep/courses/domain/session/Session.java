@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Students;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -18,8 +17,6 @@ public abstract class Session {
     protected LocalDate startDate;
     protected LocalDate endDate;
 
-    protected Session() {}
-
     public Session(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.payType = payType;
@@ -30,7 +27,7 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public abstract void enroll(NsUser student, Payment payment);
+    public abstract void enroll(Payment payment);
 
     @Override
     public boolean equals(Object o) {

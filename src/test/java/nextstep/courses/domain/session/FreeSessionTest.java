@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.Student;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,10 @@ class FreeSessionTest {
     void validateStatus() {
         // given
         FreeSession freeSession = createFreeSession(PREPARE);
-        Payment payment = new Payment();
+        Payment payment = createPayment(freeSession.id, JAVAJIGI.getId(), 10000L);
 
         // when & then
-        assertThatThrownBy(() -> freeSession.enroll(JAVAJIGI, payment)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> freeSession.enroll(payment)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
@@ -35,5 +36,9 @@ class FreeSessionTest {
             LocalDate.of(2023, 12, 5),
             LocalDate.now()
             );
+    }
+
+    private Payment createPayment(Long sessionId, Long nsUserId, Long amount) {
+        return new Payment("1", sessionId, nsUserId, amount);
     }
 }

@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.Student;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -23,12 +24,12 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void enroll(NsUser student, Payment payment) {
+    public void enroll(Payment payment) {
         validateStatus();
         validatePayAmount(payment);
         validateCapacity();
 
-        students.add(student);
+        students.add(new Student(id, payment.nsUserId()));
     }
 
     private void validateStatus() {
