@@ -1,10 +1,15 @@
 package nextstep.courses.domain.course.session;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Sessions implements Iterable<Session> {
     private final List<Session> sessions;
+
+    public Sessions() {
+        this(new ArrayList<>());
+    }
 
     public Sessions(List<Session> sessions) {
         validate(sessions);
@@ -22,8 +27,16 @@ public class Sessions implements Iterable<Session> {
         }
     }
 
+    public int size() {
+        return this.sessions.size();
+    }
+
+    public void add(Session session) {
+        this.sessions.add(session);
+    }
+
     @Override
     public Iterator<Session> iterator() {
-        return null;
+        return this.sessions.iterator();
     }
 }
