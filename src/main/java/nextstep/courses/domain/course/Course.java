@@ -11,20 +11,20 @@ public class Course extends BaseEntity {
 
     private String title;
 
-    private int sequence;
+    private int ordering;
 
     private Sessions sessions;
 
-    public Course(String title, int sequence, Long creatorId) {
-        this(0L, title, sequence, creatorId, LocalDateTime.now(), null);
+    public Course(String title, int ordering, Long creatorId) {
+        this(0L, title, ordering, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, int sequence, Long creatorId,
+    public Course(Long id, String title, int ordering, Long creatorId,
                   LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         this.id = id;
         this.title = title;
-        this.sequence = sequence;
+        this.ordering = ordering;
         this.sessions = new Sessions();
     }
 
@@ -44,8 +44,8 @@ public class Course extends BaseEntity {
         return title;
     }
 
-    public int getSequence() {
-        return this.sequence;
+    public int getOrdering() {
+        return this.ordering;
     }
 
     public Long getCreatorId() {

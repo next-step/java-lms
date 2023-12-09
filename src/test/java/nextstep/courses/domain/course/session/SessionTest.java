@@ -34,7 +34,7 @@ public class SessionTest {
 
     @BeforeEach
     void setUp() {
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN);
+        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L);
         payment = new Payment("1", 1L, 3L, 1000L);
         differentPayment = new Payment("1", 1L, 3L, 500L);
         localDate = LocalDate.of(2023, 12, 5);
