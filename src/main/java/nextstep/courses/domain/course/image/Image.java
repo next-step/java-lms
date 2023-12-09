@@ -1,8 +1,10 @@
 package nextstep.courses.domain.course.image;
 
+import nextstep.courses.domain.BaseEntity;
+
 import java.time.LocalDateTime;
 
-public class Image {
+public class Image extends BaseEntity {
     public static final int MB = 1024 * 1024;
     public static final int WIDTH_MIN = 300;
     public static final int HEIGHT_MIN = 200;
@@ -18,19 +20,13 @@ public class Image {
 
     private int imageHeight;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Image() {
-    }
-
-    public Image(int imageSize, String type, int imageWidth, int imageHeight) {
-        this(0L, imageSize, type, imageWidth, imageHeight, LocalDateTime.now(), null);
+    public Image(int imageSize, String type, int imageWidth, int imageHeight, Long creatorId) {
+        this(0L, imageSize, type, imageWidth, imageHeight, creatorId, LocalDateTime.now(), null);
     }
 
     public Image(Long id, int imageSize, String type, int imageWidth, int imageHeight,
-                 LocalDateTime createdAt, LocalDateTime updatedAt) {
+                 Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(creatorId, createdAt, updatedAt);
         checkImageSizeIsValid(imageSize);
         checkWidthAndHeightSizeIsValid(imageWidth, imageHeight);
         checkWidthAndHeightRatioIsValid(imageWidth, imageHeight);
@@ -40,8 +36,6 @@ public class Image {
         this.imageType = ImageType.find(type);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     private static void checkImageSizeIsValid(int imageSize) {
