@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Repository("courseRepository")
+@Repository
 public class JdbcCourseRepository implements CourseRepository {
     private JdbcOperations jdbcTemplate;
 
