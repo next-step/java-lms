@@ -37,7 +37,7 @@ public class CourseServiceTest {
 
     @BeforeEach
     void setUp() {
-        course = new Course("math", 1L);
+        course = new Course("math", 1, 1L);
         image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN);
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
