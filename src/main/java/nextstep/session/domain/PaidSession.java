@@ -33,7 +33,7 @@ public class PaidSession extends Session {
     }
 
     private void validateLimitNumberOfStudents() {
-        if (this.capacity <= enrollment.enrolledNumber()) {
+        if (this.capacity <= enrollments.enrolledNumber()) {
             throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
     }

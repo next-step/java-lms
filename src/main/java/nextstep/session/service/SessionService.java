@@ -1,5 +1,6 @@
 package nextstep.session.service;
 
+import nextstep.session.domain.Enrollment;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.ui.CreateSessionRequest;
@@ -21,5 +22,6 @@ public class SessionService {
     public void enrollSession(NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
         session.enroll(loginUser);
+        new Enrollment(loginUser, session);
     }
 }

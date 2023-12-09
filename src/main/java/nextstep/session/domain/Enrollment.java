@@ -1,25 +1,37 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.BaseDomain;
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
-public class Enrollment {
-    private final List<NsUser> students = new ArrayList<>();
+public class Enrollment extends BaseDomain {
+    private NsUser student;
+    private Long studentId;
+    private Long sessionId;
 
-    public Enrollment() {
+    public Enrollment(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId) {
+        super(id, createdAt, updatedAt);
+        this.studentId = studentId;
+        this.sessionId = sessionId;
     }
 
-    public Enrollment(List<NsUser> students) {
-        this.students.addAll(students);
+    public Enrollment(NsUser student) {
+        this.student = student;
+        this.studentId = student.getId();
     }
 
-    public void add(NsUser user) {
-        students.add(user);
+    public Enrollment(NsUser student, Session session) {
+        this.student = student;
+        this.studentId = student.getId();
+        this.sessionId = session.getId();
     }
 
-    public int enrolledNumber() {
-        return this.students.size();
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 }

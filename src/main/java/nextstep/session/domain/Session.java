@@ -17,7 +17,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
 
     private SessionStatus sessionStatus;
     private SessionType sessionType;
-    protected Enrollment enrollment = new Enrollment();
+    protected Enrollments enrollments = new Enrollments();
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
         super();
@@ -41,7 +41,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
     public void enroll(NsUser user) {
         validateStatus();
         validateCommonEnroll(user);
-        enrollment.add(user);
+        enrollments.add(user);
     }
 
     private void validateStatus() {
@@ -55,7 +55,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
 
     @Override
     public int enrolledNumber() {
-        return enrollment.enrolledNumber();
+        return enrollments.enrolledNumber();
     }
 
     @Override
