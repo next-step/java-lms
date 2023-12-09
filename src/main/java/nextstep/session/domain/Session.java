@@ -12,9 +12,7 @@ public abstract class Session extends BaseDomain {
 
     private Long creatorId;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private SessionDate sessionDate;
 
     private SessionImage sessionImage;
 
@@ -28,8 +26,7 @@ public abstract class Session extends BaseDomain {
     public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus) {
         super(id, createdAt, updatedAt);
         this.creatorId = creatorId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
         this.sessionStatus = sessionStatus;
     }

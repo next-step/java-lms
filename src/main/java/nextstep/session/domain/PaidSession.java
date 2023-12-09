@@ -16,7 +16,6 @@ public class PaidSession extends Session {
 
     public static PaidSession create(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
         return new PaidSession(creatorId, startDate, endDate, sessionImage, limitNumberOfStudents, price);
-
     }
 
     @Override
