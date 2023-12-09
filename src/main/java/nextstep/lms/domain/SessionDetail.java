@@ -17,11 +17,9 @@ public class SessionDetail {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public boolean enroll(Students students, Payment payment) {
-        if (sessionPeriod.canEnroll(LocalDateTime.now())) {
-            return sessionEnrollmentManagement.enroll(students, payment);
-        }
-        return false;
+    public Long enroll(Students students, Payment payment) {
+        sessionPeriod.canEnrollCheck(LocalDateTime.now());
+        return sessionEnrollmentManagement.enroll(students, payment);
     }
 
     public String getPricingType() {

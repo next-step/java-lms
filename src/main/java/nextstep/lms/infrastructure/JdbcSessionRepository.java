@@ -3,6 +3,7 @@ package nextstep.lms.infrastructure;
 import nextstep.lms.domain.*;
 import nextstep.lms.repository.CoverImageRepository;
 import nextstep.lms.repository.SessionRepository;
+import nextstep.lms.repository.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,13 +13,15 @@ import java.time.LocalDateTime;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
-    private CoverImageRepository coverImageRepository;
+    private final CoverImageRepository coverImageRepository;
+    private final StudentsRepository studentsRepository;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        this.studentsRepository = new JdbcStudentsRepository(jdbcTemplate);
     }
 
 
@@ -50,6 +53,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getInt(6),
                 toLocalDateTime(rs.getTimestamp(7)),
                 toLocalDateTime(rs.getTimestamp(8)),
+                getStudents(id),
                 toLocalDateTime(rs.getTimestamp(9)),
                 toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -57,6 +61,10 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private CoverImage getCoverImage(Long id) {
         return coverImageRepository.findById(id);
+    }
+
+    private Students getStudents(Long SessionId) {
+        return studentsRepository.findBySession(SessionId);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

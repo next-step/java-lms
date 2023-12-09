@@ -19,17 +19,15 @@ public class SessionEnrollmentManagement {
         this.capacity = capacity;
     }
 
-    public boolean enroll(Students students, Payment payment) {
+    public Long enroll(Students students, Payment payment) {
         sessionStatusCheck();
-        if (!pricingPolicy.canEnroll(payment)) {
-            return false;
+        pricingPolicy.canEnrollCheck(payment);
+
+        if (pricingPolicy.isPaid()) {
+            students.capacityCheck(capacity);
         }
-        if (pricingPolicy.isFree()) {
-            students.freeSessionEnroll(payment.getNsUserId());
-            return true;
-        }
-        students.paidSessionEnroll(capacity, payment.getNsUserId());
-        return true;
+
+        return students.enroll(payment.getNsUserId());
     }
 
     private void sessionStatusCheck() {

@@ -20,8 +20,6 @@ public class LmsService {
     @Transactional
     public void enrollStudent(Payment payment) {
         Session session = sessionRepository.findById(payment.getSessionId());
-        if (session.enroll(payment)) {
-            studentsRepository.save(payment.getNsUserId(), payment.getSessionId());
-        }
+        studentsRepository.save(session.enroll(payment));
     }
 }

@@ -17,7 +17,7 @@ public class SessionInfo {
         this.sessionDetail = sessionDetail;
     }
 
-    public boolean enroll(Students students, Payment payment) {
+    public Long enroll(Students students, Payment payment) {
         return sessionDetail.enroll(students, payment);
     }
 

@@ -12,18 +12,14 @@ public class PricingPolicy {
         this.tuitionFee = tuitionFee;
     }
 
-    public boolean canEnroll(Payment payment) {
-        if (pricingTypeEnum.isFree()) {
-            return true;
-        }
-        if (payment.isDifferentAmount(this.tuitionFee)) {
+    public void canEnrollCheck(Payment payment) {
+        if (pricingTypeEnum.isPaid() && payment.isDifferentAmount(this.tuitionFee)) {
             throw new IllegalArgumentException("결제금액이 수강료와 다릅니다.");
         }
-        return true;
     }
 
-    public boolean isFree() {
-        return pricingTypeEnum.isFree();
+    public boolean isPaid() {
+        return pricingTypeEnum.isPaid();
     }
 
     public String getPricingType() {

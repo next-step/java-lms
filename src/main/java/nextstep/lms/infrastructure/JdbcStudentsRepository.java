@@ -1,5 +1,6 @@
 package nextstep.lms.infrastructure;
 
+import nextstep.lms.domain.Student;
 import nextstep.lms.domain.Students;
 import nextstep.lms.repository.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -18,12 +19,12 @@ public class JdbcStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public int save(Long userId, Long sessionId) {
+    public int save(Student student) {
         String sql = "insert into students (user_id, session_id, created_at) values(?,?,?)";
 
         return jdbcTemplate.update(sql,
-                userId,
-                sessionId,
+                student.getUserId(),
+                student.getSessionId(),
                 LocalDateTime.now());
     }
 
