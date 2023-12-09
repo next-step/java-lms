@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 class SessionUsersTest {
 
@@ -33,8 +34,9 @@ class SessionUsersTest {
     void exceed() {
         // given
         Session session = new Session(SessionStatus.ENROLL, 1);
-        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
-        sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
+        SessionUsers sessionUsers = new SessionUsers(List.of(new SessionUser(NsUserTest.JAVAJIGI, session)));
+
+//        sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // when
         // then
         Assertions.assertThatThrownBy(() -> sessionUsers.addUser(NsUserTest.SANJIGI, session))
@@ -47,9 +49,8 @@ class SessionUsersTest {
     void addNotFreeUser() {
         // given
         Session session = new Session(SessionStatus.ENROLL, 1);
-        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
+        SessionUsers sessionUsers = new SessionUsers(List.of(new SessionUser(NsUserTest.JAVAJIGI, session)));
         // when
-        sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // then
         Assertions.assertThat(sessionUsers.totalAttendUsersCount()).isEqualTo(1);
     }
@@ -59,9 +60,8 @@ class SessionUsersTest {
     void addUser() {
         // given
         Session session = new Session(SessionStatus.ENROLL);
-        SessionUsers sessionUsers = new SessionUsers(new ArrayList<>());
+        SessionUsers sessionUsers = new SessionUsers(List.of(new SessionUser(NsUserTest.JAVAJIGI, session)));
         // when
-        sessionUsers.addUser(NsUserTest.JAVAJIGI, session);
         // then
         Assertions.assertThat(sessionUsers.totalAttendUsersCount()).isEqualTo(1);
     }
