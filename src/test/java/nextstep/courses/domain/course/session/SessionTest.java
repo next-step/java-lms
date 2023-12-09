@@ -40,7 +40,7 @@ public class SessionTest {
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
-        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         session = new Session(1L, image, duration, sessionState, applicants,
                 Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
         applicants = new Applicants();
@@ -51,7 +51,7 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 이미지가 없으면 이미지를 추가하라는 예외를 반환한다.")
     void newObject_imageNull_throwsException() {
-        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         assertThatThrownBy(
                 () -> new Session(null, duration, sessionState, 1L)
         ).isInstanceOf(IllegalArgumentException.class);

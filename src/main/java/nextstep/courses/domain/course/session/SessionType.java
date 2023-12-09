@@ -13,4 +13,8 @@ public enum SessionType {
     public boolean charged() {
         return this == CHARGE;
     }
+
+    public boolean free() {
+        return this == FREE;
+    }
 }
