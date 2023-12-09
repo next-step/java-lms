@@ -2,6 +2,7 @@ package nextstep.sessions.domain.data.vo;
 
 import java.time.LocalDateTime;
 
+import nextstep.sessions.domain.data.session.Duration;
 import nextstep.sessions.domain.exception.SessionsException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

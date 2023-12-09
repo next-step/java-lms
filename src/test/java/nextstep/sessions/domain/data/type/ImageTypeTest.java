@@ -1,5 +1,6 @@
 package nextstep.sessions.domain.data.type;
 
+import nextstep.sessions.domain.data.coverimage.ImageType;
 import nextstep.sessions.domain.exception.SessionsException;
 import org.junit.jupiter.api.Test;
 

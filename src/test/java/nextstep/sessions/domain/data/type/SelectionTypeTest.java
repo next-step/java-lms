@@ -1,5 +1,6 @@
 package nextstep.sessions.domain.data.type;
 
+import nextstep.sessions.domain.data.registration.SelectionType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

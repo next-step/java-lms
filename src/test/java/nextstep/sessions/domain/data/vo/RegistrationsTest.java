@@ -3,8 +3,8 @@ package nextstep.sessions.domain.data.vo;
 import java.util.List;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.Session;
-import nextstep.sessions.domain.data.type.PaidType;
+import nextstep.sessions.domain.data.registration.*;
+import nextstep.sessions.domain.data.session.*;
 import nextstep.sessions.domain.exception.SessionsException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;

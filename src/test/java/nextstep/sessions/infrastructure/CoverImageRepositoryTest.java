@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import nextstep.sessions.domain.data.CoverImage;
-import nextstep.sessions.domain.data.type.ImageType;
+import nextstep.sessions.domain.data.coverimage.CoverImage;
+import nextstep.sessions.domain.data.coverimage.ImageType;
 import nextstep.sessions.repository.CoverImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class CoverImageRepositoryTest {
         int count = coverImageRepository.saveAll(1, coverImages);
         assertThat(count).isEqualTo(2);
 
-        List<CoverImage> savedCoverImages = coverImageRepository.findById(1);
+        List<CoverImage> savedCoverImages = coverImageRepository.findAllBySessionId(1);
         List<ImageType> imageTypes = savedCoverImages.stream()
             .map(CoverImage::imageType)
             .collect(Collectors.toList());

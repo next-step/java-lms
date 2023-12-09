@@ -3,11 +3,9 @@ package nextstep.sessions.service;
 import java.util.List;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.Enrollment;
-import nextstep.sessions.domain.data.Session;
-import nextstep.sessions.domain.data.type.ApprovalType;
-import nextstep.sessions.domain.data.type.SelectionType;
-import nextstep.sessions.domain.data.vo.Registration;
+import nextstep.sessions.domain.data.registration.Registration;
+import nextstep.sessions.domain.data.session.Enrollment;
+import nextstep.sessions.domain.data.session.Session;
 import nextstep.sessions.domain.exception.SessionsException;
 import nextstep.sessions.repository.RegistrationRepository;
 import nextstep.sessions.repository.SessionRepository;
@@ -27,24 +25,28 @@ public class RegistrationService {
         Session session = sessionRepository.findById(sessionId)
             .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllById(sessionId);
+
         Enrollment enrollment = session.enrollment(registrations);
-        Registration registration = new Registration(session, loginUser, payment);
+        Registration registration = enrollment.registration(session, loginUser, payment);
         enrollment.enroll(registration);
-        registrationRepository.save(sessionId, registration);
+        registrationRepository.save(registration);
     }
 
     public void select(int registrationId) {
-        registration(registrationId).validateSelection();
-        registrationRepository.updateSelectionType(registrationId, SelectionType.SELECTION);
+        Registration registration = registration(registrationId);
+        registration.select();
+        registrationRepository.updateSelectionType(registration);
     }
 
     public void approve(int registrationId) {
-        registration(registrationId).validateApproval();
-        registrationRepository.updateApprovalType(registrationId, ApprovalType.APPROVAL);
+        Registration registration = registration(registrationId);
+        registration.approve();
+        registrationRepository.updateApprovalType(registration);
     }
 
     public void cancel(int registrationId) {
-        registration(registrationId).validateCancel();
+        Registration registration = registration(registrationId);
+        registration.cancel();
         registrationRepository.deleteById(registrationId);
     }
 

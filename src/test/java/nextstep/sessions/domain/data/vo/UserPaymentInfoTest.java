@@ -1,6 +1,7 @@
 package nextstep.sessions.domain.data.vo;
 
 import nextstep.payments.domain.Payment;
+import nextstep.sessions.domain.data.session.UserPaymentInfo;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 

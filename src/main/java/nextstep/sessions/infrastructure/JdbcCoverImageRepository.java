@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import nextstep.sessions.domain.data.CoverImage;
-import nextstep.sessions.domain.data.type.ImageType;
-import nextstep.sessions.domain.data.vo.ImageSize;
+import nextstep.sessions.domain.data.coverimage.CoverImage;
+import nextstep.sessions.domain.data.coverimage.ImageType;
+import nextstep.sessions.domain.data.coverimage.ImageSize;
 import nextstep.sessions.repository.CoverImageRepository;
 
 @Repository("sessionRepository")
@@ -20,7 +20,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public List<CoverImage> findById(int sessionId) {
+    public List<CoverImage> findAllBySessionId(int sessionId) {
         String sql =
             "    select " +
                 "  session_id, " +

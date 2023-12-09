@@ -1,7 +1,8 @@
 package nextstep.sessions.domain.data.vo;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.type.PaidType;
+import nextstep.sessions.domain.data.session.PaidType;
+import nextstep.sessions.domain.data.session.SessionType;
 import nextstep.sessions.domain.exception.SessionsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

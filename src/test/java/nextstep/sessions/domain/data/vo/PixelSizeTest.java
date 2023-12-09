@@ -1,5 +1,6 @@
 package nextstep.sessions.domain.data.vo;
 
+import nextstep.sessions.domain.data.coverimage.PixelSize;
 import nextstep.sessions.domain.exception.SessionsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
