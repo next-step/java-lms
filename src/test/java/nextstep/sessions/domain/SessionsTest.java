@@ -26,20 +26,20 @@ class SessionsTest {
                 .isInstanceOf(IllegalStateException.class);
     }
 
-    @DisplayName("모집 인원이 마감된 강의를 전달하면 IllegalStateException을 던진다.")
-    @Test
-    void addSessionExceptionTest2() {
-        Sessions sessions = new Sessions();
-        Session computer = new Session("COMPUTER", PeriodTest.DEC, SessionImageTest.IMAGE_JPG, SessionChargeTest.CHARGE_100, new SessionStudent(1000, 1), SessionStatus.RECRUITING);
-        computer.addStudent();
-        assertThatThrownBy(() -> sessions.addSession(computer))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
     @DisplayName("강의 결제를 하면 Payments를 반환한다.")
     @Test
     void payTest() {
-        Sessions sessions = new Sessions(List.of(new Session("JAVA_TDD", PeriodTest.DEC, SessionImageTest.IMAGE_PNG, SessionChargeTest.CHARGE_1000, new SessionStudent(1000, 1), SessionStatus.RECRUITING)));
+        Sessions sessions = new Sessions(List.of(new Session("JAVA_TDD", PeriodTest.DEC, SessionImageTest.IMAGE_PNG, SessionChargeTest.CHARGE_1000, SessionStatus.RECRUITING)));
         assertThat(sessions.pay(NsUserTest.JAVAJIGI.getId())).isInstanceOf(Payments.class);
+    }
+
+    @DisplayName("모집 인원이 마감된 강의를 결제하면 IllegalStateException을 던진다.")
+    @Test
+    void payExceptionTest() {
+        SessionTest.COMPUTER.addStudent();
+        Sessions sessions = new Sessions(List.of(SessionTest.COMPUTER));
+
+        assertThatThrownBy(() -> sessions.pay(NsUserTest.SANJIGI.getId()))
+                .isInstanceOf(IllegalStateException.class);
     }
 }

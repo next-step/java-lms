@@ -20,18 +20,18 @@ public class Session {
     private SessionCharge charge;
 
     // 인원수
-    private SessionStudent student;
+    private int studentCount;
 
     // 상태
     private SessionStatus status;
 
-    public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStudent student, SessionStatus status) {
+    public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status) {
         this.id = 0l;
         this.name = name;
         this.date = date;
         this.image = image;
         this.charge = charge;
-        this.student = student;
+        this.studentCount = 0;
         this.status = status;
     }
 
@@ -51,23 +51,37 @@ public class Session {
         return charge;
     }
 
+    public int getStudentCount() {
+        return studentCount;
+    }
+
     public SessionStatus getStatus() {
         return status;
     }
 
-    public boolean isInProgress() {
+    private boolean isInProgress() {
         return this.date.isInProgress();
     }
 
     public void checkSessionStatus() {
+        if (!isInProgress()) {
+            throw new IllegalStateException("진행중인 강의만 수강할 수 있습니다.");
+        }
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강할 수 있습니다.");
         }
     }
 
+    private void checkStudentCount() {
+        int limitCount = this.charge.getLimitCount();
+        if (limitCount > 0 && limitCount == this.studentCount) {
+            throw new IllegalStateException("모집 인원이 마감되었습니다.");
+        }
+    }
+
     public void addStudent() {
-        checkSessionStatus();
-        this.student.addStudent();
+        checkStudentCount();
+        this.studentCount++;
     }
 
 
