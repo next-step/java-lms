@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static nextstep.courses.infrastructure.TestUtil.autoincrementReset;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class ImageRepositoryTest extends TestUtil {
+public class ImageRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired

@@ -17,10 +17,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 
+import static nextstep.courses.infrastructure.TestUtil.autoincrementReset;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class SessionRepositoryTest extends TestUtil {
+class SessionRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired

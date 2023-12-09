@@ -23,10 +23,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static nextstep.courses.infrastructure.TestUtil.autoincrementReset;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class EnrollmentRepositoryTest extends TestUtil {
+public class EnrollmentRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(EnrollmentRepositoryTest.class);
 
     @Autowired
