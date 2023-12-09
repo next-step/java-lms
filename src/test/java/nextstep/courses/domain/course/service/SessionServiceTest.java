@@ -54,7 +54,7 @@ public class SessionServiceTest {
         applicants.addFreeApplicant(JAVAJIGI);
         duration = new Duration(localDate, localDate);
         session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
+                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
     }
 
     @Test

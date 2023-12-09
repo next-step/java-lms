@@ -1,5 +1,6 @@
 package nextstep.courses.domain.course.session;
 
+import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.course.image.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Session {
+public class Session extends BaseEntity  {
     private Long id;
 
     private Image image;
@@ -22,10 +23,6 @@ public class Session {
     private Applicants applicants;
 
     private Status status;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public enum Type {
         FREE("무료"),
@@ -50,18 +47,16 @@ public class Session {
         }
     }
 
-    public Session() {
-    }
-
-    public Session(Image image, Duration duration,
-                   Type type, Long amount, int quota) {
+    public Session(Image image, Duration duration, Type type,
+                   Long amount, int quota, Long creatorId) {
         this(0L, image, duration, type, amount, new Applicants(quota),
-                Status.READY, LocalDateTime.now(), null);
+                Status.READY, creatorId, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Image image, Duration duration,
-                   Type type, Long amount, Applicants applicants,
-                   Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Image image, Duration duration, Type type, Long amount,
+                   Applicants applicants, Status status, Long creatorId,
+                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(creatorId, createdAt, updatedAt);
         if (image == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
         }
@@ -77,8 +72,6 @@ public class Session {
         this.amount = amount;
         this.applicants = applicants;
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public boolean sameAmount(Long amount) {

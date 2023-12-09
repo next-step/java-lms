@@ -44,7 +44,7 @@ public class CourseServiceTest {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
         session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                new Applicants(10), Session.Status.RECRUIT, localDateTime, localDateTime);
+                new Applicants(10), Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
     }
 
     @Mock
