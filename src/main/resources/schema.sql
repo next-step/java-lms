@@ -69,7 +69,6 @@ create table session (
     fee_type varchar(10) not null,
     session_fee bigint null,
     available_count bigint null,
-    remain_count bigint null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id),

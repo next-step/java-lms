@@ -1,32 +1,21 @@
 package nextstep.courses.domain.session;
 
 public class EnrollmentCount {
-    private final int availableCount;
-    private int remainCount;
+    private int availableCount;
 
     public EnrollmentCount(final int availableCount) {
         this.availableCount = availableCount;
-        this.remainCount = availableCount;
-    }
-
-    public EnrollmentCount(final int maxEnrollmentCount, final int remainEnrollmentCount) {
-        this.availableCount = maxEnrollmentCount;
-        this.remainCount = remainEnrollmentCount;
     }
 
     public boolean isNoRemaining() {
-        return remainCount <= 0;
+        return availableCount < 1;
     }
 
     public void decrease() {
-        this.remainCount--;
+        this.availableCount--;
     }
 
     public int getAvailableCount() {
         return availableCount;
-    }
-
-    public int getRemainCount() {
-        return remainCount;
     }
 }

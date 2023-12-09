@@ -36,12 +36,12 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public long save(Long courseId, Session session) {
         String sql = "insert into session (title, start_at, end_at, state, course_id, image_id, fee_type, " +
-                     " session_fee, available_count, remain_count, created_at) " +
-                     " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                     " session_fee, available_count, created_at) " +
+                     " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         SessionPeriod sessionPeriod = session.getSessionPeriod();
         EnrollmentCount enrollmentCount =
                 (session.getSessionFeeType() == SessionFeeType.PAID) ? session.getEnrollmentCount()
-                        : new EnrollmentCount(0, 0);
+                        : new EnrollmentCount(0);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
@@ -55,8 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(7, session.getSessionFeeType().name());
             ps.setLong(8, session.getSessionFee().getFee());
             ps.setInt(9, enrollmentCount.getAvailableCount());
-            ps.setInt(10, enrollmentCount.getRemainCount());
-            ps.setTimestamp(11, toTimeStamp(LocalDateTime.now()));
+            ps.setTimestamp(10, toTimeStamp(LocalDateTime.now()));
             return ps;
         }, keyHolder);
 
@@ -67,7 +66,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(final Long id) {
         String sql = "select id, title, start_at, end_at, state, course_id, image_id, fee_type," +
-                     " session_fee, available_count, remain_count, created_at, updated_at from session where id = ?";
+                     " session_fee, available_count, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
@@ -76,9 +75,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 findByCoverImage(rs.getLong(7)),
                 SessionFeeType.valueOf(rs.getString(8)),
                 SessionFee.of(rs.getLong(9)),
-                new EnrollmentCount(rs.getInt(10), rs.getInt(11)),
-                toLocalDateTime(rs.getTimestamp(12)),
-                toLocalDateTime(rs.getTimestamp(13)));
+                new EnrollmentCount(rs.getInt(10)),
+                toLocalDateTime(rs.getTimestamp(11)),
+                toLocalDateTime(rs.getTimestamp(12)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
