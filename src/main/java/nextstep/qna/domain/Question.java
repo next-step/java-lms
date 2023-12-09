@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question implements Content {
-    private static final String DELETE_NOT_PERMITTED_MESSAGE = "질문을 삭제할 권한이 없습니다.";
+import static nextstep.qna.common.ErrorMessage.DELETE_NOT_PERMITTED_MESSAGE;
+
+public class Question {
 
     private Long id;
 
@@ -84,14 +85,28 @@ public class Question implements Content {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
+        this.validateAllPermission(loginUser, answers);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(this.deleteContent());
+        answers.forEach(answer -> deleteHistories.add(answer.deleteContent()));
+        return deleteHistories;
+    }
+
+    private void validateAllPermission(NsUser loginUser, List<Answer> answers) throws CannotDeleteException {
+        this.validatePermission(loginUser);
+        answers.forEach(answer -> answer.validatePermission(loginUser));
     }
 
     public void validatePermission(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException(DELETE_NOT_PERMITTED_MESSAGE);
         }
+    }
+
+    private DeleteHistory deleteContent() {
+        this.setDeleted(true);
+        return new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), LocalDateTime.now());
     }
 
     @Override

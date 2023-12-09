@@ -7,8 +7,9 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer implements Content {
-    private static final String CANNOT_DELETE_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+import static nextstep.qna.common.ErrorMessage.CANNOT_DELETE_MESSAGE;
+
+public class Answer {
 
     private Long id;
 
@@ -79,6 +80,11 @@ public class Answer implements Content {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException(CANNOT_DELETE_MESSAGE);
         }
+    }
+
+    public DeleteHistory deleteContent() {
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override
