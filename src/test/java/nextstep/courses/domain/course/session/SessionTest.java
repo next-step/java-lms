@@ -34,11 +34,11 @@ public class SessionTest {
 
     @BeforeEach
     void setUp() {
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L);
         payment = new Payment("1", 1L, 3L, 1000L);
         differentPayment = new Payment("1", 1L, 3L, 500L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
+        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         session = new Session(1L, image, duration, sessionState, applicants,
@@ -53,7 +53,7 @@ public class SessionTest {
     void newObject_imageNull_throwsException() {
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         assertThatThrownBy(
-                () -> new Session(null, duration, sessionState, 1L)
+                () -> new Session(null, duration, sessionState, 1L, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -61,7 +61,7 @@ public class SessionTest {
     @DisplayName("강의는 기간이 없으면 기간을 추가하라는 예외를 반환한다.")
     void newObject_durationNull_throwsException() {
         assertThatThrownBy(
-                () -> new Session(image, null, sessionState, 1L)
+                () -> new Session(image, null, sessionState, 1L, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -69,7 +69,7 @@ public class SessionTest {
     @DisplayName("강의는 강의 상태가 없으면 상태를 추가하라는 예외를 반환한다.")
     void newObject_sessionStateNull_throwsException() {
         assertThatThrownBy(
-                () -> new Session(image, duration, null, 1L)
+                () -> new Session(image, duration, null, 1L, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 

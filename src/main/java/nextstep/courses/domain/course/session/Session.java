@@ -34,9 +34,9 @@ public class Session extends BaseEntity  {
         }
     }
 
-    public Session(Image image, Duration duration, SessionState sessionState, Long creatorId) {
+    public Session(Image image, Duration duration, SessionState sessionState, Long creatorId, LocalDateTime date) {
         this(0L, image, duration, sessionState, new Applicants(),
-                Status.READY, creatorId, LocalDateTime.now(), null);
+                Status.READY, creatorId, date, null);
     }
 
     public Session(Long id, Image image, Duration duration, SessionState sessionState,

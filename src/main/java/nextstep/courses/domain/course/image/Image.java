@@ -20,8 +20,8 @@ public class Image extends BaseEntity {
 
     private int imageHeight;
 
-    public Image(int imageSize, String type, int imageWidth, int imageHeight, Long creatorId) {
-        this(0L, imageSize, type, imageWidth, imageHeight, creatorId, LocalDateTime.now(), null);
+    public Image(int imageSize, String type, int imageWidth, int imageHeight, Long creatorId, LocalDateTime date) {
+        this(0L, imageSize, type, imageWidth, imageHeight, creatorId, date, null);
     }
 
     public Image(Long id, int imageSize, String type, int imageWidth, int imageHeight,

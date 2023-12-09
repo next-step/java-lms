@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ImageSessionTypeTest {
+public class ImageTypeTest {
     @Test
     @DisplayName("find는 존재하지 않는 값을 입력하면 찾을 수 없다는 예외를 던진다.")
     void find_notExistedName_throwsException() {
