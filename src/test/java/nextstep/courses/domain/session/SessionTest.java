@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -45,8 +47,8 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
-                , Amount.of(1000L), new EnrollmentCount(0), RecruitStatus.RECRUITING);
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, List.of(coverImage),
+                Amount.of(1000L), new EnrollmentCount(0), RecruitStatus.RECRUITING);
 
         assertThatThrownBy(() -> {
             tddSession.enroll(JAVAJIGI, new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -59,7 +61,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, coverImage
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, List.of(coverImage)
                 , Amount.of(1500L), new EnrollmentCount(10), RecruitStatus.RECRUITING);
 
         assertThatThrownBy(() -> {

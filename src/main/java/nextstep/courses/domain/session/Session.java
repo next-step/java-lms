@@ -7,6 +7,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session extends BaseEntity {
     private static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
@@ -16,27 +17,27 @@ public class Session extends BaseEntity {
     private String title;
     private SessionPeriod sessionPeriod;
     private SessionStatus sessionStatus;
-    private CoverImage coverImage;
+    private List<CoverImage> coverImages;
     private SessionType sessionType;
     private Amount amount;
     private EnrollmentCount enrollmentCount;
     private RecruitStatus recruitStatus;
 
     public Session(final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
-                   final CoverImage coverImage, final Amount amount, final EnrollmentCount enrollmentCount,
+                   final List<CoverImage> coverImages, final Amount amount, final EnrollmentCount enrollmentCount,
                    final RecruitStatus recruitStatus) {
-        this(null, title, sessionPeriod, sessionStatus, coverImage, SessionType.of(amount), amount, enrollmentCount,
+        this(null, title, sessionPeriod, sessionStatus, coverImages, SessionType.of(amount), amount, enrollmentCount,
                 recruitStatus, LocalDateTime.now(), null);
     }
     public Session(final Long id, final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
-                   final CoverImage coverImage, final SessionType sessionType, final Amount amount,
+                   final List<CoverImage> coverImages, final SessionType sessionType, final Amount amount,
                    final EnrollmentCount enrollmentCount, final RecruitStatus recruitStatus,
                    final LocalDateTime createAt, LocalDateTime updatedAt) {
         super(id, createAt, updatedAt);
         this.title = title;
         this.sessionPeriod = sessionPeriod;
         this.sessionStatus = sessionStatus;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.sessionType = sessionType;
         this.amount = amount;
         this.enrollmentCount = enrollmentCount;
@@ -88,8 +89,8 @@ public class Session extends BaseEntity {
         return sessionStatus;
     }
 
-    public CoverImage coverImage() {
-        return coverImage;
+    public List<CoverImage> coverImages() {
+        return coverImages;
     }
 
     public Amount amount() {

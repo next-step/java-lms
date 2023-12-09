@@ -4,10 +4,7 @@ import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentRepository;
-import nextstep.courses.domain.image.CoverImage;
-import nextstep.courses.domain.image.ImagePixel;
 import nextstep.courses.domain.image.ImageRepository;
-import nextstep.courses.domain.image.ImageType;
 import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -20,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static nextstep.courses.infrastructure.TestUtil.autoincrementReset;
+import static nextstep.courses.infrastructure.TestUtil.createDefaultTddSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -53,15 +50,10 @@ public class EnrollmentRepositoryTest {
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
         courseRepository.save(course);
+        Course savedCourse = courseRepository.findById(1L).get();
 
-        final CoverImage coverImage = new CoverImage(1024L, new ImagePixel(300, 200), ImageType.GIF);
-        imageRepository.save(coverImage);
-        CoverImage savedCoverImage = imageRepository.findById(1L).get();
-
-        SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, Amount.ZERO()
-                , null, RecruitStatus.RECRUITING);
-        int count = sessionRepository.save(1L, tddSession);
+        final Session tddSession = createDefaultTddSession();
+        int count = sessionRepository.save(savedCourse.id(), tddSession);
         Optional<NsUser> javajigi = userRepository.findByUserId("javajigi");
 
         final Enrollment enrollment = new Enrollment(javajigi.get().getId(), 1L);
