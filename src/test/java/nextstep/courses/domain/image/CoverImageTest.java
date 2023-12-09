@@ -10,7 +10,7 @@ class CoverImageTest {
     @Test
     void validateSizeTest() {
         assertThatThrownBy(() -> {
-            new CoverImage(1024L * 1024L * 3, 300, 200, ImageType.GIF);
+            new CoverImage(300, 200, 1024L * 1024L * 3, ImageType.GIF);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 

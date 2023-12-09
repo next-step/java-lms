@@ -6,13 +6,13 @@ import java.util.Objects;
 public class SessionPeriod {
     public static final String INVALID_PERIOD_MESSAGE = "강의 기간을 확인해주세요.";
 
-    private final LocalDateTime startDateTime;
-    private final LocalDateTime endDateTime;
+    private final LocalDateTime startAt;
+    private final LocalDateTime endAt;
 
-    public SessionPeriod(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
-        validateSessionPeriod(startDateTime, endDateTime);
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+    public SessionPeriod(final LocalDateTime startAt, final LocalDateTime endAt) {
+        validateSessionPeriod(startAt, endAt);
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
     private void validateSessionPeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -26,11 +26,19 @@ public class SessionPeriod {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SessionPeriod that = (SessionPeriod) o;
-        return Objects.equals(startDateTime, that.startDateTime) && Objects.equals(endDateTime, that.endDateTime);
+        return Objects.equals(startAt, that.startAt) && Objects.equals(endAt, that.endAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startDateTime, endDateTime);
+        return Objects.hash(startAt, endAt);
+    }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
     }
 }

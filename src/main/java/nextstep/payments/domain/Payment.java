@@ -12,22 +12,34 @@ public class Payment {
     private Long nsUserId;
 
     // 결제 금액
-    private Long amount;
+    private Long sessionFee;
 
     private LocalDateTime createdAt;
 
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+    public Payment(String id, Long sessionId, Long nsUserId, Long sessionFee) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
-        this.amount = amount;
+        this.sessionFee = sessionFee;
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getAmount() {
-        return this.amount;
+    public Long getSessionFee() {
+        return this.sessionFee;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
     }
 }
