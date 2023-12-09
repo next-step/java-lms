@@ -15,8 +15,8 @@ public class Course extends BaseEntity {
 
     private Sessions sessions;
 
-    public Course(String title, int ordering, Long creatorId) {
-        this(0L, title, ordering, creatorId, LocalDateTime.now(), null);
+    public Course(String title, int ordering, Long creatorId, LocalDateTime date) {
+        this(0L, title, ordering, creatorId, date, null);
     }
 
     public Course(Long id, String title, int ordering, Long creatorId,

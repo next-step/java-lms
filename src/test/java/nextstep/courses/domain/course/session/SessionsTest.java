@@ -27,10 +27,10 @@ public class SessionsTest {
     @BeforeEach
     void setUp() {
         sessions = new Sessions();
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L);
+        localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
+        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
-        localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         session = new Session(1L, image, duration, sessionState, new Applicants(),
