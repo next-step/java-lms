@@ -14,7 +14,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    @DisplayName("로그인 사용자와 질문한 사람이 같은 경우 질문을 삭제한다")
+    @DisplayName("사용자와 질문한 사람이 같은 경우 질문을 삭제한다")
     void delete_same_user() throws CannotDeleteException {
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
@@ -24,7 +24,7 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("로그인 사용자와 질문한 사람이 다른 경우 질문 삭제는 불가능하다")
+    @DisplayName("사용자와 질문한 사람이 다른 경우 질문 삭제는 불가능하다")
     void delete_different_user() {
         assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class);
