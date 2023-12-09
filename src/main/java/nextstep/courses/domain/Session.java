@@ -10,24 +10,22 @@ public class Session {
     private final Thumbnail thumbnail;
     private final SessionType sessionType;
     private final SessionStatus sessionStatus;
-    private final List<NsUser> students;
 
     public Session(Long sessionId, String sessionName, Period sessionPeriod, Thumbnail thumbnail,
-                   SessionType sessionType, SessionStatus sessionStatus, List<NsUser> students) {
+                   SessionType sessionType, SessionStatus sessionStatus) {
         this.sessionId = sessionId;
         this.sessionName = sessionName;
         this.sessionPeriod = sessionPeriod;
         this.thumbnail = thumbnail;
         this.sessionType = sessionType;
         this.sessionStatus = sessionStatus;
-        this.students = students;
     }
 
-    public boolean isEnrollmentPossible(Integer sessionFee) {
+    public boolean isEnrollmentPossible(SessionStudents students, Integer sessionFee) {
         if (!isRecruiting()) {
             return false;
         }
-        if (!isWithinCapacity()) {
+        if (!isWithinCapacity(students)) {
             return false;
         }
         if (!checkSessionFeeEquality(sessionFee)) {
@@ -39,24 +37,18 @@ public class Session {
         return sessionStatus == SessionStatus.RECRUITING;
     }
 
-    protected boolean isWithinCapacity() {
-        return this.sessionType.isWithinCapacity(this.students.size());
+    protected boolean isWithinCapacity(SessionStudents students) {
+        return students.isWithinCapacity(this.sessionType);
     }
 
     protected boolean checkSessionFeeEquality(Integer sessionFee) {
         return this.sessionType.checkSessionFeeEquality(sessionFee);
     }
 
-    public void enroll(NsUser student) {
-        this.students.add(student);
-    }
-
-    public Long getSessionId() {
-        return sessionId;
-    }
-
-    public List<NsUser> getStudents() {
-        return students;
+    public Student enroll(SessionStudents students, NsUser user) {
+        Student student = new Student(this.sessionId, user.getId());
+        students.enroll(student);
+        return student;
     }
 
     @Override
@@ -68,7 +60,6 @@ public class Session {
                 ", thumbnail=" + thumbnail +
                 ", sessionType=" + sessionType +
                 ", sessionStatus=" + sessionStatus +
-                ", students=" + students +
                 '}';
     }
 }
