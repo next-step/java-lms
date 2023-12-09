@@ -47,7 +47,7 @@ public class SessionServiceTest {
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
-        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         applicants = new Applicants();
         applicants.addApplicant(JAVAJIGI, sessionState);
         session = new Session(1L, image, duration, sessionState, applicants,

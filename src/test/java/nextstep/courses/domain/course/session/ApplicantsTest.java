@@ -18,7 +18,7 @@ public class ApplicantsTest {
     @BeforeEach
     void setUp() {
         applicants = new Applicants();
-        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         applicants.addApplicant(JAVAJIGI, sessionState);
     }
 
