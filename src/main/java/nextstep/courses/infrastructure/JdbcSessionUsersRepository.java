@@ -23,34 +23,29 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
 
     @Override
     public SessionUsers findBy(long sessionId) {
-        String sql = "select ns.id, ns.user_id, ns.password, ns.name, ns.email, ns.created_at, ns.updated_at " +
-                "from user_session us " +
-                "join ns_user ns on ns.id = us.user_id " +
-                "where us.session_id = ?";
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+        String sql = "select session_id, user_id, selection_status, status " +
+                "from session_users " +
+                "where session_id = ?";
+        RowMapper<SessionUser> rowMapper = (rs, rowNum) -> new SessionUser(
                 rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7))
+                rs.getLong(2),
+                SelectionStatus.valueOf(rs.getString(3)),
+                SessionUserStatus.valueOf(rs.getString(4))
         );
-        List<NsUser> users = jdbcTemplate.query(sql, rowMapper, sessionId);
-        Set<NsUser> userSet = new HashSet<>(users);
-        return new SessionUsers(userSet);
+        List<SessionUser> sessionUsers = jdbcTemplate.query(sql, rowMapper, sessionId);
+        Set<SessionUser> sessionUserSet = new HashSet<>(sessionUsers);
+        return new SessionUsers(sessionUserSet);
     }
 
     @Override
-    public void addUserFor(long sessionId, long userId) {
-        String sql = "insert into user_session(session_id, user_id) values(?,?)";
-        this.jdbcTemplate.update(sql, sessionId, userId);
+    public void addUserFor(SessionUser sessionUser) {
+        String sql = "insert into session_users(session_id, user_id, selection_status, status) values(?,?,?,?)";
+        this.jdbcTemplate.update(sql, sessionUser.sessionId(), sessionUser.userId(), sessionUser.selectionStatus().toString(), sessionUser.sessionUserStatus().toString());
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
+    @Override
+    public void save(SessionUser sessionUser) {
+        String sql = "update session_users set status = ? where session_id = ? and user_id = ?";
+        this.jdbcTemplate.update(sql, sessionUser.sessionUserStatus().toString(), sessionUser.sessionId(), sessionUser.userId());
     }
 }

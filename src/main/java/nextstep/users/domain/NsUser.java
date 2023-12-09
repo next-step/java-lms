@@ -92,6 +92,10 @@ public class NsUser {
         this.email = target.email;
     }
 
+    public boolean matchId(Long userId) {
+        return Objects.equals(this.id, userId);
+    }
+
     public boolean matchUser(NsUser target) {
         return matchUserId(target.getUserId());
     }

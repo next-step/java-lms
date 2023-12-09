@@ -1,9 +1,11 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
+import nextstep.tutor.domain.NsTutor;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -12,76 +14,54 @@ public class Session {
 
     private Long courseId;
 
-    private final SessionImage sessionImage;
+    private Long tutorId;
+
+    private final SessionImages sessionImages;
 
     private final SessionPeriod sessionPeriod;
 
-    private final SessionPrice sessionPrice;
-
-    private final SessionState sessionState;
-
-    private final SessionType sessionType;
-
-    private final SessionUsers sessionUsers;
-
-    private final SessionUserCount sessionUserCount;
+    private final Enrollment enrollment;
 
     public Session(Long id) {
-        this(id, null, null, null, null, null, null, null, null);
+        this(id, 1L, 1L,
+                new SessionImages(
+                        List.of(new SessionImage(0, "jpg", 300, 200))
+                ),
+                new SessionPeriod(
+                        LocalDate.of(2023, 1, 1),
+                        LocalDate.of(2023, 1, 30)
+                ),
+                new Enrollment(
+                        new SessionPrice(1000),
+                        SessionStatus.PREPARE,
+                        SessionRecruitment.OPEN,
+                        SessionType.PAID,
+                        new SessionUserCount(0, 0)
+                )
+        );
     }
 
-    public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUserCount sessionUserCount) {
-        this(id, courseId, sessionImage, sessionPeriod, sessionPrice, sessionState, sessionType, new SessionUsers(), sessionUserCount);
-    }
-
-    public Session(Long id, Long courseId, SessionImage sessionImage, SessionPeriod sessionPeriod, SessionPrice sessionPrice, SessionState sessionState, SessionType sessionType, SessionUsers sessionUsers, SessionUserCount sessionUserCount) {
+    public Session(Long id, Long courseId, Long tutorId, SessionImages sessionImages, SessionPeriod sessionPeriod, Enrollment enrollment) {
         this.id = id;
         this.courseId = courseId;
-        this.sessionImage = sessionImage;
+        this.tutorId = tutorId;
+        this.sessionImages = sessionImages;
         this.sessionPeriod = sessionPeriod;
-        this.sessionPrice = sessionPrice;
-        this.sessionState = sessionState;
-        this.sessionType = sessionType;
-        this.sessionUsers = sessionUsers;
-        this.sessionUserCount = sessionUserCount;
+        this.enrollment = enrollment;
     }
 
-    public void register(NsUser user, Payment payment) {
-        validateState();
-        validateType();
-        validatePriceEqualPayment(payment);
-        sessionUsers.addUser(user);
-        sessionUserCount.plusUserCount();
+    public SessionUser register(SelectionStatus selectionStatus, NsUser user, Payment payment) {
+        return enrollment.enroll(this.id, selectionStatus, user, payment);
     }
 
-    private void validatePriceEqualPayment(Payment payment) {
-        if (isPaid()) {
-            sessionPrice.isSameBy(payment);
-        }
+    public SessionUser approve(NsTutor tutor, NsUser user) {
+        tutor.isSameTutor(this.tutorId);
+        return enrollment.approve(user);
     }
 
-    private void validateState() {
-        if (!isOpen()) {
-            throw new SessionException("현재 강의가 모집중이지 않아 수강 신청을 할 수가 없습니다.");
-        }
-    }
-
-    private boolean isOpen() {
-        return sessionState.isOpen();
-    }
-
-    private void validateType() {
-        if (isPaid()) {
-            sessionUserCount.validateMaxUserCount();
-        }
-    }
-
-    private boolean isPaid() {
-        return sessionType == SessionType.PAID;
-    }
-
-    public int userCount(){
-        return sessionUserCount.userCount();
+    public SessionUser cancel(NsTutor tutor, NsUser user) {
+        tutor.isSameTutor(this.tutorId);
+        return enrollment.cancel(user);
     }
 
     @Override
@@ -96,4 +76,5 @@ public class Session {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

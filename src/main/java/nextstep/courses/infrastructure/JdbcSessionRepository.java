@@ -12,40 +12,47 @@ import java.util.Optional;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
+    private SessionUsersRepository sessionUsersRepository;
+
+    private SessionImageRepository sessionImageRepository;
+
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(SessionImageRepository sessionImageRepository, SessionUsersRepository sessionUsersRepository, JdbcOperations jdbcTemplate) {
+        this.sessionImageRepository = sessionImageRepository;
+        this.sessionUsersRepository = sessionUsersRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Optional<Session> findBy(long sessionId, SessionUsers sessionUsers) {
-        String sql = "select id, course_id, start_date, end_date, price, " +
-                "state, type, user_count, max_user_count, image_size, image_extension, image_width, " +
-                "image_height " +
+    public Optional<Session> findBy(long sessionId) {
+        final SessionUsers sessionUsers = sessionUsersRepository.findBy(sessionId);
+        final SessionImages sessionImages = sessionImageRepository.findBy(sessionId);
+
+        String sql = "select id, course_id, tutor_id, start_date, end_date, price, " +
+                "type, status, recruitment, max_user_count " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
-                new SessionImage(
-                        rs.getInt(10),
-                        rs.getString(11),
-                        rs.getInt(12),
-                        rs.getInt(13)
-                ),
+                rs.getLong(3),
+                sessionImages,
                 new SessionPeriod(
-                        toLocalDate(rs.getDate(3)),
-                        toLocalDate(rs.getDate(4))
+                        toLocalDate(rs.getDate(4)),
+                        toLocalDate(rs.getDate(5))
                 ),
-                new SessionPrice(
-                        rs.getInt(5)
-                ),
-                SessionState.valueOf(rs.getString(6)),
-                SessionType.valueOf(rs.getString(7)),
-                sessionUsers,
-                new SessionUserCount(
-                        rs.getInt(8),
-                        rs.getInt(9)
+                new Enrollment(
+                        new SessionPrice(
+                                rs.getInt(6)
+                        ),
+                        SessionStatus.valueOf(rs.getString(8)),
+                        SessionRecruitment.valueOf(rs.getString(9)),
+                        SessionType.valueOf(rs.getString(7)),
+                        new SessionUserCount(
+                                sessionUsers.size(),
+                                rs.getInt(10)
+                        ),
+                        sessionUsers
                 )
         );
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
@@ -56,12 +63,6 @@ public class JdbcSessionRepository implements SessionRepository {
             return null;
         }
         return date.toLocalDate();
-    }
-
-    @Override
-    public void updateCountBy(int userCount, long sessionId) {
-        String sql = "update session set user_count=? where id=?";
-        this.jdbcTemplate.update(sql, userCount, sessionId);
     }
 
 }
