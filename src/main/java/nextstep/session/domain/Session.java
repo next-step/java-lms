@@ -20,7 +20,12 @@ public abstract class Session extends BaseDomain implements Sessionable {
     protected Enrollment enrollment = new Enrollment();
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
-        this(0L, LocalDateTime.now(), null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS, sessionType);
+        super();
+        this.creatorId = creatorId;
+        this.sessionDate = new SessionDate(startDate, endDate);
+        this.sessionImage = sessionImage;
+        this.sessionStatus = DEFAULT_SESSION_STATUS;
+        this.sessionType = sessionType;
     }
 
     public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {

@@ -17,7 +17,9 @@ public class Course extends BaseDomain {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        super();
+        this.title = title;
+        this.creatorId = creatorId;
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

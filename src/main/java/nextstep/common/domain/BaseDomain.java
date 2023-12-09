@@ -8,6 +8,8 @@ public class BaseDomain {
     private LocalDateTime updatedAt;
 
     public BaseDomain() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = null;
     }
 
     public BaseDomain(Long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
