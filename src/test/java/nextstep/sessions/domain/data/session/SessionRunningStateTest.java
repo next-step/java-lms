@@ -1,6 +1,5 @@
-package nextstep.sessions.domain.data.type;
+package nextstep.sessions.domain.data.session;
 
-import nextstep.sessions.domain.data.session.SessionRunningState;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

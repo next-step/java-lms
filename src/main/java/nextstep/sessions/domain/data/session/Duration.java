@@ -2,7 +2,7 @@ package nextstep.sessions.domain.data.session;
 
 import java.time.LocalDateTime;
 
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotEstablishSessionException;
 
 public class Duration {
 
@@ -17,7 +17,7 @@ public class Duration {
 
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (!isValidDate(startDate, endDate)) {
-            throw new SessionsException("시작일은 종료일보다 빨라야 합니다.");
+            throw new CannotEstablishSessionException("시작일은 종료일보다 빨라야 합니다.");
         }
     }
 

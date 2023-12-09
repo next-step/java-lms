@@ -1,7 +1,6 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data.coverimage;
 
-import nextstep.sessions.domain.data.coverimage.PixelSize;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotSaveCoverImageException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -18,14 +17,14 @@ public class PixelSizeTest {
         })
     void 이미지_가로세로_크기_미달(int width, int height) {
         assertThatThrownBy(() -> new PixelSize(width, height))
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotSaveCoverImageException.class)
             .hasMessage(PixelSize.IMAGE_SIZE_VALIDATION_MESSAGE);
     }
 
     @Test
     void 이미지_비율_불일치() {
         assertThatThrownBy(() -> new PixelSize(301, 200))
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotSaveCoverImageException.class)
             .hasMessage(PixelSize.IMAGE_RATIO_VALIDATION_MESSAGE);
     }
 }

@@ -1,6 +1,6 @@
 package nextstep.sessions.domain.data.coverimage;
 
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotSaveCoverImageException;
 
 public class PixelSize {
 
@@ -30,10 +30,10 @@ public class PixelSize {
 
     private void validateWidthAndHeight(int width, int height) {
         if (!isValidWidthAndHeightSize(width, height)) {
-            throw new SessionsException(IMAGE_SIZE_VALIDATION_MESSAGE);
+            throw new CannotSaveCoverImageException(IMAGE_SIZE_VALIDATION_MESSAGE);
         }
         if (!isValidRatio(width, height)) {
-            throw new SessionsException(IMAGE_RATIO_VALIDATION_MESSAGE);
+            throw new CannotSaveCoverImageException(IMAGE_RATIO_VALIDATION_MESSAGE);
         }
     }
 

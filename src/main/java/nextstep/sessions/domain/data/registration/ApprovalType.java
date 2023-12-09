@@ -2,7 +2,7 @@ package nextstep.sessions.domain.data.registration;
 
 import java.util.Arrays;
 
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotApproveRegistrationException;
 
 public enum ApprovalType {
 
@@ -21,7 +21,7 @@ public enum ApprovalType {
         return Arrays.stream(values())
             .filter(approvalType -> approvalType.code.equals(code))
             .findFirst()
-            .orElseThrow(() -> new SessionsException("일치하는 코드 값이 없습니다."));
+            .orElseThrow(() -> new CannotApproveRegistrationException("유효하지 않은 승인 코드 입니다."));
     }
 
     public String code() {

@@ -2,7 +2,7 @@ package nextstep.sessions.domain.data.registration;
 
 import java.util.Arrays;
 
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotSelectRegistrationException;
 
 public enum SelectionType {
     SELECTION("Y", "선발"),
@@ -20,7 +20,7 @@ public enum SelectionType {
         return Arrays.stream(values())
             .filter(selectionType -> selectionType.code.equals(code))
             .findFirst()
-            .orElseThrow(() -> new SessionsException("일치하는 코드 값이 없습니다."));
+            .orElseThrow(() -> new CannotSelectRegistrationException("일치하는 코드 값이 없습니다."));
     }
 
     public String code() {

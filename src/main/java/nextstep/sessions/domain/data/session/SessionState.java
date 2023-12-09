@@ -1,8 +1,6 @@
 package nextstep.sessions.domain.data.session;
 
-import nextstep.sessions.domain.data.session.SessionRecruitingState;
-import nextstep.sessions.domain.data.session.SessionRunningState;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotEnrollRegistrationException;
 
 public class SessionState {
 
@@ -16,10 +14,10 @@ public class SessionState {
 
     public void validateState() {
         if (!sessionRunningState.isRunning()) {
-            throw new SessionsException("진행중이 아닌 강의입니다.");
+            throw new CannotEnrollRegistrationException("진행중이 아닌 강의입니다.");
         }
         if (!sessionRecruitingState.isRecruiting()) {
-            throw new SessionsException("모집중이 아닌 강의입니다.");
+            throw new CannotEnrollRegistrationException("모집중이 아닌 강의입니다.");
         }
     }
 

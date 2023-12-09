@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import nextstep.sessions.domain.data.session.*;
-import nextstep.sessions.domain.data.session.SessionType;
+import nextstep.sessions.domain.exception.NotFoundSessionException;
 import nextstep.sessions.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,8 @@ public class SessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
-        Session savedSession = sessionRepository.findById(1).get();
+        Session savedSession = sessionRepository.findById(1)
+            .orElseThrow(() -> new NotFoundSessionException("강의 정보가 없습니다."));
         assertThat(savedSession.sessionRunningState()).isEqualTo(session.sessionRunningState());
         assertThat(savedSession.sessionRecruitingState()).isEqualTo(session.sessionRecruitingState());
     }

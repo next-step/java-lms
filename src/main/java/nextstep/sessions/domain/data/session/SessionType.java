@@ -1,7 +1,7 @@
 package nextstep.sessions.domain.data.session;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotEnrollRegistrationException;
 
 public class SessionType {
 
@@ -22,7 +22,7 @@ public class SessionType {
 
     private void validateCapacity(int registrationCount) {
         if (!isValidCapacity(registrationCount)) {
-            throw new SessionsException("강의 최대 인원을 초과했습니다.");
+            throw new CannotEnrollRegistrationException("강의 최대 인원을 초과했습니다.");
         }
     }
 

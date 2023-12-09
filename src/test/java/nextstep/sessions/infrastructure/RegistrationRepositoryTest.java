@@ -9,7 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.registration.*;
 import nextstep.sessions.domain.data.session.Session;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.NotFoundRegistrationException;
+import nextstep.sessions.domain.exception.NotFoundSessionException;
 import nextstep.sessions.repository.RegistrationRepository;
 import nextstep.sessions.repository.SessionRepository;
 import nextstep.users.domain.NsUserTest;
@@ -37,7 +38,7 @@ public class RegistrationRepositoryTest {
     void 수강_신청_및_신청_내역_조회() {
         int sessionId = 6;
         Session session = sessionRepository.findById(sessionId)
-            .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
+            .orElseThrow(() -> new NotFoundSessionException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllById(sessionId);
 
         Registration registration = new Registration(session, NsUserTest.SANJIGI, new Payment(1L, 2L, 3L, 800000L));
@@ -86,6 +87,6 @@ public class RegistrationRepositoryTest {
 
     private Registration registration(int registrationId) {
         return registrationRepository.findById(registrationId)
-            .orElseThrow(() -> new SessionsException("등록된 수강 정보가 없습니다."));
+            .orElseThrow(() -> new NotFoundRegistrationException("등록된 수강 정보가 없습니다."));
     }
 }

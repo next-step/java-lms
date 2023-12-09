@@ -1,9 +1,7 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data.session;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.session.PaidType;
-import nextstep.sessions.domain.data.session.SessionType;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotEnrollRegistrationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +14,7 @@ public class SessionTypeTest {
         SessionType sessionType = new SessionType(PaidType.PAID, 800000, 2);
 
         assertThatThrownBy(() -> sessionType.validateSession(2, new Payment()))
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotEnrollRegistrationException.class)
             .hasMessage("강의 최대 인원을 초과했습니다.");
     }
 

@@ -6,7 +6,8 @@ import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.registration.Registration;
 import nextstep.sessions.domain.data.session.Enrollment;
 import nextstep.sessions.domain.data.session.Session;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.NotFoundRegistrationException;
+import nextstep.sessions.domain.exception.NotFoundSessionException;
 import nextstep.sessions.repository.RegistrationRepository;
 import nextstep.sessions.repository.SessionRepository;
 import nextstep.users.domain.NsUser;
@@ -23,7 +24,7 @@ public class RegistrationService {
 
     public void enroll(int sessionId, NsUser loginUser, Payment payment) {
         Session session = sessionRepository.findById(sessionId)
-            .orElseThrow(() -> new SessionsException("강의 정보가 없습니다."));
+            .orElseThrow(() -> new NotFoundSessionException("강의 정보가 없습니다."));
         List<Registration> registrations = registrationRepository.findAllById(sessionId);
 
         Enrollment enrollment = session.enrollment(registrations);
@@ -52,7 +53,7 @@ public class RegistrationService {
 
     private Registration registration(int registrationId) {
         return registrationRepository.findById(registrationId)
-            .orElseThrow(() -> new SessionsException("등록된 수강 정보가 없습니다."));
+            .orElseThrow(() -> new NotFoundRegistrationException("등록된 수강 정보가 없습니다."));
     }
 
 }

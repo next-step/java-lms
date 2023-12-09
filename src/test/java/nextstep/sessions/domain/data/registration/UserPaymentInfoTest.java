@@ -1,4 +1,4 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data.registration;
 
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.session.UserPaymentInfo;

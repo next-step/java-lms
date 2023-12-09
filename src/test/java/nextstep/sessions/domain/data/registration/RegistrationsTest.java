@@ -1,11 +1,10 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data.registration;
 
 import java.util.List;
 
 import nextstep.payments.domain.Payment;
-import nextstep.sessions.domain.data.registration.*;
 import nextstep.sessions.domain.data.session.*;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotEnrollRegistrationException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,7 @@ public class RegistrationsTest {
         ));
 
         assertThatThrownBy(() -> registrations.validateDuplicateEnrollment(NsUserTest.JAVAJIGI))
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotEnrollRegistrationException.class)
             .hasMessage("이미 수강신청된 사용자 입니다.");
     }
 

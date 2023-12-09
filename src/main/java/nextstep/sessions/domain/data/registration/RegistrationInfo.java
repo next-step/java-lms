@@ -15,10 +15,6 @@ public class RegistrationInfo {
         this.userPaymentInfo = userPaymentInfo;
     }
 
-    public UserPaymentInfo userPaymentInfo() {
-        return userPaymentInfo;
-    }
-
     public long userId() {
         return userPaymentInfo.userId();
     }

@@ -3,7 +3,7 @@ package nextstep.sessions.domain.data.coverimage;
 import java.util.Arrays;
 
 import org.springframework.util.StringUtils;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotSaveCoverImageException;
 
 public enum ImageType {
     GIF("gif"),
@@ -23,7 +23,7 @@ public enum ImageType {
         return Arrays.stream(values())
             .filter(imageType -> imageType.name.equals(ext))
             .findFirst()
-            .orElseThrow(() -> new SessionsException("지원하지 않는 이미지 타입입니다."));
+            .orElseThrow(() -> new CannotSaveCoverImageException("지원하지 않는 이미지 타입입니다."));
     }
 
 }

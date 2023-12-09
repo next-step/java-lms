@@ -14,7 +14,7 @@ public class RegistrationProcedure {
         this.selectionType = SelectionType.SELECTION;
     }
 
-    public void approve() {
+    void approve() {
         this.approvalType = ApprovalType.APPROVAL;
     }
 

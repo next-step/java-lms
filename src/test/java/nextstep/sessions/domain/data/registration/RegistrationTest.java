@@ -1,7 +1,6 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data.registration;
 
-import nextstep.sessions.domain.data.registration.*;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,7 +11,7 @@ public class RegistrationTest {
     void 이미_선발된_인원_선발() {
         Registration registration = registration(SelectionType.SELECTION, ApprovalType.BEFORE_APPROVAL);
         assertThatThrownBy(registration::select)
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotSelectRegistrationException.class)
             .hasMessage("이미 선발된 인원입니다.");
     }
 
@@ -20,7 +19,7 @@ public class RegistrationTest {
     void 선발되지_않은_인원_승인() {
         Registration registration = registration(SelectionType.BEFORE_SELECTION, ApprovalType.BEFORE_APPROVAL);
         assertThatThrownBy(registration::approve)
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotApproveRegistrationException.class)
             .hasMessage("선발된 인원만 승인할 수 있습니다.");
     }
 
@@ -28,7 +27,7 @@ public class RegistrationTest {
     void 이미_승인된_인원_승인() {
         Registration registration = registration(SelectionType.SELECTION, ApprovalType.APPROVAL);
         assertThatThrownBy(registration::approve)
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotApproveRegistrationException.class)
             .hasMessage("이미 승인된 인원입니다.");
     }
 
@@ -36,7 +35,7 @@ public class RegistrationTest {
     void 미선발되지_않은_인원_수강_취소() {
         Registration registration = registration(SelectionType.SELECTION, ApprovalType.BEFORE_APPROVAL);
         assertThatThrownBy(registration::cancel)
-            .isInstanceOf(SessionsException.class)
+            .isInstanceOf(CannotCancelRegistrationException.class)
             .hasMessage("미선발된 인원이 아닙니다.");
     }
 

@@ -1,6 +1,6 @@
 package nextstep.sessions.domain.data.coverimage;
 
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.CannotSaveCoverImageException;
 
 public class ImageSize {
 
@@ -16,7 +16,7 @@ public class ImageSize {
 
     private void validateFileSize(int fileSize) {
         if (!isValidFileSize(fileSize)) {
-            throw new SessionsException("이미지 파일 크기가 초과했습니다.");
+            throw new CannotSaveCoverImageException("이미지 파일 크기가 초과했습니다.");
         }
     }
 

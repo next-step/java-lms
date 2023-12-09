@@ -3,7 +3,7 @@ package nextstep.sessions.domain.data.registration;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.data.session.Session;
 import nextstep.sessions.domain.data.session.UserPaymentInfo;
-import nextstep.sessions.domain.exception.SessionsException;
+import nextstep.sessions.domain.exception.*;
 import nextstep.users.domain.NsUser;
 
 public class Registration {
@@ -58,22 +58,22 @@ public class Registration {
 
     private void validateSelection() {
         if (registrationProcedure.isSelected()) {
-            throw new SessionsException("이미 선발된 인원입니다.");
+            throw new CannotSelectRegistrationException("이미 선발된 인원입니다.");
         }
     }
 
     private void validateApproval() {
         if (!registrationProcedure.isSelected()) {
-            throw new SessionsException("선발된 인원만 승인할 수 있습니다.");
+            throw new CannotApproveRegistrationException("선발된 인원만 승인할 수 있습니다.");
         }
         if (registrationProcedure.isApproved()) {
-            throw new SessionsException("이미 승인된 인원입니다.");
+            throw new CannotApproveRegistrationException("이미 승인된 인원입니다.");
         }
     }
 
     private void validateCancel() {
         if (!registrationProcedure.isBeforeSelection()) {
-            throw new SessionsException("미선발된 인원이 아닙니다.");
+            throw new CannotCancelRegistrationException("미선발된 인원이 아닙니다.");
         }
     }
 
