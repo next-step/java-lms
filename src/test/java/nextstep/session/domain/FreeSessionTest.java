@@ -46,7 +46,7 @@ class FreeSessionTest {
         session.enroll(STUDENT_3);
 
         // then
-        assertThat(session.getStudents()).hasSize(3);
+        assertThat(session.enrolledNumber()).isEqualTo(3);
     }
 
 }

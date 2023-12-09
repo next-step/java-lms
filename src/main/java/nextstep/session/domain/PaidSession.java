@@ -5,12 +5,12 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDate;
 
 public class PaidSession extends Session {
-    private final Integer limitNumberOfStudents;
+    private final Integer capacity;
     private final Long price;
 
-    public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer limitNumberOfStudents, Long price) {
+    public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer capacity, Long price) {
         super(creatorId, startDate, endDate, sessionImage);
-        this.limitNumberOfStudents = limitNumberOfStudents;
+        this.capacity = capacity;
         this.price = price;
     }
 
@@ -25,7 +25,7 @@ public class PaidSession extends Session {
     }
 
     private void validateLimitNumberOfStudents() {
-        if (this.limitNumberOfStudents <= students.enrolledNumber()) {
+        if (this.capacity <= enrollment.enrolledNumber()) {
             throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
         }
     }

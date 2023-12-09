@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public abstract class Session extends BaseDomain {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
@@ -17,7 +16,7 @@ public abstract class Session extends BaseDomain {
     private SessionImage sessionImage;
 
     protected SessionStatus sessionStatus;
-    protected SessionStudents students = new SessionStudents();
+    protected Enrollment enrollment = new Enrollment();
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
         this(0L, LocalDateTime.now(), null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS);
@@ -34,7 +33,7 @@ public abstract class Session extends BaseDomain {
     public void enroll(NsUser user) {
         validateStatus();
         validateCommonEnroll(user);
-        students.add(user);
+        enrollment.add(user);
     }
 
     private void validateStatus() {
@@ -46,8 +45,8 @@ public abstract class Session extends BaseDomain {
     protected void validateCommonEnroll(NsUser nsUser) {
     }
 
-    public List<NsUser> getStudents() {
-        return students.getStudents();
+    public int enrolledNumber() {
+        return enrollment.enrolledNumber();
     }
 
     public void changeStatus(SessionStatus status) {

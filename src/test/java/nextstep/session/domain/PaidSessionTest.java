@@ -47,7 +47,7 @@ class PaidSessionTest {
         session.enroll(STUDENT_2);
 
         // then
-        assertThat(session.getStudents()).hasSize(2);
+        assertThat(session.enrolledNumber()).isEqualTo(2);
     }
 
     @Test
@@ -79,7 +79,7 @@ class PaidSessionTest {
         session.enroll(STUDENT_1);
 
         // then
-        assertThat(session.getStudents()).hasSize(1);
+        assertThat(session.enrolledNumber()).isEqualTo(1);
     }
 
     @Test

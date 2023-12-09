@@ -3,21 +3,16 @@ package nextstep.session.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class SessionStudents {
+public class Enrollment {
     private final List<NsUser> students = new ArrayList<>();
 
-    public SessionStudents() {
+    public Enrollment() {
     }
 
-    public SessionStudents(List<NsUser> students) {
+    public Enrollment(List<NsUser> students) {
         this.students.addAll(students);
-    }
-
-    public List<NsUser> getStudents() {
-        return Collections.unmodifiableList(students);
     }
 
     public void add(NsUser user) {
