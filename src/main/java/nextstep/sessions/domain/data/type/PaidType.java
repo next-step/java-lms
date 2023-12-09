@@ -16,4 +16,8 @@ public enum PaidType {
     public boolean isPaid() {
         return this == PAID;
     }
+
+    public boolean isFree() {
+        return this == FREE;
+    }
 }

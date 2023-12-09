@@ -11,4 +11,10 @@ public class PaidTypeTest {
         assertThat(PaidType.PAID.isPaid()).isTrue();
         assertThat(PaidType.FREE.isPaid()).isFalse();
     }
+
+    @Test
+    void isTrue() {
+        assertThat(PaidType.PAID.isFree()).isFalse();
+        assertThat(PaidType.FREE.isFree()).isTrue();
+    }
 }

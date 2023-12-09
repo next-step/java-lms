@@ -59,5 +59,4 @@ public class Session {
     public LocalDateTime endDate() {
         return sessionInfo.endDate();
     }
-
 }
