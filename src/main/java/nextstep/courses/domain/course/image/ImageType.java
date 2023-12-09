@@ -2,22 +2,22 @@ package nextstep.courses.domain.course.image;
 
 import java.util.Arrays;
 
-public enum Type {
+public enum ImageType {
     GIF("gif"),
     JPG("jpg"),
     JPEG("jpeg"),
     PNG("png"),
     SVG("svg");
 
-    Type(String description) {
+    ImageType(String description) {
         this.description = description;
     }
 
     private final String description;
 
-    public static Type find(String name) {
+    public static ImageType find(String name) {
         return Arrays.stream(values())
-                .filter(imageType -> imageType.description.equals(name))
+                .filter(imageImageType -> imageImageType.description.equals(name))
                 .findAny()
                 .orElseThrow(
                         () -> new IllegalArgumentException(
@@ -28,8 +28,8 @@ public enum Type {
 
     public static String descriptions() {
         StringBuilder sb = new StringBuilder();
-        for (Type type : values()) {
-            sb.append(type.description).append(", ");
+        for (ImageType imageType : values()) {
+            sb.append(imageType.description).append(", ");
         }
         sb.setLength(sb.length() - 2);
 

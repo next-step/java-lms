@@ -16,24 +16,11 @@ public class Session extends BaseEntity  {
 
     private Duration duration;
 
-    private Type type;
-
-    private Long amount;
+    private SessionState sessionState;
 
     private Applicants applicants;
 
     private Status status;
-
-    public enum Type {
-        FREE("무료"),
-        CHARGE("유료");
-
-        private final String description;
-
-        Type(String description) {
-            this.description = description;
-        }
-    }
 
     public enum Status {
         READY("준비중"),
@@ -47,13 +34,12 @@ public class Session extends BaseEntity  {
         }
     }
 
-    public Session(Image image, Duration duration, Type type,
-                   Long amount, int quota, Long creatorId) {
-        this(0L, image, duration, type, amount, new Applicants(quota),
+    public Session(Image image, Duration duration, SessionState sessionState, Long creatorId) {
+        this(0L, image, duration, sessionState, new Applicants(),
                 Status.READY, creatorId, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, Image image, Duration duration, Type type, Long amount,
+    public Session(Long id, Image image, Duration duration, SessionState sessionState,
                    Applicants applicants, Status status, Long creatorId,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
@@ -65,17 +51,20 @@ public class Session extends BaseEntity  {
             throw new IllegalArgumentException("기간을 추가해야 합니다.");
         }
 
+        if (sessionState == null) {
+            throw new IllegalArgumentException("강의 상태를 합니다.");
+        }
+
         this.id = id;
         this.image = image;
         this.duration = duration;
-        this.type = type;
-        this.amount = amount;
+        this.sessionState = sessionState;
         this.applicants = applicants;
         this.status = status;
     }
 
     public boolean sameAmount(Long amount) {
-        return Objects.equals(this.amount, amount);
+        return this.sessionState.sameAmount(amount);
     }
 
     public boolean sameId(Long sessionId) {
@@ -93,17 +82,11 @@ public class Session extends BaseEntity  {
     public void apply(NsUser loginUser, Payment payment) {
         checkStatusOnRecruit();
 
-        if (typeCharged()) {
+        if (this.sessionState.charged()) {
             checkPaymentIsPaid(loginUser, payment);
-            this.applicants.addChargedApplicant(loginUser);
-            return;
         }
 
-        this.applicants.addFreeApplicant(loginUser);
-    }
-
-    private boolean typeCharged() {
-        return this.type == Type.CHARGE;
+        this.applicants.addApplicant(loginUser, sessionState);
     }
 
     private void checkStatusOnRecruit() {
@@ -145,4 +128,7 @@ public class Session extends BaseEntity  {
         }
     }
 
+    public SessionState sessionState() {
+        return this.sessionState;
+    }
 }
