@@ -3,10 +3,7 @@ package nextstep.courses.domain.course.service;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.session.Applicants;
-import nextstep.courses.domain.course.session.Duration;
-import nextstep.courses.domain.course.session.Session;
-import nextstep.courses.domain.course.session.SessionRepository;
+import nextstep.courses.domain.course.session.*;
 import nextstep.courses.service.CourseService;
 import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
@@ -32,6 +29,7 @@ public class CourseServiceTest {
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private Duration duration;
+    private SessionState sessionState;
     private Course course;
     private Session session;
 
@@ -43,12 +41,10 @@ public class CourseServiceTest {
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
-        session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                new Applicants(10), Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, new Applicants(),
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
     }
-
-    @Mock
-    private SessionRepository sessionRepository;
 
     @Mock
     private CourseRepository courseRepository;

@@ -27,9 +27,9 @@ public class SessionTest {
     private Payment differentPayment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
-    private int quota;
     private Applicants applicants;
     private Duration duration;
+    private SessionState sessionState;
     private Session session;
 
     @BeforeEach
@@ -39,20 +39,21 @@ public class SessionTest {
         differentPayment = new Payment("1", 1L, 3L, 500L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        quota = 10;
-        applicants = new Applicants(quota);
-        this.applicants.addChargedApplicant(JAVAJIGI);
-        this.applicants.addChargedApplicant(SANJIGI);
         duration = new Duration(localDate, localDate);
-        session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        applicants = new Applicants();
+        this.applicants.addApplicant(JAVAJIGI, session.sessionState());
+        this.applicants.addApplicant(SANJIGI, session.sessionState());
     }
 
     @Test
     @DisplayName("강의는 이미지가 없으면 이미지를 추가하라는 예외를 반환한다.")
     void newObject_imageNull_throwsException() {
+        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
         assertThatThrownBy(
-                () -> new Session(null, duration, Session.Type.FREE, 1000L, 10, 1L)
+                () -> new Session(null, duration, sessionState, 1L)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -60,15 +61,23 @@ public class SessionTest {
     @DisplayName("강의는 기간이 없으면 기간을 추가하라는 예외를 반환한다.")
     void newObject_durationNull_throwsException() {
         assertThatThrownBy(
-                () -> new Session(image, null, Session.Type.FREE, 1000L, 10, 1L)
+                () -> new Session(image, null, sessionState, 1L)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("강의는 강의 상태가 없으면 상태를 추가하라는 예외를 반환한다.")
+    void newObject_sessionStateNull_throwsException() {
+        assertThatThrownBy(
+                () -> new Session(image, duration, null, 1L)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("수강 신청은 수강 신청 인원에 해당 인원이 추가된다.")
     void apply_success() {
-        Session session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThat(session.applyCount()).isEqualTo(2);
 
@@ -80,8 +89,8 @@ public class SessionTest {
     @Test
     @DisplayName("수강 신청은 모집 중이 아니면 신청할 수 없다는 예외를 반환한다.")
     void apply_notRecruitStatus_throwsException() {
-        Session session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                applicants, Session.Status.READY, 1L, localDateTime, localDateTime);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.READY, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, payment)
@@ -91,12 +100,12 @@ public class SessionTest {
     @Test
     @DisplayName("수강 신청은 유료 강의 수강 인원 정원을 초과하면 신청할 수 없다는 예외를 반환한다.")
     void apply_chargeSession_overQuota_throwsException() {
-        applicants = new Applicants(2);
-        applicants.addChargedApplicant(JAVAJIGI);
-        applicants.addChargedApplicant(SANJIGI);
-
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        applicants = new Applicants();
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        applicants.addApplicant(JAVAJIGI, session.sessionState());
+        applicants.addApplicant(SANJIGI, session.sessionState());
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, payment)
@@ -106,8 +115,9 @@ public class SessionTest {
     @Test
     @DisplayName("수강 신청은 유료 강의 결제가 안되었다면 신청할 수 없다는 예외를 반환한다.")
     void apply_chargeSession_notPaid_throwsException() {
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, null)
@@ -117,8 +127,9 @@ public class SessionTest {
     @Test
     @DisplayName("수강 신청은 수강 금액과 지불 금액이 다르면 신청할 수 없다는 예외를 던진다.")
     void apply_chargeSession_differentAmount_throwsException() {
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, differentPayment)
@@ -128,9 +139,10 @@ public class SessionTest {
     @Test
     @DisplayName("changeOnReady는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
     void changeOnReady_startDateIsBeforeOrSame_throwsException() {
-        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnReady(DATE_2023_12_5)
@@ -144,9 +156,10 @@ public class SessionTest {
     @Test
     @DisplayName("changeOnRecruit는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
     void changeOnRecruit_startDateIsBeforeOrSame_throwsException() {
-        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.READY, 1L, localDateTime, localDateTime);
+        duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.READY, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnRecruit(DATE_2023_12_5)
@@ -160,9 +173,10 @@ public class SessionTest {
     @Test
     @DisplayName("changeOnRecruit는 강의 종료 날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
     void changeOnEnd_EndDateIsSameOrAfter_throwsException() {
-        Duration duration = new Duration(DATE_2023_12_5, DATE_2023_12_12);
-        Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        duration = new Duration(DATE_2023_12_5, DATE_2023_12_12);
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnEnd(DATE_2023_12_6)

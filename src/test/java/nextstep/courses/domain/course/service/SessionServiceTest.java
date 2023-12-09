@@ -1,10 +1,7 @@
 package nextstep.courses.domain.course.service;
 
 import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.session.Applicants;
-import nextstep.courses.domain.course.session.Duration;
-import nextstep.courses.domain.course.session.Session;
-import nextstep.courses.domain.course.session.SessionRepository;
+import nextstep.courses.domain.course.session.*;
 import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -32,9 +29,9 @@ public class SessionServiceTest {
     private Payment payment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
-    private int quota;
     private Applicants applicants;
     private Duration duration;
+    private SessionState sessionState;
     private Session session;
 
     @Mock
@@ -49,12 +46,12 @@ public class SessionServiceTest {
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        quota = 10;
-        applicants = new Applicants(quota);
-        applicants.addFreeApplicant(JAVAJIGI);
         duration = new Duration(localDate, localDate);
-        session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                applicants, Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        applicants = new Applicants();
+        applicants.addApplicant(JAVAJIGI, sessionState);
+        session = new Session(1L, image, duration, sessionState, applicants,
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
     }
 
     @Test

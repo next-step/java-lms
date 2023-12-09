@@ -12,7 +12,7 @@ public class Image {
 
     private int imageSize;
 
-    private Type type;
+    private ImageType imageType;
 
     private int imageWidth;
 
@@ -37,7 +37,7 @@ public class Image {
 
         this.id = id;
         this.imageSize = imageSize;
-        this.type = Type.find(type);
+        this.imageType = ImageType.find(type);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
         this.createdAt = createdAt;

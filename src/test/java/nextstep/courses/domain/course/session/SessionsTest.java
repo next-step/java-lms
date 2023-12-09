@@ -21,6 +21,7 @@ public class SessionsTest {
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private Duration duration;
+    private SessionState sessionState;
     private Session session;
 
     @BeforeEach
@@ -31,8 +32,9 @@ public class SessionsTest {
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
-        session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                new Applicants(10), Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.FREE, 1000L, 10);
+        session = new Session(1L, image, duration, sessionState, new Applicants(),
+                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
         sessions.add(session);
     }
 
