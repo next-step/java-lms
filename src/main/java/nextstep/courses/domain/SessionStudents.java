@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.util.List;
-import nextstep.users.domain.NsUser;
 
 public class SessionStudents {
 

@@ -1,6 +1,10 @@
 package nextstep.courses.domain;
 
 import java.util.List;
+import nextstep.courses.exception.SessionException;
+import nextstep.courses.exception.SessionException.SessionFeeNotEqualException;
+import nextstep.courses.exception.SessionException.SessionFullException;
+import nextstep.courses.exception.SessionException.SessionNotOpenException;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -23,13 +27,13 @@ public class Session {
 
     public boolean isEnrollmentPossible(SessionStudents students, Integer sessionFee) {
         if (!isRecruiting()) {
-            return false;
+            throw new SessionNotOpenException("강의가 모집중인 상태가 아닙니다.");
         }
         if (!isWithinCapacity(students)) {
-            return false;
+            throw new SessionFullException("강의의 수용인원이 다 찼습니다.");
         }
         if (!checkSessionFeeEquality(sessionFee)) {
-            return false;
+            throw new SessionFeeNotEqualException("접수하신 수강료가 강의 수강료와 일치하지 않습니다.");
         }
         return true;
     }
@@ -49,6 +53,10 @@ public class Session {
         Student student = new Student(this.sessionId, user.getId());
         students.enroll(student);
         return student;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     @Override
