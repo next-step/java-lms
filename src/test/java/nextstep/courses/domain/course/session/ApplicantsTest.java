@@ -20,14 +20,14 @@ public class ApplicantsTest {
     void setUp() {
         qouta = 2;
         applicants = new Applicants(qouta);
-        applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE);
+        applicants.addChargedApplicant(JAVAJIGI);
     }
 
     @Test
     @DisplayName("addApplicant 는 이미 수강생이 강의를 신청 하였으면 예외를 던진다.")
     void addApplicant_alreadyExistedApplicant_throwsException() {
         assertThatThrownBy(
-                () -> applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE)
+                () -> applicants.addChargedApplicant(JAVAJIGI)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -35,11 +35,11 @@ public class ApplicantsTest {
     @DisplayName("addApplicant 는 유료강의 수강 정원이 찼으면 예외를 던진다.")
     void addApplicant_alreadyFull_throwsException() {
         applicants = new Applicants(2);
-        applicants.addApplicant(SANJIGI, Session.Type.CHARGE);
-        applicants.addApplicant(APPLE, Session.Type.CHARGE);
+        applicants.addChargedApplicant(SANJIGI);
+        applicants.addChargedApplicant(APPLE);
 
         assertThatThrownBy(
-                () -> applicants.addApplicant(SANJIGI, Session.Type.CHARGE)
+                () -> applicants.addChargedApplicant(SANJIGI)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -47,11 +47,11 @@ public class ApplicantsTest {
     @DisplayName("isFull 은 수강생 수와 정원이 같으면 true를 적으면 false를 반환한다.")
     void isFull_sameOrOverQuota_throwsException() {
         applicants = new Applicants(2);
-        applicants.addApplicant(SANJIGI, Session.Type.CHARGE);
+        applicants.addFreeApplicant(SANJIGI);
 
         assertThat(applicants.isFull()).isFalse();
 
-        applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE);
+        applicants.addFreeApplicant(JAVAJIGI);
         assertThat(applicants.isFull()).isTrue();
     }
 }

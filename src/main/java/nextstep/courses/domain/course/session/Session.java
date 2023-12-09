@@ -102,9 +102,11 @@ public class Session {
 
         if (typeCharged()) {
             checkPaymentIsPaid(loginUser, payment);
+            this.applicants.addChargedApplicant(loginUser);
+            return;
         }
 
-        this.applicants.addApplicant(loginUser, type);
+        this.applicants.addFreeApplicant(loginUser);
     }
 
     private boolean typeCharged() {

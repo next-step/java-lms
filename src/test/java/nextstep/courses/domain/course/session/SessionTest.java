@@ -41,8 +41,8 @@ public class SessionTest {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         quota = 10;
         applicants = new Applicants(quota);
-        this.applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE);
-        this.applicants.addApplicant(SANJIGI, Session.Type.CHARGE);
+        this.applicants.addChargedApplicant(JAVAJIGI);
+        this.applicants.addChargedApplicant(SANJIGI);
         duration = new Duration(localDate, localDate);
         session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
                 applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
@@ -92,8 +92,8 @@ public class SessionTest {
     @DisplayName("수강 신청은 유료 강의 수강 인원 정원을 초과하면 신청할 수 없다는 예외를 반환한다.")
     void apply_chargeSession_overQuota_throwsException() {
         applicants = new Applicants(2);
-        applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE);
-        applicants.addApplicant(SANJIGI, Session.Type.CHARGE);
+        applicants.addChargedApplicant(JAVAJIGI);
+        applicants.addChargedApplicant(SANJIGI);
 
         Session session = new Session(1L, image, duration, Session.Type.CHARGE, 1000L,
                 applicants, Session.Status.RECRUIT, localDateTime, localDateTime);

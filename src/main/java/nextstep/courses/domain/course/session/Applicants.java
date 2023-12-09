@@ -24,9 +24,14 @@ public class Applicants implements Iterable<NsUser> {
         return this.applicants.size();
     }
 
-    public void addApplicant(NsUser applicant, Session.Type type) {
+    public void addChargedApplicant(NsUser applicant) {
         checkApplicantAlreadyExisted(applicant);
-        checkChargeAndApplySizeIsValid(type);
+        checkChargeAndApplySizeIsValid();
+        this.applicants.add(applicant);
+    }
+
+    public void addFreeApplicant(NsUser applicant) {
+        checkApplicantAlreadyExisted(applicant);
         this.applicants.add(applicant);
     }
 
@@ -36,8 +41,8 @@ public class Applicants implements Iterable<NsUser> {
         }
     }
 
-    private void checkChargeAndApplySizeIsValid(Session.Type type) {
-        if (type == Session.Type.CHARGE && this.isFull()) {
+    private void checkChargeAndApplySizeIsValid() {
+        if (this.isFull()) {
             throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
         }
     }
