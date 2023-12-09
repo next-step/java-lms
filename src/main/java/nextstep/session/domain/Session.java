@@ -6,7 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public abstract class Session extends BaseDomain {
+public abstract class Session extends BaseDomain implements Sessionable {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
 
     private Long creatorId;
@@ -30,6 +30,7 @@ public abstract class Session extends BaseDomain {
         this.sessionStatus = sessionStatus;
     }
 
+    @Override
     public void enroll(NsUser user) {
         validateStatus();
         validateCommonEnroll(user);
@@ -45,10 +46,12 @@ public abstract class Session extends BaseDomain {
     protected void validateCommonEnroll(NsUser nsUser) {
     }
 
+    @Override
     public int enrolledNumber() {
         return enrollment.enrolledNumber();
     }
 
+    @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
     }
