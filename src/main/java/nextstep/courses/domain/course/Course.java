@@ -1,5 +1,7 @@
 package nextstep.courses.domain.course;
 
+import nextstep.courses.domain.session.Period;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -26,6 +28,12 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void checkPeriod(Period period) {
+        if (!period.isAfterCourseWasCreated(createdAt)) {
+            throw new IllegalArgumentException("시작일이 코스 생성일보다 빠를 수 없습니다.");
+        }
     }
 
     public Long getId() {

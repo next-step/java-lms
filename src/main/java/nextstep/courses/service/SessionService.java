@@ -31,6 +31,8 @@ public class SessionService {
     public void createFreeSession(Long courseId, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
         CoverImage coverImage = coverImageDto.toCoverImage();
+        course.checkPeriod(period);
+
         Session session = Session.freeSession(coverImage, course, period);
         sessionRepository.save(session);
     }
@@ -42,6 +44,7 @@ public class SessionService {
         CoverImage coverImage = coverImageDto.toCoverImage();
         Long coverImageId = coverImageRepository.save(coverImage);
         CoverImage savedCoverImage = coverImage.toSavedCoverImage(coverImageId);
+        course.checkPeriod(period);
 
         Session session = Session.notFreeSession(savedCoverImage, maxAttendance, course, period);
         sessionRepository.save(session);

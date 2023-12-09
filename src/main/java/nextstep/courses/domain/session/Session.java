@@ -70,12 +70,24 @@ public class Session {
         return sessionType.canRegisterNewUser(currentUserSize);
     }
 
-    public SessionStatus getSessionStatus() {
-        return sessionStatus;
+    public LocalDateTime startDate() {
+        return period.getStartDateTime();
     }
 
-    public Period getPeriod() {
-        return period;
+    public LocalDateTime endDate() {
+        return period.getEndDateTime();
+    }
+
+    public boolean isFree() {
+        return sessionType.isFree();
+    }
+
+    public Integer maxAttendance() {
+        return sessionType.getMaxAttendance();
+    }
+
+    public String sessionStatus() {
+        return sessionStatus.name();
     }
 
     public SessionType getSessionType() {
