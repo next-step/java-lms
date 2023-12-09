@@ -13,7 +13,7 @@ public class Session extends BaseEntity {
     private static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
     private static final String NOT_IN_PROGRESS_MSG = "강의 진행중인 강의가 아닙니다.";
     public static final String INVALID_AMOUNT_MSG = "결제한 금액과 강의의 금액이 다릅니다.";
-    private static final String NOT_RECRUITNG_MSG = "모집중인 강의가 아닙니다.";
+    private static final String NOT_RECRUITING_MSG = "모집중인 강의가 아닙니다.";
     private String title;
     private SessionPeriod sessionPeriod;
     private SessionStatus sessionStatus;
@@ -22,16 +22,17 @@ public class Session extends BaseEntity {
     private Amount amount;
     private EnrollmentCount enrollmentCount;
     private RecruitStatus recruitStatus;
+    private Long creatorId;
 
     public Session(final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
                    final List<CoverImage> coverImages, final Amount amount, final EnrollmentCount enrollmentCount,
-                   final RecruitStatus recruitStatus) {
+                   final RecruitStatus recruitStatus, final Long creatorId) {
         this(null, title, sessionPeriod, sessionStatus, coverImages, SessionType.of(amount), amount, enrollmentCount,
-                recruitStatus, LocalDateTime.now(), null);
+                recruitStatus, creatorId, LocalDateTime.now(), null);
     }
     public Session(final Long id, final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
                    final List<CoverImage> coverImages, final SessionType sessionType, final Amount amount,
-                   final EnrollmentCount enrollmentCount, final RecruitStatus recruitStatus,
+                   final EnrollmentCount enrollmentCount, final RecruitStatus recruitStatus, final Long creatorId,
                    final LocalDateTime createAt, LocalDateTime updatedAt) {
         super(id, createAt, updatedAt);
         this.title = title;
@@ -42,17 +43,9 @@ public class Session extends BaseEntity {
         this.amount = amount;
         this.enrollmentCount = enrollmentCount;
         this.recruitStatus = recruitStatus;
+        this.creatorId = creatorId;
     }
 
-    private void checkSessionStatus() {
-        if (sessionStatus.isNotInProcess()) {
-            throw new IllegalArgumentException(NOT_IN_PROGRESS_MSG);
-        }
-
-        if (recruitStatus.isNotRecruiting()) {
-            throw new IllegalArgumentException(NOT_RECRUITNG_MSG);
-        }
-    }
     public Enrollment enroll(NsUser user, final Payment payment) {
         checkAvailableEnroll(payment);
 
@@ -74,6 +67,16 @@ public class Session extends BaseEntity {
 
         if (amount.isNotSame(payment)) {
             throw new IllegalArgumentException(INVALID_AMOUNT_MSG);
+        }
+    }
+
+    private void checkSessionStatus() {
+        if (sessionStatus.isNotInProcess()) {
+            throw new IllegalArgumentException(NOT_IN_PROGRESS_MSG);
+        }
+
+        if (recruitStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException(NOT_RECRUITING_MSG);
         }
     }
 
@@ -107,5 +110,13 @@ public class Session extends BaseEntity {
 
     public RecruitStatus recruitStatus() {
         return recruitStatus;
+    }
+
+    public Long creatorId() {
+        return creatorId;
+    }
+
+    public boolean isNotOwner(final NsUser loginUser) {
+        return creatorId != loginUser.getId();
     }
 }

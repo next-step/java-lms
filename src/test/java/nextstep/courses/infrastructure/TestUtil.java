@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+
 public class TestUtil {
     public static void autoincrementReset(JdbcTemplate jdbcTemplate) {
         jdbcTemplate.execute("ALTER TABLE course ALTER COLUMN id RESTART WITH 1");
@@ -26,7 +28,7 @@ public class TestUtil {
         final Amount amount = Amount.of(100L);
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, imageList, amount,
-                new EnrollmentCount(20), RecruitStatus.RECRUITING);
+                new EnrollmentCount(20), RecruitStatus.RECRUITING, JAVAJIGI.getId());
         return tddSession;
     }
 }

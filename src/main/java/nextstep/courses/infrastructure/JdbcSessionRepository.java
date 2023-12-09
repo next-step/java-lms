@@ -47,8 +47,9 @@ public class JdbcSessionRepository implements SessionRepository {
         final RecruitStatus recruitStatus = session.recruitStatus();
 
         String sql = "insert into session (title, start_data_time, end_date_time, status, course_id, type, " +
-                " amount, max_enrollment_count, remain_enrollment_count, recruit, created_at) " +
-                " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " amount, max_enrollment_count, remain_enrollment_count, recruit, creator_id, created_at) " +
+                " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         return jdbcTemplate.update(connection -> {
             EnrollmentCount enrollmentCount = session.enrollmentCount();
             if (sessionType.isFree()) {
@@ -66,7 +67,8 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setInt(8, enrollmentCount.maxEnrollmentCount());
             ps.setInt(9, enrollmentCount.remainEnrollmentCount());
             ps.setString(10, recruitStatus.name());
-            ps.setTimestamp(11, Timestamp.valueOf(session.createdAt()));
+            ps.setLong(11, session.creatorId());
+            ps.setTimestamp(12, Timestamp.valueOf(session.createdAt()));
             return ps;
         }, keyHolder);
     }
@@ -74,7 +76,8 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(final Long id) {
         String sql = "select id, title, start_data_time, end_date_time, status, type," +
-                " amount, max_enrollment_count, remain_enrollment_count, recruit, created_at, updated_at from session where id = ?";
+                " amount, max_enrollment_count, remain_enrollment_count, recruit, creator_id, created_at, updated_at " +
+                " from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
@@ -85,8 +88,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 Amount.of(rs.getLong(7)),
                 new EnrollmentCount(rs.getInt(8), rs.getInt(9)),
                 RecruitStatus.valueOf(rs.getString(10)),
-                toLocalDateTime(rs.getTimestamp(11)),
-                toLocalDateTime(rs.getTimestamp(12)));
+                rs.getLong(11),
+                toLocalDateTime(rs.getTimestamp(12)),
+                toLocalDateTime(rs.getTimestamp(13)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 

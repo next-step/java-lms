@@ -21,7 +21,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
         final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, null,
-                Amount.of(1000L), new EnrollmentCount(10), RecruitStatus.RECRUITING);
+                Amount.of(1000L), new EnrollmentCount(10), RecruitStatus.RECRUITING, JAVAJIGI.getId());
 
         assertThatThrownBy(() -> {
             tddSession.enroll(null, new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -34,7 +34,7 @@ public class SessionTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
 
         final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.IN_PROGRESS, null,
-                Amount.of(1000L), new EnrollmentCount(10), RecruitStatus.NOT_RECRUITING);
+                Amount.of(1000L), new EnrollmentCount(10), RecruitStatus.NOT_RECRUITING, JAVAJIGI.getId());
 
         assertThatThrownBy(() -> {
             tddSession.enroll(null, new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -48,7 +48,7 @@ public class SessionTest {
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
         final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, List.of(coverImage),
-                Amount.of(1000L), new EnrollmentCount(0), RecruitStatus.RECRUITING);
+                Amount.of(1000L), new EnrollmentCount(0), RecruitStatus.RECRUITING, JAVAJIGI.getId());
 
         assertThatThrownBy(() -> {
             tddSession.enroll(JAVAJIGI, new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
@@ -62,7 +62,7 @@ public class SessionTest {
         final CoverImage coverImage = new CoverImage(3000L, new ImagePixel(300, 200), ImageType.SVG);
 
         final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.FINISHED, List.of(coverImage)
-                , Amount.of(1500L), new EnrollmentCount(10), RecruitStatus.RECRUITING);
+                , Amount.of(1500L), new EnrollmentCount(10), RecruitStatus.RECRUITING, JAVAJIGI.getId());
 
         assertThatThrownBy(() -> {
             tddSession.enroll(JAVAJIGI, new Payment("1", 1L, JAVAJIGI.getId(), 1000L));
