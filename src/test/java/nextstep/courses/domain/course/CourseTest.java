@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course;
 
 import nextstep.courses.domain.session.Period;
+import nextstep.courses.domain.session.Session;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ class CourseTest {
         Course course = new Course(1L, "title", 1L, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(10));
         // when
         // then
-        Assertions.assertThatThrownBy(() -> course.checkPeriod(period))
+        Assertions.assertThatThrownBy(() -> Session.freeSession(null, course, period))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("시작일이 코스 생성일보다 빠를 수 없습니다.");
+                .hasMessage("세션 시작일이 코스 생성일보다 빠를 수 없습니다.");
     }
 }

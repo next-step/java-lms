@@ -54,12 +54,18 @@ public class Session {
 
     public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
-        return new Session(coverImg, period, sessionType, course);
+        Session session = new Session(coverImg, period, sessionType, course);
+
+        course.addSession(session);
+        return session;
     }
 
     public static Session freeSession(CoverImage coverImg, Course course, Period period) {
         SessionType sessionType = SessionType.freeSession();
-        return new Session(coverImg, period, sessionType, course);
+        Session session = new Session(coverImg, period, sessionType, course);
+
+        course.addSession(session);
+        return session;
     }
 
     public boolean canRegisterNewUser(int currentUserSize) {
@@ -104,5 +110,9 @@ public class Session {
 
     public Long getId() {
         return id;
+    }
+
+    public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
+        return period.isAfterCourseWasCreated(createdAt);
     }
 }
