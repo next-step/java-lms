@@ -3,6 +3,7 @@ package nextstep.session.infrastructure;
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.PaidSession;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionImageRepository;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionType;
 import nextstep.session.domain.fixture.SessionImageFixture;
@@ -24,12 +25,13 @@ public class SessionRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
+    private SessionImageRepository sessionImageRepository;
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionImageRepository = new JdbcSessionImageRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionImageRepository);
     }
 
     @Test
@@ -38,6 +40,7 @@ public class SessionRepositoryTest {
         Long id = sessionRepository.save(freeSession);
         Session savedSession = sessionRepository.findById(id);
         assertThat(savedSession.getSessionType()).isEqualTo(SessionType.FREE);
+        assertThat(savedSession.getSessionImage()).isNotNull();
     }
 
     @Test
@@ -46,6 +49,7 @@ public class SessionRepositoryTest {
         Long id = sessionRepository.save(paidSession);
         Session savedSession = sessionRepository.findById(id);
         assertThat(savedSession.getSessionType()).isEqualTo(SessionType.PAID);
+        assertThat(savedSession.getSessionImage()).isNotNull();
     }
 
 }

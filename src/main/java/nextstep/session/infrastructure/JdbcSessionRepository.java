@@ -3,6 +3,7 @@ package nextstep.session.infrastructure;
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.PaidSession;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionImageRepository;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
@@ -12,19 +13,22 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import static nextstep.common.domain.utils.JdbcConvertUtils.toDate;
+import static nextstep.common.domain.utils.JdbcConvertUtils.toLocalDate;
+import static nextstep.common.domain.utils.JdbcConvertUtils.toLocalDateTime;
+import static nextstep.common.domain.utils.JdbcConvertUtils.toTimestamp;
 
 @Repository
 public class JdbcSessionRepository implements SessionRepository {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
+    private final SessionImageRepository sessionImageRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, SessionImageRepository sessionImageRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sessionImageRepository = sessionImageRepository;
     }
 
     @Override
@@ -33,14 +37,13 @@ public class JdbcSessionRepository implements SessionRepository {
         if (session instanceof FreeSession) {
             String freeSessionSQL = "insert into free_session (session_id) values(?)";
             jdbcTemplate.update(freeSessionSQL, sessionId);
-            return sessionId;
         }
         if (session instanceof PaidSession) {
             String paidSessionSQL = "insert into paid_session (session_id, capacity, price) values(?, ? , ?)";
             jdbcTemplate.update(paidSessionSQL, sessionId, ((PaidSession) session).getCapacity(), ((PaidSession) session).getPrice());
-            return sessionId;
         }
-        return null;
+        sessionImageRepository.save(session);
+        return sessionId;
     }
 
     private long saveSession(Session session) {
@@ -82,7 +85,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong(4),
                     toLocalDate(rs.getDate(5)),
                     toLocalDate(rs.getDate(6)),
-                    null,
+                    sessionImageRepository.findById(rs.getLong(1)),
                     SessionStatus.valueOf(rs.getString(7)),
                     SessionType.valueOf(rs.getString(8))
             );
@@ -102,7 +105,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong(4),
                     toLocalDate(rs.getDate(5)),
                     toLocalDate(rs.getDate(6)),
-                    null,
+                    sessionImageRepository.findById(rs.getLong(1)),
                     SessionStatus.valueOf(rs.getString(7)),
                     SessionType.valueOf(rs.getString(8)),
                     rs.getInt(9),
@@ -120,33 +123,4 @@ public class JdbcSessionRepository implements SessionRepository {
         );
         return jdbcTemplate.queryForObject(checkSessionTypeSQL, rowMapper, id);
     }
-
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
-
-    private Timestamp toTimestamp(LocalDateTime localDateTime) {
-        if (localDateTime == null) {
-            return null;
-        }
-        return Timestamp.valueOf(localDateTime);
-    }
-
-    private Date toDate(LocalDate localDate) {
-        if (localDate == null) {
-            return null;
-        }
-        return Date.valueOf(localDate);
-    }
-
-    private LocalDate toLocalDate(Date date) {
-        if (date == null) {
-            return null;
-        }
-        return date.toLocalDate();
-    }
-
 }

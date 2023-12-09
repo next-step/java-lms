@@ -18,6 +18,10 @@ public class BaseDomain {
         this.updatedAt = updatedAt;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
