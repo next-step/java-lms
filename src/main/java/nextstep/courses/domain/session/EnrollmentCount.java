@@ -9,11 +9,24 @@ public class EnrollmentCount {
         this.remainEnrollmentCount = maxEnrollmentCount;
     }
 
+    public EnrollmentCount(final int maxEnrollmentCount, final int remainEnrollmentCount) {
+        this.maxEnrollmentCount = maxEnrollmentCount;
+        this.remainEnrollmentCount = remainEnrollmentCount;
+    }
+
     public boolean isNotRemain() {
         return remainEnrollmentCount == 0;
     }
 
     public void decrease() {
         this.remainEnrollmentCount--;
+    }
+
+    public int maxEnrollmentCount() {
+        return maxEnrollmentCount;
+    }
+
+    public int remainEnrollmentCount() {
+        return remainEnrollmentCount;
     }
 }

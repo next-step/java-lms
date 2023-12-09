@@ -29,4 +29,12 @@ public class SessionPeriod {
     public int hashCode() {
         return Objects.hash(startDateTime, endDateTime);
     }
+
+    public LocalDateTime startDateTime() {
+        return startDateTime;
+    }
+
+    public LocalDateTime endDateTime() {
+        return endDateTime;
+    }
 }

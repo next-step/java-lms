@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class CourseRepositoryTest {
+public class CourseRepositoryTest extends TestUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired
@@ -23,6 +23,7 @@ public class CourseRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        autoincrementReset(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
     }
 
@@ -31,7 +32,7 @@ public class CourseRepositoryTest {
         Course course = new Course("TDD, 클린 코드 with Java", 1L);
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
-        Course savedCourse = courseRepository.findById(1L);
+        Course savedCourse = courseRepository.findById(1L).get();
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }

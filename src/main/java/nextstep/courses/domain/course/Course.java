@@ -1,19 +1,14 @@
 package nextstep.courses.domain.course;
 
+import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.session.Sessions;
 
 import java.time.LocalDateTime;
 
-public class Course {
-    private Long id;
+public class Course extends BaseEntity {
     private String title;
     private Long creatorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Sessions sessions;
-
-    public Course() {
-    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
@@ -24,11 +19,9 @@ public class Course {
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt, Sessions sessions) {
-        this.id = id;
+        super(id, createdAt, updatedAt);
         this.title = title;
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.sessions = sessions;
     }
 
@@ -38,10 +31,6 @@ public class Course {
 
     public Long getCreatorId() {
         return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     @Override

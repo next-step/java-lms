@@ -10,19 +10,19 @@ class AmountTest {
     @Test
     void 금액이_음수일떄() {
         assertThatThrownBy(() -> {
-            new Amount(-1L);
+            Amount.of(-1L);
         }).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void 금액이_0원일때() {
-        final Amount amount = new Amount(0L);
+        final Amount amount = Amount.ZERO();
         assertThat(amount.isFree()).isTrue();
     }
 
     @Test
     void 금액이_다를떄() {
-        final Amount amount = new Amount(100L);
+        final Amount amount = Amount.of(100L);
         final Payment payment = new Payment("qwe5507", 1L, 1L, 10L);
         assertThat(amount.isNotSame(payment)).isTrue();
     }
