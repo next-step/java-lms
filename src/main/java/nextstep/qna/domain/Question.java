@@ -19,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -69,7 +69,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -86,16 +86,17 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        this.validateAllPermission(loginUser, answers);
+        this.validateAllPermission(loginUser);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(this.deleteContent());
-        answers.forEach(answer -> deleteHistories.add(answer.deleteContent()));
+        answers.deleteAnswers(deleteHistories);
         return deleteHistories;
     }
 
-    private void validateAllPermission(NsUser loginUser, List<Answer> answers) throws CannotDeleteException {
+    private void validateAllPermission(NsUser loginUser) throws CannotDeleteException {
         this.validatePermission(loginUser);
-        answers.forEach(answer -> answer.validatePermission(loginUser));
+        answers.validatePermission(loginUser);
     }
 
     public void validatePermission(NsUser loginUser) throws CannotDeleteException {
