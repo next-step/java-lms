@@ -51,7 +51,8 @@ class SessionRepositoryTest {
 
         final Amount amount = Amount.of(100L);
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, amount, new EnrollmentCount(20));
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, amount,
+                new EnrollmentCount(20), RecruitStatus.RECRUITING);
         int count = sessionRepository.save(1L, tddSession);
         assertThat(count).isEqualTo(1);
 

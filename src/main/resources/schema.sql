@@ -35,6 +35,7 @@ create table session (
     start_data_time DATETIME not null,
     end_date_time DATETIME not null,
     status varchar(10) not null,
+    recruit varchar(10) not null,
     course_id bigint not null,
     image_id bigint not null,
     `type` varchar(10) not null,

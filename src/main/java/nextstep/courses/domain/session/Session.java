@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
     private static final String NOT_REMAIN_MSG = "남은 자리가 없습니다.";
-    private static final String NOT_RECRUITING_MSG = "강의 모집중인 강의가 아닙니다.";
+    private static final String NOT_IN_PROGRESS_MSG = "강의 진행중인 강의가 아닙니다.";
     public static final String INVALID_AMOUNT_MSG = "결제한 금액과 강의의 금액이 다릅니다.";
+    private static final String NOT_RECRUITNG_MSG = "모집중인 강의가 아닙니다.";
     private String title;
     private SessionPeriod sessionPeriod;
     private SessionStatus sessionStatus;
@@ -19,14 +20,17 @@ public class Session extends BaseEntity {
     private SessionType sessionType;
     private Amount amount;
     private EnrollmentCount enrollmentCount;
+    private RecruitStatus recruitStatus;
 
     public Session(final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
-                   final CoverImage coverImage, final Amount amount, final EnrollmentCount enrollmentCount) {
+                   final CoverImage coverImage, final Amount amount, final EnrollmentCount enrollmentCount,
+                   final RecruitStatus recruitStatus) {
         this(null, title, sessionPeriod, sessionStatus, coverImage, SessionType.of(amount), amount, enrollmentCount,
-                LocalDateTime.now(), null);
+                recruitStatus, LocalDateTime.now(), null);
     }
     public Session(final Long id, final String title, final SessionPeriod sessionPeriod, final SessionStatus sessionStatus,
-                   final CoverImage coverImage, final SessionType sessionType, final Amount amount, final EnrollmentCount enrollmentCount,
+                   final CoverImage coverImage, final SessionType sessionType, final Amount amount,
+                   final EnrollmentCount enrollmentCount, final RecruitStatus recruitStatus,
                    final LocalDateTime createAt, LocalDateTime updatedAt) {
         super(id, createAt, updatedAt);
         this.title = title;
@@ -36,11 +40,16 @@ public class Session extends BaseEntity {
         this.sessionType = sessionType;
         this.amount = amount;
         this.enrollmentCount = enrollmentCount;
+        this.recruitStatus = recruitStatus;
     }
 
-    private void checkRecruiting() {
-        if (sessionStatus != SessionStatus.RECRUITING) {
-            throw new IllegalArgumentException(NOT_RECRUITING_MSG);
+    private void checkSessionStatus() {
+        if (sessionStatus.isNotInProcess()) {
+            throw new IllegalArgumentException(NOT_IN_PROGRESS_MSG);
+        }
+
+        if (recruitStatus.isNotRecruiting()) {
+            throw new IllegalArgumentException(NOT_RECRUITNG_MSG);
         }
     }
     public Enrollment enroll(NsUser user, final Payment payment) {
@@ -52,11 +61,11 @@ public class Session extends BaseEntity {
     }
 
     private void checkAvailableEnroll(final Payment payment) {
+        checkSessionStatus();
+
         if (sessionType.isFree()) {
             return;
         }
-
-        checkRecruiting();
 
         if (enrollmentCount.isNotRemain()) {
             throw new IllegalArgumentException(NOT_REMAIN_MSG);
@@ -93,5 +102,9 @@ public class Session extends BaseEntity {
 
     public SessionType sessionType() {
         return sessionType;
+    }
+
+    public RecruitStatus recruitStatus() {
+        return recruitStatus;
     }
 }

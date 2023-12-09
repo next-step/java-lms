@@ -59,7 +59,8 @@ public class EnrollmentRepositoryTest {
         CoverImage savedCoverImage = imageRepository.findById(1L).get();
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, Amount.ZERO(), null);
+        final Session tddSession = new Session("tdd", sessionPeriod, SessionStatus.PREPARING, savedCoverImage, Amount.ZERO()
+                , null, RecruitStatus.RECRUITING);
         int count = sessionRepository.save(1L, tddSession);
         Optional<NsUser> javajigi = userRepository.findByUserId("javajigi");
 
