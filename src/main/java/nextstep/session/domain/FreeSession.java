@@ -6,10 +6,6 @@ import java.time.LocalDateTime;
 public class FreeSession extends Session {
     private static final SessionType SESSION_TYPE = SessionType.FREE;
 
-    public FreeSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionStatus sessionStatus, SessionType sessionType) {
-        this(id, createdAt, updatedAt, creatorId, startDate, endDate, null, sessionStatus, sessionType);
-    }
-
     public FreeSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
         super(creatorId, startDate, endDate, sessionImage, SESSION_TYPE);
     }
