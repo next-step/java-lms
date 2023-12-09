@@ -1,7 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.course.Course;
-
 import java.time.LocalDateTime;
 
 public class Period {
@@ -15,10 +13,6 @@ public class Period {
         }
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-    }
-
-    public boolean isAfterStartDateTime(Course course) {
-        return startDateTime.isAfter(course.getCreatedAt());
     }
 
     public LocalDateTime getStartDateTime() {

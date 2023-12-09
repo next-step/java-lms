@@ -53,23 +53,13 @@ public class Session {
     }
 
     public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {
-        if (!period.isAfterStartDateTime(course)) {
-            throw new IllegalArgumentException("유효하지 않는 세션 일정입니다.");
-        }
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
         return new Session(coverImg, period, sessionType, course);
     }
 
     public static Session freeSession(CoverImage coverImg, Course course, Period period) {
-        if (!period.isAfterStartDateTime(course)) {
-            throw new IllegalArgumentException("유효하지 않는 세션 일정입니다.");
-        }
         SessionType sessionType = SessionType.freeSession();
         return new Session(coverImg, period, sessionType, course);
-    }
-
-    public int attendUserCount() {
-        return sessionUsers.totalAttendUsersCount();
     }
 
     public boolean canRegisterNewUser(int currentUserSize) {
