@@ -32,7 +32,8 @@ public class SessionServiceTest {
     private Payment payment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
-    private Applicants applicants = new Applicants();
+    private int quota;
+    private Applicants applicants;
     private Duration duration;
     private Session session;
 
@@ -48,10 +49,12 @@ public class SessionServiceTest {
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        applicants.add(JAVAJIGI);
+        quota = 10;
+        applicants = new Applicants(quota);
+        applicants.addApplicant(JAVAJIGI, Session.Type.CHARGE);
         duration = new Duration(localDate, localDate);
         session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                10, applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
+                applicants, Session.Status.RECRUIT, localDateTime, localDateTime);
     }
 
     @Test

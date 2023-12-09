@@ -19,8 +19,6 @@ public class Session {
 
     private Long amount;
 
-    private int quota;
-
     private Applicants applicants;
 
     private Status status;
@@ -57,12 +55,12 @@ public class Session {
 
     public Session(Image image, Duration duration,
                    Type type, Long amount, int quota) {
-        this(0L, image, duration, type, amount, quota, new Applicants(),
+        this(0L, image, duration, type, amount, new Applicants(quota),
                 Status.READY, LocalDateTime.now(), null);
     }
 
     public Session(Long id, Image image, Duration duration,
-                   Type type, Long amount, int quota, Applicants applicants,
+                   Type type, Long amount, Applicants applicants,
                    Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if (image == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
@@ -77,7 +75,6 @@ public class Session {
         this.duration = duration;
         this.type = type;
         this.amount = amount;
-        this.quota = quota;
         this.applicants = applicants;
         this.status = status;
         this.createdAt = createdAt;
@@ -104,11 +101,10 @@ public class Session {
         checkStatusOnRecruit();
 
         if (typeCharged()) {
-            checkApplySizeIsValid();
             checkPaymentIsPaid(loginUser, payment);
         }
 
-        this.applicants.add(loginUser);
+        this.applicants.addApplicant(loginUser, type);
     }
 
     private boolean typeCharged() {
@@ -118,12 +114,6 @@ public class Session {
     private void checkStatusOnRecruit() {
         if (this.status != Status.RECRUIT) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
-        }
-    }
-
-    private void checkApplySizeIsValid() {
-        if (applyCount() + 1 > quota) {
-            throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
         }
     }
 

@@ -32,7 +32,7 @@ public class SessionsTest {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
         session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                10, new Applicants(), Session.Status.RECRUIT, localDateTime, localDateTime);
+                new Applicants(10), Session.Status.RECRUIT, localDateTime, localDateTime);
         sessions.add(session);
     }
 

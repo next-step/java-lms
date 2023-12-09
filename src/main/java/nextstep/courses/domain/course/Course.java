@@ -12,7 +12,7 @@ public class Course {
 
     private Long creatorId;
 
-    private Sessions sessions = new Sessions();
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 

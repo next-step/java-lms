@@ -9,20 +9,24 @@ import java.util.List;
 public class Applicants implements Iterable<NsUser> {
     private final List<NsUser> applicants;
 
-    public Applicants() {
-        this(new ArrayList<NsUser>());
+    private final int quota;
+
+    public Applicants(int quota) {
+        this(new ArrayList<>(), quota);
     }
 
-    public Applicants(List<NsUser> applicants) {
+    public Applicants(List<NsUser> applicants, int quota) {
         this.applicants = applicants;
+        this.quota = quota;
     }
 
     public int size() {
         return this.applicants.size();
     }
 
-    public void add(NsUser applicant) {
+    public void addApplicant(NsUser applicant, Session.Type type) {
         checkApplicantAlreadyExisted(applicant);
+        checkChargeAndApplySizeIsValid(type);
         this.applicants.add(applicant);
     }
 
@@ -30,6 +34,16 @@ public class Applicants implements Iterable<NsUser> {
         if (this.applicants.contains(applicant)) {
             throw new IllegalArgumentException("이미 강의를 신청하였습니다.");
         }
+    }
+
+    private void checkChargeAndApplySizeIsValid(Session.Type type) {
+        if (type == Session.Type.CHARGE && this.isFull()) {
+            throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
+        }
+    }
+
+    public boolean isFull() {
+        return this. applicants.size() == this.quota;
     }
 
     @Override
