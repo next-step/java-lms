@@ -15,19 +15,21 @@ public abstract class Session extends BaseDomain implements Sessionable {
 
     private SessionImage sessionImage;
 
-    protected SessionStatus sessionStatus;
+    private SessionStatus sessionStatus;
+    private SessionType sessionType;
     protected Enrollment enrollment = new Enrollment();
 
-    public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        this(0L, LocalDateTime.now(), null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS);
+    public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
+        this(0L, LocalDateTime.now(), null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS, sessionType);
     }
 
-    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {
         super(id, createdAt, updatedAt);
         this.creatorId = creatorId;
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
         this.sessionStatus = sessionStatus;
+        this.sessionType = sessionType;
     }
 
     @Override
@@ -54,5 +56,25 @@ public abstract class Session extends BaseDomain implements Sessionable {
     @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public SessionDate getSessionDate() {
+        return sessionDate;
+    }
+
+    public SessionImage getSessionImage() {
+        return sessionImage;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
     }
 }

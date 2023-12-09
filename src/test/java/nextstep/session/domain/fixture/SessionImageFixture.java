@@ -9,6 +9,10 @@ public class SessionImageFixture {
     public static final int DEFAULT_HEIGHT = 200;
     public static final SessionImage sessionImageFixture = SessionImage.of(DEFAULT_IMAGE_URL, DEFAULT_IMAGE_SIZE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
+    public static SessionImage createSessionImage() {
+        return SessionImage.of(DEFAULT_IMAGE_URL, DEFAULT_IMAGE_SIZE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
     public static SessionImage createSessionImage(String fileURL) {
         return SessionImage.of(fileURL, DEFAULT_IMAGE_SIZE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }

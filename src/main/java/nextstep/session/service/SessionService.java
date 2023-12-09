@@ -14,7 +14,7 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public int createSession(NsUser loginUser, CreateSessionRequest dto) {
+    public Long createSession(NsUser loginUser, CreateSessionRequest dto) {
         return sessionRepository.save(dto.toSession(loginUser));
     }
 

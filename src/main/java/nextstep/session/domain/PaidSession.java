@@ -5,11 +5,12 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDate;
 
 public class PaidSession extends Session {
+    private static final SessionType SESSION_TYPE = SessionType.PAID;
     private final Integer capacity;
     private final Long price;
 
     public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer capacity, Long price) {
-        super(creatorId, startDate, endDate, sessionImage);
+        super(creatorId, startDate, endDate, sessionImage, SESSION_TYPE);
         this.capacity = capacity;
         this.price = price;
     }
