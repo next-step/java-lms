@@ -1,28 +1,28 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.ImageSizeOverException;
-import nextstep.courses.exception.InvalidImageWidthAndHeightException;
 
-public class CoverImage {
+import java.time.LocalDateTime;
 
+public class CoverImage extends BaseEntity {
     private static final int MAX_MB_OF_IMAGE_SIZE = 1;
-    private static final int MIN_WIDTH_PIXEL = 300;
-    private static final int MIN_HEIGHT_PIXEL = 200;
-    private static final int WIDTH_RATIO = 2;
-    private static final int HEIGHT_RATIO = 3;
 
-    private final long size;
+    private final Long id;
+    private final Long size;
     private final Extension extension;
-    private final int width;
-    private final int height;
+    private final ImageDimensions dimensions;
 
     public CoverImage(long size, String extension, int width, int height) {
+        this(1L, size, extension, width, height, LocalDateTime.now(), null);
+    }
+
+    public CoverImage(Long id, Long size, String extension, int width, int height, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         validateImageSize(size);
-        validateWidthAndHeight(width, height);
+        this.id = id;
         this.size = size;
         this.extension = Extension.from(extension);
-        this.width = width;
-        this.height = height;
+        this.dimensions = new ImageDimensions(width, height);
     }
 
     private void validateImageSize(long size) {
@@ -31,17 +31,33 @@ public class CoverImage {
         }
     }
 
-    private void validateWidthAndHeight(int width, int height) {
-        if (!checkPixel(width, height) || !checkRatio(width, height)) {
-            throw new InvalidImageWidthAndHeightException();
-        }
+    public Long getId() {
+        return id;
     }
 
-    private static boolean checkPixel(int width, int height) {
-        return width >= MIN_WIDTH_PIXEL && height >= MIN_HEIGHT_PIXEL;
+    public long getSize() {
+        return size;
     }
 
-    private static boolean checkRatio(int width, int height) {
-        return width * WIDTH_RATIO == height * HEIGHT_RATIO;
+    public String getExtension() {
+        return extension.name();
+    }
+
+    public int getWidth() {
+        return dimensions.getWidth();
+    }
+
+    public int getHeight() {
+        return dimensions.getHeight();
+    }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id +
+                ", size=" + size +
+                ", extension=" + extension +
+                ", dimensions=" + dimensions +
+                '}';
     }
 }

@@ -37,11 +37,11 @@ public class Payment {
         return new Payment(id, sessionId, nsUser, amount);
     }
 
-    public NsUser findPaidUser() {
+    public NsUser paidUser() {
         return this.nsUser;
     }
 
-    public Long findAmount() {
-        return this.amount;
+    public boolean equalAmount(Long fee) {
+        return amount.equals(fee);
     }
 }

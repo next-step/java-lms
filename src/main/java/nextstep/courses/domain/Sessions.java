@@ -5,17 +5,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class Sessions {
-    private final List<Session> sessions;
+    private final List<Session> values;
 
     public Sessions() {
-        this.sessions = new ArrayList<>();
+        this.values = new ArrayList<>();
     }
 
-    public List<Session> findSessions() {
-        return Collections.unmodifiableList(sessions);
+    public List<Session> values() {
+        return Collections.unmodifiableList(values);
     }
 
     public void addSession(Session session) {
-        sessions.add(session);
+        values.add(session);
     }
 }

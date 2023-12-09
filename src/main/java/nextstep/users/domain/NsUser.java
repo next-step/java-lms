@@ -1,11 +1,12 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.BaseEntity;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class NsUser {
+public class NsUser extends BaseEntity {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
@@ -18,10 +19,6 @@ public class NsUser {
 
     private String email;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public NsUser() {
     }
 
@@ -30,13 +27,12 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -125,14 +121,26 @@ public class NsUser {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(id, nsUser.id) && Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password) && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, userId, password, name, email);
+    }
+
+    @Override
     public String toString() {
         return "NsUser{" +
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
