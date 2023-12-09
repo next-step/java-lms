@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.exception.FileException.FileDimensionsException;
 
-public class FileDimensions {
+public class ThumbnailDimensions {
 
     private static final int MIN_THUMBNAIL_FILE_LENGTH = 0;
     private static final int MAX_THUMBNAIL_FILE_WIDTH = 300;
@@ -13,7 +13,7 @@ public class FileDimensions {
     private final int width;
     private final int height;
 
-    public FileDimensions(int width, int height) {
+    public ThumbnailDimensions(int width, int height) {
         validateFileDimensions(width, height);
         this.width = width;
         this.height = height;

@@ -1,20 +1,36 @@
 package nextstep.courses.service;
 
+import javax.annotation.Resource;
 import nextstep.courses.domain.Session;
-import nextstep.payments.domain.Payment;
+import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStudents;
+import nextstep.courses.domain.SessionStudentsRepository;
+import nextstep.courses.domain.Student;
 import nextstep.users.domain.NsUser;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service("sessionService")
 public class SessionService {
 
-    public void enroll(NsUser student, Integer sessionFee) {
-        Session session = null; //Todo Session DB코드 추가필요.
+    @Resource(name = "sessionRepository")
+    private final SessionRepository sessionRepository;
+    @Resource(name = "sessionStudentsRepository")
+    private final SessionStudentsRepository studentsRepository;
 
-        if (session.isEnrollmentPossible(sessionFee)) {
-            session.enroll(student);
-            //todo Payment 설정 필요
-            Payment payment = new Payment("paymentId", session.getSessionId(), student.getId(), sessionFee);
-            //todo student, payment DB저장 필요
+    public SessionService(SessionRepository sessionRepository, SessionStudentsRepository studentsRepository) {
+        this.sessionRepository = sessionRepository;
+        this.studentsRepository = studentsRepository;
+    }
+
+    @Transactional
+    public void enroll(Long sessionId, NsUser user, Integer sessionFee) {
+        Session session = sessionRepository.findById(sessionId);
+        SessionStudents students = studentsRepository.findBySessionId(sessionId);
+
+        if (session.isEnrollmentPossible(students, sessionFee)) {
+            Student student = session.enroll(students, user);
+            studentsRepository.save(student);
         }
-
     }
 }

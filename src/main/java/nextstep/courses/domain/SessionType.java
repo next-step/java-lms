@@ -1,20 +1,21 @@
 package nextstep.courses.domain;
 
-public abstract class SessionType {
+public interface SessionType {
 
-    private final boolean isPaid;
-
-    public SessionType(boolean isPaid) {
-        this.isPaid = isPaid;
-    }
-
-    public static SessionType determineSessionType(boolean isPaid, Integer maxStudents, Integer sessionFee) {
+    static SessionType determineSessionType(boolean isPaid, Long sessionTypeId, Integer maxStudents, Integer sessionFee) {
         if (isPaid) {
-            return new PaidSession(isPaid, maxStudents, sessionFee);
+            return new PaidSession(sessionTypeId, maxStudents, sessionFee);
         }
-        return new FreeSession(isPaid);
+        return new FreeSession(sessionTypeId);
     }
 
-    public abstract boolean isWithinCapacity(Integer size);
-    public abstract boolean checkSessionFeeEquality(Integer sessionFee);
+    static SessionType determineSessionTypeByDB(Long freeSessionTypeId, Long paidSessionTypeId, Integer maxStudents, Integer sessionFee) {
+        if (freeSessionTypeId == null) {
+            return new PaidSession(paidSessionTypeId, maxStudents, sessionFee);
+        }
+        return new FreeSession(freeSessionTypeId);
+    }
+
+    boolean isWithinCapacity(Integer size);
+    boolean checkSessionFeeEquality(Integer sessionFee);
 }
