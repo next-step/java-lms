@@ -16,10 +16,10 @@ public class RegistrationsTest {
 
     @Test
     void 단순_size_메서드_테스트() {
-        SessionInfo sessionInfo = new SessionInfo(new SessionType(PaidType.PAID, 800000, 2), null);
+        EnrollmentInfo enrollmentInfo = new EnrollmentInfo(new SessionType(PaidType.PAID, 800000, 2), null);
         Registrations registrations = new Registrations(List.of(
-            new Registration(session(sessionInfo), NsUserTest.JAVAJIGI, new Payment()),
-            new Registration(session(sessionInfo), NsUserTest.SANJIGI, new Payment())
+            new Registration(session(enrollmentInfo), NsUserTest.JAVAJIGI, new Payment()),
+            new Registration(session(enrollmentInfo), NsUserTest.SANJIGI, new Payment())
         ));
 
         assertThat(registrations.size()).isEqualTo(2);
@@ -27,10 +27,10 @@ public class RegistrationsTest {
 
     @Test
     void 이미_수강_신청된_유저() {
-        SessionInfo sessionInfo = new SessionInfo(new SessionType(PaidType.PAID, 800000, 2), null);
+        EnrollmentInfo enrollmentInfo = new EnrollmentInfo(new SessionType(PaidType.PAID, 800000, 2), null);
         Registrations registrations = new Registrations(List.of(
-            new Registration(session(sessionInfo), NsUserTest.JAVAJIGI, new Payment()),
-            new Registration(session(sessionInfo), NsUserTest.SANJIGI, new Payment())
+            new Registration(session(enrollmentInfo), NsUserTest.JAVAJIGI, new Payment()),
+            new Registration(session(enrollmentInfo), NsUserTest.SANJIGI, new Payment())
         ));
 
         assertThatThrownBy(() -> registrations.validateDuplicateEnrollment(NsUserTest.JAVAJIGI))
@@ -38,7 +38,7 @@ public class RegistrationsTest {
             .hasMessage("이미 수강신청된 사용자 입니다.");
     }
 
-    private Session session(SessionInfo sessionInfo) {
-        return new Session(sessionInfo);
+    private Session session(EnrollmentInfo enrollmentInfo) {
+        return new Session(enrollmentInfo);
     }
 }

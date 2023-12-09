@@ -1,6 +1,6 @@
 package nextstep.sessions.domain.data.dto;
 
-import nextstep.sessions.domain.data.vo.CoverImage;
+import nextstep.sessions.domain.data.CoverImage;
 
 public class CoverImageCreateRequestDto {
 

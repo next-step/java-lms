@@ -8,10 +8,11 @@ import nextstep.sessions.domain.data.vo.*;
 
 public class Session {
 
-    private final SessionInfo sessionInfo;
+    private final EnrollmentInfo enrollmentInfo;
+    private OpenInfo openInfo;
 
-    public Session(SessionInfo sessionInfo) {
-        this.sessionInfo = sessionInfo;
+    public Session(EnrollmentInfo enrollmentInfo) {
+        this.enrollmentInfo = enrollmentInfo;
     }
 
     public Session(
@@ -23,40 +24,46 @@ public class Session {
         LocalDateTime startDate,
         LocalDateTime endDate
     ) {
-        this.sessionInfo = new SessionInfo(
-            new EnrollmentInfo(new SessionType(paidType, fee, capacity), new NewSessionState(sessionRunningStateState, sessionRecruitingState)),
+        this(new EnrollmentInfo(
+                new SessionType(paidType, fee, capacity),
+                new NewSessionState(sessionRunningStateState, sessionRecruitingState)),
             new OpenInfo(new Duration(startDate, endDate)));
     }
 
+    public Session(EnrollmentInfo enrollmentInfo, OpenInfo openInfo) {
+        this.enrollmentInfo = enrollmentInfo;
+        this.openInfo = openInfo;
+    }
+
     public Enrollment enrollment(List<Registration> registrations) {
-        return new Enrollment(sessionInfo, registrations);
+        return new Enrollment(enrollmentInfo, registrations);
     }
 
     public String paidType() {
-        return sessionInfo.paidType();
+        return enrollmentInfo.paidType();
     }
 
     public long fee() {
-        return sessionInfo.fee();
+        return enrollmentInfo.fee();
     }
 
     public int capacity() {
-        return sessionInfo.capacity();
+        return enrollmentInfo.capacity();
     }
 
     public String sessionRunningState() {
-        return sessionInfo.sessionRunningState();
+        return enrollmentInfo.sessionRunningState();
     }
 
     public String sessionRecruitingState() {
-        return sessionInfo.sessionRecruitingState();
+        return enrollmentInfo.sessionRecruitingState();
     }
 
     public LocalDateTime startDate() {
-        return sessionInfo.startDate();
+        return openInfo.startDate();
     }
 
     public LocalDateTime endDate() {
-        return sessionInfo.endDate();
+        return openInfo.endDate();
     }
 }

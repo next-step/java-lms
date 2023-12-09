@@ -6,16 +6,16 @@ import nextstep.sessions.domain.data.vo.*;
 
 public class Enrollment {
 
-    private final SessionInfo sessionInfo;
+    private final EnrollmentInfo enrollmentInfo;
     private final Registrations registrations;
 
-    public Enrollment(SessionInfo sessionInfo, List<Registration> registrations) {
-        this.sessionInfo = sessionInfo;
+    public Enrollment(EnrollmentInfo enrollmentInfo, List<Registration> registrations) {
+        this.enrollmentInfo = enrollmentInfo;
         this.registrations = new Registrations(registrations);
     }
 
     public void enroll(Registration registration) {
-        sessionInfo.validateEnrollment(registrations.size(), registration.payment());
+        enrollmentInfo.validateEnrollment(registrations.size(), registration.payment());
         registrations.validateDuplicateEnrollment(registration.user());
     }
 }

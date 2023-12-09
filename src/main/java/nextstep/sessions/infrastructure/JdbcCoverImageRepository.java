@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import nextstep.sessions.domain.data.CoverImage;
 import nextstep.sessions.domain.data.type.ImageType;
-import nextstep.sessions.domain.data.vo.CoverImage;
 import nextstep.sessions.domain.data.vo.ImageSize;
 import nextstep.sessions.repository.CoverImageRepository;
 
@@ -69,7 +69,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 coverImage.height()
             );
         }
-        
+
         return count;
     }
 }

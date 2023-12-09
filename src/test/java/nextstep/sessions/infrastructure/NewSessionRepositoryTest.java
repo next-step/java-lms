@@ -34,8 +34,7 @@ public class NewSessionRepositoryTest {
             new NewSessionState(SessionRunningState.RUNNING, SessionRecruitingState.RECRUITING)
         );
         OpenInfo openInfo = new OpenInfo(new Duration(LocalDateTime.now(), LocalDateTime.now().plusDays(10)));
-        SessionInfo sessionInfo = new SessionInfo(enrollmentInfo, openInfo);
-        Session session = new Session(sessionInfo);
+        Session session = new Session(enrollmentInfo, openInfo);
 
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);

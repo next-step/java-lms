@@ -1,6 +1,7 @@
-package nextstep.sessions.domain.data.vo;
+package nextstep.sessions.domain.data;
 
 import nextstep.sessions.domain.data.type.ImageType;
+import nextstep.sessions.domain.data.vo.ImageSize;
 
 public class CoverImage {
 

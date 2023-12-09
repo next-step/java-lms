@@ -12,7 +12,7 @@ public class EnrollmentInfo {
         this.newSessionState = newSessionState;
     }
 
-    public void validate(int registrationSize, Payment payment) {
+    public void validateEnrollment(int registrationSize, Payment payment) {
         newSessionState.validateState();
         sessionType.validateSession(registrationSize, payment);
     }

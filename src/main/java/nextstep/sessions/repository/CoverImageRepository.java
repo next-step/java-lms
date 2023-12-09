@@ -2,7 +2,7 @@ package nextstep.sessions.repository;
 
 import java.util.List;
 
-import nextstep.sessions.domain.data.vo.CoverImage;
+import nextstep.sessions.domain.data.CoverImage;
 
 public interface CoverImageRepository {
 

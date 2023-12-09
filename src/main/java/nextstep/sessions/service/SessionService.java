@@ -3,10 +3,10 @@ package nextstep.sessions.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import nextstep.sessions.domain.data.CoverImage;
 import nextstep.sessions.domain.data.Session;
 import nextstep.sessions.domain.data.dto.CoverImageCreateRequestDto;
 import nextstep.sessions.domain.data.dto.SessionCreateRequestDto;
-import nextstep.sessions.domain.data.vo.CoverImage;
 import nextstep.sessions.repository.CoverImageRepository;
 import nextstep.sessions.repository.SessionRepository;
 
