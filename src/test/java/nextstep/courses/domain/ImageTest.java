@@ -11,21 +11,13 @@ public class ImageTest {
     void 이미지_타입은_gif_jpg_jpeg_포함__png_svg만_허용한다() {
         // given
         int size = 1;
-
+        ImageSize imageSize = new ImageSize(300, 200);
         // when
-        Image image = new Image(size, ImageType.JPG);
+        Image image = new Image(imageSize, ImageType.JPG);
 
         // then
         assertThat(image.getType()).isEqualTo(ImageType.JPG);
     }
 
-    @Test
-    void 이미지_크기는_1MB_이하여야_한다() {
-        // given
-        int size = 2;
 
-        // when, then
-        assertThatThrownBy(() -> new Image(size, ImageType.GIF)).isInstanceOf(
-            IllegalArgumentException.class);
-    }
 }
