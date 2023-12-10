@@ -23,9 +23,10 @@ public class EnrollmentTest {
     @Test
     @DisplayName("수강신청 상태가 아닐 때 수강신청을하면 예외가 발생한다")
     void capacity_exception() {
-        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 1);
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            new Enrollment(SessionStatus.ENROLLING, 1, students);
+            enrollment.enroll(NsUserTest.JAVAJIGI);
+            enrollment.enroll(NsUserTest.SANJIGI);
         });
     }
 
