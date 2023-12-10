@@ -32,7 +32,7 @@ class JdbcSessionRepositoryTest {
 
     @Test
     void create_read() {
-        Session session = new Session(coverImageRepository.findById(1L),
+        Session session = new Session(coverImageRepository.findBySessionId(1L),
                 PricingTypeEnum.PAID.name(),
                 800_000L,
                 SessionProgressEnum.PREPARING.name(),
@@ -43,7 +43,7 @@ class JdbcSessionRepositoryTest {
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
-        assertThat(session.getImageId()).isEqualTo(savedSession.getImageId());
+        assertThat(session.getCoverImages().size()).isEqualTo(savedSession.getCoverImages().size());
         assertThat(session.getPricingType()).isEqualTo(savedSession.getPricingType());
         assertThat(session.getTuitionFee()).isEqualTo(savedSession.getTuitionFee());
         assertThat(session.getSessionRecruitment()).isEqualTo(savedSession.getSessionRecruitment());

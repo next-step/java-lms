@@ -11,7 +11,7 @@ class SessionMetadataTest {
     @Test
     void 강의_상태_확인() {
         SessionMetadata completedSession = new SessionMetadata(
-                new CoverImage(FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA),
+                new CoverImage(1L, FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA),
                 SessionProgressEnum.COMPLETED);
         assertThatThrownBy(() -> completedSession.sessionStatusCheck())
                 .isInstanceOf(IllegalArgumentException.class)

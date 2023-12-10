@@ -3,17 +3,20 @@ package nextstep.lms.domain;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SessionInfo {
-    private final CoverImage coverImage;
+    private final List<CoverImage> coverImages;
     private final SessionDetail sessionDetail;
 
-    public SessionInfo(CoverImage coverImage, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(coverImage, new SessionDetail(pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate));
+    public SessionInfo(List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(coverImages, new SessionDetail(pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate));
     }
 
-    public SessionInfo(CoverImage coverImage, SessionDetail sessionDetail) {
-        this.coverImage = coverImage;
+    public SessionInfo(List<CoverImage> coverImages, SessionDetail sessionDetail) {
+        this.coverImages = new ArrayList<>(coverImages) ;
         this.sessionDetail = sessionDetail;
     }
 
@@ -21,8 +24,8 @@ public class SessionInfo {
         return sessionDetail.enroll(students, payment);
     }
 
-    public Long getImageId() {
-        return coverImage.getId();
+    public List<CoverImage> getCoverImages() {
+        return Collections.unmodifiableList(coverImages);
     }
 
     public String getPricingType() {

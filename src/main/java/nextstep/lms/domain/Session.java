@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
     private final Long id;
@@ -12,12 +13,12 @@ public class Session {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(Long id, CoverImage coverImage, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, new SessionInfo(coverImage, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), students, createdAt, updatedAt);
+    public Session(Long id, List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, new SessionInfo(coverImages, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), students, createdAt, updatedAt);
     }
 
-    public Session(CoverImage coverImage, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(0L, new SessionInfo(coverImage, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), new Students(new ArrayList<>()), LocalDateTime.now(), null);
+    public Session(List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(0L, new SessionInfo(coverImages, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), new Students(new ArrayList<>()), LocalDateTime.now(), null);
     }
 
     public Session(Long id, SessionInfo sessionInfo, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -32,8 +33,8 @@ public class Session {
         return new Student(sessionInfo.enroll(this.students, payment), id);
     }
 
-    public Long getImageId() {
-        return sessionInfo.getImageId();
+    public List<CoverImage> getCoverImages() {
+        return sessionInfo.getCoverImages();
     }
 
     public String getPricingType() {

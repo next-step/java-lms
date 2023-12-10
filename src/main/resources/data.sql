@@ -9,4 +9,5 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
 
-insert into cover_image (name, extension, file_volume, width, height, created_at) values ('next', 'png', 1024, 300, 200, CURRENT_TIMESTAMP());
+insert into cover_image (session_id, name, extension, file_volume, width, height, created_at) values (1L, 'next', 'png', 1024, 300, 200, CURRENT_TIMESTAMP());
+insert into cover_image (session_id, name, extension, file_volume, width, height, created_at) values (1L, 'step', 'png', 1024, 300, 200, CURRENT_TIMESTAMP());
