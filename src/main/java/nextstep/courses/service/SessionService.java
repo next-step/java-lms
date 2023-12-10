@@ -8,13 +8,9 @@ import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.Optional;
-
 @Service
 public class SessionService {
 
-    @Resource(name = "userRepository")
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
 
