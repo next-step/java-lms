@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,18 +31,30 @@ class JdbcCoverImageRepositoryTest {
 
     @Test
     void create_read() {
-        CoverImage coverImage = this.coverImage();
-        int count = coverImageRepository.save(coverImage);
-        assertThat(count).isEqualTo(1);
-        CoverImage savedCoverImage = coverImageRepository.findById(2L);
-        assertThat(coverImage.getName()).isEqualTo(savedCoverImage.getName());
-        assertThat(coverImage.getExtension()).isEqualTo(savedCoverImage.getExtension());
-        assertThat(coverImage.getFileVolume()).isEqualTo(savedCoverImage.getFileVolume());
-        assertThat(coverImage.getWidth()).isEqualTo(savedCoverImage.getWidth());
-        assertThat(coverImage.getHeight()).isEqualTo(savedCoverImage.getHeight());
+        CoverImage coverImage1 = this.coverImage();
+        CoverImage coverImage2 = this.coverImage();
+
+        int count = coverImageRepository.save(coverImage1);
+        count += coverImageRepository.save(coverImage2);
+
+        List<CoverImage> expectdCoverImages = new ArrayList<>(Arrays.asList(coverImage1, coverImage2));
+
+        assertThat(count).isEqualTo(2);
+
+        List<CoverImage> savedCoverImages = coverImageRepository.findBySessionId(2L);
+
+        for (int index = 0; index < expectdCoverImages.size(); index++) {
+            CoverImage expectdCoverImage = expectdCoverImages.get(index);
+            CoverImage savedCoverImage = savedCoverImages.get(index);
+            assertThat(expectdCoverImage.getName()).isEqualTo(savedCoverImage.getName());
+            assertThat(expectdCoverImage.getExtension()).isEqualTo(savedCoverImage.getExtension());
+            assertThat(expectdCoverImage.getFileVolume()).isEqualTo(savedCoverImage.getFileVolume());
+            assertThat(expectdCoverImage.getWidth()).isEqualTo(savedCoverImage.getWidth());
+            assertThat(expectdCoverImage.getHeight()).isEqualTo(savedCoverImage.getHeight());
+        }
     }
 
     private CoverImage coverImage() {
-        return new CoverImage(0L, FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA, LocalDateTime.now(), null);
+        return new CoverImage(2L, FileNameStructureTest.NORMAL_FILE_NAME, FileMetadataTest.NORMAL_FILE_METADATA);
     }
 }

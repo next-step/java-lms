@@ -1,56 +1,82 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.StudentStatusEnum;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class StudentsTest {
-    @DisplayName("유료강의 최대 수강 인원을 초과하지 않는다면 수강생 추가")
+    @DisplayName("수강신청 가능")
     @Test
-    void 유료_수강생_추가() {
-        Students students = new Students(Arrays.asList(NsUserTest.JAVAJIGI.getId()));
+    void 수강생_추가() {
+        Student student1 = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Student student2 = new Student(NsUserTest.SANJIGI.getId(), 1L);
+        Students students = new Students(Arrays.asList(student1));
         int existingStudentsSize = students.size();
-        students.paidSessionEnroll(Integer.MAX_VALUE, NsUserTest.SANJIGI.getId());
+        students.enroll(student2);
         assertThat(students.size()).isEqualTo(existingStudentsSize + 1);
+    }
+
+    @DisplayName("중복 수강신청시 예외 발생")
+    @Test
+    void 중복_수강신청() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Students students = new Students(Arrays.asList(student));
+
+        assertThatIllegalArgumentException().isThrownBy(() -> students.enroll(student))
+                .withMessage("이미 수강중인 강의입니다.");
     }
 
     @DisplayName("유료강의 최대 수강 인원을 초과한다면 예외 발생")
     @Test
-    void 유료_최대_수강_인원_초과() {
-        Students students = new Students(Arrays.asList(NsUserTest.JAVAJIGI.getId()));
-        assertThatThrownBy(() -> students.paidSessionEnroll(1, NsUserTest.SANJIGI.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최대 수강 인원을 초과할 수 없습니다.");
+    void 최대_수강_인원_초과() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
+        Students students = new Students(Arrays.asList(student));
+        assertThatIllegalArgumentException().isThrownBy(() -> students.capacityCheck(1))
+                .withMessage("수강생이 모두 선발됐습니다.");
     }
 
-    @DisplayName("유료강의 중복 수강 신청 시 예외발생")
+    @DisplayName("수강생 선발")
     @Test
-    void 유료_중복_수강_신청_불가() {
-        Students students = new Students(Arrays.asList(NsUserTest.JAVAJIGI.getId()));
-        assertThatThrownBy(() -> students.paidSessionEnroll(Integer.MAX_VALUE, NsUserTest.JAVAJIGI.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 수강중인 강의입니다.");
+    void 수강생_선발() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Students students = new Students(Arrays.asList(student));
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
+
+        assertThat(students.selection(student)).isEqualTo(expectedStudent);
     }
 
-    @DisplayName("무료강의는 조건없이 수강신청 가능")
+    @DisplayName("존재하지 않는 수강생 선발 처리 시 예외 발생")
     @Test
-    void 무료_수강생_추가() {
-        Students students = new Students(Arrays.asList(NsUserTest.JAVAJIGI.getId()));
-        int existingStudentsSize = students.size();
-        students.freeSessionEnroll(NsUserTest.SANJIGI.getId());
-        assertThat(students.size()).isEqualTo(existingStudentsSize + 1);
+    void 없는_수강생_선발() {
+        Student otherStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Students students = new Students(new ArrayList<>());
+        assertThatIllegalArgumentException().isThrownBy(() -> students.selection(otherStudent))
+                .withMessage("강의 신청자가 아닙니다.");
     }
 
-    @DisplayName("무료강의 중복 수강 신청 시 예외발생")
+    @DisplayName("수강생 미선발")
     @Test
-    void 무료_중복_수강_신청_불가() {
-        Students students = new Students(Arrays.asList(NsUserTest.JAVAJIGI.getId()));
-        assertThatThrownBy(() -> students.freeSessionEnroll(NsUserTest.JAVAJIGI.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 수강중인 강의입니다.");
+    void 수강생_미선발() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Students students = new Students(Arrays.asList(student));
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.NON_SELECTED);
+
+        assertThat(students.nonSelection(student)).isEqualTo(expectedStudent);
+    }
+
+    @DisplayName("존재하지 않는 수강생 미선발 처리 시 예외 발생")
+    @Test
+    void 없는_수강생_미선발() {
+        Student otherStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Students students = new Students(new ArrayList<>());
+        assertThatIllegalArgumentException().isThrownBy(() -> students.nonSelection(otherStudent))
+                .withMessage("강의 신청자가 아닙니다.");
     }
 }

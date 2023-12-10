@@ -1,18 +1,18 @@
 package nextstep.lms.domain;
 
-import nextstep.lms.enums.SessionStatusEnum;
+import nextstep.lms.enums.SessionProgressEnum;
 
 public class SessionMetadata {
     private final CoverImage coverImage;
-    private final SessionStatusEnum sessionStatusEnum;
+    private final SessionProgressEnum sessionProgressEnum;
 
-    public SessionMetadata(CoverImage coverImage, SessionStatusEnum sessionStatusEnum) {
+    public SessionMetadata(CoverImage coverImage, SessionProgressEnum sessionProgressEnum) {
         this.coverImage = coverImage;
-        this.sessionStatusEnum = sessionStatusEnum;
+        this.sessionProgressEnum = sessionProgressEnum;
     }
 
     public void sessionStatusCheck() {
-        if (sessionStatusEnum != SessionStatusEnum.RECRUITING) {
+        if (sessionProgressEnum != SessionProgressEnum.PROGRESSING) {
             throw new IllegalArgumentException("모집중이 아닙니다.");
         }
     }

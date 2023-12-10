@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
@@ -22,8 +23,9 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
     @Override
     public int save(CoverImage coverImage) {
-        String sql = "insert into cover_image (name, extension, file_volume, width, height, created_at) values(?,?,?,?,?,?)";
+        String sql = "insert into cover_image (session_id, name, extension, file_volume, width, height, created_at) values(?,?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
+                coverImage.getSessionId(),
                 coverImage.getName(),
                 coverImage.getExtension(),
                 coverImage.getFileVolume(),
@@ -33,16 +35,19 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public CoverImage findById(Long id) {
-        String sql = "select id, name, extension, file_volume, width, height, created_at, updated_at from cover_image where id = ?";
+    public List<CoverImage> findBySessionId(Long sessionId) {
+        String sql = "select id, session_id, name, extension, file_volume, width, height, created_at, updated_at from cover_image where session_id = ?";
 
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong(1),
-                new FileNameStructure(rs.getString(2), rs.getString(3)),
-                new FileMetadata(rs.getLong(4), new FileSize(rs.getInt(5), rs.getInt(6))),
-                toLocalDateTime(rs.getTimestamp(7)),
-                toLocalDateTime(rs.getTimestamp(8)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+                rs.getLong(2),
+                new FileNameStructure(rs.getString(3), rs.getString(4)),
+                new FileMetadata(rs.getLong(5), new FileSize(rs.getInt(6), rs.getInt(7))),
+                toLocalDateTime(rs.getTimestamp(8)),
+                toLocalDateTime(rs.getTimestamp(9)));
+
+        List<CoverImage> coverImages = jdbcTemplate.query(sql, rowMapper, sessionId);
+        return coverImages;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

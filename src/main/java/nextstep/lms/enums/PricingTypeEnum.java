@@ -13,4 +13,8 @@ public enum PricingTypeEnum {
     public boolean isFree() {
         return this == FREE;
     }
+
+    public boolean isPaid() {
+        return this == PAID;
+    }
 }

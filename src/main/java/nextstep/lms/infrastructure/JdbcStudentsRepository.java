@@ -1,6 +1,8 @@
 package nextstep.lms.infrastructure;
 
+import nextstep.lms.domain.Student;
 import nextstep.lms.domain.Students;
+import nextstep.lms.enums.StudentStatusEnum;
 import nextstep.lms.repository.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,20 +20,34 @@ public class JdbcStudentsRepository implements StudentsRepository {
     }
 
     @Override
-    public int save(Long userId, Long sessionId) {
-        String sql = "insert into students (user_id, session_id, created_at) values(?,?,?)";
+    public int save(Student student) {
+        String sql = "insert into students (user_id, session_id, status, created_at) values(?,?,?,?)";
 
         return jdbcTemplate.update(sql,
-                userId,
-                sessionId,
+                student.getUserId(),
+                student.getSessionId(),
+                student.getStudentStatus(),
                 LocalDateTime.now());
     }
 
     @Override
     public Students findBySession(Long sessionId) {
-        String sql = "select user_id from students where session_id = ?";
-        RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
-        List<Long> userIds = jdbcTemplate.query(sql, rowMapper, sessionId);
-        return new Students(userIds);
+        String sql = "select user_id, session_id, status from students where session_id = ?";
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+                rs.getLong(1),
+                rs.getLong(2),
+                StudentStatusEnum.valueOf(rs.getString(3)));
+        List<Student> sessionStudent = jdbcTemplate.query(sql, rowMapper, sessionId);
+        return new Students(sessionStudent);
+    }
+
+    @Override
+    public int updateStatus(Student student) {
+        String sql = "update students set status = ? where user_id = ? and session_id =?";
+
+        return jdbcTemplate.update(sql,
+                student.getStudentStatus(),
+                student.getUserId(),
+                student.getSessionId());
     }
 }

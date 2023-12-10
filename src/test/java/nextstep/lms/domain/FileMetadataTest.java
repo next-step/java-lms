@@ -11,8 +11,10 @@ public class FileMetadataTest {
     @DisplayName("파일용량이 허용 최대 용량보다 크다면 예외 발생")
     @Test
     void 파일_용량_확인() {
-        assertThatThrownBy(() -> new FileMetadata(1_024 * 1_024 * 3L, FileSizeTest.NORMAL_FILE_SIZE))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("파일이 너무 큽니다.");
+        final Long fileVolume = 1_024 * 1_024 * 3L;
+        final FileSize fileSize = FileSizeTest.NORMAL_FILE_SIZE;
+
+        assertThatIllegalArgumentException().isThrownBy(() -> new FileMetadata(fileVolume, fileSize))
+                .withMessage("파일이 너무 큽니다.");
     }
 }

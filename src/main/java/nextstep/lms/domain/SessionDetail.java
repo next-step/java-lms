@@ -1,27 +1,30 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.PricingTypeEnum;
+import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
 public class SessionDetail {
     private final SessionEnrollmentManagement sessionEnrollmentManagement;
+    private final SessionProgressEnum sessionProgressEnum;
     private final SessionPeriod sessionPeriod;
 
-    public SessionDetail(String pricingType, Long tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionStatus, capacity), new SessionPeriod(startDate, endDate));
+    public SessionDetail(PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionProgressEnum sessionProgressEnum, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(new SessionEnrollmentManagement(pricingTypeEnum, tuitionFee, sessionRecruitmentEnum, capacity), sessionProgressEnum, new SessionPeriod(startDate, endDate));
     }
 
-    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionPeriod sessionPeriod) {
+    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionProgressEnum sessionProgressEnum, SessionPeriod sessionPeriod) {
         this.sessionEnrollmentManagement = sessionEnrollmentManagement;
+        this.sessionProgressEnum = sessionProgressEnum;
         this.sessionPeriod = sessionPeriod;
     }
 
-    public boolean enroll(Students students, Payment payment) {
-        if (sessionPeriod.canEnroll(LocalDateTime.now())) {
-            return sessionEnrollmentManagement.enroll(students, payment);
-        }
-        return false;
+    public void enrollableCheck(Students students, Payment payment) {
+        sessionPeriod.canEnrollCheck(LocalDateTime.now());
+        sessionEnrollmentManagement.enrollableCheck(students, payment);
     }
 
     public String getPricingType() {
@@ -32,8 +35,8 @@ public class SessionDetail {
         return sessionEnrollmentManagement.getTuitionFee();
     }
 
-    public String getSessionStatus() {
-        return sessionEnrollmentManagement.getSessionStatus();
+    public String getSessionRecruitment() {
+        return sessionEnrollmentManagement.getSessionRecruitment();
     }
 
     public int getCapacity() {
@@ -48,6 +51,9 @@ public class SessionDetail {
         return sessionPeriod.getEndDate();
     }
 
+    public String getSessionProgressEnum() {
+        return sessionProgressEnum.name();
+    }
 }
 
 

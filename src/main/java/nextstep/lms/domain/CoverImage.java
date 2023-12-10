@@ -4,17 +4,19 @@ import java.time.LocalDateTime;
 
 public class CoverImage {
     private final Long id;
+    private final Long sessionId;
     private final FileNameStructure fileNameStructure;
     private final FileMetadata fileMetadata;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public CoverImage(FileNameStructure fileNameStructure, FileMetadata fileMetadata) {
-        this(0l, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
+    public CoverImage(Long sessionId, FileNameStructure fileNameStructure, FileMetadata fileMetadata) {
+        this(0L, sessionId, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
     }
 
-    public CoverImage(Long id, FileNameStructure fileNameStructure, FileMetadata fileMetadata, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CoverImage(Long id, Long sessionId, FileNameStructure fileNameStructure, FileMetadata fileMetadata, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.sessionId = sessionId;
         this.fileNameStructure = fileNameStructure;
         this.fileMetadata = fileMetadata;
         this.createdAt = createdAt;
@@ -23,6 +25,10 @@ public class CoverImage {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public String getName() {
