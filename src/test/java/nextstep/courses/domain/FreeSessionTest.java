@@ -32,7 +32,7 @@ public class FreeSessionTest {
     }
 
     @Test
-    @DisplayName("강의 수강신청은 강의 진행상태가 모집중일 때만 가능하다.")
+    @DisplayName("강의 수강신청은 강의 모집상태가 모집중일 때만 가능하다.")
     void 수강신청_강의모집상태_모집중_에러() {
         LocalDateTime now = LocalDateTime.now();
         FreeSession freeSession = new FreeSession(
@@ -40,6 +40,7 @@ public class FreeSessionTest {
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionProgressState.PREPARING,
+                false,
                 LocalDateTime.now()
         );
 

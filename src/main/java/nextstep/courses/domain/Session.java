@@ -40,7 +40,7 @@ public abstract class Session extends BaseEntity {
         this.id = id;
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
-        this.recruitState = isRecruit(progressState);
+        this.recruitState = isRecruiting(progressState);
         this.progressState = progressState;
         this.participants = new Participants(new HashSet<>());
     }
@@ -56,11 +56,11 @@ public abstract class Session extends BaseEntity {
      * @param createdAt
      */
     protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
-        this(null, coverImage, startDate, endDate, progressState, createdAt, null);
+        this(null, coverImage, startDate, endDate, progressState, recruitState, createdAt, null);
     }
 
     protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, coverImage, startDate, endDate, progressState, createdAt, updatedAt);
+        this(null, coverImage, startDate, endDate, progressState, recruitState, createdAt, updatedAt);
     }
 
 
@@ -74,8 +74,8 @@ public abstract class Session extends BaseEntity {
         this.participants = new Participants(new HashSet<>());
     }
 
-    private static Boolean isRecruit(SessionProgressState state) {
-        return state.isNotRecruiting();
+    private static Boolean isRecruiting(SessionProgressState state) {
+        return state.isRecruiting();
     }
 
 
@@ -86,7 +86,7 @@ public abstract class Session extends BaseEntity {
     public abstract void apply(Payment payment);
 
     protected void validateState() {
-        if (recruitState) {
+        if (!recruitState) {
             throw new SessionStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다");
         }
     }
