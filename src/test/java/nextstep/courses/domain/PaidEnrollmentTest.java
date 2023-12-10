@@ -23,7 +23,7 @@ class PaidEnrollmentTest {
         Price price = new Price(1000L);
         PaidEnrollment paidEnrollment = new PaidEnrollment(attendees, price);
 
-        assertThatThrownBy(() -> paidEnrollment.enroll(1L, 2L, 1L))
+        assertThatThrownBy(() -> paidEnrollment.enroll(1000L, 2L, 1L))
                 .isInstanceOf(ExceedAttendeesException.class);
     }
 
@@ -34,7 +34,7 @@ class PaidEnrollmentTest {
         Price price = new Price(1000L);
         PaidEnrollment paidEnrollment = new PaidEnrollment(attendees, price);
 
-        assertThatThrownBy(() -> paidEnrollment.enroll(1L, 1L, 1L))
+        assertThatThrownBy(() -> paidEnrollment.enroll(1000L, 1L, 1L))
                 .isInstanceOf(AlreadyTakingSessionException.class);
     }
 

@@ -16,7 +16,7 @@ public class FreeEnrollment implements Enrollment {
     @Override
     public Attendee enroll(Long amount, Long userId, Long sessionId) {
         Attendee attendee = new Attendee(userId, sessionId);
-        freeAttendees.checkAlreadyAttend(attendee);
+        freeAttendees.add(attendee);
         return attendee;
     }
 

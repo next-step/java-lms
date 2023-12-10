@@ -19,7 +19,7 @@ class FreeAttendeesTest {
         Attendee attendee = new Attendee(JAVAJIGI.getId(), 1L);
         FreeAttendees freeAttendees = new FreeAttendees(List.of(attendee));
 
-        assertThatThrownBy(() -> freeAttendees.checkAlreadyAttend(attendee))
+        assertThatThrownBy(() -> freeAttendees.add(attendee))
                 .isInstanceOf(AlreadyTakingSessionException.class);
     }
 

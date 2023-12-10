@@ -30,9 +30,23 @@ public class PaidAttendees {
         }
     }
 
-    public void checkParticipateIn(Attendee attendee) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaidAttendees attendees = (PaidAttendees) o;
+        return maxCapacity == attendees.maxCapacity && Objects.equals(values, attendees.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(values, maxCapacity);
+    }
+
+    public void add(Attendee attendee) {
         checkAlreadyAttend(attendee);
         validateMaxCapacity();
+        this.values.add(attendee);
     }
 
     private void checkAlreadyAttend(Attendee attendee) {
@@ -45,18 +59,5 @@ public class PaidAttendees {
         if (this.values.size() + 1 > maxCapacity) {
             throw new ExceedAttendeesException(this.values.size());
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PaidAttendees attendees = (PaidAttendees) o;
-        return maxCapacity == attendees.maxCapacity && Objects.equals(values, attendees.values);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(values, maxCapacity);
     }
 }

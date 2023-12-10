@@ -23,7 +23,7 @@ class PaidAttendeesTest {
         PaidAttendees attendees = new PaidAttendees(list, 2);
         Attendee newAttendee = new Attendee(1L, 1L);
 
-        assertThatThrownBy(() -> attendees.checkParticipateIn(newAttendee))
+        assertThatThrownBy(() -> attendees.add(newAttendee))
                 .isInstanceOf(AlreadyTakingSessionException.class);
     }
 
@@ -36,7 +36,7 @@ class PaidAttendeesTest {
         PaidAttendees attendees = new PaidAttendees(list, 1);
         Attendee newAttendee = new Attendee(1L, 2L);
 
-        assertThatThrownBy(() -> attendees.checkParticipateIn(newAttendee))
+        assertThatThrownBy(() -> attendees.add(newAttendee))
                 .isInstanceOf(ExceedAttendeesException.class);
     }
 }

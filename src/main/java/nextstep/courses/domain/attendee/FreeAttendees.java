@@ -18,7 +18,12 @@ public class FreeAttendees {
         this.values = values;
     }
 
-    public void checkAlreadyAttend(Attendee attendee) {
+    public void add(Attendee attendee) {
+        checkAlreadyAttend(attendee);
+        this.values.add(attendee);
+    }
+
+    private void checkAlreadyAttend(Attendee attendee) {
         if (this.values.contains(attendee)) {
             throw new AlreadyTakingSessionException();
         }
