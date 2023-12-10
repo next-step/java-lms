@@ -16,7 +16,7 @@ public class Price {
 
     private void validateAmount(Long amount) {
         if (amount <= 0) {
-            throw new NegativeOrZeroNumberException();
+            throw new NegativeOrZeroNumberException(amount);
         }
     }
 

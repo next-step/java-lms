@@ -26,7 +26,7 @@ public class PaidAttendees {
 
     private void validateCapacity(int maxCapacity) {
         if (maxCapacity <= 0) {
-            throw new NegativeOrZeroNumberException();
+            throw new NegativeOrZeroNumberException(maxCapacity);
         }
     }
 
