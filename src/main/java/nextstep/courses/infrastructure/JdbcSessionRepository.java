@@ -30,7 +30,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 " from session" +
                 " where id = ?";
         RowMapper<EnrollmentSession> rowMapper = (rs, rowNum) -> {
-            List<Attendee> attendees = attendeeRepository.findAllBySeesionId(sessionId);
+            List<Attendee> attendees = attendeeRepository.findAllBySessionId(sessionId);
             return new EnrollmentSession(
                     rs.getLong(1),
                     new SessionInformation(SessionStatus.valueOf(rs.getString(3)),

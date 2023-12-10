@@ -9,5 +9,5 @@ public interface AttendeeRepository {
 
     void save(Attendee attendee);
 
-    List<Attendee> findAllBySeesionId(Long sessionId);
+    List<Attendee> findAllBySessionId(Long sessionId);
 }

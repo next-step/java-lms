@@ -38,7 +38,7 @@ public class JdbcAttendeeRepository implements AttendeeRepository {
     }
 
     @Override
-    public List<Attendee> findAllBySeesionId(Long sessionId) {
+    public List<Attendee> findAllBySessionId(Long sessionId) {
         String sql = "select user_id, session_id" +
                 " from enrollment" +
                 " where session_id = ?";
