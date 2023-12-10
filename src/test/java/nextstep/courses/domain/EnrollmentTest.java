@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EnrollmentTest {
     @Test
@@ -25,6 +26,16 @@ public class EnrollmentTest {
         List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
         assertThatIllegalArgumentException().isThrownBy(() -> {
             new Enrollment(SessionStatus.ENROLLING, 1, students);
+        });
+    }
+
+    @Test
+    @DisplayName("이미 수강신청을한 인원은 수강신청을 할 수 없다")
+    void student_exception() {
+        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI);
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 2, students);
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            enrollment.enroll(NsUserTest.JAVAJIGI);
         });
     }
 }
