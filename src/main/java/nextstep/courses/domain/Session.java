@@ -16,53 +16,7 @@ public abstract class Session extends BaseEntity {
     protected SessionProgressState progressState;
     protected Boolean recruitState;
     protected Participants participants;
-
-
-    /**
-     * AS_IS : 모집상태가 반영되지 않은 생성자
-     *
-     * @param coverImage
-     * @param startDate
-     * @param endDate
-     * @param progressState
-     * @param createdAt
-     */
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt) {
-        this(null, coverImage, startDate, endDate, progressState, createdAt, null);
-    }
-
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, coverImage, startDate, endDate, progressState, createdAt, updatedAt);
-    }
-
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(createdAt, updatedAt);
-        this.id = id;
-        this.coverImage = coverImage;
-        this.progressPeriod = new ProgressPeriod(startDate, endDate);
-        this.recruitState = isRecruiting(progressState);
-        this.progressState = progressState;
-        this.participants = new Participants(new HashSet<>());
-    }
-
-    /**
-     * 모집상태가 반영된 생성자
-     *
-     * @param coverImage
-     * @param startDate
-     * @param endDate
-     * @param progressState
-     * @param recruitState
-     * @param createdAt
-     */
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
-        this(null, coverImage, startDate, endDate, progressState, recruitState, createdAt, null);
-    }
-
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, coverImage, startDate, endDate, progressState, recruitState, createdAt, updatedAt);
-    }
-
+    
 
     protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
@@ -72,10 +26,6 @@ public abstract class Session extends BaseEntity {
         this.recruitState = recruitState;
         this.progressState = state;
         this.participants = new Participants(new HashSet<>());
-    }
-
-    private static Boolean isRecruiting(SessionProgressState state) {
-        return state.isRecruiting();
     }
 
 

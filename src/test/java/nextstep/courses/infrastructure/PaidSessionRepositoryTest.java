@@ -43,7 +43,8 @@ public class PaidSessionRepositoryTest {
                 coverImageRepository.findById(10L),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionProgressState.RECRUITING,
+                SessionProgressState.PROGRESSING,
+                true,
                 800_000L,
                 1,
                 LocalDateTime.now()

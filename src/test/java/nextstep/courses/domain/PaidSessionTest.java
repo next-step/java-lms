@@ -26,7 +26,8 @@ public class PaidSessionTest {
                 new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionProgressState.RECRUITING,
+                SessionProgressState.PROGRESSING,
+                true,
                 800_000L,
                 1,
                 now
