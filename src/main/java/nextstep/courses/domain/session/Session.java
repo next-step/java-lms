@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import static nextstep.courses.domain.session.FreeOrPaid.FREE;
 import static nextstep.courses.domain.session.FreeOrPaid.PAID;
 
-import java.util.UUID;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.payments.domain.Payment;
 
@@ -11,17 +10,16 @@ public class Session {
 
     private static final int UNLIMITED_ENROLLMENT = 0;
     private static final long FREE_FEE = 0;
-    private final String id;
     private final FreeOrPaid freeOrPaid;
     private final CoverImage coverImage;
     private final Period period;
     private final int limitedEnrollment;
     private final long sessionFee;
+    private long id;
     private SessionStatus sessionStatus;
 
     private Session(FreeOrPaid freeOrPaid, CoverImage coverImage, Period period, int limitedEnrollment,
         long sessionFee, SessionStatus sessionStatus) {
-        this.id = UUID.randomUUID().toString();
         this.freeOrPaid = freeOrPaid;
         this.sessionFee = sessionFee;
         this.coverImage = coverImage;
