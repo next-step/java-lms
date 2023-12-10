@@ -20,11 +20,11 @@ public class Image extends BaseEntity {
 
     private int imageHeight;
 
-    public Image(int imageSize, String type, int imageWidth, int imageHeight, Long creatorId, LocalDateTime date) {
+    public Image(int imageSize, ImageType type, int imageWidth, int imageHeight, Long creatorId, LocalDateTime date) {
         this(0L, imageSize, type, imageWidth, imageHeight, creatorId, date, null);
     }
 
-    public Image(Long id, int imageSize, String type, int imageWidth, int imageHeight,
+    public Image(Long id, int imageSize, ImageType imageType, int imageWidth, int imageHeight,
                  Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         checkImageSizeIsValid(imageSize);
@@ -33,7 +33,7 @@ public class Image extends BaseEntity {
 
         this.id = id;
         this.imageSize = imageSize;
-        this.imageType = ImageType.find(type);
+        this.imageType = imageType;
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
     }
@@ -56,5 +56,36 @@ public class Image extends BaseEntity {
         if ((double) imageWidth / imageHeight != WIDTH_HEIGHT_RATIO) {
             throw new IllegalArgumentException("가로 세로 비율은 3:2여야 합니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getImageSize() {
+        return imageSize;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", imageSize=" + imageSize +
+                ", imageType=" + imageType +
+                ", imageWidth=" + imageWidth +
+                ", imageHeight=" + imageHeight +
+                '}';
     }
 }
