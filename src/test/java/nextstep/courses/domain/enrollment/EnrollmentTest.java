@@ -35,7 +35,7 @@ class EnrollmentTest {
         int limitedEnrollment = 100;
         Session session = Session.createPaidSession(null, newPeriod(), limitedEnrollment, 800_000L);
 
-        assertThatThrownBy(() -> Enrollment.enrollPaidSession(payment, session, null)).isInstanceOf(
+        assertThatThrownBy(() -> Enrollment.enroll(payment, session, null)).isInstanceOf(
             IllegalArgumentException.class).hasMessage("결제한 금액과 수강료가 일치하지 않습니다.");
     }
 }

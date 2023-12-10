@@ -21,7 +21,7 @@ class SessionUsersTest {
         int limitedEnrollment = 0;
         Session session = Session.createPaidSession(null, newPeriod(), limitedEnrollment, 800_000L);
 
-        assertThatThrownBy(() -> Enrollment.enrollPaidSession(payment, session, null)).isInstanceOf(
+        assertThatThrownBy(() -> Enrollment.enroll(payment, session, null)).isInstanceOf(
             IllegalArgumentException.class).hasMessage("강의 최대 수강 인원을 초과했습니다.");
     }
 }

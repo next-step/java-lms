@@ -20,11 +20,7 @@ public class Enrollment {
         this(null, null, session);
     }
 
-    public static Enrollment enrollFreeSession(Session session, NsUser user) {
-        return new Enrollment(null, user, session);
-    }
-
-    public static Enrollment enrollPaidSession(Payment payment, Session session, NsUser user) {
+    public static Enrollment enroll(Payment payment, Session session, NsUser user) {
         return new Enrollment(payment, user, session);
     }
 
