@@ -21,7 +21,7 @@ public class CourseTest {
         Session freeSession = FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
@@ -30,7 +30,7 @@ public class CourseTest {
         Session costMoneySession = CostMoneySession.of(1L,
                 1L,
                 "유료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 10,
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.READY,
@@ -38,7 +38,7 @@ public class CourseTest {
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        Course course = new Course("넥스트스텝 1강", 1L);
+        Course course = Course.of("넥스트스텝 1강", 1L);
         course.addSession(freeSession);
         course.addSession(costMoneySession);
 

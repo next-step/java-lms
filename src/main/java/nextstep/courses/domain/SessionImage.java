@@ -32,7 +32,7 @@ public class SessionImage extends BaseEntity {
         this.size = size;
     }
 
-    public SessionImage(Long id, Long sessionId, String imageUrl, ExtensionType extensionType, Long size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private SessionImage(Long id, Long sessionId, String imageUrl, ExtensionType extensionType, Long size, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
 
         this.id = id;
@@ -40,6 +40,10 @@ public class SessionImage extends BaseEntity {
         this.imageUrl = imageUrl;
         this.extensionType = extensionType;
         this.size = size;
+    }
+
+    public static SessionImage of(Long id, Long sessionId, String imageUrl, ExtensionType extensionType, Long size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new SessionImage(id, sessionId, imageUrl, extensionType, size, createdAt, updatedAt);
     }
 
     public static SessionImage of(Long id, Long sessionId, String imageUrl, String extensionType, Long size, Long width, Long height) {

@@ -38,7 +38,7 @@ public class SessionTest {
         sessionInReady = FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
@@ -47,7 +47,7 @@ public class SessionTest {
         freeSessionInProgress = FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.IN_PROGRESS,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
@@ -56,7 +56,7 @@ public class SessionTest {
         costMoneySessionInRegistering = CostMoneySession.of(1L,
                 1L,
                 "유료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 1,
                 SessionRecruitStatus.RECRUITING,
                 SessionProgressType.READY,
@@ -77,7 +77,7 @@ public class SessionTest {
         assertThatThrownBy(() -> FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.READY,
                 null,
@@ -88,7 +88,7 @@ public class SessionTest {
         assertThatThrownBy(() -> CostMoneySession.of(1L,
                 1L,
                 "유료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L, "url", "GIF", 1000L, 300L, 200L))),
                 10,
                 SessionRecruitStatus.NOT_RECRUITING,
                 SessionProgressType.READY,
@@ -166,7 +166,7 @@ public class SessionTest {
     void multipleSessionImagesTest() {
         SessionImage sessionImageOne = SessionImage.of(1L, 1L,"url1", "gif", 1024L, 300L, 200L);
         SessionImage sessionImageTwo = SessionImage.of(2L, 1L,"url2", "jpg", 1024L, 300L, 200L);
-        SessionImages sessionImages = new SessionImages(List.of(sessionImageOne, sessionImageTwo));
+        SessionImages sessionImages = SessionImages.of(List.of(sessionImageOne, sessionImageTwo));
 
         Session sessionWithMultipleImages = FreeSession.of(1L,
                 1L,

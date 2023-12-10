@@ -9,8 +9,12 @@ public class SessionStudents {
 
     private final Set<SessionStudent> students;
 
-    public SessionStudents(Set<SessionStudent> sessionStudents) {
+    private SessionStudents(Set<SessionStudent> sessionStudents) {
         this.students = sessionStudents;
+    }
+
+    public static SessionStudents of(Set<SessionStudent> students) {
+        return new SessionStudents(students);
     }
 
     public void add(SessionStudent sessionStudent) {

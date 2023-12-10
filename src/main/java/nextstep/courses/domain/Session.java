@@ -36,7 +36,7 @@ public abstract class Session extends BaseEntity {
         this.title = title;
         this.sessionImages = sessionImages;
         this.sessionType = sessionType;
-        this.sessionStudents = new SessionStudents(new HashSet<>());
+        this.sessionStudents = SessionStudents.of(new HashSet<>());
         this.sessionRecruitStatus = sessionRecruitStatus;
         this.sessionProgressType = sessionProgressType;
         this.price = price;
@@ -51,9 +51,9 @@ public abstract class Session extends BaseEntity {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.sessionImages = new SessionImages(new ArrayList<>());
+        this.sessionImages = SessionImages.of(new ArrayList<>());
         this.sessionType = sessionType;
-        this.sessionStudents = new SessionStudents(new HashSet<>());
+        this.sessionStudents = SessionStudents.of(new HashSet<>());
         this.sessionRecruitStatus = sessionRecruitStatus;
         this.sessionProgressType = sessionProgressType;
         this.price = price;

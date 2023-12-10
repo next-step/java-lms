@@ -9,9 +9,9 @@ import static nextstep.courses.enumeration.SessionStudentStatus.CANCELED;
 
 public class SessionStudent extends BaseEntity {
 
-    private Long id;
-    private Long sessionId;
-    private Long nsUserId;
+    private final Long id;
+    private final Long sessionId;
+    private final Long nsUserId;
     private SessionStudentStatus sessionStudentStatus;
 
     private SessionStudent(Long id, Long sessionId, Long nsUserId, SessionStudentStatus sessionStudentStatus) {

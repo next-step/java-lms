@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class CostMoneySession extends Session {
 
-    public CostMoneySession(Long id, Long courseId, String title, SessionImages sessionImages, SessionType sessionType, Integer maxParticipants, SessionRecruitStatus sessionRecruitStatus, SessionProgressType sessionProgressType, Integer price, LocalDateTime startAt, LocalDateTime endAt) {
+    private CostMoneySession(Long id, Long courseId, String title, SessionImages sessionImages, SessionType sessionType, Integer maxParticipants, SessionRecruitStatus sessionRecruitStatus, SessionProgressType sessionProgressType, Integer price, LocalDateTime startAt, LocalDateTime endAt) {
         super(id, courseId, title, sessionImages, sessionType, sessionRecruitStatus, sessionProgressType, price, maxParticipants, startAt, endAt);
         validate(price, maxParticipants);
     }

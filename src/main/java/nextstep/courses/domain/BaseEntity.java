@@ -8,11 +8,11 @@ public class BaseEntity {
 
     private LocalDateTime updatedAt;
 
-    public BaseEntity() {
+    protected BaseEntity() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public BaseEntity(LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected BaseEntity(LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
