@@ -10,6 +10,8 @@ public class Course {
 
     private Long creatorId;
 
+    private Sessions sessions = new Sessions();
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -42,6 +44,14 @@ public class Course {
         return createdAt;
     }
 
+    public Sessions getSessions() {
+        return sessions;
+    }
+
+    public void addSession(final Session session) {
+        sessions.add(session);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -52,4 +62,6 @@ public class Course {
             ", updatedAt=" + updatedAt +
             '}';
     }
+
+
 }

@@ -12,10 +12,12 @@ public class Session {
 
     private SessionStatus sessionStatus;
 
+    private int maxParticipants;
+
+    private Image coverImage;
+
     private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
-
-    private Image coverImage;
 
 }
