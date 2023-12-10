@@ -41,7 +41,7 @@ public class SessionServiceTest {
         Session session = sessionService.findById(1000L);
 
         assertThat(session.id()).isEqualTo(1000L);
-        assertThat(session.image().id()).isEqualTo(1000L);
+        assertThat(session.images().size()).isEqualTo(1);
         assertThat(session.students().size()).isEqualTo(2);
     }
 

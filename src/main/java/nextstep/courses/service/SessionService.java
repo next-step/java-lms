@@ -24,16 +24,16 @@ public class SessionService {
 
     public long save(Session session) {
         long sessionId = sessionRepository.save(session);
-        imageRepository.save(session.image(), sessionId);
+        imageRepository.save(session.images(), sessionId);
         return sessionId;
     }
 
     public Session findById(long id) {
         Session session = sessionRepository.findById(id);
-        Image image = imageRepository.findBySessionId(session.id());
+        Images images = imageRepository.findImagesBySessionId(session.id());
         Students students = studentsRepository.findBySessionId(session.id());
 
-        session.changeImage(image);
+        session.changeImages(images);
         session.changeStudents(students);
 
         return session;
