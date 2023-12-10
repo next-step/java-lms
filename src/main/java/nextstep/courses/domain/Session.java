@@ -95,12 +95,16 @@ public abstract class Session extends BaseEntity {
         return progressPeriod;
     }
 
-    public String state() {
+    public String progressState() {
         return progressState.toString();
     }
 
     public CoverImage coverImage() {
         return coverImage;
+    }
+
+    public Boolean recruitState() {
+        return recruitState;
     }
 
     @Override

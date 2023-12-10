@@ -30,5 +30,5 @@ VALUES (10, 'images/test1.jpg', 800000, 'JPG', 600, 400, CURRENT_TIMESTAMP());
 INSERT INTO course (id, title, creator_id, created_at)
 VALUES (10, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id,course_id, image_id, start_date, end_date, state, type, fee, max_apply, created_at)
-VALUES (10,10, 10, '2023-12-10', '2023-12-29', 'RECRUITING', 'RAID', 800000, 10, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, image_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at)
+VALUES (10, 10, 10, '2023-12-10', '2023-12-29', 'RECRUITING', true, 'RAID', 800000, 10, CURRENT_TIMESTAMP());

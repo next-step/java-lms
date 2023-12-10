@@ -44,6 +44,7 @@ public class FreeSessionRepositoryTest {
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionProgressState.PREPARING,
+                true,
                 LocalDateTime.now()
         );
         int count = freeSessionRepository.save(courseRepository.findById(10L), freeSession);

@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Repository("sessionRepository")
+@Repository("paidSessionRepository")
 public class JdbcPaidSessionRepository implements PaidSessionRepository {
 
     private final JdbcOperations jdbcTemplate;
@@ -30,23 +30,24 @@ public class JdbcPaidSessionRepository implements PaidSessionRepository {
     public int save(Course course, PaidSession session) {
         LocalDate startDate = session.getProgressPeriod().getStartDate();
         LocalDate endDate = session.getProgressPeriod().getEndDate();
-        String sql = "insert into session (course_id, image_id, start_date, end_date, state, type, fee, max_apply, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, course.id(), session.coverImage().id(), startDate, endDate, session.state(), "PAID", session.sessionFee(), session.maxApplyCount(), session.createdAt());
+        String sql = "insert into session (course_id, image_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.id(), session.coverImage().id(), startDate, endDate, session.progressState(), session.recruitState(), "PAID", session.sessionFee(), session.maxApplyCount(), session.createdAt());
     }
 
     @Override
     public PaidSession findById(Long id) {
-        String sql = "select id, course_id, image_id, start_date, end_date, state, type, fee, max_apply, created_at, updated_at from session where id = ?";
+        String sql = "select id, course_id, image_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at, updated_at from session where id = ?";
         RowMapper<PaidSession> rowMapper = (rs, rowNum) -> new PaidSession(
                 rs.getLong(1),
                 findCoverImage(rs.getLong(3)),
                 toLocalDate(rs.getDate(4)),
                 toLocalDate(rs.getDate(5)),
                 SessionProgressState.valueOf(rs.getString(6)),
-                rs.getLong(8),
-                rs.getInt(9),
-                toLocalDateTime(rs.getTimestamp(10)),
-                toLocalDateTime(rs.getTimestamp(11))
+                rs.getBoolean(7),
+                rs.getLong(9),
+                rs.getInt(10),
+                toLocalDateTime(rs.getTimestamp(11)),
+                toLocalDateTime(rs.getTimestamp(12))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
