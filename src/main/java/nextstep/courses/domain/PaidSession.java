@@ -11,23 +11,63 @@ import java.util.Objects;
 
 public class PaidSession extends Session {
 
-    private Amount sessionFee;
-    private int maxApplyCount;
+    private final Amount sessionFee;
+    private final int maxApplyCount;
 
-    public PaidSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    /**
+     * AS_IS : 모집상태 미반영 생성자
+     *
+     * @param image
+     * @param start
+     * @param end
+     * @param state
+     * @param fee
+     * @param max
+     * @param createdAt
+     * @param updatedAt
+     */
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(null, image, start, end, state, fee, max, createdAt, updatedAt);
+    }
+
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt) {
+        this(null, image, start, end, state, fee, max, createdAt, null);
+    }
+
+    public PaidSession(Long id, CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(id, image, start, end, state, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }
 
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(image, start, end, state, createdAt, updatedAt);
+    /**
+     * TO_BE : 모집상태 반영 생성자
+     *
+     * @param image
+     * @param start
+     * @param end
+     * @param progressState
+     * @param recruitState
+     * @param fee
+     * @param max
+     * @param createdAt
+     * @param updatedAt
+     */
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(image, start, end, progressState, recruitState, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }
 
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState state, long fee, int max, LocalDateTime createdAt) {
-        super(image, start, end, state, createdAt);
+    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt) {
+        super(image, start, end, progressState, recruitState, createdAt);
+        this.sessionFee = new Amount(fee);
+        this.maxApplyCount = max;
+    }
+
+    public PaidSession(Long id, CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, image, start, end, progressState, recruitState, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }

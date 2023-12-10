@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.Image.CoverImage;
 import nextstep.courses.exception.PaidSessionException;
 import nextstep.courses.exception.ParticipantsException;
+import nextstep.courses.exception.SessionStateException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,27 @@ public class PaidSessionTest {
                 1,
                 now
         );
+    }
+
+    @Test
+    @DisplayName("강의 수강신청은 강의 모집상태가 모집중일 때만 가능하다.")
+    void 수강신청_강의모집상태_모집중_에러() {
+        LocalDateTime now = LocalDateTime.now();
+        PaidSession paidSession = new PaidSession(
+                new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
+                LocalDate.of(2023, 12, 1),
+                LocalDate.of(2023, 12, 29),
+                SessionProgressState.PREPARING,
+                false,
+                800_000L,
+                1,
+                LocalDateTime.now()
+        );
+
+        assertThatThrownBy(() -> paidSession.apply(Payment.ofPaid(2L, 1L, NsUserTest.SANJIGI, 800_000L)))
+                .isInstanceOf(SessionStateException.class);
+
+
     }
 
     @Test
