@@ -35,4 +35,16 @@ public class SessionType {
     private boolean isFreeSession() {
         return PayType.FREE.equals(type);
     }
+
+    public PayType type() {
+        return type;
+    }
+
+    public Long price() {
+        return price;
+    }
+
+    public Integer capacity() {
+        return capacity;
+    }
 }

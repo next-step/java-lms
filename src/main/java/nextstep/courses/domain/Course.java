@@ -26,6 +26,7 @@ public class Course {
 
     public List<Session> register(Session session){
         this.seesionList.add(session);
+        session.addCourse(this);
         return this.seesionList;
     }
 
@@ -38,6 +39,10 @@ public class Course {
         this.title = title;
         this.generation = generation;
         this.baseEntity = new BaseEntity(creatorId, createdAt, updatedAt);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

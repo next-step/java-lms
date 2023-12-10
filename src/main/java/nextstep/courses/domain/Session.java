@@ -4,16 +4,19 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 public class Session {
 
+    private long id;
     private Period period;
     private SessionStatus status;
     private Students students;
     private SessionType sessionType;
     private SessionImage sessionImage;
+    private Course course;
 
     public Session() {
     }
@@ -42,6 +45,12 @@ public class Session {
             throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
         }
         this.sessionImage = sessionImage;
+    }
+
+    public Session(Period period, SessionStatus sessionStatus, SessionType sessionType) {
+        this.period = period;
+        this.status = sessionStatus;
+        this.sessionType = sessionType;
     }
 
     public Students register(NsUser user) throws CannotRegisterException {
@@ -77,5 +86,41 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(period, status, sessionType);
+    }
+
+    public LocalDate startedAt() {
+        return this.period.startDate();
+    }
+
+    public LocalDate endAt() {
+        return this.period.endDate();
+    }
+
+    public String status() {
+        return this.status.name();
+    }
+
+    public String payType() {
+        return this.sessionType.type().name();
+    }
+
+    public Long price() {
+        return this.sessionType.price();
+    }
+
+    public int capacity() {
+        return this.sessionType.capacity();
+    }
+
+    public Long courseId() {
+        return this.course.getId();
+    }
+
+    public Long imageId() {
+        return this.sessionImage.getId();
+    }
+
+    public void addCourse(Course course) {
+        this.course = course;
     }
 }
