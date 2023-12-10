@@ -3,6 +3,7 @@ package nextstep.payments.domain;
 import java.time.LocalDateTime;
 
 public class Payment {
+
     private String id;
 
     // 결제한 강의 아이디
@@ -25,5 +26,9 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isValid(long sessionPrice) {
+        return this.amount == sessionPrice;
     }
 }
