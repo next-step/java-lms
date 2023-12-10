@@ -32,7 +32,7 @@ public class SessionTest {
     void 강의는_유료강의와_무료강의로_나뉜다() {
         // given
         FreeSession freeSession = new FreeSession(new Image(), new Period());
-        PaySession paySession = new PaySession(new Image(), new Period(), 1, 1000);
+        PaySession paySession = new PaySession(new Image(), new Period(), 1, 1000L);
 
         // when, then
         assertThat(paySession.getType()).isEqualTo(SessionType.PAY);
@@ -43,11 +43,11 @@ public class SessionTest {
     void 유료강의는_최대_수강_인원_제한이_있다() {
         // given
         int maxCountOfStudents = 1;
-        PaySession paySession = new PaySession(new Image(), new Period(), maxCountOfStudents, 1000);
+        PaySession paySession = new PaySession(new Image(), new Period(), maxCountOfStudents, 1000L);
 
         // when, then
-        paySession.enroll(NsUserTest.JAVAJIGI, 1000);
-        assertThatThrownBy(() -> paySession.enroll(NsUserTest.SANJIGI, 1000)).isInstanceOf(
+        paySession.enroll(NsUserTest.JAVAJIGI, 1000L);
+        assertThatThrownBy(() -> paySession.enroll(NsUserTest.SANJIGI, 1000L)).isInstanceOf(
             IllegalArgumentException.class)
             .hasMessageContaining("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.");
     }

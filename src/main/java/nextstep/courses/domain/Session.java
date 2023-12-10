@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public abstract class Session {
@@ -45,6 +46,9 @@ public abstract class Session {
         this.status = SessionStatus.RECRUITING;
     }
 
+    public Long getId() {
+        return this.id;
+    }
     public Image getImage() {
         return this.coverImage;
     }
