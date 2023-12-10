@@ -18,8 +18,7 @@ class SessionEnrollmentTest {
     @Test
     void notOpenFreeSessionException() {
         SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(4, sessionStudents);
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(true, sessionStudent, new SessionPrice(0L), SessionStatus.PREPARING);
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(true, 2, new SessionPrice(0L), SessionStatus.PREPARING, sessionStudents);
 
         assertThatThrownBy(() -> sessionEnrollment.enrollFreeSession(new NsUser()))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -30,12 +29,21 @@ class SessionEnrollmentTest {
     @Test
     void notOpenPaySessionException() {
         SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
-        SessionStudent sessionStudent = new SessionStudent(4, sessionStudents);
-        SessionEnrollment sessionEnrollment = new SessionEnrollment(false, sessionStudent, new SessionPrice(50000L), SessionStatus.PREPARING);
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(false, 4, new SessionPrice(50000L), SessionStatus.PREPARING, sessionStudents);
 
         assertThatThrownBy(() -> sessionEnrollment.enrollPaySession(new NsUser(), 50000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 강의는 모집중이 아닙니다");
     }
 
+    @DisplayName("유로 강의의 수강 제한 인원을 넘어서면 예외를 던진다")
+    @Test
+    void aboveMaxSessionSize() {
+        SessionStudents sessionStudents = new SessionStudents(new ArrayList<>(List.of(SANJIGI, JAVAJIGI)));
+        SessionEnrollment sessionEnrollment = new SessionEnrollment(false, 2, new SessionPrice(50000L), SessionStatus.OPEN, sessionStudents);
+
+        assertThatThrownBy(() -> sessionEnrollment.enrollPaySession(new NsUser(), 50000L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("수강 인원이 다 찼습니다");
+    }
 }

@@ -6,29 +6,38 @@ public class SessionEnrollment {
 
     private boolean isFree;
 
-    private SessionStudent sessionStudent;
+    private final int maxStudentCount;
 
     private SessionPrice sessionPrice;
 
     private SessionStatus sessionStatus;
 
-    public SessionEnrollment(boolean isFree, SessionStudent sessionStudent, SessionPrice sessionPrice, SessionStatus sessionStatus) {
+    private SessionStudents sessionStudents;
+
+    public SessionEnrollment(boolean isFree, int maxStudnetCount, SessionPrice sessionPrice, SessionStatus sessionStatus, SessionStudents sessionStudents) {
         this.isFree = isFree;
-        this.sessionStudent = sessionStudent;
+        this.maxStudentCount = maxStudnetCount;
         this.sessionPrice = sessionPrice;
         this.sessionStatus = sessionStatus;
+        this.sessionStudents = sessionStudents;
     }
 
-    public void enrollFreeSession(NsUser studnet) {
+    public void enrollFreeSession(NsUser student) {
         validateStatus();
-        sessionStudent.add(studnet);
+        sessionStudents.add(student);
     }
 
     public void enrollPaySession(NsUser student, Long userPay) {
         validateStatus();
-        sessionStudent.isUnderMaxStudentCount();
+        validateSize();
         sessionPrice.validatePrice(userPay);
-        sessionStudent.add(student);
+        sessionStudents.add(student);
+    }
+
+    private void validateSize() {
+        if (sessionStudents.enrolledStudentsCount() >= maxStudentCount) {
+            throw new IllegalArgumentException("수강 인원이 다 찼습니다");
+        }
     }
 
     private void validateStatus() {
