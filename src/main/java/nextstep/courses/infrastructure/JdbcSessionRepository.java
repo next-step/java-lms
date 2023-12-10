@@ -22,16 +22,17 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public long save(Session session) {
-        String sql = "insert into session (type, state, start_date, end_date, amount, enrollment_max) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (type, state, recruit_state, start_date, end_date, amount, enrollment_max) values(?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(conn -> {
             PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setObject(1, session.type());
-            preparedStatement.setObject(2, session.state());
-            preparedStatement.setObject(3, session.startDate());
-            preparedStatement.setObject(4, session.endDate());
-            preparedStatement.setObject(5, session.amount());
-            preparedStatement.setObject(6, session.enrollmentMax());
+            preparedStatement.setObject(2, session.stateStateValue());
+            preparedStatement.setObject(3, session.recruitStateValue());
+            preparedStatement.setObject(4, session.startDate());
+            preparedStatement.setObject(5, session.endDate());
+            preparedStatement.setObject(6, session.amount());
+            preparedStatement.setObject(7, session.enrollmentMax());
 
             return preparedStatement;
         }, generatedKeyHolder);
@@ -41,15 +42,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, type, state, start_date, end_date, amount, enrollment_max from session where id = ?";
+        String sql = "select id, type, state, recruit_state, start_date, end_date, amount, enrollment_max from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getString(3),
-                rs.getDate(4).toLocalDate(),
+                rs.getString(4),
                 rs.getDate(5).toLocalDate(),
-                rs.getLong(6),
-                rs.getLong(7));
+                rs.getDate(6).toLocalDate(),
+                rs.getLong(7),
+                rs.getLong(8));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 }

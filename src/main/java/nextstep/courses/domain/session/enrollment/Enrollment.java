@@ -2,7 +2,6 @@ package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.exception.session.InvalidSessionStateException;
-import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -28,7 +27,11 @@ public interface Enrollment {
     }
 
     default void noRecruiting(Session session) {
-        if (!SessionState.recruiting(session.sessionState())) {
+        if (!session.sessionState().ongoing()) {
+            throw new InvalidSessionStateException("현재 강의 모집중이 아닙니다.");
+        }
+
+        if (!session.recruitState().recruiting()) {
             throw new InvalidSessionStateException("현재 강의 모집중이 아닙니다.");
         }
     }

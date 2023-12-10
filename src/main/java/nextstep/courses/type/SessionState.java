@@ -2,10 +2,10 @@ package nextstep.courses.type;
 
 public enum SessionState {
     PREPARING,
-    RECRUITING,
+    ONGOING,
     END;
 
-    public static boolean recruiting(SessionState sessionState) {
-        return sessionState == SessionState.RECRUITING;
+    public boolean ongoing() {
+        return this == ONGOING;
     }
 }

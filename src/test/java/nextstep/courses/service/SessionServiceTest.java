@@ -68,7 +68,9 @@ public class SessionServiceTest {
 
     private Session 유료_강의_생성_및_모집중() {
         Session session = 유료_강의_생성();
-        return session.recruiting();
+        session.ongoing();
+        session.recruiting();
+        return session;
     }
 
     @Test
@@ -89,6 +91,9 @@ public class SessionServiceTest {
     private Session 무료_강의_생성_및_모집중() {
         Session session = Session.ofFree(Period.from(), Image.from());
         long savedId = sessionService.save(session);
-        return sessionService.findById(savedId).recruiting();
+        Session findSession = sessionService.findById(savedId);
+        findSession.ongoing();
+        findSession.recruiting();
+        return findSession;
     }
 }

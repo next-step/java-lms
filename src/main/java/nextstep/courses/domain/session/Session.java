@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
@@ -13,7 +14,9 @@ public class Session {
     private final Long id;
 
     private final SessionType sessionType;
-    private final SessionState sessionState;
+    private SessionState sessionState;
+
+    private RecruitState recruitState;
 
     private final Period period;
 
@@ -27,10 +30,11 @@ public class Session {
     private final Enrollment enrollment;
 
 
-    public Session(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
+    public Session(Long id, SessionType sessionType, SessionState sessionState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
         this.id = id;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
+        this.recruitState = recruitState;
         this.period = period;
         this.amount = amount;
         this.enrollmentMax = enrollmentMax;
@@ -40,19 +44,19 @@ public class Session {
     }
 
     public static Session ofFree(Period period, Image image) {
-        return of(null, SessionType.FREE, SessionState.PREPARING, period, null, null, image, Students.of(new ArrayList<>()));
+        return of(null, SessionType.FREE, SessionState.PREPARING, RecruitState.CLOSED, period, null, null, image, Students.of(new ArrayList<>()));
     }
 
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax) {
-        return of(null, SessionType.PAID, SessionState.PREPARING, period, amount, enrollmentMax, image, Students.of(new ArrayList<>()));
+        return of(null, SessionType.PAID, SessionState.PREPARING, RecruitState.CLOSED, period, amount, enrollmentMax, image, Students.of(new ArrayList<>()));
     }
 
-    public static Session of(Long id, String sessionType, String sessionState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
-        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
+    public static Session of(Long id, String sessionType, String sessionState, String recruitState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
+        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), RecruitState.valueOf(recruitState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
     }
 
-    public static Session of(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
-        return new Session(id, sessionType, sessionState, period, amount, enrollmentMax, image, students);
+    public static Session of(Long id, SessionType sessionType, SessionState sessionState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
+        return new Session(id, sessionType, sessionState, recruitState, period, amount, enrollmentMax, image, students);
     }
 
 
@@ -64,16 +68,24 @@ public class Session {
         return students.size() < enrollmentMax;
     }
 
-    public Session preparing() {
-        return of(id, sessionType, SessionState.PREPARING, period, amount, enrollmentMax, image, students);
+    public void preparing() {
+        sessionState = SessionState.PREPARING;
     }
 
-    public Session recruiting() {
-        return of(id, sessionType, SessionState.RECRUITING, period, amount, enrollmentMax, image, students);
+    public void ongoing() {
+        sessionState = SessionState.ONGOING;
     }
 
-    public Session end() {
-        return of(id, sessionType, SessionState.END, period, amount, enrollmentMax, image, students);
+    public void end() {
+        sessionState = SessionState.END;
+    }
+
+    public void recruiting() {
+        recruitState = RecruitState.RECRUITING;
+    }
+
+    public void closed() {
+        recruitState = RecruitState.CLOSED;
     }
 
     public Long id() {
@@ -88,8 +100,20 @@ public class Session {
         return sessionState;
     }
 
-    public String state() {
+    public String stateStateValue() {
         return sessionState.name();
+    }
+
+    public RecruitState recruitState() {
+        return recruitState;
+    }
+
+    public boolean isRecruiting() {
+        return recruitState.recruiting();
+    }
+
+    public String recruitStateValue() {
+        return recruitState.name();
     }
 
     public LocalDate startDate() {
