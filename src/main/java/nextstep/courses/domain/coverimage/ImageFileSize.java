@@ -10,4 +10,8 @@ public class ImageFileSize {
     }
     this.size = size;
   }
+
+  public long getSize() {
+    return size;
+  }
 }

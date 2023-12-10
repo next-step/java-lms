@@ -3,12 +3,12 @@ package nextstep.courses.domain.coverimage;
 import java.util.Arrays;
 
 public enum CoverImageType {
-  GIF("gif")
-  , JPG("jpg")
-  , JPEG("jpeg")
-  , PNG("png")
-  , SVG("svg")
-  , NO_MATCH("nothing")
+  GIF("GIF")
+  , JPG("JPG")
+  , JPEG("JPEG")
+  , PNG("PNG")
+  , SVG("SVG")
+  , NO_MATCH("NO_MATCH")
   ;
 
   private final String name;
@@ -20,8 +20,12 @@ public enum CoverImageType {
 
   public static CoverImageType valuesOf(String name) {
     return Arrays.stream(values)
-          .filter(it -> it.name.equals(name))
+          .filter(it -> it.name.equals(name.toUpperCase()))
           .findFirst()
           .orElseThrow(() -> new IllegalArgumentException("확장자를 확인해주세요."));
-    }
+  }
+
+  public String getName() {
+    return name;
+  }
 }
