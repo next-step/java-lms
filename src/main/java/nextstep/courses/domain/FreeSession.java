@@ -2,15 +2,8 @@ package nextstep.courses.domain;
 
 public class FreeSession extends Session {
 
-    private int studentCount;
-
-    public FreeSession(String title, Course course) {
-        super(title, course);
-        this.studentCount = 0;
+    public FreeSession(Long sessionId, String title, Course course, SessionStatus sessionStatus) {
+        super(sessionId, title, course, sessionStatus);
     }
 
-    @Override
-    public void signUp() {
-        this.studentCount += 1;
-    }
 }

@@ -38,7 +38,7 @@ public class Course {
 
     public void addSession(Session session) {
         session.toCourse(this);
-        this.sessions = sessions.addSession(session);
+        sessions.addSession(session);
     }
 
     public String getTitle() {

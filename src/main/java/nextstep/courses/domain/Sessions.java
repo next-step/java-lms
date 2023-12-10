@@ -5,20 +5,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class Sessions {
-    private List<Session> sessions;
+    private final List<Session> sessions;
 
     public static Sessions initialize() {
         return new Sessions(Collections.emptyList());
     }
 
-    public Sessions addSession(Session session) {
-        ArrayList<Session> sessions = new ArrayList<>(this.sessions);
+    public void addSession(Session session) {
         sessions.add(session);
-        return new Sessions(sessions);
+        new Sessions(sessions);
     }
 
     private Sessions(List<Session> sessions) {
-        this.sessions = sessions;
+        this.sessions = new ArrayList<>(sessions);
     }
 
     public List<Session> getSessions() {
