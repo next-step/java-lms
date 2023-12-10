@@ -17,8 +17,9 @@ public class SessionService {
         this.studentsRepository = studentsRepository;
     }
 
-    public void enroll(Session session, NsUser student, Payment payment) {
-        session.enroll(student, payment);
+    public void enroll(Session session, NsUser nsUser, Payment payment) {
+        Student student = Student.ofWait(nsUser);
+        session.enroll(nsUser, payment);
         studentsRepository.save(session.id(), student);
     }
 
@@ -26,6 +27,16 @@ public class SessionService {
         long sessionId = sessionRepository.save(session);
         imageRepository.save(session.images(), sessionId);
         return sessionId;
+    }
+
+    public void approval(Session session, NsUser nsUser) {
+        Student student = session.approvalSession(nsUser);
+        studentsRepository.updateState(session.id(), student);
+    }
+
+    public void cancel(Session session, NsUser nsUser) {
+        Student student = session.approvalCancel(nsUser);
+        studentsRepository.updateState(session.id(), student);
     }
 
     public Session findById(long id) {

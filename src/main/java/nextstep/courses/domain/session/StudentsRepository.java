@@ -1,11 +1,11 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
-
 public interface StudentsRepository {
-    int save(long sessionId, NsUser student);
+    int save(long sessionId, Student student);
 
     int saveAll(long sessionId, Students students);
+
+    int updateState(long sessionId, Student student);
 
     Students findBySessionId(Long sessionId);
 }

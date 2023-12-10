@@ -59,9 +59,37 @@ public class Session {
         return new Session(id, sessionType, sessionState, recruitState, period, amount, enrollmentMax, images, students);
     }
 
+    public void enroll(NsUser nsUser, Payment payment) {
+        Student students = Student.of(nsUser, SessionApproval.WAIT);
+        enroll(students, payment);
+    }
 
-    public void enroll(NsUser student, Payment payment) {
+    public void enroll(Student student, Payment payment) {
         enrollment.enroll(this, student, payment);
+    }
+
+    public Student approvalSession(NsUser nsUser) {
+        Student student = students.get(nsUser);
+
+        if (!student.isWait()) {
+            throw new IllegalArgumentException("준비 상태에서만 수강승인이 가능합닌다.");
+        }
+
+        student.approval();
+
+        return student;
+    }
+
+    public Student approvalCancel(NsUser nsUser) {
+        Student student = students.get(nsUser);
+
+        if (!student.isWait()) {
+            throw new IllegalArgumentException("준비 상태에서만 수강 취소가 가능합니다.");
+        }
+
+        student.cancel();
+
+        return student;
     }
 
     public boolean isFullEnrollment() {
@@ -148,7 +176,7 @@ public class Session {
         this.students = students;
     }
 
-    public void addStudent(NsUser student) {
+    public void addStudent(Student student) {
         students.add(student);
     }
 }

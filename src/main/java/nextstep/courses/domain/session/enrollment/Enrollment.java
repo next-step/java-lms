@@ -1,14 +1,14 @@
 package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Student;
 import nextstep.courses.exception.session.InvalidSessionStateException;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 public interface Enrollment {
 
-    void enroll(Session session, NsUser student, Payment payment);
+    void enroll(Session session, Student student, Payment payment);
 
     static Enrollment from(SessionType sessionType) {
         if (sessionType == SessionType.PAID) {

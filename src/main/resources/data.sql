@@ -29,9 +29,9 @@ values (1000, 1000, 1000);
 INSERT INTO course_session (id, course_id, session_id)
 values (2000, 1000, 2000);
 
-INSERT INTO session_student (id, session_id, user_id)
-values (1000, 1000, 'javajigi');
+INSERT INTO session_student (id, session_id, user_id, state)
+values (1000, 1000, 'javajigi', 'WAIT');
 
-INSERT INTO session_student (id, session_id, user_id)
-values (2000, 1000, 'sanjigi');
+INSERT INTO session_student (id, session_id, user_id, state)
+values (2000, 1000, 'sanjigi', 'WAIT');
 

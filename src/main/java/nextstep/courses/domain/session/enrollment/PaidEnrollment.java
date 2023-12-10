@@ -1,9 +1,9 @@
 package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Student;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 public class PaidEnrollment implements Enrollment {
 
@@ -16,7 +16,7 @@ public class PaidEnrollment implements Enrollment {
     }
 
     @Override
-    public void enroll(Session session, NsUser student, Payment payment) {
+    public void enroll(Session session, Student student, Payment payment) {
         validate(session, payment);
         session.addStudent(student);
     }

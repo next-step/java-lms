@@ -1,5 +1,7 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.session.SessionApproval;
+import nextstep.courses.domain.session.Student;
 import nextstep.courses.domain.session.Students;
 import nextstep.courses.domain.session.StudentsRepository;
 import nextstep.users.domain.NsUserTest;
@@ -29,10 +31,13 @@ public class StudentsRepositoryTest {
 
     @Test
     void crud() {
-        int count = studentsRepository.saveAll(1L, Students.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
-        assertThat(count).isEqualTo(2);
+        int saveCount = studentsRepository.saveAll(1L, Students.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
+        assertThat(saveCount).isEqualTo(2);
+        int updateCount = studentsRepository.updateState(1L, Student.of(NsUserTest.JAVAJIGI, SessionApproval.APPROVAL));
+        assertThat(updateCount).isEqualTo(1);
         Students saveStudents = studentsRepository.findBySessionId(1L);
         assertThat(saveStudents.size()).isEqualTo(2);
+
         LOGGER.debug("saveStudents: {}", saveStudents);
     }
 }
