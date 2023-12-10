@@ -31,10 +31,10 @@ public class ApplyRepositoryTest {
 
     @Test
     void crud() {
-        int count = applyRepository.save(1L, NsUserTest.SANJIGI);
+        int count = applyRepository.save(10L, NsUserTest.SANJIGI);
         assertThat(count).isEqualTo(1);
 
-        Participants participants = applyRepository.findBySessionId(1L);
+        Participants participants = applyRepository.findBySessionId(10L);
         assertThat(participants.size()).isEqualTo(1);
         LOGGER.debug("participants : {}", participants);
     }

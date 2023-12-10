@@ -17,6 +17,6 @@ public class ParticipantsTest {
 
         Assertions.assertThatThrownBy(() -> participants.add(NsUserTest.JAVAJIGI))
                 .isInstanceOf(ParticipantsException.class);
-
+        
     }
 }

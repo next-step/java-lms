@@ -18,14 +18,14 @@ public class CourseTest {
                 new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionState.PREPARING,
+                SessionProgressState.PREPARING,
                 now
         );
         PaidSession paidSession = new PaidSession(
                 new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionState.RECRUITING,
+                SessionProgressState.RECRUITING,
                 800_000L,
                 1
                 , now

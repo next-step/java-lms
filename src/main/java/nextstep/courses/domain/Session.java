@@ -13,36 +13,52 @@ public abstract class Session extends BaseEntity {
     protected Long id;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
-    protected SessionState state;
+    protected SessionProgressState state;
+    protected Boolean recruitState;
     protected Participants participants;
 
 
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt) {
         this(null, coverImage, startDate, endDate, state, createdAt, null);
     }
 
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(null, coverImage, startDate, endDate, state, createdAt, updatedAt);
     }
 
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
+        this.recruitState = isRecruit(state);
         this.state = state;
         this.participants = new Participants(new HashSet<>());
     }
 
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.coverImage = coverImage;
+        this.progressPeriod = new ProgressPeriod(startDate, endDate);
+        this.recruitState = recruitState;
+        this.state = state;
+        this.participants = new Participants(new HashSet<>());
+    }
 
-    public long id() {
+    private static Boolean isRecruit(SessionProgressState state) {
+        return state.isNotRecruiting();
+    }
+
+
+    public Long id() {
         return id;
     }
 
     public abstract void apply(Payment payment);
 
     protected void validateState() {
-        if (state.isNotRecruiting()) {
+        if (recruitState) {
             throw new SessionStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다");
         }
     }

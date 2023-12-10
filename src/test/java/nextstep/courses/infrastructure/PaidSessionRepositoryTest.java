@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.PaidSession;
-import nextstep.courses.domain.SessionState;
+import nextstep.courses.domain.SessionProgressState;
 import nextstep.courses.repository.CourseRepository;
 import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.PaidSessionRepository;
@@ -40,19 +40,19 @@ public class PaidSessionRepositoryTest {
     @Test
     void crud() {
         PaidSession paidSession = new PaidSession(
-                coverImageRepository.findById(2L),
+                coverImageRepository.findById(10L),
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
-                SessionState.RECRUITING,
+                SessionProgressState.RECRUITING,
                 800_000L,
                 1,
                 LocalDateTime.now()
         );
-        int count = paidSessionRepository.save(courseRepository.findById(2L), paidSession);
+        int count = paidSessionRepository.save(courseRepository.findById(10L), paidSession);
         assertThat(count).isEqualTo(1);
 
         PaidSession saveSession = paidSessionRepository.findById(1L);
-        assertThat(paidSession.id()).isEqualTo(saveSession.id());
+        assertThat(paidSession.getProgressPeriod()).isEqualTo(saveSession.getProgressPeriod());
         LOGGER.debug("FreeSession : {}", saveSession);
     }
 

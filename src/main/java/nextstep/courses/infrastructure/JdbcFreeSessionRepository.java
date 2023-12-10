@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.Image.CoverImage;
-import nextstep.courses.domain.SessionState;
+import nextstep.courses.domain.SessionProgressState;
 import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.FreeSessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -42,7 +42,7 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
                 findCoverImage(rs.getLong(3)),
                 toLocalDate(rs.getDate(4)),
                 toLocalDate(rs.getDate(5)),
-                SessionState.valueOf(rs.getString(6)),
+                SessionProgressState.valueOf(rs.getString(6)),
                 toLocalDateTime(rs.getTimestamp(7)),
                 toLocalDateTime(rs.getTimestamp(8))
         );

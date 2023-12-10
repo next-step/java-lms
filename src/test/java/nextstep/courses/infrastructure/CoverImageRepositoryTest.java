@@ -31,7 +31,7 @@ public class CoverImageRepositoryTest {
 
     @Test
     void crud() {
-        CoverImage coverImage = new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, LocalDateTime.now());
+        CoverImage coverImage = new CoverImage("images/test.jpeg", 1000_000, "jpeg", 300, 200, LocalDateTime.now());
         int count = coverImageRepository.save(coverImage);
         assertThat(count).isEqualTo(1);
 
