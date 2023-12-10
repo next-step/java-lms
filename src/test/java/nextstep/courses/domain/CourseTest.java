@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
 import org.assertj.core.api.Assertions;

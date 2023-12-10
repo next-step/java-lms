@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.coverimage;
 
 public class CoverImage {
     private final String name;

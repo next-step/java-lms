@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import nextstep.courses.domain.coverimage.CoverImage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

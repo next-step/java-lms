@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.coverimage;
 
 public class ImageSize {
   private static final Long WIDTH_MAX_SIZE = 300L;

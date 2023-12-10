@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
 import nextstep.courses.domain.lectures.PaidLecture;

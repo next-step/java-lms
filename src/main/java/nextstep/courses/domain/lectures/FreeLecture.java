@@ -1,6 +1,6 @@
 package nextstep.courses.domain.lectures;
 
-import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.LectureStatus;
 import nextstep.courses.domain.LectureType;
 import nextstep.courses.domain.RegistrationPeriod;
