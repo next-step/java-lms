@@ -7,4 +7,6 @@ public interface StudentsRepository {
     int save(Student student);
 
     Students findBySession(Long sessionId);
+
+    int updateStatus(Student student);
 }

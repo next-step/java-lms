@@ -30,7 +30,9 @@ public class Session {
     }
 
     public Student enroll(Payment payment) {
-        return new Student(sessionInfo.enroll(this.students, payment), id);
+        sessionInfo.enrollableCheck(this.students, payment);
+        Student enrolledStudent = new Student(payment.getNsUserId(), id);
+        return enrolledStudent;
     }
 
     public List<CoverImage> getCoverImages() {

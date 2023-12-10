@@ -16,12 +16,12 @@ public class SessionInfo {
     }
 
     public SessionInfo(List<CoverImage> coverImages, SessionDetail sessionDetail) {
-        this.coverImages = new ArrayList<>(coverImages) ;
+        this.coverImages = new ArrayList<>(coverImages);
         this.sessionDetail = sessionDetail;
     }
 
-    public Long enroll(Students students, Payment payment) {
-        return sessionDetail.enroll(students, payment);
+    public void enrollableCheck(Students students, Payment payment) {
+        sessionDetail.enrollableCheck(students, payment);
     }
 
     public List<CoverImage> getCoverImages() {

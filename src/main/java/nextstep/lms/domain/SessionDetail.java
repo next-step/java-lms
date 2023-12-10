@@ -20,9 +20,9 @@ public class SessionDetail {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Long enroll(Students students, Payment payment) {
+    public void enrollableCheck(Students students, Payment payment) {
         sessionPeriod.canEnrollCheck(LocalDateTime.now());
-        return sessionEnrollmentManagement.enroll(students, payment);
+        sessionEnrollmentManagement.enrollableCheck(students, payment);
     }
 
     public String getPricingType() {

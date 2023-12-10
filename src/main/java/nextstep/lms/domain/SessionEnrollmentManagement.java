@@ -20,15 +20,13 @@ public class SessionEnrollmentManagement {
         this.capacity = capacity;
     }
 
-    public Long enroll(Students students, Payment payment) {
+    public void enrollableCheck(Students students, Payment payment) {
         sessionRecruitmentCheck();
         pricingPolicy.canEnrollCheck(payment);
 
         if (pricingPolicy.isPaid()) {
             students.capacityCheck(capacity);
         }
-
-        return students.enroll(payment.getNsUserId());
     }
 
     private void sessionRecruitmentCheck() {

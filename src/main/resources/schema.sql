@@ -79,6 +79,7 @@ CREATE TABLE cover_image (
 CREATE TABLE students (
     user_id	bigint	NOT NULL,
     session_id	bigint	NOT NULL,
+    status  varchar(20) NOT NULL,
     created_at	timestamp	NOT NULL,
     updated_at	timestamp	NULL,
     primary key (user_id, session_id)

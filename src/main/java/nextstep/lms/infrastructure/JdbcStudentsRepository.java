@@ -20,19 +20,33 @@ public class JdbcStudentsRepository implements StudentsRepository {
 
     @Override
     public int save(Student student) {
-        String sql = "insert into students (user_id, session_id, created_at) values(?,?,?)";
+        String sql = "insert into students (user_id, session_id, status, created_at) values(?,?,?,?)";
 
         return jdbcTemplate.update(sql,
                 student.getUserId(),
                 student.getSessionId(),
+                student.getStudentStatus(),
                 LocalDateTime.now());
     }
 
     @Override
     public Students findBySession(Long sessionId) {
-        String sql = "select user_id from students where session_id = ?";
-        RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
-        List<Long> userIds = jdbcTemplate.query(sql, rowMapper, sessionId);
-        return new Students(userIds);
+        String sql = "select user_id, session_id, status from students where session_id = ?";
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+                rs.getLong(1),
+                rs.getLong(2),
+                rs.getString(3));
+        List<Student> sessionStudent = jdbcTemplate.query(sql, rowMapper, sessionId);
+        return new Students(sessionStudent);
+    }
+
+    @Override
+    public int updateStatus(Student student) {
+        String sql = "update students set status = ? where user_id = ? and session_id =?";
+
+        return jdbcTemplate.update(sql,
+                student.getStudentStatus(),
+                student.getUserId(),
+                student.getSessionId());
     }
 }
