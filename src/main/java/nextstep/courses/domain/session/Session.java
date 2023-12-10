@@ -13,24 +13,24 @@ public class Session {
     private SessionPeriod sessionPeriod;
     private SessionStatus status;
     private Enrolment enrolment;
-    private Image image;
+    private Images images;
     private Long courseId;
 
     public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Long courseId) {
         this(id, title, sessionPeriod, enrolment, status, null, courseId);
     }
 
-    public Session(String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Image image, Long courseId) {
-        this(null, title, sessionPeriod, enrolment, status, image, courseId);
+    public Session(String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Images images, Long courseId) {
+        this(null, title, sessionPeriod, enrolment, status, images, courseId);
     }
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Image image, Long courseId) {
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Images images, Long courseId) {
         this.id = id;
         this.title = title;
         this.sessionPeriod = sessionPeriod;
         this.enrolment = enrolment;
         this.status = status;
-        this.image = image;
+        this.images = images;
         this.courseId = courseId;
     }
 
@@ -81,11 +81,11 @@ public class Session {
         return enrolment.maxParticipants();
     }
 
-    public Image image() {
-        return image;
+    public Images images() {
+        return images;
     }
 
-    public void mappadByImage(Image image) {
-        this.image = image;
+    public void mappadByImage(Images images) {
+        this.images = images;
     }
 }

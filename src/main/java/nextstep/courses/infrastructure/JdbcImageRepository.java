@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.image.*;
+import nextstep.courses.domain.session.Images;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,7 @@ public class JdbcImageRepository implements ImageRepository {
     }
 
     @Override
-    public Image findBySessionId(Long findSessionId) {
+    public Images findBySessionId(Long findSessionId) {
         String sql = "select id, name, volume, width, height, session_id from image where session_id = ?";
         RowMapper<Image> rowMapper = (rs, rowNum) -> {
             Long imageId = rs.getLong(1);
@@ -47,6 +48,11 @@ public class JdbcImageRepository implements ImageRepository {
             Long sessionId = rs.getLong(6);
             return new Image(imageId, ImageName.of(name), ImageSize.of(volume), ImagePixel.of(width, height), sessionId);
         };
-        return jdbcTemplate.queryForObject(sql, rowMapper, findSessionId);
+        return new Images(jdbcTemplate.query(sql, rowMapper, findSessionId));
+    }
+
+    @Override
+    public void saveAll(Images images) {
+        images.images().forEach(this::save);
     }
 }

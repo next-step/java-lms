@@ -28,8 +28,8 @@ public class SessionService {
     @Transactional
     public void saveSession(Session session) {
         sessionRepository.save(session);
-        if(session.image() != null) {
-            imageRepository.save(session.image());
+        if(session.images() != null) {
+            imageRepository.saveAll(session.images());
         }
     }
 
