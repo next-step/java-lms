@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
