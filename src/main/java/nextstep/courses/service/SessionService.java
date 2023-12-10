@@ -3,6 +3,9 @@ package nextstep.courses.service;
 import nextstep.courses.domain.image.ImageRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionUserEnrolment;
+import nextstep.courses.domain.session.SessionUserEnrolmentRepository;
+import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -19,16 +22,20 @@ public class SessionService {
 
     private UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, ImageRepository imageRepository, UserRepository userRepository) {
+    private SessionUserEnrolmentRepository sessionUserEnrolmentRepository;
+
+    public SessionService(SessionRepository sessionRepository, ImageRepository imageRepository,
+                          UserRepository userRepository, SessionUserEnrolmentRepository sessionUserEnrolmentRepository) {
         this.sessionRepository = sessionRepository;
         this.imageRepository = imageRepository;
         this.userRepository = userRepository;
+        this.sessionUserEnrolmentRepository = sessionUserEnrolmentRepository;
     }
 
     @Transactional
     public void saveSession(Session session) {
         sessionRepository.save(session);
-        if(session.images() != null) {
+        if (session.images() != null) {
             imageRepository.saveAll(session.images());
         }
     }
@@ -44,7 +51,20 @@ public class SessionService {
     public void SessionPayment(Payment payment) {
         Session session = sessionRepository.findById(payment.sessionId());
         NsUser nsUser = userRepository.findById(payment.nsUserId()).orElseThrow(IllegalArgumentException::new);
+        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(nsUser.getId(), session.id(), SessionSubscriptionStatus.WAITING);
         session.addParticipant(payment.amount(), nsUser);
+
         sessionRepository.save(session);
+        sessionUserEnrolmentRepository.save(sessionUserEnrolment);
+    }
+
+    @Transactional
+    public void accept(SessionUserEnrolment sessionUserEnrolment) {
+        sessionUserEnrolmentRepository.update(sessionUserEnrolment);
+    }
+
+    @Transactional
+    public void reject(SessionUserEnrolment sessionUserEnrolment) {
+        sessionUserEnrolmentRepository.update(sessionUserEnrolment);
     }
 }

@@ -91,4 +91,8 @@ public class Session {
     public String recruitmentStatus() {
         return recruitmentStatus.toString();
     }
+
+    public Long id() {
+        return id;
+    }
 }
