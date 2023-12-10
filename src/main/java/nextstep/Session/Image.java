@@ -2,17 +2,23 @@ package nextstep.Session;
 
 public class Image {
 
-    private Long imageId;
-
     private String imageName;
 
-    private String imagePath;
+    private ImageSize imageSize;
 
-    private long imageSize;
+    private ImageType imageType;
 
-    private String imageType;
+    private ImageDimensions imageDimensions;
 
-    private int width;
+    public Image() {
 
-    private int height;
+    }
+
+    public Image(String imageName, long imageSize, String imageType, ImageDimensions imageDimensions) {
+        this.imageName = imageName;
+        this.imageSize = ImageSize.from(imageSize);
+        this.imageType = ImageType.from(imageType);
+        this.imageDimensions = imageDimensions;
+    }
+
 }
