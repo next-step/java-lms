@@ -34,7 +34,6 @@ public class JdbcSessionRepository implements SessionRepository {
             return new EnrollmentSession(
                     rs.getLong(1),
                     new SessionInformation(SessionStatus.valueOf(rs.getString(3)),
-                                           SessionType.valueOf(rs.getString(4)),
                                            new Period(from(rs.getTimestamp(5)), from(rs.getTimestamp(6)))),
                     EnrollmentFactory.create(SessionType.valueOf(rs.getString(4)), attendees, rs.getLong(7), rs.getInt(8)));
         };

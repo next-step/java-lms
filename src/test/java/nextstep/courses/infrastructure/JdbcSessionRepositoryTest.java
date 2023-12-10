@@ -42,7 +42,6 @@ class JdbcSessionRepositoryTest {
         attendeeRepository.save(attendee1);
         attendeeRepository.save(attendee2);
         SessionInformation information = new SessionInformation(RECRUITING,
-                                                                FREE,
                                                                 new Period(LocalDate.parse("2023-12-01"),
                                                                            LocalDate.parse("2023-12-02")));
 
@@ -66,7 +65,6 @@ class JdbcSessionRepositoryTest {
         attendeeRepository.save(attendee1);
         attendeeRepository.save(attendee2);
         SessionInformation information = new SessionInformation(RECRUITING,
-                                                                PAID,
                                                                 new Period(LocalDate.parse("2023-12-01"),
                                                                            LocalDate.parse("2023-12-02")));
 

@@ -8,13 +8,10 @@ public class SessionInformation {
 
     private final SessionStatus status;
 
-    private final SessionType sessionType;
-
     private final Period period;
 
-    public SessionInformation(SessionStatus status, SessionType sessionType, Period period) {
+    public SessionInformation(SessionStatus status, Period period) {
         this.status = status;
-        this.sessionType = sessionType;
         this.period = period;
     }
 
@@ -33,13 +30,11 @@ public class SessionInformation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionInformation that = (SessionInformation) o;
-        return status == that.status
-                && sessionType == that.sessionType
-                && Objects.equals(period, that.period);
+        return status == that.status && Objects.equals(period, that.period);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, sessionType, period);
+        return Objects.hash(status, period);
     }
 }

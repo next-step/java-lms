@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.SessionStatus.*;
-import static nextstep.courses.domain.session.SessionType.*;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -20,7 +19,7 @@ class SessionTest {
     void throw_exception_if_session_is_not_recruiting() {
         Period period = new Period(LocalDate.now(),
                                    LocalDate.now().plusDays(1));
-        SessionInformation information = new SessionInformation(PREPARING, FREE, period);
+        SessionInformation information = new SessionInformation(PREPARING, period);
         Enrollment freeEnrollment = new FreeEnrollment(new FreeAttendees());
         EnrollmentSession session = new EnrollmentSession(1L, information, freeEnrollment);
 
