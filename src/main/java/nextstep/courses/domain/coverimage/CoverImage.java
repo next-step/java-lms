@@ -1,6 +1,7 @@
 package nextstep.courses.domain.coverimage;
 
 import java.time.LocalDateTime;
+import nextstep.courses.Time;
 
 public class CoverImage extends Time {
 
