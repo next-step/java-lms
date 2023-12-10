@@ -10,12 +10,15 @@ public class Session {
 
     private Period sessionPeriod;
 
+    private SessionType type;
+
     public Session() {
     }
 
-    public Session(Image image, Period period) {
+    public Session(Image image, Period period, SessionType type) {
         this.coverImage = image;
         this.sessionPeriod = period;
+        this.type = type;
     }
 
     public void setCoverImage(Image image, Period sessionPeriod) {
@@ -29,5 +32,9 @@ public class Session {
 
     public Period getPeriod() {
         return this.sessionPeriod;
+    }
+
+    public SessionType getType() {
+        return this.type;
     }
 }

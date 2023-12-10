@@ -18,10 +18,25 @@ public class SessionTest {
         Period period = new Period();
 
         // when
-        Session session = new Session(image, period);
+        Session session = new Session(image, period, SessionType.FREE);
 
         // then
         assertThat(session.getImage()).isEqualTo(image);
         assertThat(session.getPeriod()).isEqualTo(period);
+    }
+
+    @Test
+    void 강의는_유료강의와_무료강의로_나뉜다() {
+        // given
+        SessionType payType = SessionType.PAY;
+        SessionType freeType = SessionType.FREE;
+
+        // when
+        Session paySession = new Session(new Image(), new Period(), payType);
+        Session freeSession = new Session(new Image(), new Period(), freeType);
+
+        // then
+        assertThat(paySession.getType()).isEqualTo(payType);
+        assertThat(freeSession.getType()).isEqualTo(freeType);
     }
 }
