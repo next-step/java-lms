@@ -12,13 +12,9 @@ public class CoverImage {
     }
 
 
-    public CoverImage(Long id, String fileName, int width, int height, long capacitySize) {
+    public CoverImage(Long id, String fileName, int width, int height, long capacitySize) throws ImageFileInfoException {
         this.id = id;
-        try {
-            this.name = new Name(fileName);
-            this.size = new Size(width, height, capacitySize);
-        } catch (ImageFileInfoException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        this.name = new Name(fileName);
+        this.size = new Size(width, height, capacitySize);
     }
 }

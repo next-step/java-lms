@@ -2,12 +2,10 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.EnrolmentInfo;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
 import nextstep.courses.domain.session.student.Student;
-import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
