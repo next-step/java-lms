@@ -1,72 +1,64 @@
 package nextstep.courses.domain.session;
 
-import java.time.LocalDate;
+import static nextstep.courses.domain.session.FreeOrPaid.FREE;
+import static nextstep.courses.domain.session.FreeOrPaid.PAID;
+
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.payments.domain.Payment;
 
 public class Session {
 
     private static final int UNLIMITED_ENROLLMENT = 0;
+    private static final long FREE_FEE = 0;
+    private final FreeOrPaid freeOrPaid;
     private final CoverImage coverImage;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final Period period;
     private final int limitedEnrollment;
+    private final long sessionFee;
     private SessionStatus sessionStatus;
 
-    private Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, int limitedEnrollment) {
-        validateStartDate(startDate);
-        validateEndDate(startDate, endDate);
+    private Session(FreeOrPaid freeOrPaid, CoverImage coverImage, Period period, int limitedEnrollment,
+        long sessionFee) {
+        this.freeOrPaid = freeOrPaid;
+        this.sessionFee = sessionFee;
         this.coverImage = coverImage;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = period;
         this.limitedEnrollment = limitedEnrollment;
-        this.sessionStatus = updateSessionStatusToEnrollmentOpenOrPreparing(startDate);
+        this.sessionStatus = updateSessionStatusToEnrollmentOpenOrPreparing();
     }
 
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this(null, startDate, endDate, 0);
+    public Session(Period period) {
+        this(null, null, period, 0, 0);
     }
 
-    public static Session createFreeSession(CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        return new Session(coverImage, startDate, endDate, UNLIMITED_ENROLLMENT);
+    public static Session createFreeSession(CoverImage coverImage, Period period) {
+        return new Session(FREE, coverImage, period, UNLIMITED_ENROLLMENT, FREE_FEE);
     }
 
-    public static Session createPaidSession(CoverImage coverImage, LocalDate startDate, LocalDate endDate,
-        int limitedEnrollment) {
-        return new Session(coverImage, startDate, endDate, limitedEnrollment);
+    public static Session createPaidSession(CoverImage coverImage, Period period, int limitedEnrollment,
+        long sessionFee) {
+        return new Session(PAID, coverImage, period, limitedEnrollment, sessionFee);
     }
 
     public int limitedEnrollment() {
         return limitedEnrollment;
     }
 
-    private void validateStartDate(LocalDate startDate) {
-        if (isBeforeToday(startDate)) {
-            throw new IllegalArgumentException("강의 시작일은 오늘 날짜 이후로 설정할 수 있습니다.");
+    public boolean isOpened() {
+        return sessionStatus.equals(SessionStatus.ENROLLMENT_OPEN);
+    }
+
+    public boolean isAbleToEnrollPaidSession(Payment payment) {
+        if (freeOrPaid == FREE) {
+            return true;
         }
+        return payment.amount() == sessionFee;
     }
 
-    private void validateEndDate(LocalDate startDate, LocalDate endDate) {
-        if (!xDateIsBeforeYDate(startDate, endDate)) {
-            throw new IllegalArgumentException("강의 종료일은 강의 시작일 이후로 설정할 수 있습니다.");
-        }
-    }
-
-    private boolean isBeforeToday(LocalDate date) {
-        return date.isBefore(LocalDate.now());
-    }
-
-    private boolean xDateIsBeforeYDate(LocalDate startDate, LocalDate endDate) {
-        return !startDate.isAfter(endDate);
-    }
-
-    private SessionStatus updateSessionStatusToEnrollmentOpenOrPreparing(LocalDate startDate) {
-        if (isToday(startDate)) {
+    private SessionStatus updateSessionStatusToEnrollmentOpenOrPreparing() {
+        if (period.isEqualStartDateAndToday()) {
             return SessionStatus.ENROLLMENT_OPEN;
         }
         return SessionStatus.PREPARING;
-    }
-
-    private boolean isToday(LocalDate date) {
-        return date.isEqual(LocalDate.now());
     }
 }
