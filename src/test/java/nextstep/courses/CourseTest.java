@@ -1,7 +1,8 @@
 package nextstep.courses;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.enumeration.SessionStatus;
+import nextstep.courses.enumeration.SessionProgressType;
+import nextstep.courses.enumeration.SessionRecruitStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,8 @@ public class CourseTest {
                 1L,
                 "무료강의",
                 new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
-                SessionStatus.READY,
+                SessionRecruitStatus.NOT_RECRUITING,
+                SessionProgressType.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
@@ -30,7 +32,8 @@ public class CourseTest {
                 "유료강의",
                 new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 10,
-                SessionStatus.READY,
+                SessionRecruitStatus.NOT_RECRUITING,
+                SessionProgressType.READY,
                 2000,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));

@@ -1,14 +1,14 @@
 package nextstep.courses.enumeration;
 
-public enum SessionStatus {
+public enum SessionRecruitStatus {
 
-    READY("준비중"),
-    REGISTERING("모집중"),
-    FINISH("종료");
+    RECRUITING("모집중"),
+    NOT_RECRUITING("비모집중")
+            ;
 
     private final String value;
 
-    SessionStatus(String value) {
+    SessionRecruitStatus(String value) {
         this.value = value;
     }
 
