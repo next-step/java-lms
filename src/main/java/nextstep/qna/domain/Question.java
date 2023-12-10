@@ -1,12 +1,16 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.qna.common.ErrorMessage.DELETE_NOT_PERMITTED_MESSAGE;
+
 public class Question {
+
     private Long id;
 
     private String title;
@@ -15,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -65,7 +69,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -81,8 +85,29 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
+        this.validateAllPermission(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(this.deleteContent());
+        answers.deleteAnswers(deleteHistories);
+        return deleteHistories;
+    }
+
+    private void validateAllPermission(NsUser loginUser) throws CannotDeleteException {
+        this.validatePermission(loginUser);
+        answers.validatePermission(loginUser);
+    }
+
+    public void validatePermission(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException(DELETE_NOT_PERMITTED_MESSAGE);
+        }
+    }
+
+    private DeleteHistory deleteContent() {
+        this.setDeleted(true);
+        return new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), LocalDateTime.now());
     }
 
     @Override

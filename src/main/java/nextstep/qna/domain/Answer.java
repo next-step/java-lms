@@ -1,12 +1,16 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
+import static nextstep.qna.common.ErrorMessage.CANNOT_DELETE_MESSAGE;
+
 public class Answer {
+
     private Long id;
 
     private NsUser writer;
@@ -70,6 +74,17 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public void validatePermission(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException(CANNOT_DELETE_MESSAGE);
+        }
+    }
+
+    public DeleteHistory deleteContent() {
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
     @Override
