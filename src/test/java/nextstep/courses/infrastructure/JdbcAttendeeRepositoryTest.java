@@ -32,8 +32,10 @@ class JdbcAttendeeRepositoryTest {
     void save_and_find_by_id_is_equal() {
         Attendee attendee = new Attendee(1L, 1L);
         attendeeRepository.save(attendee);
+
         Attendee actual = attendeeRepository.findById(1L)
-                                               .orElseThrow(NotFoundException::new);
+                                            .orElseThrow(NotFoundException::new);
+
         assertThat(actual).isEqualTo(attendee);
     }
 
@@ -48,7 +50,7 @@ class JdbcAttendeeRepositoryTest {
         attendeeRepository.save(attendee3);
         List<Attendee> expected = List.of(attendee1, attendee2, attendee3);
 
-        List<Attendee> actual = attendeeRepository.findAllBySeesionId(1L);
+        List<Attendee> actual = attendeeRepository.findAllBySessionId(1L);
 
         assertThat(actual).isEqualTo(expected);
     }
