@@ -1,5 +1,8 @@
 package nextstep.courses.domain.course;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -12,6 +15,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Sessions sessions = new Sessions();
 
     public Course() {
     }
@@ -26,6 +31,17 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void addSession(Session session) {
+        if (!session.isAfterCourseWasCreated(createdAt)) {
+            throw new IllegalArgumentException("세션 시작일이 코스 생성일보다 빠를 수 없습니다.");
+        }
+        sessions.addSession(session);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
