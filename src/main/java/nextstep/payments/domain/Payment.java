@@ -1,6 +1,7 @@
 package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.session.SessionFee;
 
 public class Payment {
 
@@ -26,7 +27,7 @@ public class Payment {
         this("", 0L, 0L, 0L);
     }
 
-    public boolean isSameAmount(long amount) {
-        return this.amount == amount;
+    public boolean isSameAmount(SessionFee sessionFee) {
+        return this.amount == sessionFee.value();
     }
 }
