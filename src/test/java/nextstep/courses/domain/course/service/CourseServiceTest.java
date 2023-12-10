@@ -3,6 +3,7 @@ package nextstep.courses.domain.course.service;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.course.image.Image;
+import nextstep.courses.domain.course.image.ImageType;
 import nextstep.courses.domain.course.session.*;
 import nextstep.courses.service.CourseService;
 import nextstep.payments.domain.Payment;
@@ -39,7 +40,7 @@ public class CourseServiceTest {
     void setUp() {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         course = new Course("math", 1, 1L, localDateTime);
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
+        image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         duration = new Duration(localDate, localDate);

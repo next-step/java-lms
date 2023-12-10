@@ -17,7 +17,7 @@ public enum ImageType {
 
     public static ImageType find(String name) {
         return Arrays.stream(values())
-                .filter(imageImageType -> imageImageType.description.equals(name))
+                .filter(imageImageType -> imageImageType.name().equals(name))
                 .findAny()
                 .orElseThrow(
                         () -> new IllegalArgumentException(

@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.course.image.Image;
+import nextstep.courses.domain.course.image.ImageType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class SessionTest {
         differentPayment = new Payment("1", 1L, 3L, 500L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
+        image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         session = new Session(1L, image, duration, sessionState, applicants,
