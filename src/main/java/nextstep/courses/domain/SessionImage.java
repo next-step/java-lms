@@ -10,7 +10,7 @@ public class SessionImage {
     public static final int MB = 1024 * 1024;
     public static final List<String> IMG_FILE_TYPE = List.of("gif", "jpg", "jpeg", "png", "svg");
 
-    private long id;
+    private Long id;
     private long fileSize;
     private String fileType;
     private ImageSize imageSize;
