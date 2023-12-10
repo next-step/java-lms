@@ -1,9 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -13,5 +17,14 @@ public class EnrollmentTest {
     void preparing_exception() {
         Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Enrollment(SessionStatus.PREPARING, 15).enroll(NsUserTest.JAVAJIGI));
+    }
+
+    @Test
+    @DisplayName("수강신청 상태가 아닐 때 수강신청을하면 예외가 발생한다")
+    void capacity_exception() {
+        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            new Enrollment(SessionStatus.ENROLLING, 1, students);
+        });
     }
 }

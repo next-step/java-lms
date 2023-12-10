@@ -14,6 +14,9 @@ public class Enrollment {
         this(sessionStatus, capacity, new ArrayList<>());
     }
     public Enrollment(SessionStatus sessionStatus, int capacity, List<NsUser> students) {
+        if (capacity < students.size()) {
+            throw new IllegalArgumentException("최대 수용 인원인 " + capacity + "명을 초과할 수 없습니다.");
+        }
         this.sessionStatus = sessionStatus;
         this.capacity = capacity;
         this.students = students;
