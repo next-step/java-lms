@@ -4,22 +4,22 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 public class Enrollment {
     private Long price;
     private ChargeStatus chargeStatus;
+    private RecruitingStatus recruitingStatus;
     private SessionStatus status;
     private SessionStudent sessionStudent;
 
-    public Enrollment(final Long price, final List<NsUser> nsUsers) {
+    public Enrollment(final Long price, final TotalSelectStatusUsers totalSelectStatusUsers) {
         validateEnrollment(price);
 
         this.price = price;
 
         this.chargeStatus = ChargeStatus.decide(price);
         this.status = SessionStatus.READY;
-        this.sessionStudent = new SessionStudent(15, nsUsers);
+        this.recruitingStatus = RecruitingStatus.NOT_RECRUITING;
+        this.sessionStudent = new SessionStudent(15, totalSelectStatusUsers);
     }
 
     private void validateEnrollment(final Long price) {
@@ -36,10 +36,6 @@ public class Enrollment {
         }
 
         increaseEnrollment(user);
-    }
-
-    private boolean isNotRecruiting() {
-        return !this.status.isRecruiting();
     }
 
     private boolean isPaidSession() {
@@ -77,7 +73,11 @@ public class Enrollment {
     }
 
     public boolean isRecruiting() {
-        return this.status.isRecruiting();
+        return !isNotRecruiting();
+    }
+
+    private boolean isNotRecruiting() {
+        return !this.recruitingStatus.isRecruiting();
     }
 
     public int getMaxStudentLimit() {
@@ -88,11 +88,19 @@ public class Enrollment {
         return this.status.toString();
     }
 
-    public List<NsUser> getUsers() {
-        return this.sessionStudent.getUsers();
+    public String getRecruitingStatusString() {
+        return this.recruitingStatus.toString();
     }
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
         this.sessionStudent.changeMaxStudentLimit(maxStudentLimit);
+    }
+
+    public void setRecruitingStatus(final RecruitingStatus recruitingStatus) {
+        this.recruitingStatus = recruitingStatus;
+    }
+
+    public TotalSelectStatusUsers getSelectionUsers() {
+        return this.sessionStudent.getSelectionUsers();
     }
 }

@@ -2,28 +2,25 @@ package nextstep.courses.domain.session;
 
 import nextstep.users.domain.NsUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SessionStudent {
     private int maxStudentLimit;
-    private List<NsUser> students = new ArrayList<>();
+    private TotalSelectStatusUsers selectionStudents;
 
-    public SessionStudent(final int maxStudentLimit, final List<NsUser> nsUsers) {
+    public SessionStudent(final int maxStudentLimit, final TotalSelectStatusUsers selectionStudents) {
         this.maxStudentLimit = maxStudentLimit;
-        this.students.addAll(nsUsers);
+        this.selectionStudents = selectionStudents;
     }
 
     public int getCurrentStudentCount() {
-        return this.students.size();
+        return this.selectionStudents.size();
     }
 
     public boolean isReachedMaxStudentLimit() {
-        return this.students.size() >= this.maxStudentLimit;
+        return this.selectionStudents.size() >= this.maxStudentLimit;
     }
 
     public void increaseStudentCount(final NsUser user) {
-        this.students.add(user);
+        this.selectionStudents.addUndecideUser(user);
     }
 
     public void changeMaxStudentLimit(final int maxStudentLimit) {
@@ -33,7 +30,7 @@ public class SessionStudent {
     }
 
     private void validateMaxStudentLimit(final int maxStudentLimit) {
-        if (maxStudentLimit < this.students.size()) {
+        if (maxStudentLimit < this.selectionStudents.size()) {
             throw new IllegalArgumentException("max student limit cannot be less than current student count");
         }
     }
@@ -42,7 +39,7 @@ public class SessionStudent {
         return this.maxStudentLimit;
     }
 
-    public List<NsUser> getUsers() {
-        return this.students;
+    public TotalSelectStatusUsers getSelectionUsers() {
+        return this.selectionStudents;
     }
 }

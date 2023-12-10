@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -34,8 +36,9 @@ class JdbcCoverImageRepositoryTest {
         int count = coverImageRepository.save(coverImage, sessionId);
         assertThat(count).isEqualTo(1);
 
-        CoverImage savedCoverImage = coverImageRepository.findBySessionId(sessionId);
-        assertThat(coverImage.getImageTypeString()).isEqualTo(savedCoverImage.getImageTypeString());
+        List<CoverImage> savedCoverImage = coverImageRepository.findBySessionId(sessionId);
+        final CoverImage firstCoverImage = savedCoverImage.get(0);
+        assertThat(coverImage.getImageTypeString()).isEqualTo(firstCoverImage.getImageTypeString());
         LOGGER.debug("CoverImage Type: {}", savedCoverImage);
     }
 }

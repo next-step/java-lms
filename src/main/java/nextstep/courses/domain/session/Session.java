@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,8 +13,12 @@ public class Session {
     private Long id;
     private String title;
     private SessionDate sessionDate;
-    private CoverImage coverImage;
+    private List<CoverImage> coverImages;
     private Enrollment enrollment;
+    private Long creatorId;
+    private LocalDateTime createdAt;
+    private Long updatorId;
+    private LocalDateTime updatedAt;
 
     public Session(final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate) {
         this(title, price, new SessionDate(startDate, endDate), null);
@@ -27,22 +32,28 @@ public class Session {
         this(title, 0L, new SessionDate(startDate, endDate), null);
     }
 
-    public Session(final String title, final long price, final SessionDate sessionDate, CoverImage coverImage) {
-        this(0L, title, price, sessionDate, coverImage, Collections.emptyList());
+    public Session(final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage) {
+        this(0L, title, price, sessionDate, coverImage, Collections.emptyList(), 1L, LocalDateTime.now());
     }
 
-    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, List<NsUser> nsUsers) {
-        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers);
+    public Session(final long id, final String title, final long price, final LocalDateTime startDate, final LocalDateTime endDate, final CoverImage coverImage, final TotalSelectStatusUsers nsUsers, final Long creatorId, final LocalDateTime createdAt) {
+        this(id, title, price, new SessionDate(startDate, endDate), coverImage, nsUsers, creatorId, createdAt);
     }
 
-    public Session(final long id, final String title, final long price, final SessionDate sessionDate, CoverImage coverImage, List<NsUser> nsUsers) {
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage, final List<NsUser> nsUsers, final Long creatorId, final LocalDateTime createdAt) {
+        this(id, title, price, sessionDate, coverImage, new TotalSelectStatusUsers(UndecidedUsers.of(nsUsers)), creatorId, createdAt);
+    }
+
+    public Session(final long id, final String title, final long price, final SessionDate sessionDate, final CoverImage coverImage, final TotalSelectStatusUsers nsUsers, final Long creatorId, final LocalDateTime createdAt) {
         validateSession(title, sessionDate);
 
         this.id = id;
         this.title = title;
         this.enrollment = new Enrollment(price, nsUsers);
         this.sessionDate = sessionDate;
-        this.coverImage = validateCoverImage(coverImage);
+        this.coverImages = validateCoverImage(coverImage);
+        this.creatorId = creatorId;
+        this.createdAt = createdAt;
     }
 
     private void validateSession(final String title, final SessionDate sessionDate) {
@@ -50,12 +61,16 @@ public class Session {
         Assert.notNull(sessionDate, "session date cannot be null");
     }
 
-    private CoverImage validateCoverImage(final CoverImage coverImage) {
+    private List<CoverImage> validateCoverImage(CoverImage coverImage) {
+        final List<CoverImage> list = new ArrayList<>();
+
         if (coverImage == null) {
-            return CoverImage.defaultCoverImage();
+            coverImage = CoverImage.defaultCoverImage();
         }
 
-        return coverImage;
+        list.add(coverImage);
+
+        return list;
     }
 
     public String getTitle() {
@@ -82,8 +97,12 @@ public class Session {
         return this.id;
     }
 
-    public CoverImage getCoverImage() {
-        return this.coverImage;
+    public List<CoverImage> getCoverImages() {
+        return this.coverImages;
+    }
+
+    public void setCoverImages(final List<CoverImage> coverImages) {
+        this.coverImages = coverImages;
     }
 
     public long getPrice() {
@@ -95,11 +114,15 @@ public class Session {
     }
 
     private void setStatus(SessionStatus status) {
-        enrollment.setStatus(status);
+        this.enrollment.setStatus(status);
     }
 
     public boolean isNotRecruiting() {
-        return !enrollment.isRecruiting();
+        return !this.enrollment.isRecruiting();
+    }
+
+    public String getRecruitingStatusString() {
+        return this.enrollment.getRecruitingStatusString();
     }
 
     public void ready() {
@@ -107,7 +130,15 @@ public class Session {
     }
 
     public void recruit() {
-        setStatus(SessionStatus.RECRUITING);
+        this.enrollment.setRecruitingStatus(RecruitingStatus.RECRUITING);
+    }
+
+    public void notRecruit() {
+        this.enrollment.setRecruitingStatus(RecruitingStatus.NOT_RECRUITING);
+    }
+
+    public void onGoing() {
+        setStatus(SessionStatus.ONGOING);
     }
 
     public void close() {
@@ -126,7 +157,7 @@ public class Session {
         setStatus(sessionStatus);
     }
 
-    public List<NsUser> getUsers() {
-        return this.enrollment.getUsers();
+    public TotalSelectStatusUsers getSelectionUsers() {
+        return this.enrollment.getSelectionUsers();
     }
 }
