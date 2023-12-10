@@ -12,11 +12,11 @@ public class EnrolmentInfo {
         this.payAmount = payAmount;
     }
 
-    public Long sessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
 
-    public Long nsUserId() {
+    public Long getNsUserId() {
         return this.nsUserId;
     }
 

@@ -34,7 +34,7 @@ public class PaySession extends Session {
         validatePayAmount(enrolmentInfo);
         validateCapacity();
 
-        Student student = new Student(id, enrolmentInfo.nsUserId());
+        Student student = new Student(id, enrolmentInfo.getNsUserId());
         students.add(student);
 
         return student;
@@ -61,4 +61,5 @@ public class PaySession extends Session {
     private boolean isExceed() {
         return students.size() >= studentsCapacity;
     }
+
 }

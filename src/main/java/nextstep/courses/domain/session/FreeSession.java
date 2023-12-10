@@ -22,7 +22,7 @@ public class FreeSession extends Session {
     public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
 
-        Student student = new Student(id, enrolmentInfo.nsUserId());
+        Student student = new Student(id, enrolmentInfo.getNsUserId());
         this.students.add(student);
 
         return student;
