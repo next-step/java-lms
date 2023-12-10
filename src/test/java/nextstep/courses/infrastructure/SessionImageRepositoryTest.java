@@ -24,7 +24,7 @@ public class SessionImageRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private SessionImageRepository sessionImageRepository;
-    SessionImage sessionImage = new SessionImage(1L, 1L,"url", ExtensionType.GIF, 1024L, LocalDateTime.now(), LocalDateTime.now());
+    SessionImage sessionImage = SessionImage.of(1L, 1L,"url", ExtensionType.GIF, 1024L, LocalDateTime.now(), LocalDateTime.now());
 
     @BeforeEach
     void setUp() {

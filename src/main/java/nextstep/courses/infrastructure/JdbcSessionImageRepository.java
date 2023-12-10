@@ -55,7 +55,7 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
     @Override
     public Optional<SessionImage> findById(Long id) {
         String sql = "select id, session_id, image_url, extension_type, size, created_at, updated_at from session_image where id = ?";
-        RowMapper<SessionImage> rowMapper = (rs, rowNum) -> new SessionImage(
+        RowMapper<SessionImage> rowMapper = (rs, rowNum) -> SessionImage.of(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),

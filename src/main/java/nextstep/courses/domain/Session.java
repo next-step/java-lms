@@ -1,16 +1,16 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.enumeration.SessionStatus;
+import nextstep.courses.enumeration.SessionProgressType;
+import nextstep.courses.enumeration.SessionRecruitStatus;
 import nextstep.courses.enumeration.SessionType;
 import nextstep.courses.exception.CanNotRegisterSessionException;
-import nextstep.courses.exception.ExceedStudentsCountException;
 import nextstep.courses.exception.PaymentMisMatchException;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Session extends BaseEntity {
@@ -21,13 +21,14 @@ public abstract class Session extends BaseEntity {
     private final Integer price;
     private final Integer maxParticipants;
     protected final SessionImages sessionImages;
-    protected final Students students;
+    protected final SessionStudents sessionStudents;
     private final SessionType sessionType;
-    private final SessionStatus status;
+    private final SessionProgressType sessionProgressType;
+    private final SessionRecruitStatus sessionRecruitStatus;
     private final LocalDateTime startAt;
     private final LocalDateTime endAt;
 
-    protected Session(Long id, Long courseId, String title, SessionImages sessionImages, SessionType sessionType, SessionStatus status, int price, int maxParticipants, LocalDateTime startAt, LocalDateTime endAt) {
+    protected Session(Long id, Long courseId, String title, SessionImages sessionImages, SessionType sessionType, SessionRecruitStatus sessionRecruitStatus, SessionProgressType sessionProgressType, int price, int maxParticipants, LocalDateTime startAt, LocalDateTime endAt) {
         super(LocalDateTime.now(), LocalDateTime.now());
         validate(startAt, endAt);
         this.id = id;
@@ -35,24 +36,26 @@ public abstract class Session extends BaseEntity {
         this.title = title;
         this.sessionImages = sessionImages;
         this.sessionType = sessionType;
-        this.students = new Students(new HashSet<>());
-        this.status = status;
+        this.sessionStudents = SessionStudents.of(new HashSet<>());
+        this.sessionRecruitStatus = sessionRecruitStatus;
+        this.sessionProgressType = sessionProgressType;
         this.price = price;
         this.maxParticipants = maxParticipants;
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
-    protected Session(Long id, Long courseId, String title, SessionType sessionType, Integer maxParticipants, Integer price, SessionStatus status, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected Session(Long id, Long courseId, String title, SessionType sessionType, Integer maxParticipants, Integer price, SessionRecruitStatus sessionRecruitStatus, SessionProgressType sessionProgressType, LocalDateTime startAt, LocalDateTime endAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         validate(startAt, endAt);
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.sessionImages = new SessionImages(new ArrayList<>());
+        this.sessionImages = SessionImages.of(new ArrayList<>());
         this.sessionType = sessionType;
-        this.students = new Students(new HashSet<>());
-        this.status = status;
+        this.sessionStudents = SessionStudents.of(new HashSet<>());
+        this.sessionRecruitStatus = sessionRecruitStatus;
+        this.sessionProgressType = sessionProgressType;
         this.price = price;
         this.maxParticipants = maxParticipants;
         this.startAt = startAt;
@@ -70,33 +73,34 @@ public abstract class Session extends BaseEntity {
     }
 
     protected void validateSessionIsRegistering() {
-        if (!SessionStatus.REGISTERING.equals(this.status)) {
-            throw new CanNotRegisterSessionException("강의가 모집중이여야만 신청할 수 있습니다.");
+        if (SessionRecruitStatus.NOT_RECRUITING.equals(this.sessionRecruitStatus) && !SessionProgressType.IN_PROGRESS.equals(this.sessionProgressType)) {
+            throw new CanNotRegisterSessionException("강의가 모집 중이거나 진행 중이여야만 신청할 수 있습니다.");
         }
     }
 
     protected void validateRegister(Payment payment) {
         validateSessionIsRegistering();
 
-        if (this.sessionType.equals(SessionType.COST_MONEY) && this.students.isMaxParticipants(this.maxParticipants)) {
-            throw new ExceedStudentsCountException("정원이 초과되어 더 이상 신청할 수 없습니다.");
-        }
-
         if (!payment.isPaidPriceSame(this.price)) {
             throw new PaymentMisMatchException("지불한 금액이 강의 가격과 일치하지 않습니다.");
         }
     }
 
-    abstract public void register(NsUser nsUser, Payment payment);
-    abstract protected void validate(int price, int maxParticipants);
+    public final void register(SessionStudent sessionStudent, Payment payment) {
+        validateRegister(payment);
+        validate(this.price, this.maxParticipants);
+        enroll(sessionStudent, payment);
+    }
 
+    abstract protected void enroll(SessionStudent sessionStudent, Payment payment);
+    abstract protected void validate(int price, int maxParticipants);
 
     public long getId() {
         return this.id;
     }
 
-    public Set<NsUser> getStudents() {
-        return this.students.getStudents();
+    public Set<SessionStudent> getStudents() {
+        return this.sessionStudents.getStudents();
     }
 
     public String getTitle() {
@@ -107,8 +111,12 @@ public abstract class Session extends BaseEntity {
         return this.sessionType;
     }
 
-    public SessionStatus getStatus() {
-        return this.status;
+    public SessionRecruitStatus getSessionRecuitStatus() {
+        return this.sessionRecruitStatus;
+    }
+
+    public SessionProgressType getSessionProgressType() {
+        return this.sessionProgressType;
     }
 
     public LocalDateTime getStartAt() {
@@ -129,5 +137,9 @@ public abstract class Session extends BaseEntity {
 
     public int getPrice() {
         return this.price;
+    }
+
+    public List<SessionImage> getSessionImages() {
+        return this.sessionImages.getSessionImages();
     }
 }

@@ -4,7 +4,8 @@ import nextstep.courses.domain.FreeSession;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionImage;
 import nextstep.courses.domain.SessionImages;
-import nextstep.courses.enumeration.SessionStatus;
+import nextstep.courses.enumeration.SessionProgressType;
+import nextstep.courses.enumeration.SessionRecruitStatus;
 import nextstep.courses.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,8 +38,9 @@ public class SessionRepositoryTest {
         freeSession = FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
-                SessionStatus.REGISTERING,
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionRecruitStatus.NOT_RECRUITING,
+                SessionProgressType.IN_PROGRESS,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 15, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
     }

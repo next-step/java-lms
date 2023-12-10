@@ -1,7 +1,8 @@
 package nextstep.courses;
 
 import nextstep.courses.domain.*;
-import nextstep.courses.enumeration.SessionStatus;
+import nextstep.courses.enumeration.SessionProgressType;
+import nextstep.courses.enumeration.SessionRecruitStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,22 +21,24 @@ public class CourseTest {
         Session freeSession = FreeSession.of(1L,
                 1L,
                 "무료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
-                SessionStatus.READY,
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionRecruitStatus.NOT_RECRUITING,
+                SessionProgressType.READY,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
         Session costMoneySession = CostMoneySession.of(1L,
                 1L,
                 "유료강의",
-                new SessionImages(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
+                SessionImages.of(List.of(SessionImage.of(1L, 1L,"url", "GIF", 1000L, 300L, 200L))),
                 10,
-                SessionStatus.READY,
+                SessionRecruitStatus.NOT_RECRUITING,
+                SessionProgressType.READY,
                 2000,
                 LocalDateTime.of(2023, Month.DECEMBER, 3, 12, 0, 0),
                 LocalDateTime.of(2023, Month.DECEMBER, 10, 15, 0, 0));
 
-        Course course = new Course("넥스트스텝 1강", 1L);
+        Course course = Course.of("넥스트스텝 1강", 1L);
         course.addSession(freeSession);
         course.addSession(costMoneySession);
 
