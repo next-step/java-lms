@@ -6,6 +6,6 @@ public enum ImageFormat {
     JPG,
     PMG,
     SVG,
-    GIF,
+    GIF
     ;
 }

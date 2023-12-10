@@ -1,20 +1,35 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.attendee.Attendee;
-import nextstep.courses.domain.attendee.Attendees;
+import nextstep.courses.domain.attendee.FreeAttendees;
+
+import java.util.Objects;
 
 public class FreeEnrollment implements Enrollment {
 
-    private final Attendees attendees;
+    private final FreeAttendees freeAttendees;
 
-    public FreeEnrollment(Attendees attendees) {
-        this.attendees = attendees;
+    public FreeEnrollment(FreeAttendees freeAttendees) {
+        this.freeAttendees = freeAttendees;
     }
 
     @Override
     public Attendee enroll(Long amount, Long userId, Long sessionId) {
         Attendee attendee = new Attendee(userId, sessionId);
-        attendees.checkAlreadyAttend(attendee);
+        freeAttendees.add(attendee);
         return attendee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FreeEnrollment that = (FreeEnrollment) o;
+        return Objects.equals(freeAttendees, that.freeAttendees);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(freeAttendees);
     }
 }
