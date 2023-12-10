@@ -1,24 +1,21 @@
 package nextstep.courses.domain.session;
 
 public class Price {
-
-    private boolean isFree;
     private int money;
 
-    public Price(boolean isFree, int money) {
-        this.isFree = isFree;
+    public Price(int money) {
         this.money = money;
     }
 
     public boolean isFree() {
-        return isFree;
+        return this.money == 0;
     }
 
     public int money() {
         return money;
     }
 
-    public static Price of(boolean isFree, int money) {
-        return new Price(isFree, money);
+    public static Price of(int money) {
+        return new Price(money);
     }
 }

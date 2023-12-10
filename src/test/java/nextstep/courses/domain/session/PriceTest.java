@@ -11,10 +11,9 @@ public class PriceTest {
     @Test
     void 강의유료금액생성() {
         // given
-        boolean isFree = false;
         int money = 10000;
         // when
-        Price price = new Price(isFree, money);
+        Price price = new Price(money);
         // then
         assertThat(price.isFree()).isFalse();
     }
@@ -23,10 +22,9 @@ public class PriceTest {
     @Test
     void 강의무료생성() {
         // given
-        boolean isFree = true;
-        int money = 10000;
+        int money = 0;
         // when
-        Price price = new Price(isFree, money);
+        Price price = new Price(money);
         // then
         assertThat(price.isFree()).isTrue();
     }

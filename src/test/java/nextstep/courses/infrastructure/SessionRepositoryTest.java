@@ -30,7 +30,7 @@ public class SessionRepositoryTest {
     @Test
     void 생성테스트() {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(false, 10000));
+        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(10000));
         Session session = new Session("title", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, 1L);
         int result = sessionRepository.save(session);
         assertThat(result).isOne();
@@ -40,7 +40,7 @@ public class SessionRepositoryTest {
     @Test
     void id로_조회_테스트() {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(false, 10000));
+        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(10000));
         Session session = new Session("title", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, 1L);
         sessionRepository.save(session);
         Session result = sessionRepository.findById(1L);
@@ -51,7 +51,7 @@ public class SessionRepositoryTest {
     @Test
     void course_id로_조회_테스트() {
         SessionPeriod sessionPeriod = new SessionPeriod("2023-12-01", "2023-12-31");
-        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(false, 10000));
+        Enrolment enrolment = new Enrolment(new ParticipantManager(10), Price.of(10000));
         Session session = new Session("title", sessionPeriod, enrolment, SessionStatus.RECRUIT, null, 1L);
         sessionRepository.save(session);
         List<Session> result = sessionRepository.findByCourseId(1L);

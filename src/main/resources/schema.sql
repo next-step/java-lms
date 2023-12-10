@@ -55,7 +55,6 @@ create table session (
     start_date_time timestamp,
     end_date_time timestamp,
     status varchar(10),
-    is_free boolean,
     money int,
     max_participants int,
     course_id bigint,

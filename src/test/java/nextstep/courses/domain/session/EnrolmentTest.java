@@ -17,10 +17,9 @@ public class EnrolmentTest {
     @Test
     void 강의유료결제한다() {
         // given
-        boolean isFree = false;
         int money = 10000;
         ParticipantManager participantManager = new ParticipantManager(10);
-        Price price = new Price(isFree, money);
+        Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price);
         // when
         enrolment.addParticipant(money, NsUserTest.JAVAJIGI);
@@ -32,13 +31,12 @@ public class EnrolmentTest {
     @Test
     void 강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
-        boolean isFree = false;
         int money = 10000;
         List<NsUser> users = new ArrayList<>() {{
             add(NsUserTest.JAVAJIGI);
         }};
         ParticipantManager participantManager = new ParticipantManager(1, new SessionParticipants(users));
-        Price price = new Price(isFree, money);
+        Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price);
         // when
         // then
@@ -50,10 +48,9 @@ public class EnrolmentTest {
     @Test
     void 결제할_금액이_강의가격과_다르면_예외가_발생한다() {
         // given
-        boolean isFree = false;
         int money = 10000;
         ParticipantManager participantManager = new ParticipantManager(10);
-        Price price = new Price(isFree, money);
+        Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price);
         // when
         // then
