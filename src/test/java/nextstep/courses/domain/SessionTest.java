@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CannotSignUpException;
 import nextstep.courses.InvalidImageFormatException;
+import nextstep.courses.enumeration.SessionStatus;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

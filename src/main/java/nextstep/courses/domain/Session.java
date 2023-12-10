@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotSignUpException;
+import nextstep.courses.enumeration.SessionStatus;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;

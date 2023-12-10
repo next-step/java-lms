@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.InvalidImageFormatException;
+import nextstep.courses.enumeration.ImageType;
 
 import java.util.Arrays;
 

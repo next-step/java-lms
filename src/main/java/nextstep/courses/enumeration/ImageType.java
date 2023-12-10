@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.enumeration;
 
 public enum ImageType {
     GIF,
