@@ -17,7 +17,7 @@
 <details>
 <summary><b>🚀 1단계 - 레거시 코드 리팩터링</b></summary>
 
-**수강 신청 기능 요구사항**
+**리팩터링 요구사항**
 > - [X] QnaService의 deleteQuestion() 메서드에 단위 테스트 가능한 코드(핵심 비지니스 로직)를 도메인 모델 객체에 구현한다.
 > - [X] QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 >> - [X] 질문(Question)은 Question Domain 에서 삭제 가능 검증 후, 삭제한다.
@@ -27,7 +27,7 @@
 <details>
 <summary><b>🚀 2단계 - 수강신청(도메인 모델)</b></summary>
 
-**리팩터링 요구사항**
+**수강 신청 기능 요구사항**
 > - CoverImage
 >> - [X] 이미지 크기는 1MB 이하여야 한다.
 >> - [X] 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
