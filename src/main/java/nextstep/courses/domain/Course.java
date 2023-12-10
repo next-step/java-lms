@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.sessions.domain.Sessions;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -12,6 +14,7 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+    private Sessions sessions;
 
     public Course() {
     }
