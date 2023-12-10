@@ -28,7 +28,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public int update(final Enrollment enrollment) {
         String sql = "update enrollment SET approved = ? where id = ?";
-        return jdbcTemplate.update(sql, toIntApproved(enrollment.isApproved()), enrollment.id());
+        return jdbcTemplate.update(sql, toIntApproved(enrollment.getApproved()), enrollment.id());
     }
 
     @Override

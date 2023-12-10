@@ -29,7 +29,7 @@ public class Enrollment extends BaseEntity {
         return sessionId;
     }
 
-    public boolean isApproved() {
+    public boolean getApproved() {
         return approved;
     }
 
