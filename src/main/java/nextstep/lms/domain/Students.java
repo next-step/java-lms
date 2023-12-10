@@ -46,25 +46,22 @@ public class Students {
     }
 
     public Student selection(Student student) {
-        Optional<Student> updatedStudent = changeStudentStatus(student, StudentStatusEnum.SELECTED);
-        if (updatedStudent.isEmpty()) {
-            throw new IllegalArgumentException("강의 신청자가 아닙니다.");
-        }
-        return updatedStudent.get();
+        Student selectionStudent = findStudent(student);
+        return selectionStudent.selection();
     }
 
     public Student nonSelection(Student student) {
-        Optional<Student> updatedStudent = changeStudentStatus(student, StudentStatusEnum.NON_SELECTED);
-        if (updatedStudent.isEmpty()) {
-            throw new IllegalArgumentException("강의 신청자가 아닙니다.");
-        }
-        return updatedStudent.get();
+        Student nonSelectionStudent = findStudent(student);
+        return nonSelectionStudent.nonSelection();
     }
 
-    private Optional<Student> changeStudentStatus(Student student, StudentStatusEnum studentStatusEnum) {
-        return this.students.stream()
-                .filter(appliedStudent -> appliedStudent.getUserId() == student.getUserId())
-                .peek(appliedStudent -> appliedStudent.setStatus(studentStatusEnum))
+    private Student findStudent(Student student) {
+        Optional<Student> sessionStudent = this.students.stream()
+                .filter(appliedStudent -> appliedStudent.equals(student))
                 .findFirst();
+        if (sessionStudent.isEmpty()) {
+            throw new IllegalArgumentException("강의 신청자가 아닙니다.");
+        }
+        return sessionStudent.get();
     }
 }

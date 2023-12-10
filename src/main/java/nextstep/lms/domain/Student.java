@@ -23,8 +23,13 @@ public class Student {
         return studentStatusEnum == StudentStatusEnum.SELECTED;
     }
 
-    public Student setStatus(StudentStatusEnum studentStatus) {
-        this.studentStatusEnum = studentStatus;
+    public Student selection() {
+        this.studentStatusEnum = StudentStatusEnum.SELECTED;
+        return this;
+    }
+
+    public Student nonSelection() {
+        this.studentStatusEnum = StudentStatusEnum.NON_SELECTED;
         return this;
     }
 

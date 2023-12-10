@@ -16,4 +16,20 @@ class StudentTest {
         Student student2 = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
         assertThat(student2.isSelected()).isTrue();
     }
+
+    @DisplayName("선발 상태로 변경")
+    @Test
+    void 선발() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
+        assertThat(student.selection()).isEqualTo(expectedStudent);
+    }
+
+    @DisplayName("미선발 상태로 변경")
+    @Test
+    void 미선발() {
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.NON_SELECTED);
+        assertThat(student.nonSelection()).isEqualTo(expectedStudent);
+    }
 }
