@@ -2,9 +2,12 @@ package nextstep.courses.domain;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Calendar;
 import java.util.Date;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 public class SessionTest {
@@ -43,6 +46,21 @@ public class SessionTest {
         PaySession paySession = new PaySession(new Image(), new Period(), maxCountOfStudents);
 
         // when, then
-        assertThat(paySession.getMaxCountOfStudents()).isEqualTo(maxCountOfStudents);
+        paySession.enroll(NsUserTest.JAVAJIGI);
+        assertThatThrownBy(() -> paySession.enroll(NsUserTest.SANJIGI)).isInstanceOf(
+            IllegalArgumentException.class)
+            .hasMessageContaining("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.");
+    }
+
+    @Test
+    void 수강_신청() {
+        // given
+        FreeSession freeSession = new FreeSession(new Image(), new Period());
+
+        // when
+        freeSession.enroll(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(freeSession.getStudents()).hasSize(1);
     }
 }

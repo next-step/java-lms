@@ -1,6 +1,9 @@
 package nextstep.courses.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import nextstep.users.domain.NsUser;
 
 public abstract class Session {
 
@@ -11,6 +14,8 @@ public abstract class Session {
     private Period sessionPeriod;
 
     private SessionType type;
+
+    private List<NsUser> students = new ArrayList<>();
 
     public Session() {
     }
@@ -26,6 +31,10 @@ public abstract class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
+    public void enroll(NsUser student) {
+        this.students.add(student);
+    }
+
     public Image getImage() {
         return this.coverImage;
     }
@@ -36,5 +45,9 @@ public abstract class Session {
 
     public SessionType getType() {
         return this.type;
+    }
+
+    public List<NsUser> getStudents() {
+        return this.students;
     }
 }
