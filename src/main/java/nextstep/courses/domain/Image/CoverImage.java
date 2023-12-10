@@ -35,7 +35,7 @@ public class CoverImage extends BaseEntity {
         this.aspectRatio = new AspectRatio(width, height);
     }
 
-    public long id() {
+    public Long id() {
         return id;
     }
 
@@ -55,18 +55,17 @@ public class CoverImage extends BaseEntity {
         return aspectRatio;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CoverImage that = (CoverImage) o;
-        return Objects.equals(volume, that.volume) && format == that.format && Objects.equals(aspectRatio, that.aspectRatio);
+        return Objects.equals(url, that.url) && Objects.equals(volume, that.volume) && format == that.format && Objects.equals(aspectRatio, that.aspectRatio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(volume, format, aspectRatio);
+        return Objects.hash(url, volume, format, aspectRatio);
     }
 
     @Override
