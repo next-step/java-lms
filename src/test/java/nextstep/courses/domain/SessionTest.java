@@ -11,7 +11,7 @@ public class SessionTest {
     void 강의는_강의_커버_이미지_정보를_가진다() {
         // given
         Session session = new Session();
-        Image image = new Image();
+        Image image = new Image(1);
 
         // when
         session.setCoverImage(image);
