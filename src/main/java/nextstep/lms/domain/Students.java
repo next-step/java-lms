@@ -1,7 +1,5 @@
 package nextstep.lms.domain;
 
-import nextstep.lms.enums.StudentStatusEnum;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
