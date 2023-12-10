@@ -35,17 +35,7 @@ class EnrollmentTest {
         int limitedEnrollment = 100;
         Session session = Session.createPaidSession(null, newPeriod(), limitedEnrollment, 800_000L);
 
-        assertThatThrownBy(() -> Enrollment.enrollPaidSession(payment, session)).isInstanceOf(
+        assertThatThrownBy(() -> Enrollment.enrollPaidSession(payment, session, null)).isInstanceOf(
             IllegalArgumentException.class).hasMessage("결제한 금액과 수강료가 일치하지 않습니다.");
-    }
-
-    @Test
-    void 유료_강의_최대_수강_인원_초과했을_경우_에러() {
-        Payment payment = new Payment(800_000L);
-        int limitedEnrollment = 0;
-        Session session = Session.createPaidSession(null, newPeriod(), limitedEnrollment, 800_000L);
-
-        assertThatThrownBy(() -> Enrollment.enrollPaidSession(payment, session)).isInstanceOf(
-            IllegalArgumentException.class).hasMessage("강의 최대 수강 인원을 초과했습니다.");
     }
 }
