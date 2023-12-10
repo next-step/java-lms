@@ -35,6 +35,16 @@ public class Session {
         this.status = status;
     }
 
+    public Session(long id, String name, Period date, SessionImage image, SessionCharge charge, int studentCount, SessionStatus status) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.image = image;
+        this.charge = charge;
+        this.studentCount = studentCount;
+        this.status = status;
+    }
+
     public long getId() {
         return id;
     }
@@ -45,6 +55,10 @@ public class Session {
 
     public Period getDate() {
         return date;
+    }
+
+    public SessionImage getImage() {
+        return image;
     }
 
     public SessionCharge getCharge() {

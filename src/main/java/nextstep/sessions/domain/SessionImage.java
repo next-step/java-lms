@@ -41,11 +41,27 @@ public class SessionImage {
         this.type = ImageType.from(type);
     }
 
-    public boolean isCorrectRatio(double width, double height) {
+    private boolean isCorrectRatio(double width, double height) {
         // 이미지의 비율 3:2를 검증
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
             return false;
         }
         return true;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public ImageType getType() {
+        return type;
     }
 }

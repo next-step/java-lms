@@ -11,7 +11,7 @@ public enum ImageType {
 
     public static ImageType from(String type) {
         return Arrays.stream(values())
-                .filter(imageType -> imageType.toString().toLowerCase().equals(type))
+                .filter(imageType -> imageType.toString().toLowerCase().equals(type.toLowerCase()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("%s는 허용하지 않는 이미지 타입입니다.", type)));
     }
