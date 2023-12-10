@@ -1,15 +1,10 @@
 package nextstep.courses.domain.session;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Images {
     private final List<Image> images;
-
-    public Images() {
-        this(new ArrayList<>());
-    }
 
     public Images(List<Image> images) {
         this.images = images;
