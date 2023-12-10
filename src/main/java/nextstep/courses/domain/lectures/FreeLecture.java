@@ -1,10 +1,12 @@
 package nextstep.courses.domain.lectures;
 
+import java.time.LocalDateTime;
+import nextstep.courses.Time;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 
-public class FreeLecture implements Lecture {
+public class FreeLecture extends Time implements Lecture {
   private final LectureType lectureType = LectureType.FREE;
   private final Long id;
   private final String title;
@@ -15,6 +17,16 @@ public class FreeLecture implements Lecture {
 
   public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
       RegistrationPeriod registrationPeriod) {
+    super();
+    this.id = id;
+    this.title = title;
+    this.coverImage = coverImage;
+    this.lectureStatus = lectureStatus;
+    this.registrationPeriod = registrationPeriod;
+  }
+  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
     this.coverImage = coverImage;
