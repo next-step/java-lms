@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.Session;
 
 public enum CourseType {
     FREE, PAID;

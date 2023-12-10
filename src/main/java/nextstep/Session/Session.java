@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.Session;
 
 import java.time.LocalDateTime;
 
@@ -16,8 +16,9 @@ public class Session {
 
     private Image coverImage;
 
-    private LocalDateTime startedAt;
+    private SessionDuration sessionDuration;
 
-    private LocalDateTime endedAt;
+    public Session() {
 
+    }
 }
