@@ -1,12 +1,12 @@
 package nextstep.courses.domain.session;
 
-import java.util.List;
+import java.util.Set;
 
 public class Sessions {
 
-    private final List<Session> sessions;
+    private final Set<Session> values;
 
-    public Sessions(List<Session> sessions) {
-        this.sessions = sessions;
+    public Sessions(Set<Session> values) {
+        this.values = values;
     }
 }

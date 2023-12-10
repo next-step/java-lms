@@ -8,16 +8,12 @@ import nextstep.users.domain.NsUser;
 
 public class Enrollment {
 
-    private SessionUsers sessionUsers = new SessionUsers();
+    private SessionUsers values = new SessionUsers();
 
     private Enrollment(Payment payment, NsUser nsUser, Session session) {
         validateSessionStatus(session);
         validateAmount(payment, session);
-        sessionUsers.addSessionUser(new SessionUser(nsUser, session));
-    }
-
-    public Enrollment(Session session) {
-        this(null, null, session);
+        values.addSessionUser(new SessionUser(nsUser, session));
     }
 
     public static Enrollment enroll(Payment payment, Session session, NsUser user) {

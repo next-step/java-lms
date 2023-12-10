@@ -10,16 +10,17 @@ public class Session {
 
     private static final int UNLIMITED_ENROLLMENT = 0;
     private static final long FREE_FEE = 0;
+    private final Long id;
     private final FreeOrPaid freeOrPaid;
     private final CoverImage coverImage;
     private final Period period;
     private final int limitedEnrollment;
     private final long sessionFee;
-    private long id;
     private SessionStatus sessionStatus;
 
-    private Session(FreeOrPaid freeOrPaid, CoverImage coverImage, Period period, int limitedEnrollment,
+    private Session(Long id, FreeOrPaid freeOrPaid, CoverImage coverImage, Period period, int limitedEnrollment,
         long sessionFee, SessionStatus sessionStatus) {
+        this.id = id;
         this.freeOrPaid = freeOrPaid;
         this.sessionFee = sessionFee;
         this.coverImage = coverImage;
@@ -28,23 +29,19 @@ public class Session {
         this.sessionStatus = sessionStatus;
     }
 
-    public Session(Period period) {
-        this(null, null, period, 0, 0, null);
-    }
-
     public Session(SessionStatus sessionStatus) {
-        this(null, null, null, 0, 0, sessionStatus);
+        this(null, null, null, null, 0, 0, sessionStatus);
     }
 
     public static Session createFreeSession(CoverImage coverImage, Period period) {
         SessionStatus sessionStatus = updateSessionStatusToEnrollmentOpenOrPreparing(period);
-        return new Session(FREE, coverImage, period, UNLIMITED_ENROLLMENT, FREE_FEE, sessionStatus);
+        return new Session(null, FREE, coverImage, period, UNLIMITED_ENROLLMENT, FREE_FEE, sessionStatus);
     }
 
     public static Session createPaidSession(CoverImage coverImage, Period period, int limitedEnrollment,
         long sessionFee) {
         SessionStatus sessionStatus = updateSessionStatusToEnrollmentOpenOrPreparing(period);
-        return new Session(PAID, coverImage, period, limitedEnrollment, sessionFee, sessionStatus);
+        return new Session(null, PAID, coverImage, period, limitedEnrollment, sessionFee, sessionStatus);
     }
 
     public int limitedEnrollment() {
@@ -56,14 +53,14 @@ public class Session {
     }
 
     public boolean isEnrollmentAmountValid(Payment payment) {
-        if (freeOrPaid == FREE) {
+        if (FreeOrPaid.isFree(freeOrPaid)) {
             return true;
         }
-        return payment.amount() == sessionFee;
+        return payment.isSameAmount(sessionFee);
     }
 
     public boolean isExceededMaxEnrollment(int enrollmentCount) {
-        if (freeOrPaid == FREE) {
+        if (FreeOrPaid.isFree(freeOrPaid)) {
             return false;
         }
         return enrollmentCount > limitedEnrollment;

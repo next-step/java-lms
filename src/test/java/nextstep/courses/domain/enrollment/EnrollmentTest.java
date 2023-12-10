@@ -1,5 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
@@ -23,9 +24,10 @@ class EnrollmentTest {
     @ParameterizedTest
     @EnumSource(mode = Mode.EXCLUDE, names = {"ENROLLMENT_OPEN"})
     void 강의_상태가_모집중이_아닐_때_수강신청_시_에러(SessionStatus sessionStatus) {
+        Payment payment = new Payment();
         Session session = new Session(sessionStatus);
 
-        assertThatThrownBy(() -> new Enrollment(session)).isInstanceOf(
+        assertThatThrownBy(() -> Enrollment.enroll(payment, session, JAVAJIGI)).isInstanceOf(
             IllegalArgumentException.class).hasMessage("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
     }
 

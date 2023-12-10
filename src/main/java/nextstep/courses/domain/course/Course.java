@@ -13,11 +13,11 @@ public class Course {
     private Sessions sessions;
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, null);
+        this(null, title, creatorId, LocalDateTime.now(), null, null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(0L, title, creatorId, LocalDateTime.now(), null, null);
+        this(id, title, creatorId, createdAt, updatedAt, null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt,

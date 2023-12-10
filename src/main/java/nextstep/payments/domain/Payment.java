@@ -26,7 +26,7 @@ public class Payment {
         this("", 0L, 0L, 0L);
     }
 
-    public long amount() {
-        return amount;
+    public boolean isSameAmount(long amount) {
+        return this.amount == amount;
     }
 }
