@@ -26,7 +26,7 @@ public class CourseTest {
         Long creatorId = 1L;
         int no = 1;
         Course course = new Course(0L, title, creatorId, LocalDateTime.now(), null, no);
-        List<Session> sessions = Arrays.asList(new Session(), new Session());
+        List<Session> sessions = Arrays.asList(new FreeSession(new Image(), new Period()), new FreeSession(new Image(), new Period()));
         course.addSession(sessions);
 
         assertThat(course.getSession().size()).isEqualTo(sessions.size());

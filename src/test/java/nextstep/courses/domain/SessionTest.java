@@ -18,7 +18,7 @@ public class SessionTest {
         Period period = new Period();
 
         // when
-        Session session = new Session(image, period, SessionType.FREE);
+        Session session = new FreeSession(image, period);
 
         // then
         assertThat(session.getImage()).isEqualTo(image);
@@ -28,15 +28,21 @@ public class SessionTest {
     @Test
     void 강의는_유료강의와_무료강의로_나뉜다() {
         // given
-        SessionType payType = SessionType.PAY;
-        SessionType freeType = SessionType.FREE;
+        FreeSession freeSession = new FreeSession(new Image(), new Period());
+        PaySession paySession = new PaySession(new Image(), new Period(), 1);
 
-        // when
-        Session paySession = new Session(new Image(), new Period(), payType);
-        Session freeSession = new Session(new Image(), new Period(), freeType);
+        // when, then
+        assertThat(paySession.getType()).isEqualTo(SessionType.PAY);
+        assertThat(freeSession.getType()).isEqualTo(SessionType.FREE);
+    }
 
-        // then
-        assertThat(paySession.getType()).isEqualTo(payType);
-        assertThat(freeSession.getType()).isEqualTo(freeType);
+    @Test
+    void 유료강의는_최대_수강_인원_제한이_있다() {
+        // given
+        int maxCountOfStudents = 1;
+        PaySession paySession = new PaySession(new Image(), new Period(), maxCountOfStudents);
+
+        // when, then
+        assertThat(paySession.getMaxCountOfStudents()).isEqualTo(maxCountOfStudents);
     }
 }

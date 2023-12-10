@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.Map;
 
-public class Session {
+public abstract class Session {
 
     private Long id;
 
