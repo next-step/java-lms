@@ -13,6 +13,7 @@ public enum ExceptionMessage {
     NEGATIVE_OR_ZERO_NUMBER("값을 음수 혹은 0으로 설정할 수 없습니다."),
     PAYMENT_AMOUNT_NOT_EQUAL("지불된 가겨과 강의 금액이 일치하지 않습니다."),
     ALREADY_TAKING_SESSION("이미 수강 중인 강의입니다."),
+    IMAGES_SIZE_ZERO("강의 이미지는 최소 1장 이상입니다."),
     ;
 
     public static final String DELIMITER = " - ";

@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.image.Images;
 import nextstep.courses.exception.CanNotApplyException;
 
 import java.util.Objects;
@@ -10,9 +11,14 @@ public class SessionInformation {
 
     private final Period period;
 
-    public SessionInformation(SessionStatus status, Period period) {
+    private final Images images;
+
+    public SessionInformation(SessionStatus status,
+                              Period period,
+                              Images images) {
         this.status = status;
         this.period = period;
+        this.images = images;
     }
 
     public void validateApply() {

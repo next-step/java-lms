@@ -2,6 +2,9 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.attendee.Attendee;
 import nextstep.courses.domain.attendee.AttendeeRepository;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.ImageRepository;
+import nextstep.courses.domain.image.Images;
 import nextstep.courses.domain.session.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,9 +22,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private final AttendeeRepository attendeeRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, AttendeeRepository attendeeRepository) {
+    private final ImageRepository imageRepository;
+
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate,
+                                 AttendeeRepository attendeeRepository,
+                                 ImageRepository imageRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.attendeeRepository = attendeeRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Override
@@ -31,10 +39,12 @@ public class JdbcSessionRepository implements SessionRepository {
                 " where id = ?";
         RowMapper<EnrollmentSession> rowMapper = (rs, rowNum) -> {
             List<Attendee> attendees = attendeeRepository.findAllBySessionId(sessionId);
+            List<Image> images = imageRepository.findAllBySessionId(sessionId);
             return new EnrollmentSession(
                     rs.getLong(1),
                     new SessionInformation(SessionStatus.valueOf(rs.getString(3)),
-                                           new Period(from(rs.getTimestamp(5)), from(rs.getTimestamp(6)))),
+                                           new Period(from(rs.getTimestamp(5)), from(rs.getTimestamp(6))),
+                                           new Images(images)),
                     EnrollmentFactory.create(SessionType.valueOf(rs.getString(4)), attendees, rs.getLong(7), rs.getInt(8)));
         };
 
