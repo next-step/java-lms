@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import nextstep.Session;
 import org.junit.jupiter.api.Test;
 
 public class CourseTest {
