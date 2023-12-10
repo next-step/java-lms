@@ -26,14 +26,14 @@ public class JdbcImageRepository implements ImageRepository {
         final ImagePixel imagePixel = image.imagePixel();
         final ImageType imageType = image.imageType();
 
-        String sql = "insert into image (session_id, size, width, height, type, created_at) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into image (session_id, size, width, height, image_type, created_at) values(?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, sessionId, image.size(), imagePixel.width(), imagePixel.height(),
                 imageType.name(), image.createdAt());
     }
 
     @Override
     public Optional<CoverImage> findById(final Long id) {
-        String sql = "select id, session_id, `size`, width, height, type, created_at, updated_at from image where id = ?";
+        String sql = "select id, session_id, `size`, width, height, image_type, created_at, updated_at from image where id = ?";
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong(1),
                 rs.getLong(3),
@@ -54,7 +54,8 @@ public class JdbcImageRepository implements ImageRepository {
     @Override
     public List<CoverImage> findAllBySessionId(final Long sessionId) {
 
-        String sql = "select id, session_id, `size`, width, height, type, created_at, updated_at from image where session_id = ?";
+        String sql = "select id, session_id, `size`, width, height, image_type, created_at, updated_at " +
+                " from image where session_id = ?";
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong(1),
                 rs.getLong(3),

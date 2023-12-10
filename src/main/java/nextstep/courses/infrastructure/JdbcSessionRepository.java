@@ -46,7 +46,7 @@ public class JdbcSessionRepository implements SessionRepository {
         final SessionType sessionType = session.sessionType();
         final RecruitStatus recruitStatus = session.recruitStatus();
 
-        String sql = "insert into session (title, start_data_time, end_date_time, status, course_id, type, " +
+        String sql = "insert into session (title, start_data_time, end_date_time, status, course_id, session_type, " +
                 " amount, max_enrollment_count, remain_enrollment_count, recruit, creator_id, created_at) " +
                 " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -75,7 +75,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(final Long id) {
-        String sql = "select id, title, start_data_time, end_date_time, status, type," +
+        String sql = "select id, title, start_data_time, end_date_time, status, session_type," +
                 " amount, max_enrollment_count, remain_enrollment_count, recruit, creator_id, created_at, updated_at " +
                 " from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
