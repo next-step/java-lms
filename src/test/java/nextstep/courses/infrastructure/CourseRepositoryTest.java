@@ -35,6 +35,8 @@ public class CourseRepositoryTest {
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+        assertThat(course.getOrdering()).isEqualTo(savedCourse.getOrdering());
+        assertThat(course.getCreatorId()).isEqualTo(savedCourse.getCreatorId());
         LOGGER.debug("Course: {}", savedCourse);
     }
 }

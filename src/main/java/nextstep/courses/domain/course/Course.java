@@ -49,6 +49,6 @@ public class Course extends BaseEntity {
     }
 
     public Long getCreatorId() {
-        return this.getCreatorId();
+        return super.getCreatorId();
     }
 }
