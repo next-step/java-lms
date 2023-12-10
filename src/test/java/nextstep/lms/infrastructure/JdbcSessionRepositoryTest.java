@@ -2,7 +2,8 @@ package nextstep.lms.infrastructure;
 
 import nextstep.lms.domain.Session;
 import nextstep.lms.enums.PricingTypeEnum;
-import nextstep.lms.enums.SessionStatusEnum;
+import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.lms.repository.CoverImageRepository;
 import nextstep.lms.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,8 @@ class JdbcSessionRepositoryTest {
         Session session = new Session(coverImageRepository.findById(1L),
                 PricingTypeEnum.PAID.name(),
                 800_000L,
-                SessionStatusEnum.PREPARING.name(),
+                SessionProgressEnum.PREPARING.name(),
+                SessionRecruitmentEnum.RECRUITING.name(),
                 100,
                 LocalDateTime.of(2023, 12, 7, 00, 00),
                 LocalDateTime.of(2023, 12, 31, 23, 59));
@@ -44,7 +46,8 @@ class JdbcSessionRepositoryTest {
         assertThat(session.getImageId()).isEqualTo(savedSession.getImageId());
         assertThat(session.getPricingType()).isEqualTo(savedSession.getPricingType());
         assertThat(session.getTuitionFee()).isEqualTo(savedSession.getTuitionFee());
-        assertThat(session.getSessionStatus()).isEqualTo(savedSession.getSessionStatus());
+        assertThat(session.getSessionRecruitment()).isEqualTo(savedSession.getSessionRecruitment());
+        assertThat(session.getSessionProgressEnum()).isEqualTo(savedSession.getSessionProgressEnum());
         assertThat(session.getCapacity()).isEqualTo(savedSession.getCapacity());
         assertThat(session.getStartDate()).isEqualTo(savedSession.getStartDate());
         assertThat(session.getEndDate()).isEqualTo(savedSession.getEndDate());

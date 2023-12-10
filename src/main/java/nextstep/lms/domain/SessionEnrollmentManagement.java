@@ -1,26 +1,27 @@
 package nextstep.lms.domain;
 
 import nextstep.lms.enums.PricingTypeEnum;
-import nextstep.lms.enums.SessionStatusEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.payments.domain.Payment;
 
 public class SessionEnrollmentManagement {
     private final PricingPolicy pricingPolicy;
-    private final SessionStatusEnum sessionStatusEnum;
+    private final SessionRecruitmentEnum sessionRecruitmentEnum;
     private final int capacity;
 
-    public SessionEnrollmentManagement(String pricingType, Long tuitionFee, String sessionStatus, int capacity) {
-        this(new PricingPolicy(PricingTypeEnum.valueOf(pricingType), tuitionFee), SessionStatusEnum.valueOf(sessionStatus), capacity);
+    public SessionEnrollmentManagement(String pricingType, Long tuitionFee, String sessionRecruitment, int capacity) {
+        this(new PricingPolicy(PricingTypeEnum.valueOf(pricingType), tuitionFee), SessionRecruitmentEnum.valueOf(sessionRecruitment), capacity);
     }
 
-    public SessionEnrollmentManagement(PricingPolicy pricingPolicy, SessionStatusEnum sessionStatusEnum, int capacity) {
+    public SessionEnrollmentManagement(PricingPolicy pricingPolicy, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity) {
         this.pricingPolicy = pricingPolicy;
-        this.sessionStatusEnum = sessionStatusEnum;
+
+        this.sessionRecruitmentEnum = sessionRecruitmentEnum;
         this.capacity = capacity;
     }
 
     public Long enroll(Students students, Payment payment) {
-        sessionStatusCheck();
+        sessionRecruitmentCheck();
         pricingPolicy.canEnrollCheck(payment);
 
         if (pricingPolicy.isPaid()) {
@@ -30,8 +31,8 @@ public class SessionEnrollmentManagement {
         return students.enroll(payment.getNsUserId());
     }
 
-    private void sessionStatusCheck() {
-        if (!sessionStatusEnum.isRecruiting()) {
+    private void sessionRecruitmentCheck() {
+        if (!sessionRecruitmentEnum.isRecruiting()) {
             throw new IllegalArgumentException("모집중이 아닙니다.");
         }
     }
@@ -44,8 +45,8 @@ public class SessionEnrollmentManagement {
         return pricingPolicy.getTuitionFee();
     }
 
-    public String getSessionStatus() {
-        return sessionStatusEnum.name();
+    public String getSessionRecruitment() {
+        return sessionRecruitmentEnum.name();
     }
 
     public int getCapacity() {

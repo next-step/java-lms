@@ -17,6 +17,7 @@ class ParserTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("파일명이 올바르지않습니다.");
     }
+
     @DisplayName("정상 파일명")
     @ParameterizedTest
     @CsvSource(value = {"next.png:next", "choi.jae.hyeon.svg:choi.jae.hyeon"}, delimiter = ':')

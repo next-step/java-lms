@@ -26,6 +26,7 @@ public class Students {
             throw new IllegalArgumentException("최대 수강 인원을 초과할 수 없습니다.");
         }
     }
+
     private void duplicationCheck(Long userId) {
         if (this.students.contains(userId)) {
             throw new IllegalArgumentException("이미 수강중인 강의입니다.");

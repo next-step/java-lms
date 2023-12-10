@@ -8,8 +8,8 @@ public class SessionInfo {
     private final CoverImage coverImage;
     private final SessionDetail sessionDetail;
 
-    public SessionInfo(CoverImage coverImage, String pricingType, Long tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(coverImage, new SessionDetail(pricingType, tuitionFee, sessionStatus, capacity, startDate, endDate));
+    public SessionInfo(CoverImage coverImage, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(coverImage, new SessionDetail(pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate));
     }
 
     public SessionInfo(CoverImage coverImage, SessionDetail sessionDetail) {
@@ -33,8 +33,12 @@ public class SessionInfo {
         return sessionDetail.getTuitionFee();
     }
 
-    public String getSessionStatus() {
-        return sessionDetail.getSessionStatus();
+    public String getSessionRecruitment() {
+        return sessionDetail.getSessionRecruitment();
+    }
+
+    public String getSessionProgressEnum() {
+        return sessionDetail.getSessionProgressEnum();
     }
 
     public int getCapacity() {

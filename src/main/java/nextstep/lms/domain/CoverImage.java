@@ -10,7 +10,7 @@ public class CoverImage {
     private LocalDateTime updatedAt;
 
     public CoverImage(FileNameStructure fileNameStructure, FileMetadata fileMetadata) {
-        this(0l, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
+        this(0L, fileNameStructure, fileMetadata, LocalDateTime.now(), null);
     }
 
     public CoverImage(Long id, FileNameStructure fileNameStructure, FileMetadata fileMetadata, LocalDateTime createdAt, LocalDateTime updatedAt) {

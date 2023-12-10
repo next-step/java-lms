@@ -1,19 +1,22 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.SessionProgressEnum;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
 public class SessionDetail {
     private final SessionEnrollmentManagement sessionEnrollmentManagement;
+    private final SessionProgressEnum sessionProgressEnum;
     private final SessionPeriod sessionPeriod;
 
-    public SessionDetail(String pricingType, Long tuitionFee, String sessionStatus, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionStatus, capacity), new SessionPeriod(startDate, endDate));
+    public SessionDetail(String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionRecruitment, capacity), SessionProgressEnum.valueOf(sessionProgress), new SessionPeriod(startDate, endDate));
     }
 
-    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionPeriod sessionPeriod) {
+    public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionProgressEnum sessionProgressEnum, SessionPeriod sessionPeriod) {
         this.sessionEnrollmentManagement = sessionEnrollmentManagement;
+        this.sessionProgressEnum = sessionProgressEnum;
         this.sessionPeriod = sessionPeriod;
     }
 
@@ -30,8 +33,8 @@ public class SessionDetail {
         return sessionEnrollmentManagement.getTuitionFee();
     }
 
-    public String getSessionStatus() {
-        return sessionEnrollmentManagement.getSessionStatus();
+    public String getSessionRecruitment() {
+        return sessionEnrollmentManagement.getSessionRecruitment();
     }
 
     public int getCapacity() {
@@ -46,6 +49,9 @@ public class SessionDetail {
         return sessionPeriod.getEndDate();
     }
 
+    public String getSessionProgressEnum() {
+        return sessionProgressEnum.name();
+    }
 }
 
 
