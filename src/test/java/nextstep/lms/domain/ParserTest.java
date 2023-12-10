@@ -13,9 +13,8 @@ class ParserTest {
     @ParameterizedTest
     @NullAndEmptySource
     void 파일명_null(String name) {
-        assertThatThrownBy(() -> Parser.getBaseName(name))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("파일명이 올바르지않습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> Parser.getBaseName(name))
+                .withMessage("파일명이 올바르지않습니다.");
     }
 
     @DisplayName("정상 파일명")
@@ -28,9 +27,8 @@ class ParserTest {
     @DisplayName("확장자가 없을경우 예외발생")
     @Test
     void 파일명_null() {
-        assertThatThrownBy(() -> Parser.getExtension("nextstep"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("확장자가 없습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> Parser.getExtension("nextstep"))
+                .withMessage("확장자가 없습니다.");
     }
 
     @DisplayName("정상 확장자")

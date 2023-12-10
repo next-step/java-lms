@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class PricingPolicyTest {
     private PricingPolicy freePolicy;
@@ -25,8 +25,7 @@ class PricingPolicyTest {
     void 유료_강의_수강료_불일치(Long fee) throws IllegalArgumentException {
         final Payment payment = new Payment("1", 1L, 1L, fee);
 
-        assertThatThrownBy(() -> paidPolicy.canEnrollCheck(payment))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("결제금액이 수강료와 다릅니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> paidPolicy.canEnrollCheck(payment))
+                .withMessage("결제금액이 수강료와 다릅니다.");
     }
 }

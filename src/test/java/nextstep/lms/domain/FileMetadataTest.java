@@ -14,8 +14,7 @@ public class FileMetadataTest {
         final Long fileVolume = 1_024 * 1_024 * 3L;
         final FileSize fileSize = FileSizeTest.NORMAL_FILE_SIZE;
 
-        assertThatThrownBy(() -> new FileMetadata(fileVolume, fileSize))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("파일이 너무 큽니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> new FileMetadata(fileVolume, fileSize))
+                .withMessage("파일이 너무 큽니다.");
     }
 }

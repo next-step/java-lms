@@ -38,9 +38,8 @@ class StudentsTest {
     void 최대_수강_인원_초과() {
         Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED.name());
         Students students = new Students(Arrays.asList(student));
-        assertThatThrownBy(() -> students.capacityCheck(1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("수강생이 모두 선발됐습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> students.capacityCheck(1))
+                .withMessage("수강생이 모두 선발됐습니다.");
     }
 
     @DisplayName("수강생 선발")

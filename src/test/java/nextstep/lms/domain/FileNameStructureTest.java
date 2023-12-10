@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class FileNameStructureTest {
     public static FileNameStructure NORMAL_FILE_NAME = new FileNameStructure("step", "png");
@@ -14,8 +14,7 @@ public class FileNameStructureTest {
     //@ValueSource(strings = {"java.step", "next.step"})
     @CsvSource(value = {"java:step", "next:step"}, delimiter = ':')
     void 확장자_확인(String name, String extension) {
-        assertThatThrownBy(() -> new FileNameStructure(name, extension))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("지원하지 않는 확장자입니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> new FileNameStructure(name, extension))
+                .withMessage("지원하지 않는 확장자입니다.");
     }
 }

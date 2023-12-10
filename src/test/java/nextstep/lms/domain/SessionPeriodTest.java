@@ -14,8 +14,7 @@ class SessionPeriodTest {
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.of(2023, 12, 5, 0, 0, 0),
                 LocalDateTime.of(2023, 12, 31, 23, 59, 59));
 
-        assertThatThrownBy(() -> sessionPeriod.canEnrollCheck(LocalDateTime.now()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("강의 시작 후에는 수강신청할 수 없습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> sessionPeriod.canEnrollCheck(LocalDateTime.now()))
+                .withMessage("강의 시작 후에는 수강신청할 수 없습니다.");
     }
 }

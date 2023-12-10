@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class SessionEnrollmentManagementTest {
     @DisplayName("강의 모집상태가 모집중이 아닐경우 수강생 등록 시 예외발생")
@@ -20,8 +20,7 @@ class SessionEnrollmentManagementTest {
         final Students students = new Students(Collections.emptyList());
         final Payment payment = new Payment("1", 1L, 1L, 0L);
 
-        assertThatThrownBy(() -> completedSession.enrollableCheck(students, payment))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모집중이 아닙니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> completedSession.enrollableCheck(students, payment))
+                .withMessage("모집중이 아닙니다.");
     }
 }
