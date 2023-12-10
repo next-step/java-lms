@@ -28,7 +28,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public int update(final Enrollment enrollment) {
         String sql = "update enrollment SET approved = ? where id = ?";
-        return jdbcTemplate.update(sql, toIntApproved(enrollment.getApproved()), enrollment.id());
+        return jdbcTemplate.update(sql, enrollment.getApproved(), enrollment.id());
     }
 
     @Override
@@ -38,26 +38,10 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
-                toApproved(rs.getInt(4)),
+                rs.getBoolean(4),
                 toLocalDateTime(rs.getTimestamp(5)),
                 toLocalDateTime(rs.getTimestamp(6)));
         return  Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
-    }
-
-    private boolean toApproved(int intApproved) {
-        if (intApproved == 1) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private int toIntApproved(boolean approved) {
-        if (approved) {
-            return 1;
-        }
-
-        return 0;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
