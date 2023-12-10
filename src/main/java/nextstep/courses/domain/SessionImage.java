@@ -9,6 +9,8 @@ import java.util.List;
 public class SessionImage {
     public static final int MB = 1024 * 1024;
     public static final List<String> IMG_FILE_TYPE = List.of("gif", "jpg", "jpeg", "png", "svg");
+
+    private Long id;
     private long fileSize;
     private String fileType;
     private ImageSize imageSize;
@@ -55,4 +57,23 @@ public class SessionImage {
         return new ImageSize(image);
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public int getImageWidth() {
+        return imageSize.getImageWidth();
+    }
+
+    public int getImageHeight() {
+        return imageSize.getImageHeight();
+    }
 }

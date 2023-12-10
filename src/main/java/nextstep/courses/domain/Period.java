@@ -25,4 +25,12 @@ public class Period {
         }
         return status;
     }
+
+    public LocalDate startDate() {
+        return startDate;
+    }
+
+    public LocalDate endDate() {
+        return endDate;
+    }
 }

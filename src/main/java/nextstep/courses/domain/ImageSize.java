@@ -10,7 +10,7 @@ public class ImageSize {
     private Integer imageHeight;
 
     public ImageSize(Integer imageWidth, Integer imageHeight) {
-        if (imageWidth < MIN_HEIGHT || imageHeight < MIN_WIDTH) {
+        if (imageWidth < MIN_WIDTH || imageHeight < MIN_HEIGHT) {
             throw new IllegalArgumentException();
         }
         if ((double) imageWidth / imageHeight != 1.5) {
@@ -22,5 +22,13 @@ public class ImageSize {
 
     public ImageSize(BufferedImage image) {
         this(image.getWidth(), image.getHeight());
+    }
+
+    public Integer getImageWidth() {
+        return imageWidth;
+    }
+
+    public Integer getImageHeight() {
+        return imageHeight;
     }
 }
