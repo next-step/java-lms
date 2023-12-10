@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import nextstep.courses.Time;
 import nextstep.courses.domain.Students;
 import nextstep.courses.domain.coverimage.CoverImage;
-import nextstep.courses.domain.coverimage.Time;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Price;
 
