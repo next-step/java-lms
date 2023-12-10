@@ -1,22 +1,42 @@
 package nextstep.courses.domain.session;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.exception.CannotEnrollException;
+import nextstep.courses.exception.InvalidSessionDateException;
 import nextstep.users.domain.NsUser;
 
 public class Session {
 
     private Type type;
+
     private Status status;
+
     private int maxCountOfStudents = Integer.MAX_VALUE;
+
     private List<NsUser> students;
 
-    public Session(Type type, Status status, int maxCountOfStudents) {
+    private LocalDateTime startAt;
+
+    private LocalDateTime endAt;
+
+    public Session(Type type, Status status, int maxCountOfStudents, LocalDateTime startAt,
+        LocalDateTime endAt) throws InvalidSessionDateException {
+        validateStartTimeAndEndTime(startAt, endAt);
         this.students = new ArrayList<>();
         this.type = type;
         this.status = status;
         this.maxCountOfStudents = maxCountOfStudents;
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
+
+    private static void validateStartTimeAndEndTime(LocalDateTime startAt, LocalDateTime endAt)
+        throws InvalidSessionDateException {
+        if (startAt.isAfter(endAt)) {
+            throw new InvalidSessionDateException("강의 시작일은 종료일보다 늦어질 수 없다");
+        }
     }
 
     public void enrollStudent(NsUser user) throws CannotEnrollException {
