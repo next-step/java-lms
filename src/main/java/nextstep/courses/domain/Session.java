@@ -4,13 +4,12 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 public class Session {
 
-    private long id;
+    private Long id;
     private Period period;
     private SessionStatus status;
     private Students students;
@@ -18,25 +17,27 @@ public class Session {
     private SessionImage sessionImage;
     private Course course;
 
-    public Session() {
-    }
-
     public Session(SessionImage image) throws PeriodException {
-        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), SessionStatus.WAITING, new Students(), new SessionType(), image);
+        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), SessionStatus.WAITING, new Students(), new SessionType(), image);
     }
     public Session(SessionStatus status) throws PeriodException {
-        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
+        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
     }
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
-        this(new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), new SessionImage());
+        this(null, new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), new SessionImage());
     }
 
     public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) throws PeriodException {
-        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, new SessionImage());
+        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, new SessionImage());
     }
 
-    public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+    public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage image) {
+        this(null, period, status, students, sessionType, image);
+    }
+
+    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this.id = id;
         this.period = period;
         this.status = status;
         this.students = students;
@@ -86,6 +87,14 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(period, status, sessionType);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Students getStudents() {
+        return students;
     }
 
     public LocalDate startedAt() {

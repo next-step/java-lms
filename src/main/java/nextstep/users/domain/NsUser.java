@@ -135,4 +135,17 @@ public class NsUser {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NsUser nsUser = (NsUser) o;
+        return Objects.equals(id, nsUser.id) && Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password) && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, password, name, email);
+    }
 }

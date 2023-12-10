@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Students {
 
@@ -26,6 +27,16 @@ public class Students {
             throw new MaxStudentsExceedException("수강인원을 초과하여 신청할 수 없습니다.");
         }
         return this;
+    }
+
+    public boolean containsNsUser(NsUser nsUser) {
+        return this.userList.contains(nsUser);
+    }
+
+    public List<NsUser> excludeNsUser(Students students) {
+        return this.userList.stream()
+                .filter(it -> !students.containsNsUser(it))
+                .collect(Collectors.toList());
     }
 
     public int size(){
