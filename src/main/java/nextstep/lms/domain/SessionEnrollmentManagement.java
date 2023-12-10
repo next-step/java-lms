@@ -9,8 +9,8 @@ public class SessionEnrollmentManagement {
     private final SessionRecruitmentEnum sessionRecruitmentEnum;
     private final int capacity;
 
-    public SessionEnrollmentManagement(String pricingType, Long tuitionFee, String sessionRecruitment, int capacity) {
-        this(new PricingPolicy(PricingTypeEnum.valueOf(pricingType), tuitionFee), SessionRecruitmentEnum.valueOf(sessionRecruitment), capacity);
+    public SessionEnrollmentManagement(PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity) {
+        this(new PricingPolicy(pricingTypeEnum, tuitionFee), sessionRecruitmentEnum, capacity);
     }
 
     public SessionEnrollmentManagement(PricingPolicy pricingPolicy, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity) {

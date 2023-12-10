@@ -1,5 +1,8 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.PricingTypeEnum;
+import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -13,12 +16,12 @@ public class Session {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(Long id, List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, new SessionInfo(coverImages, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), students, createdAt, updatedAt);
+    public Session(Long id, List<CoverImage> coverImages, PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionProgressEnum sessionProgressEnum, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity, LocalDateTime startDate, LocalDateTime endDate, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, new SessionInfo(coverImages, pricingTypeEnum, tuitionFee, sessionProgressEnum, sessionRecruitmentEnum, capacity, startDate, endDate), students, createdAt, updatedAt);
     }
 
-    public Session(List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(0L, new SessionInfo(coverImages, pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate), new Students(new ArrayList<>()), LocalDateTime.now(), null);
+    public Session(List<CoverImage> coverImages, PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionProgressEnum sessionProgressEnum, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(0L, new SessionInfo(coverImages, pricingTypeEnum, tuitionFee, sessionProgressEnum, sessionRecruitmentEnum, capacity, startDate, endDate), new Students(new ArrayList<>()), LocalDateTime.now(), null);
     }
 
     public Session(Long id, SessionInfo sessionInfo, Students students, LocalDateTime createdAt, LocalDateTime updatedAt) {

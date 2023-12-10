@@ -1,5 +1,8 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.PricingTypeEnum;
+import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -11,8 +14,8 @@ public class SessionInfo {
     private final List<CoverImage> coverImages;
     private final SessionDetail sessionDetail;
 
-    public SessionInfo(List<CoverImage> coverImages, String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(coverImages, new SessionDetail(pricingType, tuitionFee, sessionProgress, sessionRecruitment, capacity, startDate, endDate));
+    public SessionInfo(List<CoverImage> coverImages, PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionProgressEnum sessionProgressEnum, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(coverImages, new SessionDetail(pricingTypeEnum, tuitionFee, sessionProgressEnum, sessionRecruitmentEnum, capacity, startDate, endDate));
     }
 
     public SessionInfo(List<CoverImage> coverImages, SessionDetail sessionDetail) {

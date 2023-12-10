@@ -33,10 +33,10 @@ class JdbcSessionRepositoryTest {
     @Test
     void create_read() {
         Session session = new Session(coverImageRepository.findBySessionId(1L),
-                PricingTypeEnum.PAID.name(),
+                PricingTypeEnum.PAID,
                 800_000L,
-                SessionProgressEnum.PREPARING.name(),
-                SessionRecruitmentEnum.RECRUITING.name(),
+                SessionProgressEnum.PREPARING,
+                SessionRecruitmentEnum.RECRUITING,
                 100,
                 LocalDateTime.of(2023, 12, 7, 00, 00),
                 LocalDateTime.of(2023, 12, 31, 23, 59));

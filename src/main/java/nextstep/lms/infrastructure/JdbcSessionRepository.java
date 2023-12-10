@@ -1,6 +1,9 @@
 package nextstep.lms.infrastructure;
 
 import nextstep.lms.domain.*;
+import nextstep.lms.enums.PricingTypeEnum;
+import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.lms.repository.CoverImageRepository;
 import nextstep.lms.repository.SessionRepository;
 import nextstep.lms.repository.StudentsRepository;
@@ -48,10 +51,10 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 getCoverImages(id),
-                rs.getString(2),
+                PricingTypeEnum.valueOf(rs.getString(2)),
                 rs.getLong(3),
-                rs.getString(4),
-                rs.getString(5),
+                SessionProgressEnum.valueOf(rs.getString(4)),
+                SessionRecruitmentEnum.valueOf(rs.getString(5)),
                 rs.getInt(6),
                 toLocalDateTime(rs.getTimestamp(7)),
                 toLocalDateTime(rs.getTimestamp(8)),

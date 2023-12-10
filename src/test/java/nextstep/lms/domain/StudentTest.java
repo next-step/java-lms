@@ -13,7 +13,7 @@ class StudentTest {
     void 선발_여부() {
         Student student1 = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
         assertThat(student1.isSelected()).isFalse();
-        Student student2 = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED.name());
+        Student student2 = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
         assertThat(student2.isSelected()).isTrue();
     }
 }

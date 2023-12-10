@@ -2,6 +2,7 @@ package nextstep.lms.infrastructure;
 
 import nextstep.lms.domain.Student;
 import nextstep.lms.domain.Students;
+import nextstep.lms.enums.StudentStatusEnum;
 import nextstep.lms.repository.StudentsRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,7 +36,7 @@ public class JdbcStudentsRepository implements StudentsRepository {
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong(1),
                 rs.getLong(2),
-                rs.getString(3));
+                StudentStatusEnum.valueOf(rs.getString(3)));
         List<Student> sessionStudent = jdbcTemplate.query(sql, rowMapper, sessionId);
         return new Students(sessionStudent);
     }

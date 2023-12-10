@@ -36,7 +36,7 @@ class StudentsTest {
     @DisplayName("유료강의 최대 수강 인원을 초과한다면 예외 발생")
     @Test
     void 최대_수강_인원_초과() {
-        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED.name());
+        Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
         Students students = new Students(Arrays.asList(student));
         assertThatIllegalArgumentException().isThrownBy(() -> students.capacityCheck(1))
                 .withMessage("수강생이 모두 선발됐습니다.");
@@ -47,7 +47,7 @@ class StudentsTest {
     void 수강생_선발() {
         Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
         Students students = new Students(Arrays.asList(student));
-        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED.name());
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.SELECTED);
 
         assertThat(students.selection(student)).isEqualTo(expectedStudent);
     }
@@ -66,7 +66,7 @@ class StudentsTest {
     void 수강생_미선발() {
         Student student = new Student(NsUserTest.JAVAJIGI.getId(), 1L);
         Students students = new Students(Arrays.asList(student));
-        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.NON_SELECTED.name());
+        Student expectedStudent = new Student(NsUserTest.JAVAJIGI.getId(), 1L, StudentStatusEnum.NON_SELECTED);
 
         assertThat(students.nonSelection(student)).isEqualTo(expectedStudent);
     }

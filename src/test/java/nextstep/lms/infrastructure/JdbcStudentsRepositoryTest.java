@@ -42,8 +42,8 @@ class JdbcStudentsRepositoryTest {
         assertThat(savedStudents.getStudents()).contains(student1, student2, student3);
 
         //update
-        Student expectedStudent1 = new Student(1L, 1L, StudentStatusEnum.NON_SELECTED.name());
-        Student expectedStudent2 = new Student(2L, 1L, StudentStatusEnum.SELECTED.name());
+        Student expectedStudent1 = new Student(1L, 1L, StudentStatusEnum.NON_SELECTED);
+        Student expectedStudent2 = new Student(2L, 1L, StudentStatusEnum.SELECTED);
         int updatedCount = studentsRepository.updateStatus(expectedStudent1);
         updatedCount += studentsRepository.updateStatus(expectedStudent2);
         assertThat(updatedCount).isEqualTo(2);

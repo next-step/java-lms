@@ -1,6 +1,8 @@
 package nextstep.lms.domain;
 
+import nextstep.lms.enums.PricingTypeEnum;
 import nextstep.lms.enums.SessionProgressEnum;
+import nextstep.lms.enums.SessionRecruitmentEnum;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -10,8 +12,8 @@ public class SessionDetail {
     private final SessionProgressEnum sessionProgressEnum;
     private final SessionPeriod sessionPeriod;
 
-    public SessionDetail(String pricingType, Long tuitionFee, String sessionProgress, String sessionRecruitment, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
-        this(new SessionEnrollmentManagement(pricingType, tuitionFee, sessionRecruitment, capacity), SessionProgressEnum.valueOf(sessionProgress), new SessionPeriod(startDate, endDate));
+    public SessionDetail(PricingTypeEnum pricingTypeEnum, Long tuitionFee, SessionProgressEnum sessionProgressEnum, SessionRecruitmentEnum sessionRecruitmentEnum, int capacity, LocalDateTime startDate, LocalDateTime endDate) {
+        this(new SessionEnrollmentManagement(pricingTypeEnum, tuitionFee, sessionRecruitmentEnum, capacity), sessionProgressEnum, new SessionPeriod(startDate, endDate));
     }
 
     public SessionDetail(SessionEnrollmentManagement sessionEnrollmentManagement, SessionProgressEnum sessionProgressEnum, SessionPeriod sessionPeriod) {

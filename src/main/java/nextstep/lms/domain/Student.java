@@ -10,13 +10,13 @@ public class Student {
     private StudentStatusEnum studentStatusEnum;
 
     public Student(Long userId, Long sessionId) {
-        this(userId, sessionId, StudentStatusEnum.APPLIED.name());
+        this(userId, sessionId, StudentStatusEnum.APPLIED);
     }
 
-    public Student(Long userId, Long sessionId, String studentStatus) {
+    public Student(Long userId, Long sessionId, StudentStatusEnum studentStatusEnum) {
         this.userId = userId;
         this.sessionId = sessionId;
-        this.studentStatusEnum = StudentStatusEnum.valueOf(studentStatus);
+        this.studentStatusEnum = studentStatusEnum;
     }
 
     public boolean isSelected() {
