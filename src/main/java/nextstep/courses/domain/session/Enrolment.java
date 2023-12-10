@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 
 public class Enrolment {
@@ -8,9 +9,12 @@ public class Enrolment {
 
     private final Price price;
 
-    public Enrolment(ParticipantManager participantManager, Price price) {
+    private SessionStatus status;
+
+    public Enrolment(ParticipantManager participantManager, Price price, SessionStatus status) {
         this.participantManager = participantManager;
         this.price = price;
+        this.status = status;
     }
 
     public void addParticipant(int money, NsUser user) {
@@ -19,6 +23,9 @@ public class Enrolment {
     }
 
     private void validate(int money) {
+        if (status.equals(status.FINISH)) {
+            throw new IllegalArgumentException("종료된 강의 입니다.");
+        }
         if (!price.isFree()) {
             participantManager.validateParticipant();
         }
@@ -44,7 +51,11 @@ public class Enrolment {
         return price.money();
     }
 
-    public static Enrolment of(int maxParticipants, Price price) {
-        return new Enrolment(ParticipantManager.of(maxParticipants), price);
+    public String status() {
+        return status.toString();
+    }
+
+    public static Enrolment of(int maxParticipants, Price price, SessionStatus status) {
+        return new Enrolment(ParticipantManager.of(maxParticipants), price, status);
     }
 }

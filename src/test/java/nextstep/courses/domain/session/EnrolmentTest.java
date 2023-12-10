@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,7 @@ public class EnrolmentTest {
         int money = 10000;
         ParticipantManager participantManager = new ParticipantManager(10);
         Price price = new Price(money);
-        Enrolment enrolment = new Enrolment(participantManager, price);
+        Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         enrolment.addParticipant(money, NsUserTest.JAVAJIGI);
         // then
@@ -37,7 +38,7 @@ public class EnrolmentTest {
         }};
         ParticipantManager participantManager = new ParticipantManager(1, new SessionParticipants(users));
         Price price = new Price(money);
-        Enrolment enrolment = new Enrolment(participantManager, price);
+        Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
         assertThatThrownBy(() -> enrolment.addParticipant(money, NsUserTest.SANJIGI))
@@ -51,10 +52,24 @@ public class EnrolmentTest {
         int money = 10000;
         ParticipantManager participantManager = new ParticipantManager(10);
         Price price = new Price(money);
-        Enrolment enrolment = new Enrolment(participantManager, price);
+        Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
         assertThatThrownBy(() -> enrolment.addParticipant(1000, NsUserTest.JAVAJIGI))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("강의가 종료 상태이면 예외가 발생한다.")
+    @Test
+    void 강의가_종료_상태이면_예외가_발생한다() {
+        // given
+        int money = 10000;
+        ParticipantManager participantManager = new ParticipantManager(10);
+        Price price = new Price(money);
+        Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.FINISH);
+        // when
+        // then
+        assertThatThrownBy(() -> enrolment.addParticipant(money, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

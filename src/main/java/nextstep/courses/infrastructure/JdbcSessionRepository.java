@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,13 +22,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (title, start_date_time, end_date_time, status, money, max_participants, course_id) values(?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.title(), session.startDateTime(), session.endDateTime(), session.status(), session.price(), session.maxParticipants(), session.courseId());
+        String sql = "insert into session (title, start_date_time, end_date_time, status, money, max_participants, course_id, recruitment_status) values(?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, session.title(), session.startDateTime(), session.endDateTime(), session.status(), session.price(), session.maxParticipants(), session.courseId(), session.recruitmentStatus());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, title, start_date_time, end_date_time, status, money, max_participants, course_id from session where id = ?";
+        String sql = "select id, title, start_date_time, end_date_time, status, money, max_participants, course_id, recruitment_status from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             Long sessionId = rs.getLong(1);
             String title = rs.getString(2);
@@ -37,15 +38,16 @@ public class JdbcSessionRepository implements SessionRepository {
             int money = rs.getInt(6);
             int maxParticipants = rs.getInt(7);
             Long courseId = rs.getLong(8);
+            String recruitmentStatus = rs.getString(9);
             return new Session(sessionId, title, SessionPeriod.of(startDateTime, endDateTime),
-                    Enrolment.of(maxParticipants, Price.of(money)), SessionStatus.valueOf(status), courseId);
+                    Enrolment.of(maxParticipants, Price.of(money), SessionStatus.valueOf(status)), RecruitmentStatus.valueOf(recruitmentStatus), courseId);
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     @Override
     public List<Session> findByCourseId(Long findCourseId) {
-        String sql = "select id, title, start_date_time, end_date_time, status, money, max_participants, course_id from session where course_id = ?";
+        String sql = "select id, title, start_date_time, end_date_time, status, money, max_participants, course_id, recruitment_status from session where course_id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             Long sessionId = rs.getLong(1);
             String title = rs.getString(2);
@@ -55,8 +57,9 @@ public class JdbcSessionRepository implements SessionRepository {
             int money = rs.getInt(6);
             int maxParticipants = rs.getInt(7);
             Long courseId = rs.getLong(8);
+            String recruitmentStatus = rs.getString(9);
             return new Session(sessionId, title, SessionPeriod.of(startDateTime, endDateTime),
-                    Enrolment.of(maxParticipants, Price.of(money)), SessionStatus.valueOf(status), courseId);
+                    Enrolment.of(maxParticipants, Price.of(money), SessionStatus.valueOf(status)), RecruitmentStatus.valueOf(recruitmentStatus), courseId);
         };
         return jdbcTemplate.query(sql, rowMapper, findCourseId);
     }

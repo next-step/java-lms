@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.image.Image;
-import nextstep.courses.type.SessionStatus;
+import nextstep.courses.type.RecruitmentStatus;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -11,25 +10,25 @@ public class Session {
     private Long id;
     private String title;
     private SessionPeriod sessionPeriod;
-    private SessionStatus status;
+    private RecruitmentStatus recruitmentStatus;
     private Enrolment enrolment;
     private Images images;
     private Long courseId;
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Long courseId) {
-        this(id, title, sessionPeriod, enrolment, status, null, courseId);
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, RecruitmentStatus recruitmentStatus, Long courseId) {
+        this(id, title, sessionPeriod, enrolment, recruitmentStatus, null, courseId);
     }
 
-    public Session(String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Images images, Long courseId) {
-        this(null, title, sessionPeriod, enrolment, status, images, courseId);
+    public Session(String title, SessionPeriod sessionPeriod, Enrolment enrolment, RecruitmentStatus recruitmentStatus, Images images, Long courseId) {
+        this(null, title, sessionPeriod, enrolment, recruitmentStatus, images, courseId);
     }
 
-    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, SessionStatus status, Images images, Long courseId) {
+    public Session(Long id, String title, SessionPeriod sessionPeriod, Enrolment enrolment, RecruitmentStatus recruitmentStatus, Images images, Long courseId) {
         this.id = id;
         this.title = title;
         this.sessionPeriod = sessionPeriod;
         this.enrolment = enrolment;
-        this.status = status;
+        this.recruitmentStatus = recruitmentStatus;
         this.images = images;
         this.courseId = courseId;
     }
@@ -48,7 +47,7 @@ public class Session {
     }
 
     public void validateRecruiting() {
-        if (status != SessionStatus.RECRUIT) {
+        if (recruitmentStatus.equals(RecruitmentStatus.NOT_RECRUITING)) {
             throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
         }
     }
@@ -66,7 +65,7 @@ public class Session {
     }
 
     public String status() {
-        return status.toString();
+        return enrolment.status();
     }
 
     public int price() {
@@ -87,5 +86,9 @@ public class Session {
 
     public void mappadByImage(Images images) {
         this.images = images;
+    }
+
+    public String recruitmentStatus() {
+        return recruitmentStatus.toString();
     }
 }

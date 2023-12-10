@@ -58,6 +58,7 @@ create table session (
     money int,
     max_participants int,
     course_id bigint,
+    recruitment_status varchar(15),
     primary key (id)
 );
 
