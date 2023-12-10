@@ -8,7 +8,7 @@ public class SessionUsers {
 
     private List<SessionUser> sessionUsers = new ArrayList<>();
 
-    private SessionUsers() {
+    public SessionUsers() {
     }
 
     public void addSessionUser(SessionUser sessionUser) {

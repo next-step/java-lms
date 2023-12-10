@@ -8,7 +8,7 @@ import nextstep.users.domain.NsUser;
 
 public class Enrollment {
 
-    private SessionUsers sessionUsers;
+    private SessionUsers sessionUsers = new SessionUsers();
 
     private Enrollment(Payment payment, NsUser nsUser, Session session) {
         validateSessionStatus(session);
