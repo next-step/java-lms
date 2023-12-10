@@ -1,7 +1,9 @@
 package nextstep.courses.domain;
 
-public interface CourseRepository {
-    int save(Course course);
+import java.util.Optional;
 
-    Course findById(Long id);
+public interface CourseRepository {
+    long save(Course course);
+
+    Optional<Course> findById(Long id);
 }

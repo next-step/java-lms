@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.Enrollment;
+import nextstep.courses.domain.EnrollmentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,35 +14,36 @@ import java.util.Optional;
 import static nextstep.common.utils.DateTimeUtils.toLocalDateTime;
 import static nextstep.common.utils.DateTimeUtils.toTimeStamp;
 
-@Repository("courseRepository")
-public class JdbcCourseRepository implements CourseRepository {
+@Repository("enrollmentRepository")
+public class JdbcEnrollmentRepository implements EnrollmentRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public JdbcEnrollmentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public long save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
+    public long save(final Enrollment enrollment) {
+        String sql = "insert into enrollment (user_id, session_id, created_at) values(?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, course.getTitle());
-            ps.setLong(2, course.getCreatorId());
-            ps.setTimestamp(3, toTimeStamp(course.getCreatedAt()));
+            ps.setLong(1, enrollment.nsUserId());
+            ps.setLong(2, enrollment.sessionId());
+            ps.setTimestamp(3, toTimeStamp(enrollment.getCreatedAt()));
             return ps;
         }, keyHolder);
+
         Number key = keyHolder.getKey();
         return key != null ? key.longValue() : -1;
     }
 
     @Override
-    public Optional<Course> findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
+    public Optional<Enrollment> findById(final Long id) {
+        String sql = "select id, user_id, session_id, created_at, updated_at from enrollment where id = ?";
+        RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),
-                rs.getString(2),
+                rs.getLong(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
