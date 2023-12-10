@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.Students;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,10 @@ public class FreeSession extends Session {
 
     public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         super(id, payType, status, coverImage, startDate, endDate);
+    }
+
+    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Students students) {
+        super(id, payType, status, coverImage, students, startDate, endDate);
     }
 
     @Override

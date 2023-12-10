@@ -12,10 +12,10 @@ create table session (
     pay_type varchar(20) not null,
     status varchar(20) not null,
     cover_image_id bigint not null,
-    amount bigint,
-    students_capacity integer,
     start_date timestamp not null,
     end_date timestamp not null,
+    amount bigint,
+    students_capacity integer,
     primary key (id)
 );
 

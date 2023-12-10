@@ -17,4 +17,8 @@ public class CoverImage {
         this.name = new Name(fileName);
         this.size = new Size(width, height, capacitySize);
     }
+
+    public String getFileName() {
+        return name.getFileName();
+    }
 }
