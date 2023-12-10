@@ -1,6 +1,6 @@
 package nextstep.courses.domain.Image;
 
-public enum ImageType {
+public enum CoverImageType {
 
     GIF("gif"),
     JPG("jpg"),
@@ -10,6 +10,6 @@ public enum ImageType {
 
     private String type;
 
-    ImageType(String type) {
+    CoverImageType(String type) {
     }
 }

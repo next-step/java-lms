@@ -1,13 +1,11 @@
 package nextstep.courses.domain.Image;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ImgaePixelTest {
+class CoverImgaePixelTest {
 
     @DisplayName("이미지의 너비 픽셀이 300보다 작을 경우 예의를 던진다")
     @Test
@@ -15,7 +13,7 @@ class ImgaePixelTest {
         int width = 299;
         int height = 200;
 
-        assertThatThrownBy(() -> new ImgaePixel(width, height))
+        assertThatThrownBy(() -> new CoverImgaePixel(width, height))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("너비 픽셀은 300픽셀 이상이어야 합니다");
     }
@@ -26,7 +24,7 @@ class ImgaePixelTest {
         int width = 300;
         int height = 199;
 
-        assertThatThrownBy(() -> new ImgaePixel(width, height))
+        assertThatThrownBy(() -> new CoverImgaePixel(width, height))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("높이 픽셀은 200픽셀 이상이어야 합니다");
     }
@@ -37,7 +35,7 @@ class ImgaePixelTest {
         int width = 600;
         int height = 500;
 
-        assertThatThrownBy(() -> new ImgaePixel(width, height))
+        assertThatThrownBy(() -> new CoverImgaePixel(width, height))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("너비와 높이의 비율은 3:2이어야 합니다");
     }

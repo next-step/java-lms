@@ -1,12 +1,12 @@
 package nextstep.courses.domain.Image;
 
-public class ImageSize {
+public class CoverImageSize {
 
     private static final int MAX_IMAGE_SIZE = 1024 * 1024;
 
     private int size;
 
-    public ImageSize(int size) {
+    public CoverImageSize(int size) {
         validate(size);
         this.size = size;
     }

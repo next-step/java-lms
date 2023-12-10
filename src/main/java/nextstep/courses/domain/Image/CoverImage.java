@@ -1,23 +1,19 @@
 package nextstep.courses.domain.Image;
 
-import nextstep.courses.domain.Image.ImageSize;
-import nextstep.courses.domain.Image.ImageType;
-import nextstep.courses.domain.Image.ImgaePixel;
-
 public class CoverImage {
 
     private Long id;
 
-    private ImageSize imageSize;
+    private CoverImageSize coverImageSize;
 
-    private ImgaePixel imgaePixel;
+    private CoverImgaePixel coverImgaePixel;
 
-    private ImageType imageType;
+    private CoverImageType coverImageType;
 
-    public CoverImage(Long id, ImageSize imageSize, ImgaePixel imgaePixel, ImageType imageType) {
+    public CoverImage(Long id, CoverImageSize coverImageSize, CoverImgaePixel coverImgaePixel, CoverImageType coverImageType) {
         this.id = id;
-        this.imageSize = imageSize;
-        this.imgaePixel = imgaePixel;
-        this.imageType = imageType;
+        this.coverImageSize = coverImageSize;
+        this.coverImgaePixel = coverImgaePixel;
+        this.coverImageType = coverImageType;
     }
 }

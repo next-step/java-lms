@@ -1,6 +1,6 @@
 package nextstep.courses.domain.Image;
 
-public class ImgaePixel {
+public class CoverImgaePixel {
 
     public static final int MIN_WIDTH_SIZE = 300;
     public static final int MIN_HEIGHT_SIZE = 200;
@@ -10,7 +10,7 @@ public class ImgaePixel {
 
     private int height;
 
-    public ImgaePixel(int width, int height) {
+    public CoverImgaePixel(int width, int height) {
         validate(width, height);
         this.width = width;
         this.height = height;
