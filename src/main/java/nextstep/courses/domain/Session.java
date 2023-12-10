@@ -13,28 +13,56 @@ public abstract class Session extends BaseEntity {
     protected Long id;
     protected CoverImage coverImage;
     protected ProgressPeriod progressPeriod;
-    protected SessionProgressState state;
+    protected SessionProgressState progressState;
     protected Boolean recruitState;
     protected Participants participants;
 
 
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt) {
-        this(null, coverImage, startDate, endDate, state, createdAt, null);
+    /**
+     * AS_IS : 모집상태가 반영되지 않은 생성자
+     *
+     * @param coverImage
+     * @param startDate
+     * @param endDate
+     * @param progressState
+     * @param createdAt
+     */
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt) {
+        this(null, coverImage, startDate, endDate, progressState, createdAt, null);
     }
 
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(null, coverImage, startDate, endDate, state, createdAt, updatedAt);
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(null, coverImage, startDate, endDate, progressState, createdAt, updatedAt);
     }
 
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
-        this.recruitState = isRecruit(state);
-        this.state = state;
+        this.recruitState = isRecruit(progressState);
+        this.progressState = progressState;
         this.participants = new Participants(new HashSet<>());
     }
+
+    /**
+     * 모집상태가 반영된 생성자
+     *
+     * @param coverImage
+     * @param startDate
+     * @param endDate
+     * @param progressState
+     * @param recruitState
+     * @param createdAt
+     */
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
+        this(null, coverImage, startDate, endDate, progressState, createdAt, null);
+    }
+
+    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(null, coverImage, startDate, endDate, progressState, createdAt, updatedAt);
+    }
+
 
     protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
@@ -42,7 +70,7 @@ public abstract class Session extends BaseEntity {
         this.coverImage = coverImage;
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.recruitState = recruitState;
-        this.state = state;
+        this.progressState = state;
         this.participants = new Participants(new HashSet<>());
     }
 
@@ -68,7 +96,7 @@ public abstract class Session extends BaseEntity {
     }
 
     public String state() {
-        return state.toString();
+        return progressState.toString();
     }
 
     public CoverImage coverImage() {
@@ -81,12 +109,12 @@ public abstract class Session extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Session session = (Session) o;
-        return Objects.equals(coverImage, session.coverImage) && Objects.equals(progressPeriod, session.progressPeriod) && state == session.state && Objects.equals(participants, session.participants);
+        return Objects.equals(coverImage, session.coverImage) && Objects.equals(progressPeriod, session.progressPeriod) && progressState == session.progressState && Objects.equals(participants, session.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), coverImage, progressPeriod, state, participants);
+        return Objects.hash(super.hashCode(), coverImage, progressPeriod, progressState, participants);
     }
 
     @Override
@@ -95,7 +123,7 @@ public abstract class Session extends BaseEntity {
                 "id=" + id() +
                 "coverImage=" + coverImage +
                 ", progressPeriod=" + progressPeriod +
-                ", state=" + state +
+                ", state=" + progressState +
                 ", participants=" + participants +
                 ", createdAt= " + createdAt() +
                 ", updateAt=" + updatedAt() +
