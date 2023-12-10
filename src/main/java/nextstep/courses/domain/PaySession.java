@@ -11,11 +11,11 @@ public class PaySession extends Session {
         this.maxCountOfStudents = maxCountOfStudents;
     }
 
-    public void enroll(NsUser students) {
+    public void enroll(NsUser student) {
         if (this.maxCountOfStudents <= this.getStudents().size()) {
             throw new IllegalArgumentException("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.");
         }
-        this.getStudents().add(students);
+        this.getStudents().add(student);
     }
 
     public int getMaxCountOfStudents() {

@@ -17,6 +17,8 @@ public abstract class Session {
 
     private List<NsUser> students = new ArrayList<>();
 
+    private SessionStatus status;
+
     public Session() {
     }
 
@@ -24,6 +26,7 @@ public abstract class Session {
         this.coverImage = image;
         this.sessionPeriod = period;
         this.type = type;
+        this.status = SessionStatus.PREPARING;
     }
 
     public void setCoverImage(Image image, Period sessionPeriod) {
@@ -32,7 +35,14 @@ public abstract class Session {
     }
 
     public void enroll(NsUser student) {
+        if (this.status != SessionStatus.RECRUITING) {
+            throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
+        }
         this.students.add(student);
+    }
+
+    public void open() {
+        this.status = SessionStatus.RECRUITING;
     }
 
     public Image getImage() {

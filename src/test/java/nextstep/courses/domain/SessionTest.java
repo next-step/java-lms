@@ -53,11 +53,21 @@ public class SessionTest {
     }
 
     @Test
+    void 수강_신청은_모집중일때만_가능하다() {
+        // given
+        FreeSession freeSession = new FreeSession(new Image(), new Period());
+
+        // when, then
+        assertThatThrownBy(() -> freeSession.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
+    }
+
+    @Test
     void 수강_신청() {
         // given
         FreeSession freeSession = new FreeSession(new Image(), new Period());
 
         // when
+        freeSession.open();
         freeSession.enroll(NsUserTest.JAVAJIGI);
 
         // then
