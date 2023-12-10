@@ -16,7 +16,7 @@ public class AnswerTest {
         assertThatThrownBy(() -> {
             A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                .hasMessage("자신이 작성한 답변만 삭제할 수 있습니다.");
     }
 
     @Test

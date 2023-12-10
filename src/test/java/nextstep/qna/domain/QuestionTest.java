@@ -16,7 +16,7 @@ public class QuestionTest {
         assertThatThrownBy(() -> {
             Q1.deleteQuestionAndAnswers(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
-                .hasMessage("질문을 삭제할 권한이 없습니다.");
+                .hasMessage("자신이 작성한 질문만 삭제할 수 있습니다.");
     }
 
     @Test

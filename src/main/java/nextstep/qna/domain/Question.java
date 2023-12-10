@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -77,7 +77,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
@@ -88,7 +88,7 @@ public class Question {
 
     private void validateDeletable(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+            throw new CannotDeleteException("자신이 작성한 질문만 삭제할 수 있습니다.");
         }
     }
 
@@ -107,10 +107,8 @@ public class Question {
         delete(loginUser);
         deleteHistories.add(generateDeleteHistory());
 
-        for (Answer answer : answers) {
-            answer.delete(loginUser);
-            deleteHistories.add(answer.generateDeleteHistory());
-        }
+        answers.delete(loginUser);
+        deleteHistories.addAll(answers.generateDeleteHistory());
 
         return deleteHistories;
     }
