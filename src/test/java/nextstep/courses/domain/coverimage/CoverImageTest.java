@@ -1,6 +1,7 @@
 package nextstep.courses.domain.coverimage;
 
 import nextstep.courses.MaxImageSizeExceededException;
+import nextstep.courses.UnsupportedImageTypeException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,5 +23,12 @@ public class CoverImageTest {
         Assertions.assertThatCode(() -> {
             new CoverImage(1023, "jpg", 300, 200);
         }).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void 이미지_타입_비허용() {
+        assertThatThrownBy(() -> {
+            new CoverImage(50, "csv", 300, 200);
+        }).isInstanceOf(UnsupportedImageTypeException.class);
     }
 }
