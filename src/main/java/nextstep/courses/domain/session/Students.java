@@ -35,11 +35,16 @@ public class Students {
         return students.size();
     }
 
+
     public Student orElseThrow(NsUser nsUser) {
         return students.stream()
                 .filter(student -> student.sameUser(nsUser))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("등록하지 않은 수강생입니다."));
+    }
+
+    public boolean isFull(long max) {
+        return students.size() < max;
     }
 
     public List<Student> values() {
