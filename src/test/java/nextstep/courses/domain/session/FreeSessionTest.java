@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.student.Students;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,8 @@ class FreeSessionTest {
             status,
             new CoverImage(),
             LocalDate.of(2023, 12, 5),
-            LocalDate.now()
+            LocalDate.now(),
+            new Students()
             );
     }
 
