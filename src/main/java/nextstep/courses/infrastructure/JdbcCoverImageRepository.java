@@ -19,7 +19,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
   @Override
   public int save(CoverImage coverImage) {
-    String sql = "insert into cover_image (name, cover_image_type, size, width, height,created_at) values(?, ?, ?, ?, ?, ?)";
+    String sql = "insert into cover_image (name, cover_image_type, image_file_size, width, height,created_at) values(?, ?, ?, ?, ?, ?)";
     return jdbcTemplate.update(sql, coverImage.getName(), coverImage.getCoverImageType().getName(),
         coverImage.getImageFileSize().getSize(), coverImage.getImageSize().getWidth(),
         coverImage.getImageSize().getHeight(),coverImage.getCreatedAt());

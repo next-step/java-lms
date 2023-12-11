@@ -7,10 +7,12 @@ import java.time.LocalDateTime;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImageRepository;
 import nextstep.courses.domain.coverimage.CoverImageType;
 import nextstep.courses.domain.coverimage.ImageFileSize;
 import nextstep.courses.domain.coverimage.ImageSize;
 import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.LectureEntity;
 import nextstep.courses.domain.lectures.LectureRepository;
 import nextstep.courses.domain.lectures.LectureStatus;
 import nextstep.courses.domain.lectures.PaidLecture;
@@ -32,30 +34,33 @@ public class LectureRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private LectureRepository lectureRepository;
+    private CoverImageRepository coverImageRepository;
 
     @BeforeEach
     void setUp() {
         lectureRepository = new JdbcLectureRepository(jdbcTemplate);
+        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
     }
 
     @Test
     void crud() {
+        CoverImage coverImage = CoverImage.defaultOf(1L,"test", CoverImageType.GIF,new ImageFileSize(50),new ImageSize(300,200),
+            LocalDateTime.now() ,null);
+        coverImageRepository.save(coverImage);
         PaidLecture lecture = new PaidLecture(
             1L
             , "test"
-            , CoverImage.defaultOf(1L, "test", CoverImageType.GIF, new ImageFileSize(5),
-            new ImageSize(300, 200),
-            LocalDateTime.now(), LocalDateTime.now())
+            , coverImage
             , LectureStatus.PREPARING
             , new RegistrationPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1))
             , new Price(BigDecimal.TEN)
             , 10
         );
-
-        int count = lectureRepository.save(lecture);
+        LectureEntity entity = lecture.toEntity();
+        int count = lectureRepository.save(entity);
         assertThat(count).isEqualTo(1);
-        Lecture savedLecture = lectureRepository.findLectureById(1L);
-        assertThat(savedLecture.isFree()).isEqualTo(lecture.getTitle());
+        LectureEntity savedLecture = lectureRepository.findById(1L);
+        assertThat(savedLecture).extracting("title").isEqualTo(lecture.getTitle());
         LOGGER.debug("Course: {}", savedLecture);
     }
 

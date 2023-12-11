@@ -105,4 +105,19 @@ public class PaidLecture extends Time implements Lecture  {
   public Integer getLimitStudentCount() {
     return limitStudentCount;
   }
+
+  public LectureEntity toEntity() {
+    return new LectureEntity(
+        this.id
+        , this.title
+        , this.coverImage
+        , this.lectureType
+        , this.lectureStatus
+        , this.registrationPeriod
+        , this.price
+        , this.limitStudentCount
+        , super.getCreatedAt()
+        , super.getUpdatedAt()
+    );
+  }
 }

@@ -1,6 +1,6 @@
 package nextstep.courses.domain.lectures;
 
 public interface LectureRepository {
-    int save(Lecture lecture);
-    Lecture findLectureById(Long id);
+    int save(LectureEntity entity);
+    LectureEntity findById(Long id);
 }
