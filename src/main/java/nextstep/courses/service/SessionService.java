@@ -7,9 +7,8 @@ import nextstep.courses.domain.coverImage.CoverImageRepository;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.sessionuser.SessionUser;
-import nextstep.courses.domain.sessionuser.SessionUsers;
-import nextstep.courses.domain.sessionuser.SessionUserRepository;
+import nextstep.courses.domain.students.Students;
+import nextstep.courses.domain.students.StudentsRepository;
 import nextstep.courses.dto.CoverImageDto;
 import nextstep.users.domain.NsUser;
 
@@ -18,13 +17,13 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final CourseRepository courseRepository;
     private final CoverImageRepository coverImageRepository;
-    private final SessionUserRepository sessionUserRepository;
+    private final StudentsRepository studentsRepository;
 
-    public SessionService(SessionRepository sessionRepository, CourseRepository courseRepository, CoverImageRepository coverImageRepository, SessionUserRepository sessionUserRepository) {
+    public SessionService(SessionRepository sessionRepository, CourseRepository courseRepository, CoverImageRepository coverImageRepository, StudentsRepository studentsRepository) {
         this.sessionRepository = sessionRepository;
         this.courseRepository = courseRepository;
         this.coverImageRepository = coverImageRepository;
-        this.sessionUserRepository = sessionUserRepository;
+        this.studentsRepository = studentsRepository;
     }
 
     // 무료 세션 생성
@@ -48,9 +47,10 @@ public class SessionService {
     // 세션 참여자 등록
     public void attendSession(NsUser nsUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        SessionUsers sessionusers = sessionUserRepository.findBySession(session);
-        SessionUser sessionUser = sessionusers.addUser(nsUser, session);
-        sessionUserRepository.save(sessionUser);
+        Students students = studentsRepository.findBySession(session);
+        session.bindStudents(students);
+        session.addStudent(nsUser);
+        studentsRepository.save(session, nsUser);
     }
 
     private CoverImage saveCoverImage(CoverImageDto coverImageDto) {

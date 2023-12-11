@@ -1,8 +1,10 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
+import nextstep.courses.ExceedMaxAttendanceCountException;
 import nextstep.courses.domain.coverImage.CoverImage;
-import nextstep.courses.domain.sessionuser.SessionUsers;
+import nextstep.courses.domain.students.Students;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,7 @@ public class Session {
 
     private Period period;
 
-    private SessionUsers sessionUsers = new SessionUsers();
+    private Students students = new Students();
 
     private SessionType sessionType;
 
@@ -60,13 +62,17 @@ public class Session {
         return new Session(coverImg, period, sessionType);
     }
 
-    public boolean canRegisterNewUser(int currentUserSize) {
-        if (!sessionStatus.equals(SessionStatus.ENROLL)) {
-            throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
+    public void addStudent(NsUser nsUser) {
+        if (!canRegisterNewUser(students.size())) {
+            throw new ExceedMaxAttendanceCountException("이미 최대 수강 인원이 다 찼습니다.");
         }
-
-        return sessionType.canRegisterNewUser(currentUserSize);
+        students.add(nsUser);
     }
+
+    public int studentSize() {
+        return students.size();
+    }
+
 
     public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
         return period.isAfter(createdAt);
@@ -74,6 +80,14 @@ public class Session {
 
     public void bindWithCourse(Long courseId) {
         this.courseId = courseId;
+    }
+
+    private boolean canRegisterNewUser(int currentUserSize) {
+        if (!sessionStatus.equals(SessionStatus.ENROLL)) {
+            throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
+        }
+
+        return sessionType.canRegisterNewUser(currentUserSize);
     }
 
     public LocalDateTime startDate() {
@@ -106,5 +120,9 @@ public class Session {
 
     public Long courseId() {
         return courseId;
+    }
+
+    public void bindStudents(Students students) {
+        this.students = students;
     }
 }
