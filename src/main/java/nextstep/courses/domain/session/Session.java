@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.domain.session.enrollment2.EnrollmentInfo;
 import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
@@ -21,16 +20,12 @@ public class Session {
     private Images images;
     private Students students;
 
-    private final Enrollment enrollment;
-
-
     public Session(Long id, SessionInfo sessionInfo, EnrollmentInfo enrollmentInfo, Images images, Students students) {
         this.id = id;
         this.sessionInfo = sessionInfo;
         this.enrollmentInfo = enrollmentInfo;
         this.images = images;
         this.students = students;
-        this.enrollment = Enrollment.from(sessionInfo.sessionType());
     }
 
     public static Session ofFree(Period period, Image image) {
@@ -60,7 +55,7 @@ public class Session {
     }
 
     public void enroll(Student student, Payment payment) {
-        enrollment.enroll(this, student, payment);
+        enrollmentInfo.enroll2(students, student, payment);
     }
 
     public Student approvalSession(NsUser nsUser) {

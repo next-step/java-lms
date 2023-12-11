@@ -1,8 +1,11 @@
 package nextstep.courses.domain.session.enrollment2;
 
+import nextstep.courses.domain.session.Student;
+import nextstep.courses.domain.session.Students;
 import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionType;
+import nextstep.payments.domain.Payment;
 
 public class EnrollmentInfo {
 
@@ -53,6 +56,10 @@ public class EnrollmentInfo {
 
     public Enroll enroll() {
         return enroll;
+    }
+
+    public void enroll2(Students students, Student student, Payment payment) {
+        enroll.enroll(this, students, student, payment);
     }
 
     public void preparing() {

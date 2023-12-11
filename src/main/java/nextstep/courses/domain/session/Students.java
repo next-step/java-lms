@@ -44,7 +44,7 @@ public class Students {
     }
 
     public boolean isFull(long max) {
-        return students.size() < max;
+        return students.size() >= max;
     }
 
     public List<Student> values() {
