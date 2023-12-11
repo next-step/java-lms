@@ -11,16 +11,16 @@ public class Image {
     private int size;
     private int width;
     private int height;
-    private Type type;
+    private ImageType imageType;
 
-    public Image(int size, Type type, int width, int height) throws InvalidImageException {
+    public Image(int size, ImageType imageType, int width, int height) throws InvalidImageException {
         validateImageSize(size);
         validateImageWidthAndHeight(width, height);
         validateImageAspectRatio(width, height);
         this.size = size;
         this.width = width;
         this.height = height;
-        this.type = type;
+        this.imageType = imageType;
     }
 
     private static void validateImageAspectRatio(double width, double height)
