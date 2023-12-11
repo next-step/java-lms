@@ -34,8 +34,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<EnrollmentSession> findBySessionId(Long sessionId) {
-        String sql = "select id, course_id, session_status, session_type, start_at, end_at, amount, max_capacity" +
-                " from session" +
+        String sql = "select id, course_id, session_status, session_type, start_at, end_at, recruitment, amount, max_capacity" +
+                " from new_session" +
                 " where id = ?";
         RowMapper<EnrollmentSession> rowMapper = (rs, rowNum) -> {
             List<Attendee> attendees = attendeeRepository.findAllBySessionId(sessionId);
@@ -44,8 +44,9 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong(1),
                     new SessionInformation(SessionStatus.valueOf(rs.getString(3)),
                                            new Period(from(rs.getTimestamp(5)), from(rs.getTimestamp(6))),
-                                           new Images(images)),
-                    EnrollmentFactory.create(SessionType.valueOf(rs.getString(4)), attendees, rs.getLong(7), rs.getInt(8)));
+                                           new Images(images),
+                                           Recruitment.valueOf(rs.getString(7))),
+                    EnrollmentFactory.create(SessionType.valueOf(rs.getString(4)), attendees, rs.getLong(8), rs.getInt(9)));
         };
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));

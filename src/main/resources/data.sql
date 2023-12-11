@@ -18,3 +18,7 @@ INSERT INTO session (id, course_id, session_status, session_type, start_at, end_
 INSERT INTO image (id, session_id, width, height, image_format, volume) VALUES (1, 1, 200, 300, 'JPG', 100);
 
 INSERT INTO image (id, session_id, width, height, image_format, volume) VALUES (2, 2, 200, 300, 'JPG', 100);
+
+INSERT INTO new_session (id, course_id, session_status, session_type, start_at, end_at, recruitment, amount, max_capacity) VALUES (1, 1, 'PREPARING', 'FREE', '2023-12-01', '2023-12-02', 'RECRUITING', 0, 2);
+
+INSERT INTO new_session (id, course_id, session_status, session_type, start_at, end_at, recruitment, amount, max_capacity) VALUES (2, 1, 'PREPARING', 'PAID', '2023-12-01', '2023-12-02', 'RECRUITING', 1000, 2);

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.image.ImageFormat.*;
+import static nextstep.courses.domain.session.Recruitment.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -24,7 +25,7 @@ class SessionInformationTest {
                                                                  100,
                                                                  JPG);
         Image image = new Image(1L, imageInformation);
-        SessionInformation information = new SessionInformation(PREPARING, period, new Images(image));
+        SessionInformation information = new SessionInformation(PREPARING, period, new Images(image), NOT_RECRUITING);
 
         assertThatThrownBy(information::validateApply)
                 .isInstanceOf(CanNotApplyException.class);

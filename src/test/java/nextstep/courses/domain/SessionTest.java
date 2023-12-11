@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.image.ImageFormat.JPG;
+import static nextstep.courses.domain.session.Recruitment.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -28,7 +29,7 @@ class SessionTest {
                                                                  100,
                                                                  JPG);
         Image image = new Image(1L, imageInformation);
-        SessionInformation information = new SessionInformation(PREPARING, period, new Images(image));
+        SessionInformation information = new SessionInformation(PREPARING, period, new Images(image), NOT_RECRUITING);
         Enrollment freeEnrollment = new FreeEnrollment(new FreeAttendees());
         EnrollmentSession session = new EnrollmentSession(1L, information, freeEnrollment);
 
