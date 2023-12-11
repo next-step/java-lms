@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.enrollment2;
+package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.domain.session.Students;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;

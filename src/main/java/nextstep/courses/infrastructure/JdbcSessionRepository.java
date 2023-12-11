@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionInfo;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.enrollment2.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

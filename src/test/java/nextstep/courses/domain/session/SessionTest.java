@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment2.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidPaymentAmountException;
 import nextstep.courses.exception.session.InvalidProgressStateException;

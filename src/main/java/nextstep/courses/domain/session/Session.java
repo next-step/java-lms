@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment2.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
 import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionApproval;
