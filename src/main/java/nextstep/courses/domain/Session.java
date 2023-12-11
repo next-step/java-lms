@@ -34,4 +34,8 @@ public abstract class Session {
             throw new BusinessInvalidValueException("수강신청 가능한 상태가 아닙니다.");
         }
     }
+
+    public Long id() {
+        return id;
+    }
 }
