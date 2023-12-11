@@ -36,5 +36,6 @@ public class ApplicantsRepositoryTest {
         assertThat(applicants.size()).isEqualTo(2);
         assertThat(nsUser_1.getId()).isEqualTo(1L);
         assertThat(nsUser_2.getId()).isEqualTo(2L);
+        LOGGER.debug("Applicants: {}", applicants);
     }
 }

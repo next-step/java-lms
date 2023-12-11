@@ -47,4 +47,11 @@ public class Applicants implements Iterable<NsUser> {
     public Iterator<NsUser> iterator() {
         return this.applicants.iterator();
     }
+
+    @Override
+    public String toString() {
+        return "Applicants{" +
+                "applicants=" + applicants +
+                '}';
+    }
 }

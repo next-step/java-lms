@@ -3,6 +3,7 @@ package nextstep.courses.domain.course.image;
 import nextstep.courses.domain.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Image extends BaseEntity {
     public static final int MB = 1024 * 1024;
@@ -87,5 +88,19 @@ public class Image extends BaseEntity {
                 ", imageWidth=" + imageWidth +
                 ", imageHeight=" + imageHeight +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return imageSize == image.imageSize && imageWidth == image.imageWidth &&
+                imageHeight == image.imageHeight && Objects.equals(id, image.id) && imageType == image.imageType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, imageSize, imageType, imageWidth, imageHeight);
     }
 }
