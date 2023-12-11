@@ -47,7 +47,7 @@ public class JdbcSessionRepository implements SessionRepository {
         Duration duration = session.getDuration();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionStatus status = session.getSession();
+        SessionStatus status = session.getSessionStatus();
         Image image = session.getImage();
         String sql = "insert into session (start_date, end_date, session_type, session_status, amount, quota, image_id, course_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(), status.name(), sessionState.getAmount(), sessionState.getQuota(), image.getId(), courseId, session.getCreatorId(), session.getCreatedAt(), session.getUpdatedAt());
@@ -69,6 +69,17 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
+    }
+
+    @Override
+    public int update(Long sessionId, Session session) {
+        Duration duration = session.getDuration();
+        SessionState sessionState = session.getSessionState();
+        SessionType sessionType = sessionState.getSessionType();
+        SessionStatus sessionStatus = session.getSessionStatus();
+        String sql = "update session set start_date = ?, end_date = ?, session_type = ?, amount = ?, quota = ?, session_status = ? where id = ?";
+        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(),
+                sessionType.name(), sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
     }
 
     private Image findImageById(Long id) {

@@ -12,4 +12,6 @@ public interface SessionRepository {
     int saveApply(NsUser user, Session session);
 
     Optional<Apply> findApplyByIds(Long NsUserId, Long sessionId);
+
+    int update(Long sessionId, Session session);
 }
