@@ -1,5 +1,6 @@
-package nextstep.courses.domain.attendee;
+package nextstep.courses.domain;
 
+import nextstep.courses.domain.attendee.Attendee;
 import nextstep.courses.exception.AlreadyApprovedException;
 import nextstep.courses.exception.AlreadyNotApprovedException;
 import org.junit.jupiter.api.DisplayName;
