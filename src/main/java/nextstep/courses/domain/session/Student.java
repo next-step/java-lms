@@ -25,7 +25,7 @@ public class Student {
     }
 
     public void approval() {
-        if (!isWait()) {
+        if (isNotWait()) {
             throw new IllegalArgumentException("준비 상태에서만 수강승인이 가능합닌다.");
         }
 
@@ -33,7 +33,7 @@ public class Student {
     }
 
     public void cancel() {
-        if (!isWait()) {
+        if (isNotWait()) {
             throw new IllegalArgumentException("준비 상태에서만 수강 취소가 가능합니다.");
         }
 
@@ -48,8 +48,8 @@ public class Student {
         return sessionApproval;
     }
 
-    public boolean isWait() {
-        return sessionApproval.isWait();
+    public boolean isNotWait() {
+        return !sessionApproval.isWait();
     }
 
     public String SessionApprovalValue() {
