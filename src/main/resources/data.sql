@@ -39,3 +39,6 @@ VALUES (10, 10, 'images/test1.jpg', 800000, 'JPG', 600, 400, CURRENT_TIMESTAMP()
 
 INSERT INTO cover_image (id, session_id, url, volume, format, width, height, created_at)
 VALUES (11, 11, 'images/test2.jpeg', 800000, 'JPEG', 600, 400, CURRENT_TIMESTAMP());
+
+
+INSERT INTO apply (id,session_id, user_id, state, created_at) values(10, 11, 1, 'CHECKING', CURRENT_TIMESTAMP());
