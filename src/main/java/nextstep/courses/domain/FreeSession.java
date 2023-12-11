@@ -37,7 +37,7 @@ public class FreeSession extends Session {
      * TO_BE : 강의 커버 이미지 다건
      *
      * @param id
-     * @param coverImageLis
+     * @param coverImageList
      * @param start
      * @param end
      * @param progressState
@@ -46,16 +46,16 @@ public class FreeSession extends Session {
      * @param updatedAt
      */
 
-    public FreeSession(Long id, List<CoverImage> coverImageLis, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, coverImageLis, start, end, progressState, recruitState, createdAt, updatedAt);
+    public FreeSession(Long id, List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, coverImageList, start, end, progressState, recruitState, createdAt, updatedAt);
     }
 
-    public FreeSession(List<CoverImage> coverImageLis, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
-        super(null, coverImageLis, start, end, progressState, recruitState, createdAt, null);
+    public FreeSession(List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
+        super(null, coverImageList, start, end, progressState, recruitState, createdAt, null);
     }
 
-    public FreeSession(List<CoverImage> coverImageLis, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(null, coverImageLis, start, end, progressState, recruitState, createdAt, updatedAt);
+    public FreeSession(List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(null, coverImageList, start, end, progressState, recruitState, createdAt, updatedAt);
     }
 
 

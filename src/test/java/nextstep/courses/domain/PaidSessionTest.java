@@ -12,18 +12,28 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PaidSessionTest {
 
     private PaidSession paidSession;
+    private List<CoverImage> coverImages;
 
     @BeforeEach
     void create() {
         LocalDateTime now = LocalDateTime.now();
+
+        CoverImage coverImage1 = new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now);
+        CoverImage coverImage2 = new CoverImage("images/test.jpeg", 1000_000, "jpeg", 300, 200, now);
+        coverImages = new ArrayList<>(Arrays.asList(coverImage1, coverImage2));
+
+
         paidSession = new PaidSession(
-                new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
+                coverImages,
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionProgressState.PROGRESSING,
@@ -39,7 +49,7 @@ public class PaidSessionTest {
     void 수강신청_강의모집상태_모집중_에러() {
         LocalDateTime now = LocalDateTime.now();
         PaidSession paidSession = new PaidSession(
-                new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, now),
+                coverImages,
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionProgressState.PREPARING,
