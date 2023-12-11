@@ -3,7 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotSignUpException;
 import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
-import org.springframework.cglib.core.Local;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 
@@ -12,20 +12,20 @@ public class PaidSession extends Session {
     private Long sessionFee;
 
     public static PaidSession feeOf(String title, int maxStudentCount, Long sessionFee) {
-        return new PaidSession(1L, title, null, SessionStatus.RECRUITING, maxStudentCount, sessionFee, LocalDate.now(), LocalDate.now());
+        return new PaidSession(0L, title, null, maxStudentCount, sessionFee, LocalDate.now(), LocalDate.now());
     }
 
-    public PaidSession(Long sessionId, String title, Course course, SessionStatus sessionStatus, int maxStudentCount, Long sessionFee, LocalDate startDate, LocalDate endDate) {
-        super(sessionId, title, course, SessionType.PAID, sessionStatus, startDate, endDate);
+    public PaidSession(Long sessionId, String title, Course course, int maxStudentCount, Long sessionFee, LocalDate startDate, LocalDate endDate) {
+        super(sessionId, title, course, SessionType.PAID, new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate));
         this.maxStudentCount = maxStudentCount;
         this.sessionFee = sessionFee;
     }
 
     @Override
-    public void signUp(Payment payment) throws CannotSignUpException {
+    public void signUp(NsUser nsUser, Payment payment) throws CannotSignUpException {
         validateAvailableSignUp();
         validateSessionFeeMatchingPayment(payment);
-        super.signUp(payment);
+        super.signUp(nsUser, payment);
     }
 
     private void validateSessionFeeMatchingPayment(Payment payment) throws CannotSignUpException {

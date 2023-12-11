@@ -16,11 +16,11 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
-    public static Payment paidOf(String id, Long amount) {
-        return new Payment(id, 1L, 1L, amount);
+    public static Payment paidOf(String id, long sessionId, long nsUserId, Long amount) {
+        return new Payment(id, sessionId, nsUserId, amount);
     }
-    public static Payment freeOf(String id) {
-        return new Payment(id, 1L, 1L, 0L);
+    public static Payment freeOf(String id, long sessionId, long nsUserId) {
+        return new Payment(id, sessionId, nsUserId, 0L);
     }
 
     public Payment() {
@@ -32,6 +32,14 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
     }
 
     public boolean isNotSamePrice(Long sessionFee) {

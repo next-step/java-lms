@@ -5,6 +5,8 @@ import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SessionTest {
+
+    private NsUser student = NsUserTest.JAVAJIGI;
 
     @Test
     @DisplayName("강의는 시작일과 종료일이 없는 경우 Exception Throw")
@@ -46,25 +50,25 @@ public class SessionTest {
     @Test
     @DisplayName("강의가 준비중인 경우 수강신청을 하면 Exception Throw")
     void cannotSignUp_ForPreparingSession_Test() {
-        Payment payment = Payment.freeOf("1");
         Session session = Session.dateOf("lms", "TDD", LocalDate.of(2024, 01, 01), LocalDate.of(2024, 03, 01));
-        assertThrows(CannotSignUpException.class, () -> session.signUp(payment));
+        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
+        assertThrows(CannotSignUpException.class, () -> session.signUp(student, payment));
     }
 
     @Test
     @DisplayName("강의가 종료상태인 경우 수강신청을 하면 Exception Throw")
     void cannotSignUp_ForClosedSession_Test() {
-        Payment payment = Payment.freeOf("1");
         Session session = Session.dateOf("lms", "TDD", LocalDate.of(2023, 11, 01), LocalDate.of(2023, 12, 01));
-        assertThrows(CannotSignUpException.class, () -> session.signUp(payment));
+        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
+        assertThrows(CannotSignUpException.class, () -> session.signUp(student, payment));
     }
 
     @Test
     @DisplayName("강의가 준비상태인 경우 수강신청이 가능하다.")
     void signUp_ForRecruitingSession_Test() throws CannotSignUpException {
-        Payment payment = Payment.freeOf("1");
         Session session = Session.dateOf("lms", "TDD", LocalDate.of(2023, 11, 01), LocalDate.of(2024, 01, 01));
-        session.signUp(payment);
+        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
+        session.signUp(student, payment);
         assertThat(session.getStudentCount()).isEqualTo(1);
     }
 }

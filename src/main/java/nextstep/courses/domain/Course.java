@@ -12,31 +12,22 @@ public class Course {
 
     private String title;
 
-    private List<Group> groups;
-
     private Sessions sessions;
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private Course() {
-    }
+    private SystemTimeStamp systemTimeStamp;
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, SystemTimeStamp systemTimeStamp) {
         this.id = id;
         this.title = title;
-        this.groups = Collections.emptyList();
         this.sessions = Sessions.initialize();
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.systemTimeStamp = systemTimeStamp;
     }
 
     public void addSession(Session session) {
@@ -57,7 +48,7 @@ public class Course {
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return systemTimeStamp.getCreatedAt();
     }
 
     @Override
@@ -66,8 +57,8 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", createdAt=" + systemTimeStamp.getCreatedAt() +
+                ", updatedAt=" + systemTimeStamp.getUpdatedAt() +
                 '}';
     }
 }

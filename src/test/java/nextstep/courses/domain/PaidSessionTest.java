@@ -4,7 +4,8 @@ import nextstep.courses.CannotSignUpException;
 import nextstep.courses.domain.session.PaidSession;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
-import org.junit.jupiter.api.BeforeEach;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,26 +15,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PaidSessionTest {
 
     private PaidSession paidSession = PaidSession.feeOf("step4", 1, 10_000L);
-    private Payment payment = Payment.paidOf("1A", 10_000L);
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    private Payment payment = Payment.paidOf("1A", paidSession.getSessionId(), NsUserTest.JAVAJIGI.getId(), 10_000L);
+    private NsUser student = NsUserTest.JAVAJIGI;
 
     @Test
     @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없다. ")
     void sessionStudentTest() throws CannotSignUpException {
-        paidSession.signUp(payment);
-        assertThrows(CannotSignUpException.class, () -> paidSession.signUp(payment));
+
+        paidSession.signUp(student, payment);
+        assertThrows(CannotSignUpException.class, () -> paidSession.signUp(student, payment));
     }
 
     @Test
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
-    void payCheckTest()  {
+    void payCheckTest() {
         PaidSession paidSession = PaidSession.feeOf("step4", 2, 10_000L);
 
-        assertDoesNotThrow(() -> paidSession.signUp(payment));
+        assertDoesNotThrow(() -> paidSession.signUp(student, payment));
     }
 
     @Test
@@ -44,7 +42,7 @@ public class PaidSessionTest {
         PaymentService paymentService = new PaymentService();
         Payment payment = paymentService.paymentPaid("1");
 
-        assertThrows(CannotSignUpException.class, () -> paidSession.signUp(payment));
+        assertThrows(CannotSignUpException.class, () -> paidSession.signUp(student, payment));
     }
 
 }

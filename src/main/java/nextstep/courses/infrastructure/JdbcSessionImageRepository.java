@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.InvalidImageFormatException;
-import nextstep.courses.domain.SessionImageRepository;
+import nextstep.courses.domain.image.SessionImageRepository;
 import nextstep.courses.domain.image.ImageType;
 import nextstep.courses.domain.image.SessionImage;
 import org.springframework.jdbc.core.JdbcOperations;
