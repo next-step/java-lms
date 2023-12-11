@@ -20,16 +20,16 @@ public class JdbcAttendeeRepository implements AttendeeRepository {
     }
 
     @Override
-    public Optional<Attendee> findById(Long attendeeId) {
+    public Optional<Attendee> findByStudentIdAndSessionId(Long studentId, Long sessionId) {
         String sql = "select user_id, session_id, approval" +
                 " from new_enrollment" +
-                " where id = ?";
+                " where user_id =? and session_id = ?";
         RowMapper<Attendee> rowMapper = (rs, rowNum) -> new Attendee(
                 rs.getLong(1),
                 rs.getLong(2),
                 Approval.valueOf(rs.getString(3))
         );
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, attendeeId));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, studentId, sessionId));
     }
 
     @Override

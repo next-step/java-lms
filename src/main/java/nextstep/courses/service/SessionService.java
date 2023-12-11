@@ -30,15 +30,17 @@ public class SessionService {
         attendeeRepository.save(enrolledAttendee);
     }
 
-    public void approve(Student student) {
-        Attendee attendee = attendeeRepository.findById(student.getId())
+    public void approve(Student student, Long sessionId) {
+        Attendee attendee = attendeeRepository.findByStudentIdAndSessionId(student.getId(),
+                                                                           sessionId)
                                               .orElseThrow(NotFoundException::new);
         Attendee approvedAttendee = attendee.approve();
         attendeeRepository.update(approvedAttendee);
     }
 
-    public void cancel(Student student) {
-        Attendee attendee = attendeeRepository.findById(student.getId())
+    public void cancel(Student student, Long sessionId) {
+        Attendee attendee = attendeeRepository.findByStudentIdAndSessionId(student.getId(),
+                                                                           sessionId)
                                               .orElseThrow(NotFoundException::new);
         Attendee approvedAttendee = attendee.cancel();
         attendeeRepository.update(approvedAttendee);

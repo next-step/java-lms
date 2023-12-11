@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface AttendeeRepository {
 
-    Optional<Attendee> findById(Long attendeeId);
+    Optional<Attendee> findByStudentIdAndSessionId(Long studentId, Long sessionId);
 
     void save(Attendee attendee);
 

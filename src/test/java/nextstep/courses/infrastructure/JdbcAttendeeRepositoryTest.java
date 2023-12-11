@@ -34,7 +34,7 @@ class JdbcAttendeeRepositoryTest {
         Attendee attendee = new Attendee(1L, 1L, NOT_APPROVED);
         attendeeRepository.save(attendee);
 
-        Attendee actual = attendeeRepository.findById(1L)
+        Attendee actual = attendeeRepository.findByStudentIdAndSessionId(1L, 1L)
                                             .orElseThrow(NotFoundException::new);
 
         assertThat(actual).isEqualTo(attendee);
@@ -59,11 +59,11 @@ class JdbcAttendeeRepositoryTest {
     @DisplayName("승인처리 후 수강생을 저장한다.")
     @Test
     void approve_attendee_and_update() {
-        Attendee attendee = new Attendee(10L, 1L, NOT_APPROVED);
+        Attendee attendee = new Attendee(1L, 1L, NOT_APPROVED);
         Attendee approved = attendee.approve();
         attendeeRepository.save(approved);
 
-        Attendee actual = attendeeRepository.findById(1L)
+        Attendee actual = attendeeRepository.findByStudentIdAndSessionId(1L, 1L)
                                             .orElseThrow(NotFoundException::new);
 
         assertThat(actual).isEqualTo(approved);
@@ -76,7 +76,7 @@ class JdbcAttendeeRepositoryTest {
         Attendee canceled = attendee.cancel();
         attendeeRepository.save(canceled);
 
-        Attendee actual = attendeeRepository.findById(1L)
+        Attendee actual = attendeeRepository.findByStudentIdAndSessionId(2L, 1L)
                                             .orElseThrow(NotFoundException::new);
 
         assertThat(actual).isEqualTo(canceled);
