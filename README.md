@@ -25,6 +25,8 @@
 * `DeleteHistory` : 삭제 이력
 
 ---
+* `students` : 신청 학생들
+  * [x] : 동일한 학생이 동일 세션에 2번 이상 신청할 수 없습니다.
 
 * `Session` : 강의
   * [x] : 유료 강의라면 최대 수강 인원까지만 수강 신청 가능합니다.
@@ -38,3 +40,4 @@
   * [x] : 이미지 타입은 gif, jpg, jpeg, png, svg만 허용됩니다.
   * [x] : width : 300px, height : 200px 이상
   * [x] : width : height = 3: 2 입니다.
+

@@ -18,24 +18,22 @@ public class Session {
 
     private SessionStatus sessionStatus = SessionStatus.PREPARE;
 
+    private SessionEnrollStatus sessionEnrollStatus = SessionEnrollStatus.NOT_ENROLL;
+
     private Period period;
 
     private Students students = new Students();
 
     private SessionType sessionType;
 
-    public Session(Long id) {
-        this.id = id;
-    }
-
-    public Session(SessionStatus sessionStatus, Integer maxAttendance) {
-        this.sessionStatus = sessionStatus;
-        this.sessionType = SessionType.notFreeSession(maxAttendance);
-    }
-
-    public Session(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
+    public Session(SessionEnrollStatus sessionEnrollStatus) {
+        this.sessionEnrollStatus = sessionEnrollStatus;
         this.sessionType = SessionType.freeSession();
+    }
+
+    public Session(SessionEnrollStatus sessionEnrollStatus, Integer maxAttendance) {
+        this.sessionEnrollStatus = sessionEnrollStatus;
+        this.sessionType = SessionType.notFreeSession(maxAttendance);
     }
 
     public Session(CoverImage coverImage, Period period, SessionType sessionType) {
@@ -83,7 +81,7 @@ public class Session {
     }
 
     private boolean canRegisterNewUser(int currentUserSize) {
-        if (!sessionStatus.equals(SessionStatus.ENROLL)) {
+        if (sessionEnrollStatus.equals(SessionEnrollStatus.NOT_ENROLL)) {
             throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
         }
 

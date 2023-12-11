@@ -9,8 +9,6 @@ import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,7 @@ class SessionTest {
     @Test
     void twoEnroll() {
         // given
-        Session session = new Session(SessionStatus.ENROLL, 2);
+        Session session = new Session(SessionEnrollStatus.ENROLL, 2);
         Students students = makeOneStudents();
         session.bindStudents(students);
         // when
@@ -35,7 +33,7 @@ class SessionTest {
     @Test
     void exceed() {
         // given
-        Session session = new Session(SessionStatus.ENROLL, 1);
+        Session session = new Session(SessionEnrollStatus.ENROLL, 1);
         Students students = makeOneStudents();
         session.bindStudents(students);
 
@@ -50,7 +48,7 @@ class SessionTest {
     @Test
     void addNotFreeUser() {
         // given
-        Session session = new Session(SessionStatus.ENROLL, 2);
+        Session session = new Session(SessionEnrollStatus.ENROLL, 2);
         Students students = makeOneStudents();
         session.bindStudents(students);
         // when
@@ -63,7 +61,7 @@ class SessionTest {
     @Test
     void addUser() {
         // given
-        Session session = new Session(SessionStatus.ENROLL);
+        Session session = new Session(SessionEnrollStatus.ENROLL);
         Students students = makeOneStudents();
         session.bindStudents(students);
         // when
@@ -72,11 +70,12 @@ class SessionTest {
         Assertions.assertThat(session.studentSize()).isEqualTo(2);
     }
 
-    @ParameterizedTest(name = "수강신청 상태가 모집중이 아닌경우 에러를 발생시킵니다.")
-    @EnumSource(names = {"FINISH", "PREPARE"})
-    void canNotEnroll(SessionStatus status) {
+    @Test
+    @DisplayName("수강신청 상태가 모집중이 아닌경우 에러를 발생시킵니다.")
+    void canNotEnroll() {
         // given
-        Session session = new Session(status, 1);
+        SessionEnrollStatus enrollStatus = SessionEnrollStatus.NOT_ENROLL;
+        Session session = new Session(enrollStatus, 1);
         Students students = makeOneStudents();
         session.bindStudents(students);
         // when
