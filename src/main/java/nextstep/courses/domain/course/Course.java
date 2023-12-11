@@ -37,6 +37,7 @@ public class Course {
         if (!session.isAfterCourseWasCreated(createdAt)) {
             throw new IllegalArgumentException("세션 시작일이 코스 생성일보다 빠를 수 없습니다.");
         }
+        session.bindWithCourse(id);
         sessions.addSession(session);
     }
 

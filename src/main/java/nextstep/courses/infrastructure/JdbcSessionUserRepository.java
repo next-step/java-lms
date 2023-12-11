@@ -3,17 +3,17 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.sessionuser.SessionUser;
 import nextstep.courses.domain.sessionuser.SessionUsers;
-import nextstep.courses.domain.sessionuser.SessionUsersRepository;
+import nextstep.courses.domain.sessionuser.SessionUserRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
-public class JdbcSessionUsersRepository implements SessionUsersRepository {
+public class JdbcSessionUserRepository implements SessionUserRepository {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionUsersRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionUserRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -31,6 +31,6 @@ public class JdbcSessionUsersRepository implements SessionUsersRepository {
     @Override
     public void save(SessionUser sessionUser) {
         String sql = "insert into session_users (user_id, session_id) values (?, ?)";
-        jdbcTemplate.update(sql, sessionUser.getNsUser().getUserId(), sessionUser.getSession().getId());
+        jdbcTemplate.update(sql, sessionUser.userId(), sessionUser.sessionId());
     }
 }

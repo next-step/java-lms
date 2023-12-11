@@ -12,11 +12,11 @@ public class SessionUser {
         this.session = session;
     }
 
-    public NsUser getNsUser() {
-        return nsUser;
+    public Long userId() {
+        return nsUser.getId();
     }
 
-    public Session getSession() {
-        return session;
+    public Long sessionId() {
+        return session.getId();
     }
 }

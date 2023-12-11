@@ -72,6 +72,10 @@ public class Session {
         return period.isAfter(createdAt);
     }
 
+    public void bindWithCourse(Long courseId) {
+        this.courseId = courseId;
+    }
+
     public LocalDateTime startDate() {
         return period.getStartDateTime();
     }
