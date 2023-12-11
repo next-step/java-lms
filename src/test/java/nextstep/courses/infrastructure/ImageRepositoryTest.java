@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import static nextstep.courses.infrastructure.SessionRepositoryTest.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
@@ -8,6 +7,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import nextstep.courses.domain.Course;
@@ -23,6 +23,7 @@ import nextstep.courses.domain.session.registration.SessionRegistration;
 import nextstep.courses.domain.session.registration.Students;
 import nextstep.courses.domain.session.registration.Tuition;
 
+@JdbcTest
 public class ImageRepositoryTest {
 	private final static Session session1 = new Session(
 		1L, "자바 마스터리 30선",
@@ -59,6 +60,6 @@ public class ImageRepositoryTest {
 	@Test
 	public void validate_findAllBySessionId() {
 		imageRepository.save(image2);
-		assertThat(imageRepository.findAllBySessionId(2L).size()).isEqualTo(2L);
+		assertThat(imageRepository.findAllBySessionId(1L).size()).isEqualTo(1L);
 	}
 }

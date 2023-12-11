@@ -22,8 +22,8 @@ public class JdbcImageRepository implements ImageRepository {
 		String sql = "insert into image (capacity, type, width, height, session_id) values(?, ?, ?, ?, ?)";
 		return jdbcTemplate.update(
 			sql,
-			image.getImageCapacity(),
-			image.getType(),
+			image.getImageCapacity().getCapacity(),
+			image.getType().name(),
 			image.getSize().getWidth(),
 			image.getSize().getHeight(),
 			image.getSession().getId()
