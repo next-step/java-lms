@@ -6,8 +6,14 @@ import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImage;
 import nextstep.sessions.domain.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -20,10 +26,28 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
         String sql = "insert into session (name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, student_count, status)" +
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getName(), session.getDate().getStartAt(), session.getDate().getEndAt(), session.getImage().getSize(), session.getImage().getWidth(), session.getImage().getHeight(), session.getImage().getType().toString(), session.getCharge().getPrice(), session.getCharge().getLimitCount(), session.getStudentCount(), session.getStatus().toString());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"});
+            ps.setString(1, session.getName());
+            ps.setDate(2, Date.valueOf(session.getDate().getStartAt()));
+            ps.setDate(3, Date.valueOf(session.getDate().getEndAt()));
+            ps.setInt(4, session.getImage().getSize());
+            ps.setDouble(5, session.getImage().getWidth());
+            ps.setDouble(6, session.getImage().getHeight());
+            ps.setString(7, session.getImage().getType().toString());
+            ps.setDouble(8, session.getCharge().getPrice());
+            ps.setInt(9, session.getCharge().getLimitCount());
+            ps.setInt(10, session.getStudentCount());
+            ps.setString(11, session.getStatus().toString());
+            System.out.println(ps);
+            return ps;
+        }, keyHolder);
+        System.out.println(keyHolder);
+        return (long) keyHolder.getKey();
     }
 
     @Override

@@ -4,7 +4,7 @@ import nextstep.sessions.domain.Session;
 
 public interface SessionRepository {
 
-    int save(Session session);
+    long save(Session session);
 
     Session findByName(String name);
 

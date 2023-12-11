@@ -42,8 +42,8 @@ class SessionRepositoryTest {
                 new SessionImage(100, 300, 200, "PNG"),
                 new SessionCharge(true, 1000, 3),
                 SessionStatus.RECRUITING);
-        int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(1);
+        long count = sessionRepository.save(session);
+        assertThat(count).isEqualTo(2);
 
         Session savedSession = sessionRepository.findByName("강의");
         assertThat(session.getName()).isEqualTo(savedSession.getName());
