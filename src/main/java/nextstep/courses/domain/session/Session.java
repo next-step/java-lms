@@ -60,8 +60,8 @@ public class Session {
     }
 
     public void enroll(NsUser nsUser, Payment payment) {
-        Student students = Student.of(nsUser, SessionApproval.WAIT);
-        enroll(students, payment);
+        Student student = Student.of(nsUser, SessionApproval.WAIT);
+        enroll(student, payment);
     }
 
     public void enroll(Student student, Payment payment) {
