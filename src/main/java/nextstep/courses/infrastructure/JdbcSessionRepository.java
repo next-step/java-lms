@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionInfo;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -48,7 +48,7 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
                 SessionInfo.of(rs.getString(2), rs.getDate(5).toLocalDate(), rs.getDate(6).toLocalDate()),
-                EnrollmentInfo.of(rs.getString(3), rs.getString(4), rs.getLong(7), rs.getLong(8), rs.getString(2)),
+                Enrollment.of(rs.getString(3), rs.getString(4), rs.getLong(7), rs.getLong(8), rs.getString(2)),
                 null,
                 null);
         return jdbcTemplate.queryForObject(sql, rowMapper, id);

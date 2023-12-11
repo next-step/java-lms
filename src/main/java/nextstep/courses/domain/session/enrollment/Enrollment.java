@@ -7,7 +7,7 @@ import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
 
-public class EnrollmentInfo {
+public class Enrollment {
 
     private ProgressState progressState;
     private RecruitState recruitState;
@@ -17,7 +17,7 @@ public class EnrollmentInfo {
 
     private final Enroll enroll;
 
-    public EnrollmentInfo(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Enroll enroll) {
+    public Enrollment(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Enroll enroll) {
         this.progressState = progressState;
         this.recruitState = recruitState;
         this.amount = amount;
@@ -25,12 +25,12 @@ public class EnrollmentInfo {
         this.enroll = enroll;
     }
 
-    public static EnrollmentInfo of(String progressState, String recruitState, Long amount, Long enrollmentMax, String sessionType) {
+    public static Enrollment of(String progressState, String recruitState, Long amount, Long enrollmentMax, String sessionType) {
         return of(ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), amount, enrollmentMax, SessionType.valueOf(sessionType));
     }
 
-    public static EnrollmentInfo of(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, SessionType sessionType) {
-        return new EnrollmentInfo(progressState, recruitState, amount, enrollmentMax, Enroll.from(sessionType));
+    public static Enrollment of(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, SessionType sessionType) {
+        return new Enrollment(progressState, recruitState, amount, enrollmentMax, Enroll.from(sessionType));
     }
 
 
@@ -58,7 +58,7 @@ public class EnrollmentInfo {
         return enroll;
     }
 
-    public void enroll2(Students students, Student student, Payment payment) {
+    public void enroll(Students students, Student student, Payment payment) {
         enroll.enroll(this, students, student, payment);
     }
 

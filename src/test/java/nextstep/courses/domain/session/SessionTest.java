@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidPaymentAmountException;
 import nextstep.courses.exception.session.InvalidProgressStateException;
@@ -68,7 +68,7 @@ class SessionTest {
     public void no_recruit() {
         Session session = Session.of(999999L,
                 SessionInfo.of(SessionType.PAID, Period.from()),
-                EnrollmentInfo.of(ProgressState.ONGOING, RecruitState.CLOSED, 1000L, 1000L, SessionType.PAID),
+                Enrollment.of(ProgressState.ONGOING, RecruitState.CLOSED, 1000L, 1000L, SessionType.PAID),
                 null, null);
         session.ongoing();
 

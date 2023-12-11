@@ -13,7 +13,7 @@ public class FreeEnroll implements Enroll {
     }
 
     @Override
-    public void validate(EnrollmentInfo enrollmentInfo, Students students, Payment payment) {
+    public void validate(Enrollment enrollment, Students students, Payment payment) {
 
     }
 }

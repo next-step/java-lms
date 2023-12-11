@@ -10,7 +10,7 @@ import nextstep.payments.domain.Payment;
 
 public interface Enroll {
 
-    void validate(EnrollmentInfo enrollmentInfo, Students students, Payment payment);
+    void validate(Enrollment enrollment, Students students, Payment payment);
 
     static Enroll from(SessionType sessionType) {
         if (sessionType.isPaid()) {
@@ -38,9 +38,9 @@ public interface Enroll {
         }
     }
 
-    default void enroll(EnrollmentInfo enrollmentInfo, Students students, Student student, Payment payment) {
-        validateRecruiting(enrollmentInfo.progressState(), enrollmentInfo.recruitState());
-        validate(enrollmentInfo, students, payment);
+    default void enroll(Enrollment enrollment, Students students, Student student, Payment payment) {
+        validateRecruiting(enrollment.progressState(), enrollment.recruitState());
+        validate(enrollment, students, payment);
         students.add(student);
     }
 }

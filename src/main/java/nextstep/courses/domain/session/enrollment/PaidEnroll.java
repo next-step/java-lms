@@ -14,9 +14,9 @@ public class PaidEnroll implements Enroll {
     }
 
     @Override
-    public void validate(EnrollmentInfo enrollmentInfo, Students students, Payment payment) {
-        validateFullStudents(enrollmentInfo.enrollmentMax(), students);
-        payment.complete(enrollmentInfo.amount());
+    public void validate(Enrollment enrollment, Students students, Payment payment) {
+        validateFullStudents(enrollment.enrollmentMax(), students);
+        payment.complete(enrollment.amount());
     }
 
     private void validateFullStudents(long enrollmentMax, Students students) {

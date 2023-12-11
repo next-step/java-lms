@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.enrollment.EnrollmentInfo;
+import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionApproval;
@@ -15,15 +15,15 @@ public class Session {
     private final Long id;
 
     private final SessionInfo sessionInfo;
-    private final EnrollmentInfo enrollmentInfo;
+    private final Enrollment enrollment;
 
     private Images images;
     private Students students;
 
-    public Session(Long id, SessionInfo sessionInfo, EnrollmentInfo enrollmentInfo, Images images, Students students) {
+    public Session(Long id, SessionInfo sessionInfo, Enrollment enrollment, Images images, Students students) {
         this.id = id;
         this.sessionInfo = sessionInfo;
-        this.enrollmentInfo = enrollmentInfo;
+        this.enrollment = enrollment;
         this.images = images;
         this.students = students;
     }
@@ -31,7 +31,7 @@ public class Session {
     public static Session ofFree(Period period, Image image) {
         return of(null,
                 SessionInfo.of(SessionType.FREE, period),
-                EnrollmentInfo.of(ProgressState.PREPARING, RecruitState.CLOSED, null, null, SessionType.PAID),
+                Enrollment.of(ProgressState.PREPARING, RecruitState.CLOSED, null, null, SessionType.PAID),
                 Images.of(image),
                 Students.of(new ArrayList<>()));
     }
@@ -39,14 +39,14 @@ public class Session {
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax) {
         return of(null,
                 SessionInfo.of(SessionType.PAID, period),
-                EnrollmentInfo.of(ProgressState.PREPARING, RecruitState.CLOSED, amount, enrollmentMax, SessionType.PAID),
+                Enrollment.of(ProgressState.PREPARING, RecruitState.CLOSED, amount, enrollmentMax, SessionType.PAID),
                 Images.of(image),
                 Students.of(new ArrayList<>())
         );
     }
 
-    public static Session of(Long id, SessionInfo sessionInfo, EnrollmentInfo enrollmentInfo, Images images, Students students) {
-        return new Session(id, sessionInfo, enrollmentInfo, images, students);
+    public static Session of(Long id, SessionInfo sessionInfo, Enrollment enrollment, Images images, Students students) {
+        return new Session(id, sessionInfo, enrollment, images, students);
     }
 
     public void enroll(NsUser nsUser, Payment payment) {
@@ -55,7 +55,7 @@ public class Session {
     }
 
     public void enroll(Student student, Payment payment) {
-        enrollmentInfo.enroll2(students, student, payment);
+        enrollment.enroll(students, student, payment);
     }
 
     public Student approvalSession(NsUser nsUser) {
@@ -83,23 +83,23 @@ public class Session {
     }
 
     public boolean isFullEnrollment() {
-        return students.size() < enrollmentInfo.enrollmentMax();
+        return students.size() < enrollment.enrollmentMax();
     }
 
     public void preparing() {
-        enrollmentInfo.preparing();
+        enrollment.preparing();
     }
 
     public void ongoing() {
-        enrollmentInfo.ongoing();
+        enrollment.ongoing();
     }
 
     public void end() {
-        enrollmentInfo.end();
+        enrollment.end();
     }
 
     public void recruiting() {
-        enrollmentInfo.recruiting();
+        enrollment.recruiting();
     }
 
 
@@ -112,19 +112,19 @@ public class Session {
     }
 
     public ProgressState progressState() {
-        return enrollmentInfo.progressState();
+        return enrollment.progressState();
     }
 
     public String progressStateValue() {
-        return enrollmentInfo.progressStateValue();
+        return enrollment.progressStateValue();
     }
 
     public RecruitState recruitState() {
-        return enrollmentInfo.recruitState();
+        return enrollment.recruitState();
     }
 
     public String recruitStateValue() {
-        return enrollmentInfo.recruitStateValue();
+        return enrollment.recruitStateValue();
     }
 
     public LocalDate startDate() {
@@ -136,11 +136,11 @@ public class Session {
     }
 
     public Long amount() {
-        return enrollmentInfo.amount();
+        return enrollment.amount();
     }
 
     public Long enrollmentMax() {
-        return enrollmentInfo.enrollmentMax();
+        return enrollment.enrollmentMax();
     }
 
     public Images images() {
