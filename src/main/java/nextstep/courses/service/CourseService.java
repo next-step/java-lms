@@ -12,6 +12,10 @@ public class CourseService {
     @Resource(name = "courseRepository")
     private CourseRepository courseRepository;
 
+    public void create(Course course) {
+        courseRepository.save(course);
+    }
+
     public void addSession(long courseId, Session session) {
         Course course = getCourse(courseId);
         course.addSession(session);

@@ -15,24 +15,32 @@ public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
+    public void create(Long courseId, Session session) {
+        sessionRepository.save(courseId, session);
+    }
+
     public void applySession(NsUser loginUser, long sessionId, Payment payment) {
         Session session = getSession(sessionId);
         session.apply(loginUser, payment);
+        sessionRepository.saveApply(loginUser, session);
     }
 
     public void changeOnReady(long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
         session.changeOnReady(date);
+        sessionRepository.update(sessionId, session);
     }
 
     public void changeOnRecruit(long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
         session.changeOnRecruit(date);
+        sessionRepository.update(sessionId, session);
     }
 
     public void changeOnEnd(long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
         session.changeOnEnd(date);
+        sessionRepository.update(sessionId, session);
     }
 
     private Session getSession(long sessionId) {
