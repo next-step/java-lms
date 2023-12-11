@@ -82,7 +82,7 @@ public class SessionTest {
 
         assertThat(session.applyCount()).isEqualTo(2);
 
-        session.apply(APPLE, payment);
+        session.apply(APPLE, payment, localDateTime);
 
         assertThat(session.applyCount()).isEqualTo(3);
     }
@@ -94,7 +94,7 @@ public class SessionTest {
                 SessionStatus.READY, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, payment)
+                () -> session.apply(APPLE, payment, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -109,7 +109,7 @@ public class SessionTest {
         applicants.addApplicant(SANJIGI, session.getSessionState());
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, payment)
+                () -> session.apply(APPLE, payment, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -121,7 +121,7 @@ public class SessionTest {
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, null)
+                () -> session.apply(APPLE, null, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -133,7 +133,7 @@ public class SessionTest {
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, differentPayment)
+                () -> session.apply(APPLE, differentPayment, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 

@@ -1,5 +1,6 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.course.session.Apply;
 import nextstep.courses.domain.course.session.Session;
 import nextstep.courses.domain.course.session.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -9,20 +10,21 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service("sessionService")
 public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
-    public void create(Long courseId, Session session) {
+    public void create(Long courseId, Session session, LocalDateTime date) {
         sessionRepository.save(courseId, session);
     }
 
-    public void applySession(NsUser loginUser, long sessionId, Payment payment) {
+    public void applySession(NsUser loginUser, long sessionId, Payment payment, LocalDateTime date) {
         Session session = getSession(sessionId);
-        session.apply(loginUser, payment);
-        sessionRepository.saveApply(loginUser, session);
+        Apply apply = session.apply(loginUser, payment, date);
+        sessionRepository.saveApply(apply);
     }
 
     public void changeOnReady(long sessionId, LocalDate date) {
