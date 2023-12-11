@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.dto.EnrolmentInfo;
 
 import java.time.LocalDate;
 import java.util.Objects;

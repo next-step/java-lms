@@ -5,6 +5,7 @@ import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
 import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.dto.EnrolmentInfo;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.session.EnrolmentInfo;
+import nextstep.courses.dto.EnrolmentInfo;
 import nextstep.courses.domain.session.PayType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.repository.SessionRepository;
