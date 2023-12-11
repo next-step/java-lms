@@ -13,10 +13,8 @@ public class Session {
     public static int MAX_CAPACITY = Integer.MAX_VALUE;
     public static Long SEQ = 0L;
 
-
     public final Long id;
-    private final LocalDateTime beginDt;
-    private final LocalDateTime endDt;
+    public final Period period;
     private final Long price;
     private final Integer capacity;
     private SessionStatus status = SessionStatus.CLOSED;
@@ -26,8 +24,7 @@ public class Session {
 
     private Session(LocalDateTime beginDt, LocalDateTime endDt, Long price, Integer capacity, SessionCover sessionCover, Course course) {
         this.id = SEQ++;
-        this.beginDt = beginDt;
-        this.endDt = endDt;
+        this.period = new Period(beginDt, endDt);
         this.price = price;
         this.capacity = capacity;
         this.sessionCover = sessionCover;
