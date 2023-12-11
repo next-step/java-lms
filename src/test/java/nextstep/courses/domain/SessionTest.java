@@ -4,6 +4,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +56,8 @@ public class SessionTest {
         FreeSession freeSession = new FreeSession(newImage(), new Period());
 
         // when, then
-        assertThatThrownBy(() -> freeSession.enroll(NsUserTest.JAVAJIGI)).isInstanceOf(
+        assertThatThrownBy(
+            () -> freeSession.enroll(NsUserTest.JAVAJIGI, new Payment())).isInstanceOf(
             IllegalArgumentException.class).hasMessageContaining("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
     }
 
@@ -66,7 +68,7 @@ public class SessionTest {
 
         // when
         freeSession.open();
-        freeSession.enroll(NsUserTest.JAVAJIGI);
+        freeSession.enroll(NsUserTest.JAVAJIGI, new Payment());
 
         // then
         assertThat(freeSession.getStudents()).hasSize(1);

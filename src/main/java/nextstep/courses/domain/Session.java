@@ -30,17 +30,12 @@ public abstract class Session {
         this.status = SessionStatus.PREPARING;
     }
 
-    public void setCoverImage(Image image, Period sessionPeriod) {
-        this.coverImage = image;
-        this.sessionPeriod = sessionPeriod;
-    }
-
-    public void enroll(NsUser student) {
-        if (this.status != SessionStatus.RECRUITING) {
-            throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
-        }
-        this.students.add(student);
-    }
+//    public abstract void enroll(NsUser student) {
+//        if (this.status != SessionStatus.RECRUITING) {
+//            throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
+//        }
+//        this.students.add(student);
+//    }
 
     public void open() {
         this.status = SessionStatus.RECRUITING;
@@ -49,6 +44,7 @@ public abstract class Session {
     public Long getId() {
         return this.id;
     }
+
     public Image getImage() {
         return this.coverImage;
     }
@@ -63,5 +59,11 @@ public abstract class Session {
 
     public List<NsUser> getStudents() {
         return this.students;
+    }
+
+    public abstract void enroll(NsUser student, Payment payment);
+
+    protected SessionStatus getStatus() {
+        return this.status;
     }
 }

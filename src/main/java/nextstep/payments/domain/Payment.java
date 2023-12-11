@@ -3,6 +3,7 @@ package nextstep.payments.domain;
 import java.time.LocalDateTime;
 
 public class Payment {
+
     private String id;
 
     // 결제한 강의 아이디
@@ -26,11 +27,7 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
-        this.id = id;
-        this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
-        this.amount = amount;
-        this.createdAt = LocalDateTime.now();
+    public boolean isMatch(Long price) {
+        return this.amount.equals(price);
     }
 }
