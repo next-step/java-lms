@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 public class ImageSize {
 
-    private static int BYTES_OF_1MB = 1048576;
+    private static final int BYTES_OF_1MB = 1024 * 1024;
 
     private int size;
 
