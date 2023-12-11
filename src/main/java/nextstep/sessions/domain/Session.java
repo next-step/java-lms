@@ -86,17 +86,8 @@ public class Session {
         }
     }
 
-    private void checkStudentCount() {
-        int limitCount = this.charge.getLimitCount();
-        if (limitCount > 0 && limitCount == this.studentCount) {
-            throw new IllegalStateException("모집 인원이 마감되었습니다.");
-        }
-    }
-
     public void addStudent() {
-        checkStudentCount();
+        this.charge.isFull(this.studentCount);
         this.studentCount++;
     }
-
-
 }

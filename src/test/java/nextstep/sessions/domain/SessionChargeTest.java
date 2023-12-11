@@ -31,4 +31,12 @@ class SessionChargeTest {
         assertThatThrownBy(() -> new SessionCharge(true, 1000, 0))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @DisplayName("학생 수를 전달하면 유료 강의면서 모집 인원이 마감된 경우 IllegalStateException을 던진다.")
+    @Test
+    void isFullTest() {
+        SessionCharge sessionCharge = new SessionCharge(true, 10, 1);
+        assertThatThrownBy(() -> sessionCharge.isFull(1))
+                .isInstanceOf(IllegalStateException.class);
+    }
 }
