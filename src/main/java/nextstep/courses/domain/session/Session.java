@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
 import nextstep.courses.type.RecruitState;
+import nextstep.courses.type.SessionApproval;
 import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;

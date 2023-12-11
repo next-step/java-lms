@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.type;
 
 public enum SessionApproval {
     WAIT,

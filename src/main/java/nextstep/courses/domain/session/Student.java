@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.type.SessionApproval;
 import nextstep.users.domain.NsUser;
 
 public class Student {
