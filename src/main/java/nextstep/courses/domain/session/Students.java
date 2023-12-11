@@ -35,7 +35,7 @@ public class Students {
         return students.size();
     }
 
-    public Student get(NsUser nsUser) {
+    public Student orElseThrow(NsUser nsUser) {
         return students.stream()
                 .filter(student -> student.sameUser(nsUser))
                 .findFirst()

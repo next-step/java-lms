@@ -70,7 +70,7 @@ public class Session {
     }
 
     public Student approvalSession(NsUser nsUser) {
-        Student student = students.get(nsUser);
+        Student student = students.orElseThrow(nsUser);
 
         if (!student.isWait()) {
             throw new IllegalArgumentException("준비 상태에서만 수강승인이 가능합닌다.");
@@ -82,7 +82,7 @@ public class Session {
     }
 
     public Student approvalCancel(NsUser nsUser) {
-        Student student = students.get(nsUser);
+        Student student = students.orElseThrow(nsUser);
 
         if (!student.isWait()) {
             throw new IllegalArgumentException("준비 상태에서만 수강 취소가 가능합니다.");
