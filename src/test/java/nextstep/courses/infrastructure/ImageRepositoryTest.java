@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 public class ImageRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

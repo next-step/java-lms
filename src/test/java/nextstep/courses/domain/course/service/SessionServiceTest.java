@@ -52,7 +52,7 @@ public class SessionServiceTest {
         applicants = new Applicants();
         applicants.addApplicant(JAVAJIGI, sessionState);
         session = new Session(1L, image, duration, sessionState, applicants,
-                Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
     }
 
     @Test

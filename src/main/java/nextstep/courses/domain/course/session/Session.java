@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Session extends BaseEntity  {
+public class Session extends BaseEntity {
     private Long id;
 
     private Image image;
@@ -20,27 +20,16 @@ public class Session extends BaseEntity  {
 
     private Applicants applicants;
 
-    private Status status;
+    private SessionStatus session;
 
-    public enum Status {
-        READY("준비중"),
-        RECRUIT("모집중"),
-        END("종료");
-
-        private final String description;
-
-        Status(String description) {
-            this.description = description;
-        }
-    }
-
-    public Session(Image image, Duration duration, SessionState sessionState, Long creatorId, LocalDateTime date) {
+    public Session(Image image, Duration duration, SessionState sessionState,
+                   Long creatorId, LocalDateTime date) {
         this(0L, image, duration, sessionState, new Applicants(),
-                Status.READY, creatorId, date, null);
+                SessionStatus.READY, creatorId, date, null);
     }
 
     public Session(Long id, Image image, Duration duration, SessionState sessionState,
-                   Applicants applicants, Status status, Long creatorId,
+                   Applicants applicants, SessionStatus session, Long creatorId,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (image == null) {
@@ -52,7 +41,7 @@ public class Session extends BaseEntity  {
         }
 
         if (sessionState == null) {
-            throw new IllegalArgumentException("강의 상태를 합니다.");
+            throw new IllegalArgumentException("강의 상태를 추가해야 합니다.");
         }
 
         this.id = id;
@@ -60,7 +49,7 @@ public class Session extends BaseEntity  {
         this.duration = duration;
         this.sessionState = sessionState;
         this.applicants = applicants;
-        this.status = status;
+        this.session = session;
     }
 
     public boolean sameAmount(Long amount) {
@@ -90,7 +79,7 @@ public class Session extends BaseEntity  {
     }
 
     private void checkStatusOnRecruit() {
-        if (this.status != Status.RECRUIT) {
+        if (this.session != SessionStatus.RECRUIT) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
     }
@@ -103,12 +92,12 @@ public class Session extends BaseEntity  {
 
     public void changeOnReady(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.status = Status.READY;
+        this.session = SessionStatus.READY;
     }
 
     public void changeOnRecruit(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.status = Status.RECRUIT;
+        this.session = SessionStatus.RECRUIT;
     }
 
     private void checkStartDateIsSameOrBefore(LocalDate date) {
@@ -119,7 +108,7 @@ public class Session extends BaseEntity  {
 
     public void changeOnEnd(LocalDate date) {
         checkEndDateIsSameOrAfter(date);
-        this.status = Status.END;
+        this.session = SessionStatus.END;
     }
 
     private void checkEndDateIsSameOrAfter(LocalDate date) {
@@ -128,7 +117,23 @@ public class Session extends BaseEntity  {
         }
     }
 
-    public SessionState sessionState() {
+    public Image getImage() {
+        return image;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public SessionState getSessionState() {
         return this.sessionState;
+    }
+
+    public Applicants getApplicants() {
+        return applicants;
+    }
+
+    public SessionStatus getSession() {
+        return session;
     }
 }
