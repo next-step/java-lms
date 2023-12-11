@@ -40,6 +40,7 @@ public class SessionRepositoryTest {
     private Duration duration;
     private SessionState sessionState;
     private Session session;
+    private Apply apply;
 
     @BeforeEach
     void setUp() {
@@ -54,6 +55,7 @@ public class SessionRepositoryTest {
         applicants = new Applicants();
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
+        apply = new Apply(1L, JAVAJIGI.getId(), JAVAJIGI.getId(), localDateTime, localDateTime);
     }
 
     @Test
@@ -73,9 +75,9 @@ public class SessionRepositoryTest {
 
     @Test
     void applySave_success() {
-        session = new Session(2L, image, duration, sessionState, new Applicants(),
+        session = new Session(1L, image, duration, sessionState, new Applicants(),
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
-        int count = sessionRepository.saveApply(JAVAJIGI, session);
+        int count = sessionRepository.saveApply(apply);
         Apply savedApply = sessionRepository.findApplyByIds(JAVAJIGI.getId(), session.getId())
                 .orElseThrow(NotFoundException::new);
 

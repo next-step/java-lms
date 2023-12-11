@@ -55,9 +55,9 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int saveApply(NsUser nsUser, Session session) {
+    public int saveApply(Apply apply) {
         String sql = "insert into apply (session_id, ns_user_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getId(), nsUser.getId(), nsUser.getId(), LocalDateTime.now(), null);
+        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(), apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
     }
 
     @Override

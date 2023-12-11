@@ -61,7 +61,7 @@ public class SessionServiceTest {
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
 
         assertThat(session.applyCount()).isEqualTo(1);
-        sessionService.applySession(APPLE, session.getId(), payment);
+        sessionService.applySession(APPLE, session.getId(), payment, localDateTime);
 
         assertThat(session.applyCount()).isEqualTo(2);
     }

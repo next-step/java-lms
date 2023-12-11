@@ -68,7 +68,7 @@ public class Session extends BaseEntity {
         return this.applicants.size();
     }
 
-    public void apply(NsUser loginUser, Payment payment) {
+    public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
         checkStatusOnRecruit();
 
         if (this.sessionState.charged()) {
@@ -76,6 +76,11 @@ public class Session extends BaseEntity {
         }
 
         this.applicants.addApplicant(loginUser, sessionState);
+        return toApply(loginUser, date);
+    }
+
+    private Apply toApply(NsUser loginUser, LocalDateTime date) {
+        return new Apply(this.id, loginUser.getId(), loginUser.getId(), date, null);
     }
 
     private void checkStatusOnRecruit() {

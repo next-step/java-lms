@@ -9,7 +9,7 @@ public interface SessionRepository {
 
     int save(Long courseId, Session session);
 
-    int saveApply(NsUser user, Session session);
+    int saveApply(Apply apply);
 
     Optional<Apply> findApplyByIds(Long NsUserId, Long sessionId);
 
