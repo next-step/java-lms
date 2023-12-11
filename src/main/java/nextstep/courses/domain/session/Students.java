@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.users.domain.NsUser;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class Students {
     }
 
     public List<Student> values() {
-        return Collections.unmodifiableList(students);
+        return List.copyOf(students);
     }
 
     @Override

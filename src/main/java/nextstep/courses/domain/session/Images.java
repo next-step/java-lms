@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Images {
@@ -23,7 +22,7 @@ public class Images {
     }
 
     public List<Image> values() {
-        return Collections.unmodifiableList(images);
+        return List.copyOf(images);
     }
 
     public int size() {
