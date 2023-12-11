@@ -1,27 +1,40 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.Image.CoverImage;
+import nextstep.courses.domain.Image.CoverImages;
 import nextstep.courses.exception.SessionStateException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class Session extends BaseEntity {
     protected Long id;
     protected CoverImage coverImage;
+    protected CoverImages coverImages;
     protected ProgressPeriod progressPeriod;
     protected SessionProgressState progressState;
     protected Boolean recruitState;
     protected Participants participants;
-    
+
 
     protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
         this.coverImage = coverImage;
+        this.coverImages = new CoverImages(new ArrayList<>(Arrays.asList(coverImage)));
+        this.progressPeriod = new ProgressPeriod(startDate, endDate);
+        this.recruitState = recruitState;
+        this.progressState = state;
+        this.participants = new Participants(new HashSet<>());
+    }
+
+    protected Session(Long id, List<CoverImage> coverImageList, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.coverImage = coverImageList.get(0);
+        this.coverImages = new CoverImages(coverImageList);
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.recruitState = recruitState;
         this.progressState = state;
@@ -50,7 +63,7 @@ public abstract class Session extends BaseEntity {
     }
 
     public CoverImage coverImage() {
-        return coverImage;
+        return coverImages.find().get(0);
     }
 
     public Boolean recruitState() {
