@@ -29,18 +29,20 @@ public class SessionService {
         return sessionId;
     }
 
-    public void approval(Session session, NsUser nsUser) {
+    public void approval(long sessionId, NsUser nsUser) {
+        Session session = findById(sessionId);
         Student student = session.approvalSession(nsUser);
         studentsRepository.updateState(session.id(), student);
     }
 
-    public void cancel(Session session, NsUser nsUser) {
+    public void cancel(long sessionId, NsUser nsUser) {
+        Session session = findById(sessionId);
         Student student = session.approvalCancel(nsUser);
         studentsRepository.updateState(session.id(), student);
     }
 
-    public Session findById(long id) {
-        Session session = sessionRepository.findById(id);
+    public Session findById(long sessionId) {
+        Session session = sessionRepository.findById(sessionId);
         Images images = imageRepository.findImagesBySessionId(session.id());
         Students students = studentsRepository.findBySessionId(session.id());
 
