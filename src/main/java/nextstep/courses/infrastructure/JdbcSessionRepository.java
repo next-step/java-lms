@@ -101,6 +101,12 @@ public class JdbcSessionRepository implements SessionRepository {
         return new Sessions(sessions);
     }
 
+    @Override
+    public int updateCourse(Long courseId, Session session) {
+        String sql = "update session set course_id = ? where id = ?";
+        return jdbcTemplate.update(sql, session.getId(), courseId);
+    }
+
     private Image findImageById(Long id) {
         return this.imageRepository.findById(id).orElseThrow(NotFoundException::new);
     }

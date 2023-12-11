@@ -16,4 +16,6 @@ public interface SessionRepository {
     int update(Long sessionId, Session session);
 
     Sessions findAllByCourseId(Long courseId);
+
+    int updateCourse(Long courseId, Session session);
 }
