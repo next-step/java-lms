@@ -17,6 +17,10 @@ public class Applicants implements Iterable<NsUser> {
         this.applicants = applicants;
     }
 
+    public NsUser find(int index) {
+        return this.applicants.get(index);
+    }
+
     public int size() {
         return this.applicants.size();
     }
