@@ -25,10 +25,18 @@ public class Student {
     }
 
     public void approval() {
+        if (!isWait()) {
+            throw new IllegalArgumentException("준비 상태에서만 수강승인이 가능합닌다.");
+        }
+
         sessionApproval = SessionApproval.APPROVAL;
     }
 
     public void cancel() {
+        if (!isWait()) {
+            throw new IllegalArgumentException("준비 상태에서만 수강 취소가 가능합니다.");
+        }
+
         sessionApproval = SessionApproval.CANCEL;
     }
 

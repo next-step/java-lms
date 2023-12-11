@@ -21,10 +21,6 @@ public class SessionInfo {
         return new SessionInfo(SessionType.valueOf(sessionType), Period.of(startDate, endDate));
     }
 
-    public SessionType sessionType() {
-        return sessionType;
-    }
-
     public String sessionTypeValue() {
         return sessionType.name();
     }
