@@ -16,14 +16,17 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
-    public static Payment paidOf(String id) {
-        return new Payment(id, 1L, 1L, 10_000L);
+    public static Payment paidOf(String id, Long amount) {
+        return new Payment(id, 1L, 1L, amount);
     }
     public static Payment freeOf(String id) {
         return new Payment(id, 1L, 1L, 0L);
     }
 
-    private Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+    public Payment() {
+
+    }
+    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;

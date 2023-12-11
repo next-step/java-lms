@@ -1,7 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
-import nextstep.courses.enumeration.SessionStatus;
+import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
 
 public class PaidSession extends Session {
@@ -10,12 +10,14 @@ public class PaidSession extends Session {
 
     public static PaidSession feeOf(String title, int maxStudentCount, Long sessionFee) {
         return new PaidSession(1L, title, null
-                , SessionStatus.RECRUITING, maxStudentCount, sessionFee);
+                , SessionStatus.RECRUITING
+                , maxStudentCount, sessionFee);
     }
 
-    public PaidSession(Long sessionId, String title, Course course, SessionStatus sessionStatus
+    public PaidSession(Long sessionId, String title, Course course
+            , SessionStatus sessionStatus
             , int maxStudentCount, Long sessionFee) {
-        super(sessionId, title, course, sessionStatus);
+        super(sessionId, title, course, SessionType.PAID, sessionStatus);
         this.maxStudentCount = maxStudentCount;
         this.sessionFee = sessionFee;
     }

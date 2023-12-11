@@ -1,4 +1,4 @@
-package nextstep.courses.enumeration;
+package nextstep.courses.domain.session;
 
 public enum SessionStatus {
     PREPARING,

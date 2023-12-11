@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotSignUpException;
+import nextstep.courses.domain.session.PaidSession;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PaidSessionTest {
 
     private PaidSession paidSession = PaidSession.feeOf("step4", 1, 10_000L);
-    private Payment payment = Payment.paidOf("1A");
+    private Payment payment = Payment.paidOf("1A", 10_000L);
 
     @BeforeEach
     void setUp() {

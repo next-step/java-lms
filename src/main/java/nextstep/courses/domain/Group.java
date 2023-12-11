@@ -6,13 +6,11 @@ import java.util.List;
 
 public class Group {
     private Course course;
-    private Long number;
-
-    private List<NsUser> groupMember;
+    private Long courseNumber;
 
     public Group(Course course, Long number) {
         this.course = course;
-        this.number = number;
+        this.courseNumber = number;
     }
 
     public Course getCourse() {
