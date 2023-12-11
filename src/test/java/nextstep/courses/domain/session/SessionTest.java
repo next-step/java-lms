@@ -81,7 +81,6 @@ class SessionTest {
         assertThat(student.sessionApproval().isApproval()).isTrue();
     }
 
-
     @Test
     @DisplayName("강사는 수강신청한 사람 중 선발되지 않은 사람은 수강을 취소할 수 있어야 한다.")
     public void session_cancel() {
@@ -91,12 +90,28 @@ class SessionTest {
         assertThat(student.sessionApproval().isCancel()).isTrue();
     }
 
+    @Test
+    @DisplayName("승인/취소시 수강생이 존재하지 않는 경우 예외가 발생한다.")
+    public void session_approval_and_student_not_exist() {
+        Session session = 강의_생성();
+
+        assertThatThrownBy(() -> session.approvalSession(NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> session.approvalCancel(NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     private Session 강의_생성_및_수강신청(NsUser user, Payment payment) {
+        Session session = 강의_생성();
+        session.enroll(user, payment);
+        return session;
+    }
+
+    private Session 강의_생성() {
         Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
         session.ongoing();
         session.recruiting();
 
-        session.enroll(user, payment);
         return session;
     }
 }
