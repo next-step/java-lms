@@ -8,9 +8,21 @@ public class SessionInfo {
     private final SessionType sessionType;
     private final Period period;
 
-    public SessionInfo(SessionType sessionType, Period period) {
+    private SessionInfo(SessionType sessionType, Period period) {
         this.sessionType = sessionType;
         this.period = period;
+    }
+
+    public static SessionInfo of(SessionType sessionType, Period period) {
+        return new SessionInfo(sessionType, period);
+    }
+
+    public static SessionInfo of(String sessionType, LocalDate startDate, LocalDate endDate) {
+        return new SessionInfo(SessionType.valueOf(sessionType), Period.of(startDate, endDate));
+    }
+
+    public SessionType sessionType() {
+        return sessionType;
     }
 
     public String sessionTypeValue() {

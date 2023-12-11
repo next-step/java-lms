@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionInfo;
 import nextstep.courses.domain.session.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,11 +46,9 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "select id, type, progress_state, recruit_state, start_date, end_date, amount, enrollment_max from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
-                rs.getString(2),
+                SessionInfo.of(rs.getString(2), rs.getDate(5).toLocalDate(), rs.getDate(6).toLocalDate()),
                 rs.getString(3),
                 rs.getString(4),
-                rs.getDate(5).toLocalDate(),
-                rs.getDate(6).toLocalDate(),
                 rs.getLong(7),
                 rs.getLong(8));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);

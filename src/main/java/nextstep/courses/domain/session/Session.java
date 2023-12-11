@@ -14,47 +14,48 @@ import java.util.ArrayList;
 public class Session {
     private final Long id;
 
-    private final SessionType sessionType;
+    private SessionInfo sessionInfo;
+
     private ProgressState progressState;
     private RecruitState recruitState;
 
-    private final Period period;
+
     private final Long amount;
     private final Long enrollmentMax;
 
     private Images images;
     private Students students;
 
+
     private final Enrollment enrollment;
 
 
-    public Session(Long id, SessionType sessionType, ProgressState progressState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
+    public Session(Long id, SessionInfo sessionInfo, ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Images images, Students students) {
         this.id = id;
-        this.sessionType = sessionType;
+        this.sessionInfo = sessionInfo;
         this.progressState = progressState;
         this.recruitState = recruitState;
-        this.period = period;
         this.amount = amount;
         this.enrollmentMax = enrollmentMax;
         this.images = images;
         this.students = students;
-        this.enrollment = Enrollment.from(sessionType);
+        this.enrollment = Enrollment.from(sessionInfo.sessionType());
     }
 
     public static Session ofFree(Period period, Image image) {
-        return of(null, SessionType.FREE, ProgressState.PREPARING, RecruitState.CLOSED, period, null, null, Images.of(image), Students.of(new ArrayList<>()));
+        return of(null, SessionInfo.of(SessionType.FREE, period), ProgressState.PREPARING, RecruitState.CLOSED, null, null, Images.of(image), Students.of(new ArrayList<>()));
     }
 
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax) {
-        return of(null, SessionType.PAID, ProgressState.PREPARING, RecruitState.CLOSED, period, amount, enrollmentMax, Images.of(image), Students.of(new ArrayList<>()));
+        return of(null, SessionInfo.of(SessionType.PAID, period), ProgressState.PREPARING, RecruitState.CLOSED, amount, enrollmentMax, Images.of(image), Students.of(new ArrayList<>()));
     }
 
-    public static Session of(Long id, String sessionType, String progressState, String recruitState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
-        return of(id, SessionType.valueOf(sessionType), ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
+    public static Session of(Long id, SessionInfo sessionInfo, String progressState, String recruitState, Long amount, Long enrollmentMax) {
+        return of(id, sessionInfo, ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), amount, enrollmentMax, null, null);
     }
 
-    public static Session of(Long id, SessionType sessionType, ProgressState progressState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
-        return new Session(id, sessionType, progressState, recruitState, period, amount, enrollmentMax, images, students);
+    public static Session of(Long id, SessionInfo sessionInfo, ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Images images, Students students) {
+        return new Session(id, sessionInfo, progressState, recruitState, amount, enrollmentMax, images, students);
     }
 
     public void enroll(NsUser nsUser, Payment payment) {
@@ -119,7 +120,7 @@ public class Session {
     }
 
     public String type() {
-        return sessionType.name();
+        return sessionInfo.sessionTypeValue();
     }
 
     public ProgressState progressState() {
@@ -143,11 +144,11 @@ public class Session {
     }
 
     public LocalDate startDate() {
-        return period.startDate();
+        return sessionInfo.startDate();
     }
 
     public LocalDate endDate() {
-        return period.endDate();
+        return sessionInfo.endDate();
     }
 
     public Long amount() {

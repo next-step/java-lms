@@ -65,7 +65,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
     public void no_recruit() {
-        Session session = Session.of(999999L, SessionType.PAID, ProgressState.ONGOING, RecruitState.CLOSED, Period.from(), 1000L, 1000L, null, null);
+        Session session = Session.of(999999L, SessionInfo.of(SessionType.PAID, Period.from()), ProgressState.ONGOING, RecruitState.CLOSED, 1000L, 1000L, null, null);
         session.ongoing();
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI, new Payment(100L)))

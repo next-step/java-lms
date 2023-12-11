@@ -11,7 +11,7 @@ public interface Enrollment {
     void enroll(Session session, Student student, Payment payment);
 
     static Enrollment from(SessionType sessionType) {
-        if (sessionType == SessionType.PAID) {
+        if (sessionType.isPaid()) {
             return fromPaid();
         }
 
