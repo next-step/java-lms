@@ -15,20 +15,11 @@ import java.util.ArrayList;
 public class Session {
     private final Long id;
 
-    private SessionInfo sessionInfo;
-
-//    private ProgressState progressState;
-//    private RecruitState recruitState;
-//
-//
-//    private final Long amount;
-//    private final Long enrollmentMax;
-
-    private EnrollmentInfo enrollmentInfo;
+    private final SessionInfo sessionInfo;
+    private final EnrollmentInfo enrollmentInfo;
 
     private Images images;
     private Students students;
-
 
     private final Enrollment enrollment;
 
@@ -135,10 +126,6 @@ public class Session {
 
     public RecruitState recruitState() {
         return enrollmentInfo.recruitState();
-    }
-
-    public boolean isRecruiting() {
-        return recruitState().recruiting();
     }
 
     public String recruitStateValue() {
