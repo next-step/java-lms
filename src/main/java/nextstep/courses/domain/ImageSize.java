@@ -11,6 +11,13 @@ public class ImageSize {
     private int height;
 
     public ImageSize(int width, int height) {
+        validateImageSize(width, height);
+        this.width = width;
+        this.height = height;
+        this.size = width * height * 3;
+    }
+
+    private static void validateImageSize(int width, int height) {
         if (width < 300) {
             throw new IllegalArgumentException("이미지의 width는 300픽셀 이상이어야 한다.");
         }
@@ -23,9 +30,6 @@ public class ImageSize {
         if (BYTES_OF_1MB < width * height * 3) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
         }
-        this.width = width;
-        this.height = height;
-        this.size = width * height * 3;
     }
 
     public int getSize() {
