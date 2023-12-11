@@ -14,13 +14,11 @@ public class Session {
 
     private String title;
 
-    private SessionState sessionState;
-
     private SessionType sessionType;
 
     private ImageInfo coverImage;
 
-    private Students students;
+    private Enrollment enrollment;
 
     private Long fee;
 
@@ -32,39 +30,35 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(long id, SessionType sessionType, SessionState sessionState, Long fee, Students students, SessionPeriod sessionPeriod) {
-        this(id, null, sessionType, sessionState, students, null, fee, sessionPeriod);
+    private Session(long id, SessionType sessionType, Enrollment enrollment, Long fee, SessionPeriod sessionPeriod) {
+        this(id, null, sessionType, enrollment,null, fee, sessionPeriod);
     }
 
     public static Session sessionWithImage(long id, ImageInfo imageInfo) {
-        return new Session(id, null,null, SessionState.RECRUITING, null, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+        Enrollment enrollment = new Enrollment(SessionState.RECRUITING, null);
+        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public static Session sessionWithState(long id, SessionState sessionState, SessionPeriod sessionPeriod) {
-        return new Session(id, null,null, sessionState, null, null, null, sessionPeriod);
+    public static Session sessionWithState(long id, Enrollment enrollment, SessionPeriod sessionPeriod) {
+        return new Session(id, null,null, enrollment, null, null, sessionPeriod);
     }
 
-    public static Session sessionWithStateAndType(long id, SessionType sessionType, SessionState sessionState, Students students) {
-        return new Session(id, sessionType, sessionState, null, students, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+    public static Session sessionWithStateAndType(long id, SessionType sessionType, Enrollment enrollment) {
+        return new Session(id, sessionType, enrollment, null,  new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Long fee, Students students) {
-        return new Session(id, sessionType, sessionState, fee, students, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+    public static Session recruitingPaidSession(long id, SessionType sessionType, Enrollment enrollment, Long fee) {
+        return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public static Session recruitingSession(long id, SessionState sessionState, Students students) {
-        return new Session(id, null,null, sessionState, students, null, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
-    }
+    public Session(long id, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
 
-    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Students students, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
-
-        sessionPeriod.checkSessionStatus(sessionState);
+        enrollment.checkSessionState(sessionPeriod);
 
         this.id = id;
         this.title = title;
         this.sessionType = sessionType;
-        this.sessionState = sessionState;
-        this.students = students;
+        this.enrollment = enrollment;
         this.fee = fee;
         this.coverImage = imageInfo;
         this.sessionPeriod = sessionPeriod;
@@ -74,17 +68,11 @@ public class Session {
     }
 
     public void enrollStudent(NsUser student, Payment payment) {
-
-        if(!SessionState.isAbleToEnroll(sessionState)) {
-            throw new SessionException("모집중인 강의가 아닙니다.");
-        }
-
-        if(sessionType == SessionType.PAID) {
-            students.isOverCapacity();
+        if(sessionType == SessionType.PAID){
+            enrollment.isOverCapacity();
             payment.isAbleToPayment(fee);
         }
-
-        students.addStudent(student);
+        enrollment.enroll(student);
     }
 
     @Override
@@ -92,12 +80,12 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionState == session.sessionState && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(students, session.students) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
+        return Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollment, session.enrollment) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, sessionState, sessionType, coverImage, students, fee, sessionPeriod, creatorId);
+        return Objects.hash(id, title, sessionType, coverImage, enrollment, fee, sessionPeriod, creatorId);
     }
 
     @Override
@@ -105,10 +93,9 @@ public class Session {
         return "Session{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", sessionState=" + sessionState +
                 ", sessionType=" + sessionType +
                 ", coverImage=" + coverImage +
-                ", students=" + students +
+                ", enrollment=" + enrollment +
                 ", fee=" + fee +
                 ", sessionPeriod=" + sessionPeriod +
                 ", creatorId=" + creatorId +

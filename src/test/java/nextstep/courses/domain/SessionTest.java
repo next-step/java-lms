@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.PaymentException;
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -23,17 +22,18 @@ class SessionTest {
     @DisplayName("모집중인 무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
     void 무료강의_수강신청() {
         Students students = new Students(new ArrayList<>(List.of(new NsUser(), new NsUser(), new NsUser())), null);
-        Session session = Session.sessionWithStateAndType(0L, SessionType.FREE, SessionState.RECRUITING, students);
+        Session session = Session.sessionWithStateAndType(0L, SessionType.FREE, new Enrollment(SessionState.RECRUITING, students));
         session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
-        assertThat(session.equals(Session.sessionWithStateAndType(0L, SessionType.FREE, SessionState.RECRUITING,students))).isTrue();
+        assertThat(session.equals(Session.sessionWithStateAndType(0L, SessionType.FREE, new Enrollment(SessionState.RECRUITING, students)))).isTrue();
     }
 
     @Test
     @DisplayName("모집중인 유료강의에 수강신청 시 최대 수강 인원을 초과하면 예외가 발생한다.")
     void 유료강의_수강신청() {
         Students students = new Students(new ArrayList<>(List.of(new NsUser(), new NsUser(), new NsUser())), 3);
-        Session session = Session.sessionWithStateAndType(0L, SessionType.PAID, SessionState.RECRUITING, students);
+        Enrollment enrollment = new Enrollment(SessionState.RECRUITING, students);
+        Session session = Session.sessionWithStateAndType(0L, SessionType.PAID, enrollment);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -43,7 +43,7 @@ class SessionTest {
     @DisplayName("강의 상태가 모집중일 때 수강신청을 할 수 있다.")
     void 수강신청_모집중_상태() {
         Students students = new Students(new ArrayList<>(), 3);
-        Session session = Session.recruitingSession(0L, SessionState.RECRUITING, students);
+        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.RECRUITING, students), todayBeforeStartDate);
         session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
         assertThat(students.enrollCount()).isEqualTo(1);
@@ -52,7 +52,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 준비중일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_준비중_상태() {
-        Session session = Session.sessionWithState(0L, SessionState.PREPARING, todayBeforeStartDate);
+        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.PREPARING, new Students(new ArrayList<>(), 3)), todayBeforeStartDate);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -61,7 +61,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 종료일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_종료_상태() {
-        Session session = Session.sessionWithState(0L, SessionState.END, todayAfterEndDate);
+        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.END, new Students(new ArrayList<>(), 3)), todayAfterEndDate);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -79,11 +79,11 @@ class SessionTest {
     @DisplayName("수강생이 결제한 금액과 모집중인 유료강의의 수강료가 일치하면 수강신청이 완료된다.")
     void 수강료와_결제금액_일치시_수강신청_완료() {
         Students students = new Students(new ArrayList<>(), 5);
-        Session session = Session.recruitingPaidSession(0L, SessionType.PAID, SessionState.RECRUITING, 10000L, students);
+        Session session = Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(SessionState.RECRUITING, students), 10000L);
         Payment payment = new Payment("ID", 0L, 0L, 10000L);
 
         session.enrollStudent(NsUserTest.JAVAJIGI, payment);
 
-        assertThat(session.equals(Session.recruitingPaidSession(0L, SessionType.PAID, SessionState.RECRUITING,10000L, students)));
+        assertThat(session.equals(Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(SessionState.RECRUITING, students),10000L)));
     }
 }
