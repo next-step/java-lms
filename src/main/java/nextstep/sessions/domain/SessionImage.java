@@ -32,7 +32,7 @@ public class SessionImage {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             throw new IllegalArgumentException("이미지는 가로 300px, 세로 200px 이상이여야 합니다.");
         }
-        if (!isCorrectRatio(width, height)) {
+        if (isNotCorrectRatio(width, height)) {
             throw new IllegalArgumentException("이미지의 비율은 3:2(가로:세로)여야 한다.");
         }
         this.size = size;
@@ -41,12 +41,12 @@ public class SessionImage {
         this.type = ImageType.from(type);
     }
 
-    private boolean isCorrectRatio(double width, double height) {
+    private boolean isNotCorrectRatio(double width, double height) {
         // 이미지의 비율 3:2를 검증
         if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public int getSize() {
