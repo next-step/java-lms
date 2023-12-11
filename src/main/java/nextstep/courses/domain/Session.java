@@ -30,9 +30,7 @@ public class Session {
 
     private Long fee;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private SessionPeriod sessionPeriod;
 
     private Long creatorId;
 
@@ -40,53 +38,47 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee, LocalDate startDate, LocalDate endDate) {
-        this(id, null, sessionType, sessionState, maxPersonnel, null, fee, startDate, endDate);
+    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee, SessionPeriod sessionPeriod) {
+        this(id, null, sessionType, sessionState, maxPersonnel, null, fee, sessionPeriod);
     }
 
-    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount, LocalDate startDate, LocalDate endDate) {
-        this(id, null,sessionType, sessionState, maxPersonnel, null, null, startDate, endDate);
+    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount, SessionPeriod sessionPeriod) {
+        this(id, null,sessionType, sessionState, maxPersonnel, null, null, sessionPeriod);
         this.students = students;
         this.enrollCount = enrollCount;
     }
 
-    public Session(long id, SessionState sessionState, LocalDate startDate, LocalDate endDate) {
-        this(id, null,null, sessionState, null, null, null, startDate, endDate);
+    public Session(long id, SessionState sessionState, SessionPeriod sessionPeriod) {
+        this(id, null,null, sessionState, null, null, null, sessionPeriod);
     }
 
-    public Session(long id, SessionState sessionState, ImageInfo imageInfo, LocalDate startDate, LocalDate endDate) {
-        this(id, null,null, sessionState, null, imageInfo, null, startDate, endDate);
+    public Session(long id, SessionState sessionState, ImageInfo imageInfo, SessionPeriod sessionPeriod) {
+        this(id, null,null, sessionState, null, imageInfo, null, sessionPeriod);
     }
 
     public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee) {
-        return new Session(id, sessionType, sessionState, maxPersonnel, fee, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+        return new Session(id, sessionType, sessionState, maxPersonnel, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
     public static Session recruitingSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
-        return new Session(id, sessionType, sessionState, maxPersonnel, students, enrollCount, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+        return new Session(id, sessionType, sessionState, maxPersonnel, students, enrollCount, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, LocalDate startDate, LocalDate endDate) {
+    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
 
-        checkSessionStatus(sessionState, startDate, endDate);
+        sessionPeriod.checkSessionStatus(sessionState);
 
         this.id = id;
+        this.title = title;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
         this.maxPersonnel = maxPersonnel;
         this.fee = fee;
         this.coverImage = imageInfo;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionPeriod = sessionPeriod;
         this.creatorId = null;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-    }
-
-    private void checkSessionStatus(SessionState sessionState, LocalDate startDate, LocalDate endDate) {
-        if(!sessionState.checkStatus(startDate, endDate, LocalDate.now())){
-            throw new SessionException("강의 상태가 잘못되었습니다.");
-        }
     }
 
     public void enrollStudent(NsUser student, Payment payment) {
@@ -115,12 +107,12 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return id == session.id && maxPersonnel == session.maxPersonnel && enrollCount == session.enrollCount && Objects.equals(title, session.title) && sessionState == session.sessionState && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(students, session.students) && Objects.equals(fee, session.fee) && Objects.equals(creatorId, session.creatorId);
+        return getEnrollCount() == session.getEnrollCount() && Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionState == session.sessionState && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(maxPersonnel, session.maxPersonnel) && Objects.equals(students, session.students) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, sessionState, sessionType, coverImage, maxPersonnel, enrollCount, students, fee, creatorId);
+        return Objects.hash(id, title, sessionState, sessionType, coverImage, maxPersonnel, getEnrollCount(), students, fee, sessionPeriod, creatorId);
     }
 
     @Override
@@ -132,9 +124,10 @@ public class Session {
                 ", sessionType=" + sessionType +
                 ", coverImage=" + coverImage +
                 ", maxPersonnel=" + maxPersonnel +
+                ", enrollCount=" + enrollCount +
+                ", students=" + students +
                 ", fee=" + fee +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", sessionPeriod=" + sessionPeriod +
                 ", creatorId=" + creatorId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

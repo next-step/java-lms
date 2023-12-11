@@ -14,27 +14,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
-
-    @Test
-    @DisplayName("오늘 날짜가 강의 시작일 이전이 아닌데 준비중 상태를 가지면 예외를 발생한다.")
-    void 오늘_날짜가_강의_시작일_이전이_아니면_준비중_상태_예외_발생() {
-        assertThatThrownBy(() -> new Session(0L, SessionState.PREPARING,  LocalDate.now().minusDays(1), LocalDate.now().plusDays(5)))
-                .isInstanceOf(SessionException.class);
-    }
-
-    @Test
-    @DisplayName("오늘 날짜가 강의 시작일 이전이 아닌데 모집중 상태를 가지면 예외를 발생한다.")
-    void 오늘_날짜가_강의_시작일_이전이_아니면_모집중_상태_예외_발생() {
-        assertThatThrownBy(() -> new Session(0L, SessionState.RECRUITING, LocalDate.now().minusDays(1), LocalDate.now().plusDays(5)))
-                .isInstanceOf(SessionException.class);
-    }
-
-    @Test
-    @DisplayName("오늘 날짜가 강의 종료일 이후가 아닌데 종료 상태를 가지면 예외를 발생한다.")
-    void 오늘_날짜가_강의_종료일_이후가_아니면_종료_상태_예외_발생() {
-        assertThatThrownBy(() -> new Session(0L, SessionState.END, LocalDate.now().minusDays(10), LocalDate.now().plusDays(5)))
-                .isInstanceOf(SessionException.class);
-    }
+    public static final SessionPeriod todayAfterStartDate = new SessionPeriod(LocalDate.now().minusDays(1), LocalDate.now().plusDays(5));
+    public static final SessionPeriod todayBeforeStartDate = new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(10));
+    public static final SessionPeriod todayAfterEndDate = new SessionPeriod(LocalDate.now().minusDays(10), LocalDate.now().minusDays(3));
 
     @Test
     @DisplayName("모집중인 무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
@@ -57,7 +39,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 모집중일 때 수강신청을 할 수 있다.")
     void 수강신청_모집중_상태() {
-        Session session = new Session(0L, SessionState.RECRUITING,  LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+        Session session = new Session(0L, SessionState.RECRUITING,  todayBeforeStartDate);
         session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
         assertThat(session.getEnrollCount()).isEqualTo(1);
@@ -66,7 +48,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 준비중일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_준비중_상태() {
-        Session session = new Session(0L, SessionState.PREPARING, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15));
+        Session session = new Session(0L, SessionState.PREPARING, todayBeforeStartDate);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -75,7 +57,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 종료일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_종료_상태() {
-        Session session = new Session(0L, SessionState.END, LocalDate.now().minusDays(10), LocalDate.now().minusDays(3));
+        Session session = new Session(0L, SessionState.END, todayAfterEndDate);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -85,7 +67,7 @@ class SessionTest {
     @DisplayName("강의 생성시 이미지 형식 제한에 맞는 강의 커버 이미지 정보를 가진다.")
     void 이미지_형식_제한에_맞는_강의_커버_이미지() {
         ImageInfo imageInfo = new ImageInfo("JPG", 0.5, 300, 200);
-        assertThatCode(() -> new Session(0L, SessionState.PREPARING, imageInfo, LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)))
+        assertThatCode(() -> new Session(0L, SessionState.PREPARING, imageInfo, todayBeforeStartDate))
                 .doesNotThrowAnyException();
     }
 
