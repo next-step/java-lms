@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.ExceedMaxAttendanceCountException;
 import nextstep.courses.domain.coverImage.CoverImage;
+import nextstep.courses.domain.coverImage.CoverImages;
 import nextstep.courses.domain.students.Students;
 import nextstep.users.domain.NsUser;
 
@@ -14,7 +15,7 @@ public class Session {
 
     private Long courseId;
 
-    private CoverImage coverImg;
+    private CoverImages coverImages = new CoverImages();
 
     private SessionStatus sessionStatus = SessionStatus.PREPARE;
 
@@ -36,8 +37,8 @@ public class Session {
         this.sessionType = SessionType.notFreeSession(maxAttendance);
     }
 
-    public Session(CoverImage coverImage, Period period, SessionType sessionType) {
-        this.coverImg = coverImage;
+    public Session(CoverImages coverImages, Period period, SessionType sessionType) {
+        this.coverImages = coverImages;
         this.period = period;
         this.sessionType = sessionType;
     }
@@ -50,14 +51,14 @@ public class Session {
         this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
     }
 
-    public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Period period) {
+    public static Session notFreeSession(CoverImages coverImages, int maxAttendance, Period period) {
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
-        return new Session(coverImg, period, sessionType);
+        return new Session(coverImages, period, sessionType);
     }
 
-    public static Session freeSession(CoverImage coverImg, Period period) {
+    public static Session freeSession(CoverImages coverImages, Period period) {
         SessionType sessionType = SessionType.freeSession();
-        return new Session(coverImg, period, sessionType);
+        return new Session(coverImages, period, sessionType);
     }
 
     public void addStudent(NsUser nsUser) {
@@ -106,10 +107,6 @@ public class Session {
 
     public String sessionStatus() {
         return sessionStatus.name();
-    }
-
-    public Long coverImageId() {
-        return coverImg.getId();
     }
 
     public Long getId() {

@@ -18,7 +18,7 @@ public class CoverImageDto {
         this.height = height;
     }
 
-    public CoverImage toCoverImage() {
-        return new CoverImage(path, size, imgType, width, height);
+    public CoverImage toCoverImage(Long sessionId) {
+        return new CoverImage(sessionId, path, size, imgType, width, height);
     }
 }

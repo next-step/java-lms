@@ -29,19 +29,21 @@ public class SessionService {
     // 무료 세션 생성
     public void createFreeSession(Long courseId, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
-        CoverImage savedCoverImage = saveCoverImage(coverImageDto);
-        Session session = Session.freeSession(savedCoverImage, period);
+        Session session = Session.freeSession(null, period);
         course.addSession(session);
-        sessionRepository.save(session);
+        Long sessionId = sessionRepository.save(session);
+        CoverImage coverImage = coverImageDto.toCoverImage(sessionId);
+        coverImageRepository.save(coverImage);
     }
 
     // 유료 세션 생성
     public void createNotFreeSession(Long courseId, int maxAttendance, CoverImageDto coverImageDto, Period period) {
         Course course = courseRepository.findById(courseId);
-        CoverImage savedCoverImage = saveCoverImage(coverImageDto);
-        Session session = Session.notFreeSession(savedCoverImage, maxAttendance, period);
+        Session session = Session.notFreeSession(null, maxAttendance, period);
         course.addSession(session);
-        sessionRepository.save(session);
+        Long sessionId = sessionRepository.save(session);
+        CoverImage coverImage = coverImageDto.toCoverImage(sessionId);
+        coverImageRepository.save(coverImage);
     }
 
     // 세션 참여자 등록
@@ -51,11 +53,5 @@ public class SessionService {
         session.bindStudents(students);
         session.addStudent(nsUser);
         studentsRepository.save(session, nsUser);
-    }
-
-    private CoverImage saveCoverImage(CoverImageDto coverImageDto) {
-        CoverImage coverImage = coverImageDto.toCoverImage();
-        Long coverImageId = coverImageRepository.save(coverImage);
-        return coverImage.toSavedCoverImage(coverImageId);
     }
 }
