@@ -20,7 +20,7 @@ public class Session extends BaseEntity {
 
     private Applicants applicants;
 
-    private SessionStatus session;
+    private SessionStatus sessionStatus;
 
     public Session(Image image, Duration duration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
@@ -29,7 +29,7 @@ public class Session extends BaseEntity {
     }
 
     public Session(Long id, Image image, Duration duration, SessionState sessionState,
-                   Applicants applicants, SessionStatus session, Long creatorId,
+                   Applicants applicants, SessionStatus sessionStatus, Long creatorId,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (image == null) {
@@ -49,7 +49,7 @@ public class Session extends BaseEntity {
         this.duration = duration;
         this.sessionState = sessionState;
         this.applicants = applicants;
-        this.session = session;
+        this.sessionStatus = sessionStatus;
     }
 
     public boolean sameAmount(Long amount) {
@@ -79,7 +79,7 @@ public class Session extends BaseEntity {
     }
 
     private void checkStatusOnRecruit() {
-        if (this.session != SessionStatus.RECRUIT) {
+        if (this.sessionStatus != SessionStatus.RECRUIT) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
     }
@@ -92,12 +92,12 @@ public class Session extends BaseEntity {
 
     public void changeOnReady(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.session = SessionStatus.READY;
+        this.sessionStatus = SessionStatus.READY;
     }
 
     public void changeOnRecruit(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.session = SessionStatus.RECRUIT;
+        this.sessionStatus = SessionStatus.RECRUIT;
     }
 
     private void checkStartDateIsSameOrBefore(LocalDate date) {
@@ -108,7 +108,7 @@ public class Session extends BaseEntity {
 
     public void changeOnEnd(LocalDate date) {
         checkEndDateIsSameOrAfter(date);
-        this.session = SessionStatus.END;
+        this.sessionStatus = SessionStatus.END;
     }
 
     private void checkEndDateIsSameOrAfter(LocalDate date) {
@@ -133,8 +133,8 @@ public class Session extends BaseEntity {
         return applicants;
     }
 
-    public SessionStatus getSession() {
-        return session;
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class Session extends BaseEntity {
                 ", duration=" + duration +
                 ", sessionState=" + sessionState +
                 ", applicants=" + applicants +
-                ", session=" + session +
+                ", session=" + sessionStatus +
                 '}';
     }
 }

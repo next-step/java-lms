@@ -82,4 +82,22 @@ public class SessionRepositoryTest {
         assertThat(savedApply.getNsUserId()).isEqualTo(JAVAJIGI.getId());
         assertThat(savedApply.getSessionId()).isEqualTo(session.getId());
     }
+
+    @Test
+    void update_success() {
+        imageRepository.save(image);
+        Image savedImage = imageRepository.findById(1L).orElseThrow(NotFoundException::new);
+
+        session = new Session(savedImage, duration, sessionState, 1L, localDateTime);
+        int count = sessionRepository.save(1L, session);
+
+        SessionState updateSessionState = new SessionState(SessionType.CHARGE, 2000L, 30);
+        session = new Session(1L, savedImage, duration, updateSessionState, new Applicants(), session.getSessionStatus(), 1L, localDateTime, null);
+        sessionRepository.update(session.getId(), session);
+        Session updatedSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
+
+        assertThat(updatedSession.getId()).isEqualTo(1L);
+        assertThat(updatedSession.getSessionState()).isEqualTo(updateSessionState);
+        LOGGER.debug("Session: {}", updatedSession);
+    }
 }
