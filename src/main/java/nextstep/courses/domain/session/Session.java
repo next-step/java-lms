@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
-import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.sessionuser.SessionUsers;
 
@@ -10,6 +9,8 @@ import java.time.LocalDateTime;
 public class Session {
 
     private Long id;
+
+    private Long courseId;
 
     private CoverImage coverImg;
 
@@ -20,8 +21,6 @@ public class Session {
     private SessionUsers sessionUsers = new SessionUsers();
 
     private SessionType sessionType;
-
-    private Course course;
 
     public Session(Long id) {
         this.id = id;
@@ -37,11 +36,10 @@ public class Session {
         this.sessionType = SessionType.freeSession();
     }
 
-    public Session(CoverImage coverImage, Period period, SessionType sessionType, Course course) {
+    public Session(CoverImage coverImage, Period period, SessionType sessionType) {
         this.coverImg = coverImage;
         this.period = period;
         this.sessionType = sessionType;
-        this.course = course;
     }
 
     public Session(Long id, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
@@ -52,20 +50,14 @@ public class Session {
         this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
     }
 
-    public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {
+    public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Period period) {
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
-        Session session = new Session(coverImg, period, sessionType, course);
-
-        course.addSession(session);
-        return session;
+        return new Session(coverImg, period, sessionType);
     }
 
-    public static Session freeSession(CoverImage coverImg, Course course, Period period) {
+    public static Session freeSession(CoverImage coverImg, Period period) {
         SessionType sessionType = SessionType.freeSession();
-        Session session = new Session(coverImg, period, sessionType, course);
-
-        course.addSession(session);
-        return session;
+        return new Session(coverImg, period, sessionType);
     }
 
     public boolean canRegisterNewUser(int currentUserSize) {
@@ -74,6 +66,10 @@ public class Session {
         }
 
         return sessionType.canRegisterNewUser(currentUserSize);
+    }
+
+    public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
+        return period.isAfter(createdAt);
     }
 
     public LocalDateTime startDate() {
@@ -96,23 +92,15 @@ public class Session {
         return sessionStatus.name();
     }
 
-    public SessionType getSessionType() {
-        return sessionType;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public CoverImage getCoverImg() {
-        return coverImg;
+    public Long coverImageId() {
+        return coverImg.getId();
     }
 
     public Long getId() {
         return id;
     }
 
-    public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
-        return period.isAfterCourseWasCreated(createdAt);
+    public Long courseId() {
+        return courseId;
     }
 }

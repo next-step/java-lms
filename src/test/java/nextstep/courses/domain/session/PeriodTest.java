@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.course.Course;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ class PeriodTest {
         // given
         Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0), LocalDateTime.of(2023, 11, 20, 0, 0));
         // when
-        boolean result = period.isAfterCourseWasCreated(LocalDateTime.of(2023, 12, 1, 0, 0));
+        boolean result = period.isAfter(LocalDateTime.of(2023, 12, 1, 0, 0));
         // then
         Assertions.assertThat(result).isFalse();
     }
@@ -27,7 +26,7 @@ class PeriodTest {
         Period period = createPeriod(LocalDateTime.of(2023, 11, 1, 14, 0),
                 LocalDateTime.of(2023, 11, 20, 0, 0));
         // when
-        boolean result = period.isAfterCourseWasCreated(LocalDateTime.of(2023, 10, 1, 0, 0));
+        boolean result = period.isAfter(LocalDateTime.of(2023, 10, 1, 0, 0));
         // then
         Assertions.assertThat(result).isTrue();
     }
