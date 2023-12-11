@@ -8,6 +8,9 @@ public class SessionCover {
         validateSize(size);
         validatePixel(width, height);
         validateRatio(width, height);
+        if (image == null) {
+            throw new IllegalArgumentException("이미지 값이 없습니다.");
+        }
         this.image = image;
     }
 
