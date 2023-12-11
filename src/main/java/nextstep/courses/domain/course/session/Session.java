@@ -136,4 +136,16 @@ public class Session extends BaseEntity {
     public SessionStatus getSession() {
         return session;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", image=" + image +
+                ", duration=" + duration +
+                ", sessionState=" + sessionState +
+                ", applicants=" + applicants +
+                ", session=" + session +
+                '}';
+    }
 }

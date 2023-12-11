@@ -4,6 +4,7 @@ import nextstep.courses.domain.course.image.Image;
 import nextstep.courses.domain.course.image.ImageRepository;
 import nextstep.courses.domain.course.session.*;
 import nextstep.qna.NotFoundException;
+import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,24 @@ public class JdbcSessionRepository implements SessionRepository {
         Image image = session.getImage();
         String sql = "insert into session (start_date, end_date, session_type, session_status, amount, quota, image_id, course_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(), status.name(), sessionState.getAmount(), sessionState.getQuota(), image.getId(), courseId, session.getCreatorId(), session.getCreatedAt(), session.getUpdatedAt());
+    }
+
+    @Override
+    public int saveApply(NsUser nsUser, Session session) {
+        String sql = "insert into apply (session_id, ns_user_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, session.getId(), nsUser.getId(), nsUser.getId(), LocalDateTime.now(), null);
+    }
+
+    @Override
+    public Optional<Apply> findApplyByIds(Long nsUserId, Long sessionId) {
+        String sql = "select session_id, ns_user_id, creator_id, created_at, updated_at from apply where ns_user_id = ? and session_id = ?";
+        RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
+                rs.getLong(1),
+                rs.getLong(2),
+                rs.getLong(3),
+                toLocalDateTime(rs.getTimestamp(4)),
+                toLocalDateTime(rs.getTimestamp(5)));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
     }
 
     private Image findImageById(Long id) {
