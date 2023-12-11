@@ -87,6 +87,7 @@ public class Session {
     }
 
     public void addStudent() {
+        checkSessionStatus();
         this.charge.isFull(this.studentCount);
         this.studentCount++;
     }
