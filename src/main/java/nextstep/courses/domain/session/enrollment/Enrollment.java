@@ -54,10 +54,6 @@ public class Enrollment {
         return enrollmentMax;
     }
 
-    public Enroll enroll() {
-        return enroll;
-    }
-
     public void enroll(Students students, Student student, Payment payment) {
         enroll.enroll(this, students, student, payment);
     }

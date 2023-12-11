@@ -82,10 +82,6 @@ public class Session {
         return student;
     }
 
-    public boolean isFullEnrollment() {
-        return students.size() < enrollment.enrollmentMax();
-    }
-
     public void preparing() {
         enrollment.preparing();
     }
@@ -111,16 +107,8 @@ public class Session {
         return sessionInfo.sessionTypeValue();
     }
 
-    public ProgressState progressState() {
-        return enrollment.progressState();
-    }
-
     public String progressStateValue() {
         return enrollment.progressStateValue();
-    }
-
-    public RecruitState recruitState() {
-        return enrollment.recruitState();
     }
 
     public String recruitStateValue() {
@@ -157,9 +145,5 @@ public class Session {
 
     public void changeStudents(Students students) {
         this.students = students;
-    }
-
-    public void addStudent(Student student) {
-        students.add(student);
     }
 }

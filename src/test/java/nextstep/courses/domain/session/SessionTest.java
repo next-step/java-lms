@@ -48,8 +48,7 @@ class SessionTest {
     }
 
     private Session 세션_최대_수강인원_생성됨() {
-        Session session = 강의_생성_및_수강신청(NsUserTest.JAVAJIGI, new Payment());
-        return session;
+        return 강의_생성_및_수강신청(NsUserTest.JAVAJIGI, new Payment());
     }
 
     @Test
