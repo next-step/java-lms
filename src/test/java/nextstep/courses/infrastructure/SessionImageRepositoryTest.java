@@ -35,7 +35,7 @@ public class SessionImageRepositoryTest {
     @Test
     @DisplayName("강의는 강의커버 이미지를 갖는다.")
     void save_강의커버이미지() throws InvalidImageFormatException {
-        SessionImage sessionImage = new SessionImage("커버이미지", 1L, 1024 * 1024, 300, 200, ImageType.PNG);
+        SessionImage sessionImage = new SessionImage(1L, "커버이미지", 1L, 1024 * 1024, 300, 200, ImageType.PNG);
         int count = sessionImageRepository.save(sessionImage);
         assertThat(count).isEqualTo(1);
         Optional<SessionImage> savedImage = sessionImageRepository.findBySessionId(1L);

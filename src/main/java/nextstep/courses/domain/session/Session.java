@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.SystemTimeStamp;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.payments.domain.Payment;
@@ -14,31 +13,23 @@ import java.util.Collections;
 import java.util.List;
 
 public class Session {
-    private Long sessionId;
+    private long sessionId;
     private String title;
     private SessionType sessionType;
-    private Course course;
     private List<NsUser> students;
     private SessionImage sessionImage;
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
-    public static Session valueOf(String title, String course) {
-        return new Session(0L, title, new Course(course, 1L), SessionType.FREE
-                , new SessionPlan(SessionStatus.fromDate(LocalDate.now(), LocalDate.now()), LocalDate.now(), LocalDate.now())
-                , new SystemTimeStamp(LocalDateTime.now(), LocalDateTime.now()));
-    }
-
-    public static Session dateOf(String title, String course, LocalDate startDate, LocalDate endDate) {
-        return new Session(0L, title, new Course(course, 1L), SessionType.FREE
+    public static Session valueOf(long id, String title, LocalDate startDate, LocalDate endDate) {
+        return new Session(id, title, SessionType.FREE
                 , new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate)
-                , new SystemTimeStamp(LocalDateTime.now(), LocalDateTime.now()));
+                , new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
-    public Session(Long sessionId, String title, Course course, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
+    public Session(Long sessionId, String title, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
         this.sessionId = sessionId;
         this.title = title;
-        this.course = course;
         this.students = new ArrayList<>(Collections.emptyList());
         this.sessionType = sessionType;
         this.sessionPlan = sessionPlan;
@@ -46,13 +37,13 @@ public class Session {
         this.systemTimeStamp = systemTimeStamp;
     }
 
-    public void signUp(NsUser student, Payment payment) throws CannotSignUpException {
+    public void signUp(NsUser student, Payment payment) {
         validateSessionStatus();
         validatePayInfo(student, payment);
         students.add(student);
     }
 
-    private void validatePayInfo(NsUser student, Payment payment) throws CannotSignUpException {
+    private void validatePayInfo(NsUser student, Payment payment) {
         if (payment.getSessionId() != sessionId) {
             throw new CannotSignUpException("결제한 강의정보가 맞지 않습니다.");
         }
@@ -61,7 +52,7 @@ public class Session {
         }
     }
 
-    private void validateSessionStatus() throws CannotSignUpException {
+    private void validateSessionStatus() {
         if (!SessionStatus.canSignUp(sessionPlan.getStartDate(), sessionPlan.getEndDate())) {
             throw new CannotSignUpException("강의를 신청할 수 있는 기간이 아닙니다.");
         }
@@ -69,10 +60,6 @@ public class Session {
 
     public void saveImage(SessionImage sessionImage) {
         this.sessionImage = sessionImage;
-    }
-
-    public void cancel() {
-
     }
 
     public int getStudentCount() {
@@ -87,7 +74,4 @@ public class Session {
         return !(sessionImage == null);
     }
 
-    public void toCourse(Course course) {
-        this.course = course;
-    }
 }

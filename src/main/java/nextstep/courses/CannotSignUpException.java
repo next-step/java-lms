@@ -1,6 +1,6 @@
 package nextstep.courses;
 
-public class CannotSignUpException extends Exception{
+public class CannotSignUpException extends RuntimeException{
     public CannotSignUpException(String message) {
         super(message);
     }

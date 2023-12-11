@@ -18,8 +18,8 @@ public class Course {
 
     private SystemTimeStamp systemTimeStamp;
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, new SystemTimeStamp(LocalDateTime.now(), null));
+    public Course(long id, String title, Long creatorId) {
+        this(id, title, creatorId, new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
     public Course(Long id, String title, Long creatorId, SystemTimeStamp systemTimeStamp) {
@@ -31,7 +31,6 @@ public class Course {
     }
 
     public void addSession(Session session) {
-        session.toCourse(this);
         sessions.addSession(session);
     }
 

@@ -2,10 +2,12 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
 import nextstep.courses.domain.Course;
+import nextstep.courses.domain.SystemTimeStamp;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PaidSession extends Session {
     private int maxStudentCount;
@@ -16,7 +18,9 @@ public class PaidSession extends Session {
     }
 
     public PaidSession(Long sessionId, String title, Course course, int maxStudentCount, Long sessionFee, LocalDate startDate, LocalDate endDate) {
-        super(sessionId, title, course, SessionType.PAID, new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate));
+        super(sessionId, title, SessionType.PAID
+                , new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate)
+                , new SystemTimeStamp(LocalDateTime.now(), null));
         this.maxStudentCount = maxStudentCount;
         this.sessionFee = sessionFee;
     }
