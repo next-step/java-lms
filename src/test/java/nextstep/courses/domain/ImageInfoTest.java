@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.ImageInfo;
 import nextstep.courses.exception.ImageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

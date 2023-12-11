@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.SessionException;
+import nextstep.courses.domain.session.SessionPeriod;
+import nextstep.courses.domain.session.SessionState;
 import nextstep.courses.exception.SessionPeriodException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

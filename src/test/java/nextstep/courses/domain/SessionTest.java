@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;

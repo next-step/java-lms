@@ -1,6 +1,5 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.SessionException;
 import nextstep.courses.exception.SessionPeriodException;
 
 import java.time.LocalDate;
