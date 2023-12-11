@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("sessionRepository")
@@ -80,6 +81,24 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "update session set start_date = ?, end_date = ?, session_type = ?, amount = ?, quota = ?, session_status = ? where id = ?";
         return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(),
                 sessionType.name(), sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
+    }
+
+    @Override
+    public Sessions findAllByCourseId(Long courseId) {
+        String sql = "select id, image_id, start_date, end_date, session_type, amount, quota, session_status, course_id, creator_id, created_at, updated_at from session where course_id = ?";
+        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
+                rs.getLong(1),
+                findImageById(rs.getLong(2)),
+                new Duration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
+                new SessionState(SessionType.find(rs.getString(5)), rs.getLong(6), rs.getInt(7)),
+                findAllBySessionId(rs.getLong(1)),
+                SessionStatus.find(rs.getString(8)),
+                rs.getLong(10),
+                toLocalDateTime(rs.getTimestamp(11)),
+                toLocalDateTime(rs.getTimestamp(12)));
+
+        List<Session> sessions = jdbcTemplate.query(sql, rowMapper, courseId);
+        return new Sessions(sessions);
     }
 
     private Image findImageById(Long id) {
