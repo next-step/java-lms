@@ -26,14 +26,21 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
+    public int update(final Enrollment enrollment) {
+        String sql = "update enrollment SET approved = ? where id = ?";
+        return jdbcTemplate.update(sql, enrollment.getApproved(), enrollment.id());
+    }
+
+    @Override
     public Optional<Enrollment> findById(final Long id) {
-        String sql = "select id, user_id, session_id, created_at, updated_at from enrollment where id = ?";
+        String sql = "select id, user_id, session_id, approved, created_at, updated_at from enrollment where id = ?";
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                rs.getBoolean(4),
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6)));
         return  Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
@@ -41,6 +48,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
         if (timestamp == null) {
             return null;
         }
+
         return timestamp.toLocalDateTime();
     }
 }

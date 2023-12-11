@@ -11,12 +11,11 @@ public class CoverImage extends BaseEntity {
     private final ImagePixel imagePixel;
     private final ImageType imageType;
 
-
     public CoverImage(final long size, final ImagePixel imagePixel, final ImageType imageType) {
         this(null, size, imagePixel, imageType, LocalDateTime.now(), null);
     }
-    public CoverImage(final Long id , final long size, final ImagePixel imagePixel, final ImageType imageType,
-                      final LocalDateTime createAt, final LocalDateTime updateAt) {
+    public CoverImage(final Long id, final long size, final ImagePixel imagePixel,
+                      final ImageType imageType, final LocalDateTime createAt, final LocalDateTime updateAt) {
         super(id, createAt, updateAt);
 
         checkSize(size);
