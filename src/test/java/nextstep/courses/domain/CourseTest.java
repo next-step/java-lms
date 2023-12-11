@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +27,8 @@ public class CourseTest {
         Long creatorId = 1L;
         int no = 1;
         Course course = new Course(0L, title, creatorId, LocalDateTime.now(), null, no);
-        List<Session> sessions = Arrays.asList(new FreeSession(newImage(), new Period()),
-            new FreeSession(newImage(), new Period()));
+        List<Session> sessions = Arrays.asList(new FreeSession(newImage(), newPeriod()),
+            new FreeSession(newImage(), newPeriod()));
         course.addSession(sessions);
 
         assertThat(course.getSession().size()).isEqualTo(sessions.size());
@@ -37,5 +38,9 @@ public class CourseTest {
         ImageSize imageSize = new ImageSize(300, 200);
         ImageType imageType = ImageType.JPG;
         return new Image(imageSize, imageType);
+    }
+
+    private Period newPeriod() {
+        return new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2024, 12, 1));
     }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -12,17 +13,12 @@ public class PeriodTest {
     @Test
     void 수강_기간_생성() {
         // given
-        Calendar startCal = Calendar.getInstance();
-        startCal.set(2023, Calendar.NOVEMBER, 10);
 
-        Calendar endCal = Calendar.getInstance();
-        endCal.set(2023, Calendar.DECEMBER, 10);
-
-        Date startDate = new Date(startCal.getTimeInMillis());
-        Date endDate = new Date(endCal.getTimeInMillis());
+        LocalDate startDate = LocalDate.of(2023, 12, 1);
+        LocalDate endDate = LocalDate.of(2024, 12, 1);
 
         // when
-        Period period = new Period(startDate, endDate);
+        Period period = new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2024, 12, 1));
 
         // then
         assertThat(period.getStartDate()).isEqualTo(startDate);
@@ -38,12 +34,12 @@ public class PeriodTest {
         Calendar endCal = Calendar.getInstance();
         endCal.set(2023, Calendar.NOVEMBER, 10);
 
-        Date startDate = new Date(startCal.getTimeInMillis());
-        Date endDate = new Date(endCal.getTimeInMillis());
+        LocalDate startDate = LocalDate.of(2023, 12, 1);
+        LocalDate endDate = LocalDate.of(2022, 12, 1);
 
         // when, then
         assertThatThrownBy(() -> new Period(startDate, endDate)).isInstanceOf(
-            IllegalArgumentException.class)
+                IllegalArgumentException.class)
             .hasMessageContaining("종료일은 시작일보다 먼저일 수 없습니다.");
     }
 

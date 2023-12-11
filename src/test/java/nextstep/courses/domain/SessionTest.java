@@ -4,6 +4,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class SessionTest {
 
         Image image = newImage();
 
-        Period period = new Period();
+        Period period = newPeriod();
 
         // when
         Session session = new FreeSession(image, period);
@@ -29,8 +30,8 @@ public class SessionTest {
     @Test
     void 강의는_유료강의와_무료강의로_나뉜다() {
         // given
-        FreeSession freeSession = new FreeSession(newImage(), new Period());
-        PaySession paySession = new PaySession(newImage(), new Period(), 1, 1000L);
+        FreeSession freeSession = new FreeSession(newImage(), newPeriod());
+        PaySession paySession = new PaySession(newImage(), newPeriod(), 1, 1000L);
 
         // when, then
         assertThat(paySession.getType()).isEqualTo(SessionType.PAY);
@@ -41,7 +42,7 @@ public class SessionTest {
     void 유료강의는_최대_수강_인원_제한이_있다() {
         // given
         int maxCountOfStudents = 1;
-        PaySession paySession = new PaySession(newImage(), new Period(), maxCountOfStudents, 1000L);
+        PaySession paySession = new PaySession(newImage(), newPeriod(), maxCountOfStudents, 1000L);
 
         // when, then
         paySession.enroll(NsUserTest.JAVAJIGI, 1000L);
@@ -53,7 +54,7 @@ public class SessionTest {
     @Test
     void 수강_신청은_모집중일때만_가능하다() {
         // given
-        FreeSession freeSession = new FreeSession(newImage(), new Period());
+        FreeSession freeSession = new FreeSession(newImage(), newPeriod());
 
         // when, then
         assertThatThrownBy(
@@ -64,7 +65,7 @@ public class SessionTest {
     @Test
     void 수강_신청() {
         // given
-        FreeSession freeSession = new FreeSession(newImage(), new Period());
+        FreeSession freeSession = new FreeSession(newImage(), newPeriod());
 
         // when
         freeSession.open();
@@ -78,5 +79,9 @@ public class SessionTest {
         ImageSize imageSize = new ImageSize(300, 200);
         ImageType imageType = ImageType.JPG;
         return new Image(imageSize, imageType);
+    }
+
+    private Period newPeriod() {
+        return new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2024, 12, 1));
     }
 }

@@ -1,29 +1,29 @@
 package nextstep.courses.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Period {
 
-    private Date startDate;
+    private final LocalDate startDate;
 
-    private Date endDate;
+    private final LocalDate endDate;
 
-    public Period() {
-    }
+//    public Period() {
+//    }
 
-    public Period(Date startDate, Date endDate) {
-        if (endDate.before(startDate)) {
+    public Period(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("종료일은 시작일보다 먼저일 수 없습니다.");
         }
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return this.startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return this.endDate;
     }
 }
