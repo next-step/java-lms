@@ -13,4 +13,8 @@ public class CoverImages {
     public CoverImages(List<CoverImage> coverImages) {
         this.coverImages = coverImages;
     }
+
+    public List<CoverImage> getCoverImages() {
+        return coverImages;
+    }
 }

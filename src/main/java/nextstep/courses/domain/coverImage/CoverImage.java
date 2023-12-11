@@ -15,12 +15,15 @@ public class CoverImage {
         if (size > MAX_IMG_SIZE_BYTE || size <= 0) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하입니다.");
         }
-
         this.sessionId = sessionId;
         this.path = path;
         this.fileSize = size;
         this.imageType = ImageType.findType(imgType);
         this.dimensions = new Dimensions(width, height);
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public Long getId() {

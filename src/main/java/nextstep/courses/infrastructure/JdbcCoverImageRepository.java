@@ -3,7 +3,6 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.coverImage.CoverImageRepository;
 import nextstep.courses.domain.coverImage.CoverImages;
-import nextstep.courses.dto.CoverImageDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,23 +21,21 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public Long save(CoverImage coverImage) {
-
+    public void save(CoverImage coverImage) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into cover_image (path, file_size, image_type, width, height) values (?, ?, ?, ?, ?)";
+        String sql = "insert into cover_image (session_id, path, file_size, image_type, width, height) values (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
                     .prepareStatement(sql);
-            ps.setString(1, coverImage.getPath());
-            ps.setInt(2, coverImage.getFileSize());
-            ps.setString(3, coverImage.getImageType().name());
-            ps.setInt(4, coverImage.getDimensions().getWidth());
-            ps.setInt(5, coverImage.getDimensions().getHeight());
+            ps.setLong(1, coverImage.getSessionId());
+            ps.setString(2, coverImage.getPath());
+            ps.setInt(3, coverImage.getFileSize());
+            ps.setString(4, coverImage.getImageType().name());
+            ps.setInt(5, coverImage.getDimensions().getWidth());
+            ps.setInt(6, coverImage.getDimensions().getHeight());
             return ps;
         }, keyHolder);
-
-        return (long) keyHolder.getKey();
     }
 
     @Override

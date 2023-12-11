@@ -2,7 +2,7 @@ package nextstep.courses.domain.coverImage;
 
 public interface CoverImageRepository {
 
-    Long save(CoverImage coverImage);
+    void save(CoverImage coverImage);
 
     CoverImages findBySessionId(Long sessionId);
 }

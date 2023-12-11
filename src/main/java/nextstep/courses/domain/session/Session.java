@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.ExceedMaxAttendanceCountException;
-import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.courses.domain.coverImage.CoverImages;
 import nextstep.courses.domain.students.Students;
 import nextstep.users.domain.NsUser;
@@ -43,9 +42,18 @@ public class Session {
         this.sessionType = sessionType;
     }
 
-    public Session(Long id, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
+    public Session(Long courseId, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                   boolean free, Integer maxAttendance) {
+        this.courseId = courseId;
+        this.sessionStatus = status;
+        this.period = new Period(startDateTime, endDateTime);
+        this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
+    }
+
+    public Session(Long id, Long courseId, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
                    boolean free, Integer maxAttendance) {
         this.id = id;
+        this.courseId = courseId;
         this.sessionStatus = status;
         this.period = new Period(startDateTime, endDateTime);
         this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);

@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 @Repository("sessionRepository")
@@ -22,14 +23,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, status, start_date_time, end_date_time, free, max_attendance from session where id = ?";
+        String sql = "select id, course_id, session_status, start_date_time, end_date_time, free, max_attendance from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
-                SessionStatus.valueOf(rs.getString(2)),
-                rs.getTimestamp(3).toLocalDateTime(),
+                rs.getLong(2),
+                SessionStatus.valueOf(rs.getString(3)),
                 rs.getTimestamp(4).toLocalDateTime(),
-                rs.getBoolean(5),
-                rs.getInt(6));
+                rs.getTimestamp(5).toLocalDateTime(),
+                rs.getBoolean(6),
+                rs.getInt(7));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
@@ -37,10 +39,10 @@ public class JdbcSessionRepository implements SessionRepository {
     public Long save(Session session) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "insert into session (course_id, status, start_date_time, end_date_time, free, max_attendance) values (?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (course_id, session_status, start_date_time, end_date_time, free, max_attendance) values (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, session.courseId());
             ps.setString(2, session.sessionStatus());
             ps.setTimestamp(3, Timestamp.valueOf(session.startDate()));
