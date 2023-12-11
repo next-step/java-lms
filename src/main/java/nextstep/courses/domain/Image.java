@@ -2,13 +2,9 @@ package nextstep.courses.domain;
 
 public class Image {
 
-    private ImageSize size;
+    private final ImageSize size;
 
-    private ImageType type;
-
-
-    public Image() {
-    }
+    private final ImageType type;
 
     public Image(ImageSize size, ImageType type) {
         this.size = size;
@@ -17,5 +13,9 @@ public class Image {
 
     public ImageType getType() {
         return this.type;
+    }
+
+    public ImageSize getSize() {
+        return size;
     }
 }

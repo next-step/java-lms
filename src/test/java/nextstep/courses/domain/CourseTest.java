@@ -26,9 +26,16 @@ public class CourseTest {
         Long creatorId = 1L;
         int no = 1;
         Course course = new Course(0L, title, creatorId, LocalDateTime.now(), null, no);
-        List<Session> sessions = Arrays.asList(new FreeSession(new Image(), new Period()), new FreeSession(new Image(), new Period()));
+        List<Session> sessions = Arrays.asList(new FreeSession(newImage(), new Period()),
+            new FreeSession(newImage(), new Period()));
         course.addSession(sessions);
 
         assertThat(course.getSession().size()).isEqualTo(sessions.size());
+    }
+
+    private Image newImage() {
+        ImageSize imageSize = new ImageSize(300, 200);
+        ImageType imageType = ImageType.JPG;
+        return new Image(imageSize, imageType);
     }
 }
