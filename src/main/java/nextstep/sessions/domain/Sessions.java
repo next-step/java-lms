@@ -36,13 +36,8 @@ public class Sessions {
                 .sum();
     }
 
-    public Payments pay(Long creatorId) {
-        List<Payment> payments = new ArrayList<>();
+    public void addStudent() {
         values.stream()
-                .forEach(session -> {
-                    session.addStudent();
-                    payments.add(new Payment(session.getName(), session.getId(), creatorId, totalPrice()));
-                });
-        return new Payments(payments);
+                .forEach(session -> session.addStudent());
     }
 }

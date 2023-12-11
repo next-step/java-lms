@@ -1,8 +1,6 @@
 package nextstep.sessions.domain;
 
 import nextstep.common.PeriodTest;
-import nextstep.payments.domain.Payments;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,20 +24,16 @@ class SessionsTest {
                 .isInstanceOf(IllegalStateException.class);
     }
 
-    @DisplayName("강의 결제를 하면 Payments를 반환한다.")
+    @DisplayName("모집 인원이 마감되지 않은 강의는 학생을 추가할 수 있다.")
     @Test
-    void payTest() {
-        Sessions sessions = new Sessions(List.of(new Session("JAVA_TDD", PeriodTest.DEC, SessionImageTest.IMAGE_PNG, SessionChargeTest.CHARGE_1000, SessionStatus.RECRUITING)));
-        assertThat(sessions.pay(NsUserTest.JAVAJIGI.getId())).isInstanceOf(Payments.class);
-    }
+    void addStudentTest() {
+        Sessions sessions = new Sessions(List.of(new Session("강의1",
+                PeriodTest.DEC,
+                SessionImageTest.IMAGE_PNG,
+                new SessionCharge(true, 1000, 3),
+                SessionStatus.RECRUITING)));
+        sessions.addStudent();
 
-    @DisplayName("모집 인원이 마감된 강의를 결제하면 IllegalStateException을 던진다.")
-    @Test
-    void payExceptionTest() {
-        SessionTest.COMPUTER.addStudent();
-        Sessions sessions = new Sessions(List.of(SessionTest.COMPUTER));
-
-        assertThatThrownBy(() -> sessions.pay(NsUserTest.SANJIGI.getId()))
-                .isInstanceOf(IllegalStateException.class);
+        assertThat(sessions.getSessions().get(0).getStudentCount()).isEqualTo(1);
     }
 }

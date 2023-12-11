@@ -60,10 +60,6 @@ public class Course {
         sessions.addSession(addSession);
     }
 
-    public Payments pay() {
-        return sessions.pay(creatorId);
-    }
-
     @Override
     public String toString() {
         return "Course{" +
