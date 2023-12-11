@@ -73,7 +73,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int update(Session session) {
+    public int updateStudentCount(Session session) {
         String sql = "update session set student_count = ? where name = ?";
         return jdbcTemplate.update(sql, session.getStudentCount(), session.getName());
     }

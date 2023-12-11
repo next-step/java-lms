@@ -8,5 +8,5 @@ public interface SessionRepository {
 
     Session findByName(String name);
 
-    int update(Session session);
+    int updateStudentCount(Session session);
 }

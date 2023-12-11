@@ -55,7 +55,7 @@ class SessionRepositoryTest {
     void updateTest() {
         Session savedSession = sessionRepository.findByName("테스트강의");
         savedSession.addStudent();
-        int count = sessionRepository.update(savedSession);
+        int count = sessionRepository.updateStudentCount(savedSession);
         assertThat(count).isEqualTo(1);
 
         Session updateSession = sessionRepository.findByName("테스트강의");
