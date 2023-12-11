@@ -1,13 +1,13 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.Session;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository {

@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;

@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
 class JdbcStudentsRepositoryTest {

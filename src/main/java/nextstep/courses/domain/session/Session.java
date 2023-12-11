@@ -1,5 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.enums.SessionProcessStatus;
+import nextstep.courses.domain.session.enums.SessionRecruitStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -12,6 +15,8 @@ public class Session {
     private Long id;
     private Period period;
     private SessionStatus status;
+    private SessionRecruitStatus recruitStatus;
+    private SessionProcessStatus processStatus;
     private Students students;
     private SessionType sessionType;
     private SessionImage sessionImage;
@@ -59,7 +64,7 @@ public class Session {
     }
 
     public Students register(NsUser user, Payment payment) throws CannotRegisterException {
-        if (!SessionStatus.isOpen(status)) {
+        if (isRecruitOpen()) {
             throw new CannotRegisterException("모집중이 아닌 경우 신청이 불가합니다");
         }
 
@@ -69,6 +74,10 @@ public class Session {
 
         students.registerSessionStudent(user, sessionType);
         return students;
+    }
+
+    private boolean isRecruitOpen() {
+        return !SessionRecruitStatus.isOpen(status) && !SessionRecruitStatus.isOpen(recruitStatus);
     }
 
     public Session updateStatus(SessionStatus status) throws PeriodException {
