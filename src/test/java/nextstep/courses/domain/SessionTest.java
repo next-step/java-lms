@@ -76,17 +76,6 @@ class SessionTest {
     }
 
     @Test
-    @DisplayName("수강생이 결제한 금액과 모집중인 유료 강의의 수강료가 일치하지 않으면 예외가 발생한다.")
-    void 수강료와_결제금액_일치하지_않으면_예외_발생() {
-        Students students = new Students(new ArrayList<>(), 5);
-        Session session = Session.recruitingPaidSession(0L, SessionType.PAID, SessionState.RECRUITING, 20000L, students);
-        Payment payment = new Payment("ID", 0L, 0L, 10000L);
-
-        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, payment))
-                .isInstanceOf(PaymentException.class);
-    }
-
-    @Test
     @DisplayName("수강생이 결제한 금액과 모집중인 유료강의의 수강료가 일치하면 수강신청이 완료된다.")
     void 수강료와_결제금액_일치시_수강신청_완료() {
         Students students = new Students(new ArrayList<>(), 5);

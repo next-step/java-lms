@@ -74,16 +74,14 @@ public class Session {
     }
 
     public void enrollStudent(NsUser student, Payment payment) {
-        if(sessionType == SessionType.PAID) {
-            students.isOverCapacity();
-        }
 
         if(!SessionState.isAbleToEnroll(sessionState)) {
             throw new SessionException("모집중인 강의가 아닙니다.");
         }
 
-        if(payment != null && !payment.isEqualPaidFee(fee)) {
-            throw new PaymentException("수강료가 지불한 금액과 일치하지 않습니다.");
+        if(sessionType == SessionType.PAID) {
+            students.isOverCapacity();
+            payment.isAbleToPayment(fee);
         }
 
         students.addStudent(student);
