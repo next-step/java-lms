@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.exception.ParticipantsException;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,6 +12,10 @@ public class Participants {
 
     public Participants(Set<NsUser> values) {
         this.values = values;
+    }
+
+    public Participants(List<NsUser> values) {
+        this.values = Set.copyOf(values);
     }
 
     public int size() {

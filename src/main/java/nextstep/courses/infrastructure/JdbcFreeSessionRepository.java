@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("freeSessionRepository")
 public class JdbcFreeSessionRepository implements FreeSessionRepository {
@@ -30,28 +31,44 @@ public class JdbcFreeSessionRepository implements FreeSessionRepository {
     public int save(Course course, FreeSession session) {
         LocalDate startDate = session.getProgressPeriod().getStartDate();
         LocalDate endDate = session.getProgressPeriod().getEndDate();
-        String sql = "insert into session (course_id, image_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, course.id(), session.coverImage().id(), startDate, endDate, session.progressState(), session.recruitState(), "FREE", 0, 0, session.createdAt());
+        String sql = "insert into session (course_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.id(), startDate, endDate, session.progressState(), session.recruitState(), "FREE", 0, 0, session.createdAt());
     }
 
     @Override
     public FreeSession findById(Long id) {
-        String sql = "select id, course_id, image_id, start_date, end_date, progress_state, recruit_state, type, created_at, updated_at from session where id = ?";
+        String sql = "select id, course_id, start_date, end_date, progress_state, recruit_state, type, created_at, updated_at from session where id = ? and type = 'FREE'";
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
                 rs.getLong(1),
-                findCoverImage(rs.getLong(3)),
+                findCoverImages(rs.getLong(1)),
+                toLocalDate(rs.getDate(3)),
                 toLocalDate(rs.getDate(4)),
-                toLocalDate(rs.getDate(5)),
-                SessionProgressState.valueOf(rs.getString(6)),
-                rs.getBoolean(7),
-                toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10))
+                SessionProgressState.valueOf(rs.getString(5)),
+                rs.getBoolean(6),
+                toLocalDateTime(rs.getTimestamp(8)),
+                toLocalDateTime(rs.getTimestamp(9))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
-    private CoverImage findCoverImage(Long id) {
-        return coverImageRepository.findById(id);
+    @Override
+    public List<FreeSession> findByCourseId(Long courseId) {
+        String sql = "select id, course_id, start_date, end_date, progress_state, recruit_state, type, created_at, updated_at from session where course_id = ? and type = 'FREE'";
+        RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
+                rs.getLong(1),
+                findCoverImages(rs.getLong(1)),
+                toLocalDate(rs.getDate(3)),
+                toLocalDate(rs.getDate(4)),
+                SessionProgressState.valueOf(rs.getString(5)),
+                rs.getBoolean(6),
+                toLocalDateTime(rs.getTimestamp(8)),
+                toLocalDateTime(rs.getTimestamp(9))
+        );
+        return jdbcTemplate.query(sql, rowMapper, courseId);
+    }
+
+    private List<CoverImage> findCoverImages(Long sessionId) {
+        return coverImageRepository.findBySessionId(sessionId);
     }
 
     private LocalDate toLocalDate(Date date) {

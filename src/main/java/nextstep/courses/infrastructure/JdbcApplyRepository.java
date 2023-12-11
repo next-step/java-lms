@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Repository("sessionRepository")
 public class JdbcApplyRepository implements ApplyRepository {
@@ -38,7 +37,7 @@ public class JdbcApplyRepository implements ApplyRepository {
                 rs.getString(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return new Participants(Set.copyOf(jdbcTemplate.query(sql, rowMapper, sessionId)));
+        return new Participants(jdbcTemplate.query(sql, rowMapper, sessionId));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

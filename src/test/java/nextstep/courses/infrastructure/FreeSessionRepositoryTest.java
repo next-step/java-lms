@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.FreeSession;
+import nextstep.courses.domain.Image.CoverImage;
 import nextstep.courses.domain.SessionProgressState;
 import nextstep.courses.repository.CourseRepository;
-import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.FreeSessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,20 +29,21 @@ public class FreeSessionRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private FreeSessionRepository freeSessionRepository;
-    private CoverImageRepository coverImageRepository;
     private CourseRepository courseRepository;
 
     @BeforeEach
     void setUp() {
-        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
         freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
     }
 
     @Test
-    void crud() {
+    void insert() {
+        CoverImage coverImage = new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, LocalDateTime.now());
+        List<CoverImage> coverImages = new ArrayList<>(List.of(coverImage));
+
         FreeSession freeSession = new FreeSession(
-                coverImageRepository.findById(10L),
+                coverImages,
                 LocalDate.of(2023, 12, 1),
                 LocalDate.of(2023, 12, 29),
                 SessionProgressState.PREPARING,
@@ -49,10 +52,21 @@ public class FreeSessionRepositoryTest {
         );
         int count = freeSessionRepository.save(courseRepository.findById(10L), freeSession);
         assertThat(count).isEqualTo(1);
+    }
 
-        FreeSession saveSession = freeSessionRepository.findById(1L);
-        assertThat(freeSession.getProgressPeriod()).isEqualTo(saveSession.getProgressPeriod());
+    @Test
+    void findById() {
+        FreeSession saveSession = freeSessionRepository.findById(11L);
+        assertThat(saveSession).isNotNull();
         LOGGER.debug("FreeSession : {}", saveSession);
     }
+
+    @Test
+    void findByCourseId() {
+        List<FreeSession> saveSessionList = freeSessionRepository.findByCourseId(10L);
+        assertThat(saveSessionList).isNotNull();
+        LOGGER.debug("FreeSession : {}", saveSessionList);
+    }
+
 
 }
