@@ -8,7 +8,10 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
     protected Long id;
@@ -28,7 +31,7 @@ public abstract class Session extends BaseEntity {
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.recruitState = recruitState;
         this.progressState = state;
-        this.participants = new Participants(new HashSet<>());
+        this.participants = new Participants(new ArrayList<>());
     }
 
     protected Session(Long id, List<CoverImage> coverImageList, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -39,7 +42,7 @@ public abstract class Session extends BaseEntity {
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.recruitState = recruitState;
         this.progressState = state;
-        this.participants = new Participants(new HashSet<>());
+        this.participants = new Participants(new ArrayList<>());
     }
 
 
