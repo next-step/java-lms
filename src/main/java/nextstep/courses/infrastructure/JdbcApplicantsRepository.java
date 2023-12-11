@@ -34,13 +34,6 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
         return new Applicants(nsUsers);
     }
 
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
-    }
-
     private List<Long> findAllApplicantIdsBySessionId(Long sessionId) {
         String sql = "select ns_user_id from apply where session_id = ?";
         RowMapper<Long> rowMapper = (rs, rowNum) -> rs.getLong(1);
@@ -60,5 +53,12 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
         );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, applicantId));
+    }
+
+    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return timestamp.toLocalDateTime();
     }
 }

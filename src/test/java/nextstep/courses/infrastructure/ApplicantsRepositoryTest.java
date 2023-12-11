@@ -27,9 +27,10 @@ public class ApplicantsRepositoryTest {
         applicantsRepository = new JdbcApplicantsRepository(jdbcTemplate);
     }
 
+    /* data.sql 파일에 이미 저장한 데이터로 테스트 합니다. */
     @Test
     void find_success() {
-        Applicants applicants = applicantsRepository.findAllBySessionId(1L);
+        Applicants applicants = applicantsRepository.findAllBySessionId(10L);
         NsUser nsUser_1 = applicants.find(0);
         NsUser nsUser_2 = applicants.find(1);
 
