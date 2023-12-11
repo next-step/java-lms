@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.Image.CoverImage;
 import nextstep.courses.domain.Image.CoverImages;
+import nextstep.courses.domain.participant.Participants;
 import nextstep.courses.exception.SessionStateException;
 import nextstep.payments.domain.Payment;
 

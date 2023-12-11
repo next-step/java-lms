@@ -1,35 +1,43 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.participant;
 
 import nextstep.courses.exception.ParticipantsException;
 import nextstep.users.domain.NsUser;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Participants {
     private final Set<NsUser> values;
 
+    private final Map<NsUser, ParticipantState> valueMap;
+
     public Participants(Set<NsUser> values) {
         this.values = values;
+        this.valueMap = values.stream().collect(Collectors.toMap(nsUser -> nsUser, nsUser -> ParticipantState.COMPLETE));
     }
 
     public Participants(List<NsUser> values) {
         this.values = Set.copyOf(values);
+        this.valueMap = values.stream().collect(Collectors.toMap(nsUser -> nsUser, nsUser -> ParticipantState.COMPLETE));
+    }
+
+    public Participants(Map<NsUser, ParticipantState> map) {
+        this.values = new HashSet<>(map.keySet());
+        this.valueMap = map;
     }
 
     public int size() {
-        return values.size();
+        return valueMap.size();
     }
 
     public Participants add(NsUser user) {
         isDuplication(user);
-        values.add(user);
-        return new Participants(values);
+        valueMap.put(user, ParticipantState.CHECKING);
+        return new Participants(valueMap);
     }
 
     private void isDuplication(NsUser user) {
-        if (values.contains(user)) {
+        if (valueMap.containsKey(user)) {
             throw new ParticipantsException("이미 수강 신청한 참여자 입니다.");
         }
     }

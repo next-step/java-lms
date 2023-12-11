@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.participant;
 
 import nextstep.courses.exception.ParticipantsException;
 import nextstep.users.domain.NsUserTest;
@@ -17,6 +17,6 @@ public class ParticipantsTest {
 
         Assertions.assertThatThrownBy(() -> participants.add(NsUserTest.JAVAJIGI))
                 .isInstanceOf(ParticipantsException.class);
-        
+
     }
 }
