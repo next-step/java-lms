@@ -2,7 +2,6 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class Enrollment {

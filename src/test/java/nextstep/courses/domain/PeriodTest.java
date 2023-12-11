@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import org.junit.jupiter.api.Test;
 
 public class PeriodTest {

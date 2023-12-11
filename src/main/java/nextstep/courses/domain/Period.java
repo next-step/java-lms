@@ -8,8 +8,6 @@ public class Period {
 
     private final LocalDate endDate;
 
-//    public Period() {
-//    }
 
     public Period(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {

@@ -19,7 +19,7 @@ public class PaySessionTest {
 
         // when, then
         paySession.enroll(NsUserTest.JAVAJIGI, new Payment(1000L));
-        assertThatThrownBy(() -> paySession.enroll(NsUserTest.SANJIGI, new Payment())).isInstanceOf(
+        assertThatThrownBy(() -> paySession.enroll(NsUserTest.SANJIGI, new Payment(1000L))).isInstanceOf(
                 IllegalArgumentException.class)
             .hasMessageContaining("유료 강의는 강의 최대 수강 인원을 초과할 수 없다.");
     }
