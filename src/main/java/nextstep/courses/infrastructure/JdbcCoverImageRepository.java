@@ -27,7 +27,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
 
   @Override
   public CoverImage findById(Long id) {
-    String sql = "select id, name, cover_image_type, `size`, width, height, created_at, updated_at from cover_image where id = ?";
+    String sql = "select id, name, cover_image_type, image_file_size, width, height, created_at, updated_at from cover_image where id = ?";
     RowMapper<CoverImage> rowMapper = (rs, rowNum) -> CoverImage.defaultOf(
         rs.getLong(1),
         rs.getString(2),

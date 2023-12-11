@@ -61,7 +61,7 @@ public class LectureRepositoryTest {
         assertThat(count).isEqualTo(1);
         LectureEntity savedLecture = lectureRepository.findById(1L);
         assertThat(savedLecture).extracting("title").isEqualTo(lecture.getTitle());
-        LOGGER.debug("Course: {}", savedLecture);
+        LOGGER.debug("LectureEntity: {}", savedLecture);
     }
 
 }
