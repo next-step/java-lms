@@ -14,21 +14,29 @@ public class EnrollmentInfo {
 
     private final Enroll enroll;
 
-    public EnrollmentInfo(SessionType sessionType, ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax) {
+    public EnrollmentInfo(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Enroll enroll) {
         this.progressState = progressState;
         this.recruitState = recruitState;
         this.amount = amount;
         this.enrollmentMax = enrollmentMax;
-        this.enroll = Enroll.from(sessionType);
+        this.enroll = enroll;
     }
 
-    public static EnrollmentInfo of(SessionType sessionType, ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax) {
-        return new EnrollmentInfo(sessionType, progressState, recruitState, amount, enrollmentMax);
+    public static EnrollmentInfo of(String progressState, String recruitState, Long amount, Long enrollmentMax, String sessionType) {
+        return of(ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), amount, enrollmentMax, SessionType.valueOf(sessionType));
+    }
+
+    public static EnrollmentInfo of(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, SessionType sessionType) {
+        return new EnrollmentInfo(progressState, recruitState, amount, enrollmentMax, Enroll.from(sessionType));
     }
 
 
     public ProgressState progressState() {
         return progressState;
+    }
+
+    public String progressStateValue() {
+        return progressState.name();
     }
 
     public RecruitState recruitState() {
@@ -45,5 +53,25 @@ public class EnrollmentInfo {
 
     public Enroll enroll() {
         return enroll;
+    }
+
+    public void preparing() {
+        progressState = ProgressState.PREPARING;
+    }
+
+    public void ongoing() {
+        progressState = ProgressState.ONGOING;
+    }
+
+    public void end() {
+        progressState = ProgressState.END;
+    }
+
+    public void recruiting() {
+        recruitState = RecruitState.RECRUITING;
+    }
+
+    public String recruitStateValue() {
+        return recruitState.name();
     }
 }
