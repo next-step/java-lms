@@ -27,8 +27,8 @@ public class CourseTest {
         Long creatorId = 1L;
         int no = 1;
         Course course = new Course(0L, title, creatorId, LocalDateTime.now(), null, no);
-        List<Session> sessions = Arrays.asList(new FreeSession(newImage(), newPeriod()),
-            new FreeSession(newImage(), newPeriod()));
+        List<Session> sessions = Arrays.asList(new FreeSession(newImage(), newEnrollment()),
+            new FreeSession(newImage(), newEnrollment()));
         course.addSession(sessions);
 
         assertThat(course.getSession().size()).isEqualTo(sessions.size());
@@ -42,5 +42,9 @@ public class CourseTest {
 
     private Period newPeriod() {
         return new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2024, 12, 1));
+    }
+
+    private Enrollment newEnrollment() {
+        return new Enrollment(newPeriod(), SessionStatus.RECRUITING);
     }
 }

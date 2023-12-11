@@ -12,34 +12,16 @@ public abstract class Session {
 
     private Image coverImage;
 
-    private Period sessionPeriod;
-
     private SessionType type;
 
-    private List<NsUser> students = new ArrayList<>();
+    private Enrollment enrollment;
 
-    private SessionStatus status;
-
-    public Session() {
-    }
-
-    public Session(Image image, Period period, SessionType type) {
+    public Session(Image image, SessionType type, Enrollment enrollment) {
         this.coverImage = image;
-        this.sessionPeriod = period;
         this.type = type;
-        this.status = SessionStatus.PREPARING;
+        this.enrollment = enrollment;
     }
 
-//    public abstract void enroll(NsUser student) {
-//        if (this.status != SessionStatus.RECRUITING) {
-//            throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
-//        }
-//        this.students.add(student);
-//    }
-
-    public void open() {
-        this.status = SessionStatus.RECRUITING;
-    }
 
     public Long getId() {
         return this.id;
@@ -49,21 +31,15 @@ public abstract class Session {
         return this.coverImage;
     }
 
-    public Period getPeriod() {
-        return this.sessionPeriod;
-    }
 
     public SessionType getType() {
         return this.type;
     }
 
-    public List<NsUser> getStudents() {
-        return this.students;
-    }
 
     public abstract void enroll(NsUser student, Payment payment);
 
-    protected SessionStatus getStatus() {
-        return this.status;
+    public Enrollment getEnrollment() {
+        return this.enrollment;
     }
 }

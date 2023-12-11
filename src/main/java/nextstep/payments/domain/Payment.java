@@ -17,14 +17,8 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
-    public Payment() {
-    }
-
-    public Payment(Long sessionId, Long nsUserId, Long amount) {
-        this.sessionId = sessionId;
-        this.nsUserId = nsUserId;
+    public Payment(Long amount) {
         this.amount = amount;
-        this.createdAt = LocalDateTime.now();
     }
 
     public boolean isMatch(Long price) {

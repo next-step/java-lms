@@ -5,15 +5,12 @@ import nextstep.users.domain.NsUser;
 
 public class FreeSession extends Session {
 
-    public FreeSession(Image image, Period period) {
-        super(image, period, SessionType.FREE);
+    public FreeSession(Image image, Enrollment enrollment) {
+        super(image, SessionType.FREE, enrollment);
     }
 
     @Override
     public void enroll(NsUser student, Payment payment) {
-        if (SessionStatus.RECRUITING != this.getStatus()) {
-            throw new IllegalArgumentException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다.");
-        }
-        this.getStudents().add(student);
+        this.getEnrollment().enroll(student);
     }
 }
