@@ -7,8 +7,6 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -22,11 +20,7 @@ public class Session {
 
     private ImageInfo coverImage;
 
-    private Integer maxPersonnel;
-
-    private int enrollCount = 0;
-
-    private List<NsUser> students = new ArrayList<>();
+    private Students students;
 
     private Long fee;
 
@@ -38,33 +32,31 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee, SessionPeriod sessionPeriod) {
-        this(id, null, sessionType, sessionState, maxPersonnel, null, fee, sessionPeriod);
+    private Session(long id, SessionType sessionType, SessionState sessionState, Long fee, Students students, SessionPeriod sessionPeriod) {
+        this(id, null, sessionType, sessionState, students, null, fee, sessionPeriod);
     }
 
-    private Session(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount, SessionPeriod sessionPeriod) {
-        this(id, null,sessionType, sessionState, maxPersonnel, null, null, sessionPeriod);
-        this.students = students;
-        this.enrollCount = enrollCount;
+    public static Session sessionWithImage(long id, ImageInfo imageInfo) {
+        return new Session(id, null,null, SessionState.RECRUITING, null, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public Session(long id, SessionState sessionState, SessionPeriod sessionPeriod) {
-        this(id, null,null, sessionState, null, null, null, sessionPeriod);
+    public static Session sessionWithState(long id, SessionState sessionState, SessionPeriod sessionPeriod) {
+        return new Session(id, null,null, sessionState, null, null, null, sessionPeriod);
     }
 
-    public Session(long id, SessionState sessionState, ImageInfo imageInfo, SessionPeriod sessionPeriod) {
-        this(id, null,null, sessionState, null, imageInfo, null, sessionPeriod);
+    public static Session sessionWithStateAndType(long id, SessionType sessionType, SessionState sessionState, Students students) {
+        return new Session(id, sessionType, sessionState, null, students, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, Long fee) {
-        return new Session(id, sessionType, sessionState, maxPersonnel, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+    public static Session recruitingPaidSession(long id, SessionType sessionType, SessionState sessionState, Long fee, Students students) {
+        return new Session(id, sessionType, sessionState, fee, students, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public static Session recruitingSession(long id, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, List<NsUser> students, int enrollCount) {
-        return new Session(id, sessionType, sessionState, maxPersonnel, students, enrollCount, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+    public static Session recruitingSession(long id, SessionState sessionState, Students students) {
+        return new Session(id, null,null, sessionState, students, null, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
     }
 
-    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Integer maxPersonnel, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
+    public Session(long id, String title, SessionType sessionType, SessionState sessionState, Students students, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
 
         sessionPeriod.checkSessionStatus(sessionState);
 
@@ -72,7 +64,7 @@ public class Session {
         this.title = title;
         this.sessionType = sessionType;
         this.sessionState = sessionState;
-        this.maxPersonnel = maxPersonnel;
+        this.students = students;
         this.fee = fee;
         this.coverImage = imageInfo;
         this.sessionPeriod = sessionPeriod;
@@ -82,8 +74,8 @@ public class Session {
     }
 
     public void enrollStudent(NsUser student, Payment payment) {
-        if(sessionType == SessionType.PAID && enrollCount >= maxPersonnel) {
-            throw new SessionException("최대 수강 인원을 초과하였습니다.");
+        if(sessionType == SessionType.PAID) {
+            students.isOverCapacity();
         }
 
         if(!SessionState.isAbleToEnroll(sessionState)) {
@@ -94,12 +86,7 @@ public class Session {
             throw new PaymentException("수강료가 지불한 금액과 일치하지 않습니다.");
         }
 
-        students.add(student);
-        enrollCount++;
-    }
-
-    public int getEnrollCount() {
-        return enrollCount;
+        students.addStudent(student);
     }
 
     @Override
@@ -107,12 +94,12 @@ public class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return getEnrollCount() == session.getEnrollCount() && Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionState == session.sessionState && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(maxPersonnel, session.maxPersonnel) && Objects.equals(students, session.students) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
+        return Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionState == session.sessionState && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(students, session.students) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, sessionState, sessionType, coverImage, maxPersonnel, getEnrollCount(), students, fee, sessionPeriod, creatorId);
+        return Objects.hash(id, title, sessionState, sessionType, coverImage, students, fee, sessionPeriod, creatorId);
     }
 
     @Override
@@ -123,8 +110,6 @@ public class Session {
                 ", sessionState=" + sessionState +
                 ", sessionType=" + sessionType +
                 ", coverImage=" + coverImage +
-                ", maxPersonnel=" + maxPersonnel +
-                ", enrollCount=" + enrollCount +
                 ", students=" + students +
                 ", fee=" + fee +
                 ", sessionPeriod=" + sessionPeriod +
