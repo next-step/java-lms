@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.time.LocalDate;
 import java.util.List;
 
+import static nextstep.courses.domain.attendee.Approval.*;
 import static nextstep.courses.domain.image.ImageFormat.*;
 import static nextstep.courses.domain.session.Recruitment.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
@@ -43,8 +44,8 @@ class JdbcSessionRepositoryTest {
     @DisplayName("무료 강의를 조회한다.")
     @Test
     void find_free_session_by_id() {
-        Attendee attendee1 = new Attendee(1L, 1L);
-        Attendee attendee2 = new Attendee(2L, 1L);
+        Attendee attendee1 = new Attendee(1L, 1L, NOT_APPROVED);
+        Attendee attendee2 = new Attendee(2L, 1L, NOT_APPROVED);
         attendeeRepository.save(attendee1);
         attendeeRepository.save(attendee2);
         SessionInformation information = getSessionInformation();
@@ -63,8 +64,8 @@ class JdbcSessionRepositoryTest {
     @DisplayName("유료 강의를 조회한다.")
     @Test
     void find_paid_session_by_id() {
-        Attendee attendee1 = new Attendee(1L, 2L);
-        Attendee attendee2 = new Attendee(2L, 2L);
+        Attendee attendee1 = new Attendee(1L, 2L, NOT_APPROVED);
+        Attendee attendee2 = new Attendee(2L, 2L, NOT_APPROVED);
         attendeeRepository.save(attendee1);
         attendeeRepository.save(attendee2);
         SessionInformation information = getSessionInformation();

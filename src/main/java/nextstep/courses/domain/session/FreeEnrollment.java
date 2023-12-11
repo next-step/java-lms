@@ -5,6 +5,8 @@ import nextstep.courses.domain.attendee.FreeAttendees;
 
 import java.util.Objects;
 
+import static nextstep.courses.domain.attendee.Approval.*;
+
 public class FreeEnrollment implements Enrollment {
 
     private final FreeAttendees freeAttendees;
@@ -15,7 +17,7 @@ public class FreeEnrollment implements Enrollment {
 
     @Override
     public Attendee enroll(Long amount, Long userId, Long sessionId) {
-        Attendee attendee = new Attendee(userId, sessionId);
+        Attendee attendee = new Attendee(userId, sessionId, NOT_APPROVED);
         freeAttendees.add(attendee);
         return attendee;
     }

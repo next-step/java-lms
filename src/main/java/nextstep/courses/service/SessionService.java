@@ -29,4 +29,18 @@ public class SessionService {
         Attendee enrolledAttendee = session.enroll(payment.getAmount(), student.getId());
         attendeeRepository.save(enrolledAttendee);
     }
+
+    public void approve(Student student) {
+        Attendee attendee = attendeeRepository.findById(student.getId())
+                                              .orElseThrow(NotFoundException::new);
+        Attendee approvedAttendee = attendee.approve();
+        attendeeRepository.update(approvedAttendee);
+    }
+
+    public void cancel(Student student) {
+        Attendee attendee = attendeeRepository.findById(student.getId())
+                                              .orElseThrow(NotFoundException::new);
+        Attendee approvedAttendee = attendee.cancel();
+        attendeeRepository.update(approvedAttendee);
+    }
 }

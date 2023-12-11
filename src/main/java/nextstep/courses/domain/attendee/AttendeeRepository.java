@@ -10,4 +10,6 @@ public interface AttendeeRepository {
     void save(Attendee attendee);
 
     List<Attendee> findAllBySessionId(Long sessionId);
+
+    void update(Attendee approvedAttendee);
 }
