@@ -19,17 +19,30 @@ import nextstep.courses.domain.session.registration.Students;
 import nextstep.courses.domain.session.registration.Tuition;
 
 public class SessionTest {
+	private final static Session session1 = new Session(
+		1L, "자바 마스터리 30선",
+		new Period(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 12, 14)),
+		ProgressStatus.IN_PROGRESS, ApplyStatus.CLOSED,
+		new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(100), new Students()), new Course("코스", 1L), null);
+	private final static Session session2 = new Session(
+		1L, "자바 마스터리 30선",
+		new Period(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 12, 14)),
+		ProgressStatus.FINISH, ApplyStatus.APPLYING,
+		new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(100), new Students()), new Course("코스", 1L), null);
 
-	@DisplayName("강의 신청 기간이 아니면 수강신청할 수 없습니다.")
+	@DisplayName("수강 신청이 종료된 강의는 신청할 수 없습니다.")
 	@Test
-	void validate_amount() {
-		Session session = new Session(
-			1L, "자바 마스터리 30선",
-			new Period(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 12, 14)),
-			ProgressStatus.READY, ApplyStatus.APPLYING,
-			new SessionRegistration(PaidType.PAID, new Tuition(50000), new SessionCapacity(100), new Students()), new Course("코스", 1L), null);
+	void validate_apply_status() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> session.apply(JAVAJIGI, 50000))
+			.isThrownBy(() -> session1.apply(JAVAJIGI, 50000))
 			.withMessage("강의 신청 기간이 아닙니다.");
+	}
+
+	@DisplayName("종료된 강의는 신청할 수 없습니다.")
+	@Test
+	void validate_progress_status() {
+		assertThatIllegalArgumentException()
+			.isThrownBy(() -> session2.apply(JAVAJIGI, 50000))
+			.withMessage("종료된 강의는 신청할 수 없습니다.");
 	}
 }

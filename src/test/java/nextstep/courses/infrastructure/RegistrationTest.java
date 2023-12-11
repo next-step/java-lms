@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.enums.ApplyStatus;
+import nextstep.courses.domain.enums.ApprovalStatus;
 import nextstep.courses.domain.enums.PaidType;
 import nextstep.courses.domain.enums.ProgressStatus;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.image.Image;
 import nextstep.courses.domain.session.registration.Registration;
 import nextstep.courses.domain.session.registration.RegistrationRepository;
 import nextstep.courses.domain.session.registration.SessionCapacity;
@@ -50,15 +50,21 @@ public class RegistrationTest {
 
 	@Test
 	public void validate_save() {
-		int count = registrationRepository.save(new Registration(JAVAJIGI, session1));
+		int count = registrationRepository.save(new Registration(JAVAJIGI, session1, ApprovalStatus.APPROVAL));
 		assertThat(count).isEqualTo(1);
 	}
 
 	@Test
-	public void validate_findRegistrationsBySessionId() {
-		registrationRepository.save(new Registration(JAVAJIGI, session1));
-		registrationRepository.save(new Registration(JAVAJIGI, session2));
-		registrationRepository.save(new Registration(SANJIGI, session2));
-		assertThat(registrationRepository.findRegistrationsBySessionId(2L).size()).isEqualTo(2L);
+	public void validate_find_by_id() {
+		registrationRepository.save(new Registration(JAVAJIGI, session1, ApprovalStatus.WAITING));
+		assertThat(registrationRepository.findById(5L).orElse(null).getId()).isEqualTo(5L);
+	}
+
+	@Test
+	public void validate_findAllBySessionId() {
+		registrationRepository.save(new Registration(JAVAJIGI, session1, ApprovalStatus.APPROVAL));
+		registrationRepository.save(new Registration(JAVAJIGI, session2, ApprovalStatus.APPROVAL));
+		registrationRepository.save(new Registration(SANJIGI, session2, ApprovalStatus.APPROVAL));
+		assertThat(registrationRepository.findAllBySessionId(3L).size()).isEqualTo(2L);
 	}
 }

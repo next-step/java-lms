@@ -69,7 +69,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
 	@Override
 	public Optional<Session> findById(Long id) {
-		List<Registration> registrations = registrationRepository.findRegistrationsBySessionId(id);
+		List<Registration> registrations = registrationRepository.findAllBySessionId(id);
 		List<Image> images = imageRepository.findAllBySessionId(id);
 
 		String sql = "select id, course_id, start_at, end_at, title, progress_status, apply_status, maximum_capacity,"

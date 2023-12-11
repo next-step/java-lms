@@ -52,10 +52,14 @@ public class Session extends BaseTimeEntity {
 	}
 
 	public void apply(NsUser nsUser, long amount) {
-		sessionRegistration.validate(amount);
+		sessionRegistration.validateAmount(amount);
 		canApply();
 
 		sessionRegistration.register(nsUser, this);
+	}
+
+	public void checkCanApprove() {
+		sessionRegistration.validateCapacity();
 	}
 
 	private void canApply() {
