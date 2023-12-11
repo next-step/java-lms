@@ -16,16 +16,16 @@ public class Course extends BaseEntity {
     private Sessions sessions;
 
     public Course(String title, int ordering, Long creatorId, LocalDateTime date) {
-        this(0L, title, ordering, creatorId, date, null);
+        this(0L, title, ordering, new Sessions(), creatorId, date, null);
     }
 
-    public Course(Long id, String title, int ordering, Long creatorId,
-                  LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, int ordering, Sessions sessions,
+                  Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         this.id = id;
         this.title = title;
         this.ordering = ordering;
-        this.sessions = new Sessions();
+        this.sessions = sessions;
     }
 
     public int sessionSize() {

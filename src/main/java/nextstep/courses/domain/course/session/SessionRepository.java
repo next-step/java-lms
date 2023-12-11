@@ -14,4 +14,6 @@ public interface SessionRepository {
     Optional<Apply> findApplyByIds(Long NsUserId, Long sessionId);
 
     int update(Long sessionId, Session session);
+
+    Sessions findAllByCourseId(Long courseId);
 }
