@@ -2,9 +2,9 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidPaymentAmountException;
-import nextstep.courses.exception.session.InvalidSessionStateException;
+import nextstep.courses.exception.session.InvalidProgressStateException;
+import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
-import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -19,22 +19,22 @@ class SessionTest {
 
     @Test
     @DisplayName("강의가 준비중인 경우 수강신청이 불가능 하다")
-    public void session_state_preparing() {
+    public void progress_state_preparing() {
         Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
         session.preparing();
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1_000L)))
-                .isInstanceOf(InvalidSessionStateException.class);
+                .isInstanceOf(InvalidProgressStateException.class);
     }
 
     @Test
     @DisplayName("강의가 종료인 경우 수강신청이 불가능 하다")
-    public void session_state_end() {
+    public void progress_state_end() {
         Session session = Session.ofPaid(Period.from(), Image.from(), 1_000L, 1L);
         session.end();
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1_000L)))
-                .isInstanceOf(InvalidSessionStateException.class);
+                .isInstanceOf(InvalidProgressStateException.class);
     }
 
     @Test
@@ -65,11 +65,11 @@ class SessionTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
     public void no_recruit() {
-        Session session = Session.of(999999L, SessionType.PAID, SessionState.ONGOING, RecruitState.CLOSED, Period.from(), 1000L, 1000L, null, null);
+        Session session = Session.of(999999L, SessionType.PAID, ProgressState.ONGOING, RecruitState.CLOSED, Period.from(), 1000L, 1000L, null, null);
         session.ongoing();
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI, new Payment(100L)))
-                .isInstanceOf(InvalidSessionStateException.class);
+                .isInstanceOf(InvalidProgressStateException.class);
     }
 
     @Test

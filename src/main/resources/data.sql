@@ -14,10 +14,10 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO course (id, title, creator_id, created_at)
 values (1000, 'TDD 강의', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, type, state, recruit_state, start_date, end_date, amount, enrollment_max)
+INSERT INTO session (id, type, progress_state, recruit_state, start_date, end_date, amount, enrollment_max)
 values (1000, 'PAID', 'PREPARING', 'RECRUITING', CURRENT_DATE(), CURRENT_DATE(), 10000, 1000);
 
-INSERT INTO session (id, type, state, recruit_state, start_date, end_date, amount, enrollment_max)
+INSERT INTO session (id, type, progress_state, recruit_state, start_date, end_date, amount, enrollment_max)
 values (2000, 'FREE', 'PREPARING', 'RECRUITING', CURRENT_DATE(), CURRENT_DATE(), null, null);
 
 INSERT INTO image (id, session_id, type, width, height, file_size)

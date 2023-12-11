@@ -1,6 +1,6 @@
 package nextstep.courses.type;
 
-public enum SessionState {
+public enum ProgressState {
     PREPARING,
     ONGOING,
     END;

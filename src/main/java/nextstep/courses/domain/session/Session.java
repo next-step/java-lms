@@ -1,9 +1,9 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.type.ProgressState;
 import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionApproval;
-import nextstep.courses.type.SessionState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -15,26 +15,23 @@ public class Session {
     private final Long id;
 
     private final SessionType sessionType;
-    private SessionState sessionState;
-
+    private ProgressState progressState;
     private RecruitState recruitState;
 
     private final Period period;
-
     private final Long amount;
     private final Long enrollmentMax;
 
     private Images images;
-
     private Students students;
 
     private final Enrollment enrollment;
 
 
-    public Session(Long id, SessionType sessionType, SessionState sessionState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
+    public Session(Long id, SessionType sessionType, ProgressState progressState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
         this.id = id;
         this.sessionType = sessionType;
-        this.sessionState = sessionState;
+        this.progressState = progressState;
         this.recruitState = recruitState;
         this.period = period;
         this.amount = amount;
@@ -45,19 +42,19 @@ public class Session {
     }
 
     public static Session ofFree(Period period, Image image) {
-        return of(null, SessionType.FREE, SessionState.PREPARING, RecruitState.CLOSED, period, null, null, Images.of(image), Students.of(new ArrayList<>()));
+        return of(null, SessionType.FREE, ProgressState.PREPARING, RecruitState.CLOSED, period, null, null, Images.of(image), Students.of(new ArrayList<>()));
     }
 
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax) {
-        return of(null, SessionType.PAID, SessionState.PREPARING, RecruitState.CLOSED, period, amount, enrollmentMax, Images.of(image), Students.of(new ArrayList<>()));
+        return of(null, SessionType.PAID, ProgressState.PREPARING, RecruitState.CLOSED, period, amount, enrollmentMax, Images.of(image), Students.of(new ArrayList<>()));
     }
 
-    public static Session of(Long id, String sessionType, String sessionState, String recruitState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
-        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), RecruitState.valueOf(recruitState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
+    public static Session of(Long id, String sessionType, String progressState, String recruitState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
+        return of(id, SessionType.valueOf(sessionType), ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
     }
 
-    public static Session of(Long id, SessionType sessionType, SessionState sessionState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
-        return new Session(id, sessionType, sessionState, recruitState, period, amount, enrollmentMax, images, students);
+    public static Session of(Long id, SessionType sessionType, ProgressState progressState, RecruitState recruitState, Period period, Long amount, Long enrollmentMax, Images images, Students students) {
+        return new Session(id, sessionType, progressState, recruitState, period, amount, enrollmentMax, images, students);
     }
 
     public void enroll(NsUser nsUser, Payment payment) {
@@ -98,15 +95,15 @@ public class Session {
     }
 
     public void preparing() {
-        sessionState = SessionState.PREPARING;
+        progressState = ProgressState.PREPARING;
     }
 
     public void ongoing() {
-        sessionState = SessionState.ONGOING;
+        progressState = ProgressState.ONGOING;
     }
 
     public void end() {
-        sessionState = SessionState.END;
+        progressState = ProgressState.END;
     }
 
     public void recruiting() {
@@ -125,12 +122,12 @@ public class Session {
         return sessionType.name();
     }
 
-    public SessionState sessionState() {
-        return sessionState;
+    public ProgressState progressState() {
+        return progressState;
     }
 
-    public String stateStateValue() {
-        return sessionState.name();
+    public String progressStateValue() {
+        return progressState.name();
     }
 
     public RecruitState recruitState() {

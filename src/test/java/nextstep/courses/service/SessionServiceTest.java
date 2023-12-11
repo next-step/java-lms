@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidPaymentAmountException;
-import nextstep.courses.exception.session.InvalidSessionStateException;
+import nextstep.courses.exception.session.InvalidProgressStateException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -50,7 +50,7 @@ public class SessionServiceTest {
     @DisplayName("모집중이 아니면 강의 신청이 불가능하다")
     public void no_recruiting() {
         Session session = 유료_강의_생성();
-        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1000L))).isInstanceOf(InvalidSessionStateException.class);
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1000L))).isInstanceOf(InvalidProgressStateException.class);
     }
 
     private Session 유료_강의_생성() {

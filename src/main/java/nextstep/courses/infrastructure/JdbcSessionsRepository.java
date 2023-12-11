@@ -26,7 +26,7 @@ public class JdbcSessionsRepository implements SessionsRepository {
 
     @Override
     public Sessions findByCourseId(Long courseId) {
-        String sql = "select a.id, a.type, a.state, a.recruit_state, a.start_date, a.end_date, a.amount, a.enrollment_max from session a inner join course_session b on a.id = b.session_id where b.course_id = ?";
+        String sql = "select a.id, a.type, a.progress_state, a.recruit_state, a.start_date, a.end_date, a.amount, a.enrollment_max from session a inner join course_session b on a.id = b.session_id where b.course_id = ?";
         return Sessions.of(
                 jdbcTemplate.query(
                         sql,
