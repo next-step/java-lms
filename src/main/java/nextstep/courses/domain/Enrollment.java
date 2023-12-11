@@ -3,17 +3,19 @@ package nextstep.courses.domain;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Enrollment {
     private SessionStatus sessionStatus;
     private int capacity;
 
-    private final List<NsUser> students;
+    private final Set<NsUser> students;
     public Enrollment(SessionStatus sessionStatus, int capacity) {
-        this(sessionStatus, capacity, new ArrayList<>());
+        this(sessionStatus, capacity, new HashSet<>());
     }
-    public Enrollment(SessionStatus sessionStatus, int capacity, List<NsUser> students) {
+    public Enrollment(SessionStatus sessionStatus, int capacity, Set<NsUser> students) {
         if (capacity < students.size()) {
             throw new IllegalArgumentException("최대 수용 인원인 " + capacity + "명을 초과할 수 없습니다.");
         }

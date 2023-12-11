@@ -6,8 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,7 +33,8 @@ public class EnrollmentTest {
     @Test
     @DisplayName("이미 수강신청을한 인원은 수강신청을 할 수 없다")
     void student_exception() {
-        List<NsUser> students = Arrays.asList(NsUserTest.JAVAJIGI);
+        Set<NsUser> students = new HashSet<>();
+        students.add(NsUserTest.JAVAJIGI);
         Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 2, students);
         assertThatIllegalArgumentException().isThrownBy(() -> {
             enrollment.enroll(NsUserTest.JAVAJIGI);
