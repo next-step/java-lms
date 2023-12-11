@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.Students;
 
 import java.time.LocalDate;
 
@@ -10,16 +10,22 @@ import static nextstep.courses.domain.session.Status.isNotRecruiting;
 
 public class FreeSession extends Session {
 
-    public FreeSession() {}
-
     public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
         super(id, payType, status, coverImage, startDate, endDate);
     }
 
+    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Students students) {
+        super(id, payType, status, coverImage, students, startDate, endDate);
+    }
+
     @Override
-    public void enroll(NsUser student, Payment payment) {
+    public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
+
+        Student student = new Student(id, enrolmentInfo.getNsUserId());
         this.students.add(student);
+
+        return student;
     }
 
     private void validateStatus() {

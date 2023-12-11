@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.Students;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -22,13 +22,22 @@ public class PaySession extends Session {
         this.studentsCapacity = studentsCapacity;
     }
 
+    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity, Students students) {
+        super(id, payType, status, coverImage, students, startDate, endDate);
+        this.amount = amount;
+        this.studentsCapacity = studentsCapacity;
+    }
+
     @Override
-    public void enroll(NsUser student, Payment payment) {
+    public Student enroll(EnrolmentInfo enrolmentInfo) {
         validateStatus();
-        validatePayAmount(payment);
+        validatePayAmount(enrolmentInfo);
         validateCapacity();
 
+        Student student = new Student(id, enrolmentInfo.getNsUserId());
         students.add(student);
+
+        return student;
     }
 
     private void validateStatus() {
@@ -37,8 +46,8 @@ public class PaySession extends Session {
         }
     }
 
-    private void validatePayAmount(Payment payment) {
-        if (payment.isNotSameAmount(amount)) {
+    private void validatePayAmount(EnrolmentInfo enrolmentInfo) {
+        if (enrolmentInfo.isNotSameAmount(amount)) {
             throw new IllegalArgumentException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
         }
     }
@@ -52,4 +61,5 @@ public class PaySession extends Session {
     private boolean isExceed() {
         return students.size() >= studentsCapacity;
     }
+
 }

@@ -37,4 +37,8 @@ public class Name {
             .map(f -> f.substring(fileName.lastIndexOf(EXTENSION_DELIMITER) + 1))
             .orElseThrow(() -> new ImageFileInfoException("확장자가 존재하지 않습니다"));
     }
+
+    public String getFileName() {
+        return this.fileName;
+    }
 }
