@@ -4,7 +4,6 @@ import nextstep.courses.CannotSignUpException;
 import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionStatus;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,10 +34,10 @@ public class SessionTest {
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     void saveSessionImageTest() throws InvalidImageFormatException {
-        Session session = Session.titleOf("과제4 - 레거시 리팩토링", "TDD");
+        Session session = Session.valueOf("과제4 - 레거시 리팩토링", "TDD");
         assertThat(session.hasImage()).isFalse();
 
-        SessionImage 강의_이미지 = SessionImage.valueOf(1L, session, 1024*1024, 300, 200, "jpg");
+        SessionImage 강의_이미지 = SessionImage.valueOf(1L, session, 1024 * 1024, 300, 200, "jpg");
         session.saveImage(강의_이미지);
 
         assertThat(session.hasImage()).isTrue();
@@ -48,7 +47,7 @@ public class SessionTest {
     @DisplayName("강의가 준비중인 경우 수강신청을 하면 Exception Throw")
     void cannotSignUp_ForPreparingSession_Test() {
         Payment payment = Payment.freeOf("1");
-        Session session = Session.statusOf("lms", "TDD", SessionStatus.PREPARING);
+        Session session = Session.dateOf("lms", "TDD", LocalDate.of(2024, 01, 01), LocalDate.of(2024, 03, 01));
         assertThrows(CannotSignUpException.class, () -> session.signUp(payment));
     }
 
@@ -56,7 +55,7 @@ public class SessionTest {
     @DisplayName("강의가 종료상태인 경우 수강신청을 하면 Exception Throw")
     void cannotSignUp_ForClosedSession_Test() {
         Payment payment = Payment.freeOf("1");
-        Session session = Session.statusOf("lms", "TDD", SessionStatus.CLOSE);
+        Session session = Session.dateOf("lms", "TDD", LocalDate.of(2023, 11, 01), LocalDate.of(2023, 12, 01));
         assertThrows(CannotSignUpException.class, () -> session.signUp(payment));
     }
 
@@ -64,7 +63,7 @@ public class SessionTest {
     @DisplayName("강의가 준비상태인 경우 수강신청이 가능하다.")
     void signUp_ForRecruitingSession_Test() throws CannotSignUpException {
         Payment payment = Payment.freeOf("1");
-        Session session = Session.statusOf("lms", "TDD", SessionStatus.RECRUITING);
+        Session session = Session.dateOf("lms", "TDD", LocalDate.of(2023, 11, 01), LocalDate.of(2024, 01, 01));
         session.signUp(payment);
         assertThat(session.getStudentCount()).isEqualTo(1);
     }

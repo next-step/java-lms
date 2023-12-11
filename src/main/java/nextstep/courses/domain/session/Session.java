@@ -4,8 +4,10 @@ import nextstep.courses.CannotSignUpException;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Session {
     private Long sessionId;
@@ -16,46 +18,23 @@ public class Session {
 
     private SessionStatus sessionStatus;
     private int studentCount;
+    private List<NsUser> students;
 
     private LocalDate startDate;
     private LocalDate endDate;
 
     private SessionImage sessionImage;
 
-    public static Session titleOf(String title, String course) {
-        return new Session(1L, title, new Course(course, 1L)
-                , SessionType.FREE, SessionStatus.RECRUITING
-                , LocalDate.now(), LocalDate.now());
-    }
-    public static Session valueOf(String title, String course, SessionStatus sessionStatus) {
-        return new Session(1L, title, new Course(course, 1L)
-                , SessionType.FREE, sessionStatus
-                , LocalDate.now(), LocalDate.now());
-    }
-
-    public static Session statusOf(String title, String course, SessionStatus sessionStatus) {
-        return new Session(1L, title, new Course(course, 1L)
-                , SessionType.FREE, sessionStatus
-                , LocalDate.now(), LocalDate.of(9999, 12, 31));
+    public static Session valueOf(String title, String course) {
+        return new Session(1L, title, new Course(course, 1L), SessionType.FREE,
+                SessionStatus.fromDate(LocalDate.now(), LocalDate.now()), LocalDate.now(), LocalDate.now());
     }
 
     public static Session dateOf(String title, String course, LocalDate startDate, LocalDate endDate) {
-        return new Session(1L, title, new Course(course, 1L)
-                , SessionType.FREE, SessionStatus.RECRUITING
-                , startDate, endDate);
+        return new Session(1L, title, new Course(course, 1L), SessionType.FREE, SessionStatus.fromDate(startDate, endDate), startDate, endDate);
     }
 
-    public Session(Long sessionId, String title, Course course
-            , SessionType sessionType, SessionStatus sessionStatus) {
-        this(sessionId, title, course
-                , sessionType, sessionStatus
-                , LocalDate.now(), LocalDate.of(9999, 12, 31));
-    }
-
-    private Session(Long sessionId, String title, Course course
-            , SessionType sessionType, SessionStatus sessionStatus
-            , LocalDate startDate, LocalDate endDate) {
-        validateDate(startDate, endDate);
+    public Session(Long sessionId, String title, Course course, SessionType sessionType, SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
         this.sessionId = sessionId;
         this.title = title;
         this.course = course;
@@ -67,9 +46,9 @@ public class Session {
         this.sessionImage = null;
     }
 
-    private static void validateDate(LocalDate startDate, LocalDate endDate) {
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("강의의 시작일자와 종료일자는 필수 정보입니다.");
+    private void validateSessionStatus() throws CannotSignUpException {
+        if (!SessionStatus.canSignUp(startDate, endDate)) {
+            throw new CannotSignUpException("강의를 신청할 수 있는 기간이 아닙니다.");
         }
     }
 
@@ -80,15 +59,6 @@ public class Session {
     public void signUp(Payment payment) throws CannotSignUpException {
         validateSessionStatus();
         studentCount += 1;
-    }
-
-    private void validateSessionStatus() throws CannotSignUpException {
-        if (this.sessionStatus.equals(SessionStatus.PREPARING)) {
-            throw new CannotSignUpException("강의가 준비중으로 신청할 수 없습니다.");
-        }
-        if (this.sessionStatus.equals(SessionStatus.CLOSE)) {
-            throw new CannotSignUpException("강의가 종료되어 신청할 수 없습니다.");
-        }
     }
 
     public void changeSessionStatus(SessionStatus sessionStatus) {

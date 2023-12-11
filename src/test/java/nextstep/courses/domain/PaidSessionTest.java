@@ -30,18 +30,15 @@ public class PaidSessionTest {
 
     @Test
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
-    void payCheckTest() throws CannotSignUpException {
+    void payCheckTest()  {
         PaidSession paidSession = PaidSession.feeOf("step4", 2, 10_000L);
-
-        PaymentService paymentService = new PaymentService();
-        Payment payment = paymentService.paymentPaid("1");
 
         assertDoesNotThrow(() -> paidSession.signUp(payment));
     }
 
     @Test
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치하지 않는 경우 Exception Throw")
-    void payCheckExceptionTest() throws CannotSignUpException {
+    void payCheckExceptionTest() {
         PaidSession paidSession = PaidSession.feeOf("step4", 2, 5_000L);
 
         PaymentService paymentService = new PaymentService();
