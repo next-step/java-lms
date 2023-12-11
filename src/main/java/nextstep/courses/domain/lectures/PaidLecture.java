@@ -31,7 +31,10 @@ public class PaidLecture extends Time implements Lecture  {
     this.limitStudentCount = limitStudentCount;
   }
   public PaidLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
-      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount, LectureType lectureType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount
+      , LectureType lectureType
+      , LocalDateTime createdAt
+      , LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
