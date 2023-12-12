@@ -15,7 +15,7 @@ public class AnswerTest {
     @DisplayName("답변을 삭제하는 경우 삭제상태가 변한다.")
     void deleteAnswerTest() throws CannotDeleteException {
         assertThat(A1.isDeleted()).isFalse();
-        A1.delete();
+        A1.delete(A1.getWriter());
         assertThat(A1.isDeleted()).isTrue();
     }
 }

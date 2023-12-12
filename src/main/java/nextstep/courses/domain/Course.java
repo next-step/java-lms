@@ -1,35 +1,45 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public class Course {
     private Long id;
 
     private String title;
 
+    private Sessions sessions;
+
     private Long creatorId;
 
-    private LocalDateTime createdAt;
+    private SystemTimeStamp systemTimeStamp;
 
-    private LocalDateTime updatedAt;
-
-    public Course() {
+    public Course(long id, String title, Long creatorId) {
+        this(id, title, creatorId, new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, SystemTimeStamp systemTimeStamp) {
         this.id = id;
         this.title = title;
+        this.sessions = Sessions.initialize();
         this.creatorId = creatorId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.systemTimeStamp = systemTimeStamp;
+    }
+
+    public void addSession(Session session) {
+        sessions.addSession(session);
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public Sessions getSessions() {
+        return sessions;
     }
 
     public Long getCreatorId() {
@@ -37,7 +47,7 @@ public class Course {
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return systemTimeStamp.getCreatedAt();
     }
 
     @Override
@@ -46,8 +56,8 @@ public class Course {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", createdAt=" + systemTimeStamp.getCreatedAt() +
+                ", updatedAt=" + systemTimeStamp.getUpdatedAt() +
                 '}';
     }
 }
