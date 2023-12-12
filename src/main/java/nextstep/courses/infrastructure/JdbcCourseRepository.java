@@ -41,7 +41,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getInt(3),
                 findAllByCourseId(rs.getLong(1)),
                 rs.getLong(4),
-                toLocalDateTime(rs.getTimestamp(5)),
+                rs.getTimestamp(5).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(6)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

@@ -37,8 +37,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 findImageById(rs.getLong(2)),
                 new Duration(
-                        toLocalDate(rs.getTimestamp(3)),
-                        toLocalDate(rs.getTimestamp(4))
+                        rs.getTimestamp(3).toLocalDateTime().toLocalDate(),
+                        rs.getTimestamp(4).toLocalDateTime().toLocalDate()
                 ),
                 new SessionState(
                         SessionType.find(rs.getString(5)),
@@ -48,7 +48,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 findAllBySessionId(id),
                 SessionStatus.find(rs.getString(8)),
                 rs.getLong(10),
-                toLocalDateTime(rs.getTimestamp(11)),
+                rs.getTimestamp(11).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(12)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
@@ -87,7 +87,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
+                rs.getTimestamp(4).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(5)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
     }
@@ -115,8 +115,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 findImageById(rs.getLong(2)),
                 new Duration(
-                        toLocalDate(rs.getTimestamp(3)),
-                        toLocalDate(rs.getTimestamp(4))
+                        rs.getTimestamp(3).toLocalDateTime().toLocalDate(),
+                        rs.getTimestamp(4).toLocalDateTime().toLocalDate()
                 ),
                 new SessionState(
                         SessionType.find(rs.getString(5)),
@@ -126,7 +126,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 findAllBySessionId(rs.getLong(1)),
                 SessionStatus.find(rs.getString(8)),
                 rs.getLong(10),
-                toLocalDateTime(rs.getTimestamp(11)),
+                rs.getTimestamp(11).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(12)));
 
         List<Session> sessions = jdbcTemplate.query(sql, rowMapper, courseId);
