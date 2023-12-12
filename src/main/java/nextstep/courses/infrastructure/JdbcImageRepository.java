@@ -18,15 +18,15 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public List<Image> findAllBySessionId(Long sessionId) {
-        String sql = "select id, height, width, image_format, volume" +
+        String sql = "select id, session_id, height, width, image_format, volume" +
                 " from image" +
                 " where session_id = ?";
         RowMapper<Image> rowMapper = (rs, rowNum) -> {
-            ImageSize size = new ImageSize(rs.getLong(2), rs.getLong(3));
+            ImageSize size = new ImageSize(rs.getLong(3), rs.getLong(4));
             ImageInformation information = new ImageInformation(size,
-                                                                     rs.getLong(5),
-                                                                     ImageFormat.valueOf(rs.getString(4)));
-            return new Image(rs.getLong(1), information);
+                                                                rs.getLong(6),
+                                                                ImageFormat.valueOf(rs.getString(5)));
+            return new Image(rs.getLong(1), rs.getLong(2), information);
         };
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }

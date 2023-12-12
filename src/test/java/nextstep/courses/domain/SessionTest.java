@@ -1,10 +1,8 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.attendee.FreeAttendees;
-import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.image.ImageInformation;
 import nextstep.courses.domain.image.ImageSize;
-import nextstep.courses.domain.image.Images;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.CanNotApplyException;
 import org.junit.jupiter.api.DisplayName;
@@ -25,11 +23,7 @@ class SessionTest {
     void throw_exception_if_session_is_not_recruiting() {
         Period period = new Period(LocalDate.now(),
                                    LocalDate.now().plusDays(1));
-        ImageInformation imageInformation = new ImageInformation(new ImageSize(300.0, 200.0),
-                                                                 100,
-                                                                 JPG);
-        Image image = new Image(1L, imageInformation);
-        SessionInformation information = new SessionInformation(PREPARING, period, new Images(image), NOT_RECRUITING);
+        SessionInformation information = new SessionInformation(PREPARING, period, NOT_RECRUITING);
         Enrollment freeEnrollment = new FreeEnrollment(new FreeAttendees());
         EnrollmentSession session = new EnrollmentSession(1L, information, freeEnrollment);
 

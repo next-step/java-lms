@@ -4,6 +4,8 @@ import nextstep.courses.exception.NotValidHeightException;
 import nextstep.courses.exception.NotValidRatioException;
 import nextstep.courses.exception.NotValidWidthException;
 
+import java.util.Objects;
+
 public class ImageSize {
 
     private static final double MINIMUM_HEIGHT = 300;
@@ -44,5 +46,18 @@ public class ImageSize {
         if (height < MINIMUM_HEIGHT) {
             throw new NotValidHeightException(height);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageSize imageSize = (ImageSize) o;
+        return Double.compare(height, imageSize.height) == 0 && Double.compare(width, imageSize.width) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(height, width);
     }
 }

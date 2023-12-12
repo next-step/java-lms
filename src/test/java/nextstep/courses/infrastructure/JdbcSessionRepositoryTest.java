@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static nextstep.courses.domain.attendee.Approval.*;
-import static nextstep.courses.domain.image.ImageFormat.*;
 import static nextstep.courses.domain.session.Recruitment.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
 import static nextstep.courses.domain.session.SessionType.*;
@@ -82,13 +81,9 @@ class JdbcSessionRepositoryTest {
     }
 
     private static SessionInformation getSessionInformation() {
-        ImageInformation imageInformation= new ImageInformation(new ImageSize(300.0, 200.0),
-                                                                100,
-                                                                JPG);
         return new SessionInformation(PREPARING,
                                       new Period(LocalDate.parse("2023-12-01"),
                                                  LocalDate.parse("2023-12-02")),
-                                      new Images(new Image(1L, imageInformation)),
                                       RECRUITING);
     }
 }
