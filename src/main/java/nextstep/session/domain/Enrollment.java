@@ -6,12 +6,14 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Enrollment extends BaseDomain {
+    private Long id;
     private NsUser student;
     private Long studentId;
     private Long sessionId;
 
     public Enrollment(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId) {
-        super(id, createdAt, updatedAt);
+        super(createdAt, updatedAt);
+        this.id = id;
         this.studentId = studentId;
         this.sessionId = sessionId;
     }
@@ -25,6 +27,10 @@ public class Enrollment extends BaseDomain {
         this.student = student;
         this.studentId = student.getId();
         this.sessionId = session.getId();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getStudentId() {

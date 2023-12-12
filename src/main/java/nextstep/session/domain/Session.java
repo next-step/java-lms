@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public abstract class Session extends BaseDomain implements Sessionable {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
 
+    private Long id;
     private Long creatorId;
 
     private SessionDate sessionDate;
@@ -29,7 +30,8 @@ public abstract class Session extends BaseDomain implements Sessionable {
     }
 
     public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {
-        super(id, createdAt, updatedAt);
+        super(createdAt, updatedAt);
+        this.id = id;
         this.creatorId = creatorId;
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
@@ -61,6 +63,10 @@ public abstract class Session extends BaseDomain implements Sessionable {
     @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getCreatorId() {

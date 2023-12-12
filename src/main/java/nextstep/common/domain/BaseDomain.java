@@ -3,7 +3,6 @@ package nextstep.common.domain;
 import java.time.LocalDateTime;
 
 public class BaseDomain {
-    private Long id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -12,16 +11,10 @@ public class BaseDomain {
         this.updatedAt = null;
     }
 
-    public BaseDomain(Long id, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public BaseDomain(LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-    public Long getId() {
-        return id;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
