@@ -39,11 +39,11 @@ public class JdbcSessionRepository implements SessionRepository {
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
             coverImageRepository.findAllBySession(sessionId),
-            enrolmentRepository.findById(rs.getLong(4)).orElseThrow(),
+            enrolmentRepository.findBySession(sessionId).orElseThrow(),
+            toLocalDate(rs.getTimestamp(4)),
             toLocalDate(rs.getTimestamp(5)),
-            toLocalDate(rs.getTimestamp(6)),
-            rs.getLong(7),
-            rs.getInt(8)) {
+            rs.getLong(6),
+            rs.getInt(7)) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
@@ -62,9 +62,9 @@ public class JdbcSessionRepository implements SessionRepository {
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
             coverImageRepository.findAllBySession(sessionId),
-            enrolmentRepository.findById(rs.getLong(4)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(5)),
-            toLocalDate(rs.getTimestamp(6))) {
+            enrolmentRepository.findBySession(sessionId).orElseThrow(),
+            toLocalDate(rs.getTimestamp(4)),
+            toLocalDate(rs.getTimestamp(5))) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;

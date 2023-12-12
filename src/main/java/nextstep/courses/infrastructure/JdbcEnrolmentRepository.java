@@ -22,15 +22,15 @@ public class JdbcEnrolmentRepository implements EnrolmentRepository {
     }
 
     @Override
-    public Optional<Enrolment> findById(Long id) {
-        String sql = "select * from enrolment where id = ?";
+    public Optional<Enrolment> findBySession(Long sessionId) {
+        String sql = "select * from enrolment where session_id = ?";
 
         RowMapper<Enrolment> rowMapper = (rs, rowNum) -> new Enrolment(
             rs.getLong(1),
-            studentRepository.findAllByEnrolment(id),
-            EnrollStatus.valueOf(rs.getString(2))
+            studentRepository.findAllByEnrolment(sessionId),
+            EnrollStatus.valueOf(rs.getString(3))
         );
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
     }
 }
