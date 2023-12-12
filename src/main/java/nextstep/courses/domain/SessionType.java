@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public enum ChargeStatus {
+public enum SessionType {
 
     FREE,
     CHARGE;
