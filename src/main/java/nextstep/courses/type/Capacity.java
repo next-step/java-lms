@@ -51,4 +51,8 @@ public class Capacity {
                 "capacity=" + capacity + "KB" +
                 '}';
     }
+
+    public int toInt() {
+        return this.capacity;
+    }
 }

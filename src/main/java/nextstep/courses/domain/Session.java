@@ -27,6 +27,7 @@ public class Session {
     private MaxRegister maxUserCount;
     private int fee;
 
+
     private Session() {
 
     }
@@ -114,6 +115,31 @@ public class Session {
 
     public Long getId() {
         return this.id;
+    }
+
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public SessionState getState() {
+        return state;
+    }
+
+    public SessionImage getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionDuration getDuration() {
+        return duration;
+    }
+
+    public MaxRegister getMaxUserCount() {
+        return maxUserCount;
+    }
+
+    public int getFee() {
+        return fee;
     }
 
     @Override

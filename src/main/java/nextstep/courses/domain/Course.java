@@ -61,4 +61,8 @@ public class Course {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    public Long getId() {
+        return this.id;
+    }
 }

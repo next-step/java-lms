@@ -73,4 +73,16 @@ public class MaxRegister {
 
         return Objects.hash(value);
     }
+
+    public boolean isInfinite() {
+        return this.isInfinite;
+    }
+
+    public int toInt() {
+        if (this.isInfinite) {
+            throw new IllegalStateException("무한 상태에서는 정수값으로 바꿀 수 없습니다.");
+        }
+
+        return this.value;
+    }
 }
