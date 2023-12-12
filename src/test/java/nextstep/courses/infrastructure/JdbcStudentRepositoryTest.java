@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static nextstep.courses.domain.session.student.SelectionStatus.SELECTION;
 import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,10 +26,10 @@ class JdbcStudentRepositoryTest {
     void setUp() {
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
     }
-    
-    @DisplayName("강의 아이디에 해당하는 학생을 가져온다.")
+
+    @DisplayName("수강신청 아이디에 해당하는 학생을 가져온다.")
     @Test
-    void findById() {
+    void findByEnrolmentId() {
         // given
         Long enrolmentId = 1L;
         studentRepository.save(new Student(enrolmentId, 1L, WAITING));
@@ -40,5 +41,24 @@ class JdbcStudentRepositoryTest {
 
         // then
         assertThat(allBySession.size()).isEqualTo(3);
+    }
+
+    @DisplayName("수강생의 선별상태를 수정해 DB에 저장한다.")
+    @Test
+    void update() {
+        // given
+        studentRepository.save(new Student(1L, 1L, WAITING));
+        Student before = studentRepository.findById(1L)
+            .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
+
+        // when
+        Student after = before.changeStatus(SELECTION);
+        studentRepository.update(after);
+
+        Student changedStudent = studentRepository.findById(1L)
+            .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
+
+        // then
+        assertThat(changedStudent.getSelectionStatus()).isEqualTo(SELECTION);
     }
 }

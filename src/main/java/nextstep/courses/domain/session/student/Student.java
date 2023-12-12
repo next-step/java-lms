@@ -22,6 +22,10 @@ public class Student {
         this.id = id;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public Long getEnrolmentId() {
         return this.enrolmentId;
     }

@@ -27,6 +27,12 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
+    public void update(Student student) {
+        String sql = "update student set selection_status = ? where id = ?";
+        jdbcTemplate.update(sql, student.getSelectionStatus().toString(), student.getId());
+    }
+
+    @Override
     public Students findAllByEnrolment(Long id) {
         String sql = "select * from student where enrolment_id = ?";
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface StudentRepository {
 
     void save(Student student);
+    void update(Student student);
     Students findAllByEnrolment(Long id);
     Optional<Student> findById(Long studentId);
 }
