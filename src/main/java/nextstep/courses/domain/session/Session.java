@@ -7,6 +7,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Session {
     private SessionProcessStatus processStatus;
     private Students students;
     private SessionType sessionType;
-    private SessionImage sessionImage;
+    private List<SessionImage> sessionImages;
     private Course course;
 
     public Session(SessionImage image) throws PeriodException {
@@ -49,22 +50,28 @@ public class Session {
         this(null, period, status, students, sessionType, image);
     }
 
-    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
-        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImage);
+    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImages) {
+        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImages);
     }
 
     public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this(id, period, recruitStatus, processStatus, students, sessionType, List.of(sessionImage));
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, List<SessionImage> sessionImages) {
         this.id = id;
         this.period = period;
         this.recruitStatus = recruitStatus;
         this.processStatus = processStatus;
         this.students = students;
         this.sessionType = sessionType;
-        if (sessionImage == null) {
+        if (sessionImages.size() == 0) {
             throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
         }
-        this.sessionImage = sessionImage;
+        this.sessionImages = sessionImages;
     }
+
+
 
     public Students register(NsUser user) throws CannotRegisterException {
         return register(user, new Payment());
@@ -140,10 +147,6 @@ public class Session {
 
     public Long courseId() {
         return this.course.getId();
-    }
-
-    public Long imageId() {
-        return this.sessionImage.getId();
     }
 
     public void addCourse(Course course) {

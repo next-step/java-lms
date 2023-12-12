@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.Session;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,6 +16,7 @@ public class SessionImage {
     private long fileSize;
     private String fileType;
     private ImageSize imageSize;
+    private Session session;
 
 
     public SessionImage() {
@@ -26,9 +29,15 @@ public class SessionImage {
     }
 
     public SessionImage(long fileSize, String fileType, ImageSize imageSize) {
+        this(null, fileSize, fileType, imageSize, null);
+    }
+
+    public SessionImage(Long id, long fileSize, String fileType, ImageSize imageSize, Session session) {
+        this.id = id;
         this.fileSize = fileSize;
         this.fileType = fileType;
         this.imageSize = imageSize;
+        this.session = session;
     }
 
     private Long validateFileSize(File file) throws ImageException {

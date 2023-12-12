@@ -26,6 +26,7 @@ create table session_image (
     file_type varchar(20),
     image_width int not null,
     image_height int not null,
+    session_id int not null
     primary key(id)
 );
 

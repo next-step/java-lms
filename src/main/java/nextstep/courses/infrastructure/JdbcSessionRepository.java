@@ -22,7 +22,7 @@ public class JdbcSessionRepository {
         String sql = "insert into sessions (started_at, end_at, status, pay_type, price, capacity," +
                 " course_id, image_id) values (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, session.startedAt(), session.endAt(), session.status(), session.payType(),
-                session.price(), session.capacity(), session.courseId(), session.imageId());
+                session.price(), session.capacity(), session.courseId(), null);
     }
 
     public Session findById(Long id) {
