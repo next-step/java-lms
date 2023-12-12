@@ -9,13 +9,11 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
     protected Long id;
-    protected CoverImage coverImage;
     protected CoverImages coverImages;
     protected ProgressPeriod progressPeriod;
     protected SessionProgressState progressState;
@@ -23,21 +21,9 @@ public abstract class Session extends BaseEntity {
     protected Participants participants;
 
 
-    protected Session(Long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(createdAt, updatedAt);
-        this.id = id;
-        this.coverImage = coverImage;
-        this.coverImages = new CoverImages(new ArrayList<>(Arrays.asList(coverImage)));
-        this.progressPeriod = new ProgressPeriod(startDate, endDate);
-        this.recruitState = recruitState;
-        this.progressState = state;
-        this.participants = new Participants(new ArrayList<>());
-    }
-
     protected Session(Long id, List<CoverImage> coverImageList, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(createdAt, updatedAt);
         this.id = id;
-        this.coverImage = coverImageList.get(0);
         this.coverImages = new CoverImages(coverImageList);
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
         this.recruitState = recruitState;
@@ -66,38 +52,34 @@ public abstract class Session extends BaseEntity {
         return progressState.toString();
     }
 
-    public CoverImage coverImage() {
-        return coverImages.find().get(0);
-    }
 
     public Boolean recruitState() {
         return recruitState;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Session session = (Session) o;
-        return Objects.equals(coverImage, session.coverImage) && Objects.equals(progressPeriod, session.progressPeriod) && progressState == session.progressState && Objects.equals(participants, session.participants);
+        return Objects.equals(id, session.id) && Objects.equals(coverImages, session.coverImages) && Objects.equals(progressPeriod, session.progressPeriod) && progressState == session.progressState && Objects.equals(recruitState, session.recruitState) && Objects.equals(participants, session.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), coverImage, progressPeriod, progressState, participants);
+        return Objects.hash(id, coverImages, progressPeriod, progressState, recruitState, participants);
     }
 
     @Override
     public String toString() {
         return "Session{" +
-                "id=" + id() +
-                "coverImage=" + coverImage +
+                "id=" + id +
+                ", coverImages=" + coverImages +
                 ", progressPeriod=" + progressPeriod +
-                ", state=" + progressState +
+                ", progressState=" + progressState +
+                ", recruitState=" + recruitState +
                 ", participants=" + participants +
-                ", createdAt= " + createdAt() +
-                ", updateAt=" + updatedAt() +
                 '}';
     }
 }

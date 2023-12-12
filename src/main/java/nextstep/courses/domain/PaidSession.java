@@ -15,51 +15,7 @@ public class PaidSession extends Session {
     private final Amount sessionFee;
     private final int maxApplyCount;
 
-    /**
-     * AS_IS : 강의 커버 이미지 단건
-     *
-     * @param image
-     * @param start
-     * @param end
-     * @param progressState
-     * @param recruitState
-     * @param fee
-     * @param max
-     * @param createdAt
-     * @param updatedAt
-     */
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(null, image, start, end, progressState, recruitState, createdAt, updatedAt);
-        this.sessionFee = new Amount(fee);
-        this.maxApplyCount = max;
-    }
 
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt) {
-        super(null, image, start, end, progressState, recruitState, createdAt, null);
-        this.sessionFee = new Amount(fee);
-        this.maxApplyCount = max;
-
-    }
-
-    public PaidSession(Long id, CoverImage image, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, image, start, end, progressState, recruitState, createdAt, updatedAt);
-        this.sessionFee = new Amount(fee);
-        this.maxApplyCount = max;
-    }
-
-    /**
-     * TO_BE : 강의 커버 이미지 다건
-     *
-     * @param coverImages
-     * @param start
-     * @param end
-     * @param progressState
-     * @param recruitState
-     * @param fee
-     * @param max
-     * @param createdAt
-     * @param updatedAt
-     */
     public PaidSession(List<CoverImage> coverImages, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(null, coverImages, start, end, progressState, recruitState, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
