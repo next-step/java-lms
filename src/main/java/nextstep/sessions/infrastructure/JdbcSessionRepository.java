@@ -51,8 +51,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findByName(String name) {
-        String sql = "select id, name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, student_count, status from session where name = ?";
+    public Session findById(Long id) {
+        String sql = "select id, name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, student_count, status from session where id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
@@ -62,7 +62,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getInt(11),
                 SessionStatus.valueOf(rs.getString(12))
         ));
-        return jdbcTemplate.queryForObject(sql, rowMapper, name);
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {
@@ -73,7 +73,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateStudentCount(Session session) {
+    public int enroll(Session session) {
         String sql = "update session set student_count = ? where name = ?";
         return jdbcTemplate.update(sql, session.getStudentCount(), session.getName());
     }

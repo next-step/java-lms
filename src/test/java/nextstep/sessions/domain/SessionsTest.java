@@ -23,17 +23,4 @@ class SessionsTest {
         assertThatThrownBy(() -> sessions.addSession(SessionTest.JAVA_TDD_16))
                 .isInstanceOf(IllegalStateException.class);
     }
-
-    @DisplayName("모집 인원이 마감되지 않은 강의는 학생을 추가할 수 있다.")
-    @Test
-    void addStudentTest() {
-        Sessions sessions = new Sessions(List.of(new Session("강의1",
-                PeriodTest.DEC,
-                SessionImageTest.IMAGE_PNG,
-                new SessionCharge(true, 1000, 3),
-                SessionStatus.RECRUITING)));
-        sessions.addStudent();
-
-        assertThat(sessions.getSessions().get(0).getStudentCount()).isEqualTo(1);
-    }
 }

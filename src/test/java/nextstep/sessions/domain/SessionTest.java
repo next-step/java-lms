@@ -59,23 +59,23 @@ public class SessionTest {
                 .isInstanceOf(IllegalStateException.class);
     }
 
-    @DisplayName("모집 인원이 마감되지 않은 강의는 학생을 추가할 수 있다.")
+    @DisplayName("모집 인원이 마감되지 않은 강의는 수강신청을 할 수 있다.")
     @Test
     void addStudentTest() {
         Session session = new Session("강의", PeriodTest.DEC, SessionImageTest.IMAGE_JPG, SessionChargeTest.CHARGE_100, SessionStatus.RECRUITING);
         int studentCount = session.getStudentCount();
-        session.addStudent();
+        session.enroll();
 
         assertThat(session.getStudentCount()).isEqualTo(studentCount + 1);
     }
 
-    @DisplayName("모집 인원이 마감된 강의는 학생을 추가하면 IllegalStateException을 던진다.")
+    @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void addStudentExceptionTest() {
         Session session = new Session("강의2", PeriodTest.DEC, SessionImageTest.IMAGE_PNG, SessionChargeTest.CHARGE_100, SessionStatus.RECRUITING);
-        session.addStudent();
+        session.enroll();
 
-        assertThatThrownBy(() -> session.addStudent())
+        assertThatThrownBy(() -> session.enroll())
                 .isInstanceOf(IllegalStateException.class);
     }
 }

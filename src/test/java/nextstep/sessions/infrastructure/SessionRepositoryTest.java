@@ -45,7 +45,7 @@ class SessionRepositoryTest {
         long count = sessionRepository.save(session);
         assertThat(count).isEqualTo(2);
 
-        Session savedSession = sessionRepository.findByName("강의");
+        Session savedSession = sessionRepository.findById(2L);
         assertThat(session.getName()).isEqualTo(savedSession.getName());
         LOGGER.debug("Session: {}", savedSession);
     }
@@ -53,12 +53,12 @@ class SessionRepositoryTest {
     @DisplayName("생성된 강의를 가져와 변경된 데이터를 저장할 수 있다.")
     @Test
     void updateTest() {
-        Session savedSession = sessionRepository.findByName("테스트강의");
-        savedSession.addStudent();
-        int count = sessionRepository.updateStudentCount(savedSession);
+        Session savedSession = sessionRepository.findById(1L);
+        savedSession.enroll();
+        int count = sessionRepository.enroll(savedSession);
         assertThat(count).isEqualTo(1);
 
-        Session updateSession = sessionRepository.findByName("테스트강의");
+        Session updateSession = sessionRepository.findById(1L);
         assertThat(updateSession.getStudentCount()).isEqualTo(2);
     }
 }

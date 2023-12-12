@@ -6,7 +6,7 @@ public interface SessionRepository {
 
     long save(Session session);
 
-    Session findByName(String name);
+    Session findById(Long id);
 
-    int updateStudentCount(Session session);
+    int enroll(Session session);
 }
