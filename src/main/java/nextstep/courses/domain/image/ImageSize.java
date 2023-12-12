@@ -1,5 +1,7 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImageSizeException;
+
 import java.util.Objects;
 
 public class ImageSize {
@@ -15,7 +17,7 @@ public class ImageSize {
 
     private void validate(int value) {
         if (value <= 0 || value > MAX_SIZE) {
-            throw new IllegalArgumentException("파일용량을 확인하세요.");
+            throw new ImageSizeException();
         }
     }
 

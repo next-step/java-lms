@@ -1,5 +1,6 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImageSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class ImageSizeTest {
         // when
         // then
         assertThatThrownBy(() -> new ImageSize(volume))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImageSizeException.class);
     }
 
     @DisplayName("이미지 사이즈가 0이하면 예외가 발생한다")
@@ -38,6 +39,6 @@ public class ImageSizeTest {
         // when
         // then
         assertThatThrownBy(() -> new ImageSize(volume))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImageSizeException.class);
     }
 }

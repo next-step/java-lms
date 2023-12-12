@@ -1,8 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.participant;
 
-import nextstep.courses.domain.participant.ParticipantManager;
-import nextstep.courses.domain.participant.SessionParticipants;
-import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.exception.MaxParticipantsException;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +61,6 @@ public class participantManagerTest {
         ParticipantManager participantManager = new ParticipantManager(maxCount, new SessionParticipants(users));
         // then
         assertThatThrownBy(() -> participantManager.validateParticipant())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MaxParticipantsException.class);
     }
 }

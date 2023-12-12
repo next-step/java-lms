@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.exception.EndSessionException;
+import nextstep.courses.exception.MissMatchPriceException;
 import nextstep.courses.domain.participant.ParticipantManager;
 import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
@@ -26,13 +28,13 @@ public class Enrolment {
 
     private void validate(int money) {
         if (status.equals(status.FINISH)) {
-            throw new IllegalArgumentException("종료된 강의 입니다.");
+            throw new EndSessionException();
         }
         if (!price.isFree()) {
             participantManager.validateParticipant();
         }
         if (price.money() != money) {
-            throw new IllegalArgumentException("결제 금액이 다릅니다.");
+            throw new MissMatchPriceException();
         }
     }
 

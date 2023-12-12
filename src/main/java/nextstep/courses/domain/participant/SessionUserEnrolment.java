@@ -1,5 +1,7 @@
 package nextstep.courses.domain.participant;
 
+import nextstep.courses.exception.AlreadyAcceptedUserException;
+import nextstep.courses.exception.AlreadyRejectedUserException;
 import nextstep.courses.type.SessionSubscriptionStatus;
 
 import java.util.Objects;
@@ -29,14 +31,14 @@ public class SessionUserEnrolment {
 
     public SessionUserEnrolment accept() {
         if (subscriptionStatus.isAccept()) {
-            throw new IllegalArgumentException("이미 수락된 사용자입니다.");
+            throw new AlreadyAcceptedUserException();
         }
         return new SessionUserEnrolment(this.nsUserId, this.sessionId, SessionSubscriptionStatus.ACCEPT);
     }
 
     public SessionUserEnrolment reject() {
         if (subscriptionStatus.isReject()) {
-            throw new IllegalArgumentException("이미 거절된 사용자입니다.");
+            throw new AlreadyRejectedUserException();
         }
         return new SessionUserEnrolment(this.nsUserId, this.sessionId, SessionSubscriptionStatus.REJECT);
     }

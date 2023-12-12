@@ -1,5 +1,7 @@
 package nextstep.courses.domain.participant;
 
+import nextstep.courses.exception.MaxParticipantsException;
+
 import java.util.ArrayList;
 
 public class ParticipantManager {
@@ -26,7 +28,7 @@ public class ParticipantManager {
 
     public void validateParticipant() {
         if (maxParticipants == sessionParticipants.count()) {
-            throw new IllegalArgumentException("최대 참가자 수를 초과하였습니다.");
+            throw new MaxParticipantsException();
         }
     }
 

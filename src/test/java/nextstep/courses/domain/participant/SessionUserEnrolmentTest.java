@@ -1,5 +1,7 @@
 package nextstep.courses.domain.participant;
 
+import nextstep.courses.exception.AlreadyAcceptedUserException;
+import nextstep.courses.exception.AlreadyRejectedUserException;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +29,9 @@ class SessionUserEnrolmentTest {
         // given
         sessionUserEnrolment = new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING);
         // when
-        sessionUserEnrolment.accept();
+        SessionUserEnrolment acceptEnrolment = sessionUserEnrolment.accept();
         // then
-        assertEquals(SessionSubscriptionStatus.ACCEPT, sessionUserEnrolment.subscriptionStatus());
+        assertEquals(SessionSubscriptionStatus.ACCEPT, acceptEnrolment.subscriptionStatus());
     }
 
     @DisplayName("강의 참여자를 거절한다.")
@@ -38,9 +40,9 @@ class SessionUserEnrolmentTest {
         // given
         sessionUserEnrolment = new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING);
         // when
-        sessionUserEnrolment.reject();
+        SessionUserEnrolment rejectEnrolment = sessionUserEnrolment.reject();
         // then
-        assertEquals(SessionSubscriptionStatus.REJECT, sessionUserEnrolment.subscriptionStatus());
+        assertEquals(SessionSubscriptionStatus.REJECT, rejectEnrolment.subscriptionStatus());
     }
 
     @DisplayName("이미 수락 상태인 참여자를 수락하면 예외가 발생한다.")
@@ -51,17 +53,17 @@ class SessionUserEnrolmentTest {
         // when
         // then
         assertThatThrownBy(() -> sessionUserEnrolment.accept())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(AlreadyAcceptedUserException.class);
     }
 
     @DisplayName("이미 거절 상태인 참여자를 거절하면 예외가 발생한다.")
     @Test
     void 이미_거절_상태인_참여자를_거절하면_예외가_발생한다() {
         // given
-        sessionUserEnrolment = new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.ACCEPT);
+        sessionUserEnrolment = new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.REJECT);
         // when
         // then
         assertThatThrownBy(() -> sessionUserEnrolment.reject())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(AlreadyRejectedUserException.class);
     }
 }

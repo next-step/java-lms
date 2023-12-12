@@ -5,6 +5,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.domain.participant.SessionUserEnrolmentRepository;
+import nextstep.courses.exception.*;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -49,7 +50,7 @@ public class SessionService {
     @Transactional
     public void SessionPayment(Payment payment) {
         Session session = sessionRepository.findById(payment.sessionId());
-        NsUser nsUser = userRepository.findById(payment.nsUserId()).orElseThrow(IllegalArgumentException::new);
+        NsUser nsUser = userRepository.findById(payment.nsUserId()).orElseThrow(NotFoundUserException::new);
         session.mappaedBySessionParticipants(sessionUserEnrolmentRepository.findBySessionId(session.id()));
 
         SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(nsUser.getId(), session.id(), SessionSubscriptionStatus.WAITING);
@@ -60,15 +61,15 @@ public class SessionService {
 
     @Transactional
     public void accept(NsUser user, Long sessionId) {
-        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId()).orElseThrow();
-        sessionUserEnrolment.accept();
-        sessionUserEnrolmentRepository.update(sessionUserEnrolment);
+        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId())
+                .orElseThrow(NotFoundEnrolmentException::new);
+        sessionUserEnrolmentRepository.update(sessionUserEnrolment.accept());
     }
 
     @Transactional
     public void reject(NsUser user, Long sessionId) {
-        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId()).orElseThrow();
-        sessionUserEnrolment.reject();
-        sessionUserEnrolmentRepository.update(sessionUserEnrolment);
+        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId())
+                .orElseThrow(NotFoundEnrolmentException::new);
+        sessionUserEnrolmentRepository.update(sessionUserEnrolment.reject());
     }
 }

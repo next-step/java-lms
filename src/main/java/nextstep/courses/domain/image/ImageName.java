@@ -1,5 +1,7 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImageNameTypeException;
+
 import java.util.Objects;
 
 public class ImageName {
@@ -14,7 +16,7 @@ public class ImageName {
 
     private void validate(String name) {
         if (!name.matches(IMAGE_EXTENSION_REGEX)) {
-            throw new IllegalArgumentException("이미지 확장자를 확인하세요.");
+            throw new ImageNameTypeException();
         }
     }
 

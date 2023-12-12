@@ -1,5 +1,8 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImagePixelRatioException;
+import nextstep.courses.exception.ImagePixelSizeException;
+
 import java.util.Objects;
 
 public class ImagePixel {
@@ -19,10 +22,10 @@ public class ImagePixel {
 
     private void validate(int width, int height) {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("이미지 최소 크기는 300X200입니다.");
+            throw new ImagePixelSizeException();
         }
         if (width / height != RATIO) {
-            throw new IllegalArgumentException("이미지 비율은 3:2여야 합니다.");
+            throw new ImagePixelRatioException();
         }
     }
 

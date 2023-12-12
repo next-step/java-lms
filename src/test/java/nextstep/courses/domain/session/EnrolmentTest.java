@@ -3,6 +3,9 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.participant.ParticipantManager;
 import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.exception.EndSessionException;
+import nextstep.courses.exception.MaxParticipantsException;
+import nextstep.courses.exception.MissMatchPriceException;
 import nextstep.courses.type.SessionStatus;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +47,7 @@ public class EnrolmentTest {
         // when
         // then
         assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MaxParticipantsException.class);
     }
 
     @DisplayName("결제할 금액이 강의가격과 다르면 예외가 발생한다.")
@@ -58,7 +61,7 @@ public class EnrolmentTest {
         // when
         // then
         assertThatThrownBy(() -> enrolment.addParticipant(1000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MissMatchPriceException.class);
     }
 
     @DisplayName("강의가 종료 상태이면 예외가 발생한다.")
@@ -72,6 +75,6 @@ public class EnrolmentTest {
         // when
         // then
         assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(EndSessionException.class);
     }
 }

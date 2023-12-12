@@ -1,5 +1,7 @@
 package nextstep.courses.domain.participant;
 
+import nextstep.courses.exception.AlreadyRegisterUserException;
+
 import java.util.List;
 
 public class SessionParticipants {
@@ -17,7 +19,7 @@ public class SessionParticipants {
 
     private void validate(SessionUserEnrolment user) {
         if (validateAlreadyRegisterUser(user)) {
-            throw new IllegalArgumentException("이미 등록된 사용자입니다.");
+            throw new AlreadyRegisterUserException();
         }
     }
 

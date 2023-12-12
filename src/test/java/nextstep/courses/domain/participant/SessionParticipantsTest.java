@@ -1,7 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.participant;
 
-import nextstep.courses.domain.participant.SessionParticipants;
-import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.exception.AlreadyRegisterUserException;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +33,6 @@ class SessionParticipantsTest {
         }};
         SessionParticipants sessionParticipants = new SessionParticipants(participants);
         assertThatThrownBy(() -> sessionParticipants.add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(AlreadyRegisterUserException.class);
     }
 }

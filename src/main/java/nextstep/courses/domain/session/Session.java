@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.exception.NotRecruitingException;
 import nextstep.courses.type.RecruitmentStatus;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,7 @@ public class Session {
 
     public void validateRecruiting() {
         if (recruitmentStatus.equals(RecruitmentStatus.NOT_RECRUITING)) {
-            throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
+            throw new NotRecruitingException();
         }
     }
 

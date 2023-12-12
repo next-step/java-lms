@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.participant.ParticipantManager;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.exception.*;
 import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;
 import nextstep.courses.type.SessionSubscriptionStatus;
@@ -66,10 +67,10 @@ public class SessionTest {
     @Test
     void 강의가_모집중이_아닐때_신청이_불가능하다() {
         // given
-        Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.FINISH, RecruitmentStatus.RECRUITING);
+        Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.NOT_RECRUITING);
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NotRecruitingException.class);
     }
 
     @DisplayName("유료강의 결제")
@@ -90,7 +91,7 @@ public class SessionTest {
         session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         // then
         assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MaxParticipantsException.class);
     }
 
     @DisplayName("유료강의 결제금액이 강의가격과 다르면 예외가 발생한다.")
@@ -100,6 +101,6 @@ public class SessionTest {
         Session session = createSession(new ParticipantManager(10), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
         // then
         assertThatThrownBy(() -> session.addParticipant(5000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MissMatchPriceException.class);
     }
 }
