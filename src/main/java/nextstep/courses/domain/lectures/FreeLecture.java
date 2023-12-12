@@ -33,6 +33,14 @@ public class FreeLecture extends BaseTime implements Lecture {
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
   }
+  public FreeLecture(LectureEntity lecture) {
+    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
+    this.id = lecture.getId();
+    this.title = lecture.getTitle();
+    this.coverImage = lecture.getCoverImage();
+    this.lectureStatus = lecture.getLectureStatus();
+    this.registrationPeriod = lecture.getRegistrationPeriod();
+  }
 
   @Override
   public boolean isFree() {
@@ -60,5 +68,20 @@ public class FreeLecture extends BaseTime implements Lecture {
   @Override
   public Integer numberOfStudent() {
     return students.size();
+  }
+
+  public LectureEntity toEntity() {
+    return new LectureEntity(
+        this.id
+        , this.title
+        , this.coverImage
+        , this.lectureType
+        , this.lectureStatus
+        , this.registrationPeriod
+        , null
+        , null
+        , super.getCreatedAt()
+        , super.getUpdatedAt()
+    );
   }
 }

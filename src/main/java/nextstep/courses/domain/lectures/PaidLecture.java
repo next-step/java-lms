@@ -45,6 +45,17 @@ public class PaidLecture extends BaseTime implements Lecture  {
     this.limitStudentCount = limitStudentCount;
   }
 
+  public PaidLecture(LectureEntity lecture) {
+    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
+    this.id = lecture.getId();
+    this.title = lecture.getTitle();
+    this.coverImage = lecture.getCoverImage();
+    this.lectureStatus = lecture.getLectureStatus();
+    this.registrationPeriod = lecture.getRegistrationPeriod();
+    this.price = lecture.getPrice();
+    this.limitStudentCount = lecture.getLimitStudentCount();
+  }
+
   @Override
   public boolean isFree() {
     return LectureType.FREE.equals(this.lectureType);
