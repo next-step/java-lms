@@ -29,6 +29,10 @@ public class Session {
         this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
     }
 
+    public Session(SessionProcessStatus processStatus, SessionRecruitStatus sessionRecruitStatus) throws PeriodException {
+        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), sessionRecruitStatus, processStatus, new Students(), new SessionType(), new SessionImage());
+    }
+
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
         this(null, new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), new SessionImage());
     }
@@ -84,7 +88,8 @@ public class Session {
     }
 
     public Session updateStatus(SessionStatus status) throws PeriodException {
-        this.status = period.validate(status);
+        this.recruitStatus = SessionRecruitStatus.by(period.validate(status));
+        this.processStatus = SessionProcessStatus.by(period.validate(status));
         return this;
     }
 

@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.enums.SessionProcessStatus;
+import nextstep.courses.domain.session.enums.SessionRecruitStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,14 @@ class SessionTest {
     }
 
     @Test
+    void 강의는_모집중에도_신청_가능하다() throws CannotRegisterException, PeriodException {
+        Session session = new Session(SessionProcessStatus.WAITING, SessionRecruitStatus.OPEN);
+        assertThat(session.register(NsUser.GUEST_USER)).isEqualTo(new Students(NsUser.GUEST_USER));
+    }
+
+    @Test
     void 강의는_모집중이_아니면_신청_불가능하다() throws PeriodException {
-        Session session = new Session(SessionStatus.WAITING);
+        Session session = new Session(SessionProcessStatus.WAITING, SessionRecruitStatus.END);
         assertThatThrownBy(() -> {
             session.register(NsUser.GUEST_USER);
         }).isInstanceOf(CannotRegisterException.class);
