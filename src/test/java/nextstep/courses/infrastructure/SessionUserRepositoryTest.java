@@ -41,4 +41,17 @@ class SessionUserRepositoryTest {
         Assertions.assertThat(result.notCanceledUserSize()).isEqualTo(1);
     }
 
+    @DisplayName("저장 후 수강신청 취소 업데이트 확인")
+    @Test
+    void cancel() {
+        // given
+        SessionUser sessionUser = new SessionUser(1L, 1L, UserType.STUDENT);
+        sessionUserRepository.save(sessionUser);
+        // when
+        sessionUserRepository.cancel(sessionUser);
+        // then
+        SessionUsers canceledUsers = sessionUserRepository.findBySession(new Session(1L, 1L, SessionStatus.PREPARE, LocalDateTime.now(), LocalDateTime.now(), false, 10));
+        SessionUser canceledUser = canceledUsers.findSessionUser(1L);
+        Assertions.assertThat(canceledUser.isCanceled()).isTrue();
+    }
 }

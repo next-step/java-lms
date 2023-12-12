@@ -57,4 +57,14 @@ public class SessionService {
         session.addSessionUser(sessionUser);
         sessionUserRepository.save(sessionUser);
     }
+
+    // 학생 수강 취소
+    public void cancelStudent(Long tutorId, Long studentId, Long sessionId) {
+        Session session = sessionRepository.findById(sessionId);
+        SessionUsers sessionUsers = sessionUserRepository.findBySession(session);
+        SessionUser tutor = sessionUsers.findSessionUser(tutorId);
+        SessionUser student = sessionUsers.findSessionUser(studentId);
+        tutor.cancel(student);
+        sessionUserRepository.cancel(student);
+    }
 }

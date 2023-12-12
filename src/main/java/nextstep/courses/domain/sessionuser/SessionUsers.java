@@ -31,4 +31,10 @@ public class SessionUsers {
         }
         sessionUsers.add(sessionUser);
     }
+
+    public SessionUser findSessionUser(Long userId) {
+        return sessionUsers.stream().filter(el -> el.getUserId() == userId)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 사용자가 없습니다."));
+    }
 }

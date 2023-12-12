@@ -18,6 +18,13 @@ public class SessionUser {
         this(userId, sessionId, userType, false);
     }
 
+    public void cancel(SessionUser sessionUser) {
+        if (sessionUser.isCanceled) {
+            throw new IllegalArgumentException("이미 취소된 학생입니다.");
+        }
+        sessionUser.isCanceled = true;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -37,6 +44,4 @@ public class SessionUser {
     public String userTypeName() {
         return userType.name();
     }
-
-
 }
