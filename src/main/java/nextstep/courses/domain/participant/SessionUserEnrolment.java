@@ -1,6 +1,8 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.participant;
 
 import nextstep.courses.type.SessionSubscriptionStatus;
+
+import java.util.Objects;
 
 public class SessionUserEnrolment {
     private final Long nsUserId;
@@ -23,5 +25,34 @@ public class SessionUserEnrolment {
 
     public SessionSubscriptionStatus subscriptionStatus() {
         return subscriptionStatus;
+    }
+
+    public SessionUserEnrolment accept() {
+        if (subscriptionStatus.isAccept()) {
+            throw new IllegalArgumentException("이미 수락된 사용자입니다.");
+        }
+        return new SessionUserEnrolment(this.nsUserId, this.sessionId, SessionSubscriptionStatus.ACCEPT);
+    }
+
+    public SessionUserEnrolment reject() {
+        if (subscriptionStatus.isReject()) {
+            throw new IllegalArgumentException("이미 거절된 사용자입니다.");
+        }
+        return new SessionUserEnrolment(this.nsUserId, this.sessionId, SessionSubscriptionStatus.REJECT);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof SessionUserEnrolment)) return false;
+        SessionUserEnrolment sessionUserEnrolment = (SessionUserEnrolment) obj;
+        return Objects.equals(nsUserId, sessionUserEnrolment.nsUserId) &&
+                Objects.equals(sessionId, sessionUserEnrolment.sessionId) &&
+                Objects.equals(subscriptionStatus, sessionUserEnrolment.subscriptionStatus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nsUserId, sessionId, subscriptionStatus);
     }
 }

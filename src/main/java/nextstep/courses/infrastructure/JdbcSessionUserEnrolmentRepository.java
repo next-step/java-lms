@@ -1,16 +1,14 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
-import nextstep.courses.domain.session.SessionUserEnrolment;
-import nextstep.courses.domain.session.SessionUserEnrolmentRepository;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.domain.participant.SessionUserEnrolmentRepository;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository("SessionUserEnrolmentRepository")
 public class JdbcSessionUserEnrolmentRepository implements SessionUserEnrolmentRepository {
@@ -33,15 +31,26 @@ public class JdbcSessionUserEnrolmentRepository implements SessionUserEnrolmentR
     }
 
     @Override
-    public SessionUserEnrolment findBySessionIdAndUserId(Long sessionId, Long userId) {
-        String sql = "select id, ns_user_id, session_id, subscriptionstatus from session_user_enrolment where session_id = ? and ns_user_id = ?";
+    public Optional<SessionUserEnrolment> findBySessionIdAndUserId(Long findSessionId, Long userId) {
+        String sql = "select ns_user_id, session_id, subscriptionstatus from session_user_enrolment where session_id = ? and ns_user_id = ?";
         RowMapper<SessionUserEnrolment> rowMapper = (rs, rowNum) -> {
-            Long id = rs.getLong(1);
-            Long nsUserId = rs.getLong(2);
-            Long sessionId1 = rs.getLong(3);
-            String subscriptionStatus = rs.getString(4);
-            return new SessionUserEnrolment(id, nsUserId, sessionId1, SessionSubscriptionStatus.valueOf(subscriptionStatus));
+            Long nsUserId = rs.getLong(1);
+            Long sessionId = rs.getLong(2);
+            String subscriptionStatus = rs.getString(3);
+            return new SessionUserEnrolment(nsUserId, sessionId, SessionSubscriptionStatus.valueOf(subscriptionStatus));
         };
-        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, findSessionId, userId));
+    }
+
+    @Override
+    public SessionParticipants findBySessionId(Long findSessionId) {
+        String sql = "select ns_user_id, session_id, subscriptionstatus from session_user_enrolment where session_id = ?";
+        RowMapper<SessionUserEnrolment> rowMapper = (rs, rowNum) -> {
+            Long nsUserId = rs.getLong(1);
+            Long sessionId = rs.getLong(2);
+            String subscriptionStatus = rs.getString(3);
+            return new SessionUserEnrolment(nsUserId, sessionId, SessionSubscriptionStatus.valueOf(subscriptionStatus));
+        };
+        return new SessionParticipants(jdbcTemplate.query(sql, rowMapper, findSessionId));
     }
 }

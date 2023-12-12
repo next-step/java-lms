@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.participant.ParticipantManager;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.SessionStatus;
-import nextstep.users.domain.NsUser;
 
 public class Enrolment {
 
@@ -17,7 +19,7 @@ public class Enrolment {
         this.status = status;
     }
 
-    public void addParticipant(int money, NsUser user) {
+    public void addParticipant(int money, SessionUserEnrolment user) {
         validate(money);
         participantManager.add(user);
     }
@@ -57,5 +59,9 @@ public class Enrolment {
 
     public static Enrolment of(int maxParticipants, Price price, SessionStatus status) {
         return new Enrolment(ParticipantManager.of(maxParticipants), price, status);
+    }
+
+    public void mappaedBySessionParticipants(SessionParticipants sessionParticipants) {
+        this.participantManager.mapppadBySessionParticipants(sessionParticipants);
     }
 }

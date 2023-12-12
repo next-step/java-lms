@@ -1,16 +1,12 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.participant.ParticipantManager;
-import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;
 import nextstep.courses.type.SessionSubscriptionStatus;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

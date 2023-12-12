@@ -1,4 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.participant;
+
+import java.util.Optional;
 
 public interface SessionUserEnrolmentRepository {
 
@@ -6,5 +8,7 @@ public interface SessionUserEnrolmentRepository {
 
     int update(SessionUserEnrolment enrolment);
 
-    SessionUserEnrolment findBySessionIdAndUserId(Long findSessionId, Long userId);
+    Optional<SessionUserEnrolment> findBySessionIdAndUserId(Long findSessionId, Long userId);
+
+    SessionParticipants findBySessionId(Long findSessionId);
 }

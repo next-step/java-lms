@@ -5,8 +5,6 @@ import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.SessionStatus;
 import nextstep.courses.type.SessionSubscriptionStatus;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

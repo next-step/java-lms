@@ -1,6 +1,4 @@
-package nextstep.courses.domain.session;
-
-import nextstep.courses.domain.participant.SessionUserEnrolment;
+package nextstep.courses.domain.participant;
 
 import java.util.List;
 
@@ -18,9 +16,13 @@ public class SessionParticipants {
     }
 
     private void validate(SessionUserEnrolment user) {
-        if (participants.contains(user)) {
+        if (validateAlreadyRegisterUser(user)) {
             throw new IllegalArgumentException("이미 등록된 사용자입니다.");
         }
+    }
+
+    private boolean validateAlreadyRegisterUser(SessionUserEnrolment user) {
+        return participants.stream().filter(participant -> participant.nsUserId().equals(user.nsUserId())).findFirst().isPresent();
     }
 
     public int count() {

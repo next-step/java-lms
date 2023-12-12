@@ -1,6 +1,4 @@
-package nextstep.courses.domain.session;
-
-import nextstep.users.domain.NsUser;
+package nextstep.courses.domain.participant;
 
 import java.util.ArrayList;
 
@@ -42,5 +40,9 @@ public class ParticipantManager {
 
     public static ParticipantManager of(int maxParticipants) {
         return new ParticipantManager(maxParticipants);
+    }
+
+    public void mapppadBySessionParticipants(SessionParticipants sessionParticipants) {
+        this.sessionParticipants = sessionParticipants;
     }
 }

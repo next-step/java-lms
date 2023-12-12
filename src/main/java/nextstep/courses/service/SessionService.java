@@ -3,13 +3,12 @@ package nextstep.courses.service;
 import nextstep.courses.domain.image.ImageRepository;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.SessionUserEnrolment;
-import nextstep.courses.domain.session.SessionUserEnrolmentRepository;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.domain.participant.SessionUserEnrolmentRepository;
 import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,20 +50,25 @@ public class SessionService {
     public void SessionPayment(Payment payment) {
         Session session = sessionRepository.findById(payment.sessionId());
         NsUser nsUser = userRepository.findById(payment.nsUserId()).orElseThrow(IllegalArgumentException::new);
-        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(nsUser.getId(), session.id(), SessionSubscriptionStatus.WAITING);
-        session.addParticipant(payment.amount(), nsUser);
+        session.mappaedBySessionParticipants(sessionUserEnrolmentRepository.findBySessionId(session.id()));
 
-        sessionRepository.save(session);
+        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(nsUser.getId(), session.id(), SessionSubscriptionStatus.WAITING);
+        session.addParticipant(payment.amount(), sessionUserEnrolment);
+
         sessionUserEnrolmentRepository.save(sessionUserEnrolment);
     }
 
     @Transactional
-    public void accept(SessionUserEnrolment sessionUserEnrolment) {
+    public void accept(NsUser user, Long sessionId) {
+        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId()).orElseThrow();
+        sessionUserEnrolment.accept();
         sessionUserEnrolmentRepository.update(sessionUserEnrolment);
     }
 
     @Transactional
-    public void reject(SessionUserEnrolment sessionUserEnrolment) {
+    public void reject(NsUser user, Long sessionId) {
+        SessionUserEnrolment sessionUserEnrolment = sessionUserEnrolmentRepository.findBySessionIdAndUserId(sessionId, user.getId()).orElseThrow();
+        sessionUserEnrolment.reject();
         sessionUserEnrolmentRepository.update(sessionUserEnrolment);
     }
 }

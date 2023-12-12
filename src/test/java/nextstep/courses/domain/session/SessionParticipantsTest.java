@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.participant.SessionParticipants;
 import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.SessionSubscriptionStatus;
-import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

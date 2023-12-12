@@ -1,7 +1,8 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.RecruitmentStatus;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -41,7 +42,7 @@ public class Session {
         return enrolment.isFree();
     }
 
-    public void addParticipant(int money, NsUser nsUser) {
+    public void addParticipant(int money, SessionUserEnrolment nsUser) {
         validateRecruiting();
         enrolment.addParticipant(money, nsUser);
     }
@@ -94,5 +95,9 @@ public class Session {
 
     public Long id() {
         return id;
+    }
+
+    public void mappaedBySessionParticipants(SessionParticipants sessionParticipants) {
+        this.enrolment.mappaedBySessionParticipants(sessionParticipants);
     }
 }
