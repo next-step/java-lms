@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.dto.EnrolmentInfo;
@@ -15,8 +15,8 @@ public class PaySession extends Session {
     private Long amount;
     private int studentsCapacity;
 
-    public PaySession(Long id, PayType payType, SessionStatus sessionStatus, CoverImage coverImage, Enrolment enrolment, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
-        super(id, payType, sessionStatus, coverImage, enrolment, startDate, endDate);
+    public PaySession(Long id, PayType payType, SessionStatus sessionStatus, CoverImages coverImages, Enrolment enrolment, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
+        super(id, payType, sessionStatus, coverImages, enrolment, startDate, endDate);
         this.amount = amount;
         this.studentsCapacity = studentsCapacity;
     }

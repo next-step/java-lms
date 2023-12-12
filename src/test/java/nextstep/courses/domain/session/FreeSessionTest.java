@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.enroll.EnrollStatus;
+import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.student.Students;
 import nextstep.courses.dto.EnrolmentInfo;
@@ -35,7 +34,7 @@ class FreeSessionTest {
             1L,
             PAY,
             sessionStatus,
-            new CoverImage(),
+            new CoverImages(),
             new Enrolment(new Students(), ENROLL_ON),
             LocalDate.of(2023, 12, 5),
             LocalDate.now()

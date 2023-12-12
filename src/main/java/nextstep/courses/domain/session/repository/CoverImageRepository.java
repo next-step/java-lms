@@ -1,10 +1,8 @@
 package nextstep.courses.domain.session.repository;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
-
-import java.util.Optional;
+import nextstep.courses.domain.session.coverimage.CoverImages;
 
 public interface CoverImageRepository {
 
-    Optional<CoverImage> findById(Long id);
+    CoverImages findAllBySession(Long sessionId);
 }

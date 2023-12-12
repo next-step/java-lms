@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.dto.EnrolmentInfo;
@@ -15,16 +15,16 @@ public abstract class Session {
     protected Long id;
     protected PayType payType;
     protected SessionStatus sessionStatus;
-    protected CoverImage coverImage;
+    protected CoverImages coverImages;
     protected Enrolment enrolment;
     protected LocalDate startDate;
     protected LocalDate endDate;
 
-    public Session(Long id, PayType payType, SessionStatus sessionStatus, CoverImage coverImage, Enrolment enrolment, LocalDate startDate, LocalDate endDate) {
+    public Session(Long id, PayType payType, SessionStatus sessionStatus, CoverImages coverImages, Enrolment enrolment, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.payType = payType;
         this.sessionStatus = sessionStatus;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.enrolment = enrolment;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -43,11 +43,11 @@ public abstract class Session {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && payType == session.payType && sessionStatus == session.sessionStatus && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrolment, session.enrolment) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate);
+        return Objects.equals(id, session.id) && payType == session.payType && sessionStatus == session.sessionStatus && Objects.equals(coverImages, session.coverImages) && Objects.equals(enrolment, session.enrolment) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, payType, sessionStatus, coverImage, enrolment, startDate, endDate);
+        return Objects.hash(id, payType, sessionStatus, coverImages, enrolment, startDate, endDate);
     }
 }

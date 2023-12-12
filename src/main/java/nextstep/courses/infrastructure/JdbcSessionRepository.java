@@ -4,7 +4,6 @@ import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -39,12 +38,12 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getLong(1),
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
-            coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            enrolmentRepository.findById(rs.getLong(5)).orElseThrow(),
+            coverImageRepository.findAllBySession(sessionId),
+            enrolmentRepository.findById(rs.getLong(4)).orElseThrow(),
+            toLocalDate(rs.getTimestamp(5)),
             toLocalDate(rs.getTimestamp(6)),
-            toLocalDate(rs.getTimestamp(7)),
-            rs.getLong(8),
-            rs.getInt(9)) {
+            rs.getLong(7),
+            rs.getInt(8)) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
@@ -62,10 +61,10 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getLong(1),
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
-            coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            enrolmentRepository.findById(rs.getLong(5)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(6)),
-            toLocalDate(rs.getTimestamp(7))) {
+            coverImageRepository.findAllBySession(sessionId),
+            enrolmentRepository.findById(rs.getLong(4)).orElseThrow(),
+            toLocalDate(rs.getTimestamp(5)),
+            toLocalDate(rs.getTimestamp(6))) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
