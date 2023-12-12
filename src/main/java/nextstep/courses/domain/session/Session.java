@@ -1,9 +1,11 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollStateException;
-import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.coverImage.CoverImage;
+import nextstep.courses.ExceedMaxAttendanceCountException;
+import nextstep.courses.domain.coverImage.CoverImages;
+import nextstep.courses.domain.sessionuser.SessionUser;
 import nextstep.courses.domain.sessionuser.SessionUsers;
+import nextstep.courses.domain.sessionuser.UserType;
 
 import java.time.LocalDateTime;
 
@@ -11,65 +13,105 @@ public class Session {
 
     private Long id;
 
-    private CoverImage coverImg;
+    private Long courseId;
+
+    private CoverImages coverImages = new CoverImages();
 
     private SessionStatus sessionStatus = SessionStatus.PREPARE;
 
+    private SessionEnrollStatus sessionEnrollStatus = SessionEnrollStatus.NOT_ENROLL;
+
     private Period period;
 
-    private SessionUsers sessionUsers = new SessionUsers();
+    private SessionUsers tutors = new SessionUsers();
+    private SessionUsers students = new SessionUsers();
 
     private SessionType sessionType;
 
-    private Course course;
-
-    public Session(Long id) {
-        this.id = id;
-    }
-
-    public Session(SessionStatus sessionStatus, Integer maxAttendance) {
-        this.sessionStatus = sessionStatus;
-        this.sessionType = SessionType.notFreeSession(maxAttendance);
-    }
-
-    public Session(SessionStatus sessionStatus) {
-        this.sessionStatus = sessionStatus;
+    public Session(SessionEnrollStatus sessionEnrollStatus) {
+        this.sessionEnrollStatus = sessionEnrollStatus;
         this.sessionType = SessionType.freeSession();
     }
 
-    public Session(CoverImage coverImage, Period period, SessionType sessionType, Course course) {
-        this.coverImg = coverImage;
-        this.period = period;
-        this.sessionType = sessionType;
-        this.course = course;
+    public Session(SessionEnrollStatus sessionEnrollStatus, Integer maxAttendance) {
+        this.sessionEnrollStatus = sessionEnrollStatus;
+        this.sessionType = SessionType.notFreeSession(maxAttendance);
     }
 
-    public Session(Long id, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
+    public Session(CoverImages coverImages, Period period, SessionType sessionType) {
+        this.coverImages = coverImages;
+        this.period = period;
+        this.sessionType = sessionType;
+    }
+
+    public Session(Long courseId, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
                    boolean free, Integer maxAttendance) {
-        this.id = id;
+        this.courseId = courseId;
         this.sessionStatus = status;
         this.period = new Period(startDateTime, endDateTime);
         this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
     }
 
-    public static Session notFreeSession(CoverImage coverImg, int maxAttendance, Course course, Period period) {
+    public Session(Long id, Long courseId, SessionStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                   boolean free, Integer maxAttendance) {
+        this.id = id;
+        this.courseId = courseId;
+        this.sessionStatus = status;
+        this.period = new Period(startDateTime, endDateTime);
+        this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
+    }
+
+    public Session(Long id, Long courseId, SessionStatus status, SessionEnrollStatus sessionEnrollStatus, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                   boolean free, Integer maxAttendance) {
+        this.id = id;
+        this.courseId = courseId;
+        this.sessionStatus = status;
+        this.sessionEnrollStatus = sessionEnrollStatus;
+        this.period = new Period(startDateTime, endDateTime);
+        this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
+    }
+
+    public static Session notFreeSession(CoverImages coverImages, int maxAttendance, Period period) {
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
-        Session session = new Session(coverImg, period, sessionType, course);
-
-        course.addSession(session);
-        return session;
+        return new Session(coverImages, period, sessionType);
     }
 
-    public static Session freeSession(CoverImage coverImg, Course course, Period period) {
+    public static Session freeSession(CoverImages coverImages, Period period) {
         SessionType sessionType = SessionType.freeSession();
-        Session session = new Session(coverImg, period, sessionType, course);
-
-        course.addSession(session);
-        return session;
+        return new Session(coverImages, period, sessionType);
     }
 
-    public boolean canRegisterNewUser(int currentUserSize) {
-        if (!sessionStatus.equals(SessionStatus.ENROLL)) {
+    public void addSessionUser(SessionUser sessionUser) {
+        if (sessionUser.userType() == UserType.TUTOR) {
+            tutors.add(sessionUser);
+            return;
+        }
+
+        if (!canRegisterNewUser(students.notCanceledUserSize())) {
+            throw new ExceedMaxAttendanceCountException("이미 최대 수강 인원이 다 찼습니다.");
+        }
+        students.add(sessionUser);
+    }
+
+    public long tutorsSize() {
+        return tutors.notCanceledUserSize();
+    }
+
+    public long studentSize() {
+        return students.notCanceledUserSize();
+    }
+
+
+    public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
+        return period.isAfter(createdAt);
+    }
+
+    public void bindWithCourse(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    private boolean canRegisterNewUser(long currentUserSize) {
+        if (sessionEnrollStatus.equals(SessionEnrollStatus.NOT_ENROLL)) {
             throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
         }
 
@@ -96,23 +138,12 @@ public class Session {
         return sessionStatus.name();
     }
 
-    public SessionType getSessionType() {
-        return sessionType;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public CoverImage getCoverImg() {
-        return coverImg;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public boolean isAfterCourseWasCreated(LocalDateTime createdAt) {
-        return period.isAfterCourseWasCreated(createdAt);
+    public Long courseId() {
+        return courseId;
     }
+
 }

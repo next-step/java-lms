@@ -15,8 +15,8 @@ public class Period {
         this.endDateTime = endDateTime;
     }
 
-    public boolean isAfterCourseWasCreated(LocalDateTime courseCreatedTime) {
-        return startDateTime.isAfter(courseCreatedTime);
+    public boolean isAfter(LocalDateTime localDateTime) {
+        return startDateTime.isAfter(localDateTime);
     }
 
     public LocalDateTime getStartDateTime() {

@@ -1,22 +1,47 @@
 package nextstep.courses.domain.sessionuser;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.users.domain.NsUser;
-
 public class SessionUser {
-    private NsUser nsUser;
-    private Session session;
 
-    public SessionUser(NsUser nsUser, Session session) {
-        this.nsUser = nsUser;
-        this.session = session;
+    private Long userId;
+    private Long sessionId;
+    private UserType userType;
+    private boolean isCanceled;
+
+    public SessionUser(Long userId, Long sessionId, UserType userType, boolean isCanceled) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.userType = userType;
+        this.isCanceled = isCanceled;
     }
 
-    public NsUser getNsUser() {
-        return nsUser;
+    public SessionUser(Long userId, Long sessionId, UserType userType) {
+        this(userId, sessionId, userType, false);
     }
 
-    public Session getSession() {
-        return session;
+    public void cancel(SessionUser sessionUser) {
+        if (sessionUser.isCanceled) {
+            throw new IllegalArgumentException("이미 취소된 학생입니다.");
+        }
+        sessionUser.isCanceled = true;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public UserType userType() {
+        return userType;
+    }
+
+    public String userTypeName() {
+        return userType.name();
     }
 }
