@@ -8,24 +8,35 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Session extends BaseEntity{
-    final Long id;
-    final Course course;
-    final SessionCover sessionCover;
-    final Period period;
-    SessionStatus status = SessionStatus.PREPARE;
-    final List<NsUser> participants = new ArrayList<>();
+public class Session extends BaseEntity{
+    public static long FREE_PRICE = 0L;
+    public static int MAX_CAPACITY = Integer.MAX_VALUE;
+    private final Long id;
+    private final Course course;
+    private final SessionCover sessionCover;
+    private final Period period;
+    private final Capacity capacity;
+    private final Price price;
 
-    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {
+    private SessionStatus status = SessionStatus.PREPARE;
+    private final List<NsUser> participants = new ArrayList<>();
+
+    private Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;
         this.course = course;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.capacity = capacity;
+        this.price = price;
     }
 
-    public abstract void enroll(NsUser participant, Long amount);
+    public static Session ofFree(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {
+        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(MAX_CAPACITY), new Price(FREE_PRICE));
+    }
+
+    public static Session ofPaid(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Long price, Integer capacity) {
+        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(capacity), new Price(price));
+    }
 
     public void startEnrollment() {
         this.status = SessionStatus.ENROLL;
@@ -35,6 +46,21 @@ public abstract class Session extends BaseEntity{
         if (SessionStatus.ENROLL != this.status) {
             throw new BusinessInvalidValueException("수강신청 가능한 상태가 아닙니다.");
         }
+    }
+
+    public void enroll(NsUser participant, Long amount) {
+        capacity.validateCapacity(participants.size());
+        price.validatePrice(amount);
+        validateStatus();
+        this.participants.add(participant);
+    }
+
+    public Price price() {
+        return price;
+    }
+
+    public Capacity capacity() {
+        return capacity;
     }
 
     public Long id() {

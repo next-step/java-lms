@@ -13,8 +13,8 @@ class SessionTest {
 
     @Test
     void 무료강의생성() {
-        Session freeSession = new FreeSession(1L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, new byte[100]), new Course());
-        assertThat(freeSession.id).isEqualTo(1L);
+        Session freeSession = Session.ofFree(1L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, new byte[100]), new Course());
+        assertThat(freeSession.id()).isEqualTo(1L);
     }
 
     @Test
@@ -22,14 +22,14 @@ class SessionTest {
         long sessionPrice = 1_000_000L;
         int sessionCapacity = 100;
 
-        Session paidSession = new PaidSession(2L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
-                new SessionCover(300, 200, 1024, new byte[100]), new Course(), sessionCapacity, sessionPrice);
-        assertThat(paidSession.id).isEqualTo(2L);
+        Session paidSession = Session.ofPaid(2L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+                new SessionCover(300, 200, 1024, new byte[100]), new Course(), sessionPrice, sessionCapacity);
+        assertThat(paidSession.id()).isEqualTo(2L);
     }
 
     @Test
     void 수강신청상태_exception() {
-        Session session = new FreeSession(5L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, new byte[100]), new Course());
+        Session session = Session.ofFree(5L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(300, 200, 1024, new byte[100]), new Course());
         assertThatExceptionOfType(BusinessInvalidValueException.class)
                 .isThrownBy(() -> session.enroll(new NsUser(), 0L))
                 .withMessage("수강신청 가능한 상태가 아닙니다.");
@@ -37,8 +37,8 @@ class SessionTest {
 
     @Test
     void 최대수강인원_exception() {
-        Session paidSession = new PaidSession(3L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
-                new SessionCover(300, 200, 1024, new byte[100]), new Course(), 0, 1_000_000L);
+        Session paidSession = Session.ofPaid(2L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+                new SessionCover(300, 200, 1024, new byte[100]), new Course(), 10000L, 0);
         paidSession.startEnrollment();
 
         assertThatExceptionOfType(BusinessInvalidValueException.class)
@@ -48,8 +48,8 @@ class SessionTest {
 
     @Test
     void 가격비교_exception() {
-        Session paidSession = new PaidSession(4L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
-                new SessionCover(300, 200, 1024, new byte[100]), new Course(), 10, 1_000_000L);
+        Session paidSession = Session.ofPaid(2L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1),
+                new SessionCover(300, 200, 1024, new byte[100]), new Course(), 10000L, 1);
         paidSession.startEnrollment();
 
         assertThatExceptionOfType(BusinessInvalidValueException.class)
