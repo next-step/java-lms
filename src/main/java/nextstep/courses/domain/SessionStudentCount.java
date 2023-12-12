@@ -22,4 +22,8 @@ public class SessionStudentCount {
             throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다.");
         }
     }
+
+    public int getStudentCount() {
+        return studentCount;
+    }
 }
