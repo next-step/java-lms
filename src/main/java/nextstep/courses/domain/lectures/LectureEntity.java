@@ -1,11 +1,11 @@
 package nextstep.courses.domain.lectures;
 
 import java.time.LocalDateTime;
-import nextstep.courses.Time;
+import nextstep.courses.BaseTime;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.users.domain.Price;
 
-public class LectureEntity extends Time  {
+public class LectureEntity extends BaseTime {
   private final LectureType lectureType;
   private final Long id;
   private final String title;

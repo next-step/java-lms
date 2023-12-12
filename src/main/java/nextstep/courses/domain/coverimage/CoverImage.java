@@ -1,9 +1,9 @@
 package nextstep.courses.domain.coverimage;
 
 import java.time.LocalDateTime;
-import nextstep.courses.Time;
+import nextstep.courses.BaseTime;
 
-public class CoverImage extends Time {
+public class CoverImage extends BaseTime {
 
   private final long id;
   private final String name;

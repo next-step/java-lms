@@ -1,13 +1,13 @@
 package nextstep.courses.domain.lectures;
 
 import java.time.LocalDateTime;
-import nextstep.courses.Time;
+import nextstep.courses.BaseTime;
 import nextstep.courses.domain.Students;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Price;
 
-public class PaidLecture extends Time implements Lecture  {
+public class PaidLecture extends BaseTime implements Lecture  {
   private final LectureType lectureType = LectureType.PAID;
   private final Long id;
   private final String title;

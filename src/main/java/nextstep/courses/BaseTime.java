@@ -2,16 +2,16 @@ package nextstep.courses;
 
 import java.time.LocalDateTime;
 
-public class Time {
+public class BaseTime {
 
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
 
-  public Time() {
+  public BaseTime() {
     this.createdAt = LocalDateTime.now();
     this.updatedAt = null;
   }
-  public Time(LocalDateTime createdAt, LocalDateTime updatedAt) {
+  public BaseTime(LocalDateTime createdAt, LocalDateTime updatedAt) {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
