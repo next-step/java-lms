@@ -1,9 +1,9 @@
 package nextstep.courses.domain;
 
-public class Symester {
+public class Semester {
     private final Course course;
 
-    public Symester(Course course) {
+    public Semester(Course course) {
         this.course = course;
     }
 }
