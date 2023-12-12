@@ -80,7 +80,7 @@ public class Session extends BaseEntity {
     }
 
     private Apply toApply(NsUser loginUser, LocalDateTime date) {
-        return new Apply(this.id, loginUser.getId(), loginUser.getId(), date, null);
+        return new Apply(this, loginUser, date);
     }
 
     private void checkStatusOnRecruit() {
