@@ -6,5 +6,5 @@ public interface SessionUserEnrolmentRepository {
 
     int update(SessionUserEnrolment enrolment);
 
-    SessionUserEnrolment findBySessionIdAndUserId(Long sessionId, Long userId);
+    SessionUserEnrolment findBySessionIdAndUserId(Long findSessionId, Long userId);
 }

@@ -1,24 +1,23 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SessionParticipants {
 
-    private final List<NsUser> participants;
+    private final List<SessionUserEnrolment> participants;
 
-    public SessionParticipants(List<NsUser> participants) {
+    public SessionParticipants(List<SessionUserEnrolment> participants) {
         this.participants = participants;
     }
 
-    public void add(NsUser user) {
+    public void add(SessionUserEnrolment user) {
         validate(user);
         participants.add(user);
     }
 
-    private void validate(NsUser user) {
+    private void validate(SessionUserEnrolment user) {
         if (participants.contains(user)) {
             throw new IllegalArgumentException("이미 등록된 사용자입니다.");
         }

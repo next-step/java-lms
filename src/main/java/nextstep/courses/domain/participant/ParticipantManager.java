@@ -22,7 +22,7 @@ public class ParticipantManager {
         this.sessionParticipants = nowParticipants;
     }
 
-    public void add(NsUser user) {
+    public void add(SessionUserEnrolment user) {
         sessionParticipants.add(user);
     }
 

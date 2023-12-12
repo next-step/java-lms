@@ -1,6 +1,10 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.participant.ParticipantManager;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.SessionStatus;
+import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +27,7 @@ public class EnrolmentTest {
         Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
-        enrolment.addParticipant(money, NsUserTest.JAVAJIGI);
+        enrolment.addParticipant(money, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         // then
         assertThat(enrolment.nowParticipants()).isEqualTo(1);
     }
@@ -33,15 +37,15 @@ public class EnrolmentTest {
     void 강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
         int money = 10000;
-        List<NsUser> users = new ArrayList<>() {{
-            add(NsUserTest.JAVAJIGI);
+        List<SessionUserEnrolment> users = new ArrayList<>() {{
+            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         }};
         ParticipantManager participantManager = new ParticipantManager(1, new SessionParticipants(users));
         Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(money, NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -55,7 +59,7 @@ public class EnrolmentTest {
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(1000, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> enrolment.addParticipant(1000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -69,7 +73,7 @@ public class EnrolmentTest {
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.FINISH);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(money, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

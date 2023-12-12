@@ -1,6 +1,8 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,22 +18,23 @@ class SessionParticipantsTest {
     @DisplayName("세션 참가자를 추가한다.")
     @Test
     void add() {
-        List<NsUser> participants = new ArrayList<>() {{
-            add(NsUserTest.JAVAJIGI);
+        List<SessionUserEnrolment> participants = new ArrayList<>() {{
+            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         }};
         SessionParticipants sessionParticipants = new SessionParticipants(participants);
-        sessionParticipants.add(NsUserTest.SANJIGI);
+        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING);
+        sessionParticipants.add(sessionUserEnrolment);
         assertEquals(2, sessionParticipants.count());
     }
 
     @DisplayName("이미 등록된 사용자는 예외가 발생한다.")
     @Test
     void addException() {
-        List<NsUser> participants = new ArrayList<>() {{
-            add(NsUserTest.JAVAJIGI);
+        List<SessionUserEnrolment> participants = new ArrayList<>() {{
+            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         }};
         SessionParticipants sessionParticipants = new SessionParticipants(participants);
-        assertThatThrownBy(() -> sessionParticipants.add(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> sessionParticipants.add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

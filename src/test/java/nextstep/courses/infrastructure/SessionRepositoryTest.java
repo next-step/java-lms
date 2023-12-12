@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.participant.ParticipantManager;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;

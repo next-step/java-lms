@@ -1,10 +1,16 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.participant.ParticipantManager;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;
+import nextstep.courses.type.SessionSubscriptionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -55,7 +61,7 @@ public class SessionTest {
     void 강의가_모집중일때_신청이_가능하다() {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, NsUserTest.SANJIGI);
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
     }
@@ -66,7 +72,7 @@ public class SessionTest {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.FINISH, RecruitmentStatus.RECRUITING);
         // then
-        assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -75,7 +81,7 @@ public class SessionTest {
     void 유료강의결제() {
         // given
         Session session = createSession(new ParticipantManager(10), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, NsUserTest.JAVAJIGI);
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
     }
@@ -85,9 +91,9 @@ public class SessionTest {
     void 유료강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, NsUserTest.JAVAJIGI);
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
         // then
-        assertThatThrownBy(() -> session.addParticipant(10000, NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -97,7 +103,7 @@ public class SessionTest {
         // given
         Session session = createSession(new ParticipantManager(10), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
         // then
-        assertThatThrownBy(() -> session.addParticipant(5000, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> session.addParticipant(5000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
