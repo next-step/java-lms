@@ -22,7 +22,7 @@ class EnrolmentTest {
         Student student = enrolment.enroll(enrolmentInfo);
 
         // then
-        assertThat(student.getSessionId()).isEqualTo(1L);
+        assertThat(student.getEnrolmentId()).isEqualTo(1L);
     }
 
     @DisplayName("수강 신청 상태가 모집중이 아니면 예외를 발생시킨다.")

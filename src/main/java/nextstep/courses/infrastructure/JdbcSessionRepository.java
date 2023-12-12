@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
+import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
 import nextstep.courses.domain.session.student.Student;
@@ -17,17 +18,17 @@ import java.util.Optional;
 import static nextstep.courses.domain.session.PayType.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
 
-@Repository("sessionRepository")
+@Repository
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
     private final CoverImageRepository coverImageRepository;
-    private final StudentRepository studentRepository;
+    private final EnrolmentRepository enrolmentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, StudentRepository studentRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, EnrolmentRepository enrolmentRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = coverImageRepository;
-        this.studentRepository = studentRepository;
+        this.enrolmentRepository = enrolmentRepository;
     }
 
     @Override
@@ -39,11 +40,11 @@ public class JdbcSessionRepository implements SessionRepository {
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
             coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(5)),
+            enrolmentRepository.findById(rs.getLong(5)).orElseThrow(),
             toLocalDate(rs.getTimestamp(6)),
-            rs.getLong(7),
-            rs.getInt(8),
-            studentRepository.findAllBySession(sessionId)) {
+            toLocalDate(rs.getTimestamp(7)),
+            rs.getLong(8),
+            rs.getInt(9)) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
@@ -62,9 +63,9 @@ public class JdbcSessionRepository implements SessionRepository {
             payType(rs.getString(2)),
             sessionStatus(rs.getString(3)),
             coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(5)),
+            enrolmentRepository.findById(rs.getLong(5)).orElseThrow(),
             toLocalDate(rs.getTimestamp(6)),
-            studentRepository.findAllBySession(sessionId)) {
+            toLocalDate(rs.getTimestamp(7))) {
             @Override
             public Student enroll(EnrolmentInfo enrolmentInfo) {
                 return null;

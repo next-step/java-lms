@@ -36,4 +36,8 @@ public class Enrolment {
             throw new IllegalArgumentException("해당 강의는 현재 모집중이 아닙니다.");
         }
     }
+
+    public int studentsSize() {
+        return students.size();
+    }
 }

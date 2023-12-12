@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImage;
+import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.student.Students;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.PayType.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
+import static nextstep.courses.domain.session.enroll.EnrollStatus.ENROLL_ON;
 import static nextstep.users.domain.fixture.DomainFixture.JAVAJIGI;
 import static nextstep.users.domain.fixture.DomainFixture.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -63,11 +65,11 @@ class PaySessionTest {
             PAY,
             sessionStatus,
             new CoverImage(),
+            new Enrolment(new Students(), ENROLL_ON),
             LocalDate.of(2023, 12, 5),
             LocalDate.now(),
             10000L,
-            2,
-            new Students()
+            2
             );
     }
 
