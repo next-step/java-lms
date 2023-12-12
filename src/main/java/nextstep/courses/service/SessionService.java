@@ -17,23 +17,36 @@ public class SessionService {
         this.studentsRepository = studentsRepository;
     }
 
-    public void enroll(Session session, NsUser student, Payment payment) {
-        session.enroll(student, payment);
+    public void enroll(Session session, NsUser nsUser, Payment payment) {
+        Student student = Student.ofWait(nsUser);
+        session.enroll(nsUser, payment);
         studentsRepository.save(session.id(), student);
     }
 
     public long save(Session session) {
         long sessionId = sessionRepository.save(session);
-        imageRepository.save(session.image(), sessionId);
+        imageRepository.save(session.images(), sessionId);
         return sessionId;
     }
 
-    public Session findById(long id) {
-        Session session = sessionRepository.findById(id);
-        Image image = imageRepository.findBySessionId(session.id());
+    public void approval(long sessionId, NsUser nsUser) {
+        Session session = findById(sessionId);
+        Student student = session.approvalSession(nsUser);
+        studentsRepository.updateState(session.id(), student);
+    }
+
+    public void cancel(long sessionId, NsUser nsUser) {
+        Session session = findById(sessionId);
+        Student student = session.approvalCancel(nsUser);
+        studentsRepository.updateState(session.id(), student);
+    }
+
+    public Session findById(long sessionId) {
+        Session session = sessionRepository.findById(sessionId);
+        Images images = imageRepository.findImagesBySessionId(session.id());
         Students students = studentsRepository.findBySessionId(session.id());
 
-        session.changeImage(image);
+        session.changeImages(images);
         session.changeStudents(students);
 
         return session;

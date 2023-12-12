@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Image;
 import nextstep.courses.domain.session.ImageRepository;
+import nextstep.courses.domain.session.Images;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,6 +20,14 @@ public class JdbcImageRepository implements ImageRepository {
     public int save(Image image, long sessionId) {
         String sql = "insert into image (type, session_id, width, height, file_size) values(?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, image.type(), sessionId, image.width(), image.height(), image.fileSize());
+    }
+
+    @Override
+    public int save(Images images, long sessionId) {
+        return images.values()
+                .stream()
+                .mapToInt(image -> save(image, sessionId))
+                .sum();
     }
 
     @Override
@@ -40,5 +49,21 @@ public class JdbcImageRepository implements ImageRepository {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public Images findImagesBySessionId(Long sessionId) {
+        String sql = "select id, type, width, height, file_size from image where id = ?";
+
+        return Images.of(
+                jdbcTemplate.query(
+                        sql,
+                        (rs, rowNum) -> Image.of(
+                                rs.getLong(1),
+                                rs.getString(2),
+                                rs.getLong(3),
+                                rs.getLong(4),
+                                rs.getLong(5)),
+                        sessionId));
     }
 }

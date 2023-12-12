@@ -4,11 +4,11 @@ public enum SessionType {
     FREE,
     PAID;
 
-    public static boolean free(SessionType sessionType) {
-        return sessionType == SessionType.FREE;
+    public boolean isFree() {
+        return this == SessionType.FREE;
     }
 
-    public static boolean paid(SessionType sessionType) {
-        return sessionType == SessionType.PAID;
+    public boolean isPaid() {
+        return this == SessionType.PAID;
     }
 }

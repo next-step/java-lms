@@ -5,8 +5,9 @@ import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.exception.session.EnrollmentMaxExceededException;
 import nextstep.courses.exception.session.InvalidPaymentAmountException;
-import nextstep.courses.exception.session.InvalidSessionStateException;
+import nextstep.courses.exception.session.InvalidProgressStateException;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ public class SessionServiceTest {
         Session session = sessionService.findById(1000L);
 
         assertThat(session.id()).isEqualTo(1000L);
-        assertThat(session.image().id()).isEqualTo(1000L);
+        assertThat(session.images().size()).isEqualTo(1);
         assertThat(session.students().size()).isEqualTo(2);
     }
 
@@ -49,7 +50,7 @@ public class SessionServiceTest {
     @DisplayName("모집중이 아니면 강의 신청이 불가능하다")
     public void no_recruiting() {
         Session session = 유료_강의_생성();
-        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1000L))).isInstanceOf(InvalidSessionStateException.class);
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, new Payment(1000L))).isInstanceOf(InvalidProgressStateException.class);
     }
 
     private Session 유료_강의_생성() {
@@ -68,7 +69,9 @@ public class SessionServiceTest {
 
     private Session 유료_강의_생성_및_모집중() {
         Session session = 유료_강의_생성();
-        return session.recruiting();
+        session.ongoing();
+        session.recruiting();
+        return session;
     }
 
     @Test
@@ -89,6 +92,24 @@ public class SessionServiceTest {
     private Session 무료_강의_생성_및_모집중() {
         Session session = Session.ofFree(Period.from(), Image.from());
         long savedId = sessionService.save(session);
-        return sessionService.findById(savedId).recruiting();
+        Session findSession = sessionService.findById(savedId);
+        findSession.ongoing();
+        findSession.recruiting();
+        return findSession;
+    }
+
+    @Test
+    @DisplayName("강사는 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인이 가능하다. 수강생이 존재하지 않는 경우 예외가 발생한다.")
+    public void no_exist_student() {
+        assertThatThrownBy(() -> sessionService.approval(1000L, new NsUser())).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> sessionService.cancel(1000L, new NsUser())).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("준비 상태에서만 수강 승인,취소가 가능하다")
+    public void validate_approval() {
+        sessionService.approval(1000L, NsUserTest.JAVAJIGI);
+        assertThatThrownBy(() -> sessionService.approval(1000L, NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> sessionService.cancel(1000L, NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
     }
 }

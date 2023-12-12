@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.enrollment.Enrollment;
-import nextstep.courses.type.SessionState;
+import nextstep.courses.type.ProgressState;
+import nextstep.courses.type.RecruitState;
+import nextstep.courses.type.SessionApproval;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -12,108 +14,117 @@ import java.util.ArrayList;
 public class Session {
     private final Long id;
 
-    private final SessionType sessionType;
-    private final SessionState sessionState;
-
-    private final Period period;
-
-    private final Long amount;
-    private final Long enrollmentMax;
-
-    private Image image;
-
-    private Students students;
-
+    private final SessionInfo sessionInfo;
     private final Enrollment enrollment;
 
+    private Images images;
+    private Students students;
 
-    public Session(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
+    public Session(Long id, SessionInfo sessionInfo, Enrollment enrollment, Images images, Students students) {
         this.id = id;
-        this.sessionType = sessionType;
-        this.sessionState = sessionState;
-        this.period = period;
-        this.amount = amount;
-        this.enrollmentMax = enrollmentMax;
-        this.image = image;
+        this.sessionInfo = sessionInfo;
+        this.enrollment = enrollment;
+        this.images = images;
         this.students = students;
-        this.enrollment = Enrollment.from(sessionType);
     }
 
     public static Session ofFree(Period period, Image image) {
-        return of(null, SessionType.FREE, SessionState.PREPARING, period, null, null, image, Students.of(new ArrayList<>()));
+        return of(null,
+                SessionInfo.of(SessionType.FREE, period),
+                Enrollment.of(ProgressState.PREPARING, RecruitState.CLOSED, null, null, SessionType.PAID),
+                Images.of(image),
+                Students.of(new ArrayList<>()));
     }
 
     public static Session ofPaid(Period period, Image image, long amount, long enrollmentMax) {
-        return of(null, SessionType.PAID, SessionState.PREPARING, period, amount, enrollmentMax, image, Students.of(new ArrayList<>()));
+        return of(null,
+                SessionInfo.of(SessionType.PAID, period),
+                Enrollment.of(ProgressState.PREPARING, RecruitState.CLOSED, amount, enrollmentMax, SessionType.PAID),
+                Images.of(image),
+                Students.of(new ArrayList<>())
+        );
     }
 
-    public static Session of(Long id, String sessionType, String sessionState, LocalDate startDate, LocalDate endDate, Long amount, Long enrollmentMax) {
-        return of(id, SessionType.valueOf(sessionType), SessionState.valueOf(sessionState), Period.of(startDate, endDate), amount, enrollmentMax, null, null);
+    public static Session of(Long id, SessionInfo sessionInfo, Enrollment enrollment, Images images, Students students) {
+        return new Session(id, sessionInfo, enrollment, images, students);
     }
 
-    public static Session of(Long id, SessionType sessionType, SessionState sessionState, Period period, Long amount, Long enrollmentMax, Image image, Students students) {
-        return new Session(id, sessionType, sessionState, period, amount, enrollmentMax, image, students);
+    public void enroll(NsUser nsUser, Payment payment) {
+        Student student = Student.of(nsUser, SessionApproval.WAIT);
+        enroll(student, payment);
     }
 
-
-    public void enroll(NsUser student, Payment payment) {
-        enrollment.enroll(this, student, payment);
+    public void enroll(Student student, Payment payment) {
+        enrollment.enroll(students, student, payment);
     }
 
-    public boolean isFullEnrollment() {
-        return students.size() < enrollmentMax;
+    public Student approvalSession(NsUser nsUser) {
+        Student student = students.orElseThrow(nsUser);
+        student.approval();
+        return student;
     }
 
-    public Session preparing() {
-        return of(id, sessionType, SessionState.PREPARING, period, amount, enrollmentMax, image, students);
+    public Student approvalCancel(NsUser nsUser) {
+        Student student = students.orElseThrow(nsUser);
+        student.cancel();
+        return student;
     }
 
-    public Session recruiting() {
-        return of(id, sessionType, SessionState.RECRUITING, period, amount, enrollmentMax, image, students);
+    public void preparing() {
+        enrollment.preparing();
     }
 
-    public Session end() {
-        return of(id, sessionType, SessionState.END, period, amount, enrollmentMax, image, students);
+    public void ongoing() {
+        enrollment.ongoing();
     }
+
+    public void end() {
+        enrollment.end();
+    }
+
+    public void recruiting() {
+        enrollment.recruiting();
+    }
+
 
     public Long id() {
         return id;
     }
 
     public String type() {
-        return sessionType.name();
+        return sessionInfo.sessionTypeValue();
     }
 
-    public SessionState sessionState() {
-        return sessionState;
+    public String progressStateValue() {
+        return enrollment.progressStateValue();
     }
 
-    public String state() {
-        return sessionState.name();
+    public String recruitStateValue() {
+        return enrollment.recruitStateValue();
     }
 
     public LocalDate startDate() {
-        return period.startDate();
+        return sessionInfo.startDate();
     }
 
     public LocalDate endDate() {
-        return period.endDate();
+        return sessionInfo.endDate();
     }
 
     public Long amount() {
-        return amount;
+        return enrollment.amount();
     }
 
     public Long enrollmentMax() {
-        return enrollmentMax;
+        return enrollment.enrollmentMax();
     }
 
-    public Image image() {
-        return image;
+    public Images images() {
+        return images;
     }
 
-    public void changeImage(Image image) {
-        this.image = image;
+    public void changeImages(Images images) {
+        this.images = images;
     }
 
     public Students students() {
@@ -122,24 +133,5 @@ public class Session {
 
     public void changeStudents(Students students) {
         this.students = students;
-    }
-
-    public void addStudent(NsUser student) {
-        students.add(student);
-    }
-
-
-    @Override
-    public String toString() {
-        return "Session{" +
-                "id=" + id +
-                ", sessionType=" + sessionType +
-                ", sessionState=" + sessionState +
-                ", period=" + period +
-                ", amount=" + amount +
-                ", enrollmentMax=" + enrollmentMax +
-                ", image=" + image +
-                ", students=" + students +
-                '}';
     }
 }

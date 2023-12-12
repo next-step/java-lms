@@ -14,11 +14,11 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO course (id, title, creator_id, created_at)
 values (1000, 'TDD 강의', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, type, state, start_date, end_date, amount, enrollment_max)
-values (1000, 'PAID', 'PREPARING', CURRENT_DATE(), CURRENT_DATE(), 10000, 1000);
+INSERT INTO session (id, type, progress_state, recruit_state, start_date, end_date, amount, enrollment_max)
+values (1000, 'PAID', 'PREPARING', 'RECRUITING', CURRENT_DATE(), CURRENT_DATE(), 10000, 1000);
 
-INSERT INTO session (id, type, state, start_date, end_date, amount, enrollment_max)
-values (2000, 'FREE', 'PREPARING', CURRENT_DATE(), CURRENT_DATE(), null, null);
+INSERT INTO session (id, type, progress_state, recruit_state, start_date, end_date, amount, enrollment_max)
+values (2000, 'FREE', 'PREPARING', 'RECRUITING', CURRENT_DATE(), CURRENT_DATE(), null, null);
 
 INSERT INTO image (id, session_id, type, width, height, file_size)
 values (1000, 1000, 'JPG', 300, 200, 1024);
@@ -29,9 +29,9 @@ values (1000, 1000, 1000);
 INSERT INTO course_session (id, course_id, session_id)
 values (2000, 1000, 2000);
 
-INSERT INTO session_student (id, session_id, user_id)
-values (1000, 1000, 'javajigi');
+INSERT INTO session_student (id, session_id, user_id, state)
+values (1000, 1000, 'javajigi', 'WAIT');
 
-INSERT INTO session_student (id, session_id, user_id)
-values (2000, 1000, 'sanjigi');
+INSERT INTO session_student (id, session_id, user_id, state)
+values (2000, 1000, 'sanjigi', 'WAIT');
 

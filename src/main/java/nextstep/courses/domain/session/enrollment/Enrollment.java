@@ -1,35 +1,80 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.exception.session.InvalidSessionStateException;
-import nextstep.courses.type.SessionState;
+import nextstep.courses.domain.session.Student;
+import nextstep.courses.domain.session.Students;
+import nextstep.courses.type.ProgressState;
+import nextstep.courses.type.RecruitState;
 import nextstep.courses.type.SessionType;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
-public interface Enrollment {
+public class Enrollment {
 
-    void enroll(Session session, NsUser student, Payment payment);
+    private ProgressState progressState;
+    private RecruitState recruitState;
 
-    static Enrollment from(SessionType sessionType) {
-        if (sessionType == SessionType.PAID) {
-            return fromPaid();
-        }
+    private final Long amount;
+    private final Long enrollmentMax;
 
-        return fromFree();
+    private final Enroll enroll;
+
+    public Enrollment(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, Enroll enroll) {
+        this.progressState = progressState;
+        this.recruitState = recruitState;
+        this.amount = amount;
+        this.enrollmentMax = enrollmentMax;
+        this.enroll = enroll;
     }
 
-    static PaidEnrollment fromPaid() {
-        return PaidEnrollment.from();
+    public static Enrollment of(String progressState, String recruitState, Long amount, Long enrollmentMax, String sessionType) {
+        return of(ProgressState.valueOf(progressState), RecruitState.valueOf(recruitState), amount, enrollmentMax, SessionType.valueOf(sessionType));
     }
 
-    static FreeEnrollment fromFree() {
-        return FreeEnrollment.from();
+    public static Enrollment of(ProgressState progressState, RecruitState recruitState, Long amount, Long enrollmentMax, SessionType sessionType) {
+        return new Enrollment(progressState, recruitState, amount, enrollmentMax, Enroll.from(sessionType));
     }
 
-    default void noRecruiting(Session session) {
-        if (!SessionState.recruiting(session.sessionState())) {
-            throw new InvalidSessionStateException("현재 강의 모집중이 아닙니다.");
-        }
+
+    public ProgressState progressState() {
+        return progressState;
+    }
+
+    public String progressStateValue() {
+        return progressState.name();
+    }
+
+    public RecruitState recruitState() {
+        return recruitState;
+    }
+
+    public Long amount() {
+        return amount;
+    }
+
+    public Long enrollmentMax() {
+        return enrollmentMax;
+    }
+
+    public void enroll(Students students, Student student, Payment payment) {
+        enroll.enroll(this, students, student, payment);
+    }
+
+    public void preparing() {
+        progressState = ProgressState.PREPARING;
+    }
+
+    public void ongoing() {
+        progressState = ProgressState.ONGOING;
+    }
+
+    public void end() {
+        progressState = ProgressState.END;
+    }
+
+    public void recruiting() {
+        recruitState = RecruitState.RECRUITING;
+    }
+
+    public String recruitStateValue() {
+        return recruitState.name();
     }
 }
