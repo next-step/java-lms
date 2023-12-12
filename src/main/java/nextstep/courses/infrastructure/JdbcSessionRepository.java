@@ -14,9 +14,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static nextstep.courses.domain.session.PayType.*;
-import static nextstep.courses.domain.session.SessionStatus.*;
-
 @Repository
 public class JdbcSessionRepository implements SessionRepository {
 
@@ -36,8 +33,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
         RowMapper<PaySession> rowMapper = (rs, rowNum) -> new PaySession(
             rs.getLong(1),
-            payType(rs.getString(2)),
-            sessionStatus(rs.getString(3)),
+            PayType.valueOf(rs.getString(2)),
+            SessionStatus.valueOf(rs.getString(3)),
             coverImageRepository.findAllBySession(sessionId),
             enrolmentRepository.findBySession(sessionId).orElseThrow(),
             toLocalDate(rs.getTimestamp(4)),
@@ -59,8 +56,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
             rs.getLong(1),
-            payType(rs.getString(2)),
-            sessionStatus(rs.getString(3)),
+            PayType.valueOf(rs.getString(2)),
+            SessionStatus.valueOf(rs.getString(3)),
             coverImageRepository.findAllBySession(sessionId),
             enrolmentRepository.findBySession(sessionId).orElseThrow(),
             toLocalDate(rs.getTimestamp(4)),

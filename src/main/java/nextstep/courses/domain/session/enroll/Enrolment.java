@@ -25,7 +25,7 @@ public class Enrolment {
     }
 
     public Student enroll(EnrolmentInfo enrolmentInfo) {
-        validateEnrollStatus();
+        validateRecruitingStatus();
 
         Student student = new Student(enrolmentInfo.getSessionId(), enrolmentInfo.getNsUserId(), WAITING);
         students.add(student);
@@ -33,7 +33,7 @@ public class Enrolment {
         return student;
     }
 
-    private void validateEnrollStatus() {
+    private void validateRecruitingStatus() {
         if (isNotRecruiting(recruitingStatus)) {
             throw new IllegalArgumentException("해당 강의는 현재 모집중이 아닙니다.");
         }

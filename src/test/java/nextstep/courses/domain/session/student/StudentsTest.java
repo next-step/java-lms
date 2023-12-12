@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.session.student.SelectionStatus.*;
-import static nextstep.users.domain.fixture.DomainFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 class StudentsTest {

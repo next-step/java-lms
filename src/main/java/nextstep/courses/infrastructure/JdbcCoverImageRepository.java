@@ -3,14 +3,12 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.coverimage.CoverImage;
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
-import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.exception.ImageFileInfoException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
