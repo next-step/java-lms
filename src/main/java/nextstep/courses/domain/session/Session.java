@@ -49,7 +49,7 @@ public class Session {
     }
 
     public void validateRecruiting() {
-        if (recruitmentStatus.equals(RecruitmentStatus.NOT_RECRUITING)) {
+        if (recruitmentStatus.isNotRecruiting()) {
             throw new NotRecruitingException();
         }
     }

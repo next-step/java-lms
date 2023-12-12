@@ -27,7 +27,7 @@ public class Enrolment {
     }
 
     private void validate(int money) {
-        if (status.equals(status.FINISH)) {
+        if (status.isFinish()) {
             throw new EndSessionException();
         }
         if (!price.isFree()) {
