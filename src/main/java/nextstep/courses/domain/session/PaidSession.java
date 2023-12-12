@@ -16,15 +16,15 @@ public class PaidSession extends Session {
 
 
     public PaidSession(int maxStudentsNumber) {
-        this(null, LocalDate.now(), null, maxStudentsNumber, 0);
+        this(maxStudentsNumber, 0);
     }
 
     public PaidSession(int maxStudentsNumber, int price) {
-        this(null, LocalDate.now(), null, maxStudentsNumber, price);
+        this(null, LocalDate.now(), LocalDate.now(), maxStudentsNumber, price);
     }
 
     public PaidSession(CoverImage image, LocalDate startDate, LocalDate endDate, int maxStudentsNumber, int price) {
-        super(image, false, startDate, endDate);
+        super(image, startDate, endDate);
         this.maxStudentsNumber = maxStudentsNumber;
         this.price = price;
     }

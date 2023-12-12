@@ -8,11 +8,11 @@ import java.time.LocalDate;
 public class FreeSession extends Session {
 
     public FreeSession() {
-        this(null, LocalDate.now(), null);
+        this(null, LocalDate.now(), LocalDate.now());
     }
 
     public FreeSession(CoverImage image, LocalDate startDate, LocalDate endDate) {
-        super(image, true, startDate, endDate);
+        super(image, startDate, endDate);
     }
 
     @Override

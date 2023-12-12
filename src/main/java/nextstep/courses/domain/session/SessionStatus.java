@@ -14,4 +14,8 @@ public enum SessionStatus {
         }
         return ENROLLING;
     }
+
+    public static final boolean isEnrollmentPeriod(Session session) {
+        return status(session) == ENROLLING;
+    }
 }
