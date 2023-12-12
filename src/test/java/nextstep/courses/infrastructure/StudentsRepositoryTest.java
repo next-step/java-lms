@@ -39,13 +39,12 @@ class StudentsRepositoryTest {
         Session session = sessionRepository.findById(3L);
         session.openSession();
 
-        session.register(Payment.ofPaid(1L, 1L, nsUser, 20_000L));
-        int count = studentsRepository.save(nsUser.getId(), 2L);
-        assertThat(count).isEqualTo(1);
+        session.register(Payment.ofPaid(1L, 3L, nsUser, 20_000L));
+        Long id = studentsRepository.save(nsUser.getId(), 3L);
+        assertThat(id).isEqualTo(1L);
 
-        Students students = studentsRepository.findBySessionId(2L);
-        System.out.println(students);
-        assertThat(students.isContains(nsUser)).isTrue(); //왜 false인지 모르겠음 ㅠㅠ
+        Students students = studentsRepository.findBySessionId(3L);
+        assertThat(students.isContains(nsUser)).isTrue();
         LOGGER.debug("Students: {}", students);
     }
 }
