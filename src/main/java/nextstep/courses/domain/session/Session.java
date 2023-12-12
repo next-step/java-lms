@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -8,26 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Session {
-    final CoverImage coverImage;
+    final Long id;
+    CoverImage coverImage;
     final Boolean free;
-    final List<NsUser> students = new ArrayList<>();
+    final List<Long> studentsId = new ArrayList<>();
     final LocalDate startDate;
 
     LocalDate endDate;
 
-    public Session() {
-        this(null, null, LocalDate.now(), null);
-    }
-
-    public Session(boolean free) {
-        this(null, free, LocalDate.now(), null);
-    }
-
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this(null, null, startDate, endDate);
-    }
 
     public Session(CoverImage image, Boolean free, LocalDate startDate, LocalDate endDate) {
+        this(0L, image, free, startDate, endDate);
+    }
+
+    public Session(Long id, CoverImage image, Boolean free, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
         this.coverImage = image;
         this.free = free;
         this.startDate = startDate;
@@ -35,7 +31,7 @@ public class Session {
     }
 
 
-    public void register(NsUser user) throws Exception {
-        this.students.add(user);
+    public void enroll(Payment payment) throws Exception {
+        this.studentsId.add(payment.userId());
     }
 }
