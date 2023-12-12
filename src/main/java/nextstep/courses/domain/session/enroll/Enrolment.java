@@ -8,12 +8,18 @@ import static nextstep.courses.domain.session.enroll.EnrollStatus.*;
 
 public class Enrolment {
 
+    private Long id;
     private Students students;
     private EnrollStatus enrollStatus;
 
     public Enrolment(Students students, EnrollStatus enrollStatus) {
         this.students = students;
         this.enrollStatus = enrollStatus;
+    }
+
+    public Enrolment(Long id, Students students, EnrollStatus enrollStatus) {
+        this(students, enrollStatus);
+        this.id = id;
     }
 
     public Student enroll(EnrolmentInfo enrolmentInfo) {
