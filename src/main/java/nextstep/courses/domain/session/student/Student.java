@@ -35,12 +35,12 @@ public class Student {
     }
 
     public void changeStatus(SelectionStatus selectionStatus) {
-        validateSelectionStatus();
+        validateSelectionStatus(selectionStatus);
 
         this.selectionStatus = selectionStatus;
     }
 
-    private void validateSelectionStatus() {
+    private void validateSelectionStatus(SelectionStatus selectionStatus) {
         if (WAITING.equals(selectionStatus)) {
             throw new IllegalArgumentException("수강생 선별은 승인 또는 거절 중 하나만 선택할 수 있습니다.");
         }
