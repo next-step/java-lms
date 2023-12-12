@@ -32,7 +32,7 @@ public class JdbcImageRepository implements ImageRepository {
                 rs.getInt(4),
                 rs.getInt(5),
                 rs.getLong(6),
-                toLocalDateTime(rs.getTimestamp(7)),
+                rs.getTimestamp(7).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(8)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }

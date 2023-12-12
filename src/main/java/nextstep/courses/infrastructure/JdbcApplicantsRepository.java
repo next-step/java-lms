@@ -50,7 +50,7 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
                 rs.getString(3),
                 rs.getString(4),
                 rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
+                rs.getTimestamp(6).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(7))
         );
 
