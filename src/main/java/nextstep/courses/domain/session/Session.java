@@ -5,9 +5,9 @@ import nextstep.courses.ExceedMaxAttendanceCountException;
 import nextstep.courses.domain.coverImage.CoverImages;
 import nextstep.courses.domain.sessionuser.SessionUser;
 import nextstep.courses.domain.sessionuser.SessionUsers;
+import nextstep.courses.domain.sessionuser.UserType;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Session {
 
@@ -82,23 +82,23 @@ public class Session {
     }
 
     public void addSessionUser(SessionUser sessionUser) {
-        if (sessionUser.userType().equals("TUTOR")) {
+        if (sessionUser.userType() == UserType.TUTOR) {
             tutors.add(sessionUser);
             return;
         }
 
-        if (!canRegisterNewUser(students.size())) {
+        if (!canRegisterNewUser(students.notCanceledUserSize())) {
             throw new ExceedMaxAttendanceCountException("이미 최대 수강 인원이 다 찼습니다.");
         }
         students.add(sessionUser);
     }
 
-    public int tutorsSize() {
-        return tutors.size();
+    public long tutorsSize() {
+        return tutors.notCanceledUserSize();
     }
 
-    public int studentSize() {
-        return students.size();
+    public long studentSize() {
+        return students.notCanceledUserSize();
     }
 
 
@@ -110,7 +110,7 @@ public class Session {
         this.courseId = courseId;
     }
 
-    private boolean canRegisterNewUser(int currentUserSize) {
+    private boolean canRegisterNewUser(long currentUserSize) {
         if (sessionEnrollStatus.equals(SessionEnrollStatus.NOT_ENROLL)) {
             throw new CannotEnrollStateException("수강 인원 모집중인 강의가 아닙니다.");
         }

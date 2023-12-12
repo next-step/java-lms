@@ -17,8 +17,9 @@ public class SessionUsers {
         this.sessionUsers = sessionUsers;
     }
 
-    public int size() {
-        return sessionUsers.size();
+    public long notCanceledUserSize() {
+        return sessionUsers.stream().filter(el -> !el.isCanceled())
+                .count();
     }
 
     public void add(SessionUser sessionUser) {

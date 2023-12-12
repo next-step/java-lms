@@ -26,7 +26,17 @@ public class SessionUser {
         return sessionId;
     }
 
-    public String userType() {
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public UserType userType() {
+        return userType;
+    }
+
+    public String userTypeName() {
         return userType.name();
     }
+
+
 }

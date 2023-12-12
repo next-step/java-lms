@@ -38,7 +38,7 @@ class SessionUserRepositoryTest {
         // when
         SessionUsers result = sessionUserRepository.findBySession(new Session(1L, 1L, SessionStatus.PREPARE, LocalDateTime.now(), LocalDateTime.now(), false, 10));
         // then
-        Assertions.assertThat(result.size()).isEqualTo(1);
+        Assertions.assertThat(result.notCanceledUserSize()).isEqualTo(1);
     }
 
 }

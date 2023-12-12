@@ -24,7 +24,7 @@ public class SessionType {
         return new SessionType(false, maxAttendance);
     }
 
-    public boolean canRegisterNewUser(int currentRegisteredUserCount) {
+    public boolean canRegisterNewUser(long currentRegisteredUserCount) {
         return isFree || currentRegisteredUserCount < maxAttendance;
     }
 

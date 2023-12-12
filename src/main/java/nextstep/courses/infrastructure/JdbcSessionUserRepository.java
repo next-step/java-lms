@@ -37,6 +37,6 @@ public class JdbcSessionUserRepository implements SessionUserRepository {
     @Override
     public void save(SessionUser sessionUser) {
         String sql = "insert into `session_user` (user_id, session_id, user_type) values (?, ?, ?)";
-        jdbcTemplate.update(sql, sessionUser.getUserId(), sessionUser.getSessionId(), sessionUser.userType());
+        jdbcTemplate.update(sql, sessionUser.getUserId(), sessionUser.getSessionId(), sessionUser.userTypeName());
     }
 }
