@@ -18,6 +18,10 @@ public class Session {
     LocalDate endDate;
 
 
+    public Session (LocalDate startDate, LocalDate endDate) {
+        this(0L, null, null, startDate, endDate);
+    }
+
     public Session(CoverImage image, Boolean free, LocalDate startDate, LocalDate endDate) {
         this(0L, image, free, startDate, endDate);
     }
