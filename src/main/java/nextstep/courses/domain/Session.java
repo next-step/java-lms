@@ -100,4 +100,19 @@ public class Session {
     public SessionPaymentCondition sessionPaymentCondition() {
         return sessionPaymentCondition;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", generation=" + generation +
+                ", coverImage=" + coverImage +
+                ", sessionPeriod=" + sessionPeriod +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", sessionStatus=" + sessionStatus +
+                ", sessionPaymentCondition=" + sessionPaymentCondition +
+                '}';
+    }
 }

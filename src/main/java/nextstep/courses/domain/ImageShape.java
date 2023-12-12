@@ -48,4 +48,12 @@ public class ImageShape {
 	public Long height() {
 		return height;
 	}
+
+	@Override
+	public String toString() {
+		return "ImageShape{" +
+				"width=" + width +
+				", height=" + height +
+				'}';
+	}
 }

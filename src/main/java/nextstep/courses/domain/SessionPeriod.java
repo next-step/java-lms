@@ -28,4 +28,12 @@ public class SessionPeriod {
 	public LocalDateTime finishedAt() {
 		return finishedAt;
 	}
+
+	@Override
+	public String toString() {
+		return "SessionPeriod{" +
+				"startedAt=" + startedAt +
+				", finishedAt=" + finishedAt +
+				'}';
+	}
 }

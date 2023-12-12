@@ -47,4 +47,12 @@ public class SessionPaymentCondition {
     public Long maxUser() {
         return maxUser;
     }
+
+    @Override
+    public String toString() {
+        return "SessionPaymentCondition{" +
+                "amount=" + amount +
+                ", maxUser=" + maxUser +
+                '}';
+    }
 }

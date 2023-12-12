@@ -17,7 +17,7 @@ create table session (
     updated_at timestamp,
     session_status varchar(10) not null,
     amount bigint not null,
-    max_user bigint not null
+    max_user bigint not null,
     primary key (id)
 );
 

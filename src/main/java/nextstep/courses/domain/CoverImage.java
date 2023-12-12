@@ -39,4 +39,14 @@ public class CoverImage {
 	public ImageShape imageShape() {
 		return imageShape;
 	}
+
+	@Override
+	public String toString() {
+		return "CoverImage{" +
+				"sessionId=" + sessionId +
+				", size=" + size +
+				", imageType=" + imageType +
+				", imageShape=" + imageShape +
+				'}';
+	}
 }

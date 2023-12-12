@@ -26,9 +26,8 @@ public class JdbcSessionRepository implements SessionRepository {
                 "(course_id, generation, started_at, finished_at, created_at, session_status, amount, max_user) " +
                 "values(?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setLong(1, session.courseId());
             ps.setLong(2, session.generation());
             ps.setObject(3, session.sessionPeriod().startedAt());

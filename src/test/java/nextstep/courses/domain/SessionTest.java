@@ -8,7 +8,7 @@ import static nextstep.courses.domain.CoverImageTest.NORMAL_COVER_IMAGE;
 import static nextstep.courses.domain.SessionPeriodTest.NORMAL_SESSION_PERIOD;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SessionTest {
+public class SessionTest {
 
     public static final Session FREE_SESSION = makeSession(new SessionPaymentCondition());
     public static final Session PAID_SESSION = makeSession(new SessionPaymentCondition(800_000L, 120L));
