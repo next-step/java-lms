@@ -1,0 +1,33 @@
+package nextstep.courses.domain.sessionuser;
+
+import nextstep.courses.CanNotEnrollSameNsUserException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class SessionUsers {
+
+    private List<SessionUser> sessionUsers = new ArrayList<>();
+
+    public SessionUsers() {
+    }
+
+    public SessionUsers(List<SessionUser> sessionUsers) {
+        this.sessionUsers = sessionUsers;
+    }
+
+    public int size() {
+        return sessionUsers.size();
+    }
+
+    public void add(SessionUser sessionUser) {
+        Optional<SessionUser> savedSessionUser = sessionUsers.stream().filter(el -> el.getUserId() == sessionUser.getUserId())
+                .findFirst();
+
+        if (savedSessionUser.isPresent()) {
+            throw new CanNotEnrollSameNsUserException("동일한 사람이 2번 신청할 수 없습니다.");
+        }
+        sessionUsers.add(sessionUser);
+    }
+}

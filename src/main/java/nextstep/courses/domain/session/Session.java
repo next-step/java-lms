@@ -3,10 +3,11 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotEnrollStateException;
 import nextstep.courses.ExceedMaxAttendanceCountException;
 import nextstep.courses.domain.coverImage.CoverImages;
-import nextstep.courses.domain.students.Students;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.sessionuser.SessionUser;
+import nextstep.courses.domain.sessionuser.SessionUsers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Session {
 
@@ -22,7 +23,8 @@ public class Session {
 
     private Period period;
 
-    private Students students = new Students();
+    private SessionUsers tutors = new SessionUsers();
+    private SessionUsers students = new SessionUsers();
 
     private SessionType sessionType;
 
@@ -59,6 +61,16 @@ public class Session {
         this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
     }
 
+    public Session(Long id, Long courseId, SessionStatus status, SessionEnrollStatus sessionEnrollStatus, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                   boolean free, Integer maxAttendance) {
+        this.id = id;
+        this.courseId = courseId;
+        this.sessionStatus = status;
+        this.sessionEnrollStatus = sessionEnrollStatus;
+        this.period = new Period(startDateTime, endDateTime);
+        this.sessionType = free ? SessionType.freeSession() : SessionType.notFreeSession(maxAttendance);
+    }
+
     public static Session notFreeSession(CoverImages coverImages, int maxAttendance, Period period) {
         SessionType sessionType = SessionType.notFreeSession(maxAttendance);
         return new Session(coverImages, period, sessionType);
@@ -69,11 +81,20 @@ public class Session {
         return new Session(coverImages, period, sessionType);
     }
 
-    public void addStudent(NsUser nsUser) {
+    public void addSessionUser(SessionUser sessionUser) {
+        if (sessionUser.userType().equals("TUTOR")) {
+            tutors.add(sessionUser);
+            return;
+        }
+
         if (!canRegisterNewUser(students.size())) {
             throw new ExceedMaxAttendanceCountException("이미 최대 수강 인원이 다 찼습니다.");
         }
-        students.add(nsUser);
+        students.add(sessionUser);
+    }
+
+    public int tutorsSize() {
+        return tutors.size();
     }
 
     public int studentSize() {
@@ -125,7 +146,4 @@ public class Session {
         return courseId;
     }
 
-    public void bindStudents(Students students) {
-        this.students = students;
-    }
 }
