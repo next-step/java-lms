@@ -1,21 +1,20 @@
 package nextstep.session.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class FreeSession extends Session {
-    public FreeSession(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        super(generation, creatorId, startDate, endDate, sessionImage);
+    private static final SessionType SESSION_TYPE = SessionType.FREE;
+
+    public FreeSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
+        super(creatorId, startDate, endDate, sessionImage, SESSION_TYPE);
     }
 
-    public static FreeSession create(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        return new FreeSession(generation, creatorId, startDate, endDate, sessionImage);
+    public FreeSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {
+        super(id, createdAt, updatedAt, creatorId, startDate, endDate, sessionImage, sessionStatus, sessionType);
     }
 
-    @Override
-    public void enroll(NsUser user) {
-        validateCommonEnroll();
-        students.add(user);
+    public static FreeSession create(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
+        return new FreeSession(creatorId, startDate, endDate, sessionImage);
     }
 }

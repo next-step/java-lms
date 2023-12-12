@@ -1,46 +1,47 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.BaseDomain;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public abstract class Session {
+public abstract class Session extends BaseDomain implements Sessionable {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
-
-    private Long id;
-
-    private int generation;
 
     private Long creatorId;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private SessionDate sessionDate;
 
     private SessionImage sessionImage;
 
-    protected SessionStatus sessionStatus = DEFAULT_SESSION_STATUS;
-    protected SessionStudents students = new SessionStudents();
+    private SessionStatus sessionStatus;
+    private SessionType sessionType;
+    protected Enrollments enrollments = new Enrollments();
 
-    public Session(int generation, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {
-        this.generation = generation;
+    public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
+        super();
         this.creatorId = creatorId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
+        this.sessionStatus = DEFAULT_SESSION_STATUS;
+        this.sessionType = sessionType;
     }
 
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {
+        super(id, createdAt, updatedAt);
+        this.creatorId = creatorId;
+        this.sessionDate = new SessionDate(startDate, endDate);
+        this.sessionImage = sessionImage;
+        this.sessionStatus = sessionStatus;
+        this.sessionType = sessionType;
+    }
+
+    @Override
     public void enroll(NsUser user) {
-    }
-
-    protected void validateCommonEnroll() {
         validateStatus();
+        validateCommonEnroll(user);
+        enrollments.add(user);
     }
 
     private void validateStatus() {
@@ -49,11 +50,36 @@ public abstract class Session {
         }
     }
 
-    public List<NsUser> getStudents() {
-        return students.getStudents();
+    protected void validateCommonEnroll(NsUser nsUser) {
     }
 
+    @Override
+    public int enrolledNumber() {
+        return enrollments.enrolledNumber();
+    }
+
+    @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public SessionDate getSessionDate() {
+        return sessionDate;
+    }
+
+    public SessionImage getSessionImage() {
+        return sessionImage;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
     }
 }

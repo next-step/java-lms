@@ -30,9 +30,9 @@ public class CreateSessionRequest {
 
     public Session toSession(NsUser nsUser) {
         if (sessionType.equals(SessionType.FREE)) {
-            return FreeSession.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage());
+            return FreeSession.create(nsUser.getId(), startDate, endDate, this.toSessionImage());
         }
-        return PaidSession.create(generation, nsUser.getId(), startDate, endDate, this.toSessionImage(), limitNumberOfStudents, price);
+        return PaidSession.create(nsUser.getId(), startDate, endDate, this.toSessionImage(), limitNumberOfStudents, price);
     }
 
     private SessionImage toSessionImage() {

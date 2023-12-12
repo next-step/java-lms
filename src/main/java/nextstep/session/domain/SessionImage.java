@@ -1,16 +1,21 @@
 package nextstep.session.domain;
 
-public class SessionImage {
+import nextstep.common.domain.BaseDomain;
+
+import java.time.LocalDateTime;
+
+public class SessionImage extends BaseDomain {
     private static final int MAXIMUM_IMAGE_SIZE = 1024 * 1024;
     public static final int MINIMUM_WIDTH_PIXEL = 300;
     public static final int MINIMUM_HEIGHT_PIXEL = 200;
 
     private String imageURL;
-    private String imageName;
     private int imageSize;
     private ImageType imageType;
     private int width;
     private int height;
+
+    private Long sessionId;
 
     public SessionImage(String imageURL, int imageSize, ImageType imageType, int width, int height) {
         this.imageURL = imageURL;
@@ -18,6 +23,16 @@ public class SessionImage {
         this.imageType = imageType;
         this.width = width;
         this.height = height;
+    }
+
+    public SessionImage(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String imageURL, int imageSize, ImageType imageType, int width, int height, Long sessionId) {
+        super(id, createdAt, updatedAt);
+        this.imageURL = imageURL;
+        this.imageSize = imageSize;
+        this.imageType = imageType;
+        this.width = width;
+        this.height = height;
+        this.sessionId = sessionId;
     }
 
     public static SessionImage of(String imageURL, int imageSize, int width, int height) {
@@ -46,5 +61,29 @@ public class SessionImage {
         if (width * 2 != height * 3) {
             throw new IllegalArgumentException("width와 height의 비율은 3:2여야 합니다.");
         }
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public int getImageSize() {
+        return imageSize;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 }
