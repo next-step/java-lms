@@ -22,7 +22,7 @@ public class AnswerTest {
 
     @Test
     void delete() throws CannotDeleteException {
-        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
+        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(DeleteHistory.ofAnswer(A1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
         assertThat(A1.isDeleted()).isTrue();
     }
 }
