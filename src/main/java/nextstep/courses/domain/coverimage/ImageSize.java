@@ -8,13 +8,13 @@ public class ImageSize {
 
   public ImageSize(long width, long height) {
     if (width < WIDTH_MAX_SIZE) {
-      throw new IllegalArgumentException("width가 작습니다.");
+      throw new IllegalArgumentException(String.format("width는 %s보다 커야합니다.", WIDTH_MAX_SIZE));
     }
     if (height < HEIGHT_MAX_SIZE) {
-      throw new IllegalArgumentException("height이 작습니다.");
+      throw new IllegalArgumentException(String.format("height은 %s보다 커야합니다.", HEIGHT_MAX_SIZE));
     }
     if (width * 2 != height * 3 ) {
-      throw new IllegalArgumentException("width와 height의 비율이 맞지 않습니다.");
+      throw new IllegalArgumentException("width와 height의 비율은 3:2 입니다.");
     }
     this.width = width;
     this.height = height;
