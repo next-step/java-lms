@@ -8,7 +8,7 @@ import nextstep.courses.dto.EnrolmentInfo;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-import static nextstep.courses.domain.session.Status.*;
+import static nextstep.courses.domain.session.SessionStatus.*;
 
 public class PaySession extends Session {
 
@@ -17,8 +17,8 @@ public class PaySession extends Session {
     private Long amount;
     private int studentsCapacity;
 
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity, Students students) {
-        super(id, payType, status, coverImage, students, startDate, endDate);
+    public PaySession(Long id, PayType payType, SessionStatus sessionStatus, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity, Students students) {
+        super(id, payType, sessionStatus, coverImage, students, startDate, endDate);
         this.amount = amount;
         this.studentsCapacity = studentsCapacity;
     }
@@ -36,8 +36,8 @@ public class PaySession extends Session {
     }
 
     private void validateStatus() {
-        if (isNotRecruiting(status)) {
-            throw new IllegalArgumentException(String.format("해당 강의는 현재 %s입니다.", status.description()));
+        if (isNotProgressing(sessionStatus)) {
+            throw new IllegalArgumentException(String.format("해당 강의는 현재 %s입니다.", sessionStatus.description()));
         }
     }
 

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static nextstep.courses.domain.session.enroll.EnrollStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
-class EnrollStatusTest {
+class EnrollSessionStatusTest {
 
     @DisplayName("인자로 EnrollStatus를 받아 비모집중인지 확인한다.")
     @Test

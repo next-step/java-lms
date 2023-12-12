@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.PayType.*;
-import static nextstep.courses.domain.session.Status.*;
+import static nextstep.courses.domain.session.SessionStatus.*;
 import static nextstep.users.domain.fixture.DomainFixture.JAVAJIGI;
 import static nextstep.users.domain.fixture.DomainFixture.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,7 +32,7 @@ class PaySessionTest {
     @Test
     void validatePayAmount() {
         // given
-        PaySession paySession = createPaySession(RECRUIT);
+        PaySession paySession = createPaySession(PROGRESS);
         EnrolmentInfo enrolmentInfo = createEnrolment(paySession.id, JAVAJIGI.getId(), 12000L);
 
         // when & then
@@ -44,7 +44,7 @@ class PaySessionTest {
     @Test
     void validateCapacity() {
         // given
-        PaySession paySession = createPaySession(RECRUIT);
+        PaySession paySession = createPaySession(PROGRESS);
         EnrolmentInfo enrolmentInfo1 = createEnrolment(paySession.id, JAVAJIGI.getId(), 10000L);
         EnrolmentInfo enrolmentInfo2 = createEnrolment(paySession.id, SANJIGI.getId(), 10000L);
 
@@ -57,11 +57,11 @@ class PaySessionTest {
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 
-    private PaySession createPaySession(Status status) {
+    private PaySession createPaySession(SessionStatus sessionStatus) {
         return new PaySession(
             1L,
             PAY,
-            status,
+            sessionStatus,
             new CoverImage(),
             LocalDate.of(2023, 12, 5),
             LocalDate.now(),

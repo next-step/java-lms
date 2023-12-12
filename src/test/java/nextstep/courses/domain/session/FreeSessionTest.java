@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.PayType.PAY;
-import static nextstep.courses.domain.session.Status.PREPARE;
+import static nextstep.courses.domain.session.SessionStatus.PREPARE;
 import static nextstep.users.domain.fixture.DomainFixture.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,11 +27,11 @@ class FreeSessionTest {
             .hasMessage("해당 강의의 현재 준비중입니다.");
     }
 
-    private FreeSession createFreeSession(Status status) {
+    private FreeSession createFreeSession(SessionStatus sessionStatus) {
         return new FreeSession(
             1L,
             PAY,
-            status,
+            sessionStatus,
             new CoverImage(),
             LocalDate.of(2023, 12, 5),
             LocalDate.now(),

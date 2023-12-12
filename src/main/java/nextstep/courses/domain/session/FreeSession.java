@@ -7,12 +7,12 @@ import nextstep.courses.dto.EnrolmentInfo;
 
 import java.time.LocalDate;
 
-import static nextstep.courses.domain.session.Status.isNotRecruiting;
+import static nextstep.courses.domain.session.SessionStatus.isNotProgressing;
 
 public class FreeSession extends Session {
 
-    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Students students) {
-        super(id, payType, status, coverImage, students, startDate, endDate);
+    public FreeSession(Long id, PayType payType, SessionStatus sessionStatus, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Students students) {
+        super(id, payType, sessionStatus, coverImage, students, startDate, endDate);
     }
 
     @Override
@@ -26,8 +26,8 @@ public class FreeSession extends Session {
     }
 
     private void validateStatus() {
-        if (isNotRecruiting(status)) {
-            throw new IllegalArgumentException(String.format("해당 강의의 현재 %s입니다.", status.description()));
+        if (isNotProgressing(sessionStatus)) {
+            throw new IllegalArgumentException(String.format("해당 강의의 현재 %s입니다.", sessionStatus.description()));
         }
     }
 }

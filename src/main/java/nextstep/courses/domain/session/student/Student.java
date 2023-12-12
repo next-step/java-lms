@@ -18,11 +18,11 @@ public class Student {
         this.id = id;
     }
 
-    public Long sessionId() {
+    public Long getSessionId() {
         return this.sessionId;
     }
 
-    public Long nsUserId() {
+    public Long getNsUserId() {
         return this.nsUserId;
     }
 

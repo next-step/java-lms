@@ -3,7 +3,6 @@ package nextstep.courses.domain.session.enroll;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.domain.session.student.Students;
 import nextstep.courses.dto.EnrolmentInfo;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ class EnrolmentTest {
         Student student = enrolment.enroll(enrolmentInfo);
 
         // then
-        assertThat(student.sessionId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
     }
 
     @DisplayName("수강 신청 상태가 모집중이 아니면 예외를 발생시킨다.")
