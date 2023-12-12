@@ -23,4 +23,12 @@ public class NsUserSession {
     public int hashCode() {
         return Objects.hash(sessionId, nsUserId);
     }
+
+    public Long sessionId() {
+        return sessionId;
+    }
+
+    public Long nsUserId() {
+        return nsUserId;
+    }
 }

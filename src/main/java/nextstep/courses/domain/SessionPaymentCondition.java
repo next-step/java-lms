@@ -39,4 +39,12 @@ public class SessionPaymentCondition {
     private boolean isFull(Long userNumber) {
         return userNumber.compareTo(maxUser) >= 0;
     }
+
+    public Long amount() {
+        return amount;
+    }
+
+    public Long maxUser() {
+        return maxUser;
+    }
 }

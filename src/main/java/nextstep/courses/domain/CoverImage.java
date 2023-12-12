@@ -23,4 +23,20 @@ public class CoverImage {
 			throw new IllegalArgumentException("커버 이미지 크기는 1MB 이하여야 합니다.");
 		}
 	}
+
+	public Long sessionId() {
+		return sessionId;
+	}
+
+	public Long size() {
+		return size;
+	}
+
+	public ImageType imageType() {
+		return imageType;
+	}
+
+	public ImageShape imageShape() {
+		return imageShape;
+	}
 }

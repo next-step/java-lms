@@ -40,4 +40,12 @@ public class ImageShape {
 	private boolean isCorrectRatio(Long width, Long height) {
 		return (width * HEIGHT_RATIO) == (height * WIDTH_RATIO);
 	}
+
+	public Long width() {
+		return width;
+	}
+
+	public Long height() {
+		return height;
+	}
 }
