@@ -13,7 +13,7 @@ INSERT INTO session(id, pay_type, session_status, amount, students_capacity, sta
 VALUES (1, 'PAY', 'PROGRESS', 10000, 100, CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO enrolment(id, session_id, enroll_status)
-VALUES (1, 1, 'ENROLL_ON');
+VALUES (1, 1, 'RECRUITING_ON');
 
 INSERT INTO cover_image(id, session_id, file_name, width, height, capacity_size)
 VALUES (1, 1, '12345.jpg', 300, 200, 1000);

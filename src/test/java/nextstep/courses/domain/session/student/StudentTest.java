@@ -15,10 +15,10 @@ class StudentTest {
         Student student = createStudent(WAITING);
 
         // when
-        student.changeStatus(SELECTION);
+        Student changed = student.changeStatus(SELECTION);
 
         // then
-        assertThat(student.getSelectionStatus()).isEqualTo(SELECTION);
+        assertThat(changed.getSelectionStatus()).isEqualTo(SELECTION);
     }
 
     @DisplayName("인자로 받은 선별 상태가 'WAITING(대기)' 상태이면 예외를 발생시킨다.")

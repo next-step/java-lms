@@ -39,8 +39,8 @@ public class Enrolment {
         }
     }
 
-    public void select(Student student, SelectionStatus selectionStatus) {
-        students.selectStudents(student, selectionStatus);
+    public Student select(Student student, SelectionStatus selectionStatus) {
+        return students.selectStudents(student, selectionStatus);
     }
 
     public int studentsSize() {

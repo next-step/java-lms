@@ -34,10 +34,11 @@ public class Student {
         return this.selectionStatus;
     }
 
-    public void changeStatus(SelectionStatus selectionStatus) {
+    public Student changeStatus(SelectionStatus selectionStatus) {
         validateSelectionStatus(selectionStatus);
 
         this.selectionStatus = selectionStatus;
+        return this;
     }
 
     private void validateSelectionStatus(SelectionStatus selectionStatus) {

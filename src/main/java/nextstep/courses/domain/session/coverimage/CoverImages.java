@@ -7,7 +7,6 @@ public class CoverImages {
     private List<CoverImage> coverImages;
 
     public CoverImages() {
-
     }
 
     public CoverImages(List<CoverImage> coverImages) {

@@ -31,8 +31,8 @@ public class Students {
         return this.students.size();
     }
 
-    public void selectStudents(Student waitingStudent, SelectionStatus selectionStatus) {
-        students.stream()
+    public Student selectStudents(Student waitingStudent, SelectionStatus selectionStatus) {
+        return students.stream()
             .filter(student -> student.equals(waitingStudent))
             .findFirst().orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."))
             .changeStatus(selectionStatus);

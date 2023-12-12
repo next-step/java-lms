@@ -17,7 +17,7 @@ public class Teacher {
         this.enrolment = enrolment;
     }
 
-    public void select(Student student, SelectionStatus selectionStatus) {
-        enrolment.select(student, selectionStatus);
+    public Student select(Student student, SelectionStatus selectionStatus) {
+        return enrolment.select(student, selectionStatus);
     }
 }

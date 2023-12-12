@@ -46,12 +46,12 @@ class StudentsTest {
         students.add(student3);
 
         // when
-        students.selectStudents(student1, SELECTION);
-        students.selectStudents(student2, DENIAL);
+        Student changed1 = students.selectStudents(student1, SELECTION);
+        Student changed2 = students.selectStudents(student2, DENIAL);
 
         // then
-        assertThat(student1.getSelectionStatus()).isEqualTo(SELECTION);
-        assertThat(student2.getSelectionStatus()).isEqualTo(DENIAL);
+        assertThat(changed1.getSelectionStatus()).isEqualTo(SELECTION);
+        assertThat(changed2.getSelectionStatus()).isEqualTo(DENIAL);
     }
 
     @DisplayName("수강생 선별 시 자신이 포함하고 있는 수강생이 아니면 예외를 던진다.")
