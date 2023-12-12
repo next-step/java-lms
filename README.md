@@ -78,7 +78,10 @@
 ### 🚀 3단계 - 수강신청(DB 적용)
 #### 요구사항
 * [ ] 2단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다.
-* [ ] schema.sql 에 DB 테이블 추가
+* [x] schema.sql 에 DB 테이블 추가
+  * [x] Session
+  * [x] CoverImage
+  * [x] NsUserSession
 * [ ] data.sql 에 샘플 데이터 추가
 * [ ] CRUD 코드 추가
 * [ ] CRUD 코드에 대한 테스트 코드 추가
