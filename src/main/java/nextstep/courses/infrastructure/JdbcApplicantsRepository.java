@@ -41,7 +41,9 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
     }
 
     private Optional<NsUser> findAllNsUsersById(Long applicantId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id = ?";
+        String sql = "select " +
+                "id, user_id, password, name, email, created_at, updated_at " +
+                "from ns_user where id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),

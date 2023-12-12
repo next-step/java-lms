@@ -29,12 +29,22 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Optional<Session> findById(Long id) {
-        String sql = "select id, image_id, start_date, end_date, session_type, amount, quota, session_status, course_id, creator_id, created_at, updated_at from session where id = ?";
+        String sql = "select " +
+                "id, image_id, start_date, end_date, session_type, amount, quota, " +
+                "session_status, course_id, creator_id, created_at, updated_at " +
+                "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 findImageById(rs.getLong(2)),
-                new Duration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
-                new SessionState(SessionType.find(rs.getString(5)), rs.getLong(6), rs.getInt(7)),
+                new Duration(
+                        toLocalDate(rs.getTimestamp(3)),
+                        toLocalDate(rs.getTimestamp(4))
+                ),
+                new SessionState(
+                        SessionType.find(rs.getString(5)),
+                        rs.getLong(6),
+                        rs.getInt(7)
+                ),
                 findAllBySessionId(id),
                 SessionStatus.find(rs.getString(8)),
                 rs.getLong(10),
@@ -50,19 +60,29 @@ public class JdbcSessionRepository implements SessionRepository {
         SessionType sessionType = sessionState.getSessionType();
         SessionStatus status = session.getSessionStatus();
         Image image = session.getImage();
-        String sql = "insert into session (start_date, end_date, session_type, session_status, amount, quota, image_id, course_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(), status.name(), sessionState.getAmount(), sessionState.getQuota(), image.getId(), courseId, session.getCreatorId(), session.getCreatedAt(), session.getUpdatedAt());
+        String sql = "insert into session " +
+                        "(start_date, end_date, session_type, session_status, amount, " +
+                        "quota, image_id, course_id, creator_id, created_at, updated_at) " +
+                        "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(),
+                status.name(), sessionState.getAmount(), sessionState.getQuota(), image.getId(), courseId,
+                session.getCreatorId(), session.getCreatedAt(), session.getUpdatedAt());
     }
 
     @Override
     public int saveApply(Apply apply) {
-        String sql = "insert into apply (session_id, ns_user_id, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(), apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
+        String sql = "insert into apply " +
+                "(session_id, ns_user_id, creator_id, created_at, updated_at) " +
+                "values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(),
+                apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
     }
 
     @Override
     public Optional<Apply> findApplyByIds(Long nsUserId, Long sessionId) {
-        String sql = "select session_id, ns_user_id, creator_id, created_at, updated_at from apply where ns_user_id = ? and session_id = ?";
+        String sql = "select " +
+                "session_id, ns_user_id, creator_id, created_at, updated_at " +
+                "from apply where ns_user_id = ? and session_id = ?";
         RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
                 rs.getLong(1),
                 rs.getLong(2),
@@ -78,19 +98,31 @@ public class JdbcSessionRepository implements SessionRepository {
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
         SessionStatus sessionStatus = session.getSessionStatus();
-        String sql = "update session set start_date = ?, end_date = ?, session_type = ?, amount = ?, quota = ?, session_status = ? where id = ?";
-        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(),
-                sessionType.name(), sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
+        String sql = "update session set " +
+                "start_date = ?, end_date = ?, session_type = ?, amount = ?, quota = ?, session_status = ? " +
+                "where id = ?";
+        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(),
+                sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
     }
 
     @Override
     public Sessions findAllByCourseId(Long courseId) {
-        String sql = "select id, image_id, start_date, end_date, session_type, amount, quota, session_status, course_id, creator_id, created_at, updated_at from session where course_id = ?";
+        String sql = "select " +
+                "id, image_id, start_date, end_date, session_type, amount, quota, " +
+                "session_status, course_id, creator_id, created_at, updated_at " +
+                "from session where course_id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 findImageById(rs.getLong(2)),
-                new Duration(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
-                new SessionState(SessionType.find(rs.getString(5)), rs.getLong(6), rs.getInt(7)),
+                new Duration(
+                        toLocalDate(rs.getTimestamp(3)),
+                        toLocalDate(rs.getTimestamp(4))
+                ),
+                new SessionState(
+                        SessionType.find(rs.getString(5)),
+                        rs.getLong(6),
+                        rs.getInt(7)
+                ),
                 findAllBySessionId(rs.getLong(1)),
                 SessionStatus.find(rs.getString(8)),
                 rs.getLong(10),

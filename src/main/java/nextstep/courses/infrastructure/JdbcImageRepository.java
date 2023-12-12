@@ -22,7 +22,9 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public Optional<Image> findById(Long id) {
-        String sql = "select id, image_size, image_type, image_width, image_height, creator_id, created_at, updated_at from image where id = ?";
+        String sql = "select " +
+                "id, image_size, image_type, image_width, image_height, creator_id, created_at, updated_at " +
+                "from image where id = ?";
         RowMapper<Image> rowMapper = (rs, rowNum) -> new Image(
                 rs.getLong(1),
                 rs.getInt(2),
@@ -39,8 +41,11 @@ public class JdbcImageRepository implements ImageRepository {
     public int save(Image image) {
         ImageType imageType = image.getImageType();
 
-        String sql = "insert into image (image_size, image_type, image_width, image_height, creator_id, created_at, updated_at) values(?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, image.getImageSize(), imageType.name(), image.getImageWidth(), image.getImageHeight(), image.getCreatorId(), image.getCreatedAt(), image.getUpdatedAt());
+        String sql = "insert into image " +
+                "(image_size, image_type, image_width, image_height, creator_id, created_at, updated_at) " +
+                "values(?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, image.getImageSize(), imageType.name(), image.getImageWidth(),
+                image.getImageHeight(), image.getCreatorId(), image.getCreatedAt(), image.getUpdatedAt());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
