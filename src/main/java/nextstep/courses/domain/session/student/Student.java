@@ -30,6 +30,10 @@ public class Student {
         return this.nsUserId;
     }
 
+    public SelectionStatus getSelectionStatus() {
+        return this.selectionStatus;
+    }
+
     public void changeStatus(SelectionStatus selectionStatus) {
         validateSelectionStatus();
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
@@ -30,9 +31,9 @@ class JdbcStudentRepositoryTest {
     void findById() {
         // given
         Long enrolmentId = 1L;
-        studentRepository.save(new Student(enrolmentId, 1L));
-        studentRepository.save(new Student(enrolmentId, 2L));
-        studentRepository.save(new Student(enrolmentId, 3L));
+        studentRepository.save(new Student(enrolmentId, 1L, WAITING));
+        studentRepository.save(new Student(enrolmentId, 2L, WAITING));
+        studentRepository.save(new Student(enrolmentId, 3L, WAITING));
 
         // when
         Students allBySession = studentRepository.findAllByEnrolment(enrolmentId);
