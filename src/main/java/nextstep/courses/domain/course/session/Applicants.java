@@ -9,29 +9,25 @@ import java.util.List;
 public class Applicants implements Iterable<NsUser> {
     private final List<NsUser> applicants;
 
-    private final int quota;
-
-    public Applicants(int quota) {
-        this(new ArrayList<>(), quota);
+    public Applicants() {
+        this(new ArrayList<>());
     }
 
-    public Applicants(List<NsUser> applicants, int quota) {
+    public Applicants(List<NsUser> applicants) {
         this.applicants = applicants;
-        this.quota = quota;
+    }
+
+    public NsUser find(int index) {
+        return this.applicants.get(index);
     }
 
     public int size() {
         return this.applicants.size();
     }
 
-    public void addChargedApplicant(NsUser applicant) {
+    public void addApplicant(NsUser applicant, SessionState sessionState) {
         checkApplicantAlreadyExisted(applicant);
-        checkChargeAndApplySizeIsValid();
-        this.applicants.add(applicant);
-    }
-
-    public void addFreeApplicant(NsUser applicant) {
-        checkApplicantAlreadyExisted(applicant);
+        checkChargedAndApplySizeIsValid(sessionState);
         this.applicants.add(applicant);
     }
 
@@ -41,18 +37,21 @@ public class Applicants implements Iterable<NsUser> {
         }
     }
 
-    private void checkChargeAndApplySizeIsValid() {
-        if (this.isFull()) {
+    private void checkChargedAndApplySizeIsValid(SessionState sessionState) {
+        if (sessionState.chargedAndFull(applicants)) {
             throw new IllegalArgumentException("수강 인원은 정원을 초과할 수 없습니다.");
         }
-    }
-
-    public boolean isFull() {
-        return this. applicants.size() == this.quota;
     }
 
     @Override
     public Iterator<NsUser> iterator() {
         return this.applicants.iterator();
+    }
+
+    @Override
+    public String toString() {
+        return "Applicants{" +
+                "applicants=" + applicants +
+                '}';
     }
 }

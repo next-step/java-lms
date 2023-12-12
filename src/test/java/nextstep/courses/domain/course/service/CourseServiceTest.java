@@ -3,12 +3,9 @@ package nextstep.courses.domain.course.service;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
 import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.session.Applicants;
-import nextstep.courses.domain.course.session.Duration;
-import nextstep.courses.domain.course.session.Session;
-import nextstep.courses.domain.course.session.SessionRepository;
+import nextstep.courses.domain.course.image.ImageType;
+import nextstep.courses.domain.course.session.*;
 import nextstep.courses.service.CourseService;
-import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -32,29 +28,26 @@ public class CourseServiceTest {
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private Duration duration;
+    private SessionState sessionState;
     private Course course;
     private Session session;
+    @Mock
+    private CourseRepository courseRepository;
+    @InjectMocks
+    private CourseService courseService;
 
     @BeforeEach
     void setUp() {
-        course = new Course("math", 1, 1L);
-        image = new Image(1000, "jpeg", Image.WIDTH_MIN, Image.HEIGHT_MIN);
+        localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
+        course = new Course("math", 1, 1L, localDateTime);
+        image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
-        localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         duration = new Duration(localDate, localDate);
-        session = new Session(1L, image, duration, Session.Type.FREE, 1000L,
-                new Applicants(10), Session.Status.RECRUIT, 1L, localDateTime, localDateTime);
+        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
+        session = new Session(1L, image, duration, sessionState, new Applicants(),
+                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
     }
-
-    @Mock
-    private SessionRepository sessionRepository;
-
-    @Mock
-    private CourseRepository courseRepository;
-
-    @InjectMocks
-    private CourseService courseService;
 
     @Test
     @DisplayName("주어진 강의를 과정에 추가하면 과정에 강의가 추가된다.")

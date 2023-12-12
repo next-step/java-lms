@@ -9,52 +9,27 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Session extends BaseEntity  {
+public class Session extends BaseEntity {
     private Long id;
 
     private Image image;
 
     private Duration duration;
 
-    private Type type;
-
-    private Long amount;
+    private SessionState sessionState;
 
     private Applicants applicants;
 
-    private Status status;
+    private SessionStatus sessionStatus;
 
-    public enum Type {
-        FREE("무료"),
-        CHARGE("유료");
-
-        private final String description;
-
-        Type(String description) {
-            this.description = description;
-        }
+    public Session(Image image, Duration duration, SessionState sessionState,
+                   Long creatorId, LocalDateTime date) {
+        this(0L, image, duration, sessionState, new Applicants(),
+                SessionStatus.READY, creatorId, date, null);
     }
 
-    public enum Status {
-        READY("준비중"),
-        RECRUIT("모집중"),
-        END("종료");
-
-        private final String description;
-
-        Status(String description) {
-            this.description = description;
-        }
-    }
-
-    public Session(Image image, Duration duration, Type type,
-                   Long amount, int quota, Long creatorId) {
-        this(0L, image, duration, type, amount, new Applicants(quota),
-                Status.READY, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Session(Long id, Image image, Duration duration, Type type, Long amount,
-                   Applicants applicants, Status status, Long creatorId,
+    public Session(Long id, Image image, Duration duration, SessionState sessionState,
+                   Applicants applicants, SessionStatus sessionStatus, Long creatorId,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (image == null) {
@@ -65,17 +40,20 @@ public class Session extends BaseEntity  {
             throw new IllegalArgumentException("기간을 추가해야 합니다.");
         }
 
+        if (sessionState == null) {
+            throw new IllegalArgumentException("강의 상태를 추가해야 합니다.");
+        }
+
         this.id = id;
         this.image = image;
         this.duration = duration;
-        this.type = type;
-        this.amount = amount;
+        this.sessionState = sessionState;
         this.applicants = applicants;
-        this.status = status;
+        this.sessionStatus = sessionStatus;
     }
 
     public boolean sameAmount(Long amount) {
-        return Objects.equals(this.amount, amount);
+        return this.sessionState.sameAmount(amount);
     }
 
     public boolean sameId(Long sessionId) {
@@ -90,24 +68,23 @@ public class Session extends BaseEntity  {
         return this.applicants.size();
     }
 
-    public void apply(NsUser loginUser, Payment payment) {
+    public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
         checkStatusOnRecruit();
 
-        if (typeCharged()) {
+        if (this.sessionState.charged()) {
             checkPaymentIsPaid(loginUser, payment);
-            this.applicants.addChargedApplicant(loginUser);
-            return;
         }
 
-        this.applicants.addFreeApplicant(loginUser);
+        this.applicants.addApplicant(loginUser, sessionState);
+        return toApply(loginUser, date);
     }
 
-    private boolean typeCharged() {
-        return this.type == Type.CHARGE;
+    private Apply toApply(NsUser loginUser, LocalDateTime date) {
+        return new Apply(this, loginUser, date);
     }
 
     private void checkStatusOnRecruit() {
-        if (this.status != Status.RECRUIT) {
+        if (this.sessionStatus != SessionStatus.RECRUIT) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
     }
@@ -120,12 +97,12 @@ public class Session extends BaseEntity  {
 
     public void changeOnReady(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.status = Status.READY;
+        this.sessionStatus = SessionStatus.READY;
     }
 
     public void changeOnRecruit(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.status = Status.RECRUIT;
+        this.sessionStatus = SessionStatus.RECRUIT;
     }
 
     private void checkStartDateIsSameOrBefore(LocalDate date) {
@@ -136,7 +113,7 @@ public class Session extends BaseEntity  {
 
     public void changeOnEnd(LocalDate date) {
         checkEndDateIsSameOrAfter(date);
-        this.status = Status.END;
+        this.sessionStatus = SessionStatus.END;
     }
 
     private void checkEndDateIsSameOrAfter(LocalDate date) {
@@ -145,4 +122,35 @@ public class Session extends BaseEntity  {
         }
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public SessionState getSessionState() {
+        return this.sessionState;
+    }
+
+    public Applicants getApplicants() {
+        return applicants;
+    }
+
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", image=" + image +
+                ", duration=" + duration +
+                ", sessionState=" + sessionState +
+                ", applicants=" + applicants +
+                ", session=" + sessionStatus +
+                '}';
+    }
 }
