@@ -8,7 +8,6 @@ public enum CoverImageType {
   , JPEG("JPEG")
   , PNG("PNG")
   , SVG("SVG")
-  , NO_MATCH("NO_MATCH")
   ;
 
   private final String name;
