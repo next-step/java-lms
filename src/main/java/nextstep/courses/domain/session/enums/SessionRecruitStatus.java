@@ -2,6 +2,8 @@ package nextstep.courses.domain.session.enums;
 
 import nextstep.courses.domain.SessionStatus;
 
+import java.util.Arrays;
+
 public enum SessionRecruitStatus {
 
     OPEN("모집중"),
@@ -19,5 +21,12 @@ public enum SessionRecruitStatus {
 
     public static boolean isOpen(SessionRecruitStatus recruitStatus) {
         return OPEN.equals(recruitStatus);
+    }
+
+    public static SessionRecruitStatus by(SessionStatus status) {
+        return Arrays.stream(SessionRecruitStatus.values())
+                .filter(it -> it.name.equals(status.name()))
+                .findAny()
+                .orElse(SessionRecruitStatus.OPEN);
     }
 }

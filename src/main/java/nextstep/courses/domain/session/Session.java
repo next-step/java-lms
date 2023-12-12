@@ -37,26 +37,29 @@ public class Session {
         this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, new SessionImage());
     }
 
+    public Session(Period period, SessionStatus sessionStatus, SessionType sessionType) {
+        this(null, period, SessionRecruitStatus.by(sessionStatus), SessionProcessStatus.by(sessionStatus), new Students(), sessionType, new SessionImage());
+    }
+
     public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage image) {
         this(null, period, status, students, sessionType, image);
     }
 
     public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImage);
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, SessionImage sessionImage) {
         this.id = id;
         this.period = period;
-        this.status = status;
+        this.recruitStatus = recruitStatus;
+        this.processStatus = processStatus;
         this.students = students;
         this.sessionType = sessionType;
         if (sessionImage == null) {
             throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
         }
         this.sessionImage = sessionImage;
-    }
-
-    public Session(Period period, SessionStatus sessionStatus, SessionType sessionType) {
-        this.period = period;
-        this.status = sessionStatus;
-        this.sessionType = sessionType;
     }
 
     public Students register(NsUser user) throws CannotRegisterException {
