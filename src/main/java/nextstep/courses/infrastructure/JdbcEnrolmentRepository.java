@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.enroll.EnrollStatus;
+import nextstep.courses.domain.session.enroll.RecruitingStatus;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
@@ -28,7 +28,7 @@ public class JdbcEnrolmentRepository implements EnrolmentRepository {
         RowMapper<Enrolment> rowMapper = (rs, rowNum) -> new Enrolment(
             rs.getLong(1),
             studentRepository.findAllByEnrolment(sessionId),
-            EnrollStatus.valueOf(rs.getString(3))
+            RecruitingStatus.valueOf(rs.getString(3))
         );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));

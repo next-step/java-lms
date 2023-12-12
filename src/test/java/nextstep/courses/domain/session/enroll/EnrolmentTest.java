@@ -6,7 +6,7 @@ import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.enroll.EnrollStatus.*;
+import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 class EnrolmentTest {
@@ -15,7 +15,7 @@ class EnrolmentTest {
     @Test
     void enroll() {
         // given
-        Enrolment enrolment = new Enrolment(new Students(), ENROLL_ON);
+        Enrolment enrolment = new Enrolment(new Students(), RECRUITING_ON);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when
@@ -29,7 +29,7 @@ class EnrolmentTest {
     @Test
     void validateEnrollStatus() {
         // given
-        Enrolment enrolment = new Enrolment(new Students(), ENROLL_OFF);
+        Enrolment enrolment = new Enrolment(new Students(), RECRUITING_OFF);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then

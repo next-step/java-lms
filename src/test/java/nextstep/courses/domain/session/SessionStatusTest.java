@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionStatusTest {
 
-    @DisplayName("인자로 강의 상태를 전달 받아 모집중 상태이면 true를 반환 하고 아니면 false를 반환한다.")
+    @DisplayName("인자로 강의 상태를 전달 받아 진행중 상태이면 true를 반환 하고 아니면 false를 반환한다.")
     @Test
     void validateStatus() {
         assertAll(

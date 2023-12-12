@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static nextstep.courses.domain.session.PayType.PAY;
 import static nextstep.courses.domain.session.SessionStatus.PREPARE;
-import static nextstep.courses.domain.session.enroll.EnrollStatus.*;
+import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
 import static nextstep.users.domain.fixture.DomainFixture.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -35,7 +35,7 @@ class FreeSessionTest {
             PAY,
             sessionStatus,
             new CoverImages(),
-            new Enrolment(new Students(), ENROLL_ON),
+            new Enrolment(new Students(), RECRUITING_ON),
             LocalDate.of(2023, 12, 5),
             LocalDate.now()
             );
