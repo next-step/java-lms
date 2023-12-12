@@ -24,11 +24,13 @@ public class JdbcEnrolmentRepository implements EnrolmentRepository {
     @Override
     public Optional<Enrolment> findById(Long id) {
         String sql = "select * from enrolment where id = ?";
+
         RowMapper<Enrolment> rowMapper = (rs, rowNum) -> new Enrolment(
             rs.getLong(1),
             studentRepository.findAllByEnrolment(id),
             EnrollStatus.valueOf(rs.getString(2))
         );
-        return Optional.empty();
+
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 }

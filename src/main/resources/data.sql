@@ -12,5 +12,8 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO cover_image(id, file_name, width, height, capacity_size)
 VALUES (1, '12345.jpg', 300, 200, 1000);
 
-INSERT INTO session(id, pay_type, status, cover_image_id, amount, students_capacity, start_date, end_date)
-VALUES (1, 'PAY', 'RECRUIT', 1, 10000, 100, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO enrolment(id, enroll_status)
+VALUES (1, 'ENROLL_ON');
+
+INSERT INTO session(id, pay_type, session_status, cover_image_id, enrolment_id, amount, students_capacity, start_date, end_date)
+VALUES (1, 'PAY', 'PROGRESS', 1, 1, 10000, 100, CURRENT_DATE, CURRENT_DATE);

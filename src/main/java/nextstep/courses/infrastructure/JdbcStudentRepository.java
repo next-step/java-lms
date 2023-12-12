@@ -20,7 +20,7 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public void save(Student student) {
-        String sql = "insert into student (session_id, ns_user_id) values(?, ?)";
+        String sql = "insert into student (enrolment_id, ns_user_id) values(?, ?)";
         jdbcTemplate.update(sql, student.getEnrolmentId(), student.getNsUserId());
     }
 

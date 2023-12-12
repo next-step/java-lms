@@ -2,9 +2,9 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.PaySession;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
+import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
-import nextstep.courses.domain.session.student.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ public class JdbcSessionRepositoryTest {
     JdbcTemplate jdbcTemplate;
 
     private CoverImageRepository coverImageRepository;
+    private EnrolmentRepository enrolmentRepository;
     private StudentRepository studentRepository;
     private SessionRepository sessionRepository;
 
@@ -28,7 +29,8 @@ public class JdbcSessionRepositoryTest {
     void setUp() {
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, studentRepository);
+        enrolmentRepository = new JdbcEnrolmentRepository(jdbcTemplate, studentRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, enrolmentRepository);
     }
 
     @DisplayName("강의 아이디를 전달받아 해당하는 강의를 조회한다.")
@@ -36,9 +38,6 @@ public class JdbcSessionRepositoryTest {
     void findSession() {
         // given
         Long sessionId = 1L;
-        studentRepository.save(new Student(sessionId, 1L));
-        studentRepository.save(new Student(sessionId, 2L));
-        studentRepository.save(new Student(sessionId, 3L));
 
         // when
         PaySession paySession = sessionRepository.findPaySessionById(sessionId)

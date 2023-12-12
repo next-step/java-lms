@@ -27,7 +27,7 @@ class FreeSessionTest {
 
         // when & then
         assertThatThrownBy(() -> freeSession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("해당 강의의 현재 준비중입니다.");
+            .hasMessage("해당 강의는 현재 준비중입니다.");
     }
 
     private FreeSession createFreeSession(SessionStatus sessionStatus) {
