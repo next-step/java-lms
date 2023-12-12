@@ -2,16 +2,12 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseEntity{
     private Long id;
 
     private String title;
 
     private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public Course() {
     }

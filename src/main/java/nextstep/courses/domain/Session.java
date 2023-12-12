@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Session {
+public abstract class Session extends BaseEntity{
     final Long id;
     final Course course;
     final SessionCover sessionCover;
@@ -21,6 +21,8 @@ public abstract class Session {
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;
         this.course = course;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public abstract void enroll(NsUser participant, Long amount);
