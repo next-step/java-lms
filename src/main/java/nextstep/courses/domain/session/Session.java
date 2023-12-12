@@ -7,9 +7,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Session {
 
@@ -23,39 +21,40 @@ public class Session {
     private List<SessionImage> sessionImages;
     private Course course;
 
-    public Session(SessionImage image) throws PeriodException {
-        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), SessionStatus.WAITING, new Students(), new SessionType(), image);
-    }
     public Session(SessionStatus status) throws PeriodException {
-        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), new SessionImage());
+        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), null);
     }
 
     public Session(SessionProcessStatus processStatus, SessionRecruitStatus sessionRecruitStatus) throws PeriodException {
-        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), sessionRecruitStatus, processStatus, new Students(), new SessionType(), new SessionImage());
+        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), sessionRecruitStatus, processStatus, new Students(), new SessionType(), null);
     }
 
     public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
-        this(null, new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), new SessionImage());
+        this(null, new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), null);
     }
 
     public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) throws PeriodException {
-        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, new SessionImage());
+        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, null);
     }
 
     public Session(Period period, SessionStatus sessionStatus, SessionType sessionType) {
-        this(null, period, SessionRecruitStatus.by(sessionStatus), SessionProcessStatus.by(sessionStatus), new Students(), sessionType, new SessionImage());
+        this(period, SessionRecruitStatus.by(sessionStatus), SessionProcessStatus.by(sessionStatus), new Students(), sessionType, null);
     }
 
     public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage image) {
         this(null, period, status, students, sessionType, image);
     }
 
-    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImages) {
-        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImages);
+    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImage);
     }
 
     public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, SessionImage sessionImage) {
-        this(id, period, recruitStatus, processStatus, students, sessionType, List.of(sessionImage));
+        this(id, period, recruitStatus, processStatus, students, sessionType, new ArrayList<>(Collections.singleton((sessionImage))));
+    }
+
+    public Session(Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, List<SessionImage> sessionImages) {
+        this(null, period, recruitStatus, processStatus, students, sessionType, sessionImages);
     }
 
     public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, List<SessionImage> sessionImages) {
@@ -65,7 +64,7 @@ public class Session {
         this.processStatus = processStatus;
         this.students = students;
         this.sessionType = sessionType;
-        if (sessionImages.size() == 0) {
+        if (sessionImages.isEmpty()) {
             throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
         }
         this.sessionImages = sessionImages;
@@ -88,6 +87,12 @@ public class Session {
 
         students.registerSessionStudent(user, sessionType);
         return students;
+    }
+
+    public List<SessionImage> addSessionImage(List<SessionImage> sessionImage) {
+        sessionImage.forEach(image -> image.addSession(this));
+        this.sessionImages.addAll(sessionImage);
+        return this.sessionImages;
     }
 
     private boolean isRecruitOpen() {

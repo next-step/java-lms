@@ -17,10 +17,10 @@ public class JdbcSessionImageRepository {
     }
 
     public int save(SessionImage image) {
-        String sql = "insert into session_image (file_size, file_type, image_width, image_height) " +
+        String sql = "insert into session_image (file_size, file_type, image_width, image_height, session_id) " +
                 "values (?, ?, ?, ?)";
         return jdbcTemplate.update(sql, image.getFileSize(), image.getFileType(),
-                image.getImageWidth(), image.getImageHeight());
+                image.getImageWidth(), image.getImageHeight(), image.getSessionId());
     }
 
 

@@ -18,7 +18,6 @@ public class SessionImage {
     private ImageSize imageSize;
     private Session session;
 
-
     public SessionImage() {
     }
 
@@ -30,6 +29,10 @@ public class SessionImage {
 
     public SessionImage(long fileSize, String fileType, ImageSize imageSize) {
         this(null, fileSize, fileType, imageSize, null);
+    }
+
+    public SessionImage(long fileSize, String fileType, ImageSize imageSize, Session session) {
+        this(null, fileSize, fileType, imageSize, session);
     }
 
     public SessionImage(Long id, long fileSize, String fileType, ImageSize imageSize, Session session) {
@@ -66,6 +69,11 @@ public class SessionImage {
         return new ImageSize(image);
     }
 
+    public Session addSession(Session session) {
+        this.session = session;
+        return session;
+    }
+
     public long getId() {
         return id;
     }
@@ -84,5 +92,9 @@ public class SessionImage {
 
     public int getImageHeight() {
         return imageSize.getImageHeight();
+    }
+
+    public long getSessionId() {
+        return session.getId();
     }
 }

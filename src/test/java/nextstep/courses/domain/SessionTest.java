@@ -20,10 +20,17 @@ class SessionTest {
     @Test
     void 강의는_이미지_정보가_등록되어야한다() {
         assertThatThrownBy(() -> {
-            new Session(new SessionImage());
+            Period period = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
+            new Session(null, period, SessionRecruitStatus.OPEN, SessionProcessStatus.WAITING, new Students(), new SessionType(), List.of());
         }).isInstanceOf(IllegalArgumentException.class);
-
     }
+
+    @Test
+    void 강의는_이미지가_1장이상_등록된다() throws PeriodException {
+        Session session = new Session(SessionStatus.OPEN);
+        assertThat(session.addSessionImage(List.of(new SessionImage()))).hasSize(2);
+    }
+
     @Test
     void 강의는_모집중일때_신청_가능하다() throws CannotRegisterException, PeriodException {
         Session session = new Session(SessionStatus.OPEN);
