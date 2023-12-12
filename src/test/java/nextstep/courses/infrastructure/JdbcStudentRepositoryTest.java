@@ -29,13 +29,13 @@ class JdbcStudentRepositoryTest {
     @Test
     void findById() {
         // given
-        Long sessionId = 1L;
-        studentRepository.save(new Student(sessionId, 1L));
-        studentRepository.save(new Student(sessionId, 2L));
-        studentRepository.save(new Student(sessionId, 3L));
+        Long enrolmentId = 1L;
+        studentRepository.save(new Student(enrolmentId, 1L));
+        studentRepository.save(new Student(enrolmentId, 2L));
+        studentRepository.save(new Student(enrolmentId, 3L));
 
         // when
-        Students allBySession = studentRepository.findAllBySession(sessionId);
+        Students allBySession = studentRepository.findAllByEnrolment(enrolmentId);
 
         // then
         assertThat(allBySession.size()).isEqualTo(3);

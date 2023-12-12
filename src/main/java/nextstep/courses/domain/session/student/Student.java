@@ -5,21 +5,21 @@ import java.util.Objects;
 public class Student {
 
     private Long id;
-    private Long sessionId;
+    private Long enrolmentId;
     private Long nsUserId;
 
-    public Student(Long sessionId, Long nsUserId) {
-        this.sessionId = sessionId;
+    public Student(Long enrolmentId, Long nsUserId) {
+        this.enrolmentId = enrolmentId;
         this.nsUserId = nsUserId;
     }
 
-    public Student(Long id, Long sessionId, Long nsUserId) {
-        this(sessionId, nsUserId);
+    public Student(Long id, Long enrolmentId, Long nsUserId) {
+        this(enrolmentId, nsUserId);
         this.id = id;
     }
 
-    public Long getSessionId() {
-        return this.sessionId;
+    public Long getEnrolmentId() {
+        return this.enrolmentId;
     }
 
     public Long getNsUserId() {
@@ -31,11 +31,11 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(sessionId, student.sessionId) && Objects.equals(nsUserId, student.nsUserId);
+        return Objects.equals(id, student.id) && Objects.equals(enrolmentId, student.enrolmentId) && Objects.equals(nsUserId, student.nsUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sessionId, nsUserId);
+        return Objects.hash(id, enrolmentId, nsUserId);
     }
 }

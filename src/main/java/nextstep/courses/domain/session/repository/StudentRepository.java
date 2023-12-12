@@ -7,5 +7,5 @@ public interface StudentRepository {
 
     void save(Student student);
 
-    Students findAllBySession(Long id);
+    Students findAllByEnrolment(Long id);
 }

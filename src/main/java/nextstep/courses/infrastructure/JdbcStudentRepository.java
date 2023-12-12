@@ -21,12 +21,13 @@ public class JdbcStudentRepository implements StudentRepository {
     @Override
     public void save(Student student) {
         String sql = "insert into student (session_id, ns_user_id) values(?, ?)";
-        jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId());
+        jdbcTemplate.update(sql, student.getEnrolmentId(), student.getNsUserId());
     }
 
     @Override
-    public Students findAllBySession(Long id) {
-        String sql = "select * from student where session_id = ?";
+    public Students findAllByEnrolment(Long id) {
+        String sql = "select * from student where enrolment_id = ?";
+
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
             rs.getLong(1),
             rs.getLong(2),
