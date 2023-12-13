@@ -52,8 +52,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
         }
     }
 
-    protected void validateCommonEnroll(NsUser nsUser) {
-    }
+    abstract protected void validateCommonEnroll(NsUser nsUser);
 
     @Override
     public int enrolledNumber() {
