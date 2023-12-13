@@ -1,14 +1,23 @@
 package nextstep.courses.domain;
 
-public class SessionCover {
+import java.time.LocalDateTime;
+
+public class SessionCover extends BaseEntity{
     public static final double RATIO = (double) 3 / 2;
 
     private Long id;
     private final byte[] image;
 
-    public SessionCover(Long id, byte[] image) {
+
+    public SessionCover(byte[] image) {
+        this.image = image;
+    }
+
+    public SessionCover(Long id, byte[] image, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.image = image;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public SessionCover(long id, int width, int height, long size, byte[] image) {

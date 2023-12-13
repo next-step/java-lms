@@ -6,4 +6,12 @@ public class BaseEntity {
     LocalDateTime createdAt;
 
     LocalDateTime updatedAt;
+
+    public LocalDateTime createdAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime updatedAt() {
+        return updatedAt;
+    }
 }
