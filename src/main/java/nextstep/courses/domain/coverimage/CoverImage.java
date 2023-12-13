@@ -21,6 +21,10 @@ public class CoverImage {
     private int width;
     private int height;
 
+    public CoverImage() {
+
+    }
+
     public CoverImage(int size, String type, int width, int height) throws Exception {
         this.size = size;
         this.type = ImageType.of(type);

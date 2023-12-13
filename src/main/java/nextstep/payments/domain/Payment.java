@@ -19,8 +19,8 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Long nsUserId) {
-        this(null, null, nsUserId, 0L);
+    public Payment(Long nsUserId, Long amount) {
+        this(null, null, nsUserId, amount);
     }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
