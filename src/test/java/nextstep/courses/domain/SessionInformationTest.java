@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static nextstep.courses.domain.session.Recruitment.*;
 import static nextstep.courses.domain.session.SessionStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -18,7 +19,7 @@ class SessionInformationTest {
     void should_be_being_recruited_when_applying_for_session() {
         Period period = new Period(LocalDate.now(),
                                    LocalDate.now().plusDays(1));
-        SessionInformation information = new SessionInformation(PREPARING, period);
+        SessionInformation information = new SessionInformation(PREPARING, period, NOT_RECRUITING);
 
         assertThatThrownBy(information::validateApply)
                 .isInstanceOf(CanNotApplyException.class);

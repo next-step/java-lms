@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.courses.domain.attendee.Approval.*;
 import static org.assertj.core.api.Assertions.*;
 
 class PaidAttendeesTest {
@@ -18,10 +19,10 @@ class PaidAttendeesTest {
     @Test
     void throw_exception_when_duplicated_attendee_exists() {
         List<Attendee> list = new ArrayList<>() {{
-            add(new Attendee(1L, 1L));
+            add(new Attendee(1L, 1L, NOT_APPROVED));
         }};
         PaidAttendees attendees = new PaidAttendees(list, 2);
-        Attendee newAttendee = new Attendee(1L, 1L);
+        Attendee newAttendee = new Attendee(1L, 1L, NOT_APPROVED);
 
         assertThatThrownBy(() -> attendees.add(newAttendee))
                 .isInstanceOf(AlreadyTakingSessionException.class);
@@ -31,10 +32,10 @@ class PaidAttendeesTest {
     @Test
     void throw_exception_when_exceed_max_capacity() {
         List<Attendee> list = new ArrayList<>() {{
-            add(new Attendee(1L, 1L));
+            add(new Attendee(1L, 1L, NOT_APPROVED));
         }};
         PaidAttendees attendees = new PaidAttendees(list, 1);
-        Attendee newAttendee = new Attendee(1L, 2L);
+        Attendee newAttendee = new Attendee(1L, 2L, NOT_APPROVED);
 
         assertThatThrownBy(() -> attendees.add(newAttendee))
                 .isInstanceOf(ExceedAttendeesException.class);

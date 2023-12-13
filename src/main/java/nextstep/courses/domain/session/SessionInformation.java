@@ -10,9 +10,14 @@ public class SessionInformation {
 
     private final Period period;
 
-    public SessionInformation(SessionStatus status, Period period) {
+    private final Recruitment recruitment;
+
+    public SessionInformation(SessionStatus status,
+                              Period period,
+                              Recruitment recruitment) {
         this.status = status;
         this.period = period;
+        this.recruitment = recruitment;
     }
 
     public void validateApply() {
@@ -20,7 +25,7 @@ public class SessionInformation {
     }
 
     private void validateRecruiting() {
-        if (status.isNotRecruiting()) {
+        if (recruitment.isNotRecruiting()) {
             throw new CanNotApplyException();
         }
     }
@@ -30,11 +35,13 @@ public class SessionInformation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionInformation that = (SessionInformation) o;
-        return status == that.status && Objects.equals(period, that.period);
+        return status == that.status
+                && Objects.equals(period, that.period)
+                && recruitment == that.recruitment;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, period);
+        return Objects.hash(status, period, recruitment);
     }
 }

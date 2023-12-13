@@ -5,6 +5,8 @@ import nextstep.courses.domain.attendee.PaidAttendees;
 
 import java.util.Objects;
 
+import static nextstep.courses.domain.attendee.Approval.*;
+
 public class PaidEnrollment implements Enrollment {
 
     private final PaidAttendees attendees;
@@ -18,7 +20,7 @@ public class PaidEnrollment implements Enrollment {
     }
 
     public Attendee enroll(Long amount, Long userId, Long sessionId) {
-        Attendee attendee = new Attendee(userId, sessionId);
+        Attendee attendee = new Attendee(userId, sessionId, NOT_APPROVED);
         price.validatePrice(amount);
         attendees.add(attendee);
         return attendee;

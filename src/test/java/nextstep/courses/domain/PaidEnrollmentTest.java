@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static nextstep.courses.domain.attendee.Approval.*;
 import static org.assertj.core.api.Assertions.*;
 
 class PaidEnrollmentTest {
@@ -19,7 +20,7 @@ class PaidEnrollmentTest {
     @DisplayName("제한된 인원을 넘을 경우 예외가 발생한다.")
     @Test
     void throw_exception_when_exceed_limited_capacity() {
-        PaidAttendees attendees = new PaidAttendees(List.of(new Attendee(1L, 1L)), 1);
+        PaidAttendees attendees = new PaidAttendees(List.of(new Attendee(1L, 1L, NOT_APPROVED)), 1);
         Price price = new Price(1000L);
         PaidEnrollment paidEnrollment = new PaidEnrollment(attendees, price);
 
@@ -30,7 +31,7 @@ class PaidEnrollmentTest {
     @DisplayName("중복으로 수강신청할 경우 예외가 발생한다.")
     @Test
     void throw_exception_if_duplicated_attendees_enrolled() {
-        PaidAttendees attendees = new PaidAttendees(List.of(new Attendee(1L, 1L)), 2);
+        PaidAttendees attendees = new PaidAttendees(List.of(new Attendee(1L, 1L, NOT_APPROVED)), 2);
         Price price = new Price(1000L);
         PaidEnrollment paidEnrollment = new PaidEnrollment(attendees, price);
 
