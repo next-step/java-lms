@@ -80,4 +80,13 @@ public class SessionState {
     public int hashCode() {
         return Objects.hash(sessionType, amount, quota);
     }
+
+    @Override
+    public String toString() {
+        return "SessionState{" +
+                "sessionType=" + sessionType +
+                ", amount=" + amount +
+                ", quota=" + quota +
+                '}';
+    }
 }

@@ -26,6 +26,7 @@ create table session (
     end_date DATETIME not null,
     session_type varchar(20) not null,
     session_status varchar(20) not null,
+    recruit_status varchar(20) not null,
     amount bigint not null,
     quota bigint not null,
     course_id bigint not null,

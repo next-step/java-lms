@@ -38,7 +38,7 @@ public class SessionsTest {
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         session = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
         sessions.add(session);
     }
 

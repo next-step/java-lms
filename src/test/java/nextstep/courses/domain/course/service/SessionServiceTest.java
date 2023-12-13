@@ -40,6 +40,7 @@ public class SessionServiceTest {
     private LocalDateTime localDateTime;
     private Applicants applicants;
     private Duration duration;
+    private RecruitStatus recruitStatus;
     private SessionState sessionState;
     private SessionStatus sessionStatus;
     private Session session;
@@ -60,11 +61,12 @@ public class SessionServiceTest {
         localDate = LocalDate.of(2023, 12, 5);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
-        sessionStatus = SessionStatus.RECRUIT;
+        sessionStatus = SessionStatus.ONGOING;
+        recruitStatus = RecruitStatus.NOT_RECRUIT;
         applicants = new Applicants();
         applicants.addApplicant(JAVAJIGI, sessionState);
         session = new Session(1L, images, duration, sessionState, applicants,
-                sessionStatus, 1L, localDateTime, localDateTime);
+                recruitStatus, sessionStatus, 1L, localDateTime, localDateTime);
     }
 
     @Test
@@ -72,14 +74,15 @@ public class SessionServiceTest {
     void create_success() {
         Session newSession = new Session(images, duration, sessionState, 1L, localDateTime);
         Session savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.create(1L, newSession, localDateTime);
         Session findSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
 
         assertThat(findSession.getId()).isEqualTo(1L);
-        assertThat(findSession.getSessionStatus()).isEqualTo(SessionStatus.READY);
+        assertThat(findSession.getSessionDetail()).isEqualTo(
+                new SessionDetail(duration, sessionState, SessionStatus.READY, recruitStatus));
         assertThat(findSession.getApplicants()).hasSize(0);
     }
 
@@ -100,7 +103,7 @@ public class SessionServiceTest {
     void changeOnReady_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
         savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnReady(1L, DATE_2023_12_5);
@@ -114,13 +117,13 @@ public class SessionServiceTest {
     void changeOnRecruit_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
         savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnRecruit(1L, DATE_2023_12_5);
 
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionStatus.RECRUIT);
+        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionStatus.ONGOING);
     }
 
     @Test
@@ -128,7 +131,7 @@ public class SessionServiceTest {
     void changeOnEnd_success() {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
         savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnEnd(1L, DATE_2023_12_12);

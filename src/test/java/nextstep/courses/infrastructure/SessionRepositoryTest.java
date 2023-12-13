@@ -69,12 +69,10 @@ public class SessionRepositoryTest {
     void save_success() {
         session = new Session(images, duration, sessionState, 1L, localDateTime);
         Session savedSession = sessionRepository.save(1L, session);
-        //Session savedSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
+
         assertThat(savedSession.getId()).isEqualTo(1L);
         assertThat(savedSession.getDuration()).isEqualTo(session.getDuration());
         assertThat(savedSession.getSessionState()).isEqualTo(session.getSessionState());
-
-        //Image savedImage = imageRepository.findById(1L).orElseThrow(NotFoundException::new);
 
         LOGGER.debug("Session: {}", savedSession);
     }
@@ -82,7 +80,7 @@ public class SessionRepositoryTest {
     @Test
     void applySave_success() {
         session = new Session(1L, images, duration, sessionState, new Applicants(),
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
         int count = sessionRepository.saveApply(apply);
         Apply savedApply = sessionRepository.findApplyByIds(JAVAJIGI.getId(), session.getId())
                 .orElseThrow(NotFoundException::new);

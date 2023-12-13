@@ -36,7 +36,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         String sql = "select " +
-                "id, start_date, end_date, session_type, amount, quota, " +
+                "id, start_date, end_date, session_type, amount, quota, recruit_status " +
                 "session_status, course_id, creator_id, created_at, updated_at " +
                 "from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
@@ -52,10 +52,11 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getInt(6)
                 ),
                 findAllBySessionId(id),
-                SessionStatus.find(rs.getString(7)),
-                rs.getLong(9),
-                rs.getTimestamp(10).toLocalDateTime(),
-                toLocalDateTime(rs.getTimestamp(11)));
+                RecruitStatus.find(rs.getString(7)),
+                SessionStatus.find(rs.getString(8)),
+                rs.getLong(10),
+                rs.getTimestamp(11).toLocalDateTime(),
+                toLocalDateTime(rs.getTimestamp(12)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 
@@ -75,13 +76,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private Session saveSession(Long courseId, Session session) {
         Duration duration = session.getDuration();
+        RecruitStatus recruitStatus = session.getRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
         SessionStatus status = session.getSessionStatus();
         String sql = "insert into session " +
                 "(start_date, end_date, session_type, session_status, amount, " +
-                "quota, course_id, creator_id, created_at, updated_at) " +
-                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "recruit_status, quota, course_id, creator_id, created_at, updated_at) " +
+                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update((Connection connection) -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -90,11 +92,12 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(3, sessionType.name());
             ps.setString(4, status.name());
             ps.setLong(5, sessionState.getAmount());
-            ps.setInt(6, sessionState.getQuota());
-            ps.setLong(7, courseId);
-            ps.setLong(8, session.getCreatorId());
-            ps.setTimestamp(9, Timestamp.valueOf(session.getCreatedAt()));
-            ps.setTimestamp(10, toTimeStamp(session.getUpdatedAt()));
+            ps.setString(6, recruitStatus.name());
+            ps.setInt(7, sessionState.getQuota());
+            ps.setLong(8, courseId);
+            ps.setLong(9, session.getCreatorId());
+            ps.setTimestamp(10, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setTimestamp(11, toTimeStamp(session.getUpdatedAt()));
             return ps;
         }, keyHolder);
 
@@ -130,21 +133,22 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int update(Long sessionId, Session session) {
         Duration duration = session.getDuration();
+        RecruitStatus recruitStatus = session.getRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
         SessionStatus sessionStatus = session.getSessionStatus();
         String sql = "update session set " +
-                "start_date = ?, end_date = ?, session_type = ?, amount = ?, quota = ?, session_status = ? " +
+                "start_date = ?, end_date = ?, session_type = ?, recruit_status = ?, amount = ?, quota = ?, session_status = ? " +
                 "where id = ?";
         return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(),
-                sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
+                recruitStatus.name(), sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
     }
 
     @Override
     public Sessions findAllByCourseId(Long courseId) {
         String sql = "select " +
                 "id, start_date, end_date, session_type, amount, quota, " +
-                "session_status, course_id, creator_id, created_at, updated_at " +
+                "recruit_status, session_status, course_id, creator_id, created_at, updated_at " +
                 "from session where course_id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
@@ -159,10 +163,11 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getInt(6)
                 ),
                 findAllBySessionId(rs.getLong(7)),
-                SessionStatus.find(rs.getString(8)),
-                rs.getLong(9),
-                rs.getTimestamp(10).toLocalDateTime(),
-                toLocalDateTime(rs.getTimestamp(11)));
+                RecruitStatus.find(rs.getString(8)),
+                SessionStatus.find(rs.getString(9)),
+                rs.getLong(10),
+                rs.getTimestamp(11).toLocalDateTime(),
+                toLocalDateTime(rs.getTimestamp(12)));
 
         List<Session> sessions = jdbcTemplate.query(sql, rowMapper, courseId);
         return new Sessions(sessions);
