@@ -79,8 +79,21 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("수강 신청은 수강 신청 인원에 해당 인원이 추가된다.")
-    void apply_success() {
+    @DisplayName("수강 신청은 모집 상태에서 준비중이면 해당 인원이 추가된다.")
+    void apply_recruit_ready_success() {
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
+
+        assertThat(session.applyCount()).isEqualTo(2);
+
+        session.apply(APPLE, payment, localDateTime);
+
+        assertThat(session.applyCount()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("수강 신청은 모집 상태에서 진행중이면 해당 인원이 추가된다.")
+    void apply_recruit_ongoing_success() {
         session = new Session(1L, images, duration, sessionState, applicants,
                 RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
@@ -92,10 +105,21 @@ public class SessionTest {
     }
 
     @Test
-    @DisplayName("수강 신청은 모집 중이 아니면 신청할 수 없다는 예외를 반환한다.")
+    @DisplayName("수강 신청은 비모집중이면 신청할 수 없다는 예외를 반환한다.")
     void apply_notRecruitStatus_throwsException() {
         session = new Session(1L, images, duration, sessionState, applicants,
                 RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.apply(APPLE, payment, localDateTime)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("수강 신청은 모집 중이어도 종료되었다면 신청할 수 없다는 예외를 반환한다.")
+    void apply_recruitStatus_endStatus_throwsException() {
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.END, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, payment, localDateTime)

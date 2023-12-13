@@ -1,5 +1,8 @@
 package nextstep.courses.domain.course.session;
 
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -56,28 +59,74 @@ public class SessionDetail {
         return this.sessionState.sameAmount(amount);
     }
 
-    public boolean charged() {
-        return this.sessionState.charged();
+    public void checkApplyPossible() {
+        checkStatusOnRecruit();
+        checkStatusOnReadyOrOnGoing();
+    }
+
+    private void checkStatusOnRecruit() {
+        if (this.notRecruiting()) {
+            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
+        }
+    }
+
+    private void checkStatusOnReadyOrOnGoing() {
+        if (this.notReadyOrOnGoing()) {
+            throw new IllegalArgumentException("강의 신청은 준비, 진행중일 때만 가능 합니다.");
+        }
     }
 
     public boolean notRecruiting() {
-        return this.sessionStatus != SessionStatus.ONGOING;
+        return this.recruitStatus == RecruitStatus.NOT_RECRUIT;
+    }
+
+    public boolean notReadyOrOnGoing() {
+        return this.sessionStatus == SessionStatus.END;
+    }
+
+    public void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
+        if(isNotPaid(payment)) {
+
+        }
+    }
+
+    public boolean isNotPaid(Payment payment) {
+        return payment == null || !charged();
+    }
+
+    public boolean charged() {
+        return this.sessionState.charged();
     }
 
     public boolean endDateIsSameOrAfter(LocalDate date) {
         return duration.endDateIsSameOrAfter(date);
     }
 
-    public void changeOnReady() {
+    public void changeOnReady(LocalDate date) {
+        checkStartDateIsSameOrBefore(date);
         this.sessionStatus = SessionStatus.READY;
     }
 
-    public void changeOnRecruit() {
+    public void changeOnRecruit(LocalDate date) {
+        checkStartDateIsSameOrBefore(date);
         this.sessionStatus = SessionStatus.ONGOING;
     }
 
-    public void changeOnEnd() {
+    private void checkStartDateIsSameOrBefore(LocalDate date) {
+        if (startDateIsSameOrBefore(date)) {
+            throw new IllegalArgumentException("강의 시작일 이전에 변경 가능합니다.");
+        }
+    }
+
+    public void changeOnEnd(LocalDate date) {
+        checkEndDateIsSameOrAfter(date);
         this.sessionStatus = SessionStatus.END;
+    }
+
+    private void checkEndDateIsSameOrAfter(LocalDate date) {
+        if (endDateIsSameOrAfter(date)) {
+            throw new IllegalArgumentException("강의 종료일 이후 변경 가능합니다.");
+        }
     }
 
     public boolean startDateIsSameOrBefore(LocalDate date) {
