@@ -19,6 +19,6 @@ public enum SessionProcessStatus {
         return Arrays.stream(SessionProcessStatus.values())
                 .filter(it -> it.name.equals(status.name()))
                 .findAny()
-                .orElse(SessionProcessStatus.PROCEEDING);
+                .orElse(SessionProcessStatus.WAITING);
     }
 }
