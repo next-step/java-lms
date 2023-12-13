@@ -21,9 +21,9 @@ public class Session {
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
-    public static Session valueOf(long id, String title, LocalDate startDate, LocalDate endDate) {
+    public static Session valueOf(long id, String title, EnrollmentStatus enrollmentStatus, LocalDate startDate, LocalDate endDate) {
         return new Session(id, title, SessionType.FREE
-                , new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate)
+                , new SessionPlan(enrollmentStatus, startDate, endDate)
                 , new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
@@ -53,7 +53,7 @@ public class Session {
     }
 
     private void validateSessionStatus() {
-        if (!SessionStatus.canSignUp(sessionPlan.getStartDate(), sessionPlan.getEndDate())) {
+        if (!EnrollmentStatus.canSignUp(this.sessionPlan.getSessionStatus())) {
             throw new CannotSignUpException("강의를 신청할 수 있는 기간이 아닙니다.");
         }
     }

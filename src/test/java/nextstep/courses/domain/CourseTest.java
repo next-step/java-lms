@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +23,8 @@ public class CourseTest {
     @DisplayName("과정은 강의가 추가될 수 있다.")
     void course_AddSession_Test() {
         assertThat(course.getSessions().size()).isEqualTo(0);
-        Session session1 = Session.valueOf(1L, "과제3 - 사다리게임", LocalDate.now(), LocalDate.now());
-        Session session2 = Session.valueOf(1L, "과제4 - 레거시 리팩토링", LocalDate.now(), LocalDate.now());
+        Session session1 = Session.valueOf(1L, "과제3 - 사다리게임", EnrollmentStatus.PREPARING, LocalDate.now(), LocalDate.now());
+        Session session2 = Session.valueOf(1L, "과제4 - 레거시 리팩토링", EnrollmentStatus.RECRUITING, LocalDate.now(), LocalDate.now());
         course.addSession(session1);
         course.addSession(session2);
         assertThat(course.getSessions().size()).isEqualTo(2);
