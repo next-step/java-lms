@@ -38,7 +38,7 @@ class SessionTest {
     }
 
     @Test
-    void 강의는_모집중에도_신청_가능하다() throws CannotRegisterException, PeriodException {
+    void 강의는_준비중에도_신청_가능하다() throws CannotRegisterException, PeriodException {
         Session session = new Session(SessionProcessStatus.WAITING, SessionRecruitStatus.OPEN);
         assertThat(session.register(NsUser.GUEST_USER)).isEqualTo(new Students(NsUser.GUEST_USER));
     }
