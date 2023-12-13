@@ -51,4 +51,14 @@ public class Course extends BaseEntity {
     public Long getCreatorId() {
         return super.getCreatorId();
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", ordering=" + ordering +
+                ", sessions=" + sessions +
+                '}';
+    }
 }

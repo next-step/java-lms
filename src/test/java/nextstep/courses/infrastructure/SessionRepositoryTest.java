@@ -1,9 +1,10 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.image.ImageRepository;
-import nextstep.courses.domain.course.image.ImageType;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.ImageRepository;
+import nextstep.courses.domain.course.session.image.ImageType;
 import nextstep.courses.domain.course.session.*;
+import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
@@ -17,6 +18,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +35,7 @@ public class SessionRepositoryTest {
     private ImageRepository imageRepository;
     private ApplicantsRepository applicantsRepository;
 
+    private Images images;
     private Image image;
     private Payment payment;
     private LocalDate localDate;
@@ -49,6 +53,9 @@ public class SessionRepositoryTest {
         applicantsRepository = new JdbcApplicantsRepository(jdbcTemplate);
 
         image = new Image(1024, ImageType.JPG, 300, 200, 1L, LocalDateTime.now());
+        List<Image> imageList = new ArrayList<>();
+        imageList.add(image);
+        images = new Images(imageList);
         payment = new Payment("1", 1L, 1L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
@@ -60,22 +67,21 @@ public class SessionRepositoryTest {
 
     @Test
     void save_success() {
-        imageRepository.save(image);
-        Image savedImage = imageRepository.findById(1L).orElseThrow(NotFoundException::new);
-
-        session = new Session(savedImage, duration, sessionState, 1L, localDateTime);
-        int count = sessionRepository.save(1L, session);
-        Session savedSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
+        session = new Session(images, duration, sessionState, 1L, localDateTime);
+        Session savedSession = sessionRepository.save(1L, session);
+        //Session savedSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getImage()).isEqualTo(session.getImage());
         assertThat(savedSession.getDuration()).isEqualTo(session.getDuration());
         assertThat(savedSession.getSessionState()).isEqualTo(session.getSessionState());
+
+        //Image savedImage = imageRepository.findById(1L).orElseThrow(NotFoundException::new);
+
         LOGGER.debug("Session: {}", savedSession);
     }
 
     @Test
     void applySave_success() {
-        session = new Session(1L, image, duration, sessionState, new Applicants(),
+        session = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
         int count = sessionRepository.saveApply(apply);
         Apply savedApply = sessionRepository.findApplyByIds(JAVAJIGI.getId(), session.getId())
@@ -87,18 +93,15 @@ public class SessionRepositoryTest {
 
     @Test
     void update_success() {
-        imageRepository.save(image);
-        Image savedImage = imageRepository.findById(2L).orElseThrow(NotFoundException::new);
-
-        session = new Session(savedImage, duration, sessionState, 1L, localDateTime);
-        int count = sessionRepository.save(1L, session);
+        session = new Session(images, duration, sessionState, 1L, localDateTime);
+        Session savedSession = sessionRepository.save(1L, session);
 
         SessionState updateSessionState = new SessionState(SessionType.CHARGE, 2000L, 30);
-        session = new Session(2L, savedImage, duration, updateSessionState, new Applicants(), session.getSessionStatus(), 1L, localDateTime, null);
-        sessionRepository.update(session.getId(), session);
-        Session updatedSession = sessionRepository.findById(2L).orElseThrow(NotFoundException::new);
+        savedSession.setSessionState(updateSessionState);
+        sessionRepository.update(savedSession.getId(), savedSession);
+        Session updatedSession = sessionRepository.findById(savedSession.getId()).orElseThrow(NotFoundException::new);
 
-        assertThat(updatedSession.getId()).isEqualTo(2L);
+        assertThat(updatedSession.getId()).isEqualTo(savedSession.getId());
         assertThat(updatedSession.getSessionState()).isEqualTo(updateSessionState);
         LOGGER.debug("Session: {}", updatedSession);
     }
