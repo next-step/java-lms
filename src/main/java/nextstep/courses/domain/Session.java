@@ -21,7 +21,7 @@ public class Session extends BaseEntity {
     private SessionStatus status = SessionStatus.PREPARE;
     private List<NsUser> participants = new ArrayList<>();
 
-    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
+    public  Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;

@@ -14,7 +14,7 @@ class SessionCoverRepositoryTest {
     private SessionCoverRepository sessionCoverRepository;
 
     @Test
-    void save_and_findById() {
+    void crud() {
         int id = sessionCoverRepository.save(new SessionCover(new byte[100]));
         SessionCover sessionCover = sessionCoverRepository.findById((long) id);
         assertThat(sessionCover.id()).isEqualTo(id);

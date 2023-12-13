@@ -1,6 +1,5 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Registration;
 import nextstep.courses.domain.RegistrationRepository;
 import nextstep.users.domain.NsUser;
@@ -26,7 +25,7 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
     @Override
     public int save(Registration registration) {
-        String sql = "insert into registration (ns_user_id, session_id, amount created_at) values(?, ?, ?, ?)";
+        String sql = "insert into registration (ns_user_id, session_id, amount, created_at) values(?, ?, ?, ?)";
         return jdbcTemplate.update(sql, registration.nsUser().getId(), registration.session().id(), registration.amount(), LocalDateTime.now());
     }
 

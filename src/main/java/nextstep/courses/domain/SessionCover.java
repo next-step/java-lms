@@ -28,6 +28,7 @@ public class SessionCover extends BaseEntity{
             throw new IllegalArgumentException("이미지 값이 없습니다.");
         }
         this.image = image;
+        this.id = id;
     }
 
     private static void validateSize(long size) {

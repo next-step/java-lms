@@ -34,9 +34,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select s.id, s.begin_dt, s.nd_dt, s.session_status, s.capacity, s.price, " +
-                "s.course_id, s.session_cover_id, s.created_at, s.updated_at" +
-                "from session s where s.id = ?";
+        String sql = "select id, begin_dt, end_dt, session_status, capacity, price, " +
+                "course_id, session_cover_id, created_at, updated_at " +
+                "from session where id = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
