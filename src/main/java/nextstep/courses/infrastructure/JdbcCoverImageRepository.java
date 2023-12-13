@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("coverImageRepository")
 public class JdbcCoverImageRepository implements CoverImageRepository {
@@ -27,6 +28,16 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     @Override
     public CoverImage findById(Long id) {
         String sql = "select id, size, extension, width, height, created_at, updated_at from cover_image where id = ?";
+        return jdbcTemplate.queryForObject(sql, rowMapper(), id);
+    }
+
+    @Override
+    public List<CoverImage> findAllBySessionId(Long id) {
+        String sql = "select id, size, extension, width, height, created_at, updated_at from cover_image where session_id = ?";
+        return jdbcTemplate.query(sql, rowMapper(), id);
+    }
+
+    private RowMapper<CoverImage> rowMapper() {
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong(1),
                 rs.getLong(2),
@@ -35,7 +46,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 rs.getInt(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return rowMapper;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

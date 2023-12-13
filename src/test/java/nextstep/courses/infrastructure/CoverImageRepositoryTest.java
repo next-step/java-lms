@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -40,5 +42,12 @@ class CoverImageRepositoryTest {
     @Test
     void find() {
         assertThat(coverImageRepository.findById(2L).getId()).isEqualTo(2L);
+    }
+
+    @Test
+    void findAllBySessionId() {
+        List<CoverImage> images = coverImageRepository.findAllBySessionId(2L);
+        assertThat(images.get(0).getId()).isEqualTo(3L);
+        assertThat(images.get(1).getId()).isEqualTo(4L);
     }
 }

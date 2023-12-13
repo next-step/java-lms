@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.CoverImages;
 import nextstep.courses.domain.Session;
-import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,17 +27,15 @@ class SessionRepositoryTest {
     private JdbcOperations jdbcTemplates;
 
     private SessionRepository sessionRepository;
-    private CoverImageRepository coverImageRepository;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplates);
-        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplates);
     }
 
     @Test
     void free_crud() {
-        Session session = Session.ofFree(1L, 2L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31));
+        Session session = Session.ofFree(1L, 2L, coverImages(), LocalDate.now(), LocalDate.of(2023, 12, 31));
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
@@ -47,7 +46,7 @@ class SessionRepositoryTest {
 
     @Test
     void paid_crud() {
-        Session session = Session.ofPaid(1L, 2L, coverImage(), LocalDate.now(), LocalDate.of(2023, 12, 31), 10, 10_000L);
+        Session session = Session.ofPaid(1L, 2L, coverImages(), LocalDate.now(), LocalDate.of(2023, 12, 31), 10, 10_000L);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
 
@@ -60,7 +59,7 @@ class SessionRepositoryTest {
         LOGGER.debug("Session: {}", paidSession);
     }
 
-    private CoverImage coverImage() {
-        return coverImageRepository.findById(2L);
+    private CoverImages coverImages() {
+        return new CoverImages(List.of(new CoverImage(1, "jpg", 300, 200)));
     }
 }
