@@ -4,8 +4,6 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.Sessions;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 
 public class Course {
     private Long id;
@@ -32,6 +30,10 @@ public class Course {
 
     public void addSession(Session session) {
         sessions.addSession(session);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

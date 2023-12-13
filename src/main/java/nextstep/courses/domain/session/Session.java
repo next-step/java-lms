@@ -15,21 +15,25 @@ import java.util.List;
 public class Session {
     private long sessionId;
     private String title;
+
+    private long courseId;
     private SessionType sessionType;
     private List<NsUser> students;
     private SessionImage sessionImage;
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
-    public static Session valueOf(long id, String title, EnrollmentStatus enrollmentStatus, LocalDate startDate, LocalDate endDate) {
-        return new Session(id, title, SessionType.FREE
+    public static Session valueOf(long id, String title, long courseId, EnrollmentStatus enrollmentStatus
+            , LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, title, courseId, SessionType.FREE
                 , new SessionPlan(enrollmentStatus, startDate, endDate)
-                , new SystemTimeStamp(LocalDateTime.now(), null));
+                , new SystemTimeStamp(createdAt, updatedAt));
     }
 
-    public Session(Long sessionId, String title, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
+    public Session(Long sessionId, String title, long courseId, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
         this.sessionId = sessionId;
         this.title = title;
+        this.courseId = courseId;
         this.students = new ArrayList<>(Collections.emptyList());
         this.sessionType = sessionType;
         this.sessionPlan = sessionPlan;
@@ -53,8 +57,8 @@ public class Session {
     }
 
     private void validateSessionStatus() {
-        if (!EnrollmentStatus.canSignUp(this.sessionPlan.getSessionStatus())) {
-            throw new CannotSignUpException("강의를 신청할 수 있는 기간이 아닙니다.");
+        if (!EnrollmentStatus.canSignUp(this.sessionPlan.getEnrollmentStatus())) {
+            throw new CannotSignUpException("강의 모집중이 아닙니다.");
         }
     }
 
@@ -68,6 +72,26 @@ public class Session {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionPlan getSessionPlan() {
+        return sessionPlan;
+    }
+
+    public SystemTimeStamp getSystemTimeStamp() {
+        return systemTimeStamp;
     }
 
     public boolean hasImage() {
