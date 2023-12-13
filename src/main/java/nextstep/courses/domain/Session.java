@@ -2,13 +2,11 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 public class Session {
     private Long id;
-    private List<NsUser> users;
     private SessionPayment sessionPayment;
     private Enrollment enrollment;
     private Duration duration;
@@ -21,39 +19,29 @@ public class Session {
         this.id = 0L;
         this.duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
         this.sessionPayment = new SessionPayment(SessionPaymentType.FREE, 0L);
-        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()),0);
+        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()),new NsUserLimit(0,SessionPaymentType.PAID));
         this.sessionStatus = SessionStatus.READY;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Session(Long id, SessionPayment sessionPayment, Enrollment enrollment, Duration duration, CoverImage coverImage) {
+    public Session(Long id, Long amountOfPrice, SessionPaymentType sessionPaymentType, NsUsers nsUsers, Integer limitOfUserCount, Duration duration, CoverImage coverImage) {
         this.id = id;
         this.duration = duration;
-        validateCountOfEnrollments(sessionPayment, enrollment);
-        this.sessionPayment = sessionPayment;
-        this.enrollment = enrollment;
+        this.sessionPayment = new SessionPayment(sessionPaymentType, amountOfPrice);
+        this.enrollment = new Enrollment(nsUsers, new NsUserLimit(limitOfUserCount, sessionPaymentType));
         this.sessionStatus = SessionStatus.READY;
         this.coverImage = coverImage;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    private void validateCountOfEnrollments(SessionPayment sessionPayment, Enrollment enrollment) {
-        if (!sessionPayment.isPaid() && enrollment.isNotEmpty()) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    public void enroll(NsUser user, Long amountOfPay){
+    public void enroll(NsUser user){
         if(sessionStatus!=SessionStatus.ENROLLING){
-            throw new IllegalArgumentException();
-        }
-        if(!sessionPayment.isSameAmountOfPay(amountOfPay)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.SESSION_STATUS_NOT_ENROLLING.getMessage());
         }
         enrollment.enroll(user);
-        if(enrollment.isFull()){
+        if(sessionPayment.isPaid() && enrollment.isFull()){
             sessionStatus = SessionStatus.DONE;
         }
     }

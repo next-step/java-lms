@@ -22,7 +22,7 @@ class EnrollmentTest {
     @DisplayName("유저 등록")
     void enroll() {
         List<NsUser> users = new ArrayList<>();
-        Enrollment actual = new Enrollment(new NsUsers(users), 1);
+        Enrollment actual = new Enrollment(new NsUsers(users), new NsUserLimit(1,SessionPaymentType.PAID));
         actual.enroll(NsUserTest.JAVAJIGI);
         assertThat(users).contains(NsUserTest.JAVAJIGI);
     }
@@ -31,7 +31,7 @@ class EnrollmentTest {
     @DisplayName("유저 등록시 한계량을 넘으면 예외발생")
     void enroll_exception() {
         List<NsUser> users = new ArrayList<>();
-        Enrollment actual = new Enrollment(new NsUsers(users), 0);
+        Enrollment actual = new Enrollment(new NsUsers(users), new NsUserLimit(0,SessionPaymentType.PAID));
         assertThatThrownBy(()->actual.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }

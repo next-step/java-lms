@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.courses.domain.NsUserLimit;
+import nextstep.courses.domain.SessionPaymentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +31,7 @@ class NsUsersTest {
     void isFull(){
         List<NsUser> actualData = new ArrayList<>(List.of(NsUserTest.JAVAJIGI));
         NsUsers users = new NsUsers(actualData);
-        assertThat(users.isFull(1)).isTrue();
+        assertThat(users.isFull(new NsUserLimit(1,SessionPaymentType.PAID))).isTrue();
     }
 
     @Test
@@ -37,7 +39,7 @@ class NsUsersTest {
     void isGreater(){
         List<NsUser> actualData = new ArrayList<>(List.of(NsUserTest.JAVAJIGI));
         NsUsers users = new NsUsers(actualData);
-        assertThat(users.isGreater(0)).isTrue();
+        assertThat(users.isGreater(new NsUserLimit(0, SessionPaymentType.PAID))).isTrue();
     }
 
     @Test

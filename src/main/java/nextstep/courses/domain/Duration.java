@@ -14,7 +14,7 @@ public class Duration {
     }
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.DURATION_RANGE.getMessage());
         }
     }
 }

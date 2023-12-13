@@ -22,17 +22,17 @@ public class CoverImage {
 
     private void validateByteSize(Long byteSize) {
         if(byteSize > 1000L){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_BYTE_SIZE.getMessage());
         }
     }
 
     private void validateWidthHeight(Double width, Double height){
         if(width < 300||height < 200){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_LEAST_SIZE.getMessage());
         }
 
         if(width/height != 1.5){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_RATIO.getMessage());
         }
     }
 }

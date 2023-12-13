@@ -17,6 +17,6 @@ public enum ImageExtension {
 
     public static ImageExtension from(String extension){
         return Arrays.stream(ImageExtension.values()).filter(e -> e.name.equals(extension)).findFirst().orElseThrow(
-                IllegalArgumentException::new);
+                ()->new IllegalArgumentException(ExceptionMessage.IMAGE_EXTENSION_NOT_FOUND_TYPE.getMessage()));
     }
 }

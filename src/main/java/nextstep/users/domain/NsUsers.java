@@ -1,6 +1,7 @@
 package nextstep.users.domain;
 
 import java.util.List;
+import nextstep.courses.domain.NsUserLimit;
 
 public class NsUsers {
     private final List<NsUser> userList;
@@ -12,12 +13,12 @@ public class NsUsers {
         userList.add(user);
     }
 
-    public boolean isFull(int limit){
-        return userList.size() >= limit;
+    public boolean isFull(NsUserLimit limit){
+        return limit.isFull(userList.size());
     }
 
-    public boolean isGreater(int limit){
-        return userList.size() > limit;
+    public boolean isGreater(NsUserLimit limit){
+        return limit.isLessThan(userList.size());
     }
 
     public boolean isNotEmpty(){

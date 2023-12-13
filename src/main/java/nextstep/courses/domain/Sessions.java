@@ -11,9 +11,9 @@ public class Sessions {
         this.sessionList = sessionList;
     }
 
-    public void enroll(NsUser user, Long sessionId, Long amountOfPaid){
+    public void enroll(NsUser user, Long sessionId){
         Session session = this.sessionList.stream().filter(e -> e.isSameId(sessionId)).findFirst().orElseThrow(
-                IllegalArgumentException::new);
-        session.enroll(user, amountOfPaid);
+                ()->new IllegalArgumentException(ExceptionMessage.SESSIONS_NOT_FOUND_SESSION.getMessage()));
+        session.enroll(user);
     }
 }

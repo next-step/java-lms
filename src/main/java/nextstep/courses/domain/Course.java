@@ -31,8 +31,8 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
-    public void enroll(NsUser user, Long sessionId, Long amountOfPaid) {
-        sessions.enroll(user, sessionId, amountOfPaid);
+    public void enroll(NsUser user, Long sessionId) {
+        sessions.enroll(user, sessionId);
     }
 
     public String getTitle() {

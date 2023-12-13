@@ -23,13 +23,15 @@ class SessionTest {
     void create_throw_exception_sessionPaymentType_price() {
         assertThatThrownBy(() ->
                 new Session(0L,
-                        new SessionPayment(SessionPaymentType.PAID, 0L),
-                        new Enrollment(new NsUsers(List.of(NsUserTest.JAVAJIGI)), 1),
+                        0L,
+                        SessionPaymentType.PAID,
+                        new NsUsers(List.of(NsUserTest.JAVAJIGI)),
+                        1,
                         new Duration(
                                 LocalDateTime.now(),
                                 LocalDateTime.now().plusMonths(1L)
                         ),
-                        new CoverImage("pobi.png",500L,300D, 200D)
+                        new CoverImage("pobi.png", 500L, 300D, 200D)
                 )
         ).isInstanceOf(IllegalArgumentException.class);
     }

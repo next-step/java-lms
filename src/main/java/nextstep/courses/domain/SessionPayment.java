@@ -17,7 +17,7 @@ public class SessionPayment {
 
     private void validatePrice(SessionPaymentType sessionPaymentType, Long price) {
         if (sessionPaymentType == SessionPaymentType.PAID && price <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.SESSION_PAYMENT_NEED_PRICE.getMessage());
         }
     }
 
