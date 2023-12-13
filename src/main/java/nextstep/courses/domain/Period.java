@@ -25,10 +25,6 @@ public class Period {
         }
     }
 
-    public boolean isDateWithinRange(LocalDate date) {
-        return !date.isBefore(startDate) && !date.isAfter(endDate);
-    }
-
     public LocalDate startDate() {
         return startDate;
     }

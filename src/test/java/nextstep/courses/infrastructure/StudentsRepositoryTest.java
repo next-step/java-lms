@@ -37,7 +37,7 @@ class StudentsRepositoryTest {
     void crud() {
         NsUser nsUser = new NsUser(1L, "javajigi", "test", "자바지기", "javajigi@slipp.net");
         Session session = sessionRepository.findById(3L);
-        session.openSession();
+        session.startRecruiting();
 
         session.register(Payment.ofPaid(1L, 3L, nsUser, 20_000L));
         Long id = studentsRepository.save(nsUser.getId(), 3L);

@@ -1,8 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.exception.InvalidSessionException;
-import nextstep.courses.exception.NotOpenSessionException;
-import nextstep.courses.exception.OutOfSessionException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
@@ -15,20 +13,20 @@ public class Session extends BaseEntity {
     private final SessionType type;
     private final CoverImages coverImages;
     private final Period period;
-    private Status status;
+    private final Status status;
     private final Students students;
     private final PaidCondition paidCondition;
 
     public static Session ofFree(Long id, Long courseId, CoverImages coverImages, LocalDate startDate, LocalDate endDate) {
-        return new Session(id, courseId, SessionType.FREE, coverImages, new Period(startDate, endDate), Status.NOT_OPEN, 0, 0L, LocalDateTime.now(), null);
+        return new Session(id, courseId, SessionType.FREE, coverImages, new Period(startDate, endDate), new Status(LocalDate.now(), startDate, endDate), 0, 0L, LocalDateTime.now(), null);
     }
 
     public static Session ofPaid(Long id, Long courseId, CoverImages coverImages, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee) {
-        return new Session(id, courseId, SessionType.PAID, coverImages, new Period(startDate, endDate), Status.NOT_OPEN, maxStudents, fee, LocalDateTime.now(), null);
+        return new Session(id, courseId, SessionType.PAID, coverImages, new Period(startDate, endDate), new Status(LocalDate.now(), startDate, endDate), maxStudents, fee, LocalDateTime.now(), null);
     }
 
-    public static Session of(Long id, Long courseId, SessionType type, CoverImages coverImages, Status status, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, courseId, type, coverImages, new Period(startDate, endDate), status, maxStudents, fee, createdAt, updatedAt);
+    public static Session of(Long id, Long courseId, SessionType type, CoverImages coverImages, RecruitmentStatus recruitmentStatus, LocalDate startDate, LocalDate endDate, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, courseId, type, coverImages, new Period(startDate, endDate), new Status(LocalDate.now(), startDate, endDate, recruitmentStatus), maxStudents, fee, createdAt, updatedAt);
     }
 
     private Session(Long id, Long courseId, SessionType type, CoverImages coverImages, Period period, Status status, int maxStudents, Long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -59,20 +57,11 @@ public class Session extends BaseEntity {
     }
 
     protected void validateStatus() {
-        if (!status.isOpen()) {
-            throw new NotOpenSessionException();
-        }
+        this.status.validate();
     }
 
-    public void openSession() {
-        if (!period.isDateWithinRange(LocalDate.now())) {
-            throw new OutOfSessionException();
-        }
-        changeStatusOpen();
-    }
-
-    private void changeStatusOpen() {
-        this.status = status.ofOpen();
+    public void startRecruiting() {
+        this.status.startRecruiting();
     }
 
     public Long id() {
@@ -87,8 +76,12 @@ public class Session extends BaseEntity {
         return type.name();
     }
 
-    public String status() {
-        return status.name();
+    public String sessionStatus() {
+        return status.sessionStatus();
+    }
+
+    public String recruitmentStatus() {
+        return status.recruitmentStatus();
     }
 
     public LocalDate startDate() {
@@ -111,6 +104,7 @@ public class Session extends BaseEntity {
     public String toString() {
         return "Session{" +
                 "id=" + id +
+                ", courseId=" + courseId +
                 ", type=" + type +
                 ", coverImages=" + coverImages +
                 ", period=" + period +
