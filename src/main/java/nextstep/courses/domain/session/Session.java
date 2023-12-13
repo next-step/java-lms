@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.NotEnrollmentPeriodException;
+import nextstep.courses.domain.Course;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -13,6 +14,7 @@ public class Session {
     private static final String ERR_NOT_PERIOD = "해당 강의는 수강신청 기간이 아닙니다.";
 
     final Long id;
+    Course course;
     CoverImage coverImage;
     final List<Long> studentsId = new ArrayList<>();
     final LocalDate startDate;
@@ -45,5 +47,9 @@ public class Session {
         if (!SessionStatus.isEnrollmentPeriod(this)) {
             throw new NotEnrollmentPeriodException(ERR_NOT_PERIOD);
         }
+    }
+
+    public void toCourse(Course course) {
+        this.course = course;
     }
 }
