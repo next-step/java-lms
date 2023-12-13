@@ -21,32 +21,12 @@ public class Session {
     private List<SessionImage> sessionImages;
     private Course course;
 
-    public Session(SessionStatus status) throws PeriodException {
-        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(), new SessionType(), null);
-    }
-
-    public Session(SessionProcessStatus processStatus, SessionRecruitStatus sessionRecruitStatus) throws PeriodException {
-        this(new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), sessionRecruitStatus, processStatus, new Students(), new SessionType(), null);
-    }
-
-    public Session(SessionStatus sessionStatus, LocalDate startDate, LocalDate endDate) throws PeriodException {
-        this(null, new Period(startDate, endDate), sessionStatus, new Students(), new SessionType(), null);
-    }
-
-    public Session(SessionStatus status, Set<NsUser> nsUsers, SessionType sessionType) throws PeriodException {
-        this(null, new Period(LocalDate.now(), LocalDate.now().plusDays(1L)), status, new Students(nsUsers), sessionType, null);
-    }
-
-    public Session(Period period, SessionStatus sessionStatus, SessionType sessionType) {
-        this(period, SessionRecruitStatus.by(sessionStatus), SessionProcessStatus.by(sessionStatus), new Students(), sessionType, null);
-    }
-
-    public Session(Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage image) {
-        this(null, period, status, students, sessionType, image);
-    }
-
     public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
         this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImage);
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, SessionType sessionType) {
+        this(id, period, recruitStatus, processStatus, new Students(), sessionType, new SessionImage());
     }
 
     public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, SessionImage sessionImage) {
@@ -156,5 +136,13 @@ public class Session {
 
     public void addCourse(Course course) {
         this.course = course;
+    }
+
+    public String getRecruitStatus() {
+        return recruitStatus.name();
+    }
+
+    public String getProcessStatus() {
+        return processStatus.name();
     }
 }

@@ -2,6 +2,8 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.enums.SessionProcessStatus;
+import nextstep.courses.domain.session.enums.SessionRecruitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,11 @@ class JdbcSessionRepositoryTest {
     void save() throws PeriodException {
         Period period = new Period(LocalDate.now(), LocalDate.now().plusDays(1));
         Course course = new Course("title", 1L, 1);
-        Session session = new Session(period, SessionStatus.OPEN, new Students(), new SessionType(PayType.FREE, 1000L, 10), new SessionImage());
+        Session session = new Session(1L, period, SessionRecruitStatus.OPEN, SessionProcessStatus.WAITING, new SessionType(PayType.FREE, 1000L, 10));
         session.addCourse(course);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session save = sessionRepository.findById(1L);
-        assertThat(save.status()).isEqualTo(session.status());
+        assertThat(save.price()).isEqualTo(session.price());
     }
 }
