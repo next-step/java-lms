@@ -7,8 +7,8 @@ import nextstep.users.domain.NsUser;
 
 public class PaymentService {
     public Payment payment(NsUser user, Session session, Long amount) {
-        Registration registration = new Registration();
-        registration.register(user, session, amount);
+        Registration registration = new Registration(user, session, amount);
+        registration.register();
         return new Payment(session.id());
     }
 }

@@ -19,7 +19,7 @@ public class Session extends BaseEntity {
     private final Price price;
 
     private SessionStatus status = SessionStatus.PREPARE;
-    private final List<NsUser> participants = new ArrayList<>();
+    private List<NsUser> participants = new ArrayList<>();
 
     public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
@@ -30,9 +30,22 @@ public class Session extends BaseEntity {
         this.price = price;
     }
 
-    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, SessionCover sessionCover, Capacity capacity, Price price, Course course) {
+    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt, List<NsUser> participants) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
+        this.status = status;
+        this.sessionCover = sessionCover;
+        this.course = course;
+        this.capacity = capacity;
+        this.price = price;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.participants = participants;
+    }
+
+    public Session(long id, Period period, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.period = period;
         this.status = status;
         this.sessionCover = sessionCover;
         this.course = course;
