@@ -7,16 +7,15 @@ import java.util.List;
 
 public class Enrollment {
     private Session session;
-    private Long userNumber;
+    private NsUserSessions nsUserSessions;
 
-    public Enrollment(Session session, List<NsUserSession> nsUserSessions) {
+    public Enrollment(Session session, NsUserSessions nsUserSessions) {
         this.session = session;
-        this.userNumber = (long) nsUserSessions.size();
+        this.nsUserSessions = nsUserSessions;
     }
 
     public NsUserSession enroll(Payment payment) throws CannotEnrollException {
-        session.checkStatus();
-        session.checkPaidSession(payment, userNumber);
+        session.enroll(payment, nsUserSessions.userNumber());
         return new NsUserSession(payment.getSessionId(), payment.getNsUserId());
     }
 }

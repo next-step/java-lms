@@ -4,6 +4,7 @@ import nextstep.courses.CannotEnrollException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Session {
     private Long id;
@@ -14,14 +15,15 @@ public class Session {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private SessionStatus sessionStatus;
-    private SessionPaymentCondition sessionPaymentCondition;
+    private SessionCondition sessionCondition;
+//    private List<NsUserSession> nsUserSessions;
 
     public Session(Long courseId,
                    CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
-                   SessionPaymentCondition sessionPaymentCondition) {
-        this(0L, courseId, 0L, coverImage, sessionPeriod, sessionStatus, sessionPaymentCondition);
+                   SessionCondition sessionCondition) {
+        this(0L, courseId, 0L, coverImage, sessionPeriod, sessionStatus, sessionCondition);
     }
 
     public Session(Long id,
@@ -30,7 +32,7 @@ public class Session {
                    CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
-                   SessionPaymentCondition sessionPaymentCondition) {
+                   SessionCondition sessionCondition) {
         validate(courseId);
         this.id = id;
         this.courseId = courseId;
@@ -40,7 +42,7 @@ public class Session {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
         this.sessionStatus = sessionStatus;
-        this.sessionPaymentCondition = sessionPaymentCondition;
+        this.sessionCondition = sessionCondition;
     }
 
     public Session(Long id,
@@ -49,8 +51,8 @@ public class Session {
                    CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    String sessionStatus,
-                   SessionPaymentCondition sessionPaymentCondition) {
-        this(id, courseId, generation, coverImage, sessionPeriod, SessionStatus.valueOf(sessionStatus), sessionPaymentCondition);
+                   SessionCondition sessionCondition) {
+        this(id, courseId, generation, coverImage, sessionPeriod, SessionStatus.valueOf(sessionStatus), sessionCondition);
     }
 
     private void validate(Long courseId) {
@@ -59,14 +61,11 @@ public class Session {
         }
     }
 
-    public void checkStatus() throws CannotEnrollException {
+    public void enroll(Payment payment, long userNumber) throws CannotEnrollException {
         if (!sessionStatus.isRecruiting()) {
             throw new CannotEnrollException("강의가 모집중인 상태가 아닙니다.");
         }
-    }
-
-    public void checkPaidSession(Payment payment, Long userNumber) throws CannotEnrollException {
-        sessionPaymentCondition.checkPaidSession(payment, userNumber);
+        sessionCondition.match(payment, userNumber);
     }
 
     public Long courseId() {
@@ -97,8 +96,8 @@ public class Session {
         return sessionStatus;
     }
 
-    public SessionPaymentCondition sessionPaymentCondition() {
-        return sessionPaymentCondition;
+    public SessionCondition sessionPaymentCondition() {
+        return sessionCondition;
     }
 
     @Override
@@ -112,7 +111,7 @@ public class Session {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", sessionStatus=" + sessionStatus +
-                ", sessionPaymentCondition=" + sessionPaymentCondition +
+                ", sessionPaymentCondition=" + sessionCondition +
                 '}';
     }
 }

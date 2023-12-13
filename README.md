@@ -87,3 +87,16 @@
     * [x] coverImageRepository
   * [x] CRUD 코드에 대한 테스트 코드 추가
     * [x] sessionRepository
+
+#### Feedback 23.12.12
+* [ ] CoverImage와 Sesssion의 관계 고민
+  * [ ] Session은 CoverImage를 가진다.
+  * [ ] 수강신청 시 CoverImage의 정보는 필요하지 않다.
+  * [ ] CoverImage는 sessionId를 반드시 안다.
+* [ ] Repository 와 DAO의 차이를 알아보고 설계를 수정
+* [x] CoverImage의 중복된 validation 제거
+* [x] Wrapper 타입과 Primitive 타입의 쓰임새 확인 후 수정
+* [x] SessionPaymentCondition 내 메서드의 적합한 명명 고민
+* [x] 수강신청 로직 수정(검증)
+* [ ] 객체 저장 후 id값을 반환하도록 하기
+* [x] Class 레벨의 @Transactional 활용

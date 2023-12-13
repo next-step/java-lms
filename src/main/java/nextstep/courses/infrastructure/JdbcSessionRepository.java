@@ -35,7 +35,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setObject(5, LocalDateTime.now());
             ps.setString(6, session.sessionStatus().name());
             ps.setLong(7, session.sessionPaymentCondition().amount());
-            ps.setLong(8, session.sessionPaymentCondition().maxUser());
+            ps.setLong(8, session.sessionPaymentCondition().maxUserNumber());
             return ps;
         }, keyHolder);
 
@@ -52,7 +52,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 coverImage,
                 new SessionPeriod(toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
                 rs.getString(6),
-                new SessionPaymentCondition(rs.getLong(7), rs.getLong(8))
+                new SessionCondition(rs.getLong(7), rs.getLong(8))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

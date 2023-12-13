@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+@Transactional
 public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
@@ -24,11 +25,11 @@ public class SessionService {
 
     public void enroll(Payment payment) throws CannotEnrollException {
         CoverImage coverImage = coverImageRepository.findBySessionId(payment.getSessionId());
-        Session session = sessionRepository.findById(payment.getSessionId(), coverImage);
         List<NsUserSession> nsUserSessions = sessionRepository.getNsUserSessions(payment.getSessionId());
-
-        Enrollment enrollment = new Enrollment(session, nsUserSessions);
+        Session session = sessionRepository.findById(payment.getSessionId(), coverImage);
+        Enrollment enrollment = new Enrollment(session, new NsUserSessions(nsUserSessions));
         NsUserSession nsUserSession = enrollment.enroll(payment);
+//        NsUserSession nsUserSession = session.enroll(payment, nsUserSessions);
 
         sessionRepository.saveNsUserSession(nsUserSession);
     }

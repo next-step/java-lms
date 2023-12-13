@@ -10,32 +10,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
-    public static final Session FREE_SESSION = makeSession(new SessionPaymentCondition());
-    public static final Session PAID_SESSION = makeSession(new SessionPaymentCondition(800_000L, 120L));
+    public static final Session FREE_SESSION = makeSession(new SessionCondition());
+    public static final Session PAID_SESSION = makeSession(new SessionCondition(800_000L, 120L));
 
-    private static Session makeSession(SessionPaymentCondition sessionPaymentCondition) {
+    private static Session makeSession(SessionCondition sessionPaymentCondition) {
         return new Session(1L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition);
     }
 
     @Test
     @DisplayName("생성_null 이거나 0_throw IllegalArgumentException")
     void 생성_validate() {
-        SessionPaymentCondition sessionPaymentCondition = new SessionPaymentCondition(0L, 0L);
+        SessionCondition sessionPaymentCondition = new SessionCondition(0L, 0L);
         assertThatThrownBy(() -> new Session(0L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("과정 ID 값은 빈 값이거나 0이 올 수 없습니다.");
         assertThatThrownBy(() -> new Session(null, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("과정 ID 값은 빈 값이거나 0이 올 수 없습니다.");
-    }
-
-    @Test
-    @DisplayName("checkStatus_SessionStatus.RECRUITING 외_throw CannotEnrollException")
-    void checkStatus() {
-        Session preparingSession = new Session(1L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.PREPARING, new SessionPaymentCondition());
-
-        assertThatThrownBy(preparingSession::checkStatus)
-                .isInstanceOf(CannotEnrollException.class)
-                .hasMessage("강의가 모집중인 상태가 아닙니다.");
     }
 }
