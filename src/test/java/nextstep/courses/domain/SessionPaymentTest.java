@@ -1,4 +1,4 @@
-package nextstep.courses.domain.dto;
+package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

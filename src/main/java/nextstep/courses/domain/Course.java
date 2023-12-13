@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.users.domain.NsUser;
 
 public class Course {
     private Long id;
@@ -28,6 +29,10 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void enroll(NsUser user, Long sessionId, Long amountOfPaid) {
+        sessions.enroll(user, sessionId, amountOfPaid);
     }
 
     public String getTitle() {

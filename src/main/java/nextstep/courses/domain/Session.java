@@ -1,67 +1,64 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.dto.SessionEnrollment;
-import nextstep.courses.domain.dto.SessionPayment;
+import java.util.ArrayList;
+import java.util.List;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
 
 public class Session {
     private Long id;
+    private List<NsUser> users;
+    private SessionPayment sessionPayment;
+    private Enrollment enrollment;
+    private Duration duration;
     private SessionStatus sessionStatus;
-    private SessionPaymentType sessionPaymentType;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Long price;
-    private Integer countOfEnrollments;
-    private Integer limitOfEnrollments;
+    private CoverImage coverImage;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate) {
+    public Session() {
         this.id = 0L;
-        validateDate(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.sessionPaymentType = SessionPaymentType.FREE;
-        this.price = 0L;
-        this.countOfEnrollments = 0;
-        this.limitOfEnrollments = 0;
+        this.duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+        this.sessionPayment = new SessionPayment(SessionPaymentType.FREE, 0L);
+        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()),0);
         this.sessionStatus = SessionStatus.READY;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Session(Long id, SessionPayment sessionPayment, SessionEnrollment sessionEnrollment, LocalDateTime startDate,
-                   LocalDateTime endDate) {
+    public Session(Long id, SessionPayment sessionPayment, Enrollment enrollment, Duration duration, CoverImage coverImage) {
         this.id = id;
-        validateDate(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        validatePrice(sessionPayment.getType(), sessionPayment.getAmount());
-        this.sessionPaymentType = sessionPayment.getType();
-        this.price = sessionPayment.getAmount();
-        validateCountOfEnrollments(sessionPayment, sessionEnrollment);
-        this.countOfEnrollments = sessionEnrollment.getCountOfEnrollments();
-        this.limitOfEnrollments = sessionEnrollment.getLimits();
+        this.duration = duration;
+        validateCountOfEnrollments(sessionPayment, enrollment);
+        this.sessionPayment = sessionPayment;
+        this.enrollment = enrollment;
         this.sessionStatus = SessionStatus.READY;
+        this.coverImage = coverImage;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
-        if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
+    private void validateCountOfEnrollments(SessionPayment sessionPayment, Enrollment enrollment) {
+        if (!sessionPayment.isPaid() && enrollment.isNotEmpty()) {
             throw new IllegalArgumentException();
         }
     }
 
-    private void validatePrice(SessionPaymentType sessionPaymentType, Long price) {
-        if (sessionPaymentType == SessionPaymentType.PAID && price <= 0) {
+    public void enroll(NsUser user, Long amountOfPay){
+        if(sessionStatus!=SessionStatus.ENROLLING){
             throw new IllegalArgumentException();
+        }
+        if(!sessionPayment.isSameAmountOfPay(amountOfPay)){
+            throw new IllegalArgumentException();
+        }
+        enrollment.enroll(user);
+        if(enrollment.isFull()){
+            sessionStatus = SessionStatus.DONE;
         }
     }
 
-    private void validateCountOfEnrollments(SessionPayment sessionPayment, SessionEnrollment sessionEnrollment) {
-        if (!sessionPayment.isPaid() && sessionEnrollment.isNotEmpty()) {
-            throw new IllegalArgumentException();
-        }
+    public boolean isSameId(Long id){
+        return this.id.equals(id);
     }
 }
