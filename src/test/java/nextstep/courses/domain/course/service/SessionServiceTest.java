@@ -1,8 +1,9 @@
 package nextstep.courses.domain.course.service;
 
-import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.image.ImageType;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.ImageType;
 import nextstep.courses.domain.course.session.*;
+import nextstep.courses.domain.course.session.image.Images;
 import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +33,7 @@ public class SessionServiceTest {
     private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
     private static final LocalDate DATE_2023_12_12 = LocalDate.of(2023, 12, 12);
 
+    private Images images;
     private Image image;
     private Payment payment;
     private LocalDate localDate;
@@ -52,6 +55,7 @@ public class SessionServiceTest {
     public void setUp() {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
+        images = new Images(List.of(image));
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         duration = new Duration(localDate, localDate);
@@ -59,15 +63,15 @@ public class SessionServiceTest {
         sessionStatus = SessionStatus.RECRUIT;
         applicants = new Applicants();
         applicants.addApplicant(JAVAJIGI, sessionState);
-        session = new Session(1L, image, duration, sessionState, applicants,
+        session = new Session(1L, images, duration, sessionState, applicants,
                 sessionStatus, 1L, localDateTime, localDateTime);
     }
 
     @Test
     @DisplayName("주어진 강의 정보로 강의를 생성한다.")
     void create_success() {
-        Session newSession = new Session(image, duration, sessionState, 1L, localDateTime);
-        Session savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
+        Session newSession = new Session(images, duration, sessionState, 1L, localDateTime);
+        Session savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
@@ -95,7 +99,7 @@ public class SessionServiceTest {
     @DisplayName("강의 시작 날짜 전이라면 주어진 식별자에 해당하는 강의를 준비 상태로 변경한다.")
     void changeOnReady_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
@@ -109,7 +113,7 @@ public class SessionServiceTest {
     @DisplayName("강의 시작 날짜 전이라면 주어진 식별자에 해당하는 강의를 모집중 상태로 변경한다.")
     void changeOnRecruit_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
@@ -123,7 +127,7 @@ public class SessionServiceTest {
     @DisplayName("강의 종료날짜 이후라면 주어진 식별자에 해당하는 강의를 종료 상태로 변경한다.")
     void changeOnEnd_success() {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 

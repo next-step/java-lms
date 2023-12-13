@@ -1,4 +1,4 @@
-package nextstep.courses.domain.course.image;
+package nextstep.courses.domain.course.session.image;
 
 import nextstep.courses.domain.BaseEntity;
 
@@ -57,6 +57,10 @@ public class Image extends BaseEntity {
         if ((double) imageWidth / imageHeight != WIDTH_HEIGHT_RATIO) {
             throw new IllegalArgumentException("가로 세로 비율은 3:2여야 합니다.");
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

@@ -1,7 +1,8 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.BaseEntity;
-import nextstep.courses.domain.course.image.Image;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
 public class Session extends BaseEntity {
     private Long id;
 
-    private Image image;
+    private Images images;
 
     private Duration duration;
 
@@ -22,17 +23,17 @@ public class Session extends BaseEntity {
 
     private SessionStatus sessionStatus;
 
-    public Session(Image image, Duration duration, SessionState sessionState,
+    public Session(Images images, Duration duration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
-        this(0L, image, duration, sessionState, new Applicants(),
+        this(0L, images, duration, sessionState, new Applicants(),
                 SessionStatus.READY, creatorId, date, null);
     }
 
-    public Session(Long id, Image image, Duration duration, SessionState sessionState,
+    public Session(Long id, Images images, Duration duration, SessionState sessionState,
                    Applicants applicants, SessionStatus sessionStatus, Long creatorId,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
-        if (image == null) {
+        if (images == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
         }
 
@@ -45,11 +46,23 @@ public class Session extends BaseEntity {
         }
 
         this.id = id;
-        this.image = image;
+        this.images = images;
         this.duration = duration;
         this.sessionState = sessionState;
         this.applicants = applicants;
         this.sessionStatus = sessionStatus;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setImages(Images images) {
+        this.images = images;
+    }
+
+    public void setSessionState(SessionState updateSessionState) {
+        this.sessionState = updateSessionState;
     }
 
     public boolean sameAmount(Long amount) {
@@ -122,8 +135,8 @@ public class Session extends BaseEntity {
         }
     }
 
-    public Image getImage() {
-        return image;
+    public Images getImages() {
+        return images;
     }
 
     public Duration getDuration() {
@@ -146,7 +159,7 @@ public class Session extends BaseEntity {
     public String toString() {
         return "Session{" +
                 "id=" + id +
-                ", image=" + image +
+                ", images=" + images +
                 ", duration=" + duration +
                 ", sessionState=" + sessionState +
                 ", applicants=" + applicants +

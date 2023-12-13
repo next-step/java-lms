@@ -1,7 +1,8 @@
 package nextstep.courses.domain.course.session;
 
-import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.image.ImageType;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.ImageType;
+import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionsTest {
     private Sessions sessions;
+    private Images images;
     private Image image;
     private Payment payment;
     private LocalDate localDate;
@@ -30,11 +32,12 @@ public class SessionsTest {
         sessions = new Sessions();
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
+        images = new Images(List.of(image));
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
-        session = new Session(1L, image, duration, sessionState, new Applicants(),
+        session = new Session(1L, images, duration, sessionState, new Applicants(),
                 SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
         sessions.add(session);
     }
