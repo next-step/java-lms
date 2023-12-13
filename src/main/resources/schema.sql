@@ -51,7 +51,7 @@ create table delete_history (
 
 create table cover_image (
     id bigint not null,
-    session_id bigint,
+    session_id bigint not null,
     size double not null,
     extension varchar(10) not null,
     width int not null,

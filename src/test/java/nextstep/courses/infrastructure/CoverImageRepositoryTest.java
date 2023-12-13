@@ -32,7 +32,7 @@ class CoverImageRepositoryTest {
     @Test
     void crud() {
         CoverImage image = new CoverImage(1, "jpg", 300, 200);
-        int count = coverImageRepository.save(image);
+        int count = coverImageRepository.save(image, 2L);
         assertThat(count).isEqualTo(1);
         CoverImage savedImage = coverImageRepository.findById(1L);
         assertThat(savedImage.getId()).isEqualTo(image.getId());

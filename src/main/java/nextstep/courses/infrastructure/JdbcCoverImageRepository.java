@@ -20,32 +20,32 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
     }
 
     @Override
-    public int save(CoverImage image) {
-        String sql = "insert into cover_image (id, size, extension, width, height, created_at) values(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, image.getId(), image.getSize(), image.getExtension(), image.getWidth(), image.getHeight(), image.getCreatedAt());
+    public int save(CoverImage image, Long sessionId) {
+        String sql = "insert into cover_image (id, session_id, size, extension, width, height, created_at) values(?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, image.getId(), sessionId, image.getSize(), image.getExtension(), image.getWidth(), image.getHeight(), image.getCreatedAt());
     }
 
     @Override
     public CoverImage findById(Long id) {
-        String sql = "select id, size, extension, width, height, created_at, updated_at from cover_image where id = ?";
+        String sql = "select id, session_id, size, extension, width, height, created_at, updated_at from cover_image where id = ?";
         return jdbcTemplate.queryForObject(sql, rowMapper(), id);
     }
 
     @Override
     public List<CoverImage> findAllBySessionId(Long id) {
-        String sql = "select id, size, extension, width, height, created_at, updated_at from cover_image where session_id = ?";
+        String sql = "select id, session_id, size, extension, width, height, created_at, updated_at from cover_image where session_id = ?";
         return jdbcTemplate.query(sql, rowMapper(), id);
     }
 
     private RowMapper<CoverImage> rowMapper() {
         RowMapper<CoverImage> rowMapper = (rs, rowNum) -> new CoverImage(
                 rs.getLong(1),
-                rs.getLong(2),
-                rs.getString(3),
-                rs.getInt(4),
+                rs.getLong(3),
+                rs.getString(4),
                 rs.getInt(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
+                rs.getInt(6),
+                toLocalDateTime(rs.getTimestamp(7)),
+                toLocalDateTime(rs.getTimestamp(8)));
         return rowMapper;
     }
 

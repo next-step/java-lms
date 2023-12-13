@@ -11,7 +11,7 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 
 INSERT INTO course (id, title, creator_id, created_at) VALUES (2, 'JPA 활용편1', 2, CURRENT_TIMESTAMP());
 
-INSERT INTO cover_image (id, size, extension, width, height, created_at) VALUES (2, 1, 'jpg', 300, 200, CURRENT_TIMESTAMP());
+INSERT INTO cover_image (id, session_id, size, extension, width, height, created_at) VALUES (2, 3, 1, 'jpg', 300, 200, CURRENT_TIMESTAMP());
 INSERT INTO cover_image (id, session_id, size, extension, width, height, created_at) VALUES (3, 2, 1, 'jpg', 300, 200, CURRENT_TIMESTAMP());
 INSERT INTO cover_image (id, session_id, size, extension, width, height, created_at) VALUES (4, 2, 1, 'jpg', 300, 200, CURRENT_TIMESTAMP());
 
