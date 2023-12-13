@@ -5,6 +5,7 @@ import nextstep.courses.domain.course.session.image.ImageType;
 import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
-    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net");
+    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net" ,Type.TEACHER);
+    private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net",Type.TEACHER);
+    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net",Type.TEACHER);
+    private static final NsUser ERIC = new NsUser(4L, "apple", "password", "name", "apple@slipp.net",Type.STUDENT);
     private static final LocalDate DATE_2023_12_5 = LocalDate.of(2023, 12, 5);
     private static final LocalDate DATE_2023_12_6 = LocalDate.of(2023, 12, 6);
     private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
@@ -49,6 +51,7 @@ public class SessionTest {
         applicants = new Applicants();
         this.applicants.addApplicant(JAVAJIGI, sessionState);
         this.applicants.addApplicant(SANJIGI, sessionState);
+        this.applicants.addApplicant(ERIC, sessionState);
         session = new Session(1L, images, duration, sessionState, applicants,
                 RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
     }
@@ -84,11 +87,11 @@ public class SessionTest {
         session = new Session(1L, images, duration, sessionState, applicants,
                 RecruitStatus.RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
 
-        assertThat(session.applyCount()).isEqualTo(2);
+        assertThat(session.applyCount()).isEqualTo(3);
 
         session.apply(APPLE, payment, localDateTime);
 
-        assertThat(session.applyCount()).isEqualTo(3);
+        assertThat(session.applyCount()).isEqualTo(4);
     }
 
     @Test
@@ -97,11 +100,11 @@ public class SessionTest {
         session = new Session(1L, images, duration, sessionState, applicants,
                 RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
-        assertThat(session.applyCount()).isEqualTo(2);
+        assertThat(session.applyCount()).isEqualTo(3);
 
         session.apply(APPLE, payment, localDateTime);
 
-        assertThat(session.applyCount()).isEqualTo(3);
+        assertThat(session.applyCount()).isEqualTo(4);
     }
 
     @Test
@@ -213,6 +216,84 @@ public class SessionTest {
 
         assertThatThrownBy(
                 () -> session.changeOnEnd(DATE_2023_12_12)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("approve 는 선생님인 경우 수강생의 강의 신청을 승인한다.")
+    void approve_teacher_changeApproveTrue() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+
+        Apply changedApply = session.approve(JAVAJIGI, ERIC, apply, localDateTime);
+
+        assertThat(changedApply.isApproved()).isTrue();
+    }
+
+    @Test
+    @DisplayName("approve 는 학생인 경우 권한이 없다는 예외를 던진다.")
+    void approve_student_throwsException() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.approve(ERIC, JAVAJIGI, apply, localDateTime)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("approve 는 이미 수강 승인이 되었으면 예외를 던진다.")
+    void approve_alreadyApproved_throwsException() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, true, 1L, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.approve(JAVAJIGI, ERIC, apply, localDateTime)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("cancel 는 선생님인 경우 수강생의 강의 신청을 취소한다.")
+    void cancel_teacher_changeApproveTrue() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(4L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, true, 1L, localDateTime, localDateTime);
+
+        Apply changedApply = session.cancel(JAVAJIGI, ERIC, apply, localDateTime);
+
+        assertThat(changedApply.isApproved()).isFalse();
+    }
+
+    @Test
+    @DisplayName("cancel 는 학생인 경우 권한이 없다는 예외를 던진다.")
+    void cancel_student_throwsException() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.cancel(ERIC, JAVAJIGI, apply, localDateTime)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("cancel 는 이미 수강 취소가 되었으면 예외를 던진다.")
+    void cancel_alreadyCanceled_throwsException() {
+        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+
+        assertThatThrownBy(
+                () -> session.cancel(JAVAJIGI, ERIC, apply, localDateTime)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ApplicantsTest {
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
-    private static final NsUser APPLE = new NsUser(3L, "sanjigi", "password", "name", "apple@slipp.net");
+    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", Type.TEACHER);
+    private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net", Type.TEACHER);
+    private static final NsUser APPLE = new NsUser(3L, "sanjigi", "password", "name", "apple@slipp.net", Type.TEACHER);
 
     private Applicants applicants;
     private SessionState sessionState;

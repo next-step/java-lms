@@ -8,6 +8,7 @@ import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionServiceTest {
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net");
+    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", Type.TEACHER);
+    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net", Type.TEACHER);
     private static final LocalDate DATE_2023_12_5 = LocalDate.of(2023, 12, 5);
     private static final LocalDate DATE_2023_12_6 = LocalDate.of(2023, 12, 6);
     private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
@@ -77,7 +78,7 @@ public class SessionServiceTest {
                 RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
-        sessionService.create(1L, newSession, localDateTime);
+        sessionService.create(1L, newSession);
         Session findSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
 
         assertThat(findSession.getId()).isEqualTo(1L);

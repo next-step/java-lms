@@ -53,7 +53,8 @@ public class SessionState {
     }
 
     public boolean chargedAndFull(List<NsUser> applicants) {
-        return this.sessionType == SessionType.CHARGE && this.quota == applicants.size();
+        return this.sessionType == SessionType.CHARGE
+                && this.quota == applicants.size();
     }
 
     public SessionType getSessionType() {

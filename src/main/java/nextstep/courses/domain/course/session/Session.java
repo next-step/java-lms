@@ -57,7 +57,23 @@ public class Session extends BaseEntity {
         checkPaymentIsPaid(loginUser, payment);
 
         this.applicants.addApplicant(loginUser, sessionDetail.getSessionState());
-        return toApply(loginUser, date);
+        return toApply(loginUser, false, date);
+    }
+
+    public Apply approve(NsUser loginUser, NsUser applicant, Apply apply, LocalDateTime date) {
+        loginUser.checkUserHasAuthor();
+        this.applicants.checkApprovePossible(applicant, sessionDetail.getSessionState());
+        apply.checkApprovePossible();
+
+        return toApply(applicant, true, date);
+    }
+
+    public Apply cancel(NsUser loginUser, NsUser applicant, Apply apply, LocalDateTime date) {
+        loginUser.checkUserHasAuthor();
+        this.applicants.checkCancelPossible(applicant, sessionDetail.getSessionState());
+        apply.checkCancelPossible();
+
+        return toApply(applicant, false, date);
     }
 
     private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
@@ -67,13 +83,13 @@ public class Session extends BaseEntity {
     }
 
     private void checkPaymentIsValid(NsUser loginUser, Payment payment) {
-        if (payment != null && payment.isPaid(loginUser, this)) {
+        if (payment == null || !payment.isPaid(loginUser, this)) {
             throw new IllegalArgumentException("결제를 다시 확인하세요;");
         }
     }
 
-    private Apply toApply(NsUser loginUser, LocalDateTime date) {
-        return new Apply(this, loginUser, date);
+    private Apply toApply(NsUser loginUser, boolean approved, LocalDateTime date) {
+        return new Apply(this, loginUser, approved, date);
     }
 
     public void changeOnReady(LocalDate date) {

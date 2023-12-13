@@ -36,9 +36,10 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         String sql = "select " +
-                "id, start_date, end_date, session_type, amount, quota, recruit_status " +
+                "id, start_date, end_date, session_type, amount, quota, recruit_status, " +
                 "session_status, course_id, creator_id, created_at, updated_at " +
                 "from session where id = ?";
+
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 findAllImagesBySessionId(rs.getLong(1)),
@@ -79,7 +80,7 @@ public class JdbcSessionRepository implements SessionRepository {
         RecruitStatus recruitStatus = session.getRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionStatus status = session.getSessionStatus();
+        SessionStatus sessionStatus = session.getSessionStatus();
         String sql = "insert into session " +
                 "(start_date, end_date, session_type, session_status, amount, " +
                 "recruit_status, quota, course_id, creator_id, created_at, updated_at) " +
@@ -90,7 +91,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(1, Timestamp.valueOf(duration.getStartDate().atStartOfDay()));
             ps.setTimestamp(2, Timestamp.valueOf(duration.getEndDate().atStartOfDay()));
             ps.setString(3, sessionType.name());
-            ps.setString(4, status.name());
+            ps.setString(4, sessionStatus.name());
             ps.setLong(5, sessionState.getAmount());
             ps.setString(6, recruitStatus.name());
             ps.setInt(7, sessionState.getQuota());
@@ -110,23 +111,24 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int saveApply(Apply apply) {
         String sql = "insert into apply " +
-                "(session_id, ns_user_id, creator_id, created_at, updated_at) " +
-                "values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(),
+                "(session_id, ns_user_id, approved, creator_id, created_at, updated_at) " +
+                "values(?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(), apply.isApproved(),
                 apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
     }
 
     @Override
     public Optional<Apply> findApplyByIds(Long nsUserId, Long sessionId) {
         String sql = "select " +
-                "session_id, ns_user_id, creator_id, created_at, updated_at " +
+                "session_id, ns_user_id, approved, creator_id, created_at, updated_at " +
                 "from apply where ns_user_id = ? and session_id = ?";
         RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
                 rs.getLong(1),
                 rs.getLong(2),
-                rs.getLong(3),
-                rs.getTimestamp(4).toLocalDateTime(),
-                toLocalDateTime(rs.getTimestamp(5)));
+                rs.getBoolean(3),
+                rs.getLong(4),
+                rs.getTimestamp(5).toLocalDateTime(),
+                toLocalDateTime(rs.getTimestamp(6)));
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
     }
 
@@ -177,6 +179,12 @@ public class JdbcSessionRepository implements SessionRepository {
     public int updateCourse(Long courseId, Session session) {
         String sql = "update session set course_id = ? where id = ?";
         return jdbcTemplate.update(sql, session.getId(), courseId);
+    }
+
+    @Override
+    public int updateApply(Apply apply) {
+        String sql = "update apply set approved = ? where session_id = ? and ns_user_id = ?";
+        return jdbcTemplate.update(sql, apply.isApproved(), apply.getSessionId(), apply.getNsUserId());
     }
 
     private Images findAllImagesBySessionId(Long id) {

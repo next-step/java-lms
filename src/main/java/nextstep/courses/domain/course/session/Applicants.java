@@ -43,6 +43,21 @@ public class Applicants implements Iterable<NsUser> {
         }
     }
 
+    public void checkApprovePossible(NsUser applicant, SessionState sessionState) {
+        checkApplicantExists(applicant);
+        checkChargedAndApplySizeIsValid(sessionState);
+    }
+
+    private void checkApplicantExists(NsUser applicant) {
+        if (!this.applicants.contains(applicant)) {
+            throw new IllegalArgumentException("수강 신청 이력이 없습니다.");
+        }
+    }
+
+    public void checkCancelPossible(NsUser applicant, SessionState sessionState) {
+        checkApplicantExists(applicant);
+    }
+
     @Override
     public Iterator<NsUser> iterator() {
         return this.applicants.iterator();
