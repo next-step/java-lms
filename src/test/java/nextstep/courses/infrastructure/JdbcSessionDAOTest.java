@@ -11,27 +11,26 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-import static nextstep.courses.domain.CoverImageTest.NORMAL_COVER_IMAGE;
 import static nextstep.courses.domain.SessionTest.FREE_SESSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class JdbcSessionRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepository.class);
+class JdbcSessionDAOTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionDAO.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private SessionRepository sessionRepository;
+    private SessionDAO sessionRepository;
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionDAO(jdbcTemplate);
     }
 
     @Test
     void session_save_find() {
         Long sessionId = sessionRepository.save(FREE_SESSION);
         assertThat(sessionId).isEqualTo(1L);
-        Session savedSession = sessionRepository.findById(sessionId, NORMAL_COVER_IMAGE);
+        Session savedSession = sessionRepository.findById(sessionId);
         assertThat(FREE_SESSION.generation()).isEqualTo(savedSession.generation());
         LOGGER.debug("Session: {}", savedSession);
     }

@@ -2,6 +2,8 @@ package nextstep.courses.service;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.*;
+import nextstep.courses.infrastructure.CoverImageDAO;
+import nextstep.courses.infrastructure.SessionDAO;
 import nextstep.payments.domain.Payment;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,27 +12,24 @@ import java.util.List;
 
 @Transactional
 public class SessionService {
-    @Resource(name = "sessionRepository")
-    private SessionRepository sessionRepository;
+    @Resource(name = "sessionDAO")
+    private SessionDAO sessionDAO;
 
-    @Resource(name = "coverImageRepository")
-    private CoverImageRepository coverImageRepository;
+    @Resource(name = "sessionDAO")
+    private CoverImageDAO coverImageDAO;
 
-    @Transactional
-    public void save(Session session) {
-        Long sessionId = sessionRepository.save(session);
-        CoverImage coverImage = session.coverImage();
-        coverImageRepository.save(coverImage, sessionId);
+    public void save(Session session, CoverImage coverImage) {
+        sessionDAO.save(session);
+        coverImageDAO.save(coverImage);
     }
 
     public void enroll(Payment payment) throws CannotEnrollException {
-        CoverImage coverImage = coverImageRepository.findBySessionId(payment.getSessionId());
-        List<NsUserSession> nsUserSessions = sessionRepository.getNsUserSessions(payment.getSessionId());
-        Session session = sessionRepository.findById(payment.getSessionId(), coverImage);
+        List<NsUserSession> nsUserSessions = sessionDAO.getNsUserSessions(payment.getSessionId());
+        Session session = sessionDAO.findById(payment.getSessionId());
         Enrollment enrollment = new Enrollment(session, new NsUserSessions(nsUserSessions));
         NsUserSession nsUserSession = enrollment.enroll(payment);
 //        NsUserSession nsUserSession = session.enroll(payment, nsUserSessions);
 
-        sessionRepository.saveNsUserSession(nsUserSession);
+        sessionDAO.saveNsUserSession(nsUserSession);
     }
 }

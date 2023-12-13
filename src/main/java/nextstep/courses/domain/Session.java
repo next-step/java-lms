@@ -4,32 +4,31 @@ import nextstep.courses.CannotEnrollException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Session {
     private Long id;
     private Long courseId;
     private Long generation;
-    private CoverImage coverImage;
     private SessionPeriod sessionPeriod;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private SessionStatus sessionStatus;
     private SessionCondition sessionCondition;
 //    private List<NsUserSession> nsUserSessions;
+    private CoverImage coverImage;
 
     public Session(Long courseId,
-                   CoverImage coverImage,
+//                   CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
                    SessionCondition sessionCondition) {
-        this(0L, courseId, 0L, coverImage, sessionPeriod, sessionStatus, sessionCondition);
+        this(0L, courseId, 0L, sessionPeriod, sessionStatus, sessionCondition);
     }
 
     public Session(Long id,
                    Long courseId,
                    Long generation,
-                   CoverImage coverImage,
+//                   CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
                    SessionCondition sessionCondition) {
@@ -37,7 +36,7 @@ public class Session {
         this.id = id;
         this.courseId = courseId;
         this.generation = generation;
-        this.coverImage = coverImage;
+//        this.coverImage = coverImage;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
@@ -48,11 +47,19 @@ public class Session {
     public Session(Long id,
                    Long courseId,
                    Long generation,
-                   CoverImage coverImage,
+//                   CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    String sessionStatus,
                    SessionCondition sessionCondition) {
-        this(id, courseId, generation, coverImage, sessionPeriod, SessionStatus.valueOf(sessionStatus), sessionCondition);
+        this(id, courseId, generation, sessionPeriod, SessionStatus.valueOf(sessionStatus), sessionCondition);
+    }
+
+    public Session coverImage(CoverImage coverImage){
+        if (coverImage.sessionId() != id){
+            throw new IllegalArgumentException("id가 일치하지 않습니다.");
+        }
+        this.coverImage = coverImage;
+        return this;
     }
 
     private void validate(Long courseId) {
@@ -76,9 +83,9 @@ public class Session {
         return generation;
     }
 
-    public CoverImage coverImage() {
-        return coverImage;
-    }
+//    public CoverImage coverImage() {
+//        return coverImage;
+//    }
 
     public SessionPeriod sessionPeriod() {
         return sessionPeriod;
@@ -106,7 +113,7 @@ public class Session {
                 "id=" + id +
                 ", courseId=" + courseId +
                 ", generation=" + generation +
-                ", coverImage=" + coverImage +
+//                ", coverImage=" + coverImage +
                 ", sessionPeriod=" + sessionPeriod +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

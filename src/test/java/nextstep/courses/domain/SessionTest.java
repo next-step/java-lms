@@ -14,17 +14,17 @@ public class SessionTest {
     public static final Session PAID_SESSION = makeSession(new SessionCondition(800_000L, 120L));
 
     private static Session makeSession(SessionCondition sessionPaymentCondition) {
-        return new Session(1L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition);
+        return new Session(1L, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition);
     }
 
     @Test
     @DisplayName("생성_null 이거나 0_throw IllegalArgumentException")
     void 생성_validate() {
         SessionCondition sessionPaymentCondition = new SessionCondition(0L, 0L);
-        assertThatThrownBy(() -> new Session(0L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
+        assertThatThrownBy(() -> new Session(0L, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("과정 ID 값은 빈 값이거나 0이 올 수 없습니다.");
-        assertThatThrownBy(() -> new Session(null, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
+        assertThatThrownBy(() -> new Session(null, NORMAL_SESSION_PERIOD, SessionStatus.RECRUITING, sessionPaymentCondition))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("과정 ID 값은 빈 값이거나 0이 올 수 없습니다.");
     }

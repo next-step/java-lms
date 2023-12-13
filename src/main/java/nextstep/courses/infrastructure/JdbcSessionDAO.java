@@ -12,11 +12,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository("sessionRepository")
-public class JdbcSessionRepository implements SessionRepository {
+@Repository("sessionDAO")
+public class JdbcSessionDAO implements SessionDAO {
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionDAO(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -43,13 +43,12 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id, CoverImage coverImage) {
+    public Session findById(Long id) {
         String sql = "select id, course_id, generation, started_at, finished_at, session_status, amount, max_user from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
-                coverImage,
                 new SessionPeriod(toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
                 rs.getString(6),
                 new SessionCondition(rs.getLong(7), rs.getLong(8))

@@ -20,7 +20,7 @@ class EnrollmentTest {
     @Test
     @DisplayName("enroll_SessionStatus.RECRUITING 외_throw CannotEnrollException")
     void 모집중이_아닌_강의_enroll() {
-        Session preparingSession = new Session(1L, NORMAL_COVER_IMAGE, NORMAL_SESSION_PERIOD, SessionStatus.PREPARING, new SessionCondition());
+        Session preparingSession = new Session(1L, NORMAL_SESSION_PERIOD, SessionStatus.PREPARING, new SessionCondition());
         Enrollment enrollment = new Enrollment(preparingSession, new NsUserSessions(new ArrayList<>()));
         assertThatThrownBy(() -> enrollment.enroll(FREE))
                 .isInstanceOf(CannotEnrollException.class)

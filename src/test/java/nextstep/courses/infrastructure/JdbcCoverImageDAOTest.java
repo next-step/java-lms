@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.CoverImage;
-import nextstep.courses.domain.CoverImageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,22 +13,22 @@ import static nextstep.courses.domain.CoverImageTest.NORMAL_COVER_IMAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class JdbcCoverImageRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoverImageRepository.class);
+class JdbcCoverImageDAOTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoverImageDAO.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private CoverImageRepository coverImageRepository;
+    private CoverImageDAO coverImageRepository;
 
     @BeforeEach
     void setUp() {
-        coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        coverImageRepository = new JdbcCoverImageDAO(jdbcTemplate);
     }
 
     @Test
     void save_find() {
-        int count = coverImageRepository.save(NORMAL_COVER_IMAGE, 2L);
-        assertThat(count).isEqualTo(1);
-        CoverImage savedCoverImage = coverImageRepository.findBySessionId(2L);
+        Long sessionId = coverImageRepository.save(NORMAL_COVER_IMAGE);
+        assertThat(sessionId).isEqualTo(0L);
+        CoverImage savedCoverImage = coverImageRepository.findBySessionId(0L);
         assertThat(savedCoverImage.size()).isEqualTo(NORMAL_COVER_IMAGE.size());
         LOGGER.debug("CoverImage : {}", savedCoverImage);
     }
