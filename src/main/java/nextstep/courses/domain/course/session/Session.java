@@ -1,7 +1,6 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.BaseEntity;
-import nextstep.courses.domain.course.session.image.Image;
 import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -15,80 +14,52 @@ public class Session extends BaseEntity {
 
     private Images images;
 
-    private Duration duration;
-
-    private SessionState sessionState;
-
     private Applicants applicants;
 
-    private SessionStatus sessionStatus;
+    private SessionDetail sessionDetail;
 
     public Session(Images images, Duration duration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
         this(0L, images, duration, sessionState, new Applicants(),
-                SessionStatus.READY, creatorId, date, null);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, creatorId, date, null);
     }
 
     public Session(Long id, Images images, Duration duration, SessionState sessionState,
-                   Applicants applicants, SessionStatus sessionStatus, Long creatorId,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+                   Applicants applicants, RecruitStatus recruitStatus, SessionStatus sessionStatus,
+                   Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, images, applicants, new SessionDetail(duration, sessionState, sessionStatus, recruitStatus),
+                creatorId, createdAt, updatedAt);
+    }
+
+    public Session(Long id, Images images, Applicants applicants, SessionDetail sessionDetail,
+                   Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (images == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
         }
 
-        if (duration == null) {
-            throw new IllegalArgumentException("기간을 추가해야 합니다.");
+        if (applicants == null) {
+            throw new IllegalArgumentException("수강생을 추가해야 합니다.");
         }
 
-        if (sessionState == null) {
-            throw new IllegalArgumentException("강의 상태를 추가해야 합니다.");
+        if (sessionDetail == null) {
+            throw new IllegalArgumentException("강의 정보를 추가해야 합니다.");
         }
 
         this.id = id;
         this.images = images;
-        this.duration = duration;
-        this.sessionState = sessionState;
         this.applicants = applicants;
-        this.sessionStatus = sessionStatus;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setImages(Images images) {
-        this.images = images;
-    }
-
-    public void setSessionState(SessionState updateSessionState) {
-        this.sessionState = updateSessionState;
-    }
-
-    public boolean sameAmount(Long amount) {
-        return this.sessionState.sameAmount(amount);
-    }
-
-    public boolean sameId(Long sessionId) {
-        return Objects.equals(this.id, sessionId);
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public int applyCount() {
-        return this.applicants.size();
+        this.sessionDetail = sessionDetail;
     }
 
     public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
         checkStatusOnRecruit();
 
-        if (this.sessionState.charged()) {
+        if (this.sessionDetail.charged()) {
             checkPaymentIsPaid(loginUser, payment);
         }
 
-        this.applicants.addApplicant(loginUser, sessionState);
+        this.applicants.addApplicant(loginUser, sessionDetail.getSessionState());
         return toApply(loginUser, date);
     }
 
@@ -97,7 +68,7 @@ public class Session extends BaseEntity {
     }
 
     private void checkStatusOnRecruit() {
-        if (this.sessionStatus != SessionStatus.RECRUIT) {
+        if (this.sessionDetail.notRecruiting()) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
     }
@@ -110,49 +81,85 @@ public class Session extends BaseEntity {
 
     public void changeOnReady(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.sessionStatus = SessionStatus.READY;
+        this.sessionDetail.changeOnReady();
     }
 
     public void changeOnRecruit(LocalDate date) {
         checkStartDateIsSameOrBefore(date);
-        this.sessionStatus = SessionStatus.RECRUIT;
+        this.sessionDetail.changeOnRecruit();
     }
 
     private void checkStartDateIsSameOrBefore(LocalDate date) {
-        if (duration.startDateIsSameOrBefore(date)) {
+        if (sessionDetail.startDateIsSameOrBefore(date)) {
             throw new IllegalArgumentException("강의 시작일 이전에 변경 가능합니다.");
         }
     }
 
     public void changeOnEnd(LocalDate date) {
         checkEndDateIsSameOrAfter(date);
-        this.sessionStatus = SessionStatus.END;
+        this.sessionDetail.changeOnEnd();
     }
 
     private void checkEndDateIsSameOrAfter(LocalDate date) {
-        if (duration.endDateIsSameOrAfter(date)) {
+        if (sessionDetail.endDateIsSameOrAfter(date)) {
             throw new IllegalArgumentException("강의 종료일 이후 변경 가능합니다.");
         }
+    }
+
+    public void setSessionState(SessionState updateSessionState) {
+        this.sessionDetail.setSessionState(updateSessionState);
+    }
+
+    public boolean sameAmount(Long amount) {
+        return this.sessionDetail.sameAmount(amount);
+    }
+
+    public boolean sameId(Long sessionId) {
+        return Objects.equals(this.id, sessionId);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int applyCount() {
+        return this.applicants.size();
     }
 
     public Images getImages() {
         return images;
     }
 
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public SessionState getSessionState() {
-        return this.sessionState;
+    public void setImages(Images images) {
+        this.images = images;
     }
 
     public Applicants getApplicants() {
         return applicants;
     }
 
+    public SessionDetail getSessionDetail() {
+        return sessionDetail;
+    }
+
+    public Duration getDuration() {
+        return sessionDetail.getDuration();
+    }
+
+    public SessionState getSessionState() {
+        return sessionDetail.getSessionState();
+    }
+
     public SessionStatus getSessionStatus() {
-        return sessionStatus;
+        return sessionDetail.getSessionStatus();
+    }
+
+    public RecruitStatus getRecruitStatus() {
+        return sessionDetail.getRecruitStatus();
     }
 
     @Override
@@ -160,10 +167,8 @@ public class Session extends BaseEntity {
         return "Session{" +
                 "id=" + id +
                 ", images=" + images +
-                ", duration=" + duration +
-                ", sessionState=" + sessionState +
                 ", applicants=" + applicants +
-                ", session=" + sessionStatus +
+                ", sessionDetail=" + sessionDetail +
                 '}';
     }
 }

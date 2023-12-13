@@ -50,7 +50,7 @@ public class SessionTest {
         this.applicants.addApplicant(JAVAJIGI, sessionState);
         this.applicants.addApplicant(SANJIGI, sessionState);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class SessionTest {
     @DisplayName("수강 신청은 수강 신청 인원에 해당 인원이 추가된다.")
     void apply_success() {
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
         assertThat(session.applyCount()).isEqualTo(2);
 
@@ -95,7 +95,7 @@ public class SessionTest {
     @DisplayName("수강 신청은 모집 중이 아니면 신청할 수 없다는 예외를 반환한다.")
     void apply_notRecruitStatus_throwsException() {
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, payment, localDateTime)
@@ -108,7 +108,7 @@ public class SessionTest {
         applicants = new Applicants();
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
         applicants.addApplicant(JAVAJIGI, session.getSessionState());
         applicants.addApplicant(SANJIGI, session.getSessionState());
 
@@ -122,7 +122,7 @@ public class SessionTest {
     void apply_chargeSession_notPaid_throwsException() {
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, null, localDateTime)
@@ -134,7 +134,7 @@ public class SessionTest {
     void apply_chargeSession_differentAmount_throwsException() {
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.apply(APPLE, differentPayment, localDateTime)
@@ -147,7 +147,7 @@ public class SessionTest {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnReady(DATE_2023_12_5)
@@ -164,7 +164,7 @@ public class SessionTest {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+                RecruitStatus.RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnRecruit(DATE_2023_12_5)
@@ -181,7 +181,7 @@ public class SessionTest {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_12);
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
         session = new Session(1L, images, duration, sessionState, applicants,
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+                RecruitStatus.NOT_RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
 
         assertThatThrownBy(
                 () -> session.changeOnEnd(DATE_2023_12_6)
