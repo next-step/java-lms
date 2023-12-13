@@ -1,27 +1,42 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.exception.InvalidSessionStatusException;
+import nextstep.courses.exception.NotOpenSessionException;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 
-public enum Status {
-    NOT_OPEN,
-    OPEN,
-    CLOSED;
+public class Status {
 
+    private SessionStatus sessionStatus;
+    private RecruitmentStatus recruitmentStatus;
 
-    public Status ofOpen() {
-        return OPEN;
+    public Status(LocalDate now, LocalDate startDate, LocalDate endDate) {
+        this(SessionStatus.of(now, startDate, endDate), RecruitmentStatus.NOT_RECRUITMENT);
     }
 
-    public boolean isOpen() {
-        return this == OPEN;
+    public Status(LocalDate now, LocalDate startDate, LocalDate endDate, RecruitmentStatus recruitmentStatus) {
+        this(SessionStatus.of(now, startDate, endDate), recruitmentStatus);
     }
 
-    public static Status findByName(String name) {
-        return Arrays.stream(values())
-                .filter(status -> status.name().equalsIgnoreCase(name))
-                .findFirst()
-                .orElseThrow(() -> new InvalidSessionStatusException(name));
+    public Status(SessionStatus sessionStatus, RecruitmentStatus recruitmentStatus) {
+        this.sessionStatus = sessionStatus;
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
+    public void validate() {
+        if (!sessionStatus.isInProgress() && !recruitmentStatus.isRecruiting()) {
+            throw new NotOpenSessionException();
+        }
+    }
+
+    public void startRecruiting() {
+        this.recruitmentStatus = recruitmentStatus.ofRecruiting();
+    }
+
+    public String sessionStatus() {
+        return this.sessionStatus.name();
+    }
+
+    public String recruitmentStatus() {
+        return this.recruitmentStatus.name();
     }
 }

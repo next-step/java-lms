@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.CoverImages;
+import nextstep.courses.domain.RecruitmentStatus;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionType;
-import nextstep.courses.domain.Status;
 import nextstep.courses.repository.CoverImageRepository;
 import nextstep.courses.repository.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -29,25 +29,25 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (id, course_id, image_id, type, status, start_date, end_date, max_students, fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.id(), session.courseId(), session.imageId(), session.type(), session.status(), session.startDate(), session.endDate(), session.maxStudents(), session.fee(), session.getCreatedAt());
+        String sql = "insert into session (id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, session.id(), session.courseId(), session.type(), session.recruitmentStatus(), session.startDate(), session.endDate(), session.maxStudents(), session.fee(), session.getCreatedAt());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, course_id, type, image_id, status, start_date, end_date, max_students, fee, created_at, updated_at from session where id = ?";
+        String sql = "select id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
                 rs.getLong(2),
                 SessionType.findByCode(rs.getString(3)),
-                coverImage(rs.getLong(4)),
-                Status.findByName(rs.getString(5)),
+                coverImages(id),
+                RecruitmentStatus.findByName(rs.getString(4)),
+                toLocalDate(rs.getDate(5)),
                 toLocalDate(rs.getDate(6)),
-                toLocalDate(rs.getDate(7)),
-                rs.getInt(8),
-                rs.getLong(9),
-                toLocalDateTime(rs.getTimestamp(10)),
-                toLocalDateTime(rs.getTimestamp(11)));
+                rs.getInt(7),
+                rs.getLong(8),
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10)));
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
@@ -66,7 +66,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return date.toLocalDate();
     }
 
-    private CoverImage coverImage(Long id) {
-        return coverImageRepository.findById(id);
+    private CoverImages coverImages(Long id) {
+        return new CoverImages(coverImageRepository.findAllBySessionId(id));
     }
 }

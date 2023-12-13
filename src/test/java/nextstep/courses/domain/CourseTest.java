@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +16,7 @@ class CourseTest {
         Course course = new Course(0L, "TDD, 클린 코드 with Java 17기", 1L);
         CoverImage coverImage = new CoverImage(1, "jpg", 300, 200);
         LocalDate now = LocalDate.now();
-        Session session = Session.ofFree(0L, 1L, coverImage, now, now);
+        Session session = Session.ofFree(0L, 1L, new CoverImages(List.of(coverImage)), now, now);
 
         course.addSession(session);
 

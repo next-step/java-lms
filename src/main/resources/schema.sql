@@ -51,6 +51,7 @@ create table delete_history (
 
 create table cover_image (
     id bigint not null,
+    session_id bigint not null,
     size double not null,
     extension varchar(10) not null,
     width int not null,
@@ -63,9 +64,8 @@ create table cover_image (
 create table session (
     id bigint not null,
     course_id bigint not null,
-    image_id bigint not null,
     type varchar(10) not null,
-    status varchar(10) not null,
+    recruitment_status varchar(30) not null,
     start_date timestamp not null,
     end_date timestamp not null,
     max_students int,
