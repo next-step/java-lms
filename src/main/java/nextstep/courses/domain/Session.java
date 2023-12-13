@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Session extends BaseEntity{
+public class Session extends BaseEntity {
     public static long FREE_PRICE = 0L;
     public static int MAX_CAPACITY = Integer.MAX_VALUE;
     private final Long id;
@@ -21,9 +21,19 @@ public class Session extends BaseEntity{
     private SessionStatus status = SessionStatus.PREPARE;
     private final List<NsUser> participants = new ArrayList<>();
 
-    private Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
+    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
+        this.sessionCover = sessionCover;
+        this.course = course;
+        this.capacity = capacity;
+        this.price = price;
+    }
+
+    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, SessionCover sessionCover, Capacity capacity, Price price, Course course) {
+        this.id = id;
+        this.period = new Period(beginDt, endDt);
+        this.status = status;
         this.sessionCover = sessionCover;
         this.course = course;
         this.capacity = capacity;
@@ -65,5 +75,21 @@ public class Session extends BaseEntity{
 
     public Long id() {
         return id;
+    }
+
+    public Period period() {
+        return period;
+    }
+
+    public Course course() {
+        return course;
+    }
+
+    public SessionCover sessionCover() {
+        return sessionCover;
+    }
+
+    public String status() {
+        return this.status.name();
     }
 }

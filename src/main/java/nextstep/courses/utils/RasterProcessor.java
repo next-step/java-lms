@@ -18,7 +18,7 @@ public class RasterProcessor implements ImageProcessor {
             throw new FileNotFoundException("Invalid image file.");
         }
 
-        return new SessionCover(image.getWidth(), image.getHeight(), file.length(), writeRasterImage(image));
+        return new SessionCover(2L, image.getWidth(), image.getHeight(), file.length(), writeRasterImage(image));
     }
 
     private static byte[] writeRasterImage(BufferedImage image) throws IOException {

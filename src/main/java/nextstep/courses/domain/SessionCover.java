@@ -2,9 +2,16 @@ package nextstep.courses.domain;
 
 public class SessionCover {
     public static final double RATIO = (double) 3 / 2;
+
+    private Long id;
     private final byte[] image;
 
-    public SessionCover(int width, int height, long size, byte[] image) {
+    public SessionCover(Long id, byte[] image) {
+        this.id = id;
+        this.image = image;
+    }
+
+    public SessionCover(long id, int width, int height, long size, byte[] image) {
         validateSize(size);
         validatePixel(width, height);
         validateRatio(width, height);
@@ -34,5 +41,9 @@ public class SessionCover {
 
     public byte[] image() {
         return image;
+    }
+
+    public Long id() {
+        return id;
     }
 }

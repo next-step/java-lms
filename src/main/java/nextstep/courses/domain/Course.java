@@ -24,6 +24,10 @@ public class Course extends BaseEntity{
         this.updatedAt = updatedAt;
     }
 
+    public Long id() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
