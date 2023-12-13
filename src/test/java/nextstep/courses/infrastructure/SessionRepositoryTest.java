@@ -8,6 +8,7 @@ import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JdbcTest
 public class SessionRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
+    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", Type.TEACHER);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -62,17 +63,18 @@ public class SessionRepositoryTest {
         applicants = new Applicants();
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
-        apply = new Apply(1L, JAVAJIGI.getId(), JAVAJIGI.getId(), localDateTime, localDateTime);
+        apply = new Apply(1L, JAVAJIGI.getId(), false, JAVAJIGI.getId(), localDateTime, localDateTime);
     }
 
     @Test
     void save_success() {
         session = new Session(images, duration, sessionState, 1L, localDateTime);
         Session savedSession = sessionRepository.save(1L, session);
+        Session findSession = sessionRepository.findById(savedSession.getId()).orElseThrow(NotFoundException::new);
 
-        assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getDuration()).isEqualTo(session.getDuration());
-        assertThat(savedSession.getSessionState()).isEqualTo(session.getSessionState());
+        assertThat(findSession.getId()).isEqualTo(1L);
+        assertThat(findSession.getDuration()).isEqualTo(session.getDuration());
+        assertThat(findSession.getSessionState()).isEqualTo(session.getSessionState());
 
         LOGGER.debug("Session: {}", savedSession);
     }
@@ -102,5 +104,18 @@ public class SessionRepositoryTest {
         assertThat(updatedSession.getId()).isEqualTo(savedSession.getId());
         assertThat(updatedSession.getSessionState()).isEqualTo(updateSessionState);
         LOGGER.debug("Session: {}", updatedSession);
+    }
+
+    @Test
+    void updateApply_success() {
+        Apply apply = new Apply(10L, JAVAJIGI.getId(), false, JAVAJIGI.getId(), localDateTime, localDateTime);
+
+        Apply updatedApply = apply.setApproved(true);
+        sessionRepository.updateApply(updatedApply);
+
+        Apply savedApply = sessionRepository.findApplyByIds(JAVAJIGI.getId(), 10L).orElseThrow(NotFoundException::new);
+        assertThat(savedApply.isApproved()).isTrue();
+
+        LOGGER.debug("Apply: {}", savedApply);
     }
 }

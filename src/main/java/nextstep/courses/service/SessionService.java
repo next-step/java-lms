@@ -17,7 +17,7 @@ public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
-    public void create(Long courseId, Session session, LocalDateTime date) {
+    public void create(Long courseId, Session session) {
         sessionRepository.save(courseId, session);
     }
 
@@ -25,6 +25,20 @@ public class SessionService {
         Session session = getSession(sessionId);
         Apply apply = session.apply(loginUser, payment, date);
         sessionRepository.saveApply(apply);
+    }
+
+    public void approve(NsUser loginUser, NsUser applicant, Long sessionId, LocalDateTime date) {
+        Session session = getSession(sessionId);
+        Apply savedApply = getApply(sessionId, loginUser.getId());
+        Apply apply = session.approve(loginUser, applicant, savedApply, date);
+        sessionRepository.updateApply(apply);
+    }
+
+    public void cancel(NsUser loginUser, NsUser applicant, Long sessionId, LocalDateTime date) {
+        Session session = getSession(sessionId);
+        Apply savedApply = getApply(sessionId, loginUser.getId());
+        Apply apply = session.cancel(loginUser, applicant, savedApply, date);
+        sessionRepository.updateApply(apply);
     }
 
     public void changeOnReady(Long sessionId, LocalDate date) {
@@ -47,5 +61,9 @@ public class SessionService {
 
     private Session getSession(Long sessionId) {
         return sessionRepository.findById(sessionId).orElseThrow(NotFoundException::new);
+    }
+
+    private Apply getApply(Long sessionId, Long nsUserId) {
+        return sessionRepository.findApplyByIds(sessionId, nsUserId).orElseThrow(NotFoundException::new);
     }
 }

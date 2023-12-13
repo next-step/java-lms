@@ -14,6 +14,7 @@ create table image (
 create table apply (
     session_id bigint not null,
     ns_user_id bigint not null,
+    approved boolean not null,
     creator_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,
@@ -52,6 +53,7 @@ create table ns_user (
     password varchar(20) not null,
     name varchar(20) not null,
     email varchar(50),
+    type varchar(20) not null,
     created_at timestamp not null,
     updated_at timestamp,
     primary key (id)
