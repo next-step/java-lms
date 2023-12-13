@@ -1,14 +1,13 @@
 package nextstep.courses.domain.lectures;
 
-import nextstep.courses.domain.CoverImage;
-import nextstep.courses.domain.LectureStatus;
-import nextstep.courses.domain.LectureType;
-import nextstep.courses.domain.RegistrationPeriod;
+import java.time.LocalDateTime;
+import nextstep.courses.BaseTime;
 import nextstep.courses.domain.Students;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Price;
 
-public class PaidLecture implements Lecture {
+public class PaidLecture extends BaseTime implements Lecture  {
   private final LectureType lectureType = LectureType.PAID;
   private final Long id;
   private final String title;
@@ -22,6 +21,7 @@ public class PaidLecture implements Lecture {
 
   public PaidLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
+    super();
     this.id = id;
     this.title = title;
     this.coverImage = coverImage;
@@ -29,6 +29,31 @@ public class PaidLecture implements Lecture {
     this.registrationPeriod = registrationPeriod;
     this.price = price;
     this.limitStudentCount = limitStudentCount;
+  }
+  public PaidLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount
+      , LectureType lectureType
+      , LocalDateTime createdAt
+      , LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
+    this.id = id;
+    this.title = title;
+    this.coverImage = coverImage;
+    this.lectureStatus = lectureStatus;
+    this.registrationPeriod = registrationPeriod;
+    this.price = price;
+    this.limitStudentCount = limitStudentCount;
+  }
+
+  public PaidLecture(LectureEntity lecture) {
+    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
+    this.id = lecture.getId();
+    this.title = lecture.getTitle();
+    this.coverImage = lecture.getCoverImage();
+    this.lectureStatus = lecture.getLectureStatus();
+    this.registrationPeriod = lecture.getRegistrationPeriod();
+    this.price = lecture.getPrice();
+    this.limitStudentCount = lecture.getLimitStudentCount();
   }
 
   @Override
@@ -60,4 +85,50 @@ public class PaidLecture implements Lecture {
     return students.size();
   }
 
+  public LectureType getLectureType() {
+    return lectureType;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public CoverImage getCoverImage() {
+    return coverImage;
+  }
+
+  public LectureStatus getLectureStatus() {
+    return lectureStatus;
+  }
+
+  public RegistrationPeriod getRegistrationPeriod() {
+    return registrationPeriod;
+  }
+
+  public Price getPrice() {
+    return price;
+  }
+
+  public Integer getLimitStudentCount() {
+    return limitStudentCount;
+  }
+
+  public LectureEntity toEntity() {
+    return new LectureEntity(
+        this.id
+        , this.title
+        , this.coverImage
+        , this.lectureType
+        , this.lectureStatus
+        , this.registrationPeriod
+        , this.price
+        , this.limitStudentCount
+        , super.getCreatedAt()
+        , super.getUpdatedAt()
+    );
+  }
 }

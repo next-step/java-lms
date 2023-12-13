@@ -1,13 +1,12 @@
 package nextstep.courses.domain.lectures;
 
-import nextstep.courses.domain.CoverImage;
-import nextstep.courses.domain.LectureStatus;
-import nextstep.courses.domain.LectureType;
-import nextstep.courses.domain.RegistrationPeriod;
+import java.time.LocalDateTime;
+import nextstep.courses.BaseTime;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 
-public class FreeLecture implements Lecture {
+public class FreeLecture extends BaseTime implements Lecture {
   private final LectureType lectureType = LectureType.FREE;
   private final Long id;
   private final String title;
@@ -18,11 +17,29 @@ public class FreeLecture implements Lecture {
 
   public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
       RegistrationPeriod registrationPeriod) {
+    super();
     this.id = id;
     this.title = title;
     this.coverImage = coverImage;
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
+  }
+  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
+    this.id = id;
+    this.title = title;
+    this.coverImage = coverImage;
+    this.lectureStatus = lectureStatus;
+    this.registrationPeriod = registrationPeriod;
+  }
+  public FreeLecture(LectureEntity lecture) {
+    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
+    this.id = lecture.getId();
+    this.title = lecture.getTitle();
+    this.coverImage = lecture.getCoverImage();
+    this.lectureStatus = lecture.getLectureStatus();
+    this.registrationPeriod = lecture.getRegistrationPeriod();
   }
 
   @Override
@@ -51,5 +68,20 @@ public class FreeLecture implements Lecture {
   @Override
   public Integer numberOfStudent() {
     return students.size();
+  }
+
+  public LectureEntity toEntity() {
+    return new LectureEntity(
+        this.id
+        , this.title
+        , this.coverImage
+        , this.lectureType
+        , this.lectureStatus
+        , this.registrationPeriod
+        , null
+        , null
+        , super.getCreatedAt()
+        , super.getUpdatedAt()
+    );
   }
 }

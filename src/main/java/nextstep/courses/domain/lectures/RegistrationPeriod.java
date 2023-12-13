@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.lectures;
 
 import java.time.LocalDateTime;
 
@@ -12,5 +12,13 @@ public class RegistrationPeriod {
     }
     this.startedAt = startedAt;
     this.endedAt = endedAt;
+  }
+
+  public LocalDateTime getStartedAt() {
+    return startedAt;
+  }
+
+  public LocalDateTime getEndedAt() {
+    return endedAt;
   }
 }

@@ -1,8 +1,11 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.LectureStatus;
+import nextstep.courses.domain.lectures.RegistrationPeriod;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

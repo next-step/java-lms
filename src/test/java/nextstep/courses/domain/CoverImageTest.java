@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import nextstep.courses.domain.coverimage.CoverImage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,8 @@ public class CoverImageTest {
       // given
       String fileName = "filetest.png";
       long size = 10;
-    double width = 300;
-    double height = 200;
+    long width = 300;
+    long height = 200;
 
       // when
       CoverImage coverImage = CoverImage.defaultOf(fileName, size, width, height);
@@ -30,8 +31,8 @@ public class CoverImageTest {
     // given
     String fileName = "filetest.png";
     long size = 1024L*1024L;
-    double width = 300;
-    double height = 200;
+    long width = 300;
+    long height = 200;
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -44,8 +45,8 @@ public class CoverImageTest {
     // given
     String fileName = "filetest.txt";
     long size = 1024L;
-    double width = 300;
-    double height = 200;
+    long width = 300;
+    long height = 200;
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -58,8 +59,8 @@ public class CoverImageTest {
     // given
     String fileName = "filetest.png";
     long size = 1024L;
-    double width = 299;
-    double height = 200;
+    long width = 299;
+    long height = 200;
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -72,8 +73,8 @@ public class CoverImageTest {
     // given
     String fileName = "filetest.png";
     long size = 1024L;
-    double width = 300;
-    double height = 199;
+    long width = 300;
+    long height = 199;
 
     // then
     assertThrows(IllegalArgumentException.class
@@ -86,8 +87,8 @@ public class CoverImageTest {
     // given
     String fileName = "filetest.png";
     long size = 1024L;
-    double width = 300;
-    double height = 201;
+    long width = 300;
+    long height = 201;
 
     // then
     assertThrows(IllegalArgumentException.class

@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
+import nextstep.courses.domain.lectures.LectureStatus;
 import nextstep.courses.domain.lectures.PaidLecture;
+import nextstep.courses.domain.lectures.RegistrationPeriod;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.Payment;
