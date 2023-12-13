@@ -1,13 +1,17 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.infrastructure.exception.DbInsertFailException;
 import nextstep.courses.type.ImageExtension;
 import nextstep.courses.type.MaxRegister;
 import nextstep.courses.type.SessionDuration;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -23,26 +27,39 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
         String sql = "insert into session(\n" +
-                "                    id, course_id,\n" +
                 "                    state,\n" +
+                "                    course_id,\n" +
                 "                    cover_image_file_path, image_type, image_capacity, image_width, image_height,\n" +
                 "                    start_time, end_time,\n" +
                 "                    max_user_count,\n" +
                 "                    fee\n" +
                 ")\n" +
-                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         RawSession db = new RawSession(session);
-        return jdbcTemplate.update(sql,
-                db.id(),
-                db.courseId(),
-                db.startTime(),
-                db.coverImageFilePath(), db.imageType(), db.imageCapacity(), db.imageWidth(), db.imageHeight(),
-                db.startTime(), db.endTime(),
-                db.maxUserCount(),
-                db.fee());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, db.state());
+            ps.setLong(2, db.courseId());
+            ps.setString(3, db.coverImageFilePath());
+            ps.setString(4, db.imageType());
+            ps.setInt(5, db.imageCapacity());
+            ps.setInt(6, db.imageWidth());
+            ps.setInt(7, db.imageHeight());
+            ps.setTimestamp(8, Timestamp.valueOf(db.startTime()));
+            ps.setTimestamp(9, Timestamp.valueOf(db.endTime()));
+            ps.setInt(10, db.maxUserCount());
+            ps.setInt(11, db.fee());
+            return ps;
+        }, keyHolder);
+
+        if (keyHolder.getKey() == null) {
+            throw new DbInsertFailException("Session");
+        }
+        return keyHolder.getKey().longValue();
     }
 
     @Override
