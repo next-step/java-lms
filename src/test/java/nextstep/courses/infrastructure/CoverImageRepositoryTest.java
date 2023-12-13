@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,15 +31,27 @@ public class CoverImageRepositoryTest {
     }
 
     @Test
-    void crud() {
-        CoverImage coverImage = new CoverImage("images/test.gif", 1000_000, "gif", 300, 200, LocalDateTime.now());
-        int count = coverImageRepository.save(coverImage);
+    void insert() {
+        CoverImage coverImage = new CoverImage("images/test.jpeg", 1000_000, "jpeg", 300, 200, LocalDateTime.now());
+        int count = coverImageRepository.save(coverImage, 10L);
         assertThat(count).isEqualTo(1);
 
-        CoverImage saveCoverImage = coverImageRepository.findById(1L);
-        assertThat(coverImage).isEqualTo(saveCoverImage);
-        LOGGER.debug("CoverImage : {}", coverImage);
+
+    }
+
+    @Test
+    void findById() {
+        CoverImage saveCoverImage = coverImageRepository.findById(10L);
+        assertThat(saveCoverImage).isNotNull();
         LOGGER.debug("saveCoverImage : {}", saveCoverImage);
+    }
+
+    @Test
+    void findBySessionId() {
+        List<CoverImage> saveCoverImages = coverImageRepository.findBySessionId(10L);
+        assertThat(saveCoverImages).isNotNull().hasSize(1);
+        LOGGER.debug("saveCoverImages : {}", saveCoverImages);
+
     }
 
 }

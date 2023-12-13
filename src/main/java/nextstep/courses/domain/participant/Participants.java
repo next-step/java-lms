@@ -1,16 +1,23 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.participant;
 
 import nextstep.courses.exception.ParticipantsException;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Participants {
-    private final Set<NsUser> values;
+    private final Set<Participant> values;
 
-    public Participants(Set<NsUser> values) {
-        this.values = values;
+
+    public Participants(List<NsUser> values) {
+        this.values = values.stream().map(item -> new Participant(item, ParticipantState.CHECKING)).collect(Collectors.toSet());
+    }
+
+    public Participants(Set<Participant> participants) {
+        this.values = participants;
     }
 
     public int size() {
@@ -19,14 +26,18 @@ public class Participants {
 
     public Participants add(NsUser user) {
         isDuplication(user);
-        values.add(user);
+        values.add(new Participant(user, ParticipantState.CHECKING));
         return new Participants(values);
     }
 
     private void isDuplication(NsUser user) {
-        if (values.contains(user)) {
+        if (isEqualUser(user)) {
             throw new ParticipantsException("이미 수강 신청한 참여자 입니다.");
         }
+    }
+
+    private boolean isEqualUser(NsUser user) {
+        return values.stream().anyMatch(item -> item.equalUser(user));
     }
 
     @Override
@@ -42,8 +53,10 @@ public class Participants {
         return Objects.hash(values);
     }
 
+
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "Participants{" +
                 "values=" + values +
                 '}';

@@ -24,11 +24,21 @@ VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 
         CURRENT_TIMESTAMP(), false);
 
 
-INSERT INTO cover_image (id, url, volume, format, width, height, created_at)
-VALUES (2, 'images/test.gif', 1000000, 'GIF', 300, 200, CURRENT_TIMESTAMP());
-
 INSERT INTO course (id, title, creator_id, created_at)
-VALUES (2, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
+VALUES (10, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
 
-INSERT INTO session (course_id, image_id, start_date, end_date, state, type, fee, max_apply, created_at)
-VALUES (2, 2, '2023-12-10', '2023-12-29', 'RECRUITING', 'RAID', 800000, 10, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at)
+VALUES (10, 10, '2023-12-10', '2023-12-29', 'PROGRESSING', true, 'PAID', 800000, 10, CURRENT_TIMESTAMP());
+
+INSERT INTO session (id, course_id, start_date, end_date, progress_state, recruit_state, type, fee, max_apply, created_at)
+VALUES (11, 10, '2023-12-22', '2024-01-04', 'PROGRESSING', true, 'FREE', 0, 0, CURRENT_TIMESTAMP());
+
+
+INSERT INTO cover_image (id, session_id, url, volume, format, width, height, created_at)
+VALUES (10, 10, 'images/test1.jpg', 800000, 'JPG', 600, 400, CURRENT_TIMESTAMP());
+
+INSERT INTO cover_image (id, session_id, url, volume, format, width, height, created_at)
+VALUES (11, 11, 'images/test2.jpeg', 800000, 'JPEG', 600, 400, CURRENT_TIMESTAMP());
+
+
+INSERT INTO apply (id,session_id, user_id, state, created_at) values(10, 11, 1, 'CHECKING', CURRENT_TIMESTAMP());

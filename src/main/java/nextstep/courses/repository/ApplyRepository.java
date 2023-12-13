@@ -1,10 +1,17 @@
 package nextstep.courses.repository;
 
-import nextstep.courses.domain.Participants;
+import nextstep.courses.domain.participant.Participant;
+import nextstep.courses.domain.participant.ParticipantState;
 import nextstep.users.domain.NsUser;
 
-public interface ApplyRepository {
-    int save(long sessionId, NsUser nsUser);
+import java.util.List;
 
-    Participants findBySessionId(Long sessionId);
+public interface ApplyRepository {
+    int save(Long sessionId, NsUser nsUser, ParticipantState state);
+
+    List<Participant> findBySessionId(Long sessionId);
+
+    int updateState(Long id, ParticipantState participantState);
+
+
 }

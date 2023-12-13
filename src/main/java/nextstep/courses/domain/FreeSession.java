@@ -5,19 +5,20 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FreeSession extends Session {
 
-    public FreeSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, image, start, end, state, createdAt, updatedAt);
+    public FreeSession(Long id, List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, coverImageList, start, end, progressState, recruitState, createdAt, updatedAt);
     }
 
-    public FreeSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt) {
-        super(image, start, end, state, createdAt);
+    public FreeSession(List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt) {
+        super(null, coverImageList, start, end, progressState, recruitState, createdAt, null);
     }
 
-    public FreeSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(image, start, end, state, createdAt, updatedAt);
+    public FreeSession(List<CoverImage> coverImageList, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(null, coverImageList, start, end, progressState, recruitState, createdAt, updatedAt);
     }
 
 

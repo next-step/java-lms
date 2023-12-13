@@ -7,27 +7,30 @@ import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class PaidSession extends Session {
 
-    private Amount sessionFee;
-    private int maxApplyCount;
+    private final Amount sessionFee;
+    private final int maxApplyCount;
 
-    public PaidSession(long id, CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, image, start, end, state, createdAt, updatedAt);
+
+    public PaidSession(List<CoverImage> coverImages, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(null, coverImages, start, end, progressState, recruitState, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }
 
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(image, start, end, state, createdAt, updatedAt);
+    public PaidSession(List<CoverImage> coverImages, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt) {
+        super(null, coverImages, start, end, progressState, recruitState, createdAt, null);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
+
     }
 
-    public PaidSession(CoverImage image, LocalDate start, LocalDate end, SessionState state, long fee, int max, LocalDateTime createdAt) {
-        super(image, start, end, state, createdAt);
+    public PaidSession(Long id, List<CoverImage> coverImages, LocalDate start, LocalDate end, SessionProgressState progressState, Boolean recruitState, long fee, int max, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, coverImages, start, end, progressState, recruitState, createdAt, updatedAt);
         this.sessionFee = new Amount(fee);
         this.maxApplyCount = max;
     }

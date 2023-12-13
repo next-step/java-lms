@@ -9,8 +9,8 @@ public enum ImageFormat {
 
     public static ImageFormat findBy(String value) {
         return Arrays.stream(ImageFormat.values())
+                .filter((i) -> i.toString().equalsIgnoreCase(value))
                 .findFirst()
-                .filter((i) -> i.name().equalsIgnoreCase(value))
                 .orElseThrow(() -> new ImageFormatException("이미지 타입은 gif, jpg(jpeg 포함), png, svg 만 가능합니다."));
     }
 

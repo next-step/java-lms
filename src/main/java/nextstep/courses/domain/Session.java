@@ -1,42 +1,45 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.Image.CoverImage;
+import nextstep.courses.domain.Image.CoverImages;
+import nextstep.courses.domain.participant.Participants;
 import nextstep.courses.exception.SessionStateException;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Session extends BaseEntity {
-    protected CoverImage coverImage;
+    protected Long id;
+    protected CoverImages coverImages;
     protected ProgressPeriod progressPeriod;
-    protected SessionState state;
+    protected SessionProgressState progressState;
+    protected Boolean recruitState;
     protected Participants participants;
 
 
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt) {
-        this(1L, coverImage, startDate, endDate, state, createdAt, null);
-    }
-
-    protected Session(CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(1L, coverImage, startDate, endDate, state, createdAt, updatedAt);
-    }
-
-    protected Session(long id, CoverImage coverImage, LocalDate startDate, LocalDate endDate, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(id, createdAt, updatedAt);
-        this.coverImage = coverImage;
+    protected Session(Long id, List<CoverImage> coverImageList, LocalDate startDate, LocalDate endDate, SessionProgressState state, Boolean recruitState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.coverImages = new CoverImages(coverImageList);
         this.progressPeriod = new ProgressPeriod(startDate, endDate);
-        this.state = state;
-        this.participants = new Participants(new HashSet<>());
+        this.recruitState = recruitState;
+        this.progressState = state;
+        this.participants = new Participants(new ArrayList<>());
     }
 
+
+    public Long id() {
+        return id;
+    }
 
     public abstract void apply(Payment payment);
 
     protected void validateState() {
-        if (state.isNotRecruiting()) {
+        if (!recruitState) {
             throw new SessionStateException("강의 수강신청은 강의 상태가 모집중일 때만 가능합니다");
         }
     }
@@ -45,38 +48,38 @@ public abstract class Session extends BaseEntity {
         return progressPeriod;
     }
 
-    public String state() {
-        return state.toString();
+    public String progressState() {
+        return progressState.toString();
     }
 
-    public CoverImage coverImage() {
-        return coverImage;
+
+    public Boolean recruitState() {
+        return recruitState;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Session session = (Session) o;
-        return Objects.equals(coverImage, session.coverImage) && Objects.equals(progressPeriod, session.progressPeriod) && state == session.state && Objects.equals(participants, session.participants);
+        return Objects.equals(id, session.id) && Objects.equals(coverImages, session.coverImages) && Objects.equals(progressPeriod, session.progressPeriod) && progressState == session.progressState && Objects.equals(recruitState, session.recruitState) && Objects.equals(participants, session.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), coverImage, progressPeriod, state, participants);
+        return Objects.hash(id, coverImages, progressPeriod, progressState, recruitState, participants);
     }
 
     @Override
     public String toString() {
         return "Session{" +
-                "id=" + id() +
-                "coverImage=" + coverImage +
+                "id=" + id +
+                ", coverImages=" + coverImages +
                 ", progressPeriod=" + progressPeriod +
-                ", state=" + state +
+                ", progressState=" + progressState +
+                ", recruitState=" + recruitState +
                 ", participants=" + participants +
-                ", createdAt= " + createdAt() +
-                ", updateAt=" + updatedAt() +
                 '}';
     }
 }
