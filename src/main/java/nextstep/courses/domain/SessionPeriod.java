@@ -20,4 +20,20 @@ public class SessionPeriod {
 			throw new IllegalArgumentException("강의 시작 일시가 종료 일시보다 늦습니다.");
 		}
 	}
+
+	public LocalDateTime startedAt() {
+		return startedAt;
+	}
+
+	public LocalDateTime finishedAt() {
+		return finishedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "SessionPeriod{" +
+				"startedAt=" + startedAt +
+				", finishedAt=" + finishedAt +
+				'}';
+	}
 }

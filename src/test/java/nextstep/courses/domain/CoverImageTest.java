@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static nextstep.courses.domain.ImageShapeTest.NORMAL_IMAGE_SHAPE;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CoverImageTest {
+public class CoverImageTest {
 	public static final CoverImage NORMAL_COVER_IMAGE = new CoverImage(0L, 1024L * 1024L, "jpg", NORMAL_IMAGE_SHAPE);
 
 	@Test

@@ -69,3 +69,35 @@
 * [x] 클래스 네임에 Info, Data는 사용하지 않고, 의미를 보다 명확히 하기
 * [x] 수강 신청이 완료되면 수강 인원이 늘어야 할 것
 * [x] 파일 마지막의 newLine에 대해 공부해 보고, 누락된 부분을 추가하기
+
+#### Feedback 23.12.07
+* [x] userNumber를 가져오는 방식에 대한 고민
+* [x] 값이 필요한 객체의 경우 기본생성자를 제공하지 않고, 추가적인 validate를 진행
+
+---
+### 🚀 3단계 - 수강신청(DB 적용)
+#### 요구사항
+* [x] 2단계에서 구현한 도메인 모델을 DB 테이블과 매핑하고, 데이터를 저장한다.
+  * [x] schema.sql 에 DB 테이블 추가
+    * [x] Session
+    * [x] CoverImage
+    * [x] NsUserSession
+  * [x] CRUD 코드 추가
+    * [x] sessionRepository
+    * [x] coverImageRepository
+  * [x] CRUD 코드에 대한 테스트 코드 추가
+    * [x] sessionRepository
+
+#### Feedback 23.12.12
+* [x] CoverImage와 Sesssion의 관계 고민
+  * Session은 CoverImage를 가진다.
+  * 수강신청 시 CoverImage의 정보는 필요하지 않다.
+  * CoverImage는 sessionId를 반드시 안다.
+* [x] Repository 와 DAO의 차이를 알아보고 설계를 수정
+  * 현재의 설계는 DAO에 가깝다. Repository는 DAO를 이용해서 서비스단에서 사용하고자 하는 객체를 만드는데 집중한다.
+* [x] CoverImage의 중복된 validation 제거
+* [x] Wrapper 타입과 Primitive 타입의 쓰임새 확인 후 수정
+* [x] SessionPaymentCondition 내 메서드의 적합한 명명 고민
+* [x] 수강신청 로직 수정(검증)
+* [x] 객체 저장 후 id값을 반환하도록 하기
+* [x] Class 레벨의 @Transactional 활용
