@@ -36,7 +36,7 @@ class SessionChargeTest {
     @Test
     void isFullTest() {
         SessionCharge sessionCharge = new SessionCharge(true, 10, 1);
-        assertThatThrownBy(() -> sessionCharge.isFull(1))
+        assertThatThrownBy(() -> sessionCharge.checkRecruits(1))
                 .isInstanceOf(IllegalStateException.class);
     }
 }

@@ -32,7 +32,7 @@ public class SessionCharge {
         return limitCount;
     }
 
-    public void isFull(int studentCount) {
+    public void checkRecruits(int studentCount) {
         if (this.limitCount > 0 && this.limitCount == studentCount) {
             throw new IllegalStateException("모집 인원이 마감되었습니다.");
         }

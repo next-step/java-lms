@@ -88,7 +88,7 @@ public class Session {
 
     public void enroll() {
         checkSessionStatus();
-        this.charge.isFull(this.studentCount);
+        this.charge.checkRecruits(this.studentCount);
         this.studentCount++;
     }
 }
