@@ -7,10 +7,6 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.payments.domain.Payment;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Session {
     private static final String ERR_NOT_PERIOD = "해당 강의는 수강신청 기간이 아닙니다.";
     private static final String ERR_MAX_STUDENTS_EXCEEDED = String.format("해당 강의의 수강인원이 모두 차서 더 이상 등록할 수 없습니다.");
@@ -23,8 +19,9 @@ public class Session {
     private final Boolean isFree;
     private final Long maxStudentsNumber;
     private final Long price;
-    private final List<Long> studentsId = new ArrayList<>();
+    private final Students students = new Students();
     private final Schedule schedule;
+
 
     public Session(Long maxStudentsNumber, Long price) {
         this(0L, new CoverImage(), false, maxStudentsNumber, price, new Schedule());
@@ -54,7 +51,7 @@ public class Session {
             validatePayment(payment);
         }
         validateEnrollmentPeriod(this.schedule);
-        this.studentsId.add(payment.userId());
+        this.students.add(payment.userId());
     }
 
     private void validateEnrollmentPeriod(Schedule schedule) throws NotEnrollmentPeriodException {
@@ -64,7 +61,7 @@ public class Session {
     }
 
     private void validateMaxStudentsNumber() throws MaxStudentsNumberExceededException {
-        if (this.studentsId.size() >= this.maxStudentsNumber) {
+        if (this.students.isGreaterThanOrEqualTo(this.maxStudentsNumber)) {
             throw new MaxStudentsNumberExceededException(ERR_MAX_STUDENTS_EXCEEDED);
         }
     }
