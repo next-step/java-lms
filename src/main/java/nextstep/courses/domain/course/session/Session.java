@@ -53,57 +53,39 @@ public class Session extends BaseEntity {
     }
 
     public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
-        checkStatusOnRecruit();
-
-        if (this.sessionDetail.charged()) {
-            checkPaymentIsPaid(loginUser, payment);
-        }
+        sessionDetail.checkApplyPossible();
+        checkPaymentIsPaid(loginUser, payment);
 
         this.applicants.addApplicant(loginUser, sessionDetail.getSessionState());
         return toApply(loginUser, date);
+    }
+
+    private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
+        if (sessionDetail.charged()) {
+            checkPaymentIsValid(loginUser, payment);
+        }
+    }
+
+    private void checkPaymentIsValid(NsUser loginUser, Payment payment) {
+        if (payment != null && payment.isPaid(loginUser, this)) {
+            throw new IllegalArgumentException("결제를 다시 확인하세요;");
+        }
     }
 
     private Apply toApply(NsUser loginUser, LocalDateTime date) {
         return new Apply(this, loginUser, date);
     }
 
-    private void checkStatusOnRecruit() {
-        if (this.sessionDetail.notRecruiting()) {
-            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
-        }
-    }
-
-    private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
-        if (payment == null || !payment.isPaid(loginUser, this)) {
-            throw new IllegalArgumentException("결제를 진행해 주세요.");
-        }
-    }
-
     public void changeOnReady(LocalDate date) {
-        checkStartDateIsSameOrBefore(date);
-        this.sessionDetail.changeOnReady();
+        this.sessionDetail.changeOnReady(date);
     }
 
     public void changeOnRecruit(LocalDate date) {
-        checkStartDateIsSameOrBefore(date);
-        this.sessionDetail.changeOnRecruit();
-    }
-
-    private void checkStartDateIsSameOrBefore(LocalDate date) {
-        if (sessionDetail.startDateIsSameOrBefore(date)) {
-            throw new IllegalArgumentException("강의 시작일 이전에 변경 가능합니다.");
-        }
+        this.sessionDetail.changeOnRecruit(date);
     }
 
     public void changeOnEnd(LocalDate date) {
-        checkEndDateIsSameOrAfter(date);
-        this.sessionDetail.changeOnEnd();
-    }
-
-    private void checkEndDateIsSameOrAfter(LocalDate date) {
-        if (sessionDetail.endDateIsSameOrAfter(date)) {
-            throw new IllegalArgumentException("강의 종료일 이후 변경 가능합니다.");
-        }
+        this.sessionDetail.changeOnEnd(date);
     }
 
     public void setSessionState(SessionState updateSessionState) {
