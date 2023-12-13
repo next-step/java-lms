@@ -64,21 +64,6 @@ create table cover_image (
 create table session (
     id bigint not null,
     course_id bigint not null,
-    image_id bigint not null,
-    type varchar(10) not null,
-    status varchar(10) not null,
-    start_date timestamp not null,
-    end_date timestamp not null,
-    max_students int,
-    fee int,
-    created_at timestamp not null,
-    updated_at timestamp,
-    primary key (id)
-);
-
-create table session2 (
-    id bigint not null,
-    course_id bigint not null,
     type varchar(10) not null,
     recruitment_status varchar(30) not null,
     start_date timestamp not null,

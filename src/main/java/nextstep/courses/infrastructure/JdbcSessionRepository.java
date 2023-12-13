@@ -29,13 +29,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session2 (id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, session.id(), session.courseId(), session.type(), session.recruitmentStatus(), session.startDate(), session.endDate(), session.maxStudents(), session.fee(), session.getCreatedAt());
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at, updated_at from session2 where id = ?";
+        String sql = "select id, course_id, type, recruitment_status, start_date, end_date, max_students, fee, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> Session.of(
                 rs.getLong(1),
                 rs.getLong(2),
