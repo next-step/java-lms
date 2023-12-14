@@ -1,7 +1,7 @@
 package nextstep.courses.domain.participant;
 
 import nextstep.courses.exception.AlreadyRegisterUserException;
-import nextstep.courses.type.SessionSubscriptionStatus;
+import nextstep.courses.type.ParticipantSelectionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +17,10 @@ class SessionParticipantsTest {
     @Test
     void add() {
         List<SessionUserEnrolment> participants = new ArrayList<>() {{
-            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+            add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         }};
         SessionParticipants sessionParticipants = new SessionParticipants(participants);
-        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING);
+        SessionUserEnrolment sessionUserEnrolment = new SessionUserEnrolment(2L, 1L, ParticipantSelectionStatus.WAITING);
         sessionParticipants.add(sessionUserEnrolment);
         assertEquals(2, sessionParticipants.count());
     }
@@ -29,10 +29,10 @@ class SessionParticipantsTest {
     @Test
     void addException() {
         List<SessionUserEnrolment> participants = new ArrayList<>() {{
-            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+            add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         }};
         SessionParticipants sessionParticipants = new SessionParticipants(participants);
-        assertThatThrownBy(() -> sessionParticipants.add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> sessionParticipants.add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(AlreadyRegisterUserException.class);
     }
 }

@@ -13,7 +13,11 @@ public enum ExceptionMessage {
     MISS_MATCH_PRICE_EXCEPTION("결제 금액이 다릅니다."),
     NOT_RECRUITING_EXCEPTION("모집중인 강의가 아닙니다."),
     NOT_FOUND_USER_EXCEPTION("사용자를 찾을 수 없습니다."),
-    NOT_FOUND_ENROLMENT_EXCEPTION("수강정보를 찾을 수 없습니다.");
+    NOT_FOUND_ENROLMENT_EXCEPTION("수강정보를 찾을 수 없습니다."),
+    NOT_ACCEPTED_USER_EXCEPTION("강의에 선발되지 않은 사용자입니다."),
+    NOT_REJECTED_USER_EXCEPTION("강의에 선발탈락된 사용자가 아닙니다."),
+    NOT_APPROVED_USER_EXCEPTION("수강신청이 승인된 사용자입니다."),
+    NOT_CANCELLED_USER_EXCEPTION("수강신청이 취소된 사용자입니다.");
 
     private String message;
 

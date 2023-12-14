@@ -1,6 +1,6 @@
 package nextstep.courses.type;
 
-public enum SessionSubscriptionStatus {
+public enum ParticipantSelectionStatus {
     WAITING, ACCEPT, REJECT;
 
     public boolean isAccept() {

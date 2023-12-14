@@ -7,7 +7,7 @@ import nextstep.courses.exception.EndSessionException;
 import nextstep.courses.exception.MaxParticipantsException;
 import nextstep.courses.exception.MissMatchPriceException;
 import nextstep.courses.type.SessionStatus;
-import nextstep.courses.type.SessionSubscriptionStatus;
+import nextstep.courses.type.ParticipantSelectionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class EnrolmentTest {
         Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
-        enrolment.addParticipant(money, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        enrolment.addParticipant(money, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // then
         assertThat(enrolment.nowParticipants()).isEqualTo(1);
     }
@@ -39,14 +39,14 @@ public class EnrolmentTest {
         // given
         int money = 10000;
         List<SessionUserEnrolment> users = new ArrayList<>() {{
-            add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+            add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         }};
         ParticipantManager participantManager = new ParticipantManager(1, new SessionParticipants(users));
         Price price = new Price(money);
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(MaxParticipantsException.class);
     }
 
@@ -60,7 +60,7 @@ public class EnrolmentTest {
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.READY);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(1000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> enrolment.addParticipant(1000, new SessionUserEnrolment(2L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(MissMatchPriceException.class);
     }
 
@@ -74,7 +74,7 @@ public class EnrolmentTest {
         Enrolment enrolment = new Enrolment(participantManager, price, SessionStatus.FINISH);
         // when
         // then
-        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> enrolment.addParticipant(money, new SessionUserEnrolment(2L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(EndSessionException.class);
     }
 }

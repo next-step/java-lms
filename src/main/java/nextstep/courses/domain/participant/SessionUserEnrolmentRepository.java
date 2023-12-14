@@ -6,7 +6,9 @@ public interface SessionUserEnrolmentRepository {
 
     int save(SessionUserEnrolment enrolment);
 
-    int update(SessionUserEnrolment enrolment);
+    int updateSubscriptionStatus(SessionUserEnrolment enrolment);
+
+    int updateApprovalStatus(SessionUserEnrolment enrolment);
 
     Optional<SessionUserEnrolment> findBySessionIdAndUserId(Long findSessionId, Long userId);
 

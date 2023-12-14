@@ -71,3 +71,11 @@ create table image (
     session_id bigint,
     primary key (id)
 );
+
+create table session_user_enrolment (
+    session_id bigint,
+    user_id bigint,
+    subscription_status varchar(10),
+    approval_status varchar(10),
+    primary key (session_id, user_id)
+);

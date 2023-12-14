@@ -5,7 +5,7 @@ import nextstep.courses.domain.participant.SessionUserEnrolment;
 import nextstep.courses.exception.*;
 import nextstep.courses.type.RecruitmentStatus;
 import nextstep.courses.type.SessionStatus;
-import nextstep.courses.type.SessionSubscriptionStatus;
+import nextstep.courses.type.ParticipantSelectionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +58,7 @@ public class SessionTest {
     void 강의가_모집중일때_신청이_가능하다() {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
     }
@@ -69,7 +69,7 @@ public class SessionTest {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.NOT_RECRUITING);
         // then
-        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(NotRecruitingException.class);
     }
 
@@ -78,7 +78,7 @@ public class SessionTest {
     void 유료강의결제() {
         // given
         Session session = createSession(new ParticipantManager(10), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // then
         assertThat(session.nowParticipants()).isEqualTo(1);
     }
@@ -88,9 +88,9 @@ public class SessionTest {
     void 유료강의_참여가_최대를_넘기면_예외가_발생한다() {
         // given
         Session session = createSession(new ParticipantManager(1), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
-        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        session.addParticipant(10000, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // then
-        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(2L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> session.addParticipant(10000, new SessionUserEnrolment(2L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(MaxParticipantsException.class);
     }
 
@@ -100,7 +100,7 @@ public class SessionTest {
         // given
         Session session = createSession(new ParticipantManager(10), 10000, SessionStatus.RECRUIT, RecruitmentStatus.RECRUITING);
         // then
-        assertThatThrownBy(() -> session.addParticipant(5000, new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING)))
+        assertThatThrownBy(() -> session.addParticipant(5000, new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING)))
                 .isInstanceOf(MissMatchPriceException.class);
     }
 }

@@ -1,7 +1,7 @@
 package nextstep.courses.domain.participant;
 
 import nextstep.courses.exception.MaxParticipantsException;
-import nextstep.courses.type.SessionSubscriptionStatus;
+import nextstep.courses.type.ParticipantSelectionStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ public class participantManagerTest {
     void 최대참가자수_생성하고_기본참여자는_1명이다() {
         // given
         int maxCount = 10;
-        List<SessionUserEnrolment> user1 = List.of(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.ACCEPT));
+        List<SessionUserEnrolment> user1 = List.of(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.ACCEPT));
         SessionParticipants participants = new SessionParticipants(user1);
         // when
         ParticipantManager participantManager = new ParticipantManager(maxCount, participants);
@@ -45,7 +45,7 @@ public class participantManagerTest {
         List<SessionUserEnrolment> users = new ArrayList<>();
         ParticipantManager participantManager = new ParticipantManager(maxCount, new SessionParticipants(users));
         // when
-        participantManager.add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        participantManager.add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // then
         assertThat(participantManager.nowCount()).isEqualTo(1);
     }
@@ -56,7 +56,7 @@ public class participantManagerTest {
         // given
         int maxCount = 1;
         List<SessionUserEnrolment> users = new ArrayList<>();
-        users.add(new SessionUserEnrolment(1L, 1L, SessionSubscriptionStatus.WAITING));
+        users.add(new SessionUserEnrolment(1L, 1L, ParticipantSelectionStatus.WAITING));
         // when
         ParticipantManager participantManager = new ParticipantManager(maxCount, new SessionParticipants(users));
         // then
