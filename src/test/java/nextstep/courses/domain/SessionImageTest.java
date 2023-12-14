@@ -2,18 +2,23 @@ package nextstep.courses.domain;
 
 import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.image.SessionImage;
+import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.PaidSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SessionImageTest {
 
-    private PaidSession session = PaidSession.feeOf("step4", 1, 10_000L);
+    private PaidSession session = PaidSession.feeOf(1L,"step4", 1L, EnrollmentStatus.RECRUITING,
+            LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), 1, 10_000L);
     private int SIZE = 1024 * 1024;
     private int WIDTH = 300;
     private int HEIGHT = 200;

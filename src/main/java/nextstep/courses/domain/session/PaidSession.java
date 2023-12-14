@@ -13,14 +13,20 @@ public class PaidSession extends Session {
     private int maxStudentCount;
     private Long sessionFee;
 
-    public static PaidSession feeOf(String title, int maxStudentCount, Long sessionFee) {
-        return new PaidSession(0L, title, null, maxStudentCount, sessionFee, LocalDate.now(), LocalDate.now());
+    public static PaidSession feeOf(long id, String title, long courseId,
+                                    EnrollmentStatus enrollmentStatus, LocalDate startDate,
+                                    LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt,
+                                    int maxStudentCount, Long sessionFee) {
+        return new PaidSession(id, title, courseId,
+                new SessionPlan(enrollmentStatus, startDate, endDate),
+                new SystemTimeStamp(createdAt, updatedAt),
+                maxStudentCount, sessionFee);
     }
 
-    public PaidSession(Long sessionId, String title, Course course, int maxStudentCount, Long sessionFee, LocalDate startDate, LocalDate endDate) {
-        super(sessionId, title, SessionType.PAID
-                , new SessionPlan(SessionStatus.fromDate(startDate, endDate), startDate, endDate)
-                , new SystemTimeStamp(LocalDateTime.now(), null));
+    public PaidSession(Long sessionId, String title, long courseId,
+                       SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp,
+                       int maxStudentCount, Long sessionFee) {
+        super(sessionId, title, courseId, SessionType.PAID, sessionPlan, systemTimeStamp);
         this.maxStudentCount = maxStudentCount;
         this.sessionFee = sessionFee;
     }
