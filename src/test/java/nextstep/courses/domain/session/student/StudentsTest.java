@@ -45,11 +45,11 @@ class StudentsTest {
         students.add(student3);
 
         // when
-        Student changed1 = students.selectStudents(student1, SELECTION);
+        Student changed1 = students.selectStudents(student1, APPROVAL);
         Student changed2 = students.selectStudents(student2, DENIAL);
 
         // then
-        assertThat(changed1.getSelectionStatus()).isEqualTo(SELECTION);
+        assertThat(changed1.getSelectionStatus()).isEqualTo(APPROVAL);
         assertThat(changed2.getSelectionStatus()).isEqualTo(DENIAL);
     }
 
@@ -63,7 +63,7 @@ class StudentsTest {
         students.add(createStudent(3L));
 
         // when & then
-        assertThatThrownBy(() -> students.selectStudents(createStudent(4L), SELECTION)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> students.selectStudents(createStudent(4L), APPROVAL)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("수강생이 존재하지 않습니다.");
     }
 

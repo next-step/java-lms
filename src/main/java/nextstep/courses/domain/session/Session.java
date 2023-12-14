@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
+import nextstep.courses.domain.session.student.SelectionStatus;
 import nextstep.courses.domain.session.student.Student;
 import nextstep.courses.dto.EnrolmentInfo;
 
@@ -36,6 +37,10 @@ public abstract class Session {
         if (isNotProgressing(sessionStatus)) {
             throw new IllegalArgumentException(String.format("해당 강의는 현재 %s입니다.", sessionStatus.description()));
         }
+    }
+
+    public Student selection(Student student, SelectionStatus selectionStatus) {
+        return enrolment.selection(student, selectionStatus);
     }
 
     @Override

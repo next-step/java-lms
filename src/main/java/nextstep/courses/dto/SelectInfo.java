@@ -4,25 +4,25 @@ import nextstep.courses.domain.session.student.SelectionStatus;
 
 public class SelectInfo {
 
-    private Long teacherId;
     private Long studentId;
+    private Long sessionId;
     private SelectionStatus selectionStatus;
 
-    public SelectInfo(Long teacherId, Long studentId, SelectionStatus selectionStatus) {
-        this.teacherId = teacherId;
+    public SelectInfo(Long studentId, Long sessionId, SelectionStatus selectionStatus) {
         this.studentId = studentId;
+        this.sessionId = sessionId;
         this.selectionStatus = selectionStatus;
-    }
-
-    public Long getTeacherId() {
-        return teacherId;
     }
 
     public Long getStudentId() {
         return studentId;
     }
 
-    public SelectionStatus getEnrollStatus() {
+    public Long getSessionId() {
+        return this.sessionId;
+    }
+
+    public SelectionStatus getSelectionStatus() {
         return selectionStatus;
     }
 }

@@ -39,7 +39,7 @@ public class Enrolment {
         }
     }
 
-    public Student select(Student student, SelectionStatus selectionStatus) {
+    public Student selection(Student student, SelectionStatus selectionStatus) {
         return students.selectStudents(student, selectionStatus);
     }
 

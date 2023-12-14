@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static nextstep.courses.domain.session.student.SelectionStatus.SELECTION;
+import static nextstep.courses.domain.session.student.SelectionStatus.APPROVAL;
 import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
@@ -52,13 +52,13 @@ class JdbcStudentRepositoryTest {
             .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
 
         // when
-        Student after = before.changeStatus(SELECTION);
+        Student after = before.changeStatus(APPROVAL);
         studentRepository.update(after);
 
         Student changedStudent = studentRepository.findById(1L)
             .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
 
         // then
-        assertThat(changedStudent.getSelectionStatus()).isEqualTo(SELECTION);
+        assertThat(changedStudent.getSelectionStatus()).isEqualTo(APPROVAL);
     }
 }
