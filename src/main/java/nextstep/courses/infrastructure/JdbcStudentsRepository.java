@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.Student;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.Students;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -20,11 +21,11 @@ public class JdbcStudentsRepository {
     }
 
     public int save(Session session, Students students) {
-        String sql = "insert into session_student (session_id, ns_user_id) values (?, ?)";
-        List<NsUser> userList = session.getStudents().excludeNsUser(students);
+        String sql = "insert into session_student (session_id, ns_user_id, register_status) values (?, ?, ?)";
+        List<Student> studentList = session.getStudents().excludeNsUser(students);
         int count = 0;
-        for (NsUser nsUser : userList) {
-            count += jdbcTemplate.update(sql, session.getId(), nsUser.getId());
+        for (Student student : studentList) {
+            count += jdbcTemplate.update(sql, session.getId(), student.getUserId(), student.getRegisterStatus().name());
         }
         return count;
     }

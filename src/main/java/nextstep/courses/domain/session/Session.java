@@ -1,0 +1,148 @@
+package nextstep.courses.domain.session;
+
+import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.enums.SessionProcessStatus;
+import nextstep.courses.domain.session.enums.SessionRecruitStatus;
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class Session {
+
+    private Long id;
+    private Period period;
+    private SessionStatus status;
+    private SessionRecruitStatus recruitStatus;
+    private SessionProcessStatus processStatus;
+    private Students students;
+    private SessionType sessionType;
+    private List<SessionImage> sessionImages;
+    private Course course;
+
+    public Session(Long id, Period period, SessionStatus status, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this(id, period, SessionRecruitStatus.by(status), SessionProcessStatus.by(status), students, sessionType, sessionImage);
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, SessionType sessionType) {
+        this(id, period, recruitStatus, processStatus, new Students(), sessionType, new SessionImage());
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, SessionImage sessionImage) {
+        this(id, period, recruitStatus, processStatus, students, sessionType, new ArrayList<>(Collections.singleton((sessionImage))));
+    }
+
+    public Session(Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, List<SessionImage> sessionImages) {
+        this(null, period, recruitStatus, processStatus, students, sessionType, sessionImages);
+    }
+
+    public Session(Long id, Period period, SessionRecruitStatus recruitStatus, SessionProcessStatus processStatus, Students students, SessionType sessionType, List<SessionImage> sessionImages) {
+        this.id = id;
+        this.period = period;
+        this.recruitStatus = recruitStatus;
+        this.processStatus = processStatus;
+        this.students = students;
+        this.sessionType = sessionType;
+        if (sessionImages.isEmpty()) {
+            throw new IllegalArgumentException("이미지 정보는 반드시 담겨야 합니다");
+        }
+        this.sessionImages = sessionImages;
+    }
+
+
+
+    public Students register(NsUser user) throws CannotRegisterException {
+        return register(user, new Payment());
+    }
+
+    public Students register(NsUser user, Payment payment) throws CannotRegisterException {
+        if (isRecruitOpen()) {
+            throw new CannotRegisterException("모집중이 아닌 경우 신청이 불가합니다");
+        }
+
+        if (!sessionType.isEqualPrice(payment)) {
+            throw new CannotRegisterException("강의 금액과 일치하지 않습니다.");
+        }
+
+        students.registerSessionStudent(user, sessionType);
+        return students;
+    }
+
+    public List<SessionImage> addSessionImage(List<SessionImage> sessionImage) {
+        sessionImage.forEach(image -> image.addSession(this));
+        this.sessionImages.addAll(sessionImage);
+        return this.sessionImages;
+    }
+
+    private boolean isRecruitOpen() {
+        return !SessionRecruitStatus.isOpen(status) && !SessionRecruitStatus.isOpen(recruitStatus);
+    }
+
+    public Session updateStatus(SessionStatus status) throws PeriodException {
+        this.recruitStatus = SessionRecruitStatus.by(period.validate(status));
+        this.processStatus = SessionProcessStatus.by(period.validate(status));
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(period, session.period) && status == session.status && Objects.equals(sessionType, session.sessionType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(period, status, sessionType);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Students getStudents() {
+        return students;
+    }
+
+    public LocalDate startedAt() {
+        return this.period.startDate();
+    }
+
+    public LocalDate endAt() {
+        return this.period.endDate();
+    }
+
+    public String status() {
+        return this.status.name();
+    }
+
+    public String payType() {
+        return this.sessionType.type().name();
+    }
+
+    public Long price() {
+        return this.sessionType.price();
+    }
+
+    public int capacity() {
+        return this.sessionType.capacity();
+    }
+
+    public Long courseId() {
+        return this.course.getId();
+    }
+
+    public void addCourse(Course course) {
+        this.course = course;
+    }
+
+    public String getRecruitStatus() {
+        return recruitStatus.name();
+    }
+
+    public String getProcessStatus() {
+        return processStatus.name();
+    }
+}
