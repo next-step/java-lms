@@ -19,7 +19,7 @@ class SessionTest {
     }
 
     @Test
-    @DisplayName("강의 생성시 가격 타입 & 가격 매칭 실패 에러 발생")
+    @DisplayName("강의 생성시 가격 타입 & 가격 매칭 실패 에러 던짐")
     void create_throw_exception_sessionPaymentType_price() {
         assertThatThrownBy(() ->
                 new Session(0L,
@@ -31,6 +31,7 @@ class SessionTest {
                                 LocalDateTime.now(),
                                 LocalDateTime.now().plusMonths(1L)
                         ),
+                        SessionStatus.READY,
                         new CoverImage("pobi.png", 500L, 300D, 200D)
                 )
         ).isInstanceOf(IllegalArgumentException.class);

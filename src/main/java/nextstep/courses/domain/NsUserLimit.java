@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 public class NsUserLimit {
-    private final Integer count;
+    private final int count;
     private final SessionPaymentType sessionPaymentType;
 
     public NsUserLimit(Integer count, SessionPaymentType sessionPaymentType) {
