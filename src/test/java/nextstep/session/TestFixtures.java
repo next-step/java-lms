@@ -10,9 +10,9 @@ import nextstep.users.domain.NsUserTest;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-class TestFixtures {
+public class TestFixtures {
 
-    static Session endSession() {
+    public static Session endSession() {
         return new Session(
                 1L,
                 new Users(30, Set.of()),
@@ -24,7 +24,7 @@ class TestFixtures {
         );
     }
 
-    static Session preparingSession() {
+    public static Session preparingSession() {
         return new Session(
                 2L,
                 new Users(30, Set.of()),
@@ -36,7 +36,7 @@ class TestFixtures {
         );
     }
 
-    static Session registableRecrutingPaidSession() {
+    public static Session registableRecrutingPaidSession() {
         return new Session(
                 null,
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
@@ -48,7 +48,7 @@ class TestFixtures {
         );
     }
 
-    static Session registableRecrutingFreeSession() {
+    public static Session registableRecrutingFreeSession() {
         return new Session(
                 null,
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),

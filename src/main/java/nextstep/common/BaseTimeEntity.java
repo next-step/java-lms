@@ -15,4 +15,12 @@ public class BaseTimeEntity {
         this.startAt = startAt;
         this.endAt = endAt;
     }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }

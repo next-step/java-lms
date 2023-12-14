@@ -55,6 +55,34 @@ public class Session {
         );
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Users getMembers() {
+        return members;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public BaseTimeEntity getBaseTime() {
+        return baseTime;
+    }
+
     private static void requiredNotBeforeCurrent(LocalDateTime localDateTime, String exceptionMessage) {
         if (localDateTime.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException(exceptionMessage);
@@ -79,11 +107,20 @@ public class Session {
         members.register(user, sessionType);
     }
 
-    public Long id() {
-        return id;
-    }
-
     public int memberSize() {
         return members.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", members=" + members +
+                ", amount=" + amount +
+                ", sessionType=" + sessionType +
+                ", status=" + status +
+                ", coverImage=" + coverImage +
+                ", baseTime=" + baseTime +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,5 +35,9 @@ public class Users {
 
     public int size() {
         return value.size();
+    }
+
+    public Set<NsUser> values() {
+        return Collections.unmodifiableSet(value);
     }
 }

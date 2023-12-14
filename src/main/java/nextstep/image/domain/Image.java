@@ -9,13 +9,15 @@ public class Image {
 
     public static final long MAXIMUM_SIZE = 1024;
 
-    private final int width;
+    private Long id;
 
-    private final int height;
+    private int width;
 
-    private final ImageType imageType;
+    private int height;
 
-    private final long size;
+    private ImageType imageType;
+
+    private long size;
 
     private Image(int width, int height, ImageType imageType, long size) {
         this.width = width;
@@ -30,6 +32,26 @@ public class Image {
         return new Image(width, height, imageType, size);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
     private static void checkImageSize(int width, int height, long size) {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             throw new IllegalArgumentException("이미지의 width는 " + MIN_WIDTH + "픽셀, height는 " + MIN_HEIGHT + "픽셀 이상이어야 한다.");
@@ -42,5 +64,16 @@ public class Image {
         if (size > MAXIMUM_SIZE) {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 한다.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", width=" + width +
+                ", height=" + height +
+                ", imageType=" + imageType +
+                ", size=" + size +
+                '}';
     }
 }

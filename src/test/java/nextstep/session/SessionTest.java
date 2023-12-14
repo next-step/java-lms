@@ -25,7 +25,7 @@ class SessionTest {
     @ParameterizedTest
     @MethodSource(value = "nonRegistrableSessions")
     void 모집중인_상태일_때만_강의_수강신청_할_수_있다(Session session) {
-        Payment payment = new Payment("id", session.id(), NsUserTest.JAVAJIGI.getId(), 1000L);
+        Payment payment = new Payment("id", session.getId(), NsUserTest.JAVAJIGI.getId(), 1000L);
         Throwable throwable = catchThrowable(() -> session.register(NsUserTest.JAVAJIGI, payment));
 
         assertThat(throwable).isInstanceOf(IllegalStateException.class)
@@ -39,7 +39,7 @@ class SessionTest {
     @Test
     void 유료_강의는_수강생이_결제한_금액과_수강료가_일치할_때_수강신청이_가능하다() {
         Session paidSession = registableRecrutingPaidSession();
-        Payment payment = new Payment("id", paidSession.id(), NsUserTest.JAVAJIGI.getId(), 1000L);
+        Payment payment = new Payment("id", paidSession.getId(), NsUserTest.JAVAJIGI.getId(), 1000L);
 
         Throwable throwable = catchThrowable(() -> paidSession.register(NsUserTest.JAVAJIGI, payment));
 
