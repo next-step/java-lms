@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session.enroll;
 
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +15,11 @@ class EnrolmentTest {
     @Test
     void enroll() {
         // given
-        Enrolment enrolment = new Enrolment(new Students(), RECRUITING_ON);
+        Enrolment enrolment = new Enrolment(new SessionStudents(), RECRUITING_ON);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when
-        Student student = enrolment.enroll(enrolmentInfo);
+        SessionStudent student = enrolment.enroll(enrolmentInfo);
 
         // then
         assertThat(student.getEnrolmentId()).isEqualTo(1L);
@@ -29,7 +29,7 @@ class EnrolmentTest {
     @Test
     void validateEnrollStatus() {
         // given
-        Enrolment enrolment = new Enrolment(new Students(), RECRUITING_OFF);
+        Enrolment enrolment = new Enrolment(new SessionStudents(), RECRUITING_OFF);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then

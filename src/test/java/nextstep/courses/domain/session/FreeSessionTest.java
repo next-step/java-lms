@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class FreeSessionTest {
             PAY,
             sessionStatus,
             new CoverImages(),
-            new Enrolment(new Students(), RECRUITING_ON),
+            new Enrolment(new SessionStudents(), RECRUITING_ON),
             LocalDate.of(2023, 12, 5),
             LocalDate.now()
             );

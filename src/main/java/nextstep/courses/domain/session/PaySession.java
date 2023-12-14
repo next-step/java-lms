@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.dto.EnrolmentInfo;
 
 import java.text.DecimalFormat;
@@ -22,7 +22,7 @@ public class PaySession extends Session {
     }
 
     @Override
-    public Student enroll(EnrolmentInfo enrolmentInfo) {
+    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
         validateSessionStatus();
         validatePayAmount(enrolmentInfo);
         validateCapacity();

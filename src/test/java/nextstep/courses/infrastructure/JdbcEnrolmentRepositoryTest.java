@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.StudentRepository;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.SessionStudent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ class JdbcEnrolmentRepositoryTest {
     @DisplayName("강의 아이디에 일치하는 수강 신청 데이터를 찾는다.")
     @Test
     void findBySession() {
-        studentRepository.save(new Student(1L, 1L, WAITING));
-        studentRepository.save(new Student(1L, 2L, WAITING));
-        studentRepository.save(new Student(1L, 3L, WAITING));
+        studentRepository.save(new SessionStudent(1L, 1L, WAITING));
+        studentRepository.save(new SessionStudent(1L, 2L, WAITING));
+        studentRepository.save(new SessionStudent(1L, 3L, WAITING));
 
         Enrolment enrolment = enrolmentRepository.findBySession(1L)
             .orElseThrow();

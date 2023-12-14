@@ -4,20 +4,20 @@ import java.util.Objects;
 
 import static nextstep.courses.domain.session.student.SelectionStatus.*;
 
-public class Student {
+public class SessionStudent {
 
     private Long id;
     private Long enrolmentId;
     private Long nsUserId;
     private SelectionStatus selectionStatus;
 
-    public Student(Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
+    public SessionStudent(Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
         this.enrolmentId = enrolmentId;
         this.nsUserId = nsUserId;
         this.selectionStatus = selectionStatus;
     }
 
-    public Student(Long id, Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
+    public SessionStudent(Long id, Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
         this(enrolmentId, nsUserId, selectionStatus);
         this.id = id;
     }
@@ -38,7 +38,7 @@ public class Student {
         return this.selectionStatus;
     }
 
-    public Student changeStatus(SelectionStatus selectionStatus) {
+    public SessionStudent changeStatus(SelectionStatus selectionStatus) {
         validateSelectionStatus(selectionStatus);
 
         this.selectionStatus = selectionStatus;
@@ -55,7 +55,7 @@ public class Student {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
+        SessionStudent student = (SessionStudent) o;
         return Objects.equals(id, student.id) && Objects.equals(enrolmentId, student.enrolmentId) && Objects.equals(nsUserId, student.nsUserId);
     }
 

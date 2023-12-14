@@ -1,8 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.repository.StudentRepository;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-class JdbcStudentRepositoryTest {
+class JdbcSessionStudentRepositoryTest {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -32,12 +32,12 @@ class JdbcStudentRepositoryTest {
     void findByEnrolmentId() {
         // given
         Long enrolmentId = 1L;
-        studentRepository.save(new Student(enrolmentId, 1L, WAITING));
-        studentRepository.save(new Student(enrolmentId, 2L, WAITING));
-        studentRepository.save(new Student(enrolmentId, 3L, WAITING));
+        studentRepository.save(new SessionStudent(enrolmentId, 1L, WAITING));
+        studentRepository.save(new SessionStudent(enrolmentId, 2L, WAITING));
+        studentRepository.save(new SessionStudent(enrolmentId, 3L, WAITING));
 
         // when
-        Students allBySession = studentRepository.findAllByEnrolment(enrolmentId);
+        SessionStudents allBySession = studentRepository.findAllByEnrolment(enrolmentId);
 
         // then
         assertThat(allBySession.size()).isEqualTo(3);
@@ -47,15 +47,15 @@ class JdbcStudentRepositoryTest {
     @Test
     void update() {
         // given
-        studentRepository.save(new Student(1L, 1L, WAITING));
-        Student before = studentRepository.findById(1L)
+        studentRepository.save(new SessionStudent(1L, 1L, WAITING));
+        SessionStudent before = studentRepository.findById(1L)
             .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
 
         // when
-        Student after = before.changeStatus(APPROVAL);
+        SessionStudent after = before.changeStatus(APPROVAL);
         studentRepository.update(after);
 
-        Student changedStudent = studentRepository.findById(1L)
+        SessionStudent changedStudent = studentRepository.findById(1L)
             .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
 
         // then

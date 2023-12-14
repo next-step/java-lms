@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session.enroll;
 
 import nextstep.courses.domain.session.student.SelectionStatus;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 
 import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
@@ -11,24 +11,24 @@ import static nextstep.courses.domain.session.student.SelectionStatus.*;
 public class Enrolment {
 
     private Long id;
-    private Students students;
+    private SessionStudents sessionStudents;
     private RecruitingStatus recruitingStatus;
 
-    public Enrolment(Students students, RecruitingStatus recruitingStatus) {
-        this.students = students;
+    public Enrolment(SessionStudents sessionStudents, RecruitingStatus recruitingStatus) {
+        this.sessionStudents = sessionStudents;
         this.recruitingStatus = recruitingStatus;
     }
 
-    public Enrolment(Long id, Students students, RecruitingStatus recruitingStatus) {
-        this(students, recruitingStatus);
+    public Enrolment(Long id, SessionStudents sessionStudents, RecruitingStatus recruitingStatus) {
+        this(sessionStudents, recruitingStatus);
         this.id = id;
     }
 
-    public Student enroll(EnrolmentInfo enrolmentInfo) {
+    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
         validateRecruitingStatus();
 
-        Student student = new Student(enrolmentInfo.getSessionId(), enrolmentInfo.getNsUserId(), WAITING);
-        students.add(student);
+        SessionStudent student = new SessionStudent(enrolmentInfo.getSessionId(), enrolmentInfo.getNsUserId(), WAITING);
+        sessionStudents.add(student);
 
         return student;
     }
@@ -39,11 +39,11 @@ public class Enrolment {
         }
     }
 
-    public Student selection(Student student, SelectionStatus selectionStatus) {
-        return students.selectStudents(student, selectionStatus);
+    public SessionStudent selection(SessionStudent student, SelectionStatus selectionStatus) {
+        return sessionStudents.selectStudents(student, selectionStatus);
     }
 
     public int studentsSize() {
-        return students.size();
+        return sessionStudents.size();
     }
 }

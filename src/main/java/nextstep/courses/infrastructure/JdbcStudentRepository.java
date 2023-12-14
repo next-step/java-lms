@@ -2,8 +2,8 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.repository.StudentRepository;
 import nextstep.courses.domain.session.student.SelectionStatus;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,37 +21,37 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public void save(Student student) {
+    public void save(SessionStudent student) {
         String sql = "insert into student (enrolment_id, ns_user_id, selection_status) values(?, ?, ?)";
         jdbcTemplate.update(sql, student.getEnrolmentId(), student.getNsUserId(), student.getSelectionStatus().toString());
     }
 
     @Override
-    public void update(Student student) {
+    public void update(SessionStudent student) {
         String sql = "update student set selection_status = ? where id = ?";
         jdbcTemplate.update(sql, student.getSelectionStatus().toString(), student.getId());
     }
 
     @Override
-    public Students findAllByEnrolment(Long id) {
+    public SessionStudents findAllByEnrolment(Long id) {
         String sql = "select * from student where enrolment_id = ?";
 
-        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+        RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
             rs.getLong(1),
             rs.getLong(2),
             rs.getLong(3),
             SelectionStatus.valueOf(rs.getString(4))
         );
 
-        List<Student> students = jdbcTemplate.query(sql, rowMapper, id);
-        return new Students(students);
+        List<SessionStudent> students = jdbcTemplate.query(sql, rowMapper, id);
+        return new SessionStudents(students);
     }
 
     @Override
-    public Optional<Student> findById(Long studentId) {
+    public Optional<SessionStudent> findById(Long studentId) {
         String sql = "select * from student where id = ?";
 
-        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+        RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
             rs.getLong(1),
             rs.getLong(2),
             rs.getLong(3),

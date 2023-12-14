@@ -4,7 +4,7 @@ import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -42,7 +42,7 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getLong(6),
             rs.getInt(7)) {
             @Override
-            public Student enroll(EnrolmentInfo enrolmentInfo) {
+            public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
             }
         };
@@ -63,7 +63,7 @@ public class JdbcSessionRepository implements SessionRepository {
             toLocalDate(rs.getTimestamp(4)),
             toLocalDate(rs.getTimestamp(5))) {
             @Override
-            public Student enroll(EnrolmentInfo enrolmentInfo) {
+            public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
             }
         };

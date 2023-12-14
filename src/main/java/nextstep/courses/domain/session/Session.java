@@ -3,7 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.student.SelectionStatus;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.dto.EnrolmentInfo;
 
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ public abstract class Session {
         this.endDate = endDate;
     }
 
-    public abstract Student enroll(EnrolmentInfo enrolmentInfo);
+    public abstract SessionStudent enroll(EnrolmentInfo enrolmentInfo);
 
     protected void validateSessionStatus() {
         if (isNotProgressing(sessionStatus)) {
@@ -39,7 +39,7 @@ public abstract class Session {
         }
     }
 
-    public Student selection(Student student, SelectionStatus selectionStatus) {
+    public SessionStudent selection(SessionStudent student, SelectionStatus selectionStatus) {
         return enrolment.selection(student, selectionStatus);
     }
 
