@@ -1,12 +1,14 @@
 package nextstep.courses.domain.course.service;
 
-import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.image.ImageType;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.ImageType;
 import nextstep.courses.domain.course.session.*;
+import nextstep.courses.domain.course.session.image.Images;
 import nextstep.courses.service.SessionService;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,19 +27,21 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionServiceTest {
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net");
+    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", Type.TEACHER);
+    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net", Type.TEACHER);
     private static final LocalDate DATE_2023_12_5 = LocalDate.of(2023, 12, 5);
     private static final LocalDate DATE_2023_12_6 = LocalDate.of(2023, 12, 6);
     private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
     private static final LocalDate DATE_2023_12_12 = LocalDate.of(2023, 12, 12);
 
+    private Images images;
     private Image image;
     private Payment payment;
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private Applicants applicants;
     private Duration duration;
+    private RecruitStatus recruitStatus;
     private SessionState sessionState;
     private SessionStatus sessionStatus;
     private Session session;
@@ -52,30 +57,33 @@ public class SessionServiceTest {
     public void setUp() {
         localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
         image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
+        images = new Images(List.of(image));
         payment = new Payment("1", 1L, 3L, 1000L);
         localDate = LocalDate.of(2023, 12, 5);
         duration = new Duration(localDate, localDate);
         sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
-        sessionStatus = SessionStatus.RECRUIT;
+        sessionStatus = SessionStatus.ONGOING;
+        recruitStatus = RecruitStatus.NOT_RECRUIT;
         applicants = new Applicants();
         applicants.addApplicant(JAVAJIGI, sessionState);
-        session = new Session(1L, image, duration, sessionState, applicants,
-                sessionStatus, 1L, localDateTime, localDateTime);
+        session = new Session(1L, images, duration, sessionState, applicants,
+                recruitStatus, sessionStatus, 1L, localDateTime, localDateTime);
     }
 
     @Test
     @DisplayName("주어진 강의 정보로 강의를 생성한다.")
     void create_success() {
-        Session newSession = new Session(image, duration, sessionState, 1L, localDateTime);
-        Session savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+        Session newSession = new Session(images, duration, sessionState, 1L, localDateTime);
+        Session savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
-        sessionService.create(1L, newSession, localDateTime);
+        sessionService.create(1L, newSession);
         Session findSession = sessionRepository.findById(1L).orElseThrow(NotFoundException::new);
 
         assertThat(findSession.getId()).isEqualTo(1L);
-        assertThat(findSession.getSessionStatus()).isEqualTo(SessionStatus.READY);
+        assertThat(findSession.getSessionDetail()).isEqualTo(
+                new SessionDetail(duration, sessionState, SessionStatus.READY, recruitStatus));
         assertThat(findSession.getApplicants()).hasSize(0);
     }
 
@@ -95,8 +103,8 @@ public class SessionServiceTest {
     @DisplayName("강의 시작 날짜 전이라면 주어진 식별자에 해당하는 강의를 준비 상태로 변경한다.")
     void changeOnReady_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
-                SessionStatus.RECRUIT, 1L, localDateTime, localDateTime);
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
+                RecruitStatus.NOT_RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnReady(1L, DATE_2023_12_5);
@@ -109,22 +117,22 @@ public class SessionServiceTest {
     @DisplayName("강의 시작 날짜 전이라면 주어진 식별자에 해당하는 강의를 모집중 상태로 변경한다.")
     void changeOnRecruit_success() {
         duration = new Duration(DATE_2023_12_6, DATE_2023_12_12);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnRecruit(1L, DATE_2023_12_5);
 
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionStatus.RECRUIT);
+        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionStatus.ONGOING);
     }
 
     @Test
     @DisplayName("강의 종료날짜 이후라면 주어진 식별자에 해당하는 강의를 종료 상태로 변경한다.")
     void changeOnEnd_success() {
         duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        savedSession = new Session(1L, image, duration, sessionState, new Applicants(),
-                SessionStatus.READY, 1L, localDateTime, localDateTime);
+        savedSession = new Session(1L, images, duration, sessionState, new Applicants(),
+                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(savedSession));
 
         sessionService.changeOnEnd(1L, DATE_2023_12_12);

@@ -10,15 +10,18 @@ public class Apply extends BaseEntity {
 
     private Long nsUserId;
 
-    public Apply(Session session, NsUser nsUser, LocalDateTime createdAt) {
-        this(session.getId(), nsUser.getId(), nsUser.getId(), createdAt, null);
+    private boolean approved;
+
+    public Apply(Session session, NsUser nsUser, boolean approved, LocalDateTime createdAt) {
+        this(session.getId(), nsUser.getId(), approved, nsUser.getId(), createdAt, null);
     }
 
-    public Apply(Long sessionId, Long nsUserId, Long creatorId,
+    public Apply(Long sessionId, Long nsUserId, boolean approved, Long creatorId,
                  LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
+        this.approved = approved;
     }
 
     public Long getSessionId() {
@@ -27,6 +30,27 @@ public class Apply extends BaseEntity {
 
     public Long getNsUserId() {
         return nsUserId;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public Apply setApproved(boolean approved) {
+        this.approved = approved;
+        return this;
+    }
+
+    public void checkApprovePossible() {
+        if (this.approved) {
+            throw new IllegalArgumentException("이미 수강 승인 상태입니다.");
+        }
+    }
+
+    public void checkCancelPossible() {
+        if (!this.approved) {
+            throw new IllegalArgumentException("이미 수강 취소 상태입니다.");
+        }
     }
 
     @Override

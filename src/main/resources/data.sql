@@ -1,5 +1,5 @@
-INSERT INTO ns_user (id, user_id, password, name, email, created_at) values (1, 'javajigi', 'test', '자바지기', 'javajigi@slipp.net', CURRENT_TIMESTAMP());
-INSERT INTO ns_user (id, user_id, password, name, email, created_at) values (2, 'sanjigi', 'test', '산지기', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
+INSERT INTO ns_user (id, user_id, password, name, email, type, created_at) values (1, 'javajigi', 'test', '자바지기', 'javajigi@slipp.net', 'TEACHER', CURRENT_TIMESTAMP());
+INSERT INTO ns_user (id, user_id, password, name, email, type, created_at) values (2, 'sanjigi', 'test', '산지기', 'sanjigi@slipp.net', 'TEACHER', CURRENT_TIMESTAMP());
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (1, 1, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?', 'Ruby on Rails(이하 RoR)는 2006년 즈음에 정말 뜨겁게 달아올랐다가 금방 가라 앉았다. Play 프레임워크는 정말 한 순간 잠시 눈에 뜨이다가 사라져 버렸다. RoR과 Play 기반으로 개발을 해보면 정말 생산성이 높으며, 웹 프로그래밍이 재미있기까지 하다. Spring MVC + JPA(Hibernate) 기반으로 진행하면 설정할 부분도 많고, 기본으로 지원하지 않는 기능도 많아 RoR과 Play에서 기본적으로 지원하는 기능을 서비스하려면 추가적인 개발이 필요하다.', CURRENT_TIMESTAMP(), false);
 
@@ -9,8 +9,10 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
 
-INSERT INTO apply (session_id, ns_user_id, creator_id, created_at, updated_at) VALUES (10, 1, 1, CURRENT_TIMESTAMP(), null);
+INSERT INTO apply (session_id, ns_user_id, approved, creator_id, created_at, updated_at) VALUES (10, 1, false, 1, CURRENT_TIMESTAMP(), null);
 
-INSERT INTO apply (session_id, ns_user_id, creator_id, created_at, updated_at) VALUES (10, 2, 2, CURRENT_TIMESTAMP(), null);
+INSERT INTO apply (session_id, ns_user_id, approved, creator_id, created_at, updated_at) VALUES (10, 2, false, 2, CURRENT_TIMESTAMP(), null);
+
+INSERT INTO apply (session_id, ns_user_id, approved, creator_id, created_at, updated_at) VALUES (4, 4, true, 2, CURRENT_TIMESTAMP(), null);
 
 --INSERT INTO image (id, image_size, image_type, image_width, image_height, creator_id, created_at, updated_at) VALUES (10, 1024, 'JPG', 300, 200, 1, CURRENT_TIMESTAMP(), null);

@@ -1,19 +1,19 @@
-package nextstep.courses.domain.course.session;
+package nextstep.users.domain;
+
+import nextstep.courses.domain.course.session.SessionStatus;
 
 import java.util.Arrays;
 
-public enum SessionStatus {
-    READY("준비중"),
-    ONGOING("진행중"),
-    END("종료");
+public enum Type {
+    TEACHER("강사"), STUDENT("학생");
 
     private final String description;
 
-    SessionStatus(String description) {
+    Type(String description) {
         this.description = description;
     }
 
-    public static SessionStatus find(String name) {
+    public static Type find(String name) {
         return Arrays.stream(values())
                 .filter(status -> status.name().equals(name))
                 .findAny()
@@ -26,8 +26,8 @@ public enum SessionStatus {
 
     public static String descriptions() {
         StringBuilder sb = new StringBuilder();
-        for (SessionStatus status : values()) {
-            sb.append(status.description).append(", ");
+        for (Type type : values()) {
+            sb.append(type.description).append(", ");
         }
         sb.setLength(sb.length() - 2);
 

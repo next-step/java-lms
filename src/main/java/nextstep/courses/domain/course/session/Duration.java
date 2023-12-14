@@ -59,4 +59,12 @@ public class Duration {
     public int hashCode() {
         return Objects.hash(startDate, endDate);
     }
+
+    @Override
+    public String toString() {
+        return "Duration{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

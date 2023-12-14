@@ -4,6 +4,7 @@ import nextstep.courses.domain.course.session.Applicants;
 import nextstep.courses.domain.course.session.ApplicantsRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Type;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -42,7 +43,7 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
 
     private Optional<NsUser> findAllNsUsersById(Long applicantId) {
         String sql = "select " +
-                "id, user_id, password, name, email, created_at, updated_at " +
+                "id, user_id, password, name, email, type, created_at, updated_at " +
                 "from ns_user where id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
@@ -50,8 +51,9 @@ public class JdbcApplicantsRepository implements ApplicantsRepository {
                 rs.getString(3),
                 rs.getString(4),
                 rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7))
+                Type.find(rs.getString(6)),
+                rs.getTimestamp(7).toLocalDateTime(),
+                toLocalDateTime(rs.getTimestamp(8))
         );
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, applicantId));

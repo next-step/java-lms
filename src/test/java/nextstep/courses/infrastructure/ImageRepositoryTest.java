@@ -1,9 +1,8 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.course.image.Image;
-import nextstep.courses.domain.course.image.ImageRepository;
-import nextstep.courses.domain.course.image.ImageType;
-import nextstep.qna.NotFoundException;
+import nextstep.courses.domain.course.session.image.Image;
+import nextstep.courses.domain.course.session.image.ImageRepository;
+import nextstep.courses.domain.course.session.image.ImageType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -33,8 +32,7 @@ public class ImageRepositoryTest {
     @Test
     void save_success() {
         Image image = new Image(1024, ImageType.JPG, 300, 200, 1L, LocalDateTime.now());
-        int count = imageRepository.save(image);
-        Image savedImage = imageRepository.findById(1L).orElseThrow(NotFoundException::new);
+        Image savedImage = imageRepository.save(1L, image);
         assertThat(image.getImageSize()).isEqualTo(savedImage.getImageSize());
         assertThat(image.getImageType()).isEqualTo(savedImage.getImageType());
         assertThat(image.getImageWidth()).isEqualTo(savedImage.getImageWidth());

@@ -53,7 +53,8 @@ public class SessionState {
     }
 
     public boolean chargedAndFull(List<NsUser> applicants) {
-        return this.sessionType == SessionType.CHARGE && this.quota == applicants.size();
+        return this.sessionType == SessionType.CHARGE
+                && this.quota == applicants.size();
     }
 
     public SessionType getSessionType() {
@@ -79,5 +80,14 @@ public class SessionState {
     @Override
     public int hashCode() {
         return Objects.hash(sessionType, amount, quota);
+    }
+
+    @Override
+    public String toString() {
+        return "SessionState{" +
+                "sessionType=" + sessionType +
+                ", amount=" + amount +
+                ", quota=" + quota +
+                '}';
     }
 }
