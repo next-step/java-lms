@@ -32,13 +32,13 @@ public class Session {
 
     }
 
-    public static Session create(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
+    public static Session create(Long id, Course course, SessionState state, RegisteredUsers registeredUsers, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
         Session session = new Session();
 
         session.id = id;
         session.course = course;
-        session.state = READY;
-        session.registeredUsers = new RegisteredUsers();
+        session.state = state;
+        session.registeredUsers = registeredUsers;
         session.coverImage = coverImage;
         session.duration = duration;
         session.maxUserCount = maxUserCount;
@@ -49,11 +49,11 @@ public class Session {
     }
 
     public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
-        return Session.create(id, course, coverImage, duration, MaxRegister.infinite(), 0);
+        return Session.create(id, course, READY, new RegisteredUsers(), coverImage, duration, MaxRegister.infinite(), 0);
     }
 
     public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
-        return Session.create(id, course, coverImage, duration, maxUserCount, fee);
+        return Session.create(id, course, READY, new RegisteredUsers(), coverImage, duration, maxUserCount, fee);
     }
 
     private static void validateSession(Session session) {
@@ -166,5 +166,9 @@ public class Session {
                 ", maxUserCount=" + maxUserCount +
                 ", fee=" + fee +
                 '}';
+    }
+
+    public RegisteredUsers getRegisteredUsers() {
+        return this.registeredUsers;
     }
 }
