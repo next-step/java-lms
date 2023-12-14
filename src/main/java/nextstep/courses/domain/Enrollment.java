@@ -1,9 +1,8 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.session.Session;
 import nextstep.payments.domain.Payment;
-
-import java.util.List;
 
 public class Enrollment {
     private Session session;

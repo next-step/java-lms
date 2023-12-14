@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.ImageShape;
+import nextstep.courses.domain.session.ImageType;
+
 import java.util.Locale;
 
 public class CoverImage {
@@ -22,6 +25,10 @@ public class CoverImage {
 		if (size > MAX_SIZE) {
 			throw new IllegalArgumentException("커버 이미지 크기는 1MB 이하여야 합니다.");
 		}
+	}
+
+	public boolean hasSameSessionId(long sessionId) {
+		return this.sessionId == sessionId;
 	}
 
 	public long sessionId() {

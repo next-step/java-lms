@@ -15,7 +15,8 @@ create table session (
     finished_at timestamp not null,
     created_at timestamp not null,
     updated_at timestamp,
-    session_status varchar(10) not null,
+    session_progress_status varchar(11) not null,
+    session_recruitment_status varchar(10) not null,
     amount bigint not null,
     max_user bigint not null,
     primary key (id)

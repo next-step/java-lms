@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.payments.domain.Payment;

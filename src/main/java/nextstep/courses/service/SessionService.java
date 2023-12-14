@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.CoverImageDAO;
 import nextstep.courses.infrastructure.SessionDAO;
 import nextstep.payments.domain.Payment;

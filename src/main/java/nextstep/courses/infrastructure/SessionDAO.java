@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.NsUserSession;
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.session.Session;
 
 import java.util.List;
 

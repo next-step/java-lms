@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.CoverImage;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,9 @@ public class Session {
     private LocalDateTime updatedAt;
     private SessionStatus sessionStatus;
     private SessionCondition sessionCondition;
-//    private List<NsUserSession> nsUserSessions;
     private CoverImage coverImage;
 
     public Session(Long courseId,
-//                   CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
                    SessionCondition sessionCondition) {
@@ -28,7 +27,6 @@ public class Session {
     public Session(Long id,
                    Long courseId,
                    Long generation,
-//                   CoverImage coverImage,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
                    SessionCondition sessionCondition) {
@@ -36,7 +34,6 @@ public class Session {
         this.id = id;
         this.courseId = courseId;
         this.generation = generation;
-//        this.coverImage = coverImage;
         this.sessionPeriod = sessionPeriod;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
@@ -44,19 +41,9 @@ public class Session {
         this.sessionCondition = sessionCondition;
     }
 
-    public Session(Long id,
-                   Long courseId,
-                   Long generation,
-//                   CoverImage coverImage,
-                   SessionPeriod sessionPeriod,
-                   String sessionStatus,
-                   SessionCondition sessionCondition) {
-        this(id, courseId, generation, sessionPeriod, SessionStatus.valueOf(sessionStatus), sessionCondition);
-    }
-
-    public Session coverImage(CoverImage coverImage){
-        if (coverImage.sessionId() != id){
-            throw new IllegalArgumentException("id가 일치하지 않습니다.");
+    public Session coverImage(CoverImage coverImage) {
+        if (coverImage.hasSameSessionId(id)) {
+            throw new IllegalArgumentException("sessionId가 일치하지 않습니다.");
         }
         this.coverImage = coverImage;
         return this;
@@ -69,9 +56,7 @@ public class Session {
     }
 
     public void enroll(Payment payment, long userNumber) throws CannotEnrollException {
-        if (!sessionStatus.isRecruiting()) {
-            throw new CannotEnrollException("강의가 모집중인 상태가 아닙니다.");
-        }
+        sessionStatus.canEnroll();
         sessionCondition.match(payment, userNumber);
     }
 
@@ -83,9 +68,9 @@ public class Session {
         return generation;
     }
 
-//    public CoverImage coverImage() {
-//        return coverImage;
-//    }
+    public CoverImage coverImage() {
+        return coverImage;
+    }
 
     public SessionPeriod sessionPeriod() {
         return sessionPeriod;
@@ -103,7 +88,7 @@ public class Session {
         return sessionStatus;
     }
 
-    public SessionCondition sessionPaymentCondition() {
+    public SessionCondition sessionCondition() {
         return sessionCondition;
     }
 
@@ -113,12 +98,12 @@ public class Session {
                 "id=" + id +
                 ", courseId=" + courseId +
                 ", generation=" + generation +
-//                ", coverImage=" + coverImage +
                 ", sessionPeriod=" + sessionPeriod +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", sessionStatus=" + sessionStatus +
-                ", sessionPaymentCondition=" + sessionCondition +
+                ", sessionCondition=" + sessionCondition +
+                ", coverImage=" + coverImage +
                 '}';
     }
 }
