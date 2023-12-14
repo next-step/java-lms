@@ -1,8 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.utils.BaseEntity;
+
 import java.time.LocalDateTime;
 
-public class SessionCover extends BaseEntity{
+public class SessionCover extends BaseEntity {
     public static final double RATIO = (double) 3 / 2;
 
     private Long id;

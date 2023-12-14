@@ -1,8 +1,10 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.utils.BaseEntity;
+
 import java.time.LocalDateTime;
 
-public class Course extends BaseEntity{
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;

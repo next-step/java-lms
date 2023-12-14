@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.enums.SessionStatus;
 import nextstep.courses.exception.BusinessInvalidValueException;
+import nextstep.courses.utils.BaseEntity;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;

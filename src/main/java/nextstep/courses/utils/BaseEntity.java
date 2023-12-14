@@ -1,11 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.utils;
 
 import java.time.LocalDateTime;
 
 public class BaseEntity {
-    LocalDateTime createdAt;
+    public LocalDateTime createdAt;
 
-    LocalDateTime updatedAt;
+    public LocalDateTime updatedAt;
 
     public LocalDateTime createdAt() {
         return createdAt;
