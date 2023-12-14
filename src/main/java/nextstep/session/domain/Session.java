@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import nextstep.common.BaseTimeEntity;
 import nextstep.image.domain.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -21,19 +22,16 @@ public class Session {
 
     private Image coverImage;
 
-    private StartAt startAt;
+    private BaseTimeEntity baseTime;
 
-    private EndAt endAt;
-
-    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, Image coverImage, StartAt startAt, EndAt endAt) {
+    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, Image coverImage, BaseTimeEntity baseTime) {
         this.id = id;
         this.members = members;
         this.amount = amount;
         this.sessionType = sessionType;
         this.status = status;
         this.coverImage = coverImage;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.baseTime = baseTime;
     }
 
     public static Session create(
@@ -44,6 +42,8 @@ public class Session {
             LocalDateTime startAt,
             LocalDateTime endAt
     ) {
+        requiredNotBeforeCurrent(startAt, "시작일은 현재보다 이전일 수 없습니다.");
+        requiredNotBeforeCurrent(endAt, "종료일은 현재보다 이전일 수 없습니다.");
         return new Session(
                 null,
                 members,
@@ -51,9 +51,14 @@ public class Session {
                 sessionType,
                 SessionStatus.PREPARING,
                 coverImage,
-                new StartAt(startAt),
-                new EndAt(endAt)
+                new BaseTimeEntity(startAt, endAt)
         );
+    }
+
+    private static void requiredNotBeforeCurrent(LocalDateTime localDateTime, String exceptionMessage) {
+        if (localDateTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(exceptionMessage);
+        }
     }
 
     private void validatePaid(Payment payment) {

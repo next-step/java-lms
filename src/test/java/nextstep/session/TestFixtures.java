@@ -1,10 +1,9 @@
 package nextstep.session;
 
-import nextstep.session.domain.EndAt;
+import nextstep.common.BaseTimeEntity;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
-import nextstep.session.domain.StartAt;
 import nextstep.session.domain.Users;
 import nextstep.users.domain.NsUserTest;
 
@@ -21,8 +20,7 @@ class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.END,
                 null,
-                new StartAt(LocalDateTime.now().plusDays(2)),
-                new EndAt(LocalDateTime.now().plusDays(7))
+                new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
 
@@ -34,8 +32,7 @@ class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.PREPARING,
                 null,
-                new StartAt(LocalDateTime.now().plusDays(2)),
-                new EndAt(LocalDateTime.now().plusDays(7))
+                new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
 
@@ -47,8 +44,7 @@ class TestFixtures {
                 SessionType.PAID,
                 SessionStatus.RECRUITING,
                 null,
-                new StartAt(LocalDateTime.now().plusDays(2)),
-                new EndAt(LocalDateTime.now().plusDays(7))
+                new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
 
@@ -60,8 +56,7 @@ class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.RECRUITING,
                 null,
-                new StartAt(LocalDateTime.now().plusDays(2)),
-                new EndAt(LocalDateTime.now().plusDays(7))
+                new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
 }
