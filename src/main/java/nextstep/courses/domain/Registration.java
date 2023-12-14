@@ -9,17 +9,23 @@ public class Registration {
     private final Session session;
     private final Long amount;
 
-    public Registration(Long id, NsUser user, Session session, Long amount) {
+    private Registration(Long id, NsUser user, Session session, Long amount) {
         this.id = id;
         this.user = user;
         this.session = session;
         this.amount = amount;
     }
 
-    public Registration(NsUser user, Session session, Long amount) {
+    private Registration(NsUser user, Session session, Long amount) {
         this.user = user;
         this.session = session;
         this.amount = amount;
+    }
+
+    public static Registration register(NsUser user, Session session, Long amount) {
+        Registration registration = new Registration(user, session, amount);
+        session.enroll(user, amount);
+        return registration;
     }
 
     public void register() {
