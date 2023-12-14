@@ -32,7 +32,7 @@ public class Image {
 
     private static void checkImageSize(int width, int height, long size) {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야 한다.");
+            throw new IllegalArgumentException("이미지의 width는 " + MIN_WIDTH + "픽셀, height는 " + MIN_HEIGHT + "픽셀 이상이어야 한다.");
         }
 
         if ((double) width / height != ASPECT_RATIO) {

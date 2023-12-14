@@ -6,9 +6,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImageTest {
+
+    @Test
+    void 이미지를_생성할_수_있다() {
+        Image image = Image.of(300, 200, ImageType.JPG, 1024);
+
+        assertThat(image).isNotNull();
+    }
 
     @Test
     void 이미지_크기는_1MB_이하여야_한다() {
