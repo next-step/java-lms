@@ -17,7 +17,6 @@ public class Enrolment {
 
     private static final DecimalFormat formatter = new DecimalFormat("###,###");
 
-    private Long id;
     private PayType payType;
     private SessionStudents sessionStudents;
     private SessionStatus sessionStatus;
@@ -25,24 +24,7 @@ public class Enrolment {
     private Long amount;
     private int studentsCapacity;
 
-    public Enrolment(SessionStudents sessionStudents, RecruitingStatus recruitingStatus) {
-        this.sessionStudents = sessionStudents;
-        this.recruitingStatus = recruitingStatus;
-    }
-
-    public Enrolment(Long id, SessionStudents sessionStudents, RecruitingStatus recruitingStatus) {
-        this(sessionStudents, recruitingStatus);
-        this.id = id;
-    }
-
-    public Enrolment(PayType payType, SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus) {
-        this.payType = payType;
-        this.sessionStudents = sessionStudents;
-        this.sessionStatus = sessionStatus;
-        this.recruitingStatus = recruitingStatus;
-    }
-
-    public Enrolment(PayType payType, SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
+    private Enrolment(PayType payType, SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
         this.payType = payType;
         this.sessionStudents = sessionStudents;
         this.sessionStatus = sessionStatus;
@@ -52,7 +34,7 @@ public class Enrolment {
     }
 
     public static Enrolment fromFreeSession(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus) {
-        return new Enrolment(FREE, sessionStudents, sessionStatus, recruitingStatus);
+        return new Enrolment(FREE, sessionStudents, sessionStatus, recruitingStatus, 0L, 0);
     }
 
     public static Enrolment fromPaySession(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
@@ -108,9 +90,5 @@ public class Enrolment {
 
     private boolean isExceed() {
         return sessionStudents.numOfSelectedStudents() >= studentsCapacity;
-    }
-
-    public int studentsSize() {
-        return sessionStudents.numOfAllStudents();
     }
 }

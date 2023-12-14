@@ -4,7 +4,6 @@ import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.enroll.RecruitingStatus;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
-import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
@@ -22,13 +21,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
     private final CoverImageRepository coverImageRepository;
-    private final EnrolmentRepository enrolmentRepository;
     private final SessionStudentRepository studentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, EnrolmentRepository enrolmentRepository, SessionStudentRepository studentRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, SessionStudentRepository studentRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = coverImageRepository;
-        this.enrolmentRepository = enrolmentRepository;
         this.studentRepository = studentRepository;
     }
 
@@ -42,7 +39,6 @@ public class JdbcSessionRepository implements SessionRepository {
             SessionStatus.valueOf(rs.getString(3)),
             RecruitingStatus.valueOf(rs.getString(4)),
             coverImageRepository.findAllBySession(sessionId),
-            enrolmentRepository.findBySession(sessionId).orElseThrow(),
             studentRepository.findAllBySession(sessionId),
             Period.from(
                 toLocalDate(rs.getTimestamp(5)),
@@ -69,7 +65,6 @@ public class JdbcSessionRepository implements SessionRepository {
             SessionStatus.valueOf(rs.getString(3)),
             RecruitingStatus.valueOf(rs.getString(4)),
             coverImageRepository.findAllBySession(sessionId),
-            enrolmentRepository.findBySession(sessionId).orElseThrow(),
             studentRepository.findAllBySession(sessionId),
             Period.from(
                 toLocalDate(rs.getTimestamp(5)),

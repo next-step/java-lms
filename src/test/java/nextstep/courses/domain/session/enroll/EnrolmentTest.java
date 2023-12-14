@@ -18,21 +18,21 @@ class EnrolmentTest {
     @Test
     void enroll() {
         // given
-        Enrolment enrolment = new Enrolment(FREE, new SessionStudents(), PROGRESS, RECRUITING_ON);
+        Enrolment enrolment = Enrolment.fromFreeSession(new SessionStudents(), PROGRESS, RECRUITING_ON);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when
         SessionStudent student = enrolment.enroll(enrolmentInfo);
 
         // then
-        assertThat(student.getEnrolmentId()).isEqualTo(1L);
+        assertThat(student.getSessionId()).isEqualTo(1L);
     }
 
     @DisplayName("강의 모집 상태가 모집중이 아니면 예외를 발생시킨다.")
     @Test
     void validateRecruitingStatus() {
         // given
-        Enrolment enrolment = new Enrolment(FREE, new SessionStudents(), PROGRESS, RECRUITING_OFF);
+        Enrolment enrolment = Enrolment.fromFreeSession(new SessionStudents(), PROGRESS, RECRUITING_OFF);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then
@@ -44,7 +44,7 @@ class EnrolmentTest {
     @Test
     void validateSessionStatus() {
         // given
-        Enrolment enrolment = new Enrolment(FREE, new SessionStudents(), PREPARE, RECRUITING_ON);
+        Enrolment enrolment = Enrolment.fromFreeSession(new SessionStudents(), PREPARE, RECRUITING_ON);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then
@@ -56,7 +56,7 @@ class EnrolmentTest {
     @Test
     void validatePayAmount() {
         // given
-        Enrolment enrolment = new Enrolment(PAY, new SessionStudents(), PROGRESS, RECRUITING_ON, 10000L, 100);
+        Enrolment enrolment = Enrolment.fromPaySession(new SessionStudents(), PROGRESS, RECRUITING_ON, 10000L, 100);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 12000L);
 
         // when & then
@@ -73,7 +73,7 @@ class EnrolmentTest {
         sessionStudents.add(new SessionStudent(1L, 2L, SelectionStatus.APPROVAL));
         sessionStudents.add(new SessionStudent(1L, 3L, SelectionStatus.APPROVAL));
 
-        Enrolment enrolment = new Enrolment(PAY, sessionStudents, PROGRESS, RECRUITING_ON, 10000L, 3);
+        Enrolment enrolment = Enrolment.fromPaySession(sessionStudents, PROGRESS, RECRUITING_ON, 10000L, 3);
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 4L, 10000L);
 
         // when & then
