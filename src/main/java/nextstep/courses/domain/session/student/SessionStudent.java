@@ -7,18 +7,18 @@ import static nextstep.courses.domain.session.student.SelectionStatus.*;
 public class SessionStudent {
 
     private Long id;
-    private Long enrolmentId;
+    private Long sessionId;
     private Long nsUserId;
     private SelectionStatus selectionStatus;
 
-    public SessionStudent(Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
-        this.enrolmentId = enrolmentId;
+    public SessionStudent(Long sessionId, Long nsUserId, SelectionStatus selectionStatus) {
+        this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.selectionStatus = selectionStatus;
     }
 
-    public SessionStudent(Long id, Long enrolmentId, Long nsUserId, SelectionStatus selectionStatus) {
-        this(enrolmentId, nsUserId, selectionStatus);
+    public SessionStudent(Long id, Long sessionId, Long nsUserId, SelectionStatus selectionStatus) {
+        this(sessionId, nsUserId, selectionStatus);
         this.id = id;
     }
 
@@ -26,8 +26,8 @@ public class SessionStudent {
         return this.id;
     }
 
-    public Long getEnrolmentId() {
-        return this.enrolmentId;
+    public Long getSessionId() {
+        return this.sessionId;
     }
 
     public Long getNsUserId() {
@@ -56,11 +56,11 @@ public class SessionStudent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionStudent student = (SessionStudent) o;
-        return Objects.equals(id, student.id) && Objects.equals(enrolmentId, student.enrolmentId) && Objects.equals(nsUserId, student.nsUserId);
+        return Objects.equals(id, student.id) && Objects.equals(sessionId, student.sessionId) && Objects.equals(nsUserId, student.nsUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, enrolmentId, nsUserId);
+        return Objects.hash(id, sessionId, nsUserId);
     }
 }

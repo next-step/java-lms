@@ -22,8 +22,8 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public void save(SessionStudent student) {
-        String sql = "insert into student (enrolment_id, ns_user_id, selection_status) values(?, ?, ?)";
-        jdbcTemplate.update(sql, student.getEnrolmentId(), student.getNsUserId(), student.getSelectionStatus().toString());
+        String sql = "insert into student (session_id, ns_user_id, selection_status) values(?, ?, ?)";
+        jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), student.getSelectionStatus().toString());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public SessionStudents findAllBySession(Long sessionId) {
-        String sql = "select * from student where enrolment_id = ?";
+        String sql = "select * from student where session_id = ?";
 
         RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
             rs.getLong(1),
