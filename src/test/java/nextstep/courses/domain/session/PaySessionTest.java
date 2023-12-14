@@ -65,6 +65,7 @@ class PaySessionTest {
             1L,
             PAY,
             sessionStatus,
+            RECRUITING_ON,
             new CoverImages(),
             new Enrolment(new SessionStudents(), RECRUITING_ON),
             new SessionStudents(),

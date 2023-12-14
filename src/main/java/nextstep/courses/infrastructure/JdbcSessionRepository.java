@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.enroll.RecruitingStatus;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
@@ -39,15 +40,16 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getLong(1),
             PayType.valueOf(rs.getString(2)),
             SessionStatus.valueOf(rs.getString(3)),
+            RecruitingStatus.valueOf(rs.getString(4)),
             coverImageRepository.findAllBySession(sessionId),
             enrolmentRepository.findBySession(sessionId).orElseThrow(),
             studentRepository.findAllBySession(sessionId),
             Period.from(
-                toLocalDate(rs.getTimestamp(4)),
-                toLocalDate(rs.getTimestamp(5))
+                toLocalDate(rs.getTimestamp(5)),
+                toLocalDate(rs.getTimestamp(6))
             ),
-            rs.getLong(6),
-            rs.getInt(7)) {
+            rs.getLong(7),
+            rs.getInt(8)) {
             @Override
             public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
@@ -65,12 +67,13 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getLong(1),
             PayType.valueOf(rs.getString(2)),
             SessionStatus.valueOf(rs.getString(3)),
+            RecruitingStatus.valueOf(rs.getString(4)),
             coverImageRepository.findAllBySession(sessionId),
             enrolmentRepository.findBySession(sessionId).orElseThrow(),
             studentRepository.findAllBySession(sessionId),
             Period.from(
-                toLocalDate(rs.getTimestamp(4)),
-                toLocalDate(rs.getTimestamp(5))
+                toLocalDate(rs.getTimestamp(5)),
+                toLocalDate(rs.getTimestamp(6))
             )) {
             @Override
             public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
