@@ -64,7 +64,6 @@ class PaySessionTest {
             sessionStatus,
             recruitingStatus,
             new CoverImages(),
-            new Enrolment(PAY, new SessionStudents(), sessionStatus, recruitingStatus, amount, studentCapacity),
             new SessionStudents(),
             Period.from(
                 LocalDate.of(2023, 12, 5),

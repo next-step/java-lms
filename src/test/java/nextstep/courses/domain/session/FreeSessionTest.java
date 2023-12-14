@@ -52,7 +52,6 @@ class FreeSessionTest {
             sessionStatus,
             recruitingStatus,
             new CoverImages(),
-            new Enrolment(FREE, new SessionStudents(), sessionStatus, recruitingStatus),
             new SessionStudents(),
             Period.from(
                 LocalDate.of(2023, 12, 5),

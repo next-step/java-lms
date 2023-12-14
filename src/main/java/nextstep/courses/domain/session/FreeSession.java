@@ -10,8 +10,8 @@ import nextstep.courses.dto.EnrolmentInfo;
 
 public class FreeSession extends Session {
 
-    public FreeSession(Long id, PayType payType, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, CoverImages coverImages, Enrolment enrolment, SessionStudents sessionStudents, Period period) {
-        super(id, payType, sessionStatus, recruitingStatus, coverImages, enrolment, sessionStudents, period);
+    public FreeSession(Long id, PayType payType, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, CoverImages coverImages, SessionStudents sessionStudents, Period period) {
+        super(id, payType, sessionStatus, recruitingStatus, coverImages, sessionStudents, period);
     }
 
     @Override
