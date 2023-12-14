@@ -17,12 +17,9 @@ public class SessionCondition {
         this.maxUserNumber = maxUserNumber;
     }
 
-    public void match(Payment payment, Long userNumber) throws CannotEnrollException {
+    public void match(Payment payment) throws CannotEnrollException {
         if (!payment.isSameAmount(amount)) {
             throw new CannotEnrollException("결제 금액이 일치하지 않습니다.");
-        }
-        if (isPaidSession()) {
-            isFull(userNumber);
         }
     }
 

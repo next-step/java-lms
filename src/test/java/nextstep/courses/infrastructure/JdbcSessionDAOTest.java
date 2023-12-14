@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import static nextstep.courses.domain.SessionTest.FREE_SESSION;
+import static nextstep.users.domain.TeacherTest.NS_USER_SESSION_1;
+import static nextstep.users.domain.TeacherTest.NS_USER_SESSION_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -38,11 +40,14 @@ class JdbcSessionDAOTest {
 
     @Test
     void nsUserSession_save_find() {
-        NsUserSession nsUserSession = new NsUserSession(1L, 1L);
-        int count = sessionRepository.saveNsUserSession(nsUserSession);
+        int count = sessionRepository.saveNsUserSession(NS_USER_SESSION_1);
         assertThat(count).isEqualTo(1);
-        List<NsUserSession> nsUserSessions = sessionRepository.getNsUserSessions(1L);
-        assertThat(nsUserSessions).hasSize(1);
-    }
+        List<NsUserSession> nsUserSessions = sessionRepository.findNsUserSessionsBySessionId(1L);
+        assertThat(nsUserSessions.get(0)).isEqualTo(NS_USER_SESSION_1);
 
+        NsUserSession NS_USER_SESSION_1_TRUE = new NsUserSession(1L, 1L, true);
+        sessionRepository.updateNsUserSession(NS_USER_SESSION_1_TRUE);
+        List<NsUserSession> updatedNsUserSessions = sessionRepository.findNsUserSessionsBySessionId(1L);
+        assertThat(updatedNsUserSessions.get(0)).isEqualTo(NS_USER_SESSION_1_TRUE);
+    }
 }

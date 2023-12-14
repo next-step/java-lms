@@ -62,16 +62,22 @@ public class JdbcSessionDAO implements SessionDAO {
     }
 
     @Override
-    public List<NsUserSession> getNsUserSessions(Long sessionId) {
-        String sql = "select session_id, ns_user_id from ns_user_session where session_id=?";
-        RowMapper<NsUserSession> rowMapper = (rs, rowNum) -> new NsUserSession(rs.getLong(1), rs.getLong(2));
+    public List<NsUserSession> findNsUserSessionsBySessionId(Long sessionId) {
+        String sql = "select session_id, ns_user_id, registered from ns_user_session where session_id=?";
+        RowMapper<NsUserSession> rowMapper = (rs, rowNum) -> new NsUserSession(rs.getLong(1), rs.getLong(2), rs.getBoolean(3));
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
     @Override
     public int saveNsUserSession(NsUserSession nsUserSession) {
-        String sql = "insert into ns_user_session(session_id, ns_user_id) values (?, ?)";
-        return jdbcTemplate.update(sql, nsUserSession.sessionId(), nsUserSession.nsUserId());
+        String sql = "insert into ns_user_session(session_id, ns_user_id, registered) values (?, ?, ?)";
+        return jdbcTemplate.update(sql, nsUserSession.sessionId(), nsUserSession.nsUserId(), nsUserSession.registered());
+    }
+
+    @Override
+    public int updateNsUserSession(NsUserSession nsUserSession) {
+        String sql = "update ns_user_session set registered =? where session_id = ? and ns_user_id = ?";
+        return jdbcTemplate.update(sql, nsUserSession.registered(), nsUserSession.sessionId(), nsUserSession.nsUserId());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

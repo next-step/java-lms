@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.CoverImageDAO;
 import nextstep.courses.infrastructure.SessionDAO;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.Teacher;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -26,12 +27,10 @@ public class SessionService {
     }
 
     public void enroll(Payment payment) throws CannotEnrollException {
-        List<NsUserSession> nsUserSessions = sessionDAO.getNsUserSessions(payment.getSessionId());
+        NsUserSessions nsUserSessions =new NsUserSessions(sessionDAO.findNsUserSessionsBySessionId(payment.getSessionId()));
+        Teacher teacher = new Teacher(nsUserSessions);
         Session session = sessionDAO.findById(payment.getSessionId());
-        Enrollment enrollment = new Enrollment(session, new NsUserSessions(nsUserSessions));
-        NsUserSession nsUserSession = enrollment.enroll(payment);
-//        NsUserSession nsUserSession = session.enroll(payment, nsUserSessions);
 
-        sessionDAO.saveNsUserSession(nsUserSession);
+        sessionDAO.updateNsUserSession(session.enroll(payment, teacher));
     }
 }

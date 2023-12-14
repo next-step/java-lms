@@ -16,25 +16,16 @@ class SessionConditionTest {
     @Test
     @DisplayName("checkPaidSession_무료강의_결제 금액 불일치 시 throw CannotEnrollException")
     void 무료() {
-        assertDoesNotThrow(() -> FREE_SESSION_CONDITION.match(FREE, 120L));
-        assertThatThrownBy(() -> FREE_SESSION_CONDITION.match(PAID_1, 120L))
+        assertDoesNotThrow(() -> FREE_SESSION_CONDITION.match(FREE_1));
+        assertThatThrownBy(() -> FREE_SESSION_CONDITION.match(PAID_1))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessage("결제 금액이 일치하지 않습니다.");
     }
 
     @Test
-    @DisplayName("checkPaidSession_유료강의_maxUser 초과 시 throw CannotEnrollException")
-    void 최대수강인원_초과() {
-        assertDoesNotThrow(() -> PAID_SESSION_CONDITION.match(PAID_1, 119L));
-        assertThatThrownBy(() -> PAID_SESSION_CONDITION.match(PAID_1, 120L))
-                .isInstanceOf(CannotEnrollException.class)
-                .hasMessage("수강 인원을 초과했습니다.");
-    }
-
-    @Test
     @DisplayName("checkPaidSession_유료강의_결제 금액 불칠치 시 throw CannotEnrollException")
     void 유료_결제금액_불일치() {
-        assertThatThrownBy(() -> PAID_SESSION_CONDITION.match(PAID_2, 119L))
+        assertThatThrownBy(() -> PAID_SESSION_CONDITION.match(PAID_2))
                 .isInstanceOf(CannotEnrollException.class)
                 .hasMessage("결제 금액이 일치하지 않습니다.");
     }

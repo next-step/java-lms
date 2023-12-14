@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.NsUserSession;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.Teacher;
 
 import java.time.LocalDateTime;
 
@@ -54,9 +56,12 @@ public class Session {
         }
     }
 
-    public void enroll(Payment payment, long userNumber) throws CannotEnrollException {
+    public NsUserSession enroll(Payment payment, Teacher teacher) throws CannotEnrollException {
+        teacher.register(payment.getSessionId(), payment.getNsUserId());
         sessionStatus.canEnroll();
-        sessionCondition.match(payment, userNumber);
+        sessionCondition.match(payment);
+
+        return new NsUserSession(payment.getSessionId(), payment.getNsUserId(), true);
     }
 
     public Long courseId() {

@@ -10,7 +10,9 @@ public interface SessionDAO {
 
     Session findById(Long id);
 
-    List<NsUserSession> getNsUserSessions(Long sessionId);
+    List<NsUserSession> findNsUserSessionsBySessionId(Long sessionId);
 
     int saveNsUserSession(NsUserSession nsUserSession);
+
+    int updateNsUserSession(NsUserSession nsUserSession);
 }

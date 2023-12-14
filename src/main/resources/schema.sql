@@ -35,6 +35,7 @@ create table cover_image (
 create table ns_user_session (
     session_id bigint not null,
     ns_user_id bigint not null,
+    registered boolean not null,
     primary key (session_id, ns_user_id)
 );
 
