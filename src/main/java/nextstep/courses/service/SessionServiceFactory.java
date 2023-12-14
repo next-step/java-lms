@@ -1,6 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.session.PayType;
+import nextstep.courses.domain.session.enums.PayType;
 
 import java.util.List;
 

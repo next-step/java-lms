@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.student;
+package nextstep.courses.domain.session.enums;
 
 public enum SelectionStatus {
 

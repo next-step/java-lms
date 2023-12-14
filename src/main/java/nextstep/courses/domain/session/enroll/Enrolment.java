@@ -1,17 +1,18 @@
 package nextstep.courses.domain.session.enroll;
 
-import nextstep.courses.domain.session.PayType;
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 
 import java.text.DecimalFormat;
 
-import static nextstep.courses.domain.session.PayType.*;
-import static nextstep.courses.domain.session.SessionStatus.isNotProgressing;
-import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
-import static nextstep.courses.domain.session.student.SelectionStatus.*;
+import static nextstep.courses.domain.session.enums.PayType.*;
+import static nextstep.courses.domain.session.enums.SessionStatus.isNotProgressing;
+import static nextstep.courses.domain.session.enums.RecruitingStatus.*;
+import static nextstep.courses.domain.session.enums.SelectionStatus.*;
 
 public class Enrolment {
 

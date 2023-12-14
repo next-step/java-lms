@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.enroll;
+package nextstep.courses.domain.session.enums;
 
 public enum RecruitingStatus {
 

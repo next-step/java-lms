@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.repository.SessionStudentRepository;
-import nextstep.courses.domain.session.student.SelectionStatus;
+import nextstep.courses.domain.session.enums.SelectionStatus;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -22,19 +22,19 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public void save(SessionStudent student) {
-        String sql = "insert into student (session_id, ns_user_id, selection_status) values(?, ?, ?)";
+        String sql = "insert into session_student (session_id, ns_user_id, selection_status) values(?, ?, ?)";
         jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), student.getSelectionStatus().toString());
     }
 
     @Override
     public void update(SessionStudent student) {
-        String sql = "update student set selection_status = ? where id = ?";
+        String sql = "update session_student set selection_status = ? where id = ?";
         jdbcTemplate.update(sql, student.getSelectionStatus().toString(), student.getId());
     }
 
     @Override
     public SessionStudents findAllBySession(Long sessionId) {
-        String sql = "select * from student where session_id = ?";
+        String sql = "select * from session_student where session_id = ?";
 
         RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
             rs.getLong(1),
@@ -49,7 +49,7 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     @Override
     public Optional<SessionStudent> findById(Long studentId) {
-        String sql = "select * from student where id = ?";
+        String sql = "select * from session_student where id = ?";
 
         RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
             rs.getLong(1),

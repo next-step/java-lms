@@ -1,9 +1,10 @@
 package nextstep.courses.domain.session.enroll;
 
+import nextstep.courses.domain.session.enums.RecruitingStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
+import static nextstep.courses.domain.session.enums.RecruitingStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 class RecruitingStatusTest {

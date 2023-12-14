@@ -1,15 +1,14 @@
 package nextstep.courses.domain.session.enroll;
 
-import nextstep.courses.domain.session.student.SelectionStatus;
+import nextstep.courses.domain.session.enums.SelectionStatus;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.PayType.*;
-import static nextstep.courses.domain.session.SessionStatus.*;
-import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
+import static nextstep.courses.domain.session.enums.SessionStatus.*;
+import static nextstep.courses.domain.session.enums.RecruitingStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 class EnrolmentTest {

@@ -1,7 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.session.enroll.RecruitingStatus;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;

@@ -1,8 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImages;
-import nextstep.courses.domain.session.enroll.Enrolment;
-import nextstep.courses.domain.session.enroll.RecruitingStatus;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
 import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
@@ -11,12 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static nextstep.courses.domain.session.PayType.FREE;
-import static nextstep.courses.domain.session.PayType.PAY;
-import static nextstep.courses.domain.session.SessionStatus.PREPARE;
-import static nextstep.courses.domain.session.SessionStatus.PROGRESS;
-import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
-import static nextstep.users.domain.fixture.DomainFixture.JAVAJIGI;
+import static nextstep.courses.domain.session.enums.PayType.PAY;
+import static nextstep.courses.domain.session.enums.SessionStatus.PREPARE;
+import static nextstep.courses.domain.session.enums.SessionStatus.PROGRESS;
+import static nextstep.courses.domain.session.enums.RecruitingStatus.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class FreeSessionTest {
@@ -26,7 +24,7 @@ class FreeSessionTest {
     void validateRecruitingStatus() {
         // given
         FreeSession freeSession = createFreeSession(PREPARE, RECRUITING_ON);
-        EnrolmentInfo enrolmentInfo = createEnrolment(freeSession.id, JAVAJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo = createEnrolment(freeSession.id);
 
         // when & then
         assertThatThrownBy(() -> freeSession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
@@ -38,7 +36,7 @@ class FreeSessionTest {
     void validateSessionStatus() {
         // given
         FreeSession freeSession = createFreeSession(PROGRESS, RECRUITING_OFF);
-        EnrolmentInfo enrolmentInfo = createEnrolment(freeSession.id, JAVAJIGI.getId(), 10000L);
+        EnrolmentInfo enrolmentInfo = createEnrolment(freeSession.id);
 
         // when & then
         assertThatThrownBy(() -> freeSession.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
@@ -59,7 +57,7 @@ class FreeSessionTest {
             ));
     }
 
-    private EnrolmentInfo createEnrolment(Long sessionId, Long nsUserId, Long payAmount) {
-        return new EnrolmentInfo(sessionId, nsUserId, payAmount);
+    private EnrolmentInfo createEnrolment(Long sessionId) {
+        return new EnrolmentInfo(sessionId, 1L, 10000L);
     }
 }

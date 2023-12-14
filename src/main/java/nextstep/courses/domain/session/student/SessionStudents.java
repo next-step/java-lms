@@ -1,9 +1,11 @@
 package nextstep.courses.domain.session.student;
 
+import nextstep.courses.domain.session.enums.SelectionStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static nextstep.courses.domain.session.student.SelectionStatus.*;
+import static nextstep.courses.domain.session.enums.SelectionStatus.*;
 
 public class SessionStudents {
 

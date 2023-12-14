@@ -2,14 +2,13 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.dto.EnrolmentInfo;
-import nextstep.courses.domain.session.PayType;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.enums.PayType;
 import nextstep.courses.domain.session.repository.SessionRepository;
 import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.dto.SelectInfo;
 
-import static nextstep.courses.domain.session.PayType.*;
+import static nextstep.courses.domain.session.enums.PayType.*;
 
 public class FreeSessionService implements SessionService {
 
@@ -28,7 +27,7 @@ public class FreeSessionService implements SessionService {
 
     @Override
     public void enroll(EnrolmentInfo enrolmentInfo) {
-        Session session = sessionRepository.findFreeSessionById(enrolmentInfo.getSessionId())
+        FreeSession session = sessionRepository.findFreeSessionById(enrolmentInfo.getSessionId())
             .orElseThrow(() -> new IllegalArgumentException("일치하는 강의가 없습니다. 강의 아이디 :: " + enrolmentInfo.getSessionId()));
 
         SessionStudent student = session.enroll(enrolmentInfo);

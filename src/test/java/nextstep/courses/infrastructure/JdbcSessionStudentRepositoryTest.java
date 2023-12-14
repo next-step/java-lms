@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static nextstep.courses.domain.session.student.SelectionStatus.APPROVAL;
-import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
+import static nextstep.courses.domain.session.enums.SelectionStatus.APPROVAL;
+import static nextstep.courses.domain.session.enums.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-class JdbcSessionSessionStudentRepositoryTest {
+class JdbcSessionStudentRepositoryTest {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -31,13 +31,13 @@ class JdbcSessionSessionStudentRepositoryTest {
     @Test
     void findByEnrolmentId() {
         // given
-        Long enrolmentId = 1L;
-        studentRepository.save(new SessionStudent(enrolmentId, 1L, WAITING));
-        studentRepository.save(new SessionStudent(enrolmentId, 2L, WAITING));
-        studentRepository.save(new SessionStudent(enrolmentId, 3L, WAITING));
+        Long sessionId = 1L;
+        studentRepository.save(new SessionStudent(sessionId, 1L, WAITING));
+        studentRepository.save(new SessionStudent(sessionId, 2L, WAITING));
+        studentRepository.save(new SessionStudent(sessionId, 3L, WAITING));
 
         // when
-        SessionStudents allBySession = studentRepository.findAllBySession(enrolmentId);
+        SessionStudents allBySession = studentRepository.findAllBySession(sessionId);
 
         // then
         assertThat(allBySession.numOfAllStudents()).isEqualTo(3);

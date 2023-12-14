@@ -3,7 +3,7 @@ package nextstep.courses.domain.session;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.SessionStatus.*;
+import static nextstep.courses.domain.session.enums.SessionStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionStatusTest {

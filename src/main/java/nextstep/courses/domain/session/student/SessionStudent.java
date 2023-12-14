@@ -1,8 +1,10 @@
 package nextstep.courses.domain.session.student;
 
+import nextstep.courses.domain.session.enums.SelectionStatus;
+
 import java.util.Objects;
 
-import static nextstep.courses.domain.session.student.SelectionStatus.*;
+import static nextstep.courses.domain.session.enums.SelectionStatus.*;
 
 public class SessionStudent {
 
