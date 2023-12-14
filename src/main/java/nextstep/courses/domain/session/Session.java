@@ -18,6 +18,8 @@ public class Session {
 
     private Enrollment enrollment;
 
+    private Integer capacity;
+
     private Long fee;
 
     private SessionPeriod sessionPeriod;
@@ -28,28 +30,28 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    private Session(long id, SessionType sessionType, Enrollment enrollment, Long fee, SessionPeriod sessionPeriod) {
-        this(id, null, sessionType, enrollment,null, fee, sessionPeriod);
+    private Session(long id, SessionType sessionType, Enrollment enrollment, Long fee, SessionPeriod sessionPeriod, Integer capacity) {
+        this(id, null, sessionType, enrollment,null, fee, sessionPeriod, capacity);
     }
 
     public static Session sessionWithImage(long id, ImageInfo imageInfo) {
         Enrollment enrollment = new Enrollment(null);
-        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
+        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), null);
     }
 
     public static Session sessionWithState(long id, Enrollment enrollment, SessionPeriod sessionPeriod) {
-        return new Session(id, null,null, enrollment, null, null, sessionPeriod);
+        return new Session(id, null,null, enrollment, null, null, sessionPeriod, null);
     }
 
-    public static Session recruitingSessionWithType(long id, SessionType sessionType, Enrollment enrollment) {
-        return new Session(id, sessionType, enrollment, null,  new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
+    public static Session recruitingSessionWithType(long id, SessionType sessionType, Enrollment enrollment, Integer capacity) {
+        return new Session(id, sessionType, enrollment, null,  new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), capacity);
     }
 
-    public static Session recruitingPaidSession(long id, SessionType sessionType, Enrollment enrollment, Long fee) {
-        return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
+    public static Session recruitingPaidSession(long id, SessionType sessionType, Enrollment enrollment, Long fee, Integer capacity) {
+        return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), capacity);
     }
 
-    public Session(long id, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
+    public Session(long id, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod, Integer capacity) {
         this.id = id;
         this.title = title;
         this.sessionType = sessionType;
@@ -57,6 +59,7 @@ public class Session {
         this.fee = fee;
         this.coverImage = imageInfo;
         this.sessionPeriod = sessionPeriod;
+        this.capacity = capacity;
         this.creatorId = null;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -66,7 +69,7 @@ public class Session {
         sessionPeriod.checkAbleToEnroll();
 
         if(sessionType == SessionType.PAID){
-            enrollment.isOverCapacity();
+            enrollment.isOverCapacity(capacity);
             payment.isAbleToPayment(fee);
         }
 

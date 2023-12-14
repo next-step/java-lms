@@ -16,8 +16,8 @@ public class Enrollment {
         students.addStudent(student);
     }
 
-    public void isOverCapacity() {
-        students.isOverCapacity();
+    public void isOverCapacity(int capacity) {
+        students.isOverCapacity(capacity);
     }
 
     @Override
