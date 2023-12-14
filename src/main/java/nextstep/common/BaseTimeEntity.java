@@ -23,4 +23,12 @@ public class BaseTimeEntity {
     public LocalDateTime getEndAt() {
         return endAt;
     }
+
+    @Override
+    public String toString() {
+        return "BaseTimeEntity{" +
+                "startAt=" + startAt +
+                ", endAt=" + endAt +
+                '}';
+    }
 }

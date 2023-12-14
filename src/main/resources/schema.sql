@@ -62,7 +62,8 @@ create table session
     session_status varchar(20) not null,
     image_id       bigint,
     start_at       timestamp,
-    end_at         timestamp
+    end_at         timestamp,
+    number_of_maximum_members bigint not null
 );
 
 create table session_attendee

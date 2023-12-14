@@ -40,4 +40,16 @@ public class Users {
     public Set<NsUser> values() {
         return Collections.unmodifiableSet(value);
     }
+
+    public int getNumberOfMaximumMembers() {
+        return numberOfMaximumMembers;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "numberOfMaximumMembers=" + numberOfMaximumMembers +
+                ", value=" + value +
+                '}';
+    }
 }
