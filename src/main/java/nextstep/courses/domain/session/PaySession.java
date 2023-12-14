@@ -8,11 +8,7 @@ import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 
-import java.text.DecimalFormat;
-
 public class PaySession extends Session {
-
-    private static final DecimalFormat formatter = new DecimalFormat("###,###");
 
     private Long amount;
     private int studentsCapacity;
@@ -26,26 +22,8 @@ public class PaySession extends Session {
 
     @Override
     public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
-        validateSessionStatus();
-        validatePayAmount(enrolmentInfo);
-        validateCapacity();
+        Enrolment enrolment = Enrolment.fromPaySession(sessionStudents, sessionStatus, recruitingStatus, amount, studentsCapacity);
 
         return enrolment.enroll(enrolmentInfo);
-    }
-
-    private void validatePayAmount(EnrolmentInfo enrolmentInfo) {
-        if (enrolmentInfo.isNotSameAmount(amount)) {
-            throw new IllegalArgumentException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
-        }
-    }
-
-    private void validateCapacity() {
-        if (isExceed()) {
-            throw new IllegalArgumentException("현재 수강 가능한 모든 인원수가 채워졌습니다.");
-        }
-    }
-
-    private boolean isExceed() {
-        return enrolment.studentsSize() >= studentsCapacity;
     }
 }

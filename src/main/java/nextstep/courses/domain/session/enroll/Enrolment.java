@@ -51,16 +51,15 @@ public class Enrolment {
         this.studentsCapacity = studentsCapacity;
     }
 
-    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
-        validateRecruitingStatus();
-
-        SessionStudent student = new SessionStudent(enrolmentInfo.getSessionId(), enrolmentInfo.getNsUserId(), WAITING);
-        sessionStudents.add(student);
-
-        return student;
+    public static Enrolment fromFreeSession(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus) {
+        return new Enrolment(FREE, sessionStudents, sessionStatus, recruitingStatus);
     }
 
-    public SessionStudent enroll1(EnrolmentInfo enrolmentInfo) {
+    public static Enrolment fromPaySession(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
+        return new Enrolment(PAY, sessionStudents, sessionStatus, recruitingStatus, amount, studentsCapacity);
+    }
+
+    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
         validateCommon();
 
         if (PAY.equals(payType)) {

@@ -22,7 +22,7 @@ class EnrolmentTest {
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when
-        SessionStudent student = enrolment.enroll1(enrolmentInfo);
+        SessionStudent student = enrolment.enroll(enrolmentInfo);
 
         // then
         assertThat(student.getEnrolmentId()).isEqualTo(1L);
@@ -36,7 +36,7 @@ class EnrolmentTest {
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then
-        assertThatThrownBy(() -> enrolment.enroll1(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> enrolment.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의는 현재 모집중이 아닙니다.");
     }
 
@@ -48,7 +48,7 @@ class EnrolmentTest {
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 1000L);
 
         // when & then
-        assertThatThrownBy(() -> enrolment.enroll1(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> enrolment.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("해당 강의는 현재 준비중입니다.");
     }
 
@@ -60,7 +60,7 @@ class EnrolmentTest {
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 1L, 12000L);
 
         // when & then
-        assertThatThrownBy(() -> enrolment.enroll1(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> enrolment.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: 10,000원");
     }
 
@@ -77,7 +77,7 @@ class EnrolmentTest {
         EnrolmentInfo enrolmentInfo = new EnrolmentInfo(1L, 4L, 10000L);
 
         // when & then
-        assertThatThrownBy(() -> enrolment.enroll1(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> enrolment.enroll(enrolmentInfo)).isInstanceOf(IllegalArgumentException.class)
             .hasMessage("현재 수강 가능한 모든 인원수가 채워졌습니다.");
     }
 }

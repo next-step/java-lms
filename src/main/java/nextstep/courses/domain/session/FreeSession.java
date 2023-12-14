@@ -16,7 +16,7 @@ public class FreeSession extends Session {
 
     @Override
     public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
-        validateSessionStatus();
+        Enrolment enrolment = Enrolment.fromFreeSession(sessionStudents, sessionStatus, recruitingStatus);
 
         return enrolment.enroll(enrolmentInfo);
     }
