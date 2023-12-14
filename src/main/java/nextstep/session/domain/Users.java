@@ -16,7 +16,7 @@ public class Users {
         this.value = new HashSet<>(nsUsers);
     }
 
-    private boolean canRegister(SessionType sessionType) {
+    private boolean registrable(SessionType sessionType) {
         if (sessionType == SessionType.FREE) {
             return true;
         }
@@ -25,7 +25,7 @@ public class Users {
     }
 
     public void register(NsUser user, SessionType sessionType) {
-        if (!canRegister(sessionType)) {
+        if (!registrable(sessionType)) {
             throw new IllegalStateException("최대 수강 인원을 초과하였습니다.");
         }
 
