@@ -1,15 +1,20 @@
 package nextstep.sessions.domain;
 
+import nextstep.common.Period;
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
+
 public class Session {
 
     // id
-    private long id;
+    private Long id;
 
     // 강의 이름
     private String name;
 
     // 날짜
-    private SessionDate date;
+    private Period date;
 
     // 이미지
     private SessionImage image;
@@ -17,20 +22,30 @@ public class Session {
     // 가격
     private SessionCharge charge;
 
-    // 인원수
-    private SessionStudent student;
-
     // 상태
     private SessionStatus status;
 
-    public Session(String name, SessionDate date, SessionImage image, SessionCharge charge, SessionStudent student, SessionStatus status) {
+    // 수강신청자 목록
+    private SessionStudents students;
+
+    public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status) {
         this.id = 0l;
         this.name = name;
         this.date = date;
         this.image = image;
         this.charge = charge;
-        this.student = student;
         this.status = status;
+        this.students = new SessionStudents();
+    }
+
+    public Session(Long id, String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status, SessionStudents students) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.image = image;
+        this.charge = charge;
+        this.status = status;
+        this.students = students;
     }
 
     public long getId() {
@@ -41,8 +56,12 @@ public class Session {
         return name;
     }
 
-    public SessionDate getDate() {
+    public Period getDate() {
         return date;
+    }
+
+    public SessionImage getImage() {
+        return image;
     }
 
     public SessionCharge getCharge() {
@@ -53,20 +72,35 @@ public class Session {
         return status;
     }
 
-    public boolean isInProgress() {
+    public SessionStudents getStudents() {
+        return students;
+    }
+
+    public int getStudentCount() {
+        return this.students.size();
+    }
+
+    private boolean isInProgress() {
         return this.date.isInProgress();
     }
 
     public void checkSessionStatus() {
+        if (!isInProgress()) {
+            throw new IllegalStateException("진행중인 강의만 수강할 수 있습니다.");
+        }
         if (status != SessionStatus.RECRUITING) {
             throw new IllegalStateException("모집중인 강의만 수강할 수 있습니다.");
         }
     }
 
-    public void addStudent() {
+    public SessionStudent enroll(NsUser user) {
+        if (user.isGuestUser()) {
+            throw new IllegalStateException("로그인 후 신청할 수 있습니다.");
+        }
         checkSessionStatus();
-        this.student.addStudent();
+        this.charge.checkRecruits(students.size());
+        SessionStudent newStudent = new SessionStudent(user, LocalDateTime.now());
+        students.addStudent(newStudent);
+        return newStudent;
     }
-
-
 }

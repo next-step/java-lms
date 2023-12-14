@@ -1,35 +1,48 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class SessionStudent {
 
-    private int limitCount;
-    private int count;
+    private Long id;
 
-    public SessionStudent(long price, int limitCount) {
-        if (price <= 0) {
-            this.limitCount = 0;
-            this.count = 0;
-            return;
-        }
-        if (limitCount <= 0) {
-            throw new IllegalArgumentException("유료 강의는 수강 인원에 제한 있습니다.");
-        }
-        this.limitCount = limitCount;
-        this.count = 0;
+    private NsUser user;
+
+    // 신청일
+    private LocalDateTime registrationAt;
+
+    public SessionStudent(NsUser user, LocalDateTime registrationAt) {
+        this.user = user;
+        this.registrationAt = registrationAt;
     }
 
-    public int getLimitCount() {
-        return limitCount;
+    public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt) {
+        this.id = id;
+        this.user = user;
+        this.registrationAt = registrationAt;
     }
 
-    public int getCount() {
-        return count;
+    public NsUser getUser() {
+        return user;
     }
 
-    public void addStudent() {
-        if (limitCount > 0 && limitCount == count) {
-            throw new IllegalStateException("모집 인원이 마감되었습니다.");
-        }
-        count++;
+    public LocalDateTime getRegistrationAt() {
+        return registrationAt;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        SessionStudent that = (SessionStudent) obj;
+        return Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
     }
 }

@@ -1,32 +1,36 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 
-public class SessionStudentTest {
-    @DisplayName("강의 금액과 최대 인원 수를 전달하면 SessionStudent 객체를 생성한다.")
+class SessionStudentTest {
+
+    @DisplayName("유저와 강의 신청 시간을 전달하면 객체를 생성한다.")
     @Test
-    void sessionStudentTest(){
-        assertThat(new SessionStudent(1000, 10)).isInstanceOf(SessionStudent.class);
-        assertThat(new SessionStudent(0, 10)).isInstanceOf(SessionStudent.class);
+    void sessionStudentTest() {
+        assertThat(new SessionStudent(NsUserTest.JAVAJIGI, LocalDateTime.now())).isInstanceOf(SessionStudent.class);
     }
 
-    @DisplayName("강의 금액이 0원 이상일 경우 수강 인원에 제한이 없으면 IllegalArgumentException을 던진다.")
+    @DisplayName("NsUser가 동일하면 true를 반환한다.")
     @Test
-    void sessionStudentExceptionTest() {
-        assertThatThrownBy(() -> new SessionStudent(1000, 0))
-                .isInstanceOf(IllegalArgumentException.class);
+    void equalsTrueTest() {
+        SessionStudent student1 = new SessionStudent(NsUserTest.JAVAJIGI, LocalDateTime.of(2023, 12, 13, 12, 12, 12));
+        SessionStudent student2 = new SessionStudent(NsUserTest.JAVAJIGI, LocalDateTime.now());
+
+        assertThat(student1.equals(student2)).isTrue();
     }
 
-    @DisplayName("모집 인원이 마감된 강의를 추가하면 IllegalStateException을 던진다.")
+    @DisplayName("NsUser가 동일하지 않으면 false를 반환한다.")
     @Test
-    void addStudentTest() {
-        SessionStudent sessionStudent = new SessionStudent(1000, 1);
-        sessionStudent.addStudent();
+    void equalsFalseTest() {
+        SessionStudent student1 = new SessionStudent(NsUserTest.JAVAJIGI, LocalDateTime.now());
+        SessionStudent student2 = new SessionStudent(NsUserTest.SANJIGI, LocalDateTime.now());
 
-        assertThatThrownBy(() -> sessionStudent.addStudent())
-                .isInstanceOf(IllegalStateException.class);
+        assertThat(student1.equals(student2)).isFalse();
     }
 }

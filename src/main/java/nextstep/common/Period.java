@@ -1,8 +1,8 @@
-package nextstep.sessions.domain;
+package nextstep.common;
 
 import java.time.LocalDate;
 
-public class SessionDate {
+public class Period {
 
     // 시작일
     private LocalDate startAt;
@@ -10,7 +10,7 @@ public class SessionDate {
     // 종료일
     private LocalDate endAt;
 
-    public SessionDate(LocalDate startAt, LocalDate endAt) {
+    public Period(LocalDate startAt, LocalDate endAt) {
         if (endAt.isBefore(startAt)) {
             throw new IllegalStateException("종료일은 시작일 이전일 수 없습니다.");
         }

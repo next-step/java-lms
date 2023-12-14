@@ -21,6 +21,16 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<NsUser> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
+        return findByValue(sql, userId);
+    }
+
+    @Override
+    public Optional<NsUser> findById(Long id) {
+        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where id = ?";
+        return findByValue(sql, String.valueOf(id));
+    }
+
+    private Optional<NsUser> findByValue(String sql, String value) {
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
                 rs.getString(2),
@@ -29,7 +39,7 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, value));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
