@@ -15,26 +15,26 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class SessionTest {
-    public static final SessionPeriod todayAfterStartDate = new SessionPeriod(LocalDate.now().minusDays(1), LocalDate.now().plusDays(5));
-    public static final SessionPeriod todayBeforeStartDate = new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(10));
-    public static final SessionPeriod todayAfterEndDate = new SessionPeriod(LocalDate.now().minusDays(10), LocalDate.now().minusDays(3));
+    public static final SessionPeriod preparingPeriod = new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(10), SessionState.PREPARING);
+    public static final SessionPeriod recruitingPeriod = new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(10), SessionState.RECRUITING);
+    public static final SessionPeriod endPeriod = new SessionPeriod(LocalDate.now().minusDays(10), LocalDate.now().minusDays(3), SessionState.END);
 
     @Test
     @DisplayName("모집중인 무료 강의는 최대 수강 인원 제한 없이 수강 신청을 할 수 있다.")
     void 무료강의_수강신청() {
         Students students = new Students(new ArrayList<>(List.of(new NsUser(), new NsUser(), new NsUser())), null);
-        Session session = Session.sessionWithStateAndType(0L, SessionType.FREE, new Enrollment(SessionState.RECRUITING, students));
+        Session session = Session.recruitingSessionWithType(0L, SessionType.FREE, new Enrollment(students));
         session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
-        assertThat(session.equals(Session.sessionWithStateAndType(0L, SessionType.FREE, new Enrollment(SessionState.RECRUITING, students)))).isTrue();
+        assertThat(session.equals(Session.recruitingSessionWithType(0L, SessionType.FREE, new Enrollment(students)))).isTrue();
     }
 
     @Test
     @DisplayName("모집중인 유료강의에 수강신청 시 최대 수강 인원을 초과하면 예외가 발생한다.")
     void 유료강의_수강신청() {
         Students students = new Students(new ArrayList<>(List.of(new NsUser(), new NsUser(), new NsUser())), 3);
-        Enrollment enrollment = new Enrollment(SessionState.RECRUITING, students);
-        Session session = Session.sessionWithStateAndType(0L, SessionType.PAID, enrollment);
+        Enrollment enrollment = new Enrollment(students);
+        Session session = Session.recruitingSessionWithType(0L, SessionType.PAID, enrollment);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -44,7 +44,7 @@ class SessionTest {
     @DisplayName("강의 상태가 모집중일 때 수강신청을 할 수 있다.")
     void 수강신청_모집중_상태() {
         Students students = new Students(new ArrayList<>(), 3);
-        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.RECRUITING, students), todayBeforeStartDate);
+        Session session = Session.sessionWithState(0L, new Enrollment(students), recruitingPeriod);
         session.enrollStudent(NsUserTest.JAVAJIGI, null);
 
         assertThat(students.enrollCount()).isEqualTo(1);
@@ -53,7 +53,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 준비중일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_준비중_상태() {
-        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.PREPARING, new Students(new ArrayList<>(), 3)), todayBeforeStartDate);
+        Session session = Session.sessionWithState(0L, new Enrollment(new Students(new ArrayList<>(), 3)), preparingPeriod);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -62,7 +62,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 종료일 때 수강신청을 하면 예외가 발생한다.")
     void 수강신청_종료_상태() {
-        Session session = Session.sessionWithState(0L, new Enrollment(SessionState.END, new Students(new ArrayList<>(), 3)), todayAfterEndDate);
+        Session session = Session.sessionWithState(0L, new Enrollment(new Students(new ArrayList<>(), 3)), endPeriod);
 
         assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, null))
                 .isInstanceOf(SessionException.class);
@@ -80,11 +80,11 @@ class SessionTest {
     @DisplayName("수강생이 결제한 금액과 모집중인 유료강의의 수강료가 일치하면 수강신청이 완료된다.")
     void 수강료와_결제금액_일치시_수강신청_완료() {
         Students students = new Students(new ArrayList<>(), 5);
-        Session session = Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(SessionState.RECRUITING, students), 10000L);
+        Session session = Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(students), 10000L);
         Payment payment = new Payment("ID", 0L, 0L, 10000L);
 
         session.enrollStudent(NsUserTest.JAVAJIGI, payment);
 
-        assertThat(session.equals(Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(SessionState.RECRUITING, students),10000L)));
+        assertThat(session.equals(Session.recruitingPaidSession(0L, SessionType.PAID, new Enrollment(students),10000L)));
     }
 }

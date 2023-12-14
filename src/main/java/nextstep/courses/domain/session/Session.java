@@ -33,26 +33,23 @@ public class Session {
     }
 
     public static Session sessionWithImage(long id, ImageInfo imageInfo) {
-        Enrollment enrollment = new Enrollment(SessionState.RECRUITING, null);
-        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+        Enrollment enrollment = new Enrollment(null);
+        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
     }
 
     public static Session sessionWithState(long id, Enrollment enrollment, SessionPeriod sessionPeriod) {
         return new Session(id, null,null, enrollment, null, null, sessionPeriod);
     }
 
-    public static Session sessionWithStateAndType(long id, SessionType sessionType, Enrollment enrollment) {
-        return new Session(id, sessionType, enrollment, null,  new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+    public static Session recruitingSessionWithType(long id, SessionType sessionType, Enrollment enrollment) {
+        return new Session(id, sessionType, enrollment, null,  new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
     }
 
     public static Session recruitingPaidSession(long id, SessionType sessionType, Enrollment enrollment, Long fee) {
-        return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15)));
+        return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING));
     }
 
     public Session(long id, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod) {
-
-        enrollment.checkSessionState(sessionPeriod);
-
         this.id = id;
         this.title = title;
         this.sessionType = sessionType;
@@ -66,10 +63,13 @@ public class Session {
     }
 
     public void enrollStudent(NsUser student, Payment payment) {
+        sessionPeriod.checkAbleToEnroll();
+
         if(sessionType == SessionType.PAID){
             enrollment.isOverCapacity();
             payment.isAbleToPayment(fee);
         }
+
         enrollment.enroll(student);
     }
 
