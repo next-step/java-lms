@@ -1,9 +1,9 @@
 package nextstep.courses.domain.course;
 
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class Course {
 
     private int generation;
 
-    private List<Session> sessions = new ArrayList<>();
+    private Sessions sessions;
 
     private Long creatorId;
 
@@ -37,7 +37,7 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
-    public Course(Long id, String title, int generation, List<Session> sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, int generation, Sessions sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.generation = generation;
@@ -48,10 +48,7 @@ public class Course {
     }
 
     public void addSessions(List<Session> sessions) {
-        this.sessions.addAll(sessions);
-        for(Session session : sessions) {
-            session.addCourse(this);
-        }
+        this.sessions.addSessions(sessions, this);
     }
 
     public String getTitle() {
