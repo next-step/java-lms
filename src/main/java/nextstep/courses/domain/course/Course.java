@@ -49,6 +49,9 @@ public class Course {
 
     public void addSessions(List<Session> sessions) {
         this.sessions.addAll(sessions);
+        for(Session session : sessions) {
+            session.addCourse(this);
+        }
     }
 
     public String getTitle() {

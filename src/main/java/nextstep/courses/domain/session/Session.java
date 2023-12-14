@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.course.Course;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -9,6 +10,8 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
+
+    private Course course;
 
     private String title;
 
@@ -31,16 +34,16 @@ public class Session {
     private LocalDateTime updatedAt;
 
     private Session(long id, SessionType sessionType, Enrollment enrollment, Long fee, SessionPeriod sessionPeriod, Integer capacity) {
-        this(id, null, sessionType, enrollment,null, fee, sessionPeriod, capacity);
+        this(id, null, null, sessionType, enrollment,null, fee, sessionPeriod, capacity);
     }
 
     public static Session sessionWithImage(long id, ImageInfo imageInfo) {
         Enrollment enrollment = new Enrollment(null);
-        return new Session(id, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), null);
+        return new Session(id, null, null,null, enrollment, imageInfo, null, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), null);
     }
 
     public static Session sessionWithState(long id, Enrollment enrollment, SessionPeriod sessionPeriod) {
-        return new Session(id, null,null, enrollment, null, null, sessionPeriod, null);
+        return new Session(id, null, null,null, enrollment, null, null, sessionPeriod, null);
     }
 
     public static Session recruitingSessionWithType(long id, SessionType sessionType, Enrollment enrollment, Integer capacity) {
@@ -51,8 +54,9 @@ public class Session {
         return new Session(id, sessionType, enrollment, fee, new SessionPeriod(LocalDate.now().plusDays(3), LocalDate.now().plusDays(15), SessionState.RECRUITING), capacity);
     }
 
-    public Session(long id, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod, Integer capacity) {
+    public Session(long id, Course course, String title, SessionType sessionType, Enrollment enrollment, ImageInfo imageInfo, Long fee, SessionPeriod sessionPeriod, Integer capacity) {
         this.id = id;
+        this.course = course;
         this.title = title;
         this.sessionType = sessionType;
         this.enrollment = enrollment;
@@ -76,27 +80,37 @@ public class Session {
         enrollment.enroll(student);
     }
 
+    public void addCourse(Course course) {
+        this.course = course;
+    }
+
+    public Course getCourse() {
+        return this.course;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && Objects.equals(title, session.title) && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollment, session.enrollment) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
+        return Objects.equals(id, session.id) && Objects.equals(course, session.course) && Objects.equals(title, session.title) && sessionType == session.sessionType && Objects.equals(coverImage, session.coverImage) && Objects.equals(enrollment, session.enrollment) && Objects.equals(capacity, session.capacity) && Objects.equals(fee, session.fee) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(creatorId, session.creatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, sessionType, coverImage, enrollment, fee, sessionPeriod, creatorId);
+        return Objects.hash(id, course, title, sessionType, coverImage, enrollment, capacity, fee, sessionPeriod, creatorId);
     }
 
     @Override
     public String toString() {
         return "Session{" +
                 "id=" + id +
+                ", course=" + course +
                 ", title='" + title + '\'' +
                 ", sessionType=" + sessionType +
                 ", coverImage=" + coverImage +
                 ", enrollment=" + enrollment +
+                ", capacity=" + capacity +
                 ", fee=" + fee +
                 ", sessionPeriod=" + sessionPeriod +
                 ", creatorId=" + creatorId +
