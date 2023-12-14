@@ -1,8 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStudent;
-
 public interface SessionRepository {
 
     Long save(Session session);
