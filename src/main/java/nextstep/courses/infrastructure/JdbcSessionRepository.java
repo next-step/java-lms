@@ -75,7 +75,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 maxUserCount = MaxRegister.infinite();
             }
 
-            return Session.createPaidSession(
+            return Session.create(
                     rs.getLong(1),
                     courseRepository.findById(rs.getLong(2)),
                     new SessionImage(rs.getString(4), rs.getInt(6), rs.getInt(7), rs.getInt(8), extension),

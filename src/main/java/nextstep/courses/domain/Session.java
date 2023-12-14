@@ -32,23 +32,7 @@ public class Session {
 
     }
 
-    public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
-        Session session = new Session();
-
-        session.id = id;
-        session.course = course;
-        session.state = READY;
-        session.registeredUsers = new RegisteredUsers();
-        session.coverImage = coverImage;
-        session.duration = duration;
-        session.maxUserCount = MaxRegister.infinite();
-        session.fee = 0;
-
-        validateSession(session);
-        return session;
-    }
-
-    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
+    public static Session create(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
         Session session = new Session();
 
         session.id = id;
@@ -64,9 +48,25 @@ public class Session {
         return session;
     }
 
+    public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
+        return Session.create(id, course, coverImage, duration, MaxRegister.infinite(), 0);
+    }
+
+    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
+        return Session.create(id, course, coverImage, duration, maxUserCount, fee);
+    }
+
     private static void validateSession(Session session) {
         validateFee(session.fee);
+        validateMaxUserCount(session.maxUserCount, session.fee);
     }
+
+    private static void validateMaxUserCount(MaxRegister maxUserCount, int fee) {
+        if (fee == 0 && maxUserCount.isFinite()) {
+            throw new IllegalArgumentException("무료 강의는 수강 제한 인원을 둘 수 없습니다.");
+        }
+    }
+
     private static void validateFee(int fee) {
         if (fee < 0) {
             throw new IllegalArgumentException("강의료가 음수일 수 없습니다.");

@@ -78,6 +78,10 @@ public class MaxRegister {
         return this.isInfinite;
     }
 
+    public boolean isFinite() {
+        return !this.isInfinite;
+    }
+
     public int toInt() {
         if (this.isInfinite) {
             throw new IllegalStateException("무한 상태에서는 정수값으로 바꿀 수 없습니다.");
@@ -85,4 +89,5 @@ public class MaxRegister {
 
         return this.value;
     }
+
 }
