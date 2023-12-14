@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.ImageShape;
 import nextstep.courses.domain.session.ImageType;
@@ -8,16 +8,22 @@ import java.util.Locale;
 public class CoverImage {
 	private static final Long MAX_SIZE = 1024L * 1024L;
 
+	private Long id;
 	private long sessionId;
 	private long size;
 	private ImageType imageType;
 	private ImageShape imageShape;
 
-	public CoverImage(long sessionId, long size, String type, ImageShape imageShape) {
+	public CoverImage(long sessionId, long size, String imageType, ImageShape imageShape) {
+		this(0L, sessionId, size, imageType, imageShape);
+	}
+
+	public CoverImage(long id, long sessionId, long size, String imageType, ImageShape imageShape) {
 		validate(size);
+		this.id = id;
 		this.sessionId = sessionId;
 		this.size = size;
-		this.imageType = ImageType.of(type.toUpperCase(Locale.ROOT));
+		this.imageType = ImageType.of(imageType.toUpperCase(Locale.ROOT));
 		this.imageShape = imageShape;
 	}
 
@@ -50,7 +56,8 @@ public class CoverImage {
 	@Override
 	public String toString() {
 		return "CoverImage{" +
-				"sessionId=" + sessionId +
+				"id=" + id +
+				", sessionId=" + sessionId +
 				", size=" + size +
 				", imageType=" + imageType +
 				", imageShape=" + imageShape +

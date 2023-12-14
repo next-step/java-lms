@@ -1,9 +1,11 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.CoverImage;
+import nextstep.courses.domain.session.CoverImage;
+
+import java.util.List;
 
 public interface CoverImageDAO {
-    Long save(CoverImage coverImage);
+    void saveAll(List<CoverImage> coverImages);
 
-    CoverImage findBySessionId(Long sessionId);
+    List<CoverImage> findBySessionId(Long sessionId);
 }

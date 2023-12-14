@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
-import nextstep.courses.domain.CoverImage;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,7 @@ public class Session {
     private LocalDateTime updatedAt;
     private SessionStatus sessionStatus;
     private SessionCondition sessionCondition;
-    private CoverImage coverImage;
+    private CoverImages coverImages;
 
     public Session(Long courseId,
                    SessionPeriod sessionPeriod,
@@ -41,11 +40,11 @@ public class Session {
         this.sessionCondition = sessionCondition;
     }
 
-    public Session coverImage(CoverImage coverImage) {
-        if (coverImage.hasSameSessionId(id)) {
+    public Session coverImages(CoverImages coverImages) {
+        if (coverImages.hasSameSessionIds(id)) {
             throw new IllegalArgumentException("sessionId가 일치하지 않습니다.");
         }
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         return this;
     }
 
@@ -68,8 +67,8 @@ public class Session {
         return generation;
     }
 
-    public CoverImage coverImage() {
-        return coverImage;
+    public CoverImages coverImages() {
+        return coverImages;
     }
 
     public SessionPeriod sessionPeriod() {
@@ -103,7 +102,7 @@ public class Session {
                 ", updatedAt=" + updatedAt +
                 ", sessionStatus=" + sessionStatus +
                 ", sessionCondition=" + sessionCondition +
-                ", coverImage=" + coverImage +
+                ", coverImages=" + coverImages +
                 '}';
     }
 }

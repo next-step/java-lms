@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.CoverImageDAO;
 import nextstep.courses.infrastructure.SessionDAO;
@@ -19,9 +20,9 @@ public class SessionService {
     @Resource(name = "sessionDAO")
     private CoverImageDAO coverImageDAO;
 
-    public void save(Session session, CoverImage coverImage) {
+    public void save(Session session, List<CoverImage> coverImages) {
         sessionDAO.save(session);
-        coverImageDAO.save(coverImage);
+        coverImageDAO.saveAll(coverImages);
     }
 
     public void enroll(Payment payment) throws CannotEnrollException {
