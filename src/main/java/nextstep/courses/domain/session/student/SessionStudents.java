@@ -3,6 +3,8 @@ package nextstep.courses.domain.session.student;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.courses.domain.session.student.SelectionStatus.*;
+
 public class SessionStudents {
 
     private List<SessionStudent> students;
@@ -27,8 +29,14 @@ public class SessionStudents {
         }
     }
 
-    public int size() {
+    public int numOfAllStudents() {
         return this.students.size();
+    }
+
+    public long numOfSelectedStudents() {
+        return students.stream()
+            .filter(student -> student.getSelectionStatus().equals(APPROVAL))
+            .count();
     }
 
     public SessionStudent selectStudent(SessionStudent waitingStudent, SelectionStatus selectionStatus) {

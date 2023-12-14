@@ -40,7 +40,7 @@ class JdbcSessionSessionStudentRepositoryTest {
         SessionStudents allBySession = studentRepository.findAllBySession(enrolmentId);
 
         // then
-        assertThat(allBySession.size()).isEqualTo(3);
+        assertThat(allBySession.numOfAllStudents()).isEqualTo(3);
     }
 
     @DisplayName("수강생의 선별상태를 수정해 DB에 저장한다.")

@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session.enroll;
 
+import nextstep.courses.domain.session.PayType;
 import nextstep.courses.domain.session.SessionStatus;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
@@ -7,6 +8,7 @@ import nextstep.courses.dto.EnrolmentInfo;
 
 import java.text.DecimalFormat;
 
+import static nextstep.courses.domain.session.PayType.*;
 import static nextstep.courses.domain.session.SessionStatus.isNotProgressing;
 import static nextstep.courses.domain.session.enroll.RecruitingStatus.*;
 import static nextstep.courses.domain.session.student.SelectionStatus.*;
@@ -16,6 +18,7 @@ public class Enrolment {
     private static final DecimalFormat formatter = new DecimalFormat("###,###");
 
     private Long id;
+    private PayType payType;
     private SessionStudents sessionStudents;
     private SessionStatus sessionStatus;
     private RecruitingStatus recruitingStatus;
@@ -32,13 +35,15 @@ public class Enrolment {
         this.id = id;
     }
 
-    public Enrolment(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus) {
+    public Enrolment(PayType payType, SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus) {
+        this.payType = payType;
         this.sessionStudents = sessionStudents;
         this.sessionStatus = sessionStatus;
         this.recruitingStatus = recruitingStatus;
     }
 
-    public Enrolment(SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
+    public Enrolment(PayType payType, SessionStudents sessionStudents, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, Long amount, int studentsCapacity) {
+        this.payType = payType;
         this.sessionStudents = sessionStudents;
         this.sessionStatus = sessionStatus;
         this.recruitingStatus = recruitingStatus;
@@ -56,7 +61,11 @@ public class Enrolment {
     }
 
     public SessionStudent enroll1(EnrolmentInfo enrolmentInfo) {
-        validate(enrolmentInfo);
+        validateCommon();
+
+        if (PAY.equals(payType)) {
+            validatePaySession(enrolmentInfo);
+        }
 
         SessionStudent student = new SessionStudent(enrolmentInfo.getSessionId(), enrolmentInfo.getNsUserId(), WAITING);
         sessionStudents.add(student);
@@ -64,9 +73,12 @@ public class Enrolment {
         return student;
     }
 
-    private void validate(EnrolmentInfo enrolmentInfo) {
+    public void validateCommon() {
         validateRecruitingStatus();
         validateSessionStatus();
+    }
+
+    private void validatePaySession(EnrolmentInfo enrolmentInfo) {
         validatePayAmount(enrolmentInfo);
         validateCapacity();
     }
@@ -89,17 +101,17 @@ public class Enrolment {
         }
     }
 
-    private boolean isExceed() {
-        return sessionStudents.size() >= studentsCapacity;
-    }
-
     private void validateCapacity() {
         if (isExceed()) {
             throw new IllegalArgumentException("현재 수강 가능한 모든 인원수가 채워졌습니다.");
         }
     }
 
+    private boolean isExceed() {
+        return sessionStudents.numOfSelectedStudents() >= studentsCapacity;
+    }
+
     public int studentsSize() {
-        return sessionStudents.size();
+        return sessionStudents.numOfAllStudents();
     }
 }
