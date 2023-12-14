@@ -5,15 +5,13 @@ import nextstep.courses.domain.startegy.sessionStateStrategy.SessionStateStrateg
 import java.time.LocalDate;
 
 public enum SessionState {
-    PREPARING("준비중", (startDate, endDate, currentDate) -> startDate.isAfter(currentDate)),
-    RECRUITING("모집중", (startDate, endDate, currentDate) -> startDate.isAfter(currentDate)),
-    END("종료", (startDate, endDate, currentDate) -> endDate.isBefore(currentDate));
+    PREPARING((startDate, endDate, currentDate) -> startDate.isAfter(currentDate)),
+    RECRUITING((startDate, endDate, currentDate) -> startDate.isAfter(currentDate)),
+    END((startDate, endDate, currentDate) -> endDate.isBefore(currentDate));
 
-    private final String state;
     private final SessionStateStrategy sessionStateStrategy;
 
-    SessionState (String state, SessionStateStrategy sessionStateStrategy) {
-        this.state = state;
+    SessionState (SessionStateStrategy sessionStateStrategy) {
         this.sessionStateStrategy = sessionStateStrategy;
     }
 
