@@ -25,7 +25,7 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, 1, null, LocalDateTime.now(), null);
     }
 
     public Course(Long id, String title, Long creatorId, int cardinalNumber, Sessions sessions,
