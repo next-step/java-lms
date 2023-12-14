@@ -55,10 +55,10 @@ create table session (
     start_date_time timestamp,
     end_date_time timestamp,
     status varchar(10),
-    is_free boolean,
     money int,
     max_participants int,
     course_id bigint,
+    recruitment_status varchar(15),
     primary key (id)
 );
 
@@ -70,4 +70,12 @@ create table image (
     volume int,
     session_id bigint,
     primary key (id)
+);
+
+create table session_user_enrolment (
+    session_id bigint,
+    user_id bigint,
+    subscription_status varchar(10),
+    approval_status varchar(10),
+    primary key (session_id, user_id)
 );

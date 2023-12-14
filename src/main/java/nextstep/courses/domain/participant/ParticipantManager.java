@@ -1,6 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.participant;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.exception.MaxParticipantsException;
 
 import java.util.ArrayList;
 
@@ -22,13 +22,13 @@ public class ParticipantManager {
         this.sessionParticipants = nowParticipants;
     }
 
-    public void add(NsUser user) {
+    public void add(SessionUserEnrolment user) {
         sessionParticipants.add(user);
     }
 
     public void validateParticipant() {
         if (maxParticipants == sessionParticipants.count()) {
-            throw new IllegalArgumentException("최대 참가자 수를 초과하였습니다.");
+            throw new MaxParticipantsException();
         }
     }
 
@@ -42,5 +42,9 @@ public class ParticipantManager {
 
     public static ParticipantManager of(int maxParticipants) {
         return new ParticipantManager(maxParticipants);
+    }
+
+    public void mapppadBySessionParticipants(SessionParticipants sessionParticipants) {
+        this.sessionParticipants = sessionParticipants;
     }
 }

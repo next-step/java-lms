@@ -1,5 +1,7 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImagePixelRatioException;
+import nextstep.courses.exception.ImagePixelSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +31,7 @@ public class ImagePixelTest {
         // when
         // then
         assertThatThrownBy(() -> new ImagePixel(width, height))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImagePixelRatioException.class);
     }
 
     @DisplayName("이미지 사이즈 최소크기가 300X200이 아니면 예외가 발생한다")
@@ -41,6 +43,6 @@ public class ImagePixelTest {
         // when
         // then
         assertThatThrownBy(() -> new ImagePixel(width, height))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImagePixelSizeException.class);
     }
 }

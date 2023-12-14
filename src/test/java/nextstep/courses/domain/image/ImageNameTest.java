@@ -1,5 +1,6 @@
 package nextstep.courses.domain.image;
 
+import nextstep.courses.exception.ImageNameTypeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class ImageNameTest {
         // when
         // then
         assertThatThrownBy(() -> new ImageName(name))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImageNameTypeException.class);
     }
 
     @DisplayName("이미지 확장자가 지정된 확장자가 아니면 예외가 발생한다.")
@@ -38,6 +39,6 @@ public class ImageNameTest {
         // when
         // then
         assertThatThrownBy(() -> new ImageName(name))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ImageNameTypeException.class);
     }
 }

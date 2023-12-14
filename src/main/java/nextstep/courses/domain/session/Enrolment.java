@@ -1,6 +1,11 @@
 package nextstep.courses.domain.session;
 
-import nextstep.users.domain.NsUser;
+import nextstep.courses.exception.EndSessionException;
+import nextstep.courses.exception.MissMatchPriceException;
+import nextstep.courses.domain.participant.ParticipantManager;
+import nextstep.courses.domain.participant.SessionParticipants;
+import nextstep.courses.domain.participant.SessionUserEnrolment;
+import nextstep.courses.type.SessionStatus;
 
 public class Enrolment {
 
@@ -8,22 +13,28 @@ public class Enrolment {
 
     private final Price price;
 
-    public Enrolment(ParticipantManager participantManager, Price price) {
+    private SessionStatus status;
+
+    public Enrolment(ParticipantManager participantManager, Price price, SessionStatus status) {
         this.participantManager = participantManager;
         this.price = price;
+        this.status = status;
     }
 
-    public void addParticipant(int money, NsUser user) {
+    public void addParticipant(int money, SessionUserEnrolment user) {
         validate(money);
         participantManager.add(user);
     }
 
     private void validate(int money) {
+        if (status.isFinish()) {
+            throw new EndSessionException();
+        }
         if (!price.isFree()) {
             participantManager.validateParticipant();
         }
         if (price.money() != money) {
-            throw new IllegalArgumentException("결제 금액이 다릅니다.");
+            throw new MissMatchPriceException();
         }
     }
 
@@ -44,7 +55,15 @@ public class Enrolment {
         return price.money();
     }
 
-    public static Enrolment of(int maxParticipants, Price price) {
-        return new Enrolment(ParticipantManager.of(maxParticipants), price);
+    public String status() {
+        return status.toString();
+    }
+
+    public static Enrolment of(int maxParticipants, Price price, SessionStatus status) {
+        return new Enrolment(ParticipantManager.of(maxParticipants), price, status);
+    }
+
+    public void mappaedBySessionParticipants(SessionParticipants sessionParticipants) {
+        this.participantManager.mapppadBySessionParticipants(sessionParticipants);
     }
 }

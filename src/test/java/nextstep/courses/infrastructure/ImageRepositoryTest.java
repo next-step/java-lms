@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.image.*;
+import nextstep.courses.domain.session.Images;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,17 @@ public class ImageRepositoryTest {
         imageRepository = new JdbcImageRepository(jdbcTemplate);
     }
 
+    public static Image createImage(String name, int volume, int width, int height) {
+        ImageName imageName = new ImageName(name);
+        ImagePixel imagePixel = new ImagePixel(width, height);
+        ImageSize imageSize = new ImageSize(volume);
+        return new Image(imageName, imageSize, imagePixel,1L);
+    }
+
     @DisplayName("이미지 저장 테스트")
     @Test
     void 이미지_저장_테스트() {
-        ImageName imageName = new ImageName("image.png");
-        ImagePixel imagePixel = new ImagePixel(300, 200);
-        ImageSize imageSize = new ImageSize(1000);
-        Image image = new Image(imageName, imageSize, imagePixel,null);
+        Image image = createImage("image.png", 1000, 300, 200);
         int result = imageRepository.save(image);
         assertThat(result).isOne();
     }
@@ -39,10 +44,7 @@ public class ImageRepositoryTest {
     @DisplayName("id로 이미지 조회 테스트")
     @Test
     void id로_조회_테스트() {
-        ImageName imageName = new ImageName("image.png");
-        ImagePixel imagePixel = new ImagePixel(300, 200);
-        ImageSize imageSize = new ImageSize(1000);
-        Image image = new Image(imageName, imageSize, imagePixel,null);
+        Image image = createImage("image.png", 1000, 300, 200);
         imageRepository.save(image);
         Image result = imageRepository.findById(1L);
         assertThat(result.name()).isEqualTo(image.name());
@@ -51,12 +53,20 @@ public class ImageRepositoryTest {
     @DisplayName("session id로 이미지 조회 테스트")
     @Test
     void session_id로_조회_테스트() {
-        ImageName imageName = new ImageName("image.png");
-        ImagePixel imagePixel = new ImagePixel(300, 200);
-        ImageSize imageSize = new ImageSize(1000);
-        Image image = new Image(imageName, imageSize, imagePixel,1L);
+        Image image = createImage("image.png", 1000, 300, 200);
         imageRepository.save(image);
-        Image results = imageRepository.findBySessionId(1L);
-        assertThat(results.name()).isEqualTo(image.name());
+        Images results = imageRepository.findBySessionId(1L);
+        assertThat(results.size()).isEqualTo(1);
+    }
+
+    @DisplayName("이미지 저장 여러개 테스트")
+    @Test
+    void 이미지_저장_여러개_테스트() {
+        Image image = createImage("image.png", 1000, 300, 200);
+        Image image2 = createImage("image2.png", 1000, 300, 200);
+        Images images = new Images(List.of(image, image2));
+        imageRepository.saveAll(images);
+        Images results = imageRepository.findBySessionId(1L);
+        assertThat(results.size()).isEqualTo(2);
     }
 }
