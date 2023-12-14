@@ -30,4 +30,8 @@ public class Payment {
     public Long getSessionId() {
         return sessionId;
     }
+
+    public Long getNsUserId() {
+        return nsUserId;
+    }
 }
