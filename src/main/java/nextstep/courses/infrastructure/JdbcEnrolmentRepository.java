@@ -3,7 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.enroll.RecruitingStatus;
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,9 +14,9 @@ import java.util.Optional;
 public class JdbcEnrolmentRepository implements EnrolmentRepository {
 
     private final JdbcOperations jdbcTemplate;
-    private final StudentRepository studentRepository;
+    private final SessionStudentRepository studentRepository;
 
-    public JdbcEnrolmentRepository(JdbcOperations jdbcTemplate, StudentRepository studentRepository) {
+    public JdbcEnrolmentRepository(JdbcOperations jdbcTemplate, SessionStudentRepository studentRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.studentRepository = studentRepository;
     }
@@ -27,7 +27,7 @@ public class JdbcEnrolmentRepository implements EnrolmentRepository {
 
         RowMapper<Enrolment> rowMapper = (rs, rowNum) -> new Enrolment(
             rs.getLong(1),
-            studentRepository.findAllByEnrolment(rs.getLong(1)),
+            studentRepository.findAllBySession(rs.getLong(1)),
             RecruitingStatus.valueOf(rs.getString(3))
         );
 
@@ -40,7 +40,7 @@ public class JdbcEnrolmentRepository implements EnrolmentRepository {
 
         RowMapper<Enrolment> rowMapper = (rs, rowNum) -> new Enrolment(
             rs.getLong(1),
-            studentRepository.findAllByEnrolment(id),
+            studentRepository.findAllBySession(id),
             RecruitingStatus.valueOf(rs.getString(3))
         );
 

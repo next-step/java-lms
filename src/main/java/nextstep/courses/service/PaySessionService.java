@@ -5,7 +5,7 @@ import nextstep.courses.dto.EnrolmentInfo;
 import nextstep.courses.domain.session.PayType;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.dto.SelectInfo;
 
@@ -14,9 +14,9 @@ import static nextstep.courses.domain.session.PayType.*;
 public class PaySessionService implements SessionService {
 
     private final SessionRepository sessionRepository;
-    private final StudentRepository studentRepository;
+    private final SessionStudentRepository studentRepository;
 
-    public PaySessionService(SessionRepository sessionRepository, StudentRepository studentRepository) {
+    public PaySessionService(SessionRepository sessionRepository, SessionStudentRepository studentRepository) {
         this.sessionRepository = sessionRepository;
         this.studentRepository = studentRepository;
     }

@@ -2,7 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.enroll.Enrolment;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,11 +21,11 @@ class JdbcEnrolmentRepositoryTest {
     JdbcTemplate jdbcTemplate;
 
     private EnrolmentRepository enrolmentRepository;
-    private StudentRepository studentRepository;
+    private SessionStudentRepository studentRepository;
 
     @BeforeEach
     void setUp() {
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        studentRepository = new JdbcSessionStudentRepository(jdbcTemplate);
         enrolmentRepository = new JdbcEnrolmentRepository(jdbcTemplate, studentRepository);
     }
 

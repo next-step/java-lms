@@ -4,7 +4,7 @@ import nextstep.courses.domain.session.PaySession;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.EnrolmentRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,15 +22,15 @@ public class JdbcSessionRepositoryTest {
 
     private CoverImageRepository coverImageRepository;
     private EnrolmentRepository enrolmentRepository;
-    private StudentRepository studentRepository;
+    private SessionStudentRepository studentRepository;
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        studentRepository = new JdbcSessionStudentRepository(jdbcTemplate);
         enrolmentRepository = new JdbcEnrolmentRepository(jdbcTemplate, studentRepository);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, enrolmentRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, enrolmentRepository, studentRepository);
     }
 
     @DisplayName("강의 아이디를 전달받아 해당하는 강의를 조회한다.")

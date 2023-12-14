@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SelectionStatus;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("studentRepository")
-public class JdbcStudentRepository implements StudentRepository {
+public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     private final JdbcOperations jdbcTemplate;
 
-    public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionStudentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -33,7 +33,7 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public SessionStudents findAllByEnrolment(Long id) {
+    public SessionStudents findAllBySession(Long sessionId) {
         String sql = "select * from student where enrolment_id = ?";
 
         RowMapper<SessionStudent> rowMapper = (rs, rowNum) -> new SessionStudent(
@@ -43,7 +43,7 @@ public class JdbcStudentRepository implements StudentRepository {
             SelectionStatus.valueOf(rs.getString(4))
         );
 
-        List<SessionStudent> students = jdbcTemplate.query(sql, rowMapper, id);
+        List<SessionStudent> students = jdbcTemplate.query(sql, rowMapper, sessionId);
         return new SessionStudents(students);
     }
 

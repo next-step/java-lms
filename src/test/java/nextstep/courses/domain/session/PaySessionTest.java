@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.coverimage.CoverImages;
 import nextstep.courses.domain.session.enroll.Enrolment;
+import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.student.SessionStudents;
 import nextstep.courses.dto.EnrolmentInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -66,8 +67,11 @@ class PaySessionTest {
             sessionStatus,
             new CoverImages(),
             new Enrolment(new SessionStudents(), RECRUITING_ON),
-            LocalDate.of(2023, 12, 5),
-            LocalDate.now(),
+            new SessionStudents(),
+            Period.from(
+                LocalDate.of(2023, 12, 5),
+                LocalDate.now()
+            ),
             10000L,
             2
             );

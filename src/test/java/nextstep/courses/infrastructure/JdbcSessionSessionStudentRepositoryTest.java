@@ -1,6 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.repository.StudentRepository;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import nextstep.courses.domain.session.student.SessionStudent;
 import nextstep.courses.domain.session.student.SessionStudents;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,16 +15,16 @@ import static nextstep.courses.domain.session.student.SelectionStatus.WAITING;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-class JdbcSessionStudentRepositoryTest {
+class JdbcSessionSessionStudentRepositoryTest {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private StudentRepository studentRepository;
+    private SessionStudentRepository studentRepository;
 
     @BeforeEach
     void setUp() {
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        studentRepository = new JdbcSessionStudentRepository(jdbcTemplate);
     }
 
     @DisplayName("수강신청 아이디에 해당하는 학생을 가져온다.")
@@ -37,7 +37,7 @@ class JdbcSessionStudentRepositoryTest {
         studentRepository.save(new SessionStudent(enrolmentId, 3L, WAITING));
 
         // when
-        SessionStudents allBySession = studentRepository.findAllByEnrolment(enrolmentId);
+        SessionStudents allBySession = studentRepository.findAllBySession(enrolmentId);
 
         // then
         assertThat(allBySession.size()).isEqualTo(3);

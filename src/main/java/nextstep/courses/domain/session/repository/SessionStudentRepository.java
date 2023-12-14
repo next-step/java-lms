@@ -5,10 +5,10 @@ import nextstep.courses.domain.session.student.SessionStudents;
 
 import java.util.Optional;
 
-public interface StudentRepository {
+public interface SessionStudentRepository {
 
     void save(SessionStudent student);
     void update(SessionStudent student);
-    SessionStudents findAllByEnrolment(Long id);
+    SessionStudents findAllBySession(Long sessionId);
     Optional<SessionStudent> findById(Long studentId);
 }
