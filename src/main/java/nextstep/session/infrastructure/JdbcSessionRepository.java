@@ -68,18 +68,26 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         // 세션 조회
-        String selectSessionSql = "select * from session where id = ?";
+        String selectSessionSql = "select " +
+                "id" +
+                "amount" +
+                "number_of_maximum_members" +
+                "session_type" +
+                "session_status" +
+                "image_id" +
+                "start_at" +
+                "end_at from session where id = ?";
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
-                findMembers(rs.getInt(8), rs.getLong(1)),
+                findMembers(rs.getInt(3), rs.getLong(1)),
                 rs.getLong(2),
-                SessionType.valueOf(rs.getString(3)),
-                SessionStatus.valueOf(rs.getString(4)),
+                SessionType.valueOf(rs.getString(4)),
+                SessionStatus.valueOf(rs.getString(5)),
                 null,
                 new BaseTimeEntity(
-                        toLocalDateTime(rs.getTimestamp(6)),
-                        toLocalDateTime(rs.getTimestamp(7)))
+                        toLocalDateTime(rs.getTimestamp(7)),
+                        toLocalDateTime(rs.getTimestamp(8)))
         );
         return Optional.ofNullable(jdbcTemplate.queryForObject(selectSessionSql, rowMapper, id));
         // 이미지 조회
