@@ -10,6 +10,6 @@ class SessionsTest {
     @Test
     @DisplayName("Sessions 생성")
     void create() {
-        assertThat(new Sessions(new ArrayList<>())).isInstanceOf(Sessions.class);
+        assertThat(new Sessions()).isInstanceOf(Sessions.class);
     }
 }

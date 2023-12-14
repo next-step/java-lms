@@ -17,7 +17,7 @@ class DurationTest {
     }
 
     @Test
-    @DisplayName("SessionDuration 생성시 강의 시작, 강의 종료 에러 발생")
+    @DisplayName("SessionDuration 생성시 강의 시작, 강의 종료 에러 던짐")
     void create_throw_exception_startDate_endDate() {
         assertThatThrownBy(()->
                 new Duration(LocalDateTime.now(),

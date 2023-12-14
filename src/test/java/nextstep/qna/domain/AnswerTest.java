@@ -20,7 +20,7 @@ public class AnswerTest {
     }
 
     @Test
-    @DisplayName("Answer 삭제시 타인 작성글 발견시 예외 발생")
+    @DisplayName("Answer 삭제시 타인 작성글 발견시 예외 던짐")
     void delete_exception()  {
         assertThatThrownBy(()-> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)

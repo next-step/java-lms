@@ -28,7 +28,7 @@ class EnrollmentTest {
     }
 
     @Test
-    @DisplayName("유저 등록시 한계량을 넘으면 예외발생")
+    @DisplayName("유저 등록시 한계량을 넘으면 예외던짐")
     void enroll_exception() {
         List<NsUser> users = new ArrayList<>();
         Enrollment actual = new Enrollment(new NsUsers(users), new NsUserLimit(0,SessionPaymentType.PAID));
