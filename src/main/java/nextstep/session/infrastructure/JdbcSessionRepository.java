@@ -8,9 +8,9 @@ import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
 import nextstep.session.domain.Users;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -18,16 +18,20 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
+    private final UserRepository userRepository;
+
     private final JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepository = userRepository;
     }
 
 
@@ -68,42 +72,33 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         // 세션 조회
-        String selectSessionSql = "select " +
-                "id" +
-                "amount" +
-                "number_of_maximum_members" +
-                "session_type" +
-                "session_status" +
-                "image_id" +
-                "start_at" +
-                "end_at from session where id = ?";
+        String selectSessionSql = "select id, amount, number_of_maximum_members, session_type, session_status, image_id, start_at, end_at " +
+                "from session where id = ?";
 
-        RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
-                rs.getLong(1),
-                findMembers(rs.getInt(3), rs.getLong(1)),
-                rs.getLong(2),
-                SessionType.valueOf(rs.getString(4)),
-                SessionStatus.valueOf(rs.getString(5)),
-                null,
-                new BaseTimeEntity(
-                        toLocalDateTime(rs.getTimestamp(7)),
-                        toLocalDateTime(rs.getTimestamp(8)))
-        );
-        return Optional.ofNullable(jdbcTemplate.queryForObject(selectSessionSql, rowMapper, id));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                selectSessionSql,
+                (rs, rowNum) -> new Session(
+                        rs.getLong(1),
+                        members(rs.getInt(3), rs.getLong(1)),
+                        rs.getLong(2),
+                        SessionType.valueOf(rs.getString(4)),
+                        SessionStatus.valueOf(rs.getString(5)),
+                        null,
+                        new BaseTimeEntity(
+                                toLocalDateTime(rs.getTimestamp(7)),
+                                toLocalDateTime(rs.getTimestamp(8)))
+                ),
+                id))
+                ;
         // 이미지 조회
-        // 멤버 전체 조회
     }
 
-    private Users findMembers(int numberOfMaximumMembers, long sessionId) {
+    private Users members(int numberOfMaximumMembers, long sessionId) {
         String selectMemberIdsSql = "select ns_user_id from session_attendee where session_id = ?";
         List<Long> memberIds = jdbcTemplate.queryForList(selectMemberIdsSql, Long.class, sessionId);
 
-        /*
-         TODO
-            List<NsUser> members = userRepository.findAllByIds(memberIds);
-            return new Users(members);
-         */
-        return null;
+        List<NsUser> members = userRepository.findAllByIds(memberIds);
+        return new Users(numberOfMaximumMembers, new HashSet<>(members));
     }
 
     private Image findImage(long imageId) {
