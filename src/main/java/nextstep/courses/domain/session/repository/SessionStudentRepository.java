@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface SessionStudentRepository {
 
     void save(SessionStudent student);
-    void update(SessionStudent student);
+    void updateSelectionResult(SessionStudent student);
     SessionStudents findAllBySession(Long sessionId);
     Optional<SessionStudent> findById(Long studentId);
 }

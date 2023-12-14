@@ -27,7 +27,7 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
     }
 
     @Override
-    public void update(SessionStudent student) {
+    public void updateSelectionResult(SessionStudent student) {
         String sql = "update session_student set selection_status = ? where id = ?";
         jdbcTemplate.update(sql, student.getSelectionStatus().toString(), student.getId());
     }

@@ -41,6 +41,9 @@ public class FreeSessionService implements SessionService {
         SessionStudent student = studentRepository.findById(selectInfo.getStudentId())
             .orElseThrow(() -> new IllegalArgumentException("일치하는 수강생이 없습니다. 수강생 아이디 :: " + selectInfo.getSessionId()));
 
-        return session.selection(student, selectInfo.getSelectionStatus());
+        SessionStudent selectionResult = session.selection(student, selectInfo.getSelectionStatus());
+        studentRepository.updateSelectionResult(selectionResult);
+
+        return selectionResult;
     }
 }

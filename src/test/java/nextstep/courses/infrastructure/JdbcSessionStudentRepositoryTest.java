@@ -53,7 +53,7 @@ class JdbcSessionStudentRepositoryTest {
 
         // when
         SessionStudent after = before.changeStatus(APPROVAL);
-        studentRepository.update(after);
+        studentRepository.updateSelectionResult(after);
 
         SessionStudent changedStudent = studentRepository.findById(1L)
             .orElseThrow(() -> new IllegalArgumentException("수강생이 존재하지 않습니다."));
