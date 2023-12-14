@@ -19,6 +19,7 @@ public class NsUser {
 
     private String email;
 
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -78,6 +79,14 @@ public class NsUser {
     public NsUser setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public void update(NsUser loginUser, NsUser target) {
@@ -154,4 +163,5 @@ public class NsUser {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

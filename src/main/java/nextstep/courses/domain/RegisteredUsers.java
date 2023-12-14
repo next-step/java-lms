@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * 수강신청한 사용자들 목록
@@ -23,5 +24,13 @@ public class RegisteredUsers {
 
     public int theNumberOfUsers() {
         return this.users.size();
+    }
+
+    public Stream<NsUser> stream() {
+        return this.users.stream();
+    }
+
+    public List<NsUser> toList() {
+        return List.copyOf(this.users);
     }
 }

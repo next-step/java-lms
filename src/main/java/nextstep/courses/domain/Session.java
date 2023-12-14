@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.type.InfinitablePositiveInteger;
+import nextstep.courses.type.MaxRegister;
 import nextstep.courses.type.SessionDuration;
 import nextstep.courses.type.SessionState;
 import nextstep.payments.domain.Payment;
@@ -24,36 +24,21 @@ public class Session {
     private SessionImage coverImage;
     private SessionDuration duration;
 
-    private InfinitablePositiveInteger maxUserCount;
+    private MaxRegister maxUserCount;
     private int fee;
+
 
     private Session() {
 
     }
 
-    public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
+    public static Session create(Long id, Course course, SessionState state, RegisteredUsers registeredUsers, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
         Session session = new Session();
 
         session.id = id;
         session.course = course;
-        session.state = READY;
-        session.registeredUsers = new RegisteredUsers();
-        session.coverImage = coverImage;
-        session.duration = duration;
-        session.maxUserCount = InfinitablePositiveInteger.infinite();
-        session.fee = 0;
-
-        validateSession(session);
-        return session;
-    }
-
-    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, InfinitablePositiveInteger maxUserCount, int fee) {
-        Session session = new Session();
-
-        session.id = id;
-        session.course = course;
-        session.state = READY;
-        session.registeredUsers = new RegisteredUsers();
+        session.state = state;
+        session.registeredUsers = registeredUsers;
         session.coverImage = coverImage;
         session.duration = duration;
         session.maxUserCount = maxUserCount;
@@ -63,9 +48,25 @@ public class Session {
         return session;
     }
 
+    public static Session createFreeSession(Long id, Course course, SessionImage coverImage, SessionDuration duration) {
+        return Session.create(id, course, READY, new RegisteredUsers(), coverImage, duration, MaxRegister.infinite(), 0);
+    }
+
+    public static Session createPaidSession(Long id, Course course, SessionImage coverImage, SessionDuration duration, MaxRegister maxUserCount, int fee) {
+        return Session.create(id, course, READY, new RegisteredUsers(), coverImage, duration, maxUserCount, fee);
+    }
+
     private static void validateSession(Session session) {
         validateFee(session.fee);
+        validateMaxUserCount(session.maxUserCount, session.fee);
     }
+
+    private static void validateMaxUserCount(MaxRegister maxUserCount, int fee) {
+        if (fee == 0 && maxUserCount.isFinite()) {
+            throw new IllegalArgumentException("무료 강의는 수강 제한 인원을 둘 수 없습니다.");
+        }
+    }
+
     private static void validateFee(int fee) {
         if (fee < 0) {
             throw new IllegalArgumentException("강의료가 음수일 수 없습니다.");
@@ -88,15 +89,15 @@ public class Session {
     }
 
     public void registerUser(NsUser user, Payment payment) {
-        if (payment.isSameUser(user) == false) {
+        if (!payment.isSameUser(user)) {
             throw new IllegalArgumentException("지불 정보와 등록하는 유저가 일치하지 않습니다.");
         }
 
-        if (payment.isSameAmountWith(this.fee) == false) {
+        if (!payment.isSameAmountWith(this.fee)) {
             throw new IllegalArgumentException("수강료와 지불 금액이 동일하지 않습니다.");
         }
 
-        if (this.maxUserCount.isLargerThan(this.registeredUsers.theNumberOfUsers()) == false) {
+        if (!this.maxUserCount.isLargerThan(this.registeredUsers.theNumberOfUsers())) {
             throw new IllegalStateException("이 강의의 최대 등록 가능 인원에 도달했습니다. 더 이상 사용자를 추가할 수 없습니다.");
         }
 
@@ -114,6 +115,31 @@ public class Session {
 
     public Long getId() {
         return this.id;
+    }
+
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public SessionState getState() {
+        return state;
+    }
+
+    public SessionImage getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionDuration getDuration() {
+        return duration;
+    }
+
+    public MaxRegister getMaxUserCount() {
+        return maxUserCount;
+    }
+
+    public int getFee() {
+        return fee;
     }
 
     @Override
@@ -140,5 +166,9 @@ public class Session {
                 ", maxUserCount=" + maxUserCount +
                 ", fee=" + fee +
                 '}';
+    }
+
+    public RegisteredUsers getRegisteredUsers() {
+        return this.registeredUsers;
     }
 }

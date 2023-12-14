@@ -10,7 +10,7 @@ public class SessionDuration {
     private LocalDateTime start;
     private LocalDateTime end;
 
-    private SessionDuration(LocalDateTime start, LocalDateTime end) {
+    public SessionDuration(LocalDateTime start, LocalDateTime end) {
         validateDuration(start, end);
         this.start = start;
         this.end = end;
@@ -30,5 +30,13 @@ public class SessionDuration {
         LocalDateTime endTime = LocalDateTime.parse(end);
 
         return new SessionDuration(startTime, endTime);
+    }
+
+    public LocalDateTime getStartTime() {
+        return start;
+    }
+
+    public LocalDateTime getEndTime() {
+        return end;
     }
 }
