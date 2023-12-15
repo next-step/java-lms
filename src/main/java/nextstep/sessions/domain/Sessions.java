@@ -7,9 +7,13 @@ public class Sessions {
 
     private List<Session> sessionList;
 
+    public Sessions(List<Session> sessionList) {
+        this.sessionList = sessionList;
+    }
+
     public List<Session> getPossibleSessionList() {
         return sessionList.stream()
-                .filter(session -> session.isPossibleToEnroll())
+                .filter(session -> session.isRecruitingStatus())
                 .collect(Collectors.toList());
     }
 }

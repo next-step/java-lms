@@ -26,9 +26,8 @@ public class Session {
         this.endDt = endDt;
     }
 
-    public boolean isPossibleToEnroll() {
-        return sessionStatus.equals(SessionStatus.PREPARING)
-                && startDt.isBefore(LocalDate.now()) && endDt.isAfter(LocalDate.now());
+    public boolean isRecruitingStatus() {
+        return sessionStatus.equals(SessionStatus.RECRUITING);
     }
 
     public Long id() {
