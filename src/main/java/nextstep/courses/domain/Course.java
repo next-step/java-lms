@@ -1,23 +1,29 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.utils.BaseEntity;
+
 import java.time.LocalDateTime;
 
-public class Course {
+public class Course extends BaseEntity {
     private Long id;
 
     private String title;
 
     private Long creatorId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public Course() {
+    }
+
+    public Course(Long id) {
+        this.id = id;
     }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
+    }
+
+    public Course(Long id, String title, Long creatorId) {
+        this(id, title, creatorId, LocalDateTime.now(), null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -26,6 +32,10 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long id() {
+        return id;
     }
 
     public String getTitle() {

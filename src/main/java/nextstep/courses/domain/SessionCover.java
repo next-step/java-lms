@@ -1,10 +1,31 @@
 package nextstep.courses.domain;
 
-public class SessionCover {
-    public static final double RATIO = (double) 3 / 2;
-    private final byte[] image;
+import nextstep.courses.utils.BaseEntity;
 
-    public SessionCover(int width, int height, long size, byte[] image) {
+import java.time.LocalDateTime;
+
+public class SessionCover extends BaseEntity {
+    public static final double RATIO = (double) 3 / 2;
+
+    private Long id;
+    private byte[] image;
+
+    public SessionCover(Long id) {
+        this.id = id;
+    }
+
+    public SessionCover(byte[] image) {
+        this.image = image;
+    }
+
+    public SessionCover(Long id, byte[] image, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.image = image;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public SessionCover(long id, int width, int height, long size, byte[] image) {
         validateSize(size);
         validatePixel(width, height);
         validateRatio(width, height);
@@ -12,6 +33,7 @@ public class SessionCover {
             throw new IllegalArgumentException("이미지 값이 없습니다.");
         }
         this.image = image;
+        this.id = id;
     }
 
     private static void validateSize(long size) {
@@ -34,5 +56,9 @@ public class SessionCover {
 
     public byte[] image() {
         return image;
+    }
+
+    public Long id() {
+        return id;
     }
 }

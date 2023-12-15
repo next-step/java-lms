@@ -17,7 +17,7 @@ public class VectorProcessor implements ImageProcessor {
     @Override
     public SessionCover processImage(File file) throws IOException {
         Element svgRoot = parseXML(file);
-        return new SessionCover(parseInt(svgRoot.getAttribute("width")), parseInt(svgRoot.getAttribute("height")), file.length(), writeVectorImage(file));
+        return new SessionCover(1L, parseInt(svgRoot.getAttribute("width")), parseInt(svgRoot.getAttribute("height")), file.length(), writeVectorImage(file));
     }
 
     private int parseInt(String pixel) {
