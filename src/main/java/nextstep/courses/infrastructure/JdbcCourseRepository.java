@@ -26,20 +26,18 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, cardinal_number, sessions, created_at, updated_at from course where id = ?";
+        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                rs.getInt(4),
-                (Sessions) rs.getObject(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
+                toLocalDateTime(rs.getTimestamp(4)),
+                toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
     @Override
-    public Course findByCardinalNumber(int cardinal_number) {
+    public Course findByCardinalNumber(int cardinalNumber) {
         String sql = "select id, title, creator_id, cardinal_number, sessions, created_at, updated_at from course where cardinal_number = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
@@ -49,7 +47,7 @@ public class JdbcCourseRepository implements CourseRepository {
                 (Sessions) rs.getObject(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, cardinal_number);
+        return jdbcTemplate.queryForObject(sql, rowMapper, cardinalNumber);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
