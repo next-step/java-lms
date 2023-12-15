@@ -2,6 +2,7 @@ package nextstep.session.infrastructure;
 
 import nextstep.common.BaseTimeEntity;
 import nextstep.image.domain.Image;
+import nextstep.image.domain.ImageRepository;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionStatus;
@@ -27,11 +28,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private final UserRepository userRepository;
 
+    private final ImageRepository imageRepository;
+
     private final JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, UserRepository userRepository, ImageRepository imageRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
 
@@ -83,13 +87,12 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong(2),
                         SessionType.valueOf(rs.getString(4)),
                         SessionStatus.valueOf(rs.getString(5)),
-                        null,
+                        image(rs.getLong(6)),
                         new BaseTimeEntity(
                                 toLocalDateTime(rs.getTimestamp(7)),
                                 toLocalDateTime(rs.getTimestamp(8)))
                 ),
-                id))
-                ;
+                id));
         // 이미지 조회
     }
 
@@ -101,12 +104,9 @@ public class JdbcSessionRepository implements SessionRepository {
         return new Users(numberOfMaximumMembers, new HashSet<>(members));
     }
 
-    private Image findImage(long imageId) {
-        /*
-        TODO
-            return imageRepository.findById(imageId);
-         */
-        return null;
+    private Image image(long imageId) {
+        return imageRepository.findById(imageId)
+                .orElse(null);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

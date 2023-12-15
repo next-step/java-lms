@@ -19,11 +19,16 @@ public class Image {
 
     private long size;
 
-    private Image(int width, int height, ImageType imageType, long size) {
+    public Image(Long id, int width, int height, ImageType imageType, long size) {
+        this.id = id;
         this.width = width;
         this.height = height;
         this.imageType = imageType;
         this.size = size;
+    }
+
+    private Image(int width, int height, ImageType imageType, long size) {
+        this(null, width, height, imageType, size);
     }
 
     public static Image of(int width, int height, ImageType imageType, long size) {
