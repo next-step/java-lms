@@ -66,11 +66,11 @@ create table session
     end_at                    timestamp
 );
 
-create table session_attendee
+create table session_member
 (
     ns_user_id bigint not null,
     session_id bigint not null,
-    constraint session_attendee_pk primary key (ns_user_id, session_id)
+    constraint session_member_pk primary key (ns_user_id, session_id)
 );
 
 create table image

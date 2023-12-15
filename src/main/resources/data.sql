@@ -13,5 +13,5 @@ INSERT INTO image (id, width, height, image_type, size) VALUES (1, 300, 200, 'JP
 
 INSERT INTO session (id, amount, number_of_maximum_members, session_type, session_status, image_id, start_at, end_at) VALUES (1, 1000, 999, 'FREE', 'PREPARING', 1, CURRENT_TIMESTAMP(), '9999-12-31 23:59:59');
 
-INSERT INTO session_attendee (ns_user_id, session_id) VALUES (1, 1), (2, 1);
+INSERT INTO session_member (ns_user_id, session_id) VALUES (1, 1), (2, 1);
 

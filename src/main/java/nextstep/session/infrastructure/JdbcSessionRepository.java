@@ -48,16 +48,16 @@ public class JdbcSessionRepository implements SessionRepository {
         }
 
         int sessionId = jdbcTemplate.update(sql, session.getAmount(), session.getSessionType().name(), session.getStatus().name(), imageId, session.getBaseTime().getStartAt(), session.getBaseTime().getEndAt(), session.getMembers().getNumberOfMaximumMembers());
-        refreshAttendees(session, sessionId);
+        refreshMembers(session, sessionId);
 
         return sessionId;
     }
 
-    private void refreshAttendees(Session session, int sessionId) {
-        String deleteAttendeesSql = "delete from session_attendee where session_id = ?";
-        jdbcTemplate.update(deleteAttendeesSql, sessionId);
+    private void refreshMembers(Session session, int sessionId) {
+        String deleteMembersSql = "delete from session_member where session_id = ?";
+        jdbcTemplate.update(deleteMembersSql, sessionId);
 
-        String memberSql = "insert into session_attendee (ns_user_id, session_id) values (?, ?)";
+        String memberSql = "insert into session_member (ns_user_id, session_id) values (?, ?)";
         List<NsUser> nsUsers = new ArrayList<>(session.getMembers().values());
         jdbcTemplate.batchUpdate(memberSql, new BatchPreparedStatementSetter() {
             @Override
@@ -97,7 +97,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Users members(int numberOfMaximumMembers, long sessionId) {
-        String selectMemberIdsSql = "select ns_user_id from session_attendee where session_id = ?";
+        String selectMemberIdsSql = "select ns_user_id from session_member where session_id = ?";
         List<Long> memberIds = jdbcTemplate.queryForList(selectMemberIdsSql, Long.class, sessionId);
 
         List<NsUser> members = userRepository.findAllByIds(memberIds);
