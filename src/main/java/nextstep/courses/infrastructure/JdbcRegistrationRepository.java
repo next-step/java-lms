@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Registration;
-import nextstep.courses.domain.RegistrationRepository;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.repository.RegistrationRepository;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -16,11 +16,9 @@ import static nextstep.courses.utils.DateUtil.toLocalDateTime;
 @Repository("registrationRepository")
 public class JdbcRegistrationRepository implements RegistrationRepository {
     private JdbcOperations jdbcTemplate;
-    private final UserRepository userRepository;
 
-    public JdbcRegistrationRepository(JdbcOperations jdbcTemplate, UserRepository userRepository) {
+    public JdbcRegistrationRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,21 +28,17 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
     }
 
     @Override
-    public List<NsUser> findParticipantsBySessionId(Long sessionId) {
-        String sql = "select u.id, u.user_id, u.password, u.name, u.email, u.created_at, u.updated_at  " +
-                "from registration r " +
-                "join session s on r.session_id = s.id " +
-                "join ns_user u on u.id = r.ns_user_id " +
-                "where session_id = ?";
+    public List<Registration> findAllBySessionId(Long sessionId) {
+        String sql = "select id, session_id, ns_user_id, amount, created_at, updated_at " +
+                "from registration r where session_id = ?";
 
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
+        RowMapper<Registration> rowMapper = (rs, rowNum) -> new Registration(
                 rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
+                new NsUser(rs.getLong(2)),
+                new Session(rs.getLong(3)),
+                rs.getLong(4),
+                toLocalDateTime(rs.getTimestamp(5)),
+                toLocalDateTime(rs.getTimestamp(6)));
 
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }

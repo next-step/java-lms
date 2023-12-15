@@ -14,6 +14,10 @@ public class Course extends BaseEntity {
     public Course() {
     }
 
+    public Course(Long id) {
+        this.id = id;
+    }
+
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }

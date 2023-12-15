@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.repository.SessionRepository;
 import nextstep.courses.enums.SessionStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,15 +14,9 @@ import static nextstep.courses.utils.DateUtil.toLocalDateTime;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
-    private final CourseRepository courseRepository;
-    private final SessionCoverRepository sessionCoverRepository;
-    private final RegistrationRepository registrationRepository;
     private JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(CourseRepository courseRepository, SessionCoverRepository sessionCoverRepository, RegistrationRepository registrationRepository, JdbcOperations jdbcTemplate) {
-        this.courseRepository = courseRepository;
-        this.sessionCoverRepository = sessionCoverRepository;
-        this.registrationRepository = registrationRepository;
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -45,11 +40,10 @@ public class JdbcSessionRepository implements SessionRepository {
                 SessionStatus.valueOf(rs.getString(4)),
                 new Capacity(rs.getInt(5)),
                 new Price(rs.getInt(6)),
-                courseRepository.findById(rs.getLong(7)),
-                sessionCoverRepository.findById(rs.getLong(8)),
+                new Course(rs.getLong(7)),
+                new SessionCover(rs.getLong(8)),
                 toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10)),
-                registrationRepository.findParticipantsBySessionId(rs.getLong(1))
+                toLocalDateTime(rs.getTimestamp(10))
         );
 
         return jdbcTemplate.queryForObject(sql, rowMapper, id);

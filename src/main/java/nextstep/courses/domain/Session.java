@@ -13,16 +13,20 @@ public class Session extends BaseEntity {
     public static long FREE_PRICE = 0L;
     public static int MAX_CAPACITY = Integer.MAX_VALUE;
     private final Long id;
-    private final Course course;
-    private final SessionCover sessionCover;
-    private final Period period;
-    private final Capacity capacity;
-    private final Price price;
+    private Course course;
+    private SessionCover sessionCover;
+    private Period period;
+    private Capacity capacity;
+    private Price price;
 
     private SessionStatus status = SessionStatus.PREPARE;
     private List<NsUser> participants = new ArrayList<>();
 
-    public  Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
+    public Session(Long id) {
+        this.id = id;
+    }
+
+    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;
@@ -31,7 +35,7 @@ public class Session extends BaseEntity {
         this.price = price;
     }
 
-    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt, List<NsUser> participants) {
+    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.status = status;
@@ -41,17 +45,6 @@ public class Session extends BaseEntity {
         this.price = price;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.participants = participants;
-    }
-
-    public Session(long id, Period period, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.period = period;
-        this.status = status;
-        this.sessionCover = sessionCover;
-        this.course = course;
-        this.capacity = capacity;
-        this.price = price;
     }
 
     public static Session ofFree(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {

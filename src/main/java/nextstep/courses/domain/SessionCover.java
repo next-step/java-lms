@@ -8,8 +8,11 @@ public class SessionCover extends BaseEntity {
     public static final double RATIO = (double) 3 / 2;
 
     private Long id;
-    private final byte[] image;
+    private byte[] image;
 
+    public SessionCover(Long id) {
+        this.id = id;
+    }
 
     public SessionCover(byte[] image) {
         this.image = image;
