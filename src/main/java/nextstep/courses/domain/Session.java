@@ -26,7 +26,7 @@ public class Session extends BaseEntity {
         this.id = id;
     }
 
-    public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
+    private Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;
@@ -47,6 +47,14 @@ public class Session extends BaseEntity {
         this.updatedAt = updatedAt;
     }
 
+    public static Session fromSessionForFree(Session session, SessionCover sessionCover, Course course) {
+        return Session.ofFree(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course);
+    }
+
+    public static Session fromSessionForPaid(Session session, SessionCover sessionCover, Course course) {
+        return Session.ofPaid(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course, session.price.price(), session.capacity.capacity());
+    }
+
     public static Session ofFree(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {
         return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(MAX_CAPACITY), new Price(FREE_PRICE));
     }
@@ -55,14 +63,15 @@ public class Session extends BaseEntity {
         return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(capacity), new Price(price));
     }
 
-    public void startEnrollment() {
-        this.status = SessionStatus.ENROLL;
+    public static Session fromSession(Session session, SessionCover sessionCover, Course course) {
+        if (session.price.equals(0L)) {
+            return fromSessionForFree(session, sessionCover, course);
+        }
+        return fromSessionForPaid(session, sessionCover, course);
     }
 
-    public void validateStatus() {
-        if (SessionStatus.ENROLL != this.status) {
-            throw new BusinessInvalidValueException("수강신청 가능한 상태가 아닙니다.");
-        }
+    public void startEnrollment() {
+        this.status = SessionStatus.ENROLL;
     }
 
     public void enroll(NsUser participant, Long amount) {
@@ -70,6 +79,13 @@ public class Session extends BaseEntity {
         price.validatePrice(amount);
         validateStatus();
         this.participants.add(participant);
+    }
+
+
+    private void validateStatus() {
+        if (SessionStatus.ENROLL != this.status) {
+            throw new BusinessInvalidValueException("수강신청 가능한 상태가 아닙니다.");
+        }
     }
 
     public Price price() {
