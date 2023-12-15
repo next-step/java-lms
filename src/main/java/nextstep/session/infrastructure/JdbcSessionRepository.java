@@ -93,7 +93,6 @@ public class JdbcSessionRepository implements SessionRepository {
                                 toLocalDateTime(rs.getTimestamp(8)))
                 ),
                 id));
-        // 이미지 조회
     }
 
     private Users members(int numberOfMaximumMembers, long sessionId) {
