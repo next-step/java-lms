@@ -61,7 +61,7 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [getId=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
     public boolean isDeletable(NsUser nsUser) {

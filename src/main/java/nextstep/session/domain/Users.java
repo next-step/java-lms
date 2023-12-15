@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class Users {
         this.value = new HashSet<>(nsUsers);
     }
 
-    private boolean canRegister(SessionType sessionType) {
+    private boolean registrable(SessionType sessionType) {
         if (sessionType == SessionType.FREE) {
             return true;
         }
@@ -25,7 +26,7 @@ public class Users {
     }
 
     public void register(NsUser user, SessionType sessionType) {
-        if (!canRegister(sessionType)) {
+        if (!registrable(sessionType)) {
             throw new IllegalStateException("최대 수강 인원을 초과하였습니다.");
         }
 
@@ -34,5 +35,21 @@ public class Users {
 
     public int size() {
         return value.size();
+    }
+
+    public Set<NsUser> values() {
+        return Collections.unmodifiableSet(value);
+    }
+
+    public int getNumberOfMaximumMembers() {
+        return numberOfMaximumMembers;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "numberOfMaximumMembers=" + numberOfMaximumMembers +
+                ", value=" + value +
+                '}';
     }
 }

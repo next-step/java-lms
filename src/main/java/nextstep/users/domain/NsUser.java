@@ -127,7 +127,7 @@ public class NsUser {
     @Override
     public String toString() {
         return "NsUser{" +
-                "id=" + id +
+                "getId=" + id +
                 ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
