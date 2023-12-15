@@ -6,7 +6,6 @@ import nextstep.courses.utils.BaseEntity;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Session extends BaseEntity {
@@ -20,19 +19,20 @@ public class Session extends BaseEntity {
     private Price price;
 
     private SessionStatus status = SessionStatus.PREPARE;
-    private List<NsUser> participants = new ArrayList<>();
+    private List<NsUser> participants;
 
     public Session(Long id) {
         this.id = id;
     }
 
-    private Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price) {
+    private Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Capacity capacity, Price price, List<NsUser> participants) {
         this.id = id;
         this.period = new Period(beginDt, endDt);
         this.sessionCover = sessionCover;
         this.course = course;
         this.capacity = capacity;
         this.price = price;
+        this.participants = participants;
     }
 
     public Session(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionStatus status, Capacity capacity, Price price, Course course, SessionCover sessionCover, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -47,27 +47,27 @@ public class Session extends BaseEntity {
         this.updatedAt = updatedAt;
     }
 
-    public static Session fromSessionForFree(Session session, SessionCover sessionCover, Course course) {
-        return Session.ofFree(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course);
+    public static Session fromSessionForFree(Session session, SessionCover sessionCover, Course course, List<NsUser> participants) {
+        return Session.ofFree(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course, participants);
     }
 
-    public static Session fromSessionForPaid(Session session, SessionCover sessionCover, Course course) {
-        return Session.ofPaid(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course, session.price.price(), session.capacity.capacity());
+    public static Session fromSessionForPaid(Session session, SessionCover sessionCover, Course course, List<NsUser> participants) {
+        return Session.ofPaid(session.id, session.period.getBeginDt(), session.period.getEndDt(), sessionCover, course, session.price.price(), session.capacity.capacity(), participants);
     }
 
-    public static Session ofFree(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course) {
-        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(MAX_CAPACITY), new Price(FREE_PRICE));
+    public static Session ofFree(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, List<NsUser> participants) {
+        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(MAX_CAPACITY), new Price(FREE_PRICE), participants);
     }
 
-    public static Session ofPaid(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Long price, Integer capacity) {
-        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(capacity), new Price(price));
+    public static Session ofPaid(Long id, LocalDateTime beginDt, LocalDateTime endDt, SessionCover sessionCover, Course course, Long price, Integer capacity, List<NsUser> participants) {
+        return new Session(id, beginDt, endDt, sessionCover, course, new Capacity(capacity), new Price(price), participants);
     }
 
-    public static Session fromSession(Session session, SessionCover sessionCover, Course course) {
+    public static Session fromSession(Session session, SessionCover sessionCover, Course course, List<NsUser> participants) {
         if (session.price.equals(0L)) {
-            return fromSessionForFree(session, sessionCover, course);
+            return fromSessionForFree(session, sessionCover, course, participants);
         }
-        return fromSessionForPaid(session, sessionCover, course);
+        return fromSessionForPaid(session, sessionCover, course, participants);
     }
 
     public void startEnrollment() {

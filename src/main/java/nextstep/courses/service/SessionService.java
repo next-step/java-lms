@@ -44,11 +44,13 @@ public class SessionService {
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("유효한 sessionId가 아닙니다."));
 
         Course course = courseRepository.findById(session.course().id());
+
         SessionCover sessionCover = sessionCoverRepository.findById(session.sessionCover().id());
+
         List<Registration> registrations = registrationRepository.findAllBySessionId(sessionId);
         List<NsUser> users = userRepository.findAllByIds(registrations.stream().map(r -> r.nsUser().getId()).collect(Collectors.toList()));
 
-        return Session.fromSession(session, sessionCover, course);
+        return Session.fromSession(session, sessionCover, course, users);
     }
 
 
