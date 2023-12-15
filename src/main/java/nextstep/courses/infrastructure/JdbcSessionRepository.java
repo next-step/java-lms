@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static nextstep.courses.utils.DateUtil.toLocalDateTime;
 
@@ -28,7 +29,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Session findById(Long id) {
+    public Optional<Session> findById(Long id) {
         String sql = "select id, begin_dt, end_dt, session_status, capacity, price, " +
                 "course_id, session_cover_id, created_at, updated_at " +
                 "from session where id = ?";
@@ -46,6 +47,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 toLocalDateTime(rs.getTimestamp(10))
         );
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, id));
     }
 }

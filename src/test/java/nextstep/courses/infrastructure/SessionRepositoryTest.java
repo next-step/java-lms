@@ -21,7 +21,7 @@ class SessionRepositoryTest {
     @Test
     void crud() {
         int id = sessionRepository.save(Session.ofFree(3L, LocalDateTime.now(), LocalDateTime.now().plusMonths(1), new SessionCover(100L, 300, 200, 1024, new byte[100]), new Course(100L, "제목", 3L)));
-        Session session = sessionRepository.findById((long) id);
+        Session session = sessionRepository.findById((long) id).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 id입니다."));
         assertThat(session.id()).isEqualTo(id);
     }
 }
