@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.constant.ImageTypeEnum;
+
 public class Image {
     private final int MAXIMUM_WIDTH = 300;
     private final int MAXIMUM_HEIGHT = 200;

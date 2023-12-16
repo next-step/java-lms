@@ -5,12 +5,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ImageTest {
+    public static final Image IMAGE = new Image(1, "gif", 300, 200);
 
     private int normalSize = 1;
     private String normalType = "gif";
     private int normalWidth = 300;
     private int normalHeight = 200;
-
 
     @Test
     void Image_생성자_예외_케이스_크기() {
