@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.constant;
 
 import java.util.Arrays;
 
@@ -11,7 +11,7 @@ public enum ImageTypeEnum {
 
     private String type;
 
-    private ImageTypeEnum(String type) {
+    ImageTypeEnum(String type) {
         this.type = type;
     }
 
