@@ -18,6 +18,7 @@ public class SessionTest {
         atdd = new Session(
                 LocalDateTime.now().plusDays(2),
                 SessionTypeEnum.FREE,
+                0,
                 1,
                 ImageTest.IMAGE);
         tdd = new Session(
@@ -37,7 +38,7 @@ public class SessionTest {
     void enrollment_무료_강의() {
         atdd.open();
         atdd.enroll(NsUserTest.JAVAJIGI, 0);
-        Assertions.assertThat(atdd.getEnrolledCount()).isEqualTo(1);
+        Assertions.assertThat(atdd.getCurrentEnrolledCount()).isEqualTo(1);
     }
 
     /**
@@ -49,7 +50,7 @@ public class SessionTest {
     void enrollment_유료_강의() {
         tdd.open();
         tdd.enroll(NsUserTest.JAVAJIGI, 10000);
-        Assertions.assertThat(tdd.getEnrolledCount()).isEqualTo(1);
+        Assertions.assertThat(tdd.getCurrentEnrolledCount()).isEqualTo(1);
     }
 
     /**

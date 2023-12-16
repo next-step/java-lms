@@ -10,19 +10,13 @@ import java.util.UUID;
 
 public class Session {
     private Long id;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private SessionDateTime dateTime;
+    private StatusEnum status;
     private SessionTypeEnum type;
     private long fee;
-    private StatusEnum status;
-    private int maxEnrolledCount;
+    private EnrolledCount enrolledCount;
     private Image image;
-    private int enrolledCount;
     private UUID uuid = UUID.randomUUID();
-
-    public Session(LocalDateTime endDate, SessionTypeEnum type, int maxEnrolledCount, Image image) {
-        this(0L, LocalDateTime.now(), endDate, type, 0, maxEnrolledCount, image);
-    }
 
     public Session(LocalDateTime endDate, SessionTypeEnum type, long fee, int maxEnrolledCount, Image image) {
         this(0L, LocalDateTime.now(), endDate, type, fee, maxEnrolledCount, image);
@@ -36,13 +30,11 @@ public class Session {
                    int maxEnrolledCount,
                    Image image) {
            this.id = id;
-           this.startDate = startDate;
-           this.endDate = endDate;
+           this.dateTime = new SessionDateTime(startDate, endDate);
+           status = StatusEnum.READY;
            this.type = type;
            this.fee = fee;
-           status = StatusEnum.READY;
-           this.maxEnrolledCount = maxEnrolledCount;
-           enrolledCount = 0;
+           enrolledCount = new EnrolledCount(maxEnrolledCount);
            this.image = image;
     }
 
@@ -68,14 +60,14 @@ public class Session {
     }
 
     private Payment enrollFreeSession(NsUser user) {
-        enrolledCount += 1;
+        enrolledCount.add();
         return new Payment(uuid.toString(), id, user.getId(), 0L);
     }
 
     private Payment enrollPaidSession(NsUser user, int amount) {
         checkPaidSessionAvailability(amount);
-        enrolledCount += 1;
-        if (enrolledCount == maxEnrolledCount) {
+        enrolledCount.add();
+        if (enrolledCount.isMax()) {
             status = StatusEnum.CLOSED;
         }
         return new Payment(uuid.toString(), id, user.getId(), fee);
@@ -91,7 +83,7 @@ public class Session {
         status = StatusEnum.OPEN;
     }
 
-    public int getEnrolledCount() {
-        return enrolledCount;
+    public int getCurrentEnrolledCount() {
+        return enrolledCount.getCurrent();
     }
 }
