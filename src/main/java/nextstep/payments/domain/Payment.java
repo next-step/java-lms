@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.courses.exception.PaymentException;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -25,5 +27,15 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isEqualPaidFee(Long fee) {
+        return amount.equals(fee);
+    }
+
+    public void isAbleToPayment(Long fee) {
+        if(!isEqualPaidFee(fee)) {
+            throw new PaymentException("수강료가 지불한 금액과 일치하지 않습니다.");
+        }
     }
 }

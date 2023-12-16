@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.AnswerTest.A2;
@@ -23,8 +23,8 @@ class AnswersTest {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
 
-        Answers answers = new Answers(Arrays.asList(answer1, answer2));
-        answers.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>());
+        Answers answers = new Answers(List.of(answer1, answer2));
+        answers.deleteBy(NsUserTest.JAVAJIGI);
 
         assertAll(
                 () -> assertThat(answer1.isDeleted()).isTrue(),
@@ -39,8 +39,8 @@ class AnswersTest {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         Answer answer2 = new Answer(NsUserTest.SANJIGI, question, "Answers Contents2");
 
-        Answers answers = new Answers(Arrays.asList(answer1, answer2));
-        assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI, new ArrayList<>()))
+        Answers answers = new Answers(List.of(answer1, answer2));
+        assertThatThrownBy(() ->answers.deleteBy(NsUserTest.JAVAJIGI))
                 .isInstanceOf(CannotDeleteException.class);
     }
 
@@ -51,6 +51,6 @@ class AnswersTest {
         answers.addAnswer(A1);
         answers.addAnswer(A2);
 
-        assertThat(answers).isEqualTo(new Answers(Arrays.asList(A1, A2)));
+        assertThat(answers).isEqualTo(new Answers(List.of(A1, A2)));
     }
 }

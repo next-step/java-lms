@@ -65,21 +65,21 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("질문을 삭제하면 질문과 답변 이력이 객체로 저장된다.")
-    void 질문_삭제시_질문_답변_이력_객체_저장() {
-        Question Q3 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", false);
-        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",false);
-        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", false);
+    @DisplayName("삭제된 질문과 답변의 삭제 이력을 객체로 저장한다.")
+    void 삭제된_질문_답변_이력_객체_저장() {
+        Question Q3 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true);
+        Answer answer1 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents1",true);
+        Answer answer2 = new Answer(NsUserTest.JAVAJIGI, Q3, "Answers Contents2", true);
 
         Q3.addAnswer(answer1);
         Q3.addAnswer(answer2);
 
-        List<DeleteHistory> deleteHistories = Q3.deleteBy(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q3.addDeleteHistory(NsUserTest.JAVAJIGI);
 
         assertThat(deleteHistories.equals(Arrays.asList(
-                DeleteHistory.QuestionOf(Q3.getId(), Q3.getWriter(), LocalDateTime.now()),
-                DeleteHistory.AnswerOf(answer1.getId(), answer1.getWriter(), LocalDateTime.now()),
-                DeleteHistory.AnswerOf(answer2.getId(), answer2.getWriter(), LocalDateTime.now())))).isTrue();
+                DeleteHistory.questionOf(Q3.getId(), Q3.getWriter(), LocalDateTime.now()),
+                DeleteHistory.answerOf(answer1.getId(), answer1.getWriter(), LocalDateTime.now()),
+                DeleteHistory.answerOf(answer2.getId(), answer2.getWriter(), LocalDateTime.now())))).isTrue();
     }
 
 }

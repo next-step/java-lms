@@ -1,6 +1,5 @@
 package nextstep.qna.service;
 
-import nextstep.qna.exception.CannotDeleteException;
 import nextstep.qna.exception.NotFoundException;
 import nextstep.qna.domain.*;
 import nextstep.users.domain.NsUser;
@@ -24,7 +23,8 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        List<DeleteHistory> deleteHistories = question.deleteBy(loginUser);
+        question.deleteBy(loginUser);
+        List<DeleteHistory> deleteHistories = question.addDeleteHistory(loginUser);
         deleteHistoryService.saveAll(deleteHistories);
     }
 }
