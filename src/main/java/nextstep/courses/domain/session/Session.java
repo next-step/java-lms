@@ -1,54 +1,53 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
+import nextstep.courses.domain.session.coverimage.CoverImages;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
+import nextstep.courses.domain.session.period.Period;
+import nextstep.courses.domain.session.enums.SelectionStatus;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.dto.EnrolmentInfo;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Session {
 
     protected Long id;
     protected PayType payType;
-    protected Status status;
-    protected CoverImage coverImage;
-    protected Students students;
-    protected LocalDate startDate;
-    protected LocalDate endDate;
+    protected SessionStatus sessionStatus;
+    protected RecruitingStatus recruitingStatus;
+    protected CoverImages coverImages;
+    protected SessionStudents sessionStudents;
+    protected Period period;
 
-    public Session(Long id, PayType payType, Status status, CoverImage coverImage, Students students, LocalDate startDate, LocalDate endDate) {
+    public Session(Long id, PayType payType, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, CoverImages coverImages, SessionStudents sessionStudents, Period period) {
         this.id = id;
         this.payType = payType;
-        this.status = status;
-        this.coverImage = coverImage;
-        this.students = students;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionStatus = sessionStatus;
+        this.recruitingStatus = recruitingStatus;
+        this.coverImages = coverImages;
+        this.sessionStudents = sessionStudents;
+        this.period = period;
     }
 
-    public Session(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        this.id = id;
-        this.payType = payType;
-        this.status = status;
-        this.coverImage = coverImage;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.students = new Students();
-    }
+    public abstract SessionStudent enroll(EnrolmentInfo enrolmentInfo);
 
-    public abstract Student enroll(EnrolmentInfo enrolmentInfo);
+    public SessionStudent selection(SessionStudent student, SelectionStatus selectionStatus) {
+        return sessionStudents.selectStudent(student, selectionStatus);
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(id, session.id) && payType == session.payType && status == session.status && Objects.equals(coverImage, session.coverImage) && Objects.equals(students, session.students) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate);
+        return Objects.equals(id, session.id) && payType == session.payType && sessionStatus == session.sessionStatus && recruitingStatus == session.recruitingStatus && Objects.equals(coverImages, session.coverImages) && Objects.equals(sessionStudents, session.sessionStudents) && Objects.equals(period, session.period);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, payType, status, coverImage, students, startDate, endDate);
+        return Objects.hash(id, payType, sessionStatus, recruitingStatus, coverImages, sessionStudents, period);
     }
 }

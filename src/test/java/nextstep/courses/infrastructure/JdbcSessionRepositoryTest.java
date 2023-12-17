@@ -3,8 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.session.PaySession;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +20,13 @@ public class JdbcSessionRepositoryTest {
     JdbcTemplate jdbcTemplate;
 
     private CoverImageRepository coverImageRepository;
-    private StudentRepository studentRepository;
+    private SessionStudentRepository studentRepository;
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
         coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        studentRepository = new JdbcSessionStudentRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository, studentRepository);
     }
 
@@ -36,9 +35,6 @@ public class JdbcSessionRepositoryTest {
     void findSession() {
         // given
         Long sessionId = 1L;
-        studentRepository.save(new Student(sessionId, 1L));
-        studentRepository.save(new Student(sessionId, 2L));
-        studentRepository.save(new Student(sessionId, 3L));
 
         // when
         PaySession paySession = sessionRepository.findPaySessionById(sessionId)

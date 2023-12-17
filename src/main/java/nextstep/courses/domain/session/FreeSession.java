@@ -1,36 +1,25 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
-
-import java.time.LocalDate;
-
-import static nextstep.courses.domain.session.Status.isNotRecruiting;
+import nextstep.courses.domain.session.coverimage.CoverImages;
+import nextstep.courses.domain.session.enroll.Enrolment;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
+import nextstep.courses.domain.session.period.Period;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.dto.EnrolmentInfo;
 
 public class FreeSession extends Session {
 
-    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate) {
-        super(id, payType, status, coverImage, startDate, endDate);
-    }
-
-    public FreeSession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Students students) {
-        super(id, payType, status, coverImage, students, startDate, endDate);
+    public FreeSession(Long id, PayType payType, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, CoverImages coverImages, SessionStudents sessionStudents, Period period) {
+        super(id, payType, sessionStatus, recruitingStatus, coverImages, sessionStudents, period);
     }
 
     @Override
-    public Student enroll(EnrolmentInfo enrolmentInfo) {
-        validateStatus();
+    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
+        Enrolment enrolment = Enrolment.fromFreeSession(sessionStudents, sessionStatus, recruitingStatus);
 
-        Student student = new Student(id, enrolmentInfo.getNsUserId());
-        this.students.add(student);
-
-        return student;
-    }
-
-    private void validateStatus() {
-        if (isNotRecruiting(status)) {
-            throw new IllegalArgumentException(String.format("해당 강의의 현재 %s입니다.", status.description()));
-        }
+        return enrolment.enroll(enrolmentInfo);
     }
 }

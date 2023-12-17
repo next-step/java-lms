@@ -1,65 +1,31 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.coverimage.CoverImage;
-import nextstep.courses.domain.session.student.Student;
-import nextstep.courses.domain.session.student.Students;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-
-import static nextstep.courses.domain.session.Status.*;
+import nextstep.courses.domain.session.coverimage.CoverImages;
+import nextstep.courses.domain.session.enroll.Enrolment;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
+import nextstep.courses.domain.session.period.Period;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.domain.session.student.SessionStudents;
+import nextstep.courses.dto.EnrolmentInfo;
 
 public class PaySession extends Session {
-
-    private static final DecimalFormat formatter = new DecimalFormat("###,###");
 
     private Long amount;
     private int studentsCapacity;
 
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity) {
-        super(id, payType, status, coverImage, startDate, endDate);
-        this.amount = amount;
-        this.studentsCapacity = studentsCapacity;
-    }
-
-    public PaySession(Long id, PayType payType, Status status, CoverImage coverImage, LocalDate startDate, LocalDate endDate, Long amount, int studentsCapacity, Students students) {
-        super(id, payType, status, coverImage, students, startDate, endDate);
+    public PaySession(Long id, PayType payType, SessionStatus sessionStatus, RecruitingStatus recruitingStatus, CoverImages coverImages,
+                      SessionStudents sessionStudents, Period period, Long amount, int studentsCapacity) {
+        super(id, payType, sessionStatus, recruitingStatus, coverImages, sessionStudents, period);
         this.amount = amount;
         this.studentsCapacity = studentsCapacity;
     }
 
     @Override
-    public Student enroll(EnrolmentInfo enrolmentInfo) {
-        validateStatus();
-        validatePayAmount(enrolmentInfo);
-        validateCapacity();
+    public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
+        Enrolment enrolment = Enrolment.fromPaySession(sessionStudents, sessionStatus, recruitingStatus, amount, studentsCapacity);
 
-        Student student = new Student(id, enrolmentInfo.getNsUserId());
-        students.add(student);
-
-        return student;
+        return enrolment.enroll(enrolmentInfo);
     }
-
-    private void validateStatus() {
-        if (isNotRecruiting(status)) {
-            throw new IllegalArgumentException(String.format("해당 강의는 현재 %s입니다.", status.description()));
-        }
-    }
-
-    private void validatePayAmount(EnrolmentInfo enrolmentInfo) {
-        if (enrolmentInfo.isNotSameAmount(amount)) {
-            throw new IllegalArgumentException(String.format("결제 금액이 강의 금액과 일치하지 않습니다. 강의 금액 :: %s원", formatter.format(amount)));
-        }
-    }
-
-    private void validateCapacity() {
-        if (isExceed()) {
-            throw new IllegalArgumentException("현재 수강 가능한 모든 인원수가 채워졌습니다.");
-        }
-    }
-
-    private boolean isExceed() {
-        return students.size() >= studentsCapacity;
-    }
-
 }

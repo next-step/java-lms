@@ -1,10 +1,15 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.enums.PayType;
+import nextstep.courses.domain.session.enums.RecruitingStatus;
+import nextstep.courses.domain.session.enums.SessionStatus;
+import nextstep.courses.domain.session.period.Period;
 import nextstep.courses.domain.session.repository.CoverImageRepository;
 import nextstep.courses.domain.session.repository.SessionRepository;
-import nextstep.courses.domain.session.repository.StudentRepository;
-import nextstep.courses.domain.session.student.Student;
+import nextstep.courses.domain.session.repository.SessionStudentRepository;
+import nextstep.courses.domain.session.student.SessionStudent;
+import nextstep.courses.dto.EnrolmentInfo;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,17 +18,14 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static nextstep.courses.domain.session.PayType.*;
-import static nextstep.courses.domain.session.Status.*;
-
-@Repository("sessionRepository")
+@Repository
 public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
     private final CoverImageRepository coverImageRepository;
-    private final StudentRepository studentRepository;
+    private final SessionStudentRepository studentRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, StudentRepository studentRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository, SessionStudentRepository studentRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.coverImageRepository = coverImageRepository;
         this.studentRepository = studentRepository;
@@ -35,16 +37,19 @@ public class JdbcSessionRepository implements SessionRepository {
 
         RowMapper<PaySession> rowMapper = (rs, rowNum) -> new PaySession(
             rs.getLong(1),
-            payType(rs.getString(2)),
-            status(rs.getString(3)),
-            coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(5)),
-            toLocalDate(rs.getTimestamp(6)),
+            PayType.valueOf(rs.getString(2)),
+            SessionStatus.valueOf(rs.getString(3)),
+            RecruitingStatus.valueOf(rs.getString(4)),
+            coverImageRepository.findAllBySession(sessionId),
+            studentRepository.findAllBySession(sessionId),
+            Period.from(
+                toLocalDate(rs.getTimestamp(5)),
+                toLocalDate(rs.getTimestamp(6))
+            ),
             rs.getLong(7),
-            rs.getInt(8),
-            studentRepository.findAllBySession(sessionId)) {
+            rs.getInt(8)) {
             @Override
-            public Student enroll(EnrolmentInfo enrolmentInfo) {
+            public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
             }
         };
@@ -58,14 +63,17 @@ public class JdbcSessionRepository implements SessionRepository {
 
         RowMapper<FreeSession> rowMapper = (rs, rowNum) -> new FreeSession(
             rs.getLong(1),
-            payType(rs.getString(2)),
-            status(rs.getString(3)),
-            coverImageRepository.findById(rs.getLong(4)).orElseThrow(),
-            toLocalDate(rs.getTimestamp(5)),
-            toLocalDate(rs.getTimestamp(6)),
-            studentRepository.findAllBySession(sessionId)) {
+            PayType.valueOf(rs.getString(2)),
+            SessionStatus.valueOf(rs.getString(3)),
+            RecruitingStatus.valueOf(rs.getString(4)),
+            coverImageRepository.findAllBySession(sessionId),
+            studentRepository.findAllBySession(sessionId),
+            Period.from(
+                toLocalDate(rs.getTimestamp(5)),
+                toLocalDate(rs.getTimestamp(6))
+            )) {
             @Override
-            public Student enroll(EnrolmentInfo enrolmentInfo) {
+            public SessionStudent enroll(EnrolmentInfo enrolmentInfo) {
                 return null;
             }
         };
