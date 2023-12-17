@@ -4,17 +4,12 @@ import java.time.LocalDateTime;
 
 public class Course {
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
+    public Course() { }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
