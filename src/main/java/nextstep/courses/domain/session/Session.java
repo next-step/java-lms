@@ -15,7 +15,7 @@ public class Session {
     private StatusEnum status;
     private SessionTypeEnum type;
     private SessionDateTime dateTime;
-    private EnrolledCount enrolledCount;
+    private StudentManager studentManager;
     private Image image;
     private UUID uuid = UUID.randomUUID();
 
@@ -23,8 +23,8 @@ public class Session {
         return new Session(0L, 0, SessionTypeEnum.FREE, startDate, endDate, 0, null);
     }
 
-    public static Session paidSession(long fee, LocalDateTime startDate, LocalDateTime endDate, int maxEnrolledCount) {
-        return new Session(0L, fee, SessionTypeEnum.PAID, startDate, endDate, maxEnrolledCount, null);
+    public static Session paidSession(long fee, LocalDateTime startDate, LocalDateTime endDate, int maxEnrollmentCount) {
+        return new Session(0L, fee, SessionTypeEnum.PAID, startDate, endDate, maxEnrollmentCount, null);
     }
 
     public Session(Long id,
@@ -39,7 +39,7 @@ public class Session {
            status = StatusEnum.READY;
            this.type = type;
            this.dateTime = new SessionDateTime(startDate, endDate);
-           enrolledCount = new EnrolledCount(maxEnrolledCount);
+           studentManager = new StudentManager(maxEnrolledCount);
            this.image = image;
     }
 
@@ -69,14 +69,14 @@ public class Session {
     }
 
     private Payment enrollFreeSession(NsUser user) {
-        enrolledCount.add();
+        studentManager.add(user);
         return new Payment(uuid.toString(), id, user.getId(), 0L);
     }
 
     private Payment enrollPaidSession(NsUser user, int amount) {
         checkPaidSessionAvailability(amount);
-        enrolledCount.add();
-        if (enrolledCount.isMax()) {
+        studentManager.add(user);
+        if (studentManager.isMaxStudent()) {
             status = StatusEnum.CLOSED;
         }
         return new Payment(uuid.toString(), id, user.getId(), fee);
@@ -93,6 +93,6 @@ public class Session {
     }
 
     public int getCurrentEnrolledCount() {
-        return enrolledCount.getCurrent();
+        return studentManager.getStudentCount();
     }
 }
