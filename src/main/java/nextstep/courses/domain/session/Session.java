@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.constant.SessionTypeEnum;
 import nextstep.courses.domain.session.constant.StatusEnum;
+import nextstep.courses.domain.session.image.Image;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 

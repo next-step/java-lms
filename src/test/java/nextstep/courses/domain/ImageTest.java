@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.Image;
+import nextstep.courses.domain.session.image.Image;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
