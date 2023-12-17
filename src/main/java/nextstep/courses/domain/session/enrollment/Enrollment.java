@@ -1,7 +1,5 @@
 package nextstep.courses.domain.session.enrollment;
 
-import nextstep.courses.domain.session.StudentManager;
-
 import java.util.UUID;
 
 public class Enrollment {

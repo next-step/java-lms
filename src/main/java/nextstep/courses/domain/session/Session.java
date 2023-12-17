@@ -67,14 +67,12 @@ public class Session {
     }
 
     private Payment enrollFreeSession(NsUser user, long amount) {
-        EnrollmentRequest request = new EnrollmentRequest(id, user, fee, amount);
-        EnrollmentResponse response = enrollment.enrollFreeSession(request);
+        EnrollmentResponse response = enrollment.enrollFreeSession(new EnrollmentRequest(id, user, fee, amount));
         return new Payment(response.getRandomUUID(), id, user.getId(), amount);
     }
 
     private Payment enrollPaidSession(NsUser user, long amount) {
-        EnrollmentRequest request = new EnrollmentRequest(id, user, fee, amount);
-        EnrollmentResponse response = enrollment.enrollPaidSession(request);
+        EnrollmentResponse response = enrollment.enrollPaidSession(new EnrollmentRequest(id, user, fee, amount));
         if (response.isMaxStudent()) {
             status = StatusEnum.CLOSED;
         }
