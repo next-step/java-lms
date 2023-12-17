@@ -23,6 +23,7 @@ class SessionTest {
     void create_throw_exception_sessionPaymentType_price() {
         assertThatThrownBy(() ->
                 new Session(0L,
+                        CourseTest.C1,
                         0L,
                         SessionPaymentType.PAID,
                         new NsUsers(List.of(NsUserTest.JAVAJIGI)),
