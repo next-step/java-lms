@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import nextstep.courses.BaseTime;
 import nextstep.courses.domain.Students;
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Price;
 
@@ -11,7 +12,7 @@ public class PaidLecture extends BaseTime implements Lecture  {
   private final LectureType lectureType = LectureType.PAID;
   private final Long id;
   private final String title;
-  private final CoverImage coverImage;
+  private final CoverImages coverImages = new CoverImages();
   private final LectureStatus lectureStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Price price;
@@ -24,7 +25,19 @@ public class PaidLecture extends BaseTime implements Lecture  {
     super();
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.add(coverImage);
+    this.lectureStatus = lectureStatus;
+    this.registrationPeriod = registrationPeriod;
+    this.price = price;
+    this.limitStudentCount = limitStudentCount;
+  }
+
+  public PaidLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
+    super();
+    this.id = id;
+    this.title = title;
+    this.coverImages.addAll(coverImages);
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
@@ -38,7 +51,7 @@ public class PaidLecture extends BaseTime implements Lecture  {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.add(coverImage);
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
@@ -47,13 +60,13 @@ public class PaidLecture extends BaseTime implements Lecture  {
 
   public PaidLecture(LectureEntity lecture) {
     super(lecture.getCreatedAt(), lecture.getUpdatedAt());
-    this.id = lecture.getId();
-    this.title = lecture.getTitle();
-    this.coverImage = lecture.getCoverImage();
-    this.lectureStatus = lecture.getLectureStatus();
-    this.registrationPeriod = lecture.getRegistrationPeriod();
-    this.price = lecture.getPrice();
-    this.limitStudentCount = lecture.getLimitStudentCount();
+    this.id = lecture.id();
+    this.title = lecture.title();
+    this.coverImages.addAll(lecture.coverImage());
+    this.lectureStatus = lecture.lectureStatus();
+    this.registrationPeriod = lecture.registrationPeriod();
+    this.price = lecture.price();
+    this.limitStudentCount = lecture.limitStudentCount();
   }
 
   @Override
@@ -77,7 +90,7 @@ public class PaidLecture extends BaseTime implements Lecture  {
 
   @Override
   public Lecture start() {
-    return new PaidLecture(this.id,this.title,this.coverImage,LectureStatus.RECRUITING, this.registrationPeriod,this.price,this.limitStudentCount);
+    return new PaidLecture(this.id,this.title,this.coverImages,LectureStatus.RECRUITING, this.registrationPeriod,this.price,this.limitStudentCount);
   }
 
   @Override
@@ -97,8 +110,8 @@ public class PaidLecture extends BaseTime implements Lecture  {
     return title;
   }
 
-  public CoverImage getCoverImage() {
-    return coverImage;
+  public CoverImages getCoverImage() {
+    return this.coverImages;
   }
 
   public LectureStatus getLectureStatus() {
@@ -121,7 +134,7 @@ public class PaidLecture extends BaseTime implements Lecture  {
     return new LectureEntity(
         this.id
         , this.title
-        , this.coverImage
+        , this.coverImages
         , this.lectureType
         , this.lectureStatus
         , this.registrationPeriod

@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import nextstep.courses.BaseTime;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.Students;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.NsUser;
 
 public class FreeLecture extends BaseTime implements Lecture {
   private final LectureType lectureType = LectureType.FREE;
   private final Long id;
   private final String title;
-  private final CoverImage coverImage;
+  private final CoverImages coverImages = new CoverImages();
   private final LectureStatus lectureStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Students students = Students.defaultOf(); // 강의 기본정보와는 다름
@@ -20,7 +21,17 @@ public class FreeLecture extends BaseTime implements Lecture {
     super();
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.add(coverImage);
+    this.lectureStatus = lectureStatus;
+    this.registrationPeriod = registrationPeriod;
+  }
+
+  public FreeLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod) {
+    super();
+    this.id = id;
+    this.title = title;
+    this.coverImages.addAll(coverImages);
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
   }
@@ -29,17 +40,17 @@ public class FreeLecture extends BaseTime implements Lecture {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.add(coverImage);
     this.lectureStatus = lectureStatus;
     this.registrationPeriod = registrationPeriod;
   }
   public FreeLecture(LectureEntity lecture) {
     super(lecture.getCreatedAt(), lecture.getUpdatedAt());
-    this.id = lecture.getId();
-    this.title = lecture.getTitle();
-    this.coverImage = lecture.getCoverImage();
-    this.lectureStatus = lecture.getLectureStatus();
-    this.registrationPeriod = lecture.getRegistrationPeriod();
+    this.id = lecture.id();
+    this.title = lecture.title();
+    this.coverImages.addAll(lecture.coverImage());
+    this.lectureStatus = lecture.lectureStatus();
+    this.registrationPeriod = lecture.registrationPeriod();
   }
 
   @Override
@@ -62,7 +73,7 @@ public class FreeLecture extends BaseTime implements Lecture {
 
   @Override
   public Lecture start() {
-    return new FreeLecture(this.id, this.title, this.coverImage, LectureStatus.RECRUITING, this.registrationPeriod);
+    return new FreeLecture(this.id, this.title, this.coverImages, LectureStatus.RECRUITING, this.registrationPeriod);
   }
 
   @Override
@@ -70,11 +81,12 @@ public class FreeLecture extends BaseTime implements Lecture {
     return students.size();
   }
 
+
   public LectureEntity toEntity() {
     return new LectureEntity(
         this.id
         , this.title
-        , this.coverImage
+        , this.coverImages
         , this.lectureType
         , this.lectureStatus
         , this.registrationPeriod

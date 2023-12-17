@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.coverimage.CoverImageType;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.courses.domain.coverimage.ImageFileSize;
 import nextstep.courses.domain.coverimage.ImageSize;
 import nextstep.courses.domain.lectures.LectureEntity;
@@ -27,16 +28,15 @@ public class JdbcLectureRepository implements LectureRepository {
 
   @Override
   public int save(LectureEntity lectureEntity) {
-    String sql = "insert into lecture (title, cover_image_id, lecture_status, started_at, ended_at, price, limit_student_count, lecture_type, created_at, updated_at) values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?)";
+    String sql = "insert into lecture (title, lecture_status, started_at, ended_at, price, limit_student_count, lecture_type, created_at, updated_at) values(?, ?, ?, ?, ? ,? ,? ,? ,?)";
     return jdbcTemplate.update(sql,
-        lectureEntity.getTitle(),
-        lectureEntity.getCoverImage().getId(),
-        lectureEntity.getLectureStatus().getName(),
-        lectureEntity.getRegistrationPeriod().getStartedAt(),
-        lectureEntity.getRegistrationPeriod().getEndedAt(),
-        lectureEntity.getPrice().getPrice(),
-        lectureEntity.getLimitStudentCount(),
-        lectureEntity.getLectureType().getName(),
+        lectureEntity.title(),
+        lectureEntity.lectureStatus().getName(),
+        lectureEntity.registrationPeriod().getStartedAt(),
+        lectureEntity.registrationPeriod().getEndedAt(),
+        lectureEntity.price().getPrice(),
+        lectureEntity.limitStudentCount(),
+        lectureEntity.lectureType().getName(),
         lectureEntity.getCreatedAt(),
         lectureEntity.getUpdatedAt()
     );
@@ -64,12 +64,15 @@ public class JdbcLectureRepository implements LectureRepository {
         + ", l.created_at"
         + ", l.updated_at "
         + "from lecture as l"
+        + " inner join cover_image_lecture_mapping as lcim"
+            + " on l.id = lcim.lecture_id"
         + " inner join cover_image as c"
-        + " on l.cover_image_id = c.id "
+        +   " on lcim.cover_image_id = c.id "
         + " where l.id = ?";
     RowMapper<LectureEntity> rowMapper = (rs, rowNum) -> new LectureEntity(
         rs.getLong(1),
         rs.getString(2),
+        new CoverImages(
         CoverImage.defaultOf(
             rs.getLong(3)
             , rs.getString(4)
@@ -78,7 +81,7 @@ public class JdbcLectureRepository implements LectureRepository {
             , new ImageSize(rs.getLong(7), rs.getLong(8))
             , toLocalDateTime(rs.getTimestamp(9))
             , toLocalDateTime(rs.getTimestamp(10))
-        ),
+        )),
         LectureType.valueOf(rs.getString(11)),
         LectureStatus.valueOf(rs.getString(12)),
         new RegistrationPeriod(
