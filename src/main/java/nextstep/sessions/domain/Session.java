@@ -104,7 +104,7 @@ public class Session {
         }
         checkSessionStatus();
         this.charge.checkRecruits(students.size());
-        SessionStudent newStudent = new SessionStudent(user, LocalDateTime.now());
+        SessionStudent newStudent = new SessionStudent(user);
         students.addStudent(newStudent);
         return newStudent;
     }

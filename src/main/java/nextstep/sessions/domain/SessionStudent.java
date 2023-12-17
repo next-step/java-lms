@@ -17,9 +17,9 @@ public class SessionStudent {
 
     private LocalDateTime registrationAt;
 
-    public SessionStudent(NsUser user, LocalDateTime registrationAt) {
+    public SessionStudent(NsUser user) {
         this.user = user;
-        this.registrationAt = registrationAt;
+        this.registrationAt = LocalDateTime.now();
     }
 
     public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt) {
