@@ -16,7 +16,7 @@ public class SessionStudents {
         for (int i = 0; i < students.size() - 1; i++) {
             checkStudent(students.get(i), students.get(i + 1));
         }
-        students.stream().forEach(student -> addStudent(student));
+        this.students = new HashSet<>(students);
     }
 
     public int size() {
