@@ -11,32 +11,40 @@ import java.util.UUID;
 
 public class Session {
     private Long id;
-    private SessionDateTime dateTime;
+    private long fee;
     private StatusEnum status;
     private SessionTypeEnum type;
-    private long fee;
+    private SessionDateTime dateTime;
     private EnrolledCount enrolledCount;
     private Image image;
     private UUID uuid = UUID.randomUUID();
 
-    public Session(LocalDateTime endDate, SessionTypeEnum type, long fee, int maxEnrolledCount, Image image) {
-        this(0L, LocalDateTime.now(), endDate, type, fee, maxEnrolledCount, image);
+    public static Session freeSession(LocalDateTime startDate, LocalDateTime endDate) {
+        return new Session(0L, 0, SessionTypeEnum.FREE, startDate, endDate, 0, null);
+    }
+
+    public static Session paidSession(long fee, LocalDateTime startDate, LocalDateTime endDate, int maxEnrolledCount) {
+        return new Session(0L, fee, SessionTypeEnum.PAID, startDate, endDate, maxEnrolledCount, null);
     }
 
     public Session(Long id,
+                   long fee,
+                   SessionTypeEnum type,
                    LocalDateTime startDate,
                    LocalDateTime endDate,
-                   SessionTypeEnum type,
-                   long fee,
                    int maxEnrolledCount,
                    Image image) {
            this.id = id;
-           this.dateTime = new SessionDateTime(startDate, endDate);
+           this.fee = fee;
            status = StatusEnum.READY;
            this.type = type;
-           this.fee = fee;
+           this.dateTime = new SessionDateTime(startDate, endDate);
            enrolledCount = new EnrolledCount(maxEnrolledCount);
            this.image = image;
+    }
+
+    public void addImage(Image image) {
+        this.image = image;
     }
 
     public Payment enroll(NsUser user, int amount) {

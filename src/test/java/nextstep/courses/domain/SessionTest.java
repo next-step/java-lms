@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.constant.SessionTypeEnum;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,18 +14,15 @@ public class SessionTest {
 
     @BeforeEach
     void setUp() {
-        atdd = new Session(
-                LocalDateTime.now().plusDays(2),
-                SessionTypeEnum.FREE,
-                0,
-                1,
-                ImageTest.IMAGE);
-        tdd = new Session(
-                LocalDateTime.now().plusDays(3),
-                SessionTypeEnum.PAID,
-                10000,
-                1,
-                ImageTest.IMAGE);
+        atdd = Session.freeSession(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+        tdd = Session.paidSession(10000, LocalDateTime.now(), LocalDateTime.now().plusDays(3), 1);
+    }
+
+    @Test
+    void checkValidEndDate() {
+        LocalDateTime now = LocalDateTime.now();
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> Session.freeSession(now, now.minusDays(1)));
     }
 
     /**
