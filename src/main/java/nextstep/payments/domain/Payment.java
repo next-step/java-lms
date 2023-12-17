@@ -9,8 +9,7 @@ public class Payment {
     private Long amount; // 결제 금액
     private LocalDateTime createdAt;
 
-    public Payment() {
-    }
+    public Payment() {}
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
