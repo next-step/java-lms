@@ -6,39 +6,34 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Session {
+    /*
+    강의
+    강의 이름, 강의 날짜, 커버 이미지, 가격, 상태, 수강 신청생 목록을 관리한다.
+     */
 
-    // id
     private Long id;
 
-    // 강의 이름
     private String name;
 
-    // 날짜
     private Period date;
 
-    // 이미지
     private SessionImage image;
 
-    // 가격
     private SessionCharge charge;
 
-    // 상태
     private SessionStatus status;
 
-    // 수강신청자 목록
     private SessionStudents students;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status) {
-        this.id = 0l;
-        this.name = name;
-        this.date = date;
-        this.image = image;
-        this.charge = charge;
-        this.status = status;
-        this.students = new SessionStudents();
+        this(0L, name, date, image, charge, status, new SessionStudents(), LocalDateTime.now(), null);
     }
 
-    public Session(Long id, String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status, SessionStudents students) {
+    public Session(Long id, String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -46,6 +41,8 @@ public class Session {
         this.charge = charge;
         this.status = status;
         this.students = students;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public long getId() {
@@ -78,6 +75,14 @@ public class Session {
 
     public int getStudentCount() {
         return this.students.size();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     private boolean isInProgress() {

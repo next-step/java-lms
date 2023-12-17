@@ -1,28 +1,24 @@
 package nextstep.sessions.domain;
 
 public class SessionImage {
+    /*
+    강의 커버 이미지
+    이미지 크기, 가로 크기, 세로 크기, 타입을 관리한다.
+    이미지는 크기와 타입의 제한이 있으며, 가로 세로 크기와 비율에 대한 제한이 있다.
+     */
 
-    // 이미지 최대 크기
     private static final int MAX_SIZE = 1_000_000;
-    // 이미지 최소 가로 사이즈
     private static final double MIN_WIDTH = 300;
-    // 이미지 최소 세로 사이즈
     private static final double MIN_HEIGHT = 200;
-    // 이미지 가로 비율
     private static final int WIDTH_RATIO = 3;
-    // 이미지 세로 비율
     private static final int HEIGHT_RATIO = 2;
 
-    // 이미지 크기
     private int size;
 
-    // 이미지 가로 사이즈
     private double width;
 
-    // 이미지 세로 사이즈
     private double height;
 
-    // 이미지 타입
     private ImageType type;
 
     public SessionImage(int size, double width, double height, String type) {

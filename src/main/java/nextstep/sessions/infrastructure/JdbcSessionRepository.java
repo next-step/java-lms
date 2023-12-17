@@ -31,8 +31,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Long save(Session session) {
-        String sql = "insert into session (name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status, created_at)" +
+                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"});
@@ -46,6 +46,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setDouble(8, session.getCharge().getPrice());
             ps.setInt(9, session.getCharge().getLimitCount());
             ps.setString(10, session.getStatus().toString());
+            ps.setTimestamp(11, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolder);
         return (Long) keyHolder.getKey();
@@ -53,7 +54,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status from session where id = ?";
+        String sql = "select id, name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
@@ -61,7 +62,9 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionImage(rs.getInt(5), rs.getDouble(6), rs.getDouble(7), rs.getString(8)),
                 new SessionCharge(rs.getInt(9) > 0 ? true : false, rs.getLong(9), rs.getInt(10)),
                 SessionStatus.valueOf(rs.getString(11)),
-                studentsFindBySessionId(id)
+                studentsFindBySessionId(id),
+                toLocalDateTime(rs.getTimestamp(12)),
+                toLocalDateTime(rs.getTimestamp(13))
         ));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

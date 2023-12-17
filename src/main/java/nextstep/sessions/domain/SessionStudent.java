@@ -6,12 +6,15 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionStudent {
+    /*
+    강의 결제한 학생
+    학생 아이디와 신청일을 관리한다.
+     */
 
     private Long id;
 
     private NsUser user;
 
-    // 신청일
     private LocalDateTime registrationAt;
 
     public SessionStudent(NsUser user, LocalDateTime registrationAt) {
