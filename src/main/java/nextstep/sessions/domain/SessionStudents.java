@@ -14,7 +14,7 @@ public class SessionStudents {
 
     public SessionStudents(List<SessionStudent> students) {
         for (int i = 0; i < students.size() - 1; i++) {
-            checkStudent(students.get(i), students.get(i+1));
+            checkStudent(students.get(i), students.get(i + 1));
         }
         students.stream().forEach(student -> addStudent(student));
     }
