@@ -19,4 +19,7 @@ public class SessionDuration {
         }
     }
 
+    public boolean isStarted() {
+        return LocalDateTime.now().isAfter(startDate);
+    }
 }
