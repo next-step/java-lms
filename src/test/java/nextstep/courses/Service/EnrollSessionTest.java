@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EnrollSessionTest {
@@ -28,13 +29,44 @@ class EnrollSessionTest {
             , LocalDate.of(2023, 12, 01), LocalDate.of(2023, 12, 30)
             , LocalDateTime.now(), null);
 
+    private Session session3 = FreeSession.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.RECRUITING
+            , LocalDate.of(2024, 03, 01), LocalDate.of(2024, 04, 30)
+            , LocalDateTime.now(), null);
+
+    private Session session4 = FreeSession.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.CLOSE
+            , LocalDate.of(2024, 03, 01), LocalDate.of(2024, 04, 30)
+            , LocalDateTime.now(), null);
+
     private Payment payment = new Payment("pay1", session1.getId(), NsUserTest.JAVAJIGI.getId(), 10_000L);
 
     @Test
     @DisplayName("강의가 진행중에 비모집중인 경우 Exception throw")
-    void canEnrollSessionTest() {
+    void canNotEnrollInProgressTest() {
         EnrollSessionService enrollSessionService = new EnrollSessionService();
 
         assertThrows(CannotSignUpException.class, () -> enrollSessionService.enrollSession(session2, NsUserTest.SANJIGI));
+    }
+
+    @Test
+    @DisplayName("강의가 진행중에 모집중인 경우 수강신청 가능")
+    void canEnrollInProgressTest() {
+        EnrollSessionService enrollSessionService = new EnrollSessionService();
+
+        assertDoesNotThrow(() -> enrollSessionService.enrollSession(session1, NsUserTest.SANJIGI));
+    }
+    @Test
+    @DisplayName("강의가 준비중일 때 모집중인 경우 수강신청 가능")
+    void canNotEnrollNotStartedTest() {
+        EnrollSessionService enrollSessionService = new EnrollSessionService();
+
+        assertDoesNotThrow(() -> enrollSessionService.enrollSession(session3, NsUserTest.SANJIGI));
+    }
+
+    @Test
+    @DisplayName("강의가 준비중일 때 모집중인 경우 수강신청 가능")
+    void canEnrollNotStartedTest() {
+        EnrollSessionService enrollSessionService = new EnrollSessionService();
+
+        assertThrows(CannotSignUpException.class, () -> enrollSessionService.enrollSession(session4, NsUserTest.SANJIGI));
     }
 }

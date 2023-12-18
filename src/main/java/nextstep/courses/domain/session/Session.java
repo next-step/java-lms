@@ -10,21 +10,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Session {
-    private long id;
-    private String title;
-    private long courseId;
-    private SessionType sessionType;
+    private SessionInfo sessionInfo;
     private SessionImage sessionImage;
     private List<NsUser> students;
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
-    public Session(Long id, String title, long courseId, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
-        this.id = id;
-        this.title = title;
-        this.courseId = courseId;
+    public Session(SessionInfo sessionInfo, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
+        this.sessionInfo = sessionInfo;
         this.students = new ArrayList<>(Collections.emptyList());
-        this.sessionType = sessionType;
         this.sessionPlan = sessionPlan;
         this.sessionImage = null;
         this.systemTimeStamp = systemTimeStamp;
@@ -50,19 +44,19 @@ public class Session {
     }
 
     public Long getId() {
-        return id;
+        return sessionInfo.getId();
     }
 
     public long getCourseId() {
-        return courseId;
+        return sessionInfo.getCourseId();
     }
 
     public String getTitle() {
-        return title;
+        return sessionInfo.getTitle();
     }
 
     public SessionType getSessionType() {
-        return sessionType;
+        return sessionInfo.getSessionType();
     }
 
     public SessionPlan getSessionPlan() {

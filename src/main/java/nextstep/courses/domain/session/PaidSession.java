@@ -16,16 +16,15 @@ public class PaidSession extends Session {
                                     EnrollmentStatus enrollmentStatus, LocalDate startDate,
                                     LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt,
                                     int maxStudentCount, Long sessionFee) {
-        return new PaidSession(id, title, courseId,
+        return new PaidSession(new SessionInfo(id, title, courseId, SessionType.PAID),
                 new SessionPlan(enrollmentStatus, startDate, endDate),
                 new SystemTimeStamp(createdAt, updatedAt),
                 maxStudentCount, sessionFee);
     }
 
-    public PaidSession(Long sessionId, String title, long courseId,
-                       SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp,
+    public PaidSession(SessionInfo sessionInfo, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp,
                        int maxStudentCount, Long sessionFee) {
-        super(sessionId, title, courseId, SessionType.PAID, sessionPlan, systemTimeStamp);
+        super(sessionInfo, sessionPlan, systemTimeStamp);
         this.maxStudentCount = maxStudentCount;
         this.sessionFee = sessionFee;
     }

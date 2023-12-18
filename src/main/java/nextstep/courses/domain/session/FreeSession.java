@@ -10,13 +10,13 @@ public class FreeSession extends Session {
 
     public static FreeSession valueOf(long id, String title, long courseId, EnrollmentStatus enrollmentStatus
             , LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new FreeSession(id, title, courseId, SessionType.FREE
+        return new FreeSession(new SessionInfo(id, title, courseId, SessionType.FREE)
                 , new SessionPlan(enrollmentStatus, startDate, endDate)
                 , new SystemTimeStamp(createdAt, updatedAt));
     }
 
-    public FreeSession(Long id, String title, long courseId, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
-        super(id, title, courseId, sessionType, sessionPlan, systemTimeStamp);
+    public FreeSession(SessionInfo sessionInfo, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
+        super(sessionInfo, sessionPlan, systemTimeStamp);
     }
 
     @Override
