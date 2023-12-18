@@ -28,25 +28,25 @@
 * [X] 자신이 작성하지 않은 질문은 삭제할 수 없어서 예외가 발생한다.
 * [X] 질문자와 답변자가 다른경우 답변을 삭제할 수 없고 예외가 발생한다.
 
-### 작업을 하면서 생각했던 것들 
+### 작업을 하면서 생각했던 것들
 일단 제일 작은 단위부터 TDD를 해보자
 내가 봤을때 제일 작은 단위는 QnAService에 해당 질문이 자신의
 질문이 아니면 예와가 발생하는 로직 인거 같다.
-그래서 검증하는 test code를 만들어주고 Question 클래스에 
+그래서 검증하는 test code를 만들어주고 Question 클래스에
 delete 메서드를 추가 후 if문을 안으로 옮겨줬다.
 
 두번째로는 눈에 들어온것은 question.getAnswers(), question.setDeleted(),
 questionId, question.getWriter() 수많은 getter와 setter들이였다.
 그래서 든 생각은 question.delete() 메서드에 모든 로직을 넣어주는건 어떨지..
 모든 로직이 들어간다면 getAnswers, setDeleted, questionId, getWriter
-get set을 안쓸 수 있지 않을까 questionId같은 경우는 이 값으로 찾아온 question이기 때문에 
+get set을 안쓸 수 있지 않을까 questionId같은 경우는 이 값으로 찾아온 question이기 때문에
 question에 있는 인스턴스변수 id를 사용하면 될거같다.
-로직을 Question으로 옮긴 후 기존 테스트 통과 
+로직을 Question으로 옮긴 후 기존 테스트 통과
 
 로직을 옮기고나니 answer.isOwner가 눈에 들어왔다
 이 로직도 Question 처럼 Answer 자기자신이 처리하면 좋을거 같았다.
 메서드명으로는 뭐가 좋을까?... 항상 이런게 고민이다.
-id 값이 같은지 판별해서 예외가 발생하는거니까 isDeleted?가 좋을까 
+id 값이 같은지 판별해서 예외가 발생하는거니까 isDeleted?가 좋을까
 보통 is가 앞에 붙으면 리턴 값이 boolean 값인거 같으니까
 validateLoginUser 정도가 적당할까 ?
 단위테스트 mock 테스트 모두 통과 !
@@ -59,7 +59,7 @@ answers 자료구조에 너무 많은 로직들과 answer의 getter, setter가 �
 일단 반복문의 로직을 Answers라는 일급 컬렉션을 만들어줄 필요가 있을까 ?
 Answers에서 List<DeleteHistory>를 리턴하는 메서드를 만들어서 한번에 처리해주면 좋을거같단 생각이 들었다
 deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-deleteHistories.addAll(answers.delete(loginUser)); 
+deleteHistories.addAll(answers.delete(loginUser));
 뭐 이런 식으로 ? 이렇게 접근하는게 맞는건가 ,,,...
 Answers에 로직 이동 후 테스트 통과!
 
@@ -85,7 +85,7 @@ Answers에 로직 이동 후 테스트 통과!
   - 결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
 
 ## TODO
-* [X] 무료 강의에 가격이 있을 때 예외가 발생한다.
+* [X] 이미지의 크기 1MB 초과하면 예외가 던져진다
 
 
 
