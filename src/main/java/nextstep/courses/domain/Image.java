@@ -21,6 +21,9 @@ public class Image {
         if (width < MAX_WIDTH || height < MAX_HEIGHT) {
             throw new IllegalArgumentException("이미지의 width는 300픽셀, height는 200픽셀 이상이어야합니다");
         }
+        if (width * 2 != height * 3) {
+            throw new IllegalArgumentException("width와 height의 비율dl 3:2 비율이 아닙니다");
+        }
     }
 
     private void validateSize(int size) {

@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +20,14 @@ public class ImageTest {
         assertThatIllegalArgumentException().isThrownBy(() -> {
             new Image(1, "jpg", 300, 199);
             new Image(1, "jpg", 299, 200);
+        });
+    }
+
+    @Test
+    @DisplayName("width와 height의 비율dl 3:2가 아니면 예외가 던져진다")
+    void image_ratio_exception() {
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            new Image(1, "jpg", 300, 201);
         });
     }
 }
