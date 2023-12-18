@@ -9,6 +9,9 @@ import nextstep.qna.NotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static nextstep.courses.domain.session.RegistrationState.*;
 
 public class Session {
     private SessionInfo sessionInfo;
@@ -40,13 +43,18 @@ public class Session {
         this.sessionImage.add(sessionImage);
     }
 
-    public void cancelSession(Student student) {
-        validateIsAStudent(student);
-        student.isCanceled();
+    public void cancelStudent(Student student) {
+        Student validateStudent = validateIsAStudent(student);
+        validateStudent.isCanceled();
     }
 
-    private void validateIsAStudent(Student student) {
-        this.getStudents().stream()
+    public void approveStudent(Student student) {
+        Student validatedStudent = validateIsAStudent(student);
+        validatedStudent.isApproved();
+    }
+
+    private Student validateIsAStudent(Student student) {
+        return this.getAllStudents().stream()
                 .filter(x -> x.getNsUserId() == student.getNsUserId())
                 .findFirst()
                 .orElseThrow(NotFoundException::new);
@@ -73,6 +81,11 @@ public class Session {
     }
 
     public List<Student> getStudents() {
+        return students.stream()
+                .filter(student -> student.getRegistrationState() == RegistrationState.APPROVED)
+                .collect(Collectors.toList());
+    }
+    public List<Student> getAllStudents() {
         return students;
     }
 

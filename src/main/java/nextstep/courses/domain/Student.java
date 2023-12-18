@@ -13,6 +13,14 @@ public class Student {
         this.registrationState = registrationState;
     }
 
+    public void isCanceled() {
+        this.registrationState = RegistrationState.CANCELED;
+    }
+
+    public void isApproved() {
+        this.registrationState = RegistrationState.APPROVED;
+    }
+
     public long getNsUserId() {
         return nsUserId;
     }
@@ -21,7 +29,7 @@ public class Student {
         return sessionId;
     }
 
-    public void isCanceled() {
-        this.registrationState = RegistrationState.CANCELED;
+    public RegistrationState getRegistrationState() {
+        return registrationState;
     }
 }

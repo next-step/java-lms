@@ -4,7 +4,6 @@ import nextstep.courses.domain.Student;
 import nextstep.courses.domain.session.RegistrationState;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionType;
-import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
 public class EnrollSessionService {
@@ -18,9 +17,12 @@ public class EnrollSessionService {
         return studentInfo;
     }
 
-    public void cancelSession(Session session, Student student) {
-
-        session.cancelSession(student);
+    public void registerStudent(Session session, Student student, Boolean approved) {
+        if (approved) {
+            session.approveStudent(student);
+        } else {
+            session.cancelStudent(student);
+        }
 
     }
 }

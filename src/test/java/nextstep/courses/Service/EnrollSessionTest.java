@@ -3,12 +3,8 @@ package nextstep.courses.Service;
 import nextstep.courses.CannotSignUpException;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Student;
-import nextstep.courses.domain.session.EnrollmentStatus;
-import nextstep.courses.domain.session.FreeSession;
-import nextstep.courses.domain.session.PaidSession;
-import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.service.EnrollSessionService;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -36,8 +33,6 @@ class EnrollSessionTest {
     private Session session4 = FreeSession.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.CLOSE
             , LocalDate.of(2024, 03, 01), LocalDate.of(2024, 04, 30)
             , LocalDateTime.now(), null);
-
-    private Payment payment = new Payment("pay1", session1.getId(), NsUserTest.JAVAJIGI.getId(), 10_000L);
 
     @Test
     @DisplayName("강의가 진행중에 비모집중인 경우 Exception throw")
@@ -77,6 +72,23 @@ class EnrollSessionTest {
         EnrollSessionService enrollSessionService = new EnrollSessionService();
         Student student = enrollSessionService.enrollSession(session3, NsUserTest.SANJIGI);
 
-        enrollSessionService.cancelSession(session3, student);
+        assertThat(student.getRegistrationState()).isEqualTo(RegistrationState.PENDING);
+
+        enrollSessionService.registerStudent(session3, student, false);
+
+        assertThat(student.getRegistrationState()).isEqualTo(RegistrationState.CANCELED);
+    }
+
+    @Test
+    @DisplayName("수강신청한 사람 중 선발된 사람에 대해 수강 승인이 가능하다.")
+    void approveSessionTest() {
+        EnrollSessionService enrollSessionService = new EnrollSessionService();
+        Student student = enrollSessionService.enrollSession(session3, NsUserTest.SANJIGI);
+
+        assertThat(student.getRegistrationState()).isEqualTo(RegistrationState.PENDING);
+
+        enrollSessionService.registerStudent(session3, student, true);
+
+        assertThat(student.getRegistrationState()).isEqualTo(RegistrationState.APPROVED);
     }
 }

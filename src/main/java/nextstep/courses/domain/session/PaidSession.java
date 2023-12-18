@@ -45,7 +45,7 @@ public class PaidSession extends Session {
         if (payment.getSessionId() != this.getId()) {
             throw new CannotSignUpException("해당 강의 결제이력이 없습니다.");
         }
-        if (student.getSessionId() != payment.getNsUserId()) {
+        if (student.getNsUserId() != payment.getNsUserId()) {
             throw new CannotSignUpException("결제자와 신청자의 정보가 일치하지 않습니다.");
         }
         if (payment.isNotSameSessionFee(sessionFee)) {
