@@ -3,9 +3,11 @@ package nextstep.courses.domain;
 public class Image {
     private static final int MAX_SIZE = 1;
     private final int size;
-    public Image(int size) {
+    private final ImageType imageType;
+    public Image(int size, String type) {
         validateSize(size);
         this.size = size;
+        this.imageType = ImageType.of(type);
     }
 
     private void validateSize(int size) {
