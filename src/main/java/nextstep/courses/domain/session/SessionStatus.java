@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.function.BiFunction;
 
 public enum SessionStatus {
-    NOT_STARTED("강의 시작 전", (startDate, endDate) -> startDate.isAfter(LocalDate.now())),
-    IN_PROGRESS("강의 진행 중", (startDate, endDate) -> startDate.compareTo(LocalDate.now()) <= 0 && endDate.compareTo(LocalDate.now()) >= 0),
-    COMPLETED("강의 종료", (startDate, endDate) -> endDate.isBefore(LocalDate.now()));
+    NOT_STARTED("준비중", (startDate, endDate) -> startDate.isAfter(LocalDate.now())),
+    IN_PROGRESS("진행중", (startDate, endDate) -> startDate.compareTo(LocalDate.now()) <= 0 && endDate.compareTo(LocalDate.now()) >= 0),
+    COMPLETED("종료", (startDate, endDate) -> endDate.isBefore(LocalDate.now()));
 
     private String statusName;
     private BiFunction<LocalDate, LocalDate, Boolean> getStatus;

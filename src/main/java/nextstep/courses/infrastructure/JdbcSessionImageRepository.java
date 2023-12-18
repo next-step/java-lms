@@ -31,7 +31,7 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
                 , image.getImageFormat().getImageSize()
                 , image.getImageFormat().getWidth()
                 , image.getImageFormat().getHeight()
-                , image.getImageFormat().getImageType()
+                , image.getImageFormat().getImageType().name()
                 , image.getCreatedAt()
                 , image.getUpdatedAt());
     }

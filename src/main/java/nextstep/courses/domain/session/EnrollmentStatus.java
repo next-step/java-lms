@@ -5,9 +5,8 @@ import java.util.Arrays;
 import java.util.function.BiFunction;
 
 public enum EnrollmentStatus {
-    PREPARING("준비중"),
     RECRUITING("모집중"),
-    CLOSE("종료");
+    CLOSE("비모집중");
 
     private String status;
 

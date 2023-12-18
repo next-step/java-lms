@@ -34,6 +34,10 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
+    public String getId() {
+        return id;
+    }
+
     public Long getSessionId() {
         return sessionId;
     }
@@ -42,7 +46,7 @@ public class Payment {
         return nsUserId;
     }
 
-    public boolean isNotSamePrice(Long sessionFee) {
+    public boolean isNotSameSessionFee(Long sessionFee) {
         return !sessionFee.equals(amount);
     }
 }

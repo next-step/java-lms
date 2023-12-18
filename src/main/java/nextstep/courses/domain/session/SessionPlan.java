@@ -8,9 +8,9 @@ public class SessionPlan {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public SessionPlan(EnrollmentStatus sessionStatus, LocalDate startDate, LocalDate endDate) {
+    public SessionPlan(EnrollmentStatus enrollmentStatus, LocalDate startDate, LocalDate endDate) {
         validateDate(startDate, endDate);
-        this.enrollmentStatus = sessionStatus;
+        this.enrollmentStatus = enrollmentStatus;
         this.startDate = startDate;
         this.endDate = endDate;
     }
