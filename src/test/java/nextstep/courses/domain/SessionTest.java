@@ -5,8 +5,8 @@ import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.courses.domain.session.EnrollmentStatus;
 import nextstep.courses.domain.session.FreeSession;
+import nextstep.courses.domain.session.RegistrationState;
 import nextstep.courses.domain.session.Session;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -46,12 +46,12 @@ public class SessionTest {
     void saveSessionImageTest() throws InvalidImageFormatException {
         Session session = FreeSession.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        assertThat(session.hasImage()).isFalse();
+        assertThat(session.getImageCount()).isEqualTo(0);
 
         SessionImage 강의_이미지 = SessionImage.valueOf(1L, session, 1024 * 1024, 300, 200, "jpg");
         session.saveImage(강의_이미지);
 
-        assertThat(session.hasImage()).isTrue();
+        assertThat(session.getImageCount()).isEqualTo(1);
     }
 
     @Test
@@ -59,17 +59,17 @@ public class SessionTest {
     void cannotSignUp_ForPreparingSession_Test() {
         Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        Payment payment = Payment.freeOf("1", session.getId(), student.getId());
-        assertThrows(CannotSignUpException.class, () -> session.signUp(student));
+
+        assertThrows(CannotSignUpException.class, () -> session.signUp(new Student(student.getId(), session.getId(), RegistrationState.PENDING)));
     }
 
     @Test
     @DisplayName("강의가 모집중인 경우 수강신청이 가능하다.")
     void signUp_ForRecruitingSession_Test() throws CannotSignUpException {
-        Session session = FreeSession.valueOf(1L,"lms", course.getId(), EnrollmentStatus.RECRUITING,
+        Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.RECRUITING,
                 LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        Payment payment = Payment.freeOf("1", session.getId(), student.getId());
-        session.signUp(student);
+
+        session.signUp(new Student(student.getId(), session.getId(), RegistrationState.PENDING));
         assertThat(session.getStudentCount()).isEqualTo(1);
     }
 }

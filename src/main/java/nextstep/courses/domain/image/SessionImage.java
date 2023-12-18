@@ -1,6 +1,6 @@
 package nextstep.courses.domain.image;
 
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.session.Session;
 
 import java.time.LocalDateTime;

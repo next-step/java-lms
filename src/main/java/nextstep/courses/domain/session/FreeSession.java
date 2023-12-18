@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.SystemTimeStamp;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.common.SystemTimeStamp;
+import nextstep.courses.domain.Student;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class FreeSession extends Session {
     }
 
     @Override
-    public void signUp(NsUser student) {
+    public void signUp(Student student) {
         super.signUp(student);
     }
 }

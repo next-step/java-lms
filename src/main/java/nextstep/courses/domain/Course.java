@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.Sessions;
 

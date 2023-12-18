@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.common;
 
 import java.time.LocalDateTime;
 

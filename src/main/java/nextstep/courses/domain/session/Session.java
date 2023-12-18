@@ -1,9 +1,10 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.image.SessionImage;
-import nextstep.users.domain.NsUser;
+import nextstep.qna.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,8 +12,8 @@ import java.util.List;
 
 public class Session {
     private SessionInfo sessionInfo;
-    private SessionImage sessionImage;
-    private List<NsUser> students;
+    private List<SessionImage> sessionImage;
+    private List<Student> students;
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
@@ -20,11 +21,11 @@ public class Session {
         this.sessionInfo = sessionInfo;
         this.students = new ArrayList<>(Collections.emptyList());
         this.sessionPlan = sessionPlan;
-        this.sessionImage = null;
+        this.sessionImage = new ArrayList<>(Collections.emptyList());;
         this.systemTimeStamp = systemTimeStamp;
     }
 
-    public void signUp(NsUser student) {
+    public void signUp(Student student) {
         validateEnrollmentStatus();
         students.add(student);
     }
@@ -36,7 +37,19 @@ public class Session {
     }
 
     public void saveImage(SessionImage sessionImage) {
-        this.sessionImage = sessionImage;
+        this.sessionImage.add(sessionImage);
+    }
+
+    public void cancelSession(Student student) {
+        validateIsAStudent(student);
+        student.isCanceled();
+    }
+
+    private void validateIsAStudent(Student student) {
+        this.getStudents().stream()
+                .filter(x -> x.getNsUserId() == student.getNsUserId())
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
     }
 
     public int getStudentCount() {
@@ -59,6 +72,10 @@ public class Session {
         return sessionInfo.getSessionType();
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
     public SessionPlan getSessionPlan() {
         return sessionPlan;
     }
@@ -67,8 +84,7 @@ public class Session {
         return systemTimeStamp;
     }
 
-    public boolean hasImage() {
-        return !(sessionImage == null);
+    public int getImageCount() {
+        return sessionImage.size();
     }
-
 }

@@ -1,7 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
+import nextstep.courses.domain.Student;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -30,21 +31,21 @@ public class PaidSession extends Session {
     }
 
     @Override
-    public void signUp(NsUser student) {
+    public void signUp(Student student) {
         validateAvailableStudentCount();
         validatePayInfo(student, getPayInfo(student));
         super.signUp(student);
     }
 
-    private Payment getPayInfo(NsUser student) {
-        return Payment.paidOf("tmp", super.getId(), student.getId(), this.sessionFee);  // 결제가 완료됐다고 가정하기 위함.
+    private Payment getPayInfo(Student student) {
+        return Payment.paidOf("tmp", super.getId(), student.getNsUserId(), this.sessionFee);  // 결제가 완료됐다고 가정하기 위함.
     }
 
-    private void validatePayInfo(NsUser student, Payment payment) {
+    private void validatePayInfo(Student student, Payment payment) {
         if (payment.getSessionId() != this.getId()) {
             throw new CannotSignUpException("해당 강의 결제이력이 없습니다.");
         }
-        if (student.getId() != payment.getNsUserId()) {
+        if (student.getSessionId() != payment.getNsUserId()) {
             throw new CannotSignUpException("결제자와 신청자의 정보가 일치하지 않습니다.");
         }
         if (payment.isNotSameSessionFee(sessionFee)) {
