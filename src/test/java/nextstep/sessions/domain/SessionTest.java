@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
@@ -18,31 +19,17 @@ public class SessionTest {
         assertThat(new Session("강의1",
                 PeriodTest.NOV,
                 new SessionImages(List.of(SessionImageTest.IMAGE_JPG)),
-                SessionChargeTest.FREE,
-                SessionStatus.END)).isInstanceOf(Session.class);
+                SessionChargeTest.FREE)).isInstanceOf(Session.class);
         assertThat(new Session("강의2",
                 PeriodTest.DEC,
                 new SessionImages(List.of(SessionImageTest.IMAGE_PNG)),
-                SessionChargeTest.CHARGE_1000,
-                SessionStatus.RECRUITING)).isInstanceOf(Session.class);
-    }
-
-    @DisplayName("진행중이 아니거나 모집중이 아닌 강의는 IllegalStateException을 던진다.")
-    @Test
-    void checkSessionStatusExceptionTest() {
-        Session session1 = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatus.RECRUITING);
-        Session session2 = new Session("강의1", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatus.END);
-
-        assertThatThrownBy(() -> session1.checkSessionStatus())
-                .isInstanceOf(IllegalStateException.class);
-        assertThatThrownBy(() -> session2.checkSessionStatus())
-                .isInstanceOf(IllegalStateException.class);
+                SessionChargeTest.CHARGE_1000)).isInstanceOf(Session.class);
     }
 
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void addStudentExceptionTest() {
-        Session session = new Session("강의2", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatus.RECRUITING);
+        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100);
         session.enroll(NsUserTest.JAVAJIGI);
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI))
@@ -54,7 +41,7 @@ public class SessionTest {
     void addImageTest() {
         List<SessionImage> images = new ArrayList<>();
         images.add(SessionImageTest.IMAGE_JPG);
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100, SessionStatus.RECRUITING);
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100);
         int beforeTotalCount = session.getImages().size();
         session.addImage(SessionImageTest.IMAGE_PNG);
 

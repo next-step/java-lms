@@ -14,7 +14,8 @@ create table session (
      end_at timestamp not null,
      price bigint not null,
      limit_count int default 0,
-     status ENUM('PREPARING', 'RECRUITING', 'END'),
+     progress_status ENUM('PREPARING', 'PROGRESSING', 'END'),
+     recruitment_status ENUM('RECRUITING', 'NON_RECRUITMENT'),
      created_at timestamp not null,
      updated_at timestamp,
      primary key (id)

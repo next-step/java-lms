@@ -6,6 +6,8 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImage;
 import nextstep.sessions.domain.SessionImages;
+import nextstep.sessions.domain.SessionProgressStatus;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionStudent;
@@ -21,7 +23,6 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcSessionRepository implements SessionRepository {
@@ -34,8 +35,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Long save(Session session) {
-        String sql = "insert into session (name, start_at, end_at, price, limit_count, status, created_at)" +
-                " values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at)" +
+                " values (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"});
@@ -44,8 +45,9 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setDate(3, Date.valueOf(session.getDate().getEndAt()));
             ps.setDouble(4, session.getCharge().getPrice());
             ps.setInt(5, session.getCharge().getLimitCount());
-            ps.setString(6, session.getStatus().toString());
-            ps.setTimestamp(7, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setString(6, session.getStatus().getProgressStatus().name());
+            ps.setString(7, session.getStatus().getRecruitmentStatus().name());
+            ps.setTimestamp(8, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolder);
         Long sessionId = (Long) keyHolder.getKey();
@@ -68,17 +70,17 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, name, start_at, end_at, price, limit_count, status, created_at, updated_at from session where id = ?";
+        String sql = "select id, name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
                 new Period(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
                 imagesFindBySessionId(id),
                 new SessionCharge(rs.getInt(5) > 0 ? true : false, rs.getLong(5), rs.getInt(6)),
-                SessionStatus.valueOf(rs.getString(7)),
+                new SessionStatus(SessionProgressStatus.valueOf(rs.getString(7)), SessionRecruitmentStatus.valueOf(rs.getString(8))),
                 studentsFindBySessionId(id),
-                toLocalDateTime(rs.getTimestamp(8)),
-                toLocalDateTime(rs.getTimestamp(9))
+                toLocalDateTime(rs.getTimestamp(9)),
+                toLocalDateTime(rs.getTimestamp(10))
         ));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

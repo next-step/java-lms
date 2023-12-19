@@ -26,6 +26,14 @@ public class Period {
         return endAt;
     }
 
+    public boolean isPreparing() {
+        LocalDate nowDate = LocalDate.now();
+        if (startAt.isAfter(nowDate) && endAt.isAfter(nowDate)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isInProgress() {
         LocalDate nowDate = LocalDate.now();
         if ((startAt.isEqual(nowDate) || startAt.isBefore(nowDate)) && (endAt.isEqual(nowDate) || endAt.isAfter(nowDate))) {

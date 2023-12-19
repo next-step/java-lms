@@ -29,8 +29,8 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status) {
-        this(0L, name, date, images, charge, status, new SessionStudents(), LocalDateTime.now(), null);
+    public Session(String name, Period date, SessionImages images, SessionCharge charge) {
+        this(0L, name, date, images, charge, new SessionStatus(date), new SessionStudents(), LocalDateTime.now(), null);
     }
 
     public Session(Long id, String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -89,15 +89,8 @@ public class Session {
         images.addImage(image);
     }
 
-    private boolean isInProgress() {
-        return this.date.isInProgress();
-    }
-
-    public void checkSessionStatus() {
-        if (!isInProgress()) {
-            throw new IllegalStateException("진행중인 강의만 수강할 수 있습니다.");
-        }
-        if (status != SessionStatus.RECRUITING) {
+    private void checkSessionStatus() {
+        if (status.isNotRecruiting()) {
             throw new IllegalStateException("모집중인 강의만 수강할 수 있습니다.");
         }
     }
