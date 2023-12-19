@@ -2,7 +2,6 @@ package nextstep.courses.domain.lectures;
 
 import java.time.LocalDateTime;
 import nextstep.courses.BaseTime;
-import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.Price;
 
@@ -11,20 +10,21 @@ public class LectureEntity extends BaseTime {
   private final Long id;
   private final String title;
   private final CoverImages coverImages = new CoverImages();
-  private final LectureStatus lectureStatus;
+  private final Lecture
+  private final LectureRecruitingStatus lectureRecruitingStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Price price;
   private final Integer limitStudentCount;
 
   public LectureEntity(Long id,   String title, CoverImages coverImages, LectureType lectureType,
-      LectureStatus lectureStatus, RegistrationPeriod registrationPeriod, Price price,
+      LectureRecruitingStatus lectureRecruitingStatus, RegistrationPeriod registrationPeriod, Price price,
       Integer limitStudentCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
     this.coverImages.addAll(coverImages);
     this.lectureType = lectureType;
-    this.lectureStatus = lectureStatus;
+    this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
     this.limitStudentCount = limitStudentCount;
@@ -46,8 +46,8 @@ public class LectureEntity extends BaseTime {
     return coverImages;
   }
 
-  public LectureStatus lectureStatus() {
-    return lectureStatus;
+  public LectureRecruitingStatus lectureStatus() {
+    return lectureRecruitingStatus;
   }
 
   public RegistrationPeriod registrationPeriod() {

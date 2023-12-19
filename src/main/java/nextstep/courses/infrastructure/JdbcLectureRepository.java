@@ -9,7 +9,7 @@ import nextstep.courses.domain.coverimage.ImageFileSize;
 import nextstep.courses.domain.coverimage.ImageSize;
 import nextstep.courses.domain.lectures.LectureEntity;
 import nextstep.courses.domain.lectures.LectureRepository;
-import nextstep.courses.domain.lectures.LectureStatus;
+import nextstep.courses.domain.lectures.LectureRecruitingStatus;
 import nextstep.courses.domain.lectures.LectureType;
 import nextstep.courses.domain.lectures.RegistrationPeriod;
 import nextstep.users.domain.Price;
@@ -83,7 +83,7 @@ public class JdbcLectureRepository implements LectureRepository {
             , toLocalDateTime(rs.getTimestamp(10))
         )),
         LectureType.valueOf(rs.getString(11)),
-        LectureStatus.valueOf(rs.getString(12)),
+        LectureRecruitingStatus.valueOf(rs.getString(12)),
         new RegistrationPeriod(
             toLocalDateTime(rs.getTimestamp(13))
             , toLocalDateTime(rs.getTimestamp(14))

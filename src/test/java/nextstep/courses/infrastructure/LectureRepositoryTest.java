@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.coverimage.CoverImageRepository;
 import nextstep.courses.domain.coverimage.CoverImageType;
@@ -13,10 +11,9 @@ import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.courses.domain.coverimage.ImageFileSize;
 import nextstep.courses.domain.coverimage.ImageSize;
 import nextstep.courses.domain.coverimage.LectureCoverImageMappingRepository;
-import nextstep.courses.domain.lectures.Lecture;
 import nextstep.courses.domain.lectures.LectureEntity;
 import nextstep.courses.domain.lectures.LectureRepository;
-import nextstep.courses.domain.lectures.LectureStatus;
+import nextstep.courses.domain.lectures.LectureRecruitingStatus;
 import nextstep.courses.domain.lectures.PaidLecture;
 import nextstep.courses.domain.lectures.RegistrationPeriod;
 import nextstep.users.domain.Price;
@@ -57,7 +54,7 @@ public class LectureRepositoryTest {
             1L
             , "test"
             , coverImage
-            , LectureStatus.PREPARING
+            , LectureRecruitingStatus.PREPARING
             , new RegistrationPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1))
             , new Price(BigDecimal.TEN)
             , 10
