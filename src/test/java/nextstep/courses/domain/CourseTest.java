@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
 import nextstep.courses.domain.lectures.LectureRecruitingStatus;
@@ -21,7 +22,7 @@ public class CourseTest {
     CoverImage coverImage = CoverImage.defaultOf("file.png", 2000L, 900, 600);
     Course course = new Course(1L, "test", 1L, LocalDateTime.of(2023, 11, 23, 15, 30, 00),
         LocalDateTime.of(2023, 11, 30, 15, 30, 00));
-    Lecture lecture = new FreeLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
+    Lecture lecture = new FreeLecture(0L, "test", new CoverImages(coverImage), LectureRecruitingStatus.PREPARING,
         new RegistrationPeriod(startDate, endDate));
 
     // when

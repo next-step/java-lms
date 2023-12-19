@@ -10,6 +10,7 @@ import nextstep.courses.domain.coverimage.ImageSize;
 import nextstep.courses.domain.lectures.LectureEntity;
 import nextstep.courses.domain.lectures.LectureRepository;
 import nextstep.courses.domain.lectures.LectureRecruitingStatus;
+import nextstep.courses.domain.lectures.LectureStatus;
 import nextstep.courses.domain.lectures.LectureType;
 import nextstep.courses.domain.lectures.RegistrationPeriod;
 import nextstep.users.domain.Price;
@@ -28,10 +29,11 @@ public class JdbcLectureRepository implements LectureRepository {
 
   @Override
   public int save(LectureEntity lectureEntity) {
-    String sql = "insert into lecture (title, lecture_status, started_at, ended_at, price, limit_student_count, lecture_type, created_at, updated_at) values(?, ?, ?, ?, ? ,? ,? ,? ,?)";
+    String sql = "insert into lecture (title, lecture_status, lecture_recruiting_status, started_at, ended_at, price, limit_student_count, lecture_type, created_at, updated_at) values(?, ?, ?, ?, ?, ? ,? ,? ,? ,?)";
     return jdbcTemplate.update(sql,
         lectureEntity.title(),
-        lectureEntity.lectureStatus().getName(),
+        lectureEntity.lectureStatus().toString(),
+        lectureEntity.lectureRecruitingStatus().getName(),
         lectureEntity.registrationPeriod().getStartedAt(),
         lectureEntity.registrationPeriod().getEndedAt(),
         lectureEntity.price().getPrice(),
@@ -57,6 +59,7 @@ public class JdbcLectureRepository implements LectureRepository {
         + ", c.updated_at"
         + ", l.lecture_type"
         + ", l.lecture_status"
+        + ", l.lecture_recruiting_status"
         + ", l.started_at"
         + ", l.ended_at"
         + ", l.price"
@@ -83,15 +86,16 @@ public class JdbcLectureRepository implements LectureRepository {
             , toLocalDateTime(rs.getTimestamp(10))
         )),
         LectureType.valueOf(rs.getString(11)),
-        LectureRecruitingStatus.valueOf(rs.getString(12)),
+        LectureStatus.valueOf(rs.getString(12)),
+        LectureRecruitingStatus.valueOf(rs.getString(13)),
         new RegistrationPeriod(
-            toLocalDateTime(rs.getTimestamp(13))
-            , toLocalDateTime(rs.getTimestamp(14))
+            toLocalDateTime(rs.getTimestamp(14))
+            , toLocalDateTime(rs.getTimestamp(15))
         ),
-        new Price(rs.getBigDecimal(15)),
-        rs.getInt(16),
-        toLocalDateTime(rs.getTimestamp(17)),
-        toLocalDateTime(rs.getTimestamp(18))
+        new Price(rs.getBigDecimal(16)),
+        rs.getInt(17),
+        toLocalDateTime(rs.getTimestamp(18)),
+        toLocalDateTime(rs.getTimestamp(19))
     );
     return jdbcTemplate.queryForObject(sql, rowMapper, id);
   }

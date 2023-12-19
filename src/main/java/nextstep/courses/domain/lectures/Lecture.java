@@ -8,6 +8,6 @@ public interface Lecture {
   boolean recruiting();
   void canEnrollment();
   void enrollment(NsUser nsUser);
-  Lecture start();
+  Lecture recruitingStart();
   Integer numberOfStudent();
 }

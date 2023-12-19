@@ -14,6 +14,7 @@ import nextstep.courses.domain.coverimage.LectureCoverImageMappingRepository;
 import nextstep.courses.domain.lectures.LectureEntity;
 import nextstep.courses.domain.lectures.LectureRepository;
 import nextstep.courses.domain.lectures.LectureRecruitingStatus;
+import nextstep.courses.domain.lectures.LectureStatus;
 import nextstep.courses.domain.lectures.PaidLecture;
 import nextstep.courses.domain.lectures.RegistrationPeriod;
 import nextstep.users.domain.Price;

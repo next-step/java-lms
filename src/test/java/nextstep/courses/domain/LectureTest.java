@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.courses.domain.lectures.FreeLecture;
 import nextstep.courses.domain.lectures.Lecture;
 import nextstep.courses.domain.lectures.LectureRecruitingStatus;
@@ -23,13 +24,14 @@ public class LectureTest {
 
   private LocalDateTime startDate;
   private LocalDateTime endDate;
-  private CoverImage coverImage;
+  private CoverImages coverImage;
 
   @BeforeEach
   void setting() {
     startDate = LocalDateTime.of(2023, 4, 3, 11, 30);
     endDate = LocalDateTime.of(2023, 6, 3, 11, 30);
-    coverImage = CoverImage.defaultOf("file.png", 2000L, 900, 600);
+    CoverImage coverImageOne = CoverImage.defaultOf("file.png", 2000L, 900, 600);
+    coverImage = new CoverImages(coverImageOne);
   }
 
   @Test
@@ -68,7 +70,7 @@ public class LectureTest {
     javajigi.payment(new Payment(new Price(BigDecimal.TEN)));
 
     // when
-    Lecture newLecture = lecture.start();
+    Lecture newLecture = lecture.recruitingStart();
     newLecture.enrollment(javajigi);
 
     // then
@@ -89,6 +91,19 @@ public class LectureTest {
   }
 
   @Test
+  @DisplayName("진행 중인 강의 수강신청 테스트")
+  public void lecture_enrolment_status_by_doing() {
+    // given
+    int maxStudent = 1;
+    Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
+
+    // then
+    assertThrows(IllegalArgumentException.class
+        , () -> lecture.enrollment(NsUserTest.SANJIGI));
+  }
+
+  @Test
   @DisplayName("수강신청에서 결제가 다를 경우")
   public void lecture_enrolment_different_fail() {
     int maxStudent = 1;
@@ -96,7 +111,7 @@ public class LectureTest {
         new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
     NsUser javajigi = NsUserTest.JAVAJIGI;
     javajigi.payment(new Payment(new Price(BigDecimal.ONE)));
-    Lecture startLecture = lecture.start();
+    Lecture startLecture = lecture.recruitingStart();
 
     assertThrows(IllegalArgumentException.class
         , () -> startLecture.enrollment(javajigi));

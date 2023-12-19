@@ -10,20 +10,21 @@ public class LectureEntity extends BaseTime {
   private final Long id;
   private final String title;
   private final CoverImages coverImages = new CoverImages();
-  private final Lecture
+  private final LectureStatus lectureStatus;
   private final LectureRecruitingStatus lectureRecruitingStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Price price;
   private final Integer limitStudentCount;
 
   public LectureEntity(Long id,   String title, CoverImages coverImages, LectureType lectureType,
-      LectureRecruitingStatus lectureRecruitingStatus, RegistrationPeriod registrationPeriod, Price price,
+      LectureStatus lectureStatus,LectureRecruitingStatus lectureRecruitingStatus, RegistrationPeriod registrationPeriod, Price price,
       Integer limitStudentCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
     this.coverImages.addAll(coverImages);
     this.lectureType = lectureType;
+    this.lectureStatus = lectureStatus;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
@@ -46,8 +47,11 @@ public class LectureEntity extends BaseTime {
     return coverImages;
   }
 
-  public LectureRecruitingStatus lectureStatus() {
+  public LectureRecruitingStatus lectureRecruitingStatus() {
     return lectureRecruitingStatus;
+  }
+  public LectureStatus lectureStatus()  {
+    return lectureStatus;
   }
 
   public RegistrationPeriod registrationPeriod() {

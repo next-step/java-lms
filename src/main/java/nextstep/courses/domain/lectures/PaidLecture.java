@@ -8,50 +8,59 @@ import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Price;
 
-public class PaidLecture extends BaseTime implements Lecture  {
+public class PaidLecture extends BaseTime implements Lecture {
+
   private final LectureType lectureType = LectureType.PAID;
   private final Long id;
   private final String title;
   private final CoverImages coverImages = new CoverImages();
+  private final LectureStatus lectureStatus;
   private final LectureRecruitingStatus lectureRecruitingStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Price price;
   private final Integer limitStudentCount;
-  private final Students students = Students.defaultOf();; // 강의 기본정보와는 다름
+  private final Students students = Students.defaultOf();
+  ; // 강의 기본정보와는 다름
 
 
-  public PaidLecture(Long id, String title, CoverImage coverImage, LectureRecruitingStatus lectureRecruitingStatus,
+  public PaidLecture(Long id, String title, CoverImage coverImage,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
     super();
     this.id = id;
     this.title = title;
     this.coverImages.add(coverImage);
+    this.lectureStatus = LectureStatus.YET;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
     this.limitStudentCount = limitStudentCount;
   }
 
-  public PaidLecture(Long id, String title, CoverImages coverImages, LectureRecruitingStatus lectureRecruitingStatus,
+  public PaidLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
     super();
     this.id = id;
     this.title = title;
     this.coverImages.addAll(coverImages);
+    this.lectureStatus = LectureStatus.YET;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
     this.limitStudentCount = limitStudentCount;
   }
-  public PaidLecture(Long id, String title, CoverImage coverImage, LectureRecruitingStatus lectureRecruitingStatus,
+
+  public PaidLecture(Long id, String title, CoverImages coverImage, LectureStatus lectureStatus,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount
-      , LectureType lectureType
       , LocalDateTime createdAt
       , LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImages.add(coverImage);
+    this.coverImages.addAll(coverImage);
+    this.lectureStatus = lectureStatus;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
@@ -63,7 +72,8 @@ public class PaidLecture extends BaseTime implements Lecture  {
     this.id = lecture.id();
     this.title = lecture.title();
     this.coverImages.addAll(lecture.coverImage());
-    this.lectureRecruitingStatus = lecture.lectureStatus();
+    this.lectureStatus = lecture.lectureStatus();
+    this.lectureRecruitingStatus = lecture.lectureRecruitingStatus();
     this.registrationPeriod = lecture.registrationPeriod();
     this.price = lecture.price();
     this.limitStudentCount = lecture.limitStudentCount();
@@ -94,8 +104,10 @@ public class PaidLecture extends BaseTime implements Lecture  {
   }
 
   @Override
-  public Lecture start() {
-    return new PaidLecture(this.id,this.title,this.coverImages, LectureRecruitingStatus.RECRUITING, this.registrationPeriod,this.price,this.limitStudentCount);
+  public Lecture recruitingStart() {
+    return new PaidLecture(this.id, this.title, this.coverImages, this.lectureStatus,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod, this.price,
+        this.limitStudentCount, this.getCreatedAt(), this.getUpdatedAt());
   }
 
   @Override
@@ -141,6 +153,7 @@ public class PaidLecture extends BaseTime implements Lecture  {
         , this.title
         , this.coverImages
         , this.lectureType
+        , this.lectureStatus
         , this.lectureRecruitingStatus
         , this.registrationPeriod
         , this.price
