@@ -32,4 +32,14 @@ public class EnrollmentTest {
             enrollment.enroll(javajigi);
         });
     }
+
+    @Test
+    @DisplayName("모집중이 아닌 강의를 수강신청하면 예외가 던져진다")
+    void recruiting_exception() {
+        NsUser javajigi = NsUserTest.JAVAJIGI;
+        Enrollment enrollment = new Enrollment(SessionState.END, 2);
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            enrollment.enroll(javajigi);
+        });
+    }
 }

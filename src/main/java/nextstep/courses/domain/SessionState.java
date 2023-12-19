@@ -23,4 +23,9 @@ public enum SessionState {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 세션 상태입니다."));
     }
+
+    public boolean isRecruiting() {
+        return this == RECRUITING;
+    }
+
 }

@@ -23,6 +23,9 @@ public class Enrollment {
     }
 
     public void enroll(NsUser loginUser) {
+        if (!this.sessionState.isRecruiting()) {
+            throw new IllegalArgumentException("수강신청은 모집중에만 가능합니다");
+        }
         if (this.students.size() == capacity) {
             throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다");
         }
