@@ -4,6 +4,7 @@ import nextstep.common.Period;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImage;
+import nextstep.sessions.domain.SessionImages;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,7 +42,7 @@ class SessionRepositoryTest {
         Session session = new Session(
                 "강의",
                 new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 15)),
-                new SessionImage(100, 300, 200, "PNG"),
+                new SessionImages(List.of(new SessionImage(100, 300, 200, "PNG"), new SessionImage(300, 300, 200, "JPG"))),
                 new SessionCharge(true, 1000, 3),
                 SessionStatus.RECRUITING);
         long count = sessionRepository.save(session);

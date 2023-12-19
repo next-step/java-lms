@@ -23,11 +23,14 @@ VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 
         '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.',
         CURRENT_TIMESTAMP(), false);
 
-INSERT INTO session (name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count,
-                     status, created_at)
-values ('테스트강의', '2023-12-01', '2023-12-20', 1000, 300, 200, 'PNG', 1000, 3, 'RECRUITING', CURRENT_TIMESTAMP());
+INSERT INTO session (name, start_at, end_at, price, limit_count, status, created_at)
+values ('테스트강의', '2023-12-01', '2023-12-20', 1000, 3, 'RECRUITING', CURRENT_TIMESTAMP());
 
 INSERT INTO session_student (id, user_id, registration_at, session_id)
 values (1, 1, CURRENT_TIMESTAMP(), 1);
 INSERT INTO session_student (id, user_id, registration_at, session_id)
 values (2, 2, CURRENT_TIMESTAMP(), 1);
+
+INSERT INTO session_image (image_size, image_width, image_height, image_type, session_id) values (1000, 300, 200, 'GIF', 1);
+INSERT INTO session_image (image_size, image_width, image_height, image_type, session_id) values (1000, 300, 200, 'PNG', 1);
+INSERT INTO session_image (image_size, image_width, image_height, image_type, session_id) values (1000, 300, 200, 'JPG', 1);

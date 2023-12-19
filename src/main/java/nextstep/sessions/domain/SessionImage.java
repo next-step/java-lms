@@ -13,6 +13,8 @@ public class SessionImage {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
+    private Long id;
+
     private int size;
 
     private double width;
@@ -35,6 +37,14 @@ public class SessionImage {
         this.width = width;
         this.height = height;
         this.type = ImageType.from(type);
+    }
+
+    public SessionImage(Long id, int size, double width, double height, ImageType type) {
+        this.id = id;
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.type = type;
     }
 
     private boolean isNotCorrectRatio(double width, double height) {

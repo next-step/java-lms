@@ -1,9 +1,11 @@
 package nextstep.sessions.infrastructure;
 
 import nextstep.common.Period;
+import nextstep.sessions.domain.ImageType;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImage;
+import nextstep.sessions.domain.SessionImages;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionStudent;
@@ -19,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcSessionRepository implements SessionRepository {
@@ -31,42 +34,68 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Long save(Session session) {
-        String sql = "insert into session (name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status, created_at)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (name, start_at, end_at, price, limit_count, status, created_at)" +
+                " values (?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"});
             ps.setString(1, session.getName());
             ps.setDate(2, Date.valueOf(session.getDate().getStartAt()));
             ps.setDate(3, Date.valueOf(session.getDate().getEndAt()));
-            ps.setInt(4, session.getImage().getSize());
-            ps.setDouble(5, session.getImage().getWidth());
-            ps.setDouble(6, session.getImage().getHeight());
-            ps.setString(7, session.getImage().getType().toString());
-            ps.setDouble(8, session.getCharge().getPrice());
-            ps.setInt(9, session.getCharge().getLimitCount());
-            ps.setString(10, session.getStatus().toString());
-            ps.setTimestamp(11, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setDouble(4, session.getCharge().getPrice());
+            ps.setInt(5, session.getCharge().getLimitCount());
+            ps.setString(6, session.getStatus().toString());
+            ps.setTimestamp(7, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolder);
-        return (Long) keyHolder.getKey();
+        Long sessionId = (Long) keyHolder.getKey();
+        saveImages(sessionId, session.getImages());
+        return sessionId;
+    }
+
+    private void saveImages(Long sessionId, SessionImages images) {
+        String sql = "insert into session_image (image_size, image_width, image_height, image_type, session_id) " +
+                " values (?, ?, ?, ?, ?)";
+        System.out.println(images.getImages());
+        jdbcTemplate.batchUpdate(sql, images.getImages(), images.size(), (PreparedStatement ps, SessionImage image) -> {
+            ps.setInt(1, image.getSize());
+            ps.setDouble(2, image.getWidth());
+            ps.setDouble(3, image.getHeight());
+            ps.setString(4, image.getType().toString());
+            ps.setLong(5, sessionId);
+        });
     }
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, name, start_at, end_at, image_size, image_width, image_height, image_type, price, limit_count, status, created_at, updated_at from session where id = ?";
+        String sql = "select id, name, start_at, end_at, price, limit_count, status, created_at, updated_at from session where id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
                 new Period(toLocalDate(rs.getTimestamp(3)), toLocalDate(rs.getTimestamp(4))),
-                new SessionImage(rs.getInt(5), rs.getDouble(6), rs.getDouble(7), rs.getString(8)),
-                new SessionCharge(rs.getInt(9) > 0 ? true : false, rs.getLong(9), rs.getInt(10)),
-                SessionStatus.valueOf(rs.getString(11)),
+                imagesFindBySessionId(id),
+                new SessionCharge(rs.getInt(5) > 0 ? true : false, rs.getLong(5), rs.getInt(6)),
+                SessionStatus.valueOf(rs.getString(7)),
                 studentsFindBySessionId(id),
-                toLocalDateTime(rs.getTimestamp(12)),
-                toLocalDateTime(rs.getTimestamp(13))
+                toLocalDateTime(rs.getTimestamp(8)),
+                toLocalDateTime(rs.getTimestamp(9))
         ));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    private SessionImages imagesFindBySessionId(Long id) {
+        String sql = "select id, image_size, image_width, image_height, image_type from session_image where session_id = ?";
+        RowMapper<SessionImage> rowMapper = ((rs, rowNum) -> new SessionImage(
+                rs.getLong(1),
+                rs.getInt(2),
+                rs.getDouble(3),
+                rs.getDouble(4),
+                ImageType.from(rs.getString(5))
+        ));
+        List<SessionImage> images = jdbcTemplate.query(sql, new String[]{String.valueOf(id)}, rowMapper);
+        System.out.println(images);
+
+        return new SessionImages(images);
     }
 
     private SessionStudents studentsFindBySessionId(Long id) {

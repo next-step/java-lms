@@ -17,7 +17,7 @@ public class Session {
 
     private Period date;
 
-    private SessionImage image;
+    private SessionImages images;
 
     private SessionCharge charge;
 
@@ -29,15 +29,15 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status) {
-        this(0L, name, date, image, charge, status, new SessionStudents(), LocalDateTime.now(), null);
+    public Session(String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status) {
+        this(0L, name, date, images, charge, status, new SessionStudents(), LocalDateTime.now(), null);
     }
 
-    public Session(Long id, String name, Period date, SessionImage image, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.date = date;
-        this.image = image;
+        this.images = images;
         this.charge = charge;
         this.status = status;
         this.students = students;
@@ -57,8 +57,8 @@ public class Session {
         return date;
     }
 
-    public SessionImage getImage() {
-        return image;
+    public SessionImages getImages() {
+        return images;
     }
 
     public SessionCharge getCharge() {
@@ -83,6 +83,10 @@ public class Session {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void addImage(SessionImage image) {
+        images.addImage(image);
     }
 
     private boolean isInProgress() {
