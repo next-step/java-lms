@@ -7,14 +7,14 @@ public class Image {
     private final int size;
     private final ImageType imageType;
     private final int width;
-    private final int heigth;
+    private final int height;
     public Image(int size, String type, int width, int height) {
         validateSize(size);
         validateWidthAndHeight(width, height);
         this.size = size;
         this.imageType = ImageType.of(type);
         this.width = width;
-        this.heigth = height;
+        this.height = height;
     }
 
     private void validateWidthAndHeight(int width, int height) {
