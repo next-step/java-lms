@@ -26,6 +26,9 @@ public class Enrollment {
         if (this.students.size() == capacity) {
             throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다");
         }
+        if (this.students.contains(loginUser)) {
+            throw new IllegalArgumentException("이미 수강신청한 강의를 수강신청 할 수 없습니다");
+        }
         this.students.add(loginUser);
     }
 }
