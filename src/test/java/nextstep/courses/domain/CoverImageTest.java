@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.courses.dto.CoverImageDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,5 +30,11 @@ class CoverImageTest {
     void create_width_height_exception(Double width, Double height) {
         assertThatThrownBy(()->new CoverImage("pobi.jpeg", 500L, width, height))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("전용 DTO 모델을 반환함")
+    void toDto() {
+        assertThat(new CoverImage("pobi.jpeg", 500L, 300D, 200D).toDto()).isInstanceOf(CoverImageDTO.class);
     }
 }

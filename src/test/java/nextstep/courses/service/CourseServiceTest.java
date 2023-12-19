@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.Duration;
 import nextstep.courses.domain.Session;
@@ -32,6 +33,7 @@ class CourseServiceTest {
     @BeforeEach
     void setUp() {
         session = new Session(0L,
+                CourseTest.C1,
                 1000L,
                 SessionPaymentType.PAID,
                 new NsUsers(userList),

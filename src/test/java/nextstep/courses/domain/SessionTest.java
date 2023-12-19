@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
 import org.junit.jupiter.api.DisplayName;
@@ -36,5 +37,13 @@ class SessionTest {
                         new CoverImage("pobi.png", 500L, 300D, 200D)
                 )
         ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+
+    @Test
+    @DisplayName("전용 DTO 모델을 반환함")
+    void toDto() {
+        assertThat(new Session().toDto())
+                .isInstanceOf(SessionDTO.class);
     }
 }

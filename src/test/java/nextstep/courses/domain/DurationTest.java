@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import nextstep.courses.dto.DurationDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,5 +23,11 @@ class DurationTest {
         assertThatThrownBy(()->
                 new Duration(LocalDateTime.now(),
                         LocalDateTime.now().minusMonths(1L))).isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    @DisplayName("전용 DTO 모델을 반환함")
+    void toDto() {
+        assertThat(new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)).toDto())
+                .isInstanceOf(DurationDTO.class);
     }
 }

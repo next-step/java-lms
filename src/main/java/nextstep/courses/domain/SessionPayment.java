@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.dto.SessionPaymentDTO;
+
 public class SessionPayment {
     private final SessionPaymentType type;
     private final Long amount;
@@ -25,7 +27,7 @@ public class SessionPayment {
         return type == SessionPaymentType.PAID;
     }
 
-    public boolean isSameAmountOfPay(Long amountOfPay){
-        return amount.equals(amountOfPay);
+    public SessionPaymentDTO toDto(){
+        return new SessionPaymentDTO(type, amount);
     }
 }

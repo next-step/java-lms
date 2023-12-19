@@ -2,10 +2,11 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
-public class Session extends AuditInfo {
+public class Session extends AuditInfo{
     private Long id;
     private Course course;
     private SessionPayment sessionPayment;
@@ -22,6 +23,7 @@ public class Session extends AuditInfo {
         this.sessionPayment = new SessionPayment(SessionPaymentType.FREE, 0L);
         this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()), new NsUserLimit(0, SessionPaymentType.PAID));
         this.sessionStatus = SessionStatus.READY;
+        this.coverImage = new CoverImage("pobi.png", 500L, 300D, 200D);
     }
 
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType, NsUsers nsUsers,
@@ -48,5 +50,9 @@ public class Session extends AuditInfo {
 
     public boolean isSameId(Long id) {
         return this.id.equals(id);
+    }
+
+    public SessionDTO toDto(){
+        return new SessionDTO(id, coverImage.toDto(), duration.toDto(), sessionPayment.toDto());
     }
 }

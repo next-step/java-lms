@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 
+import nextstep.courses.dto.CoverImageDTO;
+
 public class CoverImage {
     public static final long LIMIT_BYTE_SIZE = 1000L;
     private final String name;
@@ -35,5 +37,9 @@ public class CoverImage {
         if(width/height != 1.5){
             throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_RATIO.getMessage());
         }
+    }
+
+    public CoverImageDTO toDto(){
+        return new CoverImageDTO(name, extension, byteSize, width, height);
     }
 }
