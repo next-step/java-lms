@@ -9,7 +9,7 @@ public class Session {
     private final Image image;
     private final SessionPeriod sessionPeriod;
     private final Enrollment enrollment;
-    private final SessionType sesstionType;
+    private final SessionType sessionType;
     private final int price;
 
     public Session(String title, int size, String imageType,
@@ -29,7 +29,7 @@ public class Session {
         this.image = image;
         this.sessionPeriod = sessionPeriod;
         this.enrollment = enrollment;
-        this.sesstionType = sessionType;
+        this.sessionType = sessionType;
         this.price = price;
     }
 
