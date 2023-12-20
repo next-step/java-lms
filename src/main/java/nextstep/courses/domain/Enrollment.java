@@ -7,18 +7,15 @@ import java.util.List;
 
 public class Enrollment {
     private final SessionState sessionState;
-    private final int capacity;
-
     private final Students students;
 
     public Enrollment(SessionState sessionState, int capacity) {
-        this(sessionState, capacity, new Students());
+        this(sessionState, new Students(capacity));
 
     }
 
-    public Enrollment(SessionState sessionState, int capacity, Students students) {
+    public Enrollment(SessionState sessionState, Students students) {
         this.sessionState = sessionState;
-        this.capacity = capacity;
         this.students = students;
     }
 
@@ -26,6 +23,6 @@ public class Enrollment {
         if (!this.sessionState.isRecruiting()) {
             throw new IllegalArgumentException("수강신청은 모집중에만 가능합니다");
         }
-        this.students.add(loginUser, capacity);
+        this.students.add(loginUser);
     }
 }

@@ -14,10 +14,10 @@ public class StudentsTest {
         NsUser javajigi = NsUserTest.JAVAJIGI;
         NsUser sanjigi = NsUserTest.SANJIGI;
 
-        Students students = new Students();
-        students.add(javajigi, 1);
+        Students students = new Students(1);
+        students.add(javajigi);
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            students.add(sanjigi, 1);
+            students.add(sanjigi);
         });
     }
 
@@ -25,10 +25,10 @@ public class StudentsTest {
     @DisplayName("수강생이 똑같은 강의를 수강신청하면 예외가 던져진다")
     void duplicate_exception() {
         NsUser javajigi = NsUserTest.JAVAJIGI;
-        Students students = new Students();
-        students.add(javajigi, 1);
+        Students students = new Students(2);
+        students.add(javajigi);
         assertThatIllegalArgumentException().isThrownBy(() -> {
-            students.add(javajigi, 1);
+            students.add(javajigi);
         });
     }
 }

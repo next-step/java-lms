@@ -7,16 +7,18 @@ import java.util.List;
 
 public class Students {
     private final List<NsUser> students;
+    private final int capacity;
 
-    public Students() {
-        this(new ArrayList<>());
+    public Students(int capacity) {
+        this(new ArrayList<>(), capacity);
     }
-    public Students(List<NsUser> students) {
+    public Students(List<NsUser> students, int capacity) {
         this.students = students;
+        this.capacity = capacity;
     }
 
-    public void add(NsUser loginUser, int capacity) {
-        if (this.students.size() == capacity) {
+    public void add(NsUser loginUser) {
+        if (this.students.size() == this.capacity) {
             throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다");
         }
         if (this.students.contains(loginUser)) {
