@@ -9,14 +9,14 @@ public class Enrollment {
     private final SessionState sessionState;
     private final int capacity;
 
-    private final List<NsUser> students;
+    private final Students students;
 
     public Enrollment(SessionState sessionState, int capacity) {
-        this(sessionState, capacity, new ArrayList<>());
+        this(sessionState, capacity, new Students());
 
     }
 
-    public Enrollment(SessionState sessionState, int capacity, List<NsUser> students) {
+    public Enrollment(SessionState sessionState, int capacity, Students students) {
         this.sessionState = sessionState;
         this.capacity = capacity;
         this.students = students;
@@ -26,12 +26,6 @@ public class Enrollment {
         if (!this.sessionState.isRecruiting()) {
             throw new IllegalArgumentException("수강신청은 모집중에만 가능합니다");
         }
-        if (this.students.size() == capacity) {
-            throw new IllegalArgumentException("강의 최대 수강 인원을 초과할 수 없습니다");
-        }
-        if (this.students.contains(loginUser)) {
-            throw new IllegalArgumentException("이미 수강신청한 강의를 수강신청 할 수 없습니다");
-        }
-        this.students.add(loginUser);
+        this.students.add(loginUser, capacity);
     }
 }
