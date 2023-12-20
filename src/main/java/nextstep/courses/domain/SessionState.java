@@ -13,13 +13,9 @@ public enum SessionState {
         this.state = state;
     }
 
-    public String getState() {
-        return this.state;
-    }
-
     public static SessionState of(String state) {
         return Arrays.stream(values())
-                .filter(SessionState -> SessionState.getState().equals(state))
+                .filter(it -> it.state.equals(state))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 세션 상태입니다."));
     }

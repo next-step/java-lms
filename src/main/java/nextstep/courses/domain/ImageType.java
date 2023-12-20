@@ -15,13 +15,9 @@ public enum ImageType {
         this.type = type;
     }
 
-    public String getValue() {
-        return this.type;
-    }
-
     public static ImageType of(String type) {
         return Arrays.stream(values())
-                .filter(imageType -> imageType.getValue().equals(type.toLowerCase()))
+                .filter(it -> it.type.equals(type.toLowerCase()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 형식입니다."));
     }

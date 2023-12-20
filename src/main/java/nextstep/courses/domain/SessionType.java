@@ -14,12 +14,8 @@ public enum SessionType {
 
     public static SessionType of(String type) {
         return Arrays.stream(values())
-                .filter(SessionType -> SessionType.getType().equals(type))
+                .filter(it -> it.type.equals(type))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 강의 타입니다."));
-    }
-
-    private String getType() {
-        return type;
     }
 }
