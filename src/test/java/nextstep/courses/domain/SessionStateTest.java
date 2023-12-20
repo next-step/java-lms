@@ -17,11 +17,8 @@ public class SessionStateTest {
     @Test
     @DisplayName("강의 상태 준비중, 모집중, 종료 3가지")
     void create() {
-        SessionState sessionState1 = SessionState.of("모집중");
-        SessionState sessionState2 = SessionState.of("준비중");
-        SessionState sessionState3 = SessionState.of("종료");
-        assertThat(sessionState1).isEqualTo(SessionState.RECRUITING);
-        assertThat(sessionState2).isEqualTo(SessionState.PREPARING);
-        assertThat(sessionState3).isEqualTo(SessionState.END);
+        assertThat(SessionState.of("모집중")).isEqualTo(SessionState.RECRUITING);
+        assertThat(SessionState.of("준비중")).isEqualTo(SessionState.PREPARING);
+        assertThat(SessionState.of("종료")).isEqualTo(SessionState.END);
     }
 }
