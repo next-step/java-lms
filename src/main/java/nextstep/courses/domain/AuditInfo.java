@@ -7,7 +7,7 @@ public abstract class AuditInfo {
 
     protected LocalDateTime updatedAt;
 
-    AuditInfo(LocalDateTime createdAt, LocalDateTime updatedAt) {
+    protected AuditInfo(LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
