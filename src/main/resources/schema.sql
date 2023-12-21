@@ -12,7 +12,7 @@ create table session (
     course_id bigint not null,
     session_type varchar(10) not null,
     price bigint not null,
-    limit int not null,
+    session_limit int not null,
     cover_image_name varchar(50) not null,
     cover_image_extension varchar(10) not null,
     cover_byte_size int not null,
@@ -22,7 +22,8 @@ create table session (
     start_date timestamp not null,
     end_date timestamp not null,
     created_at timestamp not null,
-    updated_at timestamp
+    updated_at timestamp,
+    primary key (id)
 );
 
 create table enrollment (
@@ -30,7 +31,8 @@ create table enrollment (
     user_id bigint not null,
     session_id bigint not null,
     created_at timestamp not null,
-    updated_at timestamp
+    updated_at timestamp,
+    primary key (id)
 );
 
 create table ns_user (

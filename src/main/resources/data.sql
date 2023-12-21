@@ -11,16 +11,16 @@ INSERT INTO answer (writer_id, contents, created_at, question_id, deleted) VALUE
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?', '설계를 희한하게 하는 바람에 꼬인 문제같긴 합니다만. 여쭙습니다. 상황은 mybatis select 실행될 시에 return object 의 getter 가 호출되면서인데요. getter 안에 다른 property 에 의존중인 코드가 삽입되어 있어서, 만약 다른 mybatis select 구문에 해당 property 가 없다면 exception 이 발생하게 됩니다.', CURRENT_TIMESTAMP(), false);
 
-INSERT INTO course (id, title, creator_id, created_at) VALUES (1,'JAVA, TDD with Clean Code', 1, CURRENT_TIMESTAMP());
-INSERT INTO course (id, title, creator_id, created_at) VALUES (2,'Kotlin, TDD with Clean Code', 2, CURRENT_TIMESTAMP());
+INSERT INTO course (title, creator_id, created_at) VALUES ('JAVA, TDD with Clean Code', 1, CURRENT_TIMESTAMP());
+INSERT INTO course (title, creator_id, created_at) VALUES ('Kotlin, TDD with Clean Code', 2, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (1, 1, 'PAID', 100000, 'DONE', DATEADD('MONTH', -2, CURRENT_TIMESTAMP), DATEADD('MONTH', -1, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (2, 1, 'PAID', 100000, 'ENROLLING', CURRENT_TIMESTAMP(), DATEADD('MONTH', 1, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (3, 1, 'PAID', 100000, 'READY', DATEADD('MONTH', 2, CURRENT_TIMESTAMP), DATEADD('MONTH', 3, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (1, 1, 'PAID', 100000, 15, 'pobi.png', 'PNG', 500, 300, 200, 'DONE', CURRENT_TIMESTAMP - INTERVAL '2' MONTH, CURRENT_TIMESTAMP - INTERVAL '1' MONTH, CURRENT_TIMESTAMP);
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (2, 1, 'PAID', 100000, 15, 'pobi.png', 'PNG', 500, 300, 200, 'ENROLLING', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP + INTERVAL '1' MONTH, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (3, 1, 'PAID', 100000, 15, 'pobi.png', 'PNG', 500, 300, 200, 'READY', CURRENT_TIMESTAMP + INTERVAL '2' MONTH, CURRENT_TIMESTAMP + INTERVAL '3' MONTH, CURRENT_TIMESTAMP());
 
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (4, 2,'FREE', 0, 'DONE', DATEADD('MONTH', -2, CURRENT_TIMESTAMP), DATEADD('MONTH', -1, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (5, 2,'FREE', 0, 'ENROLLING', CURRENT_TIMESTAMP(), DATEADD('MONTH', 1, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
-INSERT INTO session (id, course_id, session_type, price, limit, status, start_date, end_date, created_at) VALUES (6, 2,'FREE', 0, 'READY', DATEADD('MONTH', 2, CURRENT_TIMESTAMP), DATEADD('MONTH', 3, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (4, 2,'FREE', 0, 0, 'sanjigi.png', 'PNG', 500, 300, 200, 'DONE', CURRENT_TIMESTAMP - INTERVAL '2' MONTH, CURRENT_TIMESTAMP - INTERVAL '1' MONTH, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (5, 2,'FREE', 0, 0, 'sanjigi.png', 'PNG', 500, 300, 200, 'ENROLLING', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP + INTERVAL '1' MONTH, CURRENT_TIMESTAMP());
+INSERT INTO session (id, course_id, session_type, price, session_limit, cover_image_name, cover_image_extension, cover_byte_size, cover_image_width, cover_image_height, status, start_date, end_date, created_at) VALUES (6, 2,'FREE', 0, 0, 'sanjigi.png', 'PNG', 500, 300, 200, 'READY', CURRENT_TIMESTAMP + INTERVAL '2' MONTH, CURRENT_TIMESTAMP + INTERVAL '3' MONTH, CURRENT_TIMESTAMP());
 
 INSERT INTO enrollment (id, user_id, session_id, created_at) VALUES (1, 3, 1, CURRENT_TIMESTAMP());
 INSERT INTO enrollment (id, user_id, session_id, created_at) VALUES (2, 4, 1, CURRENT_TIMESTAMP());
