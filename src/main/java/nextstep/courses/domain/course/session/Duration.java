@@ -31,12 +31,12 @@ public class Duration {
         }
     }
 
-    public boolean startDateIsSameOrBefore(LocalDate date) {
-        return this.startDate == date || this.startDate.isBefore(date);
+    public boolean changeDateIsSameOrAfterWithEndDate(LocalDate date) {
+        return date == this.endDate || date.isAfter(this.endDate);
     }
 
-    public boolean endDateIsSameOrAfter(LocalDate date) {
-        return this.endDate == date || this.endDate.isAfter(date);
+    public boolean changeDateIsBeforeOrSameWithEndDate(LocalDate date) {
+        return date.isBefore(this.endDate) || date == this.endDate;
     }
 
     public LocalDate getStartDate() {

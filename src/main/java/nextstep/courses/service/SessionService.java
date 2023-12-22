@@ -1,8 +1,9 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.course.session.Apply;
 import nextstep.courses.domain.course.session.Session;
 import nextstep.courses.domain.course.session.SessionRepository;
+import nextstep.courses.domain.course.session.apply.Apply;
+import nextstep.courses.domain.course.session.apply.ApplyRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
@@ -17,6 +18,9 @@ public class SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
+    @Resource(name = "applyRepository")
+    private ApplyRepository applyRepository;
+
     public void create(Long courseId, Session session) {
         sessionRepository.save(courseId, session);
     }
@@ -24,21 +28,21 @@ public class SessionService {
     public void applySession(NsUser loginUser, Long sessionId, Payment payment, LocalDateTime date) {
         Session session = getSession(sessionId);
         Apply apply = session.apply(loginUser, payment, date);
-        sessionRepository.saveApply(apply);
+        applyRepository.save(apply);
     }
 
-    public void approve(NsUser loginUser, NsUser applicant, Long sessionId, LocalDateTime date) {
+    public void approve(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
-        Apply savedApply = getApply(sessionId, loginUser.getId());
-        Apply apply = session.approve(loginUser, applicant, savedApply, date);
-        sessionRepository.updateApply(apply);
+        Apply savedApply = getApply(sessionId, applicantId);
+        Apply apply = session.approve(loginUser, savedApply, date);
+        applyRepository.update(apply);
     }
 
-    public void cancel(NsUser loginUser, NsUser applicant, Long sessionId, LocalDateTime date) {
+    public void cancel(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
-        Apply savedApply = getApply(sessionId, loginUser.getId());
-        Apply apply = session.cancel(loginUser, applicant, savedApply, date);
-        sessionRepository.updateApply(apply);
+        Apply savedApply = getApply(sessionId, applicantId);
+        Apply apply = session.cancel(loginUser, savedApply, date);
+        applyRepository.update(apply);
     }
 
     public void changeOnReady(Long sessionId, LocalDate date) {
@@ -47,9 +51,9 @@ public class SessionService {
         sessionRepository.update(sessionId, session);
     }
 
-    public void changeOnRecruit(Long sessionId, LocalDate date) {
+    public void changeOnGoing(Long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
-        session.changeOnRecruit(date);
+        session.changeOnGoing(date);
         sessionRepository.update(sessionId, session);
     }
 
@@ -64,6 +68,6 @@ public class SessionService {
     }
 
     private Apply getApply(Long sessionId, Long nsUserId) {
-        return sessionRepository.findApplyByIds(sessionId, nsUserId).orElseThrow(NotFoundException::new);
+        return applyRepository.findApplyByNsUserIdAndSessionId(sessionId, nsUserId).orElseThrow(NotFoundException::new);
     }
 }

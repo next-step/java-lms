@@ -125,10 +125,8 @@ public class NsUser {
         return Objects.equals(this.id, nsUserId);
     }
 
-    public void checkUserHasAuthor() {
-        if(this.type == Type.STUDENT) {
-            throw new IllegalArgumentException("신청을 승인 할 권한이 없습니다.");
-        }
+    public boolean hasAuthor() {
+        return this.type.isTeacher();
     }
 
     private static class GuestNsUser extends NsUser {

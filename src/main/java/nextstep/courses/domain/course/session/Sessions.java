@@ -38,7 +38,7 @@ public class Sessions implements Iterable<Session> {
 
     private void checkSessionAlreadyExisted(Session session) {
         if (this.sessions.contains(session)) {
-            throw new IllegalArgumentException("이미 강의를 추가하였습니다.");
+            throw new IllegalArgumentException("이미 강의를 추가 하였습니다.");
         }
     }
 

@@ -1,6 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.course.session.*;
+import nextstep.courses.domain.course.session.apply.Applies;
+import nextstep.courses.domain.course.session.apply.ApplyRepository;
 import nextstep.courses.domain.course.session.image.Image;
 import nextstep.courses.domain.course.session.image.ImageRepository;
 import nextstep.courses.domain.course.session.image.Images;
@@ -24,13 +26,13 @@ import java.util.Optional;
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
     private final ImageRepository imageRepository;
-    private final ApplicantsRepository applicantsRepository;
+    private final ApplyRepository applyRepository;
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.imageRepository = new JdbcImageRepository(jdbcTemplate);
-        this.applicantsRepository = new JdbcApplicantsRepository(jdbcTemplate);
+        this.applyRepository = new JdbcApplyRepository(jdbcTemplate);
     }
 
     @Override
@@ -50,11 +52,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionState(
                         SessionType.find(rs.getString(4)),
                         rs.getLong(5),
-                        rs.getInt(6)
+                        rs.getInt(6),
+                        findAllAppliesBySessionId(id)
                 ),
-                findAllBySessionId(id),
-                RecruitStatus.find(rs.getString(7)),
-                SessionStatus.find(rs.getString(8)),
+                SessionRecruitStatus.find(rs.getString(7)),
+                SessionProgressStatus.find(rs.getString(8)),
                 rs.getLong(10),
                 rs.getTimestamp(11).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(12)));
@@ -77,10 +79,10 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private Session saveSession(Long courseId, Session session) {
         Duration duration = session.getDuration();
-        RecruitStatus recruitStatus = session.getRecruitStatus();
+        SessionRecruitStatus sessionRecruitStatus = session.getRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionStatus sessionStatus = session.getSessionStatus();
+        SessionProgressStatus sessionProgressStatus = session.getSessionStatus();
         String sql = "insert into session " +
                 "(start_date, end_date, session_type, session_status, amount, " +
                 "recruit_status, quota, course_id, creator_id, created_at, updated_at) " +
@@ -91,9 +93,9 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(1, Timestamp.valueOf(duration.getStartDate().atStartOfDay()));
             ps.setTimestamp(2, Timestamp.valueOf(duration.getEndDate().atStartOfDay()));
             ps.setString(3, sessionType.name());
-            ps.setString(4, sessionStatus.name());
+            ps.setString(4, sessionProgressStatus.name());
             ps.setLong(5, sessionState.getAmount());
-            ps.setString(6, recruitStatus.name());
+            ps.setString(6, sessionRecruitStatus.name());
             ps.setInt(7, sessionState.getQuota());
             ps.setLong(8, courseId);
             ps.setLong(9, session.getCreatorId());
@@ -109,41 +111,17 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int saveApply(Apply apply) {
-        String sql = "insert into apply " +
-                "(session_id, ns_user_id, approved, creator_id, created_at, updated_at) " +
-                "values(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(), apply.isApproved(),
-                apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
-    }
-
-    @Override
-    public Optional<Apply> findApplyByIds(Long nsUserId, Long sessionId) {
-        String sql = "select " +
-                "session_id, ns_user_id, approved, creator_id, created_at, updated_at " +
-                "from apply where ns_user_id = ? and session_id = ?";
-        RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
-                rs.getLong(1),
-                rs.getLong(2),
-                rs.getBoolean(3),
-                rs.getLong(4),
-                rs.getTimestamp(5).toLocalDateTime(),
-                toLocalDateTime(rs.getTimestamp(6)));
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, nsUserId, sessionId));
-    }
-
-    @Override
     public int update(Long sessionId, Session session) {
         Duration duration = session.getDuration();
-        RecruitStatus recruitStatus = session.getRecruitStatus();
+        SessionRecruitStatus sessionRecruitStatus = session.getRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionStatus sessionStatus = session.getSessionStatus();
+        SessionProgressStatus sessionProgressStatus = session.getSessionStatus();
         String sql = "update session set " +
                 "start_date = ?, end_date = ?, session_type = ?, recruit_status = ?, amount = ?, quota = ?, session_status = ? " +
                 "where id = ?";
         return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(),
-                recruitStatus.name(), sessionState.getAmount(), sessionState.getQuota(), sessionStatus.name(), sessionId);
+                sessionRecruitStatus.name(), sessionState.getAmount(), sessionState.getQuota(), sessionProgressStatus.name(), sessionId);
     }
 
     @Override
@@ -162,11 +140,11 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionState(
                         SessionType.find(rs.getString(4)),
                         rs.getLong(5),
-                        rs.getInt(6)
+                        rs.getInt(6),
+                        findAllAppliesBySessionId(rs.getLong(7))
                 ),
-                findAllBySessionId(rs.getLong(7)),
-                RecruitStatus.find(rs.getString(8)),
-                SessionStatus.find(rs.getString(9)),
+                SessionRecruitStatus.find(rs.getString(8)),
+                SessionProgressStatus.find(rs.getString(9)),
                 rs.getLong(10),
                 rs.getTimestamp(11).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(12)));
@@ -176,23 +154,17 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateCourse(Long courseId, Session session) {
+    public int updateCourseId(Long courseId, Session session) {
         String sql = "update session set course_id = ? where id = ?";
         return jdbcTemplate.update(sql, session.getId(), courseId);
-    }
-
-    @Override
-    public int updateApply(Apply apply) {
-        String sql = "update apply set approved = ? where session_id = ? and ns_user_id = ?";
-        return jdbcTemplate.update(sql, apply.isApproved(), apply.getSessionId(), apply.getNsUserId());
     }
 
     private Images findAllImagesBySessionId(Long id) {
         return this.imageRepository.findAllBySessionId(id);
     }
 
-    private Applicants findAllBySessionId(Long id) {
-        return this.applicantsRepository.findAllBySessionId(id);
+    private Applies findAllAppliesBySessionId(Long id) {
+        return this.applyRepository.findAllBySessionId(id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

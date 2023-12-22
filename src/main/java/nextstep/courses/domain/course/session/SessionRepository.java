@@ -1,7 +1,5 @@
 package nextstep.courses.domain.course.session;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.Optional;
 
 public interface SessionRepository {
@@ -9,15 +7,9 @@ public interface SessionRepository {
 
     Session save(Long courseId, Session session);
 
-    int saveApply(Apply apply);
-
-    Optional<Apply> findApplyByIds(Long NsUserId, Long sessionId);
-
     int update(Long sessionId, Session session);
 
     Sessions findAllByCourseId(Long courseId);
 
-    int updateCourse(Long courseId, Session session);
-
-    int updateApply(Apply apply);
+    int updateCourseId(Long courseId, Session session);
 }

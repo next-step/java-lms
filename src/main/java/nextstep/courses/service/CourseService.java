@@ -23,7 +23,7 @@ public class CourseService {
     public void addSession(long courseId, Session session) {
         Course course = getCourse(courseId);
         course.addSession(session);
-        sessionRepository.updateCourse(courseId, session);
+        sessionRepository.updateCourseId(courseId, session);
     }
 
     private Course getCourse(long courseId) {

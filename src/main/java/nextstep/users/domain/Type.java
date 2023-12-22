@@ -1,7 +1,5 @@
 package nextstep.users.domain;
 
-import nextstep.courses.domain.course.session.SessionStatus;
-
 import java.util.Arrays;
 
 public enum Type {
@@ -22,6 +20,10 @@ public enum Type {
                                 String.format("허용하는 값은 다음과 같습니다.\n %s", descriptions())
                         )
                 );
+    }
+
+    public boolean isTeacher() {
+        return this == TEACHER;
     }
 
     public static String descriptions() {

@@ -2,17 +2,18 @@ package nextstep.courses.domain.course.session;
 
 import java.util.Arrays;
 
-public enum RecruitStatus {
-    RECRUIT("모집중"),
-    NOT_RECRUIT("비모집중");
+public enum SessionProgressStatus {
+    READY("준비중"),
+    ONGOING("진행중"),
+    END("종료");
 
     private final String description;
 
-    RecruitStatus(String description) {
+    SessionProgressStatus(String description) {
         this.description = description;
     }
 
-    public static RecruitStatus find(String name) {
+    public static SessionProgressStatus find(String name) {
         return Arrays.stream(values())
                 .filter(status -> status.name().equals(name))
                 .findAny()
@@ -25,11 +26,15 @@ public enum RecruitStatus {
 
     public static String descriptions() {
         StringBuilder sb = new StringBuilder();
-        for (RecruitStatus recruitStatus : values()) {
-            sb.append(recruitStatus.description).append(", ");
+        for (SessionProgressStatus status : values()) {
+            sb.append(status.description).append(", ");
         }
         sb.setLength(sb.length() - 2);
 
         return sb.toString();
+    }
+
+    public boolean notReadyOrOnGoing() {
+        return this == SessionProgressStatus.END;
     }
 }

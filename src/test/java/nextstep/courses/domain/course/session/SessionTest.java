@@ -1,233 +1,216 @@
 package nextstep.courses.domain.course.session;
 
-import nextstep.courses.domain.course.session.image.Image;
-import nextstep.courses.domain.course.session.image.ImageType;
-import nextstep.courses.domain.course.session.image.Images;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.Type;
-import org.junit.jupiter.api.BeforeEach;
+import nextstep.courses.domain.course.session.apply.Apply;
+import nextstep.courses.fixture.ApplyFixtures;
+import nextstep.courses.fixture.ImageFixtures;
+import nextstep.courses.fixture.SessionFixtures;
+import nextstep.payments.fixture.PaymentFixtures;
+import nextstep.users.fixtures.NsUserFixtures;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
-    private static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net" ,Type.TEACHER);
-    private static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net",Type.TEACHER);
-    private static final NsUser APPLE = new NsUser(3L, "apple", "password", "name", "apple@slipp.net",Type.TEACHER);
-    private static final NsUser ERIC = new NsUser(4L, "apple", "password", "name", "apple@slipp.net",Type.STUDENT);
-    private static final LocalDate DATE_2023_12_5 = LocalDate.of(2023, 12, 5);
-    private static final LocalDate DATE_2023_12_6 = LocalDate.of(2023, 12, 6);
-    private static final LocalDate DATE_2023_12_10 = LocalDate.of(2023, 12, 10);
-    private static final LocalDate DATE_2023_12_12 = LocalDate.of(2023, 12, 12);
-
-    private Images images;
-    private Image image;
-    private Payment payment;
-    private Payment differentPayment;
-    private LocalDate localDate;
-    private LocalDateTime localDateTime;
-    private Applicants applicants;
-    private Duration duration;
-    private SessionState sessionState;
     private Session session;
 
-    @BeforeEach
-    void setUp() {
-        payment = new Payment("1", 1L, 3L, 1000L);
-        differentPayment = new Payment("1", 1L, 3L, 500L);
-        localDate = LocalDate.of(2023, 12, 5);
-        localDateTime = LocalDateTime.of(2023, 12, 5, 12, 0);
-        image = new Image(1000, ImageType.GIF, Image.WIDTH_MIN, Image.HEIGHT_MIN, 1L, localDateTime);
-        images = new Images(List.of(image));
-        duration = new Duration(localDate, localDate);
-        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
-        applicants = new Applicants();
-        this.applicants.addApplicant(JAVAJIGI, sessionState);
-        this.applicants.addApplicant(SANJIGI, sessionState);
-        this.applicants.addApplicant(ERIC, sessionState);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-    }
-
     @Test
-    @DisplayName("강의는 이미지가 없으면 이미지를 추가하라는 예외를 반환한다.")
+    @DisplayName("강의는 이미지가 없으면 이미지를 추가하라는 예외를 반환 한다.")
     void newObject_imageNull_throwsException() {
-        sessionState = new SessionState(SessionType.FREE, 0L, Integer.MAX_VALUE);
         assertThatThrownBy(
-                () -> new Session(null, duration, sessionState, 1L, localDateTime)
+                () -> new Session(
+                        null,
+                        SessionFixtures.duration(),
+                        SessionFixtures.freeSessionStateZero(),
+                        1L,
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("강의는 기간이 없으면 기간을 추가하라는 예외를 반환한다.")
+    @DisplayName("강의는 기간이 없으면 기간을 추가하라는 예외를 반환 한다.")
     void newObject_durationNull_throwsException() {
         assertThatThrownBy(
-                () -> new Session(images, null, sessionState, 1L, localDateTime)
+                () -> new Session(
+                        ImageFixtures.images(),
+                        null,
+                        SessionFixtures.freeSessionStateZero(),
+                        1L,
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("강의는 강의 상태가 없으면 상태를 추가하라는 예외를 반환한다.")
+    @DisplayName("강의는 강의 상태가 없으면 상태를 추가하라는 예외를 반환 한다.")
     void newObject_sessionStateNull_throwsException() {
         assertThatThrownBy(
-                () -> new Session(images, duration, null, 1L, localDateTime)
+                () -> new Session(
+                        ImageFixtures.images(),
+                        SessionFixtures.duration(),
+                        null,
+                        1L,
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("수강 신청은 모집 상태에서 준비중이면 해당 인원이 추가된다.")
+    @DisplayName("수강 신청은 모집 중, 준비 중이면 해당 인원이 추가 된다.")
     void apply_recruit_ready_success() {
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession(SessionRecruitStatus.RECRUIT, SessionProgressStatus.READY);
 
-        assertThat(session.applyCount()).isEqualTo(3);
+        int size = session.applyCount();
 
-        session.apply(APPLE, payment, localDateTime);
+        session.apply(
+                NsUserFixtures.TEACHER_APPLE_3L,
+                PaymentFixtures.payment(1L, 3L),
+                SessionFixtures.DATETIME_2023_12_5
+        );
 
-        assertThat(session.applyCount()).isEqualTo(4);
+        assertThat(session.applyCount()).isEqualTo(size + 1);
     }
 
     @Test
-    @DisplayName("수강 신청은 모집 상태에서 진행중이면 해당 인원이 추가된다.")
+    @DisplayName("수강 신청은 모집 중, 진행 중이면 해당 인원이 추가 된다.")
     void apply_recruit_ongoing_success() {
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession(SessionRecruitStatus.RECRUIT, SessionProgressStatus.ONGOING);
 
-        assertThat(session.applyCount()).isEqualTo(3);
+        int size = session.applyCount();
 
-        session.apply(APPLE, payment, localDateTime);
+        session.apply(
+                NsUserFixtures.TEACHER_APPLE_3L,
+                PaymentFixtures.payment(1L, 3L),
+                SessionFixtures.DATETIME_2023_12_5
+        );
 
-        assertThat(session.applyCount()).isEqualTo(4);
+        assertThat(session.applyCount()).isEqualTo(size + 1);
     }
 
     @Test
-    @DisplayName("수강 신청은 비모집중이면 신청할 수 없다는 예외를 반환한다.")
+    @DisplayName("수강 신청은 비 모집 중이면 신청할 수 없다는 예외를 반환 한다.")
     void apply_notRecruitStatus_throwsException() {
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession(SessionRecruitStatus.NOT_RECRUIT, SessionProgressStatus.ONGOING);
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, payment, localDateTime)
+                () -> session.apply(
+                        NsUserFixtures.TEACHER_APPLE_3L,
+                        PaymentFixtures.payment(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("수강 신청은 모집 중이어도 종료되었다면 신청할 수 없다는 예외를 반환한다.")
+    @DisplayName("수강 신청은 모집 중, 종료 라면 신청할 수 없다는 예외를 반환 한다.")
     void apply_recruitStatus_endStatus_throwsException() {
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.END, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession(SessionRecruitStatus.RECRUIT, SessionProgressStatus.END);
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, payment, localDateTime)
+                () -> session.apply(
+                        NsUserFixtures.TEACHER_APPLE_3L,
+                        PaymentFixtures.payment(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("수강 신청은 유료 강의 수강 인원 정원을 초과하면 신청할 수 없다는 예외를 반환한다.")
+    @DisplayName("수강 신청은 유료 강의의 경우, 수강 인원 정원을 초과 하면 신청할 수 없다는 예외를 반환 한다.")
     void apply_chargeSession_overQuota_throwsException() {
-        applicants = new Applicants();
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        applicants.addApplicant(JAVAJIGI, session.getSessionState());
-        applicants.addApplicant(SANJIGI, session.getSessionState());
+        session = SessionFixtures.chargedSessionFullCanceled();
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, payment, localDateTime)
+                () -> session.apply(
+                        NsUserFixtures.TEACHER_APPLE_3L,
+                        PaymentFixtures.payment(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("수강 신청은 유료 강의 결제가 안되었다면 신청할 수 없다는 예외를 반환한다.")
+    @DisplayName("수강 신청은 유료 강의 결제가 안 되었다면 신청할 수 없다는 예외를 반환 한다.")
     void apply_chargeSession_notPaid_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession();
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, null, localDateTime)
+                () -> session.apply(
+                        NsUserFixtures.TEACHER_APPLE_3L,
+                        null,
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("수강 신청은 수강 금액과 지불 금액이 다르면 신청할 수 없다는 예외를 던진다.")
     void apply_chargeSession_differentAmount_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.createdChargedSession();
 
         assertThatThrownBy(
-                () -> session.apply(APPLE, differentPayment, localDateTime)
+                () -> session.apply(
+                        NsUserFixtures.TEACHER_APPLE_3L,
+                        PaymentFixtures.differentPayment(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("changeOnReady는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
-    void changeOnReady_startDateIsBeforeOrSame_throwsException() {
-        duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+    @DisplayName("changeOnReady 는 변경할 날짜가 강의 종료일과 같거나 늦으면 예외를 던진다.")
+    void changeOnReady_changeDateIsSameOrAfterWithEndDate_throwsException() {
+        session = SessionFixtures.createdFreeSession();
 
         assertThatThrownBy(
-                () -> session.changeOnReady(DATE_2023_12_5)
+                () -> session.changeOnReady(SessionFixtures.DATE_2023_12_10)
         ).isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-                () -> session.changeOnReady(DATE_2023_12_6)
+                () -> session.changeOnReady(SessionFixtures.DATE_2023_12_12)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("changeOnRecruit는 강의 시작날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
-    void changeOnRecruit_startDateIsBeforeOrSame_throwsException() {
-        duration = new Duration(DATE_2023_12_5, DATE_2023_12_10);
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.READY, 1L, localDateTime, localDateTime);
+    @DisplayName("changeOnGoing 는 변경할 날짜가 강의 종료일과 같거나 늦으면 예외를 던진다.")
+    void changeOnGoing_changeDateIsSameOrAfterWithEndDate_throwsException() {
+        session = SessionFixtures.createdFreeSession();
 
         assertThatThrownBy(
-                () -> session.changeOnRecruit(DATE_2023_12_5)
+                () -> session.changeOnGoing(SessionFixtures.DATE_2023_12_10)
         ).isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-                () -> session.changeOnRecruit(DATE_2023_12_6)
+                () -> session.changeOnGoing(SessionFixtures.DATE_2023_12_12)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("changeOnRecruit는 강의 종료 날짜가 변경하려는 날짜와 같거나 늦으면 변경 할 수 없다는 예외를 던진다.")
-    void changeOnEnd_EndDateIsSameOrAfter_throwsException() {
-        duration = new Duration(DATE_2023_12_5, DATE_2023_12_12);
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 10);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.NOT_RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
+    @DisplayName("changeOnEnd 는 변경할 날짜가 강의 종료일보다 빠르거나 같다면 예외를 던진다.")
+    void changeOnEnd_changeDateIsBeforeOrSameWithEndDate_throwsException() {
+        session = SessionFixtures.createdFreeSession();
 
         assertThatThrownBy(
-                () -> session.changeOnEnd(DATE_2023_12_6)
+                () -> session.changeOnEnd(SessionFixtures.DATE_2023_12_6)
         ).isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-                () -> session.changeOnEnd(DATE_2023_12_12)
+                () -> session.changeOnEnd(SessionFixtures.DATE_2023_12_10)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("approve 는 선생님인 경우 수강생의 강의 신청을 승인한다.")
     void approve_teacher_changeApproveTrue() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullCanceled();
 
-        Apply changedApply = session.approve(JAVAJIGI, ERIC, apply, localDateTime);
+        Apply changedApply = session.approve
+                (NsUserFixtures.TEACHER_JAVAJIGI_1L,
+                ApplyFixtures.apply_one_canceled(),
+                SessionFixtures.DATETIME_2023_12_5
+                );
 
         assertThat(changedApply.isApproved()).isTrue();
     }
@@ -235,38 +218,41 @@ public class SessionTest {
     @Test
     @DisplayName("approve 는 학생인 경우 권한이 없다는 예외를 던진다.")
     void approve_student_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullCanceled();
 
         assertThatThrownBy(
-                () -> session.approve(ERIC, JAVAJIGI, apply, localDateTime)
+                () -> session.approve(
+                        NsUserFixtures.STUDENT_ERIC_4L,
+                        ApplyFixtures.apply_one_canceled(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("approve 는 이미 수강 승인이 되었으면 예외를 던진다.")
     void approve_alreadyApproved_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, true, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullApproved();
 
         assertThatThrownBy(
-                () -> session.approve(JAVAJIGI, ERIC, apply, localDateTime)
+                () -> session.approve(
+                        NsUserFixtures.TEACHER_JAVAJIGI_1L,
+                        ApplyFixtures.apply_one_approved(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("cancel 는 선생님인 경우 수강생의 강의 신청을 취소한다.")
     void cancel_teacher_changeApproveTrue() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(4L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, true, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullApproved();
 
-        Apply changedApply = session.cancel(JAVAJIGI, ERIC, apply, localDateTime);
+        Apply changedApply = session.cancel(
+                NsUserFixtures.TEACHER_JAVAJIGI_1L,
+                ApplyFixtures.apply_one_canceled(),
+                SessionFixtures.DATETIME_2023_12_5
+        );
 
         assertThat(changedApply.isApproved()).isFalse();
     }
@@ -274,26 +260,28 @@ public class SessionTest {
     @Test
     @DisplayName("cancel 는 학생인 경우 권한이 없다는 예외를 던진다.")
     void cancel_student_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullApproved();
 
         assertThatThrownBy(
-                () -> session.cancel(ERIC, JAVAJIGI, apply, localDateTime)
+                () -> session.cancel(
+                        NsUserFixtures.STUDENT_ERIC_4L,
+                        ApplyFixtures.apply_one_approved(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("cancel 는 이미 수강 취소가 되었으면 예외를 던진다.")
     void cancel_alreadyCanceled_throwsException() {
-        sessionState = new SessionState(SessionType.CHARGE, 1000L, 2);
-        session = new Session(1L, images, duration, sessionState, applicants,
-                RecruitStatus.RECRUIT, SessionStatus.ONGOING, 1L, localDateTime, localDateTime);
-        Apply apply = new Apply(1L, 4L, false, 1L, localDateTime, localDateTime);
+        session = SessionFixtures.chargedSessionFullCanceled();
 
         assertThatThrownBy(
-                () -> session.cancel(JAVAJIGI, ERIC, apply, localDateTime)
+                () -> session.cancel(
+                        NsUserFixtures.TEACHER_JAVAJIGI_1L,
+                        ApplyFixtures.apply_one_canceled(),
+                        SessionFixtures.DATETIME_2023_12_5
+                )
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

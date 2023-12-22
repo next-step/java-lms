@@ -1,6 +1,7 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.BaseEntity;
+import nextstep.courses.domain.course.session.apply.Apply;
 import nextstep.courses.domain.course.session.image.Images;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -14,32 +15,26 @@ public class Session extends BaseEntity {
 
     private Images images;
 
-    private Applicants applicants;
-
     private SessionDetail sessionDetail;
 
     public Session(Images images, Duration duration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
-        this(0L, images, duration, sessionState, new Applicants(),
-                RecruitStatus.NOT_RECRUIT, SessionStatus.READY, creatorId, date, null);
+        this(0L, images, duration, sessionState, SessionRecruitStatus.NOT_RECRUIT,
+                SessionProgressStatus.READY, creatorId, date, null);
     }
 
     public Session(Long id, Images images, Duration duration, SessionState sessionState,
-                   Applicants applicants, RecruitStatus recruitStatus, SessionStatus sessionStatus,
+                   SessionRecruitStatus sessionRecruitStatus, SessionProgressStatus sessionProgressStatus,
                    Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, images, applicants, new SessionDetail(duration, sessionState, sessionStatus, recruitStatus),
+        this(id, images, new SessionDetail(duration, sessionState, sessionProgressStatus, sessionRecruitStatus),
                 creatorId, createdAt, updatedAt);
     }
 
-    public Session(Long id, Images images, Applicants applicants, SessionDetail sessionDetail,
+    public Session(Long id, Images images, SessionDetail sessionDetail,
                    Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (images == null) {
             throw new IllegalArgumentException("이미지를 추가해야 합니다");
-        }
-
-        if (applicants == null) {
-            throw new IllegalArgumentException("수강생을 추가해야 합니다.");
         }
 
         if (sessionDetail == null) {
@@ -48,32 +43,13 @@ public class Session extends BaseEntity {
 
         this.id = id;
         this.images = images;
-        this.applicants = applicants;
         this.sessionDetail = sessionDetail;
     }
 
     public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
-        sessionDetail.checkApplyPossible();
         checkPaymentIsPaid(loginUser, payment);
 
-        this.applicants.addApplicant(loginUser, sessionDetail.getSessionState());
-        return toApply(loginUser, false, date);
-    }
-
-    public Apply approve(NsUser loginUser, NsUser applicant, Apply apply, LocalDateTime date) {
-        loginUser.checkUserHasAuthor();
-        this.applicants.checkApprovePossible(applicant, sessionDetail.getSessionState());
-        apply.checkApprovePossible();
-
-        return toApply(applicant, true, date);
-    }
-
-    public Apply cancel(NsUser loginUser, NsUser applicant, Apply apply, LocalDateTime date) {
-        loginUser.checkUserHasAuthor();
-        this.applicants.checkCancelPossible(applicant, sessionDetail.getSessionState());
-        apply.checkCancelPossible();
-
-        return toApply(applicant, false, date);
+        return this.sessionDetail.addApply(this.id, loginUser.getId(), date);
     }
 
     private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
@@ -84,28 +60,42 @@ public class Session extends BaseEntity {
 
     private void checkPaymentIsValid(NsUser loginUser, Payment payment) {
         if (payment == null || !payment.isPaid(loginUser, this)) {
-            throw new IllegalArgumentException("결제를 다시 확인하세요;");
+            throw new IllegalArgumentException("결제를 다시 확인하세요.");
         }
     }
 
-    private Apply toApply(NsUser loginUser, boolean approved, LocalDateTime date) {
-        return new Apply(this, loginUser, approved, date);
+    public Apply approve(NsUser loginUser, Apply apply, LocalDateTime date) {
+        checkUserHasAuthor(loginUser);
+
+        return sessionDetail.approve(apply, date);
+    }
+
+    public Apply cancel(NsUser loginUser, Apply apply, LocalDateTime date) {
+        checkUserHasAuthor(loginUser);
+
+        return sessionDetail.cancel(apply, date);
+    }
+
+    private void checkUserHasAuthor(NsUser loginUser) {
+        if(!loginUser.hasAuthor()) {
+            throw new IllegalArgumentException("신청을 승인 할 권한이 없습니다.");
+        }
     }
 
     public void changeOnReady(LocalDate date) {
         this.sessionDetail.changeOnReady(date);
     }
 
-    public void changeOnRecruit(LocalDate date) {
-        this.sessionDetail.changeOnRecruit(date);
+    public void changeOnGoing(LocalDate date) {
+        this.sessionDetail.changeOnGoing(date);
     }
 
     public void changeOnEnd(LocalDate date) {
         this.sessionDetail.changeOnEnd(date);
     }
 
-    public void setSessionState(SessionState updateSessionState) {
-        this.sessionDetail.setSessionState(updateSessionState);
+    public void changeSessionState(SessionState updateSessionState) {
+        this.sessionDetail.changeSessionState(updateSessionState);
     }
 
     public boolean sameAmount(Long amount) {
@@ -125,7 +115,7 @@ public class Session extends BaseEntity {
     }
 
     public int applyCount() {
-        return this.applicants.size();
+        return this.sessionDetail.size();
     }
 
     public Images getImages() {
@@ -134,10 +124,6 @@ public class Session extends BaseEntity {
 
     public void setImages(Images images) {
         this.images = images;
-    }
-
-    public Applicants getApplicants() {
-        return applicants;
     }
 
     public SessionDetail getSessionDetail() {
@@ -152,12 +138,25 @@ public class Session extends BaseEntity {
         return sessionDetail.getSessionState();
     }
 
-    public SessionStatus getSessionStatus() {
+    public SessionProgressStatus getSessionStatus() {
         return sessionDetail.getSessionStatus();
     }
 
-    public RecruitStatus getRecruitStatus() {
+    public SessionRecruitStatus getRecruitStatus() {
         return sessionDetail.getRecruitStatus();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
@@ -165,7 +164,6 @@ public class Session extends BaseEntity {
         return "Session{" +
                 "id=" + id +
                 ", images=" + images +
-                ", applicants=" + applicants +
                 ", sessionDetail=" + sessionDetail +
                 '}';
     }
