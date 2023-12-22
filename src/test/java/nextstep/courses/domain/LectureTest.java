@@ -53,10 +53,12 @@ public class LectureTest {
     int maxStudent = 0;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
         new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
+    Students students = Students.defaultOf();
+    students.add(NsUserTest.SANJIGI);
 
     // then
     assertThrows(IllegalArgumentException.class
-        , () -> lecture.enrollment(NsUserTest.SANJIGI));
+        , () -> lecture.enrollment(NsUserTest.SANJIGI, students));
   }
 
   @Test
@@ -68,10 +70,11 @@ public class LectureTest {
         new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
     NsUser javajigi = NsUserTest.JAVAJIGI;
     javajigi.payment(new Payment(new Price(BigDecimal.TEN)));
-
+    Students students = Students.defaultOf();
+    students.add(javajigi);
     // when
     Lecture newLecture = lecture.recruitingStart();
-    newLecture.enrollment(javajigi);
+    newLecture.enrollment(javajigi, students);
 
     // then
     assertThat(newLecture.numberOfStudent()).isEqualTo(1);
@@ -84,10 +87,11 @@ public class LectureTest {
     int maxStudent = 1;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
         new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
-
+    Students students = Students.defaultOf();
+    students.add(NsUserTest.SANJIGI);
     // then
     assertThrows(IllegalArgumentException.class
-        , () -> lecture.enrollment(NsUserTest.SANJIGI));
+        , () -> lecture.enrollment(NsUserTest.SANJIGI, students));
   }
 
   @Test
@@ -97,10 +101,11 @@ public class LectureTest {
     int maxStudent = 1;
     Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
         new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
-
+    Students selectedStudents = Students.defaultOf();
+    selectedStudents.add(NsUserTest.SANJIGI);
     // then
     assertThrows(IllegalArgumentException.class
-        , () -> lecture.enrollment(NsUserTest.SANJIGI));
+        , () -> lecture.enrollment(NsUserTest.SANJIGI, selectedStudents));
   }
 
   @Test
@@ -112,8 +117,27 @@ public class LectureTest {
     NsUser javajigi = NsUserTest.JAVAJIGI;
     javajigi.payment(new Payment(new Price(BigDecimal.ONE)));
     Lecture startLecture = lecture.recruitingStart();
+    Students selectedStudents = Students.defaultOf();
+    selectedStudents.add(NsUserTest.SANJIGI);
 
     assertThrows(IllegalArgumentException.class
-        , () -> startLecture.enrollment(javajigi));
+        , () -> startLecture.enrollment(javajigi, selectedStudents));
+  }
+
+  @Test
+  @DisplayName("선정되지 않은 학생이 수강신청을 하는 경우")
+  public void enrollment_fail_when_try_to_enroll_lecture() {
+    int maxStudent = 1;
+    Lecture lecture = new PaidLecture(0L, "test", coverImage, LectureRecruitingStatus.PREPARING,
+        new RegistrationPeriod(startDate, endDate), new Price(BigDecimal.TEN), maxStudent);
+    NsUser javajigi = NsUserTest.JAVAJIGI;
+    javajigi.payment(new Payment(new Price(BigDecimal.ONE)));
+    Lecture startLecture = lecture.recruitingStart();
+    Students selectedStudents = Students.defaultOf();
+    selectedStudents.add(NsUserTest.SANJIGI);
+
+
+    assertThrows(IllegalArgumentException.class
+        , () -> startLecture.enrollment(javajigi, selectedStudents));
   }
 }

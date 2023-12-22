@@ -90,7 +90,7 @@ public class PaidLecture extends BaseTime implements Lecture {
   }
 
   @Override
-  public void canEnrollment() {
+  public void canEnrollment(NsUser nsUser, Students selectedStudents) {
     if (!isRecruiting()) {
       throw new IllegalArgumentException("모집중이지 않습니다.");
     }
@@ -98,13 +98,17 @@ public class PaidLecture extends BaseTime implements Lecture {
     if (this.lectureStatus == LectureStatus.DONE) {
       throw new IllegalArgumentException("이미 종료된 강의입니다.");
     }
+
+    if (!selectedStudents.contain(nsUser)) {
+      throw new IllegalArgumentException("선발된 인원만 수강신청이 가능합니다.");
+    }
   }
 
   @Override
-  public void enrollment(NsUser nsUser) {
-    this.canEnrollment();
+  public void enrollment(NsUser nsUser, Students selectedStudents) {
+    this.canEnrollment(nsUser,selectedStudents);
     nsUser.hasPayment(price);
-    students.addWithLimitCount(nsUser, limitStudentCount);
+    this.students.addWithLimitCount(nsUser, limitStudentCount);
   }
 
   @Override

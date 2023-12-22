@@ -75,16 +75,20 @@ public class FreeLecture extends BaseTime implements Lecture {
   }
 
   @Override
-  public void canEnrollment() {
+  public void canEnrollment(NsUser nsUser, Students selectedStudents) {
     if (!isRecruiting()) {
       throw new IllegalArgumentException("모집중이지 않습니다.");
+    }
+
+    if (selectedStudents.contain(nsUser)) {
+      throw new IllegalArgumentException("선발된 인원만 수강신청이 가능합니다.");
     }
   }
 
   @Override
-  public void enrollment(NsUser nsUser) {
-    this.canEnrollment();
-    students.add(nsUser);
+  public void enrollment(NsUser nsUser, Students selectedStudents) {
+    this.canEnrollment(nsUser,selectedStudents);
+    this.students.add(nsUser);
   }
 
   @Override
