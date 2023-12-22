@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.courses.dto.CourseDTO;
 import nextstep.users.domain.NsUser;
 
 public class Course extends AuditInfo{
@@ -15,6 +16,14 @@ public class Course extends AuditInfo{
 
     public Course() {
         super(LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Course(Long id){
+        super(LocalDateTime.now(), LocalDateTime.now());
+        this.id=id;
+        this.title = "";
+        this.creatorId = -1L;
+        this.sessions = new Sessions();
     }
 
     public Course(String title, Long creatorId) {
@@ -37,9 +46,12 @@ public class Course extends AuditInfo{
         this.sessions = new Sessions();
     }
 
+    public void addSessions(Sessions sessions){
+        this.sessions.addAll(sessions);
+    }
 
-    public void enroll(NsUser user, Long sessionId) {
-        sessions.enroll(user, sessionId);
+    public Session enroll(NsUser user, Long sessionId) {
+        return sessions.enroll(user, sessionId);
     }
 
     public String getTitle() {
@@ -80,5 +92,9 @@ public class Course extends AuditInfo{
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public CourseDTO toDto(){
+        return new CourseDTO(id, title, creatorId, sessions);
     }
 }

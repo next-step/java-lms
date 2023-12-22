@@ -4,17 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.CourseTest;
 import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.Duration;
+import nextstep.courses.domain.EnrollmentRepository;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionPaymentType;
+import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.Sessions;
+import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
@@ -23,10 +28,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CourseServiceTest {
-
-
     private CourseRepository courseRepository;
-
+    private SessionService sessionService;
     private Session session;
     private List<NsUser> userList = new ArrayList<>();
 
@@ -46,7 +49,7 @@ class CourseServiceTest {
 
             private final List<Course> courses = new ArrayList<>(
                     List.of(
-                            new Course(0L, "JAVA", NsUserTest.JAVAJIGI.getId(), new Sessions(List.of(session)))));
+                            new Course(0L, "JAVA", NsUserTest.JAVAJIGI.getId(), new Sessions(new LinkedHashSet<>(Set.of(session))))));
 
             @Override
             public int save(Course course) {
@@ -66,13 +69,43 @@ class CourseServiceTest {
                 return result.get();
             }
         };
+
+        sessionService = new SessionService(new SessionRepository() {
+            @Override
+            public int save(SessionDTO session) {
+                return 0;
+            }
+
+            @Override
+            public Session findById(Long id) {
+                return null;
+            }
+
+            @Override
+            public Optional<Sessions> findByCourseId(Long courseId) {
+                return Optional.of(new Sessions(new LinkedHashSet<>(Set.of(session))));
+            }
+        },
+                new EnrollmentRepository(){
+
+                    @Override
+                    public int save(Long userId, Long sessionId) {
+                        return 0;
+                    }
+
+                    @Override
+                    public NsUsers findBySessionId(Long id) {
+                        return new NsUsers(userList);
+                    }
+                }
+        );
     }
 
     @Test
     @DisplayName("CourseService 강의 유저 등록")
     void enroll() {
-        CourseService courseService = new CourseService(courseRepository);
-        courseService.enroll(NsUserTest.SANJIGI,0L,0L);
+        CourseService courseService = new CourseService(courseRepository, sessionService);
+        courseService.enroll(NsUserTest.SANJIGI, 0L,0L);
         assertThat(userList).contains(NsUserTest.SANJIGI);
     }
 }

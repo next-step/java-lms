@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.dto.NsUserLimitDTO;
+
 public class NsUserLimit {
     private final int count;
     private final SessionPaymentType sessionPaymentType;
@@ -15,5 +17,9 @@ public class NsUserLimit {
 
     public boolean isFull(int size){
         return count <= size && sessionPaymentType == SessionPaymentType.PAID;
+    }
+
+    public NsUserLimitDTO toDto() {
+        return new NsUserLimitDTO(count);
     }
 }

@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.dto.SessionDTO;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,27 @@ class SessionTest {
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    @DisplayName("Enrollment의 nsUsers를 새 NsUsers로 교체")
+    void replaceEnrollmentNsUsers() {
+        List<NsUser> userList = new ArrayList<>(List.of(NsUserTest.JAVAJIGI));
+        Session session = new Session(0L,
+                CourseTest.C1,
+                0L,
+                SessionPaymentType.FREE,
+                new NsUsers(userList),
+                1,
+                new Duration(
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusMonths(1L)
+                ),
+                SessionStatus.READY,
+                new CoverImage("pobi.png", 500L, 300D, 200D)
+        );
+        NsUsers users = new NsUsers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
+        session.replaceEnrollmentNsUsers(e->users);
+        assertThat(userList).contains(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+    }
 
     @Test
     @DisplayName("전용 DTO 모델을 반환함")

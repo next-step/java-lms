@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.util.ArrayList;
+import nextstep.courses.dto.EnrollmentDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
@@ -33,5 +34,13 @@ public class Enrollment {
             throw new IllegalArgumentException(ExceptionMessage.ENROLLMENT_SIZE.getMessage());
         }
         users.add(nsUser);
+    }
+
+    public EnrollmentDTO toDto() {
+        return new EnrollmentDTO(users.toDto(), limits.toDto());
+    }
+
+    public void replaceUsers(NsUsers nsUsers){
+        this.users.replaceAll(nsUsers);
     }
 }

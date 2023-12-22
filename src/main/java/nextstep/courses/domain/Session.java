@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.LongFunction;
 import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
@@ -21,9 +23,9 @@ public class Session extends AuditInfo{
         this.course = new Course();
         this.duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
         this.sessionPayment = new SessionPayment(SessionPaymentType.FREE, 0L);
-        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()), new NsUserLimit(0, SessionPaymentType.PAID));
         this.sessionStatus = SessionStatus.READY;
         this.coverImage = new CoverImage("pobi.png", 500L, 300D, 200D);
+        this.enrollment = new Enrollment();
     }
 
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType, NsUsers nsUsers,
@@ -34,6 +36,20 @@ public class Session extends AuditInfo{
         this.duration = duration;
         this.sessionPayment = new SessionPayment(sessionPaymentType, amountOfPrice);
         this.enrollment = new Enrollment(nsUsers, new NsUserLimit(limitOfUserCount, sessionPaymentType));
+        this.sessionStatus = sessionStatus;
+        this.coverImage = coverImage;
+    }
+
+    public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType,
+                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage,
+                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.course = course;
+        this.duration = duration;
+        this.sessionPayment = new SessionPayment(sessionPaymentType, amountOfPrice);
+        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()),
+                new NsUserLimit(limitOfUserCount, sessionPaymentType));
         this.sessionStatus = sessionStatus;
         this.coverImage = coverImage;
     }
@@ -52,7 +68,28 @@ public class Session extends AuditInfo{
         return this.id.equals(id);
     }
 
+    public void replaceEnrollmentNsUsers(LongFunction<NsUsers> function){
+        this.enrollment.replaceUsers(function.apply(id));
+    }
+
     public SessionDTO toDto(){
-        return new SessionDTO(id, coverImage.toDto(), duration.toDto(), sessionPayment.toDto());
+        return new SessionDTO(id, course.toDto().getId(),coverImage.toDto(), duration.toDto(), sessionPayment.toDto(), sessionStatus, enrollment.toDto(), createdAt, updatedAt);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Session session = (Session) object;
+        return Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
