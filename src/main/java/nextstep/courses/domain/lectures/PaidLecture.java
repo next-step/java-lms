@@ -85,14 +85,18 @@ public class PaidLecture extends BaseTime implements Lecture {
   }
 
   @Override
-  public boolean recruiting() {
+  public boolean isRecruiting() {
     return LectureRecruitingStatus.RECRUITING.equals(this.lectureRecruitingStatus);
   }
 
   @Override
   public void canEnrollment() {
-    if (!recruiting()) {
+    if (!isRecruiting()) {
       throw new IllegalArgumentException("모집중이지 않습니다.");
+    }
+
+    if (this.lectureStatus == LectureStatus.DONE) {
+      throw new IllegalArgumentException("이미 종료된 강의입니다.");
     }
   }
 
@@ -106,6 +110,13 @@ public class PaidLecture extends BaseTime implements Lecture {
   @Override
   public Lecture recruitingStart() {
     return new PaidLecture(this.id, this.title, this.coverImages, this.lectureStatus,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod, this.price,
+        this.limitStudentCount, this.getCreatedAt(), this.getUpdatedAt());
+  }
+
+  @Override
+  public Lecture start() {
+    return new PaidLecture(this.id, this.title, this.coverImages, LectureStatus.DOING,
         LectureRecruitingStatus.RECRUITING, this.registrationPeriod, this.price,
         this.limitStudentCount, this.getCreatedAt(), this.getUpdatedAt());
   }

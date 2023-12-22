@@ -8,6 +8,7 @@ import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.NsUser;
 
 public class FreeLecture extends BaseTime implements Lecture {
+
   private final LectureType lectureType = LectureType.FREE;
   private final Long id;
   private final String title;
@@ -17,7 +18,8 @@ public class FreeLecture extends BaseTime implements Lecture {
   private final RegistrationPeriod registrationPeriod;
   private final Students students = Students.defaultOf(); // 강의 기본정보와는 다름
 
-  public FreeLecture(Long id, String title, CoverImages coverImages, LectureRecruitingStatus lectureRecruitingStatus,
+  public FreeLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod) {
     super();
     this.id = id;
@@ -28,7 +30,8 @@ public class FreeLecture extends BaseTime implements Lecture {
     this.registrationPeriod = registrationPeriod;
   }
 
-  public FreeLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus, LectureRecruitingStatus lectureRecruitingStatus,
+  public FreeLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod) {
     super();
     this.id = id;
@@ -38,7 +41,9 @@ public class FreeLecture extends BaseTime implements Lecture {
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
   }
-  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus, LectureRecruitingStatus lectureRecruitingStatus,
+
+  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
+      LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -48,6 +53,7 @@ public class FreeLecture extends BaseTime implements Lecture {
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
   }
+
   public FreeLecture(LectureEntity lecture) {
     super(lecture.getCreatedAt(), lecture.getUpdatedAt());
     this.id = lecture.id();
@@ -64,13 +70,13 @@ public class FreeLecture extends BaseTime implements Lecture {
   }
 
   @Override
-  public boolean recruiting() {
+  public boolean isRecruiting() {
     return LectureRecruitingStatus.RECRUITING.equals(this.lectureRecruitingStatus);
   }
 
   @Override
   public void canEnrollment() {
-    if (!recruiting()) {
+    if (!isRecruiting()) {
       throw new IllegalArgumentException("모집중이지 않습니다.");
     }
   }
@@ -83,7 +89,14 @@ public class FreeLecture extends BaseTime implements Lecture {
 
   @Override
   public Lecture recruitingStart() {
-    return new FreeLecture(this.id, this.title, this.coverImages, LectureRecruitingStatus.RECRUITING, this.registrationPeriod);
+    return new FreeLecture(this.id, this.title, this.coverImages,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod);
+  }
+
+  @Override
+  public Lecture start() {
+    return new FreeLecture(this.id, this.title, this.coverImages, LectureStatus.DOING,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod);
   }
 
   @Override
