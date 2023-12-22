@@ -60,7 +60,7 @@ public class SessionTest {
         Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
 
-        assertThrows(CannotSignUpException.class, () -> session.signUp(new Student(student.getId(), session.getId(), RegistrationState.PENDING)));
+        assertThrows(CannotSignUpException.class, () -> session.signUp(student));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SessionTest {
         Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.RECRUITING,
                 LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
 
-        session.signUp(new Student(student.getId(), session.getId(), RegistrationState.PENDING));
+        session.signUp(student);
         assertThat(session.getStudentCount()).isEqualTo(1);
     }
 }

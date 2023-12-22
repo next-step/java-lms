@@ -32,3 +32,8 @@
 
 ## STEP4 리팩토링
 * [X] Session 인스턴스 변수 줄이기
+
+## STEP4 보완사항
+* [ ] List Collection 중 일급 콜렉션으로 구현하면 의미있는 필드가 있을까? 의미 있다 생각하는 필드를 일급 콜렉션으로 구현해 보는 것은 어떨까?
+* [X] equals, hashCode, toString 사용하기 -> 사용하는 이유에 대해서 알아보기
+* [X] Session 생성자 타입을 NsUser로 변경한 뒤에 객체를 전달하기 

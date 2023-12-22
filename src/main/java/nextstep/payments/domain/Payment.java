@@ -1,5 +1,7 @@
 package nextstep.payments.domain;
 
+import nextstep.courses.CannotSignUpException;
+
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -44,6 +46,14 @@ public class Payment {
 
     public Long getNsUserId() {
         return nsUserId;
+    }
+
+    public boolean isNotSameSessionId(long sessionId) {
+        return this.sessionId != sessionId;
+    }
+
+    public boolean isNotSameStudentId(long studentId) {
+        return this.nsUserId != studentId;
     }
 
     public boolean isNotSameSessionFee(Long sessionFee) {

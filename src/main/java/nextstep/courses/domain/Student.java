@@ -13,11 +13,11 @@ public class Student {
         this.registrationState = registrationState;
     }
 
-    public void isCanceled() {
+    public void cancel() {
         this.registrationState = RegistrationState.CANCELED;
     }
 
-    public void isApproved() {
+    public void approve() {
         this.registrationState = RegistrationState.APPROVED;
     }
 

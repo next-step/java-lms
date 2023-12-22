@@ -5,13 +5,12 @@ import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.Student;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.qna.NotFoundException;
+import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static nextstep.courses.domain.session.RegistrationState.*;
 
 public class Session {
     private SessionInfo sessionInfo;
@@ -28,9 +27,10 @@ public class Session {
         this.systemTimeStamp = systemTimeStamp;
     }
 
-    public void signUp(Student student) {
+    public void signUp(NsUser student) {
+        Student studentInfo = new Student(student.getId(), this.getId(), RegistrationState.PENDING);
         validateEnrollmentStatus();
-        students.add(student);
+        students.add(studentInfo);
     }
 
     private void validateEnrollmentStatus() {
@@ -45,12 +45,12 @@ public class Session {
 
     public void cancelStudent(Student student) {
         Student validateStudent = validateIsAStudent(student);
-        validateStudent.isCanceled();
+        validateStudent.cancel();
     }
 
     public void approveStudent(Student student) {
         Student validatedStudent = validateIsAStudent(student);
-        validatedStudent.isApproved();
+        validatedStudent.approve();
     }
 
     private Student validateIsAStudent(Student student) {
@@ -99,5 +99,12 @@ public class Session {
 
     public int getImageCount() {
         return sessionImage.size();
+    }
+
+    public boolean isFree() {
+        return this.getSessionType().isFree();
+    }
+    public boolean isPaid() {
+        return this.getSessionType().isPaid();
     }
 }
