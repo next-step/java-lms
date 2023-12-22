@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.InvalidImageFormatException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.session.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,10 +50,10 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             try {
                 return new Session(
-                        rs.getLong(1),
+                        new SessionInfo(rs.getLong(1),
                         rs.getString(2),
                         rs.getLong(3),
-                        SessionType.valueOf(rs.getString(4)),
+                        SessionType.valueOf(rs.getString(4))),
                         new SessionPlan(EnrollmentStatus.valueOf(rs.getString(5)),
                                 rs.getDate(6).toLocalDate(),
                                 rs.getDate(7).toLocalDate()),

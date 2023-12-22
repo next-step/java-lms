@@ -2,10 +2,8 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.image.ImageType;
-import nextstep.courses.domain.image.SessionImage;
-import nextstep.courses.domain.image.SessionImageRepository;
 import nextstep.courses.domain.session.EnrollmentStatus;
+import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +39,7 @@ public class SessionRepositoryTest {
     @DisplayName("강의 정보를 저장한다.")
     void save_강의_Test() throws InvalidImageFormatException {
         Course course = new Course(1L, "TDD with java", 1L);
-        Session session = Session.valueOf(1L, "LMS", course.getId(), EnrollmentStatus.CLOSE
+        Session session = FreeSession.valueOf(1L, "LMS", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
 
         int count = sessionRepository.save(session);

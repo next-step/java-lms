@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.InvalidImageFormatException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.image.ImageFormat;
 import nextstep.courses.domain.image.SessionImageRepository;
 import nextstep.courses.domain.image.ImageType;
@@ -31,7 +31,7 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
                 , image.getImageFormat().getImageSize()
                 , image.getImageFormat().getWidth()
                 , image.getImageFormat().getHeight()
-                , image.getImageFormat().getImageType()
+                , image.getImageFormat().getImageType().name()
                 , image.getCreatedAt()
                 , image.getUpdatedAt());
     }

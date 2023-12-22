@@ -1,7 +1,6 @@
 package nextstep.courses.domain.image;
 
-import nextstep.courses.InvalidImageFormatException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
 import nextstep.courses.domain.session.Session;
 
 import java.time.LocalDateTime;
@@ -19,13 +18,9 @@ public class SessionImage {
 
 
     public static SessionImage valueOf(long id, Session session, int size, int width, int height, String imageType) {
-        return new SessionImage(id, "tmp", session.getSessionId()
+        return new SessionImage(id, "tmp", session.getId()
                 , new ImageFormat(size, width, height, ImageType.validateImageType(imageType))
                 , new SystemTimeStamp(LocalDateTime.now(), null));
-    }
-
-    public SessionImage(long id, String name, long sessionId, int size, int width, int height, ImageType imageType) {
-        this(id, name, sessionId, new ImageFormat(size, width, height, imageType), new SystemTimeStamp(LocalDateTime.now(), null));
     }
 
     public SessionImage(long id, String name, long sessionId, ImageFormat imageFormat, SystemTimeStamp systemTimeStamp) {

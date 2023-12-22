@@ -4,8 +4,9 @@ import nextstep.courses.CannotSignUpException;
 import nextstep.courses.InvalidImageFormatException;
 import nextstep.courses.domain.image.SessionImage;
 import nextstep.courses.domain.session.EnrollmentStatus;
+import nextstep.courses.domain.session.FreeSession;
+import nextstep.courses.domain.session.RegistrationState;
 import nextstep.courses.domain.session.Session;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,7 @@ public class SessionTest {
     void
     notHave_StartAndEndDate_Test() {
         assertThrows(IllegalArgumentException.class,
-                () -> Session.valueOf(1L, "과제4-리팩토링", course.getId(), EnrollmentStatus.RECRUITING
+                () -> FreeSession.valueOf(1L, "과제4-리팩토링", course.getId(), EnrollmentStatus.RECRUITING
                         , null, null, LocalDateTime.now(), LocalDateTime.now()));
     }
 
@@ -36,48 +37,39 @@ public class SessionTest {
     @DisplayName("강의는 시작일과 종료일을 가진다.")
     void haveDateTest() {
         assertDoesNotThrow(()
-                -> Session.valueOf(1L, "과제4-리팩토링", course.getId(), EnrollmentStatus.PREPARING
+                -> FreeSession.valueOf(1L, "과제4-리팩토링", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.of(2023, 12, 01), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now()));
     }
 
     @Test
     @DisplayName("강의는 강의 커버 이미지 정보를 가진다.")
     void saveSessionImageTest() throws InvalidImageFormatException {
-        Session session = Session.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.PREPARING
+        Session session = FreeSession.valueOf(1L, "과제4 - 레거시 리팩토링", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        assertThat(session.hasImage()).isFalse();
+        assertThat(session.getImageCount()).isEqualTo(0);
 
         SessionImage 강의_이미지 = SessionImage.valueOf(1L, session, 1024 * 1024, 300, 200, "jpg");
         session.saveImage(강의_이미지);
 
-        assertThat(session.hasImage()).isTrue();
+        assertThat(session.getImageCount()).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("강의가 준비중인 경우 수강신청을 하면 Exception Throw")
+    @DisplayName("강의가 모집중이 아닌 경우 수강신청을 하면 Exception Throw")
     void cannotSignUp_ForPreparingSession_Test() {
-        Session session = Session.valueOf(1L, "lms", course.getId(), EnrollmentStatus.PREPARING
+        Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.CLOSE
                 , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
-        assertThrows(CannotSignUpException.class, () -> session.signUp(student, payment));
+
+        assertThrows(CannotSignUpException.class, () -> session.signUp(student));
     }
 
     @Test
-    @DisplayName("강의가 종료상태인 경우 수강신청을 하면 Exception Throw")
-    void cannotSignUp_ForClosedSession_Test() {
-        Session session = Session.valueOf(1L, "LMS", course.getId(), EnrollmentStatus.CLOSE
-                , LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
-        assertThrows(CannotSignUpException.class, () -> session.signUp(student, payment));
-    }
-
-    @Test
-    @DisplayName("강의가 준비상태인 경우 수강신청이 가능하다.")
+    @DisplayName("강의가 모집중인 경우 수강신청이 가능하다.")
     void signUp_ForRecruitingSession_Test() throws CannotSignUpException {
-        Session session = Session.valueOf(1L,"lms", course.getId(), EnrollmentStatus.RECRUITING,
+        Session session = FreeSession.valueOf(1L, "lms", course.getId(), EnrollmentStatus.RECRUITING,
                 LocalDate.now(), LocalDate.now(), LocalDateTime.now(), LocalDateTime.now());
-        Payment payment = Payment.freeOf("1", session.getSessionId(), student.getId());
-        session.signUp(student, payment);
+
+        session.signUp(student);
         assertThat(session.getStudentCount()).isEqualTo(1);
     }
 }

@@ -1,89 +1,92 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotSignUpException;
-import nextstep.courses.domain.SystemTimeStamp;
+import nextstep.courses.common.SystemTimeStamp;
+import nextstep.courses.domain.Student;
 import nextstep.courses.domain.image.SessionImage;
-import nextstep.payments.domain.Payment;
+import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Session {
-    private long sessionId;
-    private String title;
-
-    private long courseId;
-    private SessionType sessionType;
-    private List<NsUser> students;
-    private SessionImage sessionImage;
+    private SessionInfo sessionInfo;
+    private List<SessionImage> sessionImage;
+    private List<Student> students;
     private SessionPlan sessionPlan;
     private SystemTimeStamp systemTimeStamp;
 
-    public static Session valueOf(long id, String title, long courseId, EnrollmentStatus enrollmentStatus
-            , LocalDate startDate, LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, title, courseId, SessionType.FREE
-                , new SessionPlan(enrollmentStatus, startDate, endDate)
-                , new SystemTimeStamp(createdAt, updatedAt));
-    }
-
-    public Session(Long sessionId, String title, long courseId, SessionType sessionType, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
-        this.sessionId = sessionId;
-        this.title = title;
-        this.courseId = courseId;
+    public Session(SessionInfo sessionInfo, SessionPlan sessionPlan, SystemTimeStamp systemTimeStamp) {
+        this.sessionInfo = sessionInfo;
         this.students = new ArrayList<>(Collections.emptyList());
-        this.sessionType = sessionType;
         this.sessionPlan = sessionPlan;
-        this.sessionImage = null;
+        this.sessionImage = new ArrayList<>(Collections.emptyList());;
         this.systemTimeStamp = systemTimeStamp;
     }
 
-    public void signUp(NsUser student, Payment payment) {
-        validateSessionStatus();
-        validatePayInfo(student, payment);
-        students.add(student);
+    public void signUp(NsUser student) {
+        Student studentInfo = new Student(student.getId(), this.getId(), RegistrationState.PENDING);
+        validateEnrollmentStatus();
+        students.add(studentInfo);
     }
 
-    private void validatePayInfo(NsUser student, Payment payment) {
-        if (payment.getSessionId() != sessionId) {
-            throw new CannotSignUpException("결제한 강의정보가 맞지 않습니다.");
-        }
-        if (student.getId() != payment.getNsUserId()) {
-            throw new CannotSignUpException("결제자와 신청자의 정보가 일치하지 않습니다.");
-        }
-    }
-
-    private void validateSessionStatus() {
+    private void validateEnrollmentStatus() {
         if (!EnrollmentStatus.canSignUp(this.sessionPlan.getEnrollmentStatus())) {
             throw new CannotSignUpException("강의 모집중이 아닙니다.");
         }
     }
 
     public void saveImage(SessionImage sessionImage) {
-        this.sessionImage = sessionImage;
+        this.sessionImage.add(sessionImage);
+    }
+
+    public void cancelStudent(Student student) {
+        Student validateStudent = validateIsAStudent(student);
+        validateStudent.cancel();
+    }
+
+    public void approveStudent(Student student) {
+        Student validatedStudent = validateIsAStudent(student);
+        validatedStudent.approve();
+    }
+
+    private Student validateIsAStudent(Student student) {
+        return this.getAllStudents().stream()
+                .filter(x -> x.getNsUserId() == student.getNsUserId())
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
     }
 
     public int getStudentCount() {
         return students.size();
     }
 
-    public Long getSessionId() {
-        return sessionId;
+    public Long getId() {
+        return sessionInfo.getId();
     }
 
     public long getCourseId() {
-        return courseId;
+        return sessionInfo.getCourseId();
     }
 
     public String getTitle() {
-        return title;
+        return sessionInfo.getTitle();
     }
 
     public SessionType getSessionType() {
-        return sessionType;
+        return sessionInfo.getSessionType();
+    }
+
+    public List<Student> getStudents() {
+        return students.stream()
+                .filter(student -> student.getRegistrationState() == RegistrationState.APPROVED)
+                .collect(Collectors.toList());
+    }
+    public List<Student> getAllStudents() {
+        return students;
     }
 
     public SessionPlan getSessionPlan() {
@@ -94,8 +97,14 @@ public class Session {
         return systemTimeStamp;
     }
 
-    public boolean hasImage() {
-        return !(sessionImage == null);
+    public int getImageCount() {
+        return sessionImage.size();
     }
 
+    public boolean isFree() {
+        return this.getSessionType().isFree();
+    }
+    public boolean isPaid() {
+        return this.getSessionType().isPaid();
+    }
 }
