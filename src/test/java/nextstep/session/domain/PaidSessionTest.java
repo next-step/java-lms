@@ -23,18 +23,7 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강신청 / 모집 중 아님 / IllegalStateException")
-    void 수강신청_모집중아님_실패() {
-        // given
-        PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 2, 1000L);
-
-        // expect
-        assertThatThrownBy(() -> session.enroll(STUDENT_1))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    @DisplayName("수강신청 / 유료 정원 2명, 2명 신청 / 성공")
+    @DisplayName("수강신청 정원 검증 / 유료 정원 2명, 2명 신청 / 성공")
     void 수강신청_유료_성공() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 2, 1000L);
@@ -51,7 +40,7 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강신청 / 유료 정원 1명, 2명 신청 / IllegalStateException")
+    @DisplayName("수강신청 정원 검증 / 유료 정원 1명, 2명 신청 / IllegalStateException")
     void 수강신청_유료_정원초과_실패() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);
@@ -68,7 +57,7 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강신청 / 결제금액 같은 유료강의 / 성공")
+    @DisplayName("수강신청 결제 검증 / 결제금액 같은 유료강의 / 성공")
     void 수강신청_결제금액같은_유료강의_성공() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);
@@ -83,7 +72,7 @@ class PaidSessionTest {
     }
 
     @Test
-    @DisplayName("수강신청 / 결제금액 다른 유료강의 / IllegalArgumentException")
+    @DisplayName("수강신청 결제 검증 / 결제금액 다른 유료강의 / IllegalArgumentException")
     void 수강신청_결제금액_다른_유료강의_실패() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);

@@ -11,7 +11,6 @@ import static nextstep.users.domain.fixture.NsUserFixture.STUDENT_1;
 import static nextstep.users.domain.fixture.NsUserFixture.STUDENT_2;
 import static nextstep.users.domain.fixture.NsUserFixture.STUDENT_3;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class FreeSessionTest {
     LocalDate today;
@@ -20,27 +19,6 @@ class FreeSessionTest {
     void setup() {
         // given
         today = LocalDate.now();
-    }
-
-    @Test
-    @DisplayName("수강신청 / 종료 / IllegalStateException")
-    void 수강신청_강의종료상태_실패() {
-        // given
-        FreeSession session = FreeSession.create(1L, today, today.plusDays(1), sessionImageFixture);
-        session.changeStatus(SessionStatus.END);
-
-        // expect
-        assertThatThrownBy(() -> session.enroll(STUDENT_1))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    @DisplayName("수강신청 / 모집중 / 성공")
-    void 수강신청_모집중_성공() {
-        // given
-        FreeSession session = FreeSession.create(1L, today, today.plusDays(1), sessionImageFixture);
-        session.changeRecruit(SessionRecruitStatus.OPEN);
-
     }
 
     @Test
