@@ -17,6 +17,7 @@ create table session
     start_date     date,
     end_date       date,
     session_status varchar(255),
+    session_recruit_status varchar(255),
     session_type   varchar(255),
     primary key (id)
 );

@@ -33,13 +33,14 @@ public abstract class Session extends BaseDomain implements Sessionable {
         this.sessionType = sessionType;
     }
 
-    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionType sessionType) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType) {
         super(createdAt, updatedAt);
         this.id = id;
         this.creatorId = creatorId;
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
         this.sessionStatus = sessionStatus;
+        this.sessionRecruitStatus = sessionRecruitStatus;
         this.sessionType = sessionType;
     }
 
@@ -96,6 +97,10 @@ public abstract class Session extends BaseDomain implements Sessionable {
 
     public SessionStatus getSessionStatus() {
         return sessionStatus;
+    }
+
+    public SessionRecruitStatus getSessionRecruitStatus() {
+        return sessionRecruitStatus;
     }
 
     public SessionType getSessionType() {

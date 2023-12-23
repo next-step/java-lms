@@ -5,13 +5,12 @@ import nextstep.session.domain.EnrollmentRepository;
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionImageRepository;
+import nextstep.session.domain.SessionRecruitStatus;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.fixture.SessionImageFixture;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ public class EnrollmentRepositoryTest {
     void enrollFreeSession() {
         // given
         Session freeSession = new FreeSession(1L, LocalDate.now(), LocalDate.now().plusDays(1), SessionImageFixture.createSessionImage());
-        freeSession.changeStatus(SessionStatus.RECRUITING);
+        freeSession.changeRecruit(SessionRecruitStatus.OPEN);
         Session savedSession = sessionRepository.findById(sessionRepository.save(freeSession));
 
         // when
