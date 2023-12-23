@@ -38,7 +38,7 @@ class PaidSessionTest {
     void 수강신청_유료_성공() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 2, 1000L);
-        session.changeStatus(SessionStatus.RECRUITING);
+        session.changeRecruit(SessionRecruitStatus.OPEN);
         STUDENT_1.addPayment(new Payment(1000L, session, STUDENT_1));
         STUDENT_2.addPayment(new Payment(1000L, session, STUDENT_2));
 
@@ -55,7 +55,7 @@ class PaidSessionTest {
     void 수강신청_유료_정원초과_실패() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);
-        session.changeStatus(SessionStatus.RECRUITING);
+        session.changeRecruit(SessionRecruitStatus.OPEN);
         STUDENT_1.addPayment(new Payment(1000L, session, STUDENT_1));
         STUDENT_2.addPayment(new Payment(1000L, session, STUDENT_2));
 
@@ -72,7 +72,7 @@ class PaidSessionTest {
     void 수강신청_결제금액같은_유료강의_성공() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);
-        session.changeStatus(SessionStatus.RECRUITING);
+        session.changeRecruit(SessionRecruitStatus.OPEN);
         STUDENT_1.addPayment(new Payment(1000L, session, STUDENT_1));
 
         // when
@@ -87,7 +87,7 @@ class PaidSessionTest {
     void 수강신청_결제금액_다른_유료강의_실패() {
         // given
         PaidSession session = PaidSession.create(1L, today, today.plusDays(1), sessionImageFixture, 1, 1000L);
-        session.changeStatus(SessionStatus.RECRUITING);
+        session.changeRecruit(SessionRecruitStatus.OPEN);
         STUDENT_1.addPayment(new Payment(1200L, session, STUDENT_1));
 
         // expect

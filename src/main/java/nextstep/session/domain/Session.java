@@ -6,8 +6,10 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 public abstract class Session extends BaseDomain implements Sessionable {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
+    private static final SessionRecruitStatus DEFAULT_RECRUIT_STATUS = SessionRecruitStatus.CLOSED;
 
     private Long id;
     private Long creatorId;
@@ -17,6 +19,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
     private SessionImage sessionImage;
 
     private SessionStatus sessionStatus;
+    private SessionRecruitStatus sessionRecruitStatus;
     private SessionType sessionType;
     protected Enrollments enrollments = new Enrollments();
 
@@ -26,6 +29,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
         this.sessionDate = new SessionDate(startDate, endDate);
         this.sessionImage = sessionImage;
         this.sessionStatus = DEFAULT_SESSION_STATUS;
+        this.sessionRecruitStatus = DEFAULT_RECRUIT_STATUS;
         this.sessionType = sessionType;
     }
 
@@ -47,7 +51,10 @@ public abstract class Session extends BaseDomain implements Sessionable {
     }
 
     private void validateStatus() {
-        if (sessionStatus != SessionStatus.RECRUITING) {
+        if (sessionStatus == SessionStatus.END) {
+            throw new IllegalStateException("종료된 강의는 신청 불가능합니다.");
+        }
+        if (sessionRecruitStatus != SessionRecruitStatus.OPEN) {
             throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
         }
     }
@@ -62,6 +69,13 @@ public abstract class Session extends BaseDomain implements Sessionable {
     @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
+    }
+
+    public void changeRecruit(SessionRecruitStatus recruitStatus) {
+        if (recruitStatus.equals(SessionRecruitStatus.OPEN)) {
+            SessionRecruitStatus.enableOpen(sessionStatus);
+        }
+        this.sessionRecruitStatus = recruitStatus;
     }
 
     public Long getId() {
