@@ -73,10 +73,6 @@ public class Session {
         return students;
     }
 
-    public int getStudentCount() {
-        return this.students.size();
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -100,9 +96,17 @@ public class Session {
             throw new IllegalStateException("로그인 후 신청할 수 있습니다.");
         }
         checkSessionStatus();
-        this.charge.checkRecruits(students.size());
+        this.charge.checkRecruits(students.approvalStudentCount());
         SessionStudent newStudent = new SessionStudent(user);
         students.addStudent(newStudent);
         return newStudent;
+    }
+
+    public void approval(SessionStudent student) {
+        students.approval(student);
+    }
+
+    public void cancel(SessionStudent student) {
+        students.cancel(student);
     }
 }

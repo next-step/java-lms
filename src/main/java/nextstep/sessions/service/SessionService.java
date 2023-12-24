@@ -2,8 +2,8 @@ package nextstep.sessions.service;
 
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStudent;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.SessionStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,5 +23,12 @@ public class SessionService {
         Optional<NsUser> optionalUser = userRepository.findById(payment.getNsUserId());
         SessionStudent sessionStudent = session.enroll(optionalUser.get());
         sessionRepository.enroll(session, sessionStudent);
+    }
+
+    @Transactional
+    public void approval(Session session, NsUser user) {
+        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), user.getId());
+        session.approval(student);
+        sessionRepository.approvalStudent(session, student);
     }
 }

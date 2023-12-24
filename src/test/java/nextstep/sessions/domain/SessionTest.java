@@ -28,9 +28,10 @@ public class SessionTest {
 
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
-    void addStudentExceptionTest() {
+    void enrollExceptionTest() {
         Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100);
         session.enroll(NsUserTest.JAVAJIGI);
+        session.approval(new SessionStudent(NsUserTest.JAVAJIGI));
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);

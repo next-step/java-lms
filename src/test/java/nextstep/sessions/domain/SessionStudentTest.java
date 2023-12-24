@@ -31,4 +31,24 @@ class SessionStudentTest {
 
         assertThat(student1.equals(student2)).isFalse();
     }
+
+    @DisplayName("승인된 학생은 true를 반환한다.")
+    @Test
+    void isApprovalTrueTest() {
+        SessionStudent student = new SessionStudent(NsUserTest.JAVAJIGI);
+        student.approval();
+
+        assertThat(student.isApproval()).isTrue();
+    }
+
+    @DisplayName("승인되지 않았거나 대기중인 학생은 false를 반환한다.")
+    @Test
+    void isApprovalFalseTest() {
+        SessionStudent student1 = new SessionStudent(NsUserTest.JAVAJIGI);
+        SessionStudent student2 = new SessionStudent(NsUserTest.SANJIGI);
+        student1.cancel();
+
+        assertThat(student1.isApproval()).isFalse();
+        assertThat(student2.isApproval()).isFalse();
+    }
 }

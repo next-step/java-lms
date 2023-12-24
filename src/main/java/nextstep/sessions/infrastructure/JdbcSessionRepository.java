@@ -3,6 +3,7 @@ package nextstep.sessions.infrastructure;
 import nextstep.common.Period;
 import nextstep.sessions.domain.ImageType;
 import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionApprovalStatus;
 import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImage;
 import nextstep.sessions.domain.SessionImages;
@@ -52,19 +53,30 @@ public class JdbcSessionRepository implements SessionRepository {
         }, keyHolder);
         Long sessionId = (Long) keyHolder.getKey();
         saveImages(sessionId, session.getImages());
+        saveStudents(sessionId, session.getStudents());
         return sessionId;
     }
 
     private void saveImages(Long sessionId, SessionImages images) {
         String sql = "insert into session_image (image_size, image_width, image_height, image_type, session_id) " +
                 " values (?, ?, ?, ?, ?)";
-        System.out.println(images.getImages());
         jdbcTemplate.batchUpdate(sql, images.getImages(), images.size(), (PreparedStatement ps, SessionImage image) -> {
             ps.setInt(1, image.getSize());
             ps.setDouble(2, image.getWidth());
             ps.setDouble(3, image.getHeight());
             ps.setString(4, image.getType().toString());
             ps.setLong(5, sessionId);
+        });
+    }
+
+    private void saveStudents(Long sessionId, SessionStudents students) {
+        String sql = "insert into session_student (user_id, registration_at, approval_status, session_id)" +
+                " values (?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(sql, students.getStudents(), students.getStudents().size(), (PreparedStatement ps, SessionStudent student) -> {
+            ps.setLong(1, student.getUser().getId());
+            ps.setTimestamp(2, Timestamp.valueOf(student.getRegistrationAt()));
+            ps.setString(3, student.getStatus().name());
+            ps.setLong(4, sessionId);
         });
     }
 
@@ -101,7 +113,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private SessionStudents studentsFindBySessionId(Long id) {
-        String sql = "select ss.id, ss.user_id, ss.registration_at, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
+        String sql = "select ss.id, ss.user_id, ss.registration_at, ss.approval_status, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
                 "from session_student ss join ns_user nu on ss.user_id = nu.id " +
                 "where session_id = ?";
 
@@ -109,14 +121,15 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong(1),
                 new NsUser(
                         rs.getLong(2),
-                        rs.getString(4),
                         rs.getString(5),
                         rs.getString(6),
                         rs.getString(7),
-                        toLocalDateTime(rs.getTimestamp(8)),
-                        toLocalDateTime(rs.getTimestamp(9))
+                        rs.getString(8),
+                        toLocalDateTime(rs.getTimestamp(9)),
+                        toLocalDateTime(rs.getTimestamp(10))
                 ),
-                toLocalDateTime(rs.getTimestamp(3))
+                toLocalDateTime(rs.getTimestamp(3)),
+                SessionApprovalStatus.valueOf(rs.getString(4))
         ));
         List<SessionStudent> students = jdbcTemplate.query(sql, new String[]{String.valueOf(id)}, rowMapper);
         if (students.isEmpty()) {
@@ -137,6 +150,40 @@ public class JdbcSessionRepository implements SessionRepository {
             return ps;
         }, keyHolder);
         return (long) keyHolder.getKey();
+    }
+
+    @Override
+    public SessionStudent studentFindBySessionIdAndUserId(Long sessionId, Long userId) {
+        String sql = "select ss.id, ss.registration_at, ss.approval_status, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
+                " from session_student ss join ns_user nu on ss.user_id = nu.id " +
+                " where ss.session_id = ? and ss.user_id = ?";
+        RowMapper<SessionStudent> rowMapper = ((rs, rowNum) -> new SessionStudent(
+                rs.getLong(1),
+                new NsUser(
+                        userId,
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        toLocalDateTime(rs.getTimestamp(8)),
+                        toLocalDateTime(rs.getTimestamp(9))
+                ),
+                toLocalDateTime(rs.getTimestamp(2)),
+                SessionApprovalStatus.valueOf(rs.getString(3))
+        ));
+        return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
+    }
+
+    @Override
+    public void approvalStudent(Session session, SessionStudent student) {
+        String sql = "update session_student set approval_status = 'APPROVAL' where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, session.getId(), student.getUser().getId());
+    }
+
+    @Override
+    public void cancelStudent(Session session, SessionStudent student) {
+        String sql = "update session_student set approval_status = 'CANCEL' where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, session.getId(), student.getUser().getId());
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {

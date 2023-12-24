@@ -26,10 +26,10 @@ VALUES (2, 2, 'runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 
 INSERT INTO session (name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at)
 values ('테스트강의', '2023-12-01', '2023-12-20', 1000, 3, 'PROGRESSING', 'RECRUITING', CURRENT_TIMESTAMP());
 
-INSERT INTO session_student (id, user_id, registration_at, session_id)
-values (1, 1, CURRENT_TIMESTAMP(), 1);
-INSERT INTO session_student (id, user_id, registration_at, session_id)
-values (2, 2, CURRENT_TIMESTAMP(), 1);
+INSERT INTO session_student (user_id, registration_at, session_id, approval_status)
+values (1, CURRENT_TIMESTAMP(), 1, 'WAITING');
+INSERT INTO session_student (user_id, registration_at, session_id, approval_status)
+values (2, CURRENT_TIMESTAMP(), 1, 'APPROVAL');
 
 INSERT INTO session_image (image_size, image_width, image_height, image_type, session_id)
 values (1000, 300, 200, 'GIF', 1);

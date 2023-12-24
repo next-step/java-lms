@@ -17,15 +17,19 @@ public class SessionStudent {
 
     private LocalDateTime registrationAt;
 
+    private SessionApprovalStatus status;
+
     public SessionStudent(NsUser user) {
         this.user = user;
         this.registrationAt = LocalDateTime.now();
+        this.status = SessionApprovalStatus.WAITING;
     }
 
-    public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt) {
+    public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt, SessionApprovalStatus status) {
         this.id = id;
         this.user = user;
         this.registrationAt = registrationAt;
+        this.status = status;
     }
 
     public NsUser getUser() {
@@ -34,6 +38,14 @@ public class SessionStudent {
 
     public LocalDateTime getRegistrationAt() {
         return registrationAt;
+    }
+
+    public SessionApprovalStatus getStatus() {
+        return status;
+    }
+
+    public boolean isApproval() {
+        return this.status == SessionApprovalStatus.APPROVAL;
     }
 
     @Override
@@ -47,5 +59,13 @@ public class SessionStudent {
     @Override
     public int hashCode() {
         return Objects.hash(user);
+    }
+
+    public void approval() {
+        this.status = SessionApprovalStatus.APPROVAL;
+    }
+
+    public void cancel() {
+        this.status = SessionApprovalStatus.CANCEL;
     }
 }
