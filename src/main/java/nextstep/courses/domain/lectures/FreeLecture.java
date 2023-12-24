@@ -18,50 +18,31 @@ public class FreeLecture extends BaseTime implements Lecture {
   private final RegistrationPeriod registrationPeriod;
   private final Students students = Students.defaultOf(); // 강의 기본정보와는 다름
 
+  // primary constructor
   public FreeLecture(Long id, String title, CoverImages coverImages,
-      LectureRecruitingStatus lectureRecruitingStatus,
-      RegistrationPeriod registrationPeriod) {
-    super();
+      LectureRecruitingStatus lectureRecruitingStatus, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
     this.coverImages.addAll(coverImages);
-    this.lectureStatus = LectureStatus.YET;
+    this.lectureStatus = lectureStatus;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
+  }
+
+  public FreeLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus,
+      RegistrationPeriod registrationPeriod) {
+    this(id, title, coverImages, lectureRecruitingStatus, LectureStatus.YET, registrationPeriod,
+        LocalDateTime.now(), null);
   }
 
   public FreeLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
       LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.coverImages.addAll(coverImages);
-    this.lectureStatus = lectureStatus;
-    this.lectureRecruitingStatus = lectureRecruitingStatus;
-    this.registrationPeriod = registrationPeriod;
-  }
-
-  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
-      LectureRecruitingStatus lectureRecruitingStatus,
-      RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    super(createdAt, updatedAt);
-    this.id = id;
-    this.title = title;
-    this.coverImages.add(coverImage);
-    this.lectureStatus = lectureStatus;
-    this.lectureRecruitingStatus = lectureRecruitingStatus;
-    this.registrationPeriod = registrationPeriod;
-  }
-
-  public FreeLecture(LectureEntity lecture) {
-    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
-    this.id = lecture.id();
-    this.title = lecture.title();
-    this.coverImages.addAll(lecture.coverImage());
-    this.lectureStatus = lecture.lectureStatus();
-    this.lectureRecruitingStatus = lecture.lectureRecruitingStatus();
-    this.registrationPeriod = lecture.registrationPeriod();
+    this(id, title, coverImages, lectureRecruitingStatus, lectureStatus, registrationPeriod,
+        LocalDateTime.now(), null);
   }
 
   @Override
@@ -87,7 +68,7 @@ public class FreeLecture extends BaseTime implements Lecture {
 
   @Override
   public void enrollment(NsUser nsUser, Students selectedStudents) {
-    this.canEnrollment(nsUser,selectedStudents);
+    this.canEnrollment(nsUser, selectedStudents);
     this.students.add(nsUser);
   }
 

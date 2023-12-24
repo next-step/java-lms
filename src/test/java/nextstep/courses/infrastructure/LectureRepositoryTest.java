@@ -54,7 +54,7 @@ public class LectureRepositoryTest {
         PaidLecture lecture = new PaidLecture(
             1L
             , "test"
-            , coverImage
+            , coverImages
             , LectureRecruitingStatus.PREPARING
             , new RegistrationPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1))
             , new Price(BigDecimal.TEN)

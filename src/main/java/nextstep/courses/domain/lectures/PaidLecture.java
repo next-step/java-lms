@@ -23,14 +23,15 @@ public class PaidLecture extends BaseTime implements Lecture {
   ; // 강의 기본정보와는 다름
 
 
-  public PaidLecture(Long id, String title, CoverImage coverImage,
-      LectureRecruitingStatus lectureRecruitingStatus,
-      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
-    super();
+  public PaidLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus, LectureStatus lectureStatus,
+      RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount,
+      LocalDateTime createdAt, LocalDateTime updatedAt) {
+    super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImages.add(coverImage);
-    this.lectureStatus = LectureStatus.YET;
+    this.coverImages.addAll(coverImages);
+    this.lectureStatus = lectureStatus;
     this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
@@ -40,31 +41,17 @@ public class PaidLecture extends BaseTime implements Lecture {
   public PaidLecture(Long id, String title, CoverImages coverImages,
       LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.coverImages.addAll(coverImages);
-    this.lectureStatus = LectureStatus.YET;
-    this.lectureRecruitingStatus = lectureRecruitingStatus;
-    this.registrationPeriod = registrationPeriod;
-    this.price = price;
-    this.limitStudentCount = limitStudentCount;
+    this(id, title, coverImages, LectureStatus.YET, lectureRecruitingStatus, registrationPeriod,
+        price, limitStudentCount, LocalDateTime.now(), null);
   }
 
-  public PaidLecture(Long id, String title, CoverImages coverImage, LectureStatus lectureStatus,
+  public PaidLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
       LectureRecruitingStatus lectureRecruitingStatus,
       RegistrationPeriod registrationPeriod, Price price, Integer limitStudentCount
       , LocalDateTime createdAt
       , LocalDateTime updatedAt) {
-    super(createdAt, updatedAt);
-    this.id = id;
-    this.title = title;
-    this.coverImages.addAll(coverImage);
-    this.lectureStatus = lectureStatus;
-    this.lectureRecruitingStatus = lectureRecruitingStatus;
-    this.registrationPeriod = registrationPeriod;
-    this.price = price;
-    this.limitStudentCount = limitStudentCount;
+    this(id, title, coverImages, lectureRecruitingStatus, LectureStatus.YET, registrationPeriod,
+        price, limitStudentCount, createdAt, updatedAt);
   }
 
   public PaidLecture(LectureEntity lecture) {
@@ -106,7 +93,7 @@ public class PaidLecture extends BaseTime implements Lecture {
 
   @Override
   public void enrollment(NsUser nsUser, Students selectedStudents) {
-    this.canEnrollment(nsUser,selectedStudents);
+    this.canEnrollment(nsUser, selectedStudents);
     nsUser.hasPayment(price);
     this.students.addWithLimitCount(nsUser, limitStudentCount);
   }
