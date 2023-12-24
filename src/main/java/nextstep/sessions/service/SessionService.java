@@ -26,16 +26,16 @@ public class SessionService {
     }
 
     @Transactional
-    public void approval(Session session, NsUser user) {
-        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), user.getId());
-        session.approval(student);
+    public void approval(Session session, NsUser enrollUser, NsUser loginUser) {
+        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), enrollUser.getId());
+        session.approval(student, loginUser);
         sessionRepository.approvalStudent(session, student);
     }
 
     @Transactional
-    public void cancel(Session session, NsUser user) {
-        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), user.getId());
-        session.cancel(student);
+    public void cancel(Session session, NsUser enrollUser, NsUser loginUser) {
+        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), enrollUser.getId());
+        session.cancel(student, loginUser);
         sessionRepository.cancelStudent(session, student);
     }
 }

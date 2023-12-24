@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,8 +31,28 @@ class SessionStudentsTest {
     void approvalStudentCountTest() {
         SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
         sessionStudents.addStudent(sessionStudent);
-        sessionStudents.approval(sessionStudent);
+        sessionStudents.approval(sessionStudent, NsUser.ADMIN_USER);
 
         assertThat(sessionStudents.approvalStudentCount()).isEqualTo(1);
+    }
+
+    @DisplayName("강사가 아닌 사용자가 수강신청 승인을 할 경우 IllegalStateException을 던진다.")
+    @Test
+    void approvalExceptionTest() {
+        SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
+        sessionStudents.addStudent(sessionStudent);
+
+        assertThatThrownBy(() -> sessionStudents.approval(sessionStudent, NsUserTest.JAVAJIGI))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @DisplayName("강사가 아닌 사용자가 수강신청 취소를 할 경우 IllegalStateException을 던진다.")
+    @Test
+    void cancelExceptionTest() {
+        SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
+        sessionStudents.addStudent(sessionStudent);
+
+        assertThatThrownBy(() -> sessionStudents.cancel(sessionStudent, NsUserTest.JAVAJIGI))
+                .isInstanceOf(IllegalStateException.class);
     }
 }

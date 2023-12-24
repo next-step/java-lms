@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.common.PeriodTest;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class SessionTest {
     void enrollExceptionTest() {
         Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100);
         session.enroll(NsUserTest.JAVAJIGI);
-        session.approval(new SessionStudent(NsUserTest.JAVAJIGI));
+        session.approval(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);

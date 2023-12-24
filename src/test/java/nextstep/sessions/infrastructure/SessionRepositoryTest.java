@@ -8,6 +8,7 @@ import nextstep.sessions.domain.SessionImage;
 import nextstep.sessions.domain.SessionImages;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStudent;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +66,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
-        session.approval(sessionStudent);
+        session.approval(sessionStudent, NsUser.ADMIN_USER);
         sessionRepository.approvalStudent(session, sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());
@@ -83,7 +84,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
-        session.cancel(sessionStudent);
+        session.cancel(sessionStudent, NsUser.ADMIN_USER);
         sessionRepository.cancelStudent(session, sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());

@@ -102,11 +102,11 @@ public class Session {
         return newStudent;
     }
 
-    public void approval(SessionStudent student) {
-        students.approval(student);
+    public void approval(SessionStudent student, NsUser loginUser) {
+        students.approval(student, loginUser);
     }
 
-    public void cancel(SessionStudent student) {
-        students.cancel(student);
+    public void cancel(SessionStudent student, NsUser loginUser) {
+        students.cancel(student, loginUser);
     }
 }

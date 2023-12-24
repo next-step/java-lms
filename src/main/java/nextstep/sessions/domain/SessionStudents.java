@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +46,10 @@ public class SessionStudents {
                 .count();
     }
 
-    public void approval(SessionStudent sessionStudent) {
+    public void approval(SessionStudent sessionStudent, NsUser loginUser) {
+        if (!loginUser.isAdminUser()) {
+            throw new IllegalStateException("강사만 승인할 수 있습니다.");
+        }
         SessionStudent findStudent = students.stream()
                 .filter(student -> student.equals(student))
                 .findFirst()
@@ -52,7 +57,10 @@ public class SessionStudents {
         findStudent.approval();
     }
 
-    public void cancel(SessionStudent sessionStudent) {
+    public void cancel(SessionStudent sessionStudent, NsUser loginUser) {
+        if (!loginUser.isAdminUser()) {
+            throw new IllegalStateException("강사만 취소할 수 있습니다.");
+        }
         SessionStudent findStudent = students.stream()
                 .filter(student -> student.equals(sessionStudent))
                 .findFirst()
