@@ -1,10 +1,10 @@
 package nextstep.courses.domain.lectures;
 
 public enum LectureRecruitingStatus {
-  RECRUITING("RECRUITING")
-  , CLOSING("CLOSING")
-  , PREPARING("PREPARING")
-  , NO_MATCH("NO_MATCH")
+  RECRUITING("RECRUITING"),
+  CLOSING("CLOSING"),
+  PREPARING("PREPARING"),
+  NO_MATCH("NO_MATCH")
   ;
   private final String name;
 
