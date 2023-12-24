@@ -31,4 +31,11 @@ public class SessionService {
         session.approval(student);
         sessionRepository.approvalStudent(session, student);
     }
+
+    @Transactional
+    public void cancel(Session session, NsUser user) {
+        SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), user.getId());
+        session.cancel(student);
+        sessionRepository.cancelStudent(session, student);
+    }
 }
