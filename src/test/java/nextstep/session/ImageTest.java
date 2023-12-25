@@ -1,8 +1,10 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.session.domain.Image;
+import nextstep.session.domain.ImageDimensions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

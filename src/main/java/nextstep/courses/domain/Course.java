@@ -1,8 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import nextstep.Session.Session;
-import nextstep.Session.Sessions;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.Sessions;
 
 public class Course {
 

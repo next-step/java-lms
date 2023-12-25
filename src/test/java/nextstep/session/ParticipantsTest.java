@@ -1,7 +1,8 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import nextstep.session.domain.Participants;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

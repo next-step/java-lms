@@ -3,9 +3,9 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import nextstep.Session.Image;
-import nextstep.Session.Session;
-import nextstep.Session.SessionDuration;
+import nextstep.session.domain.Image;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionDuration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

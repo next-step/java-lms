@@ -1,4 +1,4 @@
-package nextstep.Session;
+package nextstep.session.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package nextstep.Session;
+package nextstep.session.domain;
 
 public class ImageSize {
 

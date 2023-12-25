@@ -1,5 +1,6 @@
-package nextstep.Session;
+package nextstep.session.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -50,7 +51,7 @@ public class Session {
         return sessionStatus;
     }
 
-    public void enrollStudent(final NsUser nsUser, final int payment) {
+    public void enrollStudent(final NsUser nsUser, final Payment payment) {
         validateSessionRecruit();
         int currentParticipants = participants.count();
         if (sessionPricing.isFreeSession()) {

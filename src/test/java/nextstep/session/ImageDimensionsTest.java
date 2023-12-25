@@ -1,7 +1,8 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
+import nextstep.session.domain.ImageDimensions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

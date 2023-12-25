@@ -1,9 +1,14 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import nextstep.payments.domain.Payment;
+import nextstep.session.domain.Image;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionDuration;
+import nextstep.session.domain.SessionStatus;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +51,8 @@ class SessionTest {
     @Test
     @DisplayName("강의 상태가 모집중이 아니라면 예외를 반환한다.")
     void cannotEnrollIfNotRecruiting() {
-        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, 100)).isInstanceOf(
+        Payment payment = new Payment("payId", 1L, 1L, 0L);
+        assertThatThrownBy(() -> session.enrollStudent(NsUserTest.JAVAJIGI, payment)).isInstanceOf(
             IllegalArgumentException.class);
     }
 
@@ -64,11 +70,12 @@ class SessionTest {
     @Test
     @DisplayName("유료강의 상태가 모집중인 경우라면 수강신청이 가능하다.")
     void canEnrollPaidSessionRecruiting() {
+        Payment payment = new Payment("payId", 1L, 1L, 1000L);
         Session tddSession =
             Session.createPaidSession("TDD강의", new Image(), new SessionDuration(started, ended),
                 1000, 10);
         tddSession.changeToRecruit();
-        tddSession.enrollStudent(NsUserTest.JAVAJIGI, 1000);
+        tddSession.enrollStudent(NsUserTest.JAVAJIGI, payment);
 
         assertThat(tddSession.getParticipants().getStudents()).contains(NsUserTest.JAVAJIGI);
     }

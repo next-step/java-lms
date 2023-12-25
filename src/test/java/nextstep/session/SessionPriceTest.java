@@ -1,7 +1,8 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import nextstep.session.domain.SessionPrice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

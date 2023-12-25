@@ -1,7 +1,10 @@
-package nextstep.Session;
+package nextstep.session;
 
 import static org.assertj.core.api.Assertions.*;
 
+import nextstep.payments.domain.Payment;
+import nextstep.session.domain.SessionPrice;
+import nextstep.session.domain.SessionPricing;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,7 @@ class SessionPricingTest {
         SessionPrice price = new SessionPrice(0);
         SessionPricing pricing = new SessionPricing(price, 10);
 
-        assertThatCode(() -> pricing.canEnroll(0, 5))
+        assertThatCode(() -> pricing.canEnroll(new Payment("payId", 1L, 1L, 0L), 5))
             .doesNotThrowAnyException();
     }
 
@@ -23,7 +26,7 @@ class SessionPricingTest {
         SessionPrice price = new SessionPrice(0);
         SessionPricing pricing = new SessionPricing(price, 10);
 
-        assertThatThrownBy(() -> pricing.canEnroll(100, 5))
+        assertThatThrownBy(() -> pricing.canEnroll(new Payment("payId", 1L, 1L, 100L), 5))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -33,7 +36,7 @@ class SessionPricingTest {
         SessionPrice paidPrice = new SessionPrice(100);
         SessionPricing pricing = new SessionPricing(paidPrice, 10);
 
-        assertThatThrownBy(() -> pricing.canEnroll(90, 9))
+        assertThatThrownBy(() -> pricing.canEnroll(new Payment("payId", 1L, 1L, 99L), 9))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 금액이 수강료와 일치하지 않습니다.");
 
@@ -45,7 +48,7 @@ class SessionPricingTest {
         SessionPrice paidPrice = new SessionPrice(100);
         SessionPricing pricing = new SessionPricing(paidPrice, 10);
 
-        assertThatThrownBy(() -> pricing.canEnroll(100, 10))
+        assertThatThrownBy(() -> pricing.canEnroll(new Payment("payId", 1L, 1L, 100L), 10))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("최대 수강 인원을 초과했습니다.");
     }
