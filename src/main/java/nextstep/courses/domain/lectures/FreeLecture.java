@@ -47,12 +47,12 @@ public class FreeLecture extends BaseTime implements Lecture {
 
   @Override
   public boolean isFree() {
-    return LectureType.FREE.equals(this.lectureType);
+    return lectureType.isFree();
   }
 
   @Override
   public boolean isRecruiting() {
-    return LectureRecruitingStatus.RECRUITING.equals(this.lectureRecruitingStatus);
+    return this.lectureRecruitingStatus.isRecruiting();
   }
 
   @Override

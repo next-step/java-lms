@@ -15,4 +15,8 @@ public enum LectureRecruitingStatus {
   public String getName() {
     return name;
   }
+
+  public boolean isRecruiting() {
+    return this.equals(LectureRecruitingStatus.RECRUITING);
+  }
 }
