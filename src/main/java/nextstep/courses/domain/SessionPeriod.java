@@ -13,6 +13,14 @@ public class SessionPeriod {
         this.endedAt = endedAt;
     }
 
+    public LocalDate getStartedAt() {
+        return startedAt;
+    }
+
+    public LocalDate getEndedAt() {
+        return endedAt;
+    }
+
     private void validateDate(LocalDate startedAt, LocalDate endedAt) {
         if (startedAt.isAfter(endedAt)) {
             throw new IllegalArgumentException("강의 시작인은 종료일 이후여야 합니다");

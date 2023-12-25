@@ -19,6 +19,14 @@ public class Enrollment {
         this.students = students;
     }
 
+    public SessionState getSessionState() {
+        return sessionState;
+    }
+
+    public Students getStudents() {
+        return students;
+    }
+
     public void enroll(NsUser loginUser) {
         if (!this.sessionState.isRecruiting()) {
             throw new IllegalArgumentException("수강신청은 모집중에만 가능합니다");

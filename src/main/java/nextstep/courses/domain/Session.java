@@ -22,6 +22,30 @@ public class Session {
                 SessionType.of(sessionType), price);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
+    }
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
     public Session(String title, Image image,
                    SessionPeriod sessionPeriod, Enrollment enrollment,
                    SessionType sessionType, int price ) {

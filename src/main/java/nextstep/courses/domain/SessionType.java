@@ -12,6 +12,10 @@ public enum SessionType {
         this.type = type;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public static SessionType of(String type) {
         return Arrays.stream(values())
                 .filter(it -> it.type.equals(type))
