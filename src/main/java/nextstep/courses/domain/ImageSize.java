@@ -30,4 +30,16 @@ public class ImageSize {
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 한다");
         }
     }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -26,4 +26,12 @@ public class Students {
         }
         this.students.add(loginUser);
     }
+
+    public List<NsUser> getStudents() {
+        return students;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
 }
