@@ -11,6 +11,10 @@ public enum ImageType {
 
     private String type;
 
+    public String getType() {
+        return type;
+    }
+
     ImageType(String type) {
         this.type = type;
     }

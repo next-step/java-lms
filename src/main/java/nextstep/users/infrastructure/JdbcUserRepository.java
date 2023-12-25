@@ -19,7 +19,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findByUserId(String userId) {
+    public NsUser findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong(1),
@@ -29,7 +29,7 @@ public class JdbcUserRepository implements UserRepository {
                 rs.getString(5),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return jdbcTemplate.queryForObject(sql, rowMapper, userId);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
