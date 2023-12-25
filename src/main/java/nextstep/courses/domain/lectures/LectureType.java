@@ -13,4 +13,8 @@ public enum LectureType {
   public String getName() {
     return name;
   }
+
+  public boolean isFree() {
+    return this.equals(LectureType.FREE);
+  }
 }

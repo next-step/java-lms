@@ -2,62 +2,67 @@ package nextstep.courses.domain.lectures;
 
 import java.time.LocalDateTime;
 import nextstep.courses.BaseTime;
-import nextstep.courses.domain.coverimage.CoverImage;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.Price;
 
 public class LectureEntity extends BaseTime {
   private final LectureType lectureType;
   private final Long id;
   private final String title;
-  private final CoverImage coverImage;
+  private final CoverImages coverImages = new CoverImages();
   private final LectureStatus lectureStatus;
+  private final LectureRecruitingStatus lectureRecruitingStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Price price;
   private final Integer limitStudentCount;
 
-  public LectureEntity(Long id,   String title, CoverImage coverImage, LectureType lectureType,
-      LectureStatus lectureStatus, RegistrationPeriod registrationPeriod, Price price,
+  public LectureEntity(Long id,   String title, CoverImages coverImages, LectureType lectureType,
+      LectureStatus lectureStatus,LectureRecruitingStatus lectureRecruitingStatus, RegistrationPeriod registrationPeriod, Price price,
       Integer limitStudentCount, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.addAll(coverImages);
     this.lectureType = lectureType;
     this.lectureStatus = lectureStatus;
+    this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
     this.price = price;
     this.limitStudentCount = limitStudentCount;
   }
 
-  public LectureType getLectureType() {
+  public LectureType lectureType() {
     return lectureType;
   }
 
-  public Long getId() {
+  public Long id() {
     return id;
   }
 
-  public String getTitle() {
+  public String title() {
     return title;
   }
 
-  public CoverImage getCoverImage() {
-    return coverImage;
+  public CoverImages coverImage() {
+    return coverImages;
   }
 
-  public LectureStatus getLectureStatus() {
+  public LectureRecruitingStatus lectureRecruitingStatus() {
+    return lectureRecruitingStatus;
+  }
+  public LectureStatus lectureStatus()  {
     return lectureStatus;
   }
 
-  public RegistrationPeriod getRegistrationPeriod() {
+  public RegistrationPeriod registrationPeriod() {
     return registrationPeriod;
   }
 
-  public Price getPrice() {
+  public Price price() {
     return price;
   }
 
-  public Integer getLimitStudentCount() {
+  public Integer limitStudentCount() {
     return limitStudentCount;
   }
 }

@@ -11,15 +11,6 @@ public class CoverImage extends BaseTime {
   private final ImageFileSize imageFileSize;
   private final ImageSize imageSize;
 
-  private CoverImage(String name, CoverImageType coverImageType, ImageFileSize size, ImageSize imageSize) {
-    super();
-    this.id = 0L;
-    this.name = name;
-    this.coverImageType = coverImageType;
-    this.imageFileSize = size;
-    this.imageSize = imageSize;
-  }
-
   private CoverImage(Long id, String name, CoverImageType coverImageType, ImageFileSize size, ImageSize imageSize, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
@@ -28,6 +19,10 @@ public class CoverImage extends BaseTime {
     this.imageFileSize = size;
     this.imageSize = imageSize;
   }
+  private CoverImage(String name, CoverImageType coverImageType, ImageFileSize size, ImageSize imageSize) {
+    this(0L, name, coverImageType, size,imageSize, LocalDateTime.now(), null);
+  }
+
 
   public static CoverImage defaultOf(String fileName, long size, long width, long height) {
     String name = fileName(fileName);

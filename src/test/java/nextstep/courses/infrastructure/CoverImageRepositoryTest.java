@@ -8,6 +8,7 @@ import nextstep.courses.domain.CourseRepository;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.coverimage.CoverImageRepository;
 import nextstep.courses.domain.coverimage.CoverImageType;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.courses.domain.coverimage.ImageFileSize;
 import nextstep.courses.domain.coverimage.ImageSize;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,17 @@ public class CoverImageRepositoryTest {
             LocalDateTime.now() ,null);
         int count = coverImageRepository.save(coverImage);
         assertThat(count).isEqualTo(1);
+        CoverImage savedCoverImage = coverImageRepository.findById(1L);
+        assertThat(coverImage.getName()).isEqualTo(savedCoverImage.getName());
+        LOGGER.debug("Course: {}", savedCoverImage);
+    }
+
+    @Test
+    void save_many() {
+        CoverImage coverImage = CoverImage.defaultOf(1L,"test", CoverImageType.GIF,new ImageFileSize(50),new ImageSize(300,200),
+            LocalDateTime.now() ,null);
+        CoverImages coverImages = new CoverImages(coverImage);
+        coverImageRepository.saveAll(coverImages);
         CoverImage savedCoverImage = coverImageRepository.findById(1L);
         assertThat(coverImage.getName()).isEqualTo(savedCoverImage.getName());
         LOGGER.debug("Course: {}", savedCoverImage);

@@ -20,11 +20,11 @@ public class ImageSize {
     this.height = height;
   }
 
-  public double getWidth() {
+  public long getWidth() {
     return width;
   }
 
-  public double getHeight() {
+  public long getHeight() {
     return height;
   }
 }

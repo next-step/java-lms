@@ -4,65 +4,84 @@ import java.time.LocalDateTime;
 import nextstep.courses.BaseTime;
 import nextstep.courses.domain.coverimage.CoverImage;
 import nextstep.courses.domain.Students;
+import nextstep.courses.domain.coverimage.CoverImages;
 import nextstep.users.domain.NsUser;
 
 public class FreeLecture extends BaseTime implements Lecture {
+
   private final LectureType lectureType = LectureType.FREE;
   private final Long id;
   private final String title;
-  private final CoverImage coverImage;
+  private final CoverImages coverImages = new CoverImages();
   private final LectureStatus lectureStatus;
+  private final LectureRecruitingStatus lectureRecruitingStatus;
   private final RegistrationPeriod registrationPeriod;
   private final Students students = Students.defaultOf(); // 강의 기본정보와는 다름
 
-  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
-      RegistrationPeriod registrationPeriod) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.coverImage = coverImage;
-    this.lectureStatus = lectureStatus;
-    this.registrationPeriod = registrationPeriod;
-  }
-  public FreeLecture(Long id, String title, CoverImage coverImage, LectureStatus lectureStatus,
+  // primary constructor
+  public FreeLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus, LectureStatus lectureStatus,
       RegistrationPeriod registrationPeriod, LocalDateTime createdAt, LocalDateTime updatedAt) {
     super(createdAt, updatedAt);
     this.id = id;
     this.title = title;
-    this.coverImage = coverImage;
+    this.coverImages.addAll(coverImages);
     this.lectureStatus = lectureStatus;
+    this.lectureRecruitingStatus = lectureRecruitingStatus;
     this.registrationPeriod = registrationPeriod;
   }
-  public FreeLecture(LectureEntity lecture) {
-    super(lecture.getCreatedAt(), lecture.getUpdatedAt());
-    this.id = lecture.getId();
-    this.title = lecture.getTitle();
-    this.coverImage = lecture.getCoverImage();
-    this.lectureStatus = lecture.getLectureStatus();
-    this.registrationPeriod = lecture.getRegistrationPeriod();
+
+  public FreeLecture(Long id, String title, CoverImages coverImages,
+      LectureRecruitingStatus lectureRecruitingStatus,
+      RegistrationPeriod registrationPeriod) {
+    this(id, title, coverImages, lectureRecruitingStatus, LectureStatus.YET, registrationPeriod,
+        LocalDateTime.now(), null);
+  }
+
+  public FreeLecture(Long id, String title, CoverImages coverImages, LectureStatus lectureStatus,
+      LectureRecruitingStatus lectureRecruitingStatus,
+      RegistrationPeriod registrationPeriod) {
+    this(id, title, coverImages, lectureRecruitingStatus, lectureStatus, registrationPeriod,
+        LocalDateTime.now(), null);
   }
 
   @Override
   public boolean isFree() {
-    return LectureType.FREE.equals(this.lectureType);
+    return lectureType.isFree();
   }
 
   @Override
-  public boolean recruiting() {
-    return LectureStatus.RECRUITING.equals(this.lectureStatus);
+  public boolean isRecruiting() {
+    return this.lectureRecruitingStatus.isRecruiting();
   }
 
   @Override
-  public void enrollment(NsUser nsUser) {
-    if (recruiting()) {
+  public void canEnrollment(NsUser nsUser, Students selectedStudents) {
+    if (!isRecruiting()) {
       throw new IllegalArgumentException("모집중이지 않습니다.");
     }
-    students.add(nsUser);
+
+    if (selectedStudents.contain(nsUser)) {
+      throw new IllegalArgumentException("선발된 인원만 수강신청이 가능합니다.");
+    }
+  }
+
+  @Override
+  public void enrollment(NsUser nsUser, Students selectedStudents) {
+    this.canEnrollment(nsUser, selectedStudents);
+    this.students.add(nsUser);
+  }
+
+  @Override
+  public Lecture recruitingStart() {
+    return new FreeLecture(this.id, this.title, this.coverImages,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod);
   }
 
   @Override
   public Lecture start() {
-    return new FreeLecture(this.id, this.title, this.coverImage, LectureStatus.RECRUITING, this.registrationPeriod);
+    return new FreeLecture(this.id, this.title, this.coverImages, LectureStatus.DOING,
+        LectureRecruitingStatus.RECRUITING, this.registrationPeriod);
   }
 
   @Override
@@ -70,13 +89,15 @@ public class FreeLecture extends BaseTime implements Lecture {
     return students.size();
   }
 
+
   public LectureEntity toEntity() {
     return new LectureEntity(
         this.id
         , this.title
-        , this.coverImage
+        , this.coverImages
         , this.lectureType
         , this.lectureStatus
+        , this.lectureRecruitingStatus
         , this.registrationPeriod
         , null
         , null

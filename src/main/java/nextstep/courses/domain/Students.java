@@ -15,7 +15,7 @@ public class Students {
     return new Students(new ArrayList<>());
   }
   public void canAdd(int limitSize) {
-    if (this.students.size() >= limitSize) {
+    if (this.students.size() > limitSize) {
       throw new IllegalArgumentException("수강인원이 가득찼습니다.");
     }
   }
@@ -37,4 +37,7 @@ public class Students {
     return this.students.size();
   }
 
+  public boolean contain(NsUser nsUser) {
+    return this.students.contains(nsUser);
+  }
 }
