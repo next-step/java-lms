@@ -16,8 +16,8 @@ public class Enrollments {
         this.enrollments.addAll(enrollments);
     }
 
-    public void add(NsUser user) {
-        enrollments.add(new Enrollment(user));
+    public void add(NsUser user, Session session) {
+        enrollments.add(new Enrollment(user, session));
     }
 
     public int enrolledNumber() {

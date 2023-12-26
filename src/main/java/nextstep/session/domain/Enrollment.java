@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 public class Enrollment extends BaseDomain {
     private Long id;
-    private NsUser student;
     private Long studentId;
     private Long sessionId;
 
@@ -18,13 +17,7 @@ public class Enrollment extends BaseDomain {
         this.sessionId = sessionId;
     }
 
-    public Enrollment(NsUser student) {
-        this.student = student;
-        this.studentId = student.getId();
-    }
-
     public Enrollment(NsUser student, Session session) {
-        this.student = student;
         this.studentId = student.getId();
         this.sessionId = session.getId();
     }

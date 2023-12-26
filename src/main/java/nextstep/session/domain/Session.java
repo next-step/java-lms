@@ -48,7 +48,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
     public void enroll(NsUser user) {
         validateStatus();
         validateCommonEnroll(user);
-        enrollments.add(user);
+        enrollments.add(user, this);
     }
 
     private void validateStatus() {
