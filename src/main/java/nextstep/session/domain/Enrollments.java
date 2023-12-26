@@ -13,7 +13,9 @@ public class Enrollments {
     }
 
     public Enrollments(List<Enrollment> enrollments) {
-        this.enrollments.addAll(enrollments);
+        if (enrollments != null) {
+            this.enrollments.addAll(enrollments);
+        }
     }
 
     public Enrollment add(NsUser student, Session session) {

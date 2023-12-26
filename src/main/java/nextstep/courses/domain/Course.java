@@ -14,13 +14,8 @@ public class Course extends BaseDomain {
 
     private List<Session> sessions;
 
-    public Course() {
-    }
-
     public Course(String title, Long creatorId) {
-        super();
-        this.title = title;
-        this.creatorId = creatorId;
+        this(null, title, creatorId, null, null);
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {

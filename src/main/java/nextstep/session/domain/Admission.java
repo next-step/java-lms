@@ -10,16 +10,15 @@ public class Admission extends BaseDomain {
     private Long studentId;
     private Long sessionId;
 
+    public Admission(NsUser student, Session session) {
+        this(null, null, null, student.getId(), session.getId());
+    }
+
     public Admission(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId) {
         super(createdAt, updatedAt);
         this.id = id;
         this.studentId = studentId;
         this.sessionId = sessionId;
-    }
-
-    public Admission(NsUser student, Session session) {
-        this.studentId = student.getId();
-        this.sessionId = session.getId();
     }
 
     public Long getStudentId() {

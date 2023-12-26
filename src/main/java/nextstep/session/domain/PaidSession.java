@@ -12,9 +12,7 @@ public class PaidSession extends Session {
     private final Long price;
 
     public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer capacity, Long price) {
-        super(creatorId, startDate, endDate, sessionImage, SESSION_TYPE);
-        this.capacity = capacity;
-        this.price = price;
+        this(null, null, null, creatorId, startDate, endDate, sessionImage, SessionStatus.PREPARING, SessionRecruitStatus.CLOSED, SESSION_TYPE, capacity, price, null, null);
     }
 
     public PaidSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, Integer capacity, Long price, List<Enrollment> enrollments, List<Admission> admissions) {

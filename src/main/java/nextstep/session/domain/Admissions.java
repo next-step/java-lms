@@ -13,7 +13,9 @@ public class Admissions {
     }
 
     public Admissions(List<Admission> admissions) {
-        this.admissions.addAll(admissions);
+        if (admissions != null) {
+            this.admissions.addAll(admissions);
+        }
     }
 
     public boolean isAdmiss(NsUser student, Session session) {

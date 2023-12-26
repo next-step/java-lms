@@ -11,17 +11,16 @@ public class Enrollment extends BaseDomain {
     private Long sessionId;
     private boolean approved;
 
+    public Enrollment(NsUser student, Session session) {
+        this(null, null, null, student.getId(), session.getId(), false);
+    }
+
     public Enrollment(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId, boolean approved) {
         super(createdAt, updatedAt);
         this.id = id;
         this.studentId = studentId;
         this.sessionId = sessionId;
         this.approved = approved;
-    }
-
-    public Enrollment(NsUser student, Session session) {
-        this.studentId = student.getId();
-        this.sessionId = session.getId();
     }
 
     public void admiss() {

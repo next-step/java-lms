@@ -19,11 +19,7 @@ public class SessionImage extends BaseDomain {
     private Long sessionId;
 
     public SessionImage(String imageURL, int imageSize, ImageType imageType, int width, int height) {
-        this.imageURL = imageURL;
-        this.imageSize = imageSize;
-        this.imageType = imageType;
-        this.width = width;
-        this.height = height;
+        this(null, null, null, imageURL, imageSize, imageType, width, height, null);
     }
 
     public SessionImage(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String imageURL, int imageSize, ImageType imageType, int width, int height, Long sessionId) {

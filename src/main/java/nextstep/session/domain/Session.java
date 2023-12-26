@@ -26,13 +26,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
     protected Admissions admissions = new Admissions();
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
-        super();
-        this.creatorId = creatorId;
-        this.sessionDate = new SessionDate(startDate, endDate);
-        this.sessionImage = sessionImage;
-        this.sessionStatus = DEFAULT_SESSION_STATUS;
-        this.sessionRecruitStatus = DEFAULT_RECRUIT_STATUS;
-        this.sessionType = sessionType;
+        this(null, null, null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS, DEFAULT_RECRUIT_STATUS, sessionType, null, null);
     }
 
     public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, List<Enrollment> enrollments, List<Admission> admissions) {

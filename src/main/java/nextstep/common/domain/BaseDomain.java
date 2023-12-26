@@ -2,19 +2,18 @@ package nextstep.common.domain;
 
 import java.time.LocalDateTime;
 
-public class BaseDomain {
+public abstract class BaseDomain {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public BaseDomain() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = null;
-    }
-
     public BaseDomain(LocalDateTime createdAt, LocalDateTime updatedAt) {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
