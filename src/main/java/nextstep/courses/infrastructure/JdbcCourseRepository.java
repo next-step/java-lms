@@ -1,13 +1,14 @@
 package nextstep.courses.infrastructure;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -26,12 +27,14 @@ public class JdbcCourseRepository implements CourseRepository {
     @Override
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+        RowMapper<Course> rowMapper = (rs, rowNum) ->
+                aCourse()
+                        .withId(rs.getLong("id"))
+                        .withTitle(rs.getString("title"))
+                        .withCreatorId(rs.getLong("creator_id"))
+                        .withCreatedAt(toLocalDateTime(rs.getTimestamp("created_at")))
+                        .withUpdatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+                        .build();
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 

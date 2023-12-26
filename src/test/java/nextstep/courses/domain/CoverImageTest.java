@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,14 +14,24 @@ class CoverImageTest {
     @Test
     @DisplayName("CoverImage 생성")
     void create() {
-        assertThat(new CoverImage("pobi.jpeg", 500L, 300D, 200D))
+        assertThat(aCoverImage()
+                .withName("pobi.jpeg")
+                .withByteSize(500L)
+                .withWidth(300D)
+                .withHeight(200D)
+                .build())
                 .isInstanceOf(CoverImage.class);
     }
 
     @Test
     @DisplayName("CoverImage 생성시, 너비, 높이 비율이 3:2가 아니면 예외 던짐")
     void create_ratio_exception() {
-        assertThatThrownBy(()->new CoverImage("pobi.jpeg", 500L, 300D, 300D))
+        assertThatThrownBy(()->aCoverImage()
+                .withName("pobi.jpeg")
+                .withByteSize(500L)
+                .withWidth(300D)
+                .withHeight(300D)
+                .build())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -28,13 +39,22 @@ class CoverImageTest {
     @DisplayName("CoverImage 생성시, 너비나 높이의 최소기준에 부합하면 에외던짐")
     @CsvSource({"299D,200D","300D,199D"})
     void create_width_height_exception(Double width, Double height) {
-        assertThatThrownBy(()->new CoverImage("pobi.jpeg", 500L, width, height))
+        assertThatThrownBy(
+                ()->aCoverImage()
+                        .withName("pobi.jpeg")
+                        .withByteSize(500L)
+                        .withWidth(width)
+                        .withHeight(height).build())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("전용 DTO 모델을 반환함")
     void toDto() {
-        assertThat(new CoverImage("pobi.jpeg", 500L, 300D, 200D).toDto()).isInstanceOf(CoverImageDTO.class);
+        assertThat(aCoverImage()
+                .withName("pobi.jpeg")
+                .withByteSize(500L)
+                .withWidth(300D)
+                .withHeight(200D).build().toDto()).isInstanceOf(CoverImageDTO.class);
     }
 }

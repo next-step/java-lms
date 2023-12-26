@@ -1,12 +1,14 @@
 package nextstep.courses.infrastructure;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
+import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
+import static nextstep.courses.domain.SessionBuilder.aSession;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CoverImage;
 import nextstep.courses.domain.Duration;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionPaymentType;
@@ -58,25 +60,27 @@ public class JdbcSessionRepository implements SessionRepository {
                 + "cover_image_name, cover_byte_size, cover_image_width, cover_image_height, "
                 + "status, start_date, end_date, created_at, updated_at from session where id = ?";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Session(rs.getLong("id"),
-                        new Course(rs.getLong("course_id")),
-                        rs.getLong("price"),
-                        SessionPaymentType.from(rs.getString("session_type")),
-                        rs.getInt("session_limit"),
-                        new Duration(
-                                rs.getTimestamp("start_date").toLocalDateTime(),
-                                rs.getTimestamp("end_date").toLocalDateTime()
-                        ),
-                        SessionStatus.valueOf(rs.getString("status")),
-                        new CoverImage(
-                                rs.getString("cover_image_name"),
-                                rs.getLong("cover_byte_size"),
-                                rs.getDouble("cover_image_width"),
-                                rs.getDouble("cover_image_height")
-                        ),
-                        toLocalDateTime(rs.getTimestamp("created_at")),
-                        toLocalDateTime(rs.getTimestamp("updated_at"))
-                ),id);
+                        aSession()
+                                .withId(rs.getLong("id"))
+                                .withCourse(aCourse().withId(rs.getLong("course_id")).build())
+                                .withAmountOfPrice(rs.getLong("price"))
+                                .withSessionPaymentType(SessionPaymentType.from(rs.getString("session_type")))
+                                .withLimitOfUsers(rs.getInt("session_limit"))
+                                .withDuration(new Duration(rs.getTimestamp("start_date").toLocalDateTime(),
+                                        rs.getTimestamp("end_date").toLocalDateTime()))
+                                .withCoverImage(
+                                        aCoverImage()
+                                                .withName(rs.getString("cover_image_name"))
+                                                .withByteSize(rs.getLong("cover_byte_size"))
+                                                .withWidth(rs.getDouble("cover_image_width"))
+                                                .withHeight(rs.getDouble("cover_image_height"))
+                                                .build()
+                                )
+                                .withSessionStatus(SessionStatus.valueOf(rs.getString("status")))
+                                .withCreatedAt(toLocalDateTime(rs.getTimestamp("created_at")))
+                                .withUpdatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+                                .build()
+                , id);
     }
 
     @Override
@@ -87,25 +91,27 @@ public class JdbcSessionRepository implements SessionRepository {
                 + "from session "
                 + "where course_id = ?";
         List<Session> sessionList = jdbcTemplate.query(sql, (rs, rowNum) ->
-                new Session(
-                        rs.getLong("id"),
-                        new Course(courseId),
-                        rs.getLong("price"),
-                        SessionPaymentType.from(rs.getString("session_type")),
-                        rs.getInt("session_limit"),
-                        new Duration(rs.getTimestamp("start_date").toLocalDateTime(),
-                                rs.getTimestamp("end_date").toLocalDateTime()),
-                        SessionStatus.valueOf(rs.getString("status")),
-                        new CoverImage(
-                                rs.getString("cover_image_name"),
-                                rs.getLong("cover_byte_size"),
-                                rs.getDouble("cover_image_width"),
-                                rs.getDouble("cover_image_height")),
-                        toLocalDateTime(rs.getTimestamp("created_at")),
-                        toLocalDateTime(rs.getTimestamp("updated_at"))
-
-                )
-                ,courseId
+                        aSession()
+                                .withId(rs.getLong("id"))
+                                .withCourse(aCourse().withId(rs.getLong("course_id")).build())
+                                .withAmountOfPrice(rs.getLong("price"))
+                                .withSessionPaymentType(SessionPaymentType.from(rs.getString("session_type")))
+                                .withLimitOfUsers(rs.getInt("session_limit"))
+                                .withDuration(new Duration(rs.getTimestamp("start_date").toLocalDateTime(),
+                                        rs.getTimestamp("end_date").toLocalDateTime()))
+                                .withCoverImage(
+                                        aCoverImage()
+                                                .withName(rs.getString("cover_image_name"))
+                                                .withByteSize(rs.getLong("cover_byte_size"))
+                                                .withWidth(rs.getDouble("cover_image_width"))
+                                                .withHeight(rs.getDouble("cover_image_height"))
+                                                .build()
+                                )
+                                .withSessionStatus(SessionStatus.valueOf(rs.getString("status")))
+                                .withCreatedAt(toLocalDateTime(rs.getTimestamp("created_at")))
+                                .withUpdatedAt(toLocalDateTime(rs.getTimestamp("updated_at")))
+                                .build()
+                , courseId
         );
         return Optional.of(new Sessions(new LinkedHashSet<>(sessionList)));
     }
