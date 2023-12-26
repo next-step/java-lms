@@ -19,19 +19,20 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public void save(Enrollment enrollment) {
-        String sql = "insert into session_enrollment (created_at, updated_at, user_id, session_id) values(?,?,?,?)";
-        jdbcTemplate.update(sql, enrollment.getCreatedAt(), enrollment.getUpdatedAt(), enrollment.getStudentId(), enrollment.getSessionId());
+        String sql = "insert into session_enrollment (created_at, updated_at, user_id, session_id, approved) values(?,?,?,?,?)";
+        jdbcTemplate.update(sql, enrollment.getCreatedAt(), enrollment.getUpdatedAt(), enrollment.getStudentId(), enrollment.getSessionId(), enrollment.isApproved());
     }
 
     @Override
     public List<Enrollment> findAllBySessionId(Long sessionId) {
-        String sql = "select id, created_at, updated_at, user_id, session_id from session_enrollment where session_id = ?";
+        String sql = "select id, created_at, updated_at, user_id, session_id, approved from session_enrollment where session_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),
                 toLocalDateTime(rs.getTimestamp(2)),
                 toLocalDateTime(rs.getTimestamp(3)),
                 rs.getLong(4),
-                rs.getLong(5)
+                rs.getLong(5),
+                rs.getBoolean(6)
         ), sessionId);
     }
 }

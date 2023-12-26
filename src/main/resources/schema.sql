@@ -69,6 +69,7 @@ create table session_enrollment
     updated_at timestamp,
     user_id    bigint,
     session_id bigint,
+    approved boolean,
     foreign key (user_id) REFERENCES ns_user (id),
     foreign key (session_id) REFERENCES session (id)
 );
