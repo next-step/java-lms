@@ -16,8 +16,18 @@ public class Enrollments {
         this.enrollments.addAll(enrollments);
     }
 
-    public void add(NsUser user, Session session) {
-        enrollments.add(new Enrollment(user, session));
+    public Enrollment add(NsUser student, Session session) {
+        Enrollment enrollment = new Enrollment(student, session);
+        enrollments.add(enrollment);
+        return enrollment;
+    }
+
+    public void admiss(NsUser student, Session session) {
+        enrollments.stream()
+                .filter(enrollment -> enrollment.getSessionId().equals(session.getId()) && enrollment.getStudentId().equals(student.getId()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("강의가 등록되지 않은 학생입니다."))
+                .admiss();
     }
 
     public int enrolledNumber() {

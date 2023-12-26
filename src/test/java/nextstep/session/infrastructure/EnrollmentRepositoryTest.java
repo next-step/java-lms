@@ -1,5 +1,6 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.AdmissionRepository;
 import nextstep.session.domain.Enrollment;
 import nextstep.session.domain.EnrollmentRepository;
 import nextstep.session.domain.FreeSession;
@@ -21,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,6 +34,7 @@ public class EnrollmentRepositoryTest {
     private SessionImageRepository sessionImageRepository;
     private SessionRepository sessionRepository;
     private EnrollmentRepository enrollmentRepository;
+    private AdmissionRepository admissionRepository;
     private UserRepository userRepository;
 
     NsUser JAVAJIGI;
@@ -41,9 +42,11 @@ public class EnrollmentRepositoryTest {
     @BeforeEach
     void setUp() {
         sessionImageRepository = new JdbcSessionImageRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionImageRepository);
-        userRepository = new JdbcUserRepository(jdbcTemplate);
         enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
+        admissionRepository = new JdbcAdmissionRepository(jdbcTemplate);
+
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionImageRepository, enrollmentRepository, admissionRepository);
+        userRepository = new JdbcUserRepository(jdbcTemplate);
 
         JAVAJIGI = userRepository.findByUserId("javajigi").get();
     }
@@ -57,11 +60,11 @@ public class EnrollmentRepositoryTest {
         Session savedSession = sessionRepository.findById(sessionRepository.save(freeSession));
 
         // when
-        savedSession.enroll(JAVAJIGI);
-        enrollmentRepository.save(new Enrollment(JAVAJIGI, savedSession));
+        Enrollment enrollment = savedSession.enroll(JAVAJIGI);
+        enrollmentRepository.save(enrollment);
 
         // then
-        List<Enrollment> enrollments = enrollmentRepository.findAllBySessionId(savedSession.getId());
-        assertThat(enrollments).hasSize(1);
+        assertThat(sessionRepository.findById(savedSession.getId()).enrolledNumber())
+                .isEqualTo(1);
     }
 }

@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public abstract class Session extends BaseDomain implements Sessionable {
@@ -22,6 +23,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
     private SessionRecruitStatus sessionRecruitStatus;
     private SessionType sessionType;
     protected Enrollments enrollments = new Enrollments();
+    protected Admissions admissions = new Admissions();
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
         super();
@@ -33,7 +35,7 @@ public abstract class Session extends BaseDomain implements Sessionable {
         this.sessionType = sessionType;
     }
 
-    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType) {
+    public Session(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, List<Enrollment> enrollments, List<Admission> admissions) {
         super(createdAt, updatedAt);
         this.id = id;
         this.creatorId = creatorId;
@@ -42,13 +44,15 @@ public abstract class Session extends BaseDomain implements Sessionable {
         this.sessionStatus = sessionStatus;
         this.sessionRecruitStatus = sessionRecruitStatus;
         this.sessionType = sessionType;
+        this.enrollments = new Enrollments(enrollments);
+        this.admissions = new Admissions(admissions);
     }
 
     @Override
-    public void enroll(NsUser user) {
+    public Enrollment enroll(NsUser user) {
         validateStatus();
         validateCommonEnroll(user);
-        enrollments.add(user, this);
+        return enrollments.add(user, this);
     }
 
     private void validateStatus() {
@@ -65,6 +69,16 @@ public abstract class Session extends BaseDomain implements Sessionable {
     @Override
     public int enrolledNumber() {
         return enrollments.enrolledNumber();
+    }
+
+    public void admiss(NsUser loginUser, NsUser student) {
+        if (!creatorId.equals(loginUser.getId())) {
+            throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
+        }
+        if (admissions.isAdmiss(student, this)) {
+            throw new IllegalArgumentException("선발되지 않은 학생입니다.");
+        }
+        enrollments.admiss(student, this);
     }
 
     @Override

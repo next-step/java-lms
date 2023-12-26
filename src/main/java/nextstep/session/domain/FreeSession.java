@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FreeSession extends Session {
     private static final SessionType SESSION_TYPE = SessionType.FREE;
@@ -12,8 +13,8 @@ public class FreeSession extends Session {
         super(creatorId, startDate, endDate, sessionImage, SESSION_TYPE);
     }
 
-    public FreeSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType) {
-        super(id, createdAt, updatedAt, creatorId, startDate, endDate, sessionImage, sessionStatus, sessionRecruitStatus, sessionType);
+    public FreeSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, List<Enrollment> enrollments, List<Admission> admissions) {
+        super(id, createdAt, updatedAt, creatorId, startDate, endDate, sessionImage, sessionStatus, sessionRecruitStatus, sessionType, enrollments, admissions);
     }
 
     public static FreeSession create(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage) {

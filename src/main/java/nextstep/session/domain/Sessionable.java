@@ -4,7 +4,7 @@ import nextstep.users.domain.NsUser;
 
 public interface Sessionable {
 
-    void enroll(NsUser user);
+    Enrollment enroll(NsUser user);
     void changeStatus(SessionStatus status);
     int enrolledNumber();
 }

@@ -25,7 +25,6 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public List<Enrollment> findAllBySessionId(Long sessionId) {
-        System.out.println(sessionId);
         String sql = "select id, created_at, updated_at, user_id, session_id from session_enrollment where session_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),

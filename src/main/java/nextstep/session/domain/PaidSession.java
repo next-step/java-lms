@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PaidSession extends Session {
     private static final SessionType SESSION_TYPE = SessionType.PAID;
@@ -16,8 +17,8 @@ public class PaidSession extends Session {
         this.price = price;
     }
 
-    public PaidSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, Integer capacity, Long price) {
-        super(id, createdAt, updatedAt, creatorId, startDate, endDate, sessionImage, sessionStatus, sessionRecruitStatus, sessionType);
+    public PaidSession(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionStatus sessionStatus, SessionRecruitStatus sessionRecruitStatus, SessionType sessionType, Integer capacity, Long price, List<Enrollment> enrollments, List<Admission> admissions) {
+        super(id, createdAt, updatedAt, creatorId, startDate, endDate, sessionImage, sessionStatus, sessionRecruitStatus, sessionType, enrollments, admissions);
         this.capacity = capacity;
         this.price = price;
     }

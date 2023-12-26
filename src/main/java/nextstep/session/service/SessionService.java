@@ -24,7 +24,12 @@ public class SessionService {
 
     public void enrollSession(NsUser loginUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId);
-        session.enroll(loginUser);
-        enrollmentRepository.save(new Enrollment(loginUser, session));
+        Enrollment enrollment = session.enroll(loginUser);
+        enrollmentRepository.save(enrollment);
+    }
+
+    public void admissSession(NsUser loginUser, Long sessionId, NsUser student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.admiss(loginUser, student);
     }
 }
