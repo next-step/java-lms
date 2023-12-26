@@ -11,40 +11,47 @@ public class Session {
 
     private SessionStatus sessionStatus;
 
-    private SessionPricing sessionPricing;
+    private SessionType sessionType;
 
     private Image coverImage;
 
     private SessionDuration sessionDuration;
 
-    private Participants participants = new Participants();
+    private Enrollment enrollment;
 
     private Session() {
 
     }
 
-    public static Session createFreeSession(final String title, final Image coverImage, final SessionDuration sessionDuration) {
+    public static Session createFreeSession(final String title, final Image coverImage,
+        final SessionDuration sessionDuration) {
         Session session = new Session();
         session.title = title;
         session.sessionStatus = SessionStatus.PREPARE;
-        session.sessionPricing = new SessionPricing(new SessionPrice());
         session.coverImage = coverImage;
         session.sessionDuration = sessionDuration;
+        session.sessionType = SessionType.FREE;
+        session.enrollment = new Enrollment(new SessionPricing(new SessionPrice()),
+            new Participants());
         return session;
     }
 
-    public static Session createPaidSession(final String title, final Image coverImage, final SessionDuration sessionDuration, int sessionPrice, int maxParticipants) {
+    public static Session createPaidSession(final String title, final Image coverImage,
+        final SessionDuration sessionDuration, int sessionPrice, int maxParticipants) {
         Session session = new Session();
         session.title = title;
         session.sessionStatus = SessionStatus.PREPARE;
-        session.sessionPricing = new SessionPricing(new SessionPrice(sessionPrice), maxParticipants);
         session.coverImage = coverImage;
         session.sessionDuration = sessionDuration;
+        session.sessionType = SessionType.PAID;
+        session.enrollment = new Enrollment(new SessionPricing(new SessionPrice(sessionPrice), maxParticipants),
+            new Participants());
+
         return session;
     }
 
     public Participants getParticipants() {
-        return participants;
+        return enrollment.getParticipants();
     }
 
     public SessionStatus getSessionStatus() {
@@ -53,20 +60,14 @@ public class Session {
 
     public void enrollStudent(final NsUser nsUser, final Payment payment) {
         validateSessionRecruit();
-        int currentParticipants = participants.count();
-        if (sessionPricing.isFreeSession()) {
-            throw new IllegalArgumentException("이 강의는 무료 강의입니다. 결제 정보가 필요하지 않습니다.");
-        }
-        sessionPricing.canEnroll(payment, currentParticipants);
-        participants.addStudent(nsUser);
-    }
 
-    public void enrollStudent(final NsUser nsUser) {
-        validateSessionRecruit();
-        if (!sessionPricing.isFreeSession()) {
-            throw new IllegalArgumentException("이 강의는 유료 강의입니다. 결제 금액이 필요 합니다.");
+        if (sessionType == SessionType.FREE) {
+            enrollment.enrollStudent(nsUser);
         }
-        participants.addStudent(nsUser);
+
+        if (sessionType == SessionType.PAID) {
+            enrollment.enrollStudent(nsUser, payment);
+        }
     }
 
     private void validateSessionRecruit() {

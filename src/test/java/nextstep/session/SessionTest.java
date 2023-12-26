@@ -29,8 +29,9 @@ class SessionTest {
     @Test
     @DisplayName("수강신청 성공하여 과정에 학생이 추가된다.")
     void sessionAddStudentTest() {
+        Payment payment = new Payment("payId", 1L, 1L, 0L);
         session.changeToRecruit();
-        session.enrollStudent(NsUserTest.JAVAJIGI);
+        session.enrollStudent(NsUserTest.JAVAJIGI, payment);
         assertThat(session.getParticipants().getStudents().contains(NsUserTest.JAVAJIGI)).isTrue();
     }
 
@@ -59,10 +60,12 @@ class SessionTest {
     @Test
     @DisplayName("무료강의 상태가 모집중인 경우라면 수강신청이 가능하다.")
     void canEnrollFreeSessionRecruiting() {
+        Payment payment = new Payment("payId", 1L, 1L, 0L);
+
         Session javaSession =
             Session.createFreeSession("자바강의", new Image(), new SessionDuration(started, ended));
         javaSession.changeToRecruit();
-        javaSession.enrollStudent(NsUserTest.JAVAJIGI);
+        javaSession.enrollStudent(NsUserTest.JAVAJIGI, payment);
 
         assertThat(javaSession.getParticipants().getStudents()).contains(NsUserTest.JAVAJIGI);
     }
