@@ -36,7 +36,9 @@ class SessionTest {
                                 LocalDateTime.now().plusMonths(1L)
                         ),
                         SessionStatus.READY,
-                        new CoverImage("pobi.png", 500L, 300D, 200D)
+                        new CoverImage("pobi.png", 500L, 300D, 200D),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 )
         ).isInstanceOf(IllegalArgumentException.class);
     }
@@ -56,7 +58,9 @@ class SessionTest {
                         LocalDateTime.now().plusMonths(1L)
                 ),
                 SessionStatus.READY,
-                new CoverImage("pobi.png", 500L, 300D, 200D)
+                new CoverImage("pobi.png", 500L, 300D, 200D),
+                LocalDateTime.now(),
+                LocalDateTime.now()
         );
         NsUsers users = new NsUsers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
         session.replaceEnrollmentNsUsers(e->users);

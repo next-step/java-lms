@@ -41,7 +41,9 @@ class SessionRepositoryTest {
         Session session = new Session(1L, CourseTest.C1, 100000L, SessionPaymentType.PAID,
                 new NsUsers(List.of(NsUserTest.JAVAJIGI)), 15,
                 new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
-                SessionStatus.ENROLLING, new CoverImage("pobi.png", 500L, 300D, 200D));
+                SessionStatus.ENROLLING, new CoverImage("pobi.png", 500L, 300D, 200D),
+                LocalDateTime.now(),
+                LocalDateTime.now());
         int count = sessionRepository.save(session.toDto());
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);

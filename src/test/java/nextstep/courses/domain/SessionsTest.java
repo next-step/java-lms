@@ -44,7 +44,9 @@ class SessionsTest {
                         10,
                         new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                         SessionStatus.READY,
-                        new CoverImage("pobi.png", 500L, 300D, 200D)
+                        new CoverImage("pobi.png", 500L, 300D, 200D),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 ),
                 new Session(
                         2L,
@@ -55,7 +57,9 @@ class SessionsTest {
                         10,
                         new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                         SessionStatus.READY,
-                        new CoverImage("sanjigi.png", 500L, 300D, 200D)
+                        new CoverImage("sanjigi.png", 500L, 300D, 200D),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 )
         ));
 
@@ -69,7 +73,9 @@ class SessionsTest {
                         10,
                         new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                         SessionStatus.READY,
-                        new CoverImage("pobi.png", 500L, 300D, 200D)
+                        new CoverImage("pobi.png", 500L, 300D, 200D),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 ),
                 new Session(
                         4L,
@@ -80,7 +86,9 @@ class SessionsTest {
                         10,
                         new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                         SessionStatus.READY,
-                        new CoverImage("sanjigi.png", 500L, 300D, 200D)
+                        new CoverImage("sanjigi.png", 500L, 300D, 200D),
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 )
         ));
         Sessions actual = new Sessions(sessionSet);

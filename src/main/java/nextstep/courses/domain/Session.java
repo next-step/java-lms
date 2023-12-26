@@ -18,8 +18,9 @@ public class Session extends AuditInfo{
     private CoverImage coverImage;
 
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType, NsUsers nsUsers,
-                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage) {
-        super(LocalDateTime.now(), LocalDateTime.now());
+                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage,
+                   LocalDateTime createAt, LocalDateTime updateAt) {
+        super(createAt, updateAt);
         this.id = id;
         this.course = course;
         this.duration = duration;
@@ -30,7 +31,8 @@ public class Session extends AuditInfo{
     }
 
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType,
-                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage) {
+                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage,
+                   LocalDateTime createAt, LocalDateTime updateAt) {
         this(id,
                 course,
                 amountOfPrice,
@@ -39,7 +41,21 @@ public class Session extends AuditInfo{
                 limitOfUserCount,
                 duration,
                 sessionStatus,
-                coverImage);
+                coverImage,
+                createAt,
+                updateAt);
+    }
+
+    public Session(final Long id, final Course course, final SessionPayment sessionPayment, final Duration duration,
+                   final SessionStatus sessionStatus, final CoverImage coverImage,
+                   final LocalDateTime createdAt, final LocalDateTime updatedAt){
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.course = course;
+        this.sessionPayment = sessionPayment;
+        this.duration = duration;
+        this.sessionStatus = sessionStatus;
+        this.coverImage = coverImage;
     }
 
     public Session() {
@@ -51,7 +67,9 @@ public class Session extends AuditInfo{
                 1,
                 new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
                 SessionStatus.READY,
-                new CoverImage("pobi.png", 500L, 300D, 200D)
+                new CoverImage("pobi.png", 500L, 300D, 200D),
+                LocalDateTime.now(),
+                LocalDateTime.now()
         );
     }
 
