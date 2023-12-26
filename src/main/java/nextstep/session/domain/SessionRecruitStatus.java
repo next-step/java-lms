@@ -14,6 +14,10 @@ public enum SessionRecruitStatus {
         }
     }
 
+    public boolean isOpen() {
+        return this == OPEN;
+    }
+
     public boolean isClosed() {
         return this == CLOSED;
     }

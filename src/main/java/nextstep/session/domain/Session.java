@@ -58,7 +58,6 @@ public abstract class Session extends BaseDomain {
         return enrollments.admiss(student, this);
     }
 
-
     public Enrollment cancel(NsUser loginUser, NsUser student) {
         new AdmissTeacherPolicy().validate(this, loginUser, student);
         return enrollments.cancel(student, this);
@@ -72,11 +71,11 @@ public abstract class Session extends BaseDomain {
         sessionStatus = status;
     }
 
-    public void changeRecruit(SessionRecruitStatus recruitStatus) {
-        if (recruitStatus.equals(SessionRecruitStatus.OPEN)) {
+    public void changeRecruit(SessionRecruitStatus changeStatus) {
+        if (changeStatus.isOpen()) {
             SessionRecruitStatus.enableOpen(sessionStatus);
         }
-        this.sessionRecruitStatus = recruitStatus;
+        this.sessionRecruitStatus = changeStatus;
     }
 
     public Long getId() {
