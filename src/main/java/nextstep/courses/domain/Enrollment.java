@@ -10,7 +10,7 @@ public class Enrollment {
     private final NsUserLimit limits;
 
     public Enrollment() {
-        this((new NsUsers(new ArrayList<>())), new NsUserLimit(1,SessionPaymentType.PAID));
+        this((new NsUsers(new ArrayList<>())), new NsUserLimit(1,SessionPaymentType.FREE));
     }
 
     public Enrollment(NsUsers users, NsUserLimit limit) {
