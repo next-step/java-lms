@@ -3,12 +3,12 @@ package nextstep.courses.domain.course.session;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Duration {
+public class SessionDuration {
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    public Duration(LocalDate startDate, LocalDate endDate) {
+    public SessionDuration(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
@@ -51,8 +51,8 @@ public class Duration {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Duration duration = (Duration) o;
-        return Objects.equals(startDate, duration.startDate) && Objects.equals(endDate, duration.endDate);
+        SessionDuration sessionDuration = (SessionDuration) o;
+        return Objects.equals(startDate, sessionDuration.startDate) && Objects.equals(endDate, sessionDuration.endDate);
     }
 
     @Override

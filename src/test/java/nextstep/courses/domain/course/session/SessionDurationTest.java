@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class DurationTest {
+public class SessionDurationTest {
     private LocalDate localDate;
 
     @BeforeEach
@@ -20,15 +20,15 @@ public class DurationTest {
     @DisplayName("Duration 은 시작 혹은 종료 날짜에 빈 값이 주어지면 예외를 던진다.")
     void newObject_nullAndEmpty_throwsException() {
         assertThatThrownBy(
-                () -> new Duration(null, null)
+                () -> new SessionDuration(null, null)
         ).isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-                () -> new Duration(localDate, null)
+                () -> new SessionDuration(localDate, null)
         ).isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-                () -> new Duration(null, localDate)
+                () -> new SessionDuration(null, localDate)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -36,7 +36,7 @@ public class DurationTest {
     @DisplayName("Duration 은 시작 날짜가 종료날짜보다 늦으면 예외를 던진다.")
     void newObject_startDateIsAfterBeforeDate_throwsException() {
         assertThatThrownBy(
-                () -> new Duration(localDate.plusDays(1), localDate)
+                () -> new SessionDuration(localDate.plusDays(1), localDate)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

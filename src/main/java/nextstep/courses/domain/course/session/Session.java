@@ -1,10 +1,8 @@
 package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.BaseEntity;
-import nextstep.courses.domain.course.session.apply.Apply;
+import nextstep.courses.domain.course.session.apply.Applies;
 import nextstep.courses.domain.course.session.image.Images;
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,22 +13,24 @@ public class Session extends BaseEntity {
 
     private Images images;
 
+    private Applies applies;
+
     private SessionDetail sessionDetail;
 
-    public Session(Images images, Duration duration, SessionState sessionState,
+    public Session(Images images, SessionDuration sessionDuration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
-        this(0L, images, duration, sessionState, SessionRecruitStatus.NOT_RECRUIT,
+        this(0L, images, new Applies(), sessionDuration, sessionState, SessionRecruitStatus.NOT_RECRUIT,
                 SessionProgressStatus.READY, creatorId, date, null);
     }
 
-    public Session(Long id, Images images, Duration duration, SessionState sessionState,
+    public Session(Long id, Images images, Applies applies, SessionDuration sessionDuration, SessionState sessionState,
                    SessionRecruitStatus sessionRecruitStatus, SessionProgressStatus sessionProgressStatus,
                    Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, images, new SessionDetail(duration, sessionState, sessionProgressStatus, sessionRecruitStatus),
+        this(id, images, applies, new SessionDetail(sessionDuration, sessionState, sessionProgressStatus, sessionRecruitStatus),
                 creatorId, createdAt, updatedAt);
     }
 
-    public Session(Long id, Images images, SessionDetail sessionDetail,
+    public Session(Long id, Images images, Applies applies, SessionDetail sessionDetail,
                    Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (images == null) {
@@ -43,43 +43,21 @@ public class Session extends BaseEntity {
 
         this.id = id;
         this.images = images;
+        this.applies = applies;
         this.sessionDetail = sessionDetail;
     }
 
-    public Apply apply(NsUser loginUser, Payment payment, LocalDateTime date) {
-        checkPaymentIsPaid(loginUser, payment);
-
-        return this.sessionDetail.addApply(this.id, loginUser.getId(), date);
+    public Enrollment enrollment() {
+        return new Enrollment(this.id, this.applies, this.getSessionState(),
+                this.getSessionProgressStatus(), this.getSessionRecruitStatus());
     }
 
-    private void checkPaymentIsPaid(NsUser loginUser, Payment payment) {
-        if (sessionDetail.charged()) {
-            checkPaymentIsValid(loginUser, payment);
-        }
+    public Approve approve() {
+        return new Approve(this.applies, this.sessionDetail.getSessionState());
     }
 
-    private void checkPaymentIsValid(NsUser loginUser, Payment payment) {
-        if (payment == null || !payment.isPaid(loginUser, this)) {
-            throw new IllegalArgumentException("결제를 다시 확인하세요.");
-        }
-    }
-
-    public Apply approve(NsUser loginUser, Apply apply, LocalDateTime date) {
-        checkUserHasAuthor(loginUser);
-
-        return sessionDetail.approve(apply, date);
-    }
-
-    public Apply cancel(NsUser loginUser, Apply apply, LocalDateTime date) {
-        checkUserHasAuthor(loginUser);
-
-        return sessionDetail.cancel(apply, date);
-    }
-
-    private void checkUserHasAuthor(NsUser loginUser) {
-        if(!loginUser.hasAuthor()) {
-            throw new IllegalArgumentException("신청을 승인 할 권한이 없습니다.");
-        }
+    public Cancel cancel() {
+        return new Cancel(this.applies, this.sessionDetail.getSessionState());
     }
 
     public void changeOnReady(LocalDate date) {
@@ -98,14 +76,6 @@ public class Session extends BaseEntity {
         this.sessionDetail.changeSessionState(updateSessionState);
     }
 
-    public boolean sameAmount(Long amount) {
-        return this.sessionDetail.sameAmount(amount);
-    }
-
-    public boolean sameId(Long sessionId) {
-        return Objects.equals(this.id, sessionId);
-    }
-
     public Long getId() {
         return this.id;
     }
@@ -115,7 +85,7 @@ public class Session extends BaseEntity {
     }
 
     public int applyCount() {
-        return this.sessionDetail.size();
+        return this.applies.size();
     }
 
     public Images getImages() {
@@ -130,7 +100,7 @@ public class Session extends BaseEntity {
         return sessionDetail;
     }
 
-    public Duration getDuration() {
+    public SessionDuration getDuration() {
         return sessionDetail.getDuration();
     }
 
@@ -138,11 +108,11 @@ public class Session extends BaseEntity {
         return sessionDetail.getSessionState();
     }
 
-    public SessionProgressStatus getSessionStatus() {
+    public SessionProgressStatus getSessionProgressStatus() {
         return sessionDetail.getSessionStatus();
     }
 
-    public SessionRecruitStatus getRecruitStatus() {
+    public SessionRecruitStatus getSessionRecruitStatus() {
         return sessionDetail.getRecruitStatus();
     }
 

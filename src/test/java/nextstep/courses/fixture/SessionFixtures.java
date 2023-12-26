@@ -13,8 +13,8 @@ public class SessionFixtures {
     public static final LocalDate DATE_2023_12_12 = LocalDate.of(2023, 12, 12);
     public static final LocalDateTime DATETIME_2023_12_5 = LocalDateTime.of(2023, 12, 5, 0, 0);
 
-    public static Duration duration() {
-        return new Duration(DATE_2023_12_5, DATE_2023_12_10);
+    public static SessionDuration duration() {
+        return new SessionDuration(DATE_2023_12_5, DATE_2023_12_10);
     }
 
     public static Session createdFreeSession() {
@@ -25,7 +25,7 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
-                new Duration(DATE_2023_12_5, DATE_2023_12_10),
+                new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
                 freeSessionStateZero(),
                 sessionRecruitStatus,
                 sessionProgressStatus,
@@ -44,7 +44,7 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
-                new Duration(DATE_2023_12_5, DATE_2023_12_10),
+                new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
                 chargedSessionStateZero(1000L, 2, new Applies()),
                 sessionRecruitStatus,
                 sessionProgressStatus,
@@ -58,7 +58,7 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
-                new Duration(DATE_2023_12_5, DATE_2023_12_10),
+                new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
                 chargedSessionStateZero(1000L, 2, ApplyFixtures.applies_two_canceled()),
                 SessionRecruitStatus.RECRUIT,
                 SessionProgressStatus.READY,
@@ -72,7 +72,7 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
-                new Duration(DATE_2023_12_5, DATE_2023_12_10),
+                new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
                 chargedSessionStateZero(1000L, 2, ApplyFixtures.applies_two_approved()),
                 SessionRecruitStatus.RECRUIT,
                 SessionProgressStatus.READY,

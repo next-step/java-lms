@@ -1,7 +1,6 @@
 package nextstep.courses.service;
 
-import nextstep.courses.domain.course.session.Session;
-import nextstep.courses.domain.course.session.SessionRepository;
+import nextstep.courses.domain.course.session.*;
 import nextstep.courses.domain.course.session.apply.Apply;
 import nextstep.courses.domain.course.session.apply.ApplyRepository;
 import nextstep.payments.domain.Payment;
@@ -25,23 +24,26 @@ public class SessionService {
         sessionRepository.save(courseId, session);
     }
 
-    public void applySession(NsUser loginUser, Long sessionId, Payment payment, LocalDateTime date) {
+    public void apply(NsUser loginUser, Long sessionId, Payment payment, LocalDateTime date) {
         Session session = getSession(sessionId);
-        Apply apply = session.apply(loginUser, payment, date);
+        Enrollment enrollment = session.enrollment();
+        Apply apply = enrollment.apply(loginUser.getId(), payment, date);
         applyRepository.save(apply);
     }
 
     public void approve(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
         Apply savedApply = getApply(sessionId, applicantId);
-        Apply apply = session.approve(loginUser, savedApply, date);
+        Approve approve = session.approve();
+        Apply apply = approve.approve(loginUser, savedApply, date);
         applyRepository.update(apply);
     }
 
     public void cancel(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
         Apply savedApply = getApply(sessionId, applicantId);
-        Apply apply = session.cancel(loginUser, savedApply, date);
+        Cancel cancel = session.cancel();
+        Apply apply = cancel.cancel(loginUser, savedApply, date);
         applyRepository.update(apply);
     }
 

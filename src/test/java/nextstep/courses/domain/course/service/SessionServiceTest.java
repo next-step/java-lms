@@ -53,7 +53,7 @@ public class SessionServiceTest {
         Session savedSession = SessionFixtures.createdChargedSession(SessionRecruitStatus.RECRUIT, SessionProgressStatus.ONGOING);
         when(sessionRepository.findById(savedSession.getId())).thenReturn(Optional.of(savedSession));
 
-        sessionService.applySession(NsUserFixtures.TEACHER_JAVAJIGI_1L,
+        sessionService.apply(NsUserFixtures.TEACHER_JAVAJIGI_1L,
                 savedSession.getId(),
                 PaymentFixtures.payment(),
                 SessionFixtures.DATETIME_2023_12_5
@@ -71,7 +71,7 @@ public class SessionServiceTest {
         sessionService.changeOnReady(savedSession.getId(), SessionFixtures.DATE_2023_12_5);
 
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionProgressStatus.READY);
+        assertThat(savedSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.READY);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class SessionServiceTest {
         sessionService.changeOnGoing(savedSession.getId(), SessionFixtures.DATE_2023_12_6);
 
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionProgressStatus.ONGOING);
+        assertThat(savedSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.ONGOING);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class SessionServiceTest {
         sessionService.changeOnEnd(savedSession.getId(), SessionFixtures.DATE_2023_12_12);
 
         assertThat(savedSession.getId()).isEqualTo(1L);
-        assertThat(savedSession.getSessionStatus()).isEqualTo(SessionProgressStatus.END);
+        assertThat(savedSession.getSessionProgressStatus()).isEqualTo(SessionProgressStatus.END);
     }
 
     @Test

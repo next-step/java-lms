@@ -45,15 +45,15 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 findAllImagesBySessionId(rs.getLong(1)),
-                new Duration(
+                findAllAppliesBySessionId(rs.getLong(1)),
+                new SessionDuration(
                         rs.getTimestamp(2).toLocalDateTime().toLocalDate(),
                         rs.getTimestamp(3).toLocalDateTime().toLocalDate()
                 ),
                 new SessionState(
                         SessionType.find(rs.getString(4)),
                         rs.getLong(5),
-                        rs.getInt(6),
-                        findAllAppliesBySessionId(id)
+                        rs.getInt(6)
                 ),
                 SessionRecruitStatus.find(rs.getString(7)),
                 SessionProgressStatus.find(rs.getString(8)),
@@ -78,11 +78,11 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Session saveSession(Long courseId, Session session) {
-        Duration duration = session.getDuration();
-        SessionRecruitStatus sessionRecruitStatus = session.getRecruitStatus();
+        SessionDuration sessionDuration = session.getDuration();
+        SessionRecruitStatus sessionRecruitStatus = session.getSessionRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionProgressStatus sessionProgressStatus = session.getSessionStatus();
+        SessionProgressStatus sessionProgressStatus = session.getSessionProgressStatus();
         String sql = "insert into session " +
                 "(start_date, end_date, session_type, session_status, amount, " +
                 "recruit_status, quota, course_id, creator_id, created_at, updated_at) " +
@@ -90,8 +90,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
         jdbcTemplate.update((Connection connection) -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, Timestamp.valueOf(duration.getStartDate().atStartOfDay()));
-            ps.setTimestamp(2, Timestamp.valueOf(duration.getEndDate().atStartOfDay()));
+            ps.setTimestamp(1, Timestamp.valueOf(sessionDuration.getStartDate().atStartOfDay()));
+            ps.setTimestamp(2, Timestamp.valueOf(sessionDuration.getEndDate().atStartOfDay()));
             ps.setString(3, sessionType.name());
             ps.setString(4, sessionProgressStatus.name());
             ps.setLong(5, sessionState.getAmount());
@@ -112,15 +112,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int update(Long sessionId, Session session) {
-        Duration duration = session.getDuration();
-        SessionRecruitStatus sessionRecruitStatus = session.getRecruitStatus();
+        SessionDuration sessionDuration = session.getDuration();
+        SessionRecruitStatus sessionRecruitStatus = session.getSessionRecruitStatus();
         SessionState sessionState = session.getSessionState();
         SessionType sessionType = sessionState.getSessionType();
-        SessionProgressStatus sessionProgressStatus = session.getSessionStatus();
+        SessionProgressStatus sessionProgressStatus = session.getSessionProgressStatus();
         String sql = "update session set " +
                 "start_date = ?, end_date = ?, session_type = ?, recruit_status = ?, amount = ?, quota = ?, session_status = ? " +
                 "where id = ?";
-        return jdbcTemplate.update(sql, duration.getStartDate(), duration.getEndDate(), sessionType.name(),
+        return jdbcTemplate.update(sql, sessionDuration.getStartDate(), sessionDuration.getEndDate(), sessionType.name(),
                 sessionRecruitStatus.name(), sessionState.getAmount(), sessionState.getQuota(), sessionProgressStatus.name(), sessionId);
     }
 
@@ -133,15 +133,15 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 findAllImagesBySessionId(rs.getLong(1)),
-                new Duration(
+                findAllAppliesBySessionId(rs.getLong(1)),
+                new SessionDuration(
                         rs.getTimestamp(2).toLocalDateTime().toLocalDate(),
                         rs.getTimestamp(3).toLocalDateTime().toLocalDate()
                 ),
                 new SessionState(
                         SessionType.find(rs.getString(4)),
                         rs.getLong(5),
-                        rs.getInt(6),
-                        findAllAppliesBySessionId(rs.getLong(7))
+                        rs.getInt(6)
                 ),
                 SessionRecruitStatus.find(rs.getString(8)),
                 SessionProgressStatus.find(rs.getString(9)),

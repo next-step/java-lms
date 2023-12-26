@@ -1,13 +1,10 @@
 package nextstep.courses.domain.course.session;
 
-import nextstep.courses.domain.course.session.apply.Apply;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionDetail {
-    private Duration duration;
+    private SessionDuration sessionDuration;
 
     private SessionState sessionState;
 
@@ -15,9 +12,9 @@ public class SessionDetail {
 
     private SessionRecruitStatus sessionRecruitStatus;
 
-    public SessionDetail(Duration duration, SessionState sessionState,
+    public SessionDetail(SessionDuration sessionDuration, SessionState sessionState,
                          SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus) {
-        if (duration == null) {
+        if (sessionDuration == null) {
             throw new IllegalArgumentException("기간이 추가되어야 합니다.");
         }
 
@@ -33,14 +30,14 @@ public class SessionDetail {
             throw new IllegalArgumentException("강의 모집 여부가 추가되어야 합니다.");
         }
 
-        this.duration = duration;
+        this.sessionDuration = sessionDuration;
         this.sessionState = sessionState;
         this.sessionProgressStatus = sessionProgressStatus;
         this.sessionRecruitStatus = sessionRecruitStatus;
     }
 
-    public Duration getDuration() {
-        return duration;
+    public SessionDuration getDuration() {
+        return sessionDuration;
     }
 
     public SessionState getSessionState() {
@@ -55,45 +52,6 @@ public class SessionDetail {
         return sessionRecruitStatus;
     }
 
-    public int size() {
-        return this.sessionState.size();
-    }
-
-    public boolean sameAmount(Long amount) {
-        return this.sessionState.sameAmount(amount);
-    }
-
-    public Apply addApply(Long sessionId, Long nsUserId, LocalDateTime date) {
-        checkStatusOnRecruit();
-        checkStatusOnReadyOrOnGoing();
-
-        return this.sessionState.addApply(sessionId, nsUserId, date);
-    }
-
-    private void checkStatusOnRecruit() {
-        if (this.notRecruiting()) {
-            throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
-        }
-    }
-
-    private void checkStatusOnReadyOrOnGoing() {
-        if (this.notReadyOrOnGoing()) {
-            throw new IllegalArgumentException("강의 신청은 준비, 진행중일 때만 가능 합니다.");
-        }
-    }
-
-    public boolean notRecruiting() {
-        return this.sessionRecruitStatus.notRecruiting();
-    }
-
-    public boolean notReadyOrOnGoing() {
-        return this.sessionProgressStatus.notReadyOrOnGoing();
-    }
-
-    public boolean charged() {
-        return this.sessionState.charged();
-    }
-
     public void changeOnReady(LocalDate date) {
         checkChangeDateIsSameOrAfterWithEndDate(date);
         this.sessionProgressStatus = SessionProgressStatus.READY;
@@ -105,7 +63,7 @@ public class SessionDetail {
     }
 
     private void checkChangeDateIsSameOrAfterWithEndDate(LocalDate date) {
-        if (this.duration.changeDateIsSameOrAfterWithEndDate(date)) {
+        if (this.sessionDuration.changeDateIsSameOrAfterWithEndDate(date)) {
             throw new IllegalArgumentException("강의 종료일 이전에 변경 가능 합니다.");
         }
     }
@@ -116,7 +74,7 @@ public class SessionDetail {
     }
 
     private void checkChangeDateIsBeforeOrSameWithEndDate(LocalDate date) {
-        if (this.duration.changeDateIsBeforeOrSameWithEndDate(date)) {
+        if (this.sessionDuration.changeDateIsBeforeOrSameWithEndDate(date)) {
             throw new IllegalArgumentException("강의 종료일 이후에 변경 가능합니다.");
         }
     }
@@ -125,31 +83,23 @@ public class SessionDetail {
         this.sessionState = sessionState;
     }
 
-    public Apply approve(Apply apply, LocalDateTime date) {
-        return this.sessionState.approve(apply, date);
-    }
-
-    public Apply cancel(Apply apply, LocalDateTime date) {
-        return this.sessionState.cancel(apply, date);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionDetail that = (SessionDetail) o;
-        return Objects.equals(duration, that.duration) && Objects.equals(sessionState, that.sessionState) && sessionProgressStatus == that.sessionProgressStatus && sessionRecruitStatus == that.sessionRecruitStatus;
+        return Objects.equals(sessionDuration, that.sessionDuration) && Objects.equals(sessionState, that.sessionState) && sessionProgressStatus == that.sessionProgressStatus && sessionRecruitStatus == that.sessionRecruitStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(duration, sessionState, sessionProgressStatus, sessionRecruitStatus);
+        return Objects.hash(sessionDuration, sessionState, sessionProgressStatus, sessionRecruitStatus);
     }
 
     @Override
     public String toString() {
         return "SessionDetail{" +
-                "duration=" + duration +
+                "duration=" + sessionDuration +
                 ", sessionState=" + sessionState +
                 ", sessionStatus=" + sessionProgressStatus +
                 ", recruitStatus=" + sessionRecruitStatus +

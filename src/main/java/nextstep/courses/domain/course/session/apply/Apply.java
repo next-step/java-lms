@@ -1,8 +1,6 @@
 package nextstep.courses.domain.course.session.apply;
 
 import nextstep.courses.domain.BaseEntity;
-import nextstep.courses.domain.course.session.Session;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -56,17 +54,13 @@ public class Apply extends BaseEntity {
     }
 
     public Apply approve(LocalDateTime date) {
-        this.approved = true;
-        this.setUpdatedAt(date);
-
-        return this;
+        return new Apply(this.sessionId, this.nsUserId, true,
+                this.getCreatorId(), this.getCreatedAt(), date);
     }
 
     public Apply cancel(LocalDateTime date) {
-        this.approved = false;
-        this.setUpdatedAt(date);
-
-        return this;
+        return new Apply(this.sessionId, this.nsUserId, false,
+                this.getCreatorId(), this.getCreatedAt(), date);
     }
 
     @Override
