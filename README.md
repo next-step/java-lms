@@ -54,9 +54,10 @@
 ## Step 3
 ### Requirements
 
-- [ ] Step2에서 구현한 도메인 모델을 DB 테이블과 매핑한다.
-  - [ ] Course 데이터를 저장한다.
-  - [ ] Session 테이블을 만든다.
-    - [ ] Session 데이터를 저장한다.
-  - [ ] Enrollment 테이블을 만든다.
-    - [ ] Enrollment 데이터를 저장한다.
+- [x] Step2에서 구현한 도메인 모델을 DB 테이블과 매핑한다.
+  - [x] Course 데이터를 저장한다.
+  - [x] Session 테이블을 만든다.
+    - [x] Session 데이터를 저장한다.
+  - [x] Enrollment 테이블을 만든다.
+    - [x] Enrollment 데이터를 저장한다.
+

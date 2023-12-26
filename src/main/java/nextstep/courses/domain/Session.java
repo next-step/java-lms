@@ -17,17 +17,6 @@ public class Session extends AuditInfo{
     private SessionStatus sessionStatus;
     private CoverImage coverImage;
 
-    public Session() {
-        super(LocalDateTime.now(), LocalDateTime.now());
-        this.id = 0L;
-        this.course = new Course();
-        this.duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
-        this.sessionPayment = new SessionPayment(SessionPaymentType.FREE, 0L);
-        this.sessionStatus = SessionStatus.READY;
-        this.coverImage = new CoverImage("pobi.png", 500L, 300D, 200D);
-        this.enrollment = new Enrollment();
-    }
-
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType, NsUsers nsUsers,
                    Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage) {
         super(LocalDateTime.now(), LocalDateTime.now());
@@ -41,18 +30,34 @@ public class Session extends AuditInfo{
     }
 
     public Session(Long id, Course course,Long amountOfPrice, SessionPaymentType sessionPaymentType,
-                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
-        super(createdAt, updatedAt);
-        this.id = id;
-        this.course = course;
-        this.duration = duration;
-        this.sessionPayment = new SessionPayment(sessionPaymentType, amountOfPrice);
-        this.enrollment = new Enrollment(new NsUsers(new ArrayList<>()),
-                new NsUserLimit(limitOfUserCount, sessionPaymentType));
-        this.sessionStatus = sessionStatus;
-        this.coverImage = coverImage;
+                   Integer limitOfUserCount, Duration duration, SessionStatus sessionStatus ,CoverImage coverImage) {
+        this(id,
+                course,
+                amountOfPrice,
+                sessionPaymentType,
+                new NsUsers(new ArrayList<>()),
+                limitOfUserCount,
+                duration,
+                sessionStatus,
+                coverImage);
     }
+
+    public Session() {
+        this(0L,
+                new Course(),
+                0L,
+                SessionPaymentType.FREE,
+                new NsUsers(new ArrayList<>()),
+                1,
+                new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1)),
+                SessionStatus.READY,
+                new CoverImage("pobi.png", 500L, 300D, 200D)
+        );
+    }
+
+
+
+
 
     public void enroll(NsUser user) {
         if (sessionStatus != SessionStatus.ENROLLING) {

@@ -14,16 +14,20 @@ public class Course extends AuditInfo{
 
     private Sessions sessions;
 
+    public Course(Long id, String title, Long creatorId, Sessions sessions, LocalDateTime createAt, LocalDateTime updateAt) {
+        super(createAt, updateAt);
+        this.id = id;
+        this.title = title;
+        this.creatorId = creatorId;
+        this.sessions = sessions;
+    }
+
     public Course() {
         super(LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(Long id){
-        super(LocalDateTime.now(), LocalDateTime.now());
-        this.id=id;
-        this.title = "";
-        this.creatorId = -1L;
-        this.sessions = new Sessions();
+        this(id, "", -1L, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(String title, Long creatorId) {
@@ -31,19 +35,11 @@ public class Course extends AuditInfo{
     }
 
     public Course(Long id, String title, Long creatorId, Sessions sessions) {
-        super(LocalDateTime.now(), LocalDateTime.now());
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.sessions = sessions;
+        this(id, title, creatorId, sessions, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Course(Long id, String title, Long creatorId, LocalDateTime createAt, LocalDateTime updateAt) {
-        super(createAt, updateAt);
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.sessions = new Sessions();
+        this(id, title, creatorId, new Sessions(), createAt, updateAt);
     }
 
     public void addSessions(Sessions sessions){
