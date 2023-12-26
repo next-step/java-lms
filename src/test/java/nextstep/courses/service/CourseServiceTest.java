@@ -43,7 +43,9 @@ class CourseServiceTest {
                 1,
                 new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
                 SessionStatus.ENROLLING,
-                new CoverImage("pobi.png",500L, 300D, 200D)
+                new CoverImage("pobi.png",500L, 300D, 200D),
+                LocalDateTime.now(),
+                LocalDateTime.now()
         );
         courseRepository = new CourseRepository() {
 
