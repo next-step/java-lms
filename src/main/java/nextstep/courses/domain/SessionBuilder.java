@@ -1,15 +1,18 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
+import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
+
 import java.time.LocalDateTime;
 
 public class SessionBuilder extends AuditInfo {
-    private Long id;
-    private Course course;
-    private SessionPayment sessionPayment;
-    private Enrollment enrollment;
-    private Duration duration;
-    private SessionStatus sessionStatus;
-    private CoverImage coverImage;
+    private Long id = 0L;
+    private Course course = aCourse().build();
+    private SessionPayment sessionPayment = new SessionPayment();
+    private Enrollment enrollment = new Enrollment();
+    private Duration duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
+    private SessionStatus sessionStatus = SessionStatus.READY;
+    private CoverImage coverImage = aCoverImage().build();
 
     private SessionBuilder(){
         super(LocalDateTime.now(), null);
