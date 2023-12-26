@@ -80,6 +80,12 @@ public abstract class Session extends BaseDomain implements Sessionable {
         }
         enrollments.admiss(student, this);
     }
+    public void cancel(NsUser loginUser, NsUser student) {
+        if (!creatorId.equals(loginUser.getId())) {
+            throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
+        }
+        enrollments.cancel(student, this);
+    }
 
     @Override
     public void changeStatus(SessionStatus status) {

@@ -23,11 +23,19 @@ public class Enrollments {
     }
 
     public void admiss(NsUser student, Session session) {
-        enrollments.stream()
+        findEnrollment(student, session).admiss();
+    }
+
+
+    public void cancel(NsUser student, Session session) {
+        enrollments.remove(findEnrollment(student, session));
+    }
+
+    private Enrollment findEnrollment(NsUser student, Session session) {
+        return enrollments.stream()
                 .filter(enrollment -> enrollment.getSessionId().equals(session.getId()) && enrollment.getStudentId().equals(student.getId()))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("강의가 등록되지 않은 학생입니다."))
-                .admiss();
+                .orElseThrow(() -> new IllegalArgumentException("수강 신청하지 않은 학생입니다."));
     }
 
     public int enrolledNumber() {

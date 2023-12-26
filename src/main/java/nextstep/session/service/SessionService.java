@@ -28,8 +28,13 @@ public class SessionService {
         enrollmentRepository.save(enrollment);
     }
 
-    public void admissSession(NsUser loginUser, Long sessionId, NsUser student) {
+    public void admissStudent(NsUser loginUser, Long sessionId, NsUser student) {
         Session session = sessionRepository.findById(sessionId);
         session.admiss(loginUser, student);
+    }
+
+    public void cancelStudent(NsUser loginUser, Long sessionId, NsUser student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.cancel(loginUser, student);
     }
 }
