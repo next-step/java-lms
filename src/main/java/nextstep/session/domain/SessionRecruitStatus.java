@@ -13,4 +13,8 @@ public enum SessionRecruitStatus {
             throw new IllegalArgumentException("모집중으로 변경할 수 없습니다.");
         }
     }
+
+    public boolean isClosed() {
+        return this == CLOSED;
+    }
 }

@@ -1,15 +1,23 @@
 package nextstep.session.domain;
 
+import nextstep.session.domain.policy.enroll.EnrollLimitNumberOfStudentPolicy;
+import nextstep.session.domain.policy.enroll.EnrollPaymentPolicy;
+import nextstep.session.domain.policy.enroll.EnrollPolicy;
+import nextstep.session.domain.policy.enroll.EnrollRecruitStatusPolicy;
+import nextstep.session.domain.policy.enroll.EnrollStatusPolicy;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 public class PaidSession extends Session {
     private static final SessionType SESSION_TYPE = SessionType.PAID;
     private final Integer capacity;
     private final Long price;
+
+    private List<EnrollPolicy<? super PaidSession>> enrollPolicies = Arrays.asList(new EnrollStatusPolicy(), new EnrollRecruitStatusPolicy(), new EnrollPaymentPolicy(), new EnrollLimitNumberOfStudentPolicy());
 
     public PaidSession(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, Integer capacity, Long price) {
         this(null, null, null, creatorId, startDate, endDate, sessionImage, SessionStatus.PREPARING, SessionRecruitStatus.CLOSED, SESSION_TYPE, capacity, price, null, null);
@@ -26,21 +34,17 @@ public class PaidSession extends Session {
     }
 
     @Override
-    protected void validateCommonEnroll(NsUser nsUser) {
-        validateLimitNumberOfStudents();
-        validatePayment(nsUser);
+    public Enrollment enroll(NsUser user) {
+        this.enrollPolicies.forEach(policy -> policy.validate(this, user));
+        return enrollments.add(user, this);
     }
 
-    private void validateLimitNumberOfStudents() {
-        if (this.capacity <= enrollments.enrolledNumber()) {
-            throw new IllegalStateException("수강신청 정원이 가득찼습니다.");
-        }
+    public boolean isFull() {
+        return enrollments.enrolledNumber() >= capacity;
     }
 
-    private void validatePayment(NsUser user) {
-        if (!user.getSessionPayment(this).getAmount().equals(price)) {
-            throw new IllegalArgumentException("강의의 가격과 결제한 가격이 다릅니다.");
-        }
+    public void setEnrollPolicies(List<EnrollPolicy<? super PaidSession>> enrollPolicies) {
+        this.enrollPolicies = enrollPolicies;
     }
 
     public Integer getCapacity() {

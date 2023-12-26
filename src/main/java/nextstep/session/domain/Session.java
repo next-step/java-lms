@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public abstract class Session extends BaseDomain implements Sessionable {
+public abstract class Session extends BaseDomain {
     private static final SessionStatus DEFAULT_SESSION_STATUS = SessionStatus.PREPARING;
     private static final SessionRecruitStatus DEFAULT_RECRUIT_STATUS = SessionRecruitStatus.CLOSED;
 
@@ -42,28 +42,11 @@ public abstract class Session extends BaseDomain implements Sessionable {
         this.admissions = new Admissions(admissions);
     }
 
-    @Override
-    public Enrollment enroll(NsUser user) {
-        validateStatus();
-        validateCommonEnroll(user);
-        return enrollments.add(user, this);
-    }
-
-    private void validateStatus() {
-        if (sessionStatus == SessionStatus.END) {
-            throw new IllegalStateException("종료된 강의는 신청 불가능합니다.");
-        }
-        if (sessionRecruitStatus != SessionRecruitStatus.OPEN) {
-            throw new IllegalStateException("모집중인 강의만 신청 가능합니다.");
-        }
-    }
-
-    abstract protected void validateCommonEnroll(NsUser nsUser);
-
-    @Override
     public int enrolledNumber() {
         return enrollments.enrolledNumber();
     }
+
+    public abstract Enrollment enroll(NsUser user);
 
     public Enrollment admiss(NsUser loginUser, NsUser student) {
         if (!creatorId.equals(loginUser.getId())) {
@@ -82,7 +65,6 @@ public abstract class Session extends BaseDomain implements Sessionable {
         return enrollments.cancel(student, this);
     }
 
-    @Override
     public void changeStatus(SessionStatus status) {
         sessionStatus = status;
     }

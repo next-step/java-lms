@@ -3,5 +3,9 @@ package nextstep.session.domain;
 public enum SessionStatus {
     PREPARING,
     PROCEEDING,
-    END,
+    END;
+
+    public boolean isEnd() {
+        return this == END;
+    }
 }
