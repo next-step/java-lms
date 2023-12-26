@@ -12,7 +12,7 @@ public class NsUserLimit {
     }
 
     public boolean isLessThan(int size){
-        return count < size;
+        return count < size && sessionPaymentType == SessionPaymentType.PAID;
     }
 
     public boolean isFull(int size){
