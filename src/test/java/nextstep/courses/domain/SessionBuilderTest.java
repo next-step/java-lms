@@ -6,6 +6,7 @@ import static nextstep.courses.domain.SessionBuilder.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,17 +28,33 @@ class SessionBuilderTest {
     }
 
     @Test
-    @DisplayName("sessionPayment를 지정하여 Session를 생성")
-    void withSessionPayment() {
-        SessionBuilder builder = aSession().withSessionPayment(new SessionPayment());
+    @DisplayName("sessionPaymentType를 지정하여 Session를 생성")
+    void withSessionPaymentType() {
+        SessionBuilder builder = aSession().withSessionPaymentType(SessionPaymentType.FREE);
         Session session = builder.build();
         assertThat(session).isInstanceOf(Session.class);
     }
 
     @Test
-    @DisplayName("enrollment를 지정하여 Session를 생성")
-    void withEnrollment() {
-        SessionBuilder builder = aSession().withEnrollment(new Enrollment());
+    @DisplayName("amountOfPrice를 지정하여 Session를 생성")
+    void withAmountOfPrice() {
+        SessionBuilder builder = aSession().withAmountOfPrice(0L);
+        Session session = builder.build();
+        assertThat(session).isInstanceOf(Session.class);
+    }
+
+    @Test
+    @DisplayName("limitOfUsers를 지정하여 Session를 생성")
+    void withLimitOfUsers() {
+        SessionBuilder builder = aSession().withLimitOfUsers(0);
+        Session session = builder.build();
+        assertThat(session).isInstanceOf(Session.class);
+    }
+
+    @Test
+    @DisplayName("userList를 지정하여 Session를 생성")
+    void withUserList() {
+        SessionBuilder builder = aSession().withUserList(new ArrayList<>());
         Session session = builder.build();
         assertThat(session).isInstanceOf(Session.class);
     }

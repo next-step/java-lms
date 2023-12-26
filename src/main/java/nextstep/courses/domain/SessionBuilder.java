@@ -4,12 +4,18 @@ import static nextstep.courses.domain.CourseBuilder.aCourse;
 import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
 
 public class SessionBuilder extends AuditInfo {
     private Long id = 0L;
     private Course course = aCourse().build();
-    private SessionPayment sessionPayment = new SessionPayment();
-    private Enrollment enrollment = new Enrollment();
+    private SessionPaymentType sessionPaymentType = SessionPaymentType.FREE;
+    private long amountOfPrice = 0l;
+    private int limitOfUsers = 0;
+    private List<NsUser> userList = new ArrayList<>();
     private Duration duration = new Duration(LocalDateTime.now(), LocalDateTime.now().plusMonths(1));
     private SessionStatus sessionStatus = SessionStatus.READY;
     private CoverImage coverImage = aCoverImage().build();
@@ -22,8 +28,10 @@ public class SessionBuilder extends AuditInfo {
         this();
         this.id = sessionBuilder.id;
         this.course = sessionBuilder.course;
-        this.sessionPayment = sessionBuilder.sessionPayment;
-        this.enrollment = sessionBuilder.enrollment;
+        this.sessionPaymentType = sessionBuilder.sessionPaymentType;
+        this.amountOfPrice = sessionBuilder.amountOfPrice;
+        this.limitOfUsers = sessionBuilder.limitOfUsers;
+        this.userList = sessionBuilder.userList;
         this.duration = sessionBuilder.duration;
         this.sessionStatus = sessionBuilder.sessionStatus;
         this.coverImage = sessionBuilder.coverImage;
@@ -43,13 +51,23 @@ public class SessionBuilder extends AuditInfo {
         return new SessionBuilder(this);
     }
 
-    public SessionBuilder withSessionPayment(final SessionPayment sessionPayment){
-        this.sessionPayment = sessionPayment;
+    public SessionBuilder withSessionPaymentType(final SessionPaymentType sessionPaymentType){
+        this.sessionPaymentType = sessionPaymentType;
         return new SessionBuilder(this);
     }
 
-    public SessionBuilder withEnrollment(final Enrollment enrollment){
-        this.enrollment = enrollment;
+    public SessionBuilder withAmountOfPrice(final long amountOfPrice){
+        this.amountOfPrice = amountOfPrice;
+        return new SessionBuilder(this);
+    }
+
+    public SessionBuilder withLimitOfUsers(final int limitOfUsers){
+        this.limitOfUsers = limitOfUsers;
+        return new SessionBuilder(this);
+    }
+
+    public SessionBuilder withUserList(final List<NsUser> userList){
+        this.userList = userList;
         return new SessionBuilder(this);
     }
 
@@ -79,6 +97,7 @@ public class SessionBuilder extends AuditInfo {
     }
 
     public Session build(){
-        return new Session(id, course, sessionPayment, duration, sessionStatus, coverImage, createdAt, updatedAt);
+        return new Session(id, course, amountOfPrice, sessionPaymentType,
+                new NsUsers(userList), limitOfUsers, duration, sessionStatus, coverImage, createdAt, updatedAt);
     }
 }
