@@ -1,6 +1,9 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseDomain;
+import nextstep.session.domain.policy.admiss.AdmissPolicy;
+import nextstep.session.domain.policy.admiss.AdmissStudentPolicy;
+import nextstep.session.domain.policy.admiss.AdmissTeacherPolicy;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDate;
@@ -24,6 +27,8 @@ public abstract class Session extends BaseDomain {
     private SessionType sessionType;
     protected Enrollments enrollments = new Enrollments();
     protected Admissions admissions = new Admissions();
+
+    private List<AdmissPolicy<Session>> admissPolicies = List.of(new AdmissStudentPolicy(), new AdmissTeacherPolicy());
 
     public Session(Long creatorId, LocalDate startDate, LocalDate endDate, SessionImage sessionImage, SessionType sessionType) {
         this(null, null, null, creatorId, startDate, endDate, sessionImage, DEFAULT_SESSION_STATUS, DEFAULT_RECRUIT_STATUS, sessionType, null, null);
@@ -49,20 +54,18 @@ public abstract class Session extends BaseDomain {
     public abstract Enrollment enroll(NsUser user);
 
     public Enrollment admiss(NsUser loginUser, NsUser student) {
-        if (!creatorId.equals(loginUser.getId())) {
-            throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
-        }
-        if (admissions.isAdmiss(student, this)) {
-            throw new IllegalArgumentException("선발되지 않은 학생입니다.");
-        }
+        admissPolicies.forEach(policy -> policy.validate(this, loginUser, student));
         return enrollments.admiss(student, this);
     }
 
+
     public Enrollment cancel(NsUser loginUser, NsUser student) {
-        if (!creatorId.equals(loginUser.getId())) {
-            throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
-        }
+        new AdmissTeacherPolicy().validate(this, loginUser, student);
         return enrollments.cancel(student, this);
+    }
+
+    public boolean isTeacher(NsUser user) {
+        return creatorId.equals(user.getId());
     }
 
     public void changeStatus(SessionStatus status) {
@@ -102,5 +105,9 @@ public abstract class Session extends BaseDomain {
 
     public SessionType getSessionType() {
         return sessionType;
+    }
+
+    public Admissions getAdmissions() {
+        return admissions;
     }
 }
