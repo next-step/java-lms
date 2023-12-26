@@ -55,4 +55,5 @@
 - 강의 커버 이미지
   - 커버 이미지 추가 등록 기능 구현
 - 수강 승인 기능
-  - session_enrollment에 승인 여부 컬럼 추가 
+  - session_enrollment에 승인 여부 컬럼 추가
+  - session_admission 테이블 추가
