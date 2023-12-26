@@ -22,13 +22,17 @@ public class Enrollments {
         return enrollment;
     }
 
-    public void admiss(NsUser student, Session session) {
-        findEnrollment(student, session).admiss();
+    public Enrollment admiss(NsUser student, Session session) {
+        Enrollment enrollment = findEnrollment(student, session);
+        enrollment.admiss();
+        return enrollment;
     }
 
 
-    public void cancel(NsUser student, Session session) {
-        enrollments.remove(findEnrollment(student, session));
+    public Enrollment cancel(NsUser student, Session session) {
+        Enrollment enrollment = findEnrollment(student, session);
+        enrollments.remove(enrollment);
+        return enrollment;
     }
 
     private Enrollment findEnrollment(NsUser student, Session session) {

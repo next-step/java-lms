@@ -71,20 +71,21 @@ public abstract class Session extends BaseDomain implements Sessionable {
         return enrollments.enrolledNumber();
     }
 
-    public void admiss(NsUser loginUser, NsUser student) {
+    public Enrollment admiss(NsUser loginUser, NsUser student) {
         if (!creatorId.equals(loginUser.getId())) {
             throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
         }
         if (admissions.isAdmiss(student, this)) {
             throw new IllegalArgumentException("선발되지 않은 학생입니다.");
         }
-        enrollments.admiss(student, this);
+        return enrollments.admiss(student, this);
     }
-    public void cancel(NsUser loginUser, NsUser student) {
+
+    public Enrollment cancel(NsUser loginUser, NsUser student) {
         if (!creatorId.equals(loginUser.getId())) {
             throw new IllegalArgumentException("강사만 승인할 수 있습니다.");
         }
-        enrollments.cancel(student, this);
+        return enrollments.cancel(student, this);
     }
 
     @Override

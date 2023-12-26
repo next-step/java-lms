@@ -67,4 +67,22 @@ public class EnrollmentRepositoryTest {
         assertThat(sessionRepository.findById(savedSession.getId()).enrolledNumber())
                 .isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("삭제 / Enrollment / 성공")
+    void deleteEnrollment() {
+        // given
+        Session freeSession = new FreeSession(1L, LocalDate.now(), LocalDate.now().plusDays(1), SessionImageFixture.createSessionImage());
+        freeSession.changeRecruit(SessionRecruitStatus.OPEN);
+        Session savedSession = sessionRepository.findById(sessionRepository.save(freeSession));
+        Enrollment enrollment = savedSession.enroll(JAVAJIGI);
+        long savedId = enrollmentRepository.save(enrollment);
+
+        // when
+        enrollmentRepository.delete(enrollmentRepository.findById(savedId));
+
+        // then
+        assertThat(sessionRepository.findById(savedSession.getId()).enrolledNumber())
+                .isEqualTo(0);
+    }
 }

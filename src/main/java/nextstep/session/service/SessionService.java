@@ -30,11 +30,13 @@ public class SessionService {
 
     public void admissStudent(NsUser loginUser, Long sessionId, NsUser student) {
         Session session = sessionRepository.findById(sessionId);
-        session.admiss(loginUser, student);
+        Enrollment enrollment = session.admiss(loginUser, student);
+        enrollmentRepository.update(enrollment);
     }
 
     public void cancelStudent(NsUser loginUser, Long sessionId, NsUser student) {
         Session session = sessionRepository.findById(sessionId);
-        session.cancel(loginUser, student);
+        Enrollment cancelEnrollment = session.cancel(loginUser, student);
+        enrollmentRepository.delete(cancelEnrollment);
     }
 }
