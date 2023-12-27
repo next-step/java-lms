@@ -1,13 +1,18 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import nextstep.session.domain.Session;
+import nextstep.session.domain.Sessions;
 
 public class Course {
+
     private Long id;
 
     private String title;
 
     private Long creatorId;
+
+    private Sessions sessions = new Sessions();
 
     private LocalDateTime createdAt;
 
@@ -20,7 +25,8 @@ public class Course {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
@@ -40,14 +46,24 @@ public class Course {
         return createdAt;
     }
 
+    public Sessions getSessions() {
+        return sessions;
+    }
+
+    public void addSession(final Session session) {
+        sessions.add(session);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", creatorId=" + creatorId +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
+
+
 }
