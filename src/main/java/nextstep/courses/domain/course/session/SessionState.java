@@ -5,11 +5,11 @@ import java.util.Objects;
 public class SessionState {
     private static final int MAX_APPLY = Integer.MAX_VALUE;
 
-    private SessionType sessionType;
+    private final SessionType sessionType;
 
-    private Long amount;
+    private final Long amount;
 
-    private int quota;
+    private final int quota;
 
     public SessionState() {
         this.sessionType = SessionType.FREE;
@@ -46,15 +46,15 @@ public class SessionState {
         }
     }
 
-    public SessionType getSessionType() {
+    public SessionType sessionType() {
         return sessionType;
     }
 
-    public Long getAmount() {
+    public Long amount() {
         return amount;
     }
 
-    public int getQuota() {
+    public int quota() {
         return quota;
     }
 

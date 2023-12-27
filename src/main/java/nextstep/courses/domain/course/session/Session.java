@@ -2,6 +2,7 @@ package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.BaseEntity;
 import nextstep.courses.domain.course.session.apply.Applies;
+import nextstep.courses.domain.course.session.apply.ApproveCancel;
 import nextstep.courses.domain.course.session.image.Images;
 
 import java.time.LocalDate;
@@ -9,13 +10,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Session extends BaseEntity {
-    private Long id;
+    private final Long id;
 
-    private Images images;
+    private final Images images;
 
-    private Applies applies;
+    private final Applies applies;
 
-    private SessionDetail sessionDetail;
+    private final SessionDetail sessionDetail;
 
     public Session(Images images, SessionDuration sessionDuration, SessionState sessionState,
                    Long creatorId, LocalDateTime date) {
@@ -34,7 +35,11 @@ public class Session extends BaseEntity {
                    Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         if (images == null) {
-            throw new IllegalArgumentException("이미지를 추가해야 합니다");
+            throw new IllegalArgumentException("이미지를 추가해야 합니다.");
+        }
+
+        if (applies == null) {
+            throw new IllegalArgumentException("지원자를 추가해야 합니다.");
         }
 
         if (sessionDetail == null) {
@@ -48,72 +53,58 @@ public class Session extends BaseEntity {
     }
 
     public Enrollment enrollment() {
-        return new Enrollment(this.id, this.applies, this.getSessionState(),
-                this.getSessionProgressStatus(), this.getSessionRecruitStatus());
+        return new Enrollment(this.id, this.applies, this.sessionDetail);
     }
 
-    public Approve approve() {
-        return new Approve(this.applies, this.sessionDetail.getSessionState());
+    public ApproveCancel approve() {
+        return new ApproveCancel(this.applies);
     }
 
-    public Cancel cancel() {
-        return new Cancel(this.applies, this.sessionDetail.getSessionState());
+    public ApproveCancel cancel() {
+        return new ApproveCancel(this.applies);
     }
 
-    public void changeOnReady(LocalDate date) {
-        this.sessionDetail.changeOnReady(date);
+    public Session changeOnReady(LocalDate date) {
+        SessionDetail changedSessionDetail = this.sessionDetail.changeOnReady(date);
+        return new Session(id, images, applies, changedSessionDetail, creatorId(), createdAt(), updatedAt());
     }
 
-    public void changeOnGoing(LocalDate date) {
-        this.sessionDetail.changeOnGoing(date);
+    public Session changeOnGoing(LocalDate date) {
+        SessionDetail changedSessionDetail = this.sessionDetail.changeOnGoing(date);
+        return new Session(id, images, applies, changedSessionDetail, creatorId(), createdAt(), updatedAt());
     }
 
-    public void changeOnEnd(LocalDate date) {
-        this.sessionDetail.changeOnEnd(date);
+    public Session changeOnEnd(LocalDate date) {
+        SessionDetail changedSessionDetail = this.sessionDetail.changeOnEnd(date);
+        return new Session(id, images, applies, changedSessionDetail, creatorId(), createdAt(), updatedAt());
     }
 
-    public void changeSessionState(SessionState updateSessionState) {
-        this.sessionDetail.changeSessionState(updateSessionState);
-    }
-
-    public Long getId() {
+    public Long id() {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int applyCount() {
-        return this.applies.size();
-    }
-
-    public Images getImages() {
+    public Images images() {
         return images;
     }
 
-    public void setImages(Images images) {
-        this.images = images;
-    }
-
-    public SessionDetail getSessionDetail() {
+    public SessionDetail sessionDetail() {
         return sessionDetail;
     }
 
-    public SessionDuration getDuration() {
-        return sessionDetail.getDuration();
+    public SessionDuration sessionDuration() {
+        return sessionDetail.sessionDuration();
     }
 
-    public SessionState getSessionState() {
-        return sessionDetail.getSessionState();
+    public SessionState sessionState() {
+        return sessionDetail.sessionState();
     }
 
-    public SessionProgressStatus getSessionProgressStatus() {
-        return sessionDetail.getSessionStatus();
+    public SessionProgressStatus sessionProgressStatus() {
+        return sessionDetail.sessionProgressStatus();
     }
 
-    public SessionRecruitStatus getSessionRecruitStatus() {
-        return sessionDetail.getRecruitStatus();
+    public SessionRecruitStatus sessionRecruitStatus() {
+        return sessionDetail.sessionRecruitStatus();
     }
 
     @Override

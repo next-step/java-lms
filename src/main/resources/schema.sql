@@ -14,7 +14,7 @@ create table image (
 create table apply (
     session_id bigint not null,
     ns_user_id bigint not null,
-    approved boolean not null,
+    approval_status varchar(20) not null,
     creator_id bigint not null,
     created_at timestamp not null,
     updated_at timestamp,

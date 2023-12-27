@@ -1,10 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.course.session.Session;
-import nextstep.courses.domain.course.session.SessionRepository;
-import nextstep.courses.domain.course.session.SessionState;
-import nextstep.courses.domain.course.session.SessionType;
-import nextstep.courses.domain.course.session.apply.Applies;
+import nextstep.courses.domain.course.session.*;
 import nextstep.courses.fixture.SessionFixtures;
 import nextstep.qna.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +31,11 @@ public class SessionRepositoryTest {
     void save_success() {
         Session session = SessionFixtures.createdFreeSession();
         Session savedSession = sessionRepository.save(1L, session);
-        Session findSession = sessionRepository.findById(savedSession.getId()).orElseThrow(NotFoundException::new);
+        Session findSession = sessionRepository.findById(savedSession.id()).orElseThrow(NotFoundException::new);
 
-        assertThat(findSession.getId()).isEqualTo(1L);
-        assertThat(findSession.getDuration()).isEqualTo(session.getDuration());
-        assertThat(findSession.getSessionState()).isEqualTo(session.getSessionState());
+        assertThat(findSession.id()).isEqualTo(1L);
+        assertThat(findSession.sessionDuration()).isEqualTo(session.sessionDuration());
+        assertThat(findSession.sessionState()).isEqualTo(session.sessionState());
 
         LOGGER.debug("Session: {}", savedSession);
     }
@@ -49,13 +45,14 @@ public class SessionRepositoryTest {
         Session session = SessionFixtures.createdChargedSession();
         Session savedSession = sessionRepository.save(1L, session);
 
-        SessionState updateSessionState = new SessionState(SessionType.CHARGE, 2000L, 30, new Applies());
-        savedSession.changeSessionState(updateSessionState);
-        sessionRepository.update(savedSession.getId(), savedSession);
-        Session updatedSession = sessionRepository.findById(savedSession.getId()).orElseThrow(NotFoundException::new);
+        SessionState updateSessionState = new SessionState(SessionType.CHARGE, 2000L, 30);
+        Session updatedSession = new Session(savedSession.images(), savedSession.sessionDuration(),
+                updateSessionState, savedSession.creatorId(), savedSession.createdAt());
+        sessionRepository.update(savedSession.id(), updatedSession);
+        Session findUpdatedSession = sessionRepository.findById(savedSession.id()).orElseThrow(NotFoundException::new);
 
-        assertThat(updatedSession.getId()).isEqualTo(savedSession.getId());
-        assertThat(updatedSession.getSessionState()).isEqualTo(updateSessionState);
-        LOGGER.debug("Session: {}", updatedSession);
+        assertThat(findUpdatedSession.id()).isEqualTo(savedSession.id());
+        assertThat(findUpdatedSession.sessionState()).isEqualTo(updateSessionState);
+        LOGGER.debug("Session: {}", findUpdatedSession);
     }
 }

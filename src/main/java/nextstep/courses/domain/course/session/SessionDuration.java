@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class SessionDuration {
-    private LocalDate startDate;
+    private final LocalDate startDate;
 
-    private LocalDate endDate;
+    private final LocalDate endDate;
 
     public SessionDuration(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
@@ -39,11 +39,11 @@ public class SessionDuration {
         return date.isBefore(this.endDate) || date == this.endDate;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDate startDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDate endDate() {
         return endDate;
     }
 

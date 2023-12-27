@@ -35,12 +35,11 @@ public class CourseRepositoryTest {
     @Test
     void crud() {
         Course course = new Course("TDD, 클린 코드 with Java", 1, 1L, LocalDateTime.now());
-        int count = courseRepository.save(course);
-        assertThat(count).isEqualTo(1);
+        courseRepository.save(course);
         Course savedCourse = courseRepository.findById(1L);
-        assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
-        assertThat(course.getOrdering()).isEqualTo(savedCourse.getOrdering());
-        assertThat(course.getCreatorId()).isEqualTo(savedCourse.getCreatorId());
+        assertThat(course.title()).isEqualTo(savedCourse.title());
+        assertThat(course.ordering()).isEqualTo(savedCourse.ordering());
+        assertThat(course.creatorId()).isEqualTo(savedCourse.creatorId());
         LOGGER.debug("Course: {}", savedCourse);
     }
 }

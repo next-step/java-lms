@@ -2,28 +2,22 @@ package nextstep.courses.domain.course.session;
 
 import nextstep.courses.domain.course.session.apply.Applies;
 import nextstep.courses.domain.course.session.apply.Apply;
+import nextstep.courses.domain.course.session.apply.ApprovalStatus;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;
 
 public class Enrollment {
-    private Long sessionId;
+    private final Long sessionId;
 
-    private Applies applies;
+    private final Applies applies;
 
-    private SessionState sessionState;
+    private final SessionDetail sessionDetail;
 
-    private SessionProgressStatus sessionProgressStatus;
-
-    private SessionRecruitStatus sessionRecruitStatus;
-
-    public Enrollment(Long sessionId, Applies applies, SessionState sessionState,
-                      SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus) {
+    public Enrollment(Long sessionId, Applies applies, SessionDetail sessionDetail) {
         this.sessionId = sessionId;
         this.applies = applies;
-        this.sessionState = sessionState;
-        this.sessionProgressStatus = sessionProgressStatus;
-        this.sessionRecruitStatus = sessionRecruitStatus;
+        this.sessionDetail = sessionDetail;
     }
 
     public Apply apply(Long nsUserId, Payment payment, LocalDateTime date) {
@@ -33,17 +27,13 @@ public class Enrollment {
         checkChargedAndApplySizeIsValid();
         checkApplicantAlreadyExisted(nsUserId);
 
-        return new Apply(sessionId, nsUserId, false, date);
+        return new Apply(sessionId, nsUserId, ApprovalStatus.WAIT, date);
     }
 
     private void checkPaymentIsPaid(Long nsUserId, Payment payment) {
-        if (this.charged()) {
+        if (this.sessionDetail.charged()) {
             checkPaymentIsValid(nsUserId, payment);
         }
-    }
-
-    public boolean charged() {
-        return this.sessionState.getSessionType().charged();
     }
 
     private void checkPaymentIsValid(Long nsUserId, Payment payment) {
@@ -51,7 +41,7 @@ public class Enrollment {
                 !payment.isPaid(
                         nsUserId,
                         sessionId,
-                        sessionState.getAmount()
+                        this.sessionDetail.getAmount()
                 )
         ) {
             throw new IllegalArgumentException("결제를 다시 확인하세요.");
@@ -59,51 +49,26 @@ public class Enrollment {
     }
 
     private void checkStatusOnRecruit() {
-        if (this.notRecruiting()) {
+        if (this.sessionDetail.notRecruiting()) {
             throw new IllegalArgumentException("강의 신청은 모집 중일 때만 가능 합니다.");
         }
     }
 
     private void checkStatusOnReadyOrOnGoing() {
-        if (this.notReadyOrOnGoing()) {
+        if (this.sessionDetail.notReadyOrOnGoing()) {
             throw new IllegalArgumentException("강의 신청은 준비, 진행중일 때만 가능 합니다.");
         }
     }
 
     private void checkChargedAndApplySizeIsValid() {
-        if(chargedAndFull()) {
+        if(this.sessionDetail.chargedAndFull(applies.size())) {
             throw new IllegalArgumentException("수강 신청 인원이 초과 되었습니다.");
         }
     }
 
-    private boolean chargedAndFull() {
-        return this.charged() && applySizeFull();
-    }
-
-    private boolean applySizeFull() {
-        return this.sessionState.getQuota() == applies.size();
-    }
-
     private void checkApplicantAlreadyExisted(Long nsUserId) {
-        if (this.containsUserId(nsUserId)) {
+        if (this.applies.containsUserId(nsUserId)) {
             throw new IllegalArgumentException("이미 수강 신청 이력이 있습니다.");
         }
-    }
-
-    public boolean containsUserId(Long nsUserId) {
-        return this.applies.getApplies().stream()
-                .anyMatch(apply -> apply.isSameWithUserId(nsUserId));
-    }
-
-    public int size() {
-        return this.applies.size();
-    }
-
-    public boolean notRecruiting() {
-        return this.sessionRecruitStatus.notRecruiting();
-    }
-
-    public boolean notReadyOrOnGoing() {
-        return this.sessionProgressStatus.notReadyOrOnGoing();
     }
 }

@@ -68,21 +68,21 @@ public class JdbcSessionRepository implements SessionRepository {
         Session savedSession = saveSession(courseId, session);
 
         List<Image> images = new ArrayList<>();
-        for (Image image : session.getImages()) {
-            Image savedImage = imageRepository.save(savedSession.getId(), image);
+        for (Image image : session.images()) {
+            Image savedImage = imageRepository.save(savedSession.id(), image);
             images.add(savedImage);
         }
 
-        savedSession.setImages(new Images(images));
-        return savedSession;
+        return new Session(savedSession.id(), new Images(images), new Applies(), session.sessionDetail(),
+                session.creatorId(), session.createdAt(), session.updatedAt());
     }
 
     private Session saveSession(Long courseId, Session session) {
-        SessionDuration sessionDuration = session.getDuration();
-        SessionRecruitStatus sessionRecruitStatus = session.getSessionRecruitStatus();
-        SessionState sessionState = session.getSessionState();
-        SessionType sessionType = sessionState.getSessionType();
-        SessionProgressStatus sessionProgressStatus = session.getSessionProgressStatus();
+        SessionDuration sessionDuration = session.sessionDuration();
+        SessionRecruitStatus sessionRecruitStatus = session.sessionRecruitStatus();
+        SessionState sessionState = session.sessionState();
+        SessionType sessionType = sessionState.sessionType();
+        SessionProgressStatus sessionProgressStatus = session.sessionProgressStatus();
         String sql = "insert into session " +
                 "(start_date, end_date, session_type, session_status, amount, " +
                 "recruit_status, quota, course_id, creator_id, created_at, updated_at) " +
@@ -90,38 +90,38 @@ public class JdbcSessionRepository implements SessionRepository {
 
         jdbcTemplate.update((Connection connection) -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, Timestamp.valueOf(sessionDuration.getStartDate().atStartOfDay()));
-            ps.setTimestamp(2, Timestamp.valueOf(sessionDuration.getEndDate().atStartOfDay()));
+            ps.setTimestamp(1, Timestamp.valueOf(sessionDuration.startDate().atStartOfDay()));
+            ps.setTimestamp(2, Timestamp.valueOf(sessionDuration.endDate().atStartOfDay()));
             ps.setString(3, sessionType.name());
             ps.setString(4, sessionProgressStatus.name());
-            ps.setLong(5, sessionState.getAmount());
+            ps.setLong(5, sessionState.amount());
             ps.setString(6, sessionRecruitStatus.name());
-            ps.setInt(7, sessionState.getQuota());
+            ps.setInt(7, sessionState.quota());
             ps.setLong(8, courseId);
-            ps.setLong(9, session.getCreatorId());
-            ps.setTimestamp(10, Timestamp.valueOf(session.getCreatedAt()));
-            ps.setTimestamp(11, toTimeStamp(session.getUpdatedAt()));
+            ps.setLong(9, session.creatorId());
+            ps.setTimestamp(10, Timestamp.valueOf(session.createdAt()));
+            ps.setTimestamp(11, toTimeStamp(session.updatedAt()));
             return ps;
         }, keyHolder);
 
         Long sessionId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        session.setId(sessionId);
 
-        return session;
+        return new Session(sessionId, new Images(), new Applies(), session.sessionDetail(),
+                session.creatorId(), session.createdAt(), session.updatedAt());
     }
 
     @Override
     public int update(Long sessionId, Session session) {
-        SessionDuration sessionDuration = session.getDuration();
-        SessionRecruitStatus sessionRecruitStatus = session.getSessionRecruitStatus();
-        SessionState sessionState = session.getSessionState();
-        SessionType sessionType = sessionState.getSessionType();
-        SessionProgressStatus sessionProgressStatus = session.getSessionProgressStatus();
+        SessionDuration sessionDuration = session.sessionDuration();
+        SessionRecruitStatus sessionRecruitStatus = session.sessionRecruitStatus();
+        SessionState sessionState = session.sessionState();
+        SessionType sessionType = sessionState.sessionType();
+        SessionProgressStatus sessionProgressStatus = session.sessionProgressStatus();
         String sql = "update session set " +
                 "start_date = ?, end_date = ?, session_type = ?, recruit_status = ?, amount = ?, quota = ?, session_status = ? " +
                 "where id = ?";
-        return jdbcTemplate.update(sql, sessionDuration.getStartDate(), sessionDuration.getEndDate(), sessionType.name(),
-                sessionRecruitStatus.name(), sessionState.getAmount(), sessionState.getQuota(), sessionProgressStatus.name(), sessionId);
+        return jdbcTemplate.update(sql, sessionDuration.startDate(), sessionDuration.endDate(), sessionType.name(),
+                sessionRecruitStatus.name(), sessionState.amount(), sessionState.quota(), sessionProgressStatus.name(), sessionId);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int updateCourseId(Long courseId, Session session) {
         String sql = "update session set course_id = ? where id = ?";
-        return jdbcTemplate.update(sql, session.getId(), courseId);
+        return jdbcTemplate.update(sql, session.id(), courseId);
     }
 
     private Images findAllImagesBySessionId(Long id) {

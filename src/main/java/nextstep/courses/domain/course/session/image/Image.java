@@ -11,15 +11,15 @@ public class Image extends BaseEntity {
     public static final int HEIGHT_MIN = 200;
     public static final double WIDTH_HEIGHT_RATIO = 1.5;
 
-    private Long id;
+    private final Long id;
 
-    private int imageSize;
+    private final int imageSize;
 
-    private ImageType imageType;
+    private final ImageType imageType;
 
-    private int imageWidth;
+    private final int imageWidth;
 
-    private int imageHeight;
+    private final int imageHeight;
 
     public Image(int imageSize, ImageType type, int imageWidth, int imageHeight, Long creatorId, LocalDateTime date) {
         this(0L, imageSize, type, imageWidth, imageHeight, creatorId, date, null);
@@ -40,7 +40,7 @@ public class Image extends BaseEntity {
     }
 
     private static void checkImageSizeIsValid(int imageSize) {
-        if (imageSize > 1 * MB) {
+        if (imageSize > MB) {
             throw new IllegalArgumentException("사진 크기는 1MB를 넘을 수 없습니다.");
         }
     }
@@ -59,27 +59,23 @@ public class Image extends BaseEntity {
         }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
-    public int getImageSize() {
+    public int imageSize() {
         return imageSize;
     }
 
-    public ImageType getImageType() {
+    public ImageType imageType() {
         return imageType;
     }
 
-    public int getImageWidth() {
+    public int imageWidth() {
         return imageWidth;
     }
 
-    public int getImageHeight() {
+    public int imageHeight() {
         return imageHeight;
     }
 

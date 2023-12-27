@@ -1,10 +1,15 @@
 package nextstep.courses.domain.course.session.image;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Images implements Iterable<Image> {
     private final List<Image> images;
+
+    public Images() {
+        this(new ArrayList<>());
+    }
 
     public Images(List<Image> images) {
         validate(images);
@@ -20,10 +25,6 @@ public class Images implements Iterable<Image> {
         if (images == null || images.isEmpty()) {
             throw new IllegalArgumentException("이미지는 최소 1개 이상 존재해야 합니다.");
         }
-    }
-
-    public void add(Image image) {
-        this.images.add(image);
     }
 
     @Override

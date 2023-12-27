@@ -1,8 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.course.session.apply.Applies;
-import nextstep.courses.domain.course.session.apply.Apply;
-import nextstep.courses.domain.course.session.apply.ApplyRepository;
+import nextstep.courses.domain.course.session.apply.*;
 import nextstep.courses.fixture.ApplyFixtures;
 import nextstep.courses.fixture.SessionFixtures;
 import nextstep.qna.NotFoundException;
@@ -47,26 +45,26 @@ public class ApplyRepositoryTest {
         Apply findApply = applyRepository
                 .findApplyByNsUserIdAndSessionId(
                         NsUserFixtures.TEACHER_JAVAJIGI_1L.getId(),
-                        SessionFixtures.createdFreeSession().getId()
+                        SessionFixtures.createdFreeSession().id()
                 )
                 .orElseThrow(NotFoundException::new);
 
-        assertThat(findApply.getNsUserId()).isEqualTo(savedApply.getNsUserId());
-        assertThat(findApply.getSessionId()).isEqualTo(savedApply.getSessionId());
+        assertThat(findApply.nsUserId()).isEqualTo(savedApply.nsUserId());
+        assertThat(findApply.sessionId()).isEqualTo(savedApply.sessionId());
     }
 
     @Test
     void updateApply_success() {
         Apply savedApply = applyRepository.save(ApplyFixtures.apply_one_canceled());
-        Apply updatedApply = savedApply.setApproved(true);
+        Apply updatedApply = savedApply.approve(SessionFixtures.DATETIME_2023_12_5);
         applyRepository.update(updatedApply);
 
         Apply findApply = applyRepository
                 .findApplyByNsUserIdAndSessionId(
                         NsUserFixtures.TEACHER_JAVAJIGI_1L.getId(),
-                        SessionFixtures.createdFreeSession().getId()
+                        SessionFixtures.createdFreeSession().id()
                 )
                 .orElseThrow(NotFoundException::new);
-        assertThat(findApply.isApproved()).isTrue();
+        assertThat(findApply.approval()).isEqualTo(ApprovalStatus.APPROVED);
     }
 }

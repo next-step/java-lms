@@ -33,10 +33,10 @@ public class ImageRepositoryTest {
     void save_success() {
         Image image = new Image(1024, ImageType.JPG, 300, 200, 1L, LocalDateTime.now());
         Image savedImage = imageRepository.save(1L, image);
-        assertThat(image.getImageSize()).isEqualTo(savedImage.getImageSize());
-        assertThat(image.getImageType()).isEqualTo(savedImage.getImageType());
-        assertThat(image.getImageWidth()).isEqualTo(savedImage.getImageWidth());
-        assertThat(image.getImageHeight()).isEqualTo(savedImage.getImageHeight());
+        assertThat(image.imageSize()).isEqualTo(savedImage.imageSize());
+        assertThat(image.imageType()).isEqualTo(savedImage.imageType());
+        assertThat(image.imageWidth()).isEqualTo(savedImage.imageWidth());
+        assertThat(image.imageHeight()).isEqualTo(savedImage.imageHeight());
         LOGGER.debug("Image: {}", savedImage);
     }
 }

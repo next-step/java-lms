@@ -7,13 +7,13 @@ import nextstep.courses.domain.course.session.Sessions;
 import java.time.LocalDateTime;
 
 public class Course extends BaseEntity {
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private int ordering;
+    private final int ordering;
 
-    private Sessions sessions;
+    private final Sessions sessions;
 
     public Course(String title, int ordering, Long creatorId, LocalDateTime date) {
         this(0L, title, ordering, new Sessions(), creatorId, date, null);
@@ -28,28 +28,24 @@ public class Course extends BaseEntity {
         this.sessions = sessions;
     }
 
-    public int sessionSize() {
-        return this.sessions.size();
-    }
-
     public void addSession(Session session) {
         this.sessions.add(session);
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
     }
 
-    public String getTitle() {
+    public String title() {
         return title;
     }
 
-    public int getOrdering() {
+    public int ordering() {
         return this.ordering;
     }
 
-    public Long getCreatorId() {
-        return super.getCreatorId();
+    public Sessions sessions() {
+        return this.sessions;
     }
 
     @Override

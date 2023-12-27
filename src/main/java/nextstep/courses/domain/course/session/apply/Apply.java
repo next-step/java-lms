@@ -6,30 +6,22 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Apply extends BaseEntity {
-    private Long sessionId;
+    private final Long sessionId;
 
-    private Long nsUserId;
+    private final Long nsUserId;
 
-    private boolean approved;
+    private final ApprovalStatus approvalStatus;
 
-    public Apply(Long sessionId, Long nsUserId, boolean approved, LocalDateTime createdAt) {
-        this(sessionId, nsUserId, approved, nsUserId, createdAt, null);
+    public Apply(Long sessionId, Long nsUserId, ApprovalStatus approvalStatus, LocalDateTime createdAt) {
+        this(sessionId, nsUserId, approvalStatus, nsUserId, createdAt, null);
     }
 
-    public Apply(Long sessionId, Long nsUserId, boolean approved, Long creatorId,
+    public Apply(Long sessionId, Long nsUserId, ApprovalStatus approvalStatus, Long creatorId,
                  LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(creatorId, createdAt, updatedAt);
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
-        this.approved = approved;
-    }
-
-    public Long getSessionId() {
-        return sessionId;
-    }
-
-    public Long getNsUserId() {
-        return nsUserId;
+        this.approvalStatus = approvalStatus;
     }
 
     public boolean isSame(Apply apply) {
@@ -40,27 +32,34 @@ public class Apply extends BaseEntity {
         return Objects.equals(this.nsUserId, nsUserId);
     }
 
-    public boolean isApproved() {
-        return approved;
+    public Long sessionId() {
+        return sessionId;
     }
 
-    public boolean isCanceled() {
-        return !approved;
+    public Long nsUserId() {
+        return nsUserId;
     }
 
-    public Apply setApproved(boolean approved) {
-        this.approved = approved;
-        return this;
+    public ApprovalStatus approval() {
+        return approvalStatus;
     }
 
     public Apply approve(LocalDateTime date) {
-        return new Apply(this.sessionId, this.nsUserId, true,
-                this.getCreatorId(), this.getCreatedAt(), date);
+        return new Apply(this.sessionId, this.nsUserId, ApprovalStatus.APPROVED,
+                this.creatorId(), this.createdAt(), date);
     }
 
     public Apply cancel(LocalDateTime date) {
-        return new Apply(this.sessionId, this.nsUserId, false,
-                this.getCreatorId(), this.getCreatedAt(), date);
+        return new Apply(this.sessionId, this.nsUserId, ApprovalStatus.CANCELED,
+                this.creatorId(), this.createdAt(), date);
+    }
+
+    public boolean notApproved() {
+        return !this.approvalStatus.approved();
+    }
+
+    public boolean notCanceled() {
+        return !this.approvalStatus.canceled();
     }
 
     @Override
@@ -68,12 +67,12 @@ public class Apply extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Apply apply = (Apply) o;
-        return approved == apply.approved && Objects.equals(sessionId, apply.sessionId) && Objects.equals(nsUserId, apply.nsUserId);
+        return approvalStatus == apply.approvalStatus && Objects.equals(sessionId, apply.sessionId) && Objects.equals(nsUserId, apply.nsUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionId, nsUserId, approved);
+        return Objects.hash(sessionId, nsUserId, approvalStatus);
     }
 
     @Override
@@ -81,7 +80,7 @@ public class Apply extends BaseEntity {
         return "Apply{" +
                 "sessionId=" + sessionId +
                 ", nsUserId=" + nsUserId +
-                ", approved=" + approved +
+                ", approved=" + approvalStatus +
                 '}';
     }
 }

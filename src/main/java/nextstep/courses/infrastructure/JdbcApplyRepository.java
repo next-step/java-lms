@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import nextstep.courses.domain.course.session.apply.Applies;
 import nextstep.courses.domain.course.session.apply.Apply;
 import nextstep.courses.domain.course.session.apply.ApplyRepository;
+import nextstep.courses.domain.course.session.apply.ApprovalStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,12 +24,12 @@ public class JdbcApplyRepository implements ApplyRepository {
     @Override
     public Applies findAllBySessionId(Long sessionId) {
         String sql = "select " +
-                "session_id, ns_user_id, approved, creator_id, created_at, updated_at " +
+                "session_id, ns_user_id, approval_status, creator_id, created_at, updated_at " +
                 "from apply where session_id = ?";
         RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
                 rs.getLong(1),
                 rs.getLong(2),
-                rs.getBoolean(3),
+                ApprovalStatus.find(rs.getString(3)),
                 rs.getLong(4),
                 rs.getTimestamp(5).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(6))
@@ -41,20 +42,20 @@ public class JdbcApplyRepository implements ApplyRepository {
     @Override
     public Apply save(Apply apply) {
         String sql = "insert into apply " +
-                "(session_id, ns_user_id, approved, creator_id, created_at, updated_at) " +
+                "(session_id, ns_user_id, approval_status, creator_id, created_at, updated_at) " +
                 "values(?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, apply.getSessionId(), apply.getNsUserId(), apply.isApproved(),
-                apply.getCreatorId(), apply.getCreatedAt(), apply.getUpdatedAt());
+        jdbcTemplate.update(sql, apply.sessionId(), apply.nsUserId(), apply.approval(),
+                apply.creatorId(), apply.createdAt(), apply.updatedAt());
 
         return apply;
     }
 
     @Override
     public Apply update(Apply apply) {
-        String sql = "update apply set approved = ? where session_id = ? and ns_user_id = ?";
+        String sql = "update apply set approval_status = ? where session_id = ? and ns_user_id = ?";
 
-        jdbcTemplate.update(sql, apply.isApproved(), apply.getSessionId(), apply.getNsUserId());
+        jdbcTemplate.update(sql, apply.approval(), apply.sessionId(), apply.nsUserId());
 
         return apply;
     }
@@ -62,12 +63,12 @@ public class JdbcApplyRepository implements ApplyRepository {
     @Override
     public Optional<Apply> findApplyByNsUserIdAndSessionId(Long nsUserId, Long sessionId) {
         String sql = "select " +
-                "session_id, ns_user_id, approved, creator_id, created_at, updated_at " +
+                "session_id, ns_user_id, approval_status, creator_id, created_at, updated_at " +
                 "from apply where ns_user_id = ? and session_id = ?";
         RowMapper<Apply> rowMapper = (rs, rowNum) -> new Apply(
                 rs.getLong(1),
                 rs.getLong(2),
-                rs.getBoolean(3),
+                ApprovalStatus.find(rs.getString(3)),
                 rs.getLong(4),
                 rs.getTimestamp(5).toLocalDateTime(),
                 toLocalDateTime(rs.getTimestamp(6)));

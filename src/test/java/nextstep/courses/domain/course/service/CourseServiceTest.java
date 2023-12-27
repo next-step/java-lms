@@ -2,6 +2,7 @@ package nextstep.courses.domain.course.service;
 
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.CourseRepository;
+import nextstep.courses.domain.course.session.Session;
 import nextstep.courses.domain.course.session.SessionRepository;
 import nextstep.courses.fixture.CourseFixtures;
 import nextstep.courses.fixture.SessionFixtures;
@@ -13,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,11 +33,11 @@ public class CourseServiceTest {
     void addSession_success() {
         Course course = CourseFixtures.course();
 
-        when(courseRepository.findById(course.getId())).thenReturn(course);
+        when(courseRepository.findById(course.id())).thenReturn(course);
 
-        assertThat(course.sessionSize()).isEqualTo(0);
+        Session session = SessionFixtures.createdFreeSession();
+        courseService.addSession(course.id(), session);
 
-        courseService.addSession(course.getId(), SessionFixtures.createdFreeSession());
-        assertThat(course.sessionSize()).isEqualTo(1);
+        verify(sessionRepository).updateCourseId(course.id(), session);
     }
 }

@@ -47,7 +47,7 @@ public class JdbcImageRepository implements ImageRepository {
 
     @Override
     public Image save(Long sessionId, Image image) {
-        ImageType imageType = image.getImageType();
+        ImageType imageType = image.imageType();
 
         String sql = "insert into image " +
                 "(image_size, image_type, image_width, image_height, session_id, creator_id, created_at, updated_at) " +
@@ -55,21 +55,21 @@ public class JdbcImageRepository implements ImageRepository {
 
         jdbcTemplate.update((Connection connection) -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, image.getImageSize());
+            ps.setInt(1, image.imageSize());
             ps.setString(2, imageType.name());
-            ps.setInt(3, image.getImageWidth());
-            ps.setInt(4, image.getImageHeight());
+            ps.setInt(3, image.imageWidth());
+            ps.setInt(4, image.imageHeight());
             ps.setLong(5, sessionId);
-            ps.setLong(6, image.getCreatorId());
-            ps.setTimestamp(7, Timestamp.valueOf(image.getCreatedAt()));
-            ps.setTimestamp(8, toTimeStamp(image.getCreatedAt()));
+            ps.setLong(6, image.creatorId());
+            ps.setTimestamp(7, Timestamp.valueOf(image.createdAt()));
+            ps.setTimestamp(8, toTimeStamp(image.createdAt()));
             return ps;
         }, keyHolder);
 
         Long imageId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        image.setId(imageId);
 
-        return image;
+        return new Image(imageId, image.imageSize(), image.imageType(), image.imageWidth(),
+                image.imageHeight(), image.creatorId(), image.createdAt(), image.updatedAt());
     }
 
     @Override

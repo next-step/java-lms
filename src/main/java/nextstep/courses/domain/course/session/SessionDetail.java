@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class SessionDetail {
-    private SessionDuration sessionDuration;
+    private final SessionDuration sessionDuration;
 
-    private SessionState sessionState;
+    private final SessionState sessionState;
 
-    private SessionProgressStatus sessionProgressStatus;
+    private final SessionProgressStatus sessionProgressStatus;
 
-    private SessionRecruitStatus sessionRecruitStatus;
+    private final SessionRecruitStatus sessionRecruitStatus;
 
     public SessionDetail(SessionDuration sessionDuration, SessionState sessionState,
                          SessionProgressStatus sessionProgressStatus, SessionRecruitStatus sessionRecruitStatus) {
@@ -36,30 +36,30 @@ public class SessionDetail {
         this.sessionRecruitStatus = sessionRecruitStatus;
     }
 
-    public SessionDuration getDuration() {
+    public SessionDuration sessionDuration() {
         return sessionDuration;
     }
 
-    public SessionState getSessionState() {
+    public SessionState sessionState() {
         return sessionState;
     }
 
-    public SessionProgressStatus getSessionStatus() {
+    public SessionProgressStatus sessionProgressStatus() {
         return sessionProgressStatus;
     }
 
-    public SessionRecruitStatus getRecruitStatus() {
+    public SessionRecruitStatus sessionRecruitStatus() {
         return sessionRecruitStatus;
     }
 
-    public void changeOnReady(LocalDate date) {
+    public SessionDetail changeOnReady(LocalDate date) {
         checkChangeDateIsSameOrAfterWithEndDate(date);
-        this.sessionProgressStatus = SessionProgressStatus.READY;
+        return new SessionDetail(sessionDuration, sessionState, SessionProgressStatus.READY, sessionRecruitStatus);
     }
 
-    public void changeOnGoing(LocalDate date) {
+    public SessionDetail changeOnGoing(LocalDate date) {
         checkChangeDateIsSameOrAfterWithEndDate(date);
-        this.sessionProgressStatus = SessionProgressStatus.ONGOING;
+        return new SessionDetail(sessionDuration, sessionState, SessionProgressStatus.ONGOING, sessionRecruitStatus);
     }
 
     private void checkChangeDateIsSameOrAfterWithEndDate(LocalDate date) {
@@ -68,9 +68,9 @@ public class SessionDetail {
         }
     }
 
-    public void changeOnEnd(LocalDate date) {
+    public SessionDetail changeOnEnd(LocalDate date) {
         checkChangeDateIsBeforeOrSameWithEndDate(date);
-        this.sessionProgressStatus = SessionProgressStatus.END;
+        return new SessionDetail(sessionDuration, sessionState, SessionProgressStatus.END, sessionRecruitStatus);
     }
 
     private void checkChangeDateIsBeforeOrSameWithEndDate(LocalDate date) {
@@ -79,8 +79,28 @@ public class SessionDetail {
         }
     }
 
-    public void changeSessionState(SessionState sessionState) {
-        this.sessionState = sessionState;
+    public boolean charged() {
+        return this.sessionState.sessionType().charged();
+    }
+
+    public Long getAmount() {
+        return this.sessionState.amount();
+    }
+
+    public boolean notRecruiting() {
+        return this.sessionRecruitStatus.notRecruiting();
+    }
+
+    public boolean notReadyOrOnGoing() {
+        return this.sessionProgressStatus.notReadyOrOnGoing();
+    }
+
+    public boolean chargedAndFull(int applySize) {
+        return this.charged() && applySizeFull(applySize);
+    }
+
+    private boolean applySizeFull(int applySize) {
+        return this.sessionState.quota() == applySize;
     }
 
     @Override
@@ -99,10 +119,10 @@ public class SessionDetail {
     @Override
     public String toString() {
         return "SessionDetail{" +
-                "duration=" + sessionDuration +
+                "sessionDuration=" + sessionDuration +
                 ", sessionState=" + sessionState +
-                ", sessionStatus=" + sessionProgressStatus +
-                ", recruitStatus=" + sessionRecruitStatus +
+                ", sessionProgressStatus=" + sessionProgressStatus +
+                ", sessionRecruitStatus=" + sessionRecruitStatus +
                 '}';
     }
 }

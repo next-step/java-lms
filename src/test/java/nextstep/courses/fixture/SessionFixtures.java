@@ -25,6 +25,7 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
+                new Applies(),
                 new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
                 freeSessionStateZero(),
                 sessionRecruitStatus,
@@ -44,8 +45,9 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
+                new Applies(),
                 new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
-                chargedSessionStateZero(1000L, 2, new Applies()),
+                chargedSessionStateZero(1000L, 2),
                 sessionRecruitStatus,
                 sessionProgressStatus,
                 1L,
@@ -58,8 +60,9 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
+                ApplyFixtures.applies_two_canceled(),
                 new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
-                chargedSessionStateZero(1000L, 2, ApplyFixtures.applies_two_canceled()),
+                chargedSessionStateZero(1000L, 2),
                 SessionRecruitStatus.RECRUIT,
                 SessionProgressStatus.READY,
                 1L,
@@ -72,8 +75,9 @@ public class SessionFixtures {
         return new Session(
                 1L,
                 ImageFixtures.images(),
+                ApplyFixtures.applies_two_approved(),
                 new SessionDuration(DATE_2023_12_5, DATE_2023_12_10),
-                chargedSessionStateZero(1000L, 2, ApplyFixtures.applies_two_approved()),
+                chargedSessionStateZero(1000L, 2),
                 SessionRecruitStatus.RECRUIT,
                 SessionProgressStatus.READY,
                 1L,
@@ -86,7 +90,7 @@ public class SessionFixtures {
         return new SessionState();
     }
 
-    public static SessionState chargedSessionStateZero(Long amount, int quota, Applies applies) {
-        return new SessionState(SessionType.CHARGE, amount, quota, applies);
+    public static SessionState chargedSessionStateZero(Long amount, int quota) {
+        return new SessionState(SessionType.CHARGE, amount, quota);
     }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.service;
 import nextstep.courses.domain.course.session.*;
 import nextstep.courses.domain.course.session.apply.Apply;
 import nextstep.courses.domain.course.session.apply.ApplyRepository;
+import nextstep.courses.domain.course.session.apply.ApproveCancel;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
@@ -34,35 +35,35 @@ public class SessionService {
     public void approve(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
         Apply savedApply = getApply(sessionId, applicantId);
-        Approve approve = session.approve();
-        Apply apply = approve.approve(loginUser, savedApply, date);
+        ApproveCancel approveCancel = session.approve();
+        Apply apply = approveCancel.approve(loginUser, savedApply, date);
         applyRepository.update(apply);
     }
 
     public void cancel(NsUser loginUser, Long applicantId, Long sessionId, LocalDateTime date) {
         Session session = getSession(sessionId);
         Apply savedApply = getApply(sessionId, applicantId);
-        Cancel cancel = session.cancel();
-        Apply apply = cancel.cancel(loginUser, savedApply, date);
+        ApproveCancel approveCancel = session.cancel();
+        Apply apply = approveCancel.cancel(loginUser, savedApply, date);
         applyRepository.update(apply);
     }
 
     public void changeOnReady(Long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
-        session.changeOnReady(date);
-        sessionRepository.update(sessionId, session);
+        Session updatedSession = session.changeOnReady(date);
+        sessionRepository.update(sessionId, updatedSession);
     }
 
     public void changeOnGoing(Long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
-        session.changeOnGoing(date);
-        sessionRepository.update(sessionId, session);
+        Session updatedSession = session.changeOnGoing(date);
+        sessionRepository.update(sessionId, updatedSession);
     }
 
     public void changeOnEnd(Long sessionId, LocalDate date) {
         Session session = getSession(sessionId);
-        session.changeOnEnd(date);
-        sessionRepository.update(sessionId, session);
+        Session updatedSession = session.changeOnEnd(date);
+        sessionRepository.update(sessionId, updatedSession);
     }
 
     private Session getSession(Long sessionId) {

@@ -3,11 +3,11 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class BaseEntity {
-    private Long creatorId;
+    private final Long creatorId;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
     public BaseEntity(Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.creatorId = creatorId;
@@ -15,19 +15,15 @@ public class BaseEntity {
         this.updatedAt = updatedAt;
     }
 
-    public Long getCreatorId() {
+    public Long creatorId() {
         return creatorId;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDateTime createdAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public LocalDateTime updatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
