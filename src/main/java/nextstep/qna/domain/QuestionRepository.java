@@ -4,4 +4,6 @@ import java.util.Optional;
 
 public interface QuestionRepository {
     Optional<Question> findById(Long id);
+
+    void update(Long questionId, Question question);
 }

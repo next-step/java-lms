@@ -1,10 +1,9 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -15,13 +14,11 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private TimeStamped timeStamped;
 
     public Question() {
     }
@@ -72,21 +69,56 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private void setDeleted() {
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public Question delete(NsUser loginUser) {
+        validate(loginUser);
+
+        this.setDeleted();
+        this.answers = answers.delete(loginUser);
+        return this;
+    }
+
+    private void validate(NsUser loginUser) {
+        checkLoginUserIsWriter(loginUser);
+    }
+
+    private void checkLoginUserIsWriter(NsUser loginUser) {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public DeleteHistories toDeleteHistories(NsUser loginUser, LocalDateTime date) {
+        validate(loginUser);
+
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.add(toDeleteHistory(date));
+        deleteHistories.add(answers.toDeleteHistories(date));
+        return deleteHistories;
+    }
+
+    private DeleteHistory toDeleteHistory(LocalDateTime date) {
+        return new DeleteHistory(
+                ContentType.QUESTION,
+                this.id,
+                this.writer,
+                date
+        );
     }
 }
