@@ -1,9 +1,12 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.AdmissionRepository;
+import nextstep.session.domain.EnrollmentRepository;
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.PaidSession;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionImageRepository;
+import nextstep.session.domain.SessionRecruitStatus;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
@@ -25,10 +28,14 @@ import static nextstep.common.domain.utils.JdbcConvertUtils.toTimestamp;
 public class JdbcSessionRepository implements SessionRepository {
     private final JdbcOperations jdbcTemplate;
     private final SessionImageRepository sessionImageRepository;
+    private final EnrollmentRepository enrollmentRepository;
+    private final AdmissionRepository admissionRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, SessionImageRepository sessionImageRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, SessionImageRepository sessionImageRepository, EnrollmentRepository enrollmentRepository, AdmissionRepository admissionRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.sessionImageRepository = sessionImageRepository;
+        this.enrollmentRepository = enrollmentRepository;
+        this.admissionRepository = admissionRepository;
     }
 
     @Override
@@ -48,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private long saveSession(Session session) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sessionSQL = "insert into session (created_at, updated_at, creator_id, start_date, end_date, session_status, session_type) values(?,?,?,?,?,?,?)";
+        String sessionSQL = "insert into session (created_at, updated_at, creator_id, start_date, end_date, session_status, session_recruit_status, session_type) values(?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(
@@ -61,7 +68,8 @@ public class JdbcSessionRepository implements SessionRepository {
                     ps.setDate(4, toDate(session.getSessionDate().getStartDate()));
                     ps.setDate(5, toDate(session.getSessionDate().getEndDate()));
                     ps.setString(6, session.getSessionStatus().toString());
-                    ps.setString(7, session.getSessionType().toString());
+                    ps.setString(7, session.getSessionRecruitStatus().toString());
+                    ps.setString(8, session.getSessionType().toString());
                     return ps;
                 },
                 keyHolder
@@ -73,7 +81,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Session findById(Long id) {
         if (getSessionType(id) == SessionType.FREE) {
-            String sql = "select s.id, s.created_at, s.updated_at, s.creator_id, s.start_date, s.end_date, s.session_status, s.session_type " +
+            String sql = "select s.id, s.created_at, s.updated_at, s.creator_id, s.start_date, s.end_date, s.session_status, s.session_recruit_status, s.session_type " +
                     "from session s " +
                     "join free_session fs " +
                     "on s.id = fs.session_id " +
@@ -87,17 +95,20 @@ public class JdbcSessionRepository implements SessionRepository {
                     toLocalDate(rs.getDate(6)),
                     sessionImageRepository.findById(rs.getLong(1)),
                     SessionStatus.valueOf(rs.getString(7)),
-                    SessionType.valueOf(rs.getString(8))
+                    SessionRecruitStatus.valueOf(rs.getString(8)),
+                    SessionType.valueOf(rs.getString(9)),
+                    enrollmentRepository.findAllBySessionId(id),
+                    admissionRepository.findAllBySessionId(id)
             );
             return jdbcTemplate.queryForObject(sql, rowMapper, id);
         }
 
         if (getSessionType(id) == SessionType.PAID) {
-            String sql = "select s.id, s.created_at, s.updated_at, s.creator_id, s.start_date, s.end_date, s.session_status, s.session_type, ps.capacity, ps.price " +
-                    "from session s " +
-                    "join paid_session ps " +
-                    "on s.id = ps.session_id " +
-                    "where s.id = ?";
+            String sql = "select s.id, s.created_at, s.updated_at, s.creator_id, s.start_date, s.end_date, s.session_status, s.session_recruit_status, s.session_type, ps.capacity, ps.price " +
+                            "from session s " +
+                                    "join paid_session ps " +
+                                    "on s.id = ps.session_id " +
+                                    "where s.id = ?";
             RowMapper<PaidSession> rowMapper = (rs, rowNum) -> new PaidSession(
                     rs.getLong(1),
                     toLocalDateTime(rs.getTimestamp(2)),
@@ -107,10 +118,12 @@ public class JdbcSessionRepository implements SessionRepository {
                     toLocalDate(rs.getDate(6)),
                     sessionImageRepository.findById(rs.getLong(1)),
                     SessionStatus.valueOf(rs.getString(7)),
-                    SessionType.valueOf(rs.getString(8)),
-                    rs.getInt(9),
-                    rs.getLong(10)
-            );
+                    SessionRecruitStatus.valueOf(rs.getString(8)),
+                    SessionType.valueOf(rs.getString(9)),
+                    rs.getInt(10),
+                    rs.getLong(11),
+                    enrollmentRepository.findAllBySessionId(id),
+                    admissionRepository.findAllBySessionId(id));
             return jdbcTemplate.queryForObject(sql, rowMapper, id);
         }
         return null;

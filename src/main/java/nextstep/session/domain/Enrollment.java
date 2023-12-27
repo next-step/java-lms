@@ -6,25 +6,29 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Enrollment extends BaseDomain {
-    private NsUser student;
+    private Long id;
     private Long studentId;
     private Long sessionId;
-
-    public Enrollment(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId) {
-        super(id, createdAt, updatedAt);
-        this.studentId = studentId;
-        this.sessionId = sessionId;
-    }
-
-    public Enrollment(NsUser student) {
-        this.student = student;
-        this.studentId = student.getId();
-    }
+    private boolean approved;
 
     public Enrollment(NsUser student, Session session) {
-        this.student = student;
-        this.studentId = student.getId();
-        this.sessionId = session.getId();
+        this(null, null, null, student.getId(), session.getId(), false);
+    }
+
+    public Enrollment(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Long studentId, Long sessionId, boolean approved) {
+        super(createdAt, updatedAt);
+        this.id = id;
+        this.studentId = studentId;
+        this.sessionId = sessionId;
+        this.approved = approved;
+    }
+
+    public void admiss() {
+        this.approved = true;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getStudentId() {
@@ -33,5 +37,9 @@ public class Enrollment extends BaseDomain {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    public boolean isApproved() {
+        return approved;
     }
 }

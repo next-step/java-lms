@@ -1,5 +1,7 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.AdmissionRepository;
+import nextstep.session.domain.EnrollmentRepository;
 import nextstep.session.domain.FreeSession;
 import nextstep.session.domain.PaidSession;
 import nextstep.session.domain.Session;
@@ -27,12 +29,17 @@ public class SessionRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private SessionImageRepository sessionImageRepository;
+    private EnrollmentRepository enrollmentRepository;
+    private AdmissionRepository admissionRepository;
     private SessionRepository sessionRepository;
 
     @BeforeEach
     void setUp() {
         sessionImageRepository = new JdbcSessionImageRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionImageRepository);
+        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
+        admissionRepository = new JdbcAdmissionRepository(jdbcTemplate);
+
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionImageRepository, enrollmentRepository, admissionRepository);
     }
 
     @Test

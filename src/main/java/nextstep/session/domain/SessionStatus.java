@@ -2,6 +2,10 @@ package nextstep.session.domain;
 
 public enum SessionStatus {
     PREPARING,
-    RECRUITING,
-    END,
+    PROCEEDING,
+    END;
+
+    public boolean isEnd() {
+        return this == END;
+    }
 }

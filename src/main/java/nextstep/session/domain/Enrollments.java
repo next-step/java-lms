@@ -13,11 +13,35 @@ public class Enrollments {
     }
 
     public Enrollments(List<Enrollment> enrollments) {
-        this.enrollments.addAll(enrollments);
+        if (enrollments != null) {
+            this.enrollments.addAll(enrollments);
+        }
     }
 
-    public void add(NsUser user) {
-        enrollments.add(new Enrollment(user));
+    public Enrollment add(NsUser student, Session session) {
+        Enrollment enrollment = new Enrollment(student, session);
+        enrollments.add(enrollment);
+        return enrollment;
+    }
+
+    public Enrollment admiss(NsUser student, Session session) {
+        Enrollment enrollment = findEnrollment(student, session);
+        enrollment.admiss();
+        return enrollment;
+    }
+
+
+    public Enrollment cancel(NsUser student, Session session) {
+        Enrollment enrollment = findEnrollment(student, session);
+        enrollments.remove(enrollment);
+        return enrollment;
+    }
+
+    private Enrollment findEnrollment(NsUser student, Session session) {
+        return enrollments.stream()
+                .filter(enrollment -> enrollment.getSessionId().equals(session.getId()) && enrollment.getStudentId().equals(student.getId()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("수강 신청하지 않은 학생입니다."));
     }
 
     public int enrolledNumber() {

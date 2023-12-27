@@ -9,6 +9,7 @@ public class SessionImage extends BaseDomain {
     public static final int MINIMUM_WIDTH_PIXEL = 300;
     public static final int MINIMUM_HEIGHT_PIXEL = 200;
 
+    private Long id;
     private String imageURL;
     private int imageSize;
     private ImageType imageType;
@@ -18,15 +19,12 @@ public class SessionImage extends BaseDomain {
     private Long sessionId;
 
     public SessionImage(String imageURL, int imageSize, ImageType imageType, int width, int height) {
-        this.imageURL = imageURL;
-        this.imageSize = imageSize;
-        this.imageType = imageType;
-        this.width = width;
-        this.height = height;
+        this(null, null, null, imageURL, imageSize, imageType, width, height, null);
     }
 
     public SessionImage(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String imageURL, int imageSize, ImageType imageType, int width, int height, Long sessionId) {
-        super(id, createdAt, updatedAt);
+        super(createdAt, updatedAt);
+        this.id = id;
         this.imageURL = imageURL;
         this.imageSize = imageSize;
         this.imageType = imageType;
@@ -61,6 +59,10 @@ public class SessionImage extends BaseDomain {
         if (width * 2 != height * 3) {
             throw new IllegalArgumentException("width와 height의 비율은 3:2여야 합니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getImageURL() {
