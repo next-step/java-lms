@@ -26,8 +26,6 @@ public class Enrollment {
     }
 
     public void enrollStudent(final NsUser nsUser) {
-        System.out.println(!sessionPricing.isFreeSession());
-        System.out.println(sessionPricing);
         if (!sessionPricing.isFreeSession()) {
             throw new IllegalArgumentException("이 강의는 유료 강의입니다. 결제 금액이 필요 합니다.");
         }
