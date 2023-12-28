@@ -4,7 +4,6 @@ import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import nextstep.courses.dto.CoverImageDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,15 +45,5 @@ class CoverImageTest {
                         .withWidth(width)
                         .withHeight(height).build())
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("전용 DTO 모델을 반환함")
-    void toDto() {
-        assertThat(aCoverImage()
-                .withName("pobi.jpeg")
-                .withByteSize(500L)
-                .withWidth(300D)
-                .withHeight(200D).build().toDto()).isInstanceOf(CoverImageDTO.class);
     }
 }

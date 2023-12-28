@@ -2,11 +2,10 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import nextstep.courses.dto.CourseDTO;
 import nextstep.users.domain.NsUser;
 
 public class Course extends AuditInfo{
-    private Long id;
+    private final Long id;
 
     private String title;
 
@@ -22,24 +21,8 @@ public class Course extends AuditInfo{
         this.sessions = sessions;
     }
 
-    public Course() {
-        super(LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(Long id){
-        this(id, "", -1L, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(Long id, String title, Long creatorId, Sessions sessions) {
-        this(id, title, creatorId, sessions, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createAt, LocalDateTime updateAt) {
-        this(id, title, creatorId, new Sessions(), createAt, updateAt);
+    public Course(Course course){
+        this(course.id, course.title, course.creatorId, course.sessions, course.createdAt, course.updatedAt);
     }
 
     public void addSessions(Sessions sessions){
@@ -50,16 +33,16 @@ public class Course extends AuditInfo{
         return sessions.enroll(user, sessionId);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public Long getCreatorId() {
         return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     @Override
@@ -88,9 +71,5 @@ public class Course extends AuditInfo{
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    public CourseDTO toDto(){
-        return new CourseDTO(id, title, creatorId, sessions);
     }
 }

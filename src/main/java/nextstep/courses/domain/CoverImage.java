@@ -1,8 +1,5 @@
 package nextstep.courses.domain;
 
-
-import nextstep.courses.dto.CoverImageDTO;
-
 public class CoverImage {
     public static final long LIMIT_BYTE_SIZE = 1000L;
     private final String name;
@@ -23,6 +20,30 @@ public class CoverImage {
         this.height = height;
     }
 
+    public CoverImage(CoverImage coverImage) {
+        this(coverImage.name, coverImage.byteSize, coverImage.width, coverImage.height);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ImageExtension getExtension() {
+        return extension;
+    }
+
+    public Long getByteSize() {
+        return byteSize;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
     private void validateByteSize(Long byteSize) {
         if(byteSize > LIMIT_BYTE_SIZE){
             throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_BYTE_SIZE.getMessage());
@@ -37,9 +58,5 @@ public class CoverImage {
         if(width/height != 1.5){
             throw new IllegalArgumentException(ExceptionMessage.COVER_IMAGE_RATIO.getMessage());
         }
-    }
-
-    public CoverImageDTO toDto(){
-        return new CoverImageDTO(name, extension, byteSize, width, height);
     }
 }
