@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import static nextstep.courses.domain.CourseBuilder.aCourse;
+import static nextstep.courses.domain.SessionBuilder.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ class CourseBuilderTest {
     @Test
     @DisplayName("sessions를 지정하여 Course를 생성")
     void withSessions() {
-        CourseBuilder builder = aCourse().withSessions(new Sessions(new LinkedHashSet<>(Set.of(new Session()))));
+        CourseBuilder builder = aCourse().withSessions(new Sessions(new LinkedHashSet<>(Set.of(aSession().build()))));
         Course course = builder.build();
         assertThat(course).isInstanceOf(Course.class);
     }

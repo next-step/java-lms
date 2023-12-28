@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class CourseBuilder extends AuditInfo {
+public class CourseBuilder{
 
     private Long id = 1L;
 
@@ -12,20 +12,24 @@ public class CourseBuilder extends AuditInfo {
 
     private Sessions sessions = new Sessions();
 
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    private LocalDateTime updatedAt = null;
+
     public static CourseBuilder aCourse(){
         return new CourseBuilder();
     }
 
     private CourseBuilder(){
-        super(LocalDateTime.now(), null);
     }
 
     private CourseBuilder(final CourseBuilder courseBuilder){
-        super(LocalDateTime.now(), null);
         this.id = courseBuilder.id;
         this.creatorId = courseBuilder.creatorId;
         this.title = courseBuilder.title;
         this.sessions = courseBuilder.sessions;
+        this.createdAt = courseBuilder.createdAt;
+        this.updatedAt = courseBuilder.updatedAt;
     }
 
     public CourseBuilder withId(final Long id){
@@ -59,6 +63,6 @@ public class CourseBuilder extends AuditInfo {
     }
 
     public Course build() {
-        return new Course(id, title, creatorId, sessions, LocalDateTime.now(), LocalDateTime.now());
+        return new Course(id, title, creatorId, sessions, createdAt, updatedAt);
     }
 }

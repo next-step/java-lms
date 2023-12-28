@@ -9,7 +9,7 @@ import java.util.List;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
-public class SessionBuilder extends AuditInfo {
+public class SessionBuilder{
     private Long id = 0L;
     private Course course = aCourse().build();
     private SessionPaymentType sessionPaymentType = SessionPaymentType.FREE;
@@ -20,8 +20,11 @@ public class SessionBuilder extends AuditInfo {
     private SessionStatus sessionStatus = SessionStatus.READY;
     private CoverImage coverImage = aCoverImage().build();
 
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    private LocalDateTime updatedAt = null;
+
     private SessionBuilder(){
-        super(LocalDateTime.now(), null);
     }
 
     private SessionBuilder(final SessionBuilder sessionBuilder){
