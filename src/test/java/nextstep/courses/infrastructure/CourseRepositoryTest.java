@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -28,7 +29,7 @@ class CourseRepositoryTest {
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
+        Course course = aCourse().withTitle("TDD, 클린 코드 with Java").withCreatorId(1L).build();
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(3L);

@@ -26,7 +26,7 @@ class SessionsTest {
     void add() {
         Set<Session> sessionSet = new LinkedHashSet<>();
         Sessions sessions = new Sessions(sessionSet);
-        Session session = new Session();
+        Session session = aSession().build();
         sessions.add(session);
         assertThat(sessionSet).contains(session);
     }

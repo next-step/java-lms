@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
 import static nextstep.courses.domain.CoverImageBuilder.aCoverImage;
 import static nextstep.courses.domain.SessionBuilder.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,13 +15,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CourseTest {
-    public static final Course C1 = new Course(1L, "JAVA, TDD with Clean Code", NsUserTest.JAVAJIGI.getId(), LocalDateTime.now(), LocalDateTime.now());
-    public static final Course C2 = new Course(2L, "Kotlin, TDD with Clean Code", NsUserTest.SANJIGI.getId(), LocalDateTime.now(), LocalDateTime.now());
+    public static final Course C1 = aCourse().withId(1L).withTitle("JAVA, TDD with Clean Code").withCreatorId(NsUserTest.JAVAJIGI.getId()).withCreatedAt(LocalDateTime.now()).withUpdatedAt(LocalDateTime.now()).build();
+    public static final Course C2 = aCourse().withId(2L).withTitle("Kotlin, TDD with Clean Code").withCreatorId(NsUserTest.SANJIGI.getId()).withCreatedAt(LocalDateTime.now()).withUpdatedAt(LocalDateTime.now()).build();
 
     @Test
     @DisplayName("과정 생성")
     void create() {
-        assertThat(new Course()).isInstanceOf(Course.class);
+        assertThat(aCourse().build()).isInstanceOf(Course.class);
     }
 
     @Test
@@ -28,7 +29,8 @@ public class CourseTest {
     void addSessions() {
         Set<Session> sessionSet = new LinkedHashSet<>();
         Sessions sessions = new Sessions(sessionSet);
-        Course course = new Course(1L, "JAVA, TDD with Clean Code", 1L, sessions);
+        Course course = aCourse()
+                .withId(1L).withTitle("JAVA, TDD with Clean Code").withCreatorId(1L).withSessions(sessions).build();
         Set<Session> expectedSessionSet = new LinkedHashSet<>(List.of(
                 aSession()
                         .withId(1L)

@@ -1,5 +1,6 @@
 package nextstep.courses.service;
 
+import static nextstep.courses.domain.CourseBuilder.aCourse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,6 @@ import nextstep.courses.domain.SessionPaymentType;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.Sessions;
-import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
@@ -51,7 +51,11 @@ class CourseServiceTest {
 
             private final List<Course> courses = new ArrayList<>(
                     List.of(
-                            new Course(0L, "JAVA", NsUserTest.JAVAJIGI.getId(), new Sessions(new LinkedHashSet<>(Set.of(session))))));
+                            aCourse()
+                                    .withId(0L)
+                                    .withCreatorId(NsUserTest.JAVAJIGI.getId())
+                                    .withSessions(new Sessions(new LinkedHashSet<>(Set.of(session))))
+                                    .build()));
 
             @Override
             public int save(Course course) {
@@ -66,7 +70,7 @@ class CourseServiceTest {
 
             @Override
             public Course findById(Long id) {
-                Optional<Course> result = this.courses.stream().filter(e -> e.equals(new Course("",id))).findFirst()
+                Optional<Course> result = this.courses.stream().filter(e -> e.equals(aCourse().withId(id))).findFirst()
                         .or(Optional::empty);
                 return result.get();
             }
@@ -74,7 +78,7 @@ class CourseServiceTest {
 
         sessionService = new SessionService(new SessionRepository() {
             @Override
-            public int save(SessionDTO session) {
+            public int save(Session session) {
                 return 0;
             }
 
@@ -107,7 +111,7 @@ class CourseServiceTest {
     @DisplayName("CourseService 강의 유저 등록")
     void enroll() {
         CourseService courseService = new CourseService(courseRepository, sessionService);
-        courseService.enroll(NsUserTest.SANJIGI, 0L,0L);
+        courseService.enroll(NsUserTest.SANJIGI, 0L);
         assertThat(userList).contains(NsUserTest.SANJIGI);
     }
 }
