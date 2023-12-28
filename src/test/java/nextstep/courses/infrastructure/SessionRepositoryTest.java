@@ -1,5 +1,6 @@
 package nextstep.courses.infrastructure;
 
+import static nextstep.courses.domain.SessionBuilder.aSession;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
@@ -44,7 +45,7 @@ class SessionRepositoryTest {
                 SessionStatus.ENROLLING, new CoverImage("pobi.png", 500L, 300D, 200D),
                 LocalDateTime.now(),
                 LocalDateTime.now());
-        int count = sessionRepository.save(session.toDto());
+        int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(1L);
         assertThat(savedSession.isSameId(1L)).isTrue();

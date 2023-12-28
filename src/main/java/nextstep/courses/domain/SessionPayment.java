@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.dto.SessionPaymentDTO;
 
 public class SessionPayment {
     private final SessionPaymentType type;
@@ -10,6 +9,9 @@ public class SessionPayment {
         this(SessionPaymentType.FREE, 0L);
     }
 
+    public SessionPayment(final SessionPayment sessionPayment){
+        this(sessionPayment.type, sessionPayment.amount);
+    }
 
     public SessionPayment(SessionPaymentType type, Long amount) {
         validatePrice(type, amount);
@@ -23,11 +25,15 @@ public class SessionPayment {
         }
     }
 
-    public boolean isPaid() {
-        return type == SessionPaymentType.PAID;
+    public String getTypeString() {
+        return type.name();
     }
 
-    public SessionPaymentDTO toDto(){
-        return new SessionPaymentDTO(type, amount);
+    public Long getAmount() {
+        return amount;
+    }
+
+    public boolean isPaid() {
+        return type == SessionPaymentType.PAID;
     }
 }

@@ -15,7 +15,6 @@ import nextstep.courses.domain.SessionPaymentType;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.courses.domain.Sessions;
-import nextstep.courses.dto.SessionDTO;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -30,27 +29,28 @@ public class JdbcSessionRepository implements SessionRepository {
 
 
     @Override
-    public int save(SessionDTO session) {
+    public int save(Session session) {
         String sql = "INSERT INTO session ("
                 + "course_id, session_type, price, session_limit, "
                 + "cover_image_name, cover_image_extension, "
                 + "cover_byte_size, cover_image_width, cover_image_height, "
-                + "status, start_date, end_date, created_at) "
+                + "status, start_date, end_date, created_at, updated_at) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-                session.getCourseId(),
-                session.getSessionPaymentDTO().getTypeString(),
-                session.getSessionPaymentDTO().getAmount(),
-                session.getEnrollmentDTO().getLimits().getLimit(),
-                session.getCoverImageDTO().getName(),
-                session.getCoverImageDTO().getExtension().name(),
-                session.getCoverImageDTO().getByteSize(),
-                session.getCoverImageDTO().getWidth(),
-                session.getCoverImageDTO().getHeight(),
+                session.getCourse().getId(),
+                session.getSessionPayment().getTypeString(),
+                session.getSessionPayment().getAmount(),
+                session.getEnrollment().getLimits(),
+                session.getCoverImage().getName(),
+                session.getCoverImage().getExtension().name(),
+                session.getCoverImage().getByteSize(),
+                session.getCoverImage().getWidth(),
+                session.getCoverImage().getHeight(),
                 session.getSessionStatus().name(),
-                session.getDurationDTO().getStartDate(),
-                session.getDurationDTO().getEndDate(),
-                session.getCreatedAt()
+                session.getDuration().getStartDate(),
+                session.getDuration().getEndDate(),
+                session.getCreatedAt(),
+                session.getUpdatedAt()
         );
     }
 

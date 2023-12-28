@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.courses.dto.EnrollmentDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
@@ -36,13 +35,6 @@ class EnrollmentTest {
         Enrollment actual = new Enrollment(new NsUsers(users), new NsUserLimit(0,SessionPaymentType.PAID));
         assertThatThrownBy(()->actual.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("전용 DTO 모델을 반환함")
-    void toDto() {
-        assertThat(new Enrollment().toDto())
-                .isInstanceOf(EnrollmentDTO.class);
     }
 
     @Test

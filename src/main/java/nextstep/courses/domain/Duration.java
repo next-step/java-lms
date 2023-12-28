@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import nextstep.courses.dto.DurationDTO;
 
 public class Duration {
     private final LocalDateTime startDate;
@@ -13,13 +12,22 @@ public class Duration {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public Duration(Duration duration) {
+        this(duration.startDate, duration.endDate);
+    }
+
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
             throw new IllegalArgumentException(ExceptionMessage.DURATION_RANGE.getMessage());
         }
     }
 
-    public DurationDTO toDto(){
-        return new DurationDTO(startDate, endDate);
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 }

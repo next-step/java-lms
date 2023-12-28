@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
-import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.NsUsers;
@@ -41,12 +40,5 @@ class SessionTest {
         NsUsers users = new NsUsers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
         session.replaceEnrollmentNsUsers(e -> users);
         assertThat(userList).contains(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
-    }
-
-    @Test
-    @DisplayName("전용 DTO 모델을 반환함")
-    void toDto() {
-        assertThat(aSession().build().toDto())
-                .isInstanceOf(SessionDTO.class);
     }
 }

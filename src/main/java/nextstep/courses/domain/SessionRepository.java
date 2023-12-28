@@ -1,10 +1,9 @@
 package nextstep.courses.domain;
 
 import java.util.Optional;
-import nextstep.courses.dto.SessionDTO;
 
 public interface SessionRepository {
-    int save(SessionDTO session);
+    int save(Session session);
     Session findById(Long id);
     Optional<Sessions> findByCourseId(Long courseId);
 }

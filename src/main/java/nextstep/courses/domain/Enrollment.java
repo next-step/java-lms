@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.util.ArrayList;
-import nextstep.courses.dto.EnrollmentDTO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
@@ -17,6 +16,14 @@ public class Enrollment {
         validateCounts(users, limit);
         this.limits = limit;
         this.users = users;
+    }
+
+    public Enrollment(Enrollment enrollment) {
+        this(enrollment.users, enrollment.limits);
+    }
+
+    public int getLimits() {
+        return limits.getCount();
     }
 
     public boolean isFull() {
@@ -35,11 +42,6 @@ public class Enrollment {
         }
         users.add(nsUser);
     }
-
-    public EnrollmentDTO toDto() {
-        return new EnrollmentDTO(users.toDto(), limits.toDto());
-    }
-
     public void replaceUsers(NsUsers nsUsers){
         this.users.replaceAll(nsUsers);
     }
