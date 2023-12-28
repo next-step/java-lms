@@ -3,7 +3,6 @@ package nextstep.users.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 import nextstep.courses.domain.NsUserLimit;
-import nextstep.courses.dto.NsUsersDTO;
 
 public class NsUsers {
     private final List<NsUser> userList;
@@ -26,10 +25,6 @@ public class NsUsers {
 
     public boolean isNotEmpty() {
         return !userList.isEmpty();
-    }
-
-    public NsUsersDTO toDto() {
-        return new NsUsersDTO(userList);
     }
 
     public List<NsUser> diffWith(NsUsers nsUsers) {

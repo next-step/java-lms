@@ -2,10 +2,11 @@ package nextstep.courses.service;
 
 import java.util.Optional;
 import nextstep.courses.domain.EnrollmentRepository;
+import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.Sessions;
-import nextstep.courses.dto.SessionDTO;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
 
 public class SessionService {
 
@@ -26,8 +27,12 @@ public class SessionService {
         return sessionRepository.findByCourseId(courseId);
     }
 
-    public void enroll(NsUser user, SessionDTO sessionDTO){
-        enrollmentRepository.save(user.getId(), sessionDTO.getId());
-        sessionRepository.save(sessionDTO);
+    public void enroll(NsUser user, Long sessionId){
+        NsUsers nsUsers = enrollmentRepository.findBySessionId(sessionId);
+        Session session = sessionRepository.findById(sessionId);
+        session.replaceEnrollmentNsUsers(e->nsUsers);
+        session.enroll(user);
+        enrollmentRepository.save(user.getId(), sessionId);
+        sessionRepository.save(session);
     }
 }
