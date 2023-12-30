@@ -1,6 +1,7 @@
 package nextstep.sessions.infrastructure;
 
 import nextstep.common.Period;
+import nextstep.sessions.domain.ImageSize;
 import nextstep.sessions.domain.ImageType;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionApprovalStatus;
@@ -61,9 +62,9 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "insert into session_image (image_size, image_width, image_height, image_type, session_id) " +
                 " values (?, ?, ?, ?, ?)";
         jdbcTemplate.batchUpdate(sql, images.getImages(), images.size(), (PreparedStatement ps, SessionImage image) -> {
-            ps.setInt(1, image.getSize());
-            ps.setDouble(2, image.getWidth());
-            ps.setDouble(3, image.getHeight());
+            ps.setInt(1, image.getImageSize().getSize());
+            ps.setDouble(2, image.getImageSize().getWidth());
+            ps.setDouble(3, image.getImageSize().getHeight());
             ps.setString(4, image.getType().toString());
             ps.setLong(5, sessionId);
         });
@@ -101,9 +102,10 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "select id, image_size, image_width, image_height, image_type from session_image where session_id = ?";
         RowMapper<SessionImage> rowMapper = ((rs, rowNum) -> new SessionImage(
                 rs.getLong(1),
-                rs.getInt(2),
-                rs.getDouble(3),
-                rs.getDouble(4),
+                new ImageSize(
+                        rs.getInt(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4)),
                 ImageType.from(rs.getString(5))
         ));
         List<SessionImage> images = jdbcTemplate.query(sql, new String[]{String.valueOf(id)}, rowMapper);
