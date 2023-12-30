@@ -6,7 +6,10 @@ import nextstep.sessions.domain.SessionApprovalStatus;
 import nextstep.sessions.domain.SessionCharge;
 import nextstep.sessions.domain.SessionImageTest;
 import nextstep.sessions.domain.SessionImages;
+import nextstep.sessions.domain.SessionProgressStatus;
+import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRepository;
+import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionStudent;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -46,7 +49,8 @@ class SessionRepositoryTest {
                 "강의",
                 new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 31)),
                 new SessionImages(List.of(SessionImageTest.IMAGE_JPG, SessionImageTest.IMAGE_PNG)),
-                new SessionCharge(true, 1000, 3));
+                new SessionCharge(true, 1000, 3),
+                new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING));
         long count = sessionRepository.save(session);
         assertThat(count).isEqualTo(2);
 
@@ -62,7 +66,8 @@ class SessionRepositoryTest {
                 "강의",
                 new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 31)),
                 new SessionImages(List.of(SessionImageTest.IMAGE_JPG, SessionImageTest.IMAGE_PNG)),
-                new SessionCharge(true, 1000, 3));
+                new SessionCharge(true, 1000, 3),
+                new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING));
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
@@ -80,7 +85,8 @@ class SessionRepositoryTest {
                 "강의",
                 new Period(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 31)),
                 new SessionImages(List.of(SessionImageTest.IMAGE_JPG, SessionImageTest.IMAGE_PNG)),
-                new SessionCharge(true, 1000, 3));
+                new SessionCharge(true, 1000, 3),
+                new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING));
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 

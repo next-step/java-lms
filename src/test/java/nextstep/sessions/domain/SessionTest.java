@@ -10,27 +10,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class SessionTest {
 
     @DisplayName("시작일, 종료일, 이미지, 가격, 상태를 전달하면 강의 객체를 생성한다.")
     @Test
     void sessionTest() {
-        assertThat(new Session("강의1",
-                PeriodTest.NOV,
-                new SessionImages(List.of(SessionImageTest.IMAGE_JPG)),
-                SessionChargeTest.FREE)).isInstanceOf(Session.class);
-        assertThat(new Session("강의2",
-                PeriodTest.DEC,
-                new SessionImages(List.of(SessionImageTest.IMAGE_PNG)),
-                SessionChargeTest.CHARGE_1000)).isInstanceOf(Session.class);
+        assertThat(
+                new Session(
+                        "강의1",
+                        PeriodTest.NOV,
+                        new SessionImages(List.of(SessionImageTest.IMAGE_JPG)),
+                        SessionChargeTest.FREE,
+                        SessionStatusTest.RECRUITING)
+        ).isInstanceOf(Session.class);
+        assertThat(
+                new Session(
+                        "강의2",
+                        PeriodTest.DEC,
+                        new SessionImages(List.of(SessionImageTest.IMAGE_PNG)),
+                        SessionChargeTest.CHARGE_1000,
+                        SessionStatusTest.NON_RECRUITMENT)
+        ).isInstanceOf(Session.class);
     }
 
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void enrollExceptionTest() {
-        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100);
+        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING);
         session.enroll(NsUserTest.JAVAJIGI);
         session.approval(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
 
@@ -43,7 +51,7 @@ public class SessionTest {
     void addImageTest() {
         List<SessionImage> images = new ArrayList<>();
         images.add(SessionImageTest.IMAGE_JPG);
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100);
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING);
         int beforeTotalCount = session.getImages().size();
         session.addImage(SessionImageTest.IMAGE_PNG);
 

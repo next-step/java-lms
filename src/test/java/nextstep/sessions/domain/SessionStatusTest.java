@@ -1,25 +1,24 @@
 package nextstep.sessions.domain;
 
-import nextstep.common.Period;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SessionStatusTest {
+public class SessionStatusTest {
+    public static final SessionStatus RECRUITING = new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
+    public static final SessionStatus NON_RECRUITMENT = new SessionStatus(SessionProgressStatus.END, SessionRecruitmentStatus.NON_RECRUITMENT);
 
-    @DisplayName("강의 기간 정보를 전달하면 SessionStatus 객체를 생성한다.")
+    @DisplayName("강의 진행 상태와 강의 모집 상태를 전달하면 SessionStatus 객체를 생성한다.")
     @Test
     void sessionStatusTest() {
-        assertThat(new SessionStatus(new Period(LocalDate.of(2023, 12, 15), LocalDate.of(2023, 12, 31)))).isInstanceOf(SessionStatus.class);
+        assertThat(new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING)).isInstanceOf(SessionStatus.class);
     }
 
     @DisplayName("모집중이지 않은 강의는 true를 반환한다.")
     @Test
     void checkNonRecruitTest() {
-        SessionStatus sessionStatus = new SessionStatus(new Period(LocalDate.of(2023, 11, 01), LocalDate.of(2023, 11, 15)));
+        SessionStatus sessionStatus = new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.NON_RECRUITMENT);
 
         assertThat(sessionStatus.isNotRecruiting()).isTrue();
     }
@@ -27,8 +26,8 @@ class SessionStatusTest {
     @DisplayName("모집중인 강의는 false를 반환한다.")
     @Test
     void checkRecruitTest() {
-        SessionStatus sessionStatus1 = new SessionStatus(new Period(LocalDate.of(2023, 12, 01), LocalDate.of(2023, 12, 31)));
-        SessionStatus sessionStatus2 = new SessionStatus(new Period(LocalDate.of(2024, 01, 01), LocalDate.of(2024, 01, 15)));
+        SessionStatus sessionStatus1 = new SessionStatus(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.RECRUITING);
+        SessionStatus sessionStatus2 = new SessionStatus(SessionProgressStatus.PROGRESSING, SessionRecruitmentStatus.RECRUITING);
 
         assertThat(sessionStatus1.isNotRecruiting()).isFalse();
         assertThat(sessionStatus2.isNotRecruiting()).isFalse();

@@ -9,4 +9,8 @@ public enum SessionRecruitmentStatus {
     SessionRecruitmentStatus(String status) {
         this.status = status;
     }
+
+    public boolean isRecruiting() {
+        return this.status.equals(RECRUITING.status);
+    }
 }

@@ -29,8 +29,8 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(String name, Period date, SessionImages images, SessionCharge charge) {
-        this(0L, name, date, images, charge, new SessionStatus(date), new SessionStudents(), LocalDateTime.now(), null);
+    public Session(String name, Period date, SessionImages images, SessionCharge charge, SessionStatus sessionStatus) {
+        this(0L, name, date, images, charge, sessionStatus, new SessionStudents(), LocalDateTime.now(), null);
     }
 
     public Session(Long id, String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
