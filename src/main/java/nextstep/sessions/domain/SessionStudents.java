@@ -46,7 +46,7 @@ public class SessionStudents {
                 .count();
     }
 
-    public void approval(SessionStudent sessionStudent, NsUser loginUser) {
+    public void approve(SessionStudent sessionStudent, NsUser loginUser) {
         if (!loginUser.isAdminUser()) {
             throw new IllegalStateException("강사만 승인할 수 있습니다.");
         }
@@ -54,7 +54,7 @@ public class SessionStudents {
                 .filter(student -> student.equals(student))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(String.format("%s 수강신청 내역이 없는 학생입니다.", sessionStudent.getUser().getName())));
-        findStudent.approval();
+        findStudent.approve();
     }
 
     public void cancel(SessionStudent sessionStudent, NsUser loginUser) {

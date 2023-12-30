@@ -71,7 +71,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
-        session.approval(sessionStudent, NsUser.ADMIN_USER);
+        session.approve(sessionStudent, NsUser.ADMIN_USER);
         sessionRepository.approvalStudent(session, sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());

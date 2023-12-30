@@ -10,4 +10,8 @@ public enum SessionApprovalStatus {
     SessionApprovalStatus(String status) {
         this.status = status;
     }
+
+    public boolean isApproval() {
+        return this.status.equals(APPROVAL.status);
+    }
 }

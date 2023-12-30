@@ -36,7 +36,7 @@ class SessionStudentTest {
     @Test
     void isApprovalTrueTest() {
         SessionStudent student = new SessionStudent(NsUserTest.JAVAJIGI);
-        student.approval();
+        student.approve();
 
         assertThat(student.isApproval()).isTrue();
     }

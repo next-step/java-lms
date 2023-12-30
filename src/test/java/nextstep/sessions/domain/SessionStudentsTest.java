@@ -31,7 +31,7 @@ class SessionStudentsTest {
     void approvalStudentCountTest() {
         SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
         sessionStudents.addStudent(sessionStudent);
-        sessionStudents.approval(sessionStudent, NsUser.ADMIN_USER);
+        sessionStudents.approve(sessionStudent, NsUser.ADMIN_USER);
 
         assertThat(sessionStudents.approvalStudentCount()).isEqualTo(1);
     }
@@ -42,7 +42,7 @@ class SessionStudentsTest {
         SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
         sessionStudents.addStudent(sessionStudent);
 
-        assertThatThrownBy(() -> sessionStudents.approval(sessionStudent, NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> sessionStudents.approve(sessionStudent, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalStateException.class);
     }
 

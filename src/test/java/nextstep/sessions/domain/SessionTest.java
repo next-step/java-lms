@@ -40,7 +40,7 @@ public class SessionTest {
     void enrollExceptionTest() {
         Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING);
         session.enroll(NsUserTest.JAVAJIGI);
-        session.approval(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
+        session.approve(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);

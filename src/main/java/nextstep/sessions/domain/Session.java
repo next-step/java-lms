@@ -102,8 +102,8 @@ public class Session {
         return newStudent;
     }
 
-    public void approval(SessionStudent student, NsUser loginUser) {
-        students.approval(student, loginUser);
+    public void approve(SessionStudent student, NsUser loginUser) {
+        students.approve(student, loginUser);
     }
 
     public void cancel(SessionStudent student, NsUser loginUser) {

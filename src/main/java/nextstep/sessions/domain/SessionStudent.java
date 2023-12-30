@@ -20,9 +20,7 @@ public class SessionStudent {
     private SessionApprovalStatus status;
 
     public SessionStudent(NsUser user) {
-        this.user = user;
-        this.registrationAt = LocalDateTime.now();
-        this.status = SessionApprovalStatus.WAITING;
+        this(0L, user, LocalDateTime.now(), SessionApprovalStatus.WAITING);
     }
 
     public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt, SessionApprovalStatus status) {
@@ -45,7 +43,7 @@ public class SessionStudent {
     }
 
     public boolean isApproval() {
-        return this.status == SessionApprovalStatus.APPROVAL;
+        return this.status.isApproval();
     }
 
     @Override
@@ -61,7 +59,7 @@ public class SessionStudent {
         return Objects.hash(user);
     }
 
-    public void approval() {
+    public void approve() {
         this.status = SessionApprovalStatus.APPROVAL;
     }
 

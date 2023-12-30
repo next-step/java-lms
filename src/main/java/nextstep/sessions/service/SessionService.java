@@ -26,9 +26,9 @@ public class SessionService {
     }
 
     @Transactional
-    public void approval(Session session, NsUser enrollUser, NsUser loginUser) {
+    public void approve(Session session, NsUser enrollUser, NsUser loginUser) {
         SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), enrollUser.getId());
-        session.approval(student, loginUser);
+        session.approve(student, loginUser);
         sessionRepository.approvalStudent(session, student);
     }
 
