@@ -9,13 +9,21 @@ public class Enrollment {
     private final NsUserLimit limits;
 
     public Enrollment() {
-        this((new NsUsers(new ArrayList<>())), new NsUserLimit(1,SessionPaymentType.PAID));
+        this((new NsUsers(new ArrayList<>())), new NsUserLimit(1,SessionPaymentType.FREE));
     }
 
     public Enrollment(NsUsers users, NsUserLimit limit) {
         validateCounts(users, limit);
         this.limits = limit;
         this.users = users;
+    }
+
+    public Enrollment(Enrollment enrollment) {
+        this(enrollment.users, enrollment.limits);
+    }
+
+    public int getLimits() {
+        return limits.getCount();
     }
 
     public boolean isFull() {
@@ -33,5 +41,8 @@ public class Enrollment {
             throw new IllegalArgumentException(ExceptionMessage.ENROLLMENT_SIZE.getMessage());
         }
         users.add(nsUser);
+    }
+    public void replaceUsers(NsUsers nsUsers){
+        this.users.replaceAll(nsUsers);
     }
 }

@@ -12,9 +12,22 @@ public class Duration {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public Duration(Duration duration) {
+        this(duration.startDate, duration.endDate);
+    }
+
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
             throw new IllegalArgumentException(ExceptionMessage.DURATION_RANGE.getMessage());
         }
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 }

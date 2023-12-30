@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +35,15 @@ class EnrollmentTest {
         Enrollment actual = new Enrollment(new NsUsers(users), new NsUserLimit(0,SessionPaymentType.PAID));
         assertThatThrownBy(()->actual.enroll(NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("새 유저 멤버들로 교체, 멤버만 교체함")
+    void replaceUsers() {
+        List<NsUser> actualUsers = new ArrayList<>();
+        List<NsUser> expectedUsers = new ArrayList<>(List.of(NsUserTest.JAVAJIGI,NsUserTest.SANJIGI));
+        Enrollment actual = new Enrollment(new NsUsers(actualUsers), new NsUserLimit(0,SessionPaymentType.FREE));
+        actual.replaceUsers(new NsUsers(expectedUsers));
+        assertIterableEquals(actualUsers, expectedUsers);
     }
 }

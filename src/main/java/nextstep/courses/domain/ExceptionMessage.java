@@ -10,7 +10,8 @@ public enum ExceptionMessage {
     SESSIONS_NOT_FOUND_SESSION("강의를 찾을 수 없습니다."),
     SESSION_NOT_MATCH_AMOUNT_OF_PAY("결제 금액이 수강료와 일치하지 않습니다."),
     SESSION_STATUS_NOT_ENROLLING("현재 강의는 모집중이지 않습니다."),
-    SESSION_PAYMENT_NEED_PRICE("유료강의는 가격이 0 초과이여야 합니다.");
+    SESSION_PAYMENT_NEED_PRICE("유료강의는 가격이 0 초과이여야 합니다."),
+    SESSION_PAYMENT_NOT_FOUND_TYPE("존재 하지 않는 타입입니다.");
 
     private final String message;
 

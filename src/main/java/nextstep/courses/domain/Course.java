@@ -5,7 +5,7 @@ import java.util.Objects;
 import nextstep.users.domain.NsUser;
 
 public class Course extends AuditInfo{
-    private Long id;
+    private final Long id;
 
     private String title;
 
@@ -13,33 +13,28 @@ public class Course extends AuditInfo{
 
     private Sessions sessions;
 
-    public Course() {
-        super(LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    public Course(Long id, String title, Long creatorId, Sessions sessions) {
-        super(LocalDateTime.now(), LocalDateTime.now());
+    public Course(Long id, String title, Long creatorId, Sessions sessions, LocalDateTime createAt, LocalDateTime updateAt) {
+        super(createAt, updateAt);
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
         this.sessions = sessions;
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createAt, LocalDateTime updateAt) {
-        super(createAt, updateAt);
-        this.id = id;
-        this.title = title;
-        this.creatorId = creatorId;
-        this.sessions = new Sessions();
+    public Course(Course course){
+        this(course.id, course.title, course.creatorId, course.sessions, course.createdAt, course.updatedAt);
     }
 
+    public void addSessions(Sessions sessions){
+        this.sessions.addAll(sessions);
+    }
 
-    public void enroll(NsUser user, Long sessionId) {
-        sessions.enroll(user, sessionId);
+    public Session enroll(NsUser user, Long sessionId) {
+        return sessions.enroll(user, sessionId);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -48,10 +43,6 @@ public class Course extends AuditInfo{
 
     public Long getCreatorId() {
         return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     @Override

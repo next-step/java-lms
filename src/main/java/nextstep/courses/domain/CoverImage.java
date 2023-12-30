@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-
 public class CoverImage {
     public static final long LIMIT_BYTE_SIZE = 1000L;
     private final String name;
@@ -19,6 +18,30 @@ public class CoverImage {
         this.byteSize = byteSize;
         this.width = width;
         this.height = height;
+    }
+
+    public CoverImage(CoverImage coverImage) {
+        this(coverImage.name, coverImage.byteSize, coverImage.width, coverImage.height);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ImageExtension getExtension() {
+        return extension;
+    }
+
+    public Long getByteSize() {
+        return byteSize;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public Double getHeight() {
+        return height;
     }
 
     private void validateByteSize(Long byteSize) {

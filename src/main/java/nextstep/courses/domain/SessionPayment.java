@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+
 public class SessionPayment {
     private final SessionPaymentType type;
     private final Long amount;
@@ -8,6 +9,9 @@ public class SessionPayment {
         this(SessionPaymentType.FREE, 0L);
     }
 
+    public SessionPayment(final SessionPayment sessionPayment){
+        this(sessionPayment.type, sessionPayment.amount);
+    }
 
     public SessionPayment(SessionPaymentType type, Long amount) {
         validatePrice(type, amount);
@@ -21,11 +25,15 @@ public class SessionPayment {
         }
     }
 
-    public boolean isPaid() {
-        return type == SessionPaymentType.PAID;
+    public String getTypeString() {
+        return type.name();
     }
 
-    public boolean isSameAmountOfPay(Long amountOfPay){
-        return amount.equals(amountOfPay);
+    public Long getAmount() {
+        return amount;
+    }
+
+    public boolean isPaid() {
+        return type == SessionPaymentType.PAID;
     }
 }
