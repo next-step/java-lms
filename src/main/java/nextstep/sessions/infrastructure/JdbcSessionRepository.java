@@ -37,8 +37,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Long save(Session session) {
-        String sql = "insert into session (name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at)" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at, user_id)" +
+                " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"});
@@ -50,6 +50,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setString(6, session.getStatus().getProgressStatus().name());
             ps.setString(7, session.getStatus().getRecruitmentStatus().name());
             ps.setTimestamp(8, Timestamp.valueOf(session.getCreatedAt()));
+            ps.setLong(9, session.getInstructor().getId());
             return ps;
         }, keyHolder);
         Long sessionId = (Long) keyHolder.getKey();
@@ -83,7 +84,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, name, start_at, end_at, price, limit_count, progress_status, recruitment_status, created_at, updated_at from session where id = ?";
+        String sql = "select s.id, s.name, s.start_at, s.end_at, s.price, s.limit_count, s.progress_status, s.recruitment_status, s.created_at, s.updated_at, nu.id, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
+                " from session s join ns_user nu on s.user_id = nu.id " +
+                " where s.id = ?";
         RowMapper<Session> rowMapper = ((rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getString(2),
@@ -93,7 +96,16 @@ public class JdbcSessionRepository implements SessionRepository {
                 new SessionStatus(SessionProgressStatus.valueOf(rs.getString(7)), SessionRecruitmentStatus.valueOf(rs.getString(8))),
                 studentsFindBySessionId(id),
                 toLocalDateTime(rs.getTimestamp(9)),
-                toLocalDateTime(rs.getTimestamp(10))
+                toLocalDateTime(rs.getTimestamp(10)),
+                new NsUser(
+                        rs.getLong(11),
+                        rs.getString(12),
+                        rs.getString(13),
+                        rs.getString(14),
+                        rs.getString(15),
+                        toLocalDateTime(rs.getTimestamp(16)),
+                        toLocalDateTime(rs.getTimestamp(17))
+                )
         ));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

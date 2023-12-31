@@ -23,7 +23,8 @@ public class SessionTest {
                         PeriodTest.NOV,
                         new SessionImages(List.of(SessionImageTest.IMAGE_JPG)),
                         SessionChargeTest.FREE,
-                        SessionStatusTest.RECRUITING)
+                        SessionStatusTest.RECRUITING,
+                        NsUserTest.JAVAJIGI)
         ).isInstanceOf(Session.class);
         assertThat(
                 new Session(
@@ -31,14 +32,15 @@ public class SessionTest {
                         PeriodTest.DEC,
                         new SessionImages(List.of(SessionImageTest.IMAGE_PNG)),
                         SessionChargeTest.CHARGE_1000,
-                        SessionStatusTest.NON_RECRUITMENT)
+                        SessionStatusTest.NON_RECRUITMENT,
+                        NsUserTest.SANJIGI)
         ).isInstanceOf(Session.class);
     }
 
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void enrollExceptionTest() {
-        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING);
+        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
         session.enroll(NsUserTest.JAVAJIGI);
         session.approve(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
 
@@ -51,7 +53,7 @@ public class SessionTest {
     void addImageTest() {
         List<SessionImage> images = new ArrayList<>();
         images.add(SessionImageTest.IMAGE_JPG);
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING);
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(images), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
         int beforeTotalCount = session.getImages().size();
         session.addImage(SessionImageTest.IMAGE_PNG);
 

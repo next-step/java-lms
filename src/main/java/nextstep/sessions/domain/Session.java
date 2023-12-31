@@ -29,11 +29,13 @@ public class Session {
 
     private LocalDateTime updatedAt;
 
-    public Session(String name, Period date, SessionImages images, SessionCharge charge, SessionStatus sessionStatus) {
-        this(0L, name, date, images, charge, sessionStatus, new SessionStudents(), LocalDateTime.now(), null);
+    private NsUser instructor;
+
+    public Session(String name, Period date, SessionImages images, SessionCharge charge, SessionStatus sessionStatus, NsUser loginUser) {
+        this(0L, name, date, images, charge, sessionStatus, new SessionStudents(), LocalDateTime.now(), null, loginUser);
     }
 
-    public Session(Long id, String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, String name, Period date, SessionImages images, SessionCharge charge, SessionStatus status, SessionStudents students, LocalDateTime createdAt, LocalDateTime updatedAt, NsUser loginUser) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -43,6 +45,7 @@ public class Session {
         this.students = students;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.instructor = loginUser;
     }
 
     public long getId() {
@@ -79,6 +82,10 @@ public class Session {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public NsUser getInstructor() {
+        return instructor;
     }
 
     public void addImage(SessionImage image) {

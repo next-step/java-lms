@@ -18,6 +18,7 @@ create table session (
      recruitment_status ENUM('RECRUITING', 'NON_RECRUITMENT'),
      created_at timestamp not null,
      updated_at timestamp,
+     user_id bigint not null,
      primary key (id)
 );
 
