@@ -29,13 +29,13 @@ public class SessionService {
     public void approve(Session session, NsUser enrollUser, NsUser loginUser) {
         SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), enrollUser.getId());
         session.approve(student, loginUser);
-        sessionRepository.approvalStudent(session, student);
+        sessionRepository.approvalStudent(student);
     }
 
     @Transactional
     public void cancel(Session session, NsUser enrollUser, NsUser loginUser) {
         SessionStudent student = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), enrollUser.getId());
         session.cancel(student, loginUser);
-        sessionRepository.cancelStudent(session, student);
+        sessionRepository.cancelStudent(student);
     }
 }

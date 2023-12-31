@@ -127,23 +127,24 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private SessionStudents studentsFindBySessionId(Long id) {
-        String sql = "select ss.id, ss.user_id, ss.registration_at, ss.approval_status, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
+        String sql = "select ss.id, ss.registration_at, ss.approval_status, ss.session_id, nu.id, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
                 "from session_student ss join ns_user nu on ss.user_id = nu.id " +
                 "where session_id = ?";
 
         RowMapper<SessionStudent> rowMapper = ((rs, rowNum) -> new SessionStudent(
                 rs.getLong(1),
                 new NsUser(
-                        rs.getLong(2),
-                        rs.getString(5),
+                        rs.getLong(5),
                         rs.getString(6),
                         rs.getString(7),
                         rs.getString(8),
-                        toLocalDateTime(rs.getTimestamp(9)),
-                        toLocalDateTime(rs.getTimestamp(10))
+                        rs.getString(9),
+                        toLocalDateTime(rs.getTimestamp(10)),
+                        toLocalDateTime(rs.getTimestamp(11))
                 ),
-                toLocalDateTime(rs.getTimestamp(3)),
-                SessionApprovalStatus.valueOf(rs.getString(4))
+                toLocalDateTime(rs.getTimestamp(2)),
+                SessionApprovalStatus.valueOf(rs.getString(3)),
+                rs.getLong(4)
         ));
         List<SessionStudent> students = jdbcTemplate.query(sql, new String[]{String.valueOf(id)}, rowMapper);
         if (students.isEmpty()) {
@@ -168,36 +169,37 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public SessionStudent studentFindBySessionIdAndUserId(Long sessionId, Long userId) {
-        String sql = "select ss.id, ss.registration_at, ss.approval_status, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
+        String sql = "select ss.id, ss.registration_at, ss.approval_status, ss.session_id, nu.user_id, nu.password, nu.name, nu.email, nu.created_at, nu.updated_at " +
                 " from session_student ss join ns_user nu on ss.user_id = nu.id " +
                 " where ss.session_id = ? and ss.user_id = ?";
         RowMapper<SessionStudent> rowMapper = ((rs, rowNum) -> new SessionStudent(
                 rs.getLong(1),
                 new NsUser(
                         userId,
-                        rs.getString(4),
                         rs.getString(5),
                         rs.getString(6),
                         rs.getString(7),
-                        toLocalDateTime(rs.getTimestamp(8)),
-                        toLocalDateTime(rs.getTimestamp(9))
+                        rs.getString(8),
+                        toLocalDateTime(rs.getTimestamp(9)),
+                        toLocalDateTime(rs.getTimestamp(10))
                 ),
                 toLocalDateTime(rs.getTimestamp(2)),
-                SessionApprovalStatus.valueOf(rs.getString(3))
+                SessionApprovalStatus.valueOf(rs.getString(3)),
+                rs.getLong(4)
         ));
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId, userId);
     }
 
     @Override
-    public void approvalStudent(Session session, SessionStudent student) {
+    public void approvalStudent(SessionStudent student) {
         String sql = "update session_student set approval_status = 'APPROVAL' where session_id = ? and user_id = ?";
-        jdbcTemplate.update(sql, session.getId(), student.getUser().getId());
+        jdbcTemplate.update(sql, student.getSessionId(), student.getUser().getId());
     }
 
     @Override
-    public void cancelStudent(Session session, SessionStudent student) {
+    public void cancelStudent(SessionStudent student) {
         String sql = "update session_student set approval_status = 'CANCEL' where session_id = ? and user_id = ?";
-        jdbcTemplate.update(sql, session.getId(), student.getUser().getId());
+        jdbcTemplate.update(sql, student.getSessionId(), student.getUser().getId());
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {

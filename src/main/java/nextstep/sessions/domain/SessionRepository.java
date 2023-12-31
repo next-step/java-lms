@@ -10,7 +10,7 @@ public interface SessionRepository {
 
     SessionStudent studentFindBySessionIdAndUserId(Long sessionId, Long userId);
 
-    void approvalStudent(Session session, SessionStudent student);
+    void approvalStudent(SessionStudent student);
 
-    void cancelStudent(Session session, SessionStudent student);
+    void cancelStudent(SessionStudent student);
 }

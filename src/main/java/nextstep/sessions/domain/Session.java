@@ -104,7 +104,7 @@ public class Session {
         }
         checkSessionStatus();
         this.charge.checkRecruits(students.approvalStudentCount());
-        SessionStudent newStudent = new SessionStudent(user);
+        SessionStudent newStudent = new SessionStudent(user, this.id);
         students.addStudent(newStudent);
         return newStudent;
     }

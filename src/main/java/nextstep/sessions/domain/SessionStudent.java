@@ -19,15 +19,22 @@ public class SessionStudent {
 
     private SessionApprovalStatus status;
 
-    public SessionStudent(NsUser user) {
-        this(0L, user, LocalDateTime.now(), SessionApprovalStatus.WAITING);
+    private Long sessionId;
+
+    public SessionStudent(NsUser user, Long sessionId) {
+        this(0L, user, LocalDateTime.now(), SessionApprovalStatus.WAITING, sessionId);
     }
 
-    public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt, SessionApprovalStatus status) {
+    public SessionStudent(Long id, NsUser user, LocalDateTime registrationAt, SessionApprovalStatus status, Long sessionId) {
         this.id = id;
         this.user = user;
         this.registrationAt = registrationAt;
         this.status = status;
+        this.sessionId = sessionId;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public NsUser getUser() {
@@ -40,6 +47,10 @@ public class SessionStudent {
 
     public SessionApprovalStatus getStatus() {
         return status;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public boolean isApproval() {

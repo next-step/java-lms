@@ -77,7 +77,7 @@ class SessionRepositoryTest {
         sessionRepository.enroll(session, sessionStudent);
 
         session.approve(sessionStudent, NsUserTest.JAVAJIGI);
-        sessionRepository.approvalStudent(session, sessionStudent);
+        sessionRepository.approvalStudent(sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());
         assertThat(savedStudent.getStatus()).isEqualTo(SessionApprovalStatus.APPROVAL);
@@ -97,7 +97,7 @@ class SessionRepositoryTest {
         sessionRepository.enroll(session, sessionStudent);
 
         session.cancel(sessionStudent, NsUserTest.JAVAJIGI);
-        sessionRepository.cancelStudent(session, sessionStudent);
+        sessionRepository.cancelStudent(sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());
         assertThat(savedStudent.getStatus()).isEqualTo(SessionApprovalStatus.CANCEL);
