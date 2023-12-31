@@ -47,7 +47,7 @@ class SessionTest {
                 .withSessionCharge(SessionChargeTest.CHARGE_100)
                 .withSessionStatus(SessionStatusTest.RECRUITING)
                 .withSessionStudents(new SessionStudents())
-                .withInstructor(NsUserTest.JAVAJIGI)
+                .withInstructor(NsUserTest.SANJIGI)
                 .build();
         session.enroll(NsUserTest.JAVAJIGI);
         session.approve(new SessionStudent(NsUserTest.JAVAJIGI, session.getId()), NsUserTest.SANJIGI);
