@@ -121,7 +121,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 ImageType.from(rs.getString(5))
         ));
         List<SessionImage> images = jdbcTemplate.query(sql, new String[]{String.valueOf(id)}, rowMapper);
-        System.out.println(images);
 
         return new SessionImages(images);
     }
