@@ -1,7 +1,6 @@
 package nextstep.sessions.domain;
 
 import nextstep.common.PeriodTest;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,9 +39,9 @@ public class SessionTest {
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void enrollExceptionTest() {
-        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING, NsUserTest.SANJIGI);
         session.enroll(NsUserTest.JAVAJIGI);
-        session.approve(new SessionStudent(NsUserTest.JAVAJIGI), NsUser.ADMIN_USER);
+        session.approve(new SessionStudent(NsUserTest.JAVAJIGI), NsUserTest.SANJIGI);
 
         assertThatThrownBy(() -> session.enroll(NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);
@@ -58,5 +57,25 @@ public class SessionTest {
         session.addImage(SessionImageTest.IMAGE_PNG);
 
         assertThat(session.getImages().size()).isEqualTo(beforeTotalCount + 1);
+    }
+
+    @DisplayName("강사가 아닌 사용자가 수강신청 승인을 할 경우 IllegalStateException을 던진다.")
+    @Test
+    void approveExceptionTest() {
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        SessionStudent sessionStudent = session.enroll(NsUserTest.SANJIGI);
+
+        assertThatThrownBy(() -> session.approve(sessionStudent, NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @DisplayName("강사가 아닌 사용자가 수강신청 취소를 할 경우 IllegalStateException을 던진다.")
+    @Test
+    void cancelExceptionTest() {
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        SessionStudent sessionStudent = session.enroll(NsUserTest.SANJIGI);
+
+        assertThatThrownBy(() -> session.cancel(sessionStudent, NsUserTest.SANJIGI))
+                .isInstanceOf(IllegalStateException.class);
     }
 }

@@ -35,24 +35,4 @@ class SessionStudentsTest {
 
         assertThat(sessionStudents.approvalStudentCount()).isEqualTo(1);
     }
-
-    @DisplayName("강사가 아닌 사용자가 수강신청 승인을 할 경우 IllegalStateException을 던진다.")
-    @Test
-    void approvalExceptionTest() {
-        SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
-        sessionStudents.addStudent(sessionStudent);
-
-        assertThatThrownBy(() -> sessionStudents.approve(sessionStudent, NsUserTest.JAVAJIGI))
-                .isInstanceOf(IllegalStateException.class);
-    }
-
-    @DisplayName("강사가 아닌 사용자가 수강신청 취소를 할 경우 IllegalStateException을 던진다.")
-    @Test
-    void cancelExceptionTest() {
-        SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
-        sessionStudents.addStudent(sessionStudent);
-
-        assertThatThrownBy(() -> sessionStudents.cancel(sessionStudent, NsUserTest.JAVAJIGI))
-                .isInstanceOf(IllegalStateException.class);
-    }
 }

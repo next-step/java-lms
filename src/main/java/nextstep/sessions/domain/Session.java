@@ -110,10 +110,16 @@ public class Session {
     }
 
     public void approve(SessionStudent student, NsUser loginUser) {
+        if (!this.instructor.matchUser(loginUser)) {
+            throw new IllegalStateException("강사만 승인할 수 있습니다.");
+        }
         students.approve(student, loginUser);
     }
 
     public void cancel(SessionStudent student, NsUser loginUser) {
+        if (!this.instructor.matchUser(loginUser)) {
+            throw new IllegalStateException("강사만 취소할 수 있습니다.");
+        }
         students.cancel(student, loginUser);
     }
 }

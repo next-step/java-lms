@@ -11,7 +11,6 @@ import nextstep.sessions.domain.SessionRecruitmentStatus;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.sessions.domain.SessionStatus;
 import nextstep.sessions.domain.SessionStudent;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
@@ -77,7 +76,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
-        session.approve(sessionStudent, NsUser.ADMIN_USER);
+        session.approve(sessionStudent, NsUserTest.JAVAJIGI);
         sessionRepository.approvalStudent(session, sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());
@@ -97,7 +96,7 @@ class SessionRepositoryTest {
         SessionStudent sessionStudent = session.enroll(NsUserTest.JAVAJIGI);
         sessionRepository.enroll(session, sessionStudent);
 
-        session.cancel(sessionStudent, NsUser.ADMIN_USER);
+        session.cancel(sessionStudent, NsUserTest.JAVAJIGI);
         sessionRepository.cancelStudent(session, sessionStudent);
 
         SessionStudent savedStudent = sessionRepository.studentFindBySessionIdAndUserId(session.getId(), NsUserTest.JAVAJIGI.getId());

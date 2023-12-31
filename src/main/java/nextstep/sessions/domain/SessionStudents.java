@@ -47,9 +47,6 @@ public class SessionStudents {
     }
 
     public void approve(SessionStudent sessionStudent, NsUser loginUser) {
-        if (!loginUser.isAdminUser()) {
-            throw new IllegalStateException("강사만 승인할 수 있습니다.");
-        }
         SessionStudent findStudent = students.stream()
                 .filter(student -> student.equals(student))
                 .findFirst()
@@ -58,9 +55,6 @@ public class SessionStudents {
     }
 
     public void cancel(SessionStudent sessionStudent, NsUser loginUser) {
-        if (!loginUser.isAdminUser()) {
-            throw new IllegalStateException("강사만 취소할 수 있습니다.");
-        }
         SessionStudent findStudent = students.stream()
                 .filter(student -> student.equals(sessionStudent))
                 .findFirst()
