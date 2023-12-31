@@ -13,6 +13,10 @@ public class SessionStudents {
         this.students = new HashSet<>();
     }
 
+    public SessionStudents(Set<SessionStudent> students) {
+        this.students = students;
+    }
+
     public SessionStudents(List<SessionStudent> students) {
         for (int i = 0; i < students.size() - 1; i++) {
             checkStudent(students.get(i), students.get(i + 1));

@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.common.PeriodTest;
+import nextstep.sessions.domain.Builder.SessionBuilder;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-public class SessionTest {
+class SessionTest {
 
     @DisplayName("시작일, 종료일, 이미지, 가격, 상태를 전달하면 강의 객체를 생성한다.")
     @Test
@@ -39,7 +40,15 @@ public class SessionTest {
     @DisplayName("모집 인원이 마감된 강의는 수강신청을 하면 IllegalStateException을 던진다.")
     @Test
     void enrollExceptionTest() {
-        Session session = new Session("강의", PeriodTest.DEC, new SessionImages(List.of(SessionImageTest.IMAGE_PNG)), SessionChargeTest.CHARGE_100, SessionStatusTest.RECRUITING, NsUserTest.SANJIGI);
+        Session session = new SessionBuilder()
+                .withName("강의")
+                .withPeriod(PeriodTest.DEC)
+                .withSessionImages(new SessionImages(List.of(SessionImageTest.IMAGE_PNG)))
+                .withSessionCharge(SessionChargeTest.CHARGE_100)
+                .withSessionStatus(SessionStatusTest.RECRUITING)
+                .withSessionStudents(new SessionStudents())
+                .withInstructor(NsUserTest.JAVAJIGI)
+                .build();
         session.enroll(NsUserTest.JAVAJIGI);
         session.approve(new SessionStudent(NsUserTest.JAVAJIGI, session.getId()), NsUserTest.SANJIGI);
 
@@ -62,7 +71,15 @@ public class SessionTest {
     @DisplayName("강사가 아닌 사용자가 수강신청 승인을 할 경우 IllegalStateException을 던진다.")
     @Test
     void approveExceptionTest() {
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        Session session = new SessionBuilder()
+                .withName("강의1")
+                .withPeriod(PeriodTest.NOV)
+                .withSessionImages(new SessionImages(List.of(SessionImageTest.IMAGE_JPG)))
+                .withSessionCharge(SessionChargeTest.FREE)
+                .withSessionStatus(SessionStatusTest.RECRUITING)
+                .withSessionStudents(new SessionStudents())
+                .withInstructor(NsUserTest.JAVAJIGI)
+                .build();
         SessionStudent sessionStudent = session.enroll(NsUserTest.SANJIGI);
 
         assertThatThrownBy(() -> session.approve(sessionStudent, NsUserTest.SANJIGI))
@@ -72,19 +89,18 @@ public class SessionTest {
     @DisplayName("강사가 아닌 사용자가 수강신청 취소를 할 경우 IllegalStateException을 던진다.")
     @Test
     void cancelExceptionTest() {
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        Session session = new SessionBuilder()
+                .withName("강의1")
+                .withPeriod(PeriodTest.NOV)
+                .withSessionImages(new SessionImages(List.of(SessionImageTest.IMAGE_JPG)))
+                .withSessionCharge(SessionChargeTest.FREE)
+                .withSessionStatus(SessionStatusTest.RECRUITING)
+                .withSessionStudents(new SessionStudents())
+                .withInstructor(NsUserTest.JAVAJIGI)
+                .build();
         SessionStudent sessionStudent = session.enroll(NsUserTest.SANJIGI);
 
         assertThatThrownBy(() -> session.cancel(sessionStudent, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    void name() {
-        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
-        session.enroll(NsUserTest.JAVAJIGI);
-        SessionStudent sanjigi = session.enroll(NsUserTest.SANJIGI);
-        System.out.println(session.getStudents());
-        session.cancel(sanjigi, NsUserTest.JAVAJIGI);
     }
 }
