@@ -1,13 +1,25 @@
 package nextstep.sessions.domain;
 
-public enum SessionStatus {
-    PREPARING("준비중"),
-    RECRUITING("모집중"),
-    END("종료");
+public class SessionStatus {
 
-    private final String status;
+    private SessionProgressStatus progressStatus;
 
-    SessionStatus(String status) {
-        this.status = status;
+    private SessionRecruitmentStatus recruitmentStatus;
+
+    public SessionStatus(SessionProgressStatus progressStatus, SessionRecruitmentStatus recruitmentStatus) {
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
+    public SessionProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public SessionRecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
+    }
+
+    public boolean isNotRecruiting() {
+        return !recruitmentStatus.isRecruiting();
     }
 }

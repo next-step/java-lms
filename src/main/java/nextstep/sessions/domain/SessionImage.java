@@ -1,64 +1,31 @@
 package nextstep.sessions.domain;
 
 public class SessionImage {
+    /*
+    강의 커버 이미지
+    이미지 크기, 타입을 관리한다.
+    이미지는 크기와 타입의 제한이 있다.
+     */
 
-    // 이미지 최대 크기
-    private static final int MAX_SIZE = 1_000_000;
-    // 이미지 최소 가로 사이즈
-    private static final double MIN_WIDTH = 300;
-    // 이미지 최소 세로 사이즈
-    private static final double MIN_HEIGHT = 200;
-    // 이미지 가로 비율
-    private static final int WIDTH_RATIO = 3;
-    // 이미지 세로 비율
-    private static final int HEIGHT_RATIO = 2;
+    private Long id;
 
-    // 이미지 크기
-    private int size;
+    private ImageSize imageSize;
 
-    // 이미지 가로 사이즈
-    private double width;
-
-    // 이미지 세로 사이즈
-    private double height;
-
-    // 이미지 타입
     private ImageType type;
 
-    public SessionImage(int size, double width, double height, String type) {
-        if (size <= 0 || size > MAX_SIZE) {
-            throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
-        }
-        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("이미지는 가로 300px, 세로 200px 이상이여야 합니다.");
-        }
-        if (isNotCorrectRatio(width, height)) {
-            throw new IllegalArgumentException("이미지의 비율은 3:2(가로:세로)여야 한다.");
-        }
-        this.size = size;
-        this.width = width;
-        this.height = height;
+    public SessionImage(ImageSize imageSize, String type) {
+        this.imageSize = imageSize;
         this.type = ImageType.from(type);
     }
 
-    private boolean isNotCorrectRatio(double width, double height) {
-        // 이미지의 비율 3:2를 검증
-        if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
-            return true;
-        }
-        return false;
+    public SessionImage(Long id, ImageSize imageSize, ImageType type) {
+        this.id = id;
+        this.imageSize = imageSize;
+        this.type = type;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public double getHeight() {
-        return height;
+    public ImageSize getImageSize() {
+        return imageSize;
     }
 
     public ImageType getType() {

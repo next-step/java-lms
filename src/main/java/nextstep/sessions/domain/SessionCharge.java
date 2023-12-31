@@ -1,11 +1,14 @@
 package nextstep.sessions.domain;
 
 public class SessionCharge {
+    /*
+    강의 가격
+    강의 가격, 수강 인원을 관리한다.
+    유료 강의의 경우 수강 인원에 제한이 있다.
+     */
 
-    // 가격
     private long price;
 
-    // 제한 인원
     private int limitCount;
 
     public SessionCharge(boolean charge, long price, int limitCount) {

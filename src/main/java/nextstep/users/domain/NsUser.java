@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
+    public static final AdminNsUser ADMIN_USER = new AdminNsUser();
 
     private Long id;
 
@@ -117,9 +118,20 @@ public class NsUser {
         return false;
     }
 
+    public boolean isAdminUser() {
+        return false;
+    }
+
     private static class GuestNsUser extends NsUser {
         @Override
         public boolean isGuestUser() {
+            return true;
+        }
+    }
+
+    private static class AdminNsUser extends NsUser {
+        @Override
+        public boolean isAdminUser() {
             return true;
         }
     }
