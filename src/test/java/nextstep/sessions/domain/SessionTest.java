@@ -78,4 +78,13 @@ public class SessionTest {
         assertThatThrownBy(() -> session.cancel(sessionStudent, NsUserTest.SANJIGI))
                 .isInstanceOf(IllegalStateException.class);
     }
+
+    @Test
+    void name() {
+        Session session = new Session("강의1", PeriodTest.NOV, new SessionImages(List.of(SessionImageTest.IMAGE_JPG)), SessionChargeTest.FREE, SessionStatusTest.RECRUITING, NsUserTest.JAVAJIGI);
+        session.enroll(NsUserTest.JAVAJIGI);
+        SessionStudent sanjigi = session.enroll(NsUserTest.SANJIGI);
+        System.out.println(session.getStudents());
+        session.cancel(sanjigi, NsUserTest.JAVAJIGI);
+    }
 }

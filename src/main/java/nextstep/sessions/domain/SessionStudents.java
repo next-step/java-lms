@@ -1,12 +1,9 @@
 package nextstep.sessions.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SessionStudents {
 
@@ -46,22 +43,21 @@ public class SessionStudents {
                 .count();
     }
 
-    public void approve(SessionStudent sessionStudent, NsUser loginUser) {
-        SessionStudent findStudent = students.stream()
-                .filter(student -> student.equals(student))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException(String.format("%s 수강신청 내역이 없는 학생입니다.", sessionStudent.getUser().getName())));
+    public void approve(SessionStudent sessionStudent) {
+        SessionStudent findStudent = findStudent(sessionStudent);
         findStudent.approve();
     }
 
-    public void cancel(SessionStudent sessionStudent, NsUser loginUser) {
-        SessionStudent findStudent = students.stream()
+    public void cancel(SessionStudent sessionStudent) {
+        SessionStudent findStudent = findStudent(sessionStudent);
+        findStudent.cancel();
+        students.remove(findStudent);
+    }
+
+    private SessionStudent findStudent(SessionStudent sessionStudent) {
+        return students.stream()
                 .filter(student -> student.equals(sessionStudent))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(String.format("%s 수강신청 내역이 없는 학생입니다.", sessionStudent.getUser().getName())));
-        findStudent.cancel();
-        this.students = students.stream()
-                .filter(student -> !student.equals(sessionStudent))
-                .collect(Collectors.toSet());
     }
 }

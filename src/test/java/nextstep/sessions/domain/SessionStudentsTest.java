@@ -1,6 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +30,7 @@ class SessionStudentsTest {
     void approvalStudentCountTest() {
         SessionStudent sessionStudent = new SessionStudent(NsUserTest.SANJIGI);
         sessionStudents.addStudent(sessionStudent);
-        sessionStudents.approve(sessionStudent, NsUser.ADMIN_USER);
+        sessionStudents.approve(sessionStudent);
 
         assertThat(sessionStudents.approvalStudentCount()).isEqualTo(1);
     }
