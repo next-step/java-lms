@@ -123,3 +123,13 @@
   * [x] Session 컬럼 session_status를 session_recruitment_status로 변경, session_progress_status 추가
   * [x] CoverImage에 id pk로 추가
   * [x] NsUserSession에 registered 필드 추가, 기존 인원은 ture로 업데이트 하는 시나리오
+
+#### Feedback 23.12.14
+* [ ] 수강 승인을 할 수 있는 인원이 최대 수강 인원으로 제한되도록 해본다.
+  * 추가로, 수강 인원만큼 승인이 되었다면 추가로 수강 승인이 되지 않도록 제한한다.
+* [ ] sessionStatus를 분류하지 않는다고 가정하고(데이터의 삭제 없이) 구현
+* [ ] NsUserSession이 3가지 상태(신청, 승인, 취소)를 갖도록 구현해본다.
+* [ ] 수강 승인 기능이 생긴 시점을 기준으로 수강 승인 기능을 구현한다.
+* [ ] create table DDL문을 수정하지 않고 Alter table 을 이용해본다.
+* [ ] 수강 신청 기능과 강사의 신청 승인은 각각의 기능으로 구현된다.
+* [ ] Session에 강사 정보를 추가 및 검증한다.
