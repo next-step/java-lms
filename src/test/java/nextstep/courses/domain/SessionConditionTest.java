@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class SessionConditionTest {
     private static final SessionCondition PAID_SESSION_CONDITION = new SessionCondition(800_000L, 120L);
-    private static final SessionCondition FREE_SESSION_CONDITION = new SessionCondition();
+    private static final SessionCondition FREE_SESSION_CONDITION = new SessionCondition(0L, 100L);
 
     @Test
     @DisplayName("checkPaidSession_무료강의_결제 금액 불일치 시 throw CannotEnrollException")

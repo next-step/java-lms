@@ -21,10 +21,6 @@ public class NsUserSession {
         this.enrollmentStatus = enrollmentStatus;
     }
 
-    public boolean matchSessionIdAndUserId(long sessionId, long nsUserId) {
-        return this.sessionId == sessionId && this.nsUserId == nsUserId;
-    }
-
     public Long sessionId() {
         return sessionId;
     }
@@ -35,6 +31,10 @@ public class NsUserSession {
 
     public EnrollmentStatus enrollmentStatus() {
         return enrollmentStatus;
+    }
+
+    public boolean isApproved() {
+        return enrollmentStatus == EnrollmentStatus.APPROVED;
     }
 
     @Override
@@ -58,4 +58,5 @@ public class NsUserSession {
                 ", enrollmentStatus=" + enrollmentStatus +
                 '}';
     }
+
 }

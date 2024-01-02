@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import static nextstep.courses.domain.NsUserSessionsTest.NS_USER_SESSION_1;
-import static nextstep.courses.domain.SessionTest.FREE_SESSION;
+import static nextstep.courses.domain.SessionTest.FREE_SESSION_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -31,10 +31,10 @@ class JdbcSessionDAOTest {
 
     @Test
     void session_save_find() {
-        Long sessionId = sessionRepository.save(FREE_SESSION);
+        Long sessionId = sessionRepository.save(FREE_SESSION_1);
         assertThat(sessionId).isEqualTo(1L);
         Session savedSession = sessionRepository.findById(sessionId);
-        assertThat(FREE_SESSION.generation()).isEqualTo(savedSession.generation());
+        assertThat(FREE_SESSION_1.generation()).isEqualTo(savedSession.generation());
         LOGGER.debug("Session: {}", savedSession);
     }
 

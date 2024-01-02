@@ -6,7 +6,7 @@ import java.util.List;
 public class NsUserSessions {
     private List<NsUserSession> nsUserSessions;
 
-    public NsUserSessions(NsUserSession... nsUserSessions){
+    public NsUserSessions(NsUserSession... nsUserSessions) {
         this(Arrays.asList(nsUserSessions));
     }
 
@@ -14,8 +14,8 @@ public class NsUserSessions {
         this.nsUserSessions = nsUserSessions;
     }
 
-    public boolean isExist(long sessionId, long nsUSerId) {
-        return nsUserSessions.stream().anyMatch(selectedStudent -> selectedStudent.matchSessionIdAndUserId(sessionId, nsUSerId));
+    public Long approvedUserNumber() {
+        return nsUserSessions.stream().filter(NsUserSession::isApproved).count();
     }
 
     @Override
