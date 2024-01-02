@@ -11,7 +11,7 @@ public class SessionStatus {
     }
 
     public SessionStatus(String sessionProgressStatus, String sessionRecruitmentStatus) {
-        this(SessionProgressStatus.valueOf(sessionProgressStatus), SessionRecruitmentStatus.valueOf(sessionRecruitmentStatus));
+        this(SessionProgressStatus.get(sessionProgressStatus), SessionRecruitmentStatus.valueOf(sessionRecruitmentStatus));
     }
 
     public SessionStatus(SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus) {
@@ -21,7 +21,7 @@ public class SessionStatus {
     }
 
     private void validate(SessionProgressStatus sessionProgressStatus, SessionRecruitmentStatus sessionRecruitmentStatus) {
-        if (!sessionProgressStatus.canRecuriting() && sessionRecruitmentStatus.isRecruiting()) {
+        if (sessionProgressStatus.isFinished() && sessionRecruitmentStatus.isRecruiting()) {
             throw new IllegalArgumentException("종료된 강의는 모집할 수 없습니다.");
         }
     }
@@ -29,6 +29,9 @@ public class SessionStatus {
     public void canEnroll() throws CannotEnrollException {
         if (!sessionRecruitmentStatus.isRecruiting()) {
             throw new CannotEnrollException("강의가 모집중인 상태가 아닙니다.");
+        }
+        if (sessionProgressStatus.isFinished()) {
+            throw new CannotEnrollException("강의가 종료되었습니다.");
         }
     }
 
