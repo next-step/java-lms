@@ -8,8 +8,8 @@ public enum SessionProgressStatus {
 
     private String displayName;
 
-    SessionProgressStatus(String name) {
-        this.displayName = name;
+    SessionProgressStatus(String displayName) {
+        this.displayName = displayName;
     }
 
     public boolean isFinished() {

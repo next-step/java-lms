@@ -1,9 +1,10 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.NsUserSession;
+import nextstep.courses.domain.NsUserSessions;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.Teacher;
 
 import java.time.LocalDateTime;
 
@@ -16,13 +17,16 @@ public class Session {
     private LocalDateTime updatedAt;
     private SessionStatus sessionStatus;
     private SessionCondition sessionCondition;
+    private boolean approvalRequired;
     private CoverImages coverImages;
+    private NsUserSessions nsUserSessions;
 
     public Session(Long courseId,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
-                   SessionCondition sessionCondition) {
-        this(0L, courseId, 0L, sessionPeriod, sessionStatus, sessionCondition);
+                   SessionCondition sessionCondition,
+                   boolean approvalRequired) {
+        this(0L, courseId, 0L, sessionPeriod, sessionStatus, sessionCondition, approvalRequired);
     }
 
     public Session(Long id,
@@ -30,7 +34,8 @@ public class Session {
                    Long generation,
                    SessionPeriod sessionPeriod,
                    SessionStatus sessionStatus,
-                   SessionCondition sessionCondition) {
+                   SessionCondition sessionCondition,
+                   boolean approvalRequired) {
         validate(courseId);
         this.id = id;
         this.courseId = courseId;
@@ -40,13 +45,19 @@ public class Session {
         this.updatedAt = null;
         this.sessionStatus = sessionStatus;
         this.sessionCondition = sessionCondition;
+        this.approvalRequired = approvalRequired;
     }
 
-    public Session coverImages(CoverImages coverImages) {
+    public Session with(CoverImages coverImages) {
         if (coverImages.hasSameSessionIds(id)) {
             throw new IllegalArgumentException("sessionId가 일치하지 않습니다.");
         }
         this.coverImages = coverImages;
+        return this;
+    }
+
+    public Session with(NsUserSessions nsUserSessions) {
+        this.nsUserSessions = nsUserSessions;
         return this;
     }
 
@@ -56,12 +67,11 @@ public class Session {
         }
     }
 
-    public NsUserSession enroll(Payment payment, Teacher teacher) throws CannotEnrollException {
-        teacher.register(payment.getSessionId(), payment.getNsUserId());
+    public NsUserSession enroll(Payment payment) throws CannotEnrollException {
         sessionStatus.canEnroll();
         sessionCondition.match(payment);
 
-        return new NsUserSession(payment.getSessionId(), payment.getNsUserId(), true);
+        return new NsUserSession(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
     }
 
     public Long courseId() {
@@ -72,7 +82,7 @@ public class Session {
         return generation;
     }
 
-    public CoverImages coverImages() {
+    public CoverImages with() {
         return coverImages;
     }
 
@@ -96,6 +106,10 @@ public class Session {
         return sessionCondition;
     }
 
+    public boolean approvalRequired() {
+        return approvalRequired;
+    }
+
     @Override
     public String toString() {
         return "Session{" +
@@ -107,7 +121,9 @@ public class Session {
                 ", updatedAt=" + updatedAt +
                 ", sessionStatus=" + sessionStatus +
                 ", sessionCondition=" + sessionCondition +
+                ", approvalRequired=" + approvalRequired +
                 ", coverImages=" + coverImages +
+                ", nsUserSessions=" + nsUserSessions +
                 '}';
     }
 }

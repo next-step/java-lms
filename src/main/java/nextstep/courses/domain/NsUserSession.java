@@ -5,31 +5,24 @@ import java.util.Objects;
 public class NsUserSession {
     private long sessionId;
     private long nsUserId;
-    private boolean registered;
+    private EnrollmentStatus enrollmentStatus;
 
     public NsUserSession(long sessionId, long nsUserId) {
-        this(sessionId, nsUserId, false);
+        this(sessionId, nsUserId, EnrollmentStatus.WAITING);
     }
 
-    public NsUserSession(Long sessionId, Long nsUserId, boolean registered) {
+    public NsUserSession(long sessionId, long nsUserId, String enrollmentStatus) {
+        this(sessionId, nsUserId, EnrollmentStatus.valueOf(enrollmentStatus));
+    }
+
+    public NsUserSession(long sessionId, long nsUserId, EnrollmentStatus enrollmentStatus) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
-        this.registered = registered;
-    }
-    public boolean matchSessionIdAndUserId(long sessionId, long nsUserId){
-        return this.sessionId == sessionId && this.nsUserId == nsUserId;
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NsUserSession that = (NsUserSession) o;
-        return sessionId == that.sessionId && nsUserId == that.nsUserId && registered == that.registered;
+        this.enrollmentStatus = enrollmentStatus;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(sessionId, nsUserId, registered);
+    public boolean matchSessionIdAndUserId(long sessionId, long nsUserId) {
+        return this.sessionId == sessionId && this.nsUserId == nsUserId;
     }
 
     public Long sessionId() {
@@ -40,8 +33,21 @@ public class NsUserSession {
         return nsUserId;
     }
 
-    public boolean registered() {
-        return registered;
+    public EnrollmentStatus enrollmentStatus() {
+        return enrollmentStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NsUserSession that = (NsUserSession) o;
+        return sessionId == that.sessionId && nsUserId == that.nsUserId && enrollmentStatus == that.enrollmentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionId, nsUserId, enrollmentStatus);
     }
 
     @Override
@@ -49,7 +55,7 @@ public class NsUserSession {
         return "NsUserSession{" +
                 "sessionId=" + sessionId +
                 ", nsUserId=" + nsUserId +
-                ", registered=" + registered +
+                ", enrollmentStatus=" + enrollmentStatus +
                 '}';
     }
 }

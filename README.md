@@ -127,11 +127,14 @@
 #### Feedback 23.12.14
 * [ ] create table DDL문을 수정하지 않고 Alter table 을 이용해본다.
   * [x] session
+  * [x] ns_user_session
 * [x] sessionStatus를 분류하되, 기존 데이터의로도 수강 신청이 가능하도록 구현
   * 강의 진행 컬럼을 추가하되, 해당 값이 존재하지 않는 기존 강의의 경우 EMPTY 값을 갖도록 함
+* [ ] 수강 신청 기능과 강사의 신청 승인은 각각의 기능으로 구현된다.
+* [x] NsUserSession이 3가지 상태(신청, 승인, 취소)를 갖도록 구현해본다.
+* [x] 수강 승인 기능이 생긴 시점을 기준으로 수강 승인 기능을 구현한다.
+  * session 테이블에 approval_required 컬럼 추가, default value false
+  * ns_user_session 테이블에 enrollment_status 컬럼 추가, default value 'APPROVED'
+* [ ] Session에 강사 정보를 추가 및 검증한다.
 * [ ] 수강 승인을 할 수 있는 인원이 최대 수강 인원으로 제한되도록 해본다.
   * 추가로, 수강 인원만큼 승인이 되었다면 추가로 수강 승인이 되지 않도록 제한한다.
-* [ ] NsUserSession이 3가지 상태(신청, 승인, 취소)를 갖도록 구현해본다.
-* [ ] 수강 승인 기능이 생긴 시점을 기준으로 수강 승인 기능을 구현한다.
-* [ ] 수강 신청 기능과 강사의 신청 승인은 각각의 기능으로 구현된다.
-* [ ] Session에 강사 정보를 추가 및 검증한다.
