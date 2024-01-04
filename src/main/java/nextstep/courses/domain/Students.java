@@ -14,10 +14,6 @@ public class Students {
         this.students = students;
     }
 
-    public Long approvedUserNumber() {
-        return students.stream().filter(Student::isApproved).count();
-    }
-
     @Override
     public String toString() {
         return "Students{" +

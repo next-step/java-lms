@@ -1,21 +1,17 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotApproveException;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.StudentsTest.*;
 import static nextstep.courses.domain.SessionPeriodTest.NORMAL_SESSION_PERIOD;
 import static nextstep.courses.domain.SessionStatusTest.RECRUITING_SESSION_STATUS;
 import static nextstep.payments.domain.PaymentTest.FREE_1;
 import static nextstep.payments.domain.PaymentTest.PAID_1;
-import static nextstep.users.domain.NsUserTest.TEACHER_1;
-import static nextstep.users.domain.NsUserTest.TEACHER_2;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SessionTest {
@@ -26,8 +22,7 @@ public class SessionTest {
     public static final Session PAID_SESSION = makeSession(new SessionCondition(800_000L, 120L, 0L));
 
     private static Session makeSession(SessionCondition sessionPaymentCondition) {
-        return new Session(1L, 1L, 1L, NORMAL_SESSION_PERIOD, RECRUITING_SESSION_STATUS, sessionPaymentCondition, true, 3L)
-                .with(STUDENTS);
+        return new Session(1L, 1L, 1L, NORMAL_SESSION_PERIOD, RECRUITING_SESSION_STATUS, sessionPaymentCondition, true, 3L);
     }
 
     @Test
@@ -60,25 +55,4 @@ public class SessionTest {
         }
     }
 
-    @Test
-    void 수강신청_승인() {
-        assertDoesNotThrow(() -> FREE_SESSION_1.canChangeEnrollmentStatus(TEACHER_1, STUDENT_4_APPROVED));
-        assertThatExceptionOfType(CannotApproveException.class)
-                .isThrownBy(() -> FREE_SESSION_1.canChangeEnrollmentStatus(TEACHER_2, STUDENT_4_APPROVED))
-                .withMessage("강사 정보가 일치하지 않습니다.");
-        assertThatExceptionOfType(CannotApproveException.class)
-                .isThrownBy(() -> FREE_SESSION_2.canChangeEnrollmentStatus(TEACHER_1, STUDENT_4_APPROVED))
-                .withMessage("인원을 추가로 승인할 수 없습니다.");
-        assertThat(FREE_SESSION_1.sessionCondition().userNumber()).isEqualTo(1);
-    }
-
-    @Test
-    void 수강신청_취소() {
-        assertDoesNotThrow(() -> FREE_SESSION_1.canChangeEnrollmentStatus(TEACHER_1, STUDENT_4_REJECTED));
-        assertThatExceptionOfType(CannotApproveException.class)
-                .isThrownBy(() -> FREE_SESSION_1.canChangeEnrollmentStatus(TEACHER_2, STUDENT_4_REJECTED))
-                .withMessage("강사 정보가 일치하지 않습니다.");
-        assertDoesNotThrow(() -> FREE_SESSION_2.canChangeEnrollmentStatus(TEACHER_1, STUDENT_4_REJECTED));
-
-    }
 }

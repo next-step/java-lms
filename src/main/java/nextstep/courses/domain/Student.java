@@ -1,10 +1,14 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotApproveException;
+import nextstep.courses.domain.session.Session;
+import nextstep.users.domain.NsUser;
+
 import java.util.Objects;
 
 public class Student {
-    private long sessionId;
-    private long nsUserId;
+    private final long sessionId;
+    private final long nsUserId;
     private EnrollmentStatus enrollmentStatus;
 
     public Student(long sessionId, long nsUserId) {
@@ -21,6 +25,15 @@ public class Student {
         this.enrollmentStatus = enrollmentStatus;
     }
 
+    public void updateEnrollmentStatus(Session session, NsUser teacher, EnrollmentStatus updatedEnrollmentStatus) throws CannotApproveException {
+        session.matchTeacher(teacher);
+        if (updatedEnrollmentStatus.isApproved()) {
+            session.canApprove();
+            session.addUserNumber();
+        }
+        this.enrollmentStatus = updatedEnrollmentStatus;
+    }
+
     public Long sessionId() {
         return sessionId;
     }
@@ -33,8 +46,13 @@ public class Student {
         return enrollmentStatus;
     }
 
-    public boolean isApproved() {
-        return EnrollmentStatus.isApproved(enrollmentStatus);
+    @Override
+    public String toString() {
+        return "Student{" +
+                "sessionId=" + sessionId +
+                ", nsUserId=" + nsUserId +
+                ", enrollmentStatus=" + enrollmentStatus +
+                '}';
     }
 
     @Override
@@ -50,12 +68,4 @@ public class Student {
         return Objects.hash(sessionId, nsUserId, enrollmentStatus);
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "sessionId=" + sessionId +
-                ", nsUserId=" + nsUserId +
-                ", enrollmentStatus=" + enrollmentStatus +
-                '}';
-    }
 }

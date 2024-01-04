@@ -2,8 +2,9 @@ package nextstep.courses.service;
 
 import nextstep.courses.CannotApproveException;
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.Enrollment;
+import nextstep.courses.domain.EnrollmentStatus;
 import nextstep.courses.domain.Student;
-import nextstep.courses.domain.Students;
 import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.CoverImageDAO;
@@ -35,17 +36,18 @@ public class SessionService {
     public void enroll(Payment payment) throws CannotEnrollException {
         Long sessionId = payment.getSessionId();
         Session session = sessionDAO.findById(sessionId);
-
         sessionDAO.saveStudent(session.enroll(payment));
     }
 
     @Transactional
-    public void changeEnrollmentStatus(NsUser teacher, Student nsUserSession) throws CannotApproveException {
+    public void changeEnrollmentStatus(NsUser teacher, Student student, EnrollmentStatus updatedEnrollmentStatus) throws CannotApproveException {
         // 수강 신청을 승인 혹은 취소한 강사 정보 및 신청 정보 값이 들어온다.
-        Session session = sessionDAO.findById(nsUserSession.sessionId());
-        session.canChangeEnrollmentStatus(teacher, nsUserSession);
+        Session session = sessionDAO.findById(student.sessionId());
+        student.updateEnrollmentStatus(session, teacher, updatedEnrollmentStatus);
 
-        sessionDAO.updateStudent(nsUserSession);
-        sessionDAO.updateSessionUserNumber(session);
+        sessionDAO.updateStudent(student);
+        if (updatedEnrollmentStatus.isApproved()) {
+            sessionDAO.updateSessionUserNumber(session);
+        }
     }
 }

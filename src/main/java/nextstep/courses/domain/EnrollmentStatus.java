@@ -11,13 +11,13 @@ public enum EnrollmentStatus {
     }
 
     public static EnrollmentStatus get(boolean approvalRequired) {
-        if (approvalRequired){
+        if (approvalRequired) {
             return WAITING;
         }
         return APPROVED;
     }
 
-    public static boolean isApproved(EnrollmentStatus enrollmentStatus) {
-        return enrollmentStatus == APPROVED;
+    public boolean isApproved() {
+        return this == APPROVED;
     }
 }

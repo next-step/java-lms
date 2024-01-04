@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import static nextstep.courses.domain.SessionTest.FREE_SESSION_1_UPDATED;
-import static nextstep.courses.domain.StudentsTest.STUDENT_1;
 import static nextstep.courses.domain.SessionTest.FREE_SESSION_1;
+import static nextstep.courses.domain.StudentTest.STUDENT_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
