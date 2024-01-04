@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotApproveException;
+import nextstep.courses.TeacherNotMatchException;
 import nextstep.courses.domain.session.Session;
 import nextstep.users.domain.NsUser;
 
@@ -25,7 +26,7 @@ public class Student {
         this.enrollmentStatus = enrollmentStatus;
     }
 
-    public void updateEnrollmentStatus(Session session, NsUser teacher, EnrollmentStatus updatedEnrollmentStatus) throws CannotApproveException {
+    public void updateEnrollmentStatus(Session session, NsUser teacher, EnrollmentStatus updatedEnrollmentStatus) throws TeacherNotMatchException, CannotApproveException {
         session.matchTeacher(teacher);
         if (updatedEnrollmentStatus.isApproved()) {
             session.canApprove();

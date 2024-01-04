@@ -8,10 +8,6 @@ public class SessionStatus {
     private SessionProgressStatus sessionProgressStatus;
     private SessionRecruitmentStatus sessionRecruitmentStatus;
 
-    public SessionStatus() {
-        this(SessionProgressStatus.PREPARING, SessionRecruitmentStatus.CLOSED);
-    }
-
     public SessionStatus(String sessionProgressStatus, String sessionRecruitmentStatus) {
         this(SessionProgressStatus.get(sessionProgressStatus), SessionRecruitmentStatus.valueOf(sessionRecruitmentStatus));
     }

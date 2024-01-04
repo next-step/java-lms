@@ -1,10 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotApproveException;
-import nextstep.courses.CannotEnrollException;
-import nextstep.courses.domain.EnrollmentStatus;
-import nextstep.courses.domain.Student;
-import nextstep.payments.domain.Payment;
+import nextstep.courses.TeacherNotMatchException;
+import nextstep.courses.domain.Enrollment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -67,15 +65,13 @@ public class Session {
         }
     }
 
-    public Student enroll(Payment payment) throws CannotEnrollException {
-        sessionStatus.canEnroll();
-        sessionCondition.match(payment);
-        return new Student(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
+    public Enrollment enrollment() {
+        return new Enrollment(sessionStatus, sessionCondition, approvalRequired);
     }
 
-    public void matchTeacher(NsUser teacher) throws CannotApproveException {
+    public void matchTeacher(NsUser teacher) throws TeacherNotMatchException {
         if (!teacher.getId().equals(teacherId)) {
-            throw new CannotApproveException("강사 정보가 일치하지 않습니다.");
+            throw new TeacherNotMatchException("강사 정보가 일치하지 않습니다.");
         }
     }
 

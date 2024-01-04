@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.CannotEnrollException;
+import nextstep.courses.TeacherNotMatchException;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionCondition;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.SessionPeriodTest.NORMAL_SESSION_PERIOD;
 import static nextstep.courses.domain.SessionStatusTest.RECRUITING_SESSION_STATUS;
-import static nextstep.payments.domain.PaymentTest.FREE_1;
-import static nextstep.payments.domain.PaymentTest.PAID_1;
+import static nextstep.users.domain.NsUserTest.TEACHER_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -38,21 +37,10 @@ public class SessionTest {
     }
 
     @Test
-    void 무료강의_enroll() {
-        try {
-            assertThat(FREE_SESSION_1.enroll(FREE_1)).isEqualTo(new Student(FREE_1.getSessionId(), FREE_1.getNsUserId(), EnrollmentStatus.WAITING));
-        } catch (CannotEnrollException e) {
-            fail(e.getMessage());
-        }
+    @DisplayName("matchTeacher_강사정보_NsUser id 불칠치 시 throw CannotApproveException")
+    void matchTeacher() {
+        assertThatThrownBy(() -> FREE_SESSION_1.matchTeacher(TEACHER_2))
+                .isInstanceOf(TeacherNotMatchException.class)
+                .hasMessage("강사 정보가 일치하지 않습니다.");
     }
-
-    @Test
-    void 유료강의_enroll() {
-        try {
-            assertThat(PAID_SESSION.enroll(PAID_1)).isEqualTo(new Student(PAID_1.getSessionId(), PAID_1.getNsUserId(), EnrollmentStatus.WAITING));
-        } catch (CannotEnrollException e) {
-            fail(e.getMessage());
-        }
-    }
-
 }

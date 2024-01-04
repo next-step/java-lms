@@ -29,8 +29,12 @@ public class SessionCondition {
         }
     }
 
-    public boolean compareToMax() {
+    private boolean compareToMax() {
         return userNumber.compareTo(maxUserNumber) >= 0;
+    }
+
+    public void addUserNumber() {
+        userNumber++;
     }
 
     public Long amount() {
@@ -43,10 +47,6 @@ public class SessionCondition {
 
     public Long userNumber() {
         return userNumber;
-    }
-
-    public void addUserNumber() {
-        userNumber++;
     }
 
     @Override
