@@ -16,4 +16,8 @@ public enum EnrollmentStatus {
         }
         return APPROVED;
     }
+
+    public static boolean isApproved(EnrollmentStatus enrollmentStatus) {
+        return enrollmentStatus == APPROVED;
+    }
 }

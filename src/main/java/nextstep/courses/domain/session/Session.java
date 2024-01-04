@@ -3,8 +3,8 @@ package nextstep.courses.domain.session;
 import nextstep.courses.CannotApproveException;
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.EnrollmentStatus;
-import nextstep.courses.domain.NsUserSession;
-import nextstep.courses.domain.NsUserSessions;
+import nextstep.courses.domain.Student;
+import nextstep.courses.domain.Students;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -22,7 +22,7 @@ public class Session {
     private boolean approvalRequired;
     private Long teacherId;
     private CoverImages coverImages;
-    private NsUserSessions nsUserSessions;
+    private Students nsUserSessions;
 
     public Session(Long courseId,
                    SessionPeriod sessionPeriod,
@@ -62,7 +62,7 @@ public class Session {
         return this;
     }
 
-    public Session with(NsUserSessions nsUserSessions) {
+    public Session with(Students nsUserSessions) {
         this.nsUserSessions = nsUserSessions;
         return this;
     }
@@ -73,11 +73,11 @@ public class Session {
         }
     }
 
-    public NsUserSession enroll(Payment payment) throws CannotEnrollException {
+    public Student enroll(Payment payment) throws CannotEnrollException {
         sessionStatus.canEnroll();
         sessionCondition.match(payment);
 
-        return new NsUserSession(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
+        return new Student(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
     }
 
     public Long courseId() {
@@ -116,7 +116,7 @@ public class Session {
         return teacherId;
     }
 
-    public void canChangeEnrollmentStatus(NsUser teacher, NsUserSession nsUserSession) throws CannotApproveException {
+    public void canChangeEnrollmentStatus(NsUser teacher, Student nsUserSession) throws CannotApproveException {
         isSameTeacher(teacher);
         if (nsUserSession.isApproved()) {
             isFull();

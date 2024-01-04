@@ -2,20 +2,20 @@ package nextstep.courses.domain;
 
 import java.util.Objects;
 
-public class NsUserSession {
+public class Student {
     private long sessionId;
     private long nsUserId;
     private EnrollmentStatus enrollmentStatus;
 
-    public NsUserSession(long sessionId, long nsUserId) {
+    public Student(long sessionId, long nsUserId) {
         this(sessionId, nsUserId, EnrollmentStatus.WAITING);
     }
 
-    public NsUserSession(long sessionId, long nsUserId, String enrollmentStatus) {
+    public Student(long sessionId, long nsUserId, String enrollmentStatus) {
         this(sessionId, nsUserId, EnrollmentStatus.valueOf(enrollmentStatus));
     }
 
-    public NsUserSession(long sessionId, long nsUserId, EnrollmentStatus enrollmentStatus) {
+    public Student(long sessionId, long nsUserId, EnrollmentStatus enrollmentStatus) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.enrollmentStatus = enrollmentStatus;
@@ -34,14 +34,14 @@ public class NsUserSession {
     }
 
     public boolean isApproved() {
-        return enrollmentStatus == EnrollmentStatus.APPROVED;
+        return EnrollmentStatus.isApproved(enrollmentStatus);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NsUserSession that = (NsUserSession) o;
+        Student that = (Student) o;
         return sessionId == that.sessionId && nsUserId == that.nsUserId && enrollmentStatus == that.enrollmentStatus;
     }
 
@@ -52,11 +52,10 @@ public class NsUserSession {
 
     @Override
     public String toString() {
-        return "NsUserSession{" +
+        return "Student{" +
                 "sessionId=" + sessionId +
                 ", nsUserId=" + nsUserId +
                 ", enrollmentStatus=" + enrollmentStatus +
                 '}';
     }
-
 }

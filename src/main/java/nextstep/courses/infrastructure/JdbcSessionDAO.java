@@ -66,21 +66,21 @@ public class JdbcSessionDAO implements SessionDAO {
     }
 
     @Override
-    public List<NsUserSession> findNsUserSessionsBySessionId(Long sessionId) {
-        String sql = "select session_id, ns_user_id, enrollment_status from ns_user_session where session_id=?";
-        RowMapper<NsUserSession> rowMapper = (rs, rowNum) -> new NsUserSession(rs.getLong(1), rs.getLong(2), rs.getString(3));
+    public List<Student> findStudnetsBySessionId(Long sessionId) {
+        String sql = "select session_id, ns_user_id, enrollment_status from student where session_id=?";
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(rs.getLong(1), rs.getLong(2), rs.getString(3));
         return jdbcTemplate.query(sql, rowMapper, sessionId);
     }
 
     @Override
-    public int saveNsUserSession(NsUserSession nsUserSession) {
-        String sql = "insert into ns_user_session(session_id, ns_user_id, enrollment_status) values (?, ?, ?)";
+    public int saveStudent(Student nsUserSession) {
+        String sql = "insert into student(session_id, ns_user_id, enrollment_status) values (?, ?, ?)";
         return jdbcTemplate.update(sql, nsUserSession.sessionId(), nsUserSession.nsUserId(), nsUserSession.enrollmentStatus().name());
     }
 
     @Override
-    public int updateNsUserSession(NsUserSession nsUserSession) {
-        String sql = "update ns_user_session set enrollment_status = ? where session_id = ? and ns_user_id = ?";
+    public int updateStudent(Student nsUserSession) {
+        String sql = "update student set enrollment_status = ? where session_id = ? and ns_user_id = ?";
         return jdbcTemplate.update(sql, nsUserSession.enrollmentStatus().name(), nsUserSession.sessionId(), nsUserSession.nsUserId());
     }
 
