@@ -27,8 +27,8 @@ public class JdbcSessionDAO implements SessionDAO {
     @Override
     public Long save(Session session) {
         String sql = "insert into session " +
-                "(course_id, generation, started_at, finished_at, created_at,session_progress_status, session_recruitment_status, amount, max_user, approval_required, teacher_id) " +
-                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(course_id, generation, started_at, finished_at, created_at,session_progress_status, session_recruitment_status, amount, max_user, approval_required, teacher_id, user_number) " +
+                "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
@@ -43,6 +43,7 @@ public class JdbcSessionDAO implements SessionDAO {
             ps.setLong(9, session.sessionCondition().maxUserNumber());
             ps.setBoolean(10, session.approvalRequired());
             ps.setLong(11, session.teacherId());
+            ps.setLong(12, session.sessionCondition().userNumber());
             return ps;
         }, keyHolder);
 
@@ -51,14 +52,14 @@ public class JdbcSessionDAO implements SessionDAO {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select id, course_id, generation, started_at, finished_at, session_progress_status, session_recruitment_status, amount, max_user, approval_required, teacher_id from session where id = ?";
+        String sql = "select id, course_id, generation, started_at, finished_at, session_progress_status, session_recruitment_status, amount, max_user, approval_required, teacher_id, user_number from session where id = ?";
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),
                 new SessionPeriod(toLocalDateTime(rs.getTimestamp(4)), toLocalDateTime(rs.getTimestamp(5))),
                 new SessionStatus(rs.getString(6), rs.getString(7)),
-                new SessionCondition(rs.getLong(8), rs.getLong(9)),
+                new SessionCondition(rs.getLong(8), rs.getLong(9), rs.getLong(12)),
                 rs.getBoolean(10),
                 rs.getLong(11)
         );
@@ -66,7 +67,13 @@ public class JdbcSessionDAO implements SessionDAO {
     }
 
     @Override
-    public List<Student> findStudnetsBySessionId(Long sessionId) {
+    public int updateSessionUserNumber(Session session) {
+        String sql = "update session set user_number = ? where id = ?";
+        return jdbcTemplate.update(sql, session.sessionCondition().userNumber(), session.id());
+    }
+
+    @Override
+    public List<Student> findStudentsBySessionId(Long sessionId) {
         String sql = "select session_id, ns_user_id, enrollment_status from student where session_id=?";
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(rs.getLong(1), rs.getLong(2), rs.getString(3));
         return jdbcTemplate.query(sql, rowMapper, sessionId);

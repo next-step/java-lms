@@ -2,6 +2,8 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
 
+import java.util.Objects;
+
 public class SessionStatus {
     private SessionProgressStatus sessionProgressStatus;
     private SessionRecruitmentStatus sessionRecruitmentStatus;
@@ -49,5 +51,18 @@ public class SessionStatus {
                 "sessionProgressStatus=" + sessionProgressStatus +
                 ", sessionRecruitmentStatus=" + sessionRecruitmentStatus +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionStatus that = (SessionStatus) o;
+        return sessionProgressStatus == that.sessionProgressStatus && sessionRecruitmentStatus == that.sessionRecruitmentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionProgressStatus, sessionRecruitmentStatus);
     }
 }

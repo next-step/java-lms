@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+import static nextstep.courses.domain.SessionTest.FREE_SESSION_1_UPDATED;
 import static nextstep.courses.domain.StudentsTest.STUDENT_1;
 import static nextstep.courses.domain.SessionTest.FREE_SESSION_1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,20 +35,25 @@ class JdbcSessionDAOTest {
         Long sessionId = sessionRepository.save(FREE_SESSION_1);
         assertThat(sessionId).isEqualTo(1L);
         Session savedSession = sessionRepository.findById(sessionId);
-        assertThat(FREE_SESSION_1.generation()).isEqualTo(savedSession.generation());
+        assertThat(FREE_SESSION_1).isEqualTo(savedSession);
         LOGGER.debug("Session: {}", savedSession);
+
+        sessionRepository.updateSessionUserNumber(FREE_SESSION_1_UPDATED);
+        Session updatedSession = sessionRepository.findById(sessionId);
+        assertThat(FREE_SESSION_1_UPDATED).isEqualTo(updatedSession);
+        LOGGER.debug("Updated Session: {}", savedSession);
     }
 
     @Test
-    void nsUserSession_save_find() {
+    void student_save_find() {
         int count = sessionRepository.saveStudent(STUDENT_1);
         assertThat(count).isEqualTo(1);
-        List<Student> nsUserSessions = sessionRepository.findStudnetsBySessionId(1L);
+        List<Student> nsUserSessions = sessionRepository.findStudentsBySessionId(1L);
         assertThat(nsUserSessions.get(0)).isEqualTo(STUDENT_1);
 
         Student NS_USER_SESSION_1_APPROVED = new Student(1L, 1L, EnrollmentStatus.APPROVED);
         sessionRepository.updateStudent(NS_USER_SESSION_1_APPROVED);
-        List<Student> updatedNsUserSessions = sessionRepository.findStudnetsBySessionId(1L);
+        List<Student> updatedNsUserSessions = sessionRepository.findStudentsBySessionId(1L);
         assertThat(updatedNsUserSessions.get(0)).isEqualTo(NS_USER_SESSION_1_APPROVED);
     }
 }

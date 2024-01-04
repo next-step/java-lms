@@ -34,20 +34,18 @@ public class SessionService {
 
     public void enroll(Payment payment) throws CannotEnrollException {
         Long sessionId = payment.getSessionId();
-        Session session = sessionDAO
-                .findById(sessionId)
-                .with(new Students(sessionDAO.findStudnetsBySessionId(sessionId)));
+        Session session = sessionDAO.findById(sessionId);
 
         sessionDAO.saveStudent(session.enroll(payment));
     }
 
+    @Transactional
     public void changeEnrollmentStatus(NsUser teacher, Student nsUserSession) throws CannotApproveException {
         // 수강 신청을 승인 혹은 취소한 강사 정보 및 신청 정보 값이 들어온다.
-        Session session = sessionDAO
-                .findById(nsUserSession.sessionId())
-                .with(new Students(sessionDAO.findStudnetsBySessionId(nsUserSession.sessionId())));
+        Session session = sessionDAO.findById(nsUserSession.sessionId());
         session.canChangeEnrollmentStatus(teacher, nsUserSession);
 
         sessionDAO.updateStudent(nsUserSession);
+        sessionDAO.updateSessionUserNumber(session);
     }
 }

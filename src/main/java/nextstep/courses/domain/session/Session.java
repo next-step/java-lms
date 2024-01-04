@@ -9,6 +9,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Session {
     private Long id;
@@ -76,8 +77,11 @@ public class Session {
     public Student enroll(Payment payment) throws CannotEnrollException {
         sessionStatus.canEnroll();
         sessionCondition.match(payment);
-
         return new Student(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
+    }
+
+    public Long id() {
+        return id;
     }
 
     public Long courseId() {
@@ -119,14 +123,10 @@ public class Session {
     public void canChangeEnrollmentStatus(NsUser teacher, Student nsUserSession) throws CannotApproveException {
         isSameTeacher(teacher);
         if (nsUserSession.isApproved()) {
-            isFull();
+            sessionCondition.isFull();
+            sessionCondition.addUserNumber();
         }
-    }
 
-    public void isFull() throws CannotApproveException {
-        if (sessionCondition.compareToMax(nsUserSessions.approvedUserNumber())) {
-            throw new CannotApproveException("인원을 추가로 승인할 수 없습니다.");
-        }
     }
 
     private void isSameTeacher(NsUser teacher) throws CannotApproveException {
@@ -151,5 +151,18 @@ public class Session {
                 ", coverImages=" + coverImages +
                 ", nsUserSessions=" + nsUserSessions +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return approvalRequired == session.approvalRequired && Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(generation, session.generation) && Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(sessionStatus, session.sessionStatus) && Objects.equals(sessionCondition, session.sessionCondition) && Objects.equals(teacherId, session.teacherId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseId, generation, sessionPeriod, sessionStatus, sessionCondition, approvalRequired, teacherId);
     }
 }

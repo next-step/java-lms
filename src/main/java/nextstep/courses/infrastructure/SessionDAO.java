@@ -10,9 +10,11 @@ public interface SessionDAO {
 
     Session findById(Long id);
 
-    List<Student> findStudnetsBySessionId(Long sessionId);
+    List<Student> findStudentsBySessionId(Long sessionId);
 
     int saveStudent(Student nsUserSession);
 
     int updateStudent(Student nsUserSession);
+
+    int updateSessionUserNumber(Session session);
 }

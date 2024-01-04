@@ -1,15 +1,20 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.CannotApproveException;
 import nextstep.courses.CannotEnrollException;
 import nextstep.payments.domain.Payment;
 
-public class SessionCondition {
-    private Long amount;
-    private Long maxUserNumber;
+import java.util.Objects;
 
-    public SessionCondition(Long amount, Long maxUserNumber) {
+public class SessionCondition {
+    private final Long amount;
+    private final Long maxUserNumber;
+    private Long userNumber;
+
+    public SessionCondition(Long amount, Long maxUserNumber, Long userNumber) {
         this.amount = amount;
         this.maxUserNumber = maxUserNumber;
+        this.userNumber = userNumber;
     }
 
     public void match(Payment payment) throws CannotEnrollException {
@@ -18,7 +23,13 @@ public class SessionCondition {
         }
     }
 
-    public boolean compareToMax(Long userNumber) {
+    public void isFull() throws CannotApproveException {
+        if (compareToMax()) {
+            throw new CannotApproveException("인원을 추가로 승인할 수 없습니다.");
+        }
+    }
+
+    public boolean compareToMax() {
         return userNumber.compareTo(maxUserNumber) >= 0;
     }
 
@@ -30,11 +41,33 @@ public class SessionCondition {
         return maxUserNumber;
     }
 
+    public Long userNumber() {
+        return userNumber;
+    }
+
+    public void addUserNumber() {
+        userNumber++;
+    }
+
     @Override
     public String toString() {
-        return "SessionPaymentCondition{" +
+        return "SessionCondition{" +
                 "amount=" + amount +
-                ", maxUser=" + maxUserNumber +
+                ", maxUserNumber=" + maxUserNumber +
+                ", userNumber=" + userNumber +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionCondition that = (SessionCondition) o;
+        return Objects.equals(amount, that.amount) && Objects.equals(maxUserNumber, that.maxUserNumber) && Objects.equals(userNumber, that.userNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount, maxUserNumber, userNumber);
     }
 }

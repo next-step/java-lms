@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SessionPeriod {
 	private LocalDateTime startedAt;
@@ -35,5 +36,18 @@ public class SessionPeriod {
 				"startedAt=" + startedAt +
 				", finishedAt=" + finishedAt +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SessionPeriod that = (SessionPeriod) o;
+		return Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(startedAt, finishedAt);
 	}
 }
