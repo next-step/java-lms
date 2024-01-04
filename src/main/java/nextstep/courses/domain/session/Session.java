@@ -10,15 +10,15 @@ import java.util.Objects;
 
 public class Session {
     private Long id;
-    private Long courseId;
-    private Long generation;
-    private SessionPeriod sessionPeriod;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private SessionStatus sessionStatus;
-    private SessionCondition sessionCondition;
-    private boolean approvalRequired;
-    private Long teacherId;
+    private final Long courseId;
+    private final Long generation;
+    private final SessionPeriod sessionPeriod;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    private final SessionStatus sessionStatus;
+    private final SessionCondition sessionCondition;
+    private final boolean approvalRequired;
+    private final Long teacherId;
     private CoverImages coverImages;
 
     public Session(Long courseId,

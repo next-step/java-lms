@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository("sessionDAO")
 public class JdbcSessionDAO implements SessionDAO {
-    private JdbcOperations jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcSessionDAO(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

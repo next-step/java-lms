@@ -9,10 +9,10 @@ public class CoverImage {
 	private static final Long MAX_SIZE = 1024L * 1024L;
 
 	private Long id;
-	private long sessionId;
-	private long size;
-	private ImageType imageType;
-	private ImageShape imageShape;
+	private final long sessionId;
+	private final long size;
+	private final ImageType imageType;
+	private final ImageShape imageShape;
 
 	public CoverImage(long sessionId, long size, String imageType, ImageShape imageShape) {
 		this(0L, sessionId, size, imageType, imageShape);

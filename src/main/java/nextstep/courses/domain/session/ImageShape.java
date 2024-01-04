@@ -6,8 +6,8 @@ public class ImageShape {
 	private static final Long WIDTH_RATIO = 3L;
 	private static final Long HEIGHT_RATIO = 2L;
 
-	private long width;
-	private long height;
+	private final long width;
+	private final long height;
 
 	public ImageShape(long width, long height) {
 		validate(width, height);

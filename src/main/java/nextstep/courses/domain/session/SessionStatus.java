@@ -5,8 +5,8 @@ import nextstep.courses.CannotEnrollException;
 import java.util.Objects;
 
 public class SessionStatus {
-    private SessionProgressStatus sessionProgressStatus;
-    private SessionRecruitmentStatus sessionRecruitmentStatus;
+    private final SessionProgressStatus sessionProgressStatus;
+    private final SessionRecruitmentStatus sessionRecruitmentStatus;
 
     public SessionStatus(String sessionProgressStatus, String sessionRecruitmentStatus) {
         this(SessionProgressStatus.get(sessionProgressStatus), SessionRecruitmentStatus.valueOf(sessionRecruitmentStatus));

@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SessionPeriod {
-	private LocalDateTime startedAt;
-	private LocalDateTime finishedAt;
+	private final LocalDateTime startedAt;
+	private final LocalDateTime finishedAt;
 
 	public SessionPeriod(LocalDateTime startedAt, LocalDateTime finishedAt) {
 		validate(startedAt, finishedAt);
