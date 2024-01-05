@@ -1,21 +1,24 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollException;
+import nextstep.courses.domain.session.SessionCondition;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.payments.domain.Payment;
 
-import java.util.List;
-
 public class Enrollment {
-    private Session session;
-    private NsUserSessions nsUserSessions;
+    private final SessionStatus sessionStatus;
+    private final SessionCondition sessionCondition;
+    private final boolean approvalRequired;
 
-    public Enrollment(Session session, NsUserSessions nsUserSessions) {
-        this.session = session;
-        this.nsUserSessions = nsUserSessions;
+    public Enrollment(SessionStatus sessionStatus, SessionCondition sessionCondition, boolean approvalRequired) {
+        this.sessionStatus = sessionStatus;
+        this.sessionCondition = sessionCondition;
+        this.approvalRequired = approvalRequired;
     }
 
-    public NsUserSession enroll(Payment payment) throws CannotEnrollException {
-        session.enroll(payment, nsUserSessions.userNumber());
-        return new NsUserSession(payment.getSessionId(), payment.getNsUserId());
+    public Student enroll(Payment payment) throws CannotEnrollException {
+        sessionStatus.canEnroll();
+        sessionCondition.match(payment);
+        return new Student(payment.getSessionId(), payment.getNsUserId(), EnrollmentStatus.get(approvalRequired));
     }
 }

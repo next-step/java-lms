@@ -34,4 +34,11 @@ public class UserRepositoryTest {
         assertThat(nsUser.isEmpty()).isFalse();
         LOGGER.debug("NsUser: {}", nsUser.get());
     }
+
+    @Test
+    void findById() {
+        NsUser nsUser = userRepository.findById(1L);
+        assertThat(nsUser.getUserId()).isEqualTo("javajigi");
+        LOGGER.debug("NsUser: {}", nsUser);
+    }
 }

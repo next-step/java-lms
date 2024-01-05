@@ -1,7 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.NsUserSession;
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.Student;
+import nextstep.courses.domain.session.Session;
 
 import java.util.List;
 
@@ -10,7 +10,11 @@ public interface SessionDAO {
 
     Session findById(Long id);
 
-    List<NsUserSession> getNsUserSessions(Long sessionId);
+    List<Student> findStudentsBySessionId(Long sessionId);
 
-    int saveNsUserSession(NsUserSession nsUserSession);
+    int saveStudent(Student nsUserSession);
+
+    int updateStudent(Student nsUserSession);
+
+    int updateSessionUserNumber(Session session);
 }
