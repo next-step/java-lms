@@ -26,6 +26,13 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public DeleteHistory(ContentType contentType, Answer answer, LocalDateTime createdDate) {
+        this.contentType = contentType;
+        this.contentId = answer.getId();
+        this.deletedBy = answer.getTextBody().getWriter();
+        this.createdDate = createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,7 +46,7 @@ public class DeleteHistory {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contentType, contentId, deletedBy);
+        return Objects.hash(id, contentType, contentId, deletedBy, createdDate);
     }
 
     @Override
