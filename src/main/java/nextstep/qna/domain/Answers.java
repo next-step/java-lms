@@ -26,8 +26,7 @@ public class Answers {
 	public List<DeleteHistory> delete(List<DeleteHistory> deleteHistories) {
 		this.answers
 			.forEach(answer -> {
-				answer = answer.create();
-				deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer, LocalDateTime.now()));
+				deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.create(), LocalDateTime.now()));
 			});
 		return deleteHistories;
 	}
