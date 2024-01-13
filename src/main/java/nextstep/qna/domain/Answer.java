@@ -35,8 +35,8 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.textBody.setDelted(deleted);
+    public Answer setDeleted() {
+        textBody = TextBody.of(textBody);
         return this;
     }
 
