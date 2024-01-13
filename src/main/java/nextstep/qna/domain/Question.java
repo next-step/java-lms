@@ -62,7 +62,7 @@ public class Question {
         answers.checkAuthorization(loginUser);
 
         DeleteHistories deleteHistories = new DeleteHistories();
-        this.setDeleted(true);
+        textBody = TextBody.of(textBody);
 
         return answers.delete(deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, textBody.getWriter(), LocalDateTime.now())));
     }

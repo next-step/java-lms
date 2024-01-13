@@ -18,6 +18,10 @@ public class TextBody {
 		this.deleted = deleted;
 	}
 
+	public static TextBody of(TextBody textBody) {
+		return new TextBody(textBody.writer, textBody.contents, true);
+	}
+
 	public void isNull() {
 		if(writer == null) {
 			throw new UnAuthorizedException();
