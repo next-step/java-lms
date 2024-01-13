@@ -22,6 +22,6 @@ public class AnswerTest {
     @Test
     @DisplayName("질문자와 답변자가 다른면 에러를 던진다")
     void delete_질문자와_답변자가_다름() {
-        assertThatThrownBy(() -> answer.compareUser(NsUserTest.SANJIGI)).isInstanceOf(UnAuthorizedException.class);
+        assertThatThrownBy(() -> answer.delete(NsUserTest.SANJIGI)).isInstanceOf(UnAuthorizedException.class);
     }
 }

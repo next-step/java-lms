@@ -7,6 +7,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
     private Long id;
@@ -15,7 +16,7 @@ public class Question {
 
     private String title;
 
-    private Answers answers = new Answers(new ArrayList<>());
+    private Answers answers;
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
@@ -29,6 +30,7 @@ public class Question {
     }
 
     public Question(Long id, TextBody textBody, String title) {
+        this.answers = new Answers(new ArrayList<>());
         this.id = id;
         this.textBody = textBody;
         this.title = title;
@@ -44,22 +46,23 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        this.answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser, long questionId) {
-        UserComparison userComparison = (textBody, user) -> {
-            if (textBody.isNotOwner(user)) {
-                throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
-            }
-        };
-        userComparison.compare(textBody, loginUser);
-        answers.checkAuthorization(loginUser);
+    public List<DeleteHistory> delete(NsUser loginUser) {
+        if (!this.textBody.isOwner(loginUser)) {
+            throw new UnAuthorizedException("질문을 삭제할 권한이 없습니다.");
+        }
 
         DeleteHistories deleteHistories = new DeleteHistories();
-        textBody = TextBody.of(textBody);
+        deleteHistories.add(DeleteHistory.ofQuestion(ContentType.QUESTION, deletedQuestion(), LocalDateTime.now()));
 
-        return answers.delete(deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, textBody.getWriter(), LocalDateTime.now())));
+        return deleteHistories.addAll(new Answers(answers.delete(loginUser)));
+    }
+
+    private Question deletedQuestion() {
+        this.textBody.deleted();
+        return new Question(this.id, TextBody.of(textBody), this.title);
     }
 
     public void isNull() {
@@ -69,12 +72,27 @@ public class Question {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Question question = (Question)o;
+        return Objects.equals(id, question.id) && Objects.equals(textBody, question.textBody)
+            && Objects.equals(title, question.title) && Objects.equals(answers, question.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, textBody, title, answers);
+    }
+
+    @Override
     public String toString() {
         return "Question{" +
             "id=" + id +
             ", textBody=" + textBody +
             ", title='" + title + '\'' +
-            ", answers=" + answers +
             '}';
     }
 }

@@ -1,8 +1,11 @@
 package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -11,23 +14,28 @@ public class Answers {
 	private List<Answer> answers;
 
 	public Answers(List<Answer> answers) {
-		this.answers = answers;
+		this.answers = new ArrayList<>(answers);
 	}
 
-	public Answers add(Answer answer) {
+	public void add(Answer answer) {
 		this.answers.add(answer);
-		return new Answers(this.answers);
 	}
 
-	public void checkAuthorization(NsUser loginUser) throws UnAuthorizedException {
-		this.answers.forEach(answer -> answer.compareUser(loginUser));
+	public static Answers of(Answer answer) {
+		return new Answers(Collections.singletonList(answer));
 	}
 
-	public List<DeleteHistory> delete(List<DeleteHistory> deleteHistories) {
-		this.answers
-			.forEach(answer -> {
-				deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.create(), LocalDateTime.now()));
-			});
+	public List<Answer> delete(NsUser loginUser) throws UnAuthorizedException {
+		return this.answers.stream().map(answer -> answer.delete(loginUser)).collect(Collectors.toList());
+	}
+
+	public List<DeleteHistory> deleteAll() {
+		List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+		for (Answer answer : answers) {
+			deleteHistories.add(DeleteHistory.ofAnswer(ContentType.ANSWER, answer.create(), LocalDateTime.now()));
+		}
+
 		return deleteHistories;
 	}
 
@@ -44,5 +52,12 @@ public class Answers {
 	@Override
 	public int hashCode() {
 		return Objects.hash(answers);
+	}
+
+	@Override
+	public String toString() {
+		return "Answers{" +
+			"answers=" + answers +
+			'}';
 	}
 }

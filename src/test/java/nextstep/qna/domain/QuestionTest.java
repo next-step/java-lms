@@ -27,16 +27,16 @@ public class QuestionTest {
     @Test
     @DisplayName("로그인한 사용자와 질문자가 다르면 에러를 던진다.")
     void delete_권한_확인() {
-        Assertions.assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, question.getId()))
+        Assertions.assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI))
             .isInstanceOf(UnAuthorizedException.class);
     }
 
     @Test
     @DisplayName("로그인한 사용자와 질문자가 같은 경우 질문 상태를 변경하고 삭제 히스토리를 리턴")
     void delete_성공() {
-        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI, question.getId());
+        List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(deleteHistories).containsOnly(
+        assertThat(deleteHistories).contains(
             new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now()),
             new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now())
         );

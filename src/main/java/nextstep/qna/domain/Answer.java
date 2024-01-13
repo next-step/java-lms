@@ -4,6 +4,7 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Answer {
     private Long id;
@@ -48,13 +49,29 @@ public class Answer {
         this.question = question;
     }
 
-    public void compareUser(NsUser loginUser) {
-        UserComparison userComparison = (textBody, writer) -> {
-            if (textBody.isNotOwner(writer)) {
-                throw new UnAuthorizedException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        };
-        userComparison.compare(this.textBody, loginUser);
+    public Answer delete(NsUser loginUser) {
+        if (!this.textBody.isOwner(loginUser)) {
+            throw new UnAuthorizedException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+        textBody.deleted();
+        return new Answer(id, TextBody.of(textBody), question);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Answer answer = (Answer)o;
+        return Objects.equals(id, answer.id) && Objects.equals(textBody, answer.textBody)
+            && Objects.equals(question, answer.question);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, textBody, question);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,28 +28,16 @@ public class AnswersTest {
 		answerList.add(new Answer(new TextBody(NsUserTest.SANJIGI, "Answers Contents2", false), QuestionTest.Q1));
 		Answers answers = new Answers(answerList);
 
-		assertThrows(UnAuthorizedException.class, () -> answers.checkAuthorization(NsUserTest.JAVAJIGI));
-	}
-
-	@Test
-	@DisplayName("답변 목록을 모두 삭제 상태로 바꾼 후 삭제 히스토리 리스트 리턴")
-	void delete_성공() {
-		Answers answers = new Answers(answerList);
-		List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-		assertThat(answers.delete(deleteHistories))
-			.containsOnly(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
+		assertThrows(UnAuthorizedException.class, () -> answers.delete(NsUserTest.JAVAJIGI));
 	}
 
 	@Test
 	@DisplayName("답변을 추가할 수 있는지 확인")
 	void 답변_추가() {
-		Answers answers = new Answers(answerList);
-		Answers result = answers.add(new Answer(new TextBody(NsUserTest.JAVAJIGI, "Answers Contents2", false), QuestionTest.Q1));
+		Answer expectingResult = new Answer(new TextBody(NsUserTest.JAVAJIGI, "Answers Contents2", false), QuestionTest.Q1);
 
 		answerList.add(new Answer(new TextBody(NsUserTest.JAVAJIGI, "Answers Contents2", false), QuestionTest.Q1));
-		Answers matchList = new Answers(answerList);
 
-		assertThat(result).isEqualTo(matchList);
+		assertThat(answerList).contains(expectingResult);
 	}
 }

@@ -36,8 +36,12 @@ public class TextBody {
 		return deleted;
 	}
 
-	public boolean isNotOwner(NsUser user) {
-		return !this.writer.equals(user);
+	public void deleted() {
+		this.deleted = true;
+	}
+
+	public boolean isOwner(NsUser writer) {
+		return this.writer.equals(writer);
 	}
 
 	@Override
@@ -56,7 +60,12 @@ public class TextBody {
 		return Objects.hash(writer, contents, deleted);
 	}
 
-	public void setDelted(boolean deleted) {
-		this.deleted = deleted;
+	@Override
+	public String toString() {
+		return "TextBody{" +
+			"writer=" + writer +
+			", contents='" + contents + '\'' +
+			", deleted=" + deleted +
+			'}';
 	}
 }

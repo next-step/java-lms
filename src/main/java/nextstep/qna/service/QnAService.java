@@ -1,5 +1,7 @@
 package nextstep.qna.service;
 
+import java.util.List;
+
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
@@ -24,6 +26,6 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws UnAuthorizedException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        deleteHistoryService.saveAll(question.delete(loginUser, questionId));
+        deleteHistoryService.saveAll(question.delete(loginUser));
     }
 }
