@@ -35,9 +35,9 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted() {
+    public Answer create() {
         textBody = TextBody.of(textBody);
-        return this;
+        return new Answer(id, textBody, question);
     }
 
     public TextBody getTextBody() {

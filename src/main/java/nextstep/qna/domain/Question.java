@@ -47,11 +47,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.textBody.setDelted(deleted);
-        return this;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser, long questionId) {
         UserComparison userComparison = (textBody, user) -> {
             if (textBody.isNotOwner(user)) {
