@@ -26,6 +26,18 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public NsUser getDeletedBy() {
+        return deletedBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

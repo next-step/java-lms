@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.qna.CannotDeleteException;
@@ -15,10 +14,15 @@ public class AnswerTest {
 
     @Test
     @DisplayName("성공적으로 삭제된다")
-    void delete() {
-        assertThatNoException()
-            .isThrownBy(() -> A1.delete(NsUserTest.JAVAJIGI));
+    void delete() throws CannotDeleteException{
+        // when
+        DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);
+
+        // then
         assertThat(A1.isDeleted()).isTrue();
+        assertThat(deleteHistory.getContentId()).isEqualTo(A1.getId());
+        assertThat(deleteHistory.getContentType()).isEqualTo(ContentType.ANSWER);
+        assertThat(deleteHistory.getDeletedBy()).isEqualTo(NsUserTest.JAVAJIGI);
     }
 
     @Test
