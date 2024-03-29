@@ -60,21 +60,12 @@ public class Answer {
         return deleted;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
