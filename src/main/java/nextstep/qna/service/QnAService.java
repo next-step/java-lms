@@ -33,12 +33,10 @@ public class QnAService {
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            DeleteHistory deleteHistory = answer.delete(loginUser);
-            deleteHistories.add(deleteHistory);
-        }
+
+        Answers answers = question.getAnswers();
+        deleteHistories.addAll(answers.delete(loginUser));
+
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

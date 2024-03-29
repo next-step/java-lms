@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import nextstep.users.domain.NsUser;
 
 public class Question {
@@ -79,8 +78,8 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers.value();
+    public Answers getAnswers() {
+        return answers;
     }
 
     @Override
