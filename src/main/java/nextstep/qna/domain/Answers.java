@@ -20,7 +20,7 @@ public class Answers {
     public void add(Answer answer) {
         answers.add(answer);
     }
-    
+
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
