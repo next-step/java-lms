@@ -1,11 +1,8 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import nextstep.users.domain.NsUser;
 
 public class Question {
     private Long id;
