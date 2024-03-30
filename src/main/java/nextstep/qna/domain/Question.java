@@ -19,22 +19,26 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
+
+    private CurrentDateTimeProvider currentDateTimeProvider;
 
     public Question() {
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+    public Question(CurrentDateTimeProvider currentDateTimeProvider, NsUser writer, String title, String contents) {
+        this(currentDateTimeProvider, 0L, writer, title, contents);
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(CurrentDateTimeProvider currentDateTimeProvider, Long id, NsUser writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.currentDateTimeProvider = currentDateTimeProvider;
+        this.createdDate = currentDateTimeProvider.now();
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
@@ -42,7 +46,7 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), currentDateTimeProvider.now()));
         deleteHistories.addAll(answers.delete(loginUser));
         deleted = true;
 

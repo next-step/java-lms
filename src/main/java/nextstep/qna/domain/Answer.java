@@ -18,18 +18,20 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
+
+    private CurrentDateTimeProvider currentDateTimeProvider;
 
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+    public Answer(CurrentDateTimeProvider currentDateTimeProvider, NsUser writer, Question question, String contents) {
+        this(currentDateTimeProvider, null, writer, question, contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
+    public Answer(CurrentDateTimeProvider currentDateTimeProvider, Long id, NsUser writer, Question question, String contents) {
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();
@@ -42,6 +44,8 @@ public class Answer {
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+        this.currentDateTimeProvider = currentDateTimeProvider;
+        this.createdDate = currentDateTimeProvider.now();
     }
 
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
@@ -49,7 +53,7 @@ public class Answer {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), currentDateTimeProvider.now());
     }
 
     public Long getId() {

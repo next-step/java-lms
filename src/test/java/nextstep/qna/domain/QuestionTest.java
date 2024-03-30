@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.TestFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,8 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
-    public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
+    public static final Question Q1 = new Question(
+        CURRENT_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
+        "title1", "contents1"
+    );
+    public static final Question Q2 = new Question(
+        CURRENT_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
+        "title2", "contents2"
+    );
 
     @Test
     @DisplayName("관련된 모든 글의 작성자가 본인이라면 성공적으로 삭제한다")
