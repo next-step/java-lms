@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -25,11 +26,8 @@ public class Answers {
   }
 
   public List<DeleteHistory> delete() {
-    List<DeleteHistory> deleteHistories = new ArrayList<>();
-    for (Answer answer : answers) {
-      answer.setDeleted(true);
-      deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-    }
-    return deleteHistories;
+    return answers.stream()
+                  .map(Answer::delete)
+                  .collect(Collectors.toList());
   }
 }

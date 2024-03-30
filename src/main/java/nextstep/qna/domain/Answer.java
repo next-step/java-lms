@@ -9,18 +9,9 @@ import java.time.LocalDateTime;
 
 public class Answer {
     private Long id;
-
-    private NsUser writer;
-
+    private AnswerInfo answerInfo;
     private Question question;
-
-    private String contents;
-
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Answer() {
     }
@@ -38,36 +29,27 @@ public class Answer {
         if(question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
         this.question = question;
-        this.contents = contents;
+
+        answerInfo = new AnswerInfo(writer, contents);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public boolean isOwner(NsUser loginUser) {
+        return answerInfo.isOwner(loginUser);
     }
 
     public NsUser getWriter() {
-        return writer;
+        return answerInfo.getWriter();
     }
 
-    public String getContents() {
-        return contents;
-    }
 
     public void toQuestion(Question question) {
         this.question = question;
@@ -75,12 +57,17 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + getId() + ", " + answerInfo + " ]";
     }
 
     public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    public DeleteHistory delete() {
+        deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, answerInfo.getWriter(), LocalDateTime.now());
     }
 }
