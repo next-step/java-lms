@@ -11,6 +11,12 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
+    void to_histories() {
+        DeleteHistories histories = Q1.toHistories();
+        assertThat(histories.get().size()).isEqualTo(1);
+    }
+
+    @Test
     void delete() throws CannotDeleteException {
         Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
