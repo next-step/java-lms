@@ -20,7 +20,7 @@ public class Answers {
         this.answers = answers;
     }
 
-    public Answers delete(NsUser user) throws CannotDeleteException {
+    public void delete(NsUser user) throws CannotDeleteException {
         // validation
         if (this.answers.stream()
                 .anyMatch(Predicate.not(answer -> answer.isOwner(user)))) {
@@ -28,7 +28,6 @@ public class Answers {
         }
 
         this.answers.forEach(Answer::delete);
-        return this;
     }
 
     public void addTo(DeleteHistories histories) {
