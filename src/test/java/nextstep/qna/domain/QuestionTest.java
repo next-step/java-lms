@@ -1,8 +1,8 @@
 package nextstep.qna.domain;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -33,5 +33,13 @@ public class QuestionTest {
     void isDeletable(){
         NsUser writer = NsUserTest.SANJIGI;
         assertThatNoException().isThrownBy(() -> Q2.validateDeletable(writer));
+    }
+
+    @Test
+    @DisplayName("deleted를 true로 만들고 삭제 이력 목록을 반환")
+    void delete() {
+        List<DeleteHistory> deleteHistories = Q1.delete();
+        assertThat(deleteHistories).isNotEmpty();
+        assertThat(Q1.isDeleted()).isTrue();
     }
 }
