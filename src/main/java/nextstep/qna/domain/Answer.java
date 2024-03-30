@@ -82,8 +82,8 @@ public class Answer {
     }
 
     public DeleteHistory toDeleteHistory() {
-        Answer answer = setDeleted(true);
-        return new DeleteHistory(ContentType.ANSWER, answer.id, answer.writer, LocalDateTime.now());
+        setDeleted(true);
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
