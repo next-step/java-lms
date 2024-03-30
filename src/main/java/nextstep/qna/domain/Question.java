@@ -16,8 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
-
+    private final Answers answers = new Answers(new ArrayList<>());
     private boolean deleted = false;
 
     private LocalDateTime createdDate = LocalDateTime.now();
@@ -73,17 +72,8 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
@@ -96,16 +86,16 @@ public class Question {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        for (Answer answer : answers) {
-            answer.validateDeletable(loginUser);
-        }
+        answers.validateDeletable(loginUser);
     }
 
     public List<DeleteHistory> delete() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-        deleted= true;
-        // TODO : answers
+        deleted = true;
+
+        List<DeleteHistory> answerDeleteHistory = answers.delete();
+        deleteHistories.addAll(answerDeleteHistory);
         return deleteHistories;
     }
 }

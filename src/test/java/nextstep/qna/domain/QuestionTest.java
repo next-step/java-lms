@@ -2,7 +2,6 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
@@ -23,23 +22,20 @@ public class QuestionTest {
     @Test
     @DisplayName("Answer가 본인이 작성하지 않으면 삭제할 수 없다.")
     void isMyAnswer() {
-        NsUser writer = NsUserTest.SANJIGI;
-        Q1.addAnswer(new Answer(writer, Q1, "test"));
-        assertThatThrownBy(() -> Q1.validateDeletable(writer)).isInstanceOf(CannotDeleteException.class);
+        Q1.addAnswer(new Answer(NsUserTest.SANJIGI, Q1, "test"));
+        assertThatThrownBy(() -> Q1.validateDeletable(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 
     @Test
     @DisplayName("삭제할 수 있는 질문인지 확인한다.")
     void isDeletable(){
-        NsUser writer = NsUserTest.SANJIGI;
-        assertThatNoException().isThrownBy(() -> Q2.validateDeletable(writer));
+        assertThatNoException().isThrownBy(() -> Q2.validateDeletable(NsUserTest.SANJIGI));
     }
 
     @Test
     @DisplayName("deleted를 true로 만들고 삭제 이력 목록을 반환")
     void delete() {
-        List<DeleteHistory> deleteHistories = Q1.delete();
-        assertThat(deleteHistories).isNotEmpty();
+        assertThat(Q1.delete()).isNotEmpty();
         assertThat(Q1.isDeleted()).isTrue();
     }
 }

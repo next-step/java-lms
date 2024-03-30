@@ -14,13 +14,13 @@ public class AnswersTest {
   private static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
   private static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
   @Test
-  @DisplayName("Anwers 삭제하면 DeleteHistory를 반환한다")
+  @DisplayName("Answers 삭제하면 DeleteHistory를 반환한다")
   void delete(){
     Answer answer = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents");
     Answers answers = new Answers(List.of(answer));
 
-    List<DeleteHistory> deleteHistories = answers.delete();
-    assertThat(deleteHistories).hasSize(1);
+    assertThat(answers.delete()).hasSize(1);
     assertThat(answer.isDeleted()).isTrue();
   }
+
 }
