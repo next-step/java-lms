@@ -78,10 +78,10 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
+    private void validateDeletable(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -89,7 +89,9 @@ public class Question {
         answers.validateDeletable(loginUser);
     }
 
-    public List<DeleteHistory> delete() {
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        validateDeletable(loginUser);
+
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
         deleted = true;
