@@ -21,13 +21,9 @@ public class Answers {
     }
 
     public void delete(NsUser user) throws CannotDeleteException {
-        // validation
-        if (this.answers.stream()
-                .anyMatch(Predicate.not(answer -> answer.isOwner(user)))) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        for (Answer answer : this.answers) {
+            answer.delete(user);
         }
-
-        this.answers.forEach(Answer::delete);
     }
 
     public void addTo(DeleteHistories histories) {
