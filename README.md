@@ -7,3 +7,9 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## TODO
+### Step1
+- [ ] Question, Answer를 삭제할 권한이 있는지 검증하는 로직을 분리한다.
+- [ ] DeleteHistries에 추가하하는 로직을 분리한다.
+- [ ] TEST를 먼저 작성한다.
