@@ -78,6 +78,14 @@ public class Answer {
         this.question = question;
     }
 
+    public void addTo(DeleteHistories deleteHistories) {
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    }
+
+    public DeleteHistory getDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
