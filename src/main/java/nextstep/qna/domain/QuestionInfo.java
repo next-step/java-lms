@@ -1,7 +1,5 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
 import nextstep.users.domain.NsUser;
 
 public class QuestionInfo {

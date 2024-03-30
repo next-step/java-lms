@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
 import nextstep.users.domain.NsUser;
 
 public class AnswerInfo extends  BaseEntity {
