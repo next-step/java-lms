@@ -21,7 +21,7 @@ class DeleteHistoriesTest {
     @Test
     void createDeleteHistory() {
         Q1.addAnswer(A1);
-        DeleteHistories deleteHistories = new DeleteHistories(Q1.getDeleteHistories());
+        DeleteHistories deleteHistories = Q1.getDeleteHistories();
 
         assertThat(deleteHistories).isEqualTo(new DeleteHistories(
                 List.of(new DeleteHistory(ContentType.QUESTION, 0L, Q1.getWriter(), LocalDateTime.now()),

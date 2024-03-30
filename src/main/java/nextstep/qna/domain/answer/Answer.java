@@ -4,6 +4,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
+import nextstep.utils.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +38,10 @@ public class Answer {
 
         if (question == null) {
             throw new NotFoundException();
+        }
+
+        if (StringUtils.isBlank(contents)) {
+            throw new IllegalArgumentException("질문은 필수 값 입니다.");
         }
 
         this.writer = writer;
