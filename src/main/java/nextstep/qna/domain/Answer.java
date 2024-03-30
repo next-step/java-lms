@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -45,6 +46,11 @@ public class Answer {
 
     public Long getId() {
         return id;
+    }
+
+    public Answer delete() {
+        this.deleted = true;
+        return this;
     }
 
     public Answer setDeleted(boolean deleted) {
