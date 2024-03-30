@@ -6,6 +6,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 public class Question {
     private Long id;
 
@@ -50,7 +51,7 @@ public class Question {
     }
 
 
-    public DeleteHistorys deleteQuestionAndAnswer(NsUser user) throws CannotDeleteException {
+    public DeleteHistorys delete(NsUser user) throws CannotDeleteException {
         return new DeleteHistorys(deleteQuestion(user), deleteAnswer(user));
     }
 
@@ -61,7 +62,7 @@ public class Question {
     }
 
 
-    public DeleteHistorys deleteAnswer(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAnswer(NsUser user) throws CannotDeleteException {
         return answers.delete(user);
     }
 

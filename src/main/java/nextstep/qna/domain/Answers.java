@@ -10,13 +10,11 @@ import java.util.stream.Collectors;
 public class Answers {
     private List<Answer> answers = new ArrayList<>();
 
-    public DeleteHistorys delete(NsUser user) throws CannotDeleteException {
+    List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
         hasOtherUserAnswer(user);
-        List<DeleteHistory> historys = answers.stream()
+        return answers.stream()
                 .map(Answer::delete)
                 .collect(Collectors.toList());
-
-        return new DeleteHistorys(historys);
     }
 
     public void add(Answer answer) {

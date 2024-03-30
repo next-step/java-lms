@@ -52,7 +52,8 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public DeleteHistory delete() {
+    DeleteHistory delete() {
+        //
         this.deleted = true;
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
