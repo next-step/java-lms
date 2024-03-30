@@ -32,5 +32,4 @@ public class QuestionTest {
         Assertions.assertThat(Q1.isDeleted()).isTrue();
     }
 
-
 }
