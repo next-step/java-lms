@@ -12,16 +12,14 @@ import nextstep.users.domain.NsUserTest;
 
 public class AnswersTest {
 
-
     @Test
     @DisplayName("다른 사람이 쓴 답변이 있으면 CannotDeleteException 발생한다.")
     void otherOwnerException() {
         NsUser javajigi = NsUserTest.JAVAJIGI;
         Answers answers = AnswersFixture.다른_사람의_답변이_있는_답변들.getAnswers();
 
-        assertThatThrownBy(() -> answers.deleteValidate(javajigi))
+        assertThatThrownBy(() -> answers.delete(javajigi))
             .isInstanceOf(CannotDeleteException.class)
             .hasMessageContaining("다른 사람이 쓴 답변");
     }
-
 }

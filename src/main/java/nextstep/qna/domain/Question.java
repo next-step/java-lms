@@ -73,9 +73,9 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        authorityValidation(loginUser);
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
@@ -86,14 +86,14 @@ public class Question {
         return answers;
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    public void deleteValidation(NsUser loginUser) throws CannotDeleteException {
+    private void authorityValidation(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

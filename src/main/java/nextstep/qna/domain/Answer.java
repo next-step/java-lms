@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -73,14 +68,19 @@ public class Answer {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        authorityValidation(loginUser);
+        this.deleted = true;
     }
 
-    public void deleteValidation(NsUser loginUser) throws CannotDeleteException {
+    private void authorityValidation(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 }

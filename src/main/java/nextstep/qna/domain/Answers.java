@@ -14,9 +14,9 @@ public class Answers implements Iterable<Answer> {
         this.answers = answers;
     }
 
-    public void deleteValidate(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            answer.deleteValidation(loginUser);
+            answer.delete(loginUser);
         }
     }
 

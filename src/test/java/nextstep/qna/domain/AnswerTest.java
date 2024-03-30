@@ -15,7 +15,7 @@ public class AnswerTest {
     @Test
     @DisplayName("Answer를 삭제할 때 Owner가 아닐 때 Exception 확인 Test")
     void differentAnswerOwnerTest() {
-        assertThatThrownBy(() -> A1.deleteValidation(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
             .isInstanceOf(CannotDeleteException.class)
             .hasMessageContaining("다른 사람");
     }
@@ -23,7 +23,15 @@ public class AnswerTest {
     @Test
     @DisplayName("Answer를 삭제할 때 Owner일 때 Exception이 발생하지 않는지 확인 Test")
     void sameAnswerOwnerTest() {
-        assertThatCode(() -> A1.deleteValidation(NsUserTest.JAVAJIGI))
+        assertThatCode(() -> A1.delete(NsUserTest.JAVAJIGI))
             .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("Answer Delete 확인 Test")
+    void deleteAnswerTest() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
+
+        assertThat(A1.isDeleted()).isTrue();
     }
 }
