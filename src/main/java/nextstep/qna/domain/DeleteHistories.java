@@ -23,4 +23,8 @@ public class DeleteHistories {
     public List<DeleteHistory> get() {
         return Collections.unmodifiableList(deleteHistories);
     }
+
+    public int size() {
+        return deleteHistories.size();
+    }
 }

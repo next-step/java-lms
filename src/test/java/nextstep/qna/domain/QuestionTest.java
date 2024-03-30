@@ -16,7 +16,7 @@ public class QuestionTest {
     @Test
     void to_histories() {
         DeleteHistories histories = Q1.toHistories();
-        assertThat(histories.get().size()).isEqualTo(1);
+        assertThat(histories.size()).isEqualTo(1);
     }
 
     @DisplayName("질문 Q1이 Q1을 작성한 사람을 삭제한다")
