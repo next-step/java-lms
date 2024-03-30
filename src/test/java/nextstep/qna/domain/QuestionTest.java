@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(
-        CURRENT_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
+        CREATED_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
         "title1", "contents1"
     );
     public static final Question Q2 = new Question(
-        CURRENT_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
+        CREATED_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
         "title2", "contents2"
     );
 
@@ -38,6 +38,7 @@ public class QuestionTest {
             .orElseThrow();
         assertThat(questionDeleteHistory.getContentId()).isEqualTo(Q1.getId());
         assertThat(questionDeleteHistory.getDeletedBy()).isEqualTo(NsUserTest.JAVAJIGI);
+        assertThat(questionDeleteHistory.getCreatedDate()).isEqualTo(CREATED_DATE_TIME);
     }
 
     @Test

@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 
-public interface CurrentDateTimeProvider {
+public interface CreatedDateTimeProvider {
 
     LocalDateTime now();
 }

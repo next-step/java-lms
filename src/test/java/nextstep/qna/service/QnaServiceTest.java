@@ -41,8 +41,8 @@ public class QnaServiceTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        question = new Question(TestFixtures.CURRENT_DATE_TIME_PROVIDER, 1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(TestFixtures.CURRENT_DATE_TIME_PROVIDER, 11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        question = new Question(TestFixtures.CREATED_DATE_TIME_PROVIDER, 1L, NsUserTest.JAVAJIGI, "title1", "contents1");
+        answer = new Answer(TestFixtures.CREATED_DATE_TIME_PROVIDER, 11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
     }
 

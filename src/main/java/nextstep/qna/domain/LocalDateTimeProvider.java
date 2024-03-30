@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalDateTimeProvider implements CurrentDateTimeProvider {
+public class LocalDateTimeProvider implements CreatedDateTimeProvider {
 
     @Override
     public LocalDateTime now() {

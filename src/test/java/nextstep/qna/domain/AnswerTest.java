@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
-import static nextstep.qna.domain.TestFixtures.CURRENT_DATE_TIME_PROVIDER;
+import static nextstep.qna.domain.TestFixtures.CREATED_DATE_TIME;
+import static nextstep.qna.domain.TestFixtures.CREATED_DATE_TIME_PROVIDER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -12,11 +13,11 @@ import org.junit.jupiter.api.Test;
 public class AnswerTest {
 
     public static final Answer A1 = new Answer(
-        CURRENT_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
+        CREATED_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
         QuestionTest.Q1, "Answers Contents1"
     );
     public static final Answer A2 = new Answer(
-        CURRENT_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
+        CREATED_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
         QuestionTest.Q1, "Answers Contents2"
     );
 
@@ -31,6 +32,7 @@ public class AnswerTest {
         assertThat(deleteHistory.getContentId()).isEqualTo(A1.getId());
         assertThat(deleteHistory.getContentType()).isEqualTo(ContentType.ANSWER);
         assertThat(deleteHistory.getDeletedBy()).isEqualTo(NsUserTest.JAVAJIGI);
+        assertThat(deleteHistory.getCreatedDate()).isEqualTo(CREATED_DATE_TIME);
     }
 
     @Test
