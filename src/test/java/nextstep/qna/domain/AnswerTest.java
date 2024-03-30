@@ -13,7 +13,7 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    @DisplayName("성공적으로 삭제된다")
+    @DisplayName("작성자 본인인 경우 성공적으로 삭제된다")
     void delete() throws CannotDeleteException{
         // when
         DeleteHistory deleteHistory = A1.delete(NsUserTest.JAVAJIGI);

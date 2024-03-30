@@ -14,7 +14,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    @DisplayName("성공적으로 삭제한다")
+    @DisplayName("관련된 모든 글의 작성자가 본인이라면 성공적으로 삭제한다")
     void delete() throws CannotDeleteException {
         // given
         Q1.addAnswer(AnswerTest.A1);
