@@ -33,11 +33,11 @@ public class Question {
     }
 
     public Question(CreatedDateTimeProvider createdDateTimeProvider, Long id, NsUser writer, String title, String contents) {
+        this.createdDateTimeProvider = createdDateTimeProvider;
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdDateTimeProvider = createdDateTimeProvider;
         this.createdDate = createdDateTimeProvider.now();
     }
 

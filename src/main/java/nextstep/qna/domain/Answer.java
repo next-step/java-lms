@@ -32,19 +32,17 @@ public class Answer {
     }
 
     public Answer(CreatedDateTimeProvider createdDateTimeProvider, Long id, NsUser writer, Question question, String contents) {
+        this.createdDateTimeProvider = createdDateTimeProvider;
         this.id = id;
         if (writer == null) {
             throw new UnAuthorizedException();
         }
-
         if (question == null) {
             throw new NotFoundException();
         }
-
         this.writer = writer;
         this.question = question;
         this.contents = contents;
-        this.createdDateTimeProvider = createdDateTimeProvider;
         this.createdDate = createdDateTimeProvider.now();
     }
 
