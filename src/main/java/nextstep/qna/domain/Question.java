@@ -69,12 +69,19 @@ public class Question {
         answers.add(answer);
     }
 
-    public void canDelete(NsUser loginUser) throws CannotDeleteException {
-        if(isOwner(loginUser)) {
-            return;
+    public Question canDelete(NsUser loginUser) throws CannotDeleteException {
+        if (isOwner(loginUser)) {
+            canDeleteAnswers(loginUser);
+            return this;
         }
 
         throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+    }
+
+    private void canDeleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.canDelete(loginUser);
+        }
     }
 
     private boolean isOwner(NsUser loginUser) {
@@ -92,6 +99,10 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public DeleteHistory toDeleteHistory(long questionId) {
+        return new DeleteHistory(ContentType.QUESTION, questionId, writer, LocalDateTime.now());
     }
 
     @Override
