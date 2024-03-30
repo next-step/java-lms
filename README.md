@@ -10,6 +10,6 @@
 
 ## TODO
 ### Step1
-- [ ] Question, Answer를 삭제할 권한이 있는지 검증하는 로직을 분리한다.
+- [x] Question, Answer를 삭제할 권한이 있는지 검증하는 로직을 분리한다.
 - [ ] DeleteHistries에 추가하하는 로직을 분리한다.
 - [ ] TEST를 먼저 작성한다.
