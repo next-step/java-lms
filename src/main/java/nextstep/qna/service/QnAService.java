@@ -2,15 +2,20 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.*;
+import nextstep.qna.domain.Answer;
+import nextstep.qna.domain.AnswerRepository;
+import nextstep.qna.domain.DeleteHistory;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.QuestionRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Boolean.TRUE;
 
 @Service("qnaService")
 public class QnAService {
@@ -26,22 +31,21 @@ public class QnAService {
     @Transactional
     public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        question.canDelete(loginUser);
+        question = question.canDelete(loginUser);
+        question = question.setDeleted(TRUE);
+
+        List<DeleteHistory> deleteHistories = convertToDeleteHistory(questionId, question);
+        deleteHistoryService.saveAll(deleteHistories);
+    }
+
+    private List<DeleteHistory> convertToDeleteHistory(long questionId, Question question) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(question.toDeleteHistory(questionId));
 
         List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
+        answers.forEach(answer -> deleteHistories.add(answer.toDeleteHistory()));
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        deleteHistoryService.saveAll(deleteHistories);
+        return deleteHistories;
     }
 }
