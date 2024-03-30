@@ -17,7 +17,7 @@ public class QuestionTest {
     @Test
     public void 질문삭제권한_실패_테스트() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        assertThrows(CannotDeleteException.class, () -> question.deleteQuestion(NsUserTest.SANJIGI));
+        assertThrows(CannotDeleteException.class, () -> question.deleteQuestionAndAnswer(NsUserTest.SANJIGI));
     }
 
 
@@ -27,17 +27,17 @@ public class QuestionTest {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         DeleteHistorys historys = question.deleteQuestionAndAnswer(NsUserTest.JAVAJIGI);
 
-        List<DeleteHistory> sut = historys.getDeleteHistoryList();
+        List<DeleteHistory> sut = historys.toList();
         assertThat(sut.size()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("답변이 없는 경우 삭제 가능하며 삭제 히스토리가 추가된다")
-    public void deleteWhenAnswerEmpty() {
+    public void deleteWhenAnswerEmpty() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.deleteQuestionAndAnswer();
-        
-        List<DeleteHistory> sut = question.getDeleteHistorys().getDeleteHistoryList();
+        DeleteHistorys historys = question.deleteQuestionAndAnswer(NsUserTest.JAVAJIGI);
+
+        List<DeleteHistory> sut = historys.toList();
         assertThat(sut.size()).isEqualTo(1);
     }
 
@@ -47,9 +47,10 @@ public class QuestionTest {
     @DisplayName("답변과 질문 삭제 테스트")
     public void deleteHistoryTest() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        DeleteHistorys historys = question.deleteQuestionAndAnswer(NsUserTest.JAVAJIGI);
+        question.addAnswer(CommonMock.A1);
 
-        List<DeleteHistory> deleteHistoryList = historys.getDeleteHistoryList();
+        DeleteHistorys historys = question.deleteQuestionAndAnswer(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistoryList = historys.toList();
         List<ContentType> types = deleteHistoryList.stream().map(DeleteHistory::getContentType).collect(Collectors.toList());
         assertThat(types).contains(ContentType.QUESTION, ContentType.ANSWER);
 

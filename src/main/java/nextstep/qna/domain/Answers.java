@@ -11,14 +11,12 @@ public class Answers {
     private List<Answer> answers = new ArrayList<>();
 
     public DeleteHistorys delete(NsUser user) throws CannotDeleteException {
-        DeleteHistorys historys = new DeleteHistorys();
-
         hasOtherUserAnswer(user);
-        historys.addAll(answers.stream()
+        List<DeleteHistory> historys = answers.stream()
                 .map(Answer::delete)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
-        return historys;
+        return new DeleteHistorys(historys);
     }
 
     public void add(Answer answer) {

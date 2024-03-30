@@ -5,16 +5,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class DeleteHistorys {
-    private final List<DeleteHistory> deleteHistoryList = new ArrayList<>();
-    public void add(DeleteHistory deleteHistory) {
-        deleteHistoryList.add(deleteHistory);
+    private List<DeleteHistory> deleteHistoryList = new ArrayList<>();
+
+    public DeleteHistorys(DeleteHistory questionDeleteHistory, DeleteHistorys answerDeleteHistory) {
+        this(answerDeleteHistory.addDeleteHistory(questionDeleteHistory));
     }
 
-    public List<DeleteHistory> getDeleteHistoryList() {
+    public DeleteHistorys(DeleteHistorys deleteHistorys) {
+        this.deleteHistoryList = deleteHistorys.deleteHistoryList;
+    }
+
+    public DeleteHistorys(List<DeleteHistory> deleteHistoryList) {
+        this.deleteHistoryList = deleteHistoryList;
+    }
+
+    private DeleteHistorys addDeleteHistory(DeleteHistory questionDeleteHistory){
+        deleteHistoryList.add(questionDeleteHistory);
+        return this;
+    }
+
+
+    public List<DeleteHistory> toList() {
         return Collections.unmodifiableList(deleteHistoryList);
-    }
-
-    public void addAll(List<DeleteHistory> histories) {
-        this.deleteHistoryList.addAll(histories);
     }
 }

@@ -50,19 +50,21 @@ public class Question {
     }
 
 
-
     public DeleteHistorys deleteQuestionAndAnswer(NsUser user) throws CannotDeleteException {
-        DeleteHistorys historys = new DeleteHistorys();
-        historys.add(deleteQuestion(user));
-        historys.addAll(deleteAnswer(user).getDeleteHistoryList());
-        return historys;
+        return new DeleteHistorys(deleteQuestion(user), deleteAnswer(user));
     }
 
-    public DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
+    private DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
         hasDeleteAuthentication(user);
         deleted = true;
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
+
+
+    public DeleteHistorys deleteAnswer(NsUser user) throws CannotDeleteException {
+        return answers.delete(user);
+    }
+
 
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -74,10 +76,6 @@ public class Question {
     }
 
 
-
-    public DeleteHistorys deleteAnswer(NsUser user) throws CannotDeleteException {
-        return answers.delete(user);
-    }
 
     public Long getId() {
         return id;
