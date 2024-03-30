@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,7 +9,11 @@ import nextstep.users.domain.NsUser;
 
 public class Answers implements Iterable<Answer> {
 
-    private List<Answer> answers;
+    private final List<Answer> answers;
+
+    public Answers() {
+        this.answers = new ArrayList<>();
+    }
 
     public Answers(List<Answer> answers) {
         this.answers = answers;
@@ -18,6 +23,10 @@ public class Answers implements Iterable<Answer> {
         for (Answer answer : answers) {
             answer.delete(loginUser);
         }
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
     }
 
     @Override
