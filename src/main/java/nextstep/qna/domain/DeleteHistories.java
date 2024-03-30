@@ -31,8 +31,14 @@ public class DeleteHistories {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
         DeleteHistories that = (DeleteHistories) object;
         return Objects.equals(deleteHistories, that.deleteHistories);
     }
