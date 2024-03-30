@@ -2,6 +2,7 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.*;
+import nextstep.qna.domain.answer.Answer;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,7 @@ public class QnaServiceTest {
         assertThat(question.isDeleted()).isTrue();
         verifyDeleteHistories();
     }
+
 
     @Test
     public void delete_다른_사람이_쓴_글() throws Exception {
