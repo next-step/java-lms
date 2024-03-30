@@ -7,10 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
-    private Long id;
-
-    private boolean deleted = false;
+public class Question extends BaseEntity{
 
     private QuestionInfo questionInfo;
 
@@ -33,19 +30,10 @@ public class Question {
         this.questionInfo = questionInfo;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
     }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
 
     public boolean isOwner(NsUser loginUser) {
         return questionInfo.isOwner(loginUser);

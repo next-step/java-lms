@@ -3,14 +3,11 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import nextstep.users.domain.NsUser;
 
-public class AnswerInfo {
+public class AnswerInfo extends  BaseEntity {
   private NsUser writer;
 
   private String contents;
 
-  private LocalDateTime createdDate = LocalDateTime.now();
-
-  private LocalDateTime updatedDate;
 
   public AnswerInfo(NsUser writer, String contents) {
     this.writer = writer;

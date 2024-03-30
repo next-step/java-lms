@@ -7,11 +7,10 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Answer {
-    private Long id;
+public class Answer extends BaseEntity  {
+
     private AnswerInfo answerInfo;
     private Question question;
-    private boolean deleted = false;
 
     public Answer() {
     }
@@ -32,14 +31,6 @@ public class Answer {
         this.question = question;
 
         answerInfo = new AnswerInfo(writer, contents);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public boolean isOwner(NsUser loginUser) {

@@ -12,10 +12,6 @@ public class QuestionInfo {
 
   private NsUser writer;
 
-  private LocalDateTime createdDate = LocalDateTime.now();
-
-  private LocalDateTime updatedDate;
-
   public QuestionInfo(NsUser writer, String title, String contents) {
     this.writer = writer;
     this.title = title;
