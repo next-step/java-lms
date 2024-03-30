@@ -1,11 +1,12 @@
 package nextstep.qna.domain;
 
+import java.util.Iterator;
 import java.util.List;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Answers {
+public class Answers implements Iterable<Answer> {
 
     private List<Answer> answers;
 
@@ -15,9 +16,12 @@ public class Answers {
 
     public void deleteValidate(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+            answer.deleteValidation(loginUser);
         }
+    }
+
+    @Override
+    public Iterator<Answer> iterator() {
+        return answers.iterator();
     }
 }
