@@ -4,14 +4,11 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.Question;
 import nextstep.qna.domain.QuestionTest;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.qna.domain.QuestionTest.Q2;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AnswersTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
