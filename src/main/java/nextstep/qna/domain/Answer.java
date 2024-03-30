@@ -43,14 +43,6 @@ public class Answer {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
 
     public boolean isDeleted() {
         return deleted;
@@ -60,16 +52,25 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public DeleteHistory delete() {
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
+    public void toQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public NsUser getWriter() {
         return writer;
     }
 
     public String getContents() {
         return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     @Override

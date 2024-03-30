@@ -1,6 +1,7 @@
 package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.CommonMock;
 import nextstep.qna.domain.*;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ public class QnaServiceTest {
     @BeforeEach
     public void setUp() throws Exception {
         question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        answer = new Answer(11L, NsUserTest.JAVAJIGI, CommonMock.Q1, "Answers Contents1");
         question.addAnswer(answer);
     }
 
