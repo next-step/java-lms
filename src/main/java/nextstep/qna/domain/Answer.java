@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -7,6 +8,8 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+    public static final String NO_DELITION_RIGHT = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     private Long id;
 
     private NsUser writer;
@@ -47,11 +50,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -70,6 +68,15 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public DeleteHistory delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException(NO_DELITION_RIGHT);
+        }
+
+        deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), now);
     }
 
     @Override
