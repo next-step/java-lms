@@ -106,23 +106,15 @@ public class Question{
 
     public void delete(NsUser nsUser) throws CannotDeleteException {
         checkIfOwner(nsUser);
-        checkAnswer(nsUser);
+        for(Answer answer : this.answers){
+            answer.delete(nsUser);
+        }
         this.deleted = true;
     }
 
     public void checkIfOwner(NsUser nsUser) throws CannotDeleteException {
         if(!isOwner(nsUser)){
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    public void checkAnswer(NsUser nsUser) throws CannotDeleteException {
-        boolean ifNotUser = this.answers
-                .stream()
-                .anyMatch(iter -> !iter.isOwner(nsUser));
-
-        if(ifNotUser){
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }
 

@@ -26,7 +26,7 @@ public class QuestionTest {
     @DisplayName("질문자가 로그인한 본인이 아닐 경우에 삭제가 불가능")
     void is_not_login_user() {
         assertThatThrownBy(() -> {
-            Q1_CLONE.checkIfOwner(NsUserTest.SANJIGI);
+            Q1_CLONE.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
@@ -36,7 +36,7 @@ public class QuestionTest {
         assertThatThrownBy(() -> {
             Q1_CLONE.addAnswer(A1);
             Q1_CLONE.addAnswer(A2);
-            Q1_CLONE.checkAnswer(NsUserTest.JAVAJIGI);
+            Q1_CLONE.delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
