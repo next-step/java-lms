@@ -1,10 +1,22 @@
 package nextstep.payments.service;
 
+import javax.annotation.Resource;
+import nextstep.courses.domain.Session;
 import nextstep.payments.domain.Payment;
+import nextstep.qna.domain.CurrentDateTimeProvider;
+import nextstep.users.domain.NsUser;
+import org.springframework.stereotype.Service;
 
+@Service("paymentService")
 public class PaymentService {
-    public Payment payment(String id) {
-        // PG사 API를 통해 id에 해당하는 결제 정보를 반환
-        return new Payment();
+
+    @Resource(name = "localDateTimeProvider")
+    private CurrentDateTimeProvider currentDateTimeProvider;
+
+    public Payment pay(NsUser loginUser, Session session, Long amount) {
+        return new Payment(
+            session.getId(), loginUser.getId(),
+            amount, currentDateTimeProvider.get()
+        );
     }
 }

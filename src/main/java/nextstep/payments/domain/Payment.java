@@ -19,11 +19,27 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+    public Payment(Long sessionId, Long nsUserId, Long amount, LocalDateTime createdAt) {
+        this("id", sessionId, nsUserId, amount, createdAt);
+    }
+
+    public Payment(String id, Long sessionId, Long nsUserId, Long amount, LocalDateTime createdAt) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
+    }
+
+    public Long getAmount() {
+        return amount;
     }
 }

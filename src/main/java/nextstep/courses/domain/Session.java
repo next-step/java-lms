@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -15,7 +16,7 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private SessionCoverImage coverImage;
-    private Integer price;
+    private Long price;
     private Integer capacity;
     private SessionStatus status = SessionStatus.PREPARE;
     private List<NsUser> learners = new ArrayList<>();
@@ -24,23 +25,23 @@ public class Session {
 
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionCoverImage coverImage,
         LocalDateTime createdAt) {
-        this(0L, startDate, endDate, coverImage, 0, 0, createdAt);
+        this(0L, startDate, endDate, coverImage, 0L, 0, createdAt);
     }
 
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionCoverImage coverImage,
-        int price, int capacity, LocalDateTime createdAt) {
+        Long price, int capacity, LocalDateTime createdAt) {
         this(0L, startDate, endDate, coverImage, price, capacity, createdAt);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
         SessionCoverImage coverImage,
-        Integer price, Integer capacity, LocalDateTime createdAt) {
+        Long price, Integer capacity, LocalDateTime createdAt) {
 
         this(id, startDate, endDate, coverImage, price, capacity, SessionStatus.PREPARE, createdAt);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate, SessionCoverImage coverImage,
-        Integer price, Integer capacity, SessionStatus status, LocalDateTime createdAt) {
+        Long price, Integer capacity, SessionStatus status, LocalDateTime createdAt) {
         validateDate(startDate, endDate);
         this.id = id;
         validateDate(startDate, endDate);
@@ -59,8 +60,9 @@ public class Session {
         }
     }
 
-    public void join(NsUser learner) {
+    public void join(NsUser learner, Payment payment) {
         validateJoinable();
+        validatePaid(learner, payment);
         learners.add(learner);
     }
 
@@ -74,11 +76,43 @@ public class Session {
         }
     }
 
+    private void validatePaid(NsUser learner, Payment payment) {
+        if (!isPaidSession()) {
+            return;
+        }
+        validatePayment(learner, payment);
+        validatePayEnough(payment);
+    }
+
+    private void validatePayEnough(Payment payment) {
+        boolean paidNotEnough = payment.getAmount() < price;
+        if (paidNotEnough) {
+            throw new CanNotJoinSessionException("결제 금액이 부족합니다");
+        }
+    }
+
+    private void validatePayment(NsUser learner, Payment payment) {
+        boolean notValidPayment = payment == null
+            || !id.equals(payment.getSessionId())
+            || !learner.getId().equals(payment.getNsUserId());
+        if (notValidPayment) {
+            throw new CanNotJoinSessionException("결제가 정상적으로 이루어지지 않았습니다");
+        }
+    }
+
     public boolean isPaidSession() {
         return price > 0;
     }
 
     public List<NsUser> getLearners() {
         return learners;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getPrice() {
+        return price;
     }
 }
