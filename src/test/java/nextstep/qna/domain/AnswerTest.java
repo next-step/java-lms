@@ -26,7 +26,7 @@ public class AnswerTest {
     }
 
     @Test
-    void 질문_삭제_성공_시_삭제_이력_반환() throws CannotDeleteException {
+    void 질문_삭제_성공_시_삭제_이력_반환() {
         assertThat(A1.delete(NsUserTest.JAVAJIGI))
                 .isInstanceOf(DeleteHistory.class);
     }

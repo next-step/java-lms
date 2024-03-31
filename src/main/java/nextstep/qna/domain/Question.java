@@ -74,7 +74,7 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> deleteAndGetHistories(final NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAndGetHistories(final NsUser loginUser) {
         if (this.deleted) {
             throw new CannotDeleteException("이미 삭제된 질문입니다.");
         }

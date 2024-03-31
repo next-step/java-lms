@@ -48,7 +48,7 @@ public class Answer {
         return id;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser loginUser) {
         if (this.deleted) {
             throw new CannotDeleteException("이미 삭제된 질문입니다.");
         }

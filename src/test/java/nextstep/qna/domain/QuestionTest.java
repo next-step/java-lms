@@ -34,12 +34,12 @@ public class QuestionTest {
     }
 
     @Test
-    void 답변이_없는_경우_삭제_가능() throws CannotDeleteException {
+    void 답변이_없는_경우_삭제_가능() {
         Q1.deleteAndGetHistories(NsUserTest.JAVAJIGI);
     }
 
     @Test
-    void 질문자와_답글의_모든_답변자가_같은_경우_삭제_가능() throws CannotDeleteException {
+    void 질문자와_답글의_모든_답변자가_같은_경우_삭제_가능() {
         Q1.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q1, "answer_contents_1"));
         Q1.addAnswer(new Answer(NsUserTest.JAVAJIGI, Q1, "answer_contents_2"));
 
@@ -57,7 +57,7 @@ public class QuestionTest {
     }
 
     @Test
-    void 질문_삭제_성공_시_삭제_이력_반환() throws CannotDeleteException {
+    void 질문_삭제_성공_시_삭제_이력_반환() {
         Q1.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, Q1, "answer_contents_2"));
         Q1.addAnswer(new Answer(2L, NsUserTest.JAVAJIGI, Q1, "answer_contents_4"));
 
