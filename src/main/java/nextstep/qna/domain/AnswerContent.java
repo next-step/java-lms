@@ -1,30 +1,27 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 public class AnswerContent {
-    private NsUser writer;
-    private String contents;
+    private Content content;
 
-    public AnswerContent(NsUser writer, String contents) {
-        if (writer == null) {
-            throw new UnAuthorizedException();
-        }
+    public AnswerContent(String contents, NsUser writer) {
+        this(new Content(contents, writer));
+    }
 
-        this.writer = writer;
-        this.contents = contents;
+    public AnswerContent(Content content) {
+        this.content = content;
     }
 
     public NsUser getWriter() {
-        return writer;
+        return this.content.getWriter();
     }
 
     public String getContents() {
-        return contents;
+        return this.content.getContents();
     }
 
     public boolean isOwner(NsUser other) {
-        return this.writer.equals(other);
+        return this.content.isOwner(other);
     }
 }

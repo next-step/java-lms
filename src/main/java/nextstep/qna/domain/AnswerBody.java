@@ -8,7 +8,7 @@ public class AnswerBody {
     private AnswerContent answerContent;
 
     public AnswerBody(Long id, NsUser writer, Question question, String contents) {
-        this(new AnswerKey(id, question), new AnswerContent(writer, contents));
+        this(new AnswerKey(id, question), new AnswerContent(contents, writer));
     }
 
     public AnswerBody(AnswerKey answerKey, AnswerContent answerContent) {
