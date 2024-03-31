@@ -23,3 +23,12 @@
 - [x] 메소드 이동, 유효성 검사 이동
 - [x] 주 생성자, 부 생성자 변경
 
+**Question**
+
+- [x] BaseTimeEntity 상속
+- [x] Deleted 인스턴스 필드 변경
+- [x] QuestionKey 생성 : id
+- [x] QuestionContent 생성 : Contents, Answers
+- [x] QuestionBody 생성
+- [x] 메소드 이동, 유효성 검사 이동
+- [x] 주 생성자, 부 생성자 변경

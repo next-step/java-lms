@@ -7,115 +7,99 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Boolean.TRUE;
+public class Question extends BaseTimeEntity {
 
-public class Question {
-    private Long id;
+    private QuestionBody questionBody;
 
-    private String title;
+    private Deleted deleted;
 
-    private String contents;
-
-    private NsUser writer;
-
-    private Answers answers = new Answers();
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
+    private Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+        this(0L, title, contents, writer, new Deleted());
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this(id, title, contents, writer, new Deleted());
+    }
+
+    public Question(Long id, String title, String contents, NsUser writer, Deleted deleted) {
+        this(new QuestionBody(id, title, contents, writer), deleted);
+    }
+
+    public Question(QuestionBody questionBody, Deleted deleted) {
+        this.questionBody = questionBody;
+        this.deleted = deleted;
     }
 
     public Long getId() {
-        return id;
+        return this.questionBody.getId();
     }
 
     public String getTitle() {
-        return title;
+        return this.questionBody.getTitle();
     }
 
     public Question setTitle(String title) {
-        this.title = title;
+        this.questionBody.setTitle(title);
         return this;
     }
 
     public String getContents() {
-        return contents;
+        return this.questionBody.getContents();
     }
 
     public Question setContents(String contents) {
-        this.contents = contents;
+        this.questionBody.setContents(contents);
         return this;
     }
 
     public NsUser getWriter() {
-        return writer;
+        return this.questionBody.getWriter();
     }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        questionBody.addAnswer(answer);
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (isOwner(loginUser)) {
-            canDeleteAnswers(loginUser);
+            questionBody.canDeleteAnswers(loginUser);
             return toDeleteHistories();
         }
 
         throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
     }
 
+    private boolean isOwner(NsUser loginUser) {
+        return this.questionBody.isOwner(loginUser);
+    }
+
     private List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(toDeleteHistory());
-        deleteHistories.addAll(answers.toDeleteHistory());
+        deleteHistories.addAll(questionBody.toDeleteHistory());
 
         return deleteHistories;
     }
 
     private DeleteHistory toDeleteHistory() {
-        setDeleted(TRUE);
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        delete();
+        return new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now());
     }
 
-    private void canDeleteAnswers(NsUser loginUser) throws CannotDeleteException {
-        this.answers.canDelete(loginUser);
-    }
-
-    private boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void delete() {
+        this.deleted.delete();
     }
 
     public boolean isDeleted() {
-        return deleted;
-    }
-
-    public Answers getAnswers() {
-        return answers;
+        return this.deleted.isDeleted();
     }
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + getTitle() + ", contents=" + getContents() + ", writer=" + getWriter() + "]";
     }
 }
