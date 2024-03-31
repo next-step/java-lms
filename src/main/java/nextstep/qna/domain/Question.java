@@ -53,24 +53,28 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
+    public Question delete(NsUser user) throws CannotDeleteException {
+        deleteQuestion(user);
+        deleteAnswers(user);
+        return this;
+    }
+
+    public DeleteHistories addDeleteHistory() {
         DeleteHistories histories = new DeleteHistories();
-        deleteQuestion(user, histories);
-        deleteAnswers(user, histories);
+        this.addTo(histories);
+        this.answers.addTo(histories);
         return histories;
     }
 
-    private void deleteQuestion(NsUser user, DeleteHistories deleteHistories) throws CannotDeleteException {
+    private void deleteQuestion(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
-        this.addTo(deleteHistories);
     }
 
-    private void deleteAnswers(NsUser user, DeleteHistories deleteHistories) throws CannotDeleteException {
+    private void deleteAnswers(NsUser user) throws CannotDeleteException {
         this.answers.delete(user);
-        this.answers.addTo(deleteHistories);
     }
 
     private void addTo(DeleteHistories deleteHistories) {
