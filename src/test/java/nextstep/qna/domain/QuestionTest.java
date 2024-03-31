@@ -6,16 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.AnswerTest.A2;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
-    public static final Question Q1_DELETED = new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true);
-
     private Question Q1_CLONE;
     @BeforeEach
     void setUp() {
@@ -44,6 +44,14 @@ public class QuestionTest {
     @DisplayName("질문자가 본인이며 답변이 없으면 삭제가 가능")
     void owner_and_has_no_answers() throws CannotDeleteException {
         Q1_CLONE.delete(NsUserTest.JAVAJIGI);
-        assertThat(Q1_DELETED).isEqualTo(Q1_CLONE);
+        assertThat(new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true, new ArrayList<>())).isEqualTo(Q1_CLONE);
+    }
+
+    @Test
+    @DisplayName("답변이 있으며 질문자와 답변글이 모두 로그인한 사용자이면 삭제가 가능")
+    void owner_as_has_owned_answers() throws CannotDeleteException {
+        Q1_CLONE.addAnswer(A1);
+        Q1_CLONE.delete(NsUserTest.JAVAJIGI);
+        assertThat(Q1_CLONE).isEqualTo(new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true, List.of(A1)));
     }
 }

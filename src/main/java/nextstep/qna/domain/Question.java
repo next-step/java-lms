@@ -32,8 +32,8 @@ public class Question{
         this(0L, writer, title, contents);
     }
 
-    public Question(NsUser writer, String title, String contents, boolean deleted) {
-        this(0L, title, contents, writer, new ArrayList<>(), deleted, LocalDateTime.now(), LocalDateTime.now());
+    public Question(NsUser writer, String title, String contents, boolean deleted, List<Answer> answers) {
+        this(0L, title, contents, writer, answers, deleted, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
