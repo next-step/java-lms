@@ -1,7 +1,10 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import nextstep.courses.InvalidSessionException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -12,6 +15,7 @@ public class Session {
     private Integer price;
     private Integer stock;
     private SessionStatus status = SessionStatus.PREPARE;
+    private List<NsUser> learners = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
