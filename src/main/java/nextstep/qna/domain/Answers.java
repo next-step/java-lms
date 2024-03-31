@@ -5,12 +5,17 @@ import nextstep.qna.CannotConvertException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Answers {
 
     private final List<Answer> answers;
+
+    public Answers() {
+        this.answers = new ArrayList<>();
+    }
 
     public Answers(List<Answer> answers) {
         this.answers = answers;
@@ -56,5 +61,13 @@ public class Answers {
         return answers.stream()
                 .map(answer -> new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()))
                 .collect(Collectors.toList());
+    }
+
+    public void add(Answer answer) {
+        this.answers.add(answer);
+    }
+
+    public boolean hasAnswer() {
+        return !this.answers.isEmpty();
     }
 }

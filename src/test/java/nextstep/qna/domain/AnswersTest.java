@@ -18,12 +18,14 @@ class AnswersTest {
     Answer A1;
     Answer A2;
     Answer A3;
+    Question Q1;
 
     @BeforeEach
     void setUp() {
-        A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
-        A3 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents3");
+        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+        A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
+        A3 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents3");
     }
 
     @DisplayName("삭제 요청 시 답변 리스트의 owner 중 하나라도 loginUser와 다르다면, CannotDeleteException를 던진다.")

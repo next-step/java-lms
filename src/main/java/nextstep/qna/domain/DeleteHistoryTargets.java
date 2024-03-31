@@ -13,4 +13,8 @@ public class DeleteHistoryTargets {
     public List<DeleteHistory> asList() {
         return List.copyOf(targets);
     }
+
+    public void addFirst(DeleteHistory deleteHistory) {
+        this.targets.add(0, deleteHistory);
+    }
 }

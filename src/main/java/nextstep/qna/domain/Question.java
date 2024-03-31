@@ -1,10 +1,10 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotConvertException;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Question {
     private Long id;
@@ -15,7 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -35,6 +35,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new Answers();
     }
 
     public Long getId() {
@@ -81,12 +82,43 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        validateOwner(loginUser);
+
+        if (this.answers.hasAnswer()) {
+            this.answers.delete(loginUser);
+        }
+
+        this.setDeleted(true);
+    }
+
+    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public DeleteHistoryTargets asDeleteHistoryTargets(NsUser loginUser) {
+        validateDeleteStatus();
+
+        DeleteHistoryTargets deleteHistoryTargets = this.answers.asDeleteHistoryTargets();
+        deleteHistoryTargets.addFirst(new DeleteHistory(ContentType.QUESTION, this.getId(), loginUser, LocalDateTime.now()));
+
+        return deleteHistoryTargets;
+    }
+
+    private void validateDeleteStatus() {
+        if (!this.isDeleted()) {
+            throw new CannotConvertException("Question이 삭제상태가 아니기 떄문에 변환할 수 없습니다.");
+        }
     }
 }

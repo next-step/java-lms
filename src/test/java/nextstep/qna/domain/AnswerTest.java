@@ -13,11 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AnswerTest {
     Answer A1;
     Answer A2;
+    Question Q1;
 
     @BeforeEach
     void setUp() {
-        A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
+        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
+        A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
     }
 
     @DisplayName("Answer에 대한 삭제를 진행할 때, loginUser와 writer가 같다면 삭제 상태를 변경한다.")
