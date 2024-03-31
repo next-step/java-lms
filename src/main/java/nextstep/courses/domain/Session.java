@@ -44,7 +44,6 @@ public class Session {
         Long price, Integer capacity, SessionStatus status, LocalDateTime createdAt) {
         validateDate(startDate, endDate);
         this.id = id;
-        validateDate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
