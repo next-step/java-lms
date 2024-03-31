@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -33,5 +35,12 @@ public class AnswerTest {
         assertThatThrownBy(() -> {
             A1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    @DisplayName("답변 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.")
+    void check_delete_history() throws CannotDeleteException {
+        A1_CLONE.delete(NsUserTest.JAVAJIGI);
+        assertThat(A1_CLONE.saveDeleteHistory()).isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 }

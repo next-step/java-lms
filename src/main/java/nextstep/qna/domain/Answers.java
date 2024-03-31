@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> answers;
@@ -38,5 +39,11 @@ public class Answers {
     @Override
     public int hashCode() {
         return Objects.hash(answers);
+    }
+
+    public List<DeleteHistory> saveDeleteHistory() {
+        return this.answers.stream()
+                .map(Answer::saveDeleteHistory)
+                .collect(Collectors.toList());
     }
 }

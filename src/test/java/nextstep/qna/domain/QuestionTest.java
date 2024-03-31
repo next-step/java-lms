@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +54,12 @@ public class QuestionTest {
         Q1_CLONE.addAnswer(A1);
         Q1_CLONE.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1_CLONE).isEqualTo(new Question(NsUserTest.JAVAJIGI, "title1", "contents1", true, List.of(A1)));
+    }
+
+    @Test
+    @DisplayName("질문 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.")
+    void check_delete_history() throws CannotDeleteException {
+        Q1_CLONE.delete(NsUserTest.JAVAJIGI);
+        assertThat(Q1_CLONE.saveDeleteHistory()).isEqualTo(List.of(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now())));
     }
 }

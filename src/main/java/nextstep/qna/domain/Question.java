@@ -128,4 +128,10 @@ public class Question{
     public int hashCode() {
         return Objects.hash(id, title, contents, writer, answers, deleted);
     }
+
+    public List<DeleteHistory> saveDeleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now())));
+        deleteHistories.addAll(this.answers.saveDeleteHistory());
+        return deleteHistories;
+    }
 }

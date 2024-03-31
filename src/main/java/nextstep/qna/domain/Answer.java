@@ -104,4 +104,8 @@ public class Answer {
         }
         this.deleted = true;
     }
+
+    public DeleteHistory saveDeleteHistory(){
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+    }
 }
