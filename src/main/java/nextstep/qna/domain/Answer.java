@@ -54,20 +54,16 @@ public class Answer {
     }
 
     DeleteHistory delete(NsUser user) {
-        try {
-            validateOwner(user);
-            this.deleted = true;
-            return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
-        } catch (CannotDeleteException e) {
-            throw new RuntimeException(e);
-        }
+        validateOwner(user);
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public void toQuestion(Question question) {
         this.question = question;
     }
 
-    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+    private void validateOwner(NsUser loginUser) {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

@@ -44,7 +44,7 @@ public class Question {
         answers.add(answer);
     }
 
-    private void hasDeleteAuthentication(NsUser loginUser) throws CannotDeleteException {
+    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -56,7 +56,7 @@ public class Question {
     }
 
     private DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
-        hasDeleteAuthentication(user);
+        validateOwner(user);
         deleted = true;
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
