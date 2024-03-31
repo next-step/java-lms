@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
     Answer A1;
@@ -21,20 +20,11 @@ public class AnswerTest {
         A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
     }
 
-    @DisplayName("Answer에 대한 삭제를 진행할 때, loginUser와 writer가 같지 않으면 CannotDeleteException를 던진다.")
-    @Test
-    void throwCannotDeleteExceptionWhenLoginUserAndWriterNotSame() {
-        // then
-        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
-
     @DisplayName("Answer에 대한 삭제를 진행할 때, loginUser와 writer가 같다면 삭제 상태를 변경한다.")
     @Test
     void changeDeleteStatueWhenLoginUserAndWriterSame() throws CannotDeleteException {
         // when
-        A1.delete(NsUserTest.JAVAJIGI);
+        A1.delete();
 
         // then
         assertThat(A1.isDeleted()).isTrue();

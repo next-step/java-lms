@@ -43,6 +43,6 @@
 # 리팩토링 리스트
 - [x] DeleteHistoryTargets 일급 컬렉션 구현
 - [x] DeleteHistory 서비스의 DeleteHistoryTargets에 대한 삭제 구현
-- [ ] Answer 일급 컬렉션 구현
+- [x] Answer 일급 컬렉션 구현
 - [ ] Question 삭제 상태 변경 구현
 - [ ] Question 삭제 리스트 반환 구현
