@@ -80,10 +80,10 @@ public class Session {
             return;
         }
         validatePayment(learner, payment);
-        validatePayEnough(payment);
+        validatePaidEnough(payment);
     }
 
-    private void validatePayEnough(Payment payment) {
+    private void validatePaidEnough(Payment payment) {
         boolean paidNotEnough = payment.getAmount() < price;
         if (paidNotEnough) {
             throw new CanNotJoinSessionException("결제 금액이 부족합니다");
