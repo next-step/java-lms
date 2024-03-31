@@ -15,24 +15,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
 
-    Answer A1;
-    Answer A2;
-    Answer A3;
-    Question Q1;
+    Answer A1_ANSWER_BY_JAVAJIGI_OF_Q1;
+    Answer A2_ANSWER_BY_SANJIGI_OF_Q1;
+    Answer A3_ANSWER_BY_SANJIGI_OF_Q1;
+    Question Q1_QUESTION_BY_JAVAJIGI;
 
     @BeforeEach
     void setUp() {
-        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
-        A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
-        A3 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents3");
+        Q1_QUESTION_BY_JAVAJIGI = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        A1_ANSWER_BY_JAVAJIGI_OF_Q1 = new Answer(NsUserTest.JAVAJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents1");
+        A2_ANSWER_BY_SANJIGI_OF_Q1 = new Answer(NsUserTest.SANJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents2");
+        A3_ANSWER_BY_SANJIGI_OF_Q1 = new Answer(NsUserTest.SANJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents3");
     }
 
     @DisplayName("삭제 요청 시 답변 리스트의 owner 중 하나라도 loginUser와 다르다면, CannotDeleteException를 던진다.")
     @Test
     void throwCannotDeleteExceptionNotAllMatchLoginUserAndOwner() {
         // given
-        Answers answers = new Answers(List.of(A1, A2));
+        Answers answers = new Answers(List.of(A1_ANSWER_BY_JAVAJIGI_OF_Q1, A2_ANSWER_BY_SANJIGI_OF_Q1));
 
         // then
         assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
@@ -44,28 +44,28 @@ class AnswersTest {
     @Test
     void changeDeleteStatusIfOwnerAndLoginUserAllMatch() throws CannotDeleteException {
         // given
-        Answers answers = new Answers(List.of(A2, A3));
+        Answers answers = new Answers(List.of(A2_ANSWER_BY_SANJIGI_OF_Q1, A3_ANSWER_BY_SANJIGI_OF_Q1));
 
         // when
         answers.delete(NsUserTest.SANJIGI);
 
         // then
-        Assertions.assertThat(A2.isDeleted()).isTrue();
-        Assertions.assertThat(A3.isDeleted()).isTrue();
+        Assertions.assertThat(A2_ANSWER_BY_SANJIGI_OF_Q1.isDeleted()).isTrue();
+        Assertions.assertThat(A3_ANSWER_BY_SANJIGI_OF_Q1.isDeleted()).isTrue();
     }
 
     @DisplayName("답변 리스트를 DeleteHistoryTargets로 반환받을 수 있다.")
     @Test
     void getAsDelteHistoryTargets() throws CannotDeleteException {
         // given
-        Answers answers = new Answers(List.of(A2, A3));
+        Answers answers = new Answers(List.of(A2_ANSWER_BY_SANJIGI_OF_Q1, A3_ANSWER_BY_SANJIGI_OF_Q1));
 
         // when
         answers.delete(NsUserTest.SANJIGI);
 
         // then
         Assertions.assertThat(answers.asDeleteHistoryTargets().asList()).contains(
-                new DeleteHistory(ContentType.ANSWER, A1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
+                new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
         );
     }
 
@@ -73,7 +73,7 @@ class AnswersTest {
     @Test
     void throwCannotTransportExceptionWhenNotAllDeletedStatus() {
         // given
-        Answers answers = new Answers(List.of(A2, A3));
+        Answers answers = new Answers(List.of(A2_ANSWER_BY_SANJIGI_OF_Q1, A3_ANSWER_BY_SANJIGI_OF_Q1));
 
         // then
         Assertions.assertThatThrownBy(answers::asDeleteHistoryTargets)
