@@ -17,7 +17,7 @@ public class Question{
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers;
 
     private boolean deleted = false;
 
@@ -45,7 +45,7 @@ public class Question{
         this.title = title;
         this.contents = contents;
         this.writer = writer;
-        this.answers = answers;
+        this.answers = new Answers(answers);
         this.deleted = deleted;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
@@ -96,7 +96,7 @@ public class Question{
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return this.answers.getAnswers();
     }
 
     @Override
@@ -106,9 +106,7 @@ public class Question{
 
     public void delete(NsUser nsUser) throws CannotDeleteException {
         checkIfOwner(nsUser);
-        for(Answer answer : this.answers){
-            answer.delete(nsUser);
-        }
+        this.answers.delete(nsUser);
         this.deleted = true;
     }
 
