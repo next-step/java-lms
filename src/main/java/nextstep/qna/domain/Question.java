@@ -55,14 +55,14 @@ public class Question {
         return new DeleteHistorys(deleteQuestion(user), deleteAnswer(user));
     }
 
-    private DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
+    private DeleteHistory deleteQuestion(NsUser user){
         validateOwner(user);
         deleted = true;
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
 
-    public List<DeleteHistory> deleteAnswer(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAnswer(NsUser user) {
         return answers.delete(user);
     }
 
