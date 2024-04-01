@@ -1,7 +1,8 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.deleteHistory;
 
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.Question;
 import nextstep.qna.domain.answer.Answer;
-import nextstep.qna.domain.answer.Answers;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -27,21 +28,6 @@ public class DeleteHistory {
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
     }
-
-    public DeleteHistory(Question question) {
-        this(ContentType.QUESTION,
-                question.getId(),
-                question.getWriter(),
-                LocalDateTime.now());
-    }
-
-    public DeleteHistory(Answer answer) {
-        this(ContentType.ANSWER,
-                answer.getId(),
-                answer.getWriter(),
-                LocalDateTime.now());
-    }
-
 
     @Override
     public boolean equals(Object o) {
