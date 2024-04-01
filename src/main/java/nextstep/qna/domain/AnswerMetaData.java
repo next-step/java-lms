@@ -2,13 +2,13 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-public class AnswerInfo {
+public class AnswerMetaData {
   private NsUser writer;
 
   private String contents;
 
 
-  public AnswerInfo(NsUser writer, String contents) {
+  public AnswerMetaData(NsUser writer, String contents) {
     this.writer = writer;
     this.contents = contents;
   }

@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-public class QuestionInfo {
+public class QuestionMetaData {
 
   private String title;
 
@@ -10,7 +10,7 @@ public class QuestionInfo {
 
   private NsUser writer;
 
-  public QuestionInfo(NsUser writer, String title, String contents) {
+  public QuestionMetaData(NsUser writer, String title, String contents) {
     this.writer = writer;
     this.title = title;
     this.contents = contents;

@@ -5,16 +5,12 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Question extends BaseEntity{
 
-    private QuestionInfo questionInfo;
+    private QuestionMetaData questionMetaData;
 
     private final Answers answers = new Answers(new ArrayList<>());
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -22,12 +18,12 @@ public class Question extends BaseEntity{
 
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
-        questionInfo = new QuestionInfo(writer, title, contents);
+        questionMetaData = new QuestionMetaData(writer, title, contents);
     }
 
-    public Question(Long id, QuestionInfo questionInfo) {
+    public Question(Long id, QuestionMetaData questionMetaData) {
         this.id = id;
-        this.questionInfo = questionInfo;
+        this.questionMetaData = questionMetaData;
     }
 
     public void addAnswer(Answer answer) {
@@ -35,17 +31,13 @@ public class Question extends BaseEntity{
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return questionInfo.isOwner(loginUser);
-    }
-
     @Override
     public String toString() {
-        return "Question [id=" + id + " " + questionInfo + " ]";
+        return "Question [id=" + id + " " + questionMetaData + " ]";
     }
 
     private void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!questionInfo.isOwner(loginUser)) {
+        if (!questionMetaData.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 

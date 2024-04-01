@@ -9,11 +9,8 @@ import java.time.LocalDateTime;
 
 public class Answer extends BaseEntity  {
 
-    private AnswerInfo answerInfo;
+    private AnswerMetaData answerMetaData;
     private Question question;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
@@ -30,15 +27,15 @@ public class Answer extends BaseEntity  {
         }
         this.question = question;
 
-        answerInfo = new AnswerInfo(writer, contents);
+        answerMetaData = new AnswerMetaData(writer, contents);
     }
 
     public boolean isOwner(NsUser loginUser) {
-        return answerInfo.isOwner(loginUser);
+        return answerMetaData.isOwner(loginUser);
     }
 
     public NsUser getWriter() {
-        return answerInfo.getWriter();
+        return answerMetaData.getWriter();
     }
 
 
@@ -54,11 +51,11 @@ public class Answer extends BaseEntity  {
 
     public DeleteHistory delete() {
         deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, id, answerInfo.getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, id, answerMetaData.getWriter(), LocalDateTime.now());
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", " + answerInfo + " ]";
+        return "Answer [id=" + getId() + ", " + answerMetaData + " ]";
     }
 }
