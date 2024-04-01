@@ -79,12 +79,12 @@ public class Question {
             throw new CannotDeleteException("이미 삭제된 질문입니다.");
         }
 
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         for (Answer answer : this.answers) {
-            if (!answer.isOwner(loginUser)) {
+            if (answer.isNotOwner(loginUser)) {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }
@@ -100,8 +100,8 @@ public class Question {
         return deleteHistories;
     }
 
-    private boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    private boolean isNotOwner(NsUser loginUser) {
+        return !writer.equals(loginUser);
     }
 
     @Override

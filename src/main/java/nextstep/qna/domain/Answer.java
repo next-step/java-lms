@@ -54,7 +54,7 @@ public class Answer {
             throw new CannotDeleteException("이미 삭제된 질문입니다.");
         }
 
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
 
@@ -62,8 +62,8 @@ public class Answer {
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public boolean isNotOwner(NsUser writer) {
+        return !this.writer.equals(writer);
     }
 
     public void toQuestion(Question question) {
