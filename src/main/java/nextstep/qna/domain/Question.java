@@ -1,6 +1,6 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
+import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
