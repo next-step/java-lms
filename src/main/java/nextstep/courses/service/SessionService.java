@@ -1,5 +1,6 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.PaidSession;
 import nextstep.courses.domain.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
@@ -15,7 +16,11 @@ public class SessionService {
         this.paymentService = paymentService;
     }
 
-    public void joinSession(NsUser loginUser, Session session, Payment payment) {
-        session.join(loginUser, payment);
+    public void joinSession(NsUser loginUser, Session session) {
+        session.join(loginUser);
+    }
+
+    public void joinPaidSession(NsUser loginUser, PaidSession paidSession, Payment payment) {
+        paidSession.join(loginUser, payment);
     }
 }

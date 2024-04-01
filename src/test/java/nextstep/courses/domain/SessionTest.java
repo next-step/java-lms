@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -50,19 +49,13 @@ class SessionTest {
         // given
         Session freeSession = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 0L, 0, SessionStatus.RECRUIT,
-            FIXED_DATE_TIME
-        );
-        Session paidSession = new Session(
-            1L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 10_000L, 1, SessionStatus.RECRUIT,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
         // when
-        freeSession.join(loginUser, null);
-        paidSession.join(loginUser, new Payment(paidSession.getId(), loginUser.getId(), paidSession.getPrice(), FIXED_DATE_TIME));
+        freeSession.join(loginUser);
 
         // then
         List<NsUser> learners = freeSession.getLearners();
@@ -76,81 +69,13 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 0L, 0, SessionStatus.valueOf(sessionStatus),
+            SAMPLE_COVER_IMAGE, SessionStatus.valueOf(sessionStatus),
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
         // when, then
-        assertThatThrownBy(() -> session.join(loginUser, null))
-            .isInstanceOf(CanNotJoinSessionException.class);
-    }
-
-    @Test
-    @DisplayName("모집정원을 초과하면 강의 참여 시 예외가 발생한다")
-    void join_fail_for_exceed_capacity() {
-        // given
-        Session session = new Session(
-            0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 800_000L, 1, SessionStatus.RECRUIT,
-            FIXED_DATE_TIME
-        );
-        NsUser oldLearner = NsUserTest.JAVAJIGI;
-        session.join(oldLearner, new Payment(session.getId(), oldLearner.getId(), session.getPrice(), FIXED_DATE_TIME));
-
-
-        // when, then
-        NsUser newLearner = NsUserTest.SANJIGI;
-        assertThatThrownBy(() -> session.join(newLearner, new Payment(session.getId(),newLearner .getId(), session.getPrice(), FIXED_DATE_TIME)))
-            .isInstanceOf(CanNotJoinSessionException.class);
-    }
-
-    @Test
-    @DisplayName("유료 강의인데 Payment가 null이라면 예외가 발생한다")
-    void join_fail_for_paid_session_but_payment_null() {
-        // given
-        Session session = new Session(
-            0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 800_000L, 1, SessionStatus.RECRUIT,
-            FIXED_DATE_TIME
-        );
-
-        // when, then
-        assertThatThrownBy(() -> session.join(NsUserTest.JAVAJIGI, null))
-            .isInstanceOf(CanNotJoinSessionException.class);
-    }
-
-    @Test
-    @DisplayName("다른 강의에 대한 결제 정보라면 예외가 발생한다")
-    void join_fail_for_another_session_payment() {
-        // given
-        Session session = new Session(
-            0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 800_000L, 1, SessionStatus.RECRUIT,
-            FIXED_DATE_TIME
-        );
-        NsUser learner = NsUserTest.JAVAJIGI;
-
-        // when, then
-        assertThatThrownBy(() -> session.join(learner, new Payment(100L, learner.getId(), session.getPrice(), FIXED_DATE_TIME)))
-            .isInstanceOf(CanNotJoinSessionException.class);
-    }
-
-    @Test
-    @DisplayName("다른 강의에 대한 결제 정보라면 예외가 발생한다")
-    void join_fail_for_not_enough_payment() {
-        // given
-        Session session = new Session(
-            0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, 800_000L, 1, SessionStatus.RECRUIT,
-            FIXED_DATE_TIME
-        );
-        NsUser learner = NsUserTest.JAVAJIGI;
-        long paidAmount = session.getPrice() - 1;
-
-        // when, then
-        assertThatThrownBy(() -> session.join(learner, new Payment(session.getId(), learner.getId(),
-            paidAmount, FIXED_DATE_TIME)))
+        assertThatThrownBy(() -> session.join(loginUser))
             .isInstanceOf(CanNotJoinSessionException.class);
     }
 }
