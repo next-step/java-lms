@@ -22,7 +22,7 @@ public class QuestionTest {
     @DisplayName("[실패] 자신이 생성하지 않은 질문을 삭제하려는 경우 CannotDeleteException 예외가 발생한다.")
     void 답변_삭제_불가능() {
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> Q2.delete(NsUserTest.SANJIGI));
+                .isThrownBy(() -> Q1.delete(NsUserTest.SANJIGI));
     }
 
 }
