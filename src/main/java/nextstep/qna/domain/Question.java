@@ -55,13 +55,13 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question delete(NsUser user) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
         deleteQuestion(user);
         deleteAnswers(user);
-        return this;
+        return addDeleteHistories();
     }
 
-    public DeleteHistories addDeleteHistory() {
+    public DeleteHistories addDeleteHistories() {
         DeleteHistories histories = new DeleteHistories();
         histories.add(convertToDeleteHistory());
         histories.add(this.answers.convertToDeleteHistories());
