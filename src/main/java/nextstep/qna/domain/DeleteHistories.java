@@ -20,6 +20,10 @@ public class DeleteHistories {
         this.deleteHistories.add(deleteHistory);
     }
 
+    public void add(List<DeleteHistory> deleteHistories) {
+        this.deleteHistories.addAll(deleteHistories);
+    }
+
     public List<DeleteHistory> get() {
         return Collections.unmodifiableList(deleteHistories);
     }

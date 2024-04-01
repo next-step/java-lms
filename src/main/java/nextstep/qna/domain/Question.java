@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.exception.CannotDeleteException;
-import nextstep.qna.exception.CannotDeleteExceptionMessage;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -64,8 +63,8 @@ public class Question {
 
     public DeleteHistories addDeleteHistory() {
         DeleteHistories histories = new DeleteHistories();
-        this.addTo(histories);
-        this.answers.addTo(histories);
+        histories.add(convertToDeleteHistory());
+        histories.add(this.answers.convertToDeleteHistories());
         return histories;
     }
 
@@ -84,8 +83,8 @@ public class Question {
         this.answers.delete(user);
     }
 
-    private void addTo(DeleteHistories deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+    private DeleteHistory convertToDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {

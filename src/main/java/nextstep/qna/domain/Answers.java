@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -25,8 +26,10 @@ public class Answers {
         return this;
     }
 
-    public void addTo(DeleteHistories histories) {
-        answers.forEach(answer -> answer.addTo(histories));
+    public List<DeleteHistory> convertToDeleteHistories() {
+        return answers.stream()
+                .map(Answer::convertToDeleteHistory)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public void add(Answer answer) {

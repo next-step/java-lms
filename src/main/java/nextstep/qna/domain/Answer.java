@@ -78,8 +78,8 @@ public class Answer {
         this.question = question;
     }
 
-    public void addTo(DeleteHistories deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    public DeleteHistory convertToDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
