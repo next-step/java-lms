@@ -61,7 +61,7 @@ public class Question {
         return addDeleteHistories();
     }
 
-    public DeleteHistories addDeleteHistories() {
+    private DeleteHistories addDeleteHistories() {
         DeleteHistories histories = new DeleteHistories();
         histories.add(convertToDeleteHistory());
         histories.add(this.answers.convertToDeleteHistories());
