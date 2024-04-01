@@ -1,8 +1,13 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.Question;
+import nextstep.qna.domain.deleteHistory.DeleteHistory;
 import nextstep.users.domain.NsUser;
+import nextstep.utils.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -30,12 +35,16 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
+        }
+
+        if (StringUtils.isBlank(contents)) {
+            throw new IllegalArgumentException("질문은 필수 값 입니다.");
         }
 
         this.writer = writer;
@@ -47,9 +56,11 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public void delete(NsUser nsUser) throws CannotDeleteException {
+        if (!isOwner(nsUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+        this.deleted = true;
     }
 
     public boolean isDeleted() {
@@ -64,10 +75,6 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
@@ -75,5 +82,9 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public DeleteHistory convertDeleteHistory(LocalDateTime regDatetime) {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, regDatetime);
     }
 }
