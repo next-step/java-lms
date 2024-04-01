@@ -3,9 +3,9 @@ package nextstep.qna.domain;
 import nextstep.users.domain.NsUser;
 
 public class AnswerInfo extends  BaseEntity {
-  private NsUser writer;
+  private final NsUser writer;
 
-  private String contents;
+  private final String contents;
 
 
   public AnswerInfo(NsUser writer, String contents) {

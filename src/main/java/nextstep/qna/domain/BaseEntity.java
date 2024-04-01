@@ -6,7 +6,7 @@ public class BaseEntity {
 
   protected Long id;
 
-  private LocalDateTime createdDate = LocalDateTime.now();
+  private final LocalDateTime createdDate = LocalDateTime.now();
 
   private LocalDateTime updatedDate;
 
