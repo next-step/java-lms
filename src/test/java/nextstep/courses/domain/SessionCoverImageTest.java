@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import static nextstep.courses.domain.SessionCoverImage.ALLOWED_EXT;
+import static nextstep.courses.domain.SessionCoverImage.ALLOWED_EXTS;
 import static nextstep.courses.domain.SessionCoverImage.HEIGHT_RATIO;
 import static nextstep.courses.domain.SessionCoverImage.MAX_BYTE_SIZE;
 import static nextstep.courses.domain.SessionCoverImage.MIN_HEIGHT;
@@ -17,8 +17,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class SessionCoverImageTest {
 
+    public static String ALLOWED_EXT = "png";
     public static SessionCoverImage SAMPLE_COVER_IMAGE = new SessionCoverImage(
-        MAX_BYTE_SIZE, ALLOWED_EXT.get(0), MIN_WIDTH, MIN_HEIGHT, "sample"
+        MAX_BYTE_SIZE, ALLOWED_EXT, MIN_WIDTH, MIN_HEIGHT, "sample"
     );
 
     @Test
@@ -26,7 +27,7 @@ class SessionCoverImageTest {
     void new_success() {
         assertThatNoException()
             .isThrownBy(() -> new SessionCoverImage(
-                MAX_BYTE_SIZE, ALLOWED_EXT.get(0), MIN_WIDTH, MIN_HEIGHT, "sample"
+                MAX_BYTE_SIZE, ALLOWED_EXT, MIN_WIDTH, MIN_HEIGHT, "sample"
         ));
     }
 
@@ -43,7 +44,7 @@ class SessionCoverImageTest {
     @DisplayName("제한 용량을 초과하면 예외가 발생한다")
     void new_fail_for_exceed_byte_size() {
         assertThatThrownBy(() -> new SessionCoverImage(
-                MAX_BYTE_SIZE + 1, ALLOWED_EXT.get(0), MIN_WIDTH, MIN_HEIGHT, "sample"
+                MAX_BYTE_SIZE + 1, ALLOWED_EXT, MIN_WIDTH, MIN_HEIGHT, "sample"
             )
         ).isInstanceOf(InvalidCoverImageException.class);
     }
@@ -53,7 +54,7 @@ class SessionCoverImageTest {
     @CsvSource(value = {"299,200", "300,199"}, delimiter = ',')
     void new_fail_for_not_satisfied_width_or_height(int width, int height) {
         assertThatThrownBy(() -> new SessionCoverImage(
-                MAX_BYTE_SIZE, ALLOWED_EXT.get(0), width, height, "sample"
+                MAX_BYTE_SIZE, ALLOWED_EXT, width, height, "sample"
             )
         ).isInstanceOf(InvalidCoverImageException.class);
     }
@@ -64,7 +65,7 @@ class SessionCoverImageTest {
         int width = (int) (MIN_WIDTH * (WIDTH_RATIO + 1));
         int height = (int) (MIN_HEIGHT * HEIGHT_RATIO);
         assertThatThrownBy(() -> new SessionCoverImage(
-                MAX_BYTE_SIZE, ALLOWED_EXT.get(0), width, height, "sample"
+                MAX_BYTE_SIZE, ALLOWED_EXT, width, height, "sample"
             )
         ).isInstanceOf(InvalidCoverImageException.class);
     }

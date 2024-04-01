@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import java.util.List;
+import java.util.Set;
 import nextstep.courses.InvalidCoverImageException;
 
 public class SessionCoverImage {
@@ -9,7 +9,7 @@ public class SessionCoverImage {
     public static final int MIN_HEIGHT = 200;
     public static final double WIDTH_RATIO = 3.0;
     public static final double HEIGHT_RATIO = 2.0;
-    public static List<String> ALLOWED_EXT = List.of("gif", "jpg", "jpeg", "png", "svg");
+    public static Set<String> ALLOWED_EXTS = Set.of("gif", "jpg", "jpeg", "png", "svg");
     public static final long MAX_BYTE_SIZE = 1024 * 1024;
 
     private static final double PRECISION = 0.0001;
@@ -47,7 +47,7 @@ public class SessionCoverImage {
     }
 
     private void validateExt(String ext) {
-        boolean notValidExt = ALLOWED_EXT.stream().noneMatch(ext::equals);
+        boolean notValidExt = !ALLOWED_EXTS.contains(ext);
         if (notValidExt) {
             throw new InvalidCoverImageException("허용되지 않는 강의 커버 이미지 확장자입니다");
         }
