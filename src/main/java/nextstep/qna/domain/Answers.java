@@ -22,9 +22,9 @@ public class Answers {
     }
   }
 
-  public List<DeleteHistory> delete() {
-    return answers.stream()
+  public DeleteHistories delete() {
+    return  new DeleteHistories(answers.stream()
                   .map(Answer::delete)
-                  .collect(Collectors.toList());
+                  .collect(Collectors.toList()));
   }
 }

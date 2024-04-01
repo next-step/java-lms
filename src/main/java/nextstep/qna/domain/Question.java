@@ -44,15 +44,15 @@ public class Question extends BaseEntity{
         answers.validateDeletable(loginUser);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         validateDeletable(loginUser);
         deleted = true;
-        List<DeleteHistory> deleteAnswerHistories = answers.delete();
+        DeleteHistories deleteAnswerHistories = answers.delete();
         return deletedHistories(deleteAnswerHistories);
     }
 
-    private List<DeleteHistory> deletedHistories(List<DeleteHistory> deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, questionInfo.getWriter(), LocalDateTime.now()));
+    private DeleteHistories deletedHistories(DeleteHistories deleteHistories) {
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, questionMetaData.getWriter(), LocalDateTime.now()));
         return deleteHistories;
     }
 }
