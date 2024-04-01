@@ -77,11 +77,8 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-    public void delete() {
+    public DeleteHistory delete() {
         this.setDeleted(true);
-    }
-
-    public DeleteHistory asDeleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 }

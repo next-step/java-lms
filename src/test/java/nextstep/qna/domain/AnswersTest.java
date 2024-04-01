@@ -1,9 +1,7 @@
 package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.CannotConvertException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnswersTest {
@@ -40,7 +39,7 @@ class AnswersTest {
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
-    @DisplayName("답변 리스트의 owner와 loginUser가 모두 같다면, 리스트의 상태를 모두 삭제 상태로 바꾼다.")
+    @DisplayName("답변 리스트의 owner와 loginUser가 모두 같다면, 리스트의 상태를 모두 삭제 상태로 바꾸고 History 리스트를 반환한다.")
     @Test
     void changeDeleteStatusIfOwnerAndLoginUserAllMatch() throws CannotDeleteException {
         // given
@@ -50,33 +49,9 @@ class AnswersTest {
         answers.delete(NsUserTest.SANJIGI);
 
         // then
-        Assertions.assertThat(A2_ANSWER_BY_SANJIGI_OF_Q1.isDeleted()).isTrue();
-        Assertions.assertThat(A3_ANSWER_BY_SANJIGI_OF_Q1.isDeleted()).isTrue();
-    }
-
-    @DisplayName("답변 리스트를 DeleteHistoryTargets로 반환받을 수 있다.")
-    @Test
-    void getAsDelteHistoryTargets() throws CannotDeleteException {
-        // given
-        Answers answers = new Answers(List.of(A2_ANSWER_BY_SANJIGI_OF_Q1, A3_ANSWER_BY_SANJIGI_OF_Q1));
-
-        // when
-        answers.delete(NsUserTest.SANJIGI);
-
-        // then
-        Assertions.assertThat(answers.asDeleteHistoryTargets().asList()).contains(
-                new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
+        assertThat(answers.delete(NsUserTest.SANJIGI).asList()).contains(
+                new DeleteHistory(ContentType.ANSWER, A2_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
+                new DeleteHistory(ContentType.ANSWER, A3_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
         );
-    }
-
-    @DisplayName("상태가 삭제가 아닌 요소가 존재할 경우, CannotConvertException")
-    @Test
-    void throwCannotTransportExceptionWhenNotAllDeletedStatus() {
-        // given
-        Answers answers = new Answers(List.of(A2_ANSWER_BY_SANJIGI_OF_Q1, A3_ANSWER_BY_SANJIGI_OF_Q1));
-
-        // then
-        Assertions.assertThatThrownBy(answers::asDeleteHistoryTargets)
-                .isInstanceOf(CannotConvertException.class);
     }
 }

@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotConvertException;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -91,34 +90,19 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistoryTargets delete(NsUser loginUser) throws CannotDeleteException {
         validateOwner(loginUser);
-
-        if (this.answers.hasAnswer()) {
-            this.answers.delete(loginUser);
-        }
-
         this.setDeleted(true);
-    }
 
-    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-    }
-
-    public DeleteHistoryTargets asDeleteHistoryTargets(NsUser loginUser) {
-        validateDeleteStatus();
-
-        DeleteHistoryTargets deleteHistoryTargets = this.answers.asDeleteHistoryTargets();
+        DeleteHistoryTargets deleteHistoryTargets = this.answers.delete(loginUser);
         deleteHistoryTargets.addFirst(new DeleteHistory(ContentType.QUESTION, this.getId(), loginUser, LocalDateTime.now()));
 
         return deleteHistoryTargets;
     }
 
-    private void validateDeleteStatus() {
-        if (!this.isDeleted()) {
-            throw new CannotConvertException("Question이 삭제상태가 아니기 떄문에 변환할 수 없습니다.");
+    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 }

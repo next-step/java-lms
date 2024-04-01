@@ -59,30 +59,11 @@ public class QuestionTest {
 
         // then
         Answers answers = Q1_QUESTION_BY_JAVAJIGI.getAnswers();
-        assertThat(answers.asDeleteHistoryTargets().asList())
+        assertThat(answers.delete(NsUserTest.JAVAJIGI).asList())
                 .containsExactly(
                         new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
                         new DeleteHistory(ContentType.ANSWER, A2_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now())
                 );
-    }
-
-    @DisplayName("삭제 도중 실패하면 모든 상태는 변하지 않는다.")
-    @Test
-    void noStatusUpdateWhenFailedToDelete() throws CannotDeleteException {
-        // given
-        boolean beforeQ1DeleteStatus = Q1_QUESTION_BY_JAVAJIGI.isDeleted();
-        boolean beforeA1DeleteStatus = A1_ANSWER_BY_JAVAJIGI_OF_Q1.isDeleted();
-        boolean beforeA3DeleteStatus = A3_ANSWER_BY_SANJIGI_OF_Q1.isDeleted();
-        Q1_QUESTION_BY_JAVAJIGI.addAnswer(A1_ANSWER_BY_JAVAJIGI_OF_Q1);
-        Q1_QUESTION_BY_JAVAJIGI.addAnswer(A3_ANSWER_BY_SANJIGI_OF_Q1);
-
-        // then
-        assertThatThrownBy(() -> Q1_QUESTION_BY_JAVAJIGI.delete(NsUserTest.JAVAJIGI))
-                .isInstanceOf(CannotDeleteException.class);
-
-        assertThat(Q1_QUESTION_BY_JAVAJIGI.isDeleted()).isEqualTo(beforeQ1DeleteStatus);
-        assertThat(A1_ANSWER_BY_JAVAJIGI_OF_Q1.isDeleted()).isEqualTo(beforeA1DeleteStatus);
-        assertThat(A3_ANSWER_BY_SANJIGI_OF_Q1.isDeleted()).isEqualTo(beforeA3DeleteStatus);
     }
 
     @DisplayName("삭제가 성공하면 모든 상태는 삭제상태가 된다.")
@@ -109,10 +90,9 @@ public class QuestionTest {
         Q1_QUESTION_BY_JAVAJIGI.addAnswer(A2_ANSWER_BY_JAVAJIGI_OF_Q1);
 
         // when
-        Q1_QUESTION_BY_JAVAJIGI.delete(NsUserTest.JAVAJIGI);
+        DeleteHistoryTargets deleteHistoryTargets = Q1_QUESTION_BY_JAVAJIGI.delete(NsUserTest.JAVAJIGI);
 
         // then
-        DeleteHistoryTargets deleteHistoryTargets = Q1_QUESTION_BY_JAVAJIGI.asDeleteHistoryTargets(NsUserTest.JAVAJIGI);
         assertThat(deleteHistoryTargets.asList())
                 .contains(
                         new DeleteHistory(ContentType.QUESTION, Q1_QUESTION_BY_JAVAJIGI.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),

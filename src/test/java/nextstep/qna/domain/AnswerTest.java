@@ -22,17 +22,7 @@ public class AnswerTest {
 
     }
 
-    @DisplayName("Answer에 대한 삭제를 진행할 때, loginUser와 writer가 같다면 삭제 상태를 변경한다.")
-    @Test
-    void changeDeleteStatueWhenLoginUserAndWriterSame() {
-        // when
-        A1_ANSWER_BY_JAVAJIGI_OF_Q1.delete();
-
-        // then
-        assertThat(A1_ANSWER_BY_JAVAJIGI_OF_Q1.isDeleted()).isTrue();
-    }
-
-    @DisplayName("생성한 Answer에 대해, DeleteHistory로 변환하여 받을 수 있다.")
+    @DisplayName("생성한 Answer에 대해 삭제 시, DeleteHistory로 변환하여 받을 수 있다.")
     @Test
     void getAsDeleteHistory() {
         // given
@@ -40,6 +30,6 @@ public class AnswerTest {
                 new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         // then
-        assertThat(A1_ANSWER_BY_JAVAJIGI_OF_Q1.asDeleteHistory()).isEqualTo(deleteHistory);
+        assertThat(A1_ANSWER_BY_JAVAJIGI_OF_Q1.delete()).isEqualTo(deleteHistory);
     }
 }
