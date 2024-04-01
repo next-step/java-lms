@@ -91,12 +91,13 @@ public class Question {
 
         this.deleted = true;
         final List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer));
         deleteHistories.addAll(
                 this.answers.stream()
                         .map(answer -> answer.delete(loginUser))
                         .collect(Collectors.toList())
         );
+
         return deleteHistories;
     }
 
