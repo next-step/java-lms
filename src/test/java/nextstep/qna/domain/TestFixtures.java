@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class TestFixtures {
 
-    public static final LocalDateTime CREATED_DATE_TIME = LocalDateTime.of(2010, 1, 1, 13, 45);
-    public static final CreatedDateTimeProvider CREATED_DATE_TIME_PROVIDER = new FixedDateTimeProvider(
-        CREATED_DATE_TIME);
+    public static final LocalDateTime FIXED_DATE_TIME = LocalDateTime.of(2010, 1, 1, 13, 45);
+    public static final CurrentDateTimeProvider CURRENT_DATE_TIME_PROVIDER = new FixedDateTimeProvider(
+        FIXED_DATE_TIME);
 
     private TestFixtures() {
         throw new AssertionError();
     }
 
-    static class FixedDateTimeProvider implements CreatedDateTimeProvider {
+    static class FixedDateTimeProvider implements CurrentDateTimeProvider {
 
         private final LocalDateTime fixedDateTime;
 
@@ -21,7 +21,7 @@ public class TestFixtures {
         }
 
         @Override
-        public LocalDateTime now() {
+        public LocalDateTime get() {
             return fixedDateTime;
         }
     }

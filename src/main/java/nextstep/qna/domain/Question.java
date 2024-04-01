@@ -23,31 +23,28 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    private CreatedDateTimeProvider createdDateTimeProvider;
-
     public Question() {
     }
 
-    public Question(CreatedDateTimeProvider createdDateTimeProvider, NsUser writer, String title, String contents) {
-        this(createdDateTimeProvider, 0L, writer, title, contents);
+    public Question(NsUser writer, String title, String contents, LocalDateTime createdDate) {
+        this(0L, writer, title, contents, createdDate);
     }
 
-    public Question(CreatedDateTimeProvider createdDateTimeProvider, Long id, NsUser writer, String title, String contents) {
-        this.createdDateTimeProvider = createdDateTimeProvider;
+    public Question(Long id, NsUser writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdDate = createdDateTimeProvider.now();
+        this.createdDate = createdDate;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime deletedDate) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), createdDateTimeProvider.now()));
-        deleteHistories.addAll(answers.delete(loginUser));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), deletedDate));
+        deleteHistories.addAll(answers.delete(loginUser, deletedDate));
         deleted = true;
 
         return deleteHistories;

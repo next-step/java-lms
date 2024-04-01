@@ -3,11 +3,11 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
-@Component
-public class LocalDateTimeProvider implements CreatedDateTimeProvider {
+@Component("localDateTimeProvider")
+public class LocalDateTimeProvider implements CurrentDateTimeProvider {
 
     @Override
-    public LocalDateTime now() {
+    public LocalDateTime get() {
         return LocalDateTime.now();
     }
 }

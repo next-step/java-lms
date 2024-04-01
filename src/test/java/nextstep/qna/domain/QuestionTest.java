@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(
-        CREATED_DATE_TIME_PROVIDER, NsUserTest.JAVAJIGI,
-        "title1", "contents1"
+        NsUserTest.JAVAJIGI, "title1", "contents1",
+        FIXED_DATE_TIME
     );
     public static final Question Q2 = new Question(
-        CREATED_DATE_TIME_PROVIDER, NsUserTest.SANJIGI,
-        "title2", "contents2"
+        NsUserTest.SANJIGI, "title2", "contents2",
+        FIXED_DATE_TIME
     );
 
     @Test
@@ -27,7 +27,7 @@ public class QuestionTest {
         Q1.addAnswer(AnswerTest.A1);
 
         // when
-        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = Q1.delete(NsUserTest.JAVAJIGI, FIXED_DATE_TIME);
 
         // then
         assertThat(deleteHistories).hasSize(2);
@@ -38,13 +38,13 @@ public class QuestionTest {
             .orElseThrow();
         assertThat(questionDeleteHistory.getContentId()).isEqualTo(Q1.getId());
         assertThat(questionDeleteHistory.getDeletedBy()).isEqualTo(NsUserTest.JAVAJIGI);
-        assertThat(questionDeleteHistory.getCreatedDate()).isEqualTo(CREATED_DATE_TIME);
+        assertThat(questionDeleteHistory.getCreatedDate()).isEqualTo(FIXED_DATE_TIME);
     }
 
     @Test
     @DisplayName("글 작성자가 아닌데 삭제하려하면 예외가 발생한다")
     void delete_fail_for_not_owner() {
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI, FIXED_DATE_TIME))
             .isInstanceOf(CannotDeleteException.class);
     }
 }

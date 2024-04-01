@@ -1,5 +1,6 @@
 package nextstep.qna.service;
 
+import static nextstep.qna.domain.TestFixtures.FIXED_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.ContentType;
-import nextstep.qna.domain.TestFixtures;
+import nextstep.qna.domain.CurrentDateTimeProvider;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
 import nextstep.qna.domain.QuestionRepository;
@@ -33,6 +34,9 @@ public class QnaServiceTest {
     @Mock
     private DeleteHistoryService deleteHistoryService;
 
+    @Mock
+    private CurrentDateTimeProvider currentDateTimeProvider;
+
     @InjectMocks
     private QnAService qnAService;
 
@@ -41,8 +45,8 @@ public class QnaServiceTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        question = new Question(TestFixtures.CREATED_DATE_TIME_PROVIDER, 1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(TestFixtures.CREATED_DATE_TIME_PROVIDER, 11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1", FIXED_DATE_TIME);
+        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1", FIXED_DATE_TIME);
         question.addAnswer(answer);
     }
 

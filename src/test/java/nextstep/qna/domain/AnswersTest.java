@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.TestFixtures.FIXED_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,7 +20,7 @@ class AnswersTest {
         Answers answers = new Answers(answersList);
 
         // when
-        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = answers.delete(NsUserTest.JAVAJIGI, FIXED_DATE_TIME);
 
         // then
         assertThat(deleteHistories).hasSize(1);
@@ -33,7 +34,7 @@ class AnswersTest {
         Answers answers = new Answers(answersList);
 
         // when, then
-        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI, FIXED_DATE_TIME))
             .isInstanceOf(CannotDeleteException.class);
     }
 }
