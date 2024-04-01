@@ -2,11 +2,14 @@ package nextstep.qna.domain;
 
 import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public class AnswersTest {
 
@@ -18,17 +21,20 @@ public class AnswersTest {
     void 답변들_삭제() {
         Answers answers = new Answers(List.of(A1));
 
-        Assertions.assertThatNoException()
+        assertThatNoException()
                         .isThrownBy(() -> { answers.delete(NsUserTest.JAVAJIGI); });
     }
 
     @Test
-    @DisplayName("[실패] 다른 사람이 답변을 등록한 경우 삭제할 수 없다.")
+    @DisplayName("[실패] 다른 사람이 등록한 답변을 삭제하려는 경우 CannotDeleteException 예외가 발생한다.")
     void 답변들_삭제_불가능() {
         Answers answers = new Answers(List.of(A1, A2));
 
-        Assertions.assertThatThrownBy(() -> {
-            answers.delete(NsUserTest.JAVAJIGI);
-        }).isInstanceOf(CannotDeleteException.class);
+        assertThatExceptionOfType(CannotDeleteException.class)
+                .isThrownBy(() -> {
+                    answers.delete(NsUserTest.JAVAJIGI);
+                })
+                .withMessageContaining(CAN_DELETE_ONLY_ANSWER_OWNER.getMessage());
     }
+
 }
