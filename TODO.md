@@ -8,6 +8,11 @@
     - enum SessionState 생성
     - PREPARING, RECRUITING, FINISHED 정의
 
+- [x] Payment
+    - [x] 결제한 유저와 로그인한 유저 아이디가 같은지 확인한다
+    - [x] 결제한 강의 아이디와 수강 신청 강의 아이디가 같은지 확인한다
+    - [x] 결제 비용과 강의 비용이 같은지 확인한다
+
 ---
 
 ### 1단계
