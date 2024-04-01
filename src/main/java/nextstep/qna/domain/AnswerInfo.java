@@ -13,8 +13,8 @@ public class AnswerInfo extends  BaseEntity {
     this.contents = contents;
   }
 
-  public boolean isOwner(NsUser writer) {
-    return this.writer.equals(writer);
+  public boolean isNotOwner(NsUser writer) {
+    return !this.writer.equals(writer);
   }
 
   public NsUser getWriter() {

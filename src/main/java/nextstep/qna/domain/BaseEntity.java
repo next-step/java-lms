@@ -12,10 +12,6 @@ public class BaseEntity {
 
   protected boolean deleted = false;
 
-  public BaseEntity(Long id) {
-    this.id = id;
-  }
-
   public BaseEntity() {
   }
 

@@ -33,8 +33,8 @@ public class Answer extends BaseEntity  {
         answerInfo = new AnswerInfo(writer, contents);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return answerInfo.isOwner(loginUser);
+    private boolean isNotOwner(NsUser loginUser) {
+        return answerInfo.isNotOwner(loginUser);
     }
 
     public NsUser getWriter() {
@@ -52,7 +52,7 @@ public class Answer extends BaseEntity  {
     }
 
     public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
     }

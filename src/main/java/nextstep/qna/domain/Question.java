@@ -35,15 +35,6 @@ public class Question extends BaseEntity{
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return questionInfo.isOwner(loginUser);
-    }
-
-    @Override
-    public String toString() {
-        return "Question [id=" + id + " " + questionInfo + " ]";
-    }
-
     private void validateDeletable(NsUser loginUser) throws CannotDeleteException {
         if (!questionInfo.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
@@ -62,5 +53,10 @@ public class Question extends BaseEntity{
     private List<DeleteHistory> deletedHistories(List<DeleteHistory> deleteHistories) {
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, questionInfo.getWriter(), LocalDateTime.now()));
         return deleteHistories;
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + id + " " + questionInfo + " ]";
     }
 }
