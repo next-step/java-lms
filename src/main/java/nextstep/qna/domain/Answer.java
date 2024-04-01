@@ -31,12 +31,13 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
+
         if (writer == null) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedException("작성 권한이 없습니다.");
         }
 
         if (question == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("질문을 찾을 수 없습니다.");
         }
 
         this.writer = writer;
