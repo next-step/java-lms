@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nextstep.qna.CannotDeleteException;
@@ -13,6 +14,14 @@ public class Answers {
         this.answers = answers;
     }
 
+    public Answers() {
+        answers = new ArrayList<>();
+    }
+
+    public void add(final Answer answer) {
+        answers.add(answer);
+    }
+
     public void validateAnswersOwnership(final NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
             validateOwnership(answer, loginUser);
@@ -23,5 +32,9 @@ public class Answers {
         if (!answer.isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
     }
 }

@@ -30,4 +30,20 @@ class AnswersTest {
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
+
+    @Test
+    void 답변을_추가한다() {
+        // given
+        final NsUser user1 = new NsUser(1L, "user1", "password1", "name1", "abc@gmail.com");
+        final NsUser user2 = new NsUser(2L, "user2", "password2", "name2", "efg@gmail.com");
+        final Question question = new Question(user1, "title", "contents");
+        final Answer answer = new Answer(user2, question, "contents1");
+
+        // when
+        final Answers answers = new Answers();
+        answers.add(answer);
+
+        // then
+        assertThat(answers.getAnswers()).containsExactly(answer);
+    }
 }
