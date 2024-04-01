@@ -1,10 +1,11 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class Question {
     private Long id;
@@ -15,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -37,40 +38,34 @@ public class Question {
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    private void validateOwner(NsUser loginUser) throws CannotDeleteException {
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
+
+
+    public DeleteHistorys delete(NsUser user) throws CannotDeleteException {
+        return new DeleteHistorys(deleteQuestion(user), deleteAnswer(user));
+    }
+
+    private DeleteHistory deleteQuestion(NsUser user){
+        validateOwner(user);
+        deleted = true;
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
+
+    public List<DeleteHistory> deleteAnswer(NsUser user) {
+        return answers.delete(user);
+    }
+
 
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
@@ -81,9 +76,16 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+
+
+    public Long getId() {
+        return id;
     }
+
+    public NsUser getWriter() {
+        return writer;
+    }
+
 
     @Override
     public String toString() {

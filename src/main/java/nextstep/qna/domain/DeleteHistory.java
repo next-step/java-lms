@@ -26,6 +26,10 @@ public class DeleteHistory {
         this.createdDate = createdDate;
     }
 
+    public ContentType getContentType() {
+        return contentType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,4 +51,9 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
+
+    public boolean isAnswer() {
+        return ContentType.ANSWER == contentType;
+    }
+
 }

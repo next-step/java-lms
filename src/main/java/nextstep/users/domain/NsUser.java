@@ -135,4 +135,32 @@ public class NsUser {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NsUser)) return false;
+
+        NsUser nsUser = (NsUser) o;
+
+        if (!Objects.equals(id, nsUser.id)) return false;
+        if (!Objects.equals(userId, nsUser.userId)) return false;
+        if (!Objects.equals(password, nsUser.password)) return false;
+        if (!Objects.equals(name, nsUser.name)) return false;
+        if (!Objects.equals(email, nsUser.email)) return false;
+        if (!Objects.equals(createdAt, nsUser.createdAt)) return false;
+        return Objects.equals(updatedAt, nsUser.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
+    }
 }
