@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,11 @@ public class AnswersTest {
     Answer answer = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents");
     Answers answers = new Answers(List.of(answer));
 
-    assertThat(answers.delete()).hasSize(1);
+    List<DeleteHistory> deleteHistories = answers.delete();
+
+    assertThat(deleteHistories).hasSize(1);
+    assertThat(deleteHistories.get(0)).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(),
+        LocalDateTime.now()));
     assertThat(answer.isDeleted()).isTrue();
   }
 

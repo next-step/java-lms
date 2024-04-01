@@ -46,19 +46,19 @@ public class Answer extends BaseEntity  {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "Answer [id=" + getId() + ", " + answerInfo + " ]";
-    }
-
-    public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+    public void validateDeletable(NsUser requester) throws CannotDeleteException {
+        if (!isOwner(requester)) {
+            throw new CannotDeleteException("자신의 작성한 답변만 삭제할 수 있습니다.");
         }
     }
 
     public DeleteHistory delete() {
         deleted = true;
         return new DeleteHistory(ContentType.ANSWER, id, answerInfo.getWriter(), LocalDateTime.now());
+    }
+
+    @Override
+    public String toString() {
+        return "Answer [id=" + getId() + ", " + answerInfo + " ]";
     }
 }
