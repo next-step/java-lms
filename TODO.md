@@ -1,3 +1,15 @@
+### 2단계 - 수강신청(도메인 모델)
+
+**Session**
+
+- [x] 강의 신청 가능 여부를 확인한다
+    - 강의 상태가 "모집중"일때만 신청 가능하다 -- isPossibleRegistration()
+- [x] 강의는 강의 상태(준비중, 모집중, 종료)를 가진다
+    - enum SessionState 생성
+    - PREPARING, RECRUITING, FINISHED 정의
+
+---
+
 ### 1단계
 
 - [x] 질문 작성자와 로그인 유저를 비교한다
