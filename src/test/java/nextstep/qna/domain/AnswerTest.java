@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -22,7 +23,8 @@ public class AnswerTest {
     @DisplayName("[실패] 자신이 생성하지 않은 답변을 삭제하려는 경우 CannotDeleteException 예외가 발생한다.")
     void 답변_삭제_불가능() {
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> A1.delete(NsUserTest.SANJIGI));
+                .isThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
+                .withMessageContaining(CAN_DELETE_ONLY_ANSWER_OWNER.getMessage());
     }
 
 }
