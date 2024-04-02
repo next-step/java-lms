@@ -31,9 +31,7 @@ public class AnswersTest {
         Answers answers = new Answers(List.of(A1, A2));
 
         assertThatExceptionOfType(CannotDeleteException.class)
-                .isThrownBy(() -> {
-                    answers.delete(NsUserTest.JAVAJIGI);
-                })
+                .isThrownBy(() -> answers.delete(NsUserTest.JAVAJIGI))
                 .withMessageContaining(CAN_DELETE_ONLY_ANSWER_OWNER.getMessage());
     }
 
