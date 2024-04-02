@@ -1,7 +1,9 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
+import nextstep.courses.infrastructure.dto.LearnerDto;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -24,18 +26,27 @@ public class PaidSession extends Session {
         this.capacity = capacity;
     }
 
-    @Override
-    public void join(NsUser learner) {
-        join(learner, null);
+    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
+        SessionCoverImage coverImage, SessionStatus status, Set<NsUser> learners,
+        LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
+        super(id, startDate, endDate, coverImage, status, learners, createdAt, updatedAt);
+        this.price = price;
+        this.capacity = capacity;
     }
 
-    public void join(NsUser learner, Payment payment) {
+    @Override
+    public LearnerDto join(NsUser learner) {
+        return join(learner, null);
+    }
+
+    public LearnerDto join(NsUser learner, Payment payment) {
         validateJoinable(learner, payment);
         learners.add(learner);
+        return new LearnerDto(learner.getId(), id);
     }
 
     private void validateJoinable(NsUser learner, Payment payment) {
-        super.validateJoinable();
+        super.validateJoinable(learner);
         validateCapacity();
         validatePayment(learner, payment);
         validatePaidEnough(payment);
@@ -66,5 +77,9 @@ public class PaidSession extends Session {
 
     public Long getPrice() {
         return price;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
     }
 }
