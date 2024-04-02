@@ -35,7 +35,7 @@ class SessionTest {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime startDate = LocalDateTime.of(2024, 4, 2, 0, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2024, 4, 1, 23, 59, 59);
-        
+
         assertThatThrownBy(() -> new Session(PREPARING, new FreeSession(), startDate, endDate, createdAt))
                 .isInstanceOf(InvalidSessionException.class)
                 .hasMessage("시작일이 종료일보다 이전이어야 합니다");
@@ -69,10 +69,29 @@ class SessionTest {
         }
 
         @Test
-        void 수강신청가능한경우_주문서를생성한다() {
-            Session session = new Session(RECRUITING);
+        void 수강신청기간을_벗어난경우_예외를던진다() {
+            LocalDateTime startDate = LocalDateTime.of(2024, 4, 2, 0, 0, 0);
+            LocalDateTime endDate = LocalDateTime.of(2024, 4, 3, 23, 59, 59);
+            Session session = new Session(RECRUITING, new FreeSession(), startDate, endDate, LocalDateTime.now());
 
-            LocalDateTime now = LocalDateTime.now();
+            // 시작 전
+            assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.of(2024, 4, 1, 23, 59, 59)))
+                    .isInstanceOf(InvalidSessionJoinException.class)
+                    .hasMessage("현재 수강 신청 불가능한 기간 입니다");
+
+            // 종료 후
+            assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.of(2024, 4, 4, 0, 0, 0)))
+                    .isInstanceOf(InvalidSessionJoinException.class)
+                    .hasMessage("현재 수강 신청 불가능한 기간 입니다");
+        }
+
+        @Test
+        void 수강신청가능한경우_주문서를생성한다() {
+            LocalDateTime startDate = LocalDateTime.of(2024, 4, 2, 0, 0, 0);
+            LocalDateTime endDate = LocalDateTime.of(2024, 4, 3, 23, 59, 59);
+            Session session = new Session(RECRUITING, new FreeSession(), startDate, endDate, LocalDateTime.now());
+
+            LocalDateTime now = LocalDateTime.of(2024, 4, 2, 12, 0, 0);
             Payment payment = session.requestJoin(JAVAJIGI, now);
 
             assertThat(payment).isEqualTo(new Payment(0L, 1L, Money.ZERO, now));

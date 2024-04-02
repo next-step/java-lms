@@ -65,11 +65,11 @@ public class Session extends BaseEntity {
     }
 
     public Payment requestJoin(NsUser loginUser, LocalDateTime now) {
-        verifySession();
+        verifySession(now);
         return new Payment(this.id, loginUser.getId(), this.sessionType.getAmount(), now);
     }
 
-    private void verifySession() {
+    private void verifySession(LocalDateTime now) {
         if (!this.state.isRecruiting()) {
             throw new InvalidSessionJoinException("현재 수강 신청 불가 합니다");
         }
@@ -77,10 +77,17 @@ public class Session extends BaseEntity {
         if (this.sessionType.isFull(this.listener.size())) {
             throw new InvalidSessionJoinException("현재 수강 신청 인원이 모두 가득 찼습니다");
         }
+
+        if (this.startDate == null || this.endDate == null || !isWithinPeriodRange(now)) {
+            throw new InvalidSessionJoinException("현재 수강 신청 불가능한 기간 입니다");
+        }
+    }
+
+    private boolean isWithinPeriodRange(LocalDateTime now) {
+        return now.isAfter(this.startDate) && now.isBefore(this.endDate);
     }
 
     public void join(NsUser loginUser, Payment payment) {
-        verifySession();
         validateJoin(loginUser, payment);
         addListener(loginUser);
     }
