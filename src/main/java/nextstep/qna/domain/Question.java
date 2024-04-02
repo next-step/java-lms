@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+
+import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
 
 public class Question {
     private Long id;
@@ -15,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -41,24 +43,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -72,17 +56,34 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public DeleteHistories delete(NsUser user) throws CannotDeleteException {
+        DeleteHistory deleteHistory = deleteQuestion(user);
+        List<DeleteHistory> deleteHistories = deleteAnswers(user);
+        return DeleteHistories.of(deleteHistory, deleteHistories);
+    }
+
+    private DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
+        validateDeletePossible(user);
+        this.deleted = true;
+        return convertToDeleteHistory();
+    }
+
+    private void validateDeletePossible(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException(CAN_DELETE_ONLY_ANSWER_OWNER);
+        }
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser user) throws CannotDeleteException {
+        return this.answers.delete(user);
+    }
+
+    private DeleteHistory convertToDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override

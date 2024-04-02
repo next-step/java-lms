@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
-import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.exception.CannotDeleteException;
+import nextstep.qna.exception.NotFoundException;
+import nextstep.qna.exception.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+
+import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
 
 public class Answer {
     private Long id;
@@ -47,9 +50,16 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+        validateDeletePossible(user);
+        this.deleted = true;
+        return convertToDeleteHistory();
+    }
+
+    private void validateDeletePossible(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException(CAN_DELETE_ONLY_ANSWER_OWNER);
+        }
     }
 
     public boolean isDeleted() {
@@ -64,12 +74,12 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    private DeleteHistory convertToDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     @Override
