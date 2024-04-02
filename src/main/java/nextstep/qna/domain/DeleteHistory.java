@@ -1,9 +1,9 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import nextstep.users.domain.NsUser;
 
 public class DeleteHistory {
     private Long id;
