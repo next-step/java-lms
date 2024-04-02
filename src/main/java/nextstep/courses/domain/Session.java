@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
+import nextstep.courses.infrastructure.dto.LearnerDto;
 import nextstep.users.domain.NsUser;
 
 public class Session {
@@ -42,9 +43,10 @@ public class Session {
         }
     }
 
-    public void join(NsUser learner) {
+    public LearnerDto join(NsUser learner) {
         validateJoinable();
         learners.add(learner);
+        return new LearnerDto(learner.getId(), id);
     }
 
     protected void validateJoinable() {

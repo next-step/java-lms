@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import nextstep.courses.CanNotJoinSessionException;
+import nextstep.courses.infrastructure.dto.LearnerDto;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -25,13 +26,14 @@ public class PaidSession extends Session {
     }
 
     @Override
-    public void join(NsUser learner) {
-        join(learner, null);
+    public LearnerDto join(NsUser learner) {
+        return join(learner, null);
     }
 
-    public void join(NsUser learner, Payment payment) {
+    public LearnerDto join(NsUser learner, Payment payment) {
         validateJoinable(learner, payment);
         learners.add(learner);
+        return new LearnerDto(learner.getId(), id);
     }
 
     private void validateJoinable(NsUser learner, Payment payment) {
