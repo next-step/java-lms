@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,7 +17,7 @@ public class QuestionTest {
     @DisplayName("질문 Q1을 toHistories()메서드를 통해 이력으로 만든다")
     @Test
     void to_histories() {
-        DeleteHistories histories = Q1.toHistories();
+        List<DeleteHistory> histories = Q1.toHistories();
         assertThat(histories.size()).isEqualTo(1);
     }
 

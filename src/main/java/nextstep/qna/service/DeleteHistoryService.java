@@ -1,6 +1,5 @@
 package nextstep.qna.service;
 
-import nextstep.qna.domain.DeleteHistories;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.DeleteHistoryRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class DeleteHistoryService {
     private DeleteHistoryRepository deleteHistoryRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveAll(DeleteHistories deleteHistories) {
+    public void saveAll(List<DeleteHistory> deleteHistories) {
         deleteHistoryRepository.saveAll(deleteHistories);
     }
 }

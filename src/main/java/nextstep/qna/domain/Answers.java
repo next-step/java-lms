@@ -26,13 +26,8 @@ public class Answers {
         }
     }
 
-    public void addTo(DeleteHistories histories) {
+    public void addTo(List<DeleteHistory> histories) {
         answers.forEach(answer -> answer.addTo(histories));
-    }
-
-
-    public List<Answer> get() {
-        return Collections.unmodifiableList(answers);
     }
 
     public void add(Answer answer) {

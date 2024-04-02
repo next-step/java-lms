@@ -15,8 +15,8 @@
 - QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 QnaServiceTest이다. 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
 
 ### 첫번째 피드백 사항
-- [ ] 리팩터링할 떼 무조건 복붙하지말고 그 도메인에 알맞는 예외 메시지를 설정하라(Answer, Answers)
-- [ ] QnaServiceTest는 변경없이 프로덕션코드만 리팩터링하여 재통과하는 사이클을 가져라
+- [x] 리팩터링할 떼 무조건 복붙하지말고 그 도메인에 알맞는 예외 메시지를 설정하라(Answer, Answers)
+- [x] QnaServiceTest는 변경없이 프로덕션코드만 리팩터링하여 재통과하는 사이클을 가져라
 - [ ] 더 이상 사용하지 않는 메서드는 제거하라
 - [ ] delete메서드와 addTo메서드의 로직을 다시 살펴보고 구현한 메서드는 무조건 테스트코드를 통해 검증하라
 - [ ] 사용하지 않는 import문은 삭제하라

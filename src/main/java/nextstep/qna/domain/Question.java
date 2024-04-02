@@ -4,6 +4,8 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Question {
     private Long id;
@@ -22,7 +24,7 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    protected Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -40,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -71,24 +55,19 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public void delete(NsUser user) throws CannotDeleteException {
         deleteQuestion(user);
         deleteAnswers(user);
     }
 
-    public DeleteHistories toHistories() {
-        DeleteHistories deleteHistories = new DeleteHistories();
+    public List<DeleteHistory> toHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.addTo(deleteHistories);
         this.answers.addTo(deleteHistories);
         return deleteHistories;
     }
 
-    private void addTo(DeleteHistories deleteHistories) {
+    private void addTo(List<DeleteHistory> deleteHistories) {
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
     }
 
@@ -105,11 +84,6 @@ public class Question {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-
-    public Answers getAnswers() {
-        return answers;
     }
 
     @Override
