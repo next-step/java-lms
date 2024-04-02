@@ -1,10 +1,10 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 
 public class Question {
     private Long id;
@@ -37,10 +37,19 @@ public class Question {
         this.contents = contents;
     }
 
-    public void validateQuestionOwnership(final NsUser loginUser) throws CannotDeleteException {
+    public void validate(final NsUser loginUser) throws CannotDeleteException {
+        validateQuestionOwnership(loginUser);
+        validateAnswerOwnership(loginUser);
+    }
+
+    private void validateQuestionOwnership(final NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
+    }
+
+    private void validateAnswerOwnership(final NsUser loginUser) throws CannotDeleteException {
+        answers.validateAnswersOwnership(loginUser);
     }
 
     private boolean isOwner(NsUser loginUser) {

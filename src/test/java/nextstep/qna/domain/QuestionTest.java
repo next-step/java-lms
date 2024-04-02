@@ -1,6 +1,9 @@
 package nextstep.qna.domain;
 
-import org.assertj.core.api.Assertions;
+import static nextstep.qna.domain.AnswerTest.A1;
+import static nextstep.qna.domain.AnswerTest.A2;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.Test;
 
 import nextstep.qna.CannotDeleteException;
@@ -12,8 +15,18 @@ public class QuestionTest {
 
     @Test
     void 질문을_삭제할_권한이_없다면_예외가_발생한다() {
-        Assertions.assertThatThrownBy(() -> Q2.validateQuestionOwnership(NsUserTest.JAVAJIGI))
+        assertThatThrownBy(() -> Q2.validate(NsUserTest.JAVAJIGI))
             .isInstanceOf(CannotDeleteException.class)
             .hasMessage("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    void 다른_사람이_쓴_답변이_있는_경우_예외가_발생한다() {
+        Q1.addAnswer(A1);
+        Q1.addAnswer(A2);
+
+        assertThatThrownBy(() -> Q1.validate(NsUserTest.JAVAJIGI))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }
