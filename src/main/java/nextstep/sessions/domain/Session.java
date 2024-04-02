@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.sessions.exception.InvalidSessionException;
 import nextstep.sessions.exception.InvalidSessionJoinException;
 import nextstep.users.domain.NsUser;
 
@@ -20,32 +21,47 @@ public class Session extends BaseEntity {
 
     private CoverImage coverImage;
 
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDate;
+
     private Set<NsUser> listener = new HashSet<>();
-    
-    public Session(String title, SessionState state) {
-        this(title, state, LocalDateTime.now());
+
+
+    public Session(SessionState state) {
+        this(state, LocalDateTime.now());
     }
 
-    public Session(String title, SessionState state, LocalDateTime createdAt) {
-        this(title, state, createdAt, new FreeSession());
+    public Session(SessionState state, LocalDateTime createdAt) {
+        this(state, new FreeSession(), createdAt, null, null);
     }
 
-    public Session(String title, SessionState state, LocalDateTime createdAt, SessionType sessionType) {
-        this(0L, title, state, createdAt, null, sessionType, null);
+    public Session(SessionState state, SessionType sessionType) {
+        this(state, sessionType, null, null, LocalDateTime.now());
     }
 
-    public Session(String title, SessionState state, SessionType sessionType) {
-        this(0L, title, state, LocalDateTime.now(), null, sessionType, null);
+    public Session(SessionState state, SessionType sessionType, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt) {
+        this(0L, "", state, sessionType, null, startDate, endDate, createdAt, null);
     }
 
-    public Session(long id, String title, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt, SessionType sessionType, CoverImage coverImage) {
+    public Session(long id, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        validatePeriod(startDate, endDate);
+
         this.id = id;
         this.title = title;
         this.state = state;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.sessionType = sessionType;
         this.coverImage = coverImage;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    private void validatePeriod(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new InvalidSessionException("시작일이 종료일보다 이전이어야 합니다");
+        }
     }
 
     public Payment requestJoin(NsUser loginUser, LocalDateTime now) {

@@ -7,6 +7,7 @@
 - [x] 강의는 강의 상태(준비중, 모집중, 종료)를 가진다
     - enum SessionState 생성
     - PREPARING, RECRUITING, FINISHED 정의
+- [x] 강의는 시작일과 종료일 상태를 가진다
 
 - [x] Payment 는 PaymentState 상태를 가진다
     - enum PaymentState 생성
