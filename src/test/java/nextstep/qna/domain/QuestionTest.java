@@ -17,9 +17,8 @@ public class QuestionTest {
     @Test
     @DisplayName("[성공] 자신이 작성한 질문을 삭제한다.")
     void 답변_삭제() {
-        assertThatNoException().isThrownBy(() -> {
-            Q1.delete(NsUserTest.JAVAJIGI);
-        });
+        assertThatNoException()
+                .isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI));
     }
 
     @Test
