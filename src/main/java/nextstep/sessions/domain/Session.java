@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.sessions.exception.InvalidSessionJoinException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -58,11 +59,11 @@ public class Session extends BaseEntity {
 
     private void verifySession() {
         if (!this.state.isRecruiting()) {
-            throw new IllegalArgumentException("현재 수강 신청 불가 합니다");
+            throw new InvalidSessionJoinException("현재 수강 신청 불가 합니다");
         }
 
         if (this.sessionType.isFull(this.count)) {
-            throw new IllegalArgumentException("현재 수강 신청 인원이 모두 가득 찼습니다");
+            throw new InvalidSessionJoinException("현재 수강 신청 인원이 모두 가득 찼습니다");
         }
     }
 
@@ -79,29 +80,29 @@ public class Session extends BaseEntity {
 
     private void validateNull(NsUser loginUser, Payment payment) {
         if (loginUser == null) {
-            throw new IllegalArgumentException();
+            throw new NullPointerException("사용자 정보가 존재하지 않습니다");
         }
 
         if (payment == null) {
-            throw new IllegalArgumentException();
+            throw new NullPointerException("결제 정보가 존재하지 않습니다");
         }
     }
 
     private void validatePayment(NsUser loginUser, Payment payment) {
         if (!payment.isPaymentComplete()) {
-            throw new IllegalArgumentException();
+            throw new InvalidSessionJoinException("결제 완료 되지 않았습니다");
         }
 
         if (!payment.equalSessionId(this.id)) {
-            throw new IllegalArgumentException();
+            throw new InvalidSessionJoinException("결제 정보와 강의 정보가 일치하지 않습니다");
         }
 
         if (!payment.equalNsUserId(loginUser)) {
-            throw new IllegalArgumentException();
+            throw new InvalidSessionJoinException("결제 정보와 유저 정보가 일치하지 않습니다");
         }
 
         if (!this.sessionType.equalMoney(payment)) {
-            throw new IllegalArgumentException();
+            throw new InvalidSessionJoinException("결제 정보와 강의 금액이 일치하지 않습니다");
         }
     }
 
