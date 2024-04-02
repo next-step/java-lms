@@ -11,6 +11,11 @@
 - [x] Payment 는 PaymentState 상태를 가진다
     - enum PaymentState 생성
     - PENDING, PAYMENT_COMPLETE, CANCELLED, COMPLETE
+    
+- [x] 강의 유형을 포함하여 강의 신청 가능 여부를 확인한다
+    - [x] 무료 강의인 경우 최대 수강 인원 제한이 없다
+    - [x] 유료 강의인 경우 최대 수강 인원을 초과할 수 없다
+- [x] 수강 신청 가능한 경우 주문서를 생성한다
 
 ---
 
