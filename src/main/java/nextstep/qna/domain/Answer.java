@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -30,12 +31,13 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
+
+        if (writer == null) {
+            throw new UnAuthorizedException("작성 권한이 없습니다.");
         }
 
-        if(question == null) {
-            throw new NotFoundException();
+        if (question == null) {
+            throw new NotFoundException("질문을 찾을 수 없습니다.");
         }
 
         this.writer = writer;
@@ -47,29 +49,33 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public DeleteHistory delete(NsUser loginUser) {
+        if (this.deleted) {
+            throw new CannotDeleteException("이미 삭제된 질문입니다.");
+        }
+
+        if (isNotOwner(loginUser)) {
+            throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
+        }
+
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer);
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
-    }
-
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
+    public boolean isNotOwner(NsUser writer) {
+        return !this.writer.equals(writer);
     }
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public NsUser getWriter() {
+        return this.writer;
     }
 
     @Override
