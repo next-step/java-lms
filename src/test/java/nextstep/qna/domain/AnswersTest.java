@@ -20,7 +20,6 @@ public class AnswersTest {
     @DisplayName("[성공] 답변들을 삭제한다.")
     void 답변들_삭제() {
         Answers answers = new Answers(List.of(A1));
-
         assertThatNoException()
                         .isThrownBy(() -> { answers.delete(NsUserTest.JAVAJIGI); });
     }
