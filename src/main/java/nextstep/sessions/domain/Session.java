@@ -20,11 +20,10 @@ public class Session extends BaseEntity {
 
     private SessionType sessionType;
 
+    private CoverImage coverImage;
+
     private Set<NsUser> listener = new HashSet<>();
 
-    public Session(String title) {
-        this(title, SessionState.PREPARING);
-    }
 
     public Session(String title, SessionState state) {
         this(title, state, LocalDateTime.now());
@@ -35,14 +34,14 @@ public class Session extends BaseEntity {
     }
 
     public Session(String title, SessionState state, LocalDateTime createdAt, SessionType sessionType) {
-        this(0L, title, state, createdAt, null, 0, sessionType);
+        this(0L, title, state, createdAt, null, 0, sessionType, null);
     }
 
     public Session(String title, SessionState state, int count, SessionType sessionType) {
-        this(0L, title, state, LocalDateTime.now(), null, count, sessionType);
+        this(0L, title, state, LocalDateTime.now(), null, count, sessionType, null);
     }
 
-    public Session(long id, String title, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt, int count, SessionType sessionType) {
+    public Session(long id, String title, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt, int count, SessionType sessionType, CoverImage coverImage) {
         this.id = id;
         this.title = title;
         this.state = state;
@@ -50,6 +49,7 @@ public class Session extends BaseEntity {
         this.updatedAt = updatedAt;
         this.count = count;
         this.sessionType = sessionType;
+        this.coverImage = coverImage;
     }
 
     public Payment requestJoin(NsUser loginUser, LocalDateTime now) {
@@ -118,6 +118,7 @@ public class Session extends BaseEntity {
     public int getCount() {
         return count;
     }
+
 
     @Override
     public boolean equals(Object other) {
