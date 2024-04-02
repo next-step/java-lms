@@ -1,6 +1,7 @@
 package nextstep.payments.domain;
 
 import nextstep.money.Money;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -36,6 +37,10 @@ public class Payment {
         this(0L, sessionId, nsUserId, amount, LocalDateTime.now(), PaymentState.PENDING);
     }
 
+    public Payment(Long sessionId, Long nsUserId, Money amount, PaymentState state) {
+        this(0L, sessionId, nsUserId, amount, LocalDateTime.now(), state);
+    }
+
     public Payment(Long sessionId, Long nsUserId, Money amount, LocalDateTime createdAt) {
         this(0L, sessionId, nsUserId, amount, createdAt, PaymentState.PENDING);
     }
@@ -49,6 +54,18 @@ public class Payment {
         this.state = state;
     }
 
+    public boolean isPaymentComplete() {
+        return this.state.isPaymentComplete();
+    }
+
+    public boolean equalSessionId(long id) {
+        return this.sessionId == id;
+    }
+
+    public Money getAmount() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -60,5 +77,9 @@ public class Payment {
     @Override
     public int hashCode() {
         return Objects.hash(id, sessionId, nsUserId, amount, createdAt, state);
+    }
+
+    public boolean equalNsUserId(NsUser loginUser) {
+        return loginUser.matchId(this.nsUserId);
     }
 }

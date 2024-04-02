@@ -11,4 +11,8 @@ public enum PaymentState {
     PaymentState(String text) {
         this.text = text;
     }
+
+    public boolean isPaymentComplete() {
+        return this == PAYMENT_COMPLETE;
+    }
 }

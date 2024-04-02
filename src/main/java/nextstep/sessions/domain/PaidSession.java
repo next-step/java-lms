@@ -1,6 +1,7 @@
 package nextstep.sessions.domain;
 
 import nextstep.money.Money;
+import nextstep.payments.domain.Payment;
 
 public class PaidSession implements SessionType {
     private static final int MIN_CAPACITY = 1;
@@ -28,5 +29,10 @@ public class PaidSession implements SessionType {
     @Override
     public Money getAmount() {
         return amount;
+    }
+
+    @Override
+    public boolean equalMoney(Payment payment) {
+        return this.amount.equals(payment.getAmount());
     }
 }

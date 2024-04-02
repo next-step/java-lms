@@ -4,7 +4,9 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Session extends BaseEntity {
     private long id;
@@ -16,6 +18,8 @@ public class Session extends BaseEntity {
     private int count;
 
     private SessionType sessionType;
+
+    private Set<NsUser> listener = new HashSet<>();
 
     public Session(String title) {
         this(title, SessionState.PREPARING);
@@ -60,6 +64,58 @@ public class Session extends BaseEntity {
         if (this.sessionType.isFull(this.count)) {
             throw new IllegalArgumentException("현재 수강 신청 인원이 모두 가득 찼습니다");
         }
+    }
+
+    public void join(NsUser loginUser, Payment payment) {
+        verifySession();
+        validateJoin(loginUser, payment);
+        addListener(loginUser);
+    }
+
+    private void validateJoin(NsUser loginUser, Payment payment) {
+        validateNull(loginUser, payment);
+        validatePayment(loginUser, payment);
+    }
+
+    private void validateNull(NsUser loginUser, Payment payment) {
+        if (loginUser == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (payment == null) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void validatePayment(NsUser loginUser, Payment payment) {
+        if (!payment.isPaymentComplete()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!payment.equalSessionId(this.id)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!payment.equalNsUserId(loginUser)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!this.sessionType.equalMoney(payment)) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void addListener(NsUser loginUser) {
+        if (listener.contains(loginUser)) {
+            throw new IllegalArgumentException();
+        }
+
+        this.listener.add(loginUser);
+        this.count += 1;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     @Override
