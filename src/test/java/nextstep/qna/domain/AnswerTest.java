@@ -5,6 +5,8 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -16,7 +18,7 @@ public class AnswerTest {
     @Test
     @DisplayName("[성공] 자신이 작성한 답변을 삭제한다.")
     void 답변_삭제() throws CannotDeleteException {
-        assertThat(A1.delete(NsUserTest.JAVAJIGI).isDeleted()).isTrue();
+        assertThat(A1.delete(NsUserTest.JAVAJIGI)).isEqualTo(new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now()));
     }
 
     @Test
