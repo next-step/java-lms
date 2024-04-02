@@ -11,11 +11,18 @@
 - [x] Payment 는 PaymentState 상태를 가진다
     - enum PaymentState 생성
     - PENDING, PAYMENT_COMPLETE, CANCELLED, COMPLETE
-    
+
 - [x] 강의 유형을 포함하여 강의 신청 가능 여부를 확인한다
     - [x] 무료 강의인 경우 최대 수강 인원 제한이 없다
     - [x] 유료 강의인 경우 최대 수강 인원을 초과할 수 없다
 - [x] 수강 신청 가능한 경우 주문서를 생성한다
+
+- [x] 예외 검사 후 수강 등록을 한다 -- Session join(..)
+    - [x] 로그인 유저(NsUser)가 NULL 인 경우 예외 던진다
+    - [x] 이미 등록된 수강생인 경우 예외 던진다
+    - [x] 결제 정보(Payment)가 NULL 인 경우 예외 던진다
+    - [x] 결제 정보(Payment)가 "결제완료" 상태가 아닌 경우 예외 던진다
+    - [x] 결제 정보와 강의 아이디(session id), 유저 아이디(NsUser id), 결제 금액 일치하지 않는 경우 예외 던진다
 
 ---
 

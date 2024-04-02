@@ -8,10 +8,12 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.LocalDateTime;
 
+import static nextstep.payments.domain.PaymentState.PAYMENT_COMPLETE;
 import static nextstep.sessions.domain.SessionState.FINISHED;
 import static nextstep.sessions.domain.SessionState.PREPARING;
 import static nextstep.sessions.domain.SessionState.RECRUITING;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -56,5 +58,83 @@ class SessionTest {
         assertThat(payment).isEqualTo(new Payment(0L, 1L, Money.ZERO, now));
     }
 
+    // 수강 등록시 NESTED
+    @Test
+    void 수강등록시_로그인유저가_널인경우_예외를_던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING);
+        assertThatThrownBy(() -> session.join(null, null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 
+    @Test
+    void 수강등록시_결제정보가_널인경우_예외를_던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING);
+        assertThatThrownBy(() -> session.join(JAVAJIGI, null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_이미_등록된_수강자인경우_예외를_던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+        session.addListener(JAVAJIGI);
+
+        Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.wons(1000L));
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_결제정보가_일치하지않는경우_예외를던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+        Payment payment = new Payment(1L, JAVAJIGI.getId(), Money.ZERO);
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_결제완료상태가_아닌경우_예외를던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+        Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.ZERO);
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_결제정보에서_강의아이디가_일치하지_않는경우_예외를던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession()); // 0L
+        Payment payment = new Payment(1L, JAVAJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_결제정보에서_유저아이디가_일치하지_않는경우_예외를던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+        Payment payment = new Payment(0L, SANJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록시_결제정보에서_결제금액이_일치하지_않는경우_예외를던진다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new PaidSession(10, Money.wons(1000L)));
+        Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
+
+        assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수강등록하면_카운트가_증가한다() {
+        Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new PaidSession(10, Money.wons(1000L)));
+        Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.wons(1000L), PAYMENT_COMPLETE);
+        session.join(JAVAJIGI, payment);
+
+        assertThat(session.getCount()).isEqualTo(1);
+    }
 }
