@@ -2,13 +2,13 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Question {
-    private Long id;
-
+public class Question extends BaseTime {
+    public static Random RANDOM = new Random();
+    private Long id = RANDOM.nextLong();
     private String title;
 
     private String contents;
@@ -19,19 +19,9 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
-    public Question() {
-    }
+    private Question() {}
 
     public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
-    }
-
-    public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
