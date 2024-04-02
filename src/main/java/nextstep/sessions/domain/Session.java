@@ -16,15 +16,12 @@ public class Session extends BaseEntity {
 
     private SessionState state;
 
-    private int count;
-
     private SessionType sessionType;
 
     private CoverImage coverImage;
 
     private Set<NsUser> listener = new HashSet<>();
-
-
+    
     public Session(String title, SessionState state) {
         this(title, state, LocalDateTime.now());
     }
@@ -34,20 +31,19 @@ public class Session extends BaseEntity {
     }
 
     public Session(String title, SessionState state, LocalDateTime createdAt, SessionType sessionType) {
-        this(0L, title, state, createdAt, null, 0, sessionType, null);
+        this(0L, title, state, createdAt, null, sessionType, null);
     }
 
-    public Session(String title, SessionState state, int count, SessionType sessionType) {
-        this(0L, title, state, LocalDateTime.now(), null, count, sessionType, null);
+    public Session(String title, SessionState state, SessionType sessionType) {
+        this(0L, title, state, LocalDateTime.now(), null, sessionType, null);
     }
 
-    public Session(long id, String title, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt, int count, SessionType sessionType, CoverImage coverImage) {
+    public Session(long id, String title, SessionState state, LocalDateTime createdAt, LocalDateTime updatedAt, SessionType sessionType, CoverImage coverImage) {
         this.id = id;
         this.title = title;
         this.state = state;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.count = count;
         this.sessionType = sessionType;
         this.coverImage = coverImage;
     }
@@ -62,7 +58,7 @@ public class Session extends BaseEntity {
             throw new InvalidSessionJoinException("현재 수강 신청 불가 합니다");
         }
 
-        if (this.sessionType.isFull(this.count)) {
+        if (this.sessionType.isFull(this.listener.size())) {
             throw new InvalidSessionJoinException("현재 수강 신청 인원이 모두 가득 찼습니다");
         }
     }
@@ -112,11 +108,10 @@ public class Session extends BaseEntity {
         }
 
         this.listener.add(loginUser);
-        this.count += 1;
     }
 
     public int getCount() {
-        return count;
+        return this.listener.size();
     }
 
 

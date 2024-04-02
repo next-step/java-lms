@@ -42,15 +42,17 @@ class SessionTest {
 
         @Test
         void 모집종료된_무료강의는_신청불가하다() {
-            Session session = new Session("TDD, 자바 18기", FINISHED, 0, new FreeSession());
+            Session session = new Session("TDD, 자바 18기", FINISHED, new FreeSession());
             assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.now()))
                     .isInstanceOf(InvalidSessionJoinException.class);
         }
 
         @Test
         void 모집중인_유료강의가_수강인원을_초과한_경우_신청할수없다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 10, new PaidSession(10, Money.wons(1000L)));
-            assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.now()))
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new PaidSession(1, Money.wons(1000L)));
+            session.addListener(JAVAJIGI);
+
+            assertThatThrownBy(() -> session.requestJoin(SANJIGI, LocalDateTime.now()))
                     .isInstanceOf(InvalidSessionJoinException.class);
         }
 
@@ -84,7 +86,7 @@ class SessionTest {
 
         @Test
         void 이미_등록된_수강자인경우_예외를_던진다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new FreeSession());
             session.addListener(JAVAJIGI);
 
             Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.wons(1000L));
@@ -95,7 +97,7 @@ class SessionTest {
 
         @Test
         void 결제완료상태가_아닌경우_예외를던진다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new FreeSession());
             Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.ZERO);
 
             assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
@@ -104,7 +106,7 @@ class SessionTest {
 
         @Test
         void 강의아이디가_일치하지_않는경우_예외를던진다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession()); // 0L
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new FreeSession()); // 0L
             Payment payment = new Payment(1L, JAVAJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
 
             assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
@@ -113,7 +115,7 @@ class SessionTest {
 
         @Test
         void 유저아이디가_일치하지_않는경우_예외를던진다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new FreeSession());
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new FreeSession());
             Payment payment = new Payment(0L, SANJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
 
             assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
@@ -122,7 +124,7 @@ class SessionTest {
 
         @Test
         void 강의금액이_일치하지_않는경우_예외를던진다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new PaidSession(10, Money.wons(1000L)));
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new PaidSession(10, Money.wons(1000L)));
             Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.ZERO, PAYMENT_COMPLETE);
 
             assertThatThrownBy(() -> session.join(JAVAJIGI, payment))
@@ -131,7 +133,7 @@ class SessionTest {
 
         @Test
         void 정상적으로_수강등록시_카운트가_증가한다() {
-            Session session = new Session("TDD, 자바 18기", RECRUITING, 0, new PaidSession(10, Money.wons(1000L)));
+            Session session = new Session("TDD, 자바 18기", RECRUITING, new PaidSession(10, Money.wons(1000L)));
             Payment payment = new Payment(0L, JAVAJIGI.getId(), Money.wons(1000L), PAYMENT_COMPLETE);
             session.join(JAVAJIGI, payment);
 
