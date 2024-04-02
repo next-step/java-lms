@@ -14,7 +14,7 @@ create table session (
     end_date timestamp not null,
     cover_image_id bigint not null,
     status varchar(30) not null,
-    price int,
+    price bigint,
     capacity int,
     created_at timestamp not null,
     updated_at timestamp,

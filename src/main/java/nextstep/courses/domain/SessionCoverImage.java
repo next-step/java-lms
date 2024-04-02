@@ -70,4 +70,8 @@ public class SessionCoverImage {
             throw new InvalidCoverImageException("강의 커버 이미지 가로 또는 세로 크기가 너무 작습니다");
         }
     }
+
+    public Long getId() {
+        return id;
+    }
 }

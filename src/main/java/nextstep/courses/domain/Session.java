@@ -29,12 +29,25 @@ public class Session {
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
         SessionCoverImage coverImage, SessionStatus status, LocalDateTime createdAt) {
         this.id = id;
-        validateDate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
         this.coverImage = coverImage;
         this.status = status;
         this.createdAt = createdAt;
+    }
+
+    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
+        SessionCoverImage coverImage, SessionStatus status, Set<NsUser> learners,
+        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        validateDate(startDate, endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.coverImage = coverImage;
+        this.status = status;
+        this.learners = learners;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
@@ -64,5 +77,29 @@ public class Session {
 
     public Long getId() {
         return id;
+    }
+
+    public String getStatusName() {
+        return status.name();
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Long getCoverImageId() {
+        return coverImage.getId();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
