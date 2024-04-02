@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.List;
+import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
 import nextstep.users.domain.NsUser;
@@ -47,7 +47,7 @@ class SessionTest {
     @DisplayName("모집 정원을 초과하지 않았고 모집중 상태라면 강의 참여에 성공한다")
     void join() {
         // given
-        Session freeSession = new Session(
+        Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
             SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
             FIXED_DATE_TIME
@@ -55,10 +55,10 @@ class SessionTest {
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
         // when
-        freeSession.join(loginUser);
+        session.join(loginUser);
 
         // then
-        List<NsUser> learners = freeSession.getLearners();
+        Set<NsUser> learners = session.getLearners();
         assertThat(learners).contains(loginUser);
     }
 
@@ -73,6 +73,23 @@ class SessionTest {
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
+
+        // when, then
+        assertThatThrownBy(() -> session.join(loginUser))
+            .isInstanceOf(CanNotJoinSessionException.class);
+    }
+
+    @Test
+    @DisplayName("이미 수강중인 강의라면 수강 신청 시 예외가 발생한다")
+    void join_fail_for_already_joined() {
+        // given
+        Session session = new Session(
+            0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
+            FIXED_DATE_TIME
+        );
+        NsUser loginUser = NsUserTest.JAVAJIGI;
+        session.join(loginUser);
 
         // when, then
         assertThatThrownBy(() -> session.join(loginUser))

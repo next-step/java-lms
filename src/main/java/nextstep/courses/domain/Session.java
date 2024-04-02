@@ -3,8 +3,8 @@ package nextstep.courses.domain;
 import static nextstep.courses.domain.SessionStatus.RECRUIT;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
 import nextstep.courses.infrastructure.dto.LearnerDto;
@@ -17,7 +17,7 @@ public class Session {
     protected LocalDateTime endDate;
     protected SessionCoverImage coverImage;
     protected SessionStatus status = SessionStatus.PREPARE;
-    protected List<NsUser> learners = new ArrayList<>();
+    protected Set<NsUser> learners = new HashSet<>();
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 
@@ -44,18 +44,21 @@ public class Session {
     }
 
     public LearnerDto join(NsUser learner) {
-        validateJoinable();
+        validateJoinable(learner);
         learners.add(learner);
         return new LearnerDto(learner.getId(), id);
     }
 
-    protected void validateJoinable() {
+    protected void validateJoinable(NsUser learner) {
         if (status != RECRUIT) {
             throw new CanNotJoinSessionException("모집중 상태가 아닙니다");
         }
+        if (learners.contains(learner)) {
+            throw new CanNotJoinSessionException("이미 수강중인 강의입니다");
+        }
     }
 
-    public List<NsUser> getLearners() {
+    public Set<NsUser> getLearners() {
         return learners;
     }
 
