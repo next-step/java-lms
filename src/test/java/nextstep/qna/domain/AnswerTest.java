@@ -5,6 +5,11 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,5 +32,16 @@ public class AnswerTest {
         assertThat(A2.isDeleted()).isTrue();
     }
 
+    @DisplayName("삭제이력을 추가해주는지 검증한다")
+    @Test
+    void toHistories() {
+        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now());
 
+        List<DeleteHistory> deleteHistory1 = new ArrayList<>();
+        deleteHistory1.add(deleteHistory);
+
+        A1.addTo(deleteHistory1);
+
+        assertThat(deleteHistory1.size()).isEqualTo(2);
+    }
 }

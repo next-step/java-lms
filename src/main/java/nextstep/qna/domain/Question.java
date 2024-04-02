@@ -60,17 +60,6 @@ public class Question {
         deleteAnswers(user);
     }
 
-    public List<DeleteHistory> toHistories() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        this.addTo(deleteHistories);
-        this.answers.addTo(deleteHistories);
-        return deleteHistories;
-    }
-
-    private void addTo(List<DeleteHistory> deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
-    }
-
     private void deleteQuestion(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
@@ -80,6 +69,17 @@ public class Question {
 
     private void deleteAnswers(NsUser user) throws CannotDeleteException {
         this.answers.delete(user);
+    }
+
+    public List<DeleteHistory> toHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        this.addTo(deleteHistories);
+        this.answers.addTo(deleteHistories);
+        return deleteHistories;
+    }
+
+    private void addTo(List<DeleteHistory> deleteHistories) {
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
     }
 
     public boolean isDeleted() {
