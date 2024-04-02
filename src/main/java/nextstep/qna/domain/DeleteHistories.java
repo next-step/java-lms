@@ -8,11 +8,14 @@ public class DeleteHistories {
 
     private final List<DeleteHistory> deleteHistories;
 
-    public DeleteHistories() {
-        this(new ArrayList<>());
+    public static DeleteHistories of(DeleteHistory deleteHistory, List<DeleteHistory> deleteHistories) {
+        List<DeleteHistory> mergeDeleteHistories = new ArrayList<>();
+        mergeDeleteHistories.add(deleteHistory);
+        mergeDeleteHistories.addAll(deleteHistories);
+        return new DeleteHistories(mergeDeleteHistories);
     }
 
-    public DeleteHistories(List<DeleteHistory> deleteHistories) {
+    private DeleteHistories(List<DeleteHistory> deleteHistories) {
         this.deleteHistories = deleteHistories;
     }
 

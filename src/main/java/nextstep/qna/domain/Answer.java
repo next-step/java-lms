@@ -50,10 +50,10 @@ public class Answer {
         return id;
     }
 
-    public Answer delete(NsUser user) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser user) throws CannotDeleteException {
         validateDeletePossible(user);
         this.deleted = true;
-        return this;
+        return convertToDeleteHistory();
     }
 
     private void validateDeletePossible(NsUser user) throws CannotDeleteException {
@@ -78,7 +78,7 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory convertToDeleteHistory() {
+    private DeleteHistory convertToDeleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 

@@ -4,8 +4,9 @@ import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import static nextstep.qna.exception.CannotDeleteExceptionMessage.*;
+import static nextstep.qna.exception.CannotDeleteExceptionMessage.CAN_DELETE_ONLY_ANSWER_OWNER;
 
 public class Question {
     private Long id;
@@ -56,21 +57,15 @@ public class Question {
     }
 
     public DeleteHistories delete(NsUser user) throws CannotDeleteException {
-        deleteQuestion(user);
-        deleteAnswers(user);
-        return addDeleteHistories();
+        DeleteHistory deleteHistory = deleteQuestion(user);
+        List<DeleteHistory> deleteHistories = deleteAnswers(user);
+        return DeleteHistories.of(deleteHistory, deleteHistories);
     }
 
-    private DeleteHistories addDeleteHistories() {
-        DeleteHistories histories = new DeleteHistories();
-        histories.add(convertToDeleteHistory());
-        histories.add(this.answers.convertToDeleteHistories());
-        return histories;
-    }
-
-    private void deleteQuestion(NsUser user) throws CannotDeleteException {
+    private DeleteHistory deleteQuestion(NsUser user) throws CannotDeleteException {
         validateDeletePossible(user);
         this.deleted = true;
+        return convertToDeleteHistory();
     }
 
     private void validateDeletePossible(NsUser user) throws CannotDeleteException {
@@ -79,8 +74,8 @@ public class Question {
         }
     }
 
-    private void deleteAnswers(NsUser user) throws CannotDeleteException {
-        this.answers.delete(user);
+    private List<DeleteHistory> deleteAnswers(NsUser user) throws CannotDeleteException {
+        return this.answers.delete(user);
     }
 
     private DeleteHistory convertToDeleteHistory() {

@@ -4,8 +4,8 @@ import nextstep.qna.exception.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -19,17 +19,12 @@ public class Answers {
         this.answers = answers;
     }
 
-    public Answers delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         for (Answer answer : answers) {
-            answer.delete(user);
+            deleteHistories.add(answer.delete(user));
         }
-        return this;
-    }
-
-    public List<DeleteHistory> convertToDeleteHistories() {
-        return answers.stream()
-                .map(Answer::convertToDeleteHistory)
-                .collect(Collectors.toUnmodifiableList());
+        return Collections.unmodifiableList(deleteHistories);
     }
 
     public void add(Answer answer) {
