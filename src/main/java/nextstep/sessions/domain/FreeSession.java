@@ -5,6 +5,14 @@ import nextstep.payments.domain.Payment;
 
 public class FreeSession implements SessionType {
 
+    private final int capacity;
+    private final Money amount;
+
+    public FreeSession() {
+        this.capacity = 0;
+        this.amount = Money.ZERO;
+    }
+
     @Override
     public boolean isFull(int count) {
         return false;
@@ -12,11 +20,11 @@ public class FreeSession implements SessionType {
 
     @Override
     public Money getAmount() {
-        return Money.ZERO;
+        return amount;
     }
 
     @Override
     public boolean equalMoney(Payment payment) {
-        return Money.ZERO.equals(payment.getAmount());
+        return amount.equals(payment.getAmount());
     }
 }
