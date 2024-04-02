@@ -34,4 +34,5 @@ public class QnAService {
 
         deleteHistoryService.saveAll(deleteHistories);
     }
+
 }
