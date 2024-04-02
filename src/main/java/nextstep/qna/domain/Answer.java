@@ -56,12 +56,16 @@ public class Answer {
         this.deleted = true;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
+    }
+
+    public void addTo(List<DeleteHistory> deleteHistories) {
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public NsUser getWriter() {
@@ -70,10 +74,6 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
-    }
-
-    public void addTo(List<DeleteHistory> deleteHistories) {
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
     }
 
     @Override

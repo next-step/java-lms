@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
@@ -17,6 +18,13 @@ public class AnswerTest {
         assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("이 유저는 답변을 삭제할 권한이 없습니다");
+    }
+
+    @DisplayName("대답을 삭제하면 그 상태(deleted)가 true로 바뀐다")
+    @Test
+    void isDeleted() throws CannotDeleteException {
+        A2.delete(NsUserTest.SANJIGI);
+        assertThat(A2.isDeleted()).isTrue();
     }
 
 
