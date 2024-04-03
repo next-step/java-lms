@@ -36,7 +36,7 @@ public class Question extends BaseEntity{
     }
 
     private void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!questionInfo.isOwner(loginUser)) {
+        if (questionInfo.isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 

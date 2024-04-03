@@ -2,7 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.users.domain.NsUser;
 
-public class AnswerInfo extends  BaseEntity {
+public class AnswerInfo {
   private final NsUser writer;
 
   private final String contents;
