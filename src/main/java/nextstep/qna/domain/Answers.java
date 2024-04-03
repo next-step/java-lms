@@ -20,7 +20,6 @@ public class Answers {
     public boolean isContainOtherOwner(NsUser loginUser) {
        return answers.stream()
            .anyMatch(answer -> !answer.isOwner(loginUser));
-
     }
 
     public void delete() {

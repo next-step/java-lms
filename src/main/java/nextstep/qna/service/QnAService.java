@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
+
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
