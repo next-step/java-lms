@@ -5,15 +5,17 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public class Answer {
+public class Answer extends ContentsDateTime{
+
     private Long id;
 
     private NsUser writer;
 
-    private Question question;
-
     private String contents;
+
+    private Question question;
 
     private boolean deleted = false;
 
@@ -47,11 +49,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -70,6 +67,11 @@ public class Answer {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public void delete(List<DeleteHistory> deleteHistories) {
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
     }
 
     @Override
