@@ -1,3 +1,38 @@
+### 2단계 - 수강신청(도메인 모델)
+
+**Session**
+
+- [x] 강의 신청 가능 여부를 확인한다
+    - 강의 상태가 "모집중"일때만 신청 가능하다 -- isPossibleRegistration()
+- [x] 강의는 강의 상태(준비중, 모집중, 종료)를 가진다
+    - enum SessionState 생성
+    - PREPARING, RECRUITING, FINISHED 정의
+- [x] 강의는 시작일과 종료일 상태를 가진다
+
+- [x] Payment 는 PaymentState 상태를 가진다
+    - enum PaymentState 생성
+    - PENDING, PAYMENT_COMPLETE, CANCELLED, COMPLETE
+
+- [x] 강의 유형을 포함하여 강의 신청 가능 여부를 확인한다
+    - [x] 무료 강의인 경우 최대 수강 인원 제한이 없다
+    - [x] 유료 강의인 경우 최대 수강 인원을 초과할 수 없다
+- [x] 수강 신청 가능한 경우 주문서를 생성한다
+
+- [x] 예외 검사 후 수강 등록을 한다 -- Session join(..)
+    - [x] 로그인 유저(NsUser)가 NULL 인 경우 예외 던진다
+    - [x] 이미 등록된 수강생인 경우 예외 던진다
+    - [x] 결제 정보(Payment)가 NULL 인 경우 예외 던진다
+    - [x] 결제 정보(Payment)가 "결제완료" 상태가 아닌 경우 예외 던진다
+    - [x] 결제 정보와 강의 아이디(session id), 유저 아이디(NsUser id), 결제 금액 일치하지 않는 경우 예외 던진다
+
+- [x] 강의 커버 이미지 도메인을 추가한다 (CoverImage)
+    - [x] 크기는 1MB (1024 * 1024) 이하만 가능하다
+    - [x] 확장자는 gif, jpg, jpeg, png, svg 만 허용한다
+    - [x] 너비(width) 300 pixel, 높이(height) 200 pixel 이상만 허용
+    - [x] 너비와 높이는 3:2 비율이여야 한다
+
+---
+
 ### 1단계
 
 - [x] 질문 작성자와 로그인 유저를 비교한다
