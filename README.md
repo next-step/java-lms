@@ -7,3 +7,8 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+# todo
+- [] Question 에 삭제 상태 변경 추가
+- [] Answer에 삭제 상태 변경 추가
+- [] Answer 일급컬렉션 추가
