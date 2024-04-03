@@ -1,22 +1,15 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.BaseTime;
+import nextstep.qna.domain.question.Question;
 import nextstep.users.domain.NsUser;
 
 public class Answer extends BaseTime {
     private Long id;
-
-    private NsUser writer;
-
-    private Question question;
-
-    private String contents;
-
+    private final AnswerInfo answerInfo;
     private boolean deleted = false;
-
-    public Answer() {
-    }
 
     public Answer(NsUser writer, Question question, String contents) {
         this(null, writer, question, contents);
@@ -32,42 +25,35 @@ public class Answer extends BaseTime {
             throw new NotFoundException();
         }
 
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
+        this.answerInfo = new AnswerInfo(question, contents, writer);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public boolean isNotOwner(NsUser writer) {
+        return !answerInfo.isOwner(writer);
     }
 
     public NsUser getWriter() {
-        return writer;
+        return answerInfo.getWriter();
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
+    public void deleted() {
+        this.deleted = true;
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" +
+            "id=" + id +
+            ", answerInfo=" + answerInfo +
+            ", deleted=" + deleted +
+            '}';
     }
 }

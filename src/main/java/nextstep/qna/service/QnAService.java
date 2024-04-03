@@ -2,12 +2,13 @@ package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.DeleteHistory;
-import nextstep.qna.domain.Question;
-import nextstep.qna.domain.repository.AnswerRepository;
-import nextstep.qna.domain.repository.QuestionRepository;
-import nextstep.qna.domain.type.ContentType;
+import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.answer.Answers;
+import nextstep.qna.domain.deleteHistory.DeleteHistory;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.domain.answer.AnswerRepository;
+import nextstep.qna.domain.question.QuestionRepository;
+import nextstep.qna.domain.deleteHistory.type.ContentType;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,36 +19,33 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
-    @Resource(name = "questionRepository")
-    private QuestionRepository questionRepository;
+  @Resource(name = "questionRepository")
+  private QuestionRepository questionRepository;
 
-    @Resource(name = "answerRepository")
-    private AnswerRepository answerRepository;
+  @Resource(name = "answerRepository")
+  private AnswerRepository answerRepository;
 
-    @Resource(name = "deleteHistoryService")
-    private DeleteHistoryService deleteHistoryService;
+  @Resource(name = "deleteHistoryService")
+  private DeleteHistoryService deleteHistoryService;
 
-    @Transactional
-    public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-        Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-        if (!question.isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
+  @Transactional
+  public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
 
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
+    // 조회
+    Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
+    Answers answers = answerRepository.findByQuestion(questionId);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
-        }
-        deleteHistoryService.saveAll(deleteHistories);
+    // 삭제
+    question.delete(loginUser, answers);
+    answers.deleteAll(question.getWriter());
+
+    // 삭제 히스토리 관리
+    List<DeleteHistory> deleteHistories = new ArrayList<>();
+    deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter()));
+    for (int index = 0; index < answers.size(); index++) {
+      Answer answer = answers.get(index);
+      deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
     }
+    deleteHistoryService.saveAll(deleteHistories);
+  }
 }

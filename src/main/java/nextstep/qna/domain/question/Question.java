@@ -27,7 +27,8 @@ public class Question extends BaseTime {
     }
 
     public void delete(NsUser loginUser, Answers answers) throws CannotDeleteException {
-        if (isOwner(loginUser) && answers.validateDeleteIsPossible(questionInfo.getWriter())) {
+        if (isOwner(loginUser)) {
+            answers.validateDeleteIsPossible(questionInfo.getWriter());
             this.deleted = true;
         }
     }
