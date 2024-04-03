@@ -46,3 +46,29 @@
 - [x] Answer 일급 컬렉션 구현
 - [x] Question 삭제 상태 변경 구현
 - [x] Question 삭제 리스트 반환 구현
+
+# 수강 신청
+- 도메인 역할 도표
+![도메인 역할 도표](./images/image002.png)
+
+- [ ] ImageExtensionType
+- [ ] FilePathInformation
+- [ ] Resolution
+- [ ] Cover
+- [ ] Duration
+- [ ] Price
+- [ ] Capacity
+- [ ] Tutor
+- [ ] Student
+- [ ] Students
+- [ ] Payment
+- [ ] GeneralPayment
+- [ ] FreePayment
+- [ ] BaseInformation
+- [ ] Session
+- [ ] FreeSession
+- [ ] Sessions
+- [ ] Generation
+- [ ] Course
+- [ ] SessionService
+- [ ] CourseService
