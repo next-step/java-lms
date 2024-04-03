@@ -11,6 +11,7 @@ import static nextstep.courses.domain.SessionState.PREPARING;
 import static nextstep.courses.domain.SessionState.RECRUITING;
 
 public class Session {
+    private Long id;
     private Course course;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -31,6 +32,10 @@ public class Session {
         this.state = PREPARING;
         this.maxStudent = maxStudent;
         this.student = new ArrayList<>();
+    }
+
+    public void openRegister(){
+        state = RECRUITING;
     }
 
     public void addStudent(NsUser newStudent){
