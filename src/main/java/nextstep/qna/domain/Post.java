@@ -20,6 +20,8 @@ public abstract class Post {
 
     public abstract DeleteHistory makeDeleteHistory();
 
+    protected abstract void validateAuthority(NsUser loginUser);
+
     public Long getId() {
         return id;
     }

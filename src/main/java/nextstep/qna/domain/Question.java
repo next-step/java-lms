@@ -48,7 +48,7 @@ public class Question extends Post{
     }
 
     public void delete(NsUser loginUser) {
-        authorityValidation(loginUser);
+        validateAuthority(loginUser);
         answers.delete(loginUser);
         this.deleted = true;
     }
@@ -57,7 +57,8 @@ public class Question extends Post{
         return deleted;
     }
 
-    private void authorityValidation(NsUser loginUser) {
+    @Override
+    protected void validateAuthority(NsUser loginUser) {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
