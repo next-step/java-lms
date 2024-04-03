@@ -33,7 +33,7 @@
 - [x] delete() 메서드 구현하기
 - [x] DeleteHistory에 직접 메세지를 보내기
 - [x] Answers 일급 콜렉션 구현하기
-- [ ] 인스턴스 변수의 수를 줄이기 위해 도전하기
+- [x] 인스턴스 변수의 수를 줄이기 위해 도전하기
 
 #### QnAService
 - [x] Question과만 의존관계를 가진다. Answer, DeleteHistory에 직접 메세지를 보내지 않는다.
