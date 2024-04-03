@@ -15,7 +15,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private ContentsDateTime contentsDateTime;
+    private ContentsDateTime contentsDateTime = new ContentsDateTime();
 
     public Answer() {
     }

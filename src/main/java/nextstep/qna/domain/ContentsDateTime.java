@@ -6,7 +6,10 @@ public class ContentsDateTime {
 
     private final LocalDateTime createdDate = LocalDateTime.now();
 
-    private final LocalDateTime updatedDate;
+    private LocalDateTime updatedDate;
+
+    public ContentsDateTime() {
+    }
 
     public ContentsDateTime(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
