@@ -40,12 +40,7 @@ public class QnAService {
     answers.deleteAll(question.getWriter());
 
     // 삭제 히스토리 관리
-    List<DeleteHistory> deleteHistories = new ArrayList<>();
-    deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter()));
-    for (int index = 0; index < answers.size(); index++) {
-      Answer answer = answers.get(index);
-      deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
-    }
+    List<DeleteHistory> deleteHistories = DeleteHistory.makeDeleteHistories(questionId, question.getWriter(), answers);
     deleteHistoryService.saveAll(deleteHistories);
   }
 }

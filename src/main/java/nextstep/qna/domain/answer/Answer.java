@@ -3,16 +3,17 @@ package nextstep.qna.domain.answer;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.qna.domain.BaseTime;
+import nextstep.qna.domain.generator.RandomIdGenerator;
 import nextstep.qna.domain.question.Question;
 import nextstep.users.domain.NsUser;
 
 public class Answer extends BaseTime {
-    private Long id;
+    private final Long id;
     private final AnswerInfo answerInfo;
     private boolean deleted = false;
 
     public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+        this(RandomIdGenerator.generate(), writer, question, contents);
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
