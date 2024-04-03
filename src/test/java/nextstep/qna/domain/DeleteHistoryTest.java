@@ -3,11 +3,10 @@ package nextstep.qna.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteHistoryTest {
     
@@ -19,11 +18,6 @@ public class DeleteHistoryTest {
 
         Question question = QuestionTest.Q1;
 
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : question.getAnswers()) {
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-
-        assertThat(deleteHistories).hasSize(1);
+        assertThat(question.makeDeleteHistories()).hasSize(1);
     }
 }
