@@ -22,3 +22,45 @@
 Question 인스턴스 변수를 줄일 수 없을 지
 delete 내부에서 DeleteHistories 를 생성하는 것과 실제 삭제 로직을 분리하는건 어떤지 고민해보기
 validate도 마찬가지
+
+## 도메인 설계
+- Course 
+  - 필드
+    - 기수 (generation)
+    - 여러 세션(sessions: List\<Session>)
+- Session (상위클래스)
+  - 필드 
+    - 강의 ID (id: long) 
+    - 강의 시작일 (startDate: LocalDateTime)
+    - 강의 종료일 (endDate: LocalDateTime)
+    - 커버 이미지 정보 (coverImageInfo: CoverImageInfo)
+    - 상태 (status: Enum)
+
+- 커버 이미지 정보(CoverImageInfo)
+  - 필드
+    - 이미지 크기(size: int)
+    - 이미지 타입(type: Enum)
+    - 이미지 너비(width: long)
+    - 이미지 높이(height: long)
+  - 생성 조건
+    - 이미지 크기는 1MB 이하여야 한다.
+    - 이미티 아빙느 gif, jpg(jpeg 포함), png, svg만 허용한다.
+    - width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 heigth의 비율은 3:2여야 한다.
+
+- 무료 강의(FreeSession) extends Session
+  - 필드
+    - 현재 수강인원 (numberOfStudents: int)
+  - 메서드
+    - 수강신청 (enrolment() -> void)
+    - status가 모집 중이 아닌 경우 IllegalStateException
+- 유료 강의(PaySession) extends Session
+  - 필드
+    - 현재 수강인원 (numberOfStudents: int)
+    - 최대 수강인원 (maxNumberOfStudents: int)
+    - 수강료 (price: long)
+  - 메서드
+    - 수강신청 (enrolment(payment: Payment) -> void)
+      - status가 모집 중이 아닌 경우 IllegalStateException  
+      - payment의 결제금액이 수강료가 일치하지 않는 경우 IllegalArgumentException
+      - 최대 수강인원 <= 현재 수강인원인 경우 IllegalStateException
+      - 예외 상황 없을 시 현재 수강인원 1 증가
