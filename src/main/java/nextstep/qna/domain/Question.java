@@ -71,10 +71,11 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         validateDeleteAuthority(loginUser);
         answers.delete(loginUser);
         this.deleted = true;
+        return DeleteHistories.createQuestionDeleteHistory(this);
     }
 
     public boolean isDeleted() {
@@ -97,6 +98,8 @@ public class Question {
     }
 
     public DeleteHistory makeDeleteHistory() {
+        DeleteHistory deleteHistory = new DeleteHistory();
+        new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 }

@@ -12,10 +12,16 @@ public class DeleteHistories {
         this.deleteHistories = new ArrayList<>();
     }
 
+    public static DeleteHistories createQuestionDeleteHistory(Question question) {
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.addQuestionDeleteHistory(question);
+        return deleteHistories;
+    }
+
     public void addQuestionDeleteHistory(Question question) {
         deleteHistories.add(question.makeDeleteHistory());
         for (Answer answer : question.getAnswers()) {
-            deleteHistories.add(answer.makeDeleteHistory());
+            deleteHistories.add(answer.makeDeleteHistory()));
         }
 
     }
