@@ -27,4 +27,8 @@ public class BaseEntity {
     return deleted;
   }
 
+  protected void deleted(){
+    deleted = true;
+  }
+
 }

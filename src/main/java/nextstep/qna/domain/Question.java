@@ -46,7 +46,7 @@ public class Question extends BaseEntity{
 
     public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         validateDeletable(loginUser);
-        deleted = true;
+        deleted();
         DeleteHistories deleteAnswerHistories = answers.delete();
         return deletedHistories(deleteAnswerHistories);
     }
