@@ -45,12 +45,12 @@ public class Answer extends Post{
         this.question = question;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) {
         authorityValidation(loginUser);
         this.deleted = true;
     }
 
-    private void authorityValidation(NsUser loginUser) throws CannotDeleteException {
+    private void authorityValidation(NsUser loginUser) {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }

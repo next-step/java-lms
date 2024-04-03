@@ -29,7 +29,7 @@ public class AnswerTest {
 
     @Test
     @DisplayName("Answer Delete 확인 Test")
-    void deleteAnswerTest() throws CannotDeleteException {
+    void deleteAnswerTest(){
         A1.delete(NsUserTest.JAVAJIGI);
 
         assertThat(A1.isDeleted()).isTrue();
