@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class DeleteHistories {
     public void addQuestionDeleteHistory(Question question) {
         deleteHistories.add(question.makeDeleteHistory());
         for (Answer answer : question.getAnswers()) {
-            deleteHistories.add(answer.makeDeleteHistory()));
+            deleteHistories.add(answer.makeDeleteHistory());
         }
 
     }
