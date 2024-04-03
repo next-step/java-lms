@@ -1,28 +1,29 @@
 package nextstep.qna.domain;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeleteHistories {
+import static org.assertj.core.api.Assertions.*;
 
-    private final List<DeleteHistory> deleteHistories;
+public class DeleteHistoryTest {
+    
+    @Test
+    @DisplayName("삭제된 Question의 삭제 히스토리를 만든다.")
+    void addQuestionDeleteHistory() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-    public DeleteHistories() {
-        this.deleteHistories = new ArrayList<>();
-    }
 
-    public void addQuestionDeleteHistory(Question question) {
+        Question question = QuestionTest.Q1;
+
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()));
         for (Answer answer : question.getAnswers()) {
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
 
+        assertThat(deleteHistories).hasSize(1);
     }
-
-    public List<DeleteHistory> getDeleteHistories() {
-        return deleteHistories;
-    }
-
-
 }
