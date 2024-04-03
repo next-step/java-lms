@@ -51,10 +51,10 @@
 - 도메인 역할 도표
 ![도메인 역할 도표](./images/image002.png)
 
-- [ ] ImageExtensionType
-- [ ] FilePathInformation
-- [ ] Resolution
-- [ ] Cover
+- [x] ImageExtensionType
+- [x] FilePathInformation
+- [x] Resolution
+- [x] Cover
 - [ ] Duration
 - [ ] Price
 - [ ] Capacity
@@ -72,3 +72,16 @@
 - [ ] Course
 - [ ] SessionService
 - [ ] CourseService
+
+과정(Course)은 기수 단위로 운영하며, 여러 개의 강의(Session)를 가질 수 있다.
+강의는 시작일과 종료일을 가진다.
+강의는 강의 커버 이미지 정보를 가진다.
+
+강의는 무료 강의와 유료 강의로 나뉜다.
+무료 강의는 최대 수강 인원 제한이 없다.
+유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
+유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
+강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
+강의 수강신청은 강의 상태가 모집중일 때만 가능하다.
+유료 강의의 경우 결제는 이미 완료한 것으로 가정하고 이후 과정을 구현한다.
+결제를 완료한 결제 정보는 payments 모듈을 통해 관리되며, 결제 정보는 Payment 객체에 담겨 반한된다.
