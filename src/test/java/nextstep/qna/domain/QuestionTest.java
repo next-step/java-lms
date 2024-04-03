@@ -37,7 +37,7 @@ public class QuestionTest {
     @Test
     @DisplayName("deleted를 true로 만들고 삭제 이력 목록을 반환")
     void delete() throws CannotDeleteException {
-        assertThat(Q3.delete(NsUserTest.SANJIGI)).isNotEmpty();
+        assertThat(Q3.delete(NsUserTest.SANJIGI).getDeleteHistories()).isNotEmpty();
         assertThat(Q3.isDeleted()).isTrue();
     }
 }
