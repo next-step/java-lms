@@ -1,7 +1,7 @@
 package nextstep.qna.infrastructure;
 
-import nextstep.qna.domain.Question;
-import nextstep.qna.domain.repository.QuestionRepository;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.domain.question.QuestionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

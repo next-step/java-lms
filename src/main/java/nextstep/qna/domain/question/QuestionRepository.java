@@ -1,6 +1,4 @@
-package nextstep.qna.domain.repository;
-
-import nextstep.qna.domain.Question;
+package nextstep.qna.domain.question;
 
 import java.util.Optional;
 
