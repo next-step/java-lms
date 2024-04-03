@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -83,6 +84,44 @@ public class Question {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public void deleteAuthorityException(NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    public void otherAnswerException(List<Answer> answers, NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            checkOtherAnswer(answer, loginUser);
+        }
+    }
+
+    private void checkOtherAnswer(Answer answer, NsUser loginUser) throws CannotDeleteException {
+        if (!answer.isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+    }
+
+    public List<DeleteHistory> writeDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
+
+        for (Answer answer : answers) {
+            answer.setDeleted(true);
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+        }
+        return deleteHistories;
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        deleteAuthorityException(loginUser);
+        otherAnswerException(getAnswers(), loginUser);
+
+        return writeDeleteHistories();
     }
 
     @Override
