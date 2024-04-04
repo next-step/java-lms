@@ -79,10 +79,6 @@ public class Answer {
         return id;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isDeletableBy(NsUser user) {
         return user.matchUser(writer);
     }

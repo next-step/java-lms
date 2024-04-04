@@ -77,12 +77,4 @@ public class Question {
     public NsUser getWriter() {
         return writer;
     }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }
