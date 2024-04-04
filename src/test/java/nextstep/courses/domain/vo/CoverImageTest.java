@@ -3,8 +3,7 @@ package nextstep.courses.domain.vo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class CoverImageTest {
 
@@ -12,9 +11,7 @@ class CoverImageTest {
     @Test
     void imageCapacityTest() {
 
-        Capacity capacity = new Capacity(10);
-
-        assertThatThrownBy(() -> new CoverImage(capacity))
+        assertThatThrownBy(() -> new Capacity(10))
                 .isInstanceOf(IllegalArgumentException.class);
 
     }
@@ -22,8 +19,7 @@ class CoverImageTest {
     @DisplayName("타입은 gif, jpg, png, svg만 허용한다")
     @Test
     void imageExtensionTest() {
-        ImageFile imageFile = new ImageFile("image.txt");
-        assertThatThrownBy(() -> new CoverImage(imageFile))
+        assertThatThrownBy(() -> new ImageFile("image.txt"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
     
@@ -31,9 +27,7 @@ class CoverImageTest {
     @Test
     void imageSizeTest() {
 
-        ImageSize imageSize = new ImageSize(299, 199);
-
-        assertThatThrownBy(() -> new CoverImage(imageSize))
+        assertThatThrownBy(() -> new ImageSize(299, 199))
                 .isInstanceOf(IllegalArgumentException.class);
         
     }
@@ -42,7 +36,7 @@ class CoverImageTest {
     @DisplayName("이미지 비율은 3 : 2 여야 한다")
     @Test
     void imageProportionTest() {
-        ImageSize sut = new ImageSize(600, 400);
-        assertThat(sut.satisfyProportion(3, 2)).isTrue();
+        assertThatCode(() -> new ImageSize(600, 400))
+                .doesNotThrowAnyException();
     }
 }

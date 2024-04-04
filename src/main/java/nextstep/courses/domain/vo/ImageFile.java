@@ -5,23 +5,27 @@ import nextstep.courses.domain.vo.Extension;
 import java.util.Arrays;
 
 public class ImageFile {
+    private static final Extension[] ALLOWED_EXTENSION = {Extension.PNG, Extension.GIF, Extension.JPG, Extension.JPEG, Extension.SVG};
+
     private String fileName;
     private Extension extension;
 
     public ImageFile(String fileName, Extension extension) {
+        if (!satisfy(extension)) {
+            throw new IllegalArgumentException("capacity must under 1mb");
+        }
         this.fileName = fileName;
         this.extension = extension;
     }
 
     public ImageFile(String file) {
         String[] split = splitFileName(file);
-        this.fileName = split[0];
-        this.extension = Extension.of(split[1]);
+        new ImageFile(split[0], Extension.of(split[1]));
     }
 
-    public boolean satisfy(Extension ... extensions) {
-        return Arrays.stream(extensions)
-                .anyMatch(it -> it == this.extension);
+    private boolean satisfy(Extension extension) {
+        return Arrays.stream(ALLOWED_EXTENSION)
+                .anyMatch(it -> it == extension);
     }
 
     private String[] splitFileName(String file) {
