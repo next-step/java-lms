@@ -52,12 +52,22 @@ public class Question {
         return "Question [id=" + this.id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void deleteBy(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("현재 로그인 계정과 질문자가 다릅니다.");
         }
-        this.answers1.deleteBy(user);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.addAll(this.answers1.deleteBy(user));
         this.deleted = true;
+        deleteHistories.add(toHistory());
+        return deleteHistories;
+    }
+
+    private DeleteHistory toHistory() throws CannotDeleteException {
+        if (!isDeleted()) {
+            throw new CannotDeleteException("삭제되지 않은 질문입니다.");
+        }
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public long getId() {

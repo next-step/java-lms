@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
 
@@ -17,17 +18,17 @@ public class Answers {
         this.answers = answers;
     }
 
-    public void deleteBy(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
         if (!isDeletableBy(user)) {
             throw new CannotDeleteException("현재 로그인 계정과 다른 답변 작성자가 있습니다.");
         }
-        this.answers.forEach(answer -> {
+        return this.answers.stream().map(answer -> {
             try {
-                answer.deleteBy(user);
+                return answer.deleteBy(user);
             } catch (CannotDeleteException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }).collect(Collectors.toList());
     }
 
     private boolean isDeletableBy(NsUser user) {
