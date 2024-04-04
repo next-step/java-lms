@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
@@ -17,5 +18,12 @@ public class AnswerTest {
         assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변은 삭제할 수 없습니다.");
+    }
+
+    @DisplayName("현재 로그인 계정과 답변 작성자가 같으면 답변을 삭제한다.")
+    @Test
+    void test02() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
+        assertThat(A1.isDeleted()).isTrue();
     }
 }
