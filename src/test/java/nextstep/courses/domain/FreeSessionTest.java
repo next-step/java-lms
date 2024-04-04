@@ -19,7 +19,7 @@ public class FreeSessionTest {
 
     @BeforeEach
     void setUp() {
-        freeSession = new FreeSession(LocalDateTime.now(), LocalDateTime.now());
+        freeSession = FreeSession.of(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()));
         payment = new Payment("1", 123L, 1L, 0L);
     }
 

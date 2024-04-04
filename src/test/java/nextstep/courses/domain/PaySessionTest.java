@@ -19,7 +19,7 @@ public class PaySessionTest {
     @BeforeEach
     void setUp() {
         payment = new Payment("1", 123L, 1L, 0L);
-        paySession = new PaySession(LocalDateTime.now(), LocalDateTime.now(), 2000L, 2);
+        paySession = PaySession.of(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()), 2000L, 2);
     }
 
     @Test

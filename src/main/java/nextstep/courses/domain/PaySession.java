@@ -13,8 +13,16 @@ public class PaySession extends Session {
     private final Long price;
     private final int maxNumberOfStudents;
 
-    public PaySession(LocalDateTime startDate, LocalDateTime endDate, Long price, int maxNumberOfStudents) {
-        super(startDate, endDate);
+    public PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
+        return new PaySession(sessionDate, price, maxNumberOfStudents, coverImageInfo);
+    }
+
+    public static PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents) {
+        return new PaySession(sessionDate, price, maxNumberOfStudents, null);
+    }
+
+    private PaySession(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
+        super(sessionDate, coverImageInfo);
         this.price = price;
         this.maxNumberOfStudents = maxNumberOfStudents;
     }
