@@ -3,8 +3,6 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
 
-import java.time.LocalDateTime;
-
 abstract public class Session {
     protected final SessionDate sessionDate;
     protected SessionStatus sessionStatus;

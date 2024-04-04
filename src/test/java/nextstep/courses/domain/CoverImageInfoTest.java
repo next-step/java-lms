@@ -32,7 +32,6 @@ class CoverImageInfoTest {
         assertThatThrownBy(() -> new CoverImageInfo(NORMAL_SIZE, wrongImageType, NORMAL_WIDTH, NORMAL_HEIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(IMAGE_TYPE_INVALID_MESSAGE);
-        ;
     }
 
     @Test
