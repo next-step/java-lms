@@ -14,6 +14,7 @@ public class Question {
     private String contents;
     private NsUser writer;
     private List<Answer> answers = new ArrayList<>();
+    private Answers answers1 = new Answers();
     private boolean deleted = false;
     private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime updatedDate;
@@ -35,6 +36,7 @@ public class Question {
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
         answers.add(answer);
+        answers1.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -54,6 +56,7 @@ public class Question {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("현재 로그인 계정과 질문자가 다릅니다.");
         }
+        this.answers1.deleteBy(user);
         this.deleted = true;
     }
 
