@@ -1,6 +1,9 @@
 package nextstep.sessions.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.payments.exception.InvalidPaymentException;
+import nextstep.payments.exception.PaymentAmountMismatchException;
+import nextstep.sessions.exception.DuplicateJoinException;
 import nextstep.sessions.exception.InvalidSessionException;
 import nextstep.sessions.exception.InvalidSessionJoinException;
 import nextstep.users.domain.NsUser;
@@ -109,25 +112,25 @@ public class Session extends BaseEntity {
 
     private void validatePayment(NsUser loginUser, Payment payment) {
         if (!payment.isPaymentComplete()) {
-            throw new InvalidSessionJoinException("결제 완료 되지 않았습니다");
+            throw new InvalidPaymentException("결제 완료 되지 않았습니다");
         }
 
         if (!payment.equalSessionId(this.id)) {
-            throw new InvalidSessionJoinException("결제 정보와 강의 정보가 일치하지 않습니다");
+            throw new InvalidPaymentException("결제 정보와 강의 정보가 일치하지 않습니다");
         }
 
         if (!payment.equalNsUserId(loginUser)) {
-            throw new InvalidSessionJoinException("결제 정보와 유저 정보가 일치하지 않습니다");
+            throw new InvalidPaymentException("결제 정보와 유저 정보가 일치하지 않습니다");
         }
 
         if (!this.sessionType.equalMoney(payment)) {
-            throw new InvalidSessionJoinException("결제 정보와 강의 금액이 일치하지 않습니다");
+            throw new PaymentAmountMismatchException("결제 정보와 강의 금액이 일치하지 않습니다");
         }
     }
 
     public void addListener(NsUser loginUser) {
         if (listener.contains(loginUser)) {
-            throw new IllegalArgumentException();
+            throw new DuplicateJoinException("이미 강의 등록된 회원입니다");
         }
 
         this.listener.add(loginUser);
