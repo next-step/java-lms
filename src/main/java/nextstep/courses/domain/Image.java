@@ -16,7 +16,7 @@ public class Image {
     }
 
     private void validateSize(Integer size) {
-        if(size > 1024 * 1024){
+        if(isMaxOverSize(size)){
             throw new IllegalArgumentException("이미지 크기는 1MB 이하여야합니다.");
         }
     }
@@ -25,5 +25,10 @@ public class Image {
         if(width * 2 != height * 3){
             throw new IllegalArgumentException("가로, 세로 비율을 3:2여야 합니다.");
         }
+    }
+
+    private boolean isMaxOverSize(Integer size){
+        int MAX_SIZE = 1024 * 1024;
+        return size > MAX_SIZE;
     }
 }

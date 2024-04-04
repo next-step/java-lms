@@ -10,9 +10,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class ImageTest {
 
     @Test
-    @DisplayName("1MB가 넘는 이미지는 생성할 수 없다.")
+    @DisplayName("이미지는 최대 허용 크기를 넘으면 생성할 수 없다.")
     void checkSize(){
-        assertThatThrownBy(() -> new Image(3 * 1024 * 1024, JPG, 300, 200)).isInstanceOf(IllegalArgumentException.class);
+        int TREE_MB = 3145728;
+        assertThatThrownBy(() -> new Image(TREE_MB, JPG, 300, 200)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
