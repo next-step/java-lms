@@ -10,6 +10,5 @@ import java.util.List;
 public class JdbcDeleteHistoryRepository implements DeleteHistoryRepository {
     @Override
     public void saveAll(List<DeleteHistory> deleteHistories) {
-
     }
 }

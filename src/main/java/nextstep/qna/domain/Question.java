@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,15 +16,15 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers();
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    protected Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -41,24 +42,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -72,21 +55,51 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public List<DeleteHistory> deleteWrittenBy(NsUser user) throws CannotDeleteException {
+        return toHistories(deleteQuestionBy(user), deleteAnswers(user));
+    }
+
+    private List<DeleteHistory> toHistories(
+            DeleteHistory questionDeleteHistory,
+            List<DeleteHistory> answerDeleteHistories)
+            throws CannotDeleteException
+    {
+        if (!deleted) {
+            throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
+        }
+
+        List<DeleteHistory> histories = new ArrayList<>();
+        histories.add(questionDeleteHistory);
+        histories.addAll(answerDeleteHistories);
+        return histories;
+    }
+
+    private DeleteHistory deleteQuestionBy(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.deleted = true;
+        return toHistory();
+    }
+
+    private DeleteHistory toHistory() throws CannotDeleteException {
+        if (!deleted) {
+            throw new CannotDeleteException("답변이 삭제가 되지 않았습니다");
+        }
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser user) throws CannotDeleteException {
+        return this.answers.deleteAnswersBy(user);
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
 }
