@@ -24,7 +24,7 @@ public class AnswerTest {
 
     @Test
     void 답변을_삭제할_떼_다른_사람이_쓴_답변이_있으면_예외가_발생한다() {
-        assertThatThrownBy(() -> A1.validateOwnership(SANJIGI))
+        assertThatThrownBy(() -> A1.delete(SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
