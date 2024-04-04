@@ -30,4 +30,8 @@ public class Payment {
     public Long getAmount(){
         return amount;
     }
+
+    public boolean isEqualToPayment(Long amount){
+        return this.amount.equals(amount);
+    }
 }
