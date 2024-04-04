@@ -52,4 +52,8 @@ public class SessionStatus {
 
         throw new SessionStatusException(String.format("이전 상태로 변경할 수 없습니다. 현재 상태 = %s", this.sessionStatus));
     }
+
+    public boolean canEnroll() {
+        return this.sessionStatus == SessionStatusType.ON_ENROLL;
+    }
 }

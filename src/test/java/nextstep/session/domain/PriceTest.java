@@ -1,5 +1,7 @@
 package nextstep.session.domain;
 
+import nextstep.payments.domain.GeneralPayment;
+import nextstep.payments.domain.Payment;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,19 +12,21 @@ class PriceTest {
     @Test
     void FullyPaidForFullyPaid() {
         // given
-        Price price = new Price(10000);
+        Price price = new Price(10_000);
+        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 10_000L);
 
         // then
-        Assertions.assertThat(price.isFullyPaid(10000)).isTrue();
+        Assertions.assertThat(price.isFullyPaid(payment)).isTrue();
     }
 
     @DisplayName("비용을 덜 지불하면 isFullyPaid는 false를 반환한다.")
     @Test
     void FullyPaidForNotFullyPaid() {
         // given
-        Price price = new Price(10000);
+        Price price = new Price(10_000);
+        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 5_000L);
 
         // then
-        Assertions.assertThat(price.isFullyPaid(5000)).isFalse();
+        Assertions.assertThat(price.isFullyPaid(payment)).isFalse();
     }
 }

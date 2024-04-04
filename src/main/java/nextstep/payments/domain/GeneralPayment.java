@@ -26,4 +26,9 @@ public class GeneralPayment implements Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    @Override
+    public Long getPaidAmount() {
+        return this.amount;
+    }
 }

@@ -32,7 +32,7 @@ class FreeSessionTest {
     @DisplayName("상태가 ON_ENROLL이면서, 신청일자가 Duration에 속한다면, 신청 가능하다.")
     @Test
     void enrollAvailable() {
-        // given
+        // when
         session.toNextSessionStatus();
 
         // then
@@ -43,7 +43,7 @@ class FreeSessionTest {
     @DisplayName("상태가 ON_ENROLL이면서 신청일자가 Duration이 아니면, 신청이 불가능하다.")
     @Test
     void enrollNotAvailableWithNotInDuration() {
-        // given
+        // when
         session.toNextSessionStatus();
 
         // then
@@ -54,7 +54,7 @@ class FreeSessionTest {
     @DisplayName("상태가 ON_ENROLL이 아니고 신청일자가 Duration이 아니면, 신청이 불가능하다.")
     @Test
     void enrollNotAvailableWithNotOnEnroll() {
-        // given
+        // when
         session.toNextSessionStatus();
         session.toNextSessionStatus();
 

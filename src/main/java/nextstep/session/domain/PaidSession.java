@@ -1,14 +1,12 @@
 package nextstep.session.domain;
 
 import nextstep.payments.domain.Payment;
-import nextstep.session.type.SessionStatusType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class FreeSession implements Session {
+public class PaidSession implements Session {
 
-    public static final int FREE_PRICE = 0;
     private Duration duration;
     private Cover cover;
     private SessionStatus sessionStatus;
@@ -19,16 +17,16 @@ public class FreeSession implements Session {
     private final Tutor tutor;
     private final Students students;
 
-    public FreeSession(
+    public PaidSession(
             Duration duration, Cover cover, String sessionName,
-            Long sessionId, Tutor tutor
+            int capacity, Long price, Long sessionId, Tutor tutor
     ) {
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
-        this.capacity = Capacity.create();
-        this.price = new Price(FREE_PRICE);
+        this.capacity = Capacity.create(capacity);
+        this.price = new Price(price);
         this.sessionId = sessionId;
         this.tutor = tutor;
         this.students = new Students();
@@ -67,12 +65,13 @@ public class FreeSession implements Session {
     @Override
     public boolean isEnrollAvailable(LocalDateTime applyDate) {
         return this.sessionStatus.canEnroll() &&
-                this.duration.isAvailable(applyDate);
+                this.duration.isAvailable(applyDate) &&
+                this.capacity.isAvailable();
     }
 
     @Override
     public boolean apply(NsUser student, Payment payment, LocalDateTime applyDate) {
-        if (isEnrollAvailable(applyDate)) {
+        if (isEnrollAvailable(applyDate) && this.price.isFullyPaid(payment)) {
             this.students.add(student);
             this.capacity.enroll();
             return true;

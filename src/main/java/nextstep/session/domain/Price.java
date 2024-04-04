@@ -1,5 +1,7 @@
 package nextstep.session.domain;
 
+import nextstep.payments.domain.Payment;
+
 public class Price {
 
     public final long price;
@@ -8,7 +10,7 @@ public class Price {
         this.price = price;
     }
 
-    public boolean isFullyPaid(long payAmount) {
-        return price == payAmount;
+    public boolean isFullyPaid(Payment payment) {
+        return price == payment.getPaidAmount();
     }
 }
