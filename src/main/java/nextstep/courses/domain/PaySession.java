@@ -27,6 +27,11 @@ public class PaySession extends Session {
 
     @Override
     public void enroll(Payment payment) {
+        validateEnrollable(payment);
+        numberOfStudents++;
+    }
+
+    private void validateEnrollable(Payment payment) {
         if (sessionStatus != SessionStatus.READY) {
             throw new IllegalStateException(SESSION_NOT_RECRUITING);
         }
@@ -36,6 +41,5 @@ public class PaySession extends Session {
         if (numberOfStudents >= maxNumberOfStudents) {
             throw new IllegalArgumentException(NUMBER_OF_STUDENTS_IS_FULL);
         }
-        numberOfStudents++;
     }
 }

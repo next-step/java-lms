@@ -11,9 +11,9 @@ public class CoverImageInfo {
     private static final String IMAGE_HEIGHT_UNDER_MESSAGE = "이미지의 높이는 200 픽셀 이상이어야 합니다.";
     private static final String IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE = "이미지의 너비와 높이는 3:2 비율이어야 합니다.";
 
-    private static final int MAX_IMAGE_SIZE = 1024;
-    private static final int MIN_IMAGE_WIDTH = 300;
-    private static final int MIN_IMAGE_HEIGHT = 200;
+    private static final int MAX_IMAGE_SIZE = 1024;         // KB
+    private static final int MIN_IMAGE_WIDTH = 300;         // 픽셀
+    private static final int MIN_IMAGE_HEIGHT = 200;        // 픽셀
     private static final int WIDTH_RATE = 3;
     private static final int HEIGHT_RATE = 2;
 
