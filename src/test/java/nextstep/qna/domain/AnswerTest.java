@@ -26,4 +26,10 @@ public class AnswerTest {
         A1.delete(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
+
+    @DisplayName("삭제 가능 여부를 확인한다.")
+    @Test
+    void test03() {
+        assertThat(A1.isDeletableBy(NsUserTest.JAVAJIGI)).isTrue();
+    }
 }
