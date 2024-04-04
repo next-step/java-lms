@@ -48,3 +48,14 @@ create table delete_history (
     deleted_by_id bigint,
     primary key (id)
 );
+
+CREATE TABLE cover_image (
+     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+     session_id BIGINT NOT NULL,
+     width INT NOT NULL,
+     height INT NOT NULL,
+     file_size BIGINT NOT NULL,
+     file_name VARCHAR(100) NOT NULL,
+     extension VARCHAR(100) NOT NULL,
+     file_path VARCHAR(100) NOT NULL
+);
