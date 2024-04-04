@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,21 +18,22 @@ public class SessionTest {
 
     @BeforeEach
     void createSession(){
-        freeSession = new Session(course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.FREE, 0);
-        paidSession = new Session(course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.PAID, 1);
+        freeSession = new Session(1L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.FREE, 0, 3000L);
+        paidSession = new Session(2L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.PAID, 1, 3000L);
     }
 
     @Test
     @DisplayName("모집중이 아닌 강의는 수강신청이 불가능한지 확인")
     void cannotRegister(){
-        assertThatThrownBy(() -> freeSession.addStudent(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        Payment payment = new Payment("1", 1L, 1L, 3000L);
+        assertThatThrownBy(() -> freeSession.addStudent(NsUserTest.JAVAJIGI, payment)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없는지 확인")
     void limitStudentCapacity(){
         paidSession.openRegister();
-        paidSession.addStudent(NsUserTest.SANJIGI);
-        assertThatThrownBy(() -> paidSession.addStudent(NsUserTest.JAVAJIGI)).isInstanceOf(IllegalArgumentException.class);
+        paidSession.addStudent(NsUserTest.SANJIGI, new Payment("1", 2L, 2L, 3000L));
+        assertThatThrownBy(() -> paidSession.addStudent(NsUserTest.JAVAJIGI, new Payment("2", 1L, 1L, 3000L))).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -22,18 +22,23 @@ public class Session {
     private Long sessionFee;
     private List<NsUser> student;
 
-    public Session(Course course, LocalDate startDate, LocalDate endDate, Image coverImage, SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
-        validateSessionDate(startDate, endDate);
+    public Session(Long id, Course course, LocalDate startDate, LocalDate endDate, Image coverImage, SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
+        this(id, course, new SessionDuration(startDate, endDate), coverImage, sessionPayType, PREPARING, maxStudent, sessionFee, new ArrayList<>());
+    }
+
+    public Session(Long id, Course course, SessionDuration sessionDuration, Image coverImage,
+        SessionPayType sessionPayType, SessionState state, Integer maxStudent, Long sessionFee,
+        List<NsUser> student) {
         validatePayType(sessionPayType, maxStudent, sessionFee);
+        this.id = id;
         this.course = course;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.sessionDuration = sessionDuration;
         this.coverImage = coverImage;
         this.sessionPayType = sessionPayType;
-        this.state = PREPARING;
+        this.state = state;
         this.maxStudent = maxStudent;
         this.sessionFee = sessionFee;
-        this.student = new ArrayList<>();
+        this.student = student;
     }
 
     public void openRegister(){
