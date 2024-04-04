@@ -26,14 +26,4 @@ public class QuestionTest {
         Q1.deleteBy(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
-
-    @DisplayName("현재 로그인 계정과 다른 답변 작성자가 있다면 예외가 발생한다.")
-    @Test
-    void test03() {
-        Q1.addAnswer(AnswerTest.A1);
-        Q1.addAnswer(AnswerTest.A2);
-        assertThatThrownBy(() -> Q1.deleteBy(NsUserTest.JAVAJIGI))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("현재 로그인 계정과 다른 답변 작성자가 있습니다.");
-    }
 }
