@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -11,6 +12,7 @@ public class PaidSession implements Session {
     private Cover cover;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
+    private final Course course;
     private final Capacity capacity;
     private final Price price;
     private final Long sessionId;
@@ -18,13 +20,14 @@ public class PaidSession implements Session {
     private final Students students;
 
     public PaidSession(
-            Duration duration, Cover cover, String sessionName,
+            Duration duration, Cover cover, String sessionName, Course course,
             int capacity, Long price, Long sessionId, Tutor tutor
     ) {
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
+        this.course = course;
         this.capacity = Capacity.create(capacity);
         this.price = new Price(price);
         this.sessionId = sessionId;

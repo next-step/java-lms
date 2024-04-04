@@ -1,7 +1,7 @@
 package nextstep.session.domain;
 
+import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
-import nextstep.session.type.SessionStatusType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -13,6 +13,7 @@ public class FreeSession implements Session {
     private Cover cover;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
+    private final Course course;
     private final Capacity capacity;
     private final Price price;
     private final Long sessionId;
@@ -21,12 +22,13 @@ public class FreeSession implements Session {
 
     public FreeSession(
             Duration duration, Cover cover, String sessionName,
-            Long sessionId, Tutor tutor
+            Course course, Long sessionId, Tutor tutor
     ) {
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
+        this.course = course;
         this.capacity = Capacity.create();
         this.price = new Price(FREE_PRICE);
         this.sessionId = sessionId;
