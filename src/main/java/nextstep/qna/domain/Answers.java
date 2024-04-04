@@ -23,7 +23,7 @@ public class Answers {
         }
         this.answers.forEach(answer -> {
             try {
-                answer.delete(user);
+                answer.deleteBy(user);
             } catch (CannotDeleteException e) {
                 throw new RuntimeException(e);
             }

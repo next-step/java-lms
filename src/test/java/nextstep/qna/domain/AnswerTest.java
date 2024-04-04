@@ -15,7 +15,7 @@ public class AnswerTest {
     @DisplayName("현재 로그인한 사용자와 답변자가 다르면 예외가 발생한다.")
     @Test
     void test01() {
-        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> A1.deleteBy(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("다른 사람이 쓴 답변은 삭제할 수 없습니다.");
     }
@@ -23,7 +23,7 @@ public class AnswerTest {
     @DisplayName("현재 로그인 계정과 답변 작성자가 같으면 답변을 삭제한다.")
     @Test
     void test02() throws CannotDeleteException {
-        A1.delete(NsUserTest.JAVAJIGI);
+        A1.deleteBy(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isTrue();
     }
 
