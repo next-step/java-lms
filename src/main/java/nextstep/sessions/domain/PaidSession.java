@@ -8,6 +8,10 @@ public class PaidSession implements SessionType {
     private final int capacity;
     private final Money amount;
 
+    public PaidSession(int capacity, long amount) {
+        this(capacity, Money.wons(amount));
+    }
+
     public PaidSession(int capacity, Money amount) {
         if (capacity < MIN_CAPACITY) {
             throw new IllegalArgumentException("강의 최소 인원은 " + MIN_CAPACITY + " 입니다");
@@ -27,8 +31,13 @@ public class PaidSession implements SessionType {
     }
 
     @Override
-    public Money getAmount() {
-        return amount;
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    @Override
+    public long getAmount() {
+        return amount.getAmount();
     }
 
     @Override

@@ -28,26 +28,10 @@ public class Session extends BaseEntity {
 
     private LocalDateTime endDate;
 
-    private Set<NsUser> listener = new HashSet<>();
+    private Set<NsUser> listener;
 
-
-    public Session(SessionState state) {
-        this(state, LocalDateTime.now());
-    }
-
-    public Session(SessionState state, LocalDateTime createdAt) {
-        this(state, new FreeSession(), createdAt, null, null);
-    }
-
-    public Session(SessionState state, SessionType sessionType) {
-        this(state, sessionType, null, null, LocalDateTime.now());
-    }
-
-    public Session(SessionState state, SessionType sessionType, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt) {
-        this(0L, "", state, sessionType, null, startDate, endDate, createdAt, null);
-    }
-
-    public Session(long id, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(long id, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+        validateSessionType(sessionType);
         validatePeriod(startDate, endDate);
 
         this.id = id;
@@ -59,11 +43,92 @@ public class Session extends BaseEntity {
         this.endDate = endDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.listener = listener == null ? new HashSet<>() : listener;
+    }
+
+    private void validateSessionType(SessionType sessionType) {
+        if (sessionType == null) {
+            throw new IllegalArgumentException("무료/유료 강의 정보가 비어있습니다");
+        }
     }
 
     private void validatePeriod(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new InvalidSessionException("시작일이 종료일보다 이전이어야 합니다");
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private long id;
+        private String title;
+        private SessionState state;
+        private SessionType sessionType;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+        private CoverImage coverImage;
+        private Set<NsUser> listener;
+
+        public Builder() {
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder state(SessionState state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder sessionType(SessionType sessionType) {
+            this.sessionType = sessionType;
+            return this;
+        }
+
+        public Builder startDate(LocalDateTime startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder endDate(LocalDateTime endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder coverImage(CoverImage coverImage) {
+            this.coverImage = coverImage;
+            return this;
+        }
+
+        public Builder listener(Set<NsUser> listener) {
+            this.listener = listener;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(id, title, state, sessionType, coverImage, startDate, endDate, createdAt, updatedAt, listener);
         }
     }
 
@@ -140,6 +205,45 @@ public class Session extends BaseEntity {
         return this.listener.size();
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public SessionState getState() {
+        return state;
+    }
+
+    public SessionType getSessionType() {
+        return sessionType;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Set<NsUser> getListener() {
+        return listener;
+    }
+
+    public int getCapacity() {
+        return this.sessionType.getCapacity();
+    }
+
+    public long getAmount() {
+        return this.sessionType.getAmount();
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -152,5 +256,19 @@ public class Session extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, state, createdAt, updatedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", state=" + state +
+                ", sessionType=" + sessionType +
+                ", coverImage=" + coverImage +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", listener=" + listener +
+                '}';
     }
 }
