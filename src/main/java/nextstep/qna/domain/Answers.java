@@ -1,11 +1,10 @@
 package nextstep.qna.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import nextstep.qna.CannotDeleteException;
-import nextstep.users.domain.NsUser;
 
 public class Answers implements Iterable<Answer> {
 
@@ -19,10 +18,13 @@ public class Answers implements Iterable<Answer> {
         this.answers = answers;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser loginUser) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         for (Answer answer : answers) {
-            answer.delete(loginUser);
+            deleteHistories.add(answer.delete(loginUser));
         }
+        return deleteHistories;
     }
 
     public void addAnswer(Answer answer) {

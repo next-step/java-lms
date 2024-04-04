@@ -2,6 +2,7 @@ package nextstep.qna.service;
 
 import nextstep.qna.NotFoundException;
 import nextstep.qna.domain.AnswerRepository;
+import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
 import nextstep.qna.domain.QuestionRepository;
 import nextstep.users.domain.NsUser;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
@@ -25,8 +27,8 @@ public class QnAService {
     public void deleteQuestion(NsUser loginUser, long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
-        question.delete(loginUser);
+        List<DeleteHistory> deleteHistories = question.delete(loginUser);
 
-        deleteHistoryService.saveAll(question.makeDeleteHistories());
+        deleteHistoryService.saveAll(deleteHistories);
     }
 }
