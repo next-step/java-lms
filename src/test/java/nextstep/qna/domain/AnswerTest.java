@@ -27,7 +27,7 @@ public class AnswerTest {
     void getAsDeleteHistory() {
         // given
         DeleteHistory deleteHistory =
-                new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
+                DeleteHistory.createAnswer(A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         // then
         assertThat(A1_ANSWER_BY_JAVAJIGI_OF_Q1.delete()).isEqualTo(deleteHistory);

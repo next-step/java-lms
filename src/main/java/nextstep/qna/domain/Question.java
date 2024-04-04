@@ -95,7 +95,7 @@ public class Question {
         this.setDeleted(true);
 
         DeleteHistoryTargets deleteHistoryTargets = this.answers.delete(loginUser);
-        deleteHistoryTargets.addFirst(new DeleteHistory(ContentType.QUESTION, this.getId(), loginUser, LocalDateTime.now()));
+        deleteHistoryTargets.addFirst(DeleteHistory.createQuestion(this.getId(), loginUser, LocalDateTime.now()));
 
         return deleteHistoryTargets;
     }

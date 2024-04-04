@@ -50,8 +50,8 @@ class AnswersTest {
 
         // then
         assertThat(answers.delete(NsUserTest.SANJIGI).asList()).contains(
-                new DeleteHistory(ContentType.ANSWER, A2_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, A3_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
+                DeleteHistory.createAnswer(A2_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now()),
+                DeleteHistory.createAnswer(A3_ANSWER_BY_SANJIGI_OF_Q1.getId(), NsUserTest.SANJIGI, LocalDateTime.now())
         );
     }
 }

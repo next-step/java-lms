@@ -16,10 +16,18 @@ public class DeleteHistory {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    public DeleteHistory() {
+    public static DeleteHistory createQuestion(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.QUESTION, contentId, deletedBy, createdDate);
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public static DeleteHistory createAnswer(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.ANSWER, contentId, deletedBy, createdDate);
+    }
+
+    private DeleteHistory() {
+    }
+
+    private DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
