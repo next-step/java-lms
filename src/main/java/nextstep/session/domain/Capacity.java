@@ -5,10 +5,19 @@ import nextstep.exception.CapacityException;
 public class Capacity {
 
     public static final int NO_CAPACITY = 0;
+    public static final int A_STUDENT = 1;
     private final int maxCapacity;
     private int enrolled = 0;
 
-    public Capacity(int maxCapacity) {
+    public static Capacity create(int maxCapacity) {
+        return new Capacity(maxCapacity);
+    }
+
+    public static Capacity create() {
+        return new Capacity(Integer.MAX_VALUE);
+    }
+
+    private Capacity(int maxCapacity) {
         validateMaxCapacity(maxCapacity);
         this.maxCapacity = maxCapacity;
     }
@@ -19,15 +28,15 @@ public class Capacity {
         }
     }
 
-    public void enroll(int enrolledNumber) {
-        int afterEnrolled = this.enrolled + enrolledNumber;
+    public void enroll() {
+        int afterEnrolled = this.enrolled + A_STUDENT;
         validateEnrolledNumber(afterEnrolled);
 
         this.enrolled = afterEnrolled;
     }
 
     private void validateEnrolledNumber(int afterEnrolled) {
-        if (afterEnrolled > maxCapacity) {
+        if (afterEnrolled > this.maxCapacity) {
             throw new CapacityException("수용 가능인원을 초과하여 신청하였습니다.");
         }
     }

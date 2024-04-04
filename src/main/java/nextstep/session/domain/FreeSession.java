@@ -13,6 +13,7 @@ public class FreeSession implements Session {
     private Cover cover;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
+    private final Capacity capacity;
     private final Price price;
     private final Long sessionId;
     private final Tutor tutor;
@@ -26,6 +27,7 @@ public class FreeSession implements Session {
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
+        this.capacity = Capacity.create();
         this.price = new Price(FREE_PRICE);
         this.sessionId = sessionId;
         this.tutor = tutor;
@@ -72,6 +74,7 @@ public class FreeSession implements Session {
     public boolean apply(NsUser student, Payment payment, LocalDateTime applyDate) {
         if (isEnrollAvailable(applyDate)) {
             this.students.add(student);
+            this.capacity.enroll();
             return true;
         }
 

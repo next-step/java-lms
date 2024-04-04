@@ -13,7 +13,7 @@ class CapacityTest {
     @Test
     void throwCapacityExceptionWhenMaxCapacityIsMinus() {
         // then
-        assertThatThrownBy(() -> new Capacity(-10))
+        assertThatThrownBy(() -> Capacity.create(-10))
                 .isInstanceOf(CapacityException.class);
     }
 
@@ -21,23 +21,27 @@ class CapacityTest {
     @Test
     void addEnrolled() {
         // given
-        Capacity capacity = new Capacity(10);
+        Capacity capacity = Capacity.create(10);
 
         // then
-        capacity.enroll(5);
-        assertThat(capacity.getEnrolled()).isEqualTo(5);
-        capacity.enroll(3);
-        assertThat(capacity.getEnrolled()).isEqualTo(8);
+        capacity.enroll();
+        assertThat(capacity.getEnrolled()).isEqualTo(1);
+        capacity.enroll();
+        assertThat(capacity.getEnrolled()).isEqualTo(2);
     }
 
     @DisplayName("수용가능 인원을 초과해서 추가한다면, CapacityException을 던진다.")
     @Test
     void throwCapacityExceptionWhenOverMaxCapacity() {
         // given
-        Capacity capacity = new Capacity(10);
+        Capacity capacity = Capacity.create(2);
+
+        // when
+        capacity.enroll();
+        capacity.enroll();
 
         // then
-        assertThatThrownBy(() -> capacity.enroll(11))
+        assertThatThrownBy(() -> capacity.enroll())
                 .isInstanceOf(CapacityException.class);
     }
 
@@ -45,10 +49,10 @@ class CapacityTest {
     @Test
     void availableWhenMasCapacityLessThanEnrolled() {
         // given
-        Capacity capacity = new Capacity(10);
+        Capacity capacity = Capacity.create(10);
 
         // when
-        capacity.enroll(5);
+        capacity.enroll();
 
         // then
         assertThat(capacity.isAvailable()).isTrue();
@@ -58,10 +62,10 @@ class CapacityTest {
     @Test
     void notAvailableWhenMasCapacityBiggerThanEnrolled() {
         // given
-        Capacity capacity = new Capacity(10);
+        Capacity capacity = Capacity.create(1);
 
         // when
-        capacity.enroll(10);
+        capacity.enroll();
 
         // then
         assertThat(capacity.isAvailable()).isFalse();
