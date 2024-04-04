@@ -1,19 +1,14 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CannotEnrollSessionException;
-import nextstep.courses.domain.vo.Capacity;
-import nextstep.courses.domain.vo.CoverImage;
-import nextstep.courses.domain.vo.ImageFile;
-import nextstep.courses.domain.vo.ImageSize;
-import nextstep.courses.domain.vo.Money;
-import nextstep.courses.domain.vo.Period;
-import nextstep.courses.domain.vo.Price;
+import nextstep.courses.domain.vo.*;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserFixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 
 class SessionTest {
@@ -22,46 +17,55 @@ class SessionTest {
     @DisplayName("무료 강의는 수강신청 제한 인원이 없다")
     @Test
     void freeSessionEnrollTest() {
-        Session sut = new FreeSession(
-                new Period(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 15)),
-                new CoverImage(new ImageSize(300, 200), new ImageFile("test.png"), new Capacity(1)),
-                SessionState.RECRUITING
+        var sut = SessionFixture.create(
+                AttendeesSlut.UNLIMIT,
+                SessionState.RECRUITING,
+                Price.FREE
         );
 
-        Assertions.assertThatCode(() -> sut.enroll(NsUserFixtures.JAVAJIGI, new FreeStrategy())).doesNotThrowAnyException();
+        var freeEnrollCommand = new FreeEnrollCommand(NsUserFixtures.JAVAJIGI);
+
+        Assertions.assertThatCode(() -> {
+            for (int i = 0; i < 10; i++) {
+                sut.enroll(freeEnrollCommand);
+            }
+        }).doesNotThrowAnyException();
 
     }
     
-    @DisplayName("무료 강의는 수강신청 제한 인원이 차지 않았다면 수강신청이 가능하다")
+    @DisplayName("유료 강의는 수강신청 제한 인원이 차지 않았다면 수강신청이 가능하다")
     @Test
     void paySessionEnrollTest() {
 
-        PaySession sut = new PaySession(
-                new Period(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 15)),
-                new CoverImage(new ImageSize(300, 200), new ImageFile("test.png"), new Capacity(1)),
-                new Attendees(1),
-                new Price(new Money(1000)),
-                SessionState.RECRUITING
+        var sut = SessionFixture.create(
+                new AttendeesSlut(5),
+                SessionState.RECRUITING,
+                new Price(new Money(1000L))
         );
 
-        Assertions.assertThatCode(() -> sut.enroll(NsUserFixtures.JAVAJIGI, price -> true)).doesNotThrowAnyException();
+        var mockPayment = new Payment("id", 1L, 1L, 1000L);
+        var paidEnrollCommand = new PaidEnrollCommand(NsUserFixtures.JAVAJIGI, mockPayment);
+
+        Assertions.assertThatCode(() -> sut.enroll(paidEnrollCommand)).doesNotThrowAnyException();
     }
 
     @DisplayName("유료 강의는 수강신청 제한 인원이 차면 수강신청이 불가능하다")
     @Test
     void paySessionEnrollFailTest() {
 
-        Session sut = new PaySession(
-                new Period(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 15)),
-                new CoverImage(new ImageSize(300, 200), new ImageFile("test.png"), new Capacity(1)),
-                new Attendees(1),
-                new Price(new Money(1000)),
-                SessionState.RECRUITING
+        Session sut = SessionFixture.create(
+                new AttendeesSlut(1),
+                SessionState.RECRUITING,
+                new Price(new Money(1000L))
         );
 
+        var mockPayment = new Payment("id", 1L, 1L, 1000L);
+        var paidEnrollCommand1 = new PaidEnrollCommand(NsUserFixtures.JAVAJIGI, mockPayment);
+        var paidEnrollCommand2 = new PaidEnrollCommand(NsUserFixtures.SANJIGI, mockPayment);
+
         Assertions.assertThatThrownBy(() -> {
-            sut.enroll(NsUserFixtures.JAVAJIGI, price -> true);
-            sut.enroll(NsUserFixtures.SANJIGI, price -> true);
+            sut.enroll(paidEnrollCommand1);
+            sut.enroll(paidEnrollCommand2);
         }).isInstanceOf(CannotEnrollSessionException.class);
     }
 
@@ -69,21 +73,21 @@ class SessionTest {
     @Test
     void paySessionEnrollWhenPaid() {
 
-        Session sut = new PaySession(
-                new Period(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 15)),
-                new CoverImage(new ImageSize(300, 200), new ImageFile("test.png"), new Capacity(1)),
-                new Attendees(10),
-                new Price(new Money(1000)),
-                SessionState.RECRUITING
+        Session sut = SessionFixture.create(
+                new AttendeesSlut(1),
+                SessionState.RECRUITING,
+                new Price(new Money(1000L))
         );
 
-        Payment payment = new Payment(null, null, null, 10L);
-        ChargeStrategy paidStrategy = new PaidStrategy(payment);
+        Payment mockPayment = new Payment(null, null, null, 10L);
+        var paidEnrollCommand = new PaidEnrollCommand(NsUserFixtures.JAVAJIGI, mockPayment);
 
         Assertions.assertThatThrownBy(() -> {
-            sut.enroll(NsUserFixtures.JAVAJIGI, paidStrategy);
+            sut.enroll(paidEnrollCommand);
         }).isInstanceOf(CannotEnrollSessionException.class);
     }
+
+
 
 
 

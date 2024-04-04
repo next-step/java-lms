@@ -9,6 +9,9 @@ public class Price {
     }
 
     public boolean paid(long amount) {
+        if (price == Money.ZERO) {
+            return true;
+        }
         return price.equals(new Money(amount));
     }
 }

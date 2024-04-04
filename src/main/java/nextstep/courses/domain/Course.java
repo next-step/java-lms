@@ -9,9 +9,7 @@ public class Course {
     private String title;
 
     private Long creatorId;
-
-    private List<Session> sessions;
-
+    private Sessions sessions;
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

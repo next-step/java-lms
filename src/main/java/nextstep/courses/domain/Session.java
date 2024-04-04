@@ -1,41 +1,48 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CannotEnrollSessionException;
 import nextstep.courses.domain.vo.CoverImage;
-import nextstep.courses.domain.vo.Period;
+import nextstep.courses.domain.vo.Price;
+import nextstep.courses.domain.vo.SessionPeriod;
+import nextstep.courses.domain.vo.SessionState;
 import nextstep.users.domain.NsUser;
 
-abstract class Session implements SessionStateful {
+class Session {
 
     private Long id;
+    private Long courseId;
+    private final AttendeesSlut attendeesSlut;
+    private final SessionPeriod sessionPeriod;
+    private final SessionState sessionState;
+    private final Attendees attendees;
+    private final Price price;
+    private final CoverImage coverImage;
 
-    protected final Period period;
-    protected final CoverImage coverImage;
-    protected final Attendees attendees;
-    protected final SessionState sessionState;
-
-    protected Session(Period period, CoverImage coverImage, Attendees attendees, SessionState sessionState) {
-        this.period = period;
-        this.coverImage = coverImage;
-        this.attendees = attendees;
+    public Session(Long id, Long courseId, AttendeesSlut attendeesSlut, SessionPeriod sessionPeriod, SessionState sessionState, Attendees attendees, Price price, CoverImage coverImage) {
+        this.id = id;
+        this.courseId = courseId;
+        this.attendeesSlut = attendeesSlut;
+        this.sessionPeriod = sessionPeriod;
         this.sessionState = sessionState;
+        this.attendees = attendees;
+        this.price = price;
+        this.coverImage = coverImage;
     }
 
-
-    abstract void enroll(NsUser nsUser, ChargeStrategy chargeStrategy);
-
-
-    @Override
-    public boolean preparing() {
-        return sessionState == SessionState.PREPARATION;
+    public void enroll(EnrollCommand enrollCommand) {
+        try {
+            enrollUser(enrollCommand.userToEnroll(price));
+        } catch (IllegalStateException exception) {
+            throw  new CannotEnrollSessionException(exception.getMessage());
+        }
     }
 
-    @Override
-    public boolean recruiting() {
-        return sessionState == SessionState.RECRUITING;
+    private void enrollUser(NsUser nsUser) {
+        if (!attendeesSlut.available()) {
+            throw new CannotEnrollSessionException("Session is fully enrolled");
+        }
+        attendees.add(nsUser);
+        attendeesSlut.plus();
     }
 
-    @Override
-    public boolean finished() {
-        return sessionState == SessionState.FINISHED;
-    }
 }
