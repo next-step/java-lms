@@ -9,6 +9,10 @@ public class Answers {
 
     private final List<Answer> answers;
 
+    public Answers() {
+        this(List.of());
+    }
+
     public Answers(List<Answer> answers) {
         this.answers = answers;
     }
@@ -28,5 +32,9 @@ public class Answers {
 
     private boolean isDeletableBy(NsUser user) {
         return this.answers.stream().allMatch(answer -> answer.isDeletableBy(user));
+    }
+
+    public void add(Answer answer) {
+        this.answers.add(answer);
     }
 }
