@@ -1,35 +1,44 @@
 package nextstep.courses.domain;
 
+import nextstep.session.domain.Session;
+import nextstep.session.domain.Sessions;
+
 import java.time.LocalDateTime;
 
 public class Course {
     private Long id;
 
-    private String title;
+    private CourseName courseName;
 
     private Long creatorId;
+
+    private final Sessions sessions;
+
+    private final Generation generation;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    public Course(String title, Long creatorId, int generation) {
+        this(0L, title, creatorId, generation, LocalDateTime.now(), null);
     }
 
-    public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
-    }
-
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(
+            Long id, String title, Long creatorId, int generation,
+            LocalDateTime createdAt, LocalDateTime updatedAt
+    ) {
         this.id = id;
-        this.title = title;
+        this.courseName = new CourseName(title);
         this.creatorId = creatorId;
+        this.sessions = new Sessions();
+        this.generation = new Generation(generation);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public String getTitle() {
-        return title;
+        return this.courseName.toString();
     }
 
     public Long getCreatorId() {
@@ -40,11 +49,15 @@ public class Course {
         return createdAt;
     }
 
+    public void addSession(Session session) {
+        this.sessions.add(session);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", title='" + courseName.toString() + '\'' +
                 ", creatorId=" + creatorId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

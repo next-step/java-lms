@@ -70,10 +70,8 @@
 - [x] Session
 - [x] FreeSession
 - [x] PaidSession
-- [ ] Sessions
-- [ ] Generation
-- [ ] Course
+- [x] Sessions
+- [x] Generation
+- [x] Course
 - [ ] SessionService
 - [ ] CourseService
-
-과정(Course)은 기수 단위로 운영하며, 여러 개의 강의(Session)를 가질 수 있다.
