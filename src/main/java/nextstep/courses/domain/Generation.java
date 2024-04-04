@@ -7,4 +7,8 @@ public class Generation {
     public Generation(int generation) {
         this.generation = generation;
     }
+
+    public int generationNumber() {
+        return this.generation;
+    }
 }

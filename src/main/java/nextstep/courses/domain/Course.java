@@ -45,6 +45,10 @@ public class Course {
         return creatorId;
     }
 
+    public int getGeneration() {
+        return this.generation.generationNumber();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
