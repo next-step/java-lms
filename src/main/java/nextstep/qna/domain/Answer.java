@@ -5,21 +5,17 @@ import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Answer {
-    private Long id;
 
-    private NsUser writer;
+    private AnswerDetails details;
 
     private Question question;
 
-    private String contents;
-
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
+    private ContentsDateTime contentsDateTime = new ContentsDateTime();
 
     public Answer() {
     }
@@ -29,27 +25,16 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
         if(question == null) {
             throw new NotFoundException();
         }
 
-        this.writer = writer;
+        this.details = new AnswerDetails(id, writer, contents);
         this.question = question;
-        this.contents = contents;
     }
 
     public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        return details.getId();
     }
 
     public boolean isDeleted() {
@@ -57,23 +42,28 @@ public class Answer {
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+        return this.details.getWriter().equals(writer);
     }
 
     public NsUser getWriter() {
-        return writer;
+        return details.getWriter();
     }
 
     public String getContents() {
-        return contents;
+        return details.getContents();
     }
 
     public void toQuestion(Question question) {
         this.question = question;
     }
 
+    public void delete(List<DeleteHistory> deleteHistories) {
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, details.getId(), details.getWriter(), LocalDateTime.now()));
+    }
+
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + getId() + ", writer=" + details.getWriter() + ", contents=" + details.getContents() + "]";
     }
 }
