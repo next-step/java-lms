@@ -82,5 +82,6 @@ public class Answer {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변은 삭제할 수 없습니다.");
         }
+        this.deleted = true;
     }
 }
