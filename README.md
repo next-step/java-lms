@@ -59,14 +59,16 @@
 - [x] Price
 - [x] Capacity
 - [x] Tutor
-- [x] SessionType
+- [x] SessionStatusType
+- [x] SessionStatus
 - [x] Students
-- [ ] Payment
+- [x] SessionName
+- [x] Payment
 - [ ] GeneralPayment
-- [ ] FreePayment
+- [x] FreePayment
 - [ ] BaseInformation
-- [ ] Session
-- [ ] FreeSession
+- [x] Session
+- [x] FreeSession
 - [ ] Sessions
 - [ ] Generation
 - [ ] Course
@@ -74,8 +76,6 @@
 - [ ] CourseService
 
 과정(Course)은 기수 단위로 운영하며, 여러 개의 강의(Session)를 가질 수 있다.
-강의는 시작일과 종료일을 가진다.
-강의는 강의 커버 이미지 정보를 가진다.
 
 강의는 무료 강의와 유료 강의로 나뉜다.
 무료 강의는 최대 수강 인원 제한이 없다.

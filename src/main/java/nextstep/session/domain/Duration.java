@@ -27,4 +27,12 @@ public class Duration {
     public boolean isAvailable(LocalDateTime queryDateFit) {
         return queryDateFit.isAfter(startDate) && queryDateFit.isBefore(endDate);
     }
+
+    public Duration changeStartDate(LocalDateTime changedStartDate) {
+        return new Duration(changedStartDate, this.endDate);
+    }
+
+    public Duration changeEndDate(LocalDateTime changedEndDate) {
+        return new Duration(this.startDate, changedEndDate);
+    }
 }
