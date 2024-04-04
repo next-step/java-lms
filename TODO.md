@@ -16,6 +16,9 @@
 - [x] 강의 커버 이미지 테이블 설계
     - 테이블명 : cover_image
     - save(..), saveAll(..), findById(..), findBySessionId(..) 테스트
+- [x] 강의 - 수강생 연관 관계 테이블 설계
+    - 테이블명 : session_listener
+    - save(..), saveAll(..), findAllBySessionId(..), delete(..) 테스트
 
 ---
 

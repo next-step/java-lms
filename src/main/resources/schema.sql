@@ -59,3 +59,8 @@ CREATE TABLE cover_image (
      extension VARCHAR(100) NOT NULL,
      file_path VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE session_listener(
+    session_id BIGINT NOT NULL,
+    ns_user_id BIGINT NOT NULL
+);

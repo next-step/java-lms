@@ -27,3 +27,10 @@ INSERT INTO cover_image(session_id, width, height, file_size, file_name, extensi
 VALUES (1, 1200, 800, 340797, 'playground.jpeg', 'jpeg', 'playground.jpeg');
 INSERT INTO cover_image(session_id, width, height, file_size, file_name, extension, file_path)
 VALUES (1, 300, 200, 999, 'example.png', 'png', 'example.png');
+
+-- 강의 수강생
+INSERT INTO session_listener(session_id, ns_user_id)
+VALUES (1L, 1L);
+INSERT INTO session_listener(session_id, ns_user_id)
+VALUES (1L, 2L);
+
