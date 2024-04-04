@@ -49,7 +49,7 @@
 
 # 수강 신청
 - 도메인 역할 도표
-![도메인 역할 도표](./images/image002.png)
+![도메인 역할 도표](./images/image003.png)
 
 - [x] ImageExtensionType
 - [x] FilePathInformation
@@ -66,7 +66,6 @@
 - [x] Payment
 - [x] GeneralPayment
 - [x] FreePayment
-- [ ] BaseInformation
 - [x] Session
 - [x] FreeSession
 - [x] PaidSession
