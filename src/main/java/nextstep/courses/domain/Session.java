@@ -14,8 +14,7 @@ import static nextstep.courses.domain.SessionState.RECRUITING;
 public class Session {
     private Long id;
     private Course course;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private SessionDuration sessionDuration;
     private Image coverImage;
     private SessionPayType sessionPayType;
     private SessionState state;
@@ -58,12 +57,6 @@ public class Session {
         }
     }
 
-    private void validateSessionDate(LocalDate startDate, LocalDate endDate){
-        if(startDate.isAfter(endDate)){
-            throw new IllegalArgumentException("시작일보다 종료일이 먼저올 수 없습니다.");
-        }
-    }
-
     private void checkSessionCapacity() {
         if(sessionPayType == PAID && student.size() == maxStudent){
             throw new IllegalArgumentException("더이상 신규 학생을 받을 수 없습니다.");
@@ -81,5 +74,23 @@ public class Session {
         if(!payment.getAmount().equals(sessionFee)){
             throw new IllegalArgumentException("수강료가 일치하지 않습니다.");
         }
+    }
+
+    public static class SessionDuration {
+        private LocalDate startDate;
+        private LocalDate endDate;
+
+        public SessionDuration(LocalDate startDate, LocalDate endDate) {
+            validateSessionDate(startDate, endDate);
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+
+        private void validateSessionDate(LocalDate startDate, LocalDate endDate){
+            if(startDate.isAfter(endDate)){
+                throw new IllegalArgumentException("시작일보다 종료일이 먼저올 수 없습니다.");
+            }
+        }
+
     }
 }
