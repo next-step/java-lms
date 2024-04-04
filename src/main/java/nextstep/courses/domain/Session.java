@@ -64,7 +64,7 @@ public class Session {
     }
 
     private void checkRegisterableState() {
-        if(state != RECRUITING){
+        if(!state.isRecruiting()){
             throw new IllegalArgumentException("현재 모집 중이 아닙니다.");
         }
     }
