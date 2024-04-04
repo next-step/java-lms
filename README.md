@@ -36,8 +36,8 @@ validate도 마찬가지
   - 필드
     - 이미지 크기(size: int)
     - 이미지 타입(type: ImageType)
-    - 이미지 너비(width: long)
-    - 이미지 높이(height: long)
+    - 이미지 너비(width: int)
+    - 이미지 높이(height: int)
   - 생성 조건
     - 이미지 크기는 1MB 이하여야 한다.
     - 이미지 타입은 gif, jpg(jpeg 포함), png, svg만 허용한다.
@@ -72,7 +72,7 @@ validate도 마찬가지
   - payment의 결제금액이 수강료가 일치하지 않는 경우 IllegalArgumentException
   - 최대 수강인원 <= 현재 수강인원인 경우 IllegalStateException
   - 정상 완료되면, 현재 수강인원 increase 1
-- ImageType Enum 생성
+- [X] ImageType Enum 생성
   - GIF, JPG, JPEG, PNG, SVG
 - [ ] CoverImageInfo 클래스 생성
   - 생성자(크기, 타입, 너비, 높이)
