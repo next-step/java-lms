@@ -5,6 +5,7 @@ import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,13 @@ public class QuestionTest {
     }
 
     @Test
-    void 질문을_삭제한다() throws CannotDeleteException {
-        assertThat(Q2.delete(NsUserTest.SANJIGI)).hasSize(1);
+    void 질문을_삭제한다() {
+        Q2.addAnswer(new Answer(NsUserTest.SANJIGI, Q2, "Answers Contents1"));
+        Q2.addAnswer(new Answer(NsUserTest.SANJIGI, Q2, "Answers Contents2"));
+
+        assertAll(
+                () -> assertThat(Q2.delete(NsUserTest.SANJIGI)).hasSize(3),
+                () -> assertThat(Q2.isDeleted()).isTrue()
+        );
     }
 }
