@@ -62,7 +62,7 @@ validate도 마찬가지
       - 예외 상황 없을 시 현재 수강인원 1 증가
 
 ## Todo
-- [ ] SessionStatus Enum 생성
+- [X] SessionStatus Enum 생성
   - READY, RECRUITING, END
 - [ ] FreeSession 수강 신청
   - status가 모집 중이 아닌 경우 IllegalStateException
