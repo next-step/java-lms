@@ -1,17 +1,25 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
     private Long id;
 
     private String title;
 
+    private final List<Session> sessions = new ArrayList<>();
+
     private Long creatorId;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public static Course of(Long id, String title, List<Session> sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Course(id, title, creatorId, createdAt, updatedAt);
+    }
 
     public Course() {
     }
