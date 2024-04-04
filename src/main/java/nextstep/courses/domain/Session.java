@@ -1,27 +1,52 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
+
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
-public class Session {
-
+public abstract class Session {
+    private final Long idx;
+    private final Course course;
     private final Period period;
+    private final Image image;
+    private final Status status;
+    protected final NsUsers nsUsers;
 
-    public Session(LocalDate startDate, LocalDate endDate) {
-        this.period = new Period(startDate, endDate);
+    public Session(Course course, Period period, Image image, NsUsers users) {
+        this(0L, course, period, image, Status.READY, users);
     }
 
-    public LocalDate startDate() {
-        return period.startDate();
+    public Session(Long idx, Course course, Period period, Image image, Status status, NsUsers nsUsers) {
+        this.idx = idx;
+        this.course = course;
+        this.period = period;
+        this.image = image;
+        this.status = status;
+        this.nsUsers = nsUsers;
     }
 
-    public LocalDate endDate() {
-        return period.endDate();
+    public void enroll(NsUser nsUser) {
+        if (!canEnrollStatus()) {
+            throw new IllegalArgumentException("강의는 현재 모집하고 있지 않습니다.");
+        }
+        assertCanEnroll();
+        nsUsers.add(nsUser);
     }
 
-    public class Period {
+    public abstract void assertCanEnroll();
+
+    private boolean canEnrollStatus() {
+        return this.status == Status.RECRUITING;
+    }
+
+    public boolean paidSession() {
+        return false;
+    }
+
+    public static class Period {
         private final LocalDate startDate;
         private final LocalDate endDate;
 
@@ -38,5 +63,11 @@ public class Session {
             return endDate;
         }
 
+    }
+
+    public enum Status {
+        READY,
+        RECRUITING,
+        CLOSED
     }
 }

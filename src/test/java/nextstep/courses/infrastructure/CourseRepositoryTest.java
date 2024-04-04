@@ -35,4 +35,9 @@ public class CourseRepositoryTest {
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
         LOGGER.debug("Course: {}", savedCourse);
     }
+
+    @Test
+    void name() {
+
+    }
 }
