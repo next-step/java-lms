@@ -17,6 +17,13 @@ public class Answers {
         if (!isDeletableBy(user)) {
             throw new CannotDeleteException("현재 로그인 계정과 다른 답변 작성자가 있습니다.");
         }
+        this.answers.forEach(answer -> {
+            try {
+                answer.delete(user);
+            } catch (CannotDeleteException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private boolean isDeletableBy(NsUser user) {

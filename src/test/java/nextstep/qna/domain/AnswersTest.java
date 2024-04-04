@@ -28,6 +28,6 @@ public class AnswersTest {
     @Test
     void test02() throws CannotDeleteException {
         answers2.deleteBy(NsUserTest.JAVAJIGI);
-        assertThat(answers2.contains(AnswerTest.A1)).isFalse();
+        assertThat(AnswerTest.A1.isDeleted()).isTrue();
     }
 }
