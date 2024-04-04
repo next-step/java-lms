@@ -1,7 +1,5 @@
 package nextstep.courses.domain.enums;
 
-import org.springframework.util.ObjectUtils;
-
 import java.util.Arrays;
 import java.util.Optional;
 

@@ -1,12 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.ImageType;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CoverImageInfoTest {
     private static final int NORMAL_SIZE = 1000;
