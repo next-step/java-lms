@@ -18,17 +18,16 @@ public class Session {
     private Image coverImage;
     private SessionPayType sessionPayType;
     private SessionState state;
-    private Integer maxStudent;
     private Long sessionFee;
-    private List<NsUser> student;
+    private SessionStudent sessionStudent;
 
     public Session(Long id, Course course, LocalDate startDate, LocalDate endDate, Image coverImage, SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
-        this(id, course, new SessionDuration(startDate, endDate), coverImage, sessionPayType, PREPARING, maxStudent, sessionFee, new ArrayList<>());
+        this(id, course, new SessionDuration(startDate, endDate), coverImage, sessionPayType, PREPARING, maxStudent, sessionFee, new SessionStudent(maxStudent));
     }
 
     public Session(Long id, Course course, SessionDuration sessionDuration, Image coverImage,
         SessionPayType sessionPayType, SessionState state, Integer maxStudent, Long sessionFee,
-        List<NsUser> student) {
+        SessionStudent sessionStudent) {
         validatePayType(sessionPayType, maxStudent, sessionFee);
         this.id = id;
         this.course = course;
@@ -36,9 +35,8 @@ public class Session {
         this.coverImage = coverImage;
         this.sessionPayType = sessionPayType;
         this.state = state;
-        this.maxStudent = maxStudent;
         this.sessionFee = sessionFee;
-        this.student = student;
+        this.sessionStudent = sessionStudent;
     }
 
     public void openRegister(){
@@ -49,7 +47,7 @@ public class Session {
         checkRegisterableState();
         checkSessionCapacity();
         checkAlreadyPaid(payment);
-        this.student.add(newStudent);
+        this.sessionStudent.add(newStudent);
     }
 
     private void validatePayType(SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
@@ -63,7 +61,7 @@ public class Session {
     }
 
     private void checkSessionCapacity() {
-        if(sessionPayType == PAID && student.size() == maxStudent){
+        if(sessionPayType == PAID && !sessionStudent.canAcceptNewStudent()){
             throw new IllegalArgumentException("더이상 신규 학생을 받을 수 없습니다.");
         }
     }
