@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,8 +15,8 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    void 답변을_삭제한다() {
-        assertThat(A1.delete()).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), A1.getCreatedDate()));
+    void 답변을_삭제한다() throws CannotDeleteException {
+        assertThat(A1.delete(JAVAJIGI)).isEqualTo(new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), A1.getCreatedDate()));
     }
 
     @Test

@@ -44,7 +44,8 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory delete() {
+    public DeleteHistory delete(final NsUser loginUser) throws CannotDeleteException {
+        validateOwnership(loginUser);
         setDeleted(true);
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }

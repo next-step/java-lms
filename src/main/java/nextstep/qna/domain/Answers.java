@@ -19,21 +19,20 @@ public class Answers {
         answers = new ArrayList<>();
     }
 
-    public List<DeleteHistory> delete(final NsUser loginUser) throws CannotDeleteException {
-        validateAnswersOwnership(loginUser);
+    public List<DeleteHistory> delete(final NsUser loginUser) {
         return answers.stream()
-                .map(Answer::delete)
+                .map(answer -> {
+                    try {
+                        return answer.delete(loginUser);
+                    } catch (CannotDeleteException e) {
+                        throw new IllegalArgumentException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
     public void add(final Answer answer) {
         answers.add(answer);
-    }
-
-    private void validateAnswersOwnership(final NsUser loginUser) throws CannotDeleteException {
-        for (final Answer answer : answers) {
-            answer.validateOwnership(loginUser);
-        }
     }
 
     public List<Answer> getAnswers() {

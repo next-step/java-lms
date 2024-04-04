@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import static nextstep.qna.domain.AnswerTest.A1;
 import static nextstep.qna.domain.AnswerTest.A2;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +31,9 @@ public class QuestionTest {
 
     @Test
     void 다른_사람이_쓴_답변이_있는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> Q1.delete(NsUserTest.JAVAJIGI))
+                .isInstanceOf(IllegalArgumentException.class)
+                .withMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 
     @Test
