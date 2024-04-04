@@ -71,7 +71,10 @@ public class Question {
         this.answers.delete(user);
     }
 
-    public List<DeleteHistory> toHistories() {
+    public List<DeleteHistory> toHistories() throws CannotDeleteException {
+        if (!deleted) {
+            throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
+        }
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         this.addTo(deleteHistories);
         this.answers.addTo(deleteHistories);

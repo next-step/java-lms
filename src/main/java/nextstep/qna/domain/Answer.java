@@ -60,7 +60,10 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public void addTo(List<DeleteHistory> deleteHistories) {
+    public void addTo(List<DeleteHistory> deleteHistories) throws CannotDeleteException {
+        if (!deleted) {
+            throw new CannotDeleteException("답변이 삭제가 되지 않았습니다");
+        }
         deleteHistories.add(new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now()));
     }
 

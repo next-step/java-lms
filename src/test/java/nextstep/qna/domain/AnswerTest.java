@@ -16,6 +16,19 @@ public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
+    @DisplayName("답변이 삭제가 되지 않았을 때 이력을 추가하려고 하면 예외를 반환한다")
+    @Test
+    void toHistoriesException() {
+        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now());
+
+        List<DeleteHistory> deleteHistory1 = new ArrayList<>();
+        deleteHistory1.add(deleteHistory);
+
+        assertThatThrownBy(() -> A1.addTo(deleteHistory1))
+                .isInstanceOf(CannotDeleteException.class)
+                .hasMessage("답변이 삭제가 되지 않았습니다");
+    }
+
     @DisplayName("작성자가 아닌 사람이 답변을 삭제하려고 하면 예외를 던진다")
     @Test
     void isNotOwner() {
@@ -33,7 +46,9 @@ public class AnswerTest {
 
     @DisplayName("삭제이력을 추가해주는지 검증한다")
     @Test
-    void toHistories() {
+    void toHistories() throws CannotDeleteException {
+        A1.delete(NsUserTest.JAVAJIGI);
+
         DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now());
 
         List<DeleteHistory> deleteHistory1 = new ArrayList<>();
