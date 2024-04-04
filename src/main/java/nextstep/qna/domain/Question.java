@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private final Answers answers = new Answers(new ArrayList<>());
 
     private boolean deleted = false;
 
@@ -82,44 +82,33 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
-    public void deleteAuthorityException(NsUser loginUser) throws CannotDeleteException {
+    private void checkDeleteAuthority(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    public void otherAnswerException(List<Answer> answers, NsUser loginUser) throws CannotDeleteException {
-        for (Answer answer : answers) {
-            checkOtherAnswer(answer, loginUser);
-        }
+    private DeleteHistory createDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
-    private void checkOtherAnswer(Answer answer, NsUser loginUser) throws CannotDeleteException {
-        if (!answer.isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-
-    public List<DeleteHistory> writeDeleteHistories() {
+    private List<DeleteHistory> writeDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), getWriter(), LocalDateTime.now()));
+        this.deleted = true;
+        deleteHistories.add(createDeleteHistory());
+        answers.addDeleteHistories(deleteHistories);
 
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
         return deleteHistories;
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        deleteAuthorityException(loginUser);
-        otherAnswerException(getAnswers(), loginUser);
+        checkDeleteAuthority(loginUser);
+        answers.checkOtherAnswers(loginUser);
 
         return writeDeleteHistories();
     }
