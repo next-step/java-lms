@@ -31,4 +31,5 @@ public class AnswersTest {
             answers.deleteAnswersBy(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
+
 }

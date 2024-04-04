@@ -59,6 +59,21 @@ public class Question {
         return toHistories(deleteQuestionBy(user), deleteAnswers(user));
     }
 
+    private List<DeleteHistory> toHistories(
+            DeleteHistory questionDeleteHistory,
+            List<DeleteHistory> answerDeleteHistories)
+            throws CannotDeleteException
+    {
+        if (!deleted) {
+            throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
+        }
+
+        List<DeleteHistory> histories = new ArrayList<>();
+        histories.add(questionDeleteHistory);
+        histories.addAll(answerDeleteHistories);
+        return histories;
+    }
+
     private DeleteHistory deleteQuestionBy(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
@@ -76,21 +91,6 @@ public class Question {
 
     private List<DeleteHistory> deleteAnswers(NsUser user) throws CannotDeleteException {
         return this.answers.deleteAnswersBy(user);
-    }
-
-    private List<DeleteHistory> toHistories(
-            DeleteHistory questionDeleteHistory,
-            List<DeleteHistory> answerDeleteHistories)
-            throws CannotDeleteException
-    {
-        if (!deleted) {
-            throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
-        }
-
-        List<DeleteHistory> histories = new ArrayList<>();
-        histories.add(questionDeleteHistory);
-        histories.addAll(answerDeleteHistories);
-        return histories;
     }
 
     public boolean isDeleted() {
