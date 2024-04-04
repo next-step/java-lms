@@ -56,4 +56,20 @@ public class Question {
         }
         this.deleted = true;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public NsUser getWriter() {
+        return writer;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

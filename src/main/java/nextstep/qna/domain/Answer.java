@@ -62,4 +62,16 @@ public class Answer {
         }
         this.deleted = true;
     }
+
+    public NsUser getWriter() {
+        return writer;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }
