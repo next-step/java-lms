@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class CoverImage {
 
-    private static final long MAX_fileSize = 1024 * 1024; // 1MB
+    private static final long MAX_SIZE = 1024 * 1024; // 1MB
     public static final int MIN_WIDTH = 300;
     public static final int MIN_HEIGHT = 200;
     private static final double STANDARD_RATIO = 3.0 / 2.0;
@@ -41,7 +41,7 @@ public class CoverImage {
             throw new IllegalArgumentException("최소 높이는 " + MIN_HEIGHT + " pixel 입니다");
         }
 
-        if (fileSize > MAX_fileSize) {
+        if (fileSize > MAX_SIZE) {
             throw new IllegalArgumentException("최대 파일 크기를 초과하였습니다");
         }
 
