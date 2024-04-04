@@ -2,14 +2,15 @@ package nextstep.courses.domain.vo;
 
 import java.time.LocalDate;
 
-public class Period {
+public class SessionPeriod {
 
     private LocalDate start;
     private LocalDate end;
 
-    public Period(LocalDate start, LocalDate end) {
+
+    public SessionPeriod(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("start should before end date");
+            throw new IllegalArgumentException("start should be before end");
         }
         this.start = start;
         this.end = end;
