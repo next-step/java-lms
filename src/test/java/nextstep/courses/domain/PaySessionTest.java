@@ -25,7 +25,6 @@ public class PaySessionTest {
     @Test
     @DisplayName("수강 신청 시 status가 모집 중이 아니면 예외 발생")
     void enroll_status_exception() {
-        paySession.startSession();
         assertThatThrownBy(() -> paySession.enroll(payment))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining(SESSION_NOT_RECRUITING);
@@ -34,6 +33,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("payment의 결제금액이 수강료가 일치하지 않는 경우 예외 발생")
     void enroll_wrong_price_exception() {
+        paySession.startSession();
         Payment wrongPricePayment = new Payment("test", 12L, 12L, 1000L);
 
         assertThatThrownBy(() -> paySession.enroll(wrongPricePayment))
@@ -44,6 +44,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("현재 수강 신청 인원이 최대 수강 신청 인원과 같으면 예외 발생")
     void enroll_students_full_exception() {
+        paySession.startSession();
         //given
         paySession.enroll(new Payment("test1", 1L, 1L, 2000L));
         paySession.enroll(new Payment("test2", 2L, 2L, 2000L));

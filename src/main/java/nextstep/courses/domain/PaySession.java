@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
 
 public class PaySession extends Session {
@@ -32,7 +31,7 @@ public class PaySession extends Session {
     }
 
     private void validateEnrollable(Payment payment) {
-        if (sessionStatus != SessionStatus.READY) {
+        if (sessionStatus.isStatusNotRecruiting()) {
             throw new IllegalStateException(SESSION_NOT_RECRUITING);
         }
         if (payment.isDifferentAmount(price)) {
