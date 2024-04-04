@@ -16,23 +16,10 @@ public class AnswerTest {
     public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
-    @DisplayName("답변이 삭제가 되지 않았을 때 이력을 추가하려고 하면 예외를 반환한다")
-    @Test
-    void toHistoriesException() {
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now());
-
-        List<DeleteHistory> deleteHistory1 = new ArrayList<>();
-        deleteHistory1.add(deleteHistory);
-
-        assertThatThrownBy(() -> A1.addTo(deleteHistory1))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("답변이 삭제가 되지 않았습니다");
-    }
-
     @DisplayName("작성자가 아닌 사람이 답변을 삭제하려고 하면 예외를 던진다")
     @Test
     void isNotOwner() {
-        assertThatThrownBy(() -> A1.delete(NsUserTest.SANJIGI))
+        assertThatThrownBy(() -> A1.deleteAnswer(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("이 유저는 답변을 삭제할 권한이 없습니다");
     }
@@ -40,23 +27,19 @@ public class AnswerTest {
     @DisplayName("대답을 삭제하면 그 상태(deleted)가 true로 바뀐다")
     @Test
     void isDeleted() throws CannotDeleteException {
-        A2.delete(NsUserTest.SANJIGI);
+        A2.deleteAnswer(NsUserTest.SANJIGI);
         assertThat(A2.isDeleted()).isTrue();
     }
 
     @DisplayName("삭제이력을 추가해주는지 검증한다")
     @Test
     void toHistories() throws CannotDeleteException {
-        A1.delete(NsUserTest.JAVAJIGI);
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        DeleteHistory deleteHistory = new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now());
+        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, 1L, NsUserTest.SANJIGI, LocalDateTime.now()));
+        deleteHistories.add(A1.deleteAnswer(NsUserTest.JAVAJIGI));
 
-        List<DeleteHistory> deleteHistory1 = new ArrayList<>();
-        deleteHistory1.add(deleteHistory);
-
-        A1.addTo(deleteHistory1);
-
-        assertThat(deleteHistory1.size()).isEqualTo(2);
+        assertThat(deleteHistories.size()).isEqualTo(2);
     }
 
 }

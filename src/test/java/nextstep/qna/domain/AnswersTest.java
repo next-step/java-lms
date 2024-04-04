@@ -19,7 +19,7 @@ public class AnswersTest {
         Answers answers = new Answers(List.of(A1));
 
         Assertions.assertThatNoException()
-                        .isThrownBy(() -> { answers.delete(NsUserTest.JAVAJIGI); });
+                        .isThrownBy(() -> { answers.delete1(NsUserTest.JAVAJIGI); });
     }
 
     @Test
@@ -28,7 +28,7 @@ public class AnswersTest {
         Answers answers = new Answers(List.of(A1, A2));
 
         Assertions.assertThatThrownBy(() -> {
-            answers.delete(NsUserTest.JAVAJIGI);
+            answers.delete1(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 }

@@ -55,9 +55,14 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public void delete(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> delete(NsUser user) throws CannotDeleteException {
         deleteQuestion(user);
         deleteAnswers(user);
+        return toHistories();
+    }
+
+    public List<DeleteHistory> delete1(NsUser user) throws CannotDeleteException {
+        return toHistories(deleteQuestion1(user), deleteAnswers1(user));
     }
 
     private void deleteQuestion(NsUser user) throws CannotDeleteException {
@@ -67,11 +72,30 @@ public class Question {
         this.deleted = true;
     }
 
+    private DeleteHistory deleteQuestion1(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.deleted = true;
+        return toHistory();
+    }
+
+    private DeleteHistory toHistory() throws CannotDeleteException {
+        if (!deleted) {
+            throw new CannotDeleteException("답변이 삭제가 되지 않았습니다");
+        }
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    }
+
     private void deleteAnswers(NsUser user) throws CannotDeleteException {
         this.answers.delete(user);
     }
 
-    public List<DeleteHistory> toHistories() throws CannotDeleteException {
+    private List<DeleteHistory> deleteAnswers1(NsUser user) throws CannotDeleteException {
+        return this.answers.delete1(user);
+    }
+
+    private List<DeleteHistory> toHistories() throws CannotDeleteException {
         if (!deleted) {
             throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
         }
@@ -81,6 +105,22 @@ public class Question {
         return deleteHistories;
     }
 
+    private List<DeleteHistory> toHistories(
+            DeleteHistory questionDeleteHistory,
+            List<DeleteHistory> answerDeleteHistories)
+            throws CannotDeleteException
+    {
+        if (!deleted) {
+            throw new CannotDeleteException("질문이 삭제가 되지 않았습니다");
+        }
+
+        List<DeleteHistory> histories = new ArrayList<>();
+        histories.add(questionDeleteHistory);
+        histories.addAll(answerDeleteHistories);
+        return histories;
+    }
+
+    // todo: 삭제
     private void addTo(List<DeleteHistory> deleteHistories) {
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
     }

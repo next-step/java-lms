@@ -60,6 +60,21 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    public DeleteHistory deleteAnswer(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("이 유저는 답변을 삭제할 권한이 없습니다");
+        }
+        this.deleted = true;
+        return toHistory();
+    }
+
+    private DeleteHistory toHistory() throws CannotDeleteException {
+        if (!deleted) {
+            throw new CannotDeleteException("답변이 삭제가 되지 않았습니다");
+        }
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
     public void addTo(List<DeleteHistory> deleteHistories) throws CannotDeleteException {
         if (!deleted) {
             throw new CannotDeleteException("답변이 삭제가 되지 않았습니다");

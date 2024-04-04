@@ -14,26 +14,17 @@ public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
-    @DisplayName("질문이 삭제가 되지 않았을 때 이력으로 남길려고 하면 예외를 발생시킨다")
-    @Test
-    void to_histories_exception() {
-        assertThatThrownBy(() -> Q1.toHistories())
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("질문이 삭제가 되지 않았습니다");
-    }
-
     @DisplayName("질문 Q1을 toHistories()메서드를 통해 이력으로 만든다")
     @Test
     void to_histories() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI);
-        List<DeleteHistory> histories = Q1.toHistories();
+        List<DeleteHistory> histories = Q1.delete1(NsUserTest.JAVAJIGI);
         assertThat(histories.size()).isEqualTo(1);
     }
 
     @DisplayName("질문 Q1이 Q1을 작성한 사람을 삭제한다")
     @Test
     void delete_자바지기() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI);
+        Q1.delete1(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 
@@ -41,7 +32,7 @@ public class QuestionTest {
     @Test
     void delete_exception() {
         assertThatThrownBy(() -> {
-            Q1.delete(NsUserTest.SANJIGI);
+            Q1.delete1(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class);
     }
 
