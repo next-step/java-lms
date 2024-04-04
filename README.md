@@ -79,6 +79,6 @@ validate도 마찬가지
     - 이미지 크기 1 초과인 경우 IlleaglArgumentException
     - 이미지 타입이 ImageType에 없는 경우 IlleaglArgumentException
     - width >= 300 && height >= 200 && width / heigth == 3/2아 아닌 경우 IlleaglArgumentException
-- [ ] Session 추상클래스 생성
+- [X] Session 추상클래스 생성
   - 생성자(강의 시작일, 강의 종료일, 커버 이미지 정보)
 - [ ] 서비스 레이어에서 수강신청 로직 구현
