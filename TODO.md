@@ -19,6 +19,9 @@
 - [x] 강의 - 수강생 연관 관계 테이블 설계
     - 테이블명 : session_listener
     - save(..), saveAll(..), findAllBySessionId(..), delete(..) 테스트
+- [x] 회원 Repository 기능 추가, 테스트
+    - 테이블명 : ns_user
+    - findById(..), findByIds(..), save(..), update(..) 추가
 
 ---
 
