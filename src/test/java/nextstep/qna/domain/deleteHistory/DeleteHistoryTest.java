@@ -1,5 +1,6 @@
 package nextstep.qna.domain.deleteHistory;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.answer.Answer;
 import nextstep.qna.domain.answer.Answers;
 import nextstep.qna.domain.question.Question;
@@ -15,20 +16,14 @@ public class DeleteHistoryTest {
   @Test
   @DisplayName("질문자와 답변자가 같은 경우" +
       "Answer 삭제되는지 검증")
-  void deleteHistoryTest() {
-
-    Question question = new Question(NsUserTest.JAVAJIGI, "질문입니다.", "내용입니다");
-    Answer answer1 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
-    Answer answer2 = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents2");
+  void deleteHistoryTest() throws CannotDeleteException {
 
     Answers answers = new Answers();
-    answers.add(answer1);
-    answers.add(answer2);
+    Question question = new Question(1L, NsUserTest.JAVAJIGI, "질문입니다.", "내용입니다", answers);
+    answers.add(new Answer(1L, NsUserTest.JAVAJIGI, question, "Answers Contents1"));
+    answers.add(new Answer(2L, NsUserTest.JAVAJIGI, question, "Answers Contents2"));
 
-    List<DeleteHistory> deleteHistories = DeleteHistory.makeDeleteHistories(
-        question.getId(),
-        question.getWriter(),
-        answers);
+    List<DeleteHistory> deleteHistories = question.delete(NsUserTest.JAVAJIGI);
 
     assertThat(deleteHistories).hasSize(3);
   }

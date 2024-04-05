@@ -23,16 +23,6 @@ public class DeleteHistory extends BaseTime {
         this.deletedBy = deletedBy;
     }
 
-    public static List<DeleteHistory> makeDeleteHistories(long questionId, NsUser writer, Answers answers) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, writer));
-        for (int index = 0; index < answers.size(); index++) {
-            Answer answer = answers.get(index);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter()));
-        }
-        return deleteHistories;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

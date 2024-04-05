@@ -2,20 +2,31 @@ package nextstep.qna.domain.question;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.BaseTime;
+import nextstep.qna.domain.answer.Answer;
 import nextstep.qna.domain.answer.Answers;
-import nextstep.qna.domain.generator.RandomIdGenerator;
+import nextstep.qna.domain.deleteHistory.DeleteHistory;
+import nextstep.qna.domain.deleteHistory.type.ContentType;
 import nextstep.users.domain.NsUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Question extends BaseTime {
 
     public static final String NOT_PERMISSION_DELETE_QUESTION = "질문을 삭제할 권한이 없습니다.";
     private final Long id;
     private final QuestionInfo questionInfo;
+    private final Answers answers;
     private boolean deleted = false;
 
-    public Question(NsUser writer, String title, String contents) {
-        this.id = RandomIdGenerator.generate();
+    public Question(Long id, NsUser writer, String title, String contents, Answers answers) {
+        this.id = id;
         this.questionInfo = new QuestionInfo(writer, title, contents);
+        this.answers = answers;
+    }
+
+    public void addAnswer(Answer answer) {
+        this.answers.add(answer);
     }
 
     public Long getId() {
@@ -26,11 +37,21 @@ public class Question extends BaseTime {
         return questionInfo.getWriter();
     }
 
-    public void delete(NsUser loginUser, Answers answers) throws CannotDeleteException {
+    public Answers getAnswers() {
+        return answers;
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+
         if (isOwner(loginUser)) {
             answers.validateDeleteIsPossible(questionInfo.getWriter());
             this.deleted = true;
         }
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, questionInfo.getWriter()));
+        deleteHistories.addAll(answers.deleteAll(questionInfo.getWriter()));
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
@@ -48,11 +69,9 @@ public class Question extends BaseTime {
     @Override
     public String toString() {
         return "Question{" +
-            "id=" + id +
-            ", questionInfo=" + questionInfo +
+            "questionInfo=" + questionInfo +
+            ", answers=" + answers +
             ", deleted=" + deleted +
-            ", createdDate=" + createdDate +
-            ", updatedDate=" + updatedDate +
             '}';
     }
 }

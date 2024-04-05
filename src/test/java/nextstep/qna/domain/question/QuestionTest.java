@@ -15,11 +15,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class QuestionTest {
     private static Question Q1;
-    public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @BeforeEach
     public void setup() {
-        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
+        Q1 = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1", new Answers());
     }
 
     @Test
@@ -29,7 +28,7 @@ public class QuestionTest {
     void questionTest() {
         String givenTitle = "질문입니다.";
         String givenContents = "내용입니다.";
-        Question question = new Question(NsUserTest.JAVAJIGI, givenTitle, givenContents);
+        Question question = new Question(1L, NsUserTest.JAVAJIGI, givenTitle, givenContents, new Answers());
         assertThat(question.getWriter()).isEqualTo(NsUserTest.JAVAJIGI);
     }
 
@@ -38,7 +37,7 @@ public class QuestionTest {
         "Question 삭제 불가능 테스트")
     void questionTest2() {
         assertThatThrownBy(() -> {
-            Q1.delete(NsUserTest.SANJIGI, new Answers());
+            Q1.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
             .hasMessageContaining(NOT_PERMISSION_DELETE_QUESTION);
     }
@@ -48,11 +47,10 @@ public class QuestionTest {
         "답변 글의 답변자가 다른 경우" +
         "Question 삭제 불가능 테스트")
     void questionTest3() {
-        Answers answers = new Answers();
-        answers.add(new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents1"));
+        Q1.addAnswer(new Answer(1L, NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents1"));
 
         assertThatThrownBy(() -> {
-            Q1.delete(NsUserTest.JAVAJIGI, answers);
+            Q1.delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class)
             .hasMessageContaining(ANSWER_CAN_NOT_BE_DELETED);
     }
@@ -62,7 +60,7 @@ public class QuestionTest {
         "답변이 없는 경우" +
         "Question 삭제 테스트")
     void questionTest4() throws CannotDeleteException {
-        Q1.delete(NsUserTest.JAVAJIGI, new Answers());
+        Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 
@@ -71,9 +69,8 @@ public class QuestionTest {
         "답변 글의 모든 답변자가 같은 경우" +
         "Question 삭제 테스트")
     void questionTest5() throws CannotDeleteException {
-        Answers answers = new Answers();
-        answers.add(new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
-        Q1.delete(NsUserTest.JAVAJIGI, answers);
+        Q1.addAnswer(new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"));
+        Q1.delete(NsUserTest.JAVAJIGI);
         assertThat(Q1.isDeleted()).isTrue();
     }
 }
