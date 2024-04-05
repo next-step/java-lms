@@ -7,6 +7,9 @@ import java.util.List;
 public class Course {
     private Long id;
 
+    /* 기수 */
+    private Long term;
+
     private String title;
 
     private final List<Session> sessions = new ArrayList<>();
@@ -17,20 +20,22 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public static Course of(Long id, String title, List<Session> sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Course(id, title, creatorId, createdAt, updatedAt);
+    public static Course of(Long id, Long term, String title, List<Session> sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Course(id, term, title, sessions, creatorId, createdAt, updatedAt);
     }
 
     public Course() {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, 0L, title, List.of(), creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, Long term, String title, List<Session> sessions, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.term = term;
         this.title = title;
+        this.sessions.addAll(sessions);
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

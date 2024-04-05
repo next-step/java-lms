@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -27,11 +28,13 @@ public class JdbcCourseRepository implements CourseRepository {
     public Course findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                rs.getLong("id"),
+                1L, //객체 설계에만 집중하기 위해 이번 단계에서 임의 값 처리
+                rs.getString("title"),
+                List.of(),
+                rs.getLong("creator_id"),
+                toLocalDateTime(rs.getTimestamp("created_at")),
+                toLocalDateTime(rs.getTimestamp("updated_at")));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
