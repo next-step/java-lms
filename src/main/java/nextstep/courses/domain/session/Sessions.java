@@ -1,4 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
+
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,5 +22,15 @@ public class Sessions {
 
     public void add(PaidSession paidSession) {
         this.sessions.add(paidSession);
+    }
+
+    public boolean isFreeSession(Long sessionIdx) {
+        Session session = findBy(sessionIdx);
+        return session.isFreeSession();
+    }
+
+    public Payment toPayment(NsUser nsUser, Long sessionIdx) {
+        Session session = findBy(sessionIdx);
+        return session.toPayment(nsUser);
     }
 }

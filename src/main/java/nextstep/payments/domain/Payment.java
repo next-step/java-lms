@@ -40,6 +40,10 @@ public class Payment {
         return this.status == status;
     }
 
+    public boolean failed() {
+        return this.status != Status.SUCCESS;
+    }
+
     public enum Status {
         READY,
         SUCCESS,

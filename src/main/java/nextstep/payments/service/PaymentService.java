@@ -1,9 +1,8 @@
 package nextstep.payments.service;
 
-import nextstep.courses.domain.PaidSession;
+import nextstep.courses.domain.session.PaidSession;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
 
 public class PaymentService {
     public Payment payment(String id) {
@@ -11,8 +10,10 @@ public class PaymentService {
         return new Payment();
     }
 
-    public Payment pay(NsUser nsUser, PaidSession paidSession) {
-        //TODO 돈이 안맞으면 예외 처리
-        return new Payment();
+    public Payment pay(Payment payment) {
+        if (payment.failed()) {
+            throw new IllegalArgumentException("결제를 실패했습니다.");
+        }
+        return payment;
     }
 }

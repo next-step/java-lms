@@ -1,6 +1,11 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.Course;
+import nextstep.courses.domain.Image;
+import nextstep.courses.domain.session.type.SessionType;
+import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 public class PaidSession extends Session {
@@ -8,13 +13,13 @@ public class PaidSession extends Session {
     private final long amount;
 
     public PaidSession(Course course, Period period, Image image, NsUsers users, int maxSize, long amount) {
-        super(course, period, image, users,Type.PAID);
+        super(course, period, image, users, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }
 
-    public PaidSession(Long idx, Course course, Period period, Image image, Status status, NsUsers nsUsers, int maxSize, long amount) {
-        super(idx, course, period, image, status, nsUsers, Type.PAID);
+    public PaidSession(Long idx, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, int maxSize, long amount) {
+        super(idx, course, period, image, status, nsUsers, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }
@@ -28,5 +33,9 @@ public class PaidSession extends Session {
 
     public Long getAmount() {
         return this.amount;
+    }
+
+    public Payment toPayment(NsUser nsUser) {
+        return new Payment("0", this.idx, nsUser.getId(), this.amount);
     }
 }

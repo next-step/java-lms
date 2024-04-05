@@ -1,15 +1,9 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,7 +19,7 @@ class ImageTest {
     @ParameterizedTest
     @CsvSource(value = {"test.jpg", "test.jpeg", "test.gif", "test.png", "test.svg"})
     void matchImages(String fileName) {
-        assertThat(Image.Type.from(fileName)).isNotEqualTo(Image.Type.NONE);
+        assertThat(Image.FileExtension.from(fileName)).isNotEqualTo(Image.FileExtension.NONE);
     }
 
     @DisplayName("width 와 height는 각각 300, 200 픽셀 이상이여야 한다.")

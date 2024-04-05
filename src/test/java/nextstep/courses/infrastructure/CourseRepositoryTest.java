@@ -1,6 +1,8 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.*;
+import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 import org.assertj.core.api.Assertions;
@@ -34,11 +36,11 @@ public class CourseRepositoryTest {
     void setUp() {
         courseRepository = new JdbcCourseRepository(jdbcTemplate);
 
-        Session.Period period = new Session.Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
+        Period period = new Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
         List<Session> sessions = new ArrayList<>();
-        sessions.add(new FreeSession(1L, null, period, image, Session.Status.RECRUITING, nsUsers));
+        sessions.add(new FreeSession(1L, null, period, image, SessionStatus.RECRUITING, nsUsers));
 
         course = new Course(1L, "무료테스트", 1L, new Sessions(sessions), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
     }
@@ -57,10 +59,10 @@ public class CourseRepositoryTest {
     @Test
     void isFreeSession() {
 
-        Session.Period period = new Session.Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
+        Period period = new Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
-        Course course = new Course(1L, "무료테스트", 1L, new Sessions(List.of(new FreeSession(1L, null, period, image, Session.Status.RECRUITING, nsUsers))), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
+        Course course = new Course(1L, "무료테스트", 1L, new Sessions(List.of(new FreeSession(1L, null, period, image, SessionStatus.RECRUITING, nsUsers))), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
 
         Assertions.assertThat(course.isFreeSession(1L)).isTrue();
     }
@@ -68,20 +70,20 @@ public class CourseRepositoryTest {
     @DisplayName("무료 강의를 등록할 수 있다.")
     @Test
     void enroll() {
-        Assertions.assertThatCode(() -> course.enroll(new NsUser(), 1L))
+        Assertions.assertThatCode(() -> course.enroll(new NsUser(), 1L, LocalDate.now()))
                 .doesNotThrowAnyException();
     }
 
     @DisplayName("유료 강의를 등록할 수 있다.")
     @Test
     void enrollWithPaidSession() {
-        Session.Period period = new Session.Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
+        Period period = new Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
 
-        PaidSession paidSession = new PaidSession(2L, null, period, image, Session.Status.RECRUITING, nsUsers, 5, 5000L);
+        PaidSession paidSession = new PaidSession(2L, null, period, image, SessionStatus.RECRUITING, nsUsers, 5, 5000L);
         course.addSession(paidSession);
-        Assertions.assertThatCode(() -> course.enroll(new NsUser(), 2L))
+        Assertions.assertThatCode(() -> course.enroll(new NsUser(), 2L, LocalDate.now()))
                 .doesNotThrowAnyException();
     }
 }

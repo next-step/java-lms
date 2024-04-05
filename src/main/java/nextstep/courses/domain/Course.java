@@ -1,7 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.session.PaidSession;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.Sessions;
+import nextstep.courses.domain.session.type.SessionType;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -65,22 +71,20 @@ public class Course {
                 '}';
     }
 
-    public Session getSession(Long sessionIdx) {
-
-        return null;
-    }
-
     public boolean isFreeSession(Long sessionIdx) {
-        Session session = sessions.findBy(sessionIdx);
-        return session.equalsType(Session.Type.FREE);
+        return sessions.isFreeSession(sessionIdx);
     }
 
-    public void enroll(NsUser nsUser, Long sessionIdx) {
+    public void enroll(NsUser nsUser, Long sessionIdx, LocalDate requestTime) {
         Session session = sessions.findBy(sessionIdx);
-        session.enroll(nsUser);
+        session.enroll(nsUser, requestTime);
     }
 
     public void addSession(PaidSession paidSession) {
         this.sessions.add(paidSession);
+    }
+
+    public Payment toPayment(NsUser nsUser, Long sessionIdx) {
+        return sessions.toPayment(nsUser, sessionIdx);
     }
 }

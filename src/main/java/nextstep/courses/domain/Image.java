@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ public class Image {
     private final int height;
     private final int width;
     private final String name;
-    private final Image.Type type;
+    private final FileExtension type;
 
     private final int MAX_SIZE = 1_000_000;
 
@@ -46,8 +47,8 @@ public class Image {
         return height >= 200;
     }
 
-    private Type convertType(String fileName) {
-        return Type.from(fileName);
+    private FileExtension convertType(String fileName) {
+        return FileExtension.from(fileName);
     }
 
     private String convertName(String fileName) {
@@ -71,7 +72,7 @@ public class Image {
         return false;
     }
 
-    public enum Type {
+    public enum FileExtension {
         GIF,
         JPG,
         JPEG,
@@ -79,15 +80,21 @@ public class Image {
         SVG,
         NONE;
 
-        private static final Map<String, Type> mappings = new HashMap<>();
-        private static final int FILE_TYPE_INDEX = 1;
+        private static final Map<String, FileExtension> MAPPINGS;
+        private static final int FILE_EXTENSION_INDEX = 1;
 
         static {
-            Arrays.stream(Type.values())
-                    .forEach(item -> mappings.put(item.name().toLowerCase(), item));
+            MAPPINGS = Collections.unmodifiableMap(init());
         }
 
-        public static Type from(String fileName) {
+        private static Map<String, FileExtension> init() {
+            Map<String, FileExtension> hashMap = new HashMap<>();
+            Arrays.stream(FileExtension.values())
+                    .forEach(item -> hashMap.put(item.name().toLowerCase(), item));
+            return hashMap;
+        }
+
+        public static FileExtension from(String fileName) {
             if (isFileNameBlank(fileName)) {
                 return NONE;
             }
@@ -97,7 +104,7 @@ public class Image {
                 return NONE;
             }
 
-            return mappings.getOrDefault(stringSplit[FILE_TYPE_INDEX], NONE);
+            return MAPPINGS.getOrDefault(stringSplit[FILE_EXTENSION_INDEX], NONE);
         }
 
         private static boolean isFileContent(String[] stringSplit) {
