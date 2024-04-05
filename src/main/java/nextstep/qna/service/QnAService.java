@@ -15,6 +15,9 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
+
+  private static final String NOT_FOUND_USER_ID = "요청온 유저가 작성한 질문이 존재하지 않습니다. request userId: %s";
+
   @Resource(name = "questionRepository")
   private QuestionRepository questionRepository;
 
@@ -26,11 +29,8 @@ public class QnAService {
 
   @Transactional
   public void deleteQuestion(NsUser loginUser, long questionId) throws CannotDeleteException {
-
-    // 조회
-    Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
-
-    // 삭제 & 히스토리 저장
+    Question question = questionRepository.findById(questionId)
+        .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_USER_ID, questionId)));
     List<DeleteHistory> histories = question.delete(loginUser);
     deleteHistoryService.saveAll(histories);
   }
