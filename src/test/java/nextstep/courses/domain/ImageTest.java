@@ -12,7 +12,7 @@ public class ImageTest {
     @DisplayName("이미지 크기가 1MB를 초과하면 예외를 반환한다")
     @Test
     void capacityException() {
-        Assertions.assertThatThrownBy(() -> new Image(0, GIF, 300))
+        Assertions.assertThatThrownBy(() -> new Image(0, GIF, 300, 200))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지크기는 1MB를 초과할 수 없다");
     }
@@ -20,10 +20,18 @@ public class ImageTest {
     @DisplayName("이미지 width가 300픽셀미만이면 예외를 반환한다")
     @Test
     void widthException() {
-        Assertions.assertThatThrownBy(() -> new Image(5, GIF, 200))
+        Assertions.assertThatThrownBy(() -> new Image(5, GIF, 200, 200))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미지 width는 300픽셀이상이어야 한다");
     }
 
+
+    @DisplayName("이미지 height가 200픽셀미만이면 예외를 반환한다")
+    @Test
+    void heightException() {
+        Assertions.assertThatThrownBy(() -> new Image(5, GIF, 300, 100))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미지 height는 200픽셀이상이어야 한다");
+    }
 
 }
