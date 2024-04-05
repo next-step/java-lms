@@ -18,6 +18,8 @@ save(..) 테스트시 테이블은 3L 까지 지정했는데 자동 증가는 1L
  
 ```
 
+<img src="https://github.com/ljw1126/user-content/blob/master/next-step/java-lms-ERD.png?raw=true">
+
 - [x] 강의 커버 이미지 테이블 설계
     - 테이블명 : cover_image
     - save(..), saveAll(..), findById(..), findBySessionId(..) 테스트
