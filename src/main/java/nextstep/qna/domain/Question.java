@@ -18,7 +18,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = Answers.from();
 
     private boolean deleted = false;
 
