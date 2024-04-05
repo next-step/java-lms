@@ -11,8 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
-    public static Question Q1;
-    public static Question Q2;
+    public Question Q1;
+    public Question Q2;
 
     @BeforeEach
     void setUp() {
