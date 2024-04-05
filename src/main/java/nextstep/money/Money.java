@@ -12,6 +12,10 @@ public class Money {
     }
 
     private Money(long amount) {
+        if (amount < 0L) {
+            throw new IllegalArgumentException("음수는 허용하지 않습니다");
+        }
+
         this.amount = amount;
     }
 
@@ -24,7 +28,7 @@ public class Money {
     }
 
     public boolean isZero() {
-        return this == ZERO;
+        return this.equals(ZERO);
     }
 
     @Override
