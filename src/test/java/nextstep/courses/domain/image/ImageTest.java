@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.image;
 
 import nextstep.courses.domain.image.Image;
 import org.assertj.core.api.Assertions;
