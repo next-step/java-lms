@@ -12,7 +12,7 @@ public interface UserRepository {
 
     List<NsUser> findByIds(List<Long> ids);
 
-    int save(NsUser nsUser);
+    long save(NsUser nsUser);
 
     int update(NsUser nsUser);
 }

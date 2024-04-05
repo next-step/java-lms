@@ -3,8 +3,11 @@ package nextstep.users.infrastructure;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -59,16 +62,21 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public int save(NsUser nsUser) {
-        String sql = "INSERT INTO ns_user (id, user_id, password, name, email, created_at) VALUES(?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, ps -> {
-            ps.setLong(1, nsUser.getId());
-            ps.setString(2, nsUser.getUserId());
-            ps.setString(3, nsUser.getPassword());
-            ps.setString(4, nsUser.getName());
-            ps.setString(5, nsUser.getEmail());
-            ps.setTimestamp(6, Timestamp.valueOf(nsUser.getCreatedAt()));
-        });
+    public long save(NsUser nsUser) {
+        String sql = "INSERT INTO ns_user (user_id, password, name, email, created_at) VALUES(?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, nsUser.getUserId());
+            ps.setString(2, nsUser.getPassword());
+            ps.setString(3, nsUser.getName());
+            ps.setString(4, nsUser.getEmail());
+            ps.setTimestamp(5, Timestamp.valueOf(nsUser.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

@@ -1,7 +1,7 @@
-INSERT INTO ns_user (id, user_id, password, name, email, created_at)
-values (1, 'javajigi', 'test', '자바지기', 'javajigi@slipp.net', CURRENT_TIMESTAMP());
-INSERT INTO ns_user (id, user_id, password, name, email, created_at)
-values (2, 'sanjigi', 'test', '산지기', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
+INSERT INTO ns_user (user_id, password, name, email, created_at)
+values ('javajigi', 'test', '자바지기', 'javajigi@slipp.net', CURRENT_TIMESTAMP());
+INSERT INTO ns_user (user_id, password, name, email, created_at)
+values ('sanjigi', 'test', '산지기', 'sanjigi@slipp.net', CURRENT_TIMESTAMP());
 
 INSERT INTO question (id, writer_id, title, contents, created_at, deleted)
 VALUES (1, 1, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?',

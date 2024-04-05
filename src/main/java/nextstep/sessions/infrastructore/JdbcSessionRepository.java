@@ -4,6 +4,8 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionState;
 import nextstep.sessions.domain.SessionTypeFactory;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -24,10 +26,17 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(Session session) {
+    public long save(Session session) {
         String sql = "INSERT INTO class_session (course_id, title, state, capacity, amount, start_date, end_date, created_at) VALUES(?, ?, ?, ?, ?, ?, ? ,?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return jdbcTemplate.update(sql, ps -> preparedStatementSetter(ps, session));
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            preparedStatementSetter(ps, session);
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

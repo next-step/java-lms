@@ -32,8 +32,8 @@ class JdbcCoverImageRepositoryTest {
     @Test
     void save() {
         CoverImage coverImage = new CoverImage(1L, 600, 400, 9999, "example.svg", "svg", "/images/example.svg");
-        int count = coverImageRepository.save(coverImage);
-        assertThat(count).isEqualTo(1);
+        long id = coverImageRepository.save(coverImage);
+        assertThat(id).isEqualTo(3L); // 더미
     }
 
     @Test

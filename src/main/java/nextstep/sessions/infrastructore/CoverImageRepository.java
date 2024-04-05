@@ -5,7 +5,7 @@ import nextstep.sessions.domain.CoverImage;
 import java.util.List;
 
 public interface CoverImageRepository {
-    int save(CoverImage coverImage);
+    long save(CoverImage coverImage);
 
     CoverImage findById(Long id);
 

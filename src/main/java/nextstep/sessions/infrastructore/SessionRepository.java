@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SessionRepository {
-    int save(Session session);
+
+    long save(Session session);
 
     void saveAll(List<Session> sessions);
 

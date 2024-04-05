@@ -48,9 +48,9 @@ class JdbcSessionRepositoryTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        int count = repository.save(session);
-        assertThat(count).isEqualTo(1);
+        assertThat(repository.save(session)).isEqualTo(4L);
     }
+
 
     @Test
     void saveAll() {

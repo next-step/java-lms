@@ -4,8 +4,11 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -18,9 +21,19 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int save(Course course) {
+    public long save(Course course) {
         String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, course.getTitle());
+            ps.setLong(2, course.getCreatorId());
+            ps.setTimestamp(3, Timestamp.valueOf(course.getCreatedAt()));
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override

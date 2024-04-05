@@ -54,9 +54,8 @@ class JdbcUserRepositoryTest {
 
     @Test
     void save() {
-        NsUser nsUser = new NsUser(3L, "ljw1126", "1234!@#$", "ljw", "github.com/ljw1126");
-        int count = jdbcUserRepository.save(nsUser);
-        assertThat(count).isEqualTo(1);
+        NsUser nsUser = new NsUser(0L, "ljw1126", "1234!@#$", "ljw", "github.com/ljw1126");
+        assertThat(jdbcUserRepository.save(nsUser)).isEqualTo(3L);
     }
 
     @DisplayName("수정할 경우 name, email 변경할 수 있다")
