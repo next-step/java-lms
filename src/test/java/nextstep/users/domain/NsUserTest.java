@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.courses.domain.Status.RECRUITING;
+import static nextstep.courses.domain.UsageType.FREE;
 import static nextstep.courses.domain.UsageType.PAY;
 import static nextstep.courses.domain.image.Type.GIF;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,9 +20,10 @@ public class NsUserTest {
     public static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
     public static final NsUser SANJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
 
+    @DisplayName("수강신청(register)을/를 하면 유저의 강의 목록에 추가가 된다")
     @Test
     void 수강신청() {
-        Session tddCleanCode = new Session(1L, "tdd클린코드",10000, new Image(5, GIF, 300, 200), RECRUITING, PAY);
+        Session tddCleanCode = new Session(1L, "tdd클린코드",10000, new Image(5, GIF, 300, 200), RECRUITING, FREE);
         JAVAJIGI.register(tddCleanCode);
         assertThat(JAVAJIGI.numberOfSession()).isEqualTo(1);
     }
@@ -39,4 +41,5 @@ public class NsUserTest {
         assertThatThrownBy(() -> SANJIGI.register(new Session(List.of(JAVAJIGI), UsageType.PAY, RECRUITING, 1)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
 }
