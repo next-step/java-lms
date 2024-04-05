@@ -1,5 +1,5 @@
 package nextstep.courses.domain;
 
-public enum Status {
+public enum SessionStatus {
     PREPARING, RECRUITING, END
 }

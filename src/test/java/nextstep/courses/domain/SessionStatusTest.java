@@ -3,9 +3,9 @@ package nextstep.courses.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.Status.*;
+import static nextstep.courses.domain.SessionStatus.*;
 
-public class StatusTest {
+public class SessionStatusTest {
 
     @Test
     void end() {

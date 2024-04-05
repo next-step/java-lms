@@ -6,10 +6,9 @@ import nextstep.courses.domain.image.Image;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static nextstep.courses.domain.Status.RECRUITING;
+import static nextstep.courses.domain.SessionStatus.RECRUITING;
 import static nextstep.courses.domain.UsageType.FREE;
 import static nextstep.courses.domain.UsageType.PAY;
 import static nextstep.courses.domain.image.Type.GIF;

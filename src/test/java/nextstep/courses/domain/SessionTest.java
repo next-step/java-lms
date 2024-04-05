@@ -16,7 +16,7 @@ public class SessionTest {
         List<NsUser> users = List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
 
         Assertions.assertThatThrownBy(() ->
-                        new Session(users, UsageType.PAY, Status.RECRUITING, 1)
+                        new Session(users, UsageType.PAY, SessionStatus.RECRUITING, 1)
                                 .validateUserLimitForPaidCourse())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강인원을 초과하였습니다.");
