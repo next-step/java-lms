@@ -13,4 +13,6 @@ public interface SessionRepository {
     Optional<Session> findById(long sessionId);
 
     List<Session> findByIds(List<Long> ids);
+
+    int update(Session session);
 }

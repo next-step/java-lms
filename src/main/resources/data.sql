@@ -35,10 +35,10 @@ INSERT INTO session_listener(session_id, ns_user_id)
 VALUES (1L, 2L);
 
 -- 강의
-INSERT INTO class_session(title, state, capacity, amount, start_date, end_date, created_at)
-VALUES ('TDD, 클린 코드 with Java 18기', 'FINISHED', 999, 800000L, '2024-03-04', '2024-04-18', CURRENT_TIMESTAMP());
-INSERT INTO class_session(title, state, capacity, amount, start_date, end_date, created_at)
-VALUES ('자바 플레이그라운드 with TDD, 클린 코드', 'RECRUITING', 999, 180000L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
-INSERT INTO class_session(title, state, capacity, amount, start_date, end_date, created_at)
-VALUES ('스터디 모집', 'RECRUITING', 0, 0L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, capacity, amount, start_date, end_date, created_at)
+VALUES (1L, 'TDD, 클린 코드 with Java 18기', 'FINISHED', 999, 800000L, '2024-03-04', '2024-04-18', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, capacity, amount, start_date, end_date, created_at)
+VALUES (2L, '자바 플레이그라운드 with TDD, 클린 코드', 'RECRUITING', 999, 180000L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, capacity, amount, start_date, end_date, created_at)
+VALUES (3L, '스터디 모집', 'RECRUITING', 0, 0L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
 

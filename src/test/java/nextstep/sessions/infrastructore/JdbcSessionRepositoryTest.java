@@ -39,6 +39,7 @@ class JdbcSessionRepositoryTest {
     @Test
     void save() {
         Session session = Session.builder()
+                .courseId(1L)
                 .title("TDD, 자바 99기")
                 .state(SessionState.RECRUITING)
                 .sessionType(new PaidSession(999, 800000L))
@@ -54,6 +55,7 @@ class JdbcSessionRepositoryTest {
     @Test
     void saveAll() {
         Session session1 = Session.builder()
+                .courseId(1L)
                 .title("TDD, 자바 99기")
                 .state(SessionState.RECRUITING)
                 .sessionType(new PaidSession(999, 800000L))
@@ -63,6 +65,7 @@ class JdbcSessionRepositoryTest {
                 .build();
 
         Session session2 = Session.builder()
+                .courseId(2L)
                 .title("스터디 모집")
                 .state(SessionState.RECRUITING)
                 .sessionType(new FreeSession())
@@ -90,5 +93,25 @@ class JdbcSessionRepositoryTest {
         List<Session> sessions = repository.findByIds(List.of(1L, 2L, 3L));
 
         assertThat(sessions).hasSize(3);
+    }
+
+    @Test
+    void update() {
+        Session session = repository.findById(1L).get();
+        Session target = Session.builder()
+                .id(1L)
+                .courseId(1L)
+                .title("TDD, 클린 코드 with Java 18기 (수정)")
+                .state(SessionState.FINISHED)
+                .sessionType(new FreeSession())
+                .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+                .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        session.update(target);
+
+        int count = repository.update(session);
+        assertThat(count).isEqualTo(1);
     }
 }

@@ -67,6 +67,7 @@ CREATE TABLE session_listener(
 
 CREATE TABLE class_session (
    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   course_id BIGINT NOT NULL,
    title VARCHAR(100) NOT NULL,
    state VARCHAR(20) NOT NULL,
    capacity INT NOT NULL,

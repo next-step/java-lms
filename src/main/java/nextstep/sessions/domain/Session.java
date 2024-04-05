@@ -14,7 +14,9 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Session extends BaseEntity {
-    private long id;
+    private Long id;
+
+    private Long courseId;
 
     private String title;
 
@@ -30,11 +32,13 @@ public class Session extends BaseEntity {
 
     private Set<NsUser> listener;
 
-    public Session(long id, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+    public Session(Long id, Long courseId, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+        validateCourseId(courseId);
         validateSessionType(sessionType);
         validatePeriod(startDate, endDate);
 
         this.id = id;
+        this.courseId = courseId;
         this.title = title;
         this.state = state;
         this.sessionType = sessionType;
@@ -44,6 +48,12 @@ public class Session extends BaseEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.listener = listener == null ? new HashSet<>() : listener;
+    }
+
+    private void validateCourseId(Long courseId) {
+        if (courseId == null) {
+            throw new IllegalArgumentException("코스 정보가 비어있습니다");
+        }
     }
 
     private void validateSessionType(SessionType sessionType) {
@@ -63,7 +73,9 @@ public class Session extends BaseEntity {
     }
 
     public static class Builder {
-        private long id;
+
+        private Long id;
+        private Long courseId;
         private String title;
         private SessionState state;
         private SessionType sessionType;
@@ -77,8 +89,13 @@ public class Session extends BaseEntity {
         public Builder() {
         }
 
-        public Builder id(long id) {
+        public Builder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder courseId(Long courseId) {
+            this.courseId = courseId;
             return this;
         }
 
@@ -128,7 +145,7 @@ public class Session extends BaseEntity {
         }
 
         public Session build() {
-            return new Session(id, title, state, sessionType, coverImage, startDate, endDate, createdAt, updatedAt, listener);
+            return new Session(id, courseId, title, state, sessionType, coverImage, startDate, endDate, createdAt, updatedAt, listener);
         }
     }
 
@@ -201,12 +218,41 @@ public class Session extends BaseEntity {
         this.listener.add(loginUser);
     }
 
+    public void update(Session target) {
+        if (!matchId(target)) {
+            throw new IllegalArgumentException(); // TODO
+        }
+
+        if (!matchCourseId(target)) {
+            throw new IllegalArgumentException();
+        }
+
+        this.title = target.title;
+        this.state = target.state;
+        this.sessionType = target.sessionType;
+        this.startDate = target.startDate;
+        this.endDate = target.getEndDate();
+        this.updatedAt = target.updatedAt;
+    }
+
+    private boolean matchId(Session target) {
+        return this.id.equals(target.id);
+    }
+
+    private boolean matchCourseId(Session target) {
+        return this.courseId.equals(target.courseId);
+    }
+
     public int getCount() {
         return this.listener.size();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 
     public String getTitle() {

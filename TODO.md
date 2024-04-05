@@ -30,6 +30,8 @@ save(..) 테스트시 테이블은 3L 까지 지정했는데 자동 증가는 1L
 - [x] 강의 테이블 설계
     - 테이블명 : class_session
     - save(..), saveAll(..), findById(..), findByIds(..) 추가
+    - courseId 필드를 추가한다
+    - update(..) 추가한다
 
 ---
 
