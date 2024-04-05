@@ -8,7 +8,13 @@ public class PaidSession extends Session {
     private final long amount;
 
     public PaidSession(Course course, Period period, Image image, NsUsers users, int maxSize, long amount) {
-        super(course, period, image, users);
+        super(course, period, image, users,Type.PAID);
+        this.maxSize = maxSize;
+        this.amount = amount;
+    }
+
+    public PaidSession(Long idx, Course course, Period period, Image image, Status status, NsUsers nsUsers, int maxSize, long amount) {
+        super(idx, course, period, image, status, nsUsers, Type.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }

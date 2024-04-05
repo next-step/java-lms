@@ -3,11 +3,12 @@ package nextstep.courses.controller;
 public class EnrollRequestDto {
     private final Long courseIdx;
     private final Long userIdx;
+    private final Long sessionIdx;
 
-
-    public EnrollRequestDto(Long courseIdx, Long userIdx) {
+    public EnrollRequestDto(Long courseIdx, Long userIdx, Long sessionIdx) {
         this.courseIdx = courseIdx;
         this.userIdx = userIdx;
+        this.sessionIdx = sessionIdx;
     }
 
     public Long getCourseIdx() {
@@ -18,7 +19,7 @@ public class EnrollRequestDto {
         return userIdx;
     }
 
-    public Object getSessionIdx() {
-        return null;
+    public Long getSessionIdx() {
+        return this.sessionIdx;
     }
 }

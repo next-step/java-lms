@@ -12,6 +12,7 @@ public class PaymentService {
     }
 
     public Payment pay(NsUser nsUser, PaidSession paidSession) {
+        //TODO 돈이 안맞으면 예외 처리
         return new Payment();
     }
 }

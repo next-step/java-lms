@@ -3,12 +3,10 @@ package nextstep.courses.service;
 import nextstep.courses.controller.EnrollRequestDto;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
-import nextstep.courses.domain.Session;
+import nextstep.courses.domain.PaidSession;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.NsUserService;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
-import nextstep.users.domain.UserRepository;
 
 public class CourseService {
     private final PaymentService paymentService;
@@ -26,6 +24,18 @@ public class CourseService {
 
         Course course = courseRepository.findById(enrollRequestDto.getCourseIdx());
 
-        //TODO
+        if (isFreeSession(enrollRequestDto, course)) {
+            course.enroll(nsUser, enrollRequestDto.getSessionIdx());
+        }
+        payAndEnroll(enrollRequestDto, nsUser, course);
+    }
+
+    private void payAndEnroll(EnrollRequestDto enrollRequestDto, NsUser nsUser, Course course) {
+        paymentService.pay(nsUser, (PaidSession) course.getSession(enrollRequestDto.getSessionIdx()));
+        course.enroll(nsUser, enrollRequestDto.getSessionIdx());
+    }
+
+    private static boolean isFreeSession(EnrollRequestDto enrollRequestDto, Course course) {
+        return course.isFreeSession(enrollRequestDto.getSessionIdx());
     }
 }

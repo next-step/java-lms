@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -63,7 +65,22 @@ public class Course {
                 '}';
     }
 
-    public Session getSession(Object sessionIdx) {
+    public Session getSession(Long sessionIdx) {
+
         return null;
+    }
+
+    public boolean isFreeSession(Long sessionIdx) {
+        Session session = sessions.findBy(sessionIdx);
+        return session.equalsType(Session.Type.FREE);
+    }
+
+    public void enroll(NsUser nsUser, Long sessionIdx) {
+        Session session = sessions.findBy(sessionIdx);
+        session.enroll(nsUser);
+    }
+
+    public void addSession(PaidSession paidSession) {
+        this.sessions.add(paidSession);
     }
 }

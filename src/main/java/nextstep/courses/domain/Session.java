@@ -8,24 +8,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public abstract class Session {
-    private final Long idx;
+    protected final Long idx;
     private final Course course;
     private final Period period;
     private final Image image;
     private final Status status;
+    private final Type type;
     protected final NsUsers nsUsers;
 
-    public Session(Course course, Period period, Image image, NsUsers users) {
-        this(0L, course, period, image, Status.READY, users);
+    public Session(Course course, Period period, Image image, NsUsers users, Type type) {
+        this(0L, course, period, image, Status.READY, users, type);
     }
 
-    public Session(Long idx, Course course, Period period, Image image, Status status, NsUsers nsUsers) {
+    public Session(Long idx, Course course, Period period, Image image, Status status, NsUsers nsUsers, Type type) {
         this.idx = idx;
         this.course = course;
         this.period = period;
         this.image = image;
         this.status = status;
         this.nsUsers = nsUsers;
+        this.type = type;
     }
 
     public void enroll(NsUser nsUser) {
@@ -42,8 +44,11 @@ public abstract class Session {
         return this.status == Status.RECRUITING;
     }
 
-    public boolean paidSession() {
-        return false;
+    public boolean equalsType(Type type) {
+        if (type == null) {
+            return false;
+        }
+        return this.type == type;
     }
 
     public static class Period {
@@ -62,12 +67,15 @@ public abstract class Session {
         public LocalDate endDate() {
             return endDate;
         }
-
     }
 
     public enum Status {
         READY,
         RECRUITING,
         CLOSED
+    }
+
+    public enum Type {
+        FREE, PAID
     }
 }
