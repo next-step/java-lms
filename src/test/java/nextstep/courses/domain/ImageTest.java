@@ -34,4 +34,12 @@ public class ImageTest {
                 .hasMessage("이미지 height는 200픽셀이상이어야 한다");
     }
 
+    @DisplayName("이미지 비율이 3:2가 아니면 예외를 반환한다")
+    @Test
+    void ratioException() {
+        Assertions.assertThatThrownBy(() -> new Image(5, GIF, 600, 300))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("width와 height의 비율은 3:2여야 한다");
+    }
+
 }
