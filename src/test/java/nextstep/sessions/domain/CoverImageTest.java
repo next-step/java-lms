@@ -19,7 +19,7 @@ class CoverImageTest {
         CoverImage coverImage = CoverImage.of(new File("playground.jpeg"), 1L);
 
         assertThat(coverImage)
-                .isEqualTo(new CoverImage(0L, 1200, 800, 340797, "playground.jpeg", "jpeg", "playground.jpeg"));
+                .isEqualTo(new CoverImage(1L, 1200, 800, 340797, "playground.jpeg", "jpeg", "playground.jpeg"));
     }
 
     @Nested
