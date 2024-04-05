@@ -1,7 +1,13 @@
 package nextstep.qna.service;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.*;
+import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.answer.AnswerRepository;
+import nextstep.qna.domain.answer.Answers;
+import nextstep.qna.domain.deleteHistory.DeleteHistory;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.domain.question.QuestionRepository;
+import nextstep.qna.domain.deleteHistory.type.ContentType;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,13 +37,13 @@ public class QnaServiceTest {
     private QnAService qnAService;
 
     private Question question;
-    private Answer answer;
+    private Answers answers;
 
     @BeforeEach
     public void setUp() throws Exception {
-        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        answer = new Answer(11L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        question.addAnswer(answer);
+        answers = new Answers();
+        question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1", answers);
+        answers.add(new Answer(1L, NsUserTest.JAVAJIGI, question, "Answers Contents1"));
     }
 
     @Test
@@ -68,7 +73,7 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        assertThat(answer.isDeleted()).isTrue();
+        assertThat(answers.get(0).isDeleted()).isTrue();
         verifyDeleteHistories();
     }
 
@@ -83,8 +88,8 @@ public class QnaServiceTest {
 
     private void verifyDeleteHistories() {
         List<DeleteHistory> deleteHistories = Arrays.asList(
-                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
-                new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+                new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter()),
+                new DeleteHistory(ContentType.ANSWER, answers.get(0).getId(), answers.get(0).getWriter()));
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
 }
