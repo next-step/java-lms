@@ -1,5 +1,9 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.ChargedSession;
+import nextstep.courses.domain.Session;
+import nextstep.payments.domain.Payment;
+import nextstep.payments.domain.Payments;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
@@ -17,6 +21,8 @@ public class NsUser {
     private String name;
 
     private String email;
+
+    private Payments payments = new Payments();
 
     private LocalDateTime createdAt;
 
@@ -115,6 +121,22 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public void addPayment(final Payment payment) {
+        this.payments.add(payment);
+    }
+
+    public boolean hasPayment(final Payment payment) {
+        return this.payments.contains(payment);
+    }
+
+    public boolean notHasPaymentFor(ChargedSession session) {
+        return !this.payments.containsPaymentFor(session);
+    }
+
+    public void register(final Session session) {
+        session.addStudent(this);
     }
 
     private static class GuestNsUser extends NsUser {

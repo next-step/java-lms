@@ -23,6 +23,10 @@ public class Payments {
     this.payments.addAll(payment);
   }
 
+  public boolean contains(final Payment payment) {
+    return this.payments.contains(payment);
+  }
+
   public boolean containsPaymentFor(final ChargedSession session) {
     return this.payments.stream()
             .anyMatch(payment -> payment.isPaymentFor(session));

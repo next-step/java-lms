@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.member.Student;
+import nextstep.users.domain.NsUser;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -10,15 +10,22 @@ public class ChargedSession extends Session {
   private Integer maxSize;
   private Long tuition;
 
-  public ChargedSession(Long id, File image, SessionStatus status, final List<Student> student,
+  public ChargedSession(Long id, File image, SessionStatus status, final List<NsUser> students,
                         LocalDate startDate, LocalDate endDate, final Integer maxSize, final Long tuition) {
-    super(id, startDate, endDate, image, status, student);
+    super(id, startDate, endDate, image, status, students);
+    this.maxSize = maxSize;
+    this.tuition = tuition;
+  }
+
+  public ChargedSession(Long id, File image, SessionStatus status, LocalDate startDate, LocalDate endDate,
+                        final Integer maxSize, final Long tuition) {
+    super(id, startDate, endDate, image, status);
     this.maxSize = maxSize;
     this.tuition = tuition;
   }
 
   @Override
-  public void addStudent(final Student student) {
+  public void addStudent(final NsUser student) {
     if (this.isNotOpen()) {
       throw new IllegalStateException("수강생 모집중인 강의가 아닙니다.");
     }

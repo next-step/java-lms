@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
-import nextstep.member.Student;
-import nextstep.member.Students;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.Users;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -13,15 +13,20 @@ public abstract class Session {
   private final LocalDate endDate;
   private File image;
   private SessionStatus status;
-  protected final Students students;
+  protected final Users students = new Users();
 
-  protected Session(Long id, LocalDate startDate, LocalDate endDate, File image, SessionStatus status, final List<Student> students) {
+  protected Session(Long id, LocalDate startDate, LocalDate endDate, File image, SessionStatus status, final List<NsUser> students) {
     this.id = id;
     this.startDate = startDate;
     this.endDate = endDate;
     this.image = image;
     this.status = status;
-    this.students = new Students(students);
+    this.students.addAll(students);
+    validate();
+  }
+
+  protected Session(Long id, LocalDate startDate, LocalDate endDate, File image, SessionStatus status) {
+    this(id, startDate, endDate, image, status, List.of());
     validate();
   }
 
@@ -47,5 +52,9 @@ public abstract class Session {
     return this.id.equals(id);
   }
 
-  public abstract void addStudent(final Student student);
+  public abstract void addStudent(final NsUser student);
+
+  public boolean hasStudent(final NsUser student) {
+    return this.students.contains(student);
+  }
 }
