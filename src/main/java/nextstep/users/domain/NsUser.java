@@ -124,6 +124,7 @@ public class NsUser {
 
     public void register(Session session) {
         if (session.isRecruiting()) {
+            session.validateUserLimitForPaidCourse();
             takingSessions.add(session);
         }
     }

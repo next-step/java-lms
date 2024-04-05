@@ -1,6 +1,11 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.image.Image;
+import nextstep.users.domain.NsUser;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Session {
 
@@ -8,6 +13,7 @@ public class Session {
 
     private String sessionName;
 
+    //가격
     private int price;
 
     private Image image;
@@ -17,6 +23,14 @@ public class Session {
 
     //무료인지 유료인지
     private UsageType usageType;
+
+    private List<NsUser> users = new ArrayList<>();
+
+    private Integer maxNoOfUsers;
+
+    private LocalDateTime startedAt;
+
+    private LocalDateTime endedAt;
 
     protected Session() {
     }
@@ -35,8 +49,29 @@ public class Session {
         this.usageType = usageType;
     }
 
+    public Session(List<NsUser> users, UsageType type, Status status, Integer maxNoOfUsers) {
+        this.users = users;
+        this.usageType = type;
+        this.status = status;
+        this.maxNoOfUsers = maxNoOfUsers;
+    }
+
     public boolean isRecruiting() {
         return status == Status.RECRUITING;
+    }
+
+    public void validateUserLimitForPaidCourse() {
+        if (isPaidCourse() && isExceedUserNo()) {
+            throw new IllegalArgumentException("수강인원을 초과하였습니다.");
+        }
+    }
+
+    private boolean isExceedUserNo() {
+        return users.size() == maxNoOfUsers;
+    }
+
+    private boolean isPaidCourse() {
+        return usageType == UsageType.PAY;
     }
 
 }
