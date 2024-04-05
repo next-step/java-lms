@@ -1,8 +1,11 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.Session;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class NsUser {
@@ -21,6 +24,8 @@ public class NsUser {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private List<Session> takingSessions = new ArrayList<>();
 
     public NsUser() {
     }
@@ -117,7 +122,18 @@ public class NsUser {
         return false;
     }
 
+    public void register(Session session) {
+        if (session.isRecruiting()) {
+            takingSessions.add(session);
+        }
+    }
+
+    public int numberOfSession() {
+        return takingSessions.size();
+    }
+
     private static class GuestNsUser extends NsUser {
+
         @Override
         public boolean isGuestUser() {
             return true;
