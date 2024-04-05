@@ -64,3 +64,15 @@ CREATE TABLE session_listener(
     session_id BIGINT NOT NULL,
     ns_user_id BIGINT NOT NULL
 );
+
+CREATE TABLE class_session (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   title VARCHAR(100) NOT NULL,
+   state VARCHAR(20) NOT NULL,
+   capacity INT NOT NULL,
+   amount BIGINT NOT NULL,
+   start_date timestamp NOT NULL,
+   end_date timestamp NOT NULL,
+   created_at timestamp NOT NULL,
+   updated_at timestamp
+);
