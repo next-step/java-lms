@@ -10,7 +10,7 @@ public class PaySession extends Session {
     private final Long price;
     private final int maxNumberOfStudents;
 
-    public PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
+    public static PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
         return new PaySession(sessionDate, price, maxNumberOfStudents, coverImageInfo);
     }
 
