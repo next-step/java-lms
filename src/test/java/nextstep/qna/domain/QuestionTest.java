@@ -62,6 +62,7 @@ public class QuestionTest {
 
     @Test
     public void delete() {
+
         Question question = new Question(NsUserFixtures.JAVAJIGI, "title1", "contents1");
         question.delete(NsUserFixtures.JAVAJIGI);
         assertThat(question.isDeleted()).isTrue();
