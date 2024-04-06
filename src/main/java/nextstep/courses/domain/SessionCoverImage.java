@@ -14,10 +14,17 @@ public class SessionCoverImage {
     public SessionCoverImage(int sizeOfBytes, ImageType type, int width, int height) {
         validateLessEqualThen1MB(sizeOfBytes);
         validateWidthAndHeight(width, height);
+        validateRatioThreeToTwo(width, height);
         this.sizeOfBytes = sizeOfBytes;
         this.type = type;
         this.width = width;
         this.height = height;
+    }
+
+    private void validateRatioThreeToTwo(int width, int height) {
+        if (width * 2 != height * 3) {
+            throw new IllegalArgumentException("가로 크기와 높이의 비율은 3:2 여야 합니다.");
+        }
     }
 
     private void validateWidthAndHeight(int width, int height) {
