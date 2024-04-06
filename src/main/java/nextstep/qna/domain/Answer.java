@@ -1,10 +1,12 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Answer {
     private Long id;
@@ -21,7 +23,8 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
+    public Answer(NsUser writer, Question question, String contents, boolean deleted) {
+        this(null, writer, question, contents, deleted);
     }
 
     public Answer(NsUser writer, Question question, String contents) {
@@ -29,6 +32,10 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+        this(id, writer, question, contents, false);
+    }
+
+    private Answer(Long id, NsUser writer, Question question, String contents, boolean deleted) {
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
@@ -37,21 +44,15 @@ public class Answer {
         if(question == null) {
             throw new NotFoundException();
         }
-
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+        this.deleted = deleted;
     }
 
     public Long getId() {
         return id;
     }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -64,16 +65,37 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Answer)) return false;
+        Answer answer = (Answer) o;
+        return deleted == answer.deleted && Objects.equals(id, answer.id) && Objects.equals(writer, answer.writer) && Objects.equals(question, answer.question) && Objects.equals(contents, answer.contents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writer, question, contents, deleted);
+    }
+
+    @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    public void delete(NsUser nsUser){
+        boolean owner = isOwner(nsUser);
+        if(!owner){
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+        this.deleted = true;
+    }
+
+    public DeleteHistory saveDeleteHistory(){
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
     }
 }
