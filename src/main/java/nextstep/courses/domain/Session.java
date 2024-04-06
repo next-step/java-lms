@@ -58,6 +58,11 @@ public class Session {
         this.maxNoOfUsers = maxNoOfUsers;
     }
 
+    public Session(List<NsUser> users, UsageType type, SessionStatus sessionStatus, Integer maxNoOfUsers, long price) {
+        this(users, type, sessionStatus, maxNoOfUsers);
+        this.price = price;
+    }
+
     public boolean isRecruitingFreeSession() {
         return isFreeCourse() && isRecruiting();
     }

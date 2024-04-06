@@ -33,6 +33,12 @@ public class NsUser {
     public NsUser() {
     }
 
+    public NsUser(Long id, List<Session> takingSessions, Payment payment) {
+        this.id = id;
+        this.takingSessions = takingSessions;
+        this.payment = payment;
+    }
+
     public NsUser(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, LocalDateTime.now(), null);
     }

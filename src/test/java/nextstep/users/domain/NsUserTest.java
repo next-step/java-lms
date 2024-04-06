@@ -39,7 +39,8 @@ public class NsUserTest {
     @DisplayName("수강 신청을 할때 유료강의는 최대수강인원을 초과할 수 없다")
     @Test
     void validateUserLimitForPaidCourseInRegister() {
-        assertThatThrownBy(() -> SANJIGI.register(new Session(List.of(JAVAJIGI), UsageType.PAY, RECRUITING, 1)))
+        NsUser user = new NsUser(1L, new ArrayList<>(), new Payment("첫번째 결제", 1L, 1L, 3000L));
+        assertThatThrownBy(() -> user.register(new Session(List.of(JAVAJIGI), UsageType.PAY, RECRUITING, 1, 3000L)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
