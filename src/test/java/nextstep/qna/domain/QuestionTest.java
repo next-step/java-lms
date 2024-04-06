@@ -1,7 +1,9 @@
 package nextstep.qna.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -16,11 +18,21 @@ public class QuestionTest {
     //1-1. if 답변이 없는가? 삭제o
     //1-2. elseif 질문자, 답변자가 모두 같은가? 삭제0
 
+    //그외 요구사항
+    //answers 변수를 일급컬렉션으로 만들어본다
+
     @Test
     public void 로그인한_사용자와_글작성자가_같아야_질문_삭제_가능() {
         assertThatThrownBy(() -> {
             Q2.delete(NsUserTest.JAVAJIGI);
         }).isInstanceOf(CannotDeleteException.class).hasMessageContaining("질문을 삭제할 권한이 없습니다.");
+    }
+
+    @Test
+    public void 질문_삭제() throws CannotDeleteException {
+        List<DeleteHistory> histories = Q1.delete(NsUserTest.JAVAJIGI);
+        assertThat(Q1.isDeleted()).isTrue();
+        assertThat(histories.size()).isEqualTo(1);
     }
 
 }
