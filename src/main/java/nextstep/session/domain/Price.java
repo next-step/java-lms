@@ -11,6 +11,6 @@ public class Price {
     }
 
     public boolean isFullyPaid(Payment payment) {
-        return price == payment.getPaidAmount();
+        return payment.isExactlyPaid(price);
     }
 }

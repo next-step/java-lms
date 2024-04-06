@@ -39,7 +39,7 @@ class StudentsTest {
         assertThat(students.findStudent(enrollStudent).isPresent()).isFalse();
     }
 
-    @DisplayName("중복 신청하면, StudentsException을 던진다.")
+    @DisplayName("학생은 중복 신청할 수 없다.")
     @Test
     void throwStudentsExceptionForDuplicateEnroll() {
         // given
@@ -54,7 +54,7 @@ class StudentsTest {
                 .isInstanceOf(StudentsException.class);
     }
 
-    @DisplayName("등록되지 않은 학생을 뺄 경우, StudentsException을 던진다.")
+    @DisplayName("등록되지 않은 학생을 뺄 수 없다.")
     @Test
     void throwStudentsExceptionRemoveNotEnrolled() {
         // given

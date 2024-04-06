@@ -27,7 +27,7 @@ class AnswersTest {
         A3_ANSWER_BY_SANJIGI_OF_Q1 = new Answer(NsUserTest.SANJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents3");
     }
 
-    @DisplayName("삭제 요청 시 답변 리스트의 owner 중 하나라도 loginUser와 다르다면, CannotDeleteException를 던진다.")
+    @DisplayName("삭제 요청 시 답변 리스트의 owner 중 하나라도 loginUser와 다를 수 없다.")
     @Test
     void throwCannotDeleteExceptionNotAllMatchLoginUserAndOwner() {
         // given

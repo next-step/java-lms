@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class ResolutionTest {
 
-    @DisplayName("가로길이가 최소 가로길이보다 짧다면, IllegalArgumentException을 던진다.")
+    @DisplayName("가로길이가 최소 가로길이보다 짧을 수 없다.")
     @Test
     void throwIllegalArgumentExceptionOfMinimumWidth() {
         // then
@@ -15,7 +15,7 @@ class ResolutionTest {
 
     }
 
-    @DisplayName("세로길이가 최소 세로길이보다 짧다면, IllegalArgumentException을 던진다.")
+    @DisplayName("세로길이가 최소 세로길이보다 짧을 수 없다.")
     @Test
     void throwIllegalArgumentExceptionOfMinimumHeight() {
         // then
@@ -23,7 +23,7 @@ class ResolutionTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("가로와 세로의 비율이 3:2가 아니라면, IllegalArgumentException을 던진다.")
+    @DisplayName("가로와 세로의 비율이 3:2 이어야 한다.")
     @Test
     void throwIllegalArgumentExceptionOfWidthHeightRate() {
         // then

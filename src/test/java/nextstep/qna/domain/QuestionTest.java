@@ -27,7 +27,7 @@ public class QuestionTest {
         A3_ANSWER_BY_SANJIGI_OF_Q1 = new Answer(NsUserTest.SANJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents3");
     }
 
-    @DisplayName("질문 작성자와 loginUser가 다르면 CannotDeleteException을 던진다.")
+    @DisplayName("질문 작성자와 loginUser가 다를 수 없다.")
     @Test
     void throwCannotDeleteExceptionWhenOwnerAndLoginUserNotSame() {
         // then

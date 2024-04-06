@@ -30,4 +30,8 @@ public class Payment {
     public Long getPaidAmount() {
         return this.amount;
     }
+
+    public boolean isExactlyPaid(long requestAmount) {
+        return getPaidAmount() == requestAmount;
+    }
 }

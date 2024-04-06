@@ -22,7 +22,7 @@ class ImageFilePathTest {
                 .isEqualTo(Path.of("/home/program/image01.jpg"));
     }
 
-    @DisplayName("처리하지 않는 확장자를 사용하면 IllegalArgumentException을 던진다.")
+    @DisplayName("처리하지 않는 확장자를 사용할 수 없다.")
     @Test
     void throwIllegalArgumentExceptionWhenNotInImageExtensionType() {
         // then

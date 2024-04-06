@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DurationTest {
 
-    @DisplayName("시작일자가 종료일자보다 미래면 IllegalArgumentException을 던진다.")
+    @DisplayName("시작일자가 종료일자보다 미래일 수 없다.")
     @Test
     void throwIllegalArgumentExceptionWhenStartDateIsLaterThanEndDate() {
         // given
@@ -39,7 +39,7 @@ class DurationTest {
         assertThat(duration.isAvailable(queryDateLater)).isFalse();
     }
 
-    @DisplayName("시작일자가 현재보다 과거라면, IllegalArgumentException를 던진다.")
+    @DisplayName("시작일자가 현재보다 과거일 수 없다.")
     @Test
     void throwIllegalArgumentExceptionWhenStartDateIsPast() {
         // given

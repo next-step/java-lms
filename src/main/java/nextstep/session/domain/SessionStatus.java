@@ -56,4 +56,9 @@ public class SessionStatus {
     public boolean canEnroll() {
         return this.sessionStatus == SessionStatusType.ON_ENROLL;
     }
+
+
+    public boolean onReady() {
+        return this.sessionStatus.equals(SessionStatusType.READY);
+    }
 }

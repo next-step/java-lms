@@ -90,4 +90,19 @@ class SessionStatusTest {
         assertThatThrownBy(sessionStatus::toNextStatus)
                 .isInstanceOf(SessionStatusException.class);
     }
+
+    @DisplayName("세션이 준비중인지 확인 할 수 있다.")
+    @Test
+    void checkOnReady() {
+        // given
+        SessionStatus sessionStatus1 = SessionStatus.create();
+        SessionStatus sessionStatus2 = SessionStatus.create();
+
+        // when
+        sessionStatus2 = sessionStatus2.toNextStatus();
+
+        // then
+        assertThat(sessionStatus1.onReady()).isTrue();
+        assertThat(sessionStatus2.onReady()).isFalse();
+    }
 }

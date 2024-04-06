@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CapacityTest {
 
-    @DisplayName("최대 수용 인원은 음수일 수 없다. 음수라면 CapacityException을 던진다.")
+    @DisplayName("최대 수용 인원은 음수일 수 없다. 음수일 수 없다.")
     @Test
     void throwCapacityExceptionWhenMaxCapacityIsMinus() {
         // then
@@ -30,7 +30,7 @@ class CapacityTest {
         assertThat(capacity.getEnrolled()).isEqualTo(2);
     }
 
-    @DisplayName("수용가능 인원을 초과해서 추가한다면, CapacityException을 던진다.")
+    @DisplayName("수용가능 인원을 초과해서 추가할 수 없다.")
     @Test
     void throwCapacityExceptionWhenOverMaxCapacity() {
         // given
