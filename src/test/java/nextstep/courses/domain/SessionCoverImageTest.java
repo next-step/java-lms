@@ -23,4 +23,12 @@ public class SessionCoverImageTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("가로 크기는 300px 이상, 높이는 200px 이상이어야 합니다.");
     }
+
+    @DisplayName("이미지의 가로 크기와 높이의 비율이 3:2 가 아니면 예외가 발생한다.")
+    @Test
+    void test03() {
+        assertThatThrownBy(() -> new SessionCoverImage(1000, ImageType.GIF, 301, 200))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("가로 크기와 높이의 비율은 3:2 여야 합니다.");
+    }
 }
