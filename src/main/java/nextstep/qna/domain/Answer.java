@@ -35,7 +35,7 @@ public class Answer {
         this(id, writer, question, contents, false);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents, boolean deleted) {
+    private Answer(Long id, NsUser writer, Question question, String contents, boolean deleted) {
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();

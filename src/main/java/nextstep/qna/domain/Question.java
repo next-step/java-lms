@@ -37,7 +37,7 @@ public class Question{
         this(id, title, contents, writer, new ArrayList<>(), false, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Question(Long id, String title, String contents, NsUser writer, List<Answer> answers, boolean deleted, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    private Question(Long id, String title, String contents, NsUser writer, List<Answer> answers, boolean deleted, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.title = title;
         this.contents = contents;
