@@ -49,7 +49,7 @@
 
 # 수강 신청
 - 도메인 역할 도표
-![도메인 역할 도표](./images/image003.png)
+![도메인 역할 도표](./images/image004.png)
 
 - [x] ImageExtensionType
 - [x] FilePathInformation
