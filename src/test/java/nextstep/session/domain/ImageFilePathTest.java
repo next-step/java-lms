@@ -8,17 +8,17 @@ import java.nio.file.Path;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class FilePathInformationTest {
+class ImageFilePathTest {
 
     @DisplayName("완벽한 파일 경로를 얻어올 수 있다.")
     @Test
     void getFullFilePath() {
         // given
-        FilePathInformation filePathInformation =
-                new FilePathInformation("/home/program/", "image01", "jpg");
+        ImageFilePath imageFilePath =
+                new ImageFilePath("/home/program/", "image01", "jpg");
 
         // then
-        assertThat(filePathInformation.getFullFilePath())
+        assertThat(imageFilePath.getFullFilePath())
                 .isEqualTo(Path.of("/home/program/image01.jpg"));
     }
 
@@ -26,7 +26,7 @@ class FilePathInformationTest {
     @Test
     void throwIllegalArgumentExceptionWhenNotInImageExtensionType() {
         // then
-        assertThatThrownBy(() -> new FilePathInformation("/home/program/", "image01", "exe"))
+        assertThatThrownBy(() -> new ImageFilePath("/home/program/", "image01", "exe"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

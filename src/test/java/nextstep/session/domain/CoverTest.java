@@ -12,10 +12,10 @@ class CoverTest {
     void throwIllegalArgumentExceptionIfImageSizeOverThan1MB() {
         // given
         Resolution resolution = new Resolution(300, 200);
-        FilePathInformation filePathInformation = new FilePathInformation("/home", "temp", "jpg");
+        ImageFilePath imageFilePath = new ImageFilePath("/home", "temp", "jpg");
 
         // then
-        assertThatThrownBy(() -> new Cover(resolution, filePathInformation, 10000000))
+        assertThatThrownBy(() -> new Cover(resolution, imageFilePath, 10000000))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

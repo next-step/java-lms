@@ -24,6 +24,6 @@ public enum ImageExtensionType {
         return Arrays.stream(ImageExtensionType.values())
                 .filter(type -> type.extension.equals(extension))
                 .findAny()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new IllegalArgumentException(String.format("%s 확장자는 호환되지 않습니다.", extension)));
     }
 }

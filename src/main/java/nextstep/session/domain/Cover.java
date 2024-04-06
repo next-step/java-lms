@@ -5,14 +5,14 @@ public class Cover {
     public static final int SIZE_UNIT = 1024;
     public static final int MAXIMUM_MEGABYTE_SIZE = 1;
     private final Resolution resolution;
-    private final FilePathInformation filePathInformation;
+    private final ImageFilePath imageFilePath;
     private final long byteSize;
 
-    public Cover(Resolution resolution, FilePathInformation filePathInformation, long byteSize) {
+    public Cover(Resolution resolution, ImageFilePath imageFilePath, long byteSize) {
         validate(byteSize);
 
         this.resolution = resolution;
-        this.filePathInformation = filePathInformation;
+        this.imageFilePath = imageFilePath;
         this.byteSize = byteSize;
     }
 

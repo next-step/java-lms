@@ -2,7 +2,6 @@ package nextstep.session.domain;
 
 import nextstep.courses.domain.Course;
 import nextstep.exception.StudentsException;
-import nextstep.payments.domain.GeneralPayment;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -21,12 +20,12 @@ class PaidSessionTest {
     @BeforeEach
     void setUp() {
         Resolution resolution = new Resolution(300, 200);
-        FilePathInformation filePathInformation = new FilePathInformation("/home", "mapa", "jpg");
+        ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         Course course = new Course("Course1", 1L, 3);
 
         session = new PaidSession(
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, filePathInformation, 10000),
+                new Cover(resolution, imageFilePath, 10000),
                 "얼른 배우자 객체지향",
                 course,
                 2,
@@ -70,7 +69,7 @@ class PaidSessionTest {
     @Test
     void cannotEnrollWithoutCountOfStudentsCondition() {
         // given
-        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 100_000L);
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
 
         // when
         session.toNextSessionStatus();
@@ -86,7 +85,7 @@ class PaidSessionTest {
     @Test
     void enrollNotAvailableWithNotOnEnroll() {
         // given
-        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 100_000L);
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
 
         // when
         session.toNextSessionStatus();
@@ -103,7 +102,7 @@ class PaidSessionTest {
     @Test
     void cannotApplySameStudentTwice() {
         // given
-        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 100_000L);
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
 
         // when
         session.toNextSessionStatus();
@@ -114,44 +113,42 @@ class PaidSessionTest {
                 .isInstanceOf(StudentsException.class);
     }
 
-    //--------
+    @DisplayName("수강신청 기간이면서 모집중이라면, 수강신청이 가능하다.")
+    @Test
+    void erollAvailable() {
+        // given
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
 
-//    @DisplayName("수강신청 기간이면서 모집중이라면, 수강신청이 가능하다.")
-//    @Test
-//    void erollAvailable() {
-//        // given
-//        Payment payment = new FreePayment();
-//
-//        // when
-//        session.toNextSessionStatus();
-//
-//        // then
-//        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
-//                .isTrue();
-//    }
-//
-//    @DisplayName("모집중이여도 수강신청 기간이 아니면, 수강신청이 불가능하다.")
-//    @Test
-//    void onEnrollNotInDurationIsUnavailable() {
-//        // given
-//        Payment payment = new FreePayment();
-//
-//        // when
-//        session.toNextSessionStatus();
-//
-//        // then
-//        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now()))
-//                .isFalse();
-//    }
-//
-//    @DisplayName("수강신청 기간이여도 모집중이 아니라면, 수강신청이 불가능하다.")
-//    @Test
-//    void inDurationAndNotOnEnrollIsUnavailable() {
-//        // given
-//        Payment payment = new FreePayment();
-//
-//        // then
-//        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
-//                .isFalse();
-//    }
+        // when
+        session.toNextSessionStatus();
+
+        // then
+        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+                .isTrue();
+    }
+
+    @DisplayName("모집중이여도 수강신청 기간이 아니면, 수강신청이 불가능하다.")
+    @Test
+    void onEnrollNotInDurationIsUnavailable() {
+        // given
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+
+        // when
+        session.toNextSessionStatus();
+
+        // then
+        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now()))
+                .isFalse();
+    }
+
+    @DisplayName("수강신청 기간이여도 모집중이 아니라면, 수강신청이 불가능하다.")
+    @Test
+    void inDurationAndNotOnEnrollIsUnavailable() {
+        // given
+        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+
+        // then
+        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+                .isFalse();
+    }
 }

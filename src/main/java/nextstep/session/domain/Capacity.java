@@ -13,10 +13,6 @@ public class Capacity {
         return new Capacity(maxCapacity);
     }
 
-    public static Capacity create() {
-        return new Capacity(Integer.MAX_VALUE);
-    }
-
     private Capacity(int maxCapacity) {
         validateMaxCapacity(maxCapacity);
         this.maxCapacity = maxCapacity;

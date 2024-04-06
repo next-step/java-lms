@@ -29,7 +29,7 @@ public class FreeSession implements Session {
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
         this.course = course;
-        this.capacity = Capacity.create();
+        this.capacity = Capacity.create(Integer.MAX_VALUE);
         this.price = new Price(FREE_PRICE);
         this.sessionId = sessionId;
         this.tutor = tutor;

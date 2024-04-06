@@ -1,6 +1,5 @@
 package nextstep.session.domain;
 
-import nextstep.payments.domain.GeneralPayment;
 import nextstep.payments.domain.Payment;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +12,7 @@ class PriceTest {
     void FullyPaidForFullyPaid() {
         // given
         Price price = new Price(10_000);
-        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 10_000L);
+        Payment payment = new Payment("NORMAL", 1L, 1L, 10_000L);
 
         // then
         Assertions.assertThat(price.isFullyPaid(payment)).isTrue();
@@ -24,7 +23,7 @@ class PriceTest {
     void FullyPaidForNotFullyPaid() {
         // given
         Price price = new Price(10_000);
-        Payment payment = new GeneralPayment("NORMAL", 1L, 1L, 5_000L);
+        Payment payment = new Payment("NORMAL", 1L, 1L, 5_000L);
 
         // then
         Assertions.assertThat(price.isFullyPaid(payment)).isFalse();
