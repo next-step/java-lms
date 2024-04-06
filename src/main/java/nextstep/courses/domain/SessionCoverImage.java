@@ -3,6 +3,8 @@ package nextstep.courses.domain;
 public class SessionCoverImage {
 
     public static final int MAX_SIZE = 1_048_576;
+    public static final int MIN_WIDTH = 300;
+    public static final int MIN_HEIGHT = 200;
 
     private final int sizeOfBytes;
     private final ImageType type;
@@ -11,10 +13,17 @@ public class SessionCoverImage {
 
     public SessionCoverImage(int sizeOfBytes, ImageType type, int width, int height) {
         validateLessEqualThen1MB(sizeOfBytes);
+        validateWidthAndHeight(width, height);
         this.sizeOfBytes = sizeOfBytes;
         this.type = type;
         this.width = width;
         this.height = height;
+    }
+
+    private void validateWidthAndHeight(int width, int height) {
+        if (width < MIN_WIDTH || height < MIN_HEIGHT) {
+            throw new IllegalArgumentException("가로 크기는 300px 이상, 높이는 200px 이상이어야 합니다.");
+        }
     }
 
     private void validateLessEqualThen1MB(int sizeOfBytes) {
