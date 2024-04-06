@@ -37,7 +37,7 @@ public class Answers {
         return Objects.hash(answers);
     }
 
-    public List<DeleteHistory> saveDeleteHistory() {
+    public List<DeleteHistory> generateDeleteHistory() {
         return this.answers.stream()
                 .map(Answer::saveDeleteHistory)
                 .collect(Collectors.toList());

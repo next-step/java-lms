@@ -99,9 +99,9 @@ public class Question{
         return Objects.hash(id, title, contents, writer, answers, deleted);
     }
 
-    public List<DeleteHistory> saveDeleteHistory() {
+    public List<DeleteHistory> generateDeleteHistory() {
         List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now())));
-        deleteHistories.addAll(this.answers.saveDeleteHistory());
+        deleteHistories.addAll(this.answers.generateDeleteHistory());
         return deleteHistories;
     }
 }

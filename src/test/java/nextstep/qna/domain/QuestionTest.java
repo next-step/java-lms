@@ -60,6 +60,6 @@ public class QuestionTest {
     @DisplayName("질문 삭제 이력에 대한 정보를 DeleteHistory를 활용해 남긴다.")
     void check_delete_history() throws CannotDeleteException {
         Q1_CLONE.delete(NsUserTest.JAVAJIGI);
-        assertThat(Q1_CLONE.saveDeleteHistory()).isEqualTo(List.of(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now())));
+        assertThat(Q1_CLONE.generateDeleteHistory()).isEqualTo(List.of(new DeleteHistory(ContentType.QUESTION, 0L, NsUserTest.JAVAJIGI, LocalDateTime.now())));
     }
 }
