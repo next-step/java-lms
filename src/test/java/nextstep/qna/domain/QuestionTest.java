@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,10 +15,9 @@ public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
-    private Question question;
-
     @Test
-    public void delete_성공() throws Exception {
+    @DisplayName("로그인한 유저와 질문 작성자가 같은 경우 질문 삭제에 성공한다.")
+    public void delete_question_from_equal_user () throws Exception {
         Q2.addAnswer(AnswerTest.A3);
         Q2.addAnswer(AnswerTest.A4);
 
@@ -34,11 +34,11 @@ public class QuestionTest {
     }
 
     @Test
-    public void delete_다른_사람이_쓴_질문() throws Exception {
-        assertThat(Q2.isDeleted()).isFalse();
-        assertThatThrownBy(() -> {
-            Q2.delete(NsUserTest.JAVAJIGI);
-        }).isInstanceOf(CannotDeleteException.class);
+    @DisplayName("로그인한 유저와 질문 작성자가 다른 경우 질문 삭제에 실패한다.")
+    public void delete_question_from_not_equal_user () {
+        assertThat(Q1.isDeleted()).isFalse();
+        assertThatThrownBy(() -> Q1.delete(NsUserTest.SANJIGI))
+                .isInstanceOf(CannotDeleteException.class);
     }
 
 }

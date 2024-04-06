@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question {
@@ -15,7 +16,7 @@ public class Question {
 
     private boolean deleted = false;
 
-    private ContentsDateTime contentsDateTime = new ContentsDateTime();
+    private final ContentsDateTime contentsDateTime = new ContentsDateTime();
 
     public Question() {
     }
@@ -75,11 +76,13 @@ public class Question {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        this.deleted = true;
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, details.getId(), details.getWriter(), contentsDateTime.getCreatedDate()));
-        answers.delete(loginUser, deleteHistories);
+        List<DeleteHistory> deleteHistories = new ArrayList<>(){{
+            add(new DeleteHistory(ContentType.QUESTION, details.getId(), details.getWriter(), contentsDateTime.getCreatedDate()));
+        }};
+
+        Collections.addAll(deleteHistories, answers.delete(loginUser).toArray(DeleteHistory[]::new));
+        this.deleted = true;
         return deleteHistories;
     }
 

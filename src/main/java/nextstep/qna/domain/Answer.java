@@ -3,8 +3,10 @@ package nextstep.qna.domain;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
+import org.w3c.dom.html.HTMLModElement;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Answer {
@@ -15,7 +17,7 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private ContentsDateTime contentsDateTime = new ContentsDateTime();
+    private final ContentsDateTime contentsDateTime = new ContentsDateTime();
 
     public Answer() {
     }
@@ -42,7 +44,7 @@ public class Answer {
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.details.getWriter().equals(writer);
+        return this.details.isOwner(writer);
     }
 
     public NsUser getWriter() {
@@ -57,9 +59,9 @@ public class Answer {
         this.question = question;
     }
 
-    public void delete(List<DeleteHistory> deleteHistories) {
+    public DeleteHistory delete() {
         this.deleted = true;
-        deleteHistories.add(new DeleteHistory(ContentType.ANSWER, details.getId(), details.getWriter(), LocalDateTime.now()));
+        return new DeleteHistory(ContentType.ANSWER, details.getId(), details.getWriter(), LocalDateTime.now());
     }
 
     @Override
