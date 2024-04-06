@@ -13,7 +13,7 @@ import java.util.List;
 import static nextstep.courses.domain.SessionStatus.RECRUITING;
 import static nextstep.courses.domain.UsageType.FREE;
 import static nextstep.courses.domain.UsageType.PAY;
-import static nextstep.courses.domain.image.Type.GIF;
+import static nextstep.courses.domain.image.ImageType.GIF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

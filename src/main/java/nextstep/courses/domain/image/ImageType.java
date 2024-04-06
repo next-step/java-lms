@@ -1,5 +1,5 @@
 package nextstep.courses.domain.image;
 
-public enum Type {
+public enum ImageType {
     GIF, JPG, JPEG, PNG, SVG
 }

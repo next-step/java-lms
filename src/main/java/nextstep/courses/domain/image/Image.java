@@ -2,13 +2,13 @@ package nextstep.courses.domain.image;
 
 public class Image {
     private final int capacity;
-    private final Type type;
+    private final ImageType imageType;
     private final double width;
 
     private final double height;
     private final double ratio;
 
-    public Image(int capacity, Type type, int width, int height) {
+    public Image(int capacity, ImageType imageType, int width, int height) {
         if (capacity < 1) {
             throw new IllegalArgumentException("이미지크기는 1MB를 초과할 수 없다");
         }
@@ -22,7 +22,7 @@ public class Image {
         }
 
         this.capacity = capacity;
-        this.type = type;
+        this.imageType = imageType;
         this.width = width;
         this.height = height;
         this.ratio = calculateRatio();

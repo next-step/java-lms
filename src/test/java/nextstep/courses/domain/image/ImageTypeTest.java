@@ -1,12 +1,11 @@
 package nextstep.courses.domain.image;
 
-import nextstep.courses.domain.image.Type;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.image.Type.*;
+import static nextstep.courses.domain.image.ImageType.*;
 
-public class TypeTest {
+public class ImageTypeTest {
 
     @Test
     void SVG() {
