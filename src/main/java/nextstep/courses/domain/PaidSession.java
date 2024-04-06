@@ -17,7 +17,7 @@ public class PaidSession extends Session {
     }
 
     private void validateLessEqualThenMaximumNumber(List<NsUser> users) {
-        if (students.size() + users.size() >= maximumNumberOfStudent) {
+        if (students.size() + users.size() > maximumNumberOfStudent) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
     }
