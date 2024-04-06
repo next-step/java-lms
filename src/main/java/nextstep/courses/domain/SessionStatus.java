@@ -7,6 +7,6 @@ public enum SessionStatus {
     FINISHED;
 
     public static boolean isRecruiting(SessionStatus status) {
-        return status == SessionStatus.RECRUITING;
+        return status == RECRUITING;
     }
 }
