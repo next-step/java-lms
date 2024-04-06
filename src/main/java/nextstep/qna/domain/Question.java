@@ -74,13 +74,13 @@ public class Question{
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public void delete(NsUser nsUser) throws CannotDeleteException {
+    public void delete(NsUser nsUser){
         checkIfOwner(nsUser);
         this.answers.delete(nsUser);
         this.deleted = true;
     }
 
-    public void checkIfOwner(NsUser nsUser) throws CannotDeleteException {
+    public void checkIfOwner(NsUser nsUser){
         if(!isOwner(nsUser)){
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }

@@ -18,7 +18,7 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public void delete(NsUser nsUser) throws CannotDeleteException {
+    public void delete(NsUser nsUser){
         for(Answer answer : this.answers){
             answer.delete(nsUser);
         }
