@@ -3,9 +3,11 @@ package nextstep.users.domain;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.UsageType;
 import nextstep.courses.domain.image.Image;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.courses.domain.SessionStatus.RECRUITING;

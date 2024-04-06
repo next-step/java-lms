@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.image.Image;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,7 @@ public class Session {
 
     private String sessionName;
 
-    //가격
-    private int price;
+    private long price;
 
     private Image image;
 
@@ -32,12 +32,14 @@ public class Session {
 
     private LocalDateTime endedAt;
 
+    private Payment payment;
+
     protected Session() {
     }
 
     public Session(long id,
                    String sessionName,
-                   int price,
+                   long price,
                    Image image,
                    SessionStatus sessionStatus,
                    UsageType usageType) {
@@ -56,8 +58,16 @@ public class Session {
         this.maxNoOfUsers = maxNoOfUsers;
     }
 
+    public boolean isRecruitingFreeSession() {
+        return isFreeCourse() && isRecruiting();
+    }
+
     public boolean isRecruiting() {
         return sessionStatus == SessionStatus.RECRUITING;
+    }
+
+    private boolean isFreeCourse() {
+        return usageType == UsageType.FREE;
     }
 
     public void validateUserLimitForPaidCourse() {
@@ -66,12 +76,16 @@ public class Session {
         }
     }
 
-    private boolean isExceedUserNo() {
-        return users.size() == maxNoOfUsers;
-    }
-
     private boolean isPaidCourse() {
         return usageType == UsageType.PAY;
+    }
+
+    private boolean isExceedUserNo() {
+        return users.size() >= maxNoOfUsers;
+    }
+
+    public long getPrice() {
+        return price;
     }
 
 }
