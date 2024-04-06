@@ -1,10 +1,14 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+
+import static nextstep.qna.ExceptionMessage.NO_AUTHORITY_TO_DELETE_ANSWER;
+import static nextstep.qna.domain.ContentType.ANSWER;
 
 public class Answer {
     private Long id;
@@ -30,11 +34,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,17 +51,24 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public DeleteHistory deleteByUser(NsUser user) throws CannotDeleteException {
+        validateUser(user);
+        this.deleted = true;
+        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
+    }
+
+    private void validateUser(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException(NO_AUTHORITY_TO_DELETE_ANSWER.message());
+        }
+    }
+
+    private boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
