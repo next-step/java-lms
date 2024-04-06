@@ -6,11 +6,15 @@ import nextstep.payments.domain.Payment;
 public class FreeSession implements SessionType {
 
     private final int capacity;
-    private final Money amount;
+    private final Money money;
 
     public FreeSession() {
-        this.capacity = 0;
-        this.amount = Money.ZERO;
+        this(0, Money.ZERO);
+    }
+
+    public FreeSession(int capacity, Money money) {
+        this.capacity = capacity;
+        this.money = money;
     }
 
     @Override
@@ -19,12 +23,17 @@ public class FreeSession implements SessionType {
     }
 
     @Override
-    public Money getAmount() {
-        return amount;
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    @Override
+    public long getAmount() {
+        return money.getAmount();
     }
 
     @Override
     public boolean equalMoney(Payment payment) {
-        return amount.equals(payment.getAmount());
+        return money.equals(payment.getAmount());
     }
 }
