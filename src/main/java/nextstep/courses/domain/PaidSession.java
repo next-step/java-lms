@@ -2,12 +2,13 @@ package nextstep.courses.domain;
 
 import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PaidSession extends Session {
 
-    public PaidSession(int maximumNumberOfStudent) {
-        super(maximumNumberOfStudent);
+    public PaidSession(int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+        super(maximumNumberOfStudent, startedAt, endedAt);
     }
 
     @Override
