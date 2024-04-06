@@ -6,7 +6,7 @@ import nextstep.qna.CannotDeleteException;
 
 public class Answers {
 
-    private List<Answer> answers;
+    private final List<Answer> answers;
 
     public Answers() {
         this.answers = new ArrayList<>();
@@ -15,8 +15,7 @@ public class Answers {
     public void add(Answer answer) {
         this.answers.add(answer);
     }
-
-
+    
     public List<DeleteHistory> delete() throws CannotDeleteException {
         List<DeleteHistory> histories = new ArrayList<>();
         for (Answer answer : answers) {
