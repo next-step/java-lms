@@ -93,7 +93,7 @@ public class Question {
         }
         setDeleted(true);
         DeleteHistory questionHistory = createDeleteHistory();
-        List<DeleteHistory> answerHistory = answers.delete(loginUser);
+        List<DeleteHistory> answerHistory = answers.delete();
 
         return Stream.concat(Stream.of(questionHistory), answerHistory.stream())
             .collect(Collectors.toList());
