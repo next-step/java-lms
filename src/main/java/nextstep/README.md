@@ -42,12 +42,12 @@
 ✔️ 커버 이미지 (Cover Image)
    - 이미지 조건을 검증한다.
 
-✔️ 강의 수강신청 조건 (SessionStrategy)
+✔️ 강의 조건 (SessionCondition)
 
-   ✔️ 무료 강의 전략 (FreeSessionStrategy)
+   ✔️ 무료 강의 조건 (FreeSessionCondition)
       - 무료 강의는 최대 수강 인원 제한이 없다.
    
-   ✔️ 유료 강의 전략 (CostSessionStrategy)
+   ✔️ 유료 강의 조건 (CostSessionCondition)
       - 유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
       - 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
       
