@@ -43,10 +43,13 @@
 
 ✔️ 강의 조건 (SessionCondition) 
 
-   ✔️ 강의 인원 조건 (SessionCapacityCondition)
+   ✔️ 강의 조건 (NoneSessionCondition)
+      - 강의 수강에 제약이 없다.
+
+   ✔️ 강의 인원 조건 (CapacityConditionDecorator)
       - 강의 최대 수강 인원을 초과할 수 없다.
    
-   ✔️ 수강료 조건 (SessionFeeCondition)
+   ✔️ 수강료 조건 (FeeConditionDecorator)
       - 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
       
 ```
