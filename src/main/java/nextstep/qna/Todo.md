@@ -17,14 +17,13 @@
 
 # Step 2
 
-## Todo
-
 ### 도메인 모델링
 ![img.png](image/img.png)
 
 ### 수강신청 내부 도메인간의 협력
-![img_1.png](image/img_1.png)
+![img.png](img.png)
 
+## Todo
 
 ## Done
 - [X] 1단계 코드 리뷰 반영 - Question,DeleteHistory createdAt 생성자에서 기본값 세팅
