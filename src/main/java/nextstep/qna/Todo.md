@@ -28,9 +28,6 @@
 ### Course > Order
 - [ ] 하나의 Course는 기수단위로 운영된다.
 
-### Session > CoverImage > ImageDimension
-- [ ] 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
-
 ### Session > EnrollmentManager
 - [ ] 무료 강의는 최대 수강 인원 제한이 없다.
 - [ ] 유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
@@ -48,3 +45,5 @@
 - [X] 이미지 크기는 1MB 이하여야 한다.
 ### Session > CoverImage > ImageType
 - [X] 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
+### Session > CoverImage > ImageDimension
+- [X] 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
