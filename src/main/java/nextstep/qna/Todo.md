@@ -28,9 +28,6 @@
 ### Course > Order
 - [ ] 하나의 Course는 기수단위로 운영된다.
 
-### Session > CoverImage > ImageType
-- [ ] 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
-
 ### Session > CoverImage > ImageDimension
 - [ ] 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
 
@@ -49,3 +46,5 @@
 - [X] 1단계 코드 리뷰 반영 - 일급 컬렉션 Answers 테스트 코드 추가
 ### Session > CoverImage > ImageCapacity
 - [X] 이미지 크기는 1MB 이하여야 한다.
+### Session > CoverImage > ImageType
+- [X] 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
