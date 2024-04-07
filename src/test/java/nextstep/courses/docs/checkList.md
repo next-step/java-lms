@@ -86,7 +86,9 @@
 <br />
 
 ### SessionPeriod (강의 기간)
-- [ ] 강의(Session)는 시작일과 종료일을 가진다.
+- [X] 강의(Session)는 시작일과 종료일을 가진다.
+- [X] SessionPeriod(시작일, 종료일)은 null 일 수 없다.
+- [X] 강의 시작일이 종료일보다 같거나 이후일 수 없다.
 
 <br />
 
