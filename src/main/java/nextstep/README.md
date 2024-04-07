@@ -39,7 +39,9 @@
      - 모집중인 상태에만 수강신청이 가능하다.
 
 ✔️ 커버 이미지 (Cover Image)
-   - 이미지 조건을 검증한다.
+   - 이미지 크기는 1MB 이하여야 한다.
+   - 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
+   - 이미지 타입은 gif, jpg(jpeg 포함),, png, svg만 허용한다.
 
 ✔️ 강의 조건 (SessionCondition) 
 
