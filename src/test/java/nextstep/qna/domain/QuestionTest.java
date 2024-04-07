@@ -19,12 +19,6 @@ public class QuestionTest {
     @Nested
     class Describe_delete {
 
-        @DisplayName("soft-delete 처리 후 질문과 답변의 삭제 이력 목록을 반환한다.")
-        @Test
-        void it_returns_deleted_histories() {
-
-        }
-
         @DisplayName("다른 사람이 작성한 질문은 삭제할 수 없다.")
         @Test
         void it_throws_cannot_delete_exception_when_others_question() throws Exception {

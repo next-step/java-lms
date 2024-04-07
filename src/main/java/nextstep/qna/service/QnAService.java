@@ -3,6 +3,7 @@ package nextstep.qna.service;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.domain.answer.AnswerRepository;
+import nextstep.qna.domain.deletehistory.DeleteHistories;
 import nextstep.qna.domain.deletehistory.DeleteHistory;
 import nextstep.qna.domain.question.Question;
 import nextstep.qna.domain.question.QuestionRepository;
@@ -31,8 +32,8 @@ public class QnAService {
 
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
-        List<DeleteHistory> deleteHistories = question.delete(loginUser, requestDatetime);
+        DeleteHistories deleteHistories = question.delete(loginUser, requestDatetime);
 
-        deleteHistoryService.saveAll(deleteHistories);
+        deleteHistoryService.saveAll(deleteHistories.values());
     }
 }
