@@ -23,7 +23,7 @@ public class PaidSession extends Session {
 
     @Override
     public void register(NsUser user) {
-        this.register(user, Payment.findB^yUserId(user.getId()));
+        this.register(user, Payment.findByUserId(user.getId()));
     }
 
     public void register(NsUser user, Payment payment) {
