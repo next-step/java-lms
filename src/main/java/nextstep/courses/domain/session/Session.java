@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.SessionException;
+import org.springframework.lang.NonNull;
 
 public class Session {
 
@@ -10,7 +11,11 @@ public class Session {
     private final SessionStatus sessionStatus;
     private final EnrollmentConditions enrollmentConditions;
 
-    public Session(SessionCapacity capacity, SessionCoverImage coverImage, Long fee, SessionStatus sessionStatus, EnrollmentConditions enrollmentConditions) {
+    public Session(@NonNull SessionCapacity capacity,
+                   @NonNull SessionCoverImage coverImage,
+                   @NonNull Long fee,
+                   @NonNull SessionStatus sessionStatus,
+                   @NonNull EnrollmentConditions enrollmentConditions) {
         this.capacity = capacity;
         this.coverImage = coverImage;
         this.fee = fee;
