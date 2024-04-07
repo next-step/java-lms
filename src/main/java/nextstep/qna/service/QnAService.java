@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
-import nextstep.qna.domain.Answer;
 import nextstep.qna.domain.AnswerRepository;
 import nextstep.qna.domain.DeleteHistory;
 import nextstep.qna.domain.Question;
@@ -33,13 +32,6 @@ public class QnAService {
     public void deleteQuestion(final NsUser loginUser, final long questionId) throws CannotDeleteException {
         final Question question = questionRepository.findById(questionId)
                 .orElseThrow(NotFoundException::new);
-
-        final List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
 
         final List<DeleteHistory> deleteHistories = question.deleteBy(loginUser, LocalDateTime.now());
 
