@@ -4,18 +4,16 @@ import nextstep.courses.exception.MismatchSessionFeeException;
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 
-public class FeeConditionDecorator extends SessionConditionDecorator {
+public class FeeCondition implements EnrollmentCondition {
 
     private final Payment payment;
 
-    public FeeConditionDecorator(SessionCondition sessionCondition, Payment payment) {
-        super(sessionCondition);
+    public FeeCondition(Payment payment) {
         this.payment = payment;
     }
 
     @Override
-    public void canEnroll(Session session) throws SessionException {
-        super.canEnroll(session);
+    public void isSatisfied(Session session) throws SessionException {
         if (!session.matchFee(payment.getAmount())) {
             throw new MismatchSessionFeeException(session.getFee(), payment.getAmount());
         }
