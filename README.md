@@ -81,7 +81,7 @@ validate도 마찬가지
     - width >= 300 && height >= 200 && width / heigth == 3/2아 아닌 경우 IlleaglArgumentException
 - [X] Session 추상클래스 생성
   - 생성자(강의 시작일, 강의 종료일, 커버 이미지 정보)
-- [ ] 각 도메인에 대한 DDL 작성
+- [X] 각 도메인에 대한 DDL 작성
     - Session 슈퍼/서브 타입은 Single Type 채택
     - session
       - startDate
@@ -90,7 +90,7 @@ validate도 마찬가지
       - numberOfStudents
       - maxNumberOfStudents
       - price
-      - cover_image (fk)
+      - cover_image_info (fk)
     - cover_image
       - size
       - type
