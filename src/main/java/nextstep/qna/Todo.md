@@ -19,7 +19,11 @@
 
 ## Todo
 
+### 도메인 모델링
 ![img.png](image/img.png)
+
+### 수강신청 내부 도메인간의 협력
+![img_1.png](image/img_1.png)
 
 ### Course > Order
 - [ ] 하나의 Course는 기수단위로 운영된다.
@@ -33,7 +37,7 @@
 ### Session > CoverImage > ImageDimension 
 - [ ] 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 한다.
 
-### Session > SessionCost
+### Session > EnrollmentManager
 - [ ] 무료 강의는 최대 수강 인원 제한이 없다.
 - [ ] 유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
 - [ ] 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
