@@ -1,30 +1,24 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
+import static nextstep.qna.domain.ContentType.ANSWER;
+import static nextstep.qna.domain.ContentType.QUESTION;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import nextstep.users.domain.NsUser;
+
 public class Question {
+
     private Long id;
-
     private String title;
-
     private String contents;
-
     private NsUser writer;
-
     private List<Answer> answers = new ArrayList<>();
-
     private boolean deleted = false;
-
     private LocalDateTime createdDate = LocalDateTime.now();
-
     private LocalDateTime updatedDate;
-
-    public Question() {
-    }
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
@@ -81,8 +75,18 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public List<DeleteHistory> deleteBy(final NsUser user, final LocalDateTime deleteDateTime) {
+        deleted = true;
+
+        final List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(QUESTION, id, writer, deleteDateTime));
+
+        for (Answer answer : answers) {
+            answer.setDeleted(true);
+            deleteHistories.add(new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), deleteDateTime));
+        }
+
+        return deleteHistories;
     }
 
     @Override
