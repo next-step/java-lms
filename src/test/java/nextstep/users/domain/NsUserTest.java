@@ -21,4 +21,13 @@ public class NsUserTest {
         Payment payment = JAVAJIGI.pay(session.getId(), 10_000);
         assertThat(payment.isSameAmount(10_000)).isTrue();
     }
+
+    @DisplayName("SessionId 를 입력받아 결제 정보를 구한다.")
+    @Test
+    void test02() {
+        int sessionId = 1;
+        Payment payment = JAVAJIGI.pay(sessionId, 10_000);
+        Payment result = JAVAJIGI.findPaymentBySessionId(sessionId);
+        assertThat(result).isEqualTo(payment);
+    }
 }
