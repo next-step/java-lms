@@ -1,5 +1,6 @@
 package nextstep.payments.domain;
 
+import javax.print.DocFlavor;
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -16,14 +17,37 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
+    private final Status status;
+
     public Payment() {
+        this.status = Status.READY;
     }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+        this(id, sessionId, nsUserId, amount, LocalDateTime.now(), Status.READY);
+    }
+
+    public Payment(String id, Long sessionId, Long nsUserId, Long amount, LocalDateTime createdAt, Status status) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.status = status;
     }
+
+    public boolean isStatus(Status status) {
+        return this.status == status;
+    }
+
+    public boolean failed() {
+        return this.status != Status.SUCCESS;
+    }
+
+    public enum Status {
+        READY,
+        SUCCESS,
+        FAIL
+    }
+
 }
