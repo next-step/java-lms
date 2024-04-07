@@ -18,6 +18,10 @@ public class SessionCapacity {
         return currentCapacity < maxCapacity;
     }
 
+    public void increaseCurrentCapacity() {
+        currentCapacity++;
+    }
+
     public int getMaxCapacity() {
         return maxCapacity;
     }

@@ -33,4 +33,15 @@ public class Session {
     public Long getFee() {
         return fee;
     }
+
+    public Session enroll() throws SessionException {
+        validateEnrollmentPossible();
+        capacity.increaseCurrentCapacity();
+        return this;
+    }
+
+    private void validateEnrollmentPossible() throws SessionException {
+        enrollmentConditions.validateSatisfy(this);
+        sessionStatus.validateCanEnrollment();
+    }
 }
