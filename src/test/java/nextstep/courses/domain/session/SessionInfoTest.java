@@ -20,7 +20,7 @@ class SessionInfoTest {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
 
-    SessionInfo sessionInfo = new SessionInfo(given1, given2, given3, 0, null);
+    SessionInfo sessionInfo = new SessionInfo(given1, given2, given3, 0L, null);
     assertThat(sessionInfo.getSessionTitle()).isEqualTo(given1);
     assertThat(sessionInfo.getSessionStatus()).isEqualTo(given2);
     assertThat(sessionInfo.getIsFree()).isEqualTo(given3);
@@ -35,7 +35,7 @@ class SessionInfoTest {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
 
-    assertThatThrownBy(() -> new SessionInfo(given, given2, given3, 0, null))
+    assertThatThrownBy(() -> new SessionInfo(given, given2, given3, 0L, null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_TITLE_IS_INCORRECT, given));
   }
@@ -47,7 +47,7 @@ class SessionInfoTest {
     String given1 = "강의명";
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = false;
-    int given4 = 0;
+    Long given4 = 0L;
     int given5 = 0;
 
     assertThatThrownBy(() -> new SessionInfo(given1, given2, given3, given4, given5))

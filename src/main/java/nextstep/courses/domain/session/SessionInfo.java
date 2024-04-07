@@ -7,7 +7,7 @@ public class SessionInfo {
   private SessionStatus sessionStatus;
   private SessionEnrollmentInfo sessionEnrollmentInfo;
 
-  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, Integer sessionAmount, Integer studentMaxCount) {
+  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, Long sessionAmount, Integer studentMaxCount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
@@ -37,7 +37,19 @@ public class SessionInfo {
     return sessionEnrollmentInfo.getStudentMaxCount();
   }
 
-  public boolean checkApplyPossible() {
+  public Long getSessionAmount() {
+    return sessionEnrollmentInfo.getSessionAmount();
+  }
+
+  public boolean checkRegisterPossibleStatus() {
     return SessionStatus.IN_PROGRESS.equals(sessionStatus);
+  }
+
+  public boolean checkPayAmount(Long payAmount) {
+    return sessionEnrollmentInfo.getSessionAmount().equals(payAmount);
+  }
+
+  public void addStudentCount() {
+    sessionEnrollmentInfo.addStudentCount();
   }
 }

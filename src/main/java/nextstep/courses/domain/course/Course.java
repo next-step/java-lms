@@ -42,6 +42,14 @@ public class Course extends BaseTime {
     this.sessions.addAll(sessions);
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public Set<Session> getSessions() {
+    return sessions;
+  }
+
   public String getTitle() {
     return courseDetailInfo.getTitleName();
   }

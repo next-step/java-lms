@@ -30,7 +30,23 @@ public class Session extends BaseTime {
     return sessionPeriod;
   }
 
-  public boolean checkApplyPossible() {
-    return sessionInfo.checkApplyPossible();
+  public Long getSessionAmount() {
+    return sessionInfo.getSessionAmount();
+  }
+
+  public boolean checkRegisterPossibleStatus() {
+    return sessionInfo.checkRegisterPossibleStatus();
+  }
+
+  public boolean checkPayAmount(Long payAmount) {
+    return sessionInfo.checkPayAmount(payAmount);
+  }
+
+  public void addStudentCount() {
+    sessionInfo.addStudentCount();
+  }
+
+  public boolean isFree() {
+    return sessionInfo.getIsFree();
   }
 }
