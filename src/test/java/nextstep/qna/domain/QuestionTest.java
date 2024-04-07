@@ -27,7 +27,7 @@ public class QuestionTest {
         A3_ANSWER_BY_SANJIGI_OF_Q1 = new Answer(NsUserTest.SANJIGI, Q1_QUESTION_BY_JAVAJIGI, "Answers Contents3");
     }
 
-    @DisplayName("질문 작성자와 loginUser가 다르면 CannotDeleteException을 던진다.")
+    @DisplayName("질문 작성자와 loginUser가 다를 수 없다.")
     @Test
     void throwCannotDeleteExceptionWhenOwnerAndLoginUserNotSame() {
         // then
@@ -61,8 +61,8 @@ public class QuestionTest {
         Answers answers = Q1_QUESTION_BY_JAVAJIGI.getAnswers();
         assertThat(answers.delete(NsUserTest.JAVAJIGI).asList())
                 .containsExactly(
-                        new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
-                        new DeleteHistory(ContentType.ANSWER, A2_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now())
+                        DeleteHistory.createAnswer(A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                        DeleteHistory.createAnswer(A2_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now())
                 );
     }
 
@@ -95,9 +95,9 @@ public class QuestionTest {
         // then
         assertThat(deleteHistoryTargets.asList())
                 .contains(
-                        new DeleteHistory(ContentType.QUESTION, Q1_QUESTION_BY_JAVAJIGI.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
-                        new DeleteHistory(ContentType.ANSWER, A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
-                        new DeleteHistory(ContentType.ANSWER, A2_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now())
+                        DeleteHistory.createQuestion(Q1_QUESTION_BY_JAVAJIGI.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                        DeleteHistory.createAnswer(A1_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()),
+                        DeleteHistory.createAnswer(A2_ANSWER_BY_JAVAJIGI_OF_Q1.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now())
                 );
     }
 }
