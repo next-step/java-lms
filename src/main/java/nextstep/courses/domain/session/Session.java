@@ -3,10 +3,16 @@ package nextstep.courses.domain.session;
 public class Session {
 
     private final SessionCapacity capacity;
+    private final SessionCoverImage coverImage;
     private final Long fee;
 
     public Session(SessionCapacity capacity, Long fee) {
+        this(capacity, null, fee);
+    }
+
+    public Session(SessionCapacity capacity, SessionCoverImage coverImage, Long fee) {
         this.capacity = capacity;
+        this.coverImage = coverImage;
         this.fee = fee;
     }
 

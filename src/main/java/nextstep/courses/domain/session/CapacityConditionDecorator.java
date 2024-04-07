@@ -1,7 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.ExceedSessionCapacityException;
-import nextstep.courses.exception.SessionConditionException;
+import nextstep.courses.exception.SessionException;
 
 public class CapacityConditionDecorator extends SessionConditionDecorator {
 
@@ -10,7 +10,7 @@ public class CapacityConditionDecorator extends SessionConditionDecorator {
     }
 
     @Override
-    public void canEnroll(Session session) throws SessionConditionException {
+    public void canEnroll(Session session) throws SessionException {
         super.canEnroll(session);
         if (!session.hasCapacity()) {
             throw new ExceedSessionCapacityException(session.getCapacity());

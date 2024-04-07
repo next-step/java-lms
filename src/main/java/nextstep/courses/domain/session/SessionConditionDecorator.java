@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.SessionConditionException;
+import nextstep.courses.exception.SessionException;
 
 abstract class SessionConditionDecorator implements SessionCondition {
 
@@ -10,7 +10,7 @@ abstract class SessionConditionDecorator implements SessionCondition {
         this.sessionCondition = sessionCondition;
     }
 
-    public void canEnroll(Session session) throws SessionConditionException {
+    public void canEnroll(Session session) throws SessionException {
         sessionCondition.canEnroll(session);
     }
 }
