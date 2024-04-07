@@ -18,7 +18,6 @@ import nextstep.qna.CannotDeleteException;
 public class QuestionTest {
 
     public static final Question Q1 = new Question(JAVAJIGI, "title1", "contents1");
-    public static final Question Q2 = new Question(SANJIGI, "title2", "contents2");
 
     @Test
     @DisplayName("모든 답변을 포함한 질문을 삭제하고, 삭제 이력을 남긴다.")
@@ -29,8 +28,8 @@ public class QuestionTest {
 
         final LocalDateTime deleteDateTime = LocalDateTime.of(2024, 4, 1, 0, 0);
         final List<DeleteHistory> expectedDeleteHistories = List.of(
-                new DeleteHistory(QUESTION, question.getId(), question.getWriter(), deleteDateTime),
-                new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), deleteDateTime)
+                new DeleteHistory(QUESTION, question.id(), question.writer(), deleteDateTime),
+                new DeleteHistory(ANSWER, answer.id(), answer.writer(), deleteDateTime)
         );
 
         assertThat(question.isDeleted()).isFalse();
@@ -44,17 +43,6 @@ public class QuestionTest {
         final Question question = new Question(JAVAJIGI, "title", "contents");
 
         assertThatThrownBy(() -> question.deleteBy(SANJIGI, LocalDateTime.now()))
-                .isInstanceOf(CannotDeleteException.class);
-    }
-
-    @Test
-    @DisplayName("질문자 이외의 다른 사용자의 답변이 있는 경우 예외를 던진다.")
-    void deleteBy_ExistAnswerOfDifferentWriter_Exception() {
-        final Question question = new Question(JAVAJIGI, "title", "contents");
-        final Answer answer = new Answer(SANJIGI, Q1, "contents");
-        question.addAnswer(answer);
-
-        assertThatThrownBy(() -> question.deleteBy(JAVAJIGI, LocalDateTime.now()))
                 .isInstanceOf(CannotDeleteException.class);
     }
 }
