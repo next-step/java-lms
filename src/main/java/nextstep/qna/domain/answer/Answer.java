@@ -1,8 +1,11 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.answer;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.ContentType;
+import nextstep.qna.domain.DeleteHistory;
+import nextstep.qna.domain.Question;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
