@@ -44,4 +44,15 @@ public class QuestionTest {
         assertThatThrownBy(() -> question.deleteBy(SANJIGI, LocalDateTime.now()))
                 .isInstanceOf(CannotDeleteException.class);
     }
+
+    @Test
+    @DisplayName("질문자 이외의 다른 사용자의 답변이 있는 경우 예외를 던진다.")
+    void deleteBy_ExistsDifferentAnswerWriter_Exception() {
+        final Question question = new Question(JAVAJIGI, "title", "contents");
+        final Answer answer = new Answer(SANJIGI, Q1, "contents");
+        question.addAnswer(answer);
+
+        assertThatThrownBy(() -> question.deleteBy(JAVAJIGI, LocalDateTime.now()))
+                .isInstanceOf(CannotDeleteException.class);
+    }
 }
