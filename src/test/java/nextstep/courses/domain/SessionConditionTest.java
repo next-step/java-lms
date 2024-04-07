@@ -7,6 +7,8 @@ import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.exception.SessionExceptionMessage.CAPACITY_EXCEED;
+import static nextstep.courses.exception.SessionExceptionMessage.PAYMENT_MISMATCH;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -48,7 +50,8 @@ public class SessionConditionTest {
         Session session = new Session(new SessionCapacity(10, 10), 800_000L);
         SessionCondition sessionCondition = new CapacityConditionDecorator(new NoneSessionCondition());
         assertThatExceptionOfType(ExceedSessionCapacityException.class)
-                .isThrownBy(() -> sessionCondition.canEnroll(session));
+                .isThrownBy(() -> sessionCondition.canEnroll(session))
+                .withMessageContaining(CAPACITY_EXCEED.getMessage());
     }
 
     @Test
@@ -66,7 +69,8 @@ public class SessionConditionTest {
         Payment payment = new Payment("paymentId", 0L, 0L, 100_000L);
         SessionCondition sessionCondition = new FeeConditionDecorator(new NoneSessionCondition(), payment);
         assertThatExceptionOfType(MismatchSessionFeeException.class)
-                .isThrownBy(() -> sessionCondition.canEnroll(SESSION));
+                .isThrownBy(() -> sessionCondition.canEnroll(SESSION))
+                .withMessageContaining(PAYMENT_MISMATCH.getMessage());
     }
 
 }
