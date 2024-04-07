@@ -1,9 +1,14 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.Session;
+import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class NsUser {
 
@@ -16,6 +21,7 @@ public class NsUser {
     private String email;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<Payment> payments = new ArrayList<>();
 
     public NsUser() {
     }
@@ -74,6 +80,12 @@ public class NsUser {
 
     public Long getId() {
         return this.id;
+    }
+
+    public Payment pay(long sessionId, long amount) {
+        Payment payment = new Payment(UUID.randomUUID().toString(), sessionId, this.id, amount);
+        this.payments.add(payment);
+        return payment;
     }
 
     private static class GuestNsUser extends NsUser {

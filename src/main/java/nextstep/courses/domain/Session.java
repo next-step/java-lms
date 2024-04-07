@@ -8,13 +8,15 @@ import java.util.List;
 
 public abstract class Session {
 
+    protected final int id;
     protected final int maximumNumberOfStudent;
     protected final List<NsUser> students = new ArrayList<>();
     protected final LocalDateTime startedAt;
     protected final LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
 
-    protected Session(int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+    protected Session(int id, int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.id = id;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
@@ -36,5 +38,9 @@ public abstract class Session {
         if (!SessionStatus.isRecruiting(status)) {
             throw new IllegalArgumentException("현재 모집 중인 강의가 아닙니다.");
         }
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

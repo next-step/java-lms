@@ -10,8 +10,8 @@ public class PaidSession extends Session {
 
     private final int amount;
 
-    public PaidSession(int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
-        super(maximumNumberOfStudent, startedAt, endedAt);
+    public PaidSession(int id, int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
+        super(id, maximumNumberOfStudent, startedAt, endedAt);
         this.amount = amount;
     }
 

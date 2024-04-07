@@ -14,7 +14,7 @@ public class CourseTest {
     @Test
     void test01() {
         Course course = new Course("TDD", 1L);
-        Session session = new FreeSession(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Session session = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         assertThatThrownBy(() -> {
             course.addSession(1, session);
             course.addSession(1, session);
@@ -26,7 +26,7 @@ public class CourseTest {
     @Test
     void test02() {
         Course course = new Course("TDD", 1L);
-        Session session = new FreeSession(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Session session = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         assertThatCode(() -> {
             course.addSession(1, session);
             course.addSession(2, session);
