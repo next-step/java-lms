@@ -3,7 +3,7 @@ package nextstep.courses.domain.session;
 public class SessionCapacity {
 
     private final int maxCapacity;
-    private final int currentCapacity;
+    private int currentCapacity;
 
     public SessionCapacity(int maxCapacity) {
         this(maxCapacity, 0);
