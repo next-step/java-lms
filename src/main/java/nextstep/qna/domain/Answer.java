@@ -51,15 +51,15 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory deleteBy(NsUser user) throws CannotDeleteException {
-        if (!isDeletableBy(this.writer)) {
+    public DeleteHistory deleteBy(NsUser user) {
+        if (!isOwner(user)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변은 삭제할 수 없습니다.");
         }
         this.deleted = true;
         return toHistory();
     }
 
-    private DeleteHistory toHistory() throws CannotDeleteException {
+    private DeleteHistory toHistory() {
         if (!isDeleted()) {
             throw new CannotDeleteException("삭제되지 않은 답변입니다.");
         }

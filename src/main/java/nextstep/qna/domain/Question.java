@@ -47,7 +47,7 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user) {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("현재 로그인 계정과 질문자가 다릅니다.");
         }
