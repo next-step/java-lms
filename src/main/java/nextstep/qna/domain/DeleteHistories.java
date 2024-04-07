@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,14 @@ public class DeleteHistories {
 
     private DeleteHistories(List<DeleteHistory> deleteHistories) {
         this.deleteHistories = deleteHistories;
+        updateCreatedDate();
+    }
+
+    private void updateCreatedDate() {
+        LocalDateTime deleteAt = LocalDateTime.now();
+        for (DeleteHistory deleteHistory : this.deleteHistories) {
+            deleteHistory.updateCreatedDate(deleteAt);
+        }
     }
 
     public void add(DeleteHistory deleteHistory) {
