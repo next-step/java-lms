@@ -4,7 +4,6 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PaidSession extends Session {
@@ -43,10 +42,5 @@ public class PaidSession extends Session {
         if (students.size() >= maximumNumberOfStudent) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
-    }
-
-    @Override
-    public List<NsUser> totalStudents() {
-        return new ArrayList<>(students);
     }
 }

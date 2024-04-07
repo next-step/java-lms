@@ -23,9 +23,4 @@ public class FreeSession extends Session {
         validateRecruiting();
         students.add(user);
     }
-
-    @Override
-    public List<NsUser> totalStudents() {
-        return this.students;
-    }
 }

@@ -28,7 +28,9 @@ public abstract class Session {
         this.status = status;
     }
 
-    public abstract List<NsUser> totalStudents();
+    public List<NsUser> totalStudents() {
+        return new ArrayList<>(this.students);
+    }
 
     protected void validateRecruiting() {
         if (!SessionStatus.isRecruiting(status)) {
