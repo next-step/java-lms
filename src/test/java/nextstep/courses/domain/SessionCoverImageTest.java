@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.fixture.SessionFixture;
 import nextstep.courses.domain.session.SessionCoverImage;
 import nextstep.courses.exception.SessionCoverImageException;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +16,7 @@ public class SessionCoverImageTest {
     @DisplayName("[성공][경계값] 강의 커버 이미지 정보를 생성한다.")
     void 강의_커버_이미지() {
         assertThatNoException()
-                .isThrownBy(() -> new SessionCoverImage(1024*1024, 300, 200, "gif"));
+                .isThrownBy(SessionFixture::coverImage);
     }
 
     @Test
