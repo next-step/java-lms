@@ -29,4 +29,10 @@ public abstract class Session {
     }
 
     public abstract List<NsUser> totalStudents();
+
+    protected void validateRecruiting() {
+        if (!SessionStatus.isRecruiting(status)) {
+            throw new IllegalArgumentException("현재 모집 중인 강의가 아닙니다.");
+        }
+    }
 }

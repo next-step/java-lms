@@ -39,12 +39,6 @@ public class PaidSession extends Session {
         }
     }
 
-    private void validateRecruiting() {
-        if (!SessionStatus.isRecruiting(status)) {
-            throw new IllegalArgumentException("현재 모집 중인 강의가 아닙니다.");
-        }
-    }
-
     private void validateLessEqualThenMaximumNumber() {
         if (students.size() >= maximumNumberOfStudent) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
