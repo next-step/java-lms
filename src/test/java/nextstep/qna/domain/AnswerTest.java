@@ -14,9 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
-    public static final Answer answerByJAVAJIGI = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-    public static final Answer answerBySANJIGI = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
-
     @Nested
     @DisplayName("deleteByUser() 테스트")
     class DeleteByUserTest {
@@ -24,7 +21,9 @@ public class AnswerTest {
         @DisplayName("user와 Answer.writer가 일치하지 않는 경우 CannotDeleteException이 발생한다.")
         void testFailCase() {
             NsUser user = NsUserTest.SANJIGI;
-            assertThatThrownBy(() -> answerByJAVAJIGI.deleteByUser(user))
+            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+
+            assertThatThrownBy(() -> answer.deleteByUser(user))
                     .isExactlyInstanceOf(CannotDeleteException.class)
                     .hasMessage(NO_AUTHORITY_TO_DELETE_ANSWER.message());
         }
