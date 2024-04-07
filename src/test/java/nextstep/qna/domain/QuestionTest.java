@@ -5,11 +5,14 @@ import static nextstep.qna.domain.ContentType.QUESTION;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nextstep.qna.CannotDeleteException;
 
 public class QuestionTest {
 
@@ -18,7 +21,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("모든 답변을 포함한 질문을 삭제하고, 삭제 이력을 남긴다.")
-    void deleteBy_AllQuestionAndAnswers_DeleteHistories() {
+    void deleteBy_AllQuestionAndAnswers_DeleteHistories() throws CannotDeleteException {
         final Question question = new Question(1L, JAVAJIGI, "title", "contents");
         final Answer answer = new Answer(10L, JAVAJIGI, Q1, "contents");
         question.addAnswer(answer);
@@ -31,5 +34,14 @@ public class QuestionTest {
                 new DeleteHistory(QUESTION, question.getId(), question.getWriter(), deleteDateTime),
                 new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), deleteDateTime));
         assertThat(question.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("삭제 요청을 한 사용자와 질문자가 다른 경우 예외를 던진다.")
+    void deleteBy_UserIsNotQuestionWriter_Exception() {
+        final Question question = new Question(JAVAJIGI, "title", "contents");
+
+        assertThatThrownBy(() -> question.deleteBy(SANJIGI, LocalDateTime.now()))
+                .isInstanceOf(CannotDeleteException.class);
     }
 }
