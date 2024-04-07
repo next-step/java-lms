@@ -42,17 +42,6 @@ public class Course {
         return createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
-
     public void addSession(int year, Session session) {
         validateDuplicatedSession(year, session);
         this.sessions.computeIfAbsent(year, k -> new ArrayList<>()).add(session);
@@ -62,5 +51,16 @@ public class Course {
         if (sessions.containsKey(year) && sessions.get(year).contains(session)) {
             throw new IllegalArgumentException("이미 동일한 강의가 있습니다.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", creatorId=" + creatorId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
