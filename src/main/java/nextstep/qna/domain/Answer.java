@@ -1,79 +1,81 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.domain.ContentType.ANSWER;
+
+import java.time.LocalDateTime;
+
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Answer {
-    private Long id;
 
-    private NsUser writer;
-
+    private final Long id;
+    private final NsUser writer;
+    private final String contents;
+    private final LocalDateTime createdDate;
     private Question question;
-
-    private String contents;
-
-    private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
+    private boolean deleted;
     private LocalDateTime updatedDate;
 
-    public Answer() {
-    }
-
-    public Answer(NsUser writer, Question question, String contents) {
+    public Answer(final NsUser writer, final Question question, final String contents) {
         this(null, writer, question, contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
-        if(writer == null) {
+    public Answer(final Long id, final NsUser writer, final Question question, final String contents) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
+        this.id = id;
         this.writer = writer;
         this.question = question;
         this.contents = contents;
+        this.createdDate = LocalDateTime.now();
+        this.deleted = false;
     }
 
-    public Long getId() {
-        return id;
+    public Long id() {
+        return this.id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public NsUser writer() {
+        return this.writer;
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return this.deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public boolean isOwner(final NsUser writer) {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void toQuestion(Question question) {
+    public void toQuestion(final Question question) {
         this.question = question;
+    }
+
+    public DeleteHistory delete(
+            final NsUser questionWriter,
+            final LocalDateTime deleteDateTime
+    ) throws CannotDeleteException {
+
+        if (!isOwner(questionWriter)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
+
+        this.deleted = true;
+
+        return new DeleteHistory(ANSWER, this.id, this.writer, deleteDateTime);
     }
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer [id=" + id() + ", writer=" + this.writer + ", contents=" + this.contents + "]";
     }
 }
