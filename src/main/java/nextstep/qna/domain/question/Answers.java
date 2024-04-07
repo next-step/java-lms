@@ -17,19 +17,15 @@ public class Answers {
     }
 
     public void add(final Answer answer) {
-        answers.add(answer);
+        this.answers.add(answer);
     }
 
-    public List<DeleteHistory> delete(
-            final NsUser questionWriter,
-            final LocalDateTime deleteDateTime
-    ) throws CannotDeleteException {
-
+    public List<DeleteHistory> delete(final NsUser questionWriter, final LocalDateTime deleteDateTime) throws
+            CannotDeleteException {
         final List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-        for (Answer answer : answers) {
-            final DeleteHistory answerDeleteHistory = answer.delete(questionWriter, deleteDateTime);
-            deleteHistories.add(answerDeleteHistory);
+        for (final Answer answer : this.answers) {
+            deleteHistories.add(answer.delete(questionWriter, deleteDateTime));
         }
 
         return deleteHistories;
