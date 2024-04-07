@@ -14,3 +14,12 @@
 - [X] 코드 리뷰 반영 - 생성자들 중에서 해당 클래스 내부에서만 사용되는 생성자들 접근 지정자를 private으로 지정
 - [X] 코드 리뷰 반영 - 이름 변경 saveDeletedHistory -> generateDeletedHistory
 - [X] 코드 리뷰 반영 - CannotDeleteException RuntimeException으로 변경
+
+# Step 2
+
+## Todo
+
+## Done
+- [X] 1단계 코드 리뷰 반영 - Question,DeleteHistory createdAt 생성자에서 기본값 세팅
+- [X] 1단계 코드 리뷰 반영 - Answer > delete내부의 변수명 변경 (owner -> isOwner)
+- [X] 1단계 코드 리뷰 반영 - 일급 컬렉션 Answers 테스트 코드 추가

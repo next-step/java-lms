@@ -30,21 +30,20 @@ public class Question{
     }
 
     public Question(NsUser writer, String title, String contents, boolean deleted, List<Answer> answers) {
-        this(0L, title, contents, writer, answers, deleted, LocalDateTime.now(), LocalDateTime.now());
+        this(0L, title, contents, writer, answers, deleted, LocalDateTime.now());
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this(id, title, contents, writer, new ArrayList<>(), false, LocalDateTime.now(), LocalDateTime.now());
+        this(id, title, contents, writer, new ArrayList<>(), false, LocalDateTime.now());
     }
 
-    private Question(Long id, String title, String contents, NsUser writer, List<Answer> answers, boolean deleted, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    private Question(Long id, String title, String contents, NsUser writer, List<Answer> answers, boolean deleted, LocalDateTime updatedDate) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
         this.answers = new Answers(answers);
         this.deleted = deleted;
-        this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
 
@@ -100,7 +99,7 @@ public class Question{
     }
 
     public List<DeleteHistory> generateDeleteHistory() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now())));
+        List<DeleteHistory> deleteHistories = new ArrayList<>(List.of(new DeleteHistory(ContentType.QUESTION, this.id, this.writer)));
         deleteHistories.addAll(this.answers.generateDeleteHistory());
         return deleteHistories;
     }

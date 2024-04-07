@@ -88,14 +88,14 @@ public class Answer {
     }
 
     public void delete(NsUser nsUser){
-        boolean owner = isOwner(nsUser);
-        if(!owner){
+        boolean isOwner = isOwner(nsUser);
+        if(!isOwner){
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         this.deleted = true;
     }
 
     public DeleteHistory saveDeleteHistory(){
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer);
     }
 }
