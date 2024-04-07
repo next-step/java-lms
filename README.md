@@ -24,10 +24,10 @@
       - 이미지 크기
         - [X] 1MB 이하 허용 검증 
       - 이미지 타입
-        - [] gif, jpg(jpeg 포함), png, svg만 허용
+        - [X] gif, jpg(jpeg 포함), png, svg만 허용
       - 이미지 비율
         - width
-          - [] 300px 이상 값 검증
+          - [X] 300px 이상 값 검증
         - height
         - [X] width, heigth 비율 3:2 검증
     - 강의타입(유료, 무료)
