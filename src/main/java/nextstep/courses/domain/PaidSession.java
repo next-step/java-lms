@@ -22,13 +22,12 @@ public class PaidSession extends Session {
 
     @Override
     public void register(NsUser user) {
-        this.register(user, Payment.findByUserId(user.getId()));
-    }
-
-    public void register(NsUser user, Payment payment) {
         validateLessEqualThenMaximumNumber();
         validateRecruiting();
+
+        Payment payment = user.findPaymentBySessionId(this.id);
         validateSameAmount(payment);
+
         students.add(user);
     }
 

@@ -74,8 +74,7 @@ public class SessionTest {
         @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치하지 않는 경우 예외가 발생한다.")
         @Test
         void test05() {
-//            NsUserTest.JAVAJIGI.pay(1, 10_000);
-            Payment payment = new Payment("1", 2L, NsUserTest.JAVAJIGI.getId(), 10000L);
+            NsUserTest.JAVAJIGI.pay(1, 10_000);
             Session session = new PaidSession(1, 1, 9000, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
             session.changeStatus(SessionStatus.RECRUITING);
             assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI))
