@@ -1,4 +1,4 @@
-package courses.domain;
+package nextstep.courses.domain;
 
 import nextstep.courses.domain.Registration;
 import org.junit.jupiter.api.Test;

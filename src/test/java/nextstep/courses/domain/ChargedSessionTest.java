@@ -1,4 +1,4 @@
-package courses.domain;
+package nextstep.courses.domain;
 
 import nextstep.courses.domain.ChargedSession;
 import nextstep.courses.domain.SessionImage;
