@@ -11,8 +11,8 @@ class SessionStatusTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능")
     void is_recruiting() {
-        assertTrue(SessionStatus.RECRUITING.canEnroll());
-        assertFalse(SessionStatus.CLOSED.canEnroll());
-        assertFalse(SessionStatus.PREPARING.canEnroll());
+        assertTrue(SessionStatus.RECRUITING.isRecruiting());
+        assertFalse(SessionStatus.CLOSED.isRecruiting());
+        assertFalse(SessionStatus.PREPARING.isRecruiting());
     }
 }

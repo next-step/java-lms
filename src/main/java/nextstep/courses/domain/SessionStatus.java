@@ -12,7 +12,7 @@ public enum SessionStatus {
         this.desc = desc;
     }
 
-    public boolean canEnroll() {
+    public boolean isRecruiting() {
         if(this.equals(RECRUITING)){
             return true;
         }
