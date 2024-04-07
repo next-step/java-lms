@@ -2,7 +2,9 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Course {
 
@@ -11,7 +13,7 @@ public class Course {
     private Long creatorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Session> sessions = new ArrayList<>();
+    private Map<Integer, List<Session>> sessions = new HashMap<>();
 
     public Course() {
     }
@@ -51,13 +53,13 @@ public class Course {
                 '}';
     }
 
-    public void addSession(Session session) {
-        validateDuplicatedSession(session);
-        this.sessions.add(session);
+    public void addSession(int year, Session session) {
+        validateDuplicatedSession(year, session);
+        this.sessions.computeIfAbsent(year, k -> new ArrayList<>()).add(session);
     }
 
-    private void validateDuplicatedSession(Session session) {
-        if (this.sessions.contains(session)) {
+    private void validateDuplicatedSession(int year, Session session) {
+        if (sessions.containsKey(year) && sessions.get(year).contains(session)) {
             throw new IllegalArgumentException("이미 동일한 강의가 있습니다.");
         }
     }
