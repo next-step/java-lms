@@ -2,21 +2,19 @@ package nextstep.courses.domain;
 
 import java.util.*;
 
-import nextstep.users.domain.NsUser;
-
 public class Session {
 
-    private final List<NsUser> joinUsers;
+    private final JoinUsers joinUsers;
 
     public Session() {
         this(new ArrayList<>());
     }
 
-    public Session(List<NsUser> joinUsers) {
-        this.joinUsers = joinUsers;
+    public Session(List<JoinUser> joinUsers) {
+        this.joinUsers = new JoinUsers(joinUsers);
     }
 
-    public void join(NsUser joinUser) {
+    public void join(JoinUser joinUser) {
         joinUsers.add(joinUser);
     }
 
