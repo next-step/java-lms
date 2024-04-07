@@ -1,6 +1,7 @@
 package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -31,5 +32,22 @@ public class Payment {
 
     public boolean isSameAmount(long amount) {
         return this.amount == amount;
+    }
+
+    public boolean isSameSessionId(int sessionId) {
+        return this.sessionId == sessionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment = (Payment) o;
+        return Objects.equals(id, payment.id) && Objects.equals(sessionId, payment.sessionId) && Objects.equals(nsUserId, payment.nsUserId) && Objects.equals(amount, payment.amount) && Objects.equals(createdAt, payment.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sessionId, nsUserId, amount, createdAt);
     }
 }

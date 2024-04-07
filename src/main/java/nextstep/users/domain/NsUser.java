@@ -1,6 +1,5 @@
 package nextstep.users.domain;
 
-import nextstep.courses.domain.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
@@ -86,6 +85,13 @@ public class NsUser {
         Payment payment = new Payment(UUID.randomUUID().toString(), sessionId, this.id, amount);
         this.payments.add(payment);
         return payment;
+    }
+
+    public Payment findPaymentBySessionId(int sessionId) {
+        return this.payments.stream()
+                .filter(payment -> payment.isSameSessionId(sessionId))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("해당 강의에 대한 결제 내역이 없습니다."));
     }
 
     private static class GuestNsUser extends NsUser {
