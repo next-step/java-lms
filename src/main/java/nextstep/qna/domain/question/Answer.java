@@ -78,6 +78,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer [id=" + id() + ", writer=" + this.writer + ", contents=" + this.contents + "]";
+        return "Answer [id=" + this.id + ", writer=" + this.writer + ", contents=" + this.contents + "]";
     }
 }

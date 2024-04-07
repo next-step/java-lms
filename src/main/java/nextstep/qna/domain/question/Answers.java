@@ -2,6 +2,7 @@ package nextstep.qna.domain.question;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nextstep.qna.CannotDeleteException;
@@ -28,6 +29,6 @@ public class Answers {
             deleteHistories.add(answer.delete(questionWriter, deleteDateTime));
         }
 
-        return deleteHistories;
+        return Collections.unmodifiableList(deleteHistories);
     }
 }

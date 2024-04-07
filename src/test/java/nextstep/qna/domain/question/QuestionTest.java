@@ -1,4 +1,4 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.question;
 
 import static nextstep.qna.domain.history.ContentType.ANSWER;
 import static nextstep.qna.domain.history.ContentType.QUESTION;
@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.history.DeleteHistory;
-import nextstep.qna.domain.question.Answer;
-import nextstep.qna.domain.question.Question;
 
 public class QuestionTest {
 

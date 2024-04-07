@@ -4,6 +4,7 @@ import static nextstep.qna.domain.history.ContentType.QUESTION;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nextstep.qna.CannotDeleteException;
@@ -79,7 +80,7 @@ public class Question {
         deleteHistories.add(new DeleteHistory(QUESTION, this.id, this.writer, deleteDateTime));
         deleteHistories.addAll(this.answers.delete(this.writer, deleteDateTime));
 
-        return deleteHistories;
+        return Collections.unmodifiableList(deleteHistories);
     }
 
     @Override

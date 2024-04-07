@@ -23,7 +23,7 @@ import nextstep.qna.domain.history.ContentType;
 import nextstep.qna.domain.history.DeleteHistory;
 import nextstep.qna.domain.question.Question;
 import nextstep.qna.domain.question.QuestionRepository;
-import nextstep.qna.domain.QuestionTest;
+import nextstep.qna.domain.question.QuestionTest;
 import nextstep.users.domain.NsUserTest;
 
 @ExtendWith(MockitoExtension.class)
