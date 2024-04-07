@@ -45,8 +45,13 @@ public class SessionEnrollmentInfo {
     return studentMaxCount;
   }
 
+  public Integer getTotalStudentCount() {
+    return totalStudentCount;
+  }
+
   public void addStudentCount() {
     if (isFree) {
+      totalStudentCount++;
       return;
     }
 

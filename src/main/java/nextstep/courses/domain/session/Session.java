@@ -22,6 +22,10 @@ public class Session extends BaseTime {
     return id;
   }
 
+  public String getSessionTitle() {
+    return sessionInfo.getSessionTitle();
+  }
+
   public SessionStatus getSessionStatus() {
     return sessionInfo.getSessionStatus();
   }
@@ -32,6 +36,14 @@ public class Session extends BaseTime {
 
   public Long getSessionAmount() {
     return sessionInfo.getSessionAmount();
+  }
+
+  public Integer getStudentMaxCount() {
+    return sessionInfo.getStudentMaxCount();
+  }
+
+  public Integer getTotalStudentCount() {
+    return sessionInfo.getTotalStudentCount();
   }
 
   public boolean checkRegisterPossibleStatus() {

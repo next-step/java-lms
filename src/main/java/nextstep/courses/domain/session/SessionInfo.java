@@ -37,6 +37,10 @@ public class SessionInfo {
     return sessionEnrollmentInfo.getStudentMaxCount();
   }
 
+  public Integer getTotalStudentCount() {
+    return sessionEnrollmentInfo.getTotalStudentCount();
+  }
+
   public Long getSessionAmount() {
     return sessionEnrollmentInfo.getSessionAmount();
   }
