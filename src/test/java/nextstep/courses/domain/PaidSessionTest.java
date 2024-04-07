@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class PaidSessionTest {
 
@@ -39,5 +39,15 @@ public class PaidSessionTest {
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI, payment))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("결제 금액과 수강료가 일치하지 않습니다.");
+    }
+
+    @DisplayName("전체 수강생을 확인한다.")
+    @Test
+    void test04() {
+        PaidSession session = new PaidSession(2, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        session.changeStatus(SessionStatus.RECRUITING);
+        session.registers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
+        List<NsUser> students = session.totalStudents();
+        assertThat(students).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
     }
 }
