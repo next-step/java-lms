@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,13 +27,14 @@ public class QuestionTest {
         final Answer answer = new Answer(10L, JAVAJIGI, Q1, "contents");
         question.addAnswer(answer);
 
-        assertThat(question.isDeleted()).isFalse();
-
         final LocalDateTime deleteDateTime = LocalDateTime.of(2024, 4, 1, 0, 0);
-
-        assertThat(question.deleteBy(JAVAJIGI, deleteDateTime)).containsExactly(
+        final List<DeleteHistory> expectedDeleteHistories = List.of(
                 new DeleteHistory(QUESTION, question.getId(), question.getWriter(), deleteDateTime),
-                new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), deleteDateTime));
+                new DeleteHistory(ANSWER, answer.getId(), answer.getWriter(), deleteDateTime)
+        );
+
+        assertThat(question.isDeleted()).isFalse();
+        assertThat(question.deleteBy(JAVAJIGI, deleteDateTime)).containsExactlyElementsOf(expectedDeleteHistories);
         assertThat(question.isDeleted()).isTrue();
     }
 
