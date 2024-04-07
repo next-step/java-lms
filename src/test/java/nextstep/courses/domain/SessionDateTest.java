@@ -15,7 +15,6 @@ public class SessionDateTest {
     void create_exception() {
         Assertions.assertThatThrownBy(() -> SessionDate.of(LocalDateTime.MAX, LocalDateTime.MIN))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining(START_DATE_CANT_LATE_THEN_END_DATE)
-        ;
+                .hasMessageContaining(START_DATE_CANT_LATE_THEN_END_DATE);
     }
 }
