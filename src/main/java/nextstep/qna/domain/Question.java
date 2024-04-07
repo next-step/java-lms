@@ -81,11 +81,11 @@ public class Question {
     }
 
     public List<DeleteHistory> deleteBy(
-            final NsUser user,
+            final NsUser loginUser,
             final LocalDateTime deleteDateTime
     ) throws CannotDeleteException {
-        validateUserIsWriter(user);
-        validateWriterIsOwnerOfAnswers(user);
+        validateLoginUserIsWriter(loginUser);
+        validateWriterOwnAllAnswers();
 
         deleted = true;
 
@@ -100,15 +100,15 @@ public class Question {
         return deleteHistories;
     }
 
-    private void validateUserIsWriter(final NsUser user) throws CannotDeleteException {
-        if (!user.matchUser(writer)) {
+    private void validateLoginUserIsWriter(final NsUser loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    private void validateWriterIsOwnerOfAnswers(final NsUser user) throws CannotDeleteException {
+    private void validateWriterOwnAllAnswers() throws CannotDeleteException {
         for (Answer answer : answers) {
-            if (!answer.isOwner(user)) {
+            if (!answer.isOwner(writer)) {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }

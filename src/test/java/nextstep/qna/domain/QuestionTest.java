@@ -40,7 +40,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("삭제 요청을 한 사용자와 질문자가 다른 경우 예외를 던진다.")
-    void deleteBy_UserIsNotQuestionWriter_Exception() {
+    void deleteBy_LoginUserIsNotWriter_Exception() {
         final Question question = new Question(JAVAJIGI, "title", "contents");
 
         assertThatThrownBy(() -> question.deleteBy(SANJIGI, LocalDateTime.now()))
@@ -49,7 +49,7 @@ public class QuestionTest {
 
     @Test
     @DisplayName("질문자 이외의 다른 사용자의 답변이 있는 경우 예외를 던진다.")
-    void deleteBy_ExistsDifferentAnswerWriter_Exception() {
+    void deleteBy_ExistAnswerOfDifferentWriter_Exception() {
         final Question question = new Question(JAVAJIGI, "title", "contents");
         final Answer answer = new Answer(SANJIGI, Q1, "contents");
         question.addAnswer(answer);
