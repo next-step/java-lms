@@ -1,12 +1,8 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.EnrollmentManager;
 import nextstep.payments.domain.Payment;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,5 +19,23 @@ class EnrollmentManagerTest {
     void paid_lecture_cannot_exceed_limit_number() {
         Payment payment = new Payment("1234", 1L, 1L, 200L);
         assertFalse(new EnrollmentManager(200L, 0).canEnroll(payment));
+    }
+
+    @Test
+    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
+    void paid_lecture_can_enroll_when_match_fee() {
+        Payment payment = new Payment("1234", 1L, 1L, 200L);
+        assertTrue(new EnrollmentManager(200L, 1).canEnroll(payment));
+        assertFalse(new EnrollmentManager(201L, 1).canEnroll(payment));
+        assertFalse(new EnrollmentManager(199L, 1).canEnroll(payment));
+    }
+
+    @Test
+    @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능하다.")
+    void can_enroll_when_recruiting() {
+        Payment payment = new Payment("1234", 1L, 1L, 200L);
+        assertTrue(new EnrollmentManager(200L, 1, SessionStatus.RECRUITING).canEnroll(payment));
+        assertFalse(new EnrollmentManager(200L, 1, SessionStatus.CLOSED).canEnroll(payment));
+        assertFalse(new EnrollmentManager(200L, 1, SessionStatus.PREPARING).canEnroll(payment));
     }
 }
