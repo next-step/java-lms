@@ -3,7 +3,12 @@ package nextstep.courses.domain.session;
 import nextstep.courses.exception.SessionException;
 import org.springframework.lang.NonNull;
 
+import java.time.LocalDateTime;
+
 public class Session {
+
+    private final LocalDateTime startAt;
+    private final LocalDateTime endAt;
 
     private final SessionCapacity capacity;
     private final CoverImage coverImage;
@@ -11,11 +16,15 @@ public class Session {
     private final SessionStatus sessionStatus;
     private final EnrollmentConditions enrollmentConditions;
 
-    public Session(@NonNull SessionCapacity capacity,
+    public Session(@NonNull LocalDateTime startAt,
+                   @NonNull LocalDateTime endAt,
+                   @NonNull SessionCapacity capacity,
                    @NonNull CoverImage coverImage,
                    @NonNull Long fee,
                    @NonNull SessionStatus sessionStatus,
                    @NonNull EnrollmentConditions enrollmentConditions) {
+        this.startAt = startAt;
+        this.endAt = endAt;
         this.capacity = capacity;
         this.coverImage = coverImage;
         this.fee = fee;
