@@ -41,14 +41,10 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
-        if (!isOwner(requestUser)) {
-             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
         List<DeleteHistory> histories = new ArrayList<>();
-        Question deletedQuestion = setDeleted(true);
 
-        histories.add(new DeleteHistory(ContentType.QUESTION, deletedQuestion.getId(), deletedQuestion.getWriter(), requestDatetime));
+        DeleteHistory questionDeleteHistory = deleteQuestion(requestUser, requestDatetime);
+        histories.add(questionDeleteHistory);
         histories.addAll(answers.deleteAll(requestUser, requestDatetime));
 
         return histories;
@@ -56,24 +52,6 @@ public class Question {
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -88,21 +66,18 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public boolean isAllSameAnswererWith(NsUser loginUser) {
-        return answers.isAllSameAnswererWith(loginUser);
-    }
+    private DeleteHistory deleteQuestion(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException{
+        if (!isOwner(requestUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+        this.deleted = true;
+
+        return new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), requestDatetime);
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers.values();
     }
 
     @Override

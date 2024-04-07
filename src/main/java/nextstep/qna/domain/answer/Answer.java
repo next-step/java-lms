@@ -52,18 +52,13 @@ public class Answer {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
 
-        final Answer deleted = setDeleted(true);
+        this.deleted = true;
 
-        return new DeleteHistory(ContentType.ANSWER, deleted.getId(), deleted.getWriter(), requestDatetime);
+        return new DeleteHistory(ContentType.ANSWER, this.getId(), this.getWriter(), requestDatetime);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -76,10 +71,6 @@ public class Answer {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
