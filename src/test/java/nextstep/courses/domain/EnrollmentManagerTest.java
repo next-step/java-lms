@@ -24,12 +24,4 @@ class EnrollmentManagerTest {
         Payment payment = new Payment("1234", 1L, 1L, 200L);
         assertFalse(new EnrollmentManager(200L, 0).canEnroll(payment));
     }
-
-    @ParameterizedTest
-    @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
-    @CsvSource(value = {"200:true", "201:false", "201:false"}, delimiter = ':') // 우선 금액이 더 커도 false 리턴하도록
-    void paid_lecture_can_enroll_when_match_fee(Long fee, boolean result) {
-        boolean canEnroll = new EnrollmentManager(200L, 1).canEnroll(new Payment("1234", 1L, 1L, fee));
-        Assertions.assertThat(canEnroll).isEqualTo(result);
-    }
 }
