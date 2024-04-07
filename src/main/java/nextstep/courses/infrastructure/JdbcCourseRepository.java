@@ -20,16 +20,16 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        String sql = "insert into course (title, term, creator_id, created_at) values(?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.getTitle(), course.term(), course.getCreatorId(), course.getCreatedAt());
     }
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
+        String sql = "select id, term, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong("id"),
-                1L, //객체 설계에만 집중하기 위해 이번 단계에서 임의 값 처리
+                rs.getString("term"),
                 rs.getString("title"),
                 List.of(),
                 rs.getLong("creator_id"),

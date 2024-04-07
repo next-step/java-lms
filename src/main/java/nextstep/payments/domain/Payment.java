@@ -22,6 +22,10 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(Long sessionId, Long nsUserId, Long amount) {
+        this("", sessionId, nsUserId, amount);
+    }
+
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
         this.sessionId = sessionId;
@@ -31,7 +35,7 @@ public class Payment {
     }
 
     public boolean isPaymentFor(final ChargedSession session) {
-        return session.isIdOf(this.sessionId) && session.isTuitionOf(this.amount);
+        return session.hasIdOf(this.sessionId) && session.hasTuitionOf(this.amount);
     }
 
     @Override

@@ -1,22 +1,25 @@
 package nextstep.courses.domain;
 
 public class SessionImage {
-  private static Long idSequence = 1L;
   private static Double IMAGE_RATIO = 1.5;
 
-  private final Long id;
+  private Long id;
   private final Integer width;
   private final Integer height;
   private final ImageExtension extension;
-  private final Integer size;
+  private final Integer fileSize;
   private final String fileName;
 
-  public SessionImage(Integer width, Integer height, String extension, Integer size, String fileName) {
-    this.id = idSequence++;
+  public SessionImage(Integer width, Integer height, String extension, Integer fileSize, String fileName) {
+    this(0L, width, height, extension, fileSize, fileName);
+  }
+
+  public SessionImage(Long id, Integer width, Integer height, String extension, Integer fileSize, String fileName) {
+    this.id = id;
     this.width = width;
     this.height = height;
     this.extension = ImageExtension.of(extension);
-    this.size = size;
+    this.fileSize = fileSize;
     this.fileName = fileName;
     this.validate();
   }
@@ -30,7 +33,7 @@ public class SessionImage {
       throw new IllegalArgumentException("이미지 height는 200px 이상이어야 합니다.");
     }
 
-    if (this.size > 1024) {
+    if (this.fileSize > 1024) {
       throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
     }
 
@@ -42,4 +45,29 @@ public class SessionImage {
   private boolean isInValidRatio(Integer width, Integer height) {
     return !IMAGE_RATIO.equals((double) width / height);
   }
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public Integer getWidth() {
+    return this.width;
+  }
+
+  public Integer getHeight() {
+    return this.height;
+  }
+
+  public ImageExtension getExtension() {
+    return this.extension;
+  }
+
+  public Integer getFileSize() {
+    return this.fileSize;
+  }
+
+  public String getFileName() {
+    return this.fileName;
+  }
+
 }
