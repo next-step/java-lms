@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 public class Question {
@@ -75,7 +76,16 @@ public class Question {
         return deleted;
     }
 
-    public List<DeleteHistory> deleteBy(final NsUser user, final LocalDateTime deleteDateTime) {
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public List<DeleteHistory> deleteBy(
+            final NsUser user,
+            final LocalDateTime deleteDateTime
+    ) throws CannotDeleteException {
+        validateUserIsWriter(user);
+
         deleted = true;
 
         final List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -87,6 +97,12 @@ public class Question {
         }
 
         return deleteHistories;
+    }
+
+    private void validateUserIsWriter(final NsUser user) throws CannotDeleteException {
+        if (!user.matchUser(writer)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 
     @Override
