@@ -16,8 +16,8 @@ public class QuestionInfo {
     this.contents = contents;
   }
 
-  public boolean isOwner(NsUser loginUser) {
-    return writer.equals(loginUser);
+  public boolean isNotOwner(NsUser loginUser) {
+    return !writer.equals(loginUser);
   }
 
   @Override
