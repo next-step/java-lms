@@ -1,11 +1,13 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.exception.CannotEnrollmentSessionStatusException;
+
 import java.time.LocalDateTime;
 
 public enum SessionStatus {
 
-    PREPARING(true),
-    IN_PROGRESS(false),
+    PREPARING(false),
+    RECRUITING(true),
     FINISHED(false)
     ;
 
@@ -19,8 +21,10 @@ public enum SessionStatus {
         this.canEnroll = canEnroll;
     }
 
-    public boolean canEnroll() {
-        return this.canEnroll;
+    public void validateCanEnrollment() throws CannotEnrollmentSessionStatusException {
+        if (!this.canEnroll) {
+            throw new CannotEnrollmentSessionStatusException(this);
+        }
     }
 
 }
