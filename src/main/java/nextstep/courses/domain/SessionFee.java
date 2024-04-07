@@ -7,7 +7,7 @@ public class SessionFee {
 
     public SessionFee(Long fee) {
         if(fee < 0L){
-            throw new IllegalArgumentException("수강료는 0보다 커야 합니다.");
+            throw new IllegalArgumentException("수강료는 0이상이어야 합니다.");
         }
         this.fee = fee;
     }
