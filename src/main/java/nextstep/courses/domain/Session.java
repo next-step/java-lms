@@ -27,4 +27,6 @@ public abstract class Session {
     public void changeStatus(SessionStatus status) {
         this.status = status;
     }
+
+    public abstract List<NsUser> totalStudents();
 }

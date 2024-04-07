@@ -1,9 +1,12 @@
 package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 public class Payment {
+
+    private static final Random random = new Random();
 
     private String id;
     private Long sessionId; // 결제한 강의 ID
@@ -23,7 +26,7 @@ public class Payment {
     }
 
     public static Payment findByUserId(Long nsUserId) {
-        return new Payment(UUID.randomUUID().toString(), UUID.randomUUID().node(), nsUserId, 10000L);
+        return new Payment(UUID.randomUUID().toString(), random.nextLong(), nsUserId, 10000L);
     }
 
     public boolean isSameAmount(long amount) {
