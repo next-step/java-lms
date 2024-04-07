@@ -96,9 +96,9 @@ validate도 마찬가지
       - type
       - width
       - height
-- [ ] CoverImage 리포지토리
-  - [ ] 인터페이스 작성
-  - [ ] 인터페이스 구현
+- [X] CoverImage 리포지토리
+  - [X] 인터페이스 작성
+  - [X] 인터페이스 구현
 - [ ] Session 리포지토리
   - [ ] 인터페이스 작성
   - [ ] 인터페이스 구현
