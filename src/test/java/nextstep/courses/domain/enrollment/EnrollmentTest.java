@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static nextstep.courses.domain.enrollment.Enrollment.REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS;
 import static nextstep.courses.domain.enrollment.Enrollment.SESSION_AMOUNT_IS_NOT_CORRECT;
+import static nextstep.courses.domain.session.SessionEnrollmentInfo.STUDENT_COUNT_IS_FULL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -77,6 +78,20 @@ class EnrollmentTest {
     assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), 0L))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, 0L, notFreeSession.get().getSessionAmount()));
+  }
+
+  @Test
+  @DisplayName("수강 인원이 꽉 찬 경우 경우" +
+      "exception 테스트")
+  void enrollmentTest6() {
+    Optional<Session> notFreeSession = COURSE.getSessions().stream()
+        .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
+        .findFirst();
+
+    Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
+    assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount()))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining(STUDENT_COUNT_IS_FULL);
   }
 
   private static void init() {
