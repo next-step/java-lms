@@ -1,5 +1,6 @@
-package nextstep.qna.domain;
+package nextstep.courses.domain;
 
+import nextstep.courses.domain.ImageType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
