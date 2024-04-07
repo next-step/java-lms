@@ -51,11 +51,6 @@ public class Answer {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + "]";
-    }
-
     public DeleteHistory deleteBy(NsUser user) throws CannotDeleteException {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변은 삭제할 수 없습니다.");
@@ -81,5 +76,10 @@ public class Answer {
 
     public boolean isDeletableBy(NsUser user) {
         return user.matchUser(writer);
+    }
+
+    @Override
+    public String toString() {
+        return "Answer [id=" + id + ", writer=" + writer + ", contents=" + contents + "]";
     }
 }
