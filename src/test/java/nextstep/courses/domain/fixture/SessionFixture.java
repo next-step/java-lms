@@ -1,10 +1,7 @@
 package nextstep.courses.domain.fixture;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.session.CoverImage;
-import nextstep.courses.domain.session.EnrollmentConditions;
-import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.session.SessionCapacity;
+import nextstep.courses.domain.session.*;
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 
@@ -24,19 +21,19 @@ public class SessionFixture {
     }
 
     public static Session session() throws SessionException {
-        return new Session(course(), SESSION_START_AT, SESSION_END_AT, new SessionCapacity(100), coverImage(), FEE, RECRUITING, new EnrollmentConditions());
+        return new Session(0L, course(), sessionDuration(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, new EnrollmentConditions());
     }
 
     public static Session session(SessionCapacity capacity) throws SessionException {
-        return new Session(course(), SESSION_START_AT, SESSION_END_AT, capacity, coverImage(), FEE, RECRUITING, new EnrollmentConditions());
+        return new Session(0L, course(), sessionDuration(), capacity, coverImage(), FEE, RECRUITING, new EnrollmentConditions());
     }
 
     public static Session session(EnrollmentConditions enrollmentConditions) throws SessionException {
-        return new Session(course(), SESSION_START_AT, SESSION_END_AT, new SessionCapacity(100), coverImage(), FEE, RECRUITING, enrollmentConditions);
+        return new Session(0L, course(), sessionDuration(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, enrollmentConditions);
     }
 
     public static Session session(SessionCapacity capacity, Long fee, EnrollmentConditions enrollmentConditions) throws SessionException {
-        return new Session(course(), SESSION_START_AT, SESSION_END_AT, capacity, coverImage(), fee, RECRUITING, enrollmentConditions);
+        return new Session(0L, course(), sessionDuration(), capacity, coverImage(), fee, RECRUITING, enrollmentConditions);
     }
 
     public static Payment payment() {
@@ -49,6 +46,10 @@ public class SessionFixture {
 
     public static Course course() {
         return new Course("TDD, 클린 코드 with Java 18기", 0L);
+    }
+
+    public static SessionDuration sessionDuration() throws SessionException {
+        return new SessionDuration(session(), SESSION_START_AT, SESSION_END_AT);
     }
 
 }

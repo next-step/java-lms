@@ -10,8 +10,7 @@ public class Session {
 
     private final Long id;
     private final Course course;
-    private final LocalDateTime startAt;
-    private final LocalDateTime endAt;
+    private final SessionDuration sessionDuration;
 
     private final SessionCapacity capacity;
     private final CoverImage coverImage;
@@ -21,14 +20,9 @@ public class Session {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(Course course, LocalDateTime startAt, LocalDateTime endAt, SessionCapacity capacity, CoverImage coverImage, Long fee, SessionStatus sessionStatus, EnrollmentConditions enrollmentConditions) {
-        this(0L, course, startAt, endAt, capacity, coverImage, fee, sessionStatus, enrollmentConditions);
-    }
-
     public Session(@NonNull Long id,
                    @NonNull Course course,
-                   @NonNull LocalDateTime startAt,
-                   @NonNull LocalDateTime endAt,
+                   @NonNull SessionDuration sessionDuration,
                    @NonNull SessionCapacity capacity,
                    @NonNull CoverImage coverImage,
                    @NonNull Long fee,
@@ -36,8 +30,7 @@ public class Session {
                    @NonNull EnrollmentConditions enrollmentConditions) {
         this.id = id;
         this.course = course;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.sessionDuration = sessionDuration;
         this.capacity = capacity;
         this.coverImage = coverImage;
         this.fee = fee;
