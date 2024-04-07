@@ -11,8 +11,8 @@ public class SessionFixture {
     private static final Long FEE = 800_000L;
     private static final String PAYMENT_ID = "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed";
 
-    public static SessionCoverImage coverImage() throws SessionException {
-        return new SessionCoverImage(1024*1024, 300, 200, "gif");
+    public static CoverImage coverImage() throws SessionException {
+        return new CoverImage(1024*1024, 300, 200, "gif");
     }
 
     public static Session session() throws SessionException {

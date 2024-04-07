@@ -2,7 +2,7 @@ package nextstep.courses.exception;
 
 import java.text.MessageFormat;
 
-import static nextstep.courses.domain.session.SessionCoverImage.*;
+import static nextstep.courses.domain.session.CoverImage.*;
 
 public class SessionCoverImageException extends SessionException {
 

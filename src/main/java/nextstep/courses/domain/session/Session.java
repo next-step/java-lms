@@ -6,13 +6,13 @@ import org.springframework.lang.NonNull;
 public class Session {
 
     private final SessionCapacity capacity;
-    private final SessionCoverImage coverImage;
+    private final CoverImage coverImage;
     private final Long fee;
     private final SessionStatus sessionStatus;
     private final EnrollmentConditions enrollmentConditions;
 
     public Session(@NonNull SessionCapacity capacity,
-                   @NonNull SessionCoverImage coverImage,
+                   @NonNull CoverImage coverImage,
                    @NonNull Long fee,
                    @NonNull SessionStatus sessionStatus,
                    @NonNull EnrollmentConditions enrollmentConditions) {
