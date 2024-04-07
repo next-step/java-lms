@@ -1,14 +1,17 @@
 package nextstep.courses.domain;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class SessionStrategyTest {
+public class SessionConditionTest {
 
     @Test
     @DisplayName("[성공] 무료 강의는 최대 수강 인원 제한이 없다.")
     void 무료_강의() {
-
+        SessionCondition sessionCondition = new FreeSessionCondition();
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> sessionCondition.canEnroll);
     }
 
     @Test
