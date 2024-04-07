@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,5 +23,14 @@ class EnrollmentCountTest {
         assertThatThrownBy(() -> {
             new EnrollmentCount(-1);
         }).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("수강 시에 강의 수강 인원 수 감소")
+    void decrease_count_when_enroll(){
+        final int originalCount = 100;
+        final int resultCount = 99;
+        EnrollmentCount enrollmentCount = new EnrollmentCount(originalCount).decreaseCount();
+        assertThat(enrollmentCount).isEqualTo(new EnrollmentCount(resultCount));
     }
 }

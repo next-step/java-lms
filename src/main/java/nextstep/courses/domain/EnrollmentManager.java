@@ -34,4 +34,8 @@ public class EnrollmentManager {
         }
         return fee.canPurchase(payment);
     }
+
+    public EnrollmentManager decreaseCount(){
+        return new EnrollmentManager(this.fee, this.count.decreaseCount(), this.status);
+    }
 }
