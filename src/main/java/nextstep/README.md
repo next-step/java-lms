@@ -34,21 +34,19 @@
    - 시작일과 종료일을 가진다.
    - 수강신청을 한다.
 
-✔️ 강의 상태 (SessionStatus)
-   - 수강 신청 가능 여부를 판단한다.
-     - 모집중인 상태에만 수강신청이 가능하다.
+✔️ 강의 상태 (SessionStatus)     
    - 강의 상태는 준비중, 모집중, 종료 3가지 상태를 가진다.
+     - 모집중인 상태에만 수강신청이 가능하다.
 
 ✔️ 커버 이미지 (Cover Image)
    - 이미지 조건을 검증한다.
 
-✔️ 강의 조건 (SessionCondition)
+✔️ 강의 조건 (SessionCondition) 
 
-   ✔️ 무료 강의 조건 (FreeSessionCondition)
-      - 무료 강의는 최대 수강 인원 제한이 없다.
+   ✔️ 강의 인원 조건 (SessionCapacityCondition)
+      - 강의 최대 수강 인원을 초과할 수 없다.
    
-   ✔️ 유료 강의 조건 (CostSessionCondition)
-      - 유료 강의는 강의 최대 수강 인원을 초과할 수 없다.
-      - 유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
+   ✔️ 수강료 조건 (SessionFeeCondition)
+      - 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.
       
 ```
