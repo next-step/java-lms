@@ -21,7 +21,7 @@ class AnswersTest {
         @DisplayName("삭제를 실패한 경우 CannotDeleteException라는 예외가 발생한다.")
         void testFailCase() {
             NsUser user = NsUserTest.SANJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
+            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.QUESTION, "Answers Contents");
             Answers answers = new Answers(List.of(answer));
 
             assertThatThrownBy(() -> answers.deleteByUser(user)).isExactlyInstanceOf(CannotDeleteException.class);
@@ -31,7 +31,7 @@ class AnswersTest {
         @DisplayName("삭제를 성공한 경우 List<DeleteHistory>를 반환한다.")
         void testSuccessCase() throws CannotDeleteException {
             NsUser user = NsUserTest.JAVAJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
+            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.QUESTION, "Answers Contents");
             Answers answers = new Answers(List.of(answer));
             DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
 

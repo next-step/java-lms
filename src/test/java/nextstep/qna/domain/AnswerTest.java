@@ -21,7 +21,7 @@ public class AnswerTest {
         @DisplayName("user와 Answer.writer가 일치하지 않는 경우 CannotDeleteException이 발생한다.")
         void testFailCase() {
             NsUser user = NsUserTest.SANJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.QUESTION, "Answers Contents1");
 
             assertThatThrownBy(() -> answer.deleteByUser(user))
                     .isExactlyInstanceOf(CannotDeleteException.class)
@@ -32,7 +32,7 @@ public class AnswerTest {
         @DisplayName("삭제가 진행되는 경우 Answer.deleted가 true로 변하며 DeleteHistory를 반환한다.")
         void testSuccessCase() throws CannotDeleteException {
             NsUser user = NsUserTest.JAVAJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
+            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.QUESTION, "Answers Contents");
             DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
 
             DeleteHistory deleteHistory = answer.deleteByUser(user);
