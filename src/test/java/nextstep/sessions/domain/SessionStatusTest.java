@@ -1,9 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.SessionStatus.*;
+import static nextstep.sessions.domain.SessionStatus.*;
 
 public class SessionStatusTest {
 

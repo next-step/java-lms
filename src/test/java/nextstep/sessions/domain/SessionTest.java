@@ -1,5 +1,8 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
+import nextstep.sessions.domain.Session;
+import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.UsageType;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;

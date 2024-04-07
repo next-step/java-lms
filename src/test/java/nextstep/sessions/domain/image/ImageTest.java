@@ -1,10 +1,11 @@
-package nextstep.courses.domain.image;
+package nextstep.sessions.domain.image;
 
+import nextstep.sessions.domain.image.Image;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.image.ImageType.GIF;
+import static nextstep.sessions.domain.image.ImageType.GIF;
 
 public class ImageTest {
 

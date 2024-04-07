@@ -1,4 +1,4 @@
-package nextstep.courses.domain.image;
+package nextstep.sessions.domain.image;
 
 public class Image {
     private final int capacity;

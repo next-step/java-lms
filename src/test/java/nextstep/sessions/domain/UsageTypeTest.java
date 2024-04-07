@@ -1,9 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.sessions.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.UsageType.FREE;
+import static nextstep.sessions.domain.UsageType.FREE;
 
 public class UsageTypeTest {
 

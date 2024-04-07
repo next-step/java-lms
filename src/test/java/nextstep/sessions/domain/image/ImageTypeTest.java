@@ -1,9 +1,9 @@
-package nextstep.courses.domain.image;
+package nextstep.sessions.domain.image;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.image.ImageType.*;
+import static nextstep.sessions.domain.image.ImageType.*;
 
 public class ImageTypeTest {
 

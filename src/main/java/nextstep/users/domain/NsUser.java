@@ -1,6 +1,6 @@
 package nextstep.users.domain;
 
-import nextstep.courses.domain.Session;
+import nextstep.sessions.domain.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
