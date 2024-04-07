@@ -63,8 +63,8 @@ public class Answer {
         }
     }
 
-    private boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    private boolean isOwner(NsUser user) {
+        return this.writer.equals(user);
     }
 
     public boolean isDeleted() {
