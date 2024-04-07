@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import static nextstep.courses.domain.session.SessionInfo.INVALID_STUDENT_COUNT;
+import static nextstep.courses.domain.session.SessionEnrollmentInfo.INVALID_STUDENT_COUNT;
 import static nextstep.courses.domain.session.SessionInfo.SESSION_TITLE_IS_INCORRECT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +20,7 @@ class SessionInfoTest {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
 
-    SessionInfo sessionInfo = new SessionInfo(given1, given2, given3, null);
+    SessionInfo sessionInfo = new SessionInfo(given1, given2, given3, 0, null);
     assertThat(sessionInfo.getSessionTitle()).isEqualTo(given1);
     assertThat(sessionInfo.getSessionStatus()).isEqualTo(given2);
     assertThat(sessionInfo.getIsFree()).isEqualTo(given3);
@@ -35,7 +35,7 @@ class SessionInfoTest {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
 
-    assertThatThrownBy(() -> new SessionInfo(given, given2, given3, null))
+    assertThatThrownBy(() -> new SessionInfo(given, given2, given3, 0, null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_TITLE_IS_INCORRECT, given));
   }
@@ -48,9 +48,10 @@ class SessionInfoTest {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = false;
     int given4 = 0;
+    int given5 = 0;
 
-    assertThatThrownBy(() -> new SessionInfo(given1, given2, given3, given4))
+    assertThatThrownBy(() -> new SessionInfo(given1, given2, given3, given4, given5))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(String.format(INVALID_STUDENT_COUNT, given4));
+        .hasMessageContaining(String.format(INVALID_STUDENT_COUNT, given5));
   }
 }

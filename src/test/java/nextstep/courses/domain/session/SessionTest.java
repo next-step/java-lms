@@ -15,7 +15,7 @@ class SessionTest {
       "Session 생성 테스트")
   void sessionTest() {
     SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
-    SessionInfo sessionInfo = new SessionInfo("강의명", SessionStatus.READY, true, null);
+    SessionInfo sessionInfo = new SessionInfo("강의명", SessionStatus.READY, true, 0,null);
     CoverImage coverImage = new CoverImage("이미지명", ImageType.PNG, new CoverImageDetailInfo(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT));
 
     Session session = new Session(1L, sessionPeriod, sessionInfo, coverImage);

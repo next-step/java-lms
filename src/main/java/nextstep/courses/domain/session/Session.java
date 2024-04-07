@@ -22,7 +22,15 @@ public class Session extends BaseTime {
     return id;
   }
 
+  public SessionStatus getSessionStatus() {
+    return sessionInfo.getSessionStatus();
+  }
+
   public SessionPeriod getSessionPeriod() {
     return sessionPeriod;
+  }
+
+  public boolean checkApplyPossible() {
+    return sessionInfo.checkApplyPossible();
   }
 }
