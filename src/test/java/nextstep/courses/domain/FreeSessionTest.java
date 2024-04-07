@@ -25,7 +25,7 @@ public class FreeSessionTest {
         FreeSession session = new FreeSession(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         session.changeStatus(SessionStatus.RECRUITING);
         assertThatCode(() -> {
-            for (int i = 0; i < 1_000; i++) {
+            for (int i = 0; i < 10_000; i++) {
                 NsUser user = new NsUser((long) i, String.valueOf(i), "password", "name", "test@email.com");
                 session.register(user);
             }
