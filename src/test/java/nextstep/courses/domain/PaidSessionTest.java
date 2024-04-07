@@ -17,6 +17,7 @@ public class PaidSessionTest {
     @Test
     void test01() {
         Session session = new PaidSession(1, 10000, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        session.changeStatus(SessionStatus.RECRUITING);
         assertThatThrownBy(() -> session.registers(List.of(NsUserTest.JAVAJIGI)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("최대 수강인원을 초과하였습니다.");
