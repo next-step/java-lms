@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Course {
 
@@ -9,6 +11,7 @@ public class Course {
     private Long creatorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<Session> sessions = new ArrayList<>();
 
     public Course() {
     }
@@ -46,5 +49,16 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void addSession(Session session) {
+        validateDuplicatedSession(session);
+        this.sessions.add(session);
+    }
+
+    private void validateDuplicatedSession(Session session) {
+        if (this.sessions.contains(session)) {
+            throw new IllegalArgumentException("이미 동일한 강의가 있습니다.");
+        }
     }
 }
