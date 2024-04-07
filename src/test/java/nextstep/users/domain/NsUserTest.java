@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class NsUserTest {
     public static final NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
@@ -29,5 +30,13 @@ public class NsUserTest {
         Payment payment = JAVAJIGI.pay(sessionId, 10_000);
         Payment result = JAVAJIGI.findPaymentBySessionId(sessionId);
         assertThat(result).isEqualTo(payment);
+    }
+
+    @DisplayName("특정 강의에 대한 결제 내역이 없으면 예외가 발생한다.")
+    @Test
+    void test03() {
+        assertThatThrownBy(() -> JAVAJIGI.findPaymentBySessionId(1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 강의에 대한 결제 내역이 없습니다.");
     }
 }
