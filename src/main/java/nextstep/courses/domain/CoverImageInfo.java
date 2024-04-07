@@ -51,8 +51,12 @@ public class CoverImageInfo {
             throw new IllegalArgumentException(IMAGE_HEIGHT_UNDER_MESSAGE);
         }
 
-        if (WIDTH_RATE * height != HEIGHT_RATE * width) {
+        if (isCorrectImageRate(width, height)) {
             throw new IllegalArgumentException(IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE);
         }
+    }
+
+    private static boolean isCorrectImageRate(int width, int height) {
+        return WIDTH_RATE * height != HEIGHT_RATE * width;
     }
 }
