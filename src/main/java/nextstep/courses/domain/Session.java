@@ -12,7 +12,7 @@ public abstract class Session {
     protected final List<NsUser> students = new ArrayList<>();
     protected final LocalDateTime startedAt;
     protected final LocalDateTime endedAt;
-    protected SessionStatus status;
+    protected SessionStatus status = SessionStatus.PREPARING;
 
     protected Session(int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.maximumNumberOfStudent = maximumNumberOfStudent;
@@ -20,7 +20,9 @@ public abstract class Session {
         this.endedAt = endedAt;
     }
 
-    public abstract void register(List<NsUser> users);
+    public abstract void registers(List<NsUser> users);
+
+    public abstract void register(NsUser user);
 
     public void changeStatus(SessionStatus status) {
         this.status = status;

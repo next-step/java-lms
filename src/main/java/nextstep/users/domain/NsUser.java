@@ -72,6 +72,10 @@ public class NsUser {
         return false;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     private static class GuestNsUser extends NsUser {
         @Override
         public boolean isGuestUser() {
