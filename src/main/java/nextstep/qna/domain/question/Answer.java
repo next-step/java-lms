@@ -1,12 +1,13 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.question;
 
-import static nextstep.qna.domain.ContentType.ANSWER;
+import static nextstep.qna.domain.history.ContentType.ANSWER;
 
 import java.time.LocalDateTime;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
+import nextstep.qna.domain.history.DeleteHistory;
 import nextstep.users.domain.NsUser;
 
 public class Answer {

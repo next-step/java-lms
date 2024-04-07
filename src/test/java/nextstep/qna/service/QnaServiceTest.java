@@ -18,11 +18,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.Answer;
-import nextstep.qna.domain.ContentType;
-import nextstep.qna.domain.DeleteHistory;
-import nextstep.qna.domain.Question;
-import nextstep.qna.domain.QuestionRepository;
+import nextstep.qna.domain.question.Answer;
+import nextstep.qna.domain.history.ContentType;
+import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Question;
+import nextstep.qna.domain.question.QuestionRepository;
 import nextstep.qna.domain.QuestionTest;
 import nextstep.users.domain.NsUserTest;
 

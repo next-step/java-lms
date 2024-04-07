@@ -1,7 +1,7 @@
 package nextstep.qna.domain;
 
-import static nextstep.qna.domain.ContentType.ANSWER;
-import static nextstep.qna.domain.ContentType.QUESTION;
+import static nextstep.qna.domain.history.ContentType.ANSWER;
+import static nextstep.qna.domain.history.ContentType.QUESTION;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,6 +14,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Answer;
+import nextstep.qna.domain.question.Question;
 
 public class QuestionTest {
 

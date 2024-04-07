@@ -1,10 +1,11 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.question;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import nextstep.qna.CannotDeleteException;
+import nextstep.qna.domain.history.DeleteHistory;
 import nextstep.users.domain.NsUser;
 
 public class Answers {
