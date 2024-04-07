@@ -1,6 +1,7 @@
 package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Payment {
 
@@ -19,5 +20,13 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public static Payment findByUserId(Long nsUserId) {
+        return new Payment(UUID.randomUUID().toString(), UUID.randomUUID().node(), nsUserId, 10000L);
+    }
+
+    public boolean isSameAmount(long amount) {
+        return this.amount == amount;
     }
 }
