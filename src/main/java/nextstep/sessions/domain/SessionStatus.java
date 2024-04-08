@@ -5,7 +5,7 @@ public enum SessionStatus {
     RECRUITING,
     END;
 
-    public static boolean isNotRecruiting(SessionStatus sessionStatus) {
-        return sessionStatus != RECRUITING;
+    public boolean isNotRecruiting() {
+        return this != RECRUITING;
     }
 }

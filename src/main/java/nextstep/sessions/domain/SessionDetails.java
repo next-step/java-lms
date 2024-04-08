@@ -22,7 +22,7 @@ public class SessionDetails {
     }
 
     public void register() {
-        if (SessionStatus.isNotRecruiting(this.sessionStatus)) {
+        if (this.sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
         }
         if (this.currentCountOfStudents + 1 > maxOfStudents) {
