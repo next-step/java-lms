@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,20 @@ class SessionTest {
     void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final Status status) {
         final Session session = new Session(5, status);
         
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> session.addAttendee(NsUserTest.JAVAJIGI)
-        ).withMessage("모집중인 강의가 아닙니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> session.addAttendee(NsUserTest.JAVAJIGI))
+                .withMessage("모집중인 강의가 아닙니다.");
+    }
+
+    @Test
+    void 모집중인_강의인_경우_수강_신청을_하면_성공한다() {
+        // given
+        final Session session = new Session(5, Status.RECRUITING);
+
+        // when
+        session.addAttendee(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(session.getAttendees()).hasSize(1)
+                .contains(NsUserTest.JAVAJIGI);
     }
 }

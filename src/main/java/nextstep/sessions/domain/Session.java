@@ -37,4 +37,8 @@ public class Session {
             throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
         }
     }
+
+    public List<NsUser> getAttendees() {
+        return attendees;
+    }
 }
