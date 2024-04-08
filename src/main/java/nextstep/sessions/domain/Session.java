@@ -20,11 +20,6 @@ public class Session {
 
     private List<NsUser> attendees = new ArrayList<>();
 
-    public Session(final int maxNumber, final Status status) {
-        this.maxNumber = maxNumber;
-        this.status = status;
-    }
-
     public Session(final int maxNumber, final Status status, final LocalDateTime endAt) {
         this(maxNumber, status, LocalDateTime.now(), endAt);
     }
