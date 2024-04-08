@@ -16,9 +16,11 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.LocalDateTime;
 
 import static nextstep.payments.domain.PaymentState.PAYMENT_COMPLETE;
+import static nextstep.sessions.domain.RecruitmentState.NOT_RECRUITING;
+import static nextstep.sessions.domain.RecruitmentState.RECRUITING;
 import static nextstep.sessions.domain.SessionState.FINISHED;
+import static nextstep.sessions.domain.SessionState.ONGOING;
 import static nextstep.sessions.domain.SessionState.PREPARING;
-import static nextstep.sessions.domain.SessionState.RECRUITING;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,11 +56,12 @@ class SessionTest {
     @Nested
     class SessionRequestJoinNestedTest {
         @ParameterizedTest
-        @EnumSource(mode = EnumSource.Mode.EXCLUDE, names = {"RECRUITING"})
-        void 강의상태가_모집중이_아닌경우_신청불가하다(SessionState sessionState) {
+        @EnumSource(mode = EnumSource.Mode.EXCLUDE, names = {"FINISHED"})
+        void 비모집중인경우_신청불가하다(SessionState sessionState) {
             Session session = Session.builder()
                     .courseId(1L)
                     .state(sessionState)
+                    .recruitment(NOT_RECRUITING)
                     .sessionType(new FreeSession())
                     .build();
             assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.now()))
@@ -66,10 +69,11 @@ class SessionTest {
         }
 
         @Test
-        void 모집종료된_무료강의는_신청불가하다() {
+        void 모집종료된_강의는_신청불가하다() {
             Session session = Session.builder()
                     .courseId(1L)
                     .state(FINISHED)
+                    .recruitment(RecruitmentState.RECRUITING)
                     .sessionType(new FreeSession())
                     .build();
             assertThatThrownBy(() -> session.requestJoin(JAVAJIGI, LocalDateTime.now()))
@@ -77,10 +81,11 @@ class SessionTest {
         }
 
         @Test
-        void 모집중인_유료강의가_수강인원을_초과한_경우_신청할수없다() {
+        void 모집중인_유료강의의_수강인원_초과한_경우_신청할수없다() {
             Session session = Session.builder()
                     .courseId(1L)
-                    .state(RECRUITING)
+                    .state(ONGOING)
+                    .recruitment(RecruitmentState.RECRUITING)
                     .sessionType(new PaidSession(1, Money.wons(1000L)))
                     .build();
             session.addListener(JAVAJIGI);
@@ -95,7 +100,8 @@ class SessionTest {
             LocalDateTime endDate = LocalDateTime.of(2024, 4, 3, 23, 59, 59);
             Session session = Session.builder()
                     .courseId(1L)
-                    .state(RECRUITING)
+                    .state(PREPARING)
+                    .recruitment(RecruitmentState.RECRUITING)
                     .sessionType(new FreeSession())
                     .startDate(startDate)
                     .endDate(endDate)
@@ -120,7 +126,8 @@ class SessionTest {
             Session session = Session.builder()
                     .id(0L)
                     .courseId(1L)
-                    .state(RECRUITING)
+                    .state(ONGOING)
+                    .recruitment(RecruitmentState.RECRUITING)
                     .sessionType(new FreeSession())
                     .startDate(startDate)
                     .endDate(endDate)
@@ -146,14 +153,16 @@ class SessionTest {
             freeSession = Session.builder()
                     .id(0L)
                     .courseId(1L)
-                    .state(RECRUITING)
+                    .state(ONGOING)
+                    .recruitment(RECRUITING)
                     .sessionType(new FreeSession())
                     .build();
 
             paidSession = Session.builder()
                     .id(0L)
                     .courseId(1L)
-                    .state(RECRUITING)
+                    .state(PREPARING)
+                    .recruitment(RECRUITING)
                     .sessionType(new PaidSession(10, Money.wons(1000L)))
                     .build();
         }

@@ -5,11 +5,12 @@
     - CoverImages 일급 컬렉션 추가
     - Session 조회시 CoverImage 조회할 수 있도록 변경
 
-- [] 강의 수강 신청은 강의 상태가 모집중 일때만 가능하다
+- [x] 강의 수강 신청은 강의 상태가 모집중 일때만 가능하다
     - 강의가 "진행 중"인 상태에서도 수강신청이 가능해야 한다
     - 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태값을 분리한다
         - 강의 진행 상태 : enum SessionState
         - 모집 상태 : enum RecruitmentState
+    - 강의가 종료된 상태이거나(OR), 비모집중 상태일 경우 강의 신청을 할 수 없다
     - Session에 RecruitmentState 상태 추가
     - Session 생성자와 Builder 생성자 점진적인 리팩토링
     - 기존 Session, Builder 생성자 제거

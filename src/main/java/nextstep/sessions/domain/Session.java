@@ -165,7 +165,7 @@ public class Session extends BaseEntity {
     }
 
     private void verifySession(LocalDateTime now) {
-        if (!this.state.isRecruiting()) {
+        if (this.state.isFinished() || this.recruitment.isNotRecruiting()) {
             throw new InvalidSessionJoinException("현재 수강 신청 불가 합니다");
         }
 
