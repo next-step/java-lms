@@ -21,6 +21,5 @@ class SessionTest {
     Session session = new Session(1L, sessionPeriod, sessionInfo, coverImage);
 
     assertThat(session.getId()).isEqualTo(1L);
-    assertThat(session.getSessionPeriod().isCorrectPeriod()).isTrue();
   }
 }

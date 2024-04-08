@@ -7,22 +7,9 @@ import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.session.SessionPeriod.INVALID_SESSION_PERIOD;
 import static nextstep.courses.domain.session.SessionPeriod.INVALID_SESSION_STARTED_AT;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionPeriodTest {
-
-  @Test
-  @DisplayName("정상 시작일과 종료일을 넣은 경우" +
-      "SessionPeriod 생성 테스트")
-  void sessionPeriod_create_test() {
-    LocalDateTime startedAt = LocalDateTime.now();
-    LocalDateTime endedAt = LocalDateTime.now().plusDays(10);
-
-    SessionPeriod sessionPeriod = new SessionPeriod(startedAt, endedAt);
-    assertThat(sessionPeriod.isCorrectPeriod()).isTrue();
-  }
-
   @Test
   @DisplayName("시작일이 null인 경우" +
       "exception 테스트")

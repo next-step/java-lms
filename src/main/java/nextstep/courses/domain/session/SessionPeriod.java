@@ -25,8 +25,4 @@ public class SessionPeriod {
       throw new IllegalArgumentException(String.format(INVALID_SESSION_STARTED_AT, startedAt, endedAt));
     }
   }
-
-  public boolean isCorrectPeriod() {
-    return (startedAt.isBefore(endedAt));
-  }
 }
