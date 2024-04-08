@@ -3,14 +3,14 @@ package nextstep.sessions.domain;
 public class Image {
 
     private final int imageByte;
-    private final String imageType;
+    private final ImageType imageType;
     private final int imageWidth;
     private final int imageHeight;
 
     public Image(int imageByte, String imageType, int imageWidth, int imageHeight) {
         validateImageByte(imageByte);
         this.imageByte = imageByte;
-        this.imageType = imageType;
+        this.imageType = ImageType.valueOfType(imageType);
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
     }
