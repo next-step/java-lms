@@ -3,6 +3,7 @@ package nextstep.sessions.infrastructore;
 import nextstep.sessions.domain.FreeSession;
 import nextstep.sessions.domain.PaidSession;
 import nextstep.sessions.domain.RecruitmentState;
+import nextstep.sessions.domain.Selection;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionState;
 import org.junit.jupiter.api.BeforeEach;
@@ -117,6 +118,7 @@ class JdbcSessionRepositoryTest {
                 .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
                 .updatedAt(LocalDateTime.now())
+                .selection(Selection.MANUAL)
                 .build();
 
         session.update(target);

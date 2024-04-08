@@ -35,17 +35,17 @@ INSERT INTO session_listener(session_id, ns_user_id)
 VALUES (1L, 2L);
 
 -- 강의
-INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, start_date, end_date, created_at)
-VALUES (1L, 'TDD, 클린 코드 with Java 18기', 'FINISHED', 'NOT_RECRUITING', 999, 800000L, '2024-03-04', '2024-04-18', CURRENT_TIMESTAMP());
-INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, start_date, end_date, created_at)
-VALUES (2L, '자바 플레이그라운드 with TDD, 클린 코드', 'ONGOING', 'RECRUITING', 999, 180000L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
-INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, start_date, end_date, created_at)
-VALUES (3L, '스터디 모집', 'ONGOING', 'RECRUITING', 0, 0L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, selection, start_date, end_date, created_at)
+VALUES (1L, 'TDD, 클린 코드 with Java 18기', 'FINISHED', 'NOT_RECRUITING', 999, 800000L, 'MANUAL', '2024-03-04', '2024-04-18', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, selection, start_date, end_date, created_at)
+VALUES (2L, '자바 플레이그라운드 with TDD, 클린 코드', 'ONGOING', 'RECRUITING', 999, 180000L, 'AUTOMATIC', '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
+INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, selection, start_date, end_date, created_at)
+VALUES (3L, '스터디 모집', 'ONGOING', 'RECRUITING', 0, 0L, 'AUTOMATIC', '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
 
 -- 강의 수강 신청
 INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
-VALUES (1L, 1L, 'AUTO_APPROVAL', CURRENT_TIMESTAMP());
+VALUES (1L, 1L, 'PENDING', CURRENT_TIMESTAMP());
 INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
 VALUES (2L, 2L, 'CANCELLED', CURRENT_TIMESTAMP());
 INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
-VALUES (2L, 1L, 'PENDING', CURRENT_TIMESTAMP());
+VALUES (2L, 1L, 'AUTO_APPROVAL', CURRENT_TIMESTAMP());

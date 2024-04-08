@@ -356,12 +356,12 @@ public class Session extends BaseEntity {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         Session session = (Session) other;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && state == session.state && recruitment == session.recruitment && Objects.equals(sessionType, session.sessionType) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(listener, session.listener) && Objects.equals(coverImages, session.coverImages);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && state == session.state && recruitment == session.recruitment && Objects.equals(sessionType, session.sessionType) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(listener, session.listener) && Objects.equals(coverImages, session.coverImages) && selection == session.selection && Objects.equals(enrollments, session.enrollments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, title, state, recruitment, sessionType, startDate, endDate, listener, coverImages);
+        return Objects.hash(id, courseId, title, state, recruitment, sessionType, startDate, endDate, listener, coverImages, selection, enrollments);
     }
 
     @Override
@@ -371,12 +371,14 @@ public class Session extends BaseEntity {
                 ", courseId=" + courseId +
                 ", title='" + title + '\'' +
                 ", state=" + state +
-                ", recruitmentState=" + recruitment +
+                ", recruitment=" + recruitment +
                 ", sessionType=" + sessionType +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", listener=" + listener +
                 ", coverImages=" + coverImages +
+                ", selection=" + selection +
+                ", enrollments=" + enrollments +
                 '}';
     }
 }

@@ -73,6 +73,7 @@ CREATE TABLE class_session (
    recruitment VARCHAR(20) NOT NULL,
    capacity INT NOT NULL,
    amount BIGINT NOT NULL,
+   selection VARCHAR(20) NOT NULL,
    start_date timestamp NOT NULL,
    end_date timestamp NOT NULL,
    created_at timestamp NOT NULL,
