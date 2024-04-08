@@ -13,7 +13,7 @@ class SessionTest {
 
     @Test
     void 강의_최대_수강_인원을_초과한_경우_수강_신청에_실패한다() {
-        final Session session = new Session(2);
+        final Session session = new Session(2, Status.RECRUITING);
 
         session.addAttendee(NsUserTest.JAVAJIGI);
         session.addAttendee(NsUserTest.SANJIGI);

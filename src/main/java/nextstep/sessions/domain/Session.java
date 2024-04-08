@@ -10,12 +10,10 @@ public class Session {
     private Long id;
 
     private int maxNumber;
-    private Status status = Status.PREPARING;
-    private List<NsUser> attendees = new ArrayList<>();
 
-    public Session(final int maxNumber) {
-        this.maxNumber = maxNumber;
-    }
+    private Status status;
+
+    private List<NsUser> attendees = new ArrayList<>();
 
     public Session(final int maxNumber, final Status status) {
         this.maxNumber = maxNumber;
