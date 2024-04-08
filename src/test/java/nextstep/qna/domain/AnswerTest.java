@@ -9,18 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class AnswerTest {
-    public  Answer A1;
-    public  Answer A2;
-    public Question Q1;
-    public Question Q2;
-
-    @BeforeEach
-    void setUp() {
-        Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
-        A1 = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents1");
-        A2 = new Answer(NsUserTest.SANJIGI, Q1, "Answers Contents2");
-    }
+    public static final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+    public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
     void 삭제() {
