@@ -1,0 +1,13 @@
+package nextstep.images.domain;
+
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
+import org.junit.jupiter.api.Test;
+
+class CoverImageTest {
+
+    @Test
+    void 이미지_크기가_1MB를_초과하는_경우_업로드_실패한다() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new CoverImage(1.1));
+    }
+}
