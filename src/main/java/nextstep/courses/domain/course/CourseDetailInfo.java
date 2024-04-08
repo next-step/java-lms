@@ -1,7 +1,5 @@
 package nextstep.courses.domain.course;
 
-import java.util.Objects;
-
 public class CourseDetailInfo {
 
   public static final String COURSE_TITLE_IS_INCORRECT = "과정 명이 올바르지 않습니다. 다시 확인해주세요. input: %s";

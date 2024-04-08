@@ -8,9 +8,6 @@ public class Session extends BaseTime {
   private SessionInfo sessionInfo;
   private CoverImage coverImage;
 
-  private Session() {
-  }
-
   public Session(Long id, SessionPeriod sessionPeriod, SessionInfo sessionInfo, CoverImage coverImage) {
     this.id = id;
     this.sessionPeriod = sessionPeriod;

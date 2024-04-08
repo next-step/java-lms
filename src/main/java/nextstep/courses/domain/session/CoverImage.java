@@ -8,8 +8,6 @@ public class CoverImage {
   private ImageType imageType;
   private CoverImageDetailInfo coverImageDetailInfo;
 
-  private CoverImage() {}
-
   public CoverImage(String imageTitle, ImageType imageType, CoverImageDetailInfo coverImageDetailInfo) {
     valid(imageTitle);
     this.imageTitle = imageTitle;
