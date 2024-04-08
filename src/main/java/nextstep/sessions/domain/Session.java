@@ -14,6 +14,8 @@ public class Session {
 
     private Status status;
 
+    private long price;
+
     private LocalDateTime startedAt;
 
     private LocalDateTime endAt;
@@ -31,11 +33,26 @@ public class Session {
         this.endAt = endAt;
     }
 
+    public Session(final int maxNumber, final Status status, final long price, final LocalDateTime startedAt,
+                   final LocalDateTime endAt) {
+        this.maxNumber = maxNumber;
+        this.status = status;
+        this.price = price;
+        this.startedAt = startedAt;
+        this.endAt = endAt;
+    }
+
     public void addAttendee(final NsUser user) {
         validateStartedAt();
         validateAttendeeNumber();
         validateRecruitingStatus();
         attendees.add(user);
+    }
+
+    public void validatePrice(final long price) {
+        if (this.price != price) {
+            throw new IllegalArgumentException("가격이 일치하지 않습니다.");
+        }
     }
 
     private void validateAttendeeNumber() {
