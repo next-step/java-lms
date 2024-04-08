@@ -1,12 +1,12 @@
 package nextstep.sessions.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.sessions.domain.SessionStatus.*;
+import static nextstep.sessions.domain.SessionStatus.END;
+import static nextstep.sessions.domain.SessionStatus.RECRUITING;
 import static nextstep.sessions.domain.SessionType.PAID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionDetailsTest {
 
@@ -29,4 +29,5 @@ public class SessionDetailsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("현재 강의는 (%s)인 상태입니다.", end));
     }
+
 }
