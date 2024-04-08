@@ -6,7 +6,7 @@ import nextstep.courses.exception.SessionException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoverImage {
+public class SessionCoverImage {
 
     public static final int MAX_FILE_SIZE = 1024 * 1024;
     public static final int WIDTH = 300;
@@ -18,7 +18,7 @@ public class CoverImage {
     private final int height;
     private final String extension;
 
-    public CoverImage(long size, int width, int height, String extension) throws SessionException {
+    public SessionCoverImage(long size, int width, int height, String extension) throws SessionException {
         validate(size, width, height, extension);
         this.size = size;
         this.width = width;

@@ -11,7 +11,7 @@ public class Session {
     private final Long id;
     private final Course course;
     private final SessionCapacity capacity;
-    private final CoverImage coverImage;
+    private final SessionCoverImage coverImage;
     private final Long fee;
     private final SessionStatus sessionStatus;
     private final EnrollmentConditions enrollmentConditions;
@@ -21,7 +21,7 @@ public class Session {
     public Session(@NonNull Long id,
                    @NonNull Course course,
                    @NonNull SessionCapacity capacity,
-                   @NonNull CoverImage coverImage,
+                   @NonNull SessionCoverImage coverImage,
                    @NonNull Long fee,
                    @NonNull SessionStatus sessionStatus,
                    @NonNull EnrollmentConditions enrollmentConditions) {

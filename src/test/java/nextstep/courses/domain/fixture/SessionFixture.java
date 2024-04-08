@@ -16,8 +16,8 @@ public class SessionFixture {
     private static final LocalDateTime SESSION_START_AT = LocalDateTime.now().plusDays(10);
     private static final LocalDateTime SESSION_END_AT = SESSION_START_AT.plusMonths(2);
 
-    public static CoverImage coverImage() throws SessionException {
-        return new CoverImage(1024*1024, 300, 200, "gif");
+    public static SessionCoverImage coverImage() throws SessionException {
+        return new SessionCoverImage(1024*1024, 300, 200, "gif");
     }
 
     public static Session session() throws SessionException {
