@@ -6,7 +6,7 @@ import nextstep.courses.exception.SessionException;
 public class SessionCapacityCondition implements SessionEnrollmentCondition {
 
     @Override
-    public void isSatisfied(Session session) throws SessionException {
+    public void satisfy(Session session) throws SessionException {
         if (!session.hasCapacity()) {
             throw new ExceedSessionCapacityException(session.getCapacity());
         }

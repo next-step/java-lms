@@ -13,7 +13,7 @@ public class SessionFeeCondition implements SessionEnrollmentCondition {
     }
 
     @Override
-    public void isSatisfied(Session session) throws SessionException {
+    public void satisfy(Session session) throws SessionException {
         if (!session.matchFee(payment.getAmount())) {
             throw new MismatchSessionFeeException(session.getFee(), payment.getAmount());
         }

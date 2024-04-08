@@ -20,7 +20,7 @@ public class SessionEnrollmentConditionTest {
     void 강의_무조건() {
         SessionEnrollmentCondition condition = new SessionNoneCondition();
         assertThatNoException()
-                .isThrownBy(() -> condition.isSatisfied(session()));
+                .isThrownBy(() -> condition.satisfy(session()));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class SessionEnrollmentConditionTest {
     void 강의_수강인원() {
         SessionEnrollmentCondition condition = new SessionCapacityCondition();
         assertThatNoException()
-                .isThrownBy(() -> condition.isSatisfied(session(new SessionCapacity(10))));
+                .isThrownBy(() -> condition.satisfy(session(new SessionCapacity(10))));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class SessionEnrollmentConditionTest {
     void 강의_수강인원_초과() {
         SessionEnrollmentCondition condition = new SessionCapacityCondition();
         assertThatExceptionOfType(ExceedSessionCapacityException.class)
-                .isThrownBy(() -> condition.isSatisfied(session(new SessionCapacity(10, 10))))
+                .isThrownBy(() -> condition.satisfy(session(new SessionCapacity(10, 10))))
                 .withMessageContaining(CAPACITY_EXCEED.getMessage());
     }
 
@@ -44,14 +44,14 @@ public class SessionEnrollmentConditionTest {
     @DisplayName("[성공] 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
     void 강의_수강료() {
         assertThatNoException()
-                .isThrownBy(() -> (new SessionFeeCondition(payment())).isSatisfied(session()));
+                .isThrownBy(() -> (new SessionFeeCondition(payment())).satisfy(session()));
     }
 
     @Test
     @DisplayName("[실패] 강의의 결제 금액과 수강료가 일치하지 않으면 MismatchSessionFeeException 예외가 발생한다.")
     void 강의_수강료_불일치() {
         assertThatExceptionOfType(MismatchSessionFeeException.class)
-                .isThrownBy(() -> (new SessionFeeCondition(payment(100_000L))).isSatisfied(session()))
+                .isThrownBy(() -> (new SessionFeeCondition(payment(100_000L))).satisfy(session()))
                 .withMessageContaining(PAYMENT_MISMATCH.getMessage());
     }
 

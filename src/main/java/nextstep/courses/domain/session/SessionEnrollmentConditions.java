@@ -27,7 +27,7 @@ public class SessionEnrollmentConditions {
 
     public void validateSatisfy(Session session) throws SessionException {
         for (SessionEnrollmentCondition condition : conditions) {
-            condition.isSatisfied(session);
+            condition.satisfy(session);
         }
     }
 
