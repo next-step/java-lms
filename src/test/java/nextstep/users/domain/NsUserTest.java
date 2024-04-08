@@ -1,7 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.UsageType;
+import nextstep.sessions.domain.SessionType;
 import nextstep.sessions.domain.image.Image;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static nextstep.sessions.domain.SessionStatus.RECRUITING;
-import static nextstep.sessions.domain.UsageType.FREE;
-import static nextstep.sessions.domain.UsageType.PAY;
+import static nextstep.sessions.domain.SessionType.FREE;
+import static nextstep.sessions.domain.SessionType.PAID;
 import static nextstep.sessions.domain.image.ImageType.GIF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,7 +32,7 @@ public class NsUserTest {
     @DisplayName("강의의 상태가 모집중인지 검증한다")
     @Test
     void isRecruiting() {
-        Session tddCleanCode = new Session(1L, "tdd클린코드",10000, new Image(5, GIF, 300, 200), RECRUITING, PAY);
+        Session tddCleanCode = new Session(1L, "tdd클린코드",10000, new Image(5, GIF, 300, 200), RECRUITING, PAID);
         assertThat(tddCleanCode.isRecruiting()).isTrue();
     }
 
@@ -40,7 +40,7 @@ public class NsUserTest {
     @Test
     void validateUserLimitForPaidCourseInRegister() {
         NsUser user = new NsUser(1L, new ArrayList<>(), new Payment("첫번째 결제", 1L, 1L, 3000L));
-        assertThatThrownBy(() -> user.register(new Session(List.of(JAVAJIGI), UsageType.PAY, RECRUITING, 1, 3000L)))
+        assertThatThrownBy(() -> user.register(new Session(List.of(JAVAJIGI), SessionType.PAID, RECRUITING, 1, 3000L)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

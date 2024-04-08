@@ -22,7 +22,7 @@ public class Session {
     private SessionStatus sessionStatus;
 
     //무료인지 유료인지
-    private UsageType usageType;
+    private SessionType sessionType;
 
     private List<NsUser> users = new ArrayList<>();
 
@@ -42,23 +42,23 @@ public class Session {
                    long price,
                    Image image,
                    SessionStatus sessionStatus,
-                   UsageType usageType) {
+                   SessionType sessionType) {
         this.id = id;
         this.sessionName = sessionName;
         this.price = price;
         this.image = image;
         this.sessionStatus = sessionStatus;
-        this.usageType = usageType;
+        this.sessionType = sessionType;
     }
 
-    public Session(List<NsUser> users, UsageType type, SessionStatus sessionStatus, Integer maxNoOfUsers) {
+    public Session(List<NsUser> users, SessionType type, SessionStatus sessionStatus, Integer maxNoOfUsers) {
         this.users = users;
-        this.usageType = type;
+        this.sessionType = type;
         this.sessionStatus = sessionStatus;
         this.maxNoOfUsers = maxNoOfUsers;
     }
 
-    public Session(List<NsUser> users, UsageType type, SessionStatus sessionStatus, Integer maxNoOfUsers, long price) {
+    public Session(List<NsUser> users, SessionType type, SessionStatus sessionStatus, Integer maxNoOfUsers, long price) {
         this(users, type, sessionStatus, maxNoOfUsers);
         this.price = price;
     }
@@ -72,7 +72,7 @@ public class Session {
     }
 
     private boolean isFreeCourse() {
-        return usageType == UsageType.FREE;
+        return sessionType == SessionType.FREE;
     }
 
     public void validateUserLimitForPaidCourse() {
@@ -82,7 +82,7 @@ public class Session {
     }
 
     private boolean isPaidCourse() {
-        return usageType == UsageType.PAY;
+        return sessionType == SessionType.PAID;
     }
 
     private boolean isExceedUserNo() {

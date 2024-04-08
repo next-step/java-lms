@@ -1,8 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStatus;
-import nextstep.sessions.domain.UsageType;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -19,7 +16,7 @@ public class SessionTest {
         List<NsUser> users = List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
 
         Assertions.assertThatThrownBy(() ->
-                        new Session(users, UsageType.PAY, SessionStatus.RECRUITING, 1)
+                        new Session(users, SessionType.PAID, SessionStatus.RECRUITING, 1)
                                 .validateUserLimitForPaidCourse())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("수강인원을 초과하였습니다.");
