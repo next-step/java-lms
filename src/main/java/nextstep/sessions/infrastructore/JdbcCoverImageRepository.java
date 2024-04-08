@@ -2,6 +2,7 @@ package nextstep.sessions.infrastructore;
 
 
 import nextstep.sessions.domain.CoverImage;
+import nextstep.sessions.domain.EnableExtension;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -35,7 +36,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
             ps.setInt(3, coverImage.getHeight());
             ps.setLong(4, coverImage.getFileSize());
             ps.setString(5, coverImage.getFileName());
-            ps.setString(6, coverImage.getExtension());
+            ps.setString(6, coverImage.getExtension().name());
             ps.setString(7, coverImage.getFilePath());
             return ps;
         }, keyHolder);
@@ -57,7 +58,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
             ps.setInt(3, coverImage.getHeight());
             ps.setLong(4, coverImage.getFileSize());
             ps.setString(5, coverImage.getFileName());
-            ps.setString(6, coverImage.getExtension());
+            ps.setString(6, coverImage.getExtension().name());
             ps.setString(7, coverImage.getFilePath());
         };
     }
@@ -69,7 +70,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
             ps.setInt(3, coverImage.getHeight());
             ps.setLong(4, coverImage.getFileSize());
             ps.setString(5, coverImage.getFileName());
-            ps.setString(6, coverImage.getExtension());
+            ps.setString(6, coverImage.getExtension().name());
             ps.setString(7, coverImage.getFilePath());
         };
     }
@@ -94,7 +95,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 rs.getInt(4),
                 rs.getLong(5),
                 rs.getString(6),
-                rs.getString(7),
+                EnableExtension.find(rs.getString(7)),
                 rs.getString(8)
         );
     }
