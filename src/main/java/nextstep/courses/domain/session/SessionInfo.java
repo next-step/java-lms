@@ -45,7 +45,7 @@ public class SessionInfo {
   }
 
   public boolean checkRegisterPossibleStatus() {
-    return SessionStatus.IN_PROGRESS.equals(sessionStatus);
+    return sessionStatus.isInProgressStatus();
   }
 
   public boolean checkPayAmount(Long payAmount) {
