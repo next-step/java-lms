@@ -7,3 +7,11 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+* refactor/delete-question
+  * refactored QnAService deleteQuestion
+    * refactored Question, Answer
+    * used first-class collection
+    * generated unit TestCodes
+  * modified gradle.properties enable ./gradlew clean build 
+    * add gradle option to enable access to unnamed module
