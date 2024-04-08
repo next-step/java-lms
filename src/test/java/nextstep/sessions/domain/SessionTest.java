@@ -2,7 +2,6 @@ package nextstep.sessions.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDateTime;
 
@@ -45,14 +44,6 @@ class SessionTest {
     }
 
     @Test
-    void 모집중인_강의인_경우_수강_신청을_하면_성공한다() {
-        session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE);
-
-        assertThat(session.getAttendees()).hasSize(1)
-                .contains(NsUserTest.JAVAJIGI);
-    }
-
-    @Test
     void 시작일이_지난_강의를_수강_신청을_하면_실패한다() {
         final Session session = new Session(5, Status.RECRUITING, 100000L, LocalDateTime.now().plusDays(1));
 
@@ -67,11 +58,6 @@ class SessionTest {
     }
 
     @Test
-    void 결제_금액과_강의_금액이_일치하면_성공한다() {
-        assertThatNoException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE));
-    }
-
-    @Test
     void 무료_강의_수강_신청한다() {
         // given
         final Session freeSession = new Session(Status.RECRUITING);
@@ -81,6 +67,14 @@ class SessionTest {
 
         // then
         assertThat(freeSession.getAttendees()).hasSize(1)
+                .contains(NsUserTest.JAVAJIGI);
+    }
+
+    @Test
+    void 유료_강의_수강_신청한다() {
+        session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE);
+
+        assertThat(session.getAttendees()).hasSize(1)
                 .contains(NsUserTest.JAVAJIGI);
     }
 }
