@@ -25,4 +25,31 @@ public class ImageTest {
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("잘못된 이미지 타입입니다.");
     }
+
+    @Test
+    @DisplayName("이미지 너비가 300픽셀보다 작을 시 오류가 발생")
+    void imageWidthTest() {
+        assertThatThrownBy(
+                () -> new Image(1000, "gif", 299, 200)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("이미지 너비는 300픽셀보다 커야 합니다.");
+    }
+
+    @Test
+    @DisplayName("이미지 높이가 200픽셀보다 작을 시 오류가 발생")
+    void imageHeightTest() {
+        assertThatThrownBy(
+                () -> new Image(1000, "gif", 300, 199)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("이미지 높이는 200픽셀보다 커야 합니다.");
+    }
+
+    @Test
+    @DisplayName("이미지 비율이 3:2가 아닐 시 오류가 발생")
+    void imageRateTest() {
+        assertThatThrownBy(
+                () -> new Image(1000, "gif", 331, 200)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("이미지 비율은 3대2여야 합니다.");
+    }
 }
