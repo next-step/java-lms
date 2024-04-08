@@ -12,25 +12,17 @@ public class CoverImage {
 
     private int height;
 
-    public CoverImage(final double size) {
-        validateSize(size);
-        this.size = size;
-    }
-
-    public CoverImage(final double size, final int width) {
-        validateSize(size);
-        validateWidth(width);
-        this.size = size;
-        this.width = width;
-    }
-
     public CoverImage(final double size, final int width, final int height) {
-        validateSize(size);
-        validateWidth(width);
-        validateHeight(height);
+        validate(size, width, height);
         this.size = size;
         this.width = width;
         this.height = height;
+    }
+
+    private void validate(final double size, final int width, final int height) {
+        validateSize(size);
+        validateWidth(width);
+        validateHeight(height);
     }
 
     private void validateSize(final double size) {
