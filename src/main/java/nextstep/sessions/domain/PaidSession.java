@@ -1,47 +1,54 @@
 package nextstep.sessions.domain;
 
+import nextstep.capacity.Capacity;
 import nextstep.money.Money;
 import nextstep.payments.domain.Payment;
 
 public class PaidSession implements SessionType {
     private static final int MIN_CAPACITY = 1;
-    private final int capacity;
-    private final Money amount;
+
+    private final Capacity capacity;
+    private final Money fee;
+
 
     public PaidSession(int capacity, long amount) {
-        this(capacity, Money.wons(amount));
+        this(new Capacity(capacity), Money.wons(amount));
     }
 
-    public PaidSession(int capacity, Money amount) {
-        if (capacity < MIN_CAPACITY) {
+    public PaidSession(int capacity, Money fee) {
+        this(new Capacity(capacity), fee);
+    }
+
+    public PaidSession(Capacity capacity, Money fee) {
+        if (capacity.isLessThan(MIN_CAPACITY)) {
             throw new IllegalArgumentException("강의 최소 인원은 " + MIN_CAPACITY + " 입니다");
         }
 
-        if (amount.isZero()) {
-            throw new IllegalArgumentException("강의 비용이 누락되었습니다");
+        if (fee.isZero()) {
+            throw new IllegalArgumentException("강의 최소 인원은 " + MIN_CAPACITY + " 입니다");
         }
 
         this.capacity = capacity;
-        this.amount = amount;
+        this.fee = fee;
     }
 
     @Override
     public boolean isFull(int count) {
-        return capacity <= count;
+        return this.capacity.isLessThanOrEqual(count);
     }
 
     @Override
     public int getCapacity() {
-        return this.capacity;
+        return this.capacity.getCapacity();
     }
 
     @Override
     public long getAmount() {
-        return amount.getAmount();
+        return this.fee.getAmount();
     }
 
     @Override
     public boolean equalMoney(Payment payment) {
-        return this.amount.equals(payment.getAmount());
+        return this.fee.equals(payment.getAmount());
     }
 }
