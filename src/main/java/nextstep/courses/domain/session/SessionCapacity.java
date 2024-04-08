@@ -2,14 +2,18 @@ package nextstep.courses.domain.session;
 
 public class SessionCapacity {
 
+    private final Long id;
+    private final Long sessionId;
     private final int maxCapacity;
     private int currentCapacity;
 
-    public SessionCapacity(int maxCapacity) {
-        this(maxCapacity, 0);
+    public SessionCapacity(Long id, Long sessionId, int maxCapacity) {
+        this(id, sessionId, maxCapacity, 0);
     }
 
-    public SessionCapacity(int maxCapacity, int currentCapacity) {
+    public SessionCapacity(Long id, Long sessionId, int maxCapacity, int currentCapacity) {
+        this.id = id;
+        this.sessionId = sessionId;
         this.maxCapacity = maxCapacity;
         this.currentCapacity = currentCapacity;
     }

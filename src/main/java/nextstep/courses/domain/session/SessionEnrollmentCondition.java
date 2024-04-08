@@ -4,6 +4,6 @@ import nextstep.courses.exception.SessionException;
 
 public interface SessionEnrollmentCondition {
 
-    void satisfy(Session session) throws SessionException;
+    void satisfy(SessionEnrollment enrollment) throws SessionException;
 
 }

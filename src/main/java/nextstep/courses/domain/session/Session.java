@@ -10,55 +10,21 @@ public class Session {
 
     private final Long id;
     private final Course course;
-    private final SessionCapacity capacity;
     private final SessionCoverImage coverImage;
-    private final Long fee;
-    private final SessionStatus sessionStatus;
-    private final SessionEnrollmentConditions enrollmentConditions;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public Session(@NonNull Long id,
                    @NonNull Course course,
-                   @NonNull SessionCapacity capacity,
-                   @NonNull SessionCoverImage coverImage,
-                   @NonNull Long fee,
-                   @NonNull SessionStatus sessionStatus,
-                   @NonNull SessionEnrollmentConditions enrollmentConditions) {
+                   @NonNull SessionCoverImage coverImage) {
         this.id = id;
         this.course = course;
-        this.capacity = capacity;
         this.coverImage = coverImage;
-        this.fee = fee;
-        this.sessionStatus = sessionStatus;
-        this.enrollmentConditions = enrollmentConditions;
         this.createdAt = LocalDateTime.now();
     }
 
-    public boolean hasCapacity() {
-        return capacity.hasCapacity();
+    public void enroll(SessionEnrollment enrollment) throws SessionException {
+        enrollment.enroll();
     }
 
-    public SessionCapacity getCapacity() {
-        return capacity;
-    }
-
-    public boolean matchFee(Long amount) {
-        return fee.equals(amount);
-    }
-
-    public Long getFee() {
-        return fee;
-    }
-
-    public Session enroll() throws SessionException {
-        validateEnrollmentPossible();
-        capacity.increaseCurrentCapacity();
-        return this;
-    }
-
-    private void validateEnrollmentPossible() throws SessionException {
-        enrollmentConditions.validateSatisfy(this);
-        sessionStatus.validateCanEnrollment();
-    }
 }
