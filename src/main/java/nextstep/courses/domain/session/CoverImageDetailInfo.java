@@ -15,9 +15,6 @@ public class CoverImageDetailInfo {
   private int imageWidth;
   private int imageHeight;
 
-  private CoverImageDetailInfo() {
-  }
-
   public CoverImageDetailInfo(int imageSize, int imageWidth, int imageHeight) {
     validate(imageSize, imageWidth, imageHeight);
     this.imageSize = imageSize;
@@ -25,19 +22,7 @@ public class CoverImageDetailInfo {
     this.imageHeight = imageHeight;
   }
 
-  public int getImageSize() {
-    return imageSize;
-  }
-
-  public int getImageWidth() {
-    return imageWidth;
-  }
-
-  public int getImageHeight() {
-    return imageHeight;
-  }
-
-  private boolean validate(int imageSize, int imageWidth, int imageHeight) {
+  private void validate(int imageSize, int imageWidth, int imageHeight) {
 
     if (ONE_MB < imageSize) {
       throw new IllegalArgumentException(String.format(EXCEED_MAX_COVER_IMAGE_SIZE, imageSize));
@@ -55,7 +40,17 @@ public class CoverImageDetailInfo {
     if (ratio != IMAGE_COVER_RATIO) {
       throw new IllegalArgumentException(String.format(INVALID_COVER_IMAGE_RATIO, imageWidth, imageHeight));
     }
+  }
 
-    return true;
+  public int getImageSize() {
+    return imageSize;
+  }
+
+  public int getImageWidth() {
+    return imageWidth;
+  }
+
+  public int getImageHeight() {
+    return imageHeight;
   }
 }

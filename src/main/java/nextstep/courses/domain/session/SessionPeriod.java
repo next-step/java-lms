@@ -16,7 +16,7 @@ public class SessionPeriod {
     this.endedAt = endedAt;
   }
 
-  public boolean valid(LocalDateTime startedAt, LocalDateTime endedAt) {
+  private void valid(LocalDateTime startedAt, LocalDateTime endedAt) {
     if (startedAt == null || endedAt == null) {
       throw new IllegalArgumentException(String.format(INVALID_SESSION_PERIOD, startedAt, endedAt));
     }
@@ -24,8 +24,6 @@ public class SessionPeriod {
     if (startedAt.isAfter(endedAt) || startedAt.isEqual(endedAt)) {
       throw new IllegalArgumentException(String.format(INVALID_SESSION_STARTED_AT, startedAt, endedAt));
     }
-
-    return true;
   }
 
   public boolean isCorrectPeriod() {

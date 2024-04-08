@@ -17,11 +17,10 @@ public class CoverImage {
     this.coverImageDetailInfo = coverImageDetailInfo;
   }
 
-  public boolean valid(String imageTitle) {
+  private void valid(String imageTitle) {
     if (imageTitle == null || imageTitle.isBlank()) {
       throw new IllegalArgumentException(String.format(IMAGE_TITLE_IS_INCORRECT, imageTitle));
     }
-    return true;
   }
 
   public String getImageTitle() {

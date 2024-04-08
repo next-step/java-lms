@@ -11,14 +11,13 @@ public class Generation {
     this.id = id;
   }
 
-  public boolean isSame(Long id) {
-    return this.id.equals(id);
-  }
-
-  private boolean validate(Long number) {
+  private void validate(Long number) {
     if (number <= 0) {
       throw new IllegalArgumentException(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, number));
     }
-    return true;
+  }
+
+  public boolean isSame(Long id) {
+    return this.id.equals(id);
   }
 }

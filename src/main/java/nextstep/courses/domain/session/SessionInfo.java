@@ -14,11 +14,10 @@ public class SessionInfo {
     this.sessionEnrollmentInfo = new SessionEnrollmentInfo(isFree, sessionAmount, studentMaxCount);
   }
 
-  public boolean valid(String sessionTitle) {
+  private void valid(String sessionTitle) {
     if (sessionTitle == null || sessionTitle.isBlank()) {
       throw new IllegalArgumentException(String.format(SESSION_TITLE_IS_INCORRECT, sessionTitle));
     }
-    return true;
   }
 
   public String getSessionTitle() {

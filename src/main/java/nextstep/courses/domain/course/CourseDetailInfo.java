@@ -16,23 +16,21 @@ public class CourseDetailInfo {
     this.titleName = titleName;
   }
 
+  private void validate(Long creatorId, String title) {
+    if (creatorId <= 0) {
+      throw new IllegalArgumentException(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, creatorId));
+    }
+
+    if (title == null || title.isBlank()) {
+      throw new IllegalArgumentException(String.format(COURSE_TITLE_IS_INCORRECT, title));
+    }
+  }
+
   public Long getCreatorId() {
     return creatorId;
   }
 
   public String getTitleName() {
     return titleName;
-  }
-
-  private boolean validate(Long creatorId, String title) {
-    if (creatorId <= 0) {
-      throw new IllegalArgumentException(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, creatorId));
-    }
-
-    if (Objects.isNull(title) || title.isBlank()) {
-      throw new IllegalArgumentException(String.format(COURSE_TITLE_IS_INCORRECT, title));
-    }
-
-    return true;
   }
 }

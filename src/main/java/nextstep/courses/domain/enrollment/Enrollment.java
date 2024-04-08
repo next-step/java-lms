@@ -29,7 +29,7 @@ public class Enrollment extends BaseTime {
     return new Enrollment(id, userId, courseId, session, payment);
   }
 
-  public static boolean valid(Session session, Long payAmount) {
+  private static void valid(Session session, Long payAmount) {
     if (!session.checkRegisterPossibleStatus()) {
       throw new IllegalArgumentException(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, session.getId(), session.getSessionStatus()));
     }
@@ -37,10 +37,7 @@ public class Enrollment extends BaseTime {
     if (!session.checkPayAmount(payAmount)) {
       throw new IllegalArgumentException(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, payAmount, session.getSessionAmount()));
     }
-
     session.addStudentCount();
-
-    return true;
   }
 
   public Long getId() {

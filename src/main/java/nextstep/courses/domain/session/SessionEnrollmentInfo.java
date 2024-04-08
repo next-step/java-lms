@@ -22,7 +22,7 @@ public class SessionEnrollmentInfo {
     this.studentMaxCount = studentMaxCount;
   }
 
-  public boolean valid(boolean isFree, Long sessionAmount, Integer studentMaxCount) {
+  private void valid(boolean isFree, Long sessionAmount, Integer studentMaxCount) {
     if (!isFree && studentMaxCount < MIN_STUDENT_COUNT) {
       throw new IllegalArgumentException(String.format(INVALID_STUDENT_COUNT, studentMaxCount));
     }
@@ -30,7 +30,6 @@ public class SessionEnrollmentInfo {
     if (!isFree && sessionAmount <= MIN_AMOUNT) {
       throw new IllegalArgumentException(String.format(INVALID_SESSION_AMOUNT, sessionAmount));
     }
-    return true;
   }
 
   public boolean isFree() {
