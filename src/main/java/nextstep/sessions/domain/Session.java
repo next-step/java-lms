@@ -22,15 +22,8 @@ public class Session {
 
     private List<NsUser> attendees = new ArrayList<>();
 
-    public Session(final int maxNumber, final Status status, final LocalDateTime endAt) {
-        this(maxNumber, status, LocalDateTime.now(), endAt);
-    }
-
-    public Session(final int maxNumber, final Status status, final LocalDateTime startedAt, final LocalDateTime endAt) {
-        this.maxNumber = maxNumber;
-        this.status = status;
-        this.startedAt = startedAt;
-        this.endAt = endAt;
+    public Session(final int maxNumber, final Status status, final long price, final LocalDateTime endAt) {
+        this(maxNumber, status, price, LocalDateTime.now(), endAt);
     }
 
     public Session(final int maxNumber, final Status status, final long price, final LocalDateTime startedAt,

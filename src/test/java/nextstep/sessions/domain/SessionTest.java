@@ -36,7 +36,7 @@ class SessionTest {
     @ParameterizedTest
     @EnumSource(value = Status.class, names = {"PREPARING", "END"})
     void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final Status status) {
-        final Session session = new Session(5, status, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        final Session session = new Session(5, status, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.addAttendee(NsUserTest.JAVAJIGI))
                 .withMessage("모집중인 강의가 아닙니다.");
@@ -52,7 +52,7 @@ class SessionTest {
 
     @Test
     void 시작일이_지난_강의를_수강_신청을_하면_실패한다() {
-        final Session session = new Session(5, Status.RECRUITING, LocalDateTime.now().plusDays(1));
+        final Session session = new Session(5, Status.RECRUITING, 100000L, LocalDateTime.now().plusDays(1));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.addAttendee(NsUserTest.JAVAJIGI));
     }
