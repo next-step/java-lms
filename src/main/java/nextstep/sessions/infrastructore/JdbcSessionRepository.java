@@ -21,8 +21,11 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private final JdbcOperations jdbcTemplate;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    private final CoverImageRepository coverImageRepository;
+
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, CoverImageRepository coverImageRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.coverImageRepository = coverImageRepository;
     }
 
     @Override
@@ -61,7 +64,13 @@ public class JdbcSessionRepository implements SessionRepository {
     public Optional<Session> findById(long sessionId) {
         String sql = "SELECT id, course_id, title, state, capacity, amount, start_date, end_date, created_at FROM class_session WHERE id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, (rs, rowNum) -> buildSession(rs), sessionId));
+        Optional<Session> optionalSession = Optional.ofNullable(jdbcTemplate.queryForObject(sql, (rs, rowNum) -> buildSession(rs), sessionId));
+
+        if (optionalSession.isPresent()) {
+            setCoverImages(optionalSession.get());
+        }
+
+        return optionalSession;
     }
 
     @Override
@@ -69,14 +78,30 @@ public class JdbcSessionRepository implements SessionRepository {
         String sql = "SELECT id, course_id, title, state, capacity, amount, start_date, end_date, created_at FROM class_session WHERE id IN (%s)";
         String inSql = String.join(",", Collections.nCopies(ids.size(), "?"));
 
-        return jdbcTemplate.query(String.format(sql, inSql), ids.toArray(), (rs, rowNum) -> buildSession(rs));
+        List<Session> sessions = jdbcTemplate.query(String.format(sql, inSql), ids.toArray(), (rs, rowNum) -> buildSession(rs));
+
+        for (Session session : sessions) {
+            setCoverImages(session);
+        }
+
+        return sessions;
     }
 
     @Override
     public List<Session> findByCourseId(long courseId) {
         String sql = "SELECT id, course_id, title, state, capacity, amount, start_date, end_date, created_at FROM class_session WHERE course_id = ?";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> buildSession(rs), courseId);
+        List<Session> sessions = jdbcTemplate.query(sql, (rs, rowNum) -> buildSession(rs), courseId);
+
+        for (Session session : sessions) {
+            setCoverImages(session);
+        }
+
+        return sessions;
+    }
+
+    private void setCoverImages(Session session) {
+        session.addAllCoverImages(coverImageRepository.findBySessionId(session.getId()));
     }
 
     private Session buildSession(ResultSet rs) throws SQLException {

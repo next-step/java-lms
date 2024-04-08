@@ -38,4 +38,11 @@ public class CoverImages {
 
         this.coverImages.addAll(coverImages);
     }
+
+    @Override
+    public String toString() {
+        return "CoverImages{" +
+                "coverImages=" + coverImages +
+                '}';
+    }
 }

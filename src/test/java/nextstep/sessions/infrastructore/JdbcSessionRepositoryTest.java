@@ -33,7 +33,8 @@ class JdbcSessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repository = new JdbcSessionRepository(jdbcTemplate);
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        repository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository);
     }
 
     @Test
@@ -93,12 +94,16 @@ class JdbcSessionRepositoryTest {
         List<Session> sessions = repository.findByIds(List.of(1L, 2L, 3L));
 
         assertThat(sessions).hasSize(3);
+
+        LOGGER.debug("Sessions : {}", sessions);
     }
 
     @Test
     void findByCourseId() {
         List<Session> sessions = repository.findByCourseId(1L);
         assertThat(sessions).hasSize(1);
+
+        LOGGER.debug("Sessions : {}", sessions);
     }
 
     @Test

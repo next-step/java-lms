@@ -10,6 +10,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -289,6 +290,10 @@ public class Session extends BaseEntity {
 
     public long getAmount() {
         return this.sessionType.getAmount();
+    }
+
+    public void addAllCoverImages(List<CoverImage> coverImages) {
+        this.coverImages.addAll(coverImages);
     }
 
     @Override

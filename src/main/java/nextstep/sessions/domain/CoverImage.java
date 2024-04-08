@@ -134,4 +134,18 @@ public class CoverImage {
     public int hashCode() {
         return Objects.hash(id, sessionId, width, height, fileSize, fileName, extension, filePath);
     }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id +
+                ", sessionId=" + sessionId +
+                ", width=" + width +
+                ", height=" + height +
+                ", fileSize=" + fileSize +
+                ", fileName='" + fileName + '\'' +
+                ", extension='" + extension + '\'' +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
 }
