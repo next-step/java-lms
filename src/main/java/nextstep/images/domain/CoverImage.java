@@ -12,11 +12,14 @@ public class CoverImage {
 
     private int height;
 
-    public CoverImage(final double size, final int width, final int height) {
+    private Type type;
+
+    public CoverImage(final double size, final int width, final int height, final String type) {
         validate(size, width, height);
         this.size = size;
         this.width = width;
         this.height = height;
+        this.type = Type.from(type);
     }
 
     private void validate(final double size, final int width, final int height) {
