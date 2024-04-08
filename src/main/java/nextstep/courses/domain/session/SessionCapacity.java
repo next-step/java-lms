@@ -17,7 +17,7 @@ public class SessionCapacity {
         this(id, sessionId, maxCapacity, new ArrayList<>());
     }
 
-    private SessionCapacity(Long id, Long sessionId, int maxCapacity, List<NsUser> users) throws ExceedSessionCapacityException {
+    public SessionCapacity(Long id, Long sessionId, int maxCapacity, List<NsUser> users) throws ExceedSessionCapacityException {
         validateCapacity(maxCapacity, users);
         this.id = id;
         this.sessionId = sessionId;
