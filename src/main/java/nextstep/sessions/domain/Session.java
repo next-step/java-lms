@@ -3,6 +3,7 @@ package nextstep.sessions.domain;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.InvalidPaymentException;
 import nextstep.payments.exception.PaymentAmountMismatchException;
+import nextstep.sessions.exception.DuplicateEnrollmentException;
 import nextstep.sessions.exception.DuplicateJoinException;
 import nextstep.sessions.exception.InvalidSessionException;
 import nextstep.sessions.exception.InvalidSessionJoinException;
@@ -35,7 +36,11 @@ public class Session extends BaseEntity {
 
     private CoverImages coverImages;
 
-    public Session(Long id, Long courseId, String title, SessionState state, RecruitmentState recruitment, SessionType sessionType, CoverImages coverImages, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+    private Selection selection;
+
+    private Set<Enrollment> enrollments;
+
+    public Session(Long id, Long courseId, String title, SessionState state, RecruitmentState recruitment, SessionType sessionType, CoverImages coverImages, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener, Selection selection, Set<Enrollment> enrollments) {
         validateCourseId(courseId);
         validateSessionType(sessionType);
         validatePeriod(startDate, endDate);
@@ -52,6 +57,8 @@ public class Session extends BaseEntity {
         this.updatedAt = updatedAt;
         this.listener = listener == null ? new HashSet<>() : listener;
         this.coverImages = coverImages == null ? new CoverImages() : coverImages;
+        this.selection = selection == null ? Selection.MANUAL : selection;
+        this.enrollments = enrollments == null ? new HashSet<>() : enrollments;
     }
 
     private void validateCourseId(Long courseId) {
@@ -90,6 +97,8 @@ public class Session extends BaseEntity {
         private LocalDateTime updatedAt;
         private Set<NsUser> listener;
         private CoverImages coverImages;
+        private Selection selection;
+        private Set<Enrollment> enrollments;
 
         public Builder() {
         }
@@ -154,17 +163,36 @@ public class Session extends BaseEntity {
             return this;
         }
 
+        public Builder selection(Selection selection) {
+            this.selection = selection;
+            return this;
+        }
+
+        public Builder enrollments(Set<Enrollment> enrollments) {
+            this.enrollments = enrollments;
+            return this;
+        }
+
         public Session build() {
-            return new Session(id, courseId, title, state, recruitment, sessionType, coverImages, startDate, endDate, createdAt, updatedAt, listener);
+            return new Session(id, courseId, title, state, recruitment, sessionType, coverImages, startDate, endDate, createdAt, updatedAt, listener, selection, enrollments);
         }
     }
 
-    public Payment requestJoin(NsUser loginUser, LocalDateTime now) {
-        verifySession(now);
-        return new Payment(this.id, loginUser.getId(), this.sessionType.getAmount(), now);
+    public Enrollment requestJoin(NsUser loginUser, LocalDateTime now) {
+        verifySession(loginUser, now);
+        return new Enrollment(this.id, loginUser.getId(), this.selection.getDefaultEnrollmentState(), now);
     }
 
-    private void verifySession(LocalDateTime now) {
+    private void verifySession(NsUser loginUser, LocalDateTime now) {
+        if (this.listener.contains(loginUser)) {
+            throw new DuplicateJoinException("이미 등록된 수강생이므로 중복 신청 불가합니다");
+        }
+
+        boolean hasEnrollment = this.enrollments.stream().anyMatch(e -> e.match(this.id, loginUser.getId()));
+        if (hasEnrollment) {
+            throw new DuplicateEnrollmentException("중복 수강 신청은 불가합니다");
+        }
+
         if (this.state.isFinished() || this.recruitment.isNotRecruiting()) {
             throw new InvalidSessionJoinException("현재 수강 신청 불가 합니다");
         }
@@ -180,6 +208,10 @@ public class Session extends BaseEntity {
 
     private boolean isWithinPeriodRange(LocalDateTime now) {
         return now.isAfter(this.startDate) && now.isBefore(this.endDate);
+    }
+
+    public Payment toPayment(NsUser loginUser, LocalDateTime now) {
+        return new Payment(this.id, loginUser.getId(), this.sessionType.getAmount(), now);
     }
 
     public void join(NsUser loginUser, Payment payment) {
@@ -230,11 +262,11 @@ public class Session extends BaseEntity {
 
     public void update(Session target) {
         if (!matchId(target)) {
-            throw new IllegalArgumentException(); // TODO
+            throw new IllegalArgumentException("강의 정보가 일치하지 않습니다");
         }
 
         if (!matchCourseId(target)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("코스 정보가 일치하지 않습니다");
         }
 
         this.title = target.title;
@@ -242,8 +274,9 @@ public class Session extends BaseEntity {
         this.recruitment = target.recruitment;
         this.sessionType = target.sessionType;
         this.startDate = target.startDate;
-        this.endDate = target.getEndDate();
+        this.endDate = target.endDate;
         this.updatedAt = target.updatedAt;
+        this.selection = target.selection;
     }
 
     private boolean matchId(Session target) {
@@ -298,6 +331,10 @@ public class Session extends BaseEntity {
         return coverImages;
     }
 
+    public Selection getSelection() {
+        return selection;
+    }
+
     public int getCapacity() {
         return this.sessionType.getCapacity();
     }
@@ -308,6 +345,10 @@ public class Session extends BaseEntity {
 
     public void addAllCoverImages(List<CoverImage> coverImages) {
         this.coverImages.addAll(coverImages);
+    }
+
+    public boolean isAutomaticSelection() {
+        return this.selection.isAutomatic();
     }
 
     @Override
