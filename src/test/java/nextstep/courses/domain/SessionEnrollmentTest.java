@@ -1,13 +1,16 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.session.condition.*;
+import nextstep.courses.domain.session.SessionCapacity;
+import nextstep.courses.domain.session.SessionEnrollment;
+import nextstep.courses.domain.session.SessionFee;
+import nextstep.courses.domain.session.condition.SessionEnrollmentConditions;
+import nextstep.courses.domain.session.condition.creator.ConditionsCreator;
+import nextstep.courses.domain.session.condition.creator.CostConditionsCreator;
+import nextstep.courses.domain.session.condition.creator.FreeConditionsCreator;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.SessionCapacityFixture.MAX_CAPACITY;
@@ -24,8 +27,9 @@ public class SessionEnrollmentTest {
     void 무료_강의_수강신청() throws ExceedSessionCapacityException {
         NsUser user = nsUser();
 
-        SessionEnrollmentCondition noneCondition = new SessionNoneCondition();
-        SessionEnrollment enrollment = sessionEnrollment(SessionEnrollmentConditions.from(noneCondition));
+        ConditionsCreator conditionsCreator = new FreeConditionsCreator();
+        SessionEnrollmentConditions conditions = new SessionEnrollmentConditions(conditionsCreator);
+        SessionEnrollment enrollment = sessionEnrollment(conditions);
         assertThatNoException().isThrownBy(() -> enrollment.enroll(user));
     }
 
@@ -33,13 +37,12 @@ public class SessionEnrollmentTest {
     @DisplayName("[성공] 유료 강의를 수강신청 한다.")
     void 유료_강의_수강신청() throws ExceedSessionCapacityException {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
-        SessionFee fee = sessionFee(SESSION_FEE);
+        SessionFee sessionFee = sessionFee(SESSION_FEE);
 
-        SessionEnrollmentCondition capacityCondition = new SessionCapacityCondition(capacity);
-        SessionEnrollmentCondition feeCondition = new SessionFeeCondition(fee, SESSION_FEE);
-        SessionEnrollmentConditions conditions = SessionEnrollmentConditions.of(List.of(capacityCondition, feeCondition));
+        ConditionsCreator conditionsCreator = new CostConditionsCreator(sessionFee, SESSION_FEE, capacity);
+        SessionEnrollmentConditions conditions = new SessionEnrollmentConditions(conditionsCreator);
 
-        SessionEnrollment enrollment = sessionEnrollment(capacity, fee, conditions);
+        SessionEnrollment enrollment = sessionEnrollment(capacity, sessionFee, conditions);
         NsUser user = nsUser();
 
         assertThatNoException().isThrownBy(() -> enrollment.enroll(user));

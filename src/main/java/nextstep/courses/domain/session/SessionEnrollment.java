@@ -28,7 +28,7 @@ public class SessionEnrollment {
     }
 
     private void validateSessionEnrollment() throws SessionException {
-        enrollmentConditions.validateSatisfy();
+        enrollmentConditions.satisfy();
         sessionStatus.validateCanEnrollment();
     }
 }

@@ -14,11 +14,6 @@ import static nextstep.courses.domain.session.SessionStatus.RECRUITING;
 
 public class SessionEnrollmentFixture {
 
-
-    public static SessionEnrollment sessionEnrollment(SessionCapacity capacity) {
-        return new SessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, capacity, RECRUITING, new SessionEnrollmentConditions(), sessionFee());
-    }
-
     public static SessionEnrollment sessionEnrollment(SessionEnrollmentConditions enrollmentConditions) throws ExceedSessionCapacityException {
         return new SessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, sessionCapacity(),RECRUITING, enrollmentConditions, sessionFee());
     }
