@@ -70,4 +70,17 @@ class SessionTest {
     void 결제_금액과_강의_금액이_일치하면_성공한다() {
         assertThatNoException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE));
     }
+
+    @Test
+    void 무료_강의_수강_신청한다() {
+        // given
+        final Session freeSession = new Session(Status.RECRUITING);
+
+        // when
+        freeSession.enroll(NsUserTest.JAVAJIGI, 0L);
+
+        // then
+        assertThat(freeSession.getAttendees()).hasSize(1)
+                .contains(NsUserTest.JAVAJIGI);
+    }
 }
