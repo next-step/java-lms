@@ -27,11 +27,7 @@ public class Payment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getAmount(){
-        return amount;
-    }
-
-    public boolean isEqualToPayment(Long amount){
+    public boolean isName(Long amount){
         return this.amount.equals(amount);
     }
 }

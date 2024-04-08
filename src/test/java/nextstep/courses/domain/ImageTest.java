@@ -12,8 +12,8 @@ public class ImageTest {
     @Test
     @DisplayName("이미지는 최대 허용 크기를 넘으면 생성할 수 없다.")
     void checkSize(){
-        int TREE_MB = 3145728;
-        assertThatThrownBy(() -> new Image(TREE_MB, JPG, 300, 200)).isInstanceOf(IllegalArgumentException.class);
+        int overSize = 3145728;
+        assertThatThrownBy(() -> new Image(overSize, JPG, 300, 200)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

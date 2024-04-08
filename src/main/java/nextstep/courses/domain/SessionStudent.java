@@ -17,10 +17,14 @@ public class SessionStudent {
   }
 
   public  boolean canAcceptNewStudent() {
-    return students.size() < maxStudent;
+    return size() < maxStudent;
   }
 
   public void add(NsUser newStudent) {
     students.add(newStudent);
+  }
+
+  private Integer size() {
+    return students.size();
   }
 }
