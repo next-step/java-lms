@@ -21,19 +21,19 @@ public class SessionFixture {
     }
 
     public static Session session() throws SessionException {
-        return new Session(0L, course(), sessionDuration(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, new EnrollmentConditions());
+        return new Session(0L, course(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, new EnrollmentConditions());
     }
 
     public static Session session(SessionCapacity capacity) throws SessionException {
-        return new Session(0L, course(), sessionDuration(), capacity, coverImage(), FEE, RECRUITING, new EnrollmentConditions());
+        return new Session(0L, course(), capacity, coverImage(), FEE, RECRUITING, new EnrollmentConditions());
     }
 
     public static Session session(EnrollmentConditions enrollmentConditions) throws SessionException {
-        return new Session(0L, course(), sessionDuration(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, enrollmentConditions);
+        return new Session(0L, course(), new SessionCapacity(100), coverImage(), FEE, RECRUITING, enrollmentConditions);
     }
 
     public static Session session(SessionCapacity capacity, Long fee, EnrollmentConditions enrollmentConditions) throws SessionException {
-        return new Session(0L, course(), sessionDuration(), capacity, coverImage(), fee, RECRUITING, enrollmentConditions);
+        return new Session(0L, course(), capacity, coverImage(), fee, RECRUITING, enrollmentConditions);
     }
 
     public static Payment payment() {

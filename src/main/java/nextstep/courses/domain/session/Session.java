@@ -10,8 +10,6 @@ public class Session {
 
     private final Long id;
     private final Course course;
-    private final SessionDuration sessionDuration;
-
     private final SessionCapacity capacity;
     private final CoverImage coverImage;
     private final Long fee;
@@ -22,7 +20,6 @@ public class Session {
 
     public Session(@NonNull Long id,
                    @NonNull Course course,
-                   @NonNull SessionDuration sessionDuration,
                    @NonNull SessionCapacity capacity,
                    @NonNull CoverImage coverImage,
                    @NonNull Long fee,
@@ -30,7 +27,6 @@ public class Session {
                    @NonNull EnrollmentConditions enrollmentConditions) {
         this.id = id;
         this.course = course;
-        this.sessionDuration = sessionDuration;
         this.capacity = capacity;
         this.coverImage = coverImage;
         this.fee = fee;
