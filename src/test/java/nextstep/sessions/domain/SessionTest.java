@@ -2,6 +2,7 @@ package nextstep.sessions.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        session = new Session(2, Status.RECRUITING, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        session = new Session(2, Status.RECRUITING, 10000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
     }
 
     @Test
@@ -54,5 +55,16 @@ class SessionTest {
         final Session session = new Session(5, Status.RECRUITING, LocalDateTime.now().plusDays(1));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.addAttendee(NsUserTest.JAVAJIGI));
+    }
+
+    @Test
+    void 결제_금액과_강의_금액이_일치하지_않으면_실패한다() {
+        assertThatIllegalArgumentException().isThrownBy(() -> session.validatePrice(20000L))
+                .withMessage("가격이 일치하지 않습니다.");
+    }
+
+    @Test
+    void 결제_금액과_강의_금액이_일치하면_성공한다() {
+        assertThatNoException().isThrownBy(() -> session.validatePrice(10000L));
     }
 }
