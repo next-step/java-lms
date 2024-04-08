@@ -4,9 +4,9 @@ import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.domain.session.SessionEnrollment;
 import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.domain.session.condition.SessionConditions;
-import nextstep.courses.domain.session.condition.creator.ConditionsCreator;
-import nextstep.courses.domain.session.condition.creator.CostConditionsCreator;
-import nextstep.courses.domain.session.condition.creator.FreeConditionsCreator;
+import nextstep.courses.domain.session.condition.creator.SessionConditionsCreator;
+import nextstep.courses.domain.session.condition.creator.CostSessionConditionsCreator;
+import nextstep.courses.domain.session.condition.creator.FreeSessionConditionsCreator;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +27,7 @@ public class SessionEnrollmentTest {
     void 무료_강의_수강신청() throws ExceedSessionCapacityException {
         NsUser user = nsUser();
 
-        ConditionsCreator conditionsCreator = new FreeConditionsCreator();
+        SessionConditionsCreator conditionsCreator = new FreeSessionConditionsCreator();
         SessionConditions conditions = new SessionConditions(conditionsCreator);
         SessionEnrollment enrollment = sessionEnrollment(conditions);
         assertThatNoException().isThrownBy(() -> enrollment.enroll(user));
@@ -39,7 +39,7 @@ public class SessionEnrollmentTest {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
         SessionFee fee = sessionFee(SESSION_FEE);
 
-        ConditionsCreator conditionsCreator = new CostConditionsCreator(fee, SESSION_FEE, capacity);
+        SessionConditionsCreator conditionsCreator = new CostSessionConditionsCreator(fee, SESSION_FEE, capacity);
         SessionConditions conditions = new SessionConditions(conditionsCreator);
 
         SessionEnrollment enrollment = sessionEnrollment(capacity, fee, conditions);

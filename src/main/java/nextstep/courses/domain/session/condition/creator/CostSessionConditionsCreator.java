@@ -8,13 +8,13 @@ import nextstep.courses.domain.session.condition.SessionFeeCondition;
 
 import java.util.List;
 
-public class CostConditionsCreator implements ConditionsCreator {
+public class CostSessionConditionsCreator implements SessionConditionsCreator {
 
     private final SessionFee sessionFee;
     private final Long paymentAmount;
     private final SessionCapacity capacity;
 
-    public CostConditionsCreator(SessionFee sessionFee, Long paymentAmount, SessionCapacity capacity) {
+    public CostSessionConditionsCreator(SessionFee sessionFee, Long paymentAmount, SessionCapacity capacity) {
         this.sessionFee = sessionFee;
         this.paymentAmount = paymentAmount;
         this.capacity = capacity;

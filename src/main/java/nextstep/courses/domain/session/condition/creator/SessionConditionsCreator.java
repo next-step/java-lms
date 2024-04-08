@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.condition.SessionCondition;
 import java.util.List;
 
 @FunctionalInterface
-public interface ConditionsCreator {
+public interface SessionConditionsCreator {
 
     List<SessionCondition> create();
 

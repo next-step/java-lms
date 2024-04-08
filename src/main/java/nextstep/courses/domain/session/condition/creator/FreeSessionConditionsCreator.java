@@ -5,7 +5,7 @@ import nextstep.courses.domain.session.condition.SessionNoneCondition;
 
 import java.util.List;
 
-public class FreeConditionsCreator implements ConditionsCreator {
+public class FreeSessionConditionsCreator implements SessionConditionsCreator {
     @Override
     public List<SessionCondition> create() {
         return List.of(new SessionNoneCondition());
