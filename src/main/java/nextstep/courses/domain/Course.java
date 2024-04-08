@@ -1,17 +1,19 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Course {
+
     private Long id;
-
     private String title;
-
     private Long creatorId;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
+    private Map<Integer, List<Session>> sessions = new HashMap<>();
 
     public Course() {
     }
@@ -38,6 +40,17 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(int year, Session session) {
+        validateDuplicatedSession(year, session);
+        this.sessions.computeIfAbsent(year, k -> new ArrayList<>()).add(session);
+    }
+
+    private void validateDuplicatedSession(int year, Session session) {
+        if (sessions.containsKey(year) && sessions.get(year).contains(session)) {
+            throw new IllegalArgumentException("이미 동일한 강의가 있습니다.");
+        }
     }
 
     @Override

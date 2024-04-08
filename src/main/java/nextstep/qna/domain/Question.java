@@ -47,12 +47,7 @@ public class Question {
         return deleted;
     }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + this.id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
-    }
-
-    public List<DeleteHistory> deleteBy(NsUser user) throws CannotDeleteException {
+    public List<DeleteHistory> deleteBy(NsUser user) {
         if (!user.matchUser(this.writer)) {
             throw new CannotDeleteException("현재 로그인 계정과 질문자가 다릅니다.");
         }
@@ -76,5 +71,10 @@ public class Question {
 
     public NsUser getWriter() {
         return writer;
+    }
+
+    @Override
+    public String toString() {
+        return "Question [id=" + this.id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }

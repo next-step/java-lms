@@ -1,26 +1,26 @@
 package nextstep.users.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class NsUser {
+
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
 
     private Long id;
-
     private String userId;
-
     private String password;
-
     private String name;
-
     private String email;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
+    private List<Payment> payments = new ArrayList<>();
 
     public NsUser() {
     }
@@ -39,52 +39,12 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
     public void update(NsUser loginUser, NsUser target) {
-        if (!matchUserId(loginUser.getUserId())) {
+        if (!matchUserId(loginUser.userId)) {
             throw new UnAuthorizedException();
         }
 
-        if (!matchPassword(target.getPassword())) {
+        if (!matchPassword(target.password)) {
             throw new UnAuthorizedException();
         }
 
@@ -93,7 +53,7 @@ public class NsUser {
     }
 
     public boolean matchUser(NsUser target) {
-        return matchUserId(target.getUserId());
+        return matchUserId(target.userId);
     }
 
     private boolean matchUserId(String userId) {
@@ -115,6 +75,23 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public Payment pay(long sessionId, long amount) {
+        Payment payment = new Payment(UUID.randomUUID().toString(), sessionId, this.id, amount);
+        this.payments.add(payment);
+        return payment;
+    }
+
+    public Payment findPaymentBySessionId(int sessionId) {
+        return this.payments.stream()
+                .filter(payment -> payment.isSameSessionId(sessionId))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("해당 강의에 대한 결제 내역이 없습니다."));
     }
 
     private static class GuestNsUser extends NsUser {
