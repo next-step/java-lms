@@ -30,7 +30,7 @@ class JdbcEnrollmentRepositoryTest {
     @Test
     void save() {
         long id = enrollmentRepository.save(new Enrollment(1L, 2L, EnrollmentState.AUTO_APPROVAL, LocalDateTime.now()));
-        assertThat(id).isEqualTo(3L); // 더미 데이터 2건
+        assertThat(id).isEqualTo(4L); // 더미 데이터 3건
     }
 
     @Test
