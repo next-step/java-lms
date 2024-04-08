@@ -1,6 +1,10 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.condition.SessionCapacityCondition;
+import nextstep.courses.domain.session.condition.SessionEnrollmentCondition;
+import nextstep.courses.domain.session.condition.SessionFeeCondition;
+import nextstep.courses.domain.session.condition.SessionNoneCondition;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.courses.exception.MismatchSessionFeeException;
 import org.junit.jupiter.api.DisplayName;

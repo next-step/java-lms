@@ -1,5 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.condition;
 
+import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.exception.MismatchSessionFeeException;
 import nextstep.courses.exception.SessionException;
 

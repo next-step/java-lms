@@ -1,5 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.condition;
 
+import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.courses.exception.SessionException;
 

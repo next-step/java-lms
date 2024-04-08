@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.condition.*;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;

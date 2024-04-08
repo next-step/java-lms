@@ -2,7 +2,7 @@ package nextstep.courses.domain.fixture;
 
 import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.domain.session.SessionEnrollment;
-import nextstep.courses.domain.session.SessionEnrollmentConditions;
+import nextstep.courses.domain.session.condition.SessionEnrollmentConditions;
 import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 

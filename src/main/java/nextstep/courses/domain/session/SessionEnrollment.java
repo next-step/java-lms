@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.condition.SessionEnrollmentConditions;
 import nextstep.courses.exception.SessionException;
 import nextstep.users.domain.NsUser;
 
