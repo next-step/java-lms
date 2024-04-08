@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static nextstep.courses.domain.session.CoverImageDetailInfo.*;
+import static nextstep.courses.domain.session.CoverImageMeta.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SessionTest {
@@ -16,7 +16,7 @@ class SessionTest {
   void session_create_test() {
     SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
     SessionInfo sessionInfo = new SessionInfo("강의명", SessionStatus.READY, true, 0L,null);
-    CoverImage coverImage = new CoverImage("이미지명", ImageType.PNG, new CoverImageDetailInfo(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT));
+    CoverImage coverImage = new CoverImage("이미지명", ImageType.PNG, new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT));
 
     Session session = new Session(1L, sessionPeriod, sessionInfo, coverImage);
 

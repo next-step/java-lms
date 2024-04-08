@@ -43,7 +43,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("유료 강의 신청 한 경우" +
       "Enrollment 생성 테스트")
-  void not_free_enrollment_create_test() {
+  void not_free_enrollment_create링_test() {
     Optional<Session> notFreeSession = COURSE.getSessions().stream()
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
@@ -101,21 +101,21 @@ class EnrollmentTest {
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
         new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0L, null),
-        new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageDetailInfo(1024, 300, 200))
+        new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
         new SessionInfo("수강신청", SessionStatus.IN_PROGRESS, false, 50000L, 1),
-        new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageDetailInfo(1024, 300, 200))
+        new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session3 = new Session(
         3L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
         new SessionInfo("수강신청 실패 케이스", SessionStatus.END, false, 50000L, 1),
-        new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageDetailInfo(1024, 300, 200))
+        new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     COURSE.addSessions(Set.of(session1, session2, session3));

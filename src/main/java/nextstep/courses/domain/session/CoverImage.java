@@ -6,13 +6,13 @@ public class CoverImage {
 
   private String imageTitle;
   private ImageType imageType;
-  private CoverImageDetailInfo coverImageDetailInfo;
+  private CoverImageMeta coverImageMeta;
 
-  public CoverImage(String imageTitle, ImageType imageType, CoverImageDetailInfo coverImageDetailInfo) {
+  public CoverImage(String imageTitle, ImageType imageType, CoverImageMeta coverImageMeta) {
     valid(imageTitle);
     this.imageTitle = imageTitle;
     this.imageType = imageType;
-    this.coverImageDetailInfo = coverImageDetailInfo;
+    this.coverImageMeta = coverImageMeta;
   }
 
   private void valid(String imageTitle) {

@@ -38,14 +38,14 @@ public class CourseService {
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
         new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0L, null),
-        new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageDetailInfo(1024, 300, 200))
+        new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
         new SessionInfo("레거시 코드 리팩토링", SessionStatus.IN_PROGRESS, false, 50000L, 100),
-        new CoverImage("리팩토링 이미지 커버", ImageType.PNG, new CoverImageDetailInfo(1024, 300, 200))
+        new CoverImage("리팩토링 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     course.addSessions(Set.of(session1, session2));

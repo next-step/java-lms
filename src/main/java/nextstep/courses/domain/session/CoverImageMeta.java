@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-public class CoverImageDetailInfo {
+public class CoverImageMeta {
 
   public static final int ONE_MB = 1024 * 1024;
   public static final int MIN_COVER_IMAGE_WIDTH = 300;
@@ -15,7 +15,7 @@ public class CoverImageDetailInfo {
   private int imageWidth;
   private int imageHeight;
 
-  public CoverImageDetailInfo(int imageSize, int imageWidth, int imageHeight) {
+  public CoverImageMeta(int imageSize, int imageWidth, int imageHeight) {
     validate(imageSize, imageWidth, imageHeight);
     this.imageSize = imageSize;
     this.imageWidth = imageWidth;
