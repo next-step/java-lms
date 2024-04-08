@@ -18,7 +18,7 @@ class CoverImageTest {
   void coverImage_create_test() {
     String imageTitle = "이미지명";
     ImageType imageType = ImageType.PNG;
-    CoverImageMeta coverImageMeta = new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
+    CoverImageMeta coverImageMeta = new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
 
     CoverImage coverImage = new CoverImage(imageTitle, imageType, coverImageMeta);
     assertThat(coverImage.getImageTitle()).isEqualTo(imageTitle);
@@ -31,7 +31,7 @@ class CoverImageTest {
       "exception 테스트")
   void coverImage_fail_case_test_by_image_title(String given) {
     ImageType imageType = ImageType.PNG;
-    CoverImageMeta coverImageMeta = new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
+    CoverImageMeta coverImageMeta = new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
 
     assertThatThrownBy(() -> new CoverImage(given, imageType, coverImageMeta))
         .isInstanceOf(IllegalArgumentException.class)

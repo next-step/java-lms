@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 public class CoverImageMeta {
 
-  public static final int ONE_MB = 1024 * 1024;
+  public static final int IMAGE_MAX_MB = 1024 * 1024;
   public static final int MIN_COVER_IMAGE_WIDTH = 300;
   public static final int MIN_COVER_IMAGE_HEIGHT = 200;
   private static final double IMAGE_COVER_RATIO = 3.0 / 2.0;
@@ -24,7 +24,7 @@ public class CoverImageMeta {
 
   private void validate(int imageSize, int imageWidth, int imageHeight) {
 
-    if (ONE_MB < imageSize) {
+    if (IMAGE_MAX_MB < imageSize) {
       throw new IllegalArgumentException(String.format(EXCEED_MAX_COVER_IMAGE_SIZE, imageSize));
     }
 

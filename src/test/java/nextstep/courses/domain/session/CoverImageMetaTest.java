@@ -13,8 +13,8 @@ class CoverImageMetaTest {
   @DisplayName("정상 이미지 사이즈, width, height 를 입력한 경우" +
       "CoverImageDetailInfo 생성 테스트")
   void coverImageDetailImage_create_test() {
-    CoverImageMeta coverImageMeta = new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
-    assertThat(coverImageMeta.getImageSize()).isEqualTo(ONE_MB);
+    CoverImageMeta coverImageMeta = new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
+    assertThat(coverImageMeta.getImageSize()).isEqualTo(IMAGE_MAX_MB);
     assertThat(coverImageMeta.getImageWidth()).isEqualTo(MIN_COVER_IMAGE_WIDTH);
     assertThat(coverImageMeta.getImageHeight()).isEqualTo(MIN_COVER_IMAGE_HEIGHT);
   }
@@ -23,8 +23,8 @@ class CoverImageMetaTest {
   @DisplayName("이미지 사이즈 최대 사이즈를 넘긴 경우" +
       "exception 테스트")
   void coverImageDetailImage_exceed_max_cover_size_test() {
-    int given = ONE_MB * 100;
-    assertThatThrownBy(() -> new CoverImageMeta(ONE_MB * 100, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT))
+    int given = IMAGE_MAX_MB * 100;
+    assertThatThrownBy(() -> new CoverImageMeta(IMAGE_MAX_MB * 100, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(EXCEED_MAX_COVER_IMAGE_SIZE, given));
   }
@@ -33,7 +33,7 @@ class CoverImageMetaTest {
   @DisplayName("이미지 width 최소 사이즈를 못 넘긴 경우" +
       "exception 테스트")
   void coverImageDetailImage_invalid_image_width_test() {
-    assertThatThrownBy(() -> new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH - 10, MIN_COVER_IMAGE_HEIGHT))
+    assertThatThrownBy(() -> new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH - 10, MIN_COVER_IMAGE_HEIGHT))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(INVALID_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_WIDTH - 10));
   }
@@ -42,7 +42,7 @@ class CoverImageMetaTest {
   @DisplayName("이미지 height 최소 사이즈를 못 넘긴 경우" +
       "exception 테스트")
   void coverImageDetailImage_invalid_image_height_test() {
-    assertThatThrownBy(() -> new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT - 10))
+    assertThatThrownBy(() -> new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT - 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(INVALID_COVER_IMAGE_HEIGHT, MIN_COVER_IMAGE_HEIGHT - 10));
   }
@@ -51,7 +51,7 @@ class CoverImageMetaTest {
   @DisplayName("width와 height의 비율이 올바르지 않은 경우" +
       "exception 테스트")
   void coverImageDetailImage_invalid_image_ratio_test() {
-    assertThatThrownBy(() -> new CoverImageMeta(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT + 10))
+    assertThatThrownBy(() -> new CoverImageMeta(IMAGE_MAX_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT + 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(INVALID_COVER_IMAGE_RATIO, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT + 10));
   }
