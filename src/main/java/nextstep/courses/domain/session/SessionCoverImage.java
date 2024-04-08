@@ -3,15 +3,11 @@ package nextstep.courses.domain.session;
 import nextstep.courses.exception.SessionCoverImageException;
 import nextstep.courses.exception.SessionException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SessionCoverImage {
 
     public static final int MAX_FILE_SIZE = 1024 * 1024;
-    public static final int WIDTH = 300;
-    public static final int HEIGHT = 200;
-    public static final List<String> EXTENSIONS = new ArrayList<String>(List.of("gif", "jpg", "jpeg", "png", "svg"));
+    public static final int MIN_WIDTH = 300;
+    public static final int MIN_HEIGHT = 200;
 
     private final long size;
     private final int width;
@@ -35,23 +31,18 @@ public class SessionCoverImage {
             throw new SessionCoverImageException(size, width, height, extension);
         }
 
-        if (!isPossibleExtension(extension)) {
+        if (!ImageExtension.isPossibleExtension(extension)) {
             throw new SessionCoverImageException(size, width, height, extension);
         }
 
     }
 
     private boolean isPossibleWidthHeightSize(int width, int height) {
-        return width >= WIDTH && height >= HEIGHT && width * 2 == height * 3;
+        return width >= MIN_WIDTH && height >= MIN_HEIGHT && width * 2 == height * 3;
     }
 
     private boolean isPossibleFileSize(long size) {
         return size <= MAX_FILE_SIZE;
     }
-
-    private boolean isPossibleExtension(String extension) {
-        return EXTENSIONS.contains(extension);
-    }
-
 
 }
