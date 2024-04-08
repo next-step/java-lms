@@ -22,6 +22,10 @@ public class Session {
 
     private List<NsUser> attendees = new ArrayList<>();
 
+    public Session(final Status status) {
+        this(Integer.MAX_VALUE, status, 0L, LocalDateTime.now(), LocalDateTime.MAX);
+    }
+
     public Session(final int maxNumber, final Status status, final long price, final LocalDateTime endAt) {
         this(maxNumber, status, price, LocalDateTime.now(), endAt);
     }
@@ -66,7 +70,7 @@ public class Session {
     }
 
     private void validateStartedAt() {
-        if (startedAt.isBefore(LocalDateTime.now())) {
+        if (startedAt.isBefore(LocalDateTime.now()) && price != 0L) {
             status = Status.END;
             throw new IllegalArgumentException("시작일이 지난 강의는 수강 신청할 수 없습니다.");
         }
