@@ -54,7 +54,7 @@ public class Answer {
     public DeleteHistory deleteByUser(NsUser user) throws CannotDeleteException {
         validateUser(user);
         this.deleted = true;
-        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
+        return deleteHistoryOfAnswer();
     }
 
     private void validateUser(NsUser user) throws CannotDeleteException {
@@ -65,6 +65,10 @@ public class Answer {
 
     private boolean isOwner(NsUser user) {
         return this.writer.equals(user);
+    }
+
+    private DeleteHistory deleteHistoryOfAnswer() {
+        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isDeleted() {

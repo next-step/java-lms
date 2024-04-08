@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nextstep.qna.domain.ContentType.QUESTION;
+
 public class Question {
     private Long id;
 
@@ -71,17 +73,9 @@ public class Question {
 
     public List<DeleteHistory> deleteByUser(NsUser user) throws CannotDeleteException {
         validateUser(user);
-
         List<DeleteHistory> deleteHistoriesOfAnswers = answers.deleteByUser(user);
-
         this.deleted = true;
-        DeleteHistory deleteHistoryOfQuestion = new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(deleteHistoryOfQuestion);
-        deleteHistories.addAll(deleteHistoriesOfAnswers);
-
-        return deleteHistories;
+        return deleteHistoriesOfQuestion(deleteHistoriesOfAnswers);
     }
 
     private void validateUser(NsUser user) throws CannotDeleteException {
@@ -92,6 +86,15 @@ public class Question {
 
     private boolean isOwner(NsUser user) {
         return writer.equals(user);
+    }
+
+    private List<DeleteHistory> deleteHistoriesOfQuestion(List<DeleteHistory> deleteHistoriesOfAnswers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(new DeleteHistory(QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(deleteHistoriesOfAnswers);
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
