@@ -7,14 +7,10 @@ import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 
 public class SessionCapacityFixture {
 
-    public static final int MAX_CAPACITY = 100;
+    public static final int MAX_CAPACITY = 10;
 
     public static SessionCapacity sessionCapacity(int maxCapacity) {
         return new SessionCapacity(SESSION_CAPACITY_ID, SESSION_ID, maxCapacity);
-    }
-
-    public static SessionCapacity sessionCapacity(int maxCapacity, int currentCapacity) {
-        return new SessionCapacity(SESSION_CAPACITY_ID, SESSION_ID, maxCapacity, currentCapacity);
     }
 
     public static SessionCapacity sessionCapacity() {

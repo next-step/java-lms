@@ -1,6 +1,7 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.SessionException;
+import nextstep.users.domain.NsUser;
 
 public class SessionEnrollment {
 
@@ -20,29 +21,13 @@ public class SessionEnrollment {
         this.fee = fee;
     }
 
-    public boolean hasCapacity() {
-        return capacity.hasCapacity();
+    public void enroll(NsUser user) throws SessionException {
+        validateSessionEnrollment();
+        capacity.addUser(user);
     }
 
-    public SessionCapacity getCapacity() {
-        return capacity;
-    }
-
-    public boolean matchFee(Long amount) {
-        return fee.matchFee(amount);
-    }
-
-    public SessionFee getFee() {
-        return fee;
-    }
-
-    public void enroll() throws SessionException {
-        validateEnrollmentPossible();
-        capacity.increaseCurrentCapacity();
-    }
-
-    private void validateEnrollmentPossible() throws SessionException {
-        enrollmentConditions.validateSatisfy(this);
+    private void validateSessionEnrollment() throws SessionException {
+        enrollmentConditions.validateSatisfy();
         sessionStatus.validateCanEnrollment();
     }
 }

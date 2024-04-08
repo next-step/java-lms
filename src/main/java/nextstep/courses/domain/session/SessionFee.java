@@ -12,7 +12,7 @@ public class SessionFee {
         this.fee = fee;
     }
 
-    public boolean matchFee(Long amount) {
+    public boolean sameAs(Long amount) {
         return fee.equals(amount);
     }
 
