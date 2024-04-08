@@ -96,6 +96,12 @@ class JdbcSessionRepositoryTest {
     }
 
     @Test
+    void findByCourseId() {
+        List<Session> sessions = repository.findByCourseId(1L);
+        assertThat(sessions).hasSize(1);
+    }
+
+    @Test
     void update() {
         Session session = repository.findById(1L).get();
         Session target = Session.builder()

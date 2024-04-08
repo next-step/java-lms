@@ -72,6 +72,13 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(String.format(sql, inSql), ids.toArray(), (rs, rowNum) -> buildSession(rs));
     }
 
+    @Override
+    public List<Session> findByCourseId(long courseId) {
+        String sql = "SELECT id, course_id, title, state, capacity, amount, start_date, end_date, created_at FROM class_session WHERE course_id = ?";
+        
+        return jdbcTemplate.query(sql, (rs, rowNum) -> buildSession(rs), courseId);
+    }
+
     private Session buildSession(ResultSet rs) throws SQLException {
         return Session.builder()
                 .id(rs.getLong(1))

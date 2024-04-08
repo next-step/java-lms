@@ -50,4 +50,16 @@ public class Course {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        if (sessions.isEmpty()) {
+            return;
+        }
+
+        this.sessions = sessions;
+    }
 }
