@@ -43,24 +43,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -78,20 +60,11 @@ public class Question {
         return deleted;
     }
 
-    private Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
-    public Answers getAnswers() {
-        return answers;
-    }
-
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-        setDeleted(true);
+        this.deleted = true;
         DeleteHistory questionHistory = createDeleteHistory();
         List<DeleteHistory> answerHistory = answers.delete();
 
@@ -100,7 +73,7 @@ public class Question {
     }
 
     private DeleteHistory createDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+        return DeleteHistory.createQuestionDeleteHistory(id, writer);
     }
 
     @Override
