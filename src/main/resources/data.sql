@@ -42,3 +42,10 @@ VALUES (2L, '자바 플레이그라운드 with TDD, 클린 코드', 'ONGOING', '
 INSERT INTO class_session(course_id, title, state, recruitment, capacity, amount, start_date, end_date, created_at)
 VALUES (3L, '스터디 모집', 'ONGOING', 'RECRUITING', 0, 0L, '2024-01-01', '2024-12-31', CURRENT_TIMESTAMP());
 
+-- 강의 수강 신청
+INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
+VALUES (1L, 1L, 'AUTO_APPROVAL', CURRENT_TIMESTAMP());
+INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
+VALUES (2L, 2L, 'CANCELLED', CURRENT_TIMESTAMP());
+INSERT INTO enrollment(session_id, ns_user_id, state, created_at)
+VALUES (2L, 1L, 'PENDING', CURRENT_TIMESTAMP());

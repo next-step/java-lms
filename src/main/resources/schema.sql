@@ -78,3 +78,13 @@ CREATE TABLE class_session (
    created_at timestamp NOT NULL,
    updated_at timestamp
 );
+
+
+CREATE TABLE enrollment (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   session_id BIGINT NOT NULL,
+   ns_user_id BIGINT NOT NULL,
+   state VARCHAR(20) NOT NULL,
+   created_at timestamp NOT NULL,
+   updated_at timestamp
+);

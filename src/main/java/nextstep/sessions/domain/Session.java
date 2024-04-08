@@ -188,8 +188,8 @@ public class Session extends BaseEntity {
             throw new DuplicateJoinException("이미 등록된 수강생이므로 중복 신청 불가합니다");
         }
 
-        boolean hasEnrollment = this.enrollments.stream().anyMatch(e -> e.hasEnrollment(this.id, loginUser.getId()));
-        if (hasEnrollment) {
+        boolean disableEnrollment = this.enrollments.stream().anyMatch(e -> e.disableEnrollment(this.id, loginUser.getId()));
+        if (disableEnrollment) {
             throw new DuplicateEnrollmentException("중복 수강 신청은 불가합니다");
         }
 
