@@ -2,7 +2,7 @@ package nextstep.sessions.domain;
 
 public class SessionDetails {
 
-    private int countOfStudents;
+    private int currentCountOfStudents;
 
     private final int maxOfStudents;
 
@@ -13,8 +13,8 @@ public class SessionDetails {
     private final SessionStatus sessionStatus;
 
     // 강의디테일: 현재 수강인원, 최대 수강인원, SessionType, SessionStatus
-    public SessionDetails(int countOfStudents, int maxOfStudents, int price, SessionType sessionType, SessionStatus sessionStatus) {
-        this.countOfStudents = countOfStudents;
+    public SessionDetails(int currentCountOfStudents, int maxOfStudents, int price, SessionType sessionType, SessionStatus sessionStatus) {
+        this.currentCountOfStudents = currentCountOfStudents;
         this.maxOfStudents = maxOfStudents;
         this.price = price;
         this.sessionType = sessionType;
@@ -22,10 +22,13 @@ public class SessionDetails {
     }
 
     public void register() {
-        if (this.countOfStudents + 1 > maxOfStudents) {
+        if (SessionStatus.isNotRecruiting(this.sessionStatus)) {
+            throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
+        }
+        if (this.currentCountOfStudents + 1 > maxOfStudents) {
             throw new IllegalArgumentException();
         }
-        this.countOfStudents++;
+        this.currentCountOfStudents++;
     }
 
 }

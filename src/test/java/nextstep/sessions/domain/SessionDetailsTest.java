@@ -6,15 +6,27 @@ import org.junit.jupiter.api.Test;
 
 import static nextstep.sessions.domain.SessionStatus.*;
 import static nextstep.sessions.domain.SessionType.PAID;
+import static org.assertj.core.api.Assertions.*;
 
 public class SessionDetailsTest {
 
     @DisplayName("유료강의는 수강신청을 했을 때, 최대 수강 인원을 초과하면 예외를 반환한다")
     @Test
-    void name() {
+    void greaterThanMax() {
         SessionDetails details = new SessionDetails(40, 40, 30000, PAID, RECRUITING);
 
-        Assertions.assertThatThrownBy(details::register)
+        assertThatThrownBy(details::register)
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("강의가 모집중이 아닐때 수강신청을 하면 예외를 반환한다")
+    @Test
+    void statusIsNotRecruiting() {
+        SessionStatus end = END;
+        SessionDetails details = new SessionDetails(39, 40, 30000, PAID, end);
+
+        assertThatThrownBy(details::register)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(String.format("현재 강의는 (%s)인 상태입니다.", end));
     }
 }
