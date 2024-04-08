@@ -26,15 +26,20 @@ public class QuestionTest {
     }
 
     @Test
-    @DisplayName("question 삭제 실패 테스트")
-    void questionDeleteFailTest() {
+    @DisplayName("question 삭제 실패 테스트 - 권한 없음")
+    void questionDeleteFailForNotAuthorizedTest() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
         assertThatThrownBy(() -> {
             question.delete(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
+    }
 
+    @Test
+    @DisplayName("question 삭제 실패 테스트 - 다른 사람이 쓴 답변")
+    void questionDeleteFailForOtherOwnerAnswerTest() {
+        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         question.addAnswer(new Answer(NsUserTest.SANJIGI, question, "Answers Contents2"));
         assertThatThrownBy(() -> {
             question.delete(NsUserTest.JAVAJIGI);

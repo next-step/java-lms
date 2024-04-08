@@ -40,10 +40,11 @@ public class Question {
         if (!isOwner(loginUser))
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         this.deleted = true;
-        this.updatedDate = LocalDateTime.now();
+        LocalDateTime updatedDate = LocalDateTime.now();
+        this.updatedDate = updatedDate;
 
         List<DeleteHistory> deleteHistoryList = new ArrayList<>();
-        DeleteHistory questionDeleteHistory = new DeleteHistory(ContentType.QUESTION, getId(), loginUser, LocalDateTime.now());
+        DeleteHistory questionDeleteHistory = new DeleteHistory(ContentType.QUESTION, getId(), loginUser, updatedDate);
         List<DeleteHistory> answersDeleteHistoryList = answers.delete(loginUser);
 
         deleteHistoryList.add(questionDeleteHistory);
