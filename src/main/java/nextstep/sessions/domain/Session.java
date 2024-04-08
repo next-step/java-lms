@@ -24,15 +24,15 @@ public class Session extends BaseEntity {
 
     private SessionType sessionType;
 
-    private CoverImage coverImage;
-
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
     private Set<NsUser> listener;
 
-    public Session(Long id, Long courseId, String title, SessionState state, SessionType sessionType, CoverImage coverImage, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+    private CoverImages coverImages;
+
+    public Session(Long id, Long courseId, String title, SessionState state, SessionType sessionType, CoverImages coverImages, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
         validateCourseId(courseId);
         validateSessionType(sessionType);
         validatePeriod(startDate, endDate);
@@ -42,12 +42,12 @@ public class Session extends BaseEntity {
         this.title = title;
         this.state = state;
         this.sessionType = sessionType;
-        this.coverImage = coverImage;
         this.startDate = startDate;
         this.endDate = endDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.listener = listener == null ? new HashSet<>() : listener;
+        this.coverImages = coverImages == null ? new CoverImages() : coverImages;
     }
 
     private void validateCourseId(Long courseId) {
@@ -83,8 +83,8 @@ public class Session extends BaseEntity {
         private LocalDateTime endDate;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private CoverImage coverImage;
         private Set<NsUser> listener;
+        private CoverImages coverImages;
 
         public Builder() {
         }
@@ -134,18 +134,18 @@ public class Session extends BaseEntity {
             return this;
         }
 
-        public Builder coverImage(CoverImage coverImage) {
-            this.coverImage = coverImage;
-            return this;
-        }
-
         public Builder listener(Set<NsUser> listener) {
             this.listener = listener;
             return this;
         }
 
+        public Builder coverImages(CoverImages coverImages) {
+            this.coverImages = coverImages;
+            return this;
+        }
+
         public Session build() {
-            return new Session(id, courseId, title, state, sessionType, coverImage, startDate, endDate, createdAt, updatedAt, listener);
+            return new Session(id, courseId, title, state, sessionType, coverImages, startDate, endDate, createdAt, updatedAt, listener);
         }
     }
 
@@ -267,10 +267,6 @@ public class Session extends BaseEntity {
         return sessionType;
     }
 
-    public CoverImage getCoverImage() {
-        return coverImage;
-    }
-
     public LocalDateTime getStartDate() {
         return startDate;
     }
@@ -281,6 +277,10 @@ public class Session extends BaseEntity {
 
     public Set<NsUser> getListener() {
         return listener;
+    }
+
+    public CoverImages getCoverImages() {
+        return coverImages;
     }
 
     public int getCapacity() {
@@ -296,25 +296,26 @@ public class Session extends BaseEntity {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         Session session = (Session) other;
-        return id == session.id && Objects.equals(title, session.title) && state == session.state && Objects.equals(createdAt, session.createdAt) && Objects.equals(updatedAt, session.updatedAt);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && state == session.state && Objects.equals(sessionType, session.sessionType) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(listener, session.listener) && Objects.equals(coverImages, session.coverImages);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, state, createdAt, updatedAt);
+        return Objects.hash(id, courseId, title, state, sessionType, startDate, endDate, listener, coverImages);
     }
 
     @Override
     public String toString() {
         return "Session{" +
                 "id=" + id +
+                ", courseId=" + courseId +
                 ", title='" + title + '\'' +
                 ", state=" + state +
                 ", sessionType=" + sessionType +
-                ", coverImage=" + coverImage +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", listener=" + listener +
+                ", coverImages=" + coverImages +
                 '}';
     }
 }
