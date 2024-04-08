@@ -18,8 +18,8 @@ public class SessionTest {
 
     @BeforeEach
     void createSession(){
-        freeSession = new Session(1L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.FREE, 0, 3000L);
-        paidSession = new Session(2L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.PAID, 1, 3000L);
+        freeSession = Session.defaultOf(1L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.FREE, 0, 3000L);
+        paidSession = Session.defaultOf(2L, course, LocalDate.of(2024, 4, 28), LocalDate.of(2024, 9, 7), new Image(10, ImageType.JPG, 300, 200), SessionPayType.PAID, 1, 3000L);
     }
 
     @Test
