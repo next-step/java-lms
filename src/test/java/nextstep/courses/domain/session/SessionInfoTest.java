@@ -15,7 +15,7 @@ class SessionInfoTest {
   @Test
   @DisplayName("정상 강의 명, 강의 상태, 무료 여부, 최대 학생수를 입력한 경우" +
       "SessionInfo 생성 테스트")
-  void sessionInfoTest() {
+  void sessionInfo_create_test() {
     String given1 = "강의명";
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
@@ -31,7 +31,7 @@ class SessionInfoTest {
   @NullAndEmptySource
   @DisplayName("강의명이 null 또는 empty인 경우" +
       "exception 테스트")
-  void sessionInfoTest2(String given) {
+  void sessionInfo_fail_test_by_incorrect_title(String given) {
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = true;
 
@@ -43,7 +43,7 @@ class SessionInfoTest {
   @Test
   @DisplayName("유로 강의인데 수강 인원이 0인 경우" +
       "exception 테스트")
-  void sessionInfoTest3() {
+  void sessionInfo_fail_test_by_invalid_student_count() {
     String given1 = "강의명";
     SessionStatus given2 = SessionStatus.READY;
     boolean given3 = false;

@@ -16,7 +16,7 @@ class CourseTest {
   @Test
   @DisplayName("정상 과정 상세 정보, 기수, 강의 정보를 입력하는 경우" +
       "COURSE 생성 테스트")
-  void courseTest() {
+  void course_create_test() {
 
     settingForCourseTest();
 

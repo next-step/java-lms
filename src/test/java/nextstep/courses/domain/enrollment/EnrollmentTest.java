@@ -29,7 +29,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("무료 강의 신청 한 경우" +
       "Enrollment 생성 테스트")
-  void enrollmentTest() {
+  void free_enrollment_create_test() {
     Optional<Session> freeSession = COURSE.getSessions().stream()
         .filter(it -> it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
@@ -43,7 +43,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("유료 강의 신청 한 경우" +
       "Enrollment 생성 테스트")
-  void enrollmentTest2() {
+  void not_free_enrollment_create_test() {
     Optional<Session> notFreeSession = COURSE.getSessions().stream()
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
@@ -57,7 +57,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("강의 상태가 모집 중이 아닌 경우" +
       "exception 테스트")
-  void enrollmentTest4() {
+  void enrollment_fail_case_test_by_not_possible_register_status() {
     Optional<Session> notInProgressSession = COURSE.getSessions().stream()
         .filter(it -> !it.checkRegisterPossibleStatus())
         .findFirst();
@@ -70,7 +70,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("수강료가 일치하지 않는 경우" +
       "exception 테스트")
-  void enrollmentTest5() {
+  void enrollment_fail_case_test_by_amount_not_correct() {
     Optional<Session> notFreeSession = COURSE.getSessions().stream()
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
@@ -83,7 +83,7 @@ class EnrollmentTest {
   @Test
   @DisplayName("수강 인원이 꽉 찬 경우 경우" +
       "exception 테스트")
-  void enrollmentTest6() {
+  void enrollment_fail_case_test_by_student_count_is_full() {
     Optional<Session> notFreeSession = COURSE.getSessions().stream()
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();

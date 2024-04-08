@@ -15,7 +15,7 @@ class SessionPeriodTest {
   @Test
   @DisplayName("정상 시작일과 종료일을 넣은 경우" +
       "SessionPeriod 생성 테스트")
-  void sessionPeriodTest() {
+  void sessionPeriod_create_test() {
     LocalDateTime startedAt = LocalDateTime.now();
     LocalDateTime endedAt = LocalDateTime.now().plusDays(10);
 
@@ -26,7 +26,7 @@ class SessionPeriodTest {
   @Test
   @DisplayName("시작일이 null인 경우" +
       "exception 테스트")
-  void sessionPeriodTest2() {
+  void sessionPeriod_fail_test_by_invalid_session_started_at() {
     LocalDateTime endedAt = LocalDateTime.now();
     assertThatThrownBy(() -> new SessionPeriod(null, endedAt))
         .isInstanceOf(IllegalArgumentException.class)
@@ -36,7 +36,7 @@ class SessionPeriodTest {
   @Test
   @DisplayName("종료일이 null인 경우" +
       "exception 테스트")
-  void sessionPeriodTest3() {
+  void sessionPeriod_fail_test_by_invalid_session_ended_at() {
     LocalDateTime startedAt = LocalDateTime.now();
     assertThatThrownBy(() -> new SessionPeriod(startedAt, null))
         .isInstanceOf(IllegalArgumentException.class)
@@ -46,7 +46,7 @@ class SessionPeriodTest {
   @Test
   @DisplayName("강의 시작일과 종료일이 같은 경우" +
       "exception 테스트")
-  void sessionPeriodTest4() {
+  void sessionPeriod_fail_test_by_invalid_session_period() {
     LocalDateTime given = LocalDateTime.now();
     assertThatThrownBy(() -> new SessionPeriod(given, given))
         .isInstanceOf(IllegalArgumentException.class)
@@ -56,7 +56,7 @@ class SessionPeriodTest {
   @Test
   @DisplayName("강의 시작일이 종료일 보다 이후인 경우" +
       "exception 테스트")
-  void sessionPeriodTest5() {
+  void sessionPeriod_fail_test_by_invalid_session_period2() {
     LocalDateTime startedAt = LocalDateTime.now().plusDays(10);
     LocalDateTime endedAt = LocalDateTime.now();
     assertThatThrownBy(() -> new SessionPeriod(startedAt, endedAt))

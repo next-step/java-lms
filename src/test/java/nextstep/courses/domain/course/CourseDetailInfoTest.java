@@ -14,7 +14,7 @@ class CourseDetailInfoTest {
   @Test
   @DisplayName("정상 생성자 id와 타이틀 명을 넣은 경우" +
       "CourseDetailInfo 생성 테스트")
-  void courseDetailInfoTest() {
+  void courseDetailInfo_create_test() {
     Long givenCreatorId = 1L;
     String givenTitleName = "테스트 과정 명";
 
@@ -26,7 +26,7 @@ class CourseDetailInfoTest {
   @Test
   @DisplayName("생성자 id를 음수로 넣은 경우" +
       "exception 테스트")
-  void courseDetailInfoTest2() {
+  void courseDetailInfo_id_validation_exception_test() {
     Long given = -1000L;
     assertThatThrownBy(() -> new CourseDetailInfo(given, "테스트 과정 명"))
         .isInstanceOf(IllegalArgumentException.class)
@@ -36,7 +36,7 @@ class CourseDetailInfoTest {
   @Test
   @DisplayName("생성자 id를 0으로 넣은 경우" +
       "exception 테스트")
-  void courseDetailInfoTest3() {
+  void courseDetailInfo_id_validation_exception_test2() {
     Long given = 0L;
     assertThatThrownBy(() -> new CourseDetailInfo(given, "테스트 과정 명"))
         .isInstanceOf(IllegalArgumentException.class)
@@ -47,7 +47,7 @@ class CourseDetailInfoTest {
   @NullAndEmptySource
   @DisplayName("과정 명이 null 또는 empty 인 경우" +
       "exception 테스트")
-  void courseDetailInfoTest4(String given) {
+  void courseDetailInfo_course_title_validation_test(String given) {
     assertThatThrownBy(() -> new CourseDetailInfo(100L, given))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(COURSE_TITLE_IS_INCORRECT, given));

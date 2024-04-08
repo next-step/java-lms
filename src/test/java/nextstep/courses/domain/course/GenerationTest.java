@@ -11,7 +11,7 @@ class GenerationTest {
 
   @Test
   @DisplayName("기수 정상 생성 테스트")
-  void generationTest() {
+  void generation_create_test() {
     Long given = 1L;
     Generation generation = new Generation(given);
     assertThat(generation.isSame(given)).isTrue();
@@ -20,7 +20,7 @@ class GenerationTest {
   @Test
   @DisplayName("기수 값을 음수로 넣은 경우" +
       "exception 테스트")
-  void generationTest2() {
+  void generation_negative_number_exception_test() {
     Long given = -100L;
     assertThatThrownBy(() -> new Generation(given))
         .isInstanceOf(IllegalArgumentException.class)
@@ -30,7 +30,7 @@ class GenerationTest {
   @Test
   @DisplayName("기수 값을 0으로 넣은 경우" +
       "exception 테스트")
-  void generationTest3() {
+  void generation_zero_number_exception_test() {
     Long given = 0L;
     assertThatThrownBy(() -> new Generation(given))
         .isInstanceOf(IllegalArgumentException.class)

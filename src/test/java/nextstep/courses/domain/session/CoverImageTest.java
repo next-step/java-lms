@@ -15,7 +15,7 @@ class CoverImageTest {
   @Test
   @DisplayName("정상 이미지 명, 이미지 확장자, 상세 정보를 입력한 경우" +
       "CoverImage 생성 테스트")
-  void coverImageTest() {
+  void coverImage_create_test() {
     String imageTitle = "이미지명";
     ImageType imageType = ImageType.PNG;
     CoverImageDetailInfo coverImageDetailInfo = new CoverImageDetailInfo(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
@@ -29,7 +29,7 @@ class CoverImageTest {
   @NullAndEmptySource
   @DisplayName("이미지명이 null 또는 empty인 경우" +
       "exception 테스트")
-  void coverImageTest2(String given) {
+  void coverImage_fail_case_test_by_image_title(String given) {
     ImageType imageType = ImageType.PNG;
     CoverImageDetailInfo coverImageDetailInfo = new CoverImageDetailInfo(ONE_MB, MIN_COVER_IMAGE_WIDTH, MIN_COVER_IMAGE_HEIGHT);
 
