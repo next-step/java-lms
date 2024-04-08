@@ -5,16 +5,16 @@ import nextstep.courses.exception.SessionException;
 
 import java.util.List;
 
-public class SessionEnrollmentConditions {
+public class SessionConditions {
 
-    private final List<SessionEnrollmentCondition> conditions;
+    private final List<SessionCondition> conditions;
 
-    public SessionEnrollmentConditions(ConditionsCreator creator) {
+    public SessionConditions(ConditionsCreator creator) {
         conditions = creator.create();
     }
 
     public void satisfy() throws SessionException {
-        for (SessionEnrollmentCondition condition : conditions) {
+        for (SessionCondition condition : conditions) {
             condition.satisfy();
         }
     }

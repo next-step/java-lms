@@ -4,7 +4,7 @@ import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.exception.MismatchSessionFeeException;
 import nextstep.courses.exception.SessionException;
 
-public class SessionFeeCondition implements SessionEnrollmentCondition {
+public class SessionFeeCondition implements SessionCondition {
 
     private final SessionFee sessionFee;
     private final Long paymentAmount;

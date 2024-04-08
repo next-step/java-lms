@@ -4,7 +4,7 @@ import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.exception.ExceedSessionCapacityException;
 import nextstep.courses.exception.SessionException;
 
-public class SessionCapacityCondition implements SessionEnrollmentCondition {
+public class SessionCapacityCondition implements SessionCondition {
 
     private final SessionCapacity capacity;
 

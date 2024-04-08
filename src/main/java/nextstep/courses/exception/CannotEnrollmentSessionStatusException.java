@@ -8,9 +8,9 @@ import static nextstep.courses.exception.SessionExceptionMessage.*;
 
 public class CannotEnrollmentSessionStatusException extends SessionException {
 
-    public CannotEnrollmentSessionStatusException(SessionStatus sessionStatus) {
+    public CannotEnrollmentSessionStatusException(SessionStatus status) {
         super(CANNOT_ENROLLMENT_SESSION_STATUS,
-                MessageFormat.format("강의 상태: {0}", sessionStatus));
+                MessageFormat.format("강의 상태: {0}", status));
     }
 
 }

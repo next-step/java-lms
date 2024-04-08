@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.domain.session.SessionEnrollment;
 import nextstep.courses.domain.session.SessionFee;
-import nextstep.courses.domain.session.condition.SessionEnrollmentConditions;
+import nextstep.courses.domain.session.condition.SessionConditions;
 import nextstep.courses.domain.session.condition.creator.ConditionsCreator;
 import nextstep.courses.domain.session.condition.creator.CostConditionsCreator;
 import nextstep.courses.domain.session.condition.creator.FreeConditionsCreator;
@@ -28,7 +28,7 @@ public class SessionEnrollmentTest {
         NsUser user = nsUser();
 
         ConditionsCreator conditionsCreator = new FreeConditionsCreator();
-        SessionEnrollmentConditions conditions = new SessionEnrollmentConditions(conditionsCreator);
+        SessionConditions conditions = new SessionConditions(conditionsCreator);
         SessionEnrollment enrollment = sessionEnrollment(conditions);
         assertThatNoException().isThrownBy(() -> enrollment.enroll(user));
     }
@@ -37,12 +37,12 @@ public class SessionEnrollmentTest {
     @DisplayName("[성공] 유료 강의를 수강신청 한다.")
     void 유료_강의_수강신청() throws ExceedSessionCapacityException {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
-        SessionFee sessionFee = sessionFee(SESSION_FEE);
+        SessionFee fee = sessionFee(SESSION_FEE);
 
-        ConditionsCreator conditionsCreator = new CostConditionsCreator(sessionFee, SESSION_FEE, capacity);
-        SessionEnrollmentConditions conditions = new SessionEnrollmentConditions(conditionsCreator);
+        ConditionsCreator conditionsCreator = new CostConditionsCreator(fee, SESSION_FEE, capacity);
+        SessionConditions conditions = new SessionConditions(conditionsCreator);
 
-        SessionEnrollment enrollment = sessionEnrollment(capacity, sessionFee, conditions);
+        SessionEnrollment enrollment = sessionEnrollment(capacity, fee, conditions);
         NsUser user = nsUser();
 
         assertThatNoException().isThrownBy(() -> enrollment.enroll(user));

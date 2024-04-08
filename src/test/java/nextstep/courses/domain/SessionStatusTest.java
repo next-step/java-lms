@@ -23,7 +23,7 @@ public class SessionStatusTest {
     }
 
     @ParameterizedTest
-    @MethodSource("sessionStatusFixture")
+    @MethodSource("statusFixture")
     @DisplayName("[성공] 강의 상태에 따른 모집 불가능을 확인한다.")
     void 강의_상태_모집_불가능(SessionStatus status, CannotEnrollmentSessionStatusException exception) {
         assertThatExceptionOfType(exception.getClass())
@@ -31,7 +31,7 @@ public class SessionStatusTest {
                 .withMessageContaining(SessionExceptionMessage.CANNOT_ENROLLMENT_SESSION_STATUS.getMessage());
     }
 
-    static Stream<Arguments> sessionStatusFixture() {
+    static Stream<Arguments> statusFixture() {
         return Stream.of(
                 Arguments.of(SessionStatus.PREPARING, new CannotEnrollmentSessionStatusException(SessionStatus.PREPARING)),
                 Arguments.of(SessionStatus.FINISHED, new CannotEnrollmentSessionStatusException(SessionStatus.FINISHED))

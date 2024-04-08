@@ -37,9 +37,9 @@ public class SessionCapacityTest {
     void 최대_인원_미만() throws ExceedSessionCapacityException {
         NsUser user = nsUser();
 
-        SessionCapacity sessionCapacity = sessionCapacity(MAX_CAPACITY);
+        SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
         assertThatNoException()
-                .isThrownBy(() -> sessionCapacity.addUser(user));
+                .isThrownBy(() -> capacity.addUser(user));
     }
 
     @Test
@@ -47,9 +47,9 @@ public class SessionCapacityTest {
     void 최대_인원_초과() throws ExceedSessionCapacityException {
         NsUser user = nsUser();
 
-        SessionCapacity sessionCapacity = sessionCapacity(0);
+        SessionCapacity capacity = sessionCapacity(0);
         assertThatExceptionOfType(ExceedSessionCapacityException.class)
-                .isThrownBy(() -> sessionCapacity.addUser(user));
+                .isThrownBy(() -> capacity.addUser(user));
     }
 
 }

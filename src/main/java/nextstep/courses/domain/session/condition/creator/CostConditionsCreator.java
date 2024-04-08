@@ -3,7 +3,7 @@ package nextstep.courses.domain.session.condition.creator;
 import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.domain.session.condition.SessionCapacityCondition;
-import nextstep.courses.domain.session.condition.SessionEnrollmentCondition;
+import nextstep.courses.domain.session.condition.SessionCondition;
 import nextstep.courses.domain.session.condition.SessionFeeCondition;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class CostConditionsCreator implements ConditionsCreator {
     }
 
     @Override
-    public List<SessionEnrollmentCondition> create() {
+    public List<SessionCondition> create() {
         return List.of(
                 new SessionFeeCondition(sessionFee, paymentAmount),
                 new SessionCapacityCondition(capacity)

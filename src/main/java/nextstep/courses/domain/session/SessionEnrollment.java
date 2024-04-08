@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.domain.session.condition.SessionEnrollmentConditions;
+import nextstep.courses.domain.session.condition.SessionConditions;
 import nextstep.courses.exception.SessionException;
 import nextstep.users.domain.NsUser;
 
@@ -9,16 +9,16 @@ public class SessionEnrollment {
     private final Long id;
     private final Long sessionId;
     private final SessionCapacity capacity;
-    private final SessionStatus sessionStatus;
-    private final SessionEnrollmentConditions enrollmentConditions;
+    private final SessionStatus status;
+    private final SessionConditions conditions;
     private final SessionFee fee;
 
-    public SessionEnrollment(Long id, Long sessionId, SessionCapacity capacity, SessionStatus sessionStatus, SessionEnrollmentConditions enrollmentConditions, SessionFee fee) {
+    public SessionEnrollment(Long id, Long sessionId, SessionCapacity capacity, SessionStatus status, SessionConditions conditions, SessionFee fee) {
         this.id = id;
         this.sessionId = sessionId;
         this.capacity = capacity;
-        this.sessionStatus = sessionStatus;
-        this.enrollmentConditions = enrollmentConditions;
+        this.status = status;
+        this.conditions = conditions;
         this.fee = fee;
     }
 
@@ -28,7 +28,7 @@ public class SessionEnrollment {
     }
 
     private void validateSessionEnrollment() throws SessionException {
-        enrollmentConditions.satisfy();
-        sessionStatus.validateCanEnrollment();
+        conditions.satisfy();
+        status.validateCanEnrollment();
     }
 }

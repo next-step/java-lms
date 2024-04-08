@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.condition.SessionCapacityCondition;
-import nextstep.courses.domain.session.condition.SessionEnrollmentCondition;
+import nextstep.courses.domain.session.condition.SessionCondition;
 import nextstep.courses.domain.session.condition.SessionFeeCondition;
 import nextstep.courses.domain.session.condition.SessionNoneCondition;
 import nextstep.courses.exception.ExceedSessionCapacityException;
@@ -19,12 +19,12 @@ import static nextstep.courses.exception.SessionExceptionMessage.PAYMENT_MISMATC
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-public class SessionEnrollmentConditionTest {
+public class SessionConditionTest {
 
     @Test
     @DisplayName("[성공] 강의 수강에 제약이 없다.")
     void 강의_무조건() {
-        SessionEnrollmentCondition condition = new SessionNoneCondition();
+        SessionCondition condition = new SessionNoneCondition();
         assertThatNoException()
                 .isThrownBy(condition::satisfy);
     }
@@ -34,7 +34,7 @@ public class SessionEnrollmentConditionTest {
     void 강의_수강인원() throws ExceedSessionCapacityException {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
 
-        SessionEnrollmentCondition condition = new SessionCapacityCondition(capacity);
+        SessionCondition condition = new SessionCapacityCondition(capacity);
         assertThatNoException()
                 .isThrownBy(condition::satisfy);
     }
@@ -44,7 +44,7 @@ public class SessionEnrollmentConditionTest {
     void 강의_수강인원_초과() throws ExceedSessionCapacityException {
         SessionCapacity capacity = sessionCapacity(0);
 
-        SessionEnrollmentCondition condition = new SessionCapacityCondition(capacity);
+        SessionCondition condition = new SessionCapacityCondition(capacity);
         assertThatExceptionOfType(ExceedSessionCapacityException.class)
                 .isThrownBy(condition::satisfy)
                 .withMessageContaining(CAPACITY_EXCEED.getMessage());
@@ -53,8 +53,8 @@ public class SessionEnrollmentConditionTest {
     @Test
     @DisplayName("[성공] 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다.")
     void 강의_수강료() {
-        SessionFee sessionFee = sessionFee(SESSION_FEE);
-        SessionFeeCondition condition =  new SessionFeeCondition(sessionFee, SESSION_FEE);
+        SessionFee fee = sessionFee(SESSION_FEE);
+        SessionFeeCondition condition =  new SessionFeeCondition(fee, SESSION_FEE);
 
         assertThatNoException().isThrownBy(condition::satisfy);
     }
@@ -62,8 +62,8 @@ public class SessionEnrollmentConditionTest {
     @Test
     @DisplayName("[실패] 강의의 결제 금액과 수강료가 일치하지 않으면 MismatchSessionFeeException 예외가 발생한다.")
     void 강의_수강료_불일치() {
-        SessionFee sessionFee = sessionFee(SESSION_FEE);
-        SessionFeeCondition condition =  new SessionFeeCondition(sessionFee, 100_000L);
+        SessionFee fee = sessionFee(SESSION_FEE);
+        SessionFeeCondition condition =  new SessionFeeCondition(fee, 100_000L);
 
         assertThatExceptionOfType(MismatchSessionFeeException.class)
                 .isThrownBy(condition::satisfy)
