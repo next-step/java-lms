@@ -25,8 +25,8 @@ public class Enrollment extends BaseEntity {
         this.updatedAt = updatedAt;
     }
 
-    public boolean match(Long sessionId, Long nsUserId) {
-        return this.sessionId.equals(sessionId) && this.nsUserId.equals(nsUserId);
+    public boolean hasEnrollment(Long sessionId, Long nsUserId) {
+        return this.sessionId.equals(sessionId) && this.nsUserId.equals(nsUserId) && !this.state.isCancelled();
     }
 
     @Override

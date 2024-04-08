@@ -165,19 +165,16 @@ class SessionTest {
                     .hasMessage("이미 등록된 수강생이므로 중복 신청 불가합니다");
         }
 
-
         @Test
         void 수강신청가능한경우_수강신청서를생성한다() {
-            LocalDateTime startDate = LocalDateTime.of(2024, 4, 2, 0, 0, 0);
-            LocalDateTime endDate = LocalDateTime.of(2024, 4, 3, 23, 59, 59);
             Session session = Session.builder()
                     .id(0L)
                     .courseId(1L)
                     .state(ONGOING)
                     .recruitment(RecruitmentState.RECRUITING)
                     .sessionType(new FreeSession())
-                    .startDate(startDate)
-                    .endDate(endDate)
+                    .startDate(LocalDateTime.of(2024, 4, 2, 0, 0, 0))
+                    .endDate(LocalDateTime.of(2024, 4, 3, 23, 59, 59))
                     .createdAt(LocalDateTime.now())
                     .selection(Selection.AUTOMATIC)
                     .build();
@@ -185,6 +182,26 @@ class SessionTest {
             LocalDateTime now = LocalDateTime.of(2024, 4, 2, 12, 0, 0);
             Enrollment enrollment = session.requestJoin(JAVAJIGI, now);
 
+            assertThat(enrollment).isEqualTo(new Enrollment(0L, 1L, EnrollmentState.AUTO_APPROVAL, now));
+        }
+
+        @Test
+        void 수강신청_취소한경우_재수강신청가능하다() {
+            Session session = Session.builder()
+                    .id(0L)
+                    .courseId(1L)
+                    .state(ONGOING)
+                    .recruitment(RecruitmentState.RECRUITING)
+                    .sessionType(new FreeSession())
+                    .startDate(LocalDateTime.of(2024, 4, 2, 0, 0, 0))
+                    .endDate(LocalDateTime.of(2024, 4, 3, 23, 59, 59))
+                    .createdAt(LocalDateTime.now())
+                    .selection(Selection.AUTOMATIC)
+                    .enrollments(Set.of(new Enrollment(0L, 1L, EnrollmentState.CANCELLED, LocalDateTime.now())))
+                    .build();
+
+            LocalDateTime now = LocalDateTime.of(2024, 4, 2, 12, 0, 0);
+            Enrollment enrollment = session.requestJoin(JAVAJIGI, now);
             assertThat(enrollment).isEqualTo(new Enrollment(0L, 1L, EnrollmentState.AUTO_APPROVAL, now));
         }
     }

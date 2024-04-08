@@ -11,4 +11,8 @@ public enum EnrollmentState {
     EnrollmentState(String text) {
         this.text = text;
     }
+
+    public boolean isCancelled() {
+        return this == CANCELLED;
+    }
 }
