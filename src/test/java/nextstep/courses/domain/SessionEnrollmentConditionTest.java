@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
+import static nextstep.courses.domain.fixture.SessionCapacityFixture.MAX_CAPACITY;
 import static nextstep.courses.domain.fixture.SessionCapacityFixture.sessionCapacity;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.sessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionFeeFixture.SESSION_FEE;
@@ -29,7 +30,7 @@ public class SessionEnrollmentConditionTest {
     @Test
     @DisplayName("[성공] 강의 최대 수강 인원을 초과할 수 없다.")
     void 강의_수강인원() {
-        SessionEnrollment enrollment = sessionEnrollment(sessionCapacity());
+        SessionEnrollment enrollment = sessionEnrollment(sessionCapacity(MAX_CAPACITY, 99));
 
         SessionEnrollmentCondition condition = new SessionCapacityCondition();
         assertThatNoException()
