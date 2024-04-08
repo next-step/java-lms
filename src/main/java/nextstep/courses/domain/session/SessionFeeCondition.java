@@ -4,11 +4,11 @@ import nextstep.courses.exception.MismatchSessionFeeException;
 import nextstep.courses.exception.SessionException;
 import nextstep.payments.domain.Payment;
 
-public class FeeCondition implements EnrollmentCondition {
+public class SessionFeeCondition implements SessionEnrollmentCondition {
 
     private final Payment payment;
 
-    public FeeCondition(Payment payment) {
+    public SessionFeeCondition(Payment payment) {
         this.payment = payment;
     }
 

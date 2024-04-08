@@ -16,7 +16,7 @@ public class SessionTest {
     @Test
     @DisplayName("[성공] 무료 강의를 수강신청 한다.")
     void 무료_강의_수강신청() throws SessionException {
-        Session session = session(EnrollmentConditions.from(new NoneCondition()));
+        Session session = session(SessionEnrollmentConditions.from(new SessionNoneCondition()));
         Session sessionAfterEnroll = session.enroll();
         assertThat(sessionAfterEnroll.getCapacity().getCurrentCapacity())
                 .isEqualTo(1);
@@ -25,8 +25,8 @@ public class SessionTest {
     @Test
     @DisplayName("[성공] 유료 강의를 수강신청 한다.")
     void 유료_강의_수강신청() throws SessionException {
-        Session session = session(EnrollmentConditions.of(
-                List.of(new CapacityCondition(), new FeeCondition(payment())))
+        Session session = session(SessionEnrollmentConditions.of(
+                List.of(new SessionCapacityCondition(), new SessionFeeCondition(payment())))
         );
         Session sessionAfterEnroll = session.enroll();
         assertThat(sessionAfterEnroll.getCapacity().getCurrentCapacity())

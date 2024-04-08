@@ -14,7 +14,7 @@ public class Session {
     private final SessionCoverImage coverImage;
     private final Long fee;
     private final SessionStatus sessionStatus;
-    private final EnrollmentConditions enrollmentConditions;
+    private final SessionEnrollmentConditions enrollmentConditions;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -24,7 +24,7 @@ public class Session {
                    @NonNull SessionCoverImage coverImage,
                    @NonNull Long fee,
                    @NonNull SessionStatus sessionStatus,
-                   @NonNull EnrollmentConditions enrollmentConditions) {
+                   @NonNull SessionEnrollmentConditions enrollmentConditions) {
         this.id = id;
         this.course = course;
         this.capacity = capacity;
