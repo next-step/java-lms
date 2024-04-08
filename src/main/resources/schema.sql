@@ -70,6 +70,7 @@ CREATE TABLE class_session (
    course_id BIGINT NOT NULL,
    title VARCHAR(100) NOT NULL,
    state VARCHAR(20) NOT NULL,
+   recruitment VARCHAR(20) NOT NULL,
    capacity INT NOT NULL,
    amount BIGINT NOT NULL,
    start_date timestamp NOT NULL,

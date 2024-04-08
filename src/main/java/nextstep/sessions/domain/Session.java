@@ -23,6 +23,8 @@ public class Session extends BaseEntity {
 
     private SessionState state;
 
+    private RecruitmentState recruitment;
+
     private SessionType sessionType;
 
     private LocalDateTime startDate;
@@ -33,7 +35,7 @@ public class Session extends BaseEntity {
 
     private CoverImages coverImages;
 
-    public Session(Long id, Long courseId, String title, SessionState state, SessionType sessionType, CoverImages coverImages, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
+    public Session(Long id, Long courseId, String title, SessionState state, RecruitmentState recruitment, SessionType sessionType, CoverImages coverImages, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime createdAt, LocalDateTime updatedAt, Set<NsUser> listener) {
         validateCourseId(courseId);
         validateSessionType(sessionType);
         validatePeriod(startDate, endDate);
@@ -41,7 +43,8 @@ public class Session extends BaseEntity {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.state = state;
+        this.state = state == null ? SessionState.PREPARING : state;
+        this.recruitment = recruitment == null ? RecruitmentState.NOT_RECRUITING : recruitment;
         this.sessionType = sessionType;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -79,6 +82,7 @@ public class Session extends BaseEntity {
         private Long courseId;
         private String title;
         private SessionState state;
+        private RecruitmentState recruitment;
         private SessionType sessionType;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
@@ -107,6 +111,11 @@ public class Session extends BaseEntity {
 
         public Builder state(SessionState state) {
             this.state = state;
+            return this;
+        }
+
+        public Builder recruitment(RecruitmentState recruitment) {
+            this.recruitment = recruitment;
             return this;
         }
 
@@ -146,7 +155,7 @@ public class Session extends BaseEntity {
         }
 
         public Session build() {
-            return new Session(id, courseId, title, state, sessionType, coverImages, startDate, endDate, createdAt, updatedAt, listener);
+            return new Session(id, courseId, title, state, recruitment, sessionType, coverImages, startDate, endDate, createdAt, updatedAt, listener);
         }
     }
 
@@ -230,6 +239,7 @@ public class Session extends BaseEntity {
 
         this.title = target.title;
         this.state = target.state;
+        this.recruitment = target.recruitment;
         this.sessionType = target.sessionType;
         this.startDate = target.startDate;
         this.endDate = target.getEndDate();
@@ -262,6 +272,10 @@ public class Session extends BaseEntity {
 
     public SessionState getState() {
         return state;
+    }
+
+    public RecruitmentState getRecruitment() {
+        return recruitment;
     }
 
     public SessionType getSessionType() {
@@ -301,12 +315,12 @@ public class Session extends BaseEntity {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         Session session = (Session) other;
-        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && state == session.state && Objects.equals(sessionType, session.sessionType) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(listener, session.listener) && Objects.equals(coverImages, session.coverImages);
+        return Objects.equals(id, session.id) && Objects.equals(courseId, session.courseId) && Objects.equals(title, session.title) && state == session.state && recruitment == session.recruitment && Objects.equals(sessionType, session.sessionType) && Objects.equals(startDate, session.startDate) && Objects.equals(endDate, session.endDate) && Objects.equals(listener, session.listener) && Objects.equals(coverImages, session.coverImages);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, title, state, sessionType, startDate, endDate, listener, coverImages);
+        return Objects.hash(id, courseId, title, state, recruitment, sessionType, startDate, endDate, listener, coverImages);
     }
 
     @Override
@@ -316,6 +330,7 @@ public class Session extends BaseEntity {
                 ", courseId=" + courseId +
                 ", title='" + title + '\'' +
                 ", state=" + state +
+                ", recruitmentState=" + recruitment +
                 ", sessionType=" + sessionType +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
