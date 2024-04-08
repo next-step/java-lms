@@ -35,14 +35,19 @@ public class Session {
         this.endAt = endAt;
     }
 
-    public void addAttendee(final NsUser user) {
-        validateStartedAt();
-        validateAttendeeNumber();
-        validateRecruitingStatus();
+    public void enroll(final NsUser user, final long price) {
+        validate(price);
         attendees.add(user);
     }
 
-    public void validatePrice(final long price) {
+    private void validate(final long price) {
+        validatePrice(price);
+        validateAttendeeNumber();
+        validateRecruitingStatus();
+        validateStartedAt();
+    }
+
+    private void validatePrice(final long price) {
         if (this.price != price) {
             throw new IllegalArgumentException("가격이 일치하지 않습니다.");
         }
