@@ -88,7 +88,7 @@ public class Question {
 
     public List<DeleteHistory> delete() throws CannotDeleteException {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
+        deleteHistories.add(DeleteHistory.createQuestion(id, getWriter(), LocalDateTime.now()));
         deleteHistories.addAll(answers.deleteAll(writer));
         setDeleted(true);
 
