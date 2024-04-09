@@ -1,30 +1,38 @@
 package nextstep.courses.domain;
 
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class SessionTest {
 
     @DisplayName("수강 신청은 강의 상태가 모집 중일 때만 가능하다.")
-    @Test
-    void test01() {
-        Session freeSession = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        freeSession.changeStatus(SessionStatus.RECRUITING);
-        Session paidSession = new PaidSession(1, 1, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        paidSession.changeStatus(SessionStatus.RECRUITING);
+    @ParameterizedTest
+    @MethodSource("checkRegister")
+    void test01(Session session, int amount) {
+        session.changeStatus(SessionStatus.RECRUITING);
+        NsUserTest.JAVAJIGI.pay(session.getId(), amount);
         assertThatCode(() -> {
-            freeSession.register(NsUserTest.JAVAJIGI);
-            paidSession.register(NsUserTest.JAVAJIGI);
+            session.register(NsUserTest.JAVAJIGI);
         }).doesNotThrowAnyException();
+    }
+
+    private static Stream<Arguments> checkRegister() {
+        return Stream.of(
+                Arguments.of(new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1)), 0),
+                Arguments.of(new PaidSession(2, 1, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1)), 10_000)
+        );
     }
 
     @DisplayName("전체 수강생을 확인한다.")

@@ -18,16 +18,12 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
-        this.id = id;
+    public Payment(Long sessionId, Long nsUserId, Long amount) {
+        this.id = UUID.randomUUID().toString();
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public static Payment findByUserId(Long nsUserId) {
-        return new Payment(UUID.randomUUID().toString(), random.nextLong(), nsUserId, 10000L);
     }
 
     public boolean isSameAmount(long amount) {

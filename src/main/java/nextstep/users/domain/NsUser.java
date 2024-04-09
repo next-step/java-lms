@@ -82,7 +82,7 @@ public class NsUser {
     }
 
     public Payment pay(long sessionId, long amount) {
-        Payment payment = new Payment(UUID.randomUUID().toString(), sessionId, this.id, amount);
+        Payment payment = new Payment(sessionId, this.id, amount);
         this.payments.add(payment);
         return payment;
     }
@@ -95,6 +95,7 @@ public class NsUser {
     }
 
     private static class GuestNsUser extends NsUser {
+
         @Override
         public boolean isGuestUser() {
             return true;
