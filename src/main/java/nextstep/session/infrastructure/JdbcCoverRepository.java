@@ -32,7 +32,7 @@ public class JdbcCoverRepository implements CoverRepository {
             ps.setString(4, coverDto.getFileName());
             ps.setString(5, coverDto.getFileExtension());
             ps.setLong(6, coverDto.getByteSize());
-            ps.setLong(7, coverDto.getWriterId());
+            ps.setString(7, coverDto.getWriterId());
             ps.setBoolean(8, coverDto.isDeleted());
             ps.setTimestamp(9, DbTimestampUtils.toTimestamp(coverDto.getCreatedAt()));
             ps.setTimestamp(10, DbTimestampUtils.toTimestamp(coverDto.getLastModifiedAt()));
@@ -54,7 +54,7 @@ public class JdbcCoverRepository implements CoverRepository {
                 rs.getString(6),
                 rs.getLong(7),
                 rs.getBoolean(8),
-                rs.getLong(9),
+                rs.getString(9),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(10)),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(11)));
         return jdbcTemplate.queryForObject(sql, rowMapper, coverId);

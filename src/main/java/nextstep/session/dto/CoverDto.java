@@ -12,20 +12,20 @@ public class CoverDto {
     private final String fileExtension;
     private final long byteSize;
     private final boolean deleted;
-    private final long writerId;
+    private final String writerId;
     private final LocalDateTime createdAt;
     private final LocalDateTime lastModifiedAt;
 
     public CoverDto(
             int width, int height, String filePath, String fileName, String fileExtension, long byteSize,
-            boolean deleted, long writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this(0L, width, height, filePath, fileName, fileExtension, byteSize, deleted, writerId, createdAt, lastModifiedAt);
     }
 
     public CoverDto(
             long id, int width, int height, String filePath, String fileName, String fileExtension,
-            long byteSize, boolean deleted, long writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            long byteSize, boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this.id = id;
         this.width = width;
@@ -68,7 +68,7 @@ public class CoverDto {
         return byteSize;
     }
 
-    public long getWriterId() {
+    public String getWriterId() {
         return writerId;
     }
 

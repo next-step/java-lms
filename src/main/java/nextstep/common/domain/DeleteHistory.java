@@ -25,6 +25,10 @@ public class DeleteHistory {
         return new DeleteHistory(ContentType.ANSWER, contentId, deletedBy, createdDate);
     }
 
+    public static DeleteHistory createCover(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.COVER, contentId, deletedBy, createdDate);
+    }
+
     private DeleteHistory() {
     }
 

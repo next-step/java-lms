@@ -13,6 +13,11 @@ public class BaseEntity {
     }
 
     public BaseEntity(LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+        this(false, createdAt, lastModifiedAt);
+    }
+
+    public BaseEntity(boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+        this.deleted = deleted;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
     }

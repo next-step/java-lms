@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.exception.CoverException;
 import nextstep.session.dto.CoverDto;
 import nextstep.users.domain.NsUser;
 
@@ -35,6 +36,20 @@ public class Cover {
         this.baseEntity = new BaseEntity(createdAt, lastModifiedAt);
     }
 
+    public Cover(
+            long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
+            boolean deleted, NsUser writer, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+    ) {
+        validate(byteSize);
+
+        this.id = id;
+        this.resolution = resolution;
+        this.imageFilePath = imageFilePath;
+        this.byteSize = byteSize;
+        this.writer = writer;
+        this.baseEntity = new BaseEntity(deleted, createdAt, lastModifiedAt);
+    }
+
     private void validate(long byteSize) {
         if ((byteSize / SIZE_UNIT / SIZE_UNIT) > MAXIMUM_MEGABYTE_SIZE) {
             throw new IllegalArgumentException("이미지는 1MB 이하여야 합니다.");
@@ -45,7 +60,23 @@ public class Cover {
         return new CoverDto(
                 this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
-                this.baseEntity.isDeleted(), this.writer.getId(), this.baseEntity.getCreatedAt(), this.baseEntity.getLastModifiedAt()
+                this.baseEntity.isDeleted(), this.writer.getUserId(), this.baseEntity.getCreatedAt(), this.baseEntity.getLastModifiedAt()
         );
+    }
+
+    public void delete(NsUser requestUser) {
+        validateWriter(requestUser);
+
+        this.baseEntity.delete(LocalDateTime.now());
+    }
+
+    private void validateWriter(NsUser requestUser) {
+        if (!this.writer.matchUser(requestUser)) {
+            throw new CoverException("삭제 요청자와 작성자가 일치하지 않습니다.");
+        }
+    }
+
+    public long getId() {
+        return id;
     }
 }
