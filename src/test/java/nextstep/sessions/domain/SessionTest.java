@@ -21,7 +21,8 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        session = new Session(2, SessionStatus.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        session = new Session(2, SessionStatus.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2));
     }
 
     @Test
@@ -77,5 +78,14 @@ class SessionTest {
 
         assertThat(session.getAttendees()).hasSize(1)
                 .contains(NsUserTest.JAVAJIGI);
+    }
+
+    @Test
+    void 이미_수강_신청한_강의인_경우_수강_신청에_실패한다() {
+        session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE);
+
+
+        assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE))
+                .withMessage("이미 수강 신청한 사용자입니다.");
     }
 }
