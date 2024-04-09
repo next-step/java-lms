@@ -91,8 +91,8 @@
   - 생성 일자
   - 수정 일자
 - [x] `Student` 객체 구성
-- [ ] `Cover` 책임 인터페이스 구현
-- [ ] `Students` 책임 인터페이스 구현
+- [x] `Cover` 책임 인터페이스 구현
+- [x] `Students` 책임 인터페이스 구현
 - [ ] `Session` - `save` 구현
   - 협력 객체로 `Cover`만을 넣은 `Session`을 생성한다.
 - [ ] `Session` - `findById(Long sessionId)` 구현
