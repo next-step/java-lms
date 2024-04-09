@@ -1,7 +1,7 @@
-package nextstep.qna.service;
+package nextstep.common.service;
 
-import nextstep.qna.domain.DeleteHistory;
-import nextstep.qna.domain.DeleteHistoryRepository;
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,5 +1,7 @@
 package nextstep.qna.service;
 
+import nextstep.common.domain.DeleteHistoryTargets;
+import nextstep.common.service.DeleteHistoryService;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.domain.*;
@@ -8,9 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("qnaService")
 public class QnAService {

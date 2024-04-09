@@ -85,7 +85,7 @@
 
 ### 구현 기능
 - [x] 이전 과제 코드리뷰 - `Session` 검증 메서드 이름 명확화
-- [ ] `DeleteHistory`를 `common` 패키지로 이관
+- [x] `DeleteHistory`를 `common` 패키지로 이관
 - [ ] `common`에 `BaseEntity` 클래스 구현
   - 삭제 상태
   - 생성 일자
