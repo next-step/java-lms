@@ -85,7 +85,8 @@ class SessionTest {
         session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE);
 
 
-        assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, SESSION_PRICE))
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> session.enroll(new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net"), SESSION_PRICE))
                 .withMessage("이미 수강 신청한 사용자입니다.");
     }
 }

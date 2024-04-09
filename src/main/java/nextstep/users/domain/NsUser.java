@@ -1,9 +1,9 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
@@ -115,6 +115,24 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final NsUser nsUser = (NsUser) o;
+        return Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password)
+                && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, password, name, email);
     }
 
     private static class GuestNsUser extends NsUser {
