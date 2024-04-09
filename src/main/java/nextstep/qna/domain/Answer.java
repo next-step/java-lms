@@ -50,7 +50,7 @@ public class Answer extends BaseEntity  {
     }
 
     public DeleteHistory delete() {
-        deleted = true;
+        deleted();
         return new DeleteHistory(ContentType.ANSWER, id, answerMetaData.getWriter(), LocalDateTime.now());
     }
 

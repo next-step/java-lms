@@ -18,11 +18,21 @@ public class AnswersTest {
     Answer answer = new Answer(NsUserTest.JAVAJIGI, Q1, "Answers Contents");
     Answers answers = new Answers(List.of(answer));
 
-    List<DeleteHistory> deleteHistories = answers.delete();
+    List<DeleteHistory> deleteHistories = answers.delete().getDeleteHistories();
 
     assertThat(deleteHistories).hasSize(1);
-    assertThat(deleteHistories.get(0)).isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(),
+    assertThat(deleteHistories).containsExactly(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(),
         LocalDateTime.now()));
+  }
+
+  @Test
+  @DisplayName("Answers 삭제하면 answer는 delete 상태가 된다.")
+  void checkDeleteState(){
+    Answer answer = new Answer(NsUserTest.SANJIGI, Q2, "Answers Contents");
+    Answers answers = new Answers(List.of(answer));
+
+    answers.delete();
+
     assertThat(answer.isDeleted()).isTrue();
   }
 
