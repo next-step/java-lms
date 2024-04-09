@@ -20,6 +20,6 @@ public enum CoverImageType {
         return Arrays.stream(CoverImageType.values())
             .filter(value -> value.type.equals(type.toLowerCase()))
             .findAny()
-            .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 타입입니다."));
+            .orElseThrow(() -> new IllegalArgumentException(type + "은 지원하지 않는 이미지 타입입니다."));
     }
 }
