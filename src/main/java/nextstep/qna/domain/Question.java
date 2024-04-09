@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static nextstep.qna.domain.ContentType.QUESTION;
 
 public class Question {
     private Long id;
@@ -15,7 +18,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -45,18 +48,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -68,21 +61,34 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public List<DeleteHistory> deleteByUser(NsUser user) throws CannotDeleteException {
+        validateUser(user);
+        List<DeleteHistory> deleteHistoriesOfAnswers = answers.deleteByUser(user);
+        this.deleted = true;
+        return deleteHistoriesOfQuestion(deleteHistoriesOfAnswers);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private void validateUser(NsUser user) throws CannotDeleteException {
+        if (!isOwner(user)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+    }
+
+    private boolean isOwner(NsUser user) {
+        return writer.equals(user);
+    }
+
+    private List<DeleteHistory> deleteHistoriesOfQuestion(List<DeleteHistory> deleteHistoriesOfAnswers) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        deleteHistories.add(new DeleteHistory(QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.addAll(deleteHistoriesOfAnswers);
+
+        return deleteHistories;
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
     }
 
     @Override
