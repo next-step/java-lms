@@ -29,4 +29,12 @@ public class Resolution {
             throw new IllegalArgumentException("가로 길이와 세로 길이의 비율은 3:2이여야 합니다.");
         }
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

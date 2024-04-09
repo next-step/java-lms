@@ -17,10 +17,22 @@ public class ImageFilePath {
     }
 
     public Path getFullFilePath() {
-        return Path.of(filePath, getFullFileName());
+        return Path.of(this.filePath, getFullFileName());
     }
 
     private String getFullFileName() {
-        return fileName + extensionType.getExtension();
+        return this.fileName + this.extensionType.getExtensionWithDot();
+    }
+
+    public String getFilePath() {
+        return this.filePath;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public String getExtension() {
+        return this.extensionType.getExtension();
     }
 }

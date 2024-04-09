@@ -128,10 +128,10 @@
   - `Students`에 삭제 메시지를 보낸다.
   - `Session`의 상태를 삭제로 변경한다.
   - `DeleteHistories`를 저장한다.
-- [ ] `Cover` - `findById(Long coverId)` 구현
+- [x] `Cover` - `findById(Long coverId)` 구현
   - 파라미터의 `coverId`로 조회한다.
   - 조회된 `Cover` 객체를 반환한다.
-- [ ] `Cover` - `save(Cover cover)` 구현
+- [x] `Cover` - `save(Cover cover)` 구현
   - 파라미터의 `Cover`를 저장한다.
   - 저장한 Id값을 반환한다.
 - [ ] `Cover` - `delete(Long coverId)` 구현
