@@ -39,4 +39,23 @@ class JdbcCoverRepositoryTest {
         assertThat(savedCover.getId())
                 .isEqualTo(savedId);
     }
+
+    @Test
+    void updateDeleteStatus() {
+        // given
+        Cover cover = new Cover(
+                new Resolution(300, 200),
+                new ImageFilePath("/home", "test", "jpg"),
+                1_234_567L
+        );
+
+        // when
+        Long savedId = coverRepository.save(cover.toDto());
+        int updatedCount = coverRepository.updateDeleteStatus(savedId, true);
+        CoverDto foundCover = coverRepository.findById(savedId);
+
+        // then
+        assertThat(updatedCount).isEqualTo(1);
+        assertThat(foundCover.isDeleted()).isTrue();
+    }
 }

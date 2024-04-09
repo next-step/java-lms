@@ -134,7 +134,7 @@
 - [x] `Cover` - `save(Cover cover)` 구현
   - 파라미터의 `Cover`를 저장한다.
   - 저장한 Id값을 반환한다.
-- [ ] `Cover` - `delete(Long coverId)` 구현
+- [x] `Cover` - `delete(Long coverId)` 구현
   - 삭제상태를 변경한다.
   - `DeleteHistory`를 반환한다.
 - [ ] `Students` - `findAllStudentsBySessionId(Long sessionId)` 구현

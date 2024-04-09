@@ -57,4 +57,10 @@ public class JdbcCoverRepository implements CoverRepository {
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(10)));
         return jdbcTemplate.queryForObject(sql, rowMapper, coverId);
     }
+
+    @Override
+    public int updateDeleteStatus(Long coverId, boolean deleteStatus) {
+        String sql = "UPDATE cover SET deleted = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, deleteStatus, coverId);
+    }
 }
