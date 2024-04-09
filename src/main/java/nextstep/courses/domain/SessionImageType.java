@@ -2,17 +2,22 @@ package nextstep.courses.domain;
 
 import java.util.Objects;
 
-public class ImageType {
+public class SessionImageType {
 
+    private static final String GIF = "gif";
+    private static final String JPG = "jpg";
+    private static final String JPEG = "jpeg";
+    private static final String PNG = "png";
+    private static final String SVG = "svg";
     private String type;
 
-    public ImageType(String type) {
+    public SessionImageType(String type) {
         checkSupportType(type);
         this.type = type;
     }
 
     private void checkSupportType(String type) {
-        if (type.equals("jpg") || type.equals("jpeg") || type.equals("png") || type.equals("gif") || type.equals("svg")) {
+        if (type.equals(JPG) || type.equals(JPEG) || type.equals(PNG) || type.equals(GIF) || type.equals(SVG)) {
             return;
         }
         throw new IllegalArgumentException("지원하지 않는 이미지 파일입니다.");
@@ -22,9 +27,9 @@ public class ImageType {
     public boolean equals(Object object) {
         if (this == object)
             return true;
-        if (!(object instanceof ImageType))
+        if (!(object instanceof SessionImageType))
             return false;
-        ImageType imageType = (ImageType) object;
+        SessionImageType imageType = (SessionImageType) object;
         return Objects.equals(type, imageType.type);
     }
 
