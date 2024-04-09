@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Answers {
     private final List<Answer> values = new ArrayList<>();
@@ -26,11 +27,17 @@ public class Answers {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : values) {
-            deleteHistories.add(answer.delete(requestUser, requestDatetime));
+        return values.stream()
+                .map(answer ->  deleteAnswer(answer, requestUser, requestDatetime))
+                .collect(Collectors.toList());
+    }
+
+    private DeleteHistory deleteAnswer(Answer answer, NsUser requestUser, LocalDateTime requestDatetime) {
+        try {
+            return answer.delete(requestUser, requestDatetime);
+        } catch (CannotDeleteException e) {
+            throw new RuntimeException(e);
         }
-        return Collections.unmodifiableList(deleteHistories);
     }
 
     public List<Answer> values() {
