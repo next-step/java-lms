@@ -16,9 +16,7 @@ public class Session {
 
     private long price;
 
-    private LocalDateTime startedAt;
-
-    private LocalDateTime endAt;
+    private SessionPeriod sessionPeriod;
 
     private List<NsUser> attendees = new ArrayList<>();
 
@@ -30,13 +28,11 @@ public class Session {
         this(maxNumber, sessionStatus, price, LocalDateTime.now(), endAt);
     }
 
-    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt,
-                   final LocalDateTime endAt) {
+    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
         this.maxNumber = maxNumber;
         this.sessionStatus = sessionStatus;
         this.price = price;
-        this.startedAt = startedAt;
-        this.endAt = endAt;
+        this.sessionPeriod = new SessionPeriod(startedAt, endAt);
     }
 
     public void enroll(final NsUser user, final long price) {
@@ -48,7 +44,7 @@ public class Session {
         validatePrice(price);
         validateAttendeeNumber();
         validateRecruitingStatus();
-        validateStartedAt();
+        sessionPeriod.validateStartedAt();
     }
 
     private void validatePrice(final long price) {
@@ -66,13 +62,6 @@ public class Session {
     private void validateRecruitingStatus() {
         if (sessionStatus != SessionStatus.RECRUITING) {
             throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
-        }
-    }
-
-    private void validateStartedAt() {
-        if (startedAt.isBefore(LocalDateTime.now()) && price != 0L) {
-            sessionStatus = SessionStatus.END;
-            throw new IllegalArgumentException("시작일이 지난 강의는 수강 신청할 수 없습니다.");
         }
     }
 
