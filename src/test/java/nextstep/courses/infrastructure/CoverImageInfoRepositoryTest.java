@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -20,11 +22,14 @@ public class CoverImageInfoRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private DataSource dataSource;
+
     private CoverImageInfoRepository coverImageInfoRepository;
 
     @BeforeEach
     void setUp() {
-        coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate);
+        coverImageInfoRepository = new JdbcCoverImageInfoRepository(jdbcTemplate, dataSource);
     }
 
     @Test
@@ -37,10 +42,9 @@ public class CoverImageInfoRepositoryTest {
                 .imageType("gif")
                 .build();
 
-        int save = coverImageInfoRepository.save(coverImageInfo);
-        assertThat(save).isEqualTo(1);
+        Long savedCoverImageId = coverImageInfoRepository.saveAndGetId(coverImageInfo);
 
-        CoverImageInfo savedCoverImageInfo = coverImageInfoRepository.findById(1L);
+        CoverImageInfo savedCoverImageInfo = coverImageInfoRepository.findById(savedCoverImageId);
         assertThat(coverImageInfo.getSize()).isEqualTo(10L);
         LOGGER.debug("CoverImageInfo: {}", savedCoverImageInfo);
     }

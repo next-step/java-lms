@@ -24,6 +24,11 @@ public class CoverImageInfo {
     private final Long width;
     private final Long height;
 
+    public CoverImageInfo(Long id, Long size, String imageTypeStr, Long width, Long height) {
+        this(size, imageTypeStr, width, height);
+        this.id = id;
+    }
+
     public CoverImageInfo(Long size, String imageTypeStr, Long width, Long height) {
         validateImageSize(size);
         validateWidthAndHeight(width, height);
@@ -56,6 +61,10 @@ public class CoverImageInfo {
         if (isCorrectImageRate(width, height)) {
             throw new IllegalArgumentException(IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE);
         }
+    }
+
+    public void setId() {
+        this.id = id;
     }
 
     public Long getId() {
@@ -119,7 +128,7 @@ public class CoverImageInfo {
         }
 
         public CoverImageInfo build() {
-            return new CoverImageInfo(size, imageType, width, height);
+            return new CoverImageInfo(id, size, imageType, width, height);
         }
 
     }
