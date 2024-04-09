@@ -84,7 +84,7 @@
 ![테이블 셜계(맵핑)](./images/image006.png)
 
 ### 구현 기능
-- [ ] 이전 과제 코드리뷰 - `Session` 검증 메서드 이름 명확화
+- [x] 이전 과제 코드리뷰 - `Session` 검증 메서드 이름 명확화
 - [ ] `DeleteHistory`를 `common` 패키지로 이관
 - [ ] `common`에 `BaseEntity` 클래스 구현
   - 삭제 상태

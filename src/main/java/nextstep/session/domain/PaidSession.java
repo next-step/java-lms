@@ -38,12 +38,12 @@ public class PaidSession implements Session {
 
     @Override
     public void changeStartDate(LocalDateTime startDate) {
-        validate();
+        validateReadyStatus();
 
         this.duration = duration.changeStartDate(startDate);
     }
 
-    private void validate() {
+    private void validateReadyStatus() {
         if (!this.sessionStatus.onReady()) {
             throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
         }
@@ -51,14 +51,14 @@ public class PaidSession implements Session {
 
     @Override
     public void changeEndDate(LocalDateTime endDate) {
-        validate();
+        validateReadyStatus();
 
         this.duration = duration.changeEndDate(endDate);
     }
 
     @Override
     public void changeCover(Cover cover) {
-        validate();
+        validateReadyStatus();
 
         this.cover = cover;
     }
@@ -75,7 +75,7 @@ public class PaidSession implements Session {
 
     @Override
     public void editSessionName(String sessionName) {
-        validate();
+        validateReadyStatus();
 
         this.sessionName = this.sessionName.editSessionName(sessionName);
     }
