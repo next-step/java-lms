@@ -20,7 +20,7 @@ class CourseTest {
     void 유료강의_생성() {
         Course course = new Course();
         LocalDateTime now = LocalDateTime.now();
-        Session session = new Session(1L, "lms", SessionType.PAID, SessionState.RECRUITING, "test.jpg", now.plusDays(5), now.plusDays(30), 5);
+        Session session = new Session(1L, "lms", SessionType.PAID, SessionState.RECRUITING, "test.jpg", now.plusDays(5), now.plusDays(30), 2, 5_000);
         course.add(session);
     }
 }

@@ -11,4 +11,8 @@ public enum SessionType {
     }
 
     private final String type;
+
+    public boolean isPaid() {
+        return this == PAID;
+    }
 }
