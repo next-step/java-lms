@@ -1,18 +1,25 @@
 package nextstep.courses.domain.lecture.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.lecture.Lecture;
 import nextstep.courses.domain.lecture.LectureStatus;
 import nextstep.courses.domain.lecture.MaxRegistrationCount;
 import nextstep.courses.domain.lecture.RegistrationCount;
+import nextstep.courses.error.exception.MaxRegistrationCountNotZero;
 import org.junit.jupiter.api.Test;
 
 class PaidCourseTest {
 
     @Test
     void 강의_최대_수강_인원은_0일_수_없다() {
+        assertThatThrownBy(() -> new PaidCourse(new RegistrationCount(2),
+            new MaxRegistrationCount(new RegistrationCount(0)),
+            LocalDateTime.now(), LocalDateTime.now(), LectureStatus.RECRUITING))
+            .isInstanceOf(MaxRegistrationCountNotZero.class)
+            .hasMessage("최대 등록수는 0일수 없습니다 입력값: 0");
     }
 
     @Test
