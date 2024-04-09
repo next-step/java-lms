@@ -2,7 +2,7 @@ package nextstep.images.domain;
 
 import java.util.Arrays;
 
-public enum Type {
+public enum CoverImageType {
 
     GIF("gif"),
     JPG("jpg"),
@@ -12,12 +12,12 @@ public enum Type {
 
     private final String type;
 
-    Type(final String type) {
+    CoverImageType(final String type) {
         this.type = type;
     }
 
-    public static Type from(final String type) {
-        return Arrays.stream(Type.values())
+    public static CoverImageType from(final String type) {
+        return Arrays.stream(CoverImageType.values())
             .filter(value -> value.type.equals(type))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 타입입니다."));
