@@ -60,7 +60,7 @@ public class Session {
     }
 
     private void validateRecruitingStatus() {
-        if (sessionStatus != SessionStatus.RECRUITING) {
+        if (sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
         }
     }
