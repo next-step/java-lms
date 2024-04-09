@@ -72,11 +72,13 @@ class PaidSessionTest {
     void cannotEnrollWithoutCountOfStudentsCondition() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student1 = new Student(NsUserTest.SANJIGI);
+        Student student2 = new Student(NsUserTest.JAVAJIGI);
 
         // when
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
-        session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student1, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student2, payment, LocalDateTime.now().plusDays(1));
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(1)))
@@ -88,12 +90,14 @@ class PaidSessionTest {
     void enrollNotAvailableWithNotOnEnroll() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student1 = new Student(NsUserTest.SANJIGI);
+        Student student2 = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student1, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student2, payment, LocalDateTime.now().plusDays(1));
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(8)))
@@ -105,13 +109,14 @@ class PaidSessionTest {
     void cannotApplySameStudentTwice() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student, payment, LocalDateTime.now().plusDays(1));
 
         // then
-        Assertions.assertThatThrownBy(() -> session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1)))
+        Assertions.assertThatThrownBy(() -> session.apply(student, payment, LocalDateTime.now().plusDays(1)))
                 .isInstanceOf(StudentsException.class);
     }
 
@@ -120,12 +125,13 @@ class PaidSessionTest {
     void erollAvailable() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+        assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isTrue();
     }
 
@@ -134,12 +140,13 @@ class PaidSessionTest {
     void onEnrollNotInDurationIsUnavailable() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now()))
+        assertThat(session.apply(student, payment, LocalDateTime.now()))
                 .isFalse();
     }
 
@@ -148,9 +155,10 @@ class PaidSessionTest {
     void inDurationAndNotOnEnrollIsUnavailable() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+        assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isFalse();
     }
 

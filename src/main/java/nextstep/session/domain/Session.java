@@ -21,5 +21,5 @@ public interface Session {
 
     boolean isEnrollAvailable(LocalDateTime applyDate);
 
-    boolean apply(NsUser student, Payment payment, LocalDateTime applyDate);
+    boolean apply(Student student, Payment payment, LocalDateTime applyDate);
 }

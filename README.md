@@ -90,7 +90,7 @@
   - 삭제 상태
   - 생성 일자
   - 수정 일자
-- [ ] `Student` 객체 구성
+- [x] `Student` 객체 구성
 - [ ] `Cover` 책임 인터페이스 구현
 - [ ] `Students` 책임 인터페이스 구현
 - [ ] `Session` - `save` 구현

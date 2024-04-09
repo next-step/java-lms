@@ -3,7 +3,6 @@ package nextstep.session.domain;
 import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -88,7 +87,7 @@ public class FreeSession implements Session {
     }
 
     @Override
-    public boolean apply(NsUser student, Payment payment, LocalDateTime applyDate) {
+    public boolean apply(Student student, Payment payment, LocalDateTime applyDate) {
         if (isEnrollAvailable(applyDate)) {
             this.students.add(student);
             this.capacity.enroll();

@@ -72,12 +72,13 @@ class FreeSessionTest {
     void erollAvailable() {
         // given
         Payment payment = new Payment();
+        Student student = new Student(NsUserTest.JAVAJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+        assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isTrue();
     }
 
@@ -86,12 +87,13 @@ class FreeSessionTest {
     void onEnrollNotInDurationIsUnavailable() {
         // given
         Payment payment = new Payment();
+        Student student = new Student(NsUserTest.JAVAJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now()))
+        assertThat(session.apply(student, payment, LocalDateTime.now()))
                 .isFalse();
     }
 
@@ -100,9 +102,10 @@ class FreeSessionTest {
     void inDurationAndNotOnEnrollIsUnavailable() {
         // given
         Payment payment = new Payment();
+        Student student = new Student(NsUserTest.JAVAJIGI);
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+        assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isFalse();
     }
 
