@@ -1,13 +1,17 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Course {
+
     private Long id;
 
     private String title;
 
     private Long creatorId;
+
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 
@@ -49,5 +53,14 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public void register(Session session) {
+        session.toCourse(this);
+        if (Objects.isNull(sessions)) {
+            sessions = Sessions.from(session);
+            return;
+        }
+        sessions.addSession(session);
     }
 }
