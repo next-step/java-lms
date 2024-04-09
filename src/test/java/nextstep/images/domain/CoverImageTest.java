@@ -23,4 +23,9 @@ class CoverImageTest {
         assertThatIllegalArgumentException().isThrownBy(() -> new CoverImage(1.0, 300, 199, "jpg"))
                 .withMessage("이미지의 height는 200픽셀 미만일 수 없습니다.");
     }
+
+    @Test
+    void 이미지의_width와_height의_비율은_3대2여야_한다() {
+        assertThatIllegalArgumentException().isThrownBy(() -> new CoverImage(1.0, 300, 201, "jpg"));
+    }
 }
