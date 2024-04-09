@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public class Image {
+public class SessionImage {
 
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
@@ -9,13 +9,13 @@ public class Image {
     private int width;
     private int height;
     private int capacity;
-    private ImageType type;
+    private SessionImageType type;
 
-    public Image(int width, int height, int capacity, String type) {
-        this(width, height, capacity, new ImageType(type));
+    public SessionImage(int width, int height, int capacity, String type) {
+        this(width, height, capacity, new SessionImageType(type));
     }
 
-    public Image(int width, int height, int capacity, ImageType jpg) {
+    public SessionImage(int width, int height, int capacity, SessionImageType jpg) {
         checkImageSize(width, height);
         this.width = width;
         this.height = height;
