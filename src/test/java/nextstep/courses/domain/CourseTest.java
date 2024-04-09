@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class CourseTest {
 
     @Test
-    void 무료강의_수강신청() {
+    void 무료강의_생성() {
         Course course = new Course();
         LocalDateTime now = LocalDateTime.now();
         Session session = new Session(1L, "lms", SessionType.FREE, SessionState.RECRUITING, "test.jpg", now.plusDays(5), now.plusDays(30));
