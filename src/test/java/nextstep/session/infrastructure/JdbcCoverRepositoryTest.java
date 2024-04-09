@@ -4,6 +4,7 @@ import nextstep.session.domain.Cover;
 import nextstep.session.domain.ImageFilePath;
 import nextstep.session.domain.Resolution;
 import nextstep.session.dto.CoverDto;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ class JdbcCoverRepositoryTest {
         Cover cover = new Cover(
                 new Resolution(300, 200),
                 new ImageFilePath("/home", "test", "jpg"),
-                1_234_567L
+                1_234_567L,
+                NsUserTest.JAVAJIGI
         );
 
         Long savedId = coverRepository.save(cover.toDto());
@@ -46,7 +48,8 @@ class JdbcCoverRepositoryTest {
         Cover cover = new Cover(
                 new Resolution(300, 200),
                 new ImageFilePath("/home", "test", "jpg"),
-                1_234_567L
+                1_234_567L,
+                NsUserTest.JAVAJIGI
         );
 
         // when

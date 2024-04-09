@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class CoverTest {
         ImageFilePath imageFilePath = new ImageFilePath("/home", "temp", "jpg");
 
         // then
-        assertThatThrownBy(() -> new Cover(resolution, imageFilePath, 10000000))
+        assertThatThrownBy(() -> new Cover(resolution, imageFilePath, 10000000, NsUserTest.JAVAJIGI))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

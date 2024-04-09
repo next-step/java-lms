@@ -27,7 +27,7 @@ class PaidSessionTest {
 
         session = new PaidSession(
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000),
+                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI),
                 "얼른 배우자 객체지향",
                 course,
                 2,
@@ -192,7 +192,7 @@ class PaidSessionTest {
         Cover newCover = new Cover(
                 new Resolution(600, 400),
                 new ImageFilePath("C:/", "image", "jpg"),
-                1_000_000L
+                1_000_000L, NsUserTest.JAVAJIGI
         );
 
         // then

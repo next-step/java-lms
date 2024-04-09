@@ -12,19 +12,20 @@ public class CoverDto {
     private final String fileExtension;
     private final long byteSize;
     private final boolean deleted;
+    private final long writerId;
     private final LocalDateTime createdAt;
     private final LocalDateTime lastModifiedAt;
 
     public CoverDto(
-            int width, int height, String filePath, String fileName, String fileExtension,
-            long byteSize, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            int width, int height, String filePath, String fileName, String fileExtension, long byteSize,
+            boolean deleted, long writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
-        this(0L, width, height, filePath, fileName, fileExtension, byteSize, deleted, createdAt, lastModifiedAt);
+        this(0L, width, height, filePath, fileName, fileExtension, byteSize, deleted, writerId, createdAt, lastModifiedAt);
     }
 
     public CoverDto(
             long id, int width, int height, String filePath, String fileName, String fileExtension,
-            long byteSize, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            long byteSize, boolean deleted, long writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this.id = id;
         this.width = width;
@@ -34,6 +35,7 @@ public class CoverDto {
         this.fileExtension = fileExtension;
         this.byteSize = byteSize;
         this.deleted = deleted;
+        this.writerId = writerId;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
     }
@@ -64,6 +66,10 @@ public class CoverDto {
 
     public long getByteSize() {
         return byteSize;
+    }
+
+    public long getWriterId() {
+        return writerId;
     }
 
     public boolean isDeleted() {

@@ -58,6 +58,7 @@ create table cover (
     file_name varchar(255),
     file_extension varchar(255),
     byte_size bigint,
+    writer_id bigint,
     deleted boolean,
     created_at timestamp,
     last_modified_at timestamp,
