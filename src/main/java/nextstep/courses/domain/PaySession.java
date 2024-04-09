@@ -12,22 +12,8 @@ public class PaySession extends Session {
     private final Long price;
     private final int maxNumberOfStudents;
 
-    public static PaySession of(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-        return new PaySession(id, sessionDate, price, maxNumberOfStudents, coverImageInfo);
-    }
-
-    public static PaySession of(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents) {
-        return new PaySession(id, sessionDate, price, maxNumberOfStudents, null);
-    }
-
-    private PaySession(Long id, SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
-        super(id, sessionDate, coverImageInfo, SessionType.PAY);
-        this.price = price;
-        this.maxNumberOfStudents = maxNumberOfStudents;
-    }
-
-    private PaySession(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, SessionType type, Long price) {
-        super(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+    private PaySession(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, int maxNumberOfStudents, CoverImageInfo coverImageInfo, SessionType type, Long price) {
+        super(id, course, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
         this.price = price;
         this.maxNumberOfStudents = maxNumberOfStudents;
     }
@@ -64,6 +50,7 @@ public class PaySession extends Session {
 
     public static class PaySessionBuilder {
         private Long id;
+        private Course course;
         private SessionDate sessionDate;
         private SessionStatus sessionStatus;
         private int numberOfStudents;
@@ -74,6 +61,11 @@ public class PaySession extends Session {
 
         public PaySession.PaySessionBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public PaySession.PaySessionBuilder course(Course course) {
+            this.course = course;
             return this;
         }
 
@@ -113,7 +105,7 @@ public class PaySession extends Session {
         }
 
         public PaySession build() {
-            return new PaySession(id, sessionDate, sessionStatus, numberOfStudents, maxNumberOfStudents, coverImageInfo, type, price);
+            return new PaySession(id, course, sessionDate, sessionStatus, numberOfStudents, maxNumberOfStudents, coverImageInfo, type, price);
         }
     }
 }

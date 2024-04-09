@@ -3,26 +3,24 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
+import org.springframework.util.ObjectUtils;
 
 abstract public class Session {
     protected final Long id;
+    protected final Course course;
     protected final SessionDate sessionDate;
     protected SessionStatus sessionStatus = SessionStatus.READY;;
     protected int numberOfStudents;
     protected CoverImageInfo coverImageInfo;
     protected final SessionType type;
 
-    protected Session(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo, SessionType type) {
+    protected Session(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
         this.id = id;
+        this.course = course;
         this.sessionDate = sessionDate;
-        this.numberOfStudents = 0;
-        this.type = type;
-    }
-
-    protected Session(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
-        this.id = id;
-        this.sessionDate = sessionDate;
-        this.sessionStatus = sessionStatus;
+        if (!ObjectUtils.isEmpty(sessionStatus)) {
+            this.sessionStatus = sessionStatus;
+        }
         this.numberOfStudents = numberOfStudents;
         this.coverImageInfo = coverImageInfo;
         this.type = type;
@@ -39,6 +37,9 @@ abstract public class Session {
     }
 
     public Long getId() {return id;}
+
+    public Course getCourse() {return course;}
+
     public SessionDate getSessionDate() {
         return sessionDate;
     }

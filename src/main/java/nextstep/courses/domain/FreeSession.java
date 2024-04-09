@@ -7,20 +7,8 @@ import nextstep.payments.domain.Payment;
 public class FreeSession extends Session {
     private static final String SESSION_NOT_RECRUITING = "해당 강의는 현재 모집 중이 아닙니다.";
 
-    public static FreeSession of(Long id, SessionDate sessionDate) {
-        return new FreeSession(id, sessionDate, null);
-    }
-
-    public static FreeSession of(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-        return new FreeSession(id, sessionDate, coverImageInfo);
-    }
-
-    private FreeSession(Long id, SessionDate sessionDate, CoverImageInfo coverImageInfo) {
-        super(id, sessionDate, coverImageInfo, SessionType.FREE);
-    }
-
-    private FreeSession(Long id, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
-        super(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+    private FreeSession(Long id, Course course, SessionDate sessionDate, SessionStatus sessionStatus, int numberOfStudents, CoverImageInfo coverImageInfo, SessionType type) {
+        super(id, course, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
     }
 
     @Override
@@ -31,13 +19,13 @@ public class FreeSession extends Session {
         numberOfStudents++;
     }
 
-
     public static FreeSession.FreeSessionBuilder builder() {
         return new FreeSession.FreeSessionBuilder();
     }
 
     public static class FreeSessionBuilder {
         private Long id;
+        private Course course;
         private SessionDate sessionDate;
         private SessionStatus sessionStatus;
         private int numberOfStudents;
@@ -46,6 +34,11 @@ public class FreeSession extends Session {
 
         public FreeSession.FreeSessionBuilder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public FreeSession.FreeSessionBuilder course(Course course) {
+            this.course = course;
             return this;
         }
 
@@ -75,7 +68,7 @@ public class FreeSession extends Session {
         }
 
         public FreeSession build() {
-            return new FreeSession(id, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
+            return new FreeSession(id, course, sessionDate, sessionStatus, numberOfStudents, coverImageInfo, type);
         }
     }
 }
