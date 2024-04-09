@@ -8,15 +8,17 @@ import java.util.List;
 
 public abstract class Session {
 
-    protected final int id;
+    protected final long id;
+    protected final int year;
     protected final int maximumNumberOfStudent;
     protected final List<NsUser> students = new ArrayList<>();
     protected final LocalDateTime startedAt;
     protected final LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
 
-    protected Session(int id, int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+    protected Session(int id, int year, int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.id = id;
+        this.year = year;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
@@ -40,7 +42,7 @@ public abstract class Session {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 }

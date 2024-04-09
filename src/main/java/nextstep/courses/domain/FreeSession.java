@@ -9,8 +9,8 @@ public class FreeSession extends Session {
 
     private static final int MAXIMUM_NUMBER = Integer.MAX_VALUE;
 
-    public FreeSession(int id, LocalDateTime startedAt, LocalDateTime endedAt) {
-        super(id, MAXIMUM_NUMBER, startedAt, endedAt);
+    public FreeSession(long id, int year, LocalDateTime startedAt, LocalDateTime endedAt) {
+        super(id, year, MAXIMUM_NUMBER, startedAt, endedAt);
     }
 
     @Override

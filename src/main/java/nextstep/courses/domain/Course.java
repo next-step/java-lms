@@ -1,5 +1,8 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,5 +65,9 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean register(NsUser user, Session session, Payment payment) {
+        return false;
     }
 }

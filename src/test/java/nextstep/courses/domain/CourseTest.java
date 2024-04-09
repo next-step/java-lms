@@ -1,12 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class CourseTest {
 
@@ -14,7 +15,7 @@ public class CourseTest {
     @Test
     void test01() {
         Course course = new Course("TDD", 1L);
-        Session session = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Session session = new FreeSession(1, 1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         assertThatThrownBy(() -> {
             course.addSession(1, session);
             course.addSession(1, session);
@@ -26,10 +27,20 @@ public class CourseTest {
     @Test
     void test02() {
         Course course = new Course("TDD", 1L);
-        Session session = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Session session = new FreeSession(1, 1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         assertThatCode(() -> {
             course.addSession(1, session);
             course.addSession(2, session);
         }).doesNotThrowAnyException();
+    }
+
+    @DisplayName("수강 신청한다.")
+    @Test
+    void test03() {
+        Course course = new Course("TDD, 클린코드 with Java", 0L);
+        Session session = new FreeSession(0L, 1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
+        boolean result = course.register(NsUserTest.JAVAJIGI, session, payment);
+        assertThat(result).isEqualTo(true);
     }
 }

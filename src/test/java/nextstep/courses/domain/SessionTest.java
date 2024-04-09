@@ -28,25 +28,21 @@ public class SessionTest {
         }).doesNotThrowAnyException();
     }
 
+    @DisplayName("전체 수강생을 확인한다.")
+    @ParameterizedTest
+    @MethodSource("checkRegister")
+    void test02(Session session, int amount) {
+        session.changeStatus(SessionStatus.RECRUITING);
+
+        session.registers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
+        assertThat(session.totalStudents()).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
+    }
+
     private static Stream<Arguments> checkRegister() {
         return Stream.of(
                 Arguments.of(new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1)), 0),
                 Arguments.of(new PaidSession(2, 1, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1)), 10_000)
         );
-    }
-
-    @DisplayName("전체 수강생을 확인한다.")
-    @Test
-    void test02() {
-        Session freeSession = new FreeSession(1, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        freeSession.changeStatus(SessionStatus.RECRUITING);
-        freeSession.registers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
-        assertThat(freeSession.totalStudents()).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
-
-        Session paidSession = new PaidSession(1, 2, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        paidSession.changeStatus(SessionStatus.RECRUITING);
-        paidSession.registers(List.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI));
-        assertThat(paidSession.totalStudents()).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
     }
 
     @Nested
