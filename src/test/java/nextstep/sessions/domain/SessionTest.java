@@ -55,14 +55,13 @@ class SessionTest {
 
     @Test
     void 결제_금액과_강의_금액이_일치하지_않으면_실패한다() {
-        assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, 20000L))
-                .withMessage("가격이 일치하지 않습니다.");
+        assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, 20000L));
     }
 
     @Test
     void 무료_강의_수강_신청한다() {
         // given
-        final Session freeSession = new Session(SessionStatus.RECRUITING);
+        final Session freeSession = Session.free(SessionStatus.RECRUITING);
 
         // when
         freeSession.enroll(NsUserTest.JAVAJIGI, 0L);

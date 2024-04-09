@@ -14,15 +14,11 @@ public class Session {
 
     private SessionStatus sessionStatus;
 
-    private long price;
+    private SessionPrice sessionPrice1;
 
     private SessionPeriod sessionPeriod;
 
     private List<NsUser> attendees = new ArrayList<>();
-
-    public Session(final SessionStatus sessionStatus) {
-        this(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX);
-    }
 
     public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime endAt) {
         this(maxNumber, sessionStatus, price, LocalDateTime.now(), endAt);
@@ -31,7 +27,7 @@ public class Session {
     public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
         this.maxNumber = maxNumber;
         this.sessionStatus = sessionStatus;
-        this.price = price;
+        this.sessionPrice1 = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
     }
 
@@ -40,17 +36,21 @@ public class Session {
         attendees.add(user);
     }
 
+    public static Session free(final SessionStatus sessionStatus) {
+        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX);
+    }
+
     private void validate(final NsUser user, final long price) {
-        validatePrice(price);
+        validateNonFreeSession();
+        sessionPrice1.validatePriceEquality(price);
         validateAttendeeNumber();
         validateRecruitingStatus();
-        sessionPeriod.validateStartedAt();
         validateAlreadyEnroll(user);
     }
 
-    private void validatePrice(final long price) {
-        if (this.price != price) {
-            throw new IllegalArgumentException("가격이 일치하지 않습니다.");
+    private void validateNonFreeSession() {
+        if (sessionPrice1.isNotFree()) {
+            sessionPeriod.validateStartedAt();
         }
     }
 
