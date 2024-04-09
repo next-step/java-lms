@@ -1,10 +1,10 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUsers;
 
 public class Session {
 
@@ -14,11 +14,11 @@ public class Session {
 
     private SessionStatus sessionStatus;
 
-    private SessionPrice sessionPrice1;
+    private SessionPrice sessionPrice;
 
     private SessionPeriod sessionPeriod;
 
-    private List<NsUser> attendees = new ArrayList<>();
+    private NsUsers attendees = new NsUsers();
 
     public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime endAt) {
         this(maxNumber, sessionStatus, price, LocalDateTime.now(), endAt);
@@ -27,7 +27,7 @@ public class Session {
     public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
         this.maxNumber = maxNumber;
         this.sessionStatus = sessionStatus;
-        this.sessionPrice1 = new SessionPrice(price);
+        this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
     }
 
@@ -42,20 +42,20 @@ public class Session {
 
     private void validate(final NsUser user, final long price) {
         validateNonFreeSession();
-        sessionPrice1.validatePriceEquality(price);
+        sessionPrice.validatePriceEquality(price);
         validateAttendeeNumber();
         validateRecruitingStatus();
         validateAlreadyEnroll(user);
     }
 
     private void validateNonFreeSession() {
-        if (sessionPrice1.isNotFree()) {
+        if (sessionPrice.isNotFree()) {
             sessionPeriod.validateStartedAt();
         }
     }
 
     private void validateAttendeeNumber() {
-        if (attendees.size() >= maxNumber) {
+        if (attendees.hasExceededMaxCapacity(maxNumber)) {
             throw new IllegalArgumentException("수강 인원이 초과되었습니다.");
         }
     }
@@ -73,6 +73,6 @@ public class Session {
     }
 
     public List<NsUser> getAttendees() {
-        return attendees;
+        return attendees.getUsers();
     }
 }

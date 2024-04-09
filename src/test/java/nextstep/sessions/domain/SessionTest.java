@@ -38,8 +38,7 @@ class SessionTest {
     @ParameterizedTest
     @EnumSource(value = SessionStatus.class, names = {"PREPARING", "END"})
     void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final SessionStatus sessionStatus) {
-        final Session session = new Session(5,
-                sessionStatus, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        final Session session = new Session(5, sessionStatus, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, 100000L))
                 .withMessage("모집중인 강의가 아닙니다.");
