@@ -21,7 +21,7 @@ class SessionTest {
 
     @BeforeEach
     void setUp() {
-        session = new Session(2, Status.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+        session = new Session(2, SessionStatus.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
     }
 
     @Test
@@ -35,9 +35,10 @@ class SessionTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = Status.class, names = {"PREPARING", "END"})
-    void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final Status status) {
-        final Session session = new Session(5, status, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+    @EnumSource(value = SessionStatus.class, names = {"PREPARING", "END"})
+    void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final SessionStatus sessionStatus) {
+        final Session session = new Session(5,
+                sessionStatus, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, 100000L))
                 .withMessage("모집중인 강의가 아닙니다.");
@@ -45,7 +46,7 @@ class SessionTest {
 
     @Test
     void 시작일이_지난_강의를_수강_신청을_하면_실패한다() {
-        final Session session = new Session(5, Status.RECRUITING, 100000L, LocalDateTime.now().plusDays(1));
+        final Session session = new Session(5, SessionStatus.RECRUITING, 100000L, LocalDateTime.now().plusDays(1));
 
         assertThatIllegalArgumentException().isThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, 100000L))
                 .withMessage("시작일이 지난 강의는 수강 신청할 수 없습니다.");
@@ -60,7 +61,7 @@ class SessionTest {
     @Test
     void 무료_강의_수강_신청한다() {
         // given
-        final Session freeSession = new Session(Status.RECRUITING);
+        final Session freeSession = new Session(SessionStatus.RECRUITING);
 
         // when
         freeSession.enroll(NsUserTest.JAVAJIGI, 0L);
