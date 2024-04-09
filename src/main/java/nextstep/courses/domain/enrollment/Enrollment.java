@@ -23,13 +23,13 @@ public class Enrollment extends BaseTime {
     this.payment = payment;
   }
 
-  public static Enrollment register(Long id, Long userId, Long courseId, Session session, Long payAmount) {
+  public static Enrollment register(Long id, Long userId, Long courseId, Session session, int payAmount) {
     valid(session, payAmount);
     Payment payment = new Payment("1", session.getId(), userId, payAmount);
     return new Enrollment(id, userId, courseId, session, payment);
   }
 
-  private static void valid(Session session, Long payAmount) {
+  private static void valid(Session session, int payAmount) {
     if (!session.checkRegisterPossibleStatus()) {
       throw new IllegalArgumentException(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, session.getId(), session.getSessionStatus()));
     }

@@ -11,18 +11,24 @@ public class SessionEnrollmentInfo {
   public static final String STUDENT_COUNT_IS_FULL = "수강 신청 가능한 인원이 모두 꽉찼습니다.";
 
   private boolean isFree;
-  private Long sessionAmount;
-  private Integer studentMaxCount;
-  private Integer totalStudentCount = 0;
+  private int sessionAmount;
+  private int studentMaxCount = Integer.MAX_VALUE;
+  private int totalStudentCount = 0;
 
-  public SessionEnrollmentInfo(boolean isFree, Long sessionAmount, Integer studentMaxCount) {
+  public SessionEnrollmentInfo(boolean isFree, int sessionAmount) {
+    valid(isFree, sessionAmount, studentMaxCount);
+    this.isFree = isFree;
+    this.sessionAmount = sessionAmount;
+  }
+
+  public SessionEnrollmentInfo(boolean isFree, int sessionAmount, int studentMaxCount) {
     valid(isFree, sessionAmount, studentMaxCount);
     this.isFree = isFree;
     this.sessionAmount = sessionAmount;
     this.studentMaxCount = studentMaxCount;
   }
 
-  private void valid(boolean isFree, Long sessionAmount, Integer studentMaxCount) {
+  private void valid(boolean isFree, int sessionAmount, Integer studentMaxCount) {
     if (!isFree && studentMaxCount < MIN_STUDENT_COUNT) {
       throw new IllegalArgumentException(String.format(INVALID_STUDENT_COUNT, studentMaxCount));
     }
@@ -36,7 +42,7 @@ public class SessionEnrollmentInfo {
     return isFree;
   }
 
-  public Long getSessionAmount() {
+  public int getSessionAmount() {
     return sessionAmount;
   }
 

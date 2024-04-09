@@ -33,7 +33,7 @@ class EnrollmentTest {
     Optional<Session> freeSession = COURSE.getSessions().stream()
         .filter(it -> it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
-    Enrollment enrollment = Enrollment.register(1L, 1004L, COURSE.getId(), freeSession.get(), 0L);
+    Enrollment enrollment = Enrollment.register(1L, 1004L, COURSE.getId(), freeSession.get(), 0);
 
     assertThat(enrollment.getId()).isEqualTo(1L);
     assertThat(enrollment.getUserId()).isEqualTo(1004L);
@@ -43,12 +43,12 @@ class EnrollmentTest {
   @Test
   @DisplayName("유료 강의 신청 한 경우" +
       "Enrollment 생성 테스트")
-  void not_free_enrollment_create링_test() {
+  void not_free_enrollment_create_test() {
     Optional<Session> notFreeSession = COURSE.getSessions().stream()
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
-    Enrollment enrollment = Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
 
+    Enrollment enrollment = Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
     assertThat(enrollment.getId()).isEqualTo(1L);
     assertThat(enrollment.getUserId()).isEqualTo(1004L);
     assertThat(enrollment.getCourseId()).isEqualTo(COURSE.getId());
@@ -62,7 +62,7 @@ class EnrollmentTest {
         .filter(it -> !it.checkRegisterPossibleStatus())
         .findFirst();
 
-    assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notInProgressSession.get(), 0L))
+    assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notInProgressSession.get(), 0))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, notInProgressSession.get().getId(), notInProgressSession.get().getSessionStatus()));
   }
@@ -75,7 +75,7 @@ class EnrollmentTest {
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
 
-    assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), 0L))
+    assertThatThrownBy(() -> Enrollment.register(1L, 1004L, COURSE.getId(), notFreeSession.get(), 0))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, 0L, notFreeSession.get().getSessionAmount()));
   }
@@ -100,21 +100,21 @@ class EnrollmentTest {
     Session session1 = new Session(
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0L, null),
+        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0),
         new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("수강신청", SessionStatus.IN_PROGRESS, false, 50000L, 1),
+        new SessionInfo("수강신청", SessionStatus.IN_PROGRESS, false, 50000, 1),
         new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session3 = new Session(
         3L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("수강신청 실패 케이스", SessionStatus.END, false, 50000L, 1),
+        new SessionInfo("수강신청 실패 케이스", SessionStatus.END, false, 50000, 1),
         new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 

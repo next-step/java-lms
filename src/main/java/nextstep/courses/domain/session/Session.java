@@ -31,7 +31,7 @@ public class Session extends BaseTime {
     return sessionPeriod;
   }
 
-  public Long getSessionAmount() {
+  public int getSessionAmount() {
     return sessionInfo.getSessionAmount();
   }
 
@@ -47,7 +47,7 @@ public class Session extends BaseTime {
     return sessionInfo.checkRegisterPossibleStatus();
   }
 
-  public boolean checkPayAmount(Long payAmount) {
+  public boolean checkPayAmount(int payAmount) {
     return sessionInfo.checkPayAmount(payAmount);
   }
 

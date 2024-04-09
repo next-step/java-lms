@@ -16,42 +16,43 @@ class SessionInfoTest {
   @DisplayName("정상 강의 명, 강의 상태, 무료 여부, 최대 학생수를 입력한 경우" +
       "SessionInfo 생성 테스트")
   void sessionInfo_create_test() {
-    String given1 = "강의명";
-    SessionStatus given2 = SessionStatus.READY;
-    boolean given3 = true;
+    String title = "강의명";
+    SessionStatus sessionStatus = SessionStatus.READY;
+    boolean isFree = true;
+    int sessionAmount = 0;
 
-    SessionInfo sessionInfo = new SessionInfo(given1, given2, given3, 0L, null);
-    assertThat(sessionInfo.getSessionTitle()).isEqualTo(given1);
-    assertThat(sessionInfo.getSessionStatus()).isEqualTo(given2);
-    assertThat(sessionInfo.getIsFree()).isEqualTo(given3);
-    assertThat(sessionInfo.getStudentMaxCount()).isEqualTo(null);
+    SessionInfo sessionInfo = new SessionInfo(title, sessionStatus, isFree, sessionAmount);
+    assertThat(sessionInfo.getSessionTitle()).isEqualTo(title);
+    assertThat(sessionInfo.getSessionStatus()).isEqualTo(sessionStatus);
+    assertThat(sessionInfo.getIsFree()).isEqualTo(isFree);
+    assertThat(sessionInfo.getStudentMaxCount()).isEqualTo(Integer.MAX_VALUE);
   }
 
   @ParameterizedTest
   @NullAndEmptySource
   @DisplayName("강의명이 null 또는 empty인 경우" +
       "exception 테스트")
-  void sessionInfo_fail_test_by_incorrect_title(String given) {
-    SessionStatus given2 = SessionStatus.READY;
-    boolean given3 = true;
+  void sessionInfo_fail_test_by_incorrect_title(String title) {
+    SessionStatus sessionStatus = SessionStatus.READY;
+    boolean isFree = true;
 
-    assertThatThrownBy(() -> new SessionInfo(given, given2, given3, 0L, null))
+    assertThatThrownBy(() -> new SessionInfo(title, sessionStatus, isFree, 0))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(String.format(SESSION_TITLE_IS_INCORRECT, given));
+        .hasMessageContaining(String.format(SESSION_TITLE_IS_INCORRECT, title));
   }
 
   @Test
   @DisplayName("유로 강의인데 수강 인원이 0인 경우" +
       "exception 테스트")
   void sessionInfo_fail_test_by_invalid_student_count() {
-    String given1 = "강의명";
-    SessionStatus given2 = SessionStatus.READY;
-    boolean given3 = false;
-    Long given4 = 0L;
-    int given5 = 0;
+    String title = "강의명";
+    SessionStatus sessionStatus = SessionStatus.READY;
+    boolean isFree = false;
+    int sessionAmount = 0;
+    int studentMaxCount = 0;
 
-    assertThatThrownBy(() -> new SessionInfo(given1, given2, given3, given4, given5))
+    assertThatThrownBy(() -> new SessionInfo(title, sessionStatus, isFree, sessionAmount, studentMaxCount))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(String.format(INVALID_STUDENT_COUNT, given5));
+        .hasMessageContaining(String.format(INVALID_STUDENT_COUNT, studentMaxCount));
   }
 }

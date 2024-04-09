@@ -37,14 +37,14 @@ public class CourseService {
     Session session1 = new Session(
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0L, null),
+        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0),
         new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("레거시 코드 리팩토링", SessionStatus.IN_PROGRESS, false, 50000L, 100),
+        new SessionInfo("레거시 코드 리팩토링", SessionStatus.IN_PROGRESS, false, 50000, 100),
         new CoverImage("리팩토링 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
@@ -54,7 +54,7 @@ public class CourseService {
   private static void printSessionInfos(Course course) {
     for (Session session : course.getSessions()) {
 
-      String printAmount = session.getSessionAmount() == 0 ? "무료" : session.getSessionAmount().toString() + "원";
+      String printAmount = session.getSessionAmount() == 0 ? "무료" : session.getSessionAmount() + "원";
 
       System.out.println("  ㄴ 강의 명: " + session.getSessionTitle() + ", 강의 상태: " + session.getSessionStatus());
       System.out.println("    ㄴ 강의 금액: " + printAmount);
@@ -72,7 +72,7 @@ public class CourseService {
   private static void doRegister(Course course) {
     Optional<Session> freeSession = course.getSessions().stream().filter(it -> it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
     Optional<Session> notFreeSession = course.getSessions().stream().filter(it -> !it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
-    Enrollment.register(1L, 1004L, course.getId(), freeSession.get(), 0L);
+    Enrollment.register(1L, 1004L, course.getId(), freeSession.get(), 0);
     Enrollment.register(2L, 1005L, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
     Enrollment.register(3L, 1006L, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
   }

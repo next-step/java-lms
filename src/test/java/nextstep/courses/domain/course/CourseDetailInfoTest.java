@@ -27,20 +27,20 @@ class CourseDetailInfoTest {
   @DisplayName("생성자 id를 음수로 넣은 경우" +
       "exception 테스트")
   void courseDetailInfo_id_validation_exception_test() {
-    Long given = -1000L;
-    assertThatThrownBy(() -> new CourseDetailInfo(given, "테스트 과정 명"))
+    Long givenCreatorId = -1000L;
+    assertThatThrownBy(() -> new CourseDetailInfo(givenCreatorId, "테스트 과정 명"))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, given));
+        .hasMessageContaining(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, givenCreatorId));
   }
 
   @Test
   @DisplayName("생성자 id를 0으로 넣은 경우" +
       "exception 테스트")
   void courseDetailInfo_id_validation_exception_test2() {
-    Long given = 0L;
-    assertThatThrownBy(() -> new CourseDetailInfo(given, "테스트 과정 명"))
+    Long givenCreatorId = 0L;
+    assertThatThrownBy(() -> new CourseDetailInfo(givenCreatorId, "테스트 과정 명"))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, given));
+        .hasMessageContaining(String.format(NEGATIVE_NUMBER_OR_ZERO_IS_NOT_ALLOWED, givenCreatorId));
   }
 
   @ParameterizedTest

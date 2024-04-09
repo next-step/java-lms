@@ -7,7 +7,14 @@ public class SessionInfo {
   private SessionStatus sessionStatus;
   private SessionEnrollmentInfo sessionEnrollmentInfo;
 
-  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, Long sessionAmount, Integer studentMaxCount) {
+  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount) {
+    valid(sessionTitle);
+    this.sessionTitle = sessionTitle;
+    this.sessionStatus = sessionStatus;
+    this.sessionEnrollmentInfo = new SessionEnrollmentInfo(isFree, sessionAmount);
+  }
+
+  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount, int studentMaxCount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
@@ -40,7 +47,7 @@ public class SessionInfo {
     return sessionEnrollmentInfo.getTotalStudentCount();
   }
 
-  public Long getSessionAmount() {
+  public int getSessionAmount() {
     return sessionEnrollmentInfo.getSessionAmount();
   }
 
@@ -48,8 +55,8 @@ public class SessionInfo {
     return sessionStatus.isInProgressStatus();
   }
 
-  public boolean checkPayAmount(Long payAmount) {
-    return sessionEnrollmentInfo.getSessionAmount().equals(payAmount);
+  public boolean checkPayAmount(int payAmount) {
+    return sessionEnrollmentInfo.getSessionAmount() == payAmount;
   }
 
   public void addStudentCount() {

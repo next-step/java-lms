@@ -12,14 +12,14 @@ public class Payment {
     private Long nsUserId;
 
     // 결제 금액
-    private Long amount;
+    private int amount;
 
     private LocalDateTime createdAt;
 
     public Payment() {
     }
 
-    public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+    public Payment(String id, Long sessionId, Long nsUserId, int amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
