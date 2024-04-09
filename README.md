@@ -10,11 +10,12 @@
 
 ## 수강신청 요구사항
 * Course는 기수 단위로 운영, 여러 개의 Session을 가짐
-* Session은 시작일과 종료일을 가짐
-* Session은 강의 커버 이미지를 가짐 
-  (1MB 이하 / 타입 - gif, jpg, jpeg, png, svg만 허용 / width 300픽셀, height 200픽셀 이상(3:2))
-* Session은 무료와 유료로 나뉨
-  (무료 - 수강 인원 제한 X / 유료 - 수강 인원 제한 초과 불가 & 수강생 결제 금액과 수강료 일치 시 수강 신청 가능)
-* Session은 준비중 / 모집중 / 종료 3가지 상태 가짐
+* Session은 시작일과 종료일을 가짐 (DONE)
+* Session은 강의 커버 이미지를 가짐 (DONE)
+  (1MB 이하 / 타입 - gif, jpg, jpeg, png, svg만 허용 / width 300픽셀, height 200픽셀 이상) (DONE)
+* Session은 준비중 / 모집중 / 종료 3가지 상태 가짐 (DONE)
+* Session은 무료와 유료로 나뉨 (DONE)
+
+* 무료 - 수강 인원 제한 X / 유료 - 수강 인원 제한 초과 불가 & 수강생 결제 금액과 수강료 일치 시 수강 신청 가능
 * Session 수강신청은 강의 상태가 모집 중일 때 가능
 * 유료 Session 결제는 이미 완료한 것으로 가정. payments 모듈로 완료된 결제 정보 관리. 결제 정보는 Payment 객체에 담겨 반환
