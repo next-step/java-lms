@@ -18,7 +18,7 @@ public enum CoverImageType {
 
     public static CoverImageType from(final String type) {
         return Arrays.stream(CoverImageType.values())
-            .filter(value -> value.type.equals(type))
+            .filter(value -> value.type.equals(type.toLowerCase()))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이미지 타입입니다."));
     }
