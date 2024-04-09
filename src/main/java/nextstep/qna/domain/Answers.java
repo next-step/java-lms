@@ -6,11 +6,12 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+
 public class Answers {
     private List<Answer> answers = new ArrayList<>();
 
     public Answers(){
-
     }
 
     public void add(Answer answer) {
@@ -27,4 +28,11 @@ public class Answers {
         return deleteHistories;
     }
 
+    protected boolean isAnswersDeleted(){
+        boolean status = FALSE;
+        for(Answer answer : answers){
+            status = status || answer.isDeleted();
+        }
+        return status;
+    }
 }
