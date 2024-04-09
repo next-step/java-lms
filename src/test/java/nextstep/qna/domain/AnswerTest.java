@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.answer.Answer;
+import nextstep.qna.domain.deletehistory.DeleteHistory;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,9 +22,12 @@ public class AnswerTest {
 
         @DisplayName("답변 작성자와 지우려고 하는 작성자가 같을 때 삭제할 수 있다.")
         @Test
-        void can_delete_when_same_writer() {
-            assertThatCode(() -> A1.delete(NsUserTest.JAVAJIGI, LocalDateTime.now()))
-                    .doesNotThrowAnyException();
+        void can_delete_when_same_writer() throws Exception {
+            final DeleteHistory expectResult = new DeleteHistory(ContentType.ANSWER, null, NsUserTest.JAVAJIGI, LocalDateTime.now());
+            assertThat(A1.delete(NsUserTest.JAVAJIGI, LocalDateTime.now()))
+                    .isInstanceOf(DeleteHistory.class)
+                    .satisfies(history -> assertThat(history).isEqualTo(expectResult));
+
         }
 
         @DisplayName("답변 작성자와 지우려고 하는 작성자가 다를 때, CannnotDeleteException을 발생시킨다.")
