@@ -71,7 +71,7 @@ public class Session {
 
 
     private void checkAlreadyPaid(Payment payment){
-        if(!payment.isName(sessionFee)){
+        if(!payment.isSame(sessionFee)){
             throw new IllegalArgumentException("수강료가 일치하지 않습니다.");
         }
     }
