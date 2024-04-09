@@ -36,15 +36,16 @@ public class Session {
     }
 
     public void enroll(final NsUser user, final long price) {
-        validate(price);
+        validate(user, price);
         attendees.add(user);
     }
 
-    private void validate(final long price) {
+    private void validate(final NsUser user, final long price) {
         validatePrice(price);
         validateAttendeeNumber();
         validateRecruitingStatus();
         sessionPeriod.validateStartedAt();
+        validateAlreadyEnroll(user);
     }
 
     private void validatePrice(final long price) {
@@ -62,6 +63,12 @@ public class Session {
     private void validateRecruitingStatus() {
         if (sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
+        }
+    }
+
+    private void validateAlreadyEnroll(final NsUser user) {
+        if (attendees.contains(user)) {
+            throw new IllegalArgumentException("이미 수강 신청한 사용자입니다.");
         }
     }
 
