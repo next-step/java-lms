@@ -22,8 +22,10 @@ public class Session {
 
     private List<NsUser> users;
 
-    public Session(long id, String title, SessionType sessionType, SessionState state, String image, LocalDateTime startDate,
-            LocalDateTime endDate) {
+    private int studentCapacity;
+
+    public Session(long id, String title, SessionType sessionType, SessionState state, String image,
+            LocalDateTime startDate, LocalDateTime endDate, int studentCapacity) {
         this.id = id;
         this.title = title;
         this.sessionType = sessionType;
@@ -31,6 +33,12 @@ public class Session {
         this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.studentCapacity = studentCapacity;
+    }
+
+    public Session(long id, String title, SessionType sessionType, SessionState state, String image,
+            LocalDateTime startDate, LocalDateTime endDate) {
+        this(id, title, sessionType, state, image, startDate, endDate, 0);
     }
 
     public void toCourse(Course course) {
