@@ -26,6 +26,7 @@ public class Enrollment extends BaseTime {
   public static Enrollment register(Long id, Long userId, Long courseId, Session session, int payAmount) {
     valid(session, payAmount);
     Payment payment = new Payment("1", session.getId(), userId, payAmount);
+    session.addStudentCount();
     return new Enrollment(id, userId, courseId, session, payment);
   }
 
@@ -37,7 +38,6 @@ public class Enrollment extends BaseTime {
     if (!session.checkPayAmount(payAmount)) {
       throw new IllegalArgumentException(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, payAmount, session.getSessionAmount()));
     }
-    session.addStudentCount();
   }
 
   public Long getId() {
