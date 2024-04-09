@@ -55,7 +55,7 @@ public class Course {
                 '}';
     }
 
-    public void register(Session session) {
+    public void add(Session session) {
         session.toCourse(this);
         if (Objects.isNull(sessions)) {
             sessions = Sessions.from(session);
