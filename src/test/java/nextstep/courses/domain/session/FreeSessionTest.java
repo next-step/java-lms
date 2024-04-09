@@ -28,9 +28,9 @@ class FreeSessionTest {
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
         List<Session> sessions = new ArrayList<>();
-        sessions.add(new FreeSession(1L, null, period, image, SessionStatus.RECRUITING, nsUsers));
-        sessions.add(new FreeSession(2L, null, period, image, SessionStatus.READY, nsUsers));
-        sessions.add(new FreeSession(3L, null, period, image, SessionStatus.CLOSED, nsUsers));
+        sessions.add(new FreeSession(1L, "축구교실", null, period, image, SessionStatus.RECRUITING, nsUsers));
+        sessions.add(new FreeSession(2L, "축구교실", null, period, image, SessionStatus.READY, nsUsers));
+        sessions.add(new FreeSession(3L, "축구교실", null, period, image, SessionStatus.CLOSED, nsUsers));
 
         course = new Course(1L, "무료테스트", 1L, new Sessions(sessions), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
     }

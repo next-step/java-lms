@@ -40,7 +40,7 @@ public class CourseRepositoryTest {
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
         List<Session> sessions = new ArrayList<>();
-        sessions.add(new FreeSession(1L, null, period, image, SessionStatus.RECRUITING, nsUsers));
+        sessions.add(new FreeSession(1L, "축구교실", null, period, image, SessionStatus.RECRUITING, nsUsers));
 
         course = new Course(1L, "무료테스트", 1L, new Sessions(sessions), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
     }
@@ -62,7 +62,7 @@ public class CourseRepositoryTest {
         Period period = new Period(LocalDate.of(2024, 2, 4), LocalDate.of(2024, 10, 9));
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
-        Course course = new Course(1L, "무료테스트", 1L, new Sessions(List.of(new FreeSession(1L, null, period, image, SessionStatus.RECRUITING, nsUsers))), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
+        Course course = new Course(1L, "무료테스트", 1L, new Sessions(List.of(new FreeSession(1L, "축구교실", null, period, image, SessionStatus.RECRUITING, nsUsers))), LocalDateTime.of(2024, 1, 10, 1, 1, 1), LocalDateTime.of(2024, 1, 10, 1, 1, 1));
 
         Assertions.assertThat(course.isFreeSession(1L)).isTrue();
     }
@@ -81,7 +81,7 @@ public class CourseRepositoryTest {
         Image image = new Image(1000, 200, 300, "test.jpg");
         NsUsers nsUsers = NsUsers.from(new ArrayList<>());
 
-        PaidSession paidSession = new PaidSession(2L, null, period, image, SessionStatus.RECRUITING, nsUsers, 5, 5000L);
+        PaidSession paidSession = new PaidSession(2L, "축구교실", null, period, image, SessionStatus.RECRUITING, nsUsers, 5, 5000L);
         course.addSession(paidSession);
         Assertions.assertThatCode(() -> course.enroll(new NsUser(), 2L, LocalDate.now()))
                 .doesNotThrowAnyException();
