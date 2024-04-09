@@ -21,8 +21,4 @@ public class MaxRegistrationCount {
     public boolean isMaxRegistrationCountOver(RegistrationCount other) {
         return COMPARATOR.compare(registrationCount, other) > 0;
     }
-
-    public int getRegistrationCount() {
-        return registrationCount.getValue();
-    }
 }
