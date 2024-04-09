@@ -2,7 +2,9 @@ package nextstep.qna.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
@@ -11,7 +13,6 @@ public class Answers {
     private final List<Answer> answers = new ArrayList<>();
 
     private Answers() {
-
     }
 
     private Answers(List<Answer> answers) {
@@ -22,8 +23,14 @@ public class Answers {
         return new Answers(answers);
     }
 
-    public static Answers from() {
-        return new Answers();
+    public static Answers from(Answer ...answers) {
+        Answers newAnswers = new Answers();
+
+        for (Answer answer : answers) {
+            newAnswers.add(answer);
+        }
+
+        return newAnswers;
     }
 
     public List<DeleteHistory> deleteAll(NsUser nsUser) throws CannotDeleteException {
@@ -45,5 +52,9 @@ public class Answers {
                 .filter(answer -> !answer.isOwner(nsUser))
                 .count();
         return count == 0;
+    }
+
+    public boolean isEmpty() {
+        return answers.isEmpty();
     }
 }

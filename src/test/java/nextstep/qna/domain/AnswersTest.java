@@ -15,10 +15,7 @@ class AnswersTest {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, q, "answer 2");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, q, "answer 3");
         Answer answer3 = new Answer(NsUserTest.JAVAJIGI, q, "answer 1");
-        Answers answers = Answers.from();
-        answers.add(answer1);
-        answers.add(answer2);
-        answers.add(answer3);
+        Answers answers = Answers.from(answer1, answer2, answer3);
         int expected = 3;
 
         assertThat(answers.deleteAll(NsUserTest.JAVAJIGI).size()).isEqualTo(expected);
@@ -33,10 +30,7 @@ class AnswersTest {
         Answer answer1 = new Answer(NsUserTest.JAVAJIGI, q, "answer 2");
         Answer answer2 = new Answer(NsUserTest.JAVAJIGI, q, "answer 3");
         Answer answer3 = new Answer(NsUserTest.SANJIGI, q, "answer 1");
-        Answers answers = Answers.from();
-        answers.add(answer1);
-        answers.add(answer2);
-        answers.add(answer3);
+        Answers answers = Answers.from(answer1, answer2, answer3);
 
         assertThat(answer1.isDeleted()).isFalse();
         assertThat(answer2.isDeleted()).isFalse();
