@@ -2,6 +2,8 @@ package nextstep.sessions.infrastructore;
 
 import nextstep.sessions.domain.FreeSession;
 import nextstep.sessions.domain.PaidSession;
+import nextstep.sessions.domain.RecruitmentState;
+import nextstep.sessions.domain.Selection;
 import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionState;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +35,8 @@ class JdbcSessionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repository = new JdbcSessionRepository(jdbcTemplate);
+        CoverImageRepository coverImageRepository = new JdbcCoverImageRepository(jdbcTemplate);
+        repository = new JdbcSessionRepository(jdbcTemplate, coverImageRepository);
     }
 
     @Test
@@ -41,7 +44,6 @@ class JdbcSessionRepositoryTest {
         Session session = Session.builder()
                 .courseId(1L)
                 .title("TDD, 자바 99기")
-                .state(SessionState.RECRUITING)
                 .sessionType(new PaidSession(999, 800000L))
                 .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
@@ -57,7 +59,6 @@ class JdbcSessionRepositoryTest {
         Session session1 = Session.builder()
                 .courseId(1L)
                 .title("TDD, 자바 99기")
-                .state(SessionState.RECRUITING)
                 .sessionType(new PaidSession(999, 800000L))
                 .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
@@ -67,7 +68,6 @@ class JdbcSessionRepositoryTest {
         Session session2 = Session.builder()
                 .courseId(2L)
                 .title("스터디 모집")
-                .state(SessionState.RECRUITING)
                 .sessionType(new FreeSession())
                 .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
@@ -93,6 +93,16 @@ class JdbcSessionRepositoryTest {
         List<Session> sessions = repository.findByIds(List.of(1L, 2L, 3L));
 
         assertThat(sessions).hasSize(3);
+
+        LOGGER.debug("Sessions : {}", sessions);
+    }
+
+    @Test
+    void findByCourseId() {
+        List<Session> sessions = repository.findByCourseId(1L);
+        assertThat(sessions).hasSize(1);
+
+        LOGGER.debug("Sessions : {}", sessions);
     }
 
     @Test
@@ -102,16 +112,20 @@ class JdbcSessionRepositoryTest {
                 .id(1L)
                 .courseId(1L)
                 .title("TDD, 클린 코드 with Java 18기 (수정)")
-                .state(SessionState.FINISHED)
+                .state(SessionState.ONGOING) // before : 'FINISHED'
+                .recruitment(RecruitmentState.RECRUITING) // before: 'NOT_RECRUITING'
                 .sessionType(new FreeSession())
                 .startDate(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59))
                 .updatedAt(LocalDateTime.now())
+                .selection(Selection.MANUAL)
                 .build();
 
         session.update(target);
 
         int count = repository.update(session);
         assertThat(count).isEqualTo(1);
+
+        LOGGER.info("Updated Session : {}", session);
     }
 }

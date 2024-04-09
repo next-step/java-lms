@@ -15,5 +15,7 @@ public interface SessionRepository {
 
     List<Session> findByIds(List<Long> ids);
 
+    List<Session> findByCourseId(long courseId);
+
     int update(Session session);
 }

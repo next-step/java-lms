@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.sessions.infrastructore.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,9 +16,11 @@ import java.time.LocalDateTime;
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
     private JdbcOperations jdbcTemplate;
+    private SessionRepository sessionRepository;
 
-    public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
+    public JdbcCourseRepository(JdbcOperations jdbcTemplate, SessionRepository sessionRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -45,7 +48,13 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+
+        Course course = jdbcTemplate.queryForObject(sql, rowMapper, id);
+        if (course != null) {
+            course.setSessions(sessionRepository.findByCourseId(id));
+        }
+
+        return course;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

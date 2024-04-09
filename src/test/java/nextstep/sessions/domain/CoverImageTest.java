@@ -49,7 +49,7 @@ class CoverImageTest {
         void 지원하지않는_확장자는_예외를던진다() {
             assertThatThrownBy(() -> new CoverImage(1L, 300, 200, 1024 * 1024, "이미지", "exe", "/images/이미지.jpeg"))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("지원하지 않는 확장자입니다");
+                    .hasMessage("지원하지 않는 확장자 입니다");
         }
 
         @Test

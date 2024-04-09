@@ -70,10 +70,22 @@ CREATE TABLE class_session (
    course_id BIGINT NOT NULL,
    title VARCHAR(100) NOT NULL,
    state VARCHAR(20) NOT NULL,
+   recruitment VARCHAR(20) NOT NULL,
    capacity INT NOT NULL,
    amount BIGINT NOT NULL,
+   selection VARCHAR(20) NOT NULL,
    start_date timestamp NOT NULL,
    end_date timestamp NOT NULL,
+   created_at timestamp NOT NULL,
+   updated_at timestamp
+);
+
+
+CREATE TABLE enrollment (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   session_id BIGINT NOT NULL,
+   ns_user_id BIGINT NOT NULL,
+   state VARCHAR(20) NOT NULL,
    created_at timestamp NOT NULL,
    updated_at timestamp
 );

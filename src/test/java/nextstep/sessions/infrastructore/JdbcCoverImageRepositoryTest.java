@@ -1,6 +1,7 @@
 package nextstep.sessions.infrastructore;
 
 import nextstep.sessions.domain.CoverImage;
+import nextstep.sessions.domain.EnableExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 @JdbcTest
 class JdbcCoverImageRepositoryTest {
 
-    private static final CoverImage COVER_IMAGE1 = new CoverImage(1L, 1L, 1200, 800, 340797, "playground.jpeg", "jpeg", "playground.jpeg");
-    private static final CoverImage COVER_IMAGE2 = new CoverImage(2L, 1L, 300, 200, 999, "example.png", "png", "example.png");
+    private static final CoverImage COVER_IMAGE1 = new CoverImage(1L, 1L, 1200, 800, 340797, "playground.jpeg", EnableExtension.JPEG, "playground.jpeg");
+    private static final CoverImage COVER_IMAGE2 = new CoverImage(2L, 1L, 300, 200, 999, "example.png", EnableExtension.PNG, "example.png");
 
 
     @Autowired

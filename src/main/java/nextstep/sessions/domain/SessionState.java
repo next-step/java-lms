@@ -2,7 +2,7 @@ package nextstep.sessions.domain;
 
 public enum SessionState {
     PREPARING("준비중"),
-    RECRUITING("모집중"),
+    ONGOING("진행중"),
     FINISHED("종료");
 
     private String text;
@@ -11,7 +11,7 @@ public enum SessionState {
         this.text = text;
     }
 
-    public boolean isRecruiting() {
-        return this == RECRUITING;
+    public boolean isFinished() {
+        return this == FINISHED;
     }
 }

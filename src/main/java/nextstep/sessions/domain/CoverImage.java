@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Set;
 
 public class CoverImage {
 
@@ -14,7 +13,6 @@ public class CoverImage {
     public static final int MIN_HEIGHT = 200;
     private static final double STANDARD_RATIO = 3.0 / 2.0;
     private static final double RATIO_OFFSET = 0.01;
-    private static final Set<String> SUPPORT_EXTENSION = Set.of("gif", "jpg", "jpeg", "png", "svg");
 
     private Long id;
     private Long sessionId;
@@ -23,17 +21,17 @@ public class CoverImage {
     private long fileSize;
 
     private String fileName;
-    private String extension;
+    private EnableExtension extension;
     private String filePath;
 
     private CoverImage() {
     }
 
     public CoverImage(Long sessionId, int width, int height, long fileSize, String fileName, String extension, String filePath) {
-        this(0L, sessionId, width, height, fileSize, fileName, extension, filePath);
+        this(0L, sessionId, width, height, fileSize, fileName, EnableExtension.find(extension), filePath);
     }
 
-    public CoverImage(Long id, Long sessionId, int width, int height, long fileSize, String fileName, String extension, String filePath) {
+    public CoverImage(Long id, Long sessionId, int width, int height, long fileSize, String fileName, EnableExtension extension, String filePath) {
         if (sessionId == null) {
             throw new IllegalArgumentException("강의 번호가 누락되어 있습니다");
         }
@@ -50,8 +48,8 @@ public class CoverImage {
             throw new IllegalArgumentException("최대 파일 크기를 초과하였습니다");
         }
 
-        if (!SUPPORT_EXTENSION.contains(extension.toLowerCase())) {
-            throw new IllegalArgumentException("지원하지 않는 확장자입니다");
+        if (extension == null) {
+            throw new IllegalArgumentException("파일 확장자 정보가 누락되어 있습니다");
         }
 
         double ratio = (double) width / height;
@@ -73,7 +71,7 @@ public class CoverImage {
         this.height = height;
         this.fileSize = fileSize;
         this.fileName = fileName;
-        this.extension = extension.toLowerCase();
+        this.extension = extension;
         this.filePath = filePath;
     }
 
@@ -114,7 +112,7 @@ public class CoverImage {
         return fileName;
     }
 
-    public String getExtension() {
+    public EnableExtension getExtension() {
         return extension;
     }
 
@@ -127,11 +125,25 @@ public class CoverImage {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         CoverImage that = (CoverImage) other;
-        return width == that.width && height == that.height && fileSize == that.fileSize && Objects.equals(id, that.id) && Objects.equals(sessionId, that.sessionId) && Objects.equals(fileName, that.fileName) && Objects.equals(extension, that.extension) && Objects.equals(filePath, that.filePath);
+        return width == that.width && height == that.height && fileSize == that.fileSize && Objects.equals(id, that.id) && Objects.equals(sessionId, that.sessionId) && Objects.equals(fileName, that.fileName) && extension == that.extension && Objects.equals(filePath, that.filePath);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, sessionId, width, height, fileSize, fileName, extension, filePath);
+    }
+
+    @Override
+    public String toString() {
+        return "CoverImage{" +
+                "id=" + id +
+                ", sessionId=" + sessionId +
+                ", width=" + width +
+                ", height=" + height +
+                ", fileSize=" + fileSize +
+                ", fileName='" + fileName + '\'' +
+                ", extension=" + extension +
+                ", filePath='" + filePath + '\'' +
+                '}';
     }
 }
