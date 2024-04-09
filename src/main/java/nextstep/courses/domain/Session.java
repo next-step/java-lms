@@ -9,7 +9,7 @@ abstract public class Session {
     protected final Long id;
     protected final Course course;
     protected final SessionDate sessionDate;
-    protected SessionStatus sessionStatus = SessionStatus.READY;;
+    protected SessionStatus sessionStatus = SessionStatus.READY;
     protected int numberOfStudents;
     protected CoverImageInfo coverImageInfo;
     protected final SessionType type;

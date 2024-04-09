@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
@@ -37,8 +36,8 @@ public class JdbcSessionRepository implements SessionRepository {
             "on s.cover_image_info_id = c.id " +
             "where s.id = ?";
 
-    private JdbcOperations jdbcTemplate;
-    private SimpleJdbcInsert simpleJdbcInsert;
+    private final JdbcOperations jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
