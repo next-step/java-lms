@@ -14,9 +14,4 @@ class CourseTest {
         course.add(session);
         course.add(session2);
     }
-
-    @Test
-    void 무료강의_신청() {
-
-    }
 }

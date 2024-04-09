@@ -1,6 +1,12 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import nextstep.courses.CannotRegisterException;
+import nextstep.users.domain.NsUser;
 
 public class Session {
 
@@ -13,6 +19,8 @@ public class Session {
     private LocalDateTime endDate;
 
     private Course course;
+
+    private List<NsUser> users;
 
     public Session(long id, String title, SessionType sessionType, SessionState state, String image, LocalDateTime startDate,
             LocalDateTime endDate) {
@@ -27,5 +35,19 @@ public class Session {
 
     public void toCourse(Course course) {
         this.course = course;
+    }
+
+    public void register(NsUser user) throws CannotRegisterException {
+        isRegisteredAllowed();
+        if (Objects.isNull(users)) {
+            users = new ArrayList<>();
+        }
+        users.add(user);
+    }
+
+    private void isRegisteredAllowed() throws CannotRegisterException {
+        if (!state.isAllowed()) {
+            throw new CannotRegisterException(String.format("해당 강의 상태 %s에서는 수강 신청을 할 수 없습니다.", state.getState()));
+        }
     }
 }

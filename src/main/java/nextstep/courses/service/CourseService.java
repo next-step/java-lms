@@ -1,2 +1,5 @@
-package nextstep.courses.service;public class CourseService {
+package nextstep.courses.service;
+
+public class CourseService {
+
 }

@@ -10,4 +10,12 @@ public enum SessionState {
     }
 
     private final String state;
+
+    public boolean isAllowed() {
+        return this == RECRUITING;
+    }
+
+    public String getState() {
+        return state;
+    }
 }
