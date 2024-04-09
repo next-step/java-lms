@@ -1,10 +1,14 @@
 package nextstep.courses.domain.lecture;
 
-public interface Lecture {
+import nextstep.payments.domain.Payment;
 
-    boolean isRegistrationAvailable();
+public interface Lecture {
 
     default boolean isRecruitmentOpen(LectureStatus lectureStatus) {
         return LectureStatus.RECRUITING == lectureStatus;
     }
+
+    boolean isRegistrationAvailable();
+
+    boolean isPaymentAmountSameTuitionFee(Payment payment);
 }
