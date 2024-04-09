@@ -17,6 +17,26 @@ import java.util.Map;
 
 @Repository("SessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
+    public static final String FIND_SESSION_BY_ID_SQL = "select " +
+            "s.id as id" +
+            ", s.start_date as startDate" +
+            ", s.end_date as endDate" +
+            ", s.status as status" +
+            ", s.number_of_students as numberOfStudents" +
+            ", s.max_number_of_students as maxNumberOfStudents" +
+            ", s.price as price" +
+            ", s.type as type" +
+            ", c.id as coverImageId" +
+            ", c.size as coverImageSize" +
+            ", c.width as coverImageWidth" +
+            ", c.height as coverImageHeight" +
+            ", c.type as coverImageType " +
+            "from " +
+            "session s " +
+            "join cover_image_info c " +
+            "on s.cover_image_info_id = c.id " +
+            "where s.id = ?";
+
     private JdbcOperations jdbcTemplate;
     private SimpleJdbcInsert simpleJdbcInsert;
 
@@ -65,26 +85,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(Long id) {
-        String sql = "select " +
-                    "s.id as id" +
-                    ", s.start_date as startDate" +
-                    ", s.end_date as endDate" +
-                    ", s.status as status" +
-                    ", s.number_of_students as numberOfStudents" +
-                    ", s.max_number_of_students as maxNumberOfStudents" +
-                    ", s.price as price" +
-                    ", s.type as type" +
-                    ", c.id as coverImageId" +
-                    ", c.size as coverImageSize" +
-                    ", c.width as coverImageWidth" +
-                    ", c.height as coverImageHeight" +
-                    ", c.type as coverImageType " +
-                "from " +
-                    "session s " +
-                "join cover_image_info c " +
-                "on s.cover_image_info_id = c.id " +
-                "where s.id = ?";
-
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             CoverImageInfo coverImageInfo = CoverImageInfo.builder()
                     .id(rs.getLong("coverImageId"))
@@ -96,7 +96,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
             String type = rs.getString("type");
 
-            if ("P".equalsIgnoreCase(type)) {
+            if (SessionType.isPay(type)) {
                 return PaySession.builder()
                         .id(rs.getLong("id"))
                         .sessionDate(SessionDate.of(toLocalDateTime(rs.getTimestamp("startDate")), toLocalDateTime(rs.getTimestamp("endDate"))))
@@ -119,7 +119,7 @@ public class JdbcSessionRepository implements SessionRepository {
                     .build();
         };
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return jdbcTemplate.queryForObject(FIND_SESSION_BY_ID_SQL, rowMapper, id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -20,6 +20,11 @@ public enum SessionType {
                 .findFirst();
     }
 
+    public static boolean isPay(String typeStr) {
+        Optional<SessionType> sessionType = findByTypeStr(typeStr);
+        return sessionType.filter(value -> value == SessionType.PAY).isPresent();
+    }
+
     public String getType() {
         return type;
     }
