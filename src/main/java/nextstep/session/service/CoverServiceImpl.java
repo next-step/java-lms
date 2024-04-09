@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Service("coverService")
 public class CoverServiceImpl implements CoverService {
 
+    public static final int NO_UPDATE_COUNT = 0;
     @Resource(name = "coverRepository")
     private CoverRepository coverRepository;
 
@@ -50,7 +51,7 @@ public class CoverServiceImpl implements CoverService {
     }
 
     private void validateUpdateResult(int updateResult) {
-        if (updateResult < 0) {
+        if (updateResult <= NO_UPDATE_COUNT) {
             throw new CoverException("이미 삭제 되었거나, 삭제할 대상이 없습니다.");
         }
     }

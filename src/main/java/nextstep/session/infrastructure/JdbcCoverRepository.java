@@ -43,7 +43,7 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public CoverDto findById(Long coverId) {
+    public CoverDto findById(long coverId) {
         String sql = "select id, width, height, file_path, file_name, file_extension, byte_size, deleted, writer_id, created_at, last_modified_at from cover where id = ?";
         RowMapper<CoverDto> rowMapper = (rs, rowNum) -> new CoverDto(
                 rs.getLong(1),
@@ -61,7 +61,7 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public int updateDeleteStatus(Long coverId, boolean deleteStatus) {
+    public int updateDeleteStatus(long coverId, boolean deleteStatus) {
         String sql = "UPDATE cover SET deleted = ? WHERE id = ?";
         return jdbcTemplate.update(sql, deleteStatus, coverId);
     }

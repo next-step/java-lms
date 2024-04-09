@@ -1,5 +1,5 @@
 package nextstep.qna.domain;
 
 public enum ContentType {
-    QUESTION, ANSWER, COVER;
+    QUESTION, ANSWER, COVER, STUDENT;
 }

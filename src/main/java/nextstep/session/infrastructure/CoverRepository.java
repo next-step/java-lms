@@ -7,7 +7,7 @@ public interface CoverRepository {
 
     long save(CoverDto coverDto);
 
-    CoverDto findById(Long coverId);
+    CoverDto findById(long coverId);
 
-    int updateDeleteStatus(Long coverId, boolean deleteStatus);
+    int updateDeleteStatus(long coverId, boolean deleteStatus);
 }

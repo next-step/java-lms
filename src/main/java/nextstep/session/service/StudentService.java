@@ -3,12 +3,13 @@ package nextstep.session.service;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.session.domain.Student;
 import nextstep.session.domain.Students;
+import nextstep.users.domain.NsUser;
 
 public interface StudentService {
 
-    Students findBySessionId(Long sessionId);
+    Students findBySessionId(long sessionId);
 
-    Long save(Long sessionId, Student student);
+    Long save(Student student);
 
-    DeleteHistory delete(Long sessionId, Student student);
+    DeleteHistory delete(NsUser requestStudent, Student student);
 }

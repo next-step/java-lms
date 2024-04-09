@@ -137,13 +137,13 @@
 - [x] `Cover` - `delete(Long coverId)` 구현
   - 삭제상태를 변경한다.
   - `DeleteHistory`를 반환한다.
-- [ ] `Students` - `findAllStudentsBySessionId(Long sessionId)` 구현
+- [x] `Student` - `findAllStudentsBySessionId(Long sessionId)` 구현
   - `sessionId`를 통해 삭제상태가 아닌 학생들을 모두 조회한다.
-  - `Students` 객체에 담아 반환한다.
-- [ ] `Students` - `save(Long sessionId, Student studet)` 구현
+  - `Student` 객체에 담아 반환한다.
+- [x] `Student` - `save(Long sessionId, Student studet)` 구현
   - `sessionId`를 기준으로, `Student`를 저장한다.
   - 저장한 `student`의 Id를 반환한다.
-- [ ] `Students` - `delete(Long sessionId, Student studetn)` 구현
+- [x] `Student` - `delete(Long sessionId, Student studetn)` 구현
   - `Student`를 조회한다.
   - 해당 `Student`의 상태를 삭제로 변경한다.
   - `DeleteHistory`를 반환한다.
