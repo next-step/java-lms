@@ -1,13 +1,16 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.BaseEntity;
 import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
+import nextstep.session.dto.SessionDto;
 
 import java.time.LocalDateTime;
 
 public class PaidSession implements Session {
 
+    private final long id;
     private Duration duration;
     private Cover cover;
     private SessionStatus sessionStatus;
@@ -15,14 +18,15 @@ public class PaidSession implements Session {
     private final Course course;
     private final Capacity capacity;
     private final Price price;
-    private final Long sessionId;
     private final Tutor tutor;
     private final Students students;
+    private final BaseEntity baseEntity;
 
     public PaidSession(
-            Duration duration, Cover cover, String sessionName, Course course,
-            int capacity, Long price, Long sessionId, Tutor tutor
+            long id, Duration duration, Cover cover, String sessionName, Course course,
+            int capacity, Long price, Tutor tutor
     ) {
+        this.id = id;
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
@@ -30,9 +34,26 @@ public class PaidSession implements Session {
         this.course = course;
         this.capacity = Capacity.create(capacity);
         this.price = new Price(price);
-        this.sessionId = sessionId;
         this.tutor = tutor;
         this.students = new Students();
+        this.baseEntity = new BaseEntity();
+    }
+
+    public PaidSession(
+            long id, Duration duration, Cover cover, SessionStatus sessionStatus, String sessionName, Course course,
+            int maxCapacity, int enrolled, Long price, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.cover = cover;
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.course = course;
+        this.capacity = new Capacity(maxCapacity, enrolled);
+        this.price = new Price(price);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
     }
 
     @Override
@@ -95,5 +116,25 @@ public class PaidSession implements Session {
         }
 
         return false;
+    }
+
+    @Override
+    public SessionDto toDto() {
+        return new SessionDto(
+                this.id,
+                this.duration.getStartDate(),
+                this.duration.getEndDate(),
+                this.sessionStatus.getSessionStatus().name(),
+                this.course.getId(),
+                this.capacity.getMaxCapacity(),
+                this.capacity.getEnrolled(),
+                this.price.getPrice(),
+                this.tutor.getTutorId(),
+                this.cover.getId(),
+                this.sessionName.getSessionName(),
+                this.baseEntity.isDeleted(),
+                this.baseEntity.getCreatedAt(),
+                this.baseEntity.getLastModifiedAt()
+        );
     }
 }

@@ -1,5 +1,6 @@
 package nextstep.session.service;
 
+import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.domain.Cover;
@@ -34,10 +35,8 @@ public class CoverServiceImpl implements CoverService {
                 new Resolution(coverDto.getWidth(), coverDto.getHeight()),
                 new ImageFilePath(coverDto.getFilePath(), coverDto.getFileName(), coverDto.getFileExtension()),
                 coverDto.getByteSize(),
-                coverDto.isDeleted(),
                 nsUser,
-                coverDto.getCreatedAt(),
-                coverDto.getLastModifiedAt()
+                new BaseEntity(coverDto.isDeleted(), coverDto.getCreatedAt(), coverDto.getLastModifiedAt())
         );
     }
 

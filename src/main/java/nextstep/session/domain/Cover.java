@@ -38,7 +38,7 @@ public class Cover {
 
     public Cover(
             long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
-            boolean deleted, NsUser writer, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            NsUser writer, BaseEntity baseEntity
     ) {
         validate(byteSize);
 
@@ -47,7 +47,7 @@ public class Cover {
         this.imageFilePath = imageFilePath;
         this.byteSize = byteSize;
         this.writer = writer;
-        this.baseEntity = new BaseEntity(deleted, createdAt, lastModifiedAt);
+        this.baseEntity = baseEntity;
     }
 
     private void validate(long byteSize) {

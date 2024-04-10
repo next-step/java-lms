@@ -1,8 +1,10 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.BaseEntity;
 import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
+import nextstep.session.dto.SessionDto;
 
 import java.time.LocalDateTime;
 
@@ -16,14 +18,16 @@ public class FreeSession implements Session {
     private final Course course;
     private final Capacity capacity;
     private final Price price;
-    private final Long sessionId;
+    private final long id;
     private final Tutor tutor;
     private final Students students;
+    private final BaseEntity baseEntity;
 
     public FreeSession(
-            Duration duration, Cover cover, String sessionName,
-            Course course, Long sessionId, Tutor tutor
+            long id, Duration duration, Cover cover, String sessionName,
+            Course course, Tutor tutor
     ) {
+        this.id = id;
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
@@ -31,9 +35,26 @@ public class FreeSession implements Session {
         this.course = course;
         this.capacity = Capacity.create(Integer.MAX_VALUE);
         this.price = new Price(FREE_PRICE);
-        this.sessionId = sessionId;
         this.tutor = tutor;
         this.students = new Students();
+        this.baseEntity = new BaseEntity();
+    }
+
+    public FreeSession(
+            long id, Duration duration, Cover cover, SessionStatus sessionStatus, String sessionName,
+            Course course, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.cover = cover;
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.course = course;
+        this.capacity = Capacity.create(Integer.MAX_VALUE);
+        this.price = new Price(FREE_PRICE);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
     }
 
     @Override
@@ -95,5 +116,25 @@ public class FreeSession implements Session {
         }
 
         return false;
+    }
+
+    @Override
+    public SessionDto toDto() {
+        return new SessionDto(
+                this.id,
+                this.duration.getStartDate(),
+                this.duration.getEndDate(),
+                this.sessionStatus.getSessionStatus().name(),
+                this.course.getId(),
+                this.capacity.getMaxCapacity(),
+                this.capacity.getEnrolled(),
+                this.price.getPrice(),
+                this.tutor.getTutorId(),
+                this.cover.getId(),
+                this.sessionName.getSessionName(),
+                this.baseEntity.isDeleted(),
+                this.baseEntity.getCreatedAt(),
+                this.baseEntity.getLastModifiedAt()
+        );
     }
 }

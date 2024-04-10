@@ -93,9 +93,9 @@
 - [x] `Student` 객체 구성
 - [x] `Cover` 책임 인터페이스 구현
 - [x] `Students` 책임 인터페이스 구현
-- [ ] `Session` - `save` 구현
+- [x] `Session` - `save` 구현
   - 협력 객체로 `Cover`만을 넣은 `Session`을 생성한다.
-- [ ] `Session` - `findById(Long sessionId)` 구현
+- [x] `Session` - `findById(Long sessionId)` 구현
   - 조회한 결과로 아래를 판단한다.
     - `cover_id`가 존재할 경우, `Cover`의 `findById`로 메시지를 보내 조회하여 매핑한다.
     - `Students`에서 `session_id`로 `findAllStudentsBySessionId`로 메시지를 보내 전체 학생을 가져와 매핑한다.

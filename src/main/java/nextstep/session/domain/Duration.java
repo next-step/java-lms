@@ -35,4 +35,12 @@ public class Duration {
     public Duration changeEndDate(LocalDateTime changedEndDate) {
         return new Duration(this.startDate, changedEndDate);
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
 }

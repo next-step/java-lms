@@ -26,13 +26,13 @@ class PaidSessionTest {
         Course course = new Course("Course1", 1L, 3);
 
         session = new PaidSession(
+                1L,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
                 new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI),
                 "얼른 배우자 객체지향",
                 course,
                 2,
                 100_000L,
-                1L,
                 new Tutor(NsUserTest.JAVAJIGI)
         );
     }

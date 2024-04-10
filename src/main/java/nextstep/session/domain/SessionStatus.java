@@ -33,6 +33,22 @@ public class SessionStatus {
         return this.sessionStatus;
     }
 
+    public static SessionStatus of(SessionStatusType sessionStatusType) {
+        if (sessionStatusType.equals(SessionStatusType.READY)) {
+            return sessionStatusCache.get(READY_INDEX);
+        }
+
+        if (sessionStatusType.equals(SessionStatusType.ON_ENROLL)) {
+            return sessionStatusCache.get(ON_ENROLL_INDEX);
+        }
+
+        if (sessionStatusType.equals(SessionStatusType.FINISHED)) {
+            return sessionStatusCache.get(FINISHED_INDEX);
+        }
+
+        throw new IllegalArgumentException("해당되는 세션 상태가 존재하지 않습니다.");
+    }
+
     public SessionStatus toNextStatus() {
         if (this.sessionStatus == SessionStatusType.READY) {
             return sessionStatusCache.get(ON_ENROLL_INDEX);

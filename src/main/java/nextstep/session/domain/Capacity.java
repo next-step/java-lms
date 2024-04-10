@@ -13,6 +13,11 @@ public class Capacity {
         return new Capacity(maxCapacity);
     }
 
+    public Capacity(int maxCapacity, int enrolled) {
+        this.maxCapacity = maxCapacity;
+        this.enrolled = enrolled;
+    }
+
     private Capacity(int maxCapacity) {
         validateMaxCapacity(maxCapacity);
         this.maxCapacity = maxCapacity;
@@ -35,6 +40,10 @@ public class Capacity {
         if (afterEnrolled > this.maxCapacity) {
             throw new CapacityException("수용 가능인원을 초과하여 신청하였습니다.");
         }
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
     public int getEnrolled() {

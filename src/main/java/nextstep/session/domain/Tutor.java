@@ -9,4 +9,8 @@ public class Tutor {
     public Tutor(NsUser tutor) {
         this.tutor = tutor;
     }
+
+    public String getTutorId() {
+        return tutor.getUserId();
+    }
 }
