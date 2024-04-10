@@ -19,16 +19,18 @@ public abstract class Session {
     protected SessionStatus status = SessionStatus.PREPARING;
     protected SessionType type;
 
-    protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
-        this(id, 0, maximumNumberOfStudent, startedAt, endedAt);
+    protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
+        this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
     }
 
-    protected Session(long id, long amount, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+    protected Session(long id, long amount, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
         this.id = id;
         this.amount = amount;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
+        this.coverImage = coverImage;
+        this.type = type;
     }
 
     public void changeStatus(SessionStatus status) {

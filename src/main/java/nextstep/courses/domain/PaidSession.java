@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PaidSession extends Session {
 
-    public PaidSession(long id, long maximumNumberOfStudent, long amount, LocalDateTime startedAt, LocalDateTime endedAt) {
-        super(id, amount, maximumNumberOfStudent, startedAt, endedAt);
+    public PaidSession(long id, long maximumNumberOfStudent, long amount, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
+        super(id, amount, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
     }
 
     @Override

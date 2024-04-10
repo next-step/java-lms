@@ -1,9 +1,6 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.FreeSession;
-import nextstep.courses.domain.PaidSession;
-import nextstep.courses.domain.Session;
-import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -48,11 +45,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             String type = rs.getString(6);
+            SessionCoverImage coverImage = new SessionCoverImage(rs.getInt(8), Enum.valueOf(ImageType.class, rs.getString(11)), rs.getInt(9), rs.getInt(10));
+
             if (type.equals("FREE")) {
                 return new FreeSession(
                         rs.getLong(1),
                         toLocalDateTime(rs.getTimestamp(3)),
-                        toLocalDateTime(rs.getTimestamp(4))
+                        toLocalDateTime(rs.getTimestamp(4)),
+                        coverImage,
+                        Enum.valueOf(SessionType.class, rs.getString(7))
                 );
             }
 
@@ -61,7 +62,10 @@ public class JdbcSessionRepository implements SessionRepository {
                     rs.getLong(2),
                     0,
                     toLocalDateTime(rs.getTimestamp(4)),
-                    toLocalDateTime(rs.getTimestamp(5)));
+                    toLocalDateTime(rs.getTimestamp(5)),
+                    coverImage,
+                    Enum.valueOf(SessionType.class, rs.getString(7))
+            );
         };
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }

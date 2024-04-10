@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionCoverImageTest {
 
+    public static final SessionCoverImage CI = new SessionCoverImage(512, ImageType.GIF, 300, 200);
+
     @DisplayName("이미지 용량이 1MB 보다 크다면 예외가 발생한다.")
     @Test
     void test01() {
