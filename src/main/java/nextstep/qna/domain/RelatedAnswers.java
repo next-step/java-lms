@@ -8,14 +8,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Answers {
+public class RelatedAnswers {
 
     private final List<Answer> answers = new ArrayList<>();
 
-    public Answers() {
+    public RelatedAnswers() {
     }
 
-    public Answers(List<Answer> answers) {
+    public RelatedAnswers(List<Answer> answers) {
         this.answers.addAll(answers);
     }
 
@@ -23,11 +23,11 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public DeletedHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
+    public DeletedDataHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
         Set<DeleteHistory> deleteHistories = new HashSet<>();
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete(loginUser));
         }
-        return new DeletedHistories(deleteHistories);
+        return new DeletedDataHistories(deleteHistories);
     }
 }

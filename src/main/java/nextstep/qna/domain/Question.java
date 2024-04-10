@@ -15,7 +15,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers;
+    private RelatedAnswers relatedAnswers;
 
     private boolean deleted = false;
 
@@ -35,7 +35,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.answers = new Answers();
+        this.relatedAnswers = new RelatedAnswers();
     }
 
     public Long getId() {
@@ -66,7 +66,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        relatedAnswers.add(answer);
     }
 
     public boolean isDeleted() {
@@ -77,10 +77,10 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public DeletedHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
-        DeletedHistories deletedHistories = this.answers.deleteAll(loginUser);
-        deletedHistories.add(this.delete(loginUser));
-        return deletedHistories;
+    public DeletedDataHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
+        DeletedDataHistories deletedDataHistories = this.relatedAnswers.deleteAll(loginUser);
+        deletedDataHistories.add(this.delete(loginUser));
+        return deletedDataHistories;
     }
 
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
@@ -96,12 +96,12 @@ public class Question {
         if (this == o) return true;
         if (!(o instanceof Question)) return false;
         Question question = (Question) o;
-        return deleted == question.deleted && Objects.equals(id, question.id) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents) && Objects.equals(writer, question.writer) && Objects.equals(answers, question.answers) && Objects.equals(createdDate, question.createdDate) && Objects.equals(updatedDate, question.updatedDate);
+        return deleted == question.deleted && Objects.equals(id, question.id) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents) && Objects.equals(writer, question.writer) && Objects.equals(relatedAnswers, question.relatedAnswers) && Objects.equals(createdDate, question.createdDate) && Objects.equals(updatedDate, question.updatedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, contents, writer, answers, deleted, createdDate, updatedDate);
+        return Objects.hash(id, title, contents, writer, relatedAnswers, deleted, createdDate, updatedDate);
     }
 
     @Override
