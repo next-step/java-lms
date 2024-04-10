@@ -16,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private QuestionAnswers answers;
 
     private boolean deleted = false;
 
@@ -29,6 +29,7 @@ public class Question {
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);
+        this.answers = new QuestionAnswers();
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
@@ -36,6 +37,7 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.answers = new QuestionAnswers();
     }
 
     public Long getId() {
@@ -66,7 +68,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -79,6 +81,10 @@ public class Question {
         }
     }
 
+    public void checkAnswerOwner(NsUser loginUser) throws CannotDeleteException {
+        this.answers.checkAnswerOwner(loginUser);
+    }
+
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -89,7 +95,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     public void delete() {
