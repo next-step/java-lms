@@ -10,7 +10,8 @@ public enum ImageType {
     SVG("svg");
     private String value;
 
-    private static final EnumMap<ImageType, Boolean> imageTypeCache = new EnumMap<>(ImageType.class);
+    private static final EnumMap<ImageType, Boolean> imageTypeCache = new EnumMap<>(
+        ImageType.class);
 
     static {
         for (ImageType imageType : values()) {
@@ -22,8 +23,11 @@ public enum ImageType {
         this.value = value;
     }
 
-    public static boolean
-    findAvailableImagesType(ImageType imageType){
+    public static boolean findAvailableImagesType(ImageType imageType) {
         return imageTypeCache.getOrDefault(imageType, false);
+    }
+
+    public String getValue() {
+        return value;
     }
 }
