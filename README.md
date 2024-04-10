@@ -84,8 +84,10 @@
 - [x] CourseTest
   - [x] 유료 강의의 경우, 무료 강의를 1개씩 가진 Course 구현
 - [x] FreeSessionTest
+  - [x] 신청 가능기한일때만 강의 신청 가능
 - [x] PaidSessionTest
-  - [x] 유료 강의의 경우, 결제는 이미 완료한 것으로 
+  - [x] 유료 강의의 경우, 결제는 이미 완료한 것으로 가정하고 구현
+  - [x] 신청 가능 기한 && 신청 가능 인원을 초과하지 않음 && 결제 정보가 일치할때만 유료 강의 신청 가능
 - [x] CoverImageTest
   - [x] ImageTypeTest
     - [x] gif, jpg, jpeg, png, svg 만 허용
