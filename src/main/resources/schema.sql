@@ -14,7 +14,12 @@ create table session (
     started_at timestamp not null,
     ended_at timestamp,
     status varchar(20) not null,
-    amount bigint
+    amount bigint,
+    type varchar(10) not null,
+    image_size_of_bytes int not null,
+    image_width int not null,
+    image_height int not null,
+    image_type int not null
 );
 
 create table ns_user (
