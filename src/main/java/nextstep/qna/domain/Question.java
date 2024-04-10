@@ -77,11 +77,11 @@ public class Question {
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id,
+                this.writer, LocalDateTime.now()));
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete(loginUser));
         }
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id,
-                this.writer, LocalDateTime.now()));
 
         return deleteHistories;
     }
