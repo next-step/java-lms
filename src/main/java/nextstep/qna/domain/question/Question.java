@@ -43,7 +43,7 @@ public class Question {
         this.contents = contents;
     }
 
-    public DeleteHistories delete(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
+    public DeleteHistories delete(NsUser requestUser, LocalDateTime requestDatetime) {
         DeleteHistories histories = new DeleteHistories(deleteQuestion(requestUser, requestDatetime));
         histories.addAll(deleteAnswers(requestUser, requestDatetime));
         return histories;
@@ -65,7 +65,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    private DeleteHistory deleteQuestion(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
+    private DeleteHistory deleteQuestion(NsUser requestUser, LocalDateTime requestDatetime) {
         if (!isOwner(requestUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -75,7 +75,7 @@ public class Question {
         return new DeleteHistory(ContentType.QUESTION, this.getId(), this.getWriter(), requestDatetime);
     }
 
-    private List<DeleteHistory> deleteAnswers(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
+    private List<DeleteHistory> deleteAnswers(NsUser requestUser, LocalDateTime requestDatetime) {
         return answers.deleteAll(requestUser, requestDatetime);
     }
 
