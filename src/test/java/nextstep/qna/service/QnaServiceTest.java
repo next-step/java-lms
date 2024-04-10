@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -17,8 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class QnaServiceTest {
@@ -27,6 +27,9 @@ public class QnaServiceTest {
 
     @Mock
     private DeleteHistoryService deleteHistoryService;
+
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @InjectMocks
     private QnAService qnAService;
@@ -49,7 +52,9 @@ public class QnaServiceTest {
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.getId());
 
         assertThat(question.isDeleted()).isTrue();
-        verifyDeleteHistories();
+        //verifyDeleteHistories();
+        verify(applicationEventPublisher, times(1)).publishEvent(new DeleteHistoryEvent(qnAService,question));
+
     }
 
     @Test
@@ -69,7 +74,9 @@ public class QnaServiceTest {
 
         assertThat(question.isDeleted()).isTrue();
         assertThat(answer.isDeleted()).isTrue();
-        verifyDeleteHistories();
+        //verifyDeleteHistories();
+        verify(applicationEventPublisher, times(1)).publishEvent(new DeleteHistoryEvent(qnAService,question));
+
     }
 
     @Test
