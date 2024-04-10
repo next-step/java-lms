@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ class EnrollmentTest {
     Optional<Session> freeSession = COURSE.getSessions().stream()
         .filter(it -> it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
-    Enrollment enrollment = Enrollment.register(1L, USER, COURSE.getId(), freeSession.get(), 0);
+    Enrollment enrollment = Enrollment.register(1L, USER, COURSE.getId(), Map.of(freeSession.get(), 0));
 
     assertThat(enrollment.getId()).isEqualTo(1L);
     assertThat(enrollment.getUser().getId()).isEqualTo(1004L);
@@ -50,7 +51,7 @@ class EnrollmentTest {
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
 
-    Enrollment enrollment = Enrollment.register(1L, USER, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
+    Enrollment enrollment = Enrollment.register(1L, USER, COURSE.getId(), Map.of(notFreeSession.get(), notFreeSession.get().getSessionAmount()));
     assertThat(enrollment.getId()).isEqualTo(1L);
     assertThat(enrollment.getUser().getId()).isEqualTo(1004L);
     assertThat(enrollment.getCourseId()).isEqualTo(COURSE.getId());
@@ -64,7 +65,7 @@ class EnrollmentTest {
         .filter(it -> !it.checkRegisterPossibleStatus())
         .findFirst();
 
-    assertThatThrownBy(() -> Enrollment.register(1L, USER, COURSE.getId(), notInProgressSession.get(), 0))
+    assertThatThrownBy(() -> Enrollment.register(1L, USER, COURSE.getId(), Map.of(notInProgressSession.get(), 0)))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, notInProgressSession.get().getId(), notInProgressSession.get().getSessionStatus()));
   }
@@ -77,7 +78,7 @@ class EnrollmentTest {
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
 
-    assertThatThrownBy(() -> Enrollment.register(1L, USER, COURSE.getId(), notFreeSession.get(), 0))
+    assertThatThrownBy(() -> Enrollment.register(1L, USER, COURSE.getId(), Map.of(notFreeSession.get(), 0)))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, 0L, notFreeSession.get().getSessionAmount()));
   }
@@ -90,10 +91,9 @@ class EnrollmentTest {
         .filter(it -> !it.isFree() && it.checkRegisterPossibleStatus())
         .findFirst();
 
-    Enrollment.register(1L, USER, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
-    assertThatThrownBy(() -> Enrollment.register(1L, USER, COURSE.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount()))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(STUDENT_COUNT_IS_FULL);
+    Enrollment.register(1L, USER, COURSE.getId(), Map.of(notFreeSession.get(), notFreeSession.get().getSessionAmount()));
+    Enrollment enrollment = Enrollment.register(1L, USER, COURSE.getId(), Map.of(notFreeSession.get(), notFreeSession.get().getSessionAmount()));
+    assertThat(enrollment.getRegisterFailReason()).isEqualTo(STUDENT_COUNT_IS_FULL);
   }
 
   private static void init() {
