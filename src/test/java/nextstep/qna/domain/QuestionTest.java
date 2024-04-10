@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
@@ -25,6 +24,20 @@ public class QuestionTest {
         addAnswers(question, answers);
 
         assertDeleteQuestionAndAnswers(question, answerLength, writer);
+    }
+
+    @Test
+    @DisplayName("이미 삭제된 질문 삭제할 경우 에러 발생")
+    void testDeleteQuestionAlreadyDeleted() throws CannotDeleteException {
+        NsUser writer = NsUserTest.JAVAJIGI;
+        int answerLength = 5;
+        Question question = makeQuestion(writer);
+        Answers answers = makeAnswers(writer, question, answerLength);
+        addAnswers(question, answers);
+
+        question.delete(writer);
+        assertThatThrownBy(() -> question.delete(writer))
+                .isInstanceOf(CannotDeleteException.class);
     }
 
     @Test

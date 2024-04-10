@@ -18,6 +18,7 @@
 - `Question` delete 추가
   - `DeleteHistory` 여러 개를 반환
   - 연관된 `Answer`도 같이 삭제.
+  - 이미 삭제된 질문을 삭제하려고 할 경우 에러 발생
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
