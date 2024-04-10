@@ -15,7 +15,7 @@ public class Sessions {
 
     public Session findBy(Long sessionIdx) {
         return sessions.stream()
-                .filter(item -> item.idx == sessionIdx)
+                .filter(item -> item.id == sessionIdx)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
     }

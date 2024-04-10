@@ -20,4 +20,11 @@ public class NsUsers {
     public void add(NsUser nsUser) {
         this.users.add(nsUser);
     }
+
+    public void addAll(List<NsUser> nsUsers) {
+        if (nsUsers == null) {
+            return;
+        }
+        this.users.addAll(nsUsers);
+    }
 }

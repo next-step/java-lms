@@ -9,9 +9,10 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public abstract class Session {
-    protected final Long idx;
+    protected final Long id;
     protected final String title;
     private final Course course;
     private final Period period;
@@ -24,8 +25,8 @@ public abstract class Session {
         this(0L, title, course, period, image, SessionStatus.READY, users, type);
     }
 
-    public Session(Long idx, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, SessionType type) {
-        this.idx = idx;
+    public Session(Long id, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, SessionType type) {
+        this.id = id;
         this.title = title;
         this.course = course;
         this.period = period;
@@ -33,6 +34,10 @@ public abstract class Session {
         this.status = status;
         this.nsUsers = nsUsers;
         this.type = type;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public void enroll(NsUser nsUser, LocalDate date) {
@@ -71,4 +76,7 @@ public abstract class Session {
         return paidSession.toPayment(nsUser);
     }
 
+    public void addNsUser(List<NsUser> nsUsers) {
+        this.nsUsers.addAll(nsUsers);
+    }
 }

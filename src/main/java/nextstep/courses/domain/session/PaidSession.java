@@ -36,6 +36,6 @@ public class PaidSession extends Session {
     }
 
     public Payment toPayment(NsUser nsUser) {
-        return new Payment("0", this.idx, nsUser.getId(), this.amount);
+        return new Payment("0", this.id, nsUser.getId(), this.amount);
     }
 }
