@@ -16,10 +16,4 @@ public enum SessionType {
 
     public abstract boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents);
 
-    public static SessionType determineSessionType(int price) {
-        if (price == 0) {
-            return FREE;
-        }
-        return PAID;
-    }
 }

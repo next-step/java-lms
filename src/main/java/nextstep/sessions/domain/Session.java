@@ -1,6 +1,5 @@
 package nextstep.sessions.domain;
 
-import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.image.Image;
 import nextstep.users.domain.NsUser;
 import nextstep.utils.BaseEntity;
