@@ -6,7 +6,7 @@ public class Image {
 
     private final ImageType type;
 
-    private final int width;
+    private final ImageWidth width;
 
     private final int height;
 
