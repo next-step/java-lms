@@ -1,20 +1,24 @@
 package nextstep.courses.domain.lecture;
 
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import nextstep.courses.error.exception.NotExistLecture;
 
 public class Lectures {
 
-    private final Set<Lecture> lectures;
+    private final Map<LectureName, Lecture> lectures = new HashMap<>();
 
-    public Lectures(Set<Lecture> lectures) {
-        this.lectures = lectures;
+    public void addLecture(LectureName lectureName, Lecture lecture) {
+        lectures.put(lectureName, lecture);
     }
 
-    public void addLecture(Lecture lecture) {
-        lectures.add(lecture);
+    public Lecture deleteLecture(LectureName lectureName) {
+        return lectures.remove(lectureName);
     }
-//
-//    public Lecture findLecture() {
-//        //코드 작성해줘
-//    }
+
+    public Lecture findLecture(LectureName lectureName) {
+        return Optional.ofNullable(lectures.getOrDefault(lectureName, null))
+            .orElseThrow(() -> new NotExistLecture(lectureName.getValue()));
+    }
 }
