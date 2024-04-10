@@ -4,7 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.ContentType;
 import nextstep.qna.domain.answer.Answer;
 import nextstep.qna.domain.answer.Answers;
-import nextstep.qna.domain.deletehistory.DeleteHistories;
 import nextstep.qna.domain.deletehistory.DeleteHistory;
 import nextstep.users.domain.NsUser;
 
@@ -43,8 +42,9 @@ public class Question {
         this.contents = contents;
     }
 
-    public DeleteHistories delete(NsUser requestUser, LocalDateTime requestDatetime) {
-        DeleteHistories histories = new DeleteHistories(deleteQuestion(requestUser, requestDatetime));
+    public List<DeleteHistory> delete(NsUser requestUser, LocalDateTime requestDatetime) {
+        List<DeleteHistory> histories = new ArrayList<>();
+        histories.add(deleteQuestion(requestUser, requestDatetime));
         histories.addAll(deleteAnswers(requestUser, requestDatetime));
         return histories;
     }
