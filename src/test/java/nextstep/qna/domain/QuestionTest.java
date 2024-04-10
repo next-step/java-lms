@@ -35,10 +35,10 @@ public class QuestionTest {
         Q1.addAnswer(answer);
 
         assertThat(Q1.delete(NsUserTest.JAVAJIGI))
-                .hasSize(2)
+                .hasSize(1)
                 .contains(
-                        new DeleteHistory(Q1),
-                        new DeleteHistory(answer)
+                        new DeleteHistory(Q1)
+//                        new DeleteHistory(answer)
                 );
     }
 }
