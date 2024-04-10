@@ -2,6 +2,8 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
+import static nextstep.courses.ExceptionMessage.INVALID_MAX_NUMBER_OF_ENROLLMENT_AND_FEE;
+
 public abstract class SessionType {
     protected int maxNumberOfEnrollment;
     protected long fee;
@@ -12,7 +14,11 @@ public abstract class SessionType {
         this.fee = fee;
     }
 
-    protected abstract void validateSessionTypeInput(int maxNumberOfEnrollment, long price);
+    protected void validateSessionTypeInput(int maxNumberOfEnrollment, long price) {
+        if (maxNumberOfEnrollment < 0 || fee < 0) {
+            throw new IllegalArgumentException(INVALID_MAX_NUMBER_OF_ENROLLMENT_AND_FEE.message());
+        }
+    }
 
     public abstract boolean isSessionFull(long currentNumberOfEnrollment);
 
