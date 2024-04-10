@@ -26,30 +26,26 @@ public class Image {
 
     private void validateCapacity(int capacity) {
         if (capacity > CAPACITY) {
-            throw new IllegalArgumentException("이미지크기는 1MB를 초과할 수 없다");
+            throw new IllegalArgumentException(String.format("이미지크기는 1MB(%s)를 초과할 수 없다", CAPACITY));
         }
     }
 
     private void validateWidth(int width) {
         if (width < WIDTH) {
-            throw new IllegalArgumentException("이미지 width는 300픽셀이상이어야 한다");
+            throw new IllegalArgumentException(String.format("이미지 width는 (%d)픽셀이상이어야 한다", WIDTH));
         }
     }
 
     private void validateHeight(int height) {
         if (height < HEIGHT) {
-            throw new IllegalArgumentException("이미지 height는 200픽셀이상이어야 한다");
+            throw new IllegalArgumentException(String.format("이미지 height는 (%d)픽셀이상이어야 한다", HEIGHT));
         }
     }
 
     private void validateRatio(int width, int height) {
         if (width / (double) height != RATIO) {
-            throw new IllegalArgumentException("width와 height의 비율은 3:2여야 한다");
+            throw new IllegalArgumentException(String.format("width와 height의 비율은 3:2(%s)여야 한다", RATIO));
         }
-    }
-
-    private double calculateRatio(int width, int height) {
-        return width / (double) height;
     }
 
 }
