@@ -87,7 +87,7 @@ public class NsUser {
         return payment;
     }
 
-    public Payment findPaymentBySessionId(int sessionId) {
+    public Payment findPaymentBySessionId(long sessionId) {
         return this.payments.stream()
                 .filter(payment -> payment.isSameSessionId(sessionId))
                 .findAny()

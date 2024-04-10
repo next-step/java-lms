@@ -10,24 +10,15 @@ public class PaidSession extends Session {
 
     private final int amount;
 
-    public PaidSession(int id, int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public PaidSession(long id, int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
         super(id, maximumNumberOfStudent, startedAt, endedAt);
         this.amount = amount;
     }
 
     @Override
-    public void registers(List<NsUser> users) {
-        users.forEach(this::register);
-    }
-
-    @Override
-    public void register(NsUser user) {
-        validateLessEqualThenMaximumNumber();
-        validateRecruiting();
-
-        Payment payment = user.findPaymentBySessionId(this.id);
+    public void enroll(NsUser user, Payment payment) {
         validateSameAmount(payment);
-
+        validateLessEqualThenMaximumNumber();
         students.add(user);
     }
 

@@ -2,12 +2,9 @@ package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 
 public class Payment {
-
-    private static final Random random = new Random();
 
     private String id;
     private Long sessionId; // 결제한 강의 ID
@@ -30,7 +27,7 @@ public class Payment {
         return this.amount == amount;
     }
 
-    public boolean isSameSessionId(int sessionId) {
+    public boolean isSameSessionId(long sessionId) {
         return this.sessionId == sessionId;
     }
 
