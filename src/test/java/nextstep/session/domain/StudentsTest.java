@@ -22,7 +22,7 @@ class StudentsTest {
         students.add(enrollStudent);
 
         // then
-        assertThat(students.findStudent(enrollStudent).isPresent()).isTrue();
+        assertThat(students.findStudent(enrollStudent)).isPresent();
     }
 
     @DisplayName("학생을 뺄 수 있다.")
@@ -38,7 +38,7 @@ class StudentsTest {
         students.remove(enrollStudent);
 
         // then
-        assertThat(students.findStudent(enrollStudent).isPresent()).isFalse();
+        assertThat(students.findStudent(enrollStudent)).isNotPresent();
     }
 
     @DisplayName("학생은 중복 신청할 수 없다.")

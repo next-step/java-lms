@@ -10,7 +10,7 @@ public class SessionStatus {
     public static final int READY_INDEX = 0;
     public static final int ON_ENROLL_INDEX = 1;
     public static final int FINISHED_INDEX = 2;
-    private final static List<SessionStatus> sessionStatusCache;
+    private static final List<SessionStatus> sessionStatusCache;
     private final SessionStatusType sessionStatus;
 
     static {

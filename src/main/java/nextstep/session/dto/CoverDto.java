@@ -17,13 +17,6 @@ public class CoverDto {
     private final LocalDateTime lastModifiedAt;
 
     public CoverDto(
-            int width, int height, String filePath, String fileName, String fileExtension, long byteSize,
-            boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
-    ) {
-        this(0L, width, height, filePath, fileName, fileExtension, byteSize, deleted, writerId, createdAt, lastModifiedAt);
-    }
-
-    public CoverDto(
             long id, int width, int height, String filePath, String fileName, String fileExtension,
             long byteSize, boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {

@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-public class CourseRepositoryTest {
+class CourseRepositoryTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
 
     @Autowired

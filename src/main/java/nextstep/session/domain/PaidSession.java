@@ -59,33 +59,6 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public void changeStartDate(LocalDateTime startDate) {
-        validateReadyStatus();
-
-        this.duration = duration.changeStartDate(startDate);
-    }
-
-    private void validateReadyStatus() {
-        if (!this.sessionStatus.onReady()) {
-            throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
-        }
-    }
-
-    @Override
-    public void changeEndDate(LocalDateTime endDate) {
-        validateReadyStatus();
-
-        this.duration = duration.changeEndDate(endDate);
-    }
-
-    @Override
-    public void changeCover(Cover cover) {
-        validateReadyStatus();
-
-        this.cover = cover;
-    }
-
-    @Override
     public void toNextSessionStatus() {
         this.sessionStatus = this.sessionStatus.toNextStatus();
     }
@@ -100,6 +73,12 @@ public class PaidSession implements Session {
         validateReadyStatus();
 
         this.sessionName = this.sessionName.editSessionName(sessionName);
+    }
+
+    private void validateReadyStatus() {
+        if (!this.sessionStatus.onReady()) {
+            throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
+        }
     }
 
     @Override

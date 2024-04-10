@@ -1,7 +1,6 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
-import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.dto.CoverDto;
 import nextstep.users.domain.NsUser;
@@ -53,7 +52,7 @@ public class Cover {
 
     private void validate(long byteSize) {
         if ((byteSize / SIZE_UNIT / SIZE_UNIT) > MAXIMUM_MEGABYTE_SIZE) {
-            throw new IllegalArgumentException("이미지는 1MB 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("이미지는 %dMB 이하여야 합니다.", MAXIMUM_MEGABYTE_SIZE));
         }
     }
 
@@ -61,7 +60,8 @@ public class Cover {
         return new CoverDto(
                 this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
-                this.baseEntity.isDeleted(), this.writer.getUserId(), this.baseEntity.getCreatedAt(), this.baseEntity.getLastModifiedAt()
+                this.baseEntity.isDeleted(), this.writer.getUserId(), this.baseEntity.getCreatedAt(),
+                this.baseEntity.getLastModifiedAt()
         );
     }
 

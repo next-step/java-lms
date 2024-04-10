@@ -17,6 +17,10 @@ import java.sql.Statement;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
 
+    public static final String SESSION_NAME_FIELD = "session_name";
+    public static final String START_DATE_FIELD = "start_date";
+    public static final String END_DATE_FIELD = "end_date";
+    public static final String QUESTION_CONDITION = " = ?, ";
     private JdbcOperations jdbcTemplate;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
@@ -105,15 +109,15 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private void addSetCondition(SessionUpdateBasicPropertiesDto sessionUpdateDto, StringBuilder sql) {
         if (sessionUpdateDto.hasSessionName()) {
-            sql.append("session_name").append(" = ?, ");
+            sql.append(SESSION_NAME_FIELD).append(QUESTION_CONDITION);
         }
 
         if (sessionUpdateDto.hasStartDate()) {
-            sql.append("start_date").append(" = ?, ");
+            sql.append(START_DATE_FIELD).append(QUESTION_CONDITION);
         }
 
         if (sessionUpdateDto.hasEndDate()) {
-            sql.append("end_date").append(" = ?, ");
+            sql.append(END_DATE_FIELD).append(QUESTION_CONDITION);
         }
     }
 

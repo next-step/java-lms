@@ -9,12 +9,6 @@ import java.time.LocalDateTime;
 
 public interface Session {
 
-    void changeStartDate(LocalDateTime startDate);
-
-    void changeEndDate(LocalDateTime endDate);
-
-    void changeCover(Cover cover);
-
     void toNextSessionStatus();
 
     void toPreviousSessionStatus();

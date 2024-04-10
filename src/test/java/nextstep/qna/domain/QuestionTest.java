@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class QuestionTest {
+class QuestionTest {
     Question Q1_QUESTION_BY_JAVAJIGI;
     Question Q2_QUESTION_BY_SANJIGI;
     Answer A1_ANSWER_BY_JAVAJIGI_OF_Q1;

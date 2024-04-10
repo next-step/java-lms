@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 public class DbTimestampUtils {
 
+    private DbTimestampUtils() {}
+
     public static LocalDateTime toLocalDateTime(Timestamp timestamp) {
         if (timestamp == null) {
             return null;

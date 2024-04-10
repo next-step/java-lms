@@ -28,14 +28,6 @@ public class Duration {
         return queryDateFit.isAfter(startDate) && queryDateFit.isBefore(endDate);
     }
 
-    public Duration changeStartDate(LocalDateTime changedStartDate) {
-        return new Duration(changedStartDate, this.endDate);
-    }
-
-    public Duration changeEndDate(LocalDateTime changedEndDate) {
-        return new Duration(this.startDate, changedEndDate);
-    }
-
     public LocalDateTime getStartDate() {
         return startDate;
     }

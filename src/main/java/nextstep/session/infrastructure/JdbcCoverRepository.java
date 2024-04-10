@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Objects;
 
 @Repository("coverRepository")
 public class JdbcCoverRepository implements CoverRepository {
@@ -39,7 +40,7 @@ public class JdbcCoverRepository implements CoverRepository {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override

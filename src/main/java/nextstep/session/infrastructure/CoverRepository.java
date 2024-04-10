@@ -1,6 +1,5 @@
 package nextstep.session.infrastructure;
 
-import nextstep.common.domain.DeleteHistory;
 import nextstep.session.dto.CoverDto;
 
 public interface CoverRepository {
