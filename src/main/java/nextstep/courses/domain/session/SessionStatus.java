@@ -2,8 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.CannotEnrollmentSessionStatusException;
 
-import java.time.LocalDateTime;
-
 public enum SessionStatus {
 
     PREPARING(false),
@@ -11,11 +9,7 @@ public enum SessionStatus {
     FINISHED(false)
     ;
 
-    private Long id;
     private final boolean canEnroll;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
 
     SessionStatus(boolean canEnroll) {
         this.canEnroll = canEnroll;
