@@ -8,6 +8,8 @@ public interface Lecture {
         return LectureStatus.RECRUITING == lectureStatus;
     }
 
+    void addRegistrationCount();
+
     boolean isRegistrationAvailable();
 
     boolean isPaymentAmountSameTuitionFee(Payment payment);

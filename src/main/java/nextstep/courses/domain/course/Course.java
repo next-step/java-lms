@@ -1,6 +1,10 @@
 package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.lecture.Lecture;
+import nextstep.courses.domain.lecture.LectureName;
+import nextstep.courses.domain.lecture.Lectures;
+import nextstep.payments.domain.Payment;
 
 public class Course {
     private Long id;
@@ -8,6 +12,8 @@ public class Course {
     private String title;
 
     private Long creatorId;
+
+    private Lectures lectures;
 
     private LocalDateTime createdAt;
 
@@ -17,13 +23,15 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, LocalDateTime.now(), null);
+        this(0L, title, creatorId, new Lectures(), LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, Lectures lectures, LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
+        this.lectures = lectures;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -49,5 +57,16 @@ public class Course {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean registerLecture(LectureName lectureName, Payment payment) {
+        Lecture lecture = lectures.findLecture(lectureName);
+
+        if (lecture.isRegistrationAvailable() && lecture.isPaymentAmountSameTuitionFee(payment)) {
+            lecture.addRegistrationCount();
+            return true;
+        }
+
+        return false;
     }
 }
