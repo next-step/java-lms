@@ -4,6 +4,11 @@ package nextstep.courses.domain.lecture;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.cover.ImageHeight;
+import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.cover.ImageType;
+import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.lecture.impl.FreeLecture;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +20,10 @@ class LecturesTest {
         Lecture lecture = new FreeLecture(new LectureName("강의이름1"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.PREPARING);
         lectures.addLecture(new LectureName("강의이름1"), lecture);
 
@@ -28,6 +37,10 @@ class LecturesTest {
         Lecture lecture = new FreeLecture(new LectureName("강의이름2"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.PREPARING);
 
         lectures.addLecture(lectureName, lecture);

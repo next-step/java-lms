@@ -3,6 +3,11 @@ package nextstep.courses.domain.lecture.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.cover.ImageHeight;
+import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.cover.ImageType;
+import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.lecture.LectureName;
 import nextstep.courses.domain.lecture.LectureStatus;
 import nextstep.payments.domain.Money;
@@ -17,6 +22,10 @@ class FreeLectureTest {
             new LectureName("강의이름"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.RECRUITING);
 
         assertThat(freeLecture.isRegistrationAvailable()).isTrue();
@@ -28,6 +37,10 @@ class FreeLectureTest {
             new LectureName("강의이름"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.END);
 
         assertThat(freeLecture.isRegistrationAvailable()).isFalse();
@@ -39,6 +52,10 @@ class FreeLectureTest {
             new LectureName("강의이름"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.RECRUITING);
 
         assertThat(freeLecture.isPaymentAmountSameTuitionFee(
@@ -51,6 +68,10 @@ class FreeLectureTest {
             new LectureName("강의이름"),
             LocalDateTime.now(),
             LocalDateTime.now(),
+            new Image(new ImageSize(1),
+                ImageType.JPG,
+                new ImageWidth(300),
+                new ImageHeight(200)),
             LectureStatus.RECRUITING);
 
         assertThat(freeLecture.isPaymentAmountSameTuitionFee(
