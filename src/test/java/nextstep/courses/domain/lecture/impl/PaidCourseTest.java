@@ -10,6 +10,7 @@ import nextstep.courses.domain.cover.ImageSize;
 import nextstep.courses.domain.cover.ImageType;
 import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.lecture.Lecture;
+import nextstep.courses.domain.lecture.LectureName;
 import nextstep.courses.domain.lecture.LectureStatus;
 import nextstep.courses.domain.lecture.MaxRegistrationCount;
 import nextstep.courses.domain.lecture.RegistrationCount;
@@ -22,7 +23,9 @@ class PaidCourseTest {
 
     @Test
     void 강의_최대_수강_인원은_0일_수_없다() {
-        assertThatThrownBy(() -> new PaidCourse(new RegistrationCount(2),
+        assertThatThrownBy(() -> new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(0)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -35,7 +38,9 @@ class PaidCourseTest {
 
     @Test
     void 강의_최대_수강_인원을_넘지_않을_경우_강의_신청이_가능해야한다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(2),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -48,7 +53,9 @@ class PaidCourseTest {
 
     @Test
     void 강의_최대_수강_인원을_넘을_경우_강의_신청이_불가능해야한다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(4),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(4),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -61,7 +68,9 @@ class PaidCourseTest {
 
     @Test
     void 유료강의는_수강생이_결제한_금액과_수강료가_일치하는_경우_강의_신청이_가능하다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -74,7 +83,9 @@ class PaidCourseTest {
 
     @Test
     void 유료강의는_수강생이_결제한_금액과_수강료가_일치하지_않은_경우_강의_신청이_불가능하다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -87,7 +98,9 @@ class PaidCourseTest {
 
     @Test
     void 유료_강의_수강신청시_강의_상태가_모집중이라면_수강_신청이_가능해야한다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
@@ -100,7 +113,9 @@ class PaidCourseTest {
 
     @Test
     void 유료_강의_수강신청시_강의_상태가_모집중이_아니라면_수강_신청이_불가능해야한다() {
-        Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
+        Lecture paidLecture = new PaidCourse(
+            new LectureName("강의이름"),
+            new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
             new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
