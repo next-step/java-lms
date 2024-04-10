@@ -4,8 +4,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 public class Question {
@@ -85,7 +83,7 @@ public class Question {
     }
 
     public DeletedHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
-        DeletedHistories deletedHistories = this.answers.delete(loginUser);
+        DeletedHistories deletedHistories = this.answers.deleteAll(loginUser);
         deletedHistories.add(this.delete(loginUser));
         return deletedHistories;
     }

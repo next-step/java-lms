@@ -23,7 +23,7 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public DeletedHistories delete(NsUser loginUser) throws CannotDeleteException {
+    public DeletedHistories deleteAll(NsUser loginUser) throws CannotDeleteException {
         Set<DeleteHistory> deleteHistories = new HashSet<>();
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete(loginUser));
