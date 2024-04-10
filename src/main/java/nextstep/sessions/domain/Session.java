@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Payment;
 import nextstep.sessions.domain.image.Image;
 import nextstep.utils.BaseEntity;
 
@@ -12,6 +13,8 @@ public class Session extends BaseEntity {
     private Image image;
 
     private SessionDetails sessionDetails;
+
+    private Payment payment;
 
     public Session(long id,
                    LocalDateTime startedAt,

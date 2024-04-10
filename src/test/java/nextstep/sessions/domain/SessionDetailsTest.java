@@ -7,6 +7,7 @@ import static nextstep.sessions.domain.SessionStatus.END;
 import static nextstep.sessions.domain.SessionStatus.RECRUITING;
 import static nextstep.sessions.domain.SessionType.FREE;
 import static nextstep.sessions.domain.SessionType.PAID;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionDetailsTest {
@@ -40,5 +41,13 @@ public class SessionDetailsTest {
         assertThatThrownBy(details::register)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("현재 강의는 (%s)인 상태입니다.", end));
+    }
+
+    @DisplayName("강의의 가격과 결제한 금액이 같은지 검증한다")
+    @Test
+    void isSameAmount() {
+        SessionDetails details = new SessionDetails(40, 0, 30000, PAID, RECRUITING);
+
+        assertThat(details.isSamePrice(30000)).isTrue();
     }
 }
