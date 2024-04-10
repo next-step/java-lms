@@ -31,4 +31,7 @@ public class Payment {
         return amount == price;
     }
 
+    public Long getAmount() {
+        return amount;
+    }
 }

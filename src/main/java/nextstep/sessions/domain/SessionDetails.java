@@ -35,7 +35,7 @@ public class SessionDetails {
         this.currentCountOfStudents++;
     }
 
-    public boolean isSamePrice(int amount) {
+    public boolean isSamePrice(long amount) {
         return this.price == amount;
     }
 
