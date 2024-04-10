@@ -1,5 +1,9 @@
 package nextstep.qna.domain;
 
+import static nextstep.qna.ExceptionMessage.*;
+import static nextstep.qna.domain.ContentType.*;
+
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -75,5 +79,21 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+	public DeleteHistory deleteByUser(NsUser user) throws CannotDeleteException {
+        validateUser(user);
+        this.deleted = true;
+        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
+	}
+
+    private void validateUser(NsUser user)  throws CannotDeleteException{
+        if(!isOwner(user)){
+            throw new CannotDeleteException(NO_AUTHORITY_TO_DELETE_ANSWER.message());
+        }
+    }
+
+    public boolean deleted() {
+        return deleted;
     }
 }
