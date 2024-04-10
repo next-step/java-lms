@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class ImageTest {
 
     @Test
-    void 이미지의_크기가_1MB보다_클_경우_예외가_발생한다() {
+    void 이미지의_크기가_1MB보다_큰_경우_예외가_발생한다() {
         assertThatThrownBy(() -> new Image(new ImageSize(2), ImageType.JPG, new ImageWidth(2), new ImageHeight(3)))
             .isInstanceOf(ImageSizeException.class)
             .hasMessage("이미지 사이즈의 최대 크기는 1입니다 입력값: 2");
