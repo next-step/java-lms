@@ -41,8 +41,9 @@ public class PaidCourse implements Lecture {
         this.lectureStatus = lectureStatus;
     }
 
-    public boolean isEnrollCourse() {
-        return true;
+    @Override
+    public void addRegistrationCount() {
+        registrationCount.addValue();
     }
 
     @Override
