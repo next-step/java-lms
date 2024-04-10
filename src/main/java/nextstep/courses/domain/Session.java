@@ -27,6 +27,10 @@ public abstract class Session {
         this.status = status;
     }
 
+    public boolean isStatus(SessionStatus status) {
+        return this.status.isSame(status);
+    }
+
     public List<NsUser> totalStudents() {
         return new ArrayList<>(this.students);
     }

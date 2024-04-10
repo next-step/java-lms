@@ -8,9 +8,9 @@ import java.util.List;
 
 public class PaidSession extends Session {
 
-    private final int amount;
+    private final long amount;
 
-    public PaidSession(long id, int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public PaidSession(long id, int maximumNumberOfStudent, long amount, LocalDateTime startedAt, LocalDateTime endedAt) {
         super(id, maximumNumberOfStudent, startedAt, endedAt);
         this.amount = amount;
     }
