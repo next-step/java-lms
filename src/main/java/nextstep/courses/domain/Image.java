@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-public class Image {
+public class Image extends BaseEntity{
     Integer size;
     ImageType type;
     Dimension dimension;
