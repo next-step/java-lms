@@ -30,4 +30,8 @@ public class Payment {
     public Money amount() {
         return amount;
     }
+
+    public boolean sameSessionId(Long sessionId) {
+        return this.sessionId.equals(sessionId);
+    }
 }

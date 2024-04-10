@@ -1,5 +1,7 @@
 package nextstep.sessions.domain;
 
+import nextstep.payments.domain.Money;
+import nextstep.payments.domain.Payment;
 import nextstep.sessions.exception.CannotEnrollException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
@@ -29,6 +31,10 @@ public class Session {
         return new Session(id, title, period, coverImage, sessionStatus, new FreeSession(), students, createdAt, updatedAt);
     }
 
+    public static Session paidSession(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, title, period, coverImage, sessionStatus, new PaidSession(capacity, new Money(price)), students, createdAt, updatedAt);
+    }
+
     public Session(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -52,6 +58,21 @@ public class Session {
 
         if (sessionType.isFull(students.size())) {
             throw new CannotEnrollException("현재 수강 인원이 가득 찼습니다.");
+        }
+    }
+
+    public void enroll(NsUser requestUser, Payment payment) {
+        assertPayOnExactSession(payment);
+        this.students.add(requestUser);
+    }
+
+    public void assertPayOnExactSession(Payment payment) {
+        if (!payment.sameSessionId(this.id)) {
+            throw new CannotEnrollException("결제 정보와 강의 정보가 일치하지 않습니다.");
+        }
+
+        if (!sessionType.equalsPrice(payment)) {
+            throw new CannotEnrollException("결제 금액과 강의 금액이 일치하지 않습니다.");
         }
     }
 
