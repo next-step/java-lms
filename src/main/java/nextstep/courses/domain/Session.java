@@ -9,15 +9,21 @@ import java.util.List;
 
 public abstract class Session {
 
-    protected final long id;
-    protected final int maximumNumberOfStudent;
-    protected final List<NsUser> students = new ArrayList<>();
-    protected final LocalDateTime startedAt;
-    protected final LocalDateTime endedAt;
+    protected long id;
+    protected long amount = 0;
+    protected long maximumNumberOfStudent;
+    protected List<NsUser> students = new ArrayList<>();
+    protected LocalDateTime startedAt;
+    protected LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
 
-    protected Session(long id, int maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+    protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this(id, 0, maximumNumberOfStudent, startedAt, endedAt);
+    }
+
+    protected Session(long id, long amount, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.id = id;
+        this.amount = amount;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
@@ -47,5 +53,29 @@ public abstract class Session {
 
     public void enroll(NsUser user, Payment payment) {
         this.students.add(user);
+    }
+
+    public long getMaximumNumberOfStudent() {
+        return maximumNumberOfStudent;
+    }
+
+    public List<NsUser> getStudents() {
+        return students;
+    }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public LocalDateTime getEndedAt() {
+        return endedAt;
+    }
+
+    public SessionStatus getStatus() {
+        return status;
+    }
+
+    public long getAmount() {
+        return amount;
     }
 }
