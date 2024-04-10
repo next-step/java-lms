@@ -12,8 +12,12 @@ public class SessionDetails {
 
     private final SessionStatus sessionStatus;
 
-    // 강의디테일: 현재 수강인원, 최대 수강인원, SessionType, SessionStatus
-    public SessionDetails(int currentCountOfStudents, int maxOfStudents, int price, SessionType sessionType, SessionStatus sessionStatus) {
+    public SessionDetails(int currentCountOfStudents,
+                          int maxOfStudents,
+                          int price,
+                          SessionType sessionType,
+                          SessionStatus sessionStatus
+    ) {
         this.currentCountOfStudents = currentCountOfStudents;
         this.maxOfStudents = maxOfStudents;
         this.price = price;
