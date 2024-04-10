@@ -38,6 +38,10 @@ public class Session {
         this.isFree = isFree;
     }
 
+    public boolean isRecruitState() {
+        return this.progress.equals(new SessionProgress(SessionProgress.RECRUIT));
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object)
@@ -55,4 +59,5 @@ public class Session {
     public int hashCode() {
         return Objects.hash(sessionDate, coverImage, progress, isFree);
     }
+
 }
