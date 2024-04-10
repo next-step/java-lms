@@ -29,7 +29,4 @@ public class SessionDetailsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("현재 강의는 (%s)인 상태입니다.", end));
     }
-
-    //@DisplayName("무료강의는 수강신청을 언제든 할 수 있다.")
-
 }

@@ -1,9 +1,11 @@
 package nextstep.sessions.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTypeTest {
 
@@ -11,7 +13,12 @@ public class SessionTypeTest {
     @ParameterizedTest
     @CsvSource({"50000, PAID", "0, FREE"})
     void determineSessionType(int price, SessionType type) {
-        Assertions.assertThat(SessionType.determineSessionType(price)).isEqualTo(type);
+        assertThat(SessionType.determineSessionType(price)).isEqualTo(type);
     }
 
+    @DisplayName("무료강의는 수강신청의 제한이 없다")
+    @Test
+    void FreeSessionIsAlwaysTrue() {
+        assertThat(SessionType.FREE.canEnroll(10, 0)).isTrue();
+    }
 }
