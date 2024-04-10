@@ -1,34 +1,27 @@
 package nextstep.courses.domain;
 
-import java.time.LocalDateTime;
-
 public class Session {
 
     private Long id;
 
-    private String title;
-
-    private Long creatorId;
-
     private Image coverImage;
 
-    private SessionType type;
+    private SessionEnrollment enrollment;
 
-    private SessionStatus status;
-
-    private Fee fee;
-
-    private int maxStudents;
-
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private SessionSchedule schedule;
 
     public Session() {
+    }
+
+    public Session(Image coverImage, SessionEnrollment enrollment, SessionSchedule schedule) {
+        this(0L, coverImage, enrollment, schedule);
+    }
+
+    public Session(Long id, Image coverImage, SessionEnrollment enrollment, SessionSchedule schedule) {
+        this.id = id;
+        this.coverImage = coverImage;
+        this.enrollment = enrollment;
+        this.schedule = schedule;
     }
 
 
