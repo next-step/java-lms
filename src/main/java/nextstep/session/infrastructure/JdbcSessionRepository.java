@@ -1,7 +1,6 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
-import nextstep.session.domain.PaidSession;
 import nextstep.session.dto.SessionDto;
 import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
 import nextstep.utils.DbTimestampUtils;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Objects;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -49,7 +49,7 @@ public class JdbcSessionRepository implements SessionRepository {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override

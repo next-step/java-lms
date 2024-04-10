@@ -1,5 +1,6 @@
 package nextstep.common.domain;
 
+import nextstep.common.dto.DeleteHistoryDto;
 import nextstep.qna.domain.ContentType;
 import nextstep.users.domain.NsUser;
 
@@ -67,5 +68,15 @@ public class DeleteHistory {
     public String toString() {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
+    }
+
+    public DeleteHistoryDto toDto() {
+        return new DeleteHistoryDto(
+                this.id,
+                this.contentId,
+                this.contentType.name(),
+                this.createdDate,
+                this.deletedBy.getId()
+        );
     }
 }
