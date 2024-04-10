@@ -1,5 +1,6 @@
-package nextstep.qna.domain;
+package nextstep.qna.domain.deletehistory;
 
+import nextstep.qna.domain.ContentType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
