@@ -69,4 +69,8 @@ public class Course {
 
         return false;
     }
+
+    public void addLecture(LectureName lectureName, Lecture lecture) {
+        lectures.addLecture(lectureName,lecture);
+    }
 }
