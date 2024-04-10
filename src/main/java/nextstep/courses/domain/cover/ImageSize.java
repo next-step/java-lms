@@ -1,6 +1,6 @@
 package nextstep.courses.domain.cover;
 
-import nextstep.courses.error.ImageSizeException;
+import nextstep.courses.error.exception.ImageSizeException;
 
 public class ImageSize {
 
