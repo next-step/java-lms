@@ -16,6 +16,16 @@ public class Image {
 
 
     public Image(int size, int height, int width, String fileName) {
+        verify(size, height, width);
+
+        this.size = size;
+        this.height = height;
+        this.width = width;
+        this.name = "";
+        this.type = convertType(fileName);
+    }
+
+    private void verify(int size, int height, int width) {
         if (isOverSize(size)) {
             throw new IllegalArgumentException("크기는 1MB 이하 여야합니다.");
         }
@@ -31,12 +41,15 @@ public class Image {
         if (!checkRatioThreeToTwo(width, height)) {
             throw new IllegalArgumentException("높이와 너비는 3:2 비율이여야 합니다. ");
         }
+    }
 
+    public Image(int size, int height, int width, String name, String type) {
+        verify(size, height, width);
         this.size = size;
         this.height = height;
         this.width = width;
-        this.name = "";
-        this.type = convertType(fileName);
+        this.name = name;
+        this.type = convertType(type);
     }
 
     private boolean verifyWidth(int width) {

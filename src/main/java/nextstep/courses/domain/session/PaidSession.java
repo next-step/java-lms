@@ -12,14 +12,14 @@ public class PaidSession extends Session {
     private final int maxSize;
     private final long amount;
 
-    public PaidSession(Course course, Period period, Image image, NsUsers users, int maxSize, long amount) {
-        super(course, period, image, users, SessionType.PAID);
+    public PaidSession(Course course, String title, Period period, Image image, NsUsers users, int maxSize, long amount) {
+        super(course, title, period, image, users, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }
 
-    public PaidSession(Long idx, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, int maxSize, long amount) {
-        super(idx, course, period, image, status, nsUsers, SessionType.PAID);
+    public PaidSession(Long idx, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, int maxSize, long amount) {
+        super(idx, title, course, period, image, status, nsUsers, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }
@@ -36,6 +36,6 @@ public class PaidSession extends Session {
     }
 
     public Payment toPayment(NsUser nsUser) {
-        return new Payment("0", this.idx, nsUser.getId(), this.amount);
+        return new Payment("0", this.id, nsUser.getId(), this.amount);
     }
 }
