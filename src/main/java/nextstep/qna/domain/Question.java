@@ -92,23 +92,22 @@ public class Question {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
-        deleteHistories.add(deleteQuestion(loginUser));
-        deleteHistories.addAll(deleteAnswers());
-        return deleteHistories;
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        //List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteQuestion(loginUser);
+        deleteAnswers();
+        //deleteHistories.add(deleteQuestion(loginUser));
+        //deleteHistories.addAll(deleteAnswers());
     }
 
-    private List<DeleteHistory> deleteAnswers() throws CannotDeleteException {
+    private void deleteAnswers() throws CannotDeleteException {
         compareQuestionOwnerAndReplyOwner();
-        return answers.delete();
+        answers.delete();
     }
 
-    private DeleteHistory deleteQuestion(NsUser loginUser) throws CannotDeleteException {
+    private void deleteQuestion(NsUser loginUser) throws CannotDeleteException {
         compareLoginUserAndQuestionId(loginUser);
         this.deleted = true;
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
 
     private void compareLoginUserAndQuestionId(NsUser loginUser) throws CannotDeleteException {
@@ -123,4 +122,10 @@ public class Question {
         }
     }
 
+    public List<DeleteHistory> deletedHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now()));
+        deleteHistories.addAll(answers.deletedHistories());
+        return deleteHistories;
+    }
 }
