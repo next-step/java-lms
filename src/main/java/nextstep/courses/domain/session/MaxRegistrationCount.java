@@ -1,4 +1,4 @@
-package nextstep.courses.domain.lecture;
+package nextstep.courses.domain.session;
 
 import java.util.Comparator;
 import nextstep.courses.error.exception.MaxRegistrationCountNotZero;

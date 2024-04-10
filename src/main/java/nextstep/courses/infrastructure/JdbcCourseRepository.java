@@ -24,7 +24,7 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, lectures_id, created_at, updated_at from course where id = ?";
+        String sql = "select id, title, creator_id, sessions_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),

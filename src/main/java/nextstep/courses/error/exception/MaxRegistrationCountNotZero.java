@@ -1,7 +1,7 @@
 package nextstep.courses.error.exception;
 
 import java.text.MessageFormat;
-import nextstep.courses.domain.lecture.RegistrationCount;
+import nextstep.courses.domain.session.RegistrationCount;
 
 public class MaxRegistrationCountNotZero extends RuntimeException {
 

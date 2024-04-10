@@ -1,11 +1,11 @@
-package nextstep.courses.domain.lecture;
+package nextstep.courses.domain.session;
 
-public enum LectureStatus {
+public enum SessionStatus {
     PREPARING("준비중"),
     RECRUITING("모집중"),
     END("종료");
 
-    LectureStatus(String value) {
+    SessionStatus(String value) {
         this.value = value;
     }
 

@@ -1,18 +1,18 @@
-package nextstep.courses.domain.lecture.impl;
+package nextstep.courses.domain.session.impl;
 
 import java.time.LocalDateTime;
 import nextstep.courses.domain.cover.Image;
-import nextstep.courses.domain.lecture.Lecture;
-import nextstep.courses.domain.lecture.LectureName;
-import nextstep.courses.domain.lecture.LectureStatus;
-import nextstep.courses.domain.lecture.MaxRegistrationCount;
-import nextstep.courses.domain.lecture.RegistrationCount;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionName;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.MaxRegistrationCount;
+import nextstep.courses.domain.session.RegistrationCount;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 
-public class PaidCourse implements Lecture {
+public class PaidSession implements Session {
 
-    private final LectureName lectureName;
+    private final SessionName sessionName;
 
     private final RegistrationCount registrationCount;
 
@@ -26,19 +26,19 @@ public class PaidCourse implements Lecture {
 
     private final LocalDateTime endDate;
 
-    private LectureStatus lectureStatus;
+    private SessionStatus sessionStatus;
 
-    public PaidCourse(LectureName lectureName, RegistrationCount registrationCount,
+    public PaidSession(SessionName sessionName, RegistrationCount registrationCount,
         MaxRegistrationCount maxRegistrationCount, Money tuitionFee, Image image,
-        LocalDateTime startDate, LocalDateTime endDate, LectureStatus lectureStatus) {
-        this.lectureName = lectureName;
+        LocalDateTime startDate, LocalDateTime endDate, SessionStatus sessionStatus) {
+        this.sessionName = sessionName;
         this.registrationCount = registrationCount;
         this.maxRegistrationCount = maxRegistrationCount;
         this.tuitionFee = tuitionFee;
         this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.lectureStatus = lectureStatus;
+        this.sessionStatus = sessionStatus;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PaidCourse implements Lecture {
 
     @Override
     public boolean isRegistrationAvailable() {
-        return isRecruitmentOpen(lectureStatus)
+        return isRecruitmentOpen(sessionStatus)
             && maxRegistrationCount.isMaxRegistrationCountOver(this.registrationCount);
     }
 

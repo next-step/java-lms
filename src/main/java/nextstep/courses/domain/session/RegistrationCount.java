@@ -1,4 +1,4 @@
-package nextstep.courses.domain.lecture;
+package nextstep.courses.domain.session;
 
 public class RegistrationCount {
 

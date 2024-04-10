@@ -1,9 +1,9 @@
 package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.lecture.Lecture;
-import nextstep.courses.domain.lecture.LectureName;
-import nextstep.courses.domain.lecture.Lectures;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionName;
+import nextstep.courses.domain.session.Sessions;
 import nextstep.payments.domain.Payment;
 
 public class Course {
@@ -13,7 +13,7 @@ public class Course {
 
     private Long creatorId;
 
-    private Lectures lectures;
+    private Sessions sessions;
 
     private LocalDateTime createdAt;
 
@@ -23,15 +23,15 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, creatorId, new Lectures(), LocalDateTime.now(), null);
+        this(0L, title, creatorId, new Sessions(), LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, Lectures lectures, LocalDateTime createdAt,
+    public Course(Long id, String title, Long creatorId, Sessions sessions, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
-        this.lectures = lectures;
+        this.sessions = sessions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -59,18 +59,18 @@ public class Course {
                 '}';
     }
 
-    public boolean registerLecture(LectureName lectureName, Payment payment) {
-        Lecture lecture = lectures.findLecture(lectureName);
+    public boolean registerSession(SessionName sessionName, Payment payment) {
+        Session session = sessions.findSession(sessionName);
 
-        if (lecture.isRegistrationAvailable() && lecture.isPaymentAmountSameTuitionFee(payment)) {
-            lecture.addRegistrationCount();
+        if (session.isRegistrationAvailable() && session.isPaymentAmountSameTuitionFee(payment)) {
+            session.addRegistrationCount();
             return true;
         }
 
         return false;
     }
 
-    public void addLecture(LectureName lectureName, Lecture lecture) {
-        lectures.addLecture(lectureName,lecture);
+    public void addSession(SessionName sessionName, Session session) {
+        sessions.addSession(sessionName, session);
     }
 }

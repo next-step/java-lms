@@ -1,15 +1,15 @@
-package nextstep.courses.domain.lecture;
+package nextstep.courses.domain.session;
 
 import java.util.Objects;
-import nextstep.courses.error.exception.LectureNameEmptyException;
+import nextstep.courses.error.exception.SessionNameEmptyException;
 
-public class LectureName {
+public class SessionName {
 
     private final String value;
 
-    public LectureName(String value) {
+    public SessionName(String value) {
         if (value == null || value.isBlank()) {
-            throw new LectureNameEmptyException(value);
+            throw new SessionNameEmptyException(value);
         }
         this.value = value;
     }
@@ -23,10 +23,10 @@ public class LectureName {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof LectureName)) {
+        if (!(o instanceof SessionName)) {
             return false;
         }
-        LectureName that = (LectureName) o;
+        SessionName that = (SessionName) o;
         return Objects.equals(getValue(), that.getValue());
     }
 
