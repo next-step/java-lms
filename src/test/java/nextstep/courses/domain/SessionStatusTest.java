@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,5 +25,11 @@ public class SessionStatusTest {
                 Arguments.of(SessionStatus.RECRUITING, true),
                 Arguments.of(SessionStatus.FINISHED, false)
         );
+    }
+
+    @DisplayName("강의 상태를 확인한다.")
+    @Test
+    void test02() {
+        assertThat(SessionStatus.PREPARING.isSame(SessionStatus.PREPARING)).isTrue();
     }
 }
