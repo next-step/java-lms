@@ -1,10 +1,13 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Question {
     private Long id;
@@ -68,10 +71,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -81,8 +80,46 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
-        return answers;
+    private boolean isOwner(NsUser loginUser) {
+        return writer.equals(loginUser);
+//        if (!writer.equals(loginUser)) {
+//            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+//        }
+//        return true;
+    }
+
+    private List<DeleteHistory> deleteAnswers(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        for (Answer answer : answers) {
+            deleteHistories.add(answer.delete(loginUser));
+        }
+        return deleteHistories;
+    }
+
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser) ) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        List<DeleteHistory> deleteHistories = this.deleteAnswers(loginUser);
+
+        this.deleted = true;
+        deleteHistories.add(new DeleteHistory(this));
+
+        deleteHistories.sort(Comparator.comparing(DeleteHistory::getContentType));
+        return deleteHistories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Question)) return false;
+        Question question = (Question) o;
+        return deleted == question.deleted && Objects.equals(id, question.id) && Objects.equals(title, question.title) && Objects.equals(contents, question.contents) && Objects.equals(writer, question.writer) && Objects.equals(answers, question.answers) && Objects.equals(createdDate, question.createdDate) && Objects.equals(updatedDate, question.updatedDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, contents, writer, answers, deleted, createdDate, updatedDate);
     }
 
     @Override
