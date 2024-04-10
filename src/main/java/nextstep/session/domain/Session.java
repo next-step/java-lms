@@ -13,8 +13,6 @@ public interface Session {
 
     void toPreviousSessionStatus();
 
-    void editSessionName(String sessionName);
-
     boolean isEnrollAvailable(LocalDateTime applyDate);
 
     boolean apply(Student student, Payment payment, LocalDateTime applyDate);

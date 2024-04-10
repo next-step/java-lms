@@ -69,13 +69,6 @@ public class FreeSession implements Session {
         this.sessionStatus = this.sessionStatus.toPreviousStatus();
     }
 
-    @Override
-    public void editSessionName(String sessionName) {
-        validateReadyStatus();
-
-        this.sessionName = this.sessionName.editSessionName(sessionName);
-    }
-
     private void validateReadyStatus() {
         if (!this.sessionStatus.onReady()) {
             throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
