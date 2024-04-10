@@ -10,10 +10,10 @@ public class FreeSessionTypeTest {
     public static final FreeSessionType FREE_SESSION_TYPE = new FreeSessionType();
 
     @Test
-    @DisplayName("isSessionFull(): numberOfCurrentEnrollment에 상관 없이 항상 true를 반환한다.")
-    void testIsSessionFull() {
+    @DisplayName("isSessionNotFull(): numberOfCurrentEnrollment에 상관 없이 항상 true를 반환한다.")
+    void testIsSessionNotFull() {
         FreeSessionType freeSessionType = new FreeSessionType();
-        assertThat(freeSessionType.isSessionFull(10000)).isTrue();
+        assertThat(freeSessionType.isSessionNotFull(10000)).isTrue();
     }
 
     @Test

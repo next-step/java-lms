@@ -17,7 +17,7 @@ public class PaidSessionType extends SessionType {
     }
 
     @Override
-    public boolean isSessionFull(long numberOfCurrentEnrollment) {
+    public boolean isSessionNotFull(long numberOfCurrentEnrollment) {
         return numberOfCurrentEnrollment < maxNumberOfEnrollment;
     }
 

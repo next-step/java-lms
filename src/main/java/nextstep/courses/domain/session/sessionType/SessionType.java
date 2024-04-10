@@ -20,7 +20,7 @@ public abstract class SessionType {
         }
     }
 
-    public abstract boolean isSessionFull(long currentNumberOfEnrollment);
+    public abstract boolean isSessionNotFull(long currentNumberOfEnrollment);
 
     public abstract boolean isValidPayment(Payment payment);
 }

@@ -31,12 +31,12 @@ public class PaidSessionTypeTest {
     }
 
     @Test
-    @DisplayName("isSessionFull(): numberOfCurrentEnrollment < maxNumberOfEnrollment 이면 true를 그렇지 않은 경우 false를 반환한다.")
-    void testIsSessionFull() {
+    @DisplayName("isSessionNotFull(): numberOfCurrentEnrollment < maxNumberOfEnrollment 이면 true를 그렇지 않은 경우 false를 반환한다.")
+    void testIsSessionNotFull() {
         PaidSessionType paidSessionType = new PaidSessionType(2, 100);
 
-        assertThat(paidSessionType.isSessionFull(1)).isTrue();
-        assertThat(paidSessionType.isSessionFull(2)).isFalse();
+        assertThat(paidSessionType.isSessionNotFull(1)).isTrue();
+        assertThat(paidSessionType.isSessionNotFull(2)).isFalse();
     }
 
     @Test
