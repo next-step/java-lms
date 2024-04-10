@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 public class CoverImageTest {
+    public static final CoverImage TEST_IMAGE = new CoverImage(1L, "test.png", 300, 200, 1024 * 1024);
 
     @DisplayName("강의 커버 이미지는")
     @Nested
