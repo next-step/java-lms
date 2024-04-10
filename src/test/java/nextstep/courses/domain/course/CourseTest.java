@@ -30,21 +30,21 @@ class CourseTest {
     Session session1 = new Session(
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0),
+        SessionInfo.newFreeSession("자동차 경주", SessionStatus.IN_PROGRESS),
         new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("사다리 타기", SessionStatus.IN_PROGRESS, true, 0),
+        SessionInfo.newFreeSession("사다리 타기", SessionStatus.IN_PROGRESS),
         new CoverImage("사다리 타기 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session3 = new Session(
         3L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("수강신청", SessionStatus.IN_PROGRESS, false, 50000, 100),
+        SessionInfo.newPaidSession("수강신청", SessionStatus.IN_PROGRESS, 50000, 100),
         new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 

@@ -10,7 +10,7 @@ public class Enrollment extends BaseTime {
   public static final String SESSION_AMOUNT_IS_NOT_CORRECT = "수강료가 일치하지 않습니다. input: %s, expected: %s";
 
   private Long id;
-  private Long userId;
+  private Long userId; // 수강 정보로
   private Long courseId;
   private Session registeredSession;
   private Payment payment;

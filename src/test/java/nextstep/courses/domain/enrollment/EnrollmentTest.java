@@ -100,21 +100,21 @@ class EnrollmentTest {
     Session session1 = new Session(
         1L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("자동차 경주", SessionStatus.IN_PROGRESS, true, 0),
+        SessionInfo.newFreeSession("자동차 경주", SessionStatus.IN_PROGRESS),
         new CoverImage("자동차 경주 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session2 = new Session(
         2L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("수강신청", SessionStatus.IN_PROGRESS, false, 50000, 1),
+        SessionInfo.newPaidSession("수강신청", SessionStatus.IN_PROGRESS, 50000, 1),
         new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 
     Session session3 = new Session(
         3L,
         new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusMonths(1L)),
-        new SessionInfo("수강신청 실패 케이스", SessionStatus.END, false, 50000, 1),
+        SessionInfo.newPaidSession("수강신청 실패 케이스", SessionStatus.END, 50000, 1),
         new CoverImage("수강신청 이미지 커버", ImageType.PNG, new CoverImageMeta(1024, 300, 200))
     );
 

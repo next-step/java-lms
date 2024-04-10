@@ -7,14 +7,14 @@ public class SessionInfo {
   private SessionStatus sessionStatus;
   private SessionEnrollmentInfo sessionEnrollmentInfo;
 
-  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount) {
+  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
     this.sessionEnrollmentInfo = new SessionEnrollmentInfo(isFree, sessionAmount);
   }
 
-  public SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount, int studentMaxCount) {
+  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount, int studentMaxCount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
@@ -25,6 +25,14 @@ public class SessionInfo {
     if (sessionTitle == null || sessionTitle.isBlank()) {
       throw new IllegalArgumentException(String.format(SESSION_TITLE_IS_INCORRECT, sessionTitle));
     }
+  }
+
+  public static SessionInfo newFreeSession(String sessionTitle, SessionStatus sessionStatus) {
+    return new SessionInfo(sessionTitle, sessionStatus, true, 0);
+  }
+
+  public static SessionInfo newPaidSession(String sessionTitle, SessionStatus sessionStatus, int sessionAmount, int studentMaxCount) {
+    return new SessionInfo(sessionTitle, sessionStatus, false, sessionAmount, studentMaxCount);
   }
 
   public String getSessionTitle() {

@@ -19,9 +19,8 @@ class SessionInfoTest {
     String title = "강의명";
     SessionStatus sessionStatus = SessionStatus.READY;
     boolean isFree = true;
-    int sessionAmount = 0;
 
-    SessionInfo sessionInfo = new SessionInfo(title, sessionStatus, isFree, sessionAmount);
+    SessionInfo sessionInfo = SessionInfo.newFreeSession(title, sessionStatus);
     assertThat(sessionInfo.getSessionTitle()).isEqualTo(title);
     assertThat(sessionInfo.getSessionStatus()).isEqualTo(sessionStatus);
     assertThat(sessionInfo.getIsFree()).isEqualTo(isFree);
@@ -34,9 +33,8 @@ class SessionInfoTest {
       "exception 테스트")
   void sessionInfo_fail_test_by_incorrect_title(String title) {
     SessionStatus sessionStatus = SessionStatus.READY;
-    boolean isFree = true;
 
-    assertThatThrownBy(() -> new SessionInfo(title, sessionStatus, isFree, 0))
+    assertThatThrownBy(() -> SessionInfo.newFreeSession(title, sessionStatus))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(SESSION_TITLE_IS_INCORRECT, title));
   }
@@ -47,11 +45,10 @@ class SessionInfoTest {
   void sessionInfo_fail_test_by_invalid_student_count() {
     String title = "강의명";
     SessionStatus sessionStatus = SessionStatus.READY;
-    boolean isFree = false;
     int sessionAmount = 0;
     int studentMaxCount = 0;
 
-    assertThatThrownBy(() -> new SessionInfo(title, sessionStatus, isFree, sessionAmount, studentMaxCount))
+    assertThatThrownBy(() -> SessionInfo.newPaidSession(title, sessionStatus, sessionAmount, studentMaxCount))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(String.format(INVALID_STUDENT_COUNT, studentMaxCount));
   }
