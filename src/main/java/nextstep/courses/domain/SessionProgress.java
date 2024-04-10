@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class SessionProgress {
 
-    private static final String READY = "준비중";
-    private static final String RECRUIT = "모집중";
-    private static final String CLOSEUP = "종료";
-    private String state;
+    public static final String READY = "준비중";
+    public static final String RECRUIT = "모집중";
+    public static final String CLOSEUP = "종료";
+    public String state;
 
     public SessionProgress() {
         this(READY);
