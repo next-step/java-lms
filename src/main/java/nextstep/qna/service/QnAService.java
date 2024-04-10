@@ -19,12 +19,6 @@ public class QnAService {
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
-    @Resource(name = "answerRepository")
-    private AnswerRepository answerRepository;
-
-    @Resource(name = "deleteHistoryService")
-    private DeleteHistoryService deleteHistoryService;
-
     @Autowired
     private ApplicationEventPublisher publisher;
 
@@ -33,8 +27,6 @@ public class QnAService {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
         question.delete(loginUser);
-
-        //deleteHistoryService.saveAll(question.deletedHistories());
 
         publisher.publishEvent(new DeleteHistoryEvent(this, question));
     }

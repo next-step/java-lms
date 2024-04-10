@@ -93,11 +93,8 @@ public class Question {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        //List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteQuestion(loginUser);
         deleteAnswers();
-        //deleteHistories.add(deleteQuestion(loginUser));
-        //deleteHistories.addAll(deleteAnswers());
     }
 
     private void deleteAnswers() throws CannotDeleteException {
