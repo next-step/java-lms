@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -72,9 +73,13 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    public List<DeleteHistory> createHistories(long questionId) {
+
+        this.deleted = true;
+        DeleteHistories deleteHistories = new DeleteHistories();
+        deleteHistories.process(questionId, this.getWriter(), this.getAnswers());
+
+        return deleteHistories.getDeleteHistories();
     }
 
     public boolean isDeleted() {
@@ -88,5 +93,25 @@ public class Question {
     @Override
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+    }
+
+    public void isDeletableBy(NsUser loginUser) throws CannotDeleteException {
+        validateAuthority(loginUser);
+        validateWriter(loginUser);
+    }
+
+    private void validateWriter(NsUser loginUser) throws CannotDeleteException {
+        List<Answer> answers = this.getAnswers();
+        for (Answer answer : answers) {
+            if (!answer.isOwner(loginUser)) {
+                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            }
+        }
+    }
+
+    private void validateAuthority(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
     }
 }
