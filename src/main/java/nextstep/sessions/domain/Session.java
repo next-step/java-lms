@@ -31,13 +31,13 @@ public class Session {
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
     }
 
+    public static Session free(final SessionStatus sessionStatus) {
+        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX);
+    }
+
     public void enroll(final NsUser user, final long price) {
         validate(user, price);
         attendees.add(user);
-    }
-
-    public static Session free(final SessionStatus sessionStatus) {
-        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX);
     }
 
     private void validate(final NsUser user, final long price) {
