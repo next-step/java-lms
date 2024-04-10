@@ -38,4 +38,20 @@ public class SessionCoverImage {
             throw new IllegalArgumentException("이미지 용량은 1MB 이하여야 합니다.");
         }
     }
+
+    public int getSizeOfBytes() {
+        return sizeOfBytes;
+    }
+
+    public ImageType getType() {
+        return type;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

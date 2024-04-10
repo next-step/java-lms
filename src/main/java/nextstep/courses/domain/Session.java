@@ -12,10 +12,12 @@ public abstract class Session {
     protected long id;
     protected long amount = 0;
     protected long maximumNumberOfStudent;
+    protected SessionCoverImage coverImage;
     protected List<NsUser> students = new ArrayList<>();
     protected LocalDateTime startedAt;
     protected LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
+    protected SessionType type;
 
     protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt) {
         this(id, 0, maximumNumberOfStudent, startedAt, endedAt);
@@ -77,5 +79,13 @@ public abstract class Session {
 
     public long getAmount() {
         return amount;
+    }
+
+    public SessionCoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionType getType() {
+        return type;
     }
 }
