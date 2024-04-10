@@ -8,12 +8,25 @@ public class Image {
 
     private final ImageWidth width;
 
-    private final int height;
+    private final ImageHeight height;
 
-    public Image(ImageSize size, ImageType type, int width, int height) {
+    public boolean isThreeToTwoRatio() {
+        double ratio = (double) width.getValue() / height.getValue();
+        return Math.abs(ratio - 1.5) < 0.001; // 허용 가능한 오차 범위 내에서 비율이 3:2인지 확인
+    }
+
+    public Image(ImageSize size, ImageType type, ImageWidth width, ImageHeight height) {
         this.size = size;
         this.type = type;
         this.width = width;
         this.height = height;
+    }
+
+    public int getWidth() {
+        return width.getValue();
+    }
+
+    public int getHeight() {
+        return height.getValue();
     }
 }
