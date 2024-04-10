@@ -113,7 +113,7 @@
   - `Cover`에게 `save` 메시지를 보내 생성한다.
   - 현재 `Session`의 `Cover`를 변경한다.
   - 현재 `Session`을 변경 저장한다.
-- [ ] `Session` - `addStudent(Long sessionId, Student student)` 구현
+- [x] `Session` - `addStudent(Long sessionId, Student student)` 구현
   - `sessionId`를 통해 `Session` 객체를 조회한다.
   - 조회한 `Session` 객체의 `Students`에 `student`를 추가한다.
   - `StudentsService`에게 `save` 메시지를 보낸다.

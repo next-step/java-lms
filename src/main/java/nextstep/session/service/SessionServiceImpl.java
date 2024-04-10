@@ -3,6 +3,7 @@ package nextstep.session.service;
 import nextstep.common.domain.BaseEntity;
 import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
+import nextstep.payments.domain.Payment;
 import nextstep.session.domain.*;
 import nextstep.session.dto.SessionDto;
 import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 @Service("sessionService")
 public class SessionServiceImpl implements SessionService {
@@ -94,5 +96,17 @@ public class SessionServiceImpl implements SessionService {
         Cover savedNewCover = coverService.findById(savedNewCoverId);
 
         return sessionRepository.updateCover(targetSession.toDto(), savedNewCover);
+    }
+
+    @Override
+    public Session apply(long sessionId, Payment payment, Student student) {
+        Session targetSession = findById(sessionId);
+        Student studentWithSession = new Student(targetSession.toDto().getId(), student.getUser());
+
+        studentService.save(studentWithSession);
+
+        targetSession.apply(studentWithSession, payment, LocalDateTime.now());
+
+        return findById(sessionId);
     }
 }

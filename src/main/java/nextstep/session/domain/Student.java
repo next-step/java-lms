@@ -36,6 +36,10 @@ public class Student {
         return this.user.getId();
     }
 
+    public NsUser getUser() {
+        return user;
+    }
+
     public StudentDto toDto() {
         return new StudentDto(
                 this.id,
