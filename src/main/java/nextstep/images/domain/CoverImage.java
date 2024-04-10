@@ -8,6 +8,8 @@ public class CoverImage {
     private static final int WIDTH_RATIO = 3;
     private static final int HEIGHT_RATIO = 2;
 
+    private Long id;
+
     private double size;
 
     private int width;
@@ -57,5 +59,21 @@ public class CoverImage {
             throw new IllegalArgumentException("이미지의 width와 heigth의 비율은 " + WIDTH_RATIO
                     + ":" + HEIGHT_RATIO + "여야 합니다.");
         }
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public String getCoverImageType() {
+        return coverImageType.name();
     }
 }
