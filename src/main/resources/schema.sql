@@ -19,7 +19,7 @@ create table session (
     image_size_of_bytes int not null,
     image_width int not null,
     image_height int not null,
-    image_type int not null
+    image_type varchar(20) not null
 );
 
 create table ns_user (

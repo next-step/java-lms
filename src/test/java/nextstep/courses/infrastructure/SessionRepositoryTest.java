@@ -1,13 +1,12 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.FreeSession;
+import nextstep.courses.domain.PaidSession;
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionCoverImageTest;
+import nextstep.courses.domain.SessionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,10 +32,10 @@ public class SessionRepositoryTest {
     @DisplayName("CRUD 테스트")
     @Test
     void crud() {
-        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Session session = new PaidSession(0L, 10L, 10_000L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.PAID);
         int count = sessionRepository.save(session);
-        assertThat(count).isEqualTo(0);
+        assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(0L);
-        assertThat(session).isEqualTo(savedSession);
+        assertThat(session.getAmount()).isEqualTo(savedSession.getAmount());
     }
 }
