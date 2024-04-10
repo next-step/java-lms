@@ -1,7 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session;
 
 import static nextstep.courses.ExceptionMessage.INVALID_COVER_IMAGE;
-import static nextstep.courses.domain.ImageType.*;
+import static nextstep.courses.domain.session.ImageType.*;
 
 public class CoverImage {
     private static final double MAX_CAPACITY = 1024 * 1024;

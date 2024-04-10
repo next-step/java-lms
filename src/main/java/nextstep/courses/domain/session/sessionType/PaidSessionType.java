@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.sessionType;
 
 import nextstep.payments.domain.Payment;
 
@@ -17,8 +17,8 @@ public class PaidSessionType extends SessionType {
     }
 
     @Override
-    public boolean isSessionFull(long currentNumberOfEnrollment) {
-        return currentNumberOfEnrollment < maxNumberOfEnrollment;
+    public boolean isSessionFull(long numberOfCurrentEnrollment) {
+        return numberOfCurrentEnrollment < maxNumberOfEnrollment;
     }
 
     @Override

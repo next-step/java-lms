@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.sessionType;
 
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ class PaidSessionTypeTest {
     }
 
     @Test
-    @DisplayName("isSessionFull(): currentNumberOfEnrollment < maxNumberOfEnrollment 이면 true를 그렇지 않은 경우 false를 반환한다.")
+    @DisplayName("isSessionFull(): numberOfCurrentEnrollment < maxNumberOfEnrollment 이면 true를 그렇지 않은 경우 false를 반환한다.")
     void testIsSessionFull() {
         PaidSessionType paidSessionType = new PaidSessionType(2, 100);
 

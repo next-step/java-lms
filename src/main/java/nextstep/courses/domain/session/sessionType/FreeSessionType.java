@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.session.sessionType;
 
 import nextstep.payments.domain.Payment;
 
@@ -11,7 +11,7 @@ public class FreeSessionType extends SessionType {
     }
 
     @Override
-    public boolean isSessionFull(long currentNumberOfEnrollment) {
+    public boolean isSessionFull(long numberOfCurrentEnrollment) {
         return true;
     }
 
