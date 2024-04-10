@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.exception.MismatchSessionFeeException;
+
 public class SessionFee {
 
     private final Long id;
@@ -12,7 +14,13 @@ public class SessionFee {
         this.fee = fee;
     }
 
-    public boolean sameAs(Long amount) {
+    public void validatePaymentAmount(Long amount) {
+        if (!sameAs(amount)) {
+            throw new MismatchSessionFeeException(this, amount);
+        }
+    }
+
+    private boolean sameAs(Long amount) {
         return fee.equals(amount);
     }
 
