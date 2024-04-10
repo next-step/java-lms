@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -72,9 +73,33 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+
+    //TODO: Answers구현 후, 수정 필요.
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        List<DeleteHistory> histories = new ArrayList<>();
+        assertSameUser(loginUser);
+        assertNotDelete();
+
+        histories.add(DeleteHistoryFactory.deleteHistoryForQuestion(loginUser, this));
+        this.deleted = true;
+
+        histories.addAll(answers.deleteAnswers(loginUser));
+        return histories;
+    }
+
+    private void assertSameUser(NsUser loginUser) throws CannotDeleteException {
+        String errorMessage = "질문을 삭제할 권한이 없습니다.";
+
+        if (!writer.equals(loginUser)) {
+            throw new CannotDeleteException(errorMessage);
+        }
+    }
+
+    private void assertNotDelete() throws CannotDeleteException {
+        String errorMessage = "이미 삭제된 질문입니다.";
+        if (isDeleted()) {
+            throw new CannotDeleteException(errorMessage);
+        }
     }
 
     public boolean isDeleted() {
@@ -82,7 +107,7 @@ public class Question {
     }
 
     public List<Answer> getAnswers() {
-        return answers;
+        return answers.getAnswers();
     }
 
     @Override
