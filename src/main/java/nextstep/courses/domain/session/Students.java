@@ -9,8 +9,12 @@ public class Students {
     private final List<Student> students;
 
     public Students(Long sessionId) {
+        this(sessionId, new ArrayList<>());
+    }
+
+    public Students(Long sessionId, List<Student> students) {
         this.sessionId = sessionId;
-        this.students = new ArrayList<>();
+        this.students = students;
     }
 
     public void add(Student student) {
