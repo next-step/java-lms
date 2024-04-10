@@ -24,4 +24,8 @@ public class EnrolledUsers {
     public boolean isDuplicatedUser(NsUser user) {
         return new HashSet<>(enrolledUsers).contains(user);
     }
+
+    public void add(NsUser user) {
+        enrolledUsers.add(user);
+    }
 }
