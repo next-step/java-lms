@@ -1,9 +1,8 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.users.domain.NsUser;
 
 public class DeleteHistory {
     private Long id;
@@ -24,6 +23,10 @@ public class DeleteHistory {
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
     }
 
     @Override
