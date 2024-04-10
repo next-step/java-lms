@@ -26,4 +26,12 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isMatchedPaymentAmount(Long fee) {
+        return amount.equals(fee);
+    }
+
+    public boolean isMatchedPaymentSessionId(Long id) {
+        return sessionId.equals(id);
+    }
 }
