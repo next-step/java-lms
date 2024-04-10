@@ -8,7 +8,6 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 import static nextstep.qna.ExceptionMessage.NO_AUTHORITY_TO_DELETE_ANSWER;
-import static nextstep.qna.domain.ContentType.ANSWER;
 
 public class Answer {
     private Long id;
@@ -52,23 +51,27 @@ public class Answer {
     }
 
     public DeleteHistory deleteByUser(NsUser user) throws CannotDeleteException {
-        validateUser(user);
-        this.deleted = true;
+        validateDeletableAnswer(user);
+        updateDeletedAsTrue();
         return deleteHistoryOfAnswer();
     }
 
-    private void validateUser(NsUser user) throws CannotDeleteException {
+    private void validateDeletableAnswer(NsUser user) throws CannotDeleteException {
         if (!isOwner(user)) {
             throw new CannotDeleteException(NO_AUTHORITY_TO_DELETE_ANSWER.message());
         }
     }
 
-    private boolean isOwner(NsUser user) {
-        return this.writer.equals(user);
+    private void updateDeletedAsTrue() {
+        this.deleted = true;
     }
 
     private DeleteHistory deleteHistoryOfAnswer() {
-        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
+        return DeleteHistory.answerDeleteHistory(id, writer);
+    }
+
+    public boolean isOwner(NsUser user) {
+        return writer.equals(user);
     }
 
     public boolean isDeleted() {

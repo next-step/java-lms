@@ -5,6 +5,9 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static nextstep.qna.domain.ContentType.ANSWER;
+import static nextstep.qna.domain.ContentType.QUESTION;
+
 public class DeleteHistory {
     private Long id;
 
@@ -19,11 +22,19 @@ public class DeleteHistory {
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    private DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         this.contentType = contentType;
         this.contentId = contentId;
         this.deletedBy = deletedBy;
         this.createdDate = createdDate;
+    }
+
+    public static DeleteHistory questionDeleteHistory(Long contentId, NsUser deletedBy) {
+        return new DeleteHistory(QUESTION, contentId, deletedBy, LocalDateTime.now());
+    }
+
+    public static DeleteHistory answerDeleteHistory(Long contentId, NsUser deletedBy) {
+        return new DeleteHistory(ANSWER, contentId, deletedBy, LocalDateTime.now());
     }
 
     @Override
