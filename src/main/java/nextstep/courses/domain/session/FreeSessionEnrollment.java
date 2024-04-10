@@ -11,21 +11,7 @@ public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
 
     @Override
     public void satisfy(Students students, Payment payment) {
-
-    }
-
-    @Override
-    public void satisfyStatus() {
         status.validateCanEnrollment();
     }
 
-    @Override
-    public void satisfyCapacity(Students students) {
-
-    }
-
-    @Override
-    public void satisfyFee(Payment payment) {
-
-    }
 }
