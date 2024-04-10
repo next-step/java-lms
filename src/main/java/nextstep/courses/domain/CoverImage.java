@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidCoverImageException;
-
 import static nextstep.courses.ExceptionMessage.INVALID_COVER_IMAGE;
 import static nextstep.courses.domain.ImageType.*;
 
@@ -29,7 +27,7 @@ public class CoverImage {
 
     private void validateCoverImageInput(double capacity, double width, double height) {
         if (!isValidCapacity(capacity) || !isValidWidthHeight(width, height)) {
-            throw new InvalidCoverImageException(INVALID_COVER_IMAGE.message());
+            throw new IllegalArgumentException(INVALID_COVER_IMAGE.message());
         }
     }
 

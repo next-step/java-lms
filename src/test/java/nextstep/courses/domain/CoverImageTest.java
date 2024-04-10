@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.InvalidCoverImageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,25 +17,25 @@ class CoverImageTest {
         @DisplayName("CoverImage 생성을 실패하는 경우를 테스트합니다.")
         class FailCaseTest {
             @Test
-            @DisplayName("사이즈는 byte 단위로 입력되며 사이즈는 1MB 이하가 아닌 경우 InvalidCoverImageException이 발생한다.")
+            @DisplayName("사이즈는 byte 단위로 입력되며 사이즈는 1MB 이하가 아닌 경우 IllegalArgumentException이 발생한다.")
             void testBigCapacity() {
                 assertThatThrownBy(() -> CoverImage.gifImage("이미지", 1024 * 1024 + 10, 300, 200))
-                        .isExactlyInstanceOf(InvalidCoverImageException.class);
+                        .isExactlyInstanceOf(IllegalArgumentException.class);
             }
 
             @ParameterizedTest
             @CsvSource(value = {"200:200", "300:100"}, delimiter = ':')
-            @DisplayName("width는 300픽셀, height는 200픽셀 이상이어야 한다. 그렇지 않은 경우 InvalidCoverImageException이 발생한다.")
+            @DisplayName("width는 300픽셀, height는 200픽셀 이상이어야 한다. 그렇지 않은 경우 IllegalArgumentException이 발생한다.")
             void testWrongWidthHeight(double width, double height) {
                 assertThatThrownBy(() -> CoverImage.jpgImage("이미지", 1024 * 1024, width, height))
-                        .isExactlyInstanceOf(InvalidCoverImageException.class);
+                        .isExactlyInstanceOf(IllegalArgumentException.class);
             }
 
             @Test
-            @DisplayName("width와 height의 비율이 3:2가 아닌 경우 InvalidCoverImageException이 발생한다.")
+            @DisplayName("width와 height의 비율이 3:2가 아닌 경우 IllegalArgumentException이 발생한다.")
             void testWrongRatio() {
                 assertThatThrownBy(() -> CoverImage.jpegImage("이미지", 1024 * 1024, 302, 201))
-                        .isExactlyInstanceOf(InvalidCoverImageException.class);
+                        .isExactlyInstanceOf(IllegalArgumentException.class);
             }
         }
 
