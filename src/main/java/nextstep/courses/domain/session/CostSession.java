@@ -1,16 +1,11 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.engine.ConcreteSession;
-import nextstep.payments.domain.Payment;
 
 public class CostSession extends ConcreteSession {
 
-    protected CostSession(Long id, Long courseId, SessionCoverImage coverImage, CostSessionEnrollment enrollment, Students students) {
-        super(id, courseId, coverImage, enrollment, students);
+    public CostSession(Long id, Long courseId, SessionCoverImage coverImage, Long enrollmentId, Students students, SessionStatus status, SessionCapacity capacity, SessionFee fee) {
+        super(id, courseId, coverImage, new CostSessionEnrollment(enrollmentId, id, status, capacity, fee), students);
     }
 
-    @Override
-    public void enroll(Student student, Payment payment) {
-
-    }
 }

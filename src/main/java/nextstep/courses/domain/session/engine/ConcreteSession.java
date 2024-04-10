@@ -1,7 +1,9 @@
 package nextstep.courses.domain.session.engine;
 
 import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.Student;
 import nextstep.courses.domain.session.Students;
+import nextstep.payments.domain.Payment;
 
 public abstract class ConcreteSession implements Session {
 
@@ -17,6 +19,12 @@ public abstract class ConcreteSession implements Session {
         this.coverImage = coverImage;
         this.enrollment = enrollment;
         this.students = students;
+    }
+
+    @Override
+    public void enroll(Student student, Payment payment) {
+        enrollment.satisfy(students, payment);
+        students.add(student);
     }
 
 }
