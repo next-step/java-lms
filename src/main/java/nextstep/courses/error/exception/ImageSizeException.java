@@ -1,4 +1,4 @@
-package nextstep.courses.error;
+package nextstep.courses.error.exception;
 
 import java.text.MessageFormat;
 
