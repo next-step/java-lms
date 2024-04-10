@@ -9,7 +9,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.*;
 
-class PaidSessionTypeTest {
+public class PaidSessionTypeTest {
+    public static final PaidSessionType PAID_SESSION_TYPE = new PaidSessionType(2, 100);
+
     @Nested
     @DisplayName("PaidSessionType 생성 테스트")
     class InstanceCreationTest {

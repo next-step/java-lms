@@ -9,7 +9,12 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class PeriodTest {
+public class PeriodTest {
+    public static final Period PERIOD_OF_SESSION = new Period(
+            LocalDateTime.of(2024, 4, 10, 18, 0),
+            LocalDateTime.of(2024, 6, 5, 18, 0)
+    );
+
     @Nested
     @DisplayName("Period 생성 테스트")
     class InstanceCreationTest {

@@ -9,7 +9,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CoverImageTest {
+public class CoverImageTest {
+    public static final CoverImage COVER_IMAGE_PNG = CoverImage.pngImage("이미지", 1024 * 1024, 300, 200);
+
     @Nested
     @DisplayName("CoverImage 생성 테스트")
     class InstanceCreationTest {

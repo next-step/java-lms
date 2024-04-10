@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FreeSessionTypeTest {
-    FreeSessionType freeSessionType = new FreeSessionType();
+public class FreeSessionTypeTest {
+    public static final FreeSessionType FREE_SESSION_TYPE = new FreeSessionType();
 
     @Test
     @DisplayName("isSessionFull(): numberOfCurrentEnrollment에 상관 없이 항상 true를 반환한다.")
     void testIsSessionFull() {
+        FreeSessionType freeSessionType = new FreeSessionType();
         assertThat(freeSessionType.isSessionFull(10000)).isTrue();
     }
 
@@ -19,6 +20,7 @@ class FreeSessionTypeTest {
     @DisplayName("isValidPayment(): Payment.amount에 상관 없이 true를 반환한다.")
     void testIsValidPayment() {
         Payment payment = new Payment();
+        FreeSessionType freeSessionType = new FreeSessionType();
         assertThat(freeSessionType.isValidPayment(payment)).isTrue();
     }
 }
