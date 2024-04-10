@@ -25,7 +25,7 @@
 ### TODO LIST
 - 과정 (Course) 
   - [ ] 과정은 기수 단위로 운영한다. -> id
-  - [ ] Course : Session = 1 : N
+  - [x] Course : Session = 1 : N
 - 이미지 (Image)
   - [x] image.size < 1MB
   - [x] image.type in `gif`, `jpg`, `png`, `svg`
@@ -33,19 +33,19 @@
   - [x] image.height >= 200
   - [x] image.width / image.height == 3 / 2
 - 강의 (Session)
-  - [ ] 강의는 시작일과 종료일을 가진다. -> startAt, endAt
+  - [x] 강의는 시작일과 종료일을 가진다. -> startAt, endAt
   - [x] 강의는 강의 커버 이미지 정보를 가진다. -> image
-  - [ ] type : FREE, PAID
-  - [ ] status : READY, RECRUITING, END
+  - [x] type : FREE, PAID
+  - [x] status : READY, RECRUITING, END
     - [ ] RECRUITING : 수강 신청 가능 
   - [ ] Session : Payment = 1 : 1
     - [ ] payment.amount == session.amount : 수강 신청 가능
-  - [ ] maxStudent
-    - [ ] type == FREE : maxStudent == null
-    - [ ] type == PAID : maxStudent > 0
-  - [ ] Fee
-    - [ ] type == FREE : Fee == 0
-    - [ ] type == PAID : Fee > 0
+  - [x] maxStudent
+    - [x] type == FREE : maxStudent == null
+    - [x] type == PAID : maxStudent > 0
+  - [x] Fee
+    - [x] type == FREE : Fee == 0
+    - [x] type == PAID : Fee > 0
 - 결제 (Payment)
   - [ ] status : PAID, CANCELED
   - [ ] amount : Fee와 일치할 때 수강 신청이 가능하다.
