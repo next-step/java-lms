@@ -11,8 +11,8 @@ class RegistrationCountTest {
         RegistrationCount registrationCount1 = new RegistrationCount(0);
         RegistrationCount registrationCount2 = new RegistrationCount(5);
 
-        assertThat(registrationCount1.isValueZero()).isFalse();
-        assertThat(registrationCount2.isValueZero()).isTrue();
+        assertThat(registrationCount1.isValueZero()).isTrue();
+        assertThat(registrationCount2.isValueZero()).isFalse();
     }
 
     @Test
