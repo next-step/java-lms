@@ -2,6 +2,7 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.BaseTime;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.user.User;
 import nextstep.payments.domain.Payment;
 
 public class Enrollment extends BaseTime {
@@ -10,22 +11,22 @@ public class Enrollment extends BaseTime {
   public static final String SESSION_AMOUNT_IS_NOT_CORRECT = "수강료가 일치하지 않습니다. input: %s, expected: %s";
 
   private Long id;
-  private Long userId; // 수강 정보로
+  private User user;
   private Long courseId;
   private Session registeredSession;
   private Payment payment;
 
-  private Enrollment(Long id, Long userId, Long courseId, Session session, Payment payment) {
+  private Enrollment(Long id, User user, Long courseId, Session session, Payment payment) {
     this.id = id;
-    this.userId = userId;
+    this.user = user;
     this.courseId = courseId;
     this.registeredSession = session;
     this.payment = payment;
   }
 
-  public static Enrollment register(Long id, Long userId, Long courseId, Session session, int payAmount) {
+  public static Enrollment register(Long id, User userId, Long courseId, Session session, int payAmount) {
     valid(session, payAmount);
-    Payment payment = new Payment("1", session.getId(), userId, payAmount);
+    Payment payment = new Payment("1", session.getId(), userId.getId(), payAmount);
     session.addStudentCount();
     return new Enrollment(id, userId, courseId, session, payment);
   }
@@ -44,8 +45,8 @@ public class Enrollment extends BaseTime {
     return id;
   }
 
-  public Long getUserId() {
-    return userId;
+  public User getUser() {
+    return user;
   }
 
   public Long getCourseId() {

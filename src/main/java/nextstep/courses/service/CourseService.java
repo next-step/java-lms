@@ -4,6 +4,7 @@ import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.Generation;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.user.User;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -70,10 +71,15 @@ public class CourseService {
   }
 
   private static void doRegister(Course course) {
+
+    User user1 = new User(1004L, "천사", "010-1234-4444");
+    User user2 = new User(1005L, "천오", "010-1234-5555");
+    User user3 = new User(1006L, "천육", "010-1234-6666");
+
     Optional<Session> freeSession = course.getSessions().stream().filter(it -> it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
     Optional<Session> notFreeSession = course.getSessions().stream().filter(it -> !it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
-    Enrollment.register(1L, 1004L, course.getId(), freeSession.get(), 0);
-    Enrollment.register(2L, 1005L, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
-    Enrollment.register(3L, 1006L, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
+    Enrollment.register(1L, user1, course.getId(), freeSession.get(), 0);
+    Enrollment.register(2L, user2, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
+    Enrollment.register(3L, user3, course.getId(), notFreeSession.get(), notFreeSession.get().getSessionAmount());
   }
 }
