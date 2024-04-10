@@ -21,10 +21,6 @@ public class Answers {
         this.answers.add(answer);
     }
 
-    public List<Answer> getValue() {
-        return Collections.unmodifiableList(this.answers);
-    }
-
     public boolean containsNotOwner(NsUser writer) throws CannotDeleteException {
         return this.answers.stream()
                 .anyMatch(answer -> !answer.isOwner(writer));
@@ -40,5 +36,9 @@ public class Answers {
         return answers.stream()
                 .map(Answer::deletedHistories)
                 .collect(Collectors.toList());
+    }
+
+    public List<Answer> getValue() {
+        return Collections.unmodifiableList(this.answers);
     }
 }
