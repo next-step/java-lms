@@ -48,11 +48,6 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
         assertNotDelete();
         assertSameUser(loginUser);
@@ -79,10 +74,6 @@ public class Answer {
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {

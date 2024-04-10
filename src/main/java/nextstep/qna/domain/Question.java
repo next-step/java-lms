@@ -55,9 +55,8 @@ public class Question {
         return contents;
     }
 
-    public Question setContents(String contents) {
+    public void changeContents(String contents) {
         this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -69,12 +68,6 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
-    }
-
-
-    //TODO: Answers구현 후, 수정 필요.
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         List<DeleteHistory> histories = new ArrayList<>();
         assertSameUser(loginUser);
