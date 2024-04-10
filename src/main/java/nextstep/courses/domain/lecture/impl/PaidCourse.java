@@ -1,6 +1,7 @@
 package nextstep.courses.domain.lecture.impl;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.cover.Image;
 import nextstep.courses.domain.lecture.Lecture;
 import nextstep.courses.domain.lecture.LectureStatus;
 import nextstep.courses.domain.lecture.MaxRegistrationCount;
@@ -16,6 +17,8 @@ public class PaidCourse implements Lecture {
 
     private final Money tuitionFee;
 
+    private final Image image;
+
     private final LocalDateTime startDate;
 
     private final LocalDateTime endDate;
@@ -24,11 +27,12 @@ public class PaidCourse implements Lecture {
 
     public PaidCourse(RegistrationCount registrationCount,
         MaxRegistrationCount maxRegistrationCount,
-        Money tuitionFee, LocalDateTime startDate, LocalDateTime endDate,
+        Money tuitionFee, Image image, LocalDateTime startDate, LocalDateTime endDate,
         LectureStatus lectureStatus) {
         this.registrationCount = registrationCount;
         this.maxRegistrationCount = maxRegistrationCount;
         this.tuitionFee = tuitionFee;
+        this.image = image;
         this.startDate = startDate;
         this.endDate = endDate;
         this.lectureStatus = lectureStatus;

@@ -4,6 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import nextstep.courses.domain.cover.Image;
+import nextstep.courses.domain.cover.ImageHeight;
+import nextstep.courses.domain.cover.ImageSize;
+import nextstep.courses.domain.cover.ImageType;
+import nextstep.courses.domain.cover.ImageWidth;
 import nextstep.courses.domain.lecture.Lecture;
 import nextstep.courses.domain.lecture.LectureStatus;
 import nextstep.courses.domain.lecture.MaxRegistrationCount;
@@ -20,6 +25,7 @@ class PaidCourseTest {
         assertThatThrownBy(() -> new PaidCourse(new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(0)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING))
@@ -32,6 +38,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(2),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING);
@@ -44,6 +51,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(4),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING);
@@ -56,6 +64,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING);
@@ -68,6 +77,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING);
@@ -80,6 +90,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.RECRUITING);
@@ -92,6 +103,7 @@ class PaidCourseTest {
         Lecture paidLecture = new PaidCourse(new RegistrationCount(1),
             new MaxRegistrationCount(new RegistrationCount(3)),
             new Money(1000),
+            new Image(new ImageSize(1), ImageType.JPG, new ImageWidth(300), new ImageHeight(200)),
             LocalDateTime.now(),
             LocalDateTime.now(),
             LectureStatus.PREPARING);
