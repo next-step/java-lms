@@ -1,50 +1,50 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.domain.session.SessionCapacity;
-import nextstep.courses.domain.session.SessionEnrollment;
 import nextstep.courses.domain.session.SessionFee;
-import nextstep.courses.domain.session.condition.SessionConditions;
-import nextstep.courses.domain.session.condition.creator.CostSessionConditionsCreator;
-import nextstep.courses.domain.session.condition.creator.FreeSessionConditionsCreator;
-import nextstep.courses.domain.session.condition.creator.SessionConditionsCreator;
-import nextstep.users.domain.NsUser;
+import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.session.engine.SessionEnrollment;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
-import static nextstep.courses.domain.fixture.SessionCapacityFixture.MAX_CAPACITY;
+import static nextstep.courses.domain.fixture.PaymentFixture.payment;
 import static nextstep.courses.domain.fixture.SessionCapacityFixture.sessionCapacity;
-import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.sessionEnrollment;
-import static nextstep.courses.domain.fixture.SessionFeeFixture.SESSION_FEE;
+import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.costSessionEnrollment;
+import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionFeeFixture.sessionFee;
+import static nextstep.courses.domain.fixture.StudentFixture.students;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public class SessionEnrollmentTest {
 
     @Test
-    @DisplayName("[성공] 무료 강의를 수강신청 한다.")
+    @DisplayName("[성공] 무료 강의 조건을 만족한다.")
     void 무료_강의_수강신청() {
-        NsUser user = nsUser();
+        SessionStatus status = SessionStatus.RECRUITING;
+        SessionCapacity capacity = sessionCapacity(10);
+        SessionFee sessionFee = sessionFee(800_000L);
+        SessionEnrollment enrollment = freeSessionEnrollment(status, capacity, sessionFee);
 
-        SessionConditionsCreator conditionsCreator = new FreeSessionConditionsCreator();
-        SessionConditions conditions = new SessionConditions(conditionsCreator);
-        SessionEnrollment enrollment = sessionEnrollment(conditions);
-        assertThatNoException().isThrownBy(() -> enrollment.enroll(user));
+        Students students = students();
+        Payment payment = payment(0L);
+
+        assertThatNoException().isThrownBy(() -> enrollment.satisfy(students, payment));
     }
 
     @Test
     @DisplayName("[성공] 유료 강의를 수강신청 한다.")
     void 유료_강의_수강신청() {
-        SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
-        SessionFee fee = sessionFee(SESSION_FEE);
+        SessionStatus status = SessionStatus.RECRUITING;
+        SessionCapacity capacity = sessionCapacity(10);
+        SessionFee sessionFee = sessionFee(800_000L);
+        SessionEnrollment enrollment = costSessionEnrollment(status, capacity, sessionFee);
 
-        SessionConditionsCreator conditionsCreator = new CostSessionConditionsCreator(fee, SESSION_FEE, capacity);
-        SessionConditions conditions = new SessionConditions(conditionsCreator);
+        Students students = students();
+        Payment payment = payment(800_000L);
 
-        SessionEnrollment enrollment = sessionEnrollment(capacity, fee, conditions);
-        NsUser user = nsUser();
-
-        assertThatNoException().isThrownBy(() -> enrollment.enroll(user));
+        assertThatNoException().isThrownBy(() -> enrollment.satisfy(students, payment));
     }
 
 }
