@@ -5,5 +5,19 @@
 * 코드 리뷰 피드백에 대한 개선 작업을 하고 다시 PUSH한다.
 * 모든 피드백을 완료하면 다음 단계를 도전하고 앞의 과정을 반복한다.
 
+## Step1
+
+### 리팩터링
+
+- `Answer` 에 delete 기능 추가 필요.
+  - 작성자와 로그인 유저가 다른 경우 에러 발생
+  - `DeleteHistory` 반환
+  - 이미 삭제된 답변을 삭제하려고 할 경우 에러 발생
+- `Answers` 추가
+  - delete 추가.
+- `Question` delete 추가
+  - `DeleteHistory` 여러 개를 반환
+  - 연관된 `Answer`도 같이 삭제.
+
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
