@@ -14,8 +14,6 @@ public class Session {
 
     private String sessionName;
 
-    private long price;
-
     private Image image;
 
     //강의 상태(준비중, 모집중, 종료)
@@ -37,20 +35,6 @@ public class Session {
     protected Session() {
     }
 
-    public Session(long id,
-                   String sessionName,
-                   long price,
-                   Image image,
-                   SessionStatus sessionStatus,
-                   SessionType sessionType) {
-        this.id = id;
-        this.sessionName = sessionName;
-        this.price = price;
-        this.image = image;
-        this.sessionStatus = sessionStatus;
-        this.sessionType = sessionType;
-    }
-
     public Session(List<NsUser> users, SessionType type, SessionStatus sessionStatus, Integer maxNoOfUsers) {
         this.users = users;
         this.sessionType = type;
@@ -58,9 +42,16 @@ public class Session {
         this.maxNoOfUsers = maxNoOfUsers;
     }
 
-    public Session(List<NsUser> users, SessionType type, SessionStatus sessionStatus, Integer maxNoOfUsers, long price) {
-        this(users, type, sessionStatus, maxNoOfUsers);
-        this.price = price;
+    public Session(long id,
+                   String sessionName,
+                   Image image,
+                   SessionStatus sessionStatus,
+                   SessionType sessionType) {
+        this.id = id;
+        this.sessionName = sessionName;
+        this.image = image;
+        this.sessionStatus = sessionStatus;
+        this.sessionType = sessionType;
     }
 
     public boolean isRecruitingFreeSession() {
@@ -87,10 +78,6 @@ public class Session {
 
     private boolean isExceedUserNo() {
         return users.size() >= maxNoOfUsers;
-    }
-
-    public long getPrice() {
-        return price;
     }
 
 }
