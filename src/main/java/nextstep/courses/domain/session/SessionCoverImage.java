@@ -22,23 +22,22 @@ public class SessionCoverImage {
         this.extension = extension;
     }
 
-    private void validate(long size, int width, int height, String extension) throws SessionException {
-        if (!isPossibleFileSize(size)) {
+    private void validate(long size, int width, int height, String extension) {
+        if (!isPossibleFileSize(size)
+            || !isPossibleWidthHeightSize(width, height)
+            || !isPossibleWidthHeightRatio(width, height)
+            || !ImageExtension.isPossibleExtension(extension)) {
+
             throw new SessionCoverImageException(size, width, height, extension);
         }
-
-        if (!isPossibleWidthHeightSize(width, height)) {
-            throw new SessionCoverImageException(size, width, height, extension);
-        }
-
-        if (!ImageExtension.isPossibleExtension(extension)) {
-            throw new SessionCoverImageException(size, width, height, extension);
-        }
-
     }
 
     private boolean isPossibleWidthHeightSize(int width, int height) {
-        return width >= MIN_WIDTH && height >= MIN_HEIGHT && width * 2 == height * 3;
+        return width >= MIN_WIDTH && height >= MIN_HEIGHT;
+    }
+
+    private boolean isPossibleWidthHeightRatio(int width, int height) {
+        return width * 2 == height * 3;
     }
 
     private boolean isPossibleFileSize(long size) {
