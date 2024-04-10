@@ -1,56 +1,34 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.exception.ExceedSessionCapacityException;
-import nextstep.users.domain.NsUser;
-
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.courses.exception.InvalidSessionCapacityException;
 
 public class SessionCapacity {
 
+    public static final int MIN_CAPACITY = 0;
+
     private final Long id;
     private final Long sessionId;
-    private final int maxCapacity;
-    private final List<NsUser> users;
+    private final int capacity;
 
-    public SessionCapacity(Long id, Long sessionId, int maxCapacity) {
-        this(id, sessionId, maxCapacity, new ArrayList<>());
-    }
-
-    public SessionCapacity(Long id, Long sessionId, int maxCapacity, List<NsUser> users) {
-        validateCapacity(maxCapacity, users);
+    public SessionCapacity(Long id, Long sessionId, int capacity) {
+        validateCapacity(capacity);
         this.id = id;
         this.sessionId = sessionId;
-        this.maxCapacity = maxCapacity;
-        this.users = users;
+        this.capacity = capacity;
     }
 
-    private void validateCapacity(int maxCapacity, List<NsUser> users) {
-        if (!hasCapacity(maxCapacity, users)) {
-            throw new ExceedSessionCapacityException(maxCapacity, users);
+    private void validateCapacity(int capacity) {
+        if (!isGreaterThanMinCapacity(capacity)) {
+            throw new InvalidSessionCapacityException(capacity);
         }
     }
 
-    public boolean hasCapacity(int maxCapacity, List<NsUser> users) {
-        return maxCapacity >= users.size();
+    private boolean isGreaterThanMinCapacity(int capacity) {
+        return capacity > MIN_CAPACITY;
     }
 
-    public boolean hasCapacity() {
-        return maxCapacity > getCurrentCapacity();
+    public boolean hasCapacity(Students students) {
+        return capacity > students.size();
     }
 
-    public void addUser(NsUser user) {
-        if (!hasCapacity()) {
-            throw new ExceedSessionCapacityException(this);
-        }
-        users.add(user);
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public int getCurrentCapacity() {
-        return users.size();
-    }
 }
