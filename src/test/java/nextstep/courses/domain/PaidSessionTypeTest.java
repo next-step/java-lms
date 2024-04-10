@@ -15,9 +15,9 @@ class PaidSessionTypeTest {
     class InstanceCreationTest {
         @ParameterizedTest
         @CsvSource(value = {"-1:800000", "80:-1", "0:0"}, delimiter = ':')
-        @DisplayName("maxNumberOfEnrollment 또는 price가 0보다 작거나 같은 경우 IllegalArgumentException이 발생한다.")
-        void testFailCase(int maxNumberOfEnrollment, int price) {
-            assertThatThrownBy(() -> new PaidSessionType(maxNumberOfEnrollment, price))
+        @DisplayName("maxNumberOfEnrollment 또는 fee가 0보다 작거나 같은 경우 IllegalArgumentException이 발생한다.")
+        void testFailCase(int maxNumberOfEnrollment, int fee) {
+            assertThatThrownBy(() -> new PaidSessionType(maxNumberOfEnrollment, fee))
                     .isExactlyInstanceOf(IllegalArgumentException.class);
         }
 
