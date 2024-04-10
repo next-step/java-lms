@@ -40,9 +40,10 @@ public class Session extends BaseEntity {
     }
 
     public void register(NsUser listener, Long amount) {
-        if (sessionDetails.isSamePrice(amount)) {
-            listeners.add(listener);
+        if (sessionDetails.isNotSamePrice(amount)) {
+            throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
         }
+        listeners.add(listener);
     }
 
 }
