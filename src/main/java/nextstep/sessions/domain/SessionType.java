@@ -29,4 +29,11 @@ public abstract class SessionType {
         return price.equals(payment.amount());
     }
 
+    /**
+     * 강의 가격을 반환한다.
+     * @return 가격
+     */
+    Money price() {
+        return price;
+    }
 }

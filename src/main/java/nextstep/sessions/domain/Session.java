@@ -48,7 +48,7 @@ public class Session {
     }
 
     public void assertCanEnroll(NsUser requestUser, LocalDateTime requestDatetime) {
-        if (!sessionStatus.canRecruit() || !period.isAfterStartDate(requestDatetime.toLocalDate())) {
+        if (!sessionStatus.canRecruit() || period.isAfterStartDate(requestDatetime.toLocalDate())) {
             throw new CannotEnrollException("현재 모집중인 강의가 아닙니다.");
         }
 
@@ -74,6 +74,14 @@ public class Session {
         if (!sessionType.equalsPrice(payment)) {
             throw new CannotEnrollException("결제 금액과 강의 금액이 일치하지 않습니다.");
         }
+    }
+
+    public Long id() {
+        return this.id;
+    }
+
+    public Money price() {
+        return this.sessionType.price();
     }
 
 
