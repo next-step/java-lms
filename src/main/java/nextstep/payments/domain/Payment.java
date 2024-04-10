@@ -1,6 +1,7 @@
 package nextstep.payments.domain;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Payment {
     private String id;
@@ -25,5 +26,10 @@ public class Payment {
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Long amount() {
+        return Optional.ofNullable(amount)
+                .orElse(0L);
     }
 }
