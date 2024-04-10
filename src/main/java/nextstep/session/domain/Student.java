@@ -32,7 +32,7 @@ public class Student {
         return getUserId() == student.getUserId();
     }
 
-    private long getUserId() {
+    public long getUserId() {
         return this.user.getId();
     }
 

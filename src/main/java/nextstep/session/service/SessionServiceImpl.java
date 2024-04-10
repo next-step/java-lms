@@ -1,6 +1,9 @@
 package nextstep.session.service;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
+import nextstep.common.service.DeleteHistoryService;
 import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
 import nextstep.payments.domain.Payment;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service("sessionService")
 public class SessionServiceImpl implements SessionService {
@@ -35,6 +39,9 @@ public class SessionServiceImpl implements SessionService {
 
     @Resource(name = "userService")
     private UserService userService;
+
+    @Resource(name = "deleteHistoryService")
+    private DeleteHistoryService deleteHistoryService;
 
     @Override
     public long save(Session session) {
@@ -108,5 +115,33 @@ public class SessionServiceImpl implements SessionService {
         targetSession.apply(studentWithSession, payment, LocalDateTime.now());
 
         return findById(sessionId);
+    }
+
+    @Override
+    public Session deleteStudent(long sessionId, Student student, NsUser requestUser) {
+        Session targetSession = findById(sessionId);
+        Student studentWithSession = new Student(targetSession.toDto().getId(), student.getUser());
+
+        DeleteHistory deleteHistory = studentService.delete(requestUser, studentWithSession);
+        deleteHistoryService.saveAll(List.of(deleteHistory));
+
+        return findById(sessionId);
+    }
+
+    @Override
+    public void delete(long sessionId, NsUser requestUser) {
+        Session targetSession = findById(sessionId);
+        DeleteHistory sessionDeleteHistory = targetSession.delete(requestUser);
+
+        Cover targetCover = coverService.findById(targetSession.toDto().getCoverId());
+        DeleteHistory coverDeleteHistory = coverService.delete(targetCover, requestUser);
+
+        Students targetStudents = studentService.findBySessionId(sessionId);
+        DeleteHistoryTargets studentDeleteHistory = studentService.deleteAll(targetStudents, requestUser);
+
+        studentDeleteHistory.addFirst(sessionDeleteHistory);
+        studentDeleteHistory.addFirst(coverDeleteHistory);
+
+        deleteHistoryService.saveAll(studentDeleteHistory.asList());
     }
 }

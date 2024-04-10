@@ -2,6 +2,7 @@ package nextstep.session.service;
 
 import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.exception.StudentsException;
 import nextstep.session.domain.Student;
 import nextstep.session.domain.Students;
@@ -62,5 +63,10 @@ public class StudentServiceImpl implements StudentService {
         if (updateResult <= NO_UPDATE_COUNT) {
             throw new StudentsException("이미 삭제 되었거나, 삭제할 대상이 없습니다.");
         }
+    }
+
+    @Override
+    public DeleteHistoryTargets deleteAll(Students targetStudents, NsUser requestUser) {
+        return targetStudents.deleteAll(requestUser);
     }
 }

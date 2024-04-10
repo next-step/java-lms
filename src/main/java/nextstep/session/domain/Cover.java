@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.dto.CoverDto;
 import nextstep.users.domain.NsUser;

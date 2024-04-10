@@ -1,7 +1,11 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.exception.StudentsException;
+import nextstep.users.domain.NsUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,5 +53,16 @@ public class Students {
         }
 
         this.students.remove(student);
+    }
+
+    public DeleteHistoryTargets deleteAll(NsUser requestUser) {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
+        for (Student student : this.students) {
+            student.delete();
+            deleteHistories.add(DeleteHistory.createStudent(student.getUserId(), requestUser, LocalDateTime.now()));
+        }
+
+        return new DeleteHistoryTargets(deleteHistories);
     }
 }

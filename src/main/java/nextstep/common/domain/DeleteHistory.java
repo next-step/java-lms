@@ -33,6 +33,10 @@ public class DeleteHistory {
         return new DeleteHistory(ContentType.STUDENT, contentId, deletedBy, createdDate);
     }
 
+    public static DeleteHistory createSession(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.SESSION, contentId, deletedBy, createdDate);
+    }
+
     private DeleteHistory() {
     }
 

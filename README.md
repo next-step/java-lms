@@ -117,11 +117,11 @@
   - `sessionId`를 통해 `Session` 객체를 조회한다.
   - 조회한 `Session` 객체의 `Students`에 `student`를 추가한다.
   - `StudentsService`에게 `save` 메시지를 보낸다.
-- [ ] `Session` - `deleteStudent(Long sessionId, Student student)` 구현
+- [x] `Session` - `deleteStudent(Long sessionId, Student student)` 구현
   - `sessionId`를 통해 `Session` 객체를 조회한다.
   - 조회한 `Session` 객체의 `Students`에 `student`를 제거한다.
   - `StudentsService`에게 `delete` 메시지를 보낸다.
-- [ ] `Session` - `delete(Long sessionId)` 구현
+- [x] `Session` - `delete(Long sessionId)` 구현
   - `sessionId`를 통해 `Session` 객체를 조회한다.
   - 삭제할 수 있는지 검증한다.
   - `Sesssion`객체가 가지고 있는 `Cover`에 삭제 메시지를 보낸다.

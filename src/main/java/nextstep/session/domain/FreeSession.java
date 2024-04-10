@@ -1,10 +1,13 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionDto;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
@@ -136,5 +139,19 @@ public class FreeSession implements Session {
                 this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
         );
+    }
+
+    @Override
+    public DeleteHistory delete(NsUser requestUser) {
+        validateCanDeleteForSessionStatus();
+        this.baseEntity.delete(LocalDateTime.now());
+
+        return DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now());
+    }
+
+    private void validateCanDeleteForSessionStatus() {
+        if (!this.sessionStatus.onReady()) {
+            throw new SessionException("준비 상태에서만 세션을 삭제할 수 있습니다.");
+        }
     }
 }
