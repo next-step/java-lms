@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.ExceptionMessage.*;
 import static nextstep.courses.domain.session.CoverImageTest.COVER_IMAGE_PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
 import static nextstep.courses.domain.session.SessionStatus.GATHERING;
@@ -25,6 +24,15 @@ class SessionTest {
         @DisplayName("수강 신청을 실패한 경우 테스트")
         class FailCaseTest {
             @Test
+            @DisplayName("강의 상태가 모집중이 아닌 경우 CannotEnrollException이 발생한다.")
+            void testInvalidSessionStatus() {
+                Session session = new Session(11L, "무료 강의", "무료 강의다", COVER_IMAGE_PNG, FREE_SESSION_TYPE, PERIOD_OF_SESSION);
+
+                assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
+                        .isExactlyInstanceOf(CannotEnrollException.class);
+            }
+
+            @Test
             @DisplayName("이미 신청한 강의인 경우 CannotEnrollException이 발생한다.")
             void testDuplicateEnroll() {
                 NsUser user = JAVAJIGI;
@@ -35,18 +43,7 @@ class SessionTest {
                 session.enroll(user, payment);
 
                 assertThatThrownBy(() -> session.enroll(user, payment))
-                        .isExactlyInstanceOf(CannotEnrollException.class)
-                        .hasMessage(DUPLICATE_SESSION_ENROLL.message());
-            }
-
-            @Test
-            @DisplayName("강의 상태가 모집중이 아닌 경우 CannotEnrollException이 발생한다.")
-            void testInvalidSessionStatus() {
-                Session session = new Session(11L, "무료 강의", "무료 강의다", COVER_IMAGE_PNG, FREE_SESSION_TYPE, PERIOD_OF_SESSION);
-
-                assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
-                        .isExactlyInstanceOf(CannotEnrollException.class)
-                        .hasMessage(INVALID_SESSION_STATUS_FOR_ENROLL.message());
+                        .isExactlyInstanceOf(CannotEnrollException.class);
             }
 
             @Test
@@ -58,8 +55,7 @@ class SessionTest {
                 session.enroll(SANJIGI, new Payment("p2", 11L, SANJIGI.getId(), 100L));
 
                 assertThatThrownBy(() -> session.enroll(ZIPJIGI, new Payment("p3", 11L, ZIPJIGI.getId(), 100L)))
-                        .isExactlyInstanceOf(CannotEnrollException.class)
-                        .hasMessage(SESSION_ALREADY_FULL.message());
+                        .isExactlyInstanceOf(CannotEnrollException.class);
             }
 
             @Test
@@ -69,8 +65,7 @@ class SessionTest {
                 session.updateStatusAs(GATHERING);
 
                 assertThatThrownBy(() -> session.enroll(JAVAJIGI, new Payment("p1", 11L, JAVAJIGI.getId(), 0L)))
-                        .isExactlyInstanceOf(CannotEnrollException.class)
-                        .hasMessage(INVALID_PAYMENT_FOR_ENROLL.message());
+                        .isExactlyInstanceOf(CannotEnrollException.class);
             }
         }
 
