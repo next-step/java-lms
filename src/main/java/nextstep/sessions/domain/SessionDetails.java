@@ -25,8 +25,7 @@ public class SessionDetails {
         if (this.sessionStatus.isNotRecruiting()) {
             throw new IllegalArgumentException(String.format("현재 강의는 (%s)인 상태입니다.", this.sessionStatus));
         }
-        //todo: 아래 로직은 유료강의 일때만 해당된다
-        if (this.currentCountOfStudents + 1 > maxOfStudents) {
+        if (!this.sessionType.canEnroll(currentCountOfStudents, maxOfStudents)) {
             throw new IllegalArgumentException();
         }
         this.currentCountOfStudents++;
