@@ -2,7 +2,6 @@ package nextstep.courses.domain.session.condition;
 
 import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.exception.MismatchSessionFeeException;
-import nextstep.courses.exception.SessionException;
 
 public class SessionFeeCondition implements SessionCondition {
 
@@ -15,7 +14,7 @@ public class SessionFeeCondition implements SessionCondition {
     }
 
     @Override
-    public void satisfy() throws SessionException {
+    public void satisfy() {
         if (!sessionFee.sameAs(paymentAmount)) {
             throw new MismatchSessionFeeException(sessionFee, paymentAmount);
         }

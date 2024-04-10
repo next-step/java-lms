@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.session.condition.SessionConditions;
-import nextstep.courses.exception.SessionException;
 import nextstep.users.domain.NsUser;
 
 public class SessionEnrollment {
@@ -22,12 +21,12 @@ public class SessionEnrollment {
         this.fee = fee;
     }
 
-    public void enroll(NsUser user) throws SessionException {
+    public void enroll(NsUser user) {
         validateSessionEnrollment();
         capacity.addUser(user);
     }
 
-    private void validateSessionEnrollment() throws SessionException {
+    private void validateSessionEnrollment() {
         conditions.satisfy();
         status.validateCanEnrollment();
     }

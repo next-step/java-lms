@@ -21,7 +21,7 @@ public enum SessionStatus {
         this.canEnroll = canEnroll;
     }
 
-    public void validateCanEnrollment() throws CannotEnrollmentSessionStatusException {
+    public void validateCanEnrollment() {
         if (!this.canEnroll) {
             throw new CannotEnrollmentSessionStatusException(this);
         }

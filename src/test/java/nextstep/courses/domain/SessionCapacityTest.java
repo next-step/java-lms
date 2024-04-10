@@ -34,7 +34,7 @@ public class SessionCapacityTest {
 
     @Test
     @DisplayName("[성공] 최대 인원을 초과하지 않는 수강생 목록을 관리한다.")
-    void 최대_인원_미만() throws ExceedSessionCapacityException {
+    void 최대_인원_미만() {
         NsUser user = nsUser();
 
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
@@ -44,7 +44,7 @@ public class SessionCapacityTest {
 
     @Test
     @DisplayName("[실패] 최대 인원을 초과하는 경우 ExceedSessionCapacityException 예외가 발생한다.")
-    void 최대_인원_초과() throws ExceedSessionCapacityException {
+    void 최대_인원_초과() {
         NsUser user = nsUser();
 
         SessionCapacity capacity = sessionCapacity(0);

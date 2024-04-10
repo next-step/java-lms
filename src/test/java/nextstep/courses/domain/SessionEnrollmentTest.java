@@ -4,10 +4,9 @@ import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.domain.session.SessionEnrollment;
 import nextstep.courses.domain.session.SessionFee;
 import nextstep.courses.domain.session.condition.SessionConditions;
-import nextstep.courses.domain.session.condition.creator.SessionConditionsCreator;
 import nextstep.courses.domain.session.condition.creator.CostSessionConditionsCreator;
 import nextstep.courses.domain.session.condition.creator.FreeSessionConditionsCreator;
-import nextstep.courses.exception.ExceedSessionCapacityException;
+import nextstep.courses.domain.session.condition.creator.SessionConditionsCreator;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ public class SessionEnrollmentTest {
 
     @Test
     @DisplayName("[성공] 무료 강의를 수강신청 한다.")
-    void 무료_강의_수강신청() throws ExceedSessionCapacityException {
+    void 무료_강의_수강신청() {
         NsUser user = nsUser();
 
         SessionConditionsCreator conditionsCreator = new FreeSessionConditionsCreator();
@@ -35,7 +34,7 @@ public class SessionEnrollmentTest {
 
     @Test
     @DisplayName("[성공] 유료 강의를 수강신청 한다.")
-    void 유료_강의_수강신청() throws ExceedSessionCapacityException {
+    void 유료_강의_수강신청() {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
         SessionFee fee = sessionFee(SESSION_FEE);
 

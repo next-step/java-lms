@@ -2,7 +2,6 @@ package nextstep.courses.domain.session.condition;
 
 import nextstep.courses.domain.session.SessionCapacity;
 import nextstep.courses.exception.ExceedSessionCapacityException;
-import nextstep.courses.exception.SessionException;
 
 public class SessionCapacityCondition implements SessionCondition {
 
@@ -13,7 +12,7 @@ public class SessionCapacityCondition implements SessionCondition {
     }
 
     @Override
-    public void satisfy() throws SessionException {
+    public void satisfy() {
         if (!capacity.hasCapacity()) {
             throw new ExceedSessionCapacityException(capacity);
         }

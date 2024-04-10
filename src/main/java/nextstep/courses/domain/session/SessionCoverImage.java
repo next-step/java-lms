@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.exception.SessionCoverImageException;
-import nextstep.courses.exception.SessionException;
 
 public class SessionCoverImage {
 
@@ -14,7 +13,7 @@ public class SessionCoverImage {
     private final int height;
     private final String extension;
 
-    public SessionCoverImage(long size, int width, int height, String extension) throws SessionException {
+    public SessionCoverImage(long size, int width, int height, String extension) {
         validate(size, width, height, extension);
         this.size = size;
         this.width = width;

@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session.condition;
 
 import nextstep.courses.domain.session.condition.creator.SessionConditionsCreator;
-import nextstep.courses.exception.SessionException;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class SessionConditions {
         conditions = creator.create();
     }
 
-    public void satisfy() throws SessionException {
+    public void satisfy() {
         for (SessionCondition condition : conditions) {
             condition.satisfy();
         }

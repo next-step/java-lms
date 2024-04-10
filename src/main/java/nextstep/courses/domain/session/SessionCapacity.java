@@ -13,11 +13,11 @@ public class SessionCapacity {
     private final int maxCapacity;
     private final List<NsUser> users;
 
-    public SessionCapacity(Long id, Long sessionId, int maxCapacity) throws ExceedSessionCapacityException {
+    public SessionCapacity(Long id, Long sessionId, int maxCapacity) {
         this(id, sessionId, maxCapacity, new ArrayList<>());
     }
 
-    public SessionCapacity(Long id, Long sessionId, int maxCapacity, List<NsUser> users) throws ExceedSessionCapacityException {
+    public SessionCapacity(Long id, Long sessionId, int maxCapacity, List<NsUser> users) {
         validateCapacity(maxCapacity, users);
         this.id = id;
         this.sessionId = sessionId;
@@ -25,7 +25,7 @@ public class SessionCapacity {
         this.users = users;
     }
 
-    private void validateCapacity(int maxCapacity, List<NsUser> users) throws ExceedSessionCapacityException {
+    private void validateCapacity(int maxCapacity, List<NsUser> users) {
         if (!hasCapacity(maxCapacity, users)) {
             throw new ExceedSessionCapacityException(maxCapacity, users);
         }
@@ -39,7 +39,7 @@ public class SessionCapacity {
         return maxCapacity > getCurrentCapacity();
     }
 
-    public void addUser(NsUser user) throws ExceedSessionCapacityException {
+    public void addUser(NsUser user) {
         if (!hasCapacity()) {
             throw new ExceedSessionCapacityException(this);
         }

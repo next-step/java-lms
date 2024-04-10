@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.exception.SessionException;
 import nextstep.users.domain.NsUser;
 import org.springframework.lang.NonNull;
 
@@ -24,7 +23,7 @@ public class Session {
         this.createdAt = LocalDateTime.now();
     }
 
-    public void enroll(SessionEnrollment enrollment, NsUser user) throws SessionException {
+    public void enroll(SessionEnrollment enrollment, NsUser user) {
         enrollment.enroll(user);
     }
 

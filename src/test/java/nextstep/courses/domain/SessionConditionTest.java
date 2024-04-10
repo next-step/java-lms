@@ -31,7 +31,7 @@ public class SessionConditionTest {
 
     @Test
     @DisplayName("[성공] 강의 최대 수강 인원을 초과할 수 없다.")
-    void 강의_수강인원() throws ExceedSessionCapacityException {
+    void 강의_수강인원() {
         SessionCapacity capacity = sessionCapacity(MAX_CAPACITY);
 
         SessionCondition condition = new SessionCapacityCondition(capacity);
@@ -41,7 +41,7 @@ public class SessionConditionTest {
 
     @Test
     @DisplayName("[실패] 최대 수강인원을 초과하면 ExceedSessionCapacityException 예외가 발생한다.")
-    void 강의_수강인원_초과() throws ExceedSessionCapacityException {
+    void 강의_수강인원_초과() {
         SessionCapacity capacity = sessionCapacity(0);
 
         SessionCondition condition = new SessionCapacityCondition(capacity);
