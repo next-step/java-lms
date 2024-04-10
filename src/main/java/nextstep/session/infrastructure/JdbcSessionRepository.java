@@ -1,6 +1,9 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.Cover;
+import nextstep.session.domain.PaidSession;
 import nextstep.session.dto.SessionDto;
+import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -65,5 +68,62 @@ public class JdbcSessionRepository implements SessionRepository {
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(14))
         );
         return jdbcTemplate.queryForObject(sql, rowMapper, sessionId);
+    }
+
+    @Override
+    public int updateSessionBasicProperties(SessionDto sessionDto, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
+        StringBuilder sql = new StringBuilder("UPDATE session SET ");
+
+        addSetCondition(sessionUpdateDto, sql);
+
+        deleteLastComma(sql);
+
+        sql.append(" WHERE ").append("id").append(" = ?");
+
+        Object[] params = getWhereParams(sessionDto, sessionUpdateDto);
+
+        return jdbcTemplate.update(sql.toString(), params);
+    }
+
+    private Object[] getWhereParams(SessionDto sessionDto, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
+        Object[] params = new Object[sessionUpdateDto.countNotNullProperties() + 1];
+        int i = 0;
+        if (sessionUpdateDto.hasSessionName()) {
+            params[i++] = sessionUpdateDto.getSessionName();
+        }
+
+        if (sessionUpdateDto.hasStartDate()) {
+            params[i++] = sessionUpdateDto.getStartDate();
+        }
+
+        if (sessionUpdateDto.hasEndDate()) {
+            params[i++] = sessionUpdateDto.getEndDate();
+        }
+        params[i] = sessionDto.getId();
+        return params;
+    }
+
+    private void addSetCondition(SessionUpdateBasicPropertiesDto sessionUpdateDto, StringBuilder sql) {
+        if (sessionUpdateDto.hasSessionName()) {
+            sql.append("session_name").append(" = ?, ");
+        }
+
+        if (sessionUpdateDto.hasStartDate()) {
+            sql.append("start_date").append(" = ?, ");
+        }
+
+        if (sessionUpdateDto.hasEndDate()) {
+            sql.append("end_date").append(" = ?, ");
+        }
+    }
+
+    private void deleteLastComma(StringBuilder sql) {
+        sql.delete(sql.length() - 2, sql.length());
+    }
+
+    @Override
+    public int updateCover(SessionDto sessionDto, Cover newCover) {
+        String sql = "UPDATE session SET cover_id = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, newCover.getId(), sessionDto.getId());
     }
 }

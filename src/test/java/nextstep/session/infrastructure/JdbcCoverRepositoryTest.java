@@ -6,6 +6,7 @@ import nextstep.session.domain.Resolution;
 import nextstep.session.dto.CoverDto;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
@@ -26,6 +27,7 @@ class JdbcCoverRepositoryTest {
         coverRepository = new JdbcCoverRepository(jdbcTemplate);
     }
 
+    @DisplayName("커버 이미지를 저장하고 조회할 수 있다.")
     @Test
     void saveAndFind() {
         Cover cover = new Cover(
@@ -42,6 +44,7 @@ class JdbcCoverRepositoryTest {
                 .isEqualTo(savedId);
     }
 
+    @DisplayName("커버 이미지의 상태를 삭제로 변경한다.")
     @Test
     void updateDeleteStatus() {
         // given

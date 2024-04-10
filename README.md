@@ -101,13 +101,13 @@
     - `Students`에서 `session_id`로 `findAllStudentsBySessionId`로 메시지를 보내 전체 학생을 가져와 매핑한다.
     - 가격에 따라 `FreeSession`, `PaidSession`을 구분하여 매핑한다.
     - `Session` 객체를 반환한다.
-- [ ] `Session` - `Session updateBasicProperties(Session session)` 구현
+- [x] `Session` - `Session updateBasicProperties(Session session)` 구현
   - `startDate`에 대해 변경한다.
   - `endDate`에 대해 변경한다.
   - `sessionName`에 대해 변역한다.
   - 변경분에 대해 저장한다.
   - 저장한 `Session` 객체를 반환한다.
-- [ ] `Session` - `Session updateCover(Long sessionId, Cover cover)` 구현
+- [x] `Session` - `Session updateCover(Long sessionId, Cover cover)` 구현
   - `sessionId`를 통해 `Session` 객체를 조회한다.
   - 기존의 `Cover`에게 `delete` 메시지를 보낸다.
   - `Cover`에게 `save` 메시지를 보내 생성한다.

@@ -5,10 +5,13 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
 import nextstep.session.domain.*;
 import nextstep.session.dto.SessionDto;
+import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
 import nextstep.session.infrastructure.SessionRepository;
 import nextstep.session.type.SessionStatusType;
+import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -72,5 +75,24 @@ public class SessionServiceImpl implements SessionService {
                 foundStudents,
                 new BaseEntity(sessionDto.isDeleted(), sessionDto.getCreatedAt(), sessionDto.getLastModifiedAt())
         );
+    }
+
+    @Override
+    public int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
+        SessionDto foundSessionDto = sessionRepository.findById(sessionId);
+        return sessionRepository.updateSessionBasicProperties(foundSessionDto, sessionUpdateDto);
+    }
+
+    @Transactional
+    @Override
+    public int updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser) {
+        Session targetSession = findById(sessionId);
+        Cover beforeCover = coverService.findById(oldCoverId);
+
+        coverService.delete(beforeCover, requestUser);
+        long savedNewCoverId = coverService.save(newCover);
+        Cover savedNewCover = coverService.findById(savedNewCoverId);
+
+        return sessionRepository.updateCover(targetSession.toDto(), savedNewCover);
     }
 }
