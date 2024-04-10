@@ -10,7 +10,7 @@ public class Session {
 
     private Long id;
 
-    private int maxNumber;
+    private int maxEnrollment;
 
     private SessionStatus sessionStatus;
 
@@ -20,12 +20,12 @@ public class Session {
 
     private NsUsers attendees = new NsUsers();
 
-    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime endAt) {
-        this(maxNumber, sessionStatus, price, LocalDateTime.now(), endAt);
+    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price, final LocalDateTime endAt) {
+        this(maxEnrollment, sessionStatus, price, LocalDateTime.now(), endAt);
     }
 
-    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
-        this.maxNumber = maxNumber;
+    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
+        this.maxEnrollment = maxEnrollment;
         this.sessionStatus = sessionStatus;
         this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
@@ -55,7 +55,7 @@ public class Session {
     }
 
     private void validateAttendeeNumber() {
-        if (attendees.hasExceededMaxCapacity(maxNumber)) {
+        if (attendees.hasExceededMaxCapacity(maxEnrollment)) {
             throw new IllegalArgumentException("수강 인원이 초과되었습니다.");
         }
     }
