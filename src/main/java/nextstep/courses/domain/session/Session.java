@@ -2,6 +2,8 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.BaseTime;
 
+import java.util.Objects;
+
 public class Session extends BaseTime {
   private Long id;
   private SessionPeriod sessionPeriod;
@@ -57,5 +59,18 @@ public class Session extends BaseTime {
 
   public boolean isFree() {
     return sessionInfo.getIsFree();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Session session = (Session) o;
+    return Objects.equals(sessionPeriod, session.sessionPeriod) && Objects.equals(sessionInfo, session.sessionInfo);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(sessionPeriod, sessionInfo);
   }
 }
