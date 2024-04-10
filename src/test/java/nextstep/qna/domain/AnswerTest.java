@@ -23,11 +23,12 @@ public class AnswerTest {
     @Test
     @DisplayName("답변 삭제 테스트")
     void testDeleteAnswer() throws CannotDeleteException {
+
         DeleteHistory deleteHistory = testAnswer.delete(NsUserTest.JAVAJIGI);
         assertThat(testAnswer.isDeleted()).isTrue();
         assertThat(deleteHistory.toString())
                 .contains(ContentType.ANSWER.toString())
-                .contains("javajigi");
+                .contains(NsUserTest.JAVAJIGI.toString());
     }
 
     @Test

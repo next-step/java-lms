@@ -59,7 +59,7 @@ public class Answer {
 
         deleted = true;
 
-        return new DeleteHistory(ContentType.ANSWER, id, loginUser, LocalDateTime.now());
+        return DeleteHistoryFactory.deleteHistoryForAnswer(loginUser, this);
     }
 
     private void assertSameUser(NsUser loginUser) throws CannotDeleteException {
