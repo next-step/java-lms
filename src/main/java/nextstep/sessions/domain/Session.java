@@ -16,8 +16,6 @@ public class Session extends BaseEntity {
 
     private SessionDetails sessionDetails;
 
-    private Payment payment;
-
     private List<NsUser> listeners;
 
     public Session(long id, String sessionName, SessionDetails sessionDetails, List<NsUser> listeners) {
