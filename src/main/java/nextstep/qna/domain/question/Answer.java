@@ -25,13 +25,8 @@ public class Answer {
     }
 
     public Answer(final Long id, final NsUser writer, final Question question, final String contents) {
-        if (writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if (question == null) {
-            throw new NotFoundException();
-        }
+        validateWriterIsNotNull(writer);
+        validateQuestionIsNotNull(question);
 
         this.id = id;
         this.writer = writer;
@@ -39,6 +34,18 @@ public class Answer {
         this.contents = contents;
         this.createdDate = LocalDateTime.now();
         this.deleted = false;
+    }
+
+    private void validateWriterIsNotNull(final NsUser writer) {
+        if (writer == null) {
+            throw new UnAuthorizedException();
+        }
+    }
+
+    private void validateQuestionIsNotNull(final Question question) {
+        if (question == null) {
+            throw new NotFoundException();
+        }
     }
 
     public Long id() {
