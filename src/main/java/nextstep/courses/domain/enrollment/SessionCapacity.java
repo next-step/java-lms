@@ -26,11 +26,22 @@ public class SessionCapacity {
         }
     }
 
-    public void validateRemainingCapacity() {
+    public void hasCapacity() {
         if (capacity <= students.size()) {
-            throw new SessionCapacityExceedException(capacity, students.size());
+            throw new SessionCapacityExceedException(this);
         }
-        students.size();
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int currentCapacity() {
+        return students.size();
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
     }
 
 }

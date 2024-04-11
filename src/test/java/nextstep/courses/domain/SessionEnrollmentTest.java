@@ -24,7 +24,7 @@ public class SessionEnrollmentTest {
         Student student = student();
         Payment payment = payment(0L);
 
-        assertThatNoException().isThrownBy(() -> enrollment.satisfy(student, payment));
+        assertThatNoException().isThrownBy(() -> enrollment.satisfyEnrollment(payment));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class SessionEnrollmentTest {
         Student student = student();
         Payment payment = payment(800_000L);
 
-        assertThatNoException().isThrownBy(() -> enrollment.satisfy(student, payment));
+        assertThatNoException().isThrownBy(() -> enrollment.satisfyEnrollment(payment));
     }
 
 }

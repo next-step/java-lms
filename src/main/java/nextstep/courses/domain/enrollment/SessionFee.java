@@ -1,6 +1,7 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.exception.SessionFeeMismatchException;
+import nextstep.payments.domain.Payment;
 
 public class SessionFee {
 
@@ -16,14 +17,10 @@ public class SessionFee {
         this.fee = fee;
     }
 
-    public void validatePaymentAmount(Long amount) {
-        if (!sameAs(amount)) {
-            throw new SessionFeeMismatchException(this, amount);
+    public void sameAs(Payment payment) {
+        if (!fee.equals(payment.getAmount())) {
+            throw new SessionFeeMismatchException(this, payment);
         }
-    }
-
-    private boolean sameAs(Long amount) {
-        return fee.equals(amount);
     }
 
     public Long get() {

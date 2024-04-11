@@ -19,7 +19,7 @@ public class SessionStatusTest {
     @Test
     @DisplayName("[성공] 강의 상태에 따른 모집 가능을 확인한다.")
     void 강의_상태_모집_가능() {
-        assertThatNoException().isThrownBy(SessionStatus.RECRUITING::validateCanEnrollment);
+        assertThatNoException().isThrownBy(SessionStatus.RECRUITING::canEnroll);
     }
 
     @ParameterizedTest
@@ -27,7 +27,7 @@ public class SessionStatusTest {
     @DisplayName("[성공] 강의 상태에 따른 모집 불가능을 확인한다.")
     void 강의_상태_모집_불가능(SessionStatus status, SessionStatusCannotEnrollmentException exception) {
         assertThatExceptionOfType(exception.getClass())
-                .isThrownBy(status::validateCanEnrollment)
+                .isThrownBy(status::canEnroll)
                 .withMessageContaining(CourseExceptionMessage.CANNOT_ENROLLMENT_SESSION_STATUS.getMessage());
     }
 

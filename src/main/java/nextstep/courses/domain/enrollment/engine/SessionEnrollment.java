@@ -5,6 +5,18 @@ import nextstep.payments.domain.Payment;
 
 public interface SessionEnrollment {
 
-    void satisfy(Student student, Payment payment);
+    void enroll(Student student, Payment payment);
+
+    default void satisfyEnrollment(Payment payment) {
+        satisfyStatus();
+        satisfyCapacity();
+        satisfyFee(payment);
+    }
+
+    void satisfyStatus();
+
+    void satisfyCapacity();
+
+    void satisfyFee(Payment payment);
 
 }
