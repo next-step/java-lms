@@ -9,21 +9,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class Question{
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private String contents;
+    private final String contents;
 
-    private NsUser writer;
+    private final NsUser writer;
 
-    private Answers answers;
+    private final Answers answers;
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
-    private LocalDateTime updatedDate;
+    private final LocalDateTime updatedDate;
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);

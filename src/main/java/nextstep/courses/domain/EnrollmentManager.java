@@ -26,7 +26,7 @@ public class EnrollmentManager {
         return status.isRecruiting() && (fee.isFree() || count.hasRemainingCount() && fee.canPurchase(payment));
     }
 
-    public EnrollmentManager decreaseCount(){
+    public EnrollmentManager decreaseCount() {
         return new EnrollmentManager(this.fee, this.count.decreaseCount(), this.status);
     }
 }

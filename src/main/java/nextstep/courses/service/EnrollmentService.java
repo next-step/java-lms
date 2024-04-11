@@ -22,7 +22,7 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public Enrollment enroll(NsUser nsUser, Long sessionId){
+    public Enrollment enroll(NsUser nsUser, Long sessionId) {
         Session session = sessionRepository.findById(sessionId).orElseThrow(() -> new NotFoundException(String.format("%d session을 찾을 수 없습니다.", sessionId)));
         Payment payment = paymentRepository.findByUser(nsUser).orElseThrow(() -> new NotFoundException(String.format("%s 유저의 payment를 찾을 수 없습니다.", nsUser.getUserId())));
         return nsUser.enrollSession(session, payment);

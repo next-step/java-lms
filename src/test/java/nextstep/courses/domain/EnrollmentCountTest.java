@@ -27,7 +27,7 @@ class EnrollmentCountTest {
 
     @Test
     @DisplayName("수강 시에 강의 수강 인원 수 감소")
-    void decrease_count_when_enroll(){
+    void decrease_count_when_enroll() {
         final int originalCount = 100;
         final int resultCount = 99;
         EnrollmentCount enrollmentCount = new EnrollmentCount(originalCount).decreaseCount();

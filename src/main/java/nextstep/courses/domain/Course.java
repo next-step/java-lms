@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
-    private Long id;
-
-    private String title;
-
-    private Long creatorId;
-
     private final List<Session> sessions = new ArrayList<>();
-
+    private Long id;
+    private String title;
+    private Long creatorId;
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

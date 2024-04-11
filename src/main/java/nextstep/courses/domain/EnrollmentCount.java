@@ -12,7 +12,7 @@ public class EnrollmentCount {
     }
 
     private void validateNegative(int count) {
-        if(count < 0){
+        if (count < 0) {
             throw new IllegalArgumentException("수강인원은 0이상이어야 합니다.");
         }
     }

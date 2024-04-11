@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Answer {
-    private Long id;
+    private final Long id;
 
-    private NsUser writer;
+    private final NsUser writer;
 
     private Question question;
 
-    private String contents;
+    private final String contents;
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 

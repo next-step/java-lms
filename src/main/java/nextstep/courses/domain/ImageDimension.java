@@ -4,7 +4,7 @@ public class ImageDimension {
 
     private static final Long MIN_WIDTH = 300L;
     private static final Long MIN_HEIGHT = 200L;
-    private static final Float RIGHT_RATIO = (float) 3/2;
+    private static final Float RIGHT_RATIO = (float) 3 / 2;
 
     private final Long width;
     private final Long height;
@@ -18,19 +18,19 @@ public class ImageDimension {
     }
 
     private void validateWidth(Long width) {
-        if(width == null || width < MIN_WIDTH){
+        if (width == null || width < MIN_WIDTH) {
             throw new IllegalArgumentException("이미지의 너비는 300픽셀 이상이어야 합니다.");
         }
     }
 
     private void validateHeight(Long height) {
-        if(height == null || height < MIN_HEIGHT){
+        if (height == null || height < MIN_HEIGHT) {
             throw new IllegalArgumentException("이미지의 높이는 200픽셀 이상이어야 합니다.");
         }
     }
 
     private void validateRatio(Long width, Long height) {
-        if(width != 0 && height != 0 && (float) width/height == RIGHT_RATIO){
+        if (width != 0 && height != 0 && (float) width / height == RIGHT_RATIO) {
             return;
         }
         throw new IllegalArgumentException("width와 height의 비율은 3:2여야 합니다");

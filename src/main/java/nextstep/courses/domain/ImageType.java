@@ -9,11 +9,9 @@ public enum ImageType {
     JPG("jpg"),
     JPEG("jpeg"),
     PNG("png"),
-    SVG("svg")
-    ;
+    SVG("svg");
 
-    private final String type;
-    private static final Map<String, ImageType> map = new HashMap<>(){
+    private static final Map<String, ImageType> map = new HashMap<>() {
         {
             put("gif", GIF);
             put("jpg", JPG);
@@ -22,6 +20,7 @@ public enum ImageType {
             put("svg", SVG);
         }
     };
+    private final String type;
 
     ImageType(String type) {
         this.type = type;
@@ -30,7 +29,7 @@ public enum ImageType {
     public static ImageType getImageType(String type) {
         type = type.toLowerCase();
         ImageType imageType = map.get(type);
-        if(imageType == null){
+        if (imageType == null) {
             throw new IllegalArgumentException("지원하지않는 이미지 타입입니다.");
         }
         return imageType;

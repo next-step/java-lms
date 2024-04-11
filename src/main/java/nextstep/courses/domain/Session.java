@@ -14,8 +14,8 @@ public class Session {
         this.sessionPeriod = sessionPeriod;
     }
 
-    public Session enroll(Payment payment){
-        if(this.enrollmentManager.canEnroll(payment)){
+    public Session enroll(Payment payment) {
+        if (this.enrollmentManager.canEnroll(payment)) {
             return new Session(this.coverImage, this.enrollmentManager.decreaseCount(), this.sessionPeriod);
         }
         throw new IllegalArgumentException("수강 신청을 할 수 없습니다.");
