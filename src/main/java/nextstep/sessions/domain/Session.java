@@ -51,6 +51,13 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
+    public void enroll(NsUser requestUser, Payment payment) {
+        assertCanEnroll(requestUser);
+        assertPayOnExactSession(payment);
+
+        this.students.add(requestUser);
+    }
+
     public void assertCanEnroll(NsUser requestUser) {
         if (!sessionStatus.canRecruit()) {
             throw new CannotEnrollException("현재 모집중인 강의가 아닙니다.");
@@ -63,11 +70,6 @@ public class Session {
         if (sessionType.isFull(students.size())) {
             throw new CannotEnrollException("현재 수강 인원이 가득 찼습니다.");
         }
-    }
-
-    public void enroll(NsUser requestUser, Payment payment) {
-        assertPayOnExactSession(payment);
-        this.students.add(requestUser);
     }
 
     public void assertPayOnExactSession(Payment payment) {

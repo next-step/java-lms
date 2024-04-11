@@ -7,6 +7,7 @@ import nextstep.sessions.domain.Session;
 import nextstep.sessions.domain.SessionRepository;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SessionService {
@@ -18,9 +19,9 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
+    @Transactional
     public void enroll(SessionEnrollRequestDto request, NsUser requestUser) {
         final Session session = sessionRepository.findById(request.sessionId());
-        session.assertCanEnroll(requestUser);
 
         Payment payment = paymentService.pay(session, requestUser);
 
