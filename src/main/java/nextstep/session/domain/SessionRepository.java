@@ -5,11 +5,11 @@ import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 
 public interface SessionRepository {
 
-    long save(SessionVO sessionVO);
+    long save(Session session);
 
     SessionVO findById(long sessionId);
 
-    int updateSessionBasicProperties(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
+    int updateSessionBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
 
-    int updateCover(SessionVO sessionVO, Cover newCover);
+    int updateCover(long sessionId, Cover newCover);
 }

@@ -38,7 +38,7 @@ class JdbcCoverRepositoryTest {
                 NsUserTest.JAVAJIGI
         );
 
-        Long savedId = coverRepository.save(cover.toVO());
+        Long savedId = coverRepository.save(cover);
         CoverVO savedCover = coverRepository.findById(savedId);
 
         assertThat(savedCover.getId())
@@ -57,7 +57,7 @@ class JdbcCoverRepositoryTest {
         );
 
         // when
-        Long savedId = coverRepository.save(cover.toVO());
+        Long savedId = coverRepository.save(cover);
         int updatedCount = coverRepository.updateDeleteStatus(savedId, true);
         CoverVO foundCover = coverRepository.findById(savedId);
 

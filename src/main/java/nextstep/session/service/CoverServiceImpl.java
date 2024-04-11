@@ -54,6 +54,6 @@ public class CoverServiceImpl implements CoverService {
 
     @Override
     public Long save(Cover cover) {
-        return coverRepository.save(cover.toVO());
+        return coverRepository.save(cover);
     }
 }

@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Long save(Student student) {
-        return studentRepository.save(student.toVO());
+        return studentRepository.save(student);
     }
 
     @Override

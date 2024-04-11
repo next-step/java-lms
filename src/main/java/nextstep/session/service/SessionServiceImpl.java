@@ -45,7 +45,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public long save(Session session) {
-        return sessionRepository.save(session.toVO());
+        return sessionRepository.save(session);
     }
 
     @Override
@@ -88,8 +88,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
-        SessionVO foundSessionVO = sessionRepository.findById(sessionId);
-        return sessionRepository.updateSessionBasicProperties(foundSessionVO, sessionUpdateDto);
+        return sessionRepository.updateSessionBasicProperties(sessionId, sessionUpdateDto);
     }
 
     @Transactional
@@ -102,7 +101,7 @@ public class SessionServiceImpl implements SessionService {
         long savedNewCoverId = coverService.save(newCover);
         Cover savedNewCover = coverService.findById(savedNewCoverId);
 
-        return sessionRepository.updateCover(targetSession.toVO(), savedNewCover);
+        return sessionRepository.updateCover(targetSession.toVO().getId(), savedNewCover);
     }
 
     @Override

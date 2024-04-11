@@ -1,5 +1,6 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.Cover;
 import nextstep.session.domain.CoverRepository;
 import nextstep.session.dto.CoverVO;
 import nextstep.utils.DbTimestampUtils;
@@ -23,8 +24,9 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public long save(CoverVO coverVO) {
+    public long save(Cover cover) {
         String sql = "insert into cover (width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        CoverVO coverVO = cover.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

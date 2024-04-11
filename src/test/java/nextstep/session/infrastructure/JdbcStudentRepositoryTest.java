@@ -36,7 +36,7 @@ class JdbcStudentRepositoryTest {
         Student student = new Student(sessionId, NsUserTest.SANJIGI);
 
         // when
-        Long savedId = studentRepository.save(student.toVO());
+        Long savedId = studentRepository.save(student);
         List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
@@ -53,8 +53,8 @@ class JdbcStudentRepositoryTest {
         Student student2 = new Student(sessionId, NsUserTest.JAVAJIGI);
 
         // when
-        Long savedId1 = studentRepository.save(student1.toVO());
-        Long savedId2 = studentRepository.save(student2.toVO());
+        Long savedId1 = studentRepository.save(student1);
+        Long savedId2 = studentRepository.save(student2);
         List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
@@ -70,7 +70,7 @@ class JdbcStudentRepositoryTest {
         Student student = new Student(sessionId, NsUserTest.SANJIGI);
 
         // when
-        Long savedId = studentRepository.save(student.toVO());
+        Long savedId = studentRepository.save(student);
         int resultCount = studentRepository.updateDeleteStatus(sessionId, student.toVO().getUserId(), true);
         List<StudentVO> findStudent = studentRepository.findBySessionId(sessionId);
 

@@ -1,5 +1,6 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.Student;
 import nextstep.session.domain.StudentRepository;
 import nextstep.session.dto.StudentVO;
 import nextstep.utils.DbTimestampUtils;
@@ -36,8 +37,9 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public long save(StudentVO studentVO) {
+    public long save(Student student) {
         String sql = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
+        StudentVO studentVO = student.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

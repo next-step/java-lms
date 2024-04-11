@@ -1,6 +1,7 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
+import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.dto.SessionVO;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
@@ -29,8 +30,9 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public long save(SessionVO sessionVO) {
+    public long save(Session session) {
         String sql = "insert into session (start_date, end_date, session_status, course_id, max_capacity, enrolled, price, tutor_id, cover_id, session_name, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        SessionVO sessionVO = session.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -76,7 +78,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateSessionBasicProperties(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
+    public int updateSessionBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
         StringBuilder sql = new StringBuilder("UPDATE session SET ");
 
         addSetCondition(sessionUpdateDto, sql);
@@ -85,12 +87,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
         sql.append(" WHERE ").append("id").append(" = ?");
 
-        Object[] params = getWhereParams(sessionVO, sessionUpdateDto);
+        Object[] params = getWhereParams(sessionId, sessionUpdateDto);
 
         return jdbcTemplate.update(sql.toString(), params);
     }
 
-    private Object[] getWhereParams(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
+    private Object[] getWhereParams(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
         Object[] params = new Object[sessionUpdateDto.countNotNullProperties() + 1];
         int i = 0;
         if (sessionUpdateDto.hasSessionName()) {
@@ -104,7 +106,7 @@ public class JdbcSessionRepository implements SessionRepository {
         if (sessionUpdateDto.hasEndDate()) {
             params[i++] = sessionUpdateDto.getEndDate();
         }
-        params[i] = sessionVO.getId();
+        params[i] = sessionId;
         return params;
     }
 
@@ -127,8 +129,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateCover(SessionVO sessionVO, Cover newCover) {
+    public int updateCover(long sessionId, Cover newCover) {
         String sql = "UPDATE session SET cover_id = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, newCover.getId(), sessionVO.getId());
+        return jdbcTemplate.update(sql, newCover.getId(), sessionId);
     }
 }

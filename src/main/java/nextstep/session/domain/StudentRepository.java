@@ -8,7 +8,7 @@ public interface StudentRepository {
 
     List<StudentVO> findBySessionId(long sessionId);
 
-    long save(StudentVO studentVO);
+    long save(Student student);
 
     int updateDeleteStatus(long sessionId, String studentId, boolean deleteStatus);
 }

@@ -4,7 +4,7 @@ import nextstep.session.dto.CoverVO;
 
 public interface CoverRepository {
 
-    long save(CoverVO coverVO);
+    long save(Cover cover);
 
     CoverVO findById(long coverId);
 
