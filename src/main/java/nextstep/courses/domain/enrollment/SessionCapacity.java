@@ -10,14 +10,12 @@ public class SessionCapacity {
     private final Long id;
     private final Long sessionId;
     private final int capacity;
-    private final Students students;
 
     public SessionCapacity(Long id, Long sessionId, int capacity) {
         validate(capacity);
         this.id = id;
         this.sessionId = sessionId;
         this.capacity = capacity;
-        this.students = new Students(sessionId);
     }
 
     private void validate(int capacity) {
@@ -26,22 +24,10 @@ public class SessionCapacity {
         }
     }
 
-    public void hasCapacity() {
-        if (capacity <= students.size()) {
-            throw new SessionCapacityExceedException(this);
+    public void hasCapacity(int currentSize) {
+        if (capacity <= currentSize) {
+            throw new SessionCapacityExceedException(capacity, currentSize);
         }
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public int currentCapacity() {
-        return students.size();
-    }
-
-    public void addStudent(Student student) {
-        students.add(student);
     }
 
 }

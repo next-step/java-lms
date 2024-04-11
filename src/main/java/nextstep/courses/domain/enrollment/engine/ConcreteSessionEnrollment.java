@@ -6,6 +6,9 @@ import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.Student;
 import nextstep.payments.domain.Payment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
 
     protected final Long id;
@@ -13,6 +16,7 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     protected final SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
+    protected final List<Student> students;
 
     protected ConcreteSessionEnrollment(Long id, Long sessionId, SessionStatus status, int capacity, long fee) {
         this.id = id;
@@ -20,12 +24,13 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
         this.status = status;
         this.capacity = new SessionCapacity(id, sessionId, capacity);
         this.fee = new SessionFee(id, sessionId, fee);
+        this.students = new ArrayList<>();
     }
 
     @Override
     public void enroll(Student student, Payment payment) {
         satisfyEnrollment(payment);
-        capacity.addStudent(student);
+        students.add(student);
     }
 
     @Override
@@ -35,7 +40,7 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
 
     @Override
     public void satisfyCapacity() {
-        capacity.hasCapacity();
+        capacity.hasCapacity(students.size());
     }
 
 }
