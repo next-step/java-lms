@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -29,10 +31,20 @@ public class RegistrationRepositoryTest {
   @Test
   void crud() {
     Registration registration = new Registration(1L, 1L);
+
     int count = registrationRepository.save(registration);
     assertThat(count).isEqualTo(1);
+
     Registration savedRegistration = registrationRepository.findById(1L);
     assertThat(registration.sessionId()).isEqualTo(savedRegistration.sessionId());
     LOGGER.debug("Registration: {}", savedRegistration);
+
+    List<Registration> savedRegistrations = registrationRepository.findByUserId(1L);
+    assertThat(registration.sessionId()).isEqualTo(savedRegistrations.get(0).sessionId());
+    LOGGER.debug("Registrations by userId: {}", savedRegistrations);
+
+    savedRegistrations = registrationRepository.findBySessionId(1L);
+    assertThat(registration.userId()).isEqualTo(savedRegistrations.get(0).userId());
+    LOGGER.debug("Registrations by sessionId: {}", savedRegistrations);
   }
 }

@@ -10,6 +10,9 @@ import java.time.LocalDate;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
+  private static final String INSERT_SQL = "INSERT INTO session (course_id, start_date, end_date, image_id, status, session_type, max_size, tuition) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+  private static final String SELECT_SQL = "SELECT * FROM session WHERE id = ?";
+
   private JdbcOperations jdbcTemplate;
   private SessionImageRepository sessionImageRepository;
 
@@ -22,14 +25,12 @@ public class JdbcSessionRepository implements SessionRepository {
   public int save(Session session) {
     Long imageId = sessionImageRepository.saveAndGetGeneratedKey(session.image());
 
-    String sql = "INSERT INTO session (course_id, start_date, end_date, image_id, status, session_type, max_size, tuition) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
-
     if (session instanceof FreeSession) {
-      return jdbcTemplate.update(sql, session.getCourseId(), session.getStartDate(), session.getEndDate(), imageId, session.getStatus().toString(),
+      return jdbcTemplate.update(INSERT_SQL, session.getCourseId(), session.getStartDate(), session.getEndDate(), imageId, session.getStatus().toString(),
               session.getType(), null, null);
     } else if (session instanceof ChargedSession) {
       ChargedSession chargedSession = (ChargedSession) session;
-      return jdbcTemplate.update(sql, session.getCourseId(), session.getStartDate(), session.getEndDate(), imageId, session.getStatus().toString(),
+      return jdbcTemplate.update(INSERT_SQL, session.getCourseId(), session.getStartDate(), session.getEndDate(), imageId, session.getStatus().toString(),
               session.getType(), chargedSession.getMaxSize(), chargedSession.getTuition());
     }
 
@@ -38,8 +39,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
   @Override
   public Session findById(Long id) {
-    String sql = "SELECT * FROM session WHERE id = ?";
-
     RowMapper<Session> rowMapper = (rs, rowNum) -> {
       if ("FREE".equals(rs.getString("session_type"))) {
         return new FreeSession(
@@ -65,7 +64,7 @@ public class JdbcSessionRepository implements SessionRepository {
       throw new IllegalArgumentException("존재하지 않는 Session 타입입니다.");
     };
 
-    return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    return jdbcTemplate.queryForObject(SELECT_SQL, rowMapper, id);
   }
 
   private LocalDate toLocalDate(Timestamp timestamp) {

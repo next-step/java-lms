@@ -2,8 +2,11 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.SessionImage;
 import nextstep.courses.domain.SessionImageRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -12,16 +15,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository("sessionImageRepository")
 public class JdbcSessionImageRepository implements SessionImageRepository {
-  private String INSERT_SQL = "INSERT INTO session_image(width, height, extension, file_size, file_name) VALUES(?, ?, ?, ?, ?)";
+  private static String INSERT_SQL = "INSERT INTO session_image(width, height, extension, file_size, file_name) VALUES(?, ?, ?, ?, ?)";
+  private static String SELECT_SQL = "SELECT * FROM session_image WHERE id = ?";
 
-  private JdbcOperations jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
+  private final SimpleJdbcInsert simpleJdbcInsert;
 
-  public JdbcSessionImageRepository(JdbcOperations jdbcTemplate) {
+  public JdbcSessionImageRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
+    this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+            .withTableName("session_image")
+            .usingGeneratedKeyColumns("id");
   }
 
   @Override
@@ -31,12 +40,15 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
 
   @Override
   public Long saveAndGetGeneratedKey(SessionImage sessionImage) {
-    KeyHolder keyHolder = new GeneratedKeyHolder();
-    jdbcTemplate.update(
-            connection -> createPreparedStatement(connection, sessionImage),
-            keyHolder);
-
-    return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    return this.simpleJdbcInsert.executeAndReturnKey(
+            Map.of(
+                    "width", sessionImage.getWidth(),
+                    "height", sessionImage.getHeight(),
+                    "extension", sessionImage.getExtension(),
+                    "file_size", sessionImage.getFileSize(),
+                    "file_name", sessionImage.getFileName()
+            )
+    ).longValue();
   }
 
   private PreparedStatement createPreparedStatement(Connection connection, SessionImage sessionImage) {
@@ -58,7 +70,6 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
 
   @Override
   public SessionImage findById(Long id) {
-    String sql = "SELECT * FROM session_image WHERE id = ?";
     RowMapper<SessionImage> rowMapper = (rs, rowNum) -> new SessionImage(
             rs.getLong("id"),
             rs.getInt("width"),
@@ -67,6 +78,6 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
             rs.getInt("file_size"),
             rs.getString("file_name")
     );
-    return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    return jdbcTemplate.queryForObject(SELECT_SQL, rowMapper, id);
   }
 }
