@@ -1,6 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.exception.CannotEnrollmentSessionStatusException;
+import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 
 public enum SessionStatus {
 
@@ -17,7 +17,7 @@ public enum SessionStatus {
 
     public void validateCanEnrollment() {
         if (!this.canEnroll) {
-            throw new CannotEnrollmentSessionStatusException(this);
+            throw new SessionStatusCannotEnrollmentException(this);
         }
     }
 

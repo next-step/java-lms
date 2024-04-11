@@ -1,6 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.exception.MismatchSessionFeeException;
+import nextstep.courses.exception.SessionFeeMismatchException;
 
 public class SessionFee {
 
@@ -16,7 +16,7 @@ public class SessionFee {
 
     public void validatePaymentAmount(Long amount) {
         if (!sameAs(amount)) {
-            throw new MismatchSessionFeeException(this, amount);
+            throw new SessionFeeMismatchException(this, amount);
         }
     }
 

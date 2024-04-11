@@ -5,9 +5,9 @@ import java.util.List;
 
 import static nextstep.courses.domain.image.ImageFileSize.MAX_FILE_SIZE;
 import static nextstep.courses.domain.image.ImageSize.*;
-import static nextstep.courses.exception.SessionExceptionMessage.UNSUPPORTED_IMAGE_FORMAT;
+import static nextstep.courses.exception.CourseExceptionMessage.UNSUPPORTED_IMAGE_FORMAT;
 
-public class SessionCoverImageException extends SessionException {
+public class SessionCoverImageException extends CourseException {
 
     public SessionCoverImageException(long size) {
         this(MessageFormat.format("이미지 파일 크기는 {0}bytes 이하여야 합니다. (입력된 이미지 파일 크기: {1})"

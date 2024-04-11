@@ -1,17 +1,17 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.exception.InvalidSessionDurationException;
+import nextstep.courses.exception.SessionPeriodRangeException;
 
 import java.time.LocalDateTime;
 
-public class SessionDuration {
+public class SessionPeriod {
 
     private final Long id;
     private final Long sessionId;
     private final LocalDateTime startAt;
     private final LocalDateTime endAt;
 
-    public SessionDuration(Long id, Long sessionId, LocalDateTime startAt, LocalDateTime endAt) {
+    public SessionPeriod(Long id, Long sessionId, LocalDateTime startAt, LocalDateTime endAt) {
         validateDuration(startAt, endAt);
         this.id = id;
         this.sessionId = sessionId;
@@ -21,7 +21,7 @@ public class SessionDuration {
 
     private void validateDuration(LocalDateTime startAt, LocalDateTime endAt) {
         if (!isValidAtRange(startAt, endAt)) {
-            throw new InvalidSessionDurationException(startAt, endAt);
+            throw new SessionPeriodRangeException(startAt, endAt);
         }
     }
 
