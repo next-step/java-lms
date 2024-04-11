@@ -1,7 +1,6 @@
 package nextstep.sessions.domain;
 
 public class CoverImage {
-    private static final long MAX_FILE_SIZE = 1024 * 1024;
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
     private static final double RATIO = 3.0 / 2.0;
@@ -11,12 +10,10 @@ public class CoverImage {
     private final String fileName;
     private final int width;
     private final int height;
-    private final long size;
+    private final FileSize size;
     private final EnableExtension extension;
 
     public CoverImage(Long id, Session session, String fileName, int width, int height, long size) {
-        assertImageUnderMaxSize(size);
-
         final EnableExtension extension = EnableExtension.from(fileName);
         assertValidExtension(extension);
 
@@ -31,14 +28,8 @@ public class CoverImage {
         this.fileName = fileName;
         this.width = width;
         this.height = height;
-        this.size = size;
+        this.size = new FileSize(size);
         this.extension = extension;
-    }
-
-    private void assertImageUnderMaxSize(long size) {
-        if (MAX_FILE_SIZE < size) {
-            throw new IllegalArgumentException("이미지 크기는 1MB 이히여야 합니다.");
-        }
     }
 
     private void assertValidExtension(EnableExtension extension) {
