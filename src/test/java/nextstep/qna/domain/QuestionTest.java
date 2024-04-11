@@ -59,16 +59,8 @@ public class QuestionTest {
         List<DeleteHistory> deleteHistories = question.delete(loginUser);
         assertThat(deleteHistories).hasSize(answerLength + 1);
 
-        assertThat(deleteHistories.get(0).toString())
-                .contains(ContentType.QUESTION.toString())
-                .contains(loginUser.toString());
-
-        for (int i = 1; i < answerLength; i++) {
-            assertThat(deleteHistories.get(i).toString())
-                    .contains(ContentType.ANSWER.toString())
-                    .contains(loginUser.toString());
-        }
-
+        assertThat(question.isDeleted()).isTrue();
+        assertThat(question.getAnswers()).extracting(Answer::isDeleted).containsOnly(true);
     }
 
     private Question makeQuestion(NsUser user) {
