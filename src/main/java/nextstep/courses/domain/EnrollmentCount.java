@@ -18,7 +18,7 @@ public class EnrollmentCount {
     }
 
     public boolean hasRemainingCount() {
-        return !(count == 0);
+        return count != 0;
     }
 
     public EnrollmentCount decreaseCount() {
