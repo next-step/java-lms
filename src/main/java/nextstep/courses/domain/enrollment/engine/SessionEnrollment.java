@@ -1,11 +1,11 @@
 package nextstep.courses.domain.enrollment.engine;
 
-import nextstep.courses.domain.enrollment.Student;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 public interface SessionEnrollment {
 
-    void enroll(Student student, Payment payment);
+    void enroll(NsUser nsUser, Payment payment);
 
     default void satisfyEnrollment(Payment payment) {
         satisfyStatus();

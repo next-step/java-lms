@@ -6,6 +6,7 @@ import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,9 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     }
 
     @Override
-    public void enroll(Student student, Payment payment) {
+    public void enroll(NsUser nsUser, Payment payment) {
         satisfyEnrollment(payment);
-        students.add(student);
+        students.add(Student.from(nsUser));
     }
 
     @Override

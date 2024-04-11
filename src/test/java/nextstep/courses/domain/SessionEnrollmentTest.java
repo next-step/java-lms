@@ -1,19 +1,19 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.courses.exception.SessionFeeMismatchException;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static nextstep.courses.domain.enrollment.SessionStatus.RECRUITING;
+import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.costSessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
-import static nextstep.courses.domain.fixture.StudentFixture.student;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -74,11 +74,11 @@ public class SessionEnrollmentTest {
     void 무료_강의_신청() {
         SessionEnrollment enrollment = freeSessionEnrollment(RECRUITING);
 
-        Student student = student();
+        NsUser user = nsUser();
         Payment payment = payment(0L);
 
         assertThatNoException()
-                .isThrownBy(() -> enrollment.enroll(student, payment));
+                .isThrownBy(() -> enrollment.enroll(user, payment));
     }
 
     @Test
@@ -86,11 +86,11 @@ public class SessionEnrollmentTest {
     void 유료_강의_신청() {
         SessionEnrollment enrollment = costSessionEnrollment(RECRUITING, 10, 800_000L);
 
-        Student student = student();
+        NsUser user = nsUser();
         Payment payment = payment(800_000L);
 
         assertThatNoException()
-                .isThrownBy(() -> enrollment.enroll(student, payment));
+                .isThrownBy(() -> enrollment.enroll(user, payment));
     }
 
 }
