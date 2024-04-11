@@ -9,26 +9,27 @@ public class SessionCapacity {
     private final Long id;
     private final Long sessionId;
     private final int capacity;
+    private final Students students;
 
     public SessionCapacity(Long id, Long sessionId, int capacity) {
-        validateCapacity(capacity);
+        validate(capacity);
         this.id = id;
         this.sessionId = sessionId;
         this.capacity = capacity;
+        this.students = new Students(sessionId);
     }
 
-    private void validateCapacity(int capacity) {
-        if (!isGreaterThanMinCapacity(capacity)) {
+    private void validate(int capacity) {
+        if (capacity < MIN_CAPACITY) {
             throw new SessionCapacityExceedException(capacity);
         }
     }
 
-    private boolean isGreaterThanMinCapacity(int capacity) {
-        return capacity > MIN_CAPACITY;
-    }
-
-    public boolean hasCapacity(Students students) {
-        return capacity > students.size();
+    public void validateRemainingCapacity() {
+        if (capacity <= students.size()) {
+            throw new SessionCapacityExceedException(capacity, students.size());
+        }
+        students.size();
     }
 
 }

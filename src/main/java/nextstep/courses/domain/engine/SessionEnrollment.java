@@ -1,10 +1,10 @@
 package nextstep.courses.domain.engine;
 
-import nextstep.courses.domain.enrollment.Students;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.payments.domain.Payment;
 
 public interface SessionEnrollment {
 
-    void satisfy(Students students, Payment payment);
+    void satisfy(Student student, Payment payment);
 
 }

@@ -10,9 +10,9 @@ public class CostSessionEnrollment extends ConcreteSessionEnrollment {
     }
 
     @Override
-    public void satisfy(Students students, Payment payment) {
+    public void satisfy(Student student, Payment payment) {
         status.validateCanEnrollment();
-        capacity.hasCapacity(students);
+        capacity.validateRemainingCapacity();
         fee.validatePaymentAmount(payment.getAmount());
     }
 
