@@ -14,6 +14,8 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
+    private List<Answer> answers = new ArrayList<>();
+    private AnswerUser answerUser;
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
@@ -28,16 +30,10 @@ public class QnAService {
         Question question = questionRepository.findById(questionId).orElseThrow(NotFoundException::new);
 
         question.isOwner(loginUser);
-//        if (!question.isOwner(loginUser)) {
-//            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-//        }
 
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
-        }
+        answers = question.getAnswers();
+        answerUser = new AnswerUser(question.getAnswers());
+        answerUser.isOwner(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         question.setDeleted(true);

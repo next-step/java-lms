@@ -17,6 +17,7 @@ public class Question {
     private NsUser writer;
 
     private List<Answer> answers = new ArrayList<>();
+    private AnswerUser answerUser;
 
     private boolean deleted = false;
 
@@ -69,10 +70,9 @@ public class Question {
         answers.add(answer);
     }
 
-    public boolean isOwner(NsUser loginUser) throws CannotDeleteException {
+    public void isOwner(NsUser loginUser) throws CannotDeleteException {
         if (!writer.equals(loginUser))
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        return true;
     }
 
     public Question setDeleted(boolean deleted) {
