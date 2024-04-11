@@ -2,7 +2,9 @@ package nextstep.courses.domain;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SessionRepository {
-    Session findById(Long sessionId);
+    Optional<Session> findById(Long sessionId);
 }
