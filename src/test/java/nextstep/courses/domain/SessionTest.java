@@ -15,8 +15,8 @@ public class SessionTest {
 
     @Test
     void 강의_생성() {
-        assertThat(new Session(startAt, endAt, image, progress, true))
-                .isEqualTo(new Session(startAt, endAt, image, progress, true));
+        assertThat(new Session(1L, startAt, endAt, image, progress, true))
+                .isEqualTo(new Session(1L, startAt, endAt, image, progress, true));
     }
 
 }
