@@ -67,5 +67,6 @@ create table cover_image (
     width int not null,
     height int not null,
     cover_image_type varchar(255) not null,
+    session_id bigint,
     primary key (id)
 );

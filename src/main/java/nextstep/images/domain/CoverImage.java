@@ -1,5 +1,7 @@
 package nextstep.images.domain;
 
+import nextstep.sessions.domain.Session;
+
 public class CoverImage {
 
     private static final int MAX_SIZE = 1;
@@ -15,6 +17,8 @@ public class CoverImage {
     private int width;
 
     private int height;
+
+    private Session session;
 
     private CoverImageType coverImageType;
 

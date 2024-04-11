@@ -3,6 +3,7 @@ package nextstep.sessions.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import nextstep.courses.domain.Course;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
@@ -17,6 +18,8 @@ public class Session {
     private SessionPrice sessionPrice;
 
     private SessionPeriod sessionPeriod;
+
+    private Course course;
 
     private NsUsers attendees = new NsUsers();
 
