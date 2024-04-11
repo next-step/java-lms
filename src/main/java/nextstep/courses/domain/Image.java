@@ -5,7 +5,7 @@ public class Image {
     final static int MAX_SIZE = 1024;
     final static int MIN_WIDTH = 300;
     final static int MIN_HEIGHT = 200;
-    final static int WIDTH_HEIGHT_RATIO = 3 / 2;
+    final static double WIDTH_HEIGHT_RATIO = 3 / 2;
 
     int size;
     int width;

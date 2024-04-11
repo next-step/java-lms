@@ -16,13 +16,14 @@ class ImageTest {
     @Test
     @DisplayName("이미지 너비, 높이가 기준보다 작을 경우 예외가 발생한다")
     void min_width_heigth_exception_test() {
-        assertThrows(IllegalArgumentException.class, () -> new Image(1024, 100, 100, ImageType.JPG));
+        assertThrows(IllegalArgumentException.class, () -> new Image(1024, 150, 300, ImageType.JPG));
+        assertThrows(IllegalArgumentException.class, () -> new Image(1024, 300, 100, ImageType.JPG));
     }
 
     @Test
     @DisplayName("이미지 비율이 3:2가 아니면 예외가 발생한다")
     void ratio_exception_test() {
-        assertThrows(IllegalArgumentException.class, () -> new Image(1024, 600, 500, ImageType.JPG));
+        assertThrows(IllegalArgumentException.class, () -> new Image(1024, 200, 300, ImageType.JPG));
     }
 
 }
