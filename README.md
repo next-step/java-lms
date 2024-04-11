@@ -30,9 +30,9 @@
 - [ ] 유료 강의와 무료 강의가 있다.
   - [ ] 유료 강의는 최대 수강 인원 제한이 있고, 유료 강의는 없다.
 - [ ] 강의는 강의 커버 이미지 정보를 가진다.
-  - [ ] 이미지 크기는 1MB 이하이다.
+  - [x] 이미지 크기는 1MB 이하이다.
   - [ ] 이미지 타입은 gif, jpg, jpeg, png, svg만 허용한다.
-  - [ ] 이미지의 width 는 300픽셀, height는 200픽셀 이상이어야 하며, width : height 은 3:2 여야 한다.
+  - [x] 이미지의 width 는 300픽셀, height는 200픽셀 이상이어야 하며, width : height 은 3:2 여야 한다.
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
