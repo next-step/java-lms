@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.List;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -19,6 +20,19 @@ public class Session extends BaseEntity {
 
     public static Session defaultOf(Long id, Course course, LocalDate startDate, LocalDate endDate, Image coverImage, SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
         return new Session(id, course, new SessionDuration(startDate, endDate), coverImage, sessionPayType, PREPARING, maxStudent, sessionFee, new SessionStudent(maxStudent));
+    }
+
+    public Session(Course course, SessionDuration duration, Image coverImage,
+        SessionPayType payType, SessionState state, Integer maxStudent, Long fee,
+        SessionStudent students) {
+        validatePayType(payType, maxStudent, fee);
+        this.course = course;
+        this.duration = duration;
+        this.coverImage = coverImage;
+        this.payType = payType;
+        this.state = state;
+        this.fee = fee;
+        this.students = students;
     }
 
     public Session(Long id, Course course, SessionDuration duration, Image coverImage,
@@ -44,6 +58,42 @@ public class Session extends BaseEntity {
         checkSessionCapacity();
         checkAlreadyPaid(payment);
         this.students.add(newStudent);
+    }
+
+    public Long getCourseId(){
+        return this.course.id;
+    }
+
+    public Image getImage(){
+        return this.coverImage;
+    }
+
+    public LocalDate getStartDate(){
+        return this.duration.startDate;
+    }
+
+    public LocalDate getEndDate(){
+        return this.duration.endDate;
+    }
+
+    public String getPayType(){
+        return this.payType.name();
+    }
+
+    public String getState(){
+        return this.state.name();
+    }
+
+    public Long getFee(){
+        return this.fee;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public List<Long> getStudentsId(){
+        return this.students.getIds();
     }
 
     private void validatePayType(SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {

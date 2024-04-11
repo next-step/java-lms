@@ -23,6 +23,10 @@ public class BaseEntity {
   public BaseEntity() {
   }
 
+  public Long getId(){
+    return id;
+  }
+
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }

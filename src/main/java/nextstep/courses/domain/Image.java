@@ -10,6 +10,7 @@ public class Image extends BaseEntity{
     }
 
     public Image(Integer size, ImageType type, Dimension dimension) {
+        super(1L);
         validateSize(size);
         this.dimension = dimension;
         this.size = size;
@@ -25,6 +26,22 @@ public class Image extends BaseEntity{
     private boolean isMaxOverSize(Integer size){
         int MAX_SIZE = 1024 * 1024;
         return size > MAX_SIZE;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public String getType() {
+        return this.type.name();
+    }
+
+    public int getWidth() {
+        return this.dimension.width;
+    }
+
+    public int getHeight() {
+        return this.dimension.height;
     }
 
     public static class Dimension{
