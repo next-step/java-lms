@@ -18,9 +18,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import nextstep.qna.CannotDeleteException;
-import nextstep.qna.domain.question.Answer;
 import nextstep.qna.domain.history.ContentType;
 import nextstep.qna.domain.history.DeleteHistory;
+import nextstep.qna.domain.question.Answer;
 import nextstep.qna.domain.question.Question;
 import nextstep.qna.domain.question.QuestionRepository;
 import nextstep.qna.domain.question.QuestionTest;
@@ -49,7 +49,7 @@ class QnaServiceTest {
     }
 
     @Test
-    void delete_성공() throws Exception {
+    void delete_성공() {
         when(questionRepository.findById(question.id())).thenReturn(Optional.of(question));
 
         assertThat(question.isDeleted()).isFalse();
@@ -60,7 +60,7 @@ class QnaServiceTest {
     }
 
     @Test
-    void delete_다른_사람이_쓴_글() throws Exception {
+    void delete_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.id())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> qnAService.deleteQuestion(NsUserTest.SANJIGI, question.id()))
@@ -68,7 +68,7 @@ class QnaServiceTest {
     }
 
     @Test
-    void delete_성공_질문자_답변자_같음() throws Exception {
+    void delete_성공_질문자_답변자_같음() {
         when(questionRepository.findById(question.id())).thenReturn(Optional.of(question));
 
         qnAService.deleteQuestion(NsUserTest.JAVAJIGI, question.id());
@@ -79,7 +79,7 @@ class QnaServiceTest {
     }
 
     @Test
-    void delete_답변_중_다른_사람이_쓴_글() throws Exception {
+    void delete_답변_중_다른_사람이_쓴_글() {
         when(questionRepository.findById(question.id())).thenReturn(Optional.of(question));
 
         assertThatThrownBy(() -> qnAService.deleteQuestion(NsUserTest.SANJIGI, question.id()))

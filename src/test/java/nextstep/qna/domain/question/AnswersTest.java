@@ -11,14 +11,13 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nextstep.qna.CannotDeleteException;
 import nextstep.qna.domain.history.DeleteHistory;
 
 class AnswersTest {
 
     @Test
     @DisplayName("모든 답변을 삭제하고, 삭제 이력을 남긴다.")
-    void delete_AllAnswers_DeleteHistories() throws CannotDeleteException {
+    void delete_AllAnswers_DeleteHistories() {
         final Answer answer1 = new Answer(1L, JAVAJIGI, Q1, "content1");
         final Answer answer2 = new Answer(2L, JAVAJIGI, Q1, "content2");
         final Answers answers = new Answers();

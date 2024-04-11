@@ -19,7 +19,7 @@ class AnswerTest {
 
     @Test
     @DisplayName("하나의 답변을 삭제하고, 삭제 이력을 남긴다.")
-    void delete_Answer_DeleteHistory() throws CannotDeleteException {
+    void delete_Answer_DeleteHistory() {
         final Answer answer = new Answer(JAVAJIGI, Q1, "contents");
         final LocalDateTime deleteDateTime = LocalDateTime.of(2024, 4, 1, 0, 0);
 

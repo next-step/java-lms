@@ -57,8 +57,7 @@ public class Question {
         return this.deleted;
     }
 
-    public List<DeleteHistory> deleteBy(final NsUser loginUser, final LocalDateTime deleteDateTime) throws
-            CannotDeleteException {
+    public List<DeleteHistory> deleteBy(final NsUser loginUser, final LocalDateTime deleteDateTime) {
         validateLoginUserIsWriter(loginUser);
 
         final List<DeleteHistory> deleteHistories = deleteQuestionAndAnswers(deleteDateTime);
@@ -67,14 +66,13 @@ public class Question {
         return deleteHistories;
     }
 
-    private void validateLoginUserIsWriter(final NsUser loginUser) throws CannotDeleteException {
+    private void validateLoginUserIsWriter(final NsUser loginUser) {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
 
-    private List<DeleteHistory> deleteQuestionAndAnswers(final LocalDateTime deleteDateTime) throws
-            CannotDeleteException {
+    private List<DeleteHistory> deleteQuestionAndAnswers(final LocalDateTime deleteDateTime) {
         final List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         deleteHistories.add(new DeleteHistory(QUESTION, this.id, this.writer, deleteDateTime));

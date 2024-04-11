@@ -68,8 +68,7 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory delete(final NsUser questionWriter, final LocalDateTime deleteDateTime) throws
-            CannotDeleteException {
+    public DeleteHistory delete(final NsUser questionWriter, final LocalDateTime deleteDateTime) {
         validateAnswerWriterIsQuestionWriter(questionWriter);
 
         this.deleted = true;
@@ -77,7 +76,7 @@ public class Answer {
         return new DeleteHistory(ANSWER, this.id, this.writer, deleteDateTime);
     }
 
-    private void validateAnswerWriterIsQuestionWriter(final NsUser questionWriter) throws CannotDeleteException {
+    private void validateAnswerWriterIsQuestionWriter(final NsUser questionWriter) {
         if (!isOwner(questionWriter)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
