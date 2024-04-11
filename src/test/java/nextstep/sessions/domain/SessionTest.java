@@ -23,10 +23,10 @@ public class SessionTest {
 
     @BeforeEach
     void setup() {
-        freeSession = Session.freeSession(1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
-        paidSession = Session.paidSession(2L, "유료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, 1, 800_000L, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
-        preparingSession = Session.freeSession(1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.PREPARING, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
-        enrolledSession = Session.freeSession(1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, new NsUsers(List.of(NsUserTest.JAVAJIGI)), LocalDateTime.now(), LocalDateTime.now());
+        freeSession = Session.freeSession(1L, 1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
+        paidSession = Session.paidSession(2L, 1L, "유료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, 1, 800_000L, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
+        preparingSession = Session.freeSession(1L, 1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.PREPARING, new NsUsers(), LocalDateTime.now(), LocalDateTime.now());
+        enrolledSession = Session.freeSession(1L, 1L, "무료강의", PeriodTest.APRIL, CoverImageTest.TEST_IMAGE, SessionStatus.RECRUITING, new NsUsers(List.of(NsUserTest.JAVAJIGI)), LocalDateTime.now(), LocalDateTime.now());
     }
 
     @DisplayName("수강신청 가능여부 검증 메서드는")

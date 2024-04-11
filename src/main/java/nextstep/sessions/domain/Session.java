@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 public class Session {
     private final Long id;
 
+    private final Long courseId;
+
     private final String title;
 
     private final Period period;
@@ -27,16 +29,17 @@ public class Session {
 
     private final LocalDateTime updatedAt;
 
-    public static Session freeSession(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, title, period, coverImage, sessionStatus, new FreeSessionType(), students, createdAt, updatedAt);
+    public static Session freeSession(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, courseId, title, period, coverImage, sessionStatus, new FreeSessionType(), students, createdAt, updatedAt);
     }
 
-    public static Session paidSession(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, title, period, coverImage, sessionStatus, new PaidSessionType(capacity, new Money(price)), students, createdAt, updatedAt);
+    public static Session paidSession(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, courseId, title, period, coverImage, sessionStatus, new PaidSessionType(capacity, new Money(price)), students, createdAt, updatedAt);
     }
 
-    public Session(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.courseId = courseId;
         this.title = title;
         this.period = period;
         this.coverImage = coverImage;
