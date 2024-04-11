@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Answer {
-    private Long id;
+    private final Long id;
 
-    private NsUser writer;
+    private final NsUser writer;
 
     private Question question;
 
-    private String contents;
+    private final String contents;
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private final LocalDateTime createdDate = LocalDateTime.now();
 
     private LocalDateTime updatedDate;
 
@@ -88,14 +88,14 @@ public class Answer {
     }
 
     public void delete(NsUser nsUser){
-        boolean owner = isOwner(nsUser);
-        if(!owner){
+        boolean isOwner = isOwner(nsUser);
+        if(!isOwner){
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
         this.deleted = true;
     }
 
     public DeleteHistory saveDeleteHistory(){
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer);
     }
 }

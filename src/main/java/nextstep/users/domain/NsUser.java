@@ -1,5 +1,7 @@
 package nextstep.users.domain;
 
+import nextstep.courses.domain.Session;
+import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
@@ -77,6 +79,10 @@ public class NsUser {
     public NsUser setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    public Enrollment enrollSession(Session session, Payment payment){
+        return new Enrollment(this, payment, session.enroll(payment));
     }
 
     public void update(NsUser loginUser, NsUser target) {
