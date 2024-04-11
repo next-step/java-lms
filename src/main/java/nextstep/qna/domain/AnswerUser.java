@@ -25,4 +25,8 @@ public class AnswerUser {
             }
         }
     }
+
+    public List<Answer> getUsers() {
+        return users;
+    }
 }

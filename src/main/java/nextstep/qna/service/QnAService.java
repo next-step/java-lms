@@ -14,8 +14,9 @@ import java.util.List;
 
 @Service("qnaService")
 public class QnAService {
-    private List<Answer> answers = new ArrayList<>();
     private AnswerUser answerUser;
+    private DeleteUserInformation deleteUser;
+
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
 
@@ -31,17 +32,17 @@ public class QnAService {
 
         question.isOwner(loginUser);
 
-        answers = question.getAnswers();
         answerUser = new AnswerUser(question.getAnswers());
         answerUser.isOwner(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, new DeleteUserInformation(question)));
+        for (Answer answer : answerUser.getUsers()) {
             answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
+            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, new DeleteUserInformation(answer)));
         }
         deleteHistoryService.saveAll(deleteHistories);
     }
+
 }
