@@ -6,7 +6,9 @@ import nextstep.courses.domain.SessionRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.Enrollment;
 import nextstep.users.domain.NsUser;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EnrollmentService {
 
     private final PaymentRepository paymentRepository;
