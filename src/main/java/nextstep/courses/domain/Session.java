@@ -70,7 +70,7 @@ public class Session extends BaseEntity {
 
 
     private void checkAlreadyPaid(Payment payment){
-        if(!payment.isSame(fee)){
+        if(payType.isPaid() && !payment.isSame(fee)){
             throw new IllegalArgumentException("수강료가 일치하지 않습니다.");
         }
     }
