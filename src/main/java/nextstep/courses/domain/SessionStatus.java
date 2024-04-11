@@ -13,9 +13,6 @@ public enum SessionStatus {
     }
 
     public boolean isRecruiting() {
-        if(this.equals(RECRUITING)){
-            return true;
-        }
-        return false;
+        return this.equals(RECRUITING);
     }
 }
