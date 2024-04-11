@@ -23,16 +23,7 @@ public class EnrollmentManager {
     }
 
     public boolean canEnroll(Payment payment) {
-        if(!status.isRecruiting()){
-            return false;
-        }
-        if(fee.isFree()){
-            return true;
-        }
-        if(!count.hasRemainingCount()){
-            return false;
-        }
-        return fee.canPurchase(payment);
+        return status.isRecruiting() && (fee.isFree() || count.hasRemainingCount() && fee.canPurchase(payment));
     }
 
     public EnrollmentManager decreaseCount(){
