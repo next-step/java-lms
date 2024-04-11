@@ -20,7 +20,7 @@ public class SessionService {
 
     public void enroll(SessionEnrollRequestDto request, NsUser requestUser) {
         final Session session = sessionRepository.findById(request.sessionId());
-        session.assertCanEnroll(requestUser, request.requestDateTime());
+        session.assertCanEnroll(requestUser);
 
         Payment payment = paymentService.pay(session, requestUser);
 

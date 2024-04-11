@@ -29,22 +29,14 @@ public class SessionTest {
         @DisplayName("모집중이고, 신청한 적이 없고, 자리가 있을 경우 통과한다.")
         @Test
         void can_enroll() {
-            assertThatCode(() -> FREE_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI, LocalDate.of(2024, 3, 15).atStartOfDay()))
+            assertThatCode(() -> FREE_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI))
                     .doesNotThrowAnyException();
         }
 
         @DisplayName("모집중이지 않은 강의는 신청할 수 없다.")
         @Test
         void not_recruiting_session() {
-            assertThatThrownBy(() -> PREPARING_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI, LocalDate.of(2024, 3, 15).atStartOfDay()))
-                    .isInstanceOf(CannotEnrollException.class)
-                    .hasMessage("현재 모집중인 강의가 아닙니다.");
-        }
-
-        @DisplayName("진행중인 강의는 신청할 수 없다.")
-        @Test
-        void during_session_period() {
-            assertThatThrownBy(() -> PREPARING_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI, LocalDate.of(2024, 4, 15).atStartOfDay()))
+            assertThatThrownBy(() -> PREPARING_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI))
                     .isInstanceOf(CannotEnrollException.class)
                     .hasMessage("현재 모집중인 강의가 아닙니다.");
         }
@@ -52,7 +44,7 @@ public class SessionTest {
         @DisplayName("이미 신청한 강의는 신청할 수 없다.")
         @Test
         void already_enrolled() {
-            assertThatThrownBy(() -> ENROLLED_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI, LocalDate.of(2024, 3, 15).atStartOfDay()))
+            assertThatThrownBy(() -> ENROLLED_SESSION.assertCanEnroll(NsUserTest.JAVAJIGI))
                     .isInstanceOf(CannotEnrollException.class)
                     .hasMessage("이미 신청한 강의입니다.");
         }

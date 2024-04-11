@@ -51,8 +51,8 @@ public class Session {
         this.updatedAt = updatedAt;
     }
 
-    public void assertCanEnroll(NsUser requestUser, LocalDateTime requestDatetime) {
-        if (!sessionStatus.canRecruit() || period.isAfterStartDate(requestDatetime.toLocalDate())) {
+    public void assertCanEnroll(NsUser requestUser) {
+        if (!sessionStatus.canRecruit()) {
             throw new CannotEnrollException("현재 모집중인 강의가 아닙니다.");
         }
 
