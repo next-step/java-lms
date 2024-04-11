@@ -2,27 +2,19 @@ package nextstep.courses.domain;
 
 public class Session {
 
-    private Long id;
+    private final Long id;
 
-    private Image coverImage;
+    private final Image coverImage;
 
-    private SessionEnrollment enrollment;
+    private final SessionInformation sessionInformation;
 
-    private SessionSchedule schedule;
-
-    public Session() {
+    public Session(Image coverImage, SessionInformation sessionInformation) {
+        this(0L, coverImage, sessionInformation);
     }
 
-    public Session(Image coverImage, SessionEnrollment enrollment, SessionSchedule schedule) {
-        this(0L, coverImage, enrollment, schedule);
-    }
-
-    public Session(Long id, Image coverImage, SessionEnrollment enrollment, SessionSchedule schedule) {
+    public Session(Long id, Image coverImage, SessionInformation sessionInformation) {
         this.id = id;
         this.coverImage = coverImage;
-        this.enrollment = enrollment;
-        this.schedule = schedule;
+        this.sessionInformation = sessionInformation;
     }
-
-
 }
