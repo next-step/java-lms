@@ -2,6 +2,7 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.ConcreteSessionEnrollment;
 import nextstep.payments.domain.Payment;
+import nextstep.payments.exception.PaymentAmountExistException;
 
 public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
 
@@ -11,7 +12,9 @@ public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
 
     @Override
     public void satisfyFee(Payment payment) {
-        payment.noPayment();
+        if (payment.paid()) {
+            throw new PaymentAmountExistException(payment);
+        }
     }
 
 }

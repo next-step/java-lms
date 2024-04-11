@@ -24,10 +24,12 @@ public class SessionCapacity {
         }
     }
 
-    public void hasCapacity(int currentSize) {
-        if (capacity <= currentSize) {
-            throw new SessionCapacityExceedException(capacity, currentSize);
-        }
+    public boolean noCapacity(int currentSize) {
+        return capacity <= currentSize;
+    }
+
+    public int get() {
+        return capacity;
     }
 
 }

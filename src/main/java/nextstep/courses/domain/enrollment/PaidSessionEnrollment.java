@@ -1,6 +1,7 @@
 package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.enrollment.engine.ConcreteSessionEnrollment;
+import nextstep.courses.exception.SessionFeeMismatchException;
 import nextstep.payments.domain.Payment;
 
 public class PaidSessionEnrollment extends ConcreteSessionEnrollment {
@@ -11,6 +12,8 @@ public class PaidSessionEnrollment extends ConcreteSessionEnrollment {
 
     @Override
     public void satisfyFee(Payment payment) {
-        fee.sameAs(payment);
+        if (fee.differentFrom(payment)) {
+            throw new SessionFeeMismatchException(fee, payment);
+        }
     }
 }

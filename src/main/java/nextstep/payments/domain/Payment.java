@@ -1,7 +1,5 @@
 package nextstep.payments.domain;
 
-import nextstep.payments.exception.PaymentAmountExistException;
-
 import java.time.LocalDateTime;
 
 public class Payment {
@@ -33,10 +31,8 @@ public class Payment {
         return amount;
     }
 
-    public void noPayment() {
-        if (amount != 0) {
-            throw new PaymentAmountExistException(this);
-        }
+    public boolean paid() {
+        return amount != 0;
     }
 
 }

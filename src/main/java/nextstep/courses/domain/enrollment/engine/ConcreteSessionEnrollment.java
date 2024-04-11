@@ -4,6 +4,7 @@ import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.payments.domain.Payment;
 
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
 
     @Override
     public void satisfyCapacity() {
-        capacity.hasCapacity(students.size());
+        if (capacity.noCapacity(students.size())) {
+            throw new SessionCapacityExceedException(capacity.get(), students.size());
+        }
     }
 
 }
