@@ -3,21 +3,11 @@ package nextstep.courses.domain.session;
 public class Student {
 
     private Long id;
+    private Long nsUserId;
 
-    private String loginId;
-
-    private String password;
-
-    private String name;
-
-    private String email;
-
-    public Student(Long id, String loginId, String password, String name, String email) {
+    public Student(Long id, Long nsUserId) {
         this.id = id;
-        this.loginId = loginId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+        this.nsUserId = nsUserId;
     }
 
 }
