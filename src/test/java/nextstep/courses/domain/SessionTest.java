@@ -10,6 +10,8 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class SessionTest {
 
@@ -51,11 +53,13 @@ class SessionTest {
         }).isInstanceOf(CannotRegisterException.class);
     }
 
-    @Test
-    void 유료강의_결제_금액이_작으면_예외발생() {
+    @ParameterizedTest
+    @ValueSource(longs = {1_000L, 4_999L, 5_001L, 6_000L})
+    void 유료강의_결제_금액이_다르면_예외발생(long amount) {
         LocalDateTime now = LocalDateTime.now();
-        Session session = new Session(1L, "lms", SessionType.PAID, SessionState.RECRUITING, "test.jpg", now.plusDays(5), now.plusDays(30), 2, 5_000);
-        Payment payment = new Payment("1", 1L, NsUserTest.JAVAJIGI.getId(), 1_000L);
+        Session session = new Session(1L, "lms", SessionType.PAID, SessionState.RECRUITING,
+                "test.jpg", now.plusDays(5), now.plusDays(30), 2, 5_000);
+        Payment payment = new Payment("1", 1L, NsUserTest.JAVAJIGI.getId(), amount);
 
         assertThatThrownBy(() -> session.register(NsUserTest.JAVAJIGI, payment))
                 .isInstanceOf(CannotRegisterException.class);
