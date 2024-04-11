@@ -17,7 +17,7 @@ public class SessionEnrollmentFixture {
     }
 
     public static SessionEnrollment costSessionEnrollment(SessionStatus status, int capacity, long fee) {
-        return new CostSessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, status, capacity, fee);
+        return new PaidSessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, status, capacity, fee);
     }
 
 }
