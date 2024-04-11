@@ -1,7 +1,7 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.session.Student;
-import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.enrollment.Students;
 
 import java.util.List;
 

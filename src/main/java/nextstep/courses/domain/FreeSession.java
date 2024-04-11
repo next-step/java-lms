@@ -1,7 +1,8 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.engine.ConcreteSession;
-import nextstep.courses.domain.session.image.SessionCoverImage;
+import nextstep.courses.domain.engine.ConcreteSession;
+import nextstep.courses.domain.enrollment.*;
+import nextstep.courses.domain.image.SessionCoverImage;
 
 public class FreeSession extends ConcreteSession {
 

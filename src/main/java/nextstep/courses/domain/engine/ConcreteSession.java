@@ -1,8 +1,8 @@
-package nextstep.courses.domain.session.engine;
+package nextstep.courses.domain.engine;
 
-import nextstep.courses.domain.session.image.SessionCoverImage;
-import nextstep.courses.domain.session.Student;
-import nextstep.courses.domain.session.Students;
+import nextstep.courses.domain.image.SessionCoverImage;
+import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.enrollment.Students;
 import nextstep.payments.domain.Payment;
 
 public abstract class ConcreteSession implements Session {

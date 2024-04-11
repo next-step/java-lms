@@ -1,6 +1,6 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.session.SessionDuration;
+import nextstep.courses.domain.enrollment.SessionDuration;
 
 import java.time.LocalDateTime;
 

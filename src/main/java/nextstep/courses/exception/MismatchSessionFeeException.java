@@ -1,6 +1,6 @@
 package nextstep.courses.exception;
 
-import nextstep.courses.domain.session.SessionFee;
+import nextstep.courses.domain.enrollment.SessionFee;
 
 import java.text.MessageFormat;
 

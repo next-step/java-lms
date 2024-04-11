@@ -1,8 +1,8 @@
-package nextstep.courses.domain.session.engine;
+package nextstep.courses.domain.engine;
 
-import nextstep.courses.domain.session.SessionCapacity;
-import nextstep.courses.domain.session.SessionFee;
-import nextstep.courses.domain.session.SessionStatus;
+import nextstep.courses.domain.enrollment.SessionCapacity;
+import nextstep.courses.domain.enrollment.SessionFee;
+import nextstep.courses.domain.enrollment.SessionStatus;
 
 public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
 

@@ -1,6 +1,6 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.session.engine.ConcreteSessionEnrollment;
+import nextstep.courses.domain.engine.ConcreteSessionEnrollment;
 import nextstep.payments.domain.Payment;
 
 public class CostSessionEnrollment extends ConcreteSessionEnrollment {

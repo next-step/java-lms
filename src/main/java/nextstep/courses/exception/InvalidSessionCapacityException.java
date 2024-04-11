@@ -2,7 +2,7 @@ package nextstep.courses.exception;
 
 import java.text.MessageFormat;
 
-import static nextstep.courses.domain.session.SessionCapacity.MIN_CAPACITY;
+import static nextstep.courses.domain.enrollment.SessionCapacity.MIN_CAPACITY;
 
 public class InvalidSessionCapacityException extends SessionException {
     public InvalidSessionCapacityException(int capacity) {

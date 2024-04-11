@@ -1,10 +1,10 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.session.SessionCapacity;
-import nextstep.courses.domain.session.SessionFee;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.Students;
-import nextstep.courses.domain.session.engine.SessionEnrollment;
+import nextstep.courses.domain.enrollment.SessionCapacity;
+import nextstep.courses.domain.enrollment.SessionFee;
+import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.enrollment.Students;
+import nextstep.courses.domain.engine.SessionEnrollment;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

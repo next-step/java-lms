@@ -1,10 +1,10 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.session.FreeSessionEnrollment;
-import nextstep.courses.domain.session.SessionCapacity;
-import nextstep.courses.domain.session.SessionFee;
-import nextstep.courses.domain.session.SessionStatus;
-import nextstep.courses.domain.session.engine.SessionEnrollment;
+import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
+import nextstep.courses.domain.enrollment.SessionCapacity;
+import nextstep.courses.domain.enrollment.SessionFee;
+import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.engine.SessionEnrollment;
 
 import static nextstep.courses.domain.fixture.IdFixture.SESSION_ENROLLMENT_ID;
 import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;

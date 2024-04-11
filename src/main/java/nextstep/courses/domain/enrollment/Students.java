@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.enrollment;
 
 import java.util.ArrayList;
 import java.util.List;

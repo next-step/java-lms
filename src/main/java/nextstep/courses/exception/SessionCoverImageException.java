@@ -3,8 +3,8 @@ package nextstep.courses.exception;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static nextstep.courses.domain.session.image.ImageFileSize.MAX_FILE_SIZE;
-import static nextstep.courses.domain.session.image.ImageSize.*;
+import static nextstep.courses.domain.image.ImageFileSize.MAX_FILE_SIZE;
+import static nextstep.courses.domain.image.ImageSize.*;
 import static nextstep.courses.exception.SessionExceptionMessage.UNSUPPORTED_IMAGE_FORMAT;
 
 public class SessionCoverImageException extends SessionException {
