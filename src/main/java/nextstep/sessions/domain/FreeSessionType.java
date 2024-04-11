@@ -2,9 +2,9 @@ package nextstep.sessions.domain;
 
 import nextstep.payments.domain.Money;
 
-public class FreeSession extends SessionType {
+public class FreeSessionType extends SessionType {
 
-    public FreeSession() {
+    public FreeSessionType() {
         super(Money.ZERO);
     }
 

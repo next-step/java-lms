@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class PaidSessionTest {
+public class PaidSessionTypeTest {
 
     @DisplayName("isFull은 최대 수용인원 이상인지를 검사한다.")
     @ParameterizedTest(name = "{0} <= {1} : {2}")
@@ -15,7 +15,7 @@ public class PaidSessionTest {
     void isFull(int capacity, int userCount, boolean expectResult) {
         final Money price = new Money(800_000L);
 
-        assertThat(new PaidSession(capacity, price).isFull(userCount))
+        assertThat(new PaidSessionType(capacity, price).isFull(userCount))
                 .isEqualTo(expectResult);
     }
 }

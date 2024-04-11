@@ -28,11 +28,11 @@ public class Session {
     private final LocalDateTime updatedAt;
 
     public static Session freeSession(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, title, period, coverImage, sessionStatus, new FreeSession(), students, createdAt, updatedAt);
+        return new Session(id, title, period, coverImage, sessionStatus, new FreeSessionType(), students, createdAt, updatedAt);
     }
 
     public static Session paidSession(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, title, period, coverImage, sessionStatus, new PaidSession(capacity, new Money(price)), students, createdAt, updatedAt);
+        return new Session(id, title, period, coverImage, sessionStatus, new PaidSessionType(capacity, new Money(price)), students, createdAt, updatedAt);
     }
 
     public Session(Long id, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
