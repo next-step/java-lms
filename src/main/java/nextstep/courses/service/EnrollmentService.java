@@ -7,6 +7,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.Enrollment;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EnrollmentService {
@@ -19,6 +20,7 @@ public class EnrollmentService {
         this.sessionRepository = sessionRepository;
     }
 
+    @Transactional
     public Enrollment enroll(NsUser nsUser, Long sessionId){
         Session session = sessionRepository.findById(sessionId);
         Payment payment = paymentRepository.findByUser(nsUser);
