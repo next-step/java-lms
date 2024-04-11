@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Money;
 import nextstep.payments.domain.Payment;
 import nextstep.sessions.exception.CannotEnrollException;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 public class Session {
     private final Long id;
 
-    private final Long courseId;
+    private final Course course;
 
     private final String title;
 
@@ -29,17 +30,17 @@ public class Session {
 
     private final LocalDateTime updatedAt;
 
-    public static Session freeSession(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, courseId, title, period, coverImage, sessionStatus, new FreeSessionType(), students, createdAt, updatedAt);
+    public static Session freeSession(Long id, Course course, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, course, title, period, coverImage, sessionStatus, new FreeSessionType(), students, createdAt, updatedAt);
     }
 
-    public static Session paidSession(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new Session(id, courseId, title, period, coverImage, sessionStatus, new PaidSessionType(capacity, new Money(price)), students, createdAt, updatedAt);
+    public static Session paidSession(Long id, Course course, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, int capacity, long price, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        return new Session(id, course, title, period, coverImage, sessionStatus, new PaidSessionType(capacity, new Money(price)), students, createdAt, updatedAt);
     }
 
-    public Session(Long id, Long courseId, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Session(Long id, Course course, String title, Period period, CoverImage coverImage, SessionStatus sessionStatus, SessionType sessionType, NsUsers students, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.courseId = courseId;
+        this.course = course;
         this.title = title;
         this.period = period;
         this.coverImage = coverImage;
