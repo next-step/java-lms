@@ -5,6 +5,7 @@ import nextstep.courses.exception.SessionCapacityExceedException;
 public class SessionCapacity {
 
     public static final int MIN_CAPACITY = 0;
+    public static final int INFINITY = Integer.MAX_VALUE;
 
     private final Long id;
     private final Long sessionId;

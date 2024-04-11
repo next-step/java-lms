@@ -6,8 +6,8 @@ import nextstep.courses.domain.image.SessionCoverImage;
 
 public class FreeSession extends ConcreteSession {
 
-    public FreeSession(Long id, Long courseId, SessionCoverImage coverImage, Long enrollmentId, SessionStatus status, SessionCapacity capacity, SessionFee fee) {
-        super(id, courseId, coverImage, new FreeSessionEnrollment(enrollmentId, id, status, capacity, fee));
+    public FreeSession(Long id, Long courseId, SessionCoverImage coverImage, Long enrollmentId, SessionStatus status) {
+        super(id, courseId, coverImage, new FreeSessionEnrollment(enrollmentId, id, status));
     }
 
 }

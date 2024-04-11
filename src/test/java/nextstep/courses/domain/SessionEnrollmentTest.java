@@ -23,9 +23,7 @@ public class SessionEnrollmentTest {
     @DisplayName("[성공] 무료 강의 조건을 만족한다.")
     void 무료_강의_수강신청() {
         SessionStatus status = SessionStatus.RECRUITING;
-        SessionCapacity capacity = sessionCapacity(10);
-        SessionFee sessionFee = sessionFee(800_000L);
-        SessionEnrollment enrollment = freeSessionEnrollment(status, capacity, sessionFee);
+        SessionEnrollment enrollment = freeSessionEnrollment(status);
 
         Student student = student();
         Payment payment = payment(0L);

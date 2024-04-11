@@ -4,6 +4,8 @@ import nextstep.courses.exception.SessionFeeMismatchException;
 
 public class SessionFee {
 
+    public static final Long FREE = 0L;
+
     private final Long id;
     private final Long sessionId;
     private final Long fee;
