@@ -62,9 +62,19 @@
 - 강의 수강료 (SessionFee)
   - [X] 강의 수강료와 결제 금액이 일치하는지 검증한다.
 
+
 - 강의 기간 (SessionPeriod)
   - [X] 강의 시작일과 종료일을 관리한다.
   - [X] 시작일이 종료일보다 빠른 일자인지 검증한다.
+
+
+- 수강생 (Student)
+  - [X] 강의 수강생 정보를 관리한다.
+
+
+- 수강생 리스트 (Students)
+  - [X] 강의 수강생 리스트를 관리한다.
+
 
 - 강의 커버 이미지 (SessionCoverImage)
   - [X] 강의 커버 이미지에 대한 정보를 생성한다.
@@ -73,6 +83,6 @@
   - 이미지 사이즈 (ImageSize)
     - [X] width 300 pixels, height 200 pixels 이하이며, width 와 height 의 비율이 3:2인 이미지 사이즈를 생성한다.
   - 이미지 확장자 (ImageExtension)
-    - [ ] gif, jpg, jpeg, png, svg 확장자를 관리한다.
-    - [ ] 외의 확장자는 지원하지 않는다.
+    - [X] gif, jpg, jpeg, png, svg 확장자를 관리한다.
+    - [X] 외의 확장자는 지원하지 않는다.
     
