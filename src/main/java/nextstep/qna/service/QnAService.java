@@ -30,20 +30,17 @@ public class QnAService {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        List<Answer> answers = question.getAnswers();
-        for (Answer answer : answers) {
-            if (!answer.isOwner(loginUser)) {
-                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-            }
+        Answers answers = question.getAnswers();
+        if (!answers.isDeletable(loginUser)) {
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        DeleteHistories deleteHistories = new DeleteHistories();
         question.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
+        deleteHistories.addQuestion(question);
+        answers.setAllDeleted(true);
+        deleteHistories.addAnswers(answers);
+
         deleteHistoryService.saveAll(deleteHistories);
     }
 }

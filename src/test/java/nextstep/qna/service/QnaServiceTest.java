@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -82,9 +83,11 @@ public class QnaServiceTest {
     }
 
     private void verifyDeleteHistories() {
-        List<DeleteHistory> deleteHistories = Arrays.asList(
+        List<DeleteHistory> deleteHistorieList = Arrays.asList(
                 new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), LocalDateTime.now()),
                 new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        verify(deleteHistoryService).saveAll(deleteHistories);
+
+        DeleteHistories deleteHistories = new DeleteHistories(deleteHistorieList);
+        verify(deleteHistoryService).saveAll(refEq(deleteHistories));
     }
 }
