@@ -2,9 +2,10 @@ package nextstep.courses.domain;
 
 public class SessionApply {
 
-    public void apply(Session session) {
+    public void apply(Session session, Student student) {
         if (!session.isRecruitState()) {
             throw new IllegalArgumentException("모집 중인 강의가 아닙니다.");
         }
+        session.checkAddStudent(student);
     }
 }
