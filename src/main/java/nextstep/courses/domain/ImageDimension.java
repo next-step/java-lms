@@ -4,7 +4,7 @@ public class ImageDimension {
 
     private static final Long MIN_WIDTH = 300L;
     private static final Long MIN_HEIGHT = 200L;
-    private static final Double RIGHT_RATIO = (double) 3/2;
+    private static final Float RIGHT_RATIO = (float) 3/2;
 
     private final Long width;
     private final Long height;
@@ -30,7 +30,7 @@ public class ImageDimension {
     }
 
     private void validateRatio(Long width, Long height) {
-        if(width != 0 && height != 0 && (double) width/height == (double) 3/2){
+        if(width != 0 && height != 0 && (float) width/height == RIGHT_RATIO){
             return;
         }
         throw new IllegalArgumentException("width와 height의 비율은 3:2여야 합니다");
