@@ -10,17 +10,9 @@ public class FreeSessionTypeTest {
     public static final FreeSessionType FREE_SESSION_TYPE = new FreeSessionType();
 
     @Test
-    @DisplayName("isSessionNotFull(): numberOfCurrentEnrollment에 상관 없이 항상 true를 반환한다.")
+    @DisplayName("isEnrollmentPossible(): numberOfCurrentEnrollment와 Payment.amount에 상관 없이 항상 true를 반환한다.")
     void testIsSessionNotFull() {
         FreeSessionType freeSessionType = new FreeSessionType();
-        assertThat(freeSessionType.isSessionNotFull(10000)).isTrue();
-    }
-
-    @Test
-    @DisplayName("isValidPayment(): Payment.amount에 상관 없이 true를 반환한다.")
-    void testIsValidPayment() {
-        Payment payment = new Payment();
-        FreeSessionType freeSessionType = new FreeSessionType();
-        assertThat(freeSessionType.isValidPayment(payment)).isTrue();
+        assertThat(freeSessionType.isEnrollmentPossible(100, new Payment())).isTrue();
     }
 }

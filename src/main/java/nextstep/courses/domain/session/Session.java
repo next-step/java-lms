@@ -47,8 +47,7 @@ public class Session {
     private boolean isSessionEnrollPossible(NsUser user, Payment payment) {
         return sessionStatus.isEnrollPossibleStatus() &&
                 !enrolledUsers.isDuplicatedUser(user) &&
-                sessionType.isSessionNotFull(enrolledUsers.numberOfCurrentEnrollment()) &&
-                sessionType.isValidPayment(payment);
+                sessionType.isEnrollmentPossible(enrolledUsers.numberOfCurrentEnrollment(), payment);
     }
 
     private void addEnrolledUse(NsUser user) {

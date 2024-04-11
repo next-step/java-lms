@@ -17,12 +17,15 @@ public class PaidSessionType extends SessionType {
     }
 
     @Override
-    public boolean isSessionNotFull(long numberOfCurrentEnrollment) {
+    public boolean isEnrollmentPossible(int currentNumberOfEnrollment, Payment payment) {
+        return isSessionNotFull(currentNumberOfEnrollment) && isValidPayment(payment);
+    }
+
+    private boolean isSessionNotFull(long numberOfCurrentEnrollment) {
         return numberOfCurrentEnrollment < maxNumberOfEnrollment;
     }
 
-    @Override
-    public boolean isValidPayment(Payment payment) {
+    private boolean isValidPayment(Payment payment) {
         return payment.amount() == fee;
     }
 }

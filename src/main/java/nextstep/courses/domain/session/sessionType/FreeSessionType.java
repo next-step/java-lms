@@ -11,12 +11,7 @@ public class FreeSessionType extends SessionType {
     }
 
     @Override
-    public boolean isSessionNotFull(long numberOfCurrentEnrollment) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidPayment(Payment payment) {
+    public boolean isEnrollmentPossible(int currentNumberOfEnrollment, Payment payment) {
         return true;
     }
 }

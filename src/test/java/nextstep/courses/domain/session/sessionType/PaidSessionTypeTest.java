@@ -30,21 +30,11 @@ public class PaidSessionTypeTest {
         }
     }
 
-    @Test
-    @DisplayName("isSessionNotFull(): numberOfCurrentEnrollment < maxNumberOfEnrollment 이면 true를 그렇지 않은 경우 false를 반환한다.")
-    void testIsSessionNotFull() {
+    @ParameterizedTest
+    @CsvSource(value = {"2:100:false", "1:50:false", "1:100:true"}, delimiter = ':')
+    @DisplayName("isEnrollmentPossible(): numberOfCurrentEnrollment < maxNumberOfEnrollment 이면서 Payment.amount가 fee와 동일한 경우 true를 그렇지 않은 경우 false를 반환한다.")
+    void testIsEnrollmentPossible(int numberOfCurrentEnrollment, long amountOfPayment, boolean expected) {
         PaidSessionType paidSessionType = new PaidSessionType(2, 100);
-
-        assertThat(paidSessionType.isSessionNotFull(1)).isTrue();
-        assertThat(paidSessionType.isSessionNotFull(2)).isFalse();
-    }
-
-    @Test
-    @DisplayName("isValidPayment(): Payment.amount가 fee와 동일한 경우 true 그렇지 않은 경우 false를 반환한다.")
-    void testIsValidPayment() {
-        Payment payment = new Payment();
-        PaidSessionType paidSessionType = new PaidSessionType(2, 100);
-
-        assertThat(paidSessionType.isValidPayment(payment)).isFalse();
+        assertThat(paidSessionType.isEnrollmentPossible(numberOfCurrentEnrollment, new Payment("p1", 2L, 3L, amountOfPayment))).isEqualTo(expected);
     }
 }

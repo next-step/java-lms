@@ -20,7 +20,5 @@ public abstract class SessionType {
         }
     }
 
-    public abstract boolean isSessionNotFull(long currentNumberOfEnrollment);
-
-    public abstract boolean isValidPayment(Payment payment);
+    public abstract boolean isEnrollmentPossible(int currentNumberOfEnrollment, Payment payment);
 }
