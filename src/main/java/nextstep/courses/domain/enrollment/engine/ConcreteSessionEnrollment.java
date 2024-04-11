@@ -1,4 +1,4 @@
-package nextstep.courses.domain.engine;
+package nextstep.courses.domain.enrollment.engine;
 
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
@@ -12,12 +12,12 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
 
-    protected ConcreteSessionEnrollment(Long id, Long sessionId, SessionStatus status, SessionCapacity capacity, SessionFee fee) {
+    protected ConcreteSessionEnrollment(Long id, Long sessionId, SessionStatus status, int capacity, long fee) {
         this.id = id;
         this.sessionId = sessionId;
         this.status = status;
-        this.capacity = capacity;
-        this.fee = fee;
+        this.capacity = new SessionCapacity(id, sessionId, capacity);
+        this.fee = new SessionFee(id, sessionId, fee);
     }
 
 }

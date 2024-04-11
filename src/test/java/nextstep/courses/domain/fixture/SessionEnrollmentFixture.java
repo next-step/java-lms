@@ -1,6 +1,6 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.engine.SessionEnrollment;
+import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.enrollment.*;
 
 import static nextstep.courses.domain.fixture.IdFixture.SESSION_ENROLLMENT_ID;
@@ -16,7 +16,7 @@ public class SessionEnrollmentFixture {
         return new FreeSessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, status);
     }
 
-    public static SessionEnrollment costSessionEnrollment(SessionStatus status, SessionCapacity capacity, SessionFee fee) {
+    public static SessionEnrollment costSessionEnrollment(SessionStatus status, int capacity, long fee) {
         return new CostSessionEnrollment(SESSION_ENROLLMENT_ID, SESSION_ID, status, capacity, fee);
     }
 

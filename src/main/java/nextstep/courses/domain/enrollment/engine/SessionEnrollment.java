@@ -1,4 +1,4 @@
-package nextstep.courses.domain.engine;
+package nextstep.courses.domain.enrollment.engine;
 
 import nextstep.courses.domain.enrollment.Student;
 import nextstep.payments.domain.Payment;
