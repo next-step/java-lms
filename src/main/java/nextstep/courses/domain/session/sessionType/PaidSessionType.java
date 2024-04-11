@@ -26,6 +26,6 @@ public class PaidSessionType extends SessionType {
     }
 
     private boolean isValidPayment(Payment payment) {
-        return payment.amount() == fee;
+        return payment.isSameAmount(fee);
     }
 }
