@@ -70,7 +70,7 @@ public class DeleteHistory {
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
 
-    public DeleteHistoryDto toDto() {
+    public DeleteHistoryDto toVO() {
         return new DeleteHistoryDto(
                 this.id,
                 this.contentId,

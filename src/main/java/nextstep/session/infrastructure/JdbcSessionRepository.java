@@ -2,8 +2,8 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
 import nextstep.session.domain.SessionRepository;
-import nextstep.session.dto.SessionDto;
-import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
+import nextstep.session.dto.SessionVO;
+import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,24 +29,24 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public long save(SessionDto sessionDto) {
+    public long save(SessionVO sessionVO) {
         String sql = "insert into session (start_date, end_date, session_status, course_id, max_capacity, enrolled, price, tutor_id, cover_id, session_name, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setTimestamp(1, DbTimestampUtils.toTimestamp(sessionDto.getStartDate()));
-            ps.setTimestamp(2, DbTimestampUtils.toTimestamp(sessionDto.getEndDate()));
-            ps.setString(3, sessionDto.getSessionStatus());
-            ps.setLong(4, sessionDto.getCourseId());
-            ps.setInt(5, sessionDto.getMaxCapacity());
-            ps.setInt(6, sessionDto.getEnrolled());
-            ps.setLong(7, sessionDto.getPrice());
-            ps.setString(8, sessionDto.getTutorId());
-            ps.setLong(9, sessionDto.getCoverId());
-            ps.setString(10, sessionDto.getSessionName());
-            ps.setBoolean(11, sessionDto.isDeleted());
-            ps.setTimestamp(12, DbTimestampUtils.toTimestamp(sessionDto.getCreatedAt()));
-            ps.setTimestamp(13, DbTimestampUtils.toTimestamp(sessionDto.getLastModifiedAt()));
+            ps.setTimestamp(1, DbTimestampUtils.toTimestamp(sessionVO.getStartDate()));
+            ps.setTimestamp(2, DbTimestampUtils.toTimestamp(sessionVO.getEndDate()));
+            ps.setString(3, sessionVO.getSessionStatus());
+            ps.setLong(4, sessionVO.getCourseId());
+            ps.setInt(5, sessionVO.getMaxCapacity());
+            ps.setInt(6, sessionVO.getEnrolled());
+            ps.setLong(7, sessionVO.getPrice());
+            ps.setString(8, sessionVO.getTutorId());
+            ps.setLong(9, sessionVO.getCoverId());
+            ps.setString(10, sessionVO.getSessionName());
+            ps.setBoolean(11, sessionVO.isDeleted());
+            ps.setTimestamp(12, DbTimestampUtils.toTimestamp(sessionVO.getCreatedAt()));
+            ps.setTimestamp(13, DbTimestampUtils.toTimestamp(sessionVO.getLastModifiedAt()));
             return ps;
         }, keyHolder);
 
@@ -54,9 +54,9 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public SessionDto findById(long sessionId) {
+    public SessionVO findById(long sessionId) {
         String sql = "select id, start_date, end_date, session_status, course_id, max_capacity, enrolled, price, tutor_id, cover_id, session_name, deleted, created_at, last_modified_at from session where id = ?";
-        RowMapper<SessionDto> rowMapper = (rs, rowNum) -> new SessionDto(
+        RowMapper<SessionVO> rowMapper = (rs, rowNum) -> new SessionVO(
                 rs.getLong(1),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(2)),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(3)),
@@ -76,7 +76,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateSessionBasicProperties(SessionDto sessionDto, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
+    public int updateSessionBasicProperties(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
         StringBuilder sql = new StringBuilder("UPDATE session SET ");
 
         addSetCondition(sessionUpdateDto, sql);
@@ -85,12 +85,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
         sql.append(" WHERE ").append("id").append(" = ?");
 
-        Object[] params = getWhereParams(sessionDto, sessionUpdateDto);
+        Object[] params = getWhereParams(sessionVO, sessionUpdateDto);
 
         return jdbcTemplate.update(sql.toString(), params);
     }
 
-    private Object[] getWhereParams(SessionDto sessionDto, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
+    private Object[] getWhereParams(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
         Object[] params = new Object[sessionUpdateDto.countNotNullProperties() + 1];
         int i = 0;
         if (sessionUpdateDto.hasSessionName()) {
@@ -104,11 +104,11 @@ public class JdbcSessionRepository implements SessionRepository {
         if (sessionUpdateDto.hasEndDate()) {
             params[i++] = sessionUpdateDto.getEndDate();
         }
-        params[i] = sessionDto.getId();
+        params[i] = sessionVO.getId();
         return params;
     }
 
-    private void addSetCondition(SessionUpdateBasicPropertiesDto sessionUpdateDto, StringBuilder sql) {
+    private void addSetCondition(SessionUpdateBasicPropertiesVO sessionUpdateDto, StringBuilder sql) {
         if (sessionUpdateDto.hasSessionName()) {
             sql.append(SESSION_NAME_FIELD).append(QUESTION_CONDITION);
         }
@@ -127,8 +127,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int updateCover(SessionDto sessionDto, Cover newCover) {
+    public int updateCover(SessionVO sessionVO, Cover newCover) {
         String sql = "UPDATE session SET cover_id = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, newCover.getId(), sessionDto.getId());
+        return jdbcTemplate.update(sql, newCover.getId(), sessionVO.getId());
     }
 }

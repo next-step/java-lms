@@ -1,7 +1,7 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.StudentRepository;
-import nextstep.session.dto.StudentDto;
+import nextstep.session.dto.StudentVO;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,9 +23,9 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public List<StudentDto> findBySessionId(long sessionId) {
+    public List<StudentVO> findBySessionId(long sessionId) {
         String sql = "select id, session_id, ns_user_id, deleted, created_at, last_modified_at from student where session_id = ? and deleted = false";
-        RowMapper<StudentDto> rowMapper = (rs, rowNum) -> new StudentDto(
+        RowMapper<StudentVO> rowMapper = (rs, rowNum) -> new StudentVO(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),
@@ -36,16 +36,16 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public long save(StudentDto studentDto) {
+    public long save(StudentVO studentVO) {
         String sql = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, studentDto.getSessionId());
-            ps.setString(2, studentDto.getUserId());
-            ps.setBoolean(3, studentDto.isDeleted());
-            ps.setTimestamp(4, DbTimestampUtils.toTimestamp(studentDto.getCreatedAt()));
-            ps.setTimestamp(5, DbTimestampUtils.toTimestamp(studentDto.getLastModifiedAt()));
+            ps.setLong(1, studentVO.getSessionId());
+            ps.setString(2, studentVO.getUserId());
+            ps.setBoolean(3, studentVO.isDeleted());
+            ps.setTimestamp(4, DbTimestampUtils.toTimestamp(studentVO.getCreatedAt()));
+            ps.setTimestamp(5, DbTimestampUtils.toTimestamp(studentVO.getLastModifiedAt()));
             return ps;
         }, keyHolder);
 

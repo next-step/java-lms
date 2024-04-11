@@ -1,14 +1,14 @@
 package nextstep.session.domain;
 
-import nextstep.session.dto.StudentDto;
+import nextstep.session.dto.StudentVO;
 
 import java.util.List;
 
 public interface StudentRepository {
 
-    List<StudentDto> findBySessionId(long sessionId);
+    List<StudentVO> findBySessionId(long sessionId);
 
-    long save(StudentDto studentDto);
+    long save(StudentVO studentVO);
 
     int updateDeleteStatus(long sessionId, String studentId, boolean deleteStatus);
 }

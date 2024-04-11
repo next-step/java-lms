@@ -1,16 +1,15 @@
 package nextstep.session.domain;
 
-import nextstep.session.domain.Cover;
-import nextstep.session.dto.SessionDto;
-import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
+import nextstep.session.dto.SessionVO;
+import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 
 public interface SessionRepository {
 
-    long save(SessionDto sessionDto);
+    long save(SessionVO sessionVO);
 
-    SessionDto findById(long sessionId);
+    SessionVO findById(long sessionId);
 
-    int updateSessionBasicProperties(SessionDto sessionDto, SessionUpdateBasicPropertiesDto sessionUpdateBasicPropertiesDto);
+    int updateSessionBasicProperties(SessionVO sessionVO, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
 
-    int updateCover(SessionDto sessionDto, Cover newCover);
+    int updateCover(SessionVO sessionVO, Cover newCover);
 }

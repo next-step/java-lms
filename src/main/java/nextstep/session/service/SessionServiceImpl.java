@@ -8,8 +8,8 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
 import nextstep.payments.domain.Payment;
 import nextstep.session.domain.*;
-import nextstep.session.dto.SessionDto;
-import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
+import nextstep.session.dto.SessionVO;
+import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.type.SessionStatusType;
 import nextstep.users.domain.NsUser;
@@ -45,51 +45,51 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public long save(Session session) {
-        return sessionRepository.save(session.toDto());
+        return sessionRepository.save(session.toVO());
     }
 
     @Override
     public Session findById(long sessionId) {
-        SessionDto sessionDto = sessionRepository.findById(sessionId);
-        Cover foundCover = coverService.findById(sessionDto.getCoverId());
-        Course foundCourse = courseService.findById(sessionDto.getCourseId());
+        SessionVO sessionVO = sessionRepository.findById(sessionId);
+        Cover foundCover = coverService.findById(sessionVO.getCoverId());
+        Course foundCourse = courseService.findById(sessionVO.getCourseId());
         Students foundStudents = studentService.findBySessionId(sessionId);
-        Tutor foundTutor = new Tutor(userService.findByUserId(sessionDto.getTutorId()));
+        Tutor foundTutor = new Tutor(userService.findByUserId(sessionVO.getTutorId()));
 
-        if (sessionDto.getPrice() == FREE_PRICE) {
+        if (sessionVO.getPrice() == FREE_PRICE) {
             return new FreeSession(
-                    sessionDto.getId(),
-                    new Duration(sessionDto.getStartDate(), sessionDto.getEndDate()),
+                    sessionVO.getId(),
+                    new Duration(sessionVO.getStartDate(), sessionVO.getEndDate()),
                     foundCover,
-                    SessionStatus.of(SessionStatusType.valueOf(sessionDto.getSessionStatus())),
-                    sessionDto.getSessionName(),
+                    SessionStatus.of(SessionStatusType.valueOf(sessionVO.getSessionStatus())),
+                    sessionVO.getSessionName(),
                     foundCourse,
                     foundTutor,
                     foundStudents,
-                    new BaseEntity(sessionDto.isDeleted(), sessionDto.getCreatedAt(), sessionDto.getLastModifiedAt())
+                    new BaseEntity(sessionVO.isDeleted(), sessionVO.getCreatedAt(), sessionVO.getLastModifiedAt())
             );
         }
 
         return new PaidSession(
-                sessionDto.getId(),
-                new Duration(sessionDto.getStartDate(), sessionDto.getEndDate()),
+                sessionVO.getId(),
+                new Duration(sessionVO.getStartDate(), sessionVO.getEndDate()),
                 foundCover,
-                SessionStatus.of(SessionStatusType.valueOf(sessionDto.getSessionStatus())),
-                sessionDto.getSessionName(),
+                SessionStatus.of(SessionStatusType.valueOf(sessionVO.getSessionStatus())),
+                sessionVO.getSessionName(),
                 foundCourse,
-                sessionDto.getMaxCapacity(),
-                sessionDto.getEnrolled(),
-                sessionDto.getPrice(),
+                sessionVO.getMaxCapacity(),
+                sessionVO.getEnrolled(),
+                sessionVO.getPrice(),
                 foundTutor,
                 foundStudents,
-                new BaseEntity(sessionDto.isDeleted(), sessionDto.getCreatedAt(), sessionDto.getLastModifiedAt())
+                new BaseEntity(sessionVO.isDeleted(), sessionVO.getCreatedAt(), sessionVO.getLastModifiedAt())
         );
     }
 
     @Override
-    public int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesDto sessionUpdateDto) {
-        SessionDto foundSessionDto = sessionRepository.findById(sessionId);
-        return sessionRepository.updateSessionBasicProperties(foundSessionDto, sessionUpdateDto);
+    public int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
+        SessionVO foundSessionVO = sessionRepository.findById(sessionId);
+        return sessionRepository.updateSessionBasicProperties(foundSessionVO, sessionUpdateDto);
     }
 
     @Transactional
@@ -102,13 +102,13 @@ public class SessionServiceImpl implements SessionService {
         long savedNewCoverId = coverService.save(newCover);
         Cover savedNewCover = coverService.findById(savedNewCoverId);
 
-        return sessionRepository.updateCover(targetSession.toDto(), savedNewCover);
+        return sessionRepository.updateCover(targetSession.toVO(), savedNewCover);
     }
 
     @Override
     public Session apply(long sessionId, Payment payment, Student student) {
         Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toDto().getId(), student.getUser());
+        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUser());
 
         studentService.save(studentWithSession);
 
@@ -120,7 +120,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Session deleteStudent(long sessionId, Student student, NsUser requestUser) {
         Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toDto().getId(), student.getUser());
+        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUser());
 
         DeleteHistory deleteHistory = studentService.delete(requestUser, studentWithSession);
         deleteHistoryService.saveAll(List.of(deleteHistory));
@@ -133,7 +133,7 @@ public class SessionServiceImpl implements SessionService {
         Session targetSession = findById(sessionId);
         DeleteHistory sessionDeleteHistory = targetSession.delete(requestUser);
 
-        Cover targetCover = coverService.findById(targetSession.toDto().getCoverId());
+        Cover targetCover = coverService.findById(targetSession.toVO().getCoverId());
         DeleteHistory coverDeleteHistory = coverService.delete(targetCover, requestUser);
 
         Students targetStudents = studentService.findBySessionId(sessionId);

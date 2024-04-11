@@ -2,7 +2,7 @@ package nextstep.session.dto;
 
 import java.time.LocalDateTime;
 
-public class StudentDto {
+public class StudentVO {
 
     private final long id;
     private final long sessionId;
@@ -11,7 +11,7 @@ public class StudentDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime lastModifiedAt;
 
-    public StudentDto(
+    public StudentVO(
             long id, long sessionId, String userId, boolean deleted,
             LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {

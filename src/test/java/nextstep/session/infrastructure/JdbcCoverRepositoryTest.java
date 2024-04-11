@@ -4,7 +4,7 @@ import nextstep.session.domain.Cover;
 import nextstep.session.domain.CoverRepository;
 import nextstep.session.domain.ImageFilePath;
 import nextstep.session.domain.Resolution;
-import nextstep.session.dto.CoverDto;
+import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,8 +38,8 @@ class JdbcCoverRepositoryTest {
                 NsUserTest.JAVAJIGI
         );
 
-        Long savedId = coverRepository.save(cover.toDto());
-        CoverDto savedCover = coverRepository.findById(savedId);
+        Long savedId = coverRepository.save(cover.toVO());
+        CoverVO savedCover = coverRepository.findById(savedId);
 
         assertThat(savedCover.getId())
                 .isEqualTo(savedId);
@@ -57,9 +57,9 @@ class JdbcCoverRepositoryTest {
         );
 
         // when
-        Long savedId = coverRepository.save(cover.toDto());
+        Long savedId = coverRepository.save(cover.toVO());
         int updatedCount = coverRepository.updateDeleteStatus(savedId, true);
-        CoverDto foundCover = coverRepository.findById(savedId);
+        CoverVO foundCover = coverRepository.findById(savedId);
 
         // then
         assertThat(updatedCount).isEqualTo(1);

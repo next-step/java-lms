@@ -19,7 +19,7 @@ public class DeleteHistoryService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveAll(List<DeleteHistory> deleteHistories) {
         List<DeleteHistoryDto> deleteHistoryDto = deleteHistories.stream()
-                .map(DeleteHistory::toDto)
+                .map(DeleteHistory::toVO)
                 .collect(Collectors.toList());
 
         deleteHistoryRepository.saveAll(deleteHistoryDto);

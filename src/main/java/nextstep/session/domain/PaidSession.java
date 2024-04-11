@@ -5,7 +5,7 @@ import nextstep.common.domain.DeleteHistory;
 import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
-import nextstep.session.dto.SessionDto;
+import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -93,8 +93,8 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public SessionDto toDto() {
-        return new SessionDto(
+    public SessionVO toVO() {
+        return new SessionVO(
                 this.id,
                 this.duration.getStartDate(),
                 this.duration.getEndDate(),

@@ -2,7 +2,7 @@ package nextstep.session.dto;
 
 import java.time.LocalDateTime;
 
-public class CoverDto {
+public class CoverVO {
 
     private final long id;
     private final int width;
@@ -16,7 +16,7 @@ public class CoverDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime lastModifiedAt;
 
-    public CoverDto(
+    public CoverVO(
             long id, int width, int height, String filePath, String fileName, String fileExtension,
             long byteSize, boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {

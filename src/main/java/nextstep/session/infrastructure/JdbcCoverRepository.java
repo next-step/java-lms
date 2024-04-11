@@ -1,7 +1,7 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.CoverRepository;
-import nextstep.session.dto.CoverDto;
+import nextstep.session.dto.CoverVO;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,21 +23,21 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public long save(CoverDto coverDto) {
+    public long save(CoverVO coverVO) {
         String sql = "insert into cover (width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, coverDto.getWidth());
-            ps.setInt(2, coverDto.getHeight());
-            ps.setString(3, coverDto.getFilePath());
-            ps.setString(4, coverDto.getFileName());
-            ps.setString(5, coverDto.getFileExtension());
-            ps.setLong(6, coverDto.getByteSize());
-            ps.setString(7, coverDto.getWriterId());
-            ps.setBoolean(8, coverDto.isDeleted());
-            ps.setTimestamp(9, DbTimestampUtils.toTimestamp(coverDto.getCreatedAt()));
-            ps.setTimestamp(10, DbTimestampUtils.toTimestamp(coverDto.getLastModifiedAt()));
+            ps.setInt(1, coverVO.getWidth());
+            ps.setInt(2, coverVO.getHeight());
+            ps.setString(3, coverVO.getFilePath());
+            ps.setString(4, coverVO.getFileName());
+            ps.setString(5, coverVO.getFileExtension());
+            ps.setLong(6, coverVO.getByteSize());
+            ps.setString(7, coverVO.getWriterId());
+            ps.setBoolean(8, coverVO.isDeleted());
+            ps.setTimestamp(9, DbTimestampUtils.toTimestamp(coverVO.getCreatedAt()));
+            ps.setTimestamp(10, DbTimestampUtils.toTimestamp(coverVO.getLastModifiedAt()));
             return ps;
         }, keyHolder);
 
@@ -45,9 +45,9 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public CoverDto findById(long coverId) {
+    public CoverVO findById(long coverId) {
         String sql = "select id, width, height, file_path, file_name, file_extension, byte_size, deleted, writer_id, created_at, last_modified_at from cover where id = ?";
-        RowMapper<CoverDto> rowMapper = (rs, rowNum) -> new CoverDto(
+        RowMapper<CoverVO> rowMapper = (rs, rowNum) -> new CoverVO(
                 rs.getLong(1),
                 rs.getInt(2),
                 rs.getInt(3),

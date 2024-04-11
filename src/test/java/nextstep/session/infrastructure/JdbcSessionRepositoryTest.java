@@ -3,8 +3,8 @@ package nextstep.session.infrastructure;
 import nextstep.common.domain.BaseEntity;
 import nextstep.courses.domain.Course;
 import nextstep.session.domain.*;
-import nextstep.session.dto.SessionDto;
-import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
+import nextstep.session.dto.SessionVO;
+import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,11 +63,11 @@ class JdbcSessionRepositoryTest {
     @Test
     void saveAndFindForFreeSession() {
         // when
-        long savedId = sessionRepository.save(freeSession.toDto());
-        SessionDto sessionDto = sessionRepository.findById(savedId);
+        long savedId = sessionRepository.save(freeSession.toVO());
+        SessionVO sessionVO = sessionRepository.findById(savedId);
 
         // then
-        assertThat(sessionDto.getId())
+        assertThat(sessionVO.getId())
                 .isEqualTo(savedId);
     }
 
@@ -75,11 +75,11 @@ class JdbcSessionRepositoryTest {
     @Test
     void saveAndFindForPaidSession() {
         // when
-        long savedId = sessionRepository.save(paidSession.toDto());
-        SessionDto sessionDto = sessionRepository.findById(savedId);
+        long savedId = sessionRepository.save(paidSession.toVO());
+        SessionVO sessionVO = sessionRepository.findById(savedId);
 
         // then
-        assertThat(sessionDto.getId())
+        assertThat(sessionVO.getId())
                 .isEqualTo(savedId);
     }
 
@@ -88,18 +88,18 @@ class JdbcSessionRepositoryTest {
     void editBasicProperties() {
         // when
         String changeSessionName = "천천히 배우자 객체지향";
-        long savedId = sessionRepository.save(freeSession.toDto());
+        long savedId = sessionRepository.save(freeSession.toVO());
 
-        SessionDto sessionDto = sessionRepository.findById(savedId);
-        SessionUpdateBasicPropertiesDto updateDto =
-                new SessionUpdateBasicPropertiesDto(null, null, changeSessionName);
-        int updateCount = sessionRepository.updateSessionBasicProperties(sessionDto, updateDto);
-        SessionDto updatedSessionDto = sessionRepository.findById(savedId);
+        SessionVO sessionVO = sessionRepository.findById(savedId);
+        SessionUpdateBasicPropertiesVO updateDto =
+                new SessionUpdateBasicPropertiesVO(null, null, changeSessionName);
+        int updateCount = sessionRepository.updateSessionBasicProperties(sessionVO, updateDto);
+        SessionVO updatedSessionVO = sessionRepository.findById(savedId);
 
         // then
         assertThat(updateCount)
                 .isEqualTo(1);
-        assertThat(updatedSessionDto.getSessionName())
+        assertThat(updatedSessionVO.getSessionName())
                 .isEqualTo(changeSessionName);
     }
 
@@ -107,14 +107,14 @@ class JdbcSessionRepositoryTest {
     @Test
     void cannotEditWithNothing() {
         // when
-        long savedId = sessionRepository.save(freeSession.toDto());
-        SessionDto sessionDto = sessionRepository.findById(savedId);
+        long savedId = sessionRepository.save(freeSession.toVO());
+        SessionVO sessionVO = sessionRepository.findById(savedId);
 
-        SessionUpdateBasicPropertiesDto updateDto =
-                new SessionUpdateBasicPropertiesDto(null, null, null);
+        SessionUpdateBasicPropertiesVO updateDto =
+                new SessionUpdateBasicPropertiesVO(null, null, null);
 
         // then
-        Assertions.assertThatThrownBy(() -> sessionRepository.updateSessionBasicProperties(sessionDto, updateDto))
+        Assertions.assertThatThrownBy(() -> sessionRepository.updateSessionBasicProperties(sessionVO, updateDto))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -122,16 +122,16 @@ class JdbcSessionRepositoryTest {
     @Test
     void canChangeCover() {
         // when
-        long savedId = sessionRepository.save(freeSession.toDto());
-        SessionDto sessionDto = sessionRepository.findById(savedId);
+        long savedId = sessionRepository.save(freeSession.toVO());
+        SessionVO sessionVO = sessionRepository.findById(savedId);
 
         Cover newCover = new Cover(100L, resolution, imageFilePath, 100_000L, NsUserTest.JAVAJIGI, new BaseEntity());
 
-        int updateCount = sessionRepository.updateCover(sessionDto, newCover);
-        SessionDto updatedSessionDto = sessionRepository.findById(savedId);
+        int updateCount = sessionRepository.updateCover(sessionVO, newCover);
+        SessionVO updatedSessionVO = sessionRepository.findById(savedId);
 
         // then
-        assertThat(updatedSessionDto.getCoverId())
+        assertThat(updatedSessionVO.getCoverId())
                 .isEqualTo(newCover.getId());
     }
 }

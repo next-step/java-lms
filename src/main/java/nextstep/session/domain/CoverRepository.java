@@ -1,12 +1,12 @@
 package nextstep.session.domain;
 
-import nextstep.session.dto.CoverDto;
+import nextstep.session.dto.CoverVO;
 
 public interface CoverRepository {
 
-    long save(CoverDto coverDto);
+    long save(CoverVO coverVO);
 
-    CoverDto findById(long coverId);
+    CoverVO findById(long coverId);
 
     int updateDeleteStatus(long coverId, boolean deleteStatus);
 }

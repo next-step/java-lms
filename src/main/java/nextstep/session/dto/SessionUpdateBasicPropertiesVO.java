@@ -3,14 +3,14 @@ package nextstep.session.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class SessionUpdateBasicPropertiesDto {
+public class SessionUpdateBasicPropertiesVO {
 
     public static final int NOTHING_TO_UPDATE_COUNT = 0;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String sessionName;
 
-    public SessionUpdateBasicPropertiesDto(LocalDateTime startDate, LocalDateTime endDate, String sessionName) {
+    public SessionUpdateBasicPropertiesVO(LocalDateTime startDate, LocalDateTime endDate, String sessionName) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.sessionName = sessionName;

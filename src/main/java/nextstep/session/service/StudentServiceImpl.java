@@ -7,7 +7,7 @@ import nextstep.exception.StudentsException;
 import nextstep.session.domain.Student;
 import nextstep.session.domain.StudentService;
 import nextstep.session.domain.Students;
-import nextstep.session.dto.StudentDto;
+import nextstep.session.dto.StudentVO;
 import nextstep.session.domain.StudentRepository;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.UserService;
@@ -30,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Students findBySessionId(long sessionId) {
-        List<StudentDto> studentsDto = studentRepository.findBySessionId(sessionId);
+        List<StudentVO> studentsDto = studentRepository.findBySessionId(sessionId);
         List<Student> students = studentsDto.stream()
                 .map(studentDto ->
                         new Student(
@@ -46,18 +46,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Long save(Student student) {
-        return studentRepository.save(student.toDto());
+        return studentRepository.save(student.toVO());
     }
 
     @Override
     public DeleteHistory delete(NsUser requestStudent, Student student) {
         student.delete();
-        StudentDto studentDto = student.toDto();
+        StudentVO studentVO = student.toVO();
 
-        int updateResult = studentRepository.updateDeleteStatus(studentDto.getSessionId(), studentDto.getUserId(), true);
+        int updateResult = studentRepository.updateDeleteStatus(studentVO.getSessionId(), studentVO.getUserId(), true);
         validateUpdateResult(updateResult);
 
-        return DeleteHistory.createStudent(studentDto.getId(), requestStudent, LocalDateTime.now());
+        return DeleteHistory.createStudent(studentVO.getId(), requestStudent, LocalDateTime.now());
     }
 
     private void validateUpdateResult(int updateResult) {

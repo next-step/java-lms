@@ -2,7 +2,7 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Student;
 import nextstep.session.domain.StudentRepository;
-import nextstep.session.dto.StudentDto;
+import nextstep.session.dto.StudentVO;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,8 +36,8 @@ class JdbcStudentRepositoryTest {
         Student student = new Student(sessionId, NsUserTest.SANJIGI);
 
         // when
-        Long savedId = studentRepository.save(student.toDto());
-        List<StudentDto> savedStudent = studentRepository.findBySessionId(sessionId);
+        Long savedId = studentRepository.save(student.toVO());
+        List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(savedStudent.size())
@@ -53,9 +53,9 @@ class JdbcStudentRepositoryTest {
         Student student2 = new Student(sessionId, NsUserTest.JAVAJIGI);
 
         // when
-        Long savedId1 = studentRepository.save(student1.toDto());
-        Long savedId2 = studentRepository.save(student2.toDto());
-        List<StudentDto> savedStudent = studentRepository.findBySessionId(sessionId);
+        Long savedId1 = studentRepository.save(student1.toVO());
+        Long savedId2 = studentRepository.save(student2.toVO());
+        List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(savedStudent.size())
@@ -70,9 +70,9 @@ class JdbcStudentRepositoryTest {
         Student student = new Student(sessionId, NsUserTest.SANJIGI);
 
         // when
-        Long savedId = studentRepository.save(student.toDto());
-        int resultCount = studentRepository.updateDeleteStatus(sessionId, student.toDto().getUserId(), true);
-        List<StudentDto> findStudent = studentRepository.findBySessionId(sessionId);
+        Long savedId = studentRepository.save(student.toVO());
+        int resultCount = studentRepository.updateDeleteStatus(sessionId, student.toVO().getUserId(), true);
+        List<StudentVO> findStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(resultCount)

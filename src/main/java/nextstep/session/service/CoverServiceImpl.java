@@ -4,7 +4,7 @@ import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.domain.*;
-import nextstep.session.dto.CoverDto;
+import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.UserService;
 import org.springframework.stereotype.Service;
@@ -24,16 +24,16 @@ public class CoverServiceImpl implements CoverService {
 
     @Override
     public Cover findById(Long coverId) {
-        CoverDto coverDto = coverRepository.findById(coverId);
-        NsUser nsUser = userService.findByUserId(coverDto.getWriterId());
+        CoverVO coverVO = coverRepository.findById(coverId);
+        NsUser nsUser = userService.findByUserId(coverVO.getWriterId());
 
         return new Cover(
-                coverDto.getId(),
-                new Resolution(coverDto.getWidth(), coverDto.getHeight()),
-                new ImageFilePath(coverDto.getFilePath(), coverDto.getFileName(), coverDto.getFileExtension()),
-                coverDto.getByteSize(),
+                coverVO.getId(),
+                new Resolution(coverVO.getWidth(), coverVO.getHeight()),
+                new ImageFilePath(coverVO.getFilePath(), coverVO.getFileName(), coverVO.getFileExtension()),
+                coverVO.getByteSize(),
                 nsUser,
-                new BaseEntity(coverDto.isDeleted(), coverDto.getCreatedAt(), coverDto.getLastModifiedAt())
+                new BaseEntity(coverVO.isDeleted(), coverVO.getCreatedAt(), coverVO.getLastModifiedAt())
         );
     }
 
@@ -54,6 +54,6 @@ public class CoverServiceImpl implements CoverService {
 
     @Override
     public Long save(Cover cover) {
-        return coverRepository.save(cover.toDto());
+        return coverRepository.save(cover.toVO());
     }
 }

@@ -2,7 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
 import nextstep.exception.CoverException;
-import nextstep.session.dto.CoverDto;
+import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -56,8 +56,8 @@ public class Cover {
         }
     }
 
-    public CoverDto toDto() {
-        return new CoverDto(
+    public CoverVO toVO() {
+        return new CoverVO(
                 this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
                 this.baseEntity.isDeleted(), this.writer.getUserId(), this.baseEntity.getCreatedAt(),

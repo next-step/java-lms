@@ -1,7 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
-import nextstep.session.dto.StudentDto;
+import nextstep.session.dto.StudentVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -40,8 +40,8 @@ public class Student {
         return user;
     }
 
-    public StudentDto toDto() {
-        return new StudentDto(
+    public StudentVO toVO() {
+        return new StudentVO(
                 this.id,
                 this.sessionId,
                 this.user.getUserId(),
