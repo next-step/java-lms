@@ -9,4 +9,8 @@ public enum SessionStatus {
     public static boolean isRecruiting(SessionStatus status) {
         return status == RECRUITING;
     }
+
+    public boolean isSame(SessionStatus status) {
+        return this == status;
+    }
 }

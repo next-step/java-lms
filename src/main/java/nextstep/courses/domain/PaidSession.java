@@ -8,26 +8,14 @@ import java.util.List;
 
 public class PaidSession extends Session {
 
-    private final int amount;
-
-    public PaidSession(int id, int maximumNumberOfStudent, int amount, LocalDateTime startedAt, LocalDateTime endedAt) {
-        super(id, maximumNumberOfStudent, startedAt, endedAt);
-        this.amount = amount;
+    public PaidSession(long id, long maximumNumberOfStudent, long amount, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
+        super(id, amount, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
     }
 
     @Override
-    public void registers(List<NsUser> users) {
-        users.forEach(this::register);
-    }
-
-    @Override
-    public void register(NsUser user) {
-        validateLessEqualThenMaximumNumber();
-        validateRecruiting();
-
-        Payment payment = user.findPaymentBySessionId(this.id);
+    public void enroll(NsUser user, Payment payment) {
         validateSameAmount(payment);
-
+        validateLessEqualThenMaximumNumber();
         students.add(user);
     }
 

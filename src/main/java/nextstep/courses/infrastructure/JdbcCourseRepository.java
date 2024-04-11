@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
+
     private JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
@@ -29,6 +30,7 @@ public class JdbcCourseRepository implements CourseRepository {
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong(1),
                 rs.getString(2),
+                0,
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
                 toLocalDateTime(rs.getTimestamp(5)));
