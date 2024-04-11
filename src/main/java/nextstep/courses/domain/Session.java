@@ -2,13 +2,16 @@ package nextstep.courses.domain;
 
 import nextstep.payments.domain.Payment;
 
-public class Session {
+import java.time.LocalDateTime;
+
+public class Session extends BaseTimeEntity{
 
     private final CoverImage coverImage;
     private final EnrollmentManager enrollmentManager;
     private final SessionPeriod sessionPeriod;
 
     public Session(CoverImage coverImage, EnrollmentManager enrollmentManager, SessionPeriod sessionPeriod) {
+        super(LocalDateTime.now(), LocalDateTime.now());
         this.coverImage = coverImage;
         this.enrollmentManager = enrollmentManager;
         this.sessionPeriod = sessionPeriod;
