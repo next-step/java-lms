@@ -14,16 +14,17 @@ public class DeleteHistory {
 
     private NsUser deletedBy;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
+
 
     public DeleteHistory() {
     }
 
-    public DeleteHistory(ContentType contentType, Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+    public DeleteHistory(ContentType contentType, DeleteUserInformation deleteUser) {
         this.contentType = contentType;
-        this.contentId = contentId;
-        this.deletedBy = deletedBy;
-        this.createdDate = createdDate;
+        this.contentId = deleteUser.getId();
+        this.deletedBy = deleteUser.getWriter();
+        this.createdDate = deleteUser.getCreatedDate();
     }
 
     @Override
