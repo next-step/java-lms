@@ -7,9 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.CoverImageTest.COVER_IMAGE_PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
 import static nextstep.courses.domain.session.SessionStatus.GATHERING;
+import static nextstep.courses.domain.session.coverImage.CoverImageTest.COVER_IMAGE_PNG;
 import static nextstep.courses.domain.session.sessionType.FreeSessionTypeTest.FREE_SESSION_TYPE;
 import static nextstep.courses.domain.session.sessionType.PaidSessionTypeTest.PAID_SESSION_TYPE;
 import static nextstep.users.domain.NsUserTest.*;
