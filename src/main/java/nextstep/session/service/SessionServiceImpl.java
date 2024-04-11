@@ -10,7 +10,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.session.domain.*;
 import nextstep.session.dto.SessionDto;
 import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
-import nextstep.session.infrastructure.SessionRepository;
+import nextstep.session.domain.SessionRepository;
 import nextstep.session.type.SessionStatusType;
 import nextstep.users.domain.NsUser;
 import nextstep.users.infrastructure.UserService;

@@ -1,5 +1,6 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.StudentRepository;
 import nextstep.session.dto.StudentDto;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;

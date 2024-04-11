@@ -1,6 +1,7 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
+import nextstep.session.domain.CoverRepository;
 import nextstep.session.domain.ImageFilePath;
 import nextstep.session.domain.Resolution;
 import nextstep.session.dto.CoverDto;

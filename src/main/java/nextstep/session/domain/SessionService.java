@@ -1,4 +1,4 @@
-package nextstep.session.service;
+package nextstep.session.domain;
 
 import nextstep.payments.domain.Payment;
 import nextstep.session.domain.Cover;

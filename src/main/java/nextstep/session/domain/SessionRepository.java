@@ -1,4 +1,4 @@
-package nextstep.session.infrastructure;
+package nextstep.session.domain;
 
 import nextstep.session.domain.Cover;
 import nextstep.session.dto.SessionDto;

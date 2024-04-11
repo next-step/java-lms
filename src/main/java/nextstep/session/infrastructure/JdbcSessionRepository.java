@@ -1,6 +1,7 @@
 package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
+import nextstep.session.domain.SessionRepository;
 import nextstep.session.dto.SessionDto;
 import nextstep.session.dto.SessionUpdateBasicPropertiesDto;
 import nextstep.utils.DbTimestampUtils;

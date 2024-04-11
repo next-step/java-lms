@@ -1,5 +1,6 @@
 package nextstep.session.infrastructure;
 
+import nextstep.session.domain.CoverRepository;
 import nextstep.session.dto.CoverDto;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;

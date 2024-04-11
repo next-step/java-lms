@@ -1,4 +1,4 @@
-package nextstep.session.service;
+package nextstep.session.domain;
 
 import nextstep.common.domain.DeleteHistory;
 import nextstep.common.domain.DeleteHistoryTargets;
