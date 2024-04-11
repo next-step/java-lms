@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 public class CoverImageTest {
-    public static final CoverImage TEST_IMAGE = new CoverImage(1L, "test.png", 300, 200, 1024 * 1024);
+    public static final CoverImage TEST_IMAGE = new CoverImage(1L, SessionTest.FREE_SESSION, "test.png", 300, 200, 1024 * 1024);
 
     @DisplayName("강의 커버 이미지는")
     @Nested
@@ -20,7 +20,7 @@ public class CoverImageTest {
         @DisplayName("조건에 부합할 경우 생성된다.")
         @Test
         void valid() {
-            assertThatCode(() -> new CoverImage(0L, "image.png", 303, 202, 1024 * 1024))
+            assertThatCode(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "image.png", 303, 202, 1024 * 1024))
                     .doesNotThrowAnyException();
         }
 
@@ -28,7 +28,7 @@ public class CoverImageTest {
         @Test
         void size_under_1MB() {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new CoverImage(0L, "image.png", 300, 200, 1024 * 1025))
+                    .isThrownBy(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "image.png", 300, 200, 1024 * 1025))
                     .withMessage("이미지 크기는 1MB 이히여야 합니다.");
         }
 
@@ -40,7 +40,7 @@ public class CoverImageTest {
             @ParameterizedTest(name = "{0} 확장자는 허용된다.")
             @ValueSource(strings = {"gif", "jpg", "jpeg", "png", "svg"})
             void valid(String fileName) {
-                assertThatCode(() -> new CoverImage(0L, "test." + fileName, 300, 200, 1024 * 1024))
+                assertThatCode(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "test." + fileName, 300, 200, 1024 * 1024))
                         .doesNotThrowAnyException();
             }
 
@@ -50,7 +50,7 @@ public class CoverImageTest {
             @NullAndEmptySource
             void invalid(String fileName) {
                 assertThatIllegalArgumentException()
-                        .isThrownBy(() -> new CoverImage(0L, fileName, 300, 200, 1024 * 1024))
+                        .isThrownBy(() -> new CoverImage(0L, SessionTest.FREE_SESSION, fileName, 300, 200, 1024 * 1024))
                         .withMessage("지원하지 않는 확장자 입니다.");
             }
 
@@ -60,7 +60,7 @@ public class CoverImageTest {
         @Test
         void min_width_300() {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new CoverImage(0L, "a.png", 299, 200, 1024 * 1024))
+                    .isThrownBy(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "a.png", 299, 200, 1024 * 1024))
                     .withMessage("이미지 너비는 300픽셀 이상이어야 합니다.");
         }
 
@@ -68,7 +68,7 @@ public class CoverImageTest {
         @Test
         void min_height_200() {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new CoverImage(0L, "a.png", 300, 199, 1024 * 1024))
+                    .isThrownBy(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "a.png", 300, 199, 1024 * 1024))
                     .withMessage("이미지 높이는 200픽셀 이상이어야 합니다.");
         }
 
@@ -76,7 +76,7 @@ public class CoverImageTest {
         @Test
         void valid_size_ratio() {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> new CoverImage(0L, "a.png", 300, 201, 1024 * 1024))
+                    .isThrownBy(() -> new CoverImage(0L, SessionTest.FREE_SESSION, "a.png", 300, 201, 1024 * 1024))
                     .withMessage("이미지 비율이 적합하지 않습니다.");
         }
     }

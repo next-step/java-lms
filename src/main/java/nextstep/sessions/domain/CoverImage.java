@@ -7,13 +7,14 @@ public class CoverImage {
     private static final double RATIO = 3.0 / 2.0;
 
     private final Long id;
+    private final Session session;
     private final String fileName;
     private final int width;
     private final int height;
     private final long size;
     private final EnableExtension extension;
 
-    public CoverImage(Long id, String fileName, int width, int height, long size) {
+    public CoverImage(Long id, Session session, String fileName, int width, int height, long size) {
         assertImageUnderMaxSize(size);
 
         final EnableExtension extension = EnableExtension.from(fileName);
@@ -26,6 +27,7 @@ public class CoverImage {
         assertValidRatio(width, height);
 
         this.id = id;
+        this.session = session;
         this.fileName = fileName;
         this.width = width;
         this.height = height;
