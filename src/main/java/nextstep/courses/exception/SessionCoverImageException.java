@@ -1,19 +1,31 @@
 package nextstep.courses.exception;
 
-import nextstep.courses.domain.session.ImageExtension;
-
 import java.text.MessageFormat;
+import java.util.List;
 
-import static nextstep.courses.domain.session.SessionCoverImage.*;
+import static nextstep.courses.domain.session.image.ImageFileSize.MAX_FILE_SIZE;
+import static nextstep.courses.domain.session.image.ImageSize.*;
+import static nextstep.courses.exception.SessionExceptionMessage.UNSUPPORTED_IMAGE_FORMAT;
 
 public class SessionCoverImageException extends SessionException {
 
-    public SessionCoverImageException(long size, int width, int height, String extension) {
-        super(SessionExceptionMessage.UNSUPPORTED_IMAGE_FORMAT,
-                MessageFormat.format("지원 형식(파일 크기: {0}, 비율: {1}x{2} pixels, 확장자: {3}), " +
-                                "입력 형식(파일 크기: {4}, 비율: {5}x{6} pixels, 확장자: {7})"
-                , MAX_FILE_SIZE, MIN_WIDTH, MIN_HEIGHT, ImageExtension.values()
-                , size, width, height, extension));
+    public SessionCoverImageException(long size) {
+        this(MessageFormat.format("이미지 파일 크기는 {0}bytes 이하여야 합니다. (입력된 이미지 파일 크기: {1})"
+                , MAX_FILE_SIZE, size));
+    }
+
+    public SessionCoverImageException(int width, int height) {
+        this(MessageFormat.format("이미지 가로는 {0}pixels 세로는 {1}pixels 이상 이어야 하며, 가로 x 세로 비율은 {2} x {3} 이어야 합니다. (입력된 이미지 width x height: {4} x {5})"
+                , MIN_WIDTH, MIN_HEIGHT, WIDTH_RATIO, HEIGHT_RATIO, width, height));
+    }
+
+    public SessionCoverImageException(List<String> extensions, String extension) {
+        this(MessageFormat.format("이미지 확장자는 {0} 형식만 허용합니다. (입력된 이미지 확장자: {1})"
+                , extensions, extension));
+    }
+
+    private SessionCoverImageException(String detailMessage) {
+        super(UNSUPPORTED_IMAGE_FORMAT, detailMessage);
     }
 
 }

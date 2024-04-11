@@ -1,6 +1,6 @@
 package nextstep.courses.domain.session.engine;
 
-import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.image.SessionCoverImage;
 import nextstep.courses.domain.session.Student;
 import nextstep.courses.domain.session.Students;
 import nextstep.payments.domain.Payment;

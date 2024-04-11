@@ -1,8 +1,10 @@
 package nextstep.courses.domain.fixture;
 
-import nextstep.courses.domain.session.SessionCoverImage;
+import nextstep.courses.domain.session.image.SessionCoverImage;
 
-import static nextstep.courses.domain.session.SessionCoverImage.*;
+import static nextstep.courses.domain.session.image.ImageFileSize.MAX_FILE_SIZE;
+import static nextstep.courses.domain.session.image.ImageSize.MIN_HEIGHT;
+import static nextstep.courses.domain.session.image.ImageSize.MIN_WIDTH;
 
 public class SessionCoverImageFixture {
 
