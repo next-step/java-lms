@@ -1,26 +1,22 @@
 package nextstep.sessions.domain;
 
 public class CoverImage {
-    private static final int MIN_WIDTH = 300;
-    private static final int MIN_HEIGHT = 200;
-    private static final double RATIO = 3.0 / 2.0;
+    private static final ImageRatio RATIO = new ImageRatio(3.0 / 2.0);
 
     private final Long id;
     private final Session session;
     private final String fileName;
-    private final int width;
-    private final int height;
+    private final ImageSize width;
+    private final ImageSize height;
     private final FileSize size;
     private final EnableExtension extension;
 
     public CoverImage(Long id, Session session, String fileName, int width, int height, long size) {
-        final EnableExtension extension = EnableExtension.from(fileName);
+        this(id, session, fileName, ImageSize.width(width), ImageSize.height(height), new FileSize(size), EnableExtension.from(fileName));
+    }
+
+    public CoverImage(Long id, Session session, String fileName, ImageSize width, ImageSize height, FileSize size, EnableExtension extension) {
         assertValidExtension(extension);
-
-        assertValidWidth(width);
-
-        assertValidHeight(height);
-
         assertValidRatio(width, height);
 
         this.id = id;
@@ -28,7 +24,7 @@ public class CoverImage {
         this.fileName = fileName;
         this.width = width;
         this.height = height;
-        this.size = new FileSize(size);
+        this.size = size;
         this.extension = extension;
     }
 
@@ -38,20 +34,9 @@ public class CoverImage {
         }
     }
 
-    private void assertValidWidth(int width) {
-        if (width < MIN_WIDTH) {
-            throw new IllegalArgumentException("이미지 너비는 " + MIN_WIDTH + "픽셀 이상이어야 합니다.");
-        }
-    }
 
-    private void assertValidHeight(int height) {
-        if (height < MIN_HEIGHT) {
-            throw new IllegalArgumentException("이미지 높이는 " + MIN_HEIGHT + "픽셀 이상이어야 합니다.");
-        }
-    }
-
-    private void assertValidRatio(int width, int height) {
-        if ((double) width != height * RATIO) {
+    private void assertValidRatio(ImageSize width, ImageSize height) {
+        if (!RATIO.equals(ImageRatio.ratio(width, height))) {
             throw new IllegalArgumentException("이미지 비율이 적합하지 않습니다.");
         }
     }
