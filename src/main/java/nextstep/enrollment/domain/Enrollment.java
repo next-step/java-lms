@@ -20,7 +20,7 @@ public class Enrollment {
 
     public void enroll(final long paymentPrice) {
         validate(paymentPrice);
-        session.getEnrollments().add(this);
+        session.addEnrollment(this);
     }
 
     private void validate(final long price) {

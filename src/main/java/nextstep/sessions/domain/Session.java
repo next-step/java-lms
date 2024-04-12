@@ -63,6 +63,10 @@ public class Session {
         return enrollments.contains(enrollment);
     }
 
+    public void addEnrollment(final Enrollment enrollment) {
+        enrollments.add(enrollment);
+    }
+
     public List<Enrollment> getEnrollments() {
         return enrollments;
     }
