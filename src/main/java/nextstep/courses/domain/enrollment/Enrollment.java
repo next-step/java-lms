@@ -2,8 +2,8 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.BaseTime;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.domain.user.User;
 import nextstep.payments.domain.Payment;
+import nextstep.users.domain.NsUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +14,12 @@ public class Enrollment extends BaseTime {
   public static final String SESSION_AMOUNT_IS_NOT_CORRECT = "수강료가 일치하지 않습니다. input: %s, expected: %s";
 
   private Long id;
-  private User user;
+  private NsUser user;
   private Long courseId;
   private Map<Session, Payment> registeredSessionInfo;
   private String registerFailReason;
 
-  private Enrollment(Long id, User user, Long courseId, Map<Session, Payment> registeredSessionInfo, String registerFailReason) {
+  private Enrollment(Long id, NsUser user, Long courseId, Map<Session, Payment> registeredSessionInfo, String registerFailReason) {
     this.id = id;
     this.user = user;
     this.courseId = courseId;
@@ -27,7 +27,7 @@ public class Enrollment extends BaseTime {
     this.registerFailReason = registerFailReason;
   }
 
-  public static Enrollment register(Long id, User user, Long courseId, Map<Session, Integer> registerRequestInfo) {
+  public static Enrollment register(Long id, NsUser user, Long courseId, Map<Session, Integer> registerRequestInfo) {
     valid(registerRequestInfo);
 
     StringBuilder registerFailReason = new StringBuilder();
@@ -75,7 +75,7 @@ public class Enrollment extends BaseTime {
     return id;
   }
 
-  public User getUser() {
+  public NsUser getUser() {
     return user;
   }
 

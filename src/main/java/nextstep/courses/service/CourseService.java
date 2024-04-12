@@ -4,7 +4,7 @@ import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.Generation;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.user.User;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -73,9 +73,9 @@ public class CourseService {
 
   private static void doRegister(Course course) {
 
-    User user1 = new User(1004L, "천사", "010-1234-4444");
-    User user2 = new User(1005L, "천오", "010-1234-5555");
-    User user3 = new User(1006L, "천육", "010-1234-6666");
+    NsUser user1 = new NsUser(1004L, "1004", "1004", "천사", "1004@naver.com");
+    NsUser user2 = new NsUser(1005L, "1005", "1005", "천오", "1005@naver.com");
+    NsUser user3 = new NsUser(1006L, "1006", "1006", "천육", "1006@naver.com");
 
     Optional<Session> freeSession = course.getSessions().stream().filter(it -> it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
     Optional<Session> notFreeSession = course.getSessions().stream().filter(it -> !it.isFree() && it.checkRegisterPossibleStatus()).findFirst();

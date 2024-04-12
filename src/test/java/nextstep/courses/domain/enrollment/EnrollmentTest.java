@@ -3,7 +3,7 @@ package nextstep.courses.domain.enrollment;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.Generation;
 import nextstep.courses.domain.session.*;
-import nextstep.courses.domain.user.User;
+import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class EnrollmentTest {
 
   private static Course COURSE;
-  private static User USER;
+  private static NsUser USER;
 
   @BeforeEach
   public void beforeEach() {
@@ -97,7 +97,7 @@ class EnrollmentTest {
   }
 
   private static void init() {
-    USER = new User(1004L, "천사", "010-1234-4444");
+    USER = new NsUser(1004L, "1004", "1004", "천사", "1004@naver.com");
     COURSE = new Course(1L, new Generation(1L), "TDD, 클린 코드 with Java", 100L, LocalDateTime.now(), LocalDateTime.now());
 
     Session session1 = new Session(
