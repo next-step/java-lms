@@ -12,6 +12,9 @@ import java.util.List;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
+    private static final String INSERT_SQL = "insert into course (title, term, creator_id, created_at) values(?, ?, ?, ?)";
+    private static final String SELECT_SQL = "select id, term, title, creator_id, created_at, updated_at from course where id = ?";
+
     private JdbcOperations jdbcTemplate;
 
     public JdbcCourseRepository(JdbcOperations jdbcTemplate) {
@@ -20,22 +23,20 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        return jdbcTemplate.update(INSERT_SQL, course.getTitle(), course.term(), course.getCreatorId(), course.getCreatedAt());
     }
 
     @Override
     public Course findById(Long id) {
-        String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
         RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
                 rs.getLong("id"),
-                1L, //객체 설계에만 집중하기 위해 이번 단계에서 임의 값 처리
+                rs.getString("term"),
                 rs.getString("title"),
                 List.of(),
                 rs.getLong("creator_id"),
                 toLocalDateTime(rs.getTimestamp("created_at")),
                 toLocalDateTime(rs.getTimestamp("updated_at")));
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return jdbcTemplate.queryForObject(SELECT_SQL, rowMapper, id);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

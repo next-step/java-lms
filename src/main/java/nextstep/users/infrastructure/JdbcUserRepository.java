@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {
+    private static String SELECT_SQL = "SELECT id, user_id, password, name, email, created_at, updated_at FROM ns_user WHERE user_id = ?";
     private JdbcOperations jdbcTemplate;
 
     public JdbcUserRepository(JdbcOperations jdbcTemplate) {
@@ -20,16 +21,15 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<NsUser> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email, created_at, updated_at from ns_user where user_id = ?";
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getLong(1),
-                rs.getString(2),
-                rs.getString(3),
-                rs.getString(4),
-                rs.getString(5),
+                rs.getLong("id"),
+                rs.getString("user_id"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email"),
                 toLocalDateTime(rs.getTimestamp(6)),
                 toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, userId));
+        return Optional.of(jdbcTemplate.queryForObject(SELECT_SQL, rowMapper, userId));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

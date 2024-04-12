@@ -1,6 +1,7 @@
 package nextstep.users.domain;
 
 import nextstep.courses.domain.ChargedSession;
+import nextstep.courses.domain.Registration;
 import nextstep.courses.domain.Session;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.domain.Payments;
@@ -135,8 +136,8 @@ public class NsUser {
         return !this.payments.containsPaymentFor(session);
     }
 
-    public void register(final Session session) {
-        session.addStudent(this);
+    public Registration register(final Session session) {
+        return session.addStudent(this);
     }
 
     private static class GuestNsUser extends NsUser {
