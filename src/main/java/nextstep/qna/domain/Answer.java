@@ -32,11 +32,11 @@ public class Answer {
 
     public Answer(Long id, User writer, Question question, String contents) {
         this.id = id;
-        if (writer == null) {
+        if(writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if (question == null) {
+        if(question == null) {
             throw new NotFoundException();
         }
 
@@ -49,19 +49,24 @@ public class Answer {
         return id;
     }
 
+    public Answer setDeleted(boolean deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
 
     public void delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException(ANSWER_DELETE_ERROR_MESSAGE);
+            throw new CannotDeleteException(ANSWER_DELETE_ERORR_MESSAGE);
         }
         this.deleted = true;
     }
 
-    public DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    public DeleteHistory toDeleteHistory(){
+        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 
     public boolean isOwner(User writer) {
@@ -70,6 +75,10 @@ public class Answer {
 
     public User getWriter() {
         return writer;
+    }
+
+    public String getContents() {
+        return contents;
     }
 
     public void toQuestion(Question question) {
