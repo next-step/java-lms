@@ -19,4 +19,13 @@ public class SessionDate {
         }
         return new SessionDate(startDate, endDate);
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
 }

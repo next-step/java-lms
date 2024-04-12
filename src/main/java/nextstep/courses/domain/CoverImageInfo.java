@@ -11,18 +11,24 @@ public class CoverImageInfo {
     private static final String IMAGE_HEIGHT_UNDER_MESSAGE = "이미지의 높이는 200 픽셀 이상이어야 합니다.";
     private static final String IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE = "이미지의 너비와 높이는 3:2 비율이어야 합니다.";
 
-    private static final int MAX_IMAGE_SIZE = 1024;         // KB
-    private static final int MIN_IMAGE_WIDTH = 300;         // 픽셀
-    private static final int MIN_IMAGE_HEIGHT = 200;        // 픽셀
-    private static final int WIDTH_RATE = 3;
-    private static final int HEIGHT_RATE = 2;
+    private static final Long MAX_IMAGE_SIZE = 1024L;         // KB
+    private static final Long MIN_IMAGE_WIDTH = 300L;         // 픽셀
+    private static final Long MIN_IMAGE_HEIGHT = 200L;        // 픽셀
+    private static final Long WIDTH_RATE = 3L;
+    private static final Long HEIGHT_RATE = 2L;
 
-    private final int size;
+    private Long id;
+    private final Long size;
     private final ImageType imageType;
-    private final int width;
-    private final int height;
+    private final Long width;
+    private final Long height;
 
-    public CoverImageInfo(int size, String imageTypeStr, int width, int height) {
+    private CoverImageInfo(Long id, Long size, String imageTypeStr, Long width, Long height) {
+        this(size, imageTypeStr, width, height);
+        this.id = id;
+    }
+
+    private CoverImageInfo(Long size, String imageTypeStr, Long width, Long height) {
         validateImageSize(size);
         validateWidthAndHeight(width, height);
         this.imageType = validatedImageType(imageTypeStr);
@@ -31,7 +37,7 @@ public class CoverImageInfo {
         this.height = height;
     }
 
-    private static void validateImageSize(int size) {
+    private static void validateImageSize(Long size) {
         if (size > MAX_IMAGE_SIZE) {
             throw new IllegalArgumentException(IMAGE_SIZE_OVER_MESSAGE);
         }
@@ -42,7 +48,7 @@ public class CoverImageInfo {
         return imageType.orElseThrow(() -> new IllegalArgumentException(IMAGE_TYPE_INVALID_MESSAGE));
     }
 
-    private void validateWidthAndHeight(int width, int height) {
+    private void validateWidthAndHeight(Long width, Long height) {
         if (width < MIN_IMAGE_WIDTH) {
             throw new IllegalArgumentException(IMAGE_WIDTH_UNDER_MESSAGE);
         }
@@ -51,8 +57,74 @@ public class CoverImageInfo {
             throw new IllegalArgumentException(IMAGE_HEIGHT_UNDER_MESSAGE);
         }
 
-        if (WIDTH_RATE * height != HEIGHT_RATE * width) {
+        if (isCorrectImageRate(width, height)) {
             throw new IllegalArgumentException(IMAGE_WRONG_WIDTH_HEIGHT_RATE_MESSAGE);
         }
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public Long getWidth() {
+        return width;
+    }
+
+    public Long getHeight() {
+        return height;
+    }
+
+    private static boolean isCorrectImageRate(Long width, Long height) {
+        return WIDTH_RATE * height != HEIGHT_RATE * width;
+    }
+
+    public static CoverImageInfoBuilder builder() {
+        return new CoverImageInfoBuilder();
+    }
+
+    public static class CoverImageInfoBuilder {
+        private Long id;
+        private Long size;
+        private String imageType;
+        private Long width;
+        private Long height;
+
+        public CoverImageInfoBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public CoverImageInfoBuilder size(Long size) {
+            this.size = size;
+            return this;
+        }
+
+        public CoverImageInfoBuilder imageType(String imageTypeStr) {
+            this.imageType = imageTypeStr;
+            return this;
+        }
+
+        public CoverImageInfoBuilder width(Long width) {
+            this.width = width;
+            return this;
+        }
+
+        public CoverImageInfoBuilder height(Long height) {
+            this.height = height;
+            return this;
+        }
+
+        public CoverImageInfo build() {
+            return new CoverImageInfo(id, size, imageType, width, height);
+        }
+    }
+
 }

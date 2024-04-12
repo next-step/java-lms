@@ -81,5 +81,26 @@ validate도 마찬가지
     - width >= 300 && height >= 200 && width / heigth == 3/2아 아닌 경우 IlleaglArgumentException
 - [X] Session 추상클래스 생성
   - 생성자(강의 시작일, 강의 종료일, 커버 이미지 정보)
-- [ ] 서비스 레이어에서 수강신청 로직 구현
-  - 아직 요구사항을 모르겠음
+- [X] 각 도메인에 대한 DDL 작성
+    - Session 슈퍼/서브 타입은 Single Type 채택
+    - session
+      - startDate
+      - endDate
+      - status
+      - numberOfStudents
+      - maxNumberOfStudents
+      - price
+      - cover_image_info (fk)
+    - cover_image
+      - size
+      - type
+      - width
+      - height
+- [X] CoverImage 리포지토리
+  - [X] 인터페이스 작성
+  - [X] 인터페이스 구현
+- [X] Session 리포지토리
+  - [X] 인터페이스 작성
+  - [X] 인터페이스 구현
+- [ ] 서비스 레이어에서 수강신청 로직 구현 (?)
+- [ ] 테스트 시 저장한 데이터가 롤백이 안돼서 테스트 격리가 안됨. 

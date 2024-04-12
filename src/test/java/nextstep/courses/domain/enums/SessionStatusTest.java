@@ -15,5 +15,4 @@ class SessionStatusTest {
         assertThat(ready.isStatusNotRecruiting()).isTrue();
         assertThat(recruiting.isStatusNotRecruiting()).isFalse();
     }
-
 }

@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,12 @@ public class PaySessionTest {
     @BeforeEach
     void setUp() {
         payment = new Payment("1", 123L, 1L, 0L);
-        paySession = PaySession.of(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()), 2000L, 2);
+        paySession = PaySession.builder()
+                .sessionDate(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()))
+                .sessionStatus(SessionStatus.READY)
+                .price(2000L)
+                .maxNumberOfStudents(2)
+                .build();
     }
 
     @Test
@@ -33,7 +39,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("payment의 결제금액이 수강료가 일치하지 않는 경우 예외 발생")
     void enroll_wrong_price_exception() {
-        paySession.startSession();
+        paySession.startRecruit();
         Payment wrongPricePayment = new Payment("test", 12L, 12L, 1000L);
 
         assertThatThrownBy(() -> paySession.enroll(wrongPricePayment))
@@ -44,8 +50,9 @@ public class PaySessionTest {
     @Test
     @DisplayName("현재 수강 신청 인원이 최대 수강 신청 인원과 같으면 예외 발생")
     void enroll_students_full_exception() {
-        paySession.startSession();
         //given
+        paySession.startRecruit();
+
         paySession.enroll(new Payment("test1", 1L, 1L, 2000L));
         paySession.enroll(new Payment("test2", 2L, 2L, 2000L));
 
