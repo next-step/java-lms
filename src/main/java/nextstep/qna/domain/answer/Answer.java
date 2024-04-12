@@ -47,7 +47,7 @@ public class Answer {
         this.contents = contents;
     }
 
-    public DeleteHistory delete(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
+    public DeleteHistory delete(NsUser requestUser, LocalDateTime requestDatetime) {
         if (!isOwner(requestUser)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }

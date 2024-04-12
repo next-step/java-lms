@@ -12,7 +12,7 @@ public class Payment {
     private Long nsUserId;
 
     // 결제 금액
-    private Long amount;
+    private Money amount;
 
     private LocalDateTime createdAt;
 
@@ -20,10 +20,22 @@ public class Payment {
     }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
+        this(id, sessionId, nsUserId, new Money(amount));
+    }
+
+    public Payment(String id, Long sessionId, Long nsUserId, Money amount) {
         this.id = id;
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Money amount() {
+        return amount;
+    }
+
+    public boolean sameSessionId(Long sessionId) {
+        return this.sessionId.equals(sessionId);
     }
 }

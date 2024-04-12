@@ -22,22 +22,14 @@ public class Answers {
         values.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser requestUser, LocalDateTime requestDatetime) throws CannotDeleteException {
+    public List<DeleteHistory> deleteAll(NsUser requestUser, LocalDateTime requestDatetime) {
         if (!isAllSameAnswererWith(requestUser)) {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
         return values.stream()
-                .map(answer ->  deleteAnswer(answer, requestUser, requestDatetime))
+                .map(answer -> answer.delete(requestUser, requestDatetime))
                 .collect(Collectors.toList());
-    }
-
-    private DeleteHistory deleteAnswer(Answer answer, NsUser requestUser, LocalDateTime requestDatetime) {
-        try {
-            return answer.delete(requestUser, requestDatetime);
-        } catch (CannotDeleteException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public List<Answer> values() {
