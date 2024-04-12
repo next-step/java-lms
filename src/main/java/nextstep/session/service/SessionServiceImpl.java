@@ -129,18 +129,16 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void delete(long sessionId, NsUser requestUser) {
+        DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
         Session targetSession = findById(sessionId);
-        DeleteHistory sessionDeleteHistory = targetSession.delete(requestUser);
+        deleteHistoryTargets.addFirst(targetSession.delete(requestUser));
 
         Cover targetCover = coverService.findById(targetSession.toVO().getCoverId());
-        DeleteHistory coverDeleteHistory = coverService.delete(targetCover, requestUser);
+        deleteHistoryTargets.addFirst(coverService.delete(targetCover, requestUser));
 
         Students targetStudents = studentService.findBySessionId(sessionId);
-        DeleteHistoryTargets studentDeleteHistory = studentService.deleteAll(targetStudents, requestUser);
+        deleteHistoryTargets.add(studentService.deleteAll(targetStudents, requestUser));
 
-        studentDeleteHistory.addFirst(sessionDeleteHistory);
-        studentDeleteHistory.addFirst(coverDeleteHistory);
-
-        deleteHistoryService.saveAll(studentDeleteHistory.asList());
+        deleteHistoryService.saveAll(deleteHistoryTargets.asList());
     }
 }
