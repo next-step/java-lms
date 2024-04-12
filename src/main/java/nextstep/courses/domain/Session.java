@@ -9,6 +9,7 @@ public class Session {
 	private Long courseId;
 	private LocalDate startedAt;
 	private LocalDate endedAt;
+	private Image image;
 
 	public Session(final long id, final String title, final long courseId, final LocalDate startedAt, final LocalDate endedAt) {
 		validateSessionDate(startedAt, endedAt);
