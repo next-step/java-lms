@@ -51,11 +51,6 @@ public class Answer {
         return id;
     }
 
-    private Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -77,10 +72,10 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-	public DeleteHistory delete(NsUser user) throws CannotDeleteException {
+	public DeleteHistory delete(NsUser user, LocalDateTime now) throws CannotDeleteException {
         validateUser(user);
         this.deleted = true;
-        return new DeleteHistory(ANSWER, id, writer, LocalDateTime.now());
+        return new DeleteHistory(ANSWER, id, writer, now);
 	}
 
     private void validateUser(NsUser user)  throws CannotDeleteException{

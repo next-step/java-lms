@@ -46,18 +46,8 @@ public class Question {
         return title;
     }
 
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getContents() {
         return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -77,8 +67,9 @@ public class Question {
         verifyIfErasable(loginUser);
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
-        deleteHistories.addAll(answers.deleteAll(loginUser));
+        LocalDateTime now = LocalDateTime.now();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), now));
+        deleteHistories.addAll(answers.deleteAll(loginUser, now));
         return deleteHistories;
     }
 
