@@ -14,13 +14,13 @@ public class Answers {
     }
 
     public void deleteAnswers(User loginUser) throws CannotDeleteException {
-        for (Answer answer : this.answers){
+        for (Answer answer : this.answers) {
             answer.delete(loginUser);
         }
     }
 
     public void toDeleteHistories(List<DeleteHistory> deleteHistories) {
-        for (Answer answer : this.answers){
+        for (Answer answer : this.answers) {
             deleteHistories.add(answer.toDeleteHistory());
         }
     }

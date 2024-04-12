@@ -24,7 +24,7 @@ public class QuestionTest {
 
     @DisplayName("질문 삭제 에러 테스트")
     @Test
-    void answer_delete_error_test(){
+    void answer_delete_error_test() {
         assertThatThrownBy(() -> {
             Q1.delete(UserTest.SANJIGI);
         }).hasMessageContaining(QUESTION_DELETE_ERORR_MESSAGE);
@@ -32,7 +32,7 @@ public class QuestionTest {
 
     @DisplayName("답변 포함 삭제 에러 테스트")
     @Test
-    void delete_with_answer_error_test(){
+    void delete_with_answer_error_test() {
         assertThatThrownBy(() -> {
             Question Q3 = new Question(UserTest.JAVAJIGI, "title3", "contents3");
             Q3.addAnswer(AnswerTest.A1);

@@ -78,7 +78,7 @@ public class Question {
         answers.deleteAnswers(loginUser);
     }
 
-    public List<DeleteHistory> toDeleteHistories(){
+    public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(toDelteHistory());
 

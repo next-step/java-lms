@@ -32,11 +32,11 @@ public class Answer {
 
     public Answer(Long id, User writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -65,7 +65,7 @@ public class Answer {
         this.deleted = true;
     }
 
-    public DeleteHistory toDeleteHistory(){
+    public DeleteHistory toDeleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 
