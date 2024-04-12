@@ -89,7 +89,6 @@ public class Question {
 
         LocalDateTime deleteTime = LocalDateTime.now();
 
-        // TODO: DeleteHistory 쪽으로 이동
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, loginUser, deleteTime));
         deleteHistories.addAll(DeleteHistory.deleteAnswers(this.answers, deleteTime));
