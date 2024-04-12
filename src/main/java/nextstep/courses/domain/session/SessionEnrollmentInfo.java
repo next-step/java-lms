@@ -10,36 +10,36 @@ public class SessionEnrollmentInfo {
   public static final String INVALID_SESSION_AMOUNT = "강의 금액이 올바르지 않습니다. input: %s";
   public static final String STUDENT_COUNT_IS_FULL = "수강 신청 가능한 인원이 모두 꽉찼습니다.";
 
-  private boolean isFree;
+  private SessionType sessionType;
   private int sessionAmount;
   private int studentMaxCount = Integer.MAX_VALUE;
   private int totalStudentCount = 0;
 
-  public SessionEnrollmentInfo(boolean isFree, int sessionAmount) {
-    valid(isFree, sessionAmount, studentMaxCount);
-    this.isFree = isFree;
+  public SessionEnrollmentInfo(SessionType sessionType, int sessionAmount) {
+    valid(sessionType, sessionAmount, studentMaxCount);
+    this.sessionType = sessionType;
     this.sessionAmount = sessionAmount;
   }
 
-  public SessionEnrollmentInfo(boolean isFree, int sessionAmount, int studentMaxCount) {
-    valid(isFree, sessionAmount, studentMaxCount);
-    this.isFree = isFree;
+  public SessionEnrollmentInfo(SessionType sessionType, int sessionAmount, int studentMaxCount) {
+    valid(sessionType, sessionAmount, studentMaxCount);
+    this.sessionType = sessionType;
     this.sessionAmount = sessionAmount;
     this.studentMaxCount = studentMaxCount;
   }
 
-  private void valid(boolean isFree, int sessionAmount, Integer studentMaxCount) {
-    if (!isFree && studentMaxCount < MIN_STUDENT_COUNT) {
+  private void valid(SessionType sessionType, int sessionAmount, Integer studentMaxCount) {
+    if (!sessionType.isFree() && studentMaxCount < MIN_STUDENT_COUNT) {
       throw new IllegalArgumentException(String.format(INVALID_STUDENT_COUNT, studentMaxCount));
     }
 
-    if (!isFree && sessionAmount <= MIN_AMOUNT) {
+    if (!sessionType.isFree() && sessionAmount <= MIN_AMOUNT) {
       throw new IllegalArgumentException(String.format(INVALID_SESSION_AMOUNT, sessionAmount));
     }
   }
 
   public boolean isFree() {
-    return isFree;
+    return sessionType.isFree();
   }
 
   public int getSessionAmount() {
@@ -55,7 +55,7 @@ public class SessionEnrollmentInfo {
   }
 
   public void addStudentCount() {
-    if (isFree) {
+    if (sessionType.isFree()) {
       totalStudentCount++;
       return;
     }

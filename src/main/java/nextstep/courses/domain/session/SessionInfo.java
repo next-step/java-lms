@@ -7,18 +7,18 @@ public class SessionInfo {
   private SessionStatus sessionStatus;
   private SessionEnrollmentInfo sessionEnrollmentInfo;
 
-  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount) {
+  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, SessionType sessionType, int sessionAmount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
-    this.sessionEnrollmentInfo = new SessionEnrollmentInfo(isFree, sessionAmount);
+    this.sessionEnrollmentInfo = new SessionEnrollmentInfo(sessionType, sessionAmount);
   }
 
-  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, boolean isFree, int sessionAmount, int studentMaxCount) {
+  private SessionInfo(String sessionTitle, SessionStatus sessionStatus, SessionType sessionType, int sessionAmount, int studentMaxCount) {
     valid(sessionTitle);
     this.sessionTitle = sessionTitle;
     this.sessionStatus = sessionStatus;
-    this.sessionEnrollmentInfo = new SessionEnrollmentInfo(isFree, sessionAmount, studentMaxCount);
+    this.sessionEnrollmentInfo = new SessionEnrollmentInfo(sessionType, sessionAmount, studentMaxCount);
   }
 
   private void valid(String sessionTitle) {
@@ -28,11 +28,11 @@ public class SessionInfo {
   }
 
   public static SessionInfo newFreeSession(String sessionTitle, SessionStatus sessionStatus) {
-    return new SessionInfo(sessionTitle, sessionStatus, true, 0);
+    return new SessionInfo(sessionTitle, sessionStatus, SessionType.FREE, 0);
   }
 
   public static SessionInfo newPaidSession(String sessionTitle, SessionStatus sessionStatus, int sessionAmount, int studentMaxCount) {
-    return new SessionInfo(sessionTitle, sessionStatus, false, sessionAmount, studentMaxCount);
+    return new SessionInfo(sessionTitle, sessionStatus, SessionType.PAID, sessionAmount, studentMaxCount);
   }
 
   public String getSessionTitle() {
