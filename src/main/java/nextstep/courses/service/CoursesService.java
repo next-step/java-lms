@@ -18,7 +18,7 @@ public class CoursesService {
   RegistrationRepository registrationRepository;
 
   @Transactional
-  public void register(long userId, long sessionId) {
+  public void register(String userId, long sessionId) {
     userRepository.findByUserId(userId).ifPresentOrElse(
             user -> {
               Session session = sessionRepository.findById(sessionId);

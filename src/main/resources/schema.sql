@@ -68,7 +68,8 @@ create table session_image (
     height int not null,
     extension varchar(10) not null,
     file_size int not null,
-    file_name varchar(100) not null
+    file_name varchar(100) not null,
+    session_id bigint not null
 );
 
 create table registration (

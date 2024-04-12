@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,8 +34,8 @@ public class SessionRepositoryTest {
 
   @Test
   void crud() {
-    SessionImage sessionImage = new SessionImage(300, 200, "jpg", 1024, "TEST");
-    Session session = new ChargedSession(1L, LocalDate.now(), LocalDate.now().plusMonths(1L), sessionImage, SessionStatus.OPEN, 50, 800000L);
+    SessionImage sessionImage = new SessionImage(300, 200, "jpg", 1024, "TEST", 1L);
+    Session session = new ChargedSession(1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(sessionImage), SessionStatus.OPEN, 50, 800000L);
     int count = sessionRepository.save(session);
     assertThat(count).isEqualTo(1);
     Session savedSession = sessionRepository.findById(1L);

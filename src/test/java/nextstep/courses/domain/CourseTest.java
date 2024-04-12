@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CourseTest {
-  public static SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+  public static SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
 
   @BeforeEach
   void beforeEach() {
-    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
   }
 
   @Test
@@ -27,9 +27,9 @@ public class CourseTest {
             "TEST-1기",
             "title1",
             List.of(
-                    new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN, List.of()),
-                    new FreeSession(2L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN, List.of()),
-                    new FreeSession(3L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN, List.of())
+                    new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of()),
+                    new FreeSession(2L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of()),
+                    new FreeSession(3L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of())
             ),
             1L,
             now,

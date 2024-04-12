@@ -48,7 +48,7 @@ public class PaymentsTest {
   @Test
   void 특정_강의에_대한_결제이력_포함하는지_확인() {
     ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L),
-            new SessionImage(1L, 300, 200, "gif", 1024, "TEST"),
+            List.of(new SessionImage(1L, 300, 200, "gif", 1024, "TEST", 1L)),
             SessionStatus.OPEN, 20, 100000L);
     Payment payment1 = new Payment(1L, 1L, 100000L);
     Payment payment2 = new Payment(1L, 2L, 200000L);

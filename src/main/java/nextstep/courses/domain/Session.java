@@ -11,27 +11,28 @@ public abstract class Session {
   private Long courseId;
   private LocalDate startDate;
   private LocalDate endDate;
-  private SessionImage image;
+  private List<SessionImage> images;
   private SessionStatus status;
+  private OpenStatus openStatus;
+  private RecruitStatus recruitStatus;
   protected final Users students = new Users();
 
-  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status, final List<NsUser> students) {
+  protected Session(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status) {
+    this(0L, courseId, startDate, endDate, images, status, List.of());
+  }
+
+  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status) {
+    this(id, courseId, startDate, endDate, images, status, List.of());
+  }
+
+  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status, final List<NsUser> students) {
     this.id = id;
     this.courseId = courseId;
     this.startDate = startDate;
     this.endDate = endDate;
-    this.image = image;
+    this.images = images;
     this.status = status;
     this.students.addAll(students);
-    validate();
-  }
-
-  protected Session(Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(0L, courseId, startDate, endDate, image, status, List.of());
-  }
-
-  protected Session(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status) {
-    this(id, courseId, startDate, endDate, image, status, List.of());
     validate();
   }
 
@@ -89,15 +90,11 @@ public abstract class Session {
     return this.endDate;
   }
 
-  public Long getSessionImageId() {
-    return this.image.getId();
-  }
-
   public SessionStatus getStatus() {
     return this.status;
   }
 
-  public SessionImage image() {
-    return this.image;
+  public List<SessionImage> images() {
+    return this.images;
   }
 }

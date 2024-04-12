@@ -20,7 +20,7 @@ public class ChargedSessionTest {
   private NsUser SANGJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
   private NsUser CJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
   private NsUser PYTHONJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
-  private SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+  private SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
 
   @BeforeEach
   void beforeEach() {
@@ -28,13 +28,13 @@ public class ChargedSessionTest {
     SANGJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
     CJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
     PYTHONJIGI = new NsUser(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
-    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
   }
 
   @ParameterizedTest
   @ValueSource(strings = { "PREPARING", "CLOSED" })
   void 모집중이지_않음(SessionStatus status) {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, status,
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), status,
             5, 10000L, List.of());
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
@@ -43,7 +43,7 @@ public class ChargedSessionTest {
 
   @Test
   void 최대_수강인원_초과() {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN,
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
             3, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
@@ -53,7 +53,7 @@ public class ChargedSessionTest {
   @ParameterizedTest
   @ValueSource(longs = { 5000L, 15000L })
   void 결제_정보_일치하지_않음(Long input) {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN,
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
             5, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
     JAVAJIGI.addPayment(new Payment("TEST_PAYMENT", 1L, 1L, input));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
@@ -63,7 +63,7 @@ public class ChargedSessionTest {
 
   @Test
   void 정상_수강_신청() {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE, SessionStatus.OPEN,
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
             3, 10000L, List.of(SANGJIGI));
     JAVAJIGI.addPayment(new Payment("TEST_PAYMENT", 1L, 1L, 10000L));
     session.addStudent(JAVAJIGI);

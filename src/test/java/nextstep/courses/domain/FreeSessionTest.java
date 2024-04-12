@@ -14,18 +14,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FreeSessionTest {
   public static NsUser JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-  public static SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+  public static SessionImage IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
 
   @BeforeEach
   void beforeEach() {
     JAVAJIGI = new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net");
-    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE");
+    IMAGE = new SessionImage(1L, 300, 200, "jpg", 1024, "TEST_IMAGE", 1L);
   }
 
   @ParameterizedTest
   @ValueSource(strings = { "PREPARING", "CLOSED" })
   void 모집중이지_않은_경우_수강신청(SessionStatus status) {
-    FreeSession session = new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), IMAGE,
+    FreeSession session = new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
             status, List.of(JAVAJIGI));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
@@ -35,7 +35,7 @@ public class FreeSessionTest {
   @Test
   void 정상_수강신청() {
     FreeSession session = new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L),
-            IMAGE, SessionStatus.OPEN, List.of());
+            List.of(IMAGE), SessionStatus.OPEN, List.of());
     session.addStudent(JAVAJIGI);
 
     assertThat(session.numberOfStudents()).isEqualTo(1);

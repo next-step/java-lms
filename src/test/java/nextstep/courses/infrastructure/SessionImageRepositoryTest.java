@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
@@ -35,11 +37,16 @@ public class SessionImageRepositoryTest {
 
   @Test
   void crud() {
-    SessionImage sessionImage = new SessionImage(300, 200, "jpeg", 1024, "TEST");
+    SessionImage sessionImage = new SessionImage(300, 200, "jpeg", 1024, "TEST", 1L);
     int count = sessionImageRepository.save(sessionImage);
     assertThat(count).isEqualTo(1);
+
     SessionImage savedSessionImage = sessionImageRepository.findById(1L);
     assertThat(sessionImage.getFileName()).isEqualTo(savedSessionImage.getFileName());
     LOGGER.debug("SessionImage: {}", savedSessionImage);
+
+    sessionImageRepository.save(new SessionImage(300, 200, "jpeg", 1024, "TEST", 1L));
+    List<SessionImage> savedSessionImages = sessionImageRepository.findBySessionId(1L);
+    assertThat(savedSessionImages.size()).isEqualTo(2);
   }
 }

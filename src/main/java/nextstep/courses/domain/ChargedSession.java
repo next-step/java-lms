@@ -9,20 +9,20 @@ public class ChargedSession extends Session {
   private Integer maxSize;
   private Long tuition;
 
-  public ChargedSession(Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status,
+  public ChargedSession(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
                         final Integer maxSize, final Long tuition) {
-    this(0L, courseId, startDate, endDate, image, status, maxSize, tuition, List.of());
+    this(0L, courseId, startDate, endDate, images, status, maxSize, tuition, List.of());
   }
 
 
-  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status,
+  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
                         final Integer maxSize, final Long tuition) {
-    this(id, courseId, startDate, endDate, image, status, maxSize, tuition, List.of());
+    this(id, courseId, startDate, endDate, images, status, maxSize, tuition, List.of());
   }
 
-  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, SessionImage image, SessionStatus status,
+  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
                         final Integer maxSize, final Long tuition, final List<NsUser> students) {
-    super(id, courseId, startDate, endDate, image, status, students);
+    super(id, courseId, startDate, endDate, images, status, students);
     this.maxSize = maxSize;
     this.tuition = tuition;
   }

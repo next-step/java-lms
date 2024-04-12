@@ -20,7 +20,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<NsUser> findByUserId(long userId) {
+    public Optional<NsUser> findByUserId(String userId) {
         RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
                 rs.getLong("id"),
                 rs.getString("user_id"),
