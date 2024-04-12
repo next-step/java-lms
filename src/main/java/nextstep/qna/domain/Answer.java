@@ -60,7 +60,7 @@ public class Answer {
 
     public void delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException(ANSWER_DELETE_ERORR_MESSAGE);
+            throw new CannotDeleteException(ANSWER_DELETE_ERROR_MESSAGE);
         }
         this.deleted = true;
     }

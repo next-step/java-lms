@@ -51,7 +51,7 @@ public class Question {
 
     public void delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException(QUESTION_DELETE_ERROR_MESSAGE);
+            throw new CannotDeleteException(QUESTION_DELETE_ERORR_MESSAGE);
         }
         this.deleted = true;
         answers.deleteAnswers(loginUser);
@@ -59,14 +59,14 @@ public class Question {
 
     public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(toDeleteHistory());
+        deleteHistories.add(toDelteHistory());
 
         answers.toDeleteHistories(deleteHistories);
         return deleteHistories;
     }
 
-    private DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
+    private DeleteHistory toDelteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now());
     }
 
     public boolean isOwner(User loginUser) {
@@ -83,7 +83,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + questionContent.getTitle() + ", contents="
-                + questionContent.getContents() + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
