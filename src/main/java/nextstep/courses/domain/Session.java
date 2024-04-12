@@ -3,13 +3,12 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.courses.domain.enums.SessionType;
 import nextstep.payments.domain.Payment;
-import org.springframework.util.ObjectUtils;
 
 abstract public class Session {
     protected final Long id;
     protected final Course course;
     protected final SessionDate sessionDate;
-    protected SessionStatus sessionStatus = SessionStatus.READY;
+    protected SessionStatus sessionStatus;
     protected int numberOfStudents;
     protected CoverImageInfo coverImageInfo;
     protected final SessionType type;
@@ -18,8 +17,8 @@ abstract public class Session {
         this.id = id;
         this.course = course;
         this.sessionDate = sessionDate;
-        if (!ObjectUtils.isEmpty(sessionStatus)) {
-            this.sessionStatus = sessionStatus;
+        if (sessionStatus == null) {
+            this.sessionStatus = SessionStatus.READY;
         }
         this.numberOfStudents = numberOfStudents;
         this.coverImageInfo = coverImageInfo;
