@@ -1,8 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.FreeSession;
-import nextstep.courses.domain.SessionImage;
-import nextstep.courses.domain.SessionStatus;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
