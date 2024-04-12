@@ -3,7 +3,7 @@ package nextstep.qna.domain;
 import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ public class Answer {
     public static final String ANSWER_DELETE_ERORR_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private Long id;
 
-    private NsUser writer;
+    private User writer;
 
     private Question question;
 
@@ -26,11 +26,11 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
+    public Answer(User writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
+    public Answer(Long id, User writer, Question question, String contents) {
         this.id = id;
         if(writer == null) {
             throw new UnAuthorizedException();
@@ -58,7 +58,7 @@ public class Answer {
         return deleted;
     }
 
-    public void delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException(ANSWER_DELETE_ERORR_MESSAGE);
         }
@@ -69,11 +69,11 @@ public class Answer {
         return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
     }
 
-    public boolean isOwner(NsUser writer) {
+    public boolean isOwner(User writer) {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
+    public User getWriter() {
         return writer;
     }
 
