@@ -1,5 +1,7 @@
 package nextstep.session.service;
 
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.common.service.DeleteHistoryService;
 import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
@@ -14,12 +16,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.setExtractBareNamePropertyMethods;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceImplTest {
@@ -144,5 +148,51 @@ class SessionServiceImplTest {
         assertThat(session.toVO().getCoverId()).isEqualTo(cover.getId());
         assertThat(session.toVO().getCourseId()).isEqualTo(course.getId());
         assertThat(session).isInstanceOf(FreeSession.class);
+    }
+
+    @DisplayName("세션 삭제 테스트.")
+    @Test
+    void delete() {
+        // Given
+        long sessionId = 3L;
+
+        SessionVO sessionVO = new SessionVO(
+                sessionId,
+                LocalDateTime.now().plusDays(2),
+                LocalDateTime.now().plusDays(5),
+                "READY",
+                course.getId(),
+                Integer.MAX_VALUE,
+                0,
+                0,
+                "JAVAJIGI",
+                cover.getId(),
+                "test session",
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+
+        Students students = new Students(List.of(student));
+        DeleteHistory deleteHistory = DeleteHistory.createStudent(student.getUserId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
+
+        // sessionService.findById
+        when(sessionRepository.findById(sessionId)).thenReturn(sessionVO);
+        when(coverService.findById(sessionVO.getCoverId())).thenReturn(cover);
+        when(courseService.findById(sessionVO.getCourseId())).thenReturn(course);
+        when(studentService.findBySessionId(sessionId)).thenReturn(students);
+        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
+        when(studentService.deleteAll(students, NsUserTest.JAVAJIGI))
+                .thenReturn(new DeleteHistoryTargets(List.of(deleteHistory)));
+        when(coverService.delete(cover, NsUserTest.JAVAJIGI))
+                .thenReturn(DeleteHistory.createCover(cover.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
+
+        // When
+        sessionService.delete(sessionId, NsUserTest.JAVAJIGI);
+
+        // Then
+        verify(coverService, times(1)).delete(any(), any());
+        verify(studentService, times(1)).deleteAll(any(), any());
+        verify(deleteHistoryService, times(1)).saveAll(anyList());
     }
 }
