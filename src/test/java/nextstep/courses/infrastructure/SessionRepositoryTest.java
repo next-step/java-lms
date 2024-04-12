@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.time.LocalDate;
 
@@ -20,11 +21,14 @@ public class SessionRepositoryTest {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
+  @Autowired
+  private SimpleJdbcInsert simpleJdbcInsert;
+
   private SessionRepository sessionRepository;
 
   @BeforeEach
   void setUp() {
-    sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcSessionImageRepository(jdbcTemplate));
+    sessionRepository = new JdbcSessionRepository(jdbcTemplate, new JdbcSessionImageRepository(jdbcTemplate, simpleJdbcInsert));
   }
 
   @Test
