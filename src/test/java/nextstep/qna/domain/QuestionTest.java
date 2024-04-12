@@ -5,8 +5,8 @@ import nextstep.users.domain.UserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.qna.domain.Answer.ANSWER_DELETE_ERORR_MESSAGE;
-import static nextstep.qna.domain.Question.QUESTION_DELETE_ERORR_MESSAGE;
+import static nextstep.qna.domain.Answer.ANSWER_DELETE_ERROR_MESSAGE;
+import static nextstep.qna.domain.Question.QUESTION_DELETE_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -27,7 +27,7 @@ public class QuestionTest {
     void answer_delete_error_test() {
         assertThatThrownBy(() -> {
             Q1.delete(UserTest.SANJIGI);
-        }).hasMessageContaining(QUESTION_DELETE_ERORR_MESSAGE);
+        }).hasMessageContaining(QUESTION_DELETE_ERROR_MESSAGE);
     }
 
     @DisplayName("답변 포함 삭제 에러 테스트")
@@ -38,6 +38,6 @@ public class QuestionTest {
             Q3.addAnswer(AnswerTest.A1);
             Q3.addAnswer(AnswerTest.A2);
             Q3.delete(UserTest.JAVAJIGI);
-        }).hasMessageContaining(ANSWER_DELETE_ERORR_MESSAGE);
+        }).hasMessageContaining(ANSWER_DELETE_ERROR_MESSAGE);
     }
 }

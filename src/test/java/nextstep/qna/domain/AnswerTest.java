@@ -5,7 +5,7 @@ import nextstep.users.domain.UserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.qna.domain.Answer.ANSWER_DELETE_ERORR_MESSAGE;
+import static nextstep.qna.domain.Answer.ANSWER_DELETE_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -26,6 +26,6 @@ public class AnswerTest {
     void answer_delete_error_test() throws CannotDeleteException {
         assertThatThrownBy(() -> {
             A1.delete(UserTest.SANJIGI);
-        }).hasMessageContaining(ANSWER_DELETE_ERORR_MESSAGE);
+        }).hasMessageContaining(ANSWER_DELETE_ERROR_MESSAGE);
     }
 }

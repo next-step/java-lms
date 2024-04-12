@@ -8,7 +8,7 @@ import nextstep.users.domain.User;
 import java.time.LocalDateTime;
 
 public class Answer {
-    public static final String ANSWER_DELETE_ERORR_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+    public static final String ANSWER_DELETE_ERROR_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private Long id;
 
     private User writer;
@@ -60,7 +60,7 @@ public class Answer {
 
     public void delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
-            throw new CannotDeleteException(ANSWER_DELETE_ERORR_MESSAGE);
+            throw new CannotDeleteException(ANSWER_DELETE_ERROR_MESSAGE);
         }
         this.deleted = true;
     }
