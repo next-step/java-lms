@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,8 +23,8 @@ public class CourseTest {
 	@Test
 	void CreateCourseWithMultipleSessions() {
 		// given & when
-		List sessions = List.of(new Session(1L, "객체지향 프로그래밍", 1L),
-			new Session(2L, "클래스 디자인", 1L));
+		List sessions = List.of(new Session(1L, "객체지향 프로그래밍", 1L, LocalDate.of(2024, 5, 2), LocalDate.of(2024, 5, 30)),
+				new Session(2L, "클래스 디자인", 1L, LocalDate.of(2024, 6, 2), LocalDate.of(2024, 2, 20)));
 
 		Course course = new Course(1L, "tdd 클린코드", 1L, sessions);
 
