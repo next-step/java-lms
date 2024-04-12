@@ -23,10 +23,11 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-    public void registerStudent(NsUser student, Long sessionId, String paymentId){
+    public void registerStudent(NsUser student, Long sessionId){
         Session session = sessionRepository.findById(sessionId);
-        Payment payment = paymentService.payment(paymentId);
+        Payment payment = paymentService.payment(session.getId(), student.getId());
 
         session.addStudent(student, payment);
+        sessionRepository.saveStudents(session);
     }
 }

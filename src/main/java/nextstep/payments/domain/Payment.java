@@ -1,10 +1,8 @@
 package nextstep.payments.domain;
 
-import java.time.LocalDateTime;
+import nextstep.courses.domain.BaseEntity;
 
-public class Payment {
-    private String id;
-
+public class Payment extends BaseEntity {
     // 결제한 강의 아이디
     private Long sessionId;
 
@@ -14,20 +12,21 @@ public class Payment {
     // 결제 금액
     private Long amount;
 
-    private LocalDateTime createdAt;
-
     public Payment() {
     }
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
-        this.id = id;
+        this(Long.parseLong(id), sessionId, nsUserId, amount);
+    }
+
+    public Payment(Long id, Long sessionId, Long nsUserId, Long amount) {
+        super(id);
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
         this.amount = amount;
-        this.createdAt = LocalDateTime.now();
     }
 
-    public boolean isName(Long amount){
+    public boolean isSame(Long amount){
         return this.amount.equals(amount);
     }
 }

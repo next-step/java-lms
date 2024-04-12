@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.users.domain.NsUser;
 
 public class SessionStudent {
@@ -26,5 +27,9 @@ public class SessionStudent {
 
   private Integer size() {
     return students.size();
+  }
+
+  public List<Long> getIds() {
+    return students.stream().map(NsUser::getId).collect(Collectors.toList());
   }
 }
