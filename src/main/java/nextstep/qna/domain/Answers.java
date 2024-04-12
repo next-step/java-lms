@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Answers {
-    private List<Answer> answers = new ArrayList<>();
+    private final List<Answer> answers;
 
     public Answers() {
+        this(new ArrayList<>());
     }
 
     public Answers(List<Answer> answers) {
