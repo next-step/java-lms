@@ -17,7 +17,7 @@ public class Answers implements Iterable<Answer> {
         this.answers = answers;
     }
 
-    public void add(Answer answer) {
+    public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }
 

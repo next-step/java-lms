@@ -66,7 +66,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        this.answers.add(answer);
+        this.answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -82,8 +82,19 @@ public class Question {
         return deleted;
     }
 
-    public Answers getAnswers() {
-        return answers;
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+        this.validateDelete(loginUser);
+
+        this.deleted = true;
+
+        LocalDateTime deleteTime = LocalDateTime.now();
+
+        // TODO: DeleteHistory 쪽으로 이동
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, loginUser, deleteTime));
+        deleteHistories.addAll(DeleteHistory.deleteAnswers(this.answers, deleteTime));
+
+        return deleteHistories;
     }
 
     public void validateDelete(NsUser loginUser) throws CannotDeleteException {

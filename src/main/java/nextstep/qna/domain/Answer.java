@@ -48,6 +48,12 @@ public class Answer {
         return id;
     }
 
+    public DeleteHistory delete(LocalDateTime deleteTime) {
+        this.deleted = true;
+
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, deleteTime);
+    }
+
     public Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
