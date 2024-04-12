@@ -10,7 +10,7 @@ public class Answers {
     private final List<Answer> answers;
 
     public Answers() {
-        answers = new ArrayList<>();
+        this(new ArrayList<>());
     }
 
     public Answers(List<Answer> answers) {
@@ -29,5 +29,9 @@ public class Answers {
 
     public void add(Answer answer) {
         answers.add(answer);
+    }
+
+    public boolean isDeletableByWriter(NsUser writerOfQuestion) {
+        return answers.isEmpty() || answers.stream().allMatch(answer -> answer.isOwner(writerOfQuestion));
     }
 }
