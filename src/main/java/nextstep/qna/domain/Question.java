@@ -80,10 +80,14 @@ public class Question {
 
     public List<DeleteHistory> toDeleteHistories(){
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
+        deleteHistories.add(toDelteHistory());
 
         answers.toDeleteHistories(deleteHistories);
         return deleteHistories;
+    }
+
+    private DeleteHistory toDelteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now());
     }
 
     public boolean isOwner(NsUser loginUser) {
