@@ -80,6 +80,16 @@ public class Question {
         }
     }
 
+    public List<DeleteHistory> toDeleteHistories(){
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now()));
+
+        for (Answer answer : this.answers){
+            deleteHistories.add(answer.toDeleteHistory());
+        }
+        return deleteHistories;
+    }
+
     public boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
