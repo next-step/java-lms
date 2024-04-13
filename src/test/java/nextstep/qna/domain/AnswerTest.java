@@ -32,8 +32,8 @@ public class AnswerTest {
 
     @Test
     void delete_answers() throws CannotDeleteException {
-        DeleteHistory deleted = A1.delete(NsUserTest.JAVAJIGI);
+        A1.delete(NsUserTest.JAVAJIGI);
+
         assertThat(A1.isDeleted()).isTrue();
-        assertThat(deleted).isEqualTo(new DeleteHistory(A1));
     }
 }

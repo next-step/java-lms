@@ -91,7 +91,7 @@ public class QnaServiceTest {
     @Test
     void delete_no_answer() throws CannotDeleteException {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        question.delete(NsUserTest.JAVAJIGI);
+        question.deleteAll(NsUserTest.JAVAJIGI);
 
         assertThat(question.isDeleted()).isTrue();
     }
