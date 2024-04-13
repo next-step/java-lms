@@ -14,6 +14,10 @@ public interface Session {
 
     void toPreviousSessionStatus();
 
+    void changeEnroll();
+
+    void changeNotEnroll();
+
     boolean isEnrollAvailable(LocalDateTime applyDate);
 
     boolean apply(Student student, Payment payment, LocalDateTime applyDate);

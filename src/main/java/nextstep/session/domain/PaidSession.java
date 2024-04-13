@@ -69,6 +69,16 @@ public class PaidSession implements Session {
     }
 
     @Override
+    public void changeEnroll() {
+        this.sessionStatus = this.sessionStatus.changeEnroll();
+    }
+
+    @Override
+    public void changeNotEnroll() {
+        this.sessionStatus = this.sessionStatus.changeNotEnroll();
+    }
+
+    @Override
     public boolean isEnrollAvailable(LocalDateTime applyDate) {
         return this.sessionStatus.canEnroll() &&
                 this.duration.isAvailable(applyDate) &&

@@ -35,18 +35,19 @@ class FreeSessionTest {
         );
     }
 
-    @DisplayName("상태가 ON_ENROLL이면서, 신청일자가 Duration에 속한다면, 신청 가능하다.")
+    @DisplayName("상태가 모집중이면서, 신청일자가 Duration에 속한다면, 신청 가능하다.")
     @Test
     void enrollAvailable() {
         // when
         session.toNextSessionStatus();
+        session.changeEnroll();
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(1)))
                 .isTrue();
     }
 
-    @DisplayName("상태가 ON_ENROLL이면서 신청일자가 Duration이 아니면, 신청이 불가능하다.")
+    @DisplayName("상태가 모집중이면서, 신청일자가 Duration이 아니면, 신청이 불가능하다.")
     @Test
     void enrollNotAvailableWithNotInDuration() {
         // when
@@ -57,7 +58,7 @@ class FreeSessionTest {
                 .isFalse();
     }
 
-    @DisplayName("상태가 ON_ENROLL이 아니고 신청일자가 Duration이 아니면, 신청이 불가능하다.")
+    @DisplayName("상태가 모집중이 아니고 신청일자가 Duration이 아니면, 신청이 불가능하다.")
     @Test
     void enrollNotAvailableWithNotOnEnroll() {
         // when
@@ -78,6 +79,7 @@ class FreeSessionTest {
 
         // when
         session.toNextSessionStatus();
+        session.changeEnroll();
 
         // then
         assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
@@ -116,6 +118,7 @@ class FreeSessionTest {
     void delete() {
         // given
         session.toNextSessionStatus();
+        session.changeEnroll();
         session.apply(new Student(NsUserTest.JAVAJIGI), new Payment(), LocalDateTime.now().plusDays(2));
 
         // when
