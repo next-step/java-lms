@@ -22,11 +22,11 @@ public class EnrollmentPolicy {
         this.fee = fee;
     }
 
-    public static EnrollmentPolicy createFreeSession() throws InvalidEnrollmentPolicyException {
+    public static EnrollmentPolicy createFreePolicy() throws InvalidEnrollmentPolicyException {
         return new EnrollmentPolicy(PriceType.FREE, MIN_ENROLLMENT, 0);
     }
 
-    public static EnrollmentPolicy createPaidSession(int maxEnrollment, int fee)
+    public static EnrollmentPolicy createPaidPolicy(int maxEnrollment, int fee)
         throws InvalidEnrollmentPolicyException {
         return new EnrollmentPolicy(PriceType.PAID, maxEnrollment, fee);
     }

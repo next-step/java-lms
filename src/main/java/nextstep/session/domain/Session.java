@@ -21,7 +21,7 @@ public class Session {
         SessionCoverImage coverImage, SessionStatus sessionStatus)
         throws InvalidEnrollmentPolicyException {
         return new Session(id, courseId, title, sessionSchedule, coverImage, sessionStatus,
-            EnrollmentPolicy.createFreeSession());
+            EnrollmentPolicy.createFreePolicy());
     }
 
     public static Session createPaidSession(Long id, Long courseId, String title,
@@ -29,7 +29,7 @@ public class Session {
         SessionCoverImage coverImage, SessionStatus sessionStatus, int maxEnrollment, int fee)
         throws InvalidEnrollmentPolicyException {
         return new Session(id, courseId, title, sessionSchedule, coverImage, sessionStatus,
-            EnrollmentPolicy.createPaidSession(maxEnrollment, fee));
+            EnrollmentPolicy.createPaidPolicy(maxEnrollment, fee));
     }
 
     private Session(Long id, Long courseId, String title, SessionSchedule sessionSchedule,
