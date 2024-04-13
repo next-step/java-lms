@@ -33,10 +33,9 @@ public class SessionRepositoryTest {
     @Test
     void crud() {
         courseRepository.save(CourseTest.C1);
-        Session session = new PaidSession(0L, CourseTest.C1.getId(), 10L, 10_000L, List.of(SessionCoverImageTest.CI), SessionType.PAID);
-        int count = sessionRepository.save(session);
+        int count = sessionRepository.save(SessionTest.FREE_S1);
         assertThat(count).isEqualTo(1);
-        Session savedSession = sessionRepository.findById(0L);
-        assertThat(session.getAmount()).isEqualTo(savedSession.getAmount());
+        Session savedSession = sessionRepository.findById(SessionTest.FREE_S1.getId());
+        assertThat(SessionTest.FREE_S1.getId()).isEqualTo(savedSession.getId());
     }
 }

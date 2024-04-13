@@ -19,10 +19,6 @@ create table session (
     recruitment_status varchar(20) not null,
     amount bigint,
     type varchar(10) not null,
-    image_size_of_bytes int not null,
-    image_width int not null,
-    image_height int not null,
-    image_type varchar(20) not null,
 
     primary key (id),
     constraint fk_course foreign key (course_id) references course (id)

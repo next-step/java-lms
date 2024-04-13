@@ -4,6 +4,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaidSession extends Session {
@@ -11,10 +12,16 @@ public class PaidSession extends Session {
     public PaidSession(long id,
                        long courseId,
                        long maximumNumberOfStudent,
-                       long amount,
-                       List<SessionCoverImage> coverImages,
-                       SessionType type) {
-        this(id, courseId, maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1), coverImages, type);
+                       long amount) {
+        this(id, courseId, new ArrayList<>(), maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       List<Long> coverImageIds,
+                       long maximumNumberOfStudent,
+                       long amount) {
+        this(id, courseId, coverImageIds, maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
     }
 
     public PaidSession(long id,
@@ -22,10 +29,18 @@ public class PaidSession extends Session {
                        long maximumNumberOfStudent,
                        long amount,
                        LocalDateTime startedAt,
-                       LocalDateTime endedAt,
-                       List<SessionCoverImage> coverImages,
-                       SessionType type) {
-        super(id, courseId, amount, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
+                       LocalDateTime endedAt) {
+        this(id, courseId, new ArrayList<>(), amount, maximumNumberOfStudent, startedAt, endedAt);
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       List<Long> coverImageIds,
+                       long maximumNumberOfStudent,
+                       long amount,
+                       LocalDateTime startedAt,
+                       LocalDateTime endedAt) {
+        super(id, courseId, coverImageIds, amount, maximumNumberOfStudent, startedAt, endedAt, SessionType.PAID);
     }
 
     @Override

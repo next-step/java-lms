@@ -11,10 +11,9 @@ public abstract class Session {
 
     protected long id;
     protected long courseId;
+    protected List<Long> coverImageIds;
     protected long amount = 0;
     protected long maximumNumberOfStudent;
-    protected SessionCoverImage coverImage;
-    protected List<SessionCoverImage> coverImages;
     protected List<NsUser> students = new ArrayList<>();
     protected LocalDateTime startedAt;
     protected LocalDateTime endedAt;
@@ -25,30 +24,29 @@ public abstract class Session {
 
     protected Session(long id,
                       long courseId,
+                      List<Long> coverImageIds,
                       long maximumNumberOfStudent,
                       LocalDateTime startedAt,
                       LocalDateTime endedAt,
-                      List<SessionCoverImage> coverImages,
                       SessionType type) {
-        this(id, courseId, 0, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
+        this(id, courseId, coverImageIds, 0, maximumNumberOfStudent, startedAt, endedAt, type);
     }
 
     protected Session(long id,
                       long courseId,
+                      List<Long> coverImageIds,
                       long amount,
                       long maximumNumberOfStudent,
                       LocalDateTime startedAt,
                       LocalDateTime endedAt,
-                      List<SessionCoverImage> coverImages,
                       SessionType type) {
         this.id = id;
         this.courseId = courseId;
+        this.coverImageIds = coverImageIds;
         this.amount = amount;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
-        this.coverImages = coverImages;
-        this.coverImage = coverImages.get(0);
         this.type = type;
     }
 
@@ -91,6 +89,10 @@ public abstract class Session {
         return courseId;
     }
 
+    public List<Long> getCoverImageIds() {
+        return coverImageIds;
+    }
+
     public long getMaximumNumberOfStudent() {
         return maximumNumberOfStudent;
     }
@@ -121,10 +123,6 @@ public abstract class Session {
 
     public long getAmount() {
         return amount;
-    }
-
-    public SessionCoverImage getCoverImage() {
-        return coverImage;
     }
 
     public SessionType getType() {

@@ -19,7 +19,7 @@ public class CourseTest {
     @Test
     void test011() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L);
-        Session session = new FreeSession(0L, course.getId(), List.of(SessionCoverImageTest.CI), SessionType.FREE);
+        Session session = new FreeSession(0L, course.getId());
         course.addSession(session);
         assertThat(course.isIncludeSession(session)).isTrue();
     }
@@ -28,7 +28,7 @@ public class CourseTest {
     @Test
     void test01() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L);
-        Session session = new FreeSession(0L, course.getId(), List.of(SessionCoverImageTest.CI), SessionType.FREE);
+        Session session = new FreeSession(0L, course.getId());
         course.addSession(session);
         assertThatThrownBy(() -> course.addSession(session))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -39,7 +39,7 @@ public class CourseTest {
     @Test
     void test03() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L);
-        Session session = new FreeSession(0L, course.getId(), List.of(SessionCoverImageTest.CI), SessionType.FREE);
+        Session session = new FreeSession(0L, course.getId());
         session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
         course.addSession(session);
         Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
