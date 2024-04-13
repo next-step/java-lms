@@ -25,19 +25,9 @@ public class SessionTest {
         assertThat(session.isRecruitmentStatus(RecruitmentStatus.RECRUITING)).isTrue();
     }
 
-    @DisplayName("전체 수강생을 확인한다.")
-    @Test
-    void test02() {
-        Session session = new FreeSession(0L, CourseTest.C1.getId());
-        session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
-        Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
-        session.enroll(NsUserTest.JAVAJIGI, payment);
-        assertThat(session.totalStudents()).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI);
-    }
-
     @DisplayName("현재 모집 중인 강의가 아닌 강의에 수강신청할 경우 예외가 발생한다.")
     @Test
-    void test03() {
+    void test02() {
         Session session = new FreeSession(0L, CourseTest.C1.getId());
         Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
         assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, payment))

@@ -48,7 +48,7 @@ public class PaidSession extends Session {
         validateRecruiting();
         validateSameAmount(payment);
         validateLessEqualThenMaximumNumber();
-        students.add(user);
+        this.enrollments.add(new Enrollment(this.id, user.getId()));
     }
 
     private void validateSameAmount(Payment payment) {
@@ -58,7 +58,7 @@ public class PaidSession extends Session {
     }
 
     private void validateLessEqualThenMaximumNumber() {
-        if (students.size() >= maximumNumberOfStudent) {
+        if (enrollments.size() >= maximumNumberOfStudent) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
     }

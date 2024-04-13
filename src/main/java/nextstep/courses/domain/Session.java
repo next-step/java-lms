@@ -13,7 +13,6 @@ public abstract class Session {
     protected long id;
     protected long courseId;
     protected List<Long> coverImageIds;
-    protected List<NsUser> students = new ArrayList<>();
     protected List<Enrollment> enrollments = new ArrayList<>();
     protected long amount = 0;
     protected long maximumNumberOfStudent;
@@ -68,13 +67,8 @@ public abstract class Session {
         return this.recruitmentStatus.isSame(recruitmentStatus);
     }
 
-    public List<NsUser> totalStudents() {
-        return new ArrayList<>(this.students);
-    }
-
     public void enroll(NsUser user, Payment payment) {
         validateRecruiting();
-        this.students.add(user);
         this.enrollments.add(new Enrollment(this.id, user.getId()));
     }
 
@@ -113,10 +107,6 @@ public abstract class Session {
 
     public long getMaximumNumberOfStudent() {
         return maximumNumberOfStudent;
-    }
-
-    public List<NsUser> getStudents() {
-        return students;
     }
 
     public LocalDateTime getStartedAt() {
