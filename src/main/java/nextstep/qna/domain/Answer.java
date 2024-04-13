@@ -57,10 +57,6 @@ public class Answer {
         return writer;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
     public void toQuestion(Question question) {
         this.question = question;
     }
@@ -69,12 +65,15 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("해당 답변을 삭제할 권한이 없습니다!");
         }
         this.deleted = true;
-        return new DeleteHistory(this);
+    }
+
+    public DeleteHistory toDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer);
     }
 
     @Override
