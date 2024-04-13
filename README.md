@@ -99,3 +99,20 @@
 - SessionRepository 객체 
   - [x] 저장한다.
   - [x] 조회한다. 
+
+## Step04 - 수강신청(요구사항 변경)
+
+### 핵심 학습 목표 
+- DB 테이블이 변경될 때도 스트랭글러 패턴을 적용해 점진적인 리팩토링을 연습한다.
+  - [Strangler Fig pattern - Microsoft Learn](https://learn.microsoft.com/ko-kr/azure/architecture/patterns/strangler-fig)
+  - [Strangler Fig pattern - Martin Fowler](https://martinfowler.com/bliki/StranglerFigApplication.html)
+
+### 변경된 기능 요구사항 
+- 기존 : 강의신청은 강의 상태가 모집 중일 때만 가능하다.
+  - 변경 : 강의가 진행 중인 상태에서도 신청이 가능해야 한다.
+    - 강의 진행상태(준비중, 진행중, 완료)와 모집상태(모집중, 비모집중)를 구분해야 한다.
+- 기존 : 강의는 강의 커버 이미지를 가진다.
+  - 변경 : 강의는 하나 이상의 강의 커버 이미지를 가진다.
+- 기존 : 강사가 승인하지 않아도 수강신청하는 모든 사람이 수강 가능하다.
+  - 변경 : 강사는 수강생 중 선발된 인원에 대해 '승인' 할 수 있다.
+    - 선발되지 않은 인원에 대해 '취소' 할 수 있다. 
