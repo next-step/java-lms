@@ -29,7 +29,7 @@
   - payment의 결제금액이 수강료가 일치하지 않는 경우 IllegalArgumentException
   - 최대 수강인원 <= 현재 수강인원인 경우 IllegalStateException
   - 정상 완료되면, 현재 수강인원 increase 1
-- ImageType Enum 생성
+- [x] ImageType Enum 생성
   - GIF, JPG, JPEG, PNG, SVG
 - [ ] CoverImageInfo 클래스 생성
   - 생성자(크기, 타입, 너비, 높이)
