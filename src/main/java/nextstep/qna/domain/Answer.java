@@ -50,7 +50,7 @@ public class Answer {
 
 
     public boolean deleted(NsUser writer) throws CannotDeleteException {
-        if(!isOwner(writer)) {
+        if(isNotOwner(writer)) {
             throw new CannotDeleteException("답변을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
@@ -61,8 +61,8 @@ public class Answer {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+    public boolean isNotOwner(NsUser writer) {
+        return !this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
@@ -77,8 +77,8 @@ public class Answer {
         this.question = question;
     }
 
-    public DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    public DeleteHistory toDeleteHistory(LocalDateTime deletionTime) {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, deletionTime);
     }
 
     @Override

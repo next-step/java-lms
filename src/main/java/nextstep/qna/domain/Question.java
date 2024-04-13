@@ -60,7 +60,7 @@ public class Question {
     }
 
     public boolean deleted(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
+        if (isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         answers.deleted(loginUser);
@@ -68,8 +68,8 @@ public class Question {
         return true;
     }
 
-    public boolean isOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
+    public boolean isNotOwner(NsUser loginUser) {
+        return !writer.equals(loginUser);
     }
 
     public boolean isDeleted() {
@@ -80,9 +80,9 @@ public class Question {
         return answers.getAnswers();
     }
 
-    public List<DeleteHistory> toDeleteHistory() {
+    public List<DeleteHistory> toDeleteHistory(LocalDateTime deletionTime) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, deletionTime));
         deleteHistories.addAll(answers.toDeleteHistories());
         return deleteHistories;
     }
