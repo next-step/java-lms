@@ -5,8 +5,8 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class FreeSession extends Session {
-    public FreeSession(SessionImage sessionImage, SessionStatus sessionStatus) {
-        super(sessionImage, sessionStatus);
+    public FreeSession(SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
+        super(sessionImage, sessionStatus, sessionDate);
     }
 
     @Override

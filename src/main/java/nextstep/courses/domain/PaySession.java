@@ -10,8 +10,8 @@ public class PaySession extends Session {
     private int maximumStudents;
     private final long amount;
 
-    public PaySession(SessionImage sessionImage, SessionStatus sessionStatus, int maximumStudents, long amount) {
-        super(sessionImage, sessionStatus);
+    public PaySession(SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, int maximumStudents, long amount) {
+        super(sessionImage, sessionStatus, sessionDate);
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;

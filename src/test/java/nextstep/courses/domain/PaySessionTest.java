@@ -35,7 +35,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("유료 강의 수강신청 되는 지 테스트")
     void testEnrollment() {
-        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, maximumStudents, amount);
+        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of(), maximumStudents, amount);
         Payment payment = paySession.enrollmentUser(student);
 
         assertThat(payment.getSessionId()).isEqualTo(paySession.getId());
@@ -47,7 +47,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("수강신청한 사람이 한 번 더 수강신청할 경우 에러 발생")
     void testDuplicateEnrollment() {
-        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, maximumStudents, amount);
+        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of(), maximumStudents, amount);
         paySession.enrollmentUser(student);
 
         assertThatThrownBy(() -> paySession.enrollmentUser(student)).isInstanceOf(NotRecruitException.class);
@@ -56,7 +56,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("수강신청 인원을 넘을 경우 에러 발생")
     void testOverMaximumStudents() {
-        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, 1, amount);
+        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of(), 1, amount);
         paySession.enrollmentUser(student);
 
         assertThatThrownBy(() -> paySession.enrollmentUser(NsUserTest.SANJIGI)).isInstanceOf(NotRecruitException.class);
@@ -65,7 +65,7 @@ public class PaySessionTest {
     @Test
     @DisplayName("결제 금액이 모자란 경우 에러 발생")
     void testLackPoint() {
-        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, 1, amount+1);
+        PaySession paySession = new PaySession(SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of(), 1, amount + 1);
 
         assertThatThrownBy(() -> paySession.enrollmentUser(student)).isInstanceOf(LackPointException.class);
     }
@@ -74,7 +74,7 @@ public class PaySessionTest {
     @EnumSource(mode = EnumSource.Mode.EXCLUDE, names = {"RECRUIT"})
     @DisplayName("모집 중이 아닌 강의에 수강신청 하는 경우 에러 발생")
     void testInvalidEnrollmentUser(SessionStatus sessionStatus) {
-        PaySession paySession = new PaySession(SessionImageTest.S1, sessionStatus, 1, amount+1);
+        PaySession paySession = new PaySession(SessionImageTest.S1, sessionStatus, SessionDateTest.of(), 1, amount + 1);
 
         assertThatThrownBy(() -> paySession.enrollmentUser(student)).isInstanceOf(NotRecruitException.class);
     }
