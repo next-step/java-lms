@@ -20,16 +20,16 @@ public class PaidSession extends Session {
     }
 
     public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(id, startDate, endDate, coverImage, status, createdAt);
+        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
+        super(id, startDate, endDate, coverImage, status, isRecruiting, createdAt);
         this.price = price;
         this.capacity = capacity;
     }
 
     public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, Set<NsUser> learners,
+        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
         LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
-        super(id, startDate, endDate, coverImage, status, learners, createdAt, updatedAt);
+        super(id, startDate, endDate, coverImage, status, isRecruiting, learners, createdAt, updatedAt);
         this.price = price;
         this.capacity = capacity;
     }

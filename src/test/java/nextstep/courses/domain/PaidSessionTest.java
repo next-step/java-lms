@@ -19,7 +19,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, 800_000L, 1,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser oldLearner = NsUserTest.JAVAJIGI;
@@ -37,7 +37,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, 800_000L, 1,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
 
@@ -52,7 +52,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, 800_000L, 1,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser learner = NsUserTest.JAVAJIGI;
@@ -68,7 +68,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, 800_000L, 1,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser learner = NsUserTest.JAVAJIGI;

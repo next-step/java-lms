@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import static nextstep.courses.domain.SessionStatus.RECRUIT;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,19 +18,20 @@ public class Session {
     protected Set<NsUser> learners = new HashSet<>();
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
+    protected boolean isRecruiting;
 
     public Session(LocalDateTime startDate, LocalDateTime endDate, SessionCoverImage coverImage,
         LocalDateTime createdAt) {
-        this(0L, startDate, endDate, coverImage, SessionStatus.PREPARE, createdAt);
+        this(0L, startDate, endDate, coverImage, SessionStatus.PREPARE, true, createdAt);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, LocalDateTime createdAt) {
-        this(id, startDate, endDate, coverImage, status, new HashSet<>(), createdAt, null);
+        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, LocalDateTime createdAt) {
+        this(id, startDate, endDate, coverImage, status, isRecruiting, new HashSet<>(), createdAt, null);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, Set<NsUser> learners,
+        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
         LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         validateDate(startDate, endDate);
@@ -40,6 +39,7 @@ public class Session {
         this.endDate = endDate;
         this.coverImage = coverImage;
         this.status = status;
+        this.isRecruiting = isRecruiting;
         this.learners = learners;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -58,7 +58,7 @@ public class Session {
     }
 
     protected void validateJoinable(NsUser learner) {
-        if (status != RECRUIT) {
+        if (!isRecruiting) {
             throw new CanNotJoinSessionException("모집중 상태가 아닙니다");
         }
         if (learners.contains(learner)) {
@@ -100,5 +100,9 @@ public class Session {
 
     public SessionCoverImage getCoverImage() {
         return coverImage;
+    }
+
+    public boolean isRecruiting() {
+        return isRecruiting;
     }
 }

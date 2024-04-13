@@ -49,7 +49,7 @@ class JdbcSessionRepositoryTest {
     void save_paid_session() {
         PaidSession paidSession = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, 800_000L, 1,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
 

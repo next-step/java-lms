@@ -31,9 +31,9 @@ public class JdbcSessionRepository {
             save((PaidSession) session);
             return;
         }
-        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, is_recruiting, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sessionSql, session.getId(), session.getStartDate(), session.getEndDate(), session.getCoverImageId(),
-            session.getStatusName(), session.getCreatedAt(), session.getUpdatedAt());
+            session.getStatusName(), session.isRecruiting(), session.getCreatedAt(), session.getUpdatedAt());
 
         SessionCoverImage coverImage = session.getCoverImage();
         String coverImageSql = "INSERT INTO cover_image (id, file_byte_size, ext, width, height, url) VALUES (?, ?, ?, ?, ?, ?)";
@@ -42,9 +42,9 @@ public class JdbcSessionRepository {
     }
 
     public void save(PaidSession paidSession) {
-        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, price, capacity, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, is_recruiting, price, capacity, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sessionSql, paidSession.getId(), paidSession.getStartDate(), paidSession.getEndDate(), paidSession.getCoverImageId(),
-            paidSession.getStatusName(), paidSession.getPrice(), paidSession.getCapacity(), paidSession.getCreatedAt(), paidSession.getUpdatedAt());
+            paidSession.getStatusName(), paidSession.isRecruiting(), paidSession.getPrice(), paidSession.getCapacity(), paidSession.getCreatedAt(), paidSession.getUpdatedAt());
 
         SessionCoverImage coverImage = paidSession.getCoverImage();
         String coverImageSql = "INSERT INTO cover_image (id, file_byte_size, ext, width, height, url) VALUES (?, ?, ?, ?, ?, ?)";
@@ -79,11 +79,12 @@ public class JdbcSessionRepository {
             Set<NsUser> learners = loadLearners(id);
             Long price = rs.getLong("price");
             Integer capacity = rs.getInt("capacity");
+            boolean isRecruiting = rs.getBoolean("is_recruiting");
 
             if (price != null) {
-                return new PaidSession(id, startDate, endDate, coverImage, status, learners, createdAt, updatedAt, price, capacity);
+                return new PaidSession(id, startDate, endDate, coverImage, status, isRecruiting, learners, createdAt, updatedAt, price, capacity);
             }
-            return new Session(id, startDate, endDate, coverImage, status, learners, createdAt, updatedAt);
+            return new Session(id, startDate, endDate, coverImage, status, isRecruiting, learners, createdAt, updatedAt);
         }
 
         private Set<NsUser> loadLearners(Long sessionId) {

@@ -13,8 +13,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 class SessionTest {
 
@@ -49,7 +47,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
+            SAMPLE_COVER_IMAGE, SessionStatus.PREPARE, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -62,14 +60,13 @@ class SessionTest {
         assertThat(learners).contains(loginUser);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"PREPARE", "END"})
+    @Test
     @DisplayName("모집중이 아니라면 강의 참여 시 예외가 발생한다")
-    void join_fail_for_not_recruiting(String sessionStatus) {
+    void join_fail_for_not_recruiting() {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.valueOf(sessionStatus),
+            SAMPLE_COVER_IMAGE, SessionStatus.PREPARE, false,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -85,7 +82,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT,
+            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
