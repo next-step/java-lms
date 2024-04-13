@@ -56,6 +56,8 @@ create table enrollment
     session_id bigint      not null,
     user_id    bigint      not null,
     status     varchar(20) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   not null,
 
     primary key (id),
     constraint fk_enrollment_session foreign key (session_id) references session (id),

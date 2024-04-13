@@ -1,6 +1,8 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.ImageType;
+import nextstep.courses.domain.SessionCoverImage;
+import nextstep.courses.domain.SessionCoverImageRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,9 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Repository("sessionRepository")
+@Repository("sessionCoverImageRepository")
 public class JdbcSessionCoverImageRepository implements SessionCoverImageRepository {
 
     private JdbcOperations jdbcTemplate;

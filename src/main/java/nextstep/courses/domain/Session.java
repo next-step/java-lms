@@ -75,7 +75,7 @@ public abstract class Session {
     public void enroll(NsUser user, Payment payment) {
         validateRecruiting();
         this.students.add(user);
-        this.enrollments.add(new Enrollment(user.getId(), this.id));
+        this.enrollments.add(new Enrollment(this.id, user.getId()));
     }
 
     protected void validateRecruiting() {

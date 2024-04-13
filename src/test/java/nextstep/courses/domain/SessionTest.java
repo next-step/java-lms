@@ -48,8 +48,8 @@ public class SessionTest {
     @DisplayName("특정 사용자의 수강신청을 승인한다.")
     @Test
     void test04() {
-        Payment payment = new Payment(SessionTest.FREE_S1.getId(), NsUserTest.JAVAJIGI.getId(), 0L);
         SessionTest.FREE_S1.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
+        Payment payment = new Payment(SessionTest.FREE_S1.getId(), NsUserTest.JAVAJIGI.getId(), 0L);
         SessionTest.FREE_S1.enroll(NsUserTest.JAVAJIGI, payment);
         SessionTest.FREE_S1.approveEnrollment(NsUserTest.JAVAJIGI);
         assertThat(SessionTest.FREE_S1.isEnrollmentStatus(NsUserTest.JAVAJIGI, EnrollmentStatus.APPROVED)).isTrue();
