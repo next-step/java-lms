@@ -5,7 +5,7 @@ import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class Session {
+public class Session extends BaseEntity {
 
     private Long id;
     private final Long courseId;
