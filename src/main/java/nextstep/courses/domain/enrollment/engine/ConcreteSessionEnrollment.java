@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
 
-    protected final Long sessionId;
+    protected Long sessionId;
     protected final SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
@@ -24,6 +24,13 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
         this.status = status;
         this.capacity = new SessionCapacity(sessionId, capacity);
         this.fee = new SessionFee(sessionId, fee);
+        this.students = new ArrayList<>();
+    }
+
+    protected ConcreteSessionEnrollment(SessionStatus status, int capacity, long fee) {
+        this.status = status;
+        this.capacity = new SessionCapacity(capacity);
+        this.fee = new SessionFee(fee);
         this.students = new ArrayList<>();
     }
 

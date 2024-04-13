@@ -10,6 +10,10 @@ public class PaidSessionEnrollment extends ConcreteSessionEnrollment {
         super(sessionId, status, capacity, fee);
     }
 
+    public PaidSessionEnrollment(SessionStatus status, int capacity, long fee) {
+        super(status, capacity, fee);
+    }
+
     @Override
     public void satisfyFee(Payment payment) {
         if (fee.differentFrom(payment)) {

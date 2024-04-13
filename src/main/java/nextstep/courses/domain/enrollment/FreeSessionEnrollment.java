@@ -10,6 +10,10 @@ public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
         super(sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
+    public FreeSessionEnrollment(SessionStatus status) {
+        super(status, SessionCapacity.INFINITY, SessionFee.FREE);
+    }
+
     @Override
     public void satisfyFee(Payment payment) {
         if (payment.paid()) {

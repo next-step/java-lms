@@ -7,12 +7,17 @@ public class SessionCapacity {
     public static final int MIN_CAPACITY = 0;
     public static final int INFINITY = Integer.MAX_VALUE;
 
-    private final Long sessionId;
+    private Long sessionId;
     private final int capacity;
 
     public SessionCapacity(Long sessionId, int capacity) {
         validate(capacity);
         this.sessionId = sessionId;
+        this.capacity = capacity;
+    }
+
+    public SessionCapacity(int capacity) {
+        validate(capacity);
         this.capacity = capacity;
     }
 
