@@ -9,13 +9,13 @@ import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FreeSession implements Session {
 
     public static final int FREE_PRICE = 0;
     private final long id;
     private Duration duration;
-    private Cover cover;
     private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
@@ -32,7 +32,7 @@ public class FreeSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -49,7 +49,7 @@ public class FreeSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -126,17 +126,11 @@ public class FreeSession implements Session {
                 this.capacity.getEnrolled(),
                 this.price.getPrice(),
                 this.tutor.getTutorId(),
-                this.cover.getId(),
                 this.sessionName.getSessionName(),
                 this.baseEntity.isDeleted(),
                 this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
         );
-    }
-
-    @Override
-    public Cover getCover() {
-        return this.cover;
     }
 
     @Override
@@ -154,7 +148,7 @@ public class FreeSession implements Session {
         validateCanDeleteForSessionStatus();
         DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
 
-        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.covers.deleteAll(requestUser));
         deleteHistoryTargets.add(this.students.deleteAll(requestUser));
 
         this.baseEntity.delete(LocalDateTime.now());

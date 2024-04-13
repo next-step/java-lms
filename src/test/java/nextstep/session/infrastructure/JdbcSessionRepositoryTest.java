@@ -153,22 +153,6 @@ class JdbcSessionRepositoryTest {
         assertThat(optionalStudent).isNotPresent();
     }
 
-    @DisplayName("커버 이미지를 변경할 수 있다.")
-    @Test
-    void changeCover() {
-        // when
-        long savedId = sessionRepository.save(freeSession);
-        Session session = sessionRepository.findById(savedId);
-        long oldCoverId = session.toVO().getCoverId();
-
-        Cover newCover = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
-        sessionRepository.updateCover(savedId, oldCoverId, newCover);
-        Session sessionChangedCover = sessionRepository.findById(savedId);
-
-        // then
-        assertThat(sessionChangedCover.toVO().getCoverId()).isNotEqualTo(oldCoverId);
-    }
-
     @DisplayName("커버를 추가할 수 있다.")
     @Test
     void addMultipleCovers() {
@@ -180,7 +164,7 @@ class JdbcSessionRepositoryTest {
         // when
         sessionRepository.addCover(savedId, newCover);
         sessionRepository.addCover(savedId, newCover2);
-        Session session = sessionRepository.findById2(savedId);
+        Session session = sessionRepository.findById(savedId);
 
         // then
         assertThat(session.getCovers().size())

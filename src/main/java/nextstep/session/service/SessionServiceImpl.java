@@ -7,7 +7,6 @@ import nextstep.session.domain.*;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -35,12 +34,6 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto) {
         return sessionRepository.updateSessionBasicProperties(sessionId, sessionUpdateDto);
-    }
-
-    @Transactional
-    @Override
-    public void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser) {
-        sessionRepository.updateCover(sessionId, oldCoverId, newCover);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package nextstep.session.domain;
 
-import nextstep.common.domain.DeleteHistory;
 import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
@@ -25,8 +24,6 @@ public interface Session {
     DeleteHistoryTargets delete(NsUser requestUser);
 
     SessionVO toVO();
-
-    Cover getCover();
 
     Covers getCovers();
 

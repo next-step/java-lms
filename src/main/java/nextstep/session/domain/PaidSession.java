@@ -9,12 +9,12 @@ import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PaidSession implements Session {
 
     private final long id;
     private Duration duration;
-    private Cover cover;
     private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
@@ -31,7 +31,7 @@ public class PaidSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -48,7 +48,7 @@ public class PaidSession implements Session {
     ) {
         this.id = id;
         this.duration = duration;
-        this.cover = cover;
+        this.covers = new Covers(List.of(cover));
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -126,7 +126,6 @@ public class PaidSession implements Session {
                 this.capacity.getEnrolled(),
                 this.price.getPrice(),
                 this.tutor.getTutorId(),
-                this.cover.getId(),
                 this.sessionName.getSessionName(),
                 this.baseEntity.isDeleted(),
                 this.baseEntity.getCreatedAt(),
@@ -139,7 +138,7 @@ public class PaidSession implements Session {
         validateCanDeleteForSessionStatus();
         DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
 
-        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.covers.deleteAll(requestUser));
         deleteHistoryTargets.add(this.students.deleteAll(requestUser));
 
         this.baseEntity.delete(LocalDateTime.now());
@@ -151,11 +150,6 @@ public class PaidSession implements Session {
         if (!this.sessionStatus.onReady()) {
             throw new SessionException("준비 상태에서만 세션을 삭제할 수 있습니다.");
         }
-    }
-
-    @Override
-    public Cover getCover() {
-        return this.cover;
     }
 
     @Override

@@ -11,11 +11,8 @@ public interface SessionRepository {
     long unapply(long sessionId, Student student);
 
     Session findById(long sessionId);
-    Session findById2(long sessionId);
 
     int updateSessionBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
-
-    void updateCover(long sessionId, long oldCoverId, Cover newCover);
 
     void delete(long sessionId);
 

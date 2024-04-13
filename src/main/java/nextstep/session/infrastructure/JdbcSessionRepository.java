@@ -63,7 +63,9 @@ public class JdbcSessionRepository implements SessionRepository {
 
         long sessionKey = Objects.requireNonNull(keyHolder.getKey()).longValue();
 
-        saveCover(session.getCover(), sessionKey);
+        for (Cover cover : session.getCovers().asList()) {
+            saveCover(cover, sessionKey);
+        }
 
         return sessionKey;
     }
@@ -95,77 +97,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(long sessionId) {
-        String findBySessionIdQuery =
-                "select s.id as sessionId, " +
-                        "s.start_date as startDate, " +
-                        "s.end_date as endDate, " +
-                        "s.session_status as sessionStatus, " +
-                        "s.course_id as courseId, " +
-                        "s.max_capacity as maxCapacity, " +
-                        "s.enrolled as enrolled, " +
-                        "s.price as price, " +
-                        "s.tutor_id as tutorId, " +
-                        "s.session_name as sessionName, " +
-                        "s.deleted as sessionDeleted, " +
-                        "s.created_at as sessionCreatedAt, " +
-                        "s.last_modified_at as sessionLastModifiedAt " +
-                        "from session s " +
-                        "where s.id = ?";
-
-        RowMapper<Session> rowMapper = (rs, rowNum) -> {
-            Cover cover = findCover(rs.getLong("sessionId"));
-
-            Students students = findStudentsBySessionId(rs.getLong("sessionId"));
-
-            if (isFreeSession(rs.getLong("price"))) {
-                return new FreeSession(
-                        rs.getLong("sessionId"),
-                        new Duration(
-                                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("startDate")),
-                                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("endDate"))
-                        ),
-                        cover,
-                        SessionStatus.of(SessionStatusType.valueOf(rs.getString("sessionStatus"))),
-                        rs.getString("sessionName"),
-                        rs.getLong("courseId"),
-                        new Tutor(rs.getString("tutorId")),
-                        students,
-                        new BaseEntity(
-                                rs.getBoolean("sessionDeleted"),
-                                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("sessionCreatedAt")),
-                                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("sessionLastModifiedAt"))
-                        )
-                );
-            }
-
-            return new PaidSession(
-                    rs.getLong("sessionId"),
-                    new Duration(
-                            DbTimestampUtils.toLocalDateTime(rs.getTimestamp("startDate")),
-                            DbTimestampUtils.toLocalDateTime(rs.getTimestamp("endDate"))
-                    ),
-                    cover,
-                    SessionStatus.of(SessionStatusType.valueOf(rs.getString("sessionStatus"))),
-                    rs.getString("sessionName"),
-                    rs.getLong("courseId"),
-                    rs.getInt("maxCapacity"),
-                    rs.getInt("enrolled"),
-                    rs.getLong("price"),
-                    new Tutor(rs.getString("tutorId")),
-                    students,
-                    new BaseEntity(
-                            rs.getBoolean("sessionDeleted"),
-                            DbTimestampUtils.toLocalDateTime(rs.getTimestamp("sessionCreatedAt")),
-                            DbTimestampUtils.toLocalDateTime(rs.getTimestamp("sessionLastModifiedAt"))
-                    )
-            );
-        };
-
-        return jdbcTemplate.queryForObject(findBySessionIdQuery, rowMapper, sessionId);
-    }
-
-    @Override
-    public Session findById2(long sessionId) {
         String findBySessionIdQuery =
                 "select s.id as sessionId, " +
                         "s.start_date as startDate, " +
@@ -235,8 +166,8 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.queryForObject(findBySessionIdQuery, rowMapper, sessionId);
     }
 
-    private Cover findCover(long sessionId) {
-        String coverFindBySessionIdQuery =
+    private Covers findCovers(long sessionId) {
+        String findListBySessionIdQuery =
                 "select id as id, " +
                         "session_id as sessionId, " +
                         "width as width, " +
@@ -259,11 +190,14 @@ public class JdbcSessionRepository implements SessionRepository {
                 new ImageFilePath(rs.getString("filePath"), rs.getString("fileName"), rs.getString("fileExtension")),
                 rs.getLong("byteSize"),
                 rs.getString("writerId"),
-                rs.getBoolean("deleted"),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt")));
+                new BaseEntity(
+                        rs.getBoolean("deleted"),
+                        DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
+                        DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt"))
+                )
+        );
 
-        return jdbcTemplate.queryForObject(coverFindBySessionIdQuery, rowMapper, sessionId);
+        return new Covers(jdbcTemplate.query(findListBySessionIdQuery, new Object[]{sessionId}, rowMapper));
     }
 
     private Students findStudentsBySessionId(long sessionId) {
@@ -366,14 +300,6 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public void updateCover(long sessionId, long oldCoverId, Cover newCover) {
-        String updateCoverSql = "update cover set deleted = true where id = ?";
-        jdbcTemplate.update(updateCoverSql, oldCoverId);
-
-        saveCover(newCover, sessionId);
-    }
-
-    @Override
     public void delete(long sessionId) {
         String updateDeleteStatusSessionSql = "update session set deleted = true where id = ?";
         jdbcTemplate.update(updateDeleteStatusSessionSql, sessionId);
@@ -383,40 +309,6 @@ public class JdbcSessionRepository implements SessionRepository {
 
         String updateDeleteStatusStudentSql = "update student set deleted = true where session_id = ?";
         jdbcTemplate.update(updateDeleteStatusStudentSql, sessionId);
-    }
-
-    private Covers findCovers(long sessionId) {
-        String findListBySessionIdQuery =
-                "select id as id, " +
-                        "session_id as sessionId, " +
-                        "width as width, " +
-                        "height as height, " +
-                        "file_path as filePath, " +
-                        "file_name as fileName, " +
-                        "file_extension as fileExtension, " +
-                        "byte_size as byteSize, " +
-                        "writer_id as writerId, " +
-                        "deleted as deleted, " +
-                        "created_at as createdAt, " +
-                        "last_modified_at as lastModifiedAt " +
-                        "from cover " +
-                        "where session_id = ? and deleted = false";
-
-        RowMapper<Cover> rowMapper = (rs, rowNum) -> new Cover(
-                rs.getLong("id"),
-                rs.getLong("sessionId"),
-                new Resolution(rs.getInt("width"), rs.getInt("height")),
-                new ImageFilePath(rs.getString("filePath"), rs.getString("fileName"), rs.getString("fileExtension")),
-                rs.getLong("byteSize"),
-                rs.getString("writerId"),
-                new BaseEntity(
-                        rs.getBoolean("deleted"),
-                        DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
-                        DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt"))
-                )
-        );
-
-        return new Covers(jdbcTemplate.query(findListBySessionIdQuery, new Object[]{sessionId}, rowMapper));
     }
 
     @Override

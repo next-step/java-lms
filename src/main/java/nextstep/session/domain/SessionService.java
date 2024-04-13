@@ -12,8 +12,6 @@ public interface SessionService {
 
     int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto);
 
-    void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser);
-
     Session apply(long sessionId, Payment payment, Student student);
 
     Session deleteStudent(long sessionId, Student student, NsUser requestUser);
