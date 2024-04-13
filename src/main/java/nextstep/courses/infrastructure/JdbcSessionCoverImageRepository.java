@@ -21,7 +21,7 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
 
     @Override
     public int save(SessionCoverImage coverImage) {
-        String sql = "insert into session (id, session_id, size_of_bytes, width, height, image_type) " +
+        String sql = "insert into session_cover_images (id, session_id, size_of_bytes, width, height, image_type) " +
                 "values(?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
@@ -30,7 +30,7 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
                 coverImage.getSizeOfBytes(),
                 coverImage.getWidth(),
                 coverImage.getHeight(),
-                coverImage.getType()
+                coverImage.getType().toString()
         );
     }
 
@@ -38,7 +38,7 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
     public SessionCoverImage findById(Long id) {
         try {
             String sql = "select id, session_id, size_of_bytes, width, height, image_type " +
-                    "from session where id = ?";
+                    "from session_cover_images where id = ?";
 
             RowMapper<SessionCoverImage> rowMapper = (rs, rowNum) -> {
                 return new SessionCoverImage(
