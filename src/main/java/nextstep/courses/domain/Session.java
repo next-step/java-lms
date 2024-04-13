@@ -28,12 +28,7 @@ public class Session {
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
         SessionCoverImage coverImage, SessionStatus status, LocalDateTime createdAt) {
-        this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImage = coverImage;
-        this.status = status;
-        this.createdAt = createdAt;
+        this(id, startDate, endDate, coverImage, status, new HashSet<>(), createdAt, null);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
