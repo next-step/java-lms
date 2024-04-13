@@ -91,6 +91,14 @@ public abstract class Session {
                 .ifPresent(enrollment -> enrollment.changeEnrollmentStatus(EnrollmentStatus.APPROVED));
     }
 
+    public boolean isEnrollmentStatus(NsUser user, EnrollmentStatus enrollmentStatus) {
+        return this.enrollments.stream()
+                .filter(enrollment -> Objects.equals(enrollment.getUserId(), user.getId()))
+                .findFirst()
+                .map(enrollment -> enrollment.isStatus(enrollmentStatus))
+                .orElse(false);
+    }
+
     public long getId() {
         return this.id;
     }
