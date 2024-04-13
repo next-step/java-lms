@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 public class Session {
 
     private final Long id;
@@ -16,5 +18,13 @@ public class Session {
         this.id = id;
         this.coverImage = coverImage;
         this.sessionInformation = sessionInformation;
+    }
+
+    public boolean isEqualSessionId(Long sessionId) {
+        return this.id.equals(sessionId);
+    }
+
+    public void enroll(Long userId) {
+        sessionInformation.enroll(userId, this.id);
     }
 }

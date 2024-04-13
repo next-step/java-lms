@@ -12,6 +12,9 @@ public class Image {
     int height;
     ImageType type;
 
+    public Image() {
+    }
+
     public Image(int size, int width, int height, ImageType type) {
         validateSize(size, width, height);
         this.size = size;

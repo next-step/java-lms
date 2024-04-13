@@ -37,9 +37,7 @@
   - [x] 강의는 강의 커버 이미지 정보를 가진다. -> image
   - [x] type : FREE, PAID
   - [x] status : READY, RECRUITING, END
-    - [ ] RECRUITING : 수강 신청 가능 
-  - [ ] Session : Payment = 1 : 1
-    - [ ] payment.amount == session.amount : 수강 신청 가능
+    - [x] RECRUITING : 수강 신청 가능
   - [x] maxStudent
     - [x] type == FREE : maxStudent == null
     - [x] type == PAID : maxStudent > 0
@@ -47,5 +45,4 @@
     - [x] type == FREE : Fee == 0
     - [x] type == PAID : Fee > 0
 - 결제 (Payment)
-  - [ ] status : PAID, CANCELED
-  - [ ] amount : Fee와 일치할 때 수강 신청이 가능하다.
+  - [x] amount : Fee와 일치할 때 수강 신청이 가능하다.

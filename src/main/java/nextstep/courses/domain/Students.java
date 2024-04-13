@@ -4,6 +4,8 @@ public class Students {
 
     private final Integer maxStudents;
 
+    private int currentStudents;
+
     public Students(Integer maxStudents, SessionType type) {
         validateMaxStudents(maxStudents, type);
         this.maxStudents = maxStudents;
@@ -21,5 +23,13 @@ public class Students {
 
     public int getMaxStudents() {
         return maxStudents;
+    }
+
+    public void enroll() {
+        // 수강 인원을 증가시킨다.
+        currentStudents++;
+        if (currentStudents > maxStudents) {
+            throw new IllegalArgumentException("수강 가능한 인원을 초과했습니다.");
+        }
     }
 }

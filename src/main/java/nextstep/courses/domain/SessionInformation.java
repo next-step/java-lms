@@ -16,4 +16,11 @@ public class SessionInformation {
         this.enrollment = enrollment;
         this.schedule = schedule;
     }
+
+    public void enroll(Long userId, Long sessionId) {
+        if (!status.isRecruiting()) {
+            throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
+        }
+        enrollment.enroll(userId, sessionId);
+    }
 }
