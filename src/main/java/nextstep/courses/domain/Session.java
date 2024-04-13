@@ -17,6 +17,8 @@ public abstract class Session {
     protected LocalDateTime startedAt;
     protected LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
+    protected ProgressStatus progressStatus = ProgressStatus.PREPARING;
+    protected RecruitmentStatus recruitmentStatus = RecruitmentStatus.NOT_RECRUITING;
     protected SessionType type;
 
     protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
@@ -37,18 +39,28 @@ public abstract class Session {
         this.status = status;
     }
 
+    public void changeProgressStatus(ProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
+    }
+
+    public void changeRecruitmentStatus(RecruitmentStatus recruitmentStatus) {
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
     public boolean isStatus(SessionStatus status) {
         return this.status.isSame(status);
     }
 
-    public List<NsUser> totalStudents() {
-        return new ArrayList<>(this.students);
+    public boolean isProgressStatus(ProgressStatus progressStatus) {
+        return this.progressStatus.isSame(progressStatus);
     }
 
-    protected void validateRecruiting() {
-        if (!SessionStatus.isRecruiting(status)) {
-            throw new IllegalArgumentException("현재 모집 중인 강의가 아닙니다.");
-        }
+    public boolean isRecruitmentStatus(RecruitmentStatus recruitmentStatus) {
+        return this.recruitmentStatus.isSame(recruitmentStatus);
+    }
+
+    public List<NsUser> totalStudents() {
+        return new ArrayList<>(this.students);
     }
 
     public long getId() {
