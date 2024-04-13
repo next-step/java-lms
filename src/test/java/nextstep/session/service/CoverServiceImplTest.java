@@ -42,7 +42,7 @@ class CoverServiceImplTest {
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         LocalDateTime now = LocalDateTime.now();
 
-        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), now, now);
+        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), false, now, now);
     }
 
     @DisplayName("생성자와 삭제 요청자가 동일하다면, 삭제할 수 있다.")

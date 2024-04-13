@@ -2,6 +2,8 @@ package nextstep.session.infrastructure;
 
 import nextstep.session.domain.Cover;
 import nextstep.session.domain.CoverRepository;
+import nextstep.session.domain.ImageFilePath;
+import nextstep.session.domain.Resolution;
 import nextstep.session.dto.CoverVO;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -17,6 +19,21 @@ import java.util.Objects;
 @Repository("coverRepository")
 public class JdbcCoverRepository implements CoverRepository {
 
+    public static final String COVER_INSERT_QUERY = "insert into cover (width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String COVER_FIND_QUERY =
+            "select id as id, " +
+                    "width as width, " +
+                    "height as height, " +
+                    "file_path as filePath, " +
+                    "file_name as fileName, " +
+                    "file_extension as fileExtension, " +
+                    "byte_size as byteSize, " +
+                    "writer_id as writerId, " +
+                    "deleted as deleted, " +
+                    "created_at as createdAt, " +
+                    "last_modified_at as lastModifiedAt " +
+            "from cover " +
+            "where id = ?";
     private JdbcOperations jdbcTemplate;
 
     public JdbcCoverRepository(JdbcOperations jdbcTemplate) {
@@ -25,11 +42,10 @@ public class JdbcCoverRepository implements CoverRepository {
 
     @Override
     public long save(Cover cover) {
-        String sql = "insert into cover (width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         CoverVO coverVO = cover.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(COVER_INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, coverVO.getWidth());
             ps.setInt(2, coverVO.getHeight());
             ps.setString(3, coverVO.getFilePath());
@@ -47,21 +63,17 @@ public class JdbcCoverRepository implements CoverRepository {
     }
 
     @Override
-    public CoverVO findById(long coverId) {
-        String sql = "select id, width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at from cover where id = ?";
-        RowMapper<CoverVO> rowMapper = (rs, rowNum) -> new CoverVO(
-                rs.getLong(1),
-                rs.getInt(2),
-                rs.getInt(3),
-                rs.getString(4),
-                rs.getString(5),
-                rs.getString(6),
-                rs.getLong(7),
-                rs.getString(8),
-                rs.getBoolean(9),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp(10)),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp(11)));
-        return jdbcTemplate.queryForObject(sql, rowMapper, coverId);
+    public Cover findById(long coverId) {
+        RowMapper<Cover> rowMapper = (rs, rowNum) -> new Cover(
+                rs.getLong("id"),
+                new Resolution(rs.getInt("width"), rs.getInt("height")),
+                new ImageFilePath(rs.getString("filePath"), rs.getString("fileName"), rs.getString("fileExtension")),
+                rs.getLong("byteSize"),
+                rs.getString("writerId"),
+                rs.getBoolean("deleted"),
+                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
+                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt")));
+        return jdbcTemplate.queryForObject(COVER_FIND_QUERY, rowMapper, coverId);
     }
 
     @Override

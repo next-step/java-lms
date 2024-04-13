@@ -20,16 +20,7 @@ public class CoverServiceImpl implements CoverService {
 
     @Override
     public Cover findById(Long coverId) {
-        CoverVO coverVO = coverRepository.findById(coverId);
-
-        return new Cover(
-                coverVO.getId(),
-                new Resolution(coverVO.getWidth(), coverVO.getHeight()),
-                new ImageFilePath(coverVO.getFilePath(), coverVO.getFileName(), coverVO.getFileExtension()),
-                coverVO.getByteSize(),
-                coverVO.getWriterId(),
-                new BaseEntity(coverVO.isDeleted(), coverVO.getCreatedAt(), coverVO.getLastModifiedAt())
-        );
+        return coverRepository.findById(coverId);
     }
 
     @Override

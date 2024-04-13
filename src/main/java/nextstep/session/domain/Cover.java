@@ -19,14 +19,14 @@ public class Cover {
     private final BaseEntity baseEntity;
 
     public Cover(Resolution resolution, ImageFilePath imageFilePath, long byteSize, String writerId) {
-        this(0L, resolution, imageFilePath, byteSize, writerId, LocalDateTime.now(), LocalDateTime.now());
+        this(0L, resolution, imageFilePath, byteSize, writerId, false, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Cover(
             long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
-            String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            String writerId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
-        this(id, resolution, imageFilePath, byteSize, writerId, new BaseEntity(createdAt, lastModifiedAt));
+        this(id, resolution, imageFilePath, byteSize, writerId, new BaseEntity(deleted, createdAt, lastModifiedAt));
     }
 
     public Cover(

@@ -1,7 +1,6 @@
 package nextstep.session.service;
 
 import nextstep.common.domain.DeleteHistory;
-import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.common.service.DeleteHistoryService;
 import nextstep.courses.domain.Course;
 import nextstep.courses.infrastructure.CourseService;
@@ -59,7 +58,7 @@ class SessionServiceImplTest {
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         LocalDateTime now = LocalDateTime.now();
 
-        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), now, now);
+        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), false, now, now);
         course = new Course(3L, "course1", 3L, 1, LocalDateTime.now(), LocalDateTime.now());
         student = new Student(3L, NsUserTest.JAVAJIGI);
         tutor = new Tutor(NsUserTest.SANJIGI);

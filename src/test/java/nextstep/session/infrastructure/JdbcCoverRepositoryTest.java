@@ -39,7 +39,7 @@ class JdbcCoverRepositoryTest {
         );
 
         Long savedId = coverRepository.save(cover);
-        CoverVO savedCover = coverRepository.findById(savedId);
+        Cover savedCover = coverRepository.findById(savedId);
 
         assertThat(savedCover.getId())
                 .isEqualTo(savedId);
@@ -59,10 +59,10 @@ class JdbcCoverRepositoryTest {
         // when
         Long savedId = coverRepository.save(cover);
         int updatedCount = coverRepository.updateDeleteStatus(savedId, true);
-        CoverVO foundCover = coverRepository.findById(savedId);
+        Cover foundCover = coverRepository.findById(savedId);
 
         // then
         assertThat(updatedCount).isEqualTo(1);
-        assertThat(foundCover.isDeleted()).isTrue();
+        assertThat(foundCover.toVO().isDeleted()).isTrue();
     }
 }
