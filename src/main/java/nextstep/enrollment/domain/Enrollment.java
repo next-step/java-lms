@@ -49,6 +49,14 @@ public class Enrollment {
         }
     }
 
+    public Long getSession() {
+        return session.getId();
+    }
+
+    public Long getAttendeeId() {
+        return attendee.getId();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

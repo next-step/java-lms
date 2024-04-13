@@ -17,6 +17,6 @@
 
 # 리팩토링
 
-- [ ] 추가한 도메인들에 대한 저장 로직을 각각의 Repository를 생성하여 처리
-  - [ ] Enrollment
-  - [ ] Session
+- [x] 추가한 도메인들에 대한 저장 로직을 각각의 Repository를 생성하여 처리
+  - [x] Enrollment
+  - [x] Session

@@ -77,6 +77,10 @@ public class Session {
         return enrollments;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public int getMaxEnrollment() {
         return maxEnrollment;
     }
