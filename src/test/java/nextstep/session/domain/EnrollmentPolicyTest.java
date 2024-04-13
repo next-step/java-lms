@@ -20,18 +20,14 @@ class EnrollmentPolicyTest {
     public void 무료_등록_정책을_생성() throws InvalidEnrollmentPolicyException {
         EnrollmentPolicy enrollmentPolicy = EnrollmentPolicy.createFreeSession();
 
-        assertThat(enrollmentPolicy.getFee()).isEqualTo(0);
-        assertThat(enrollmentPolicy.getPriceType()).isEqualTo(PriceType.FREE);
-        assertThat(enrollmentPolicy.getMaxEnrollment()).isEqualTo(0);
+        assertThat(enrollmentPolicy.isPaymentCorrect(0)).isTrue();
     }
 
     @Test
     public void 유료_등록_정책_생성() throws InvalidEnrollmentPolicyException {
         EnrollmentPolicy enrollmentPolicy = EnrollmentPolicy.createPaidSession(100, 50000);
 
-        assertThat(enrollmentPolicy.getFee()).isEqualTo(50000);
-        assertThat(enrollmentPolicy.getPriceType()).isEqualTo(PriceType.PAID);
-        assertThat(enrollmentPolicy.getMaxEnrollment()).isEqualTo(100);
+        assertThat(enrollmentPolicy.isPaymentCorrect(50000)).isTrue();
     }
 
 }

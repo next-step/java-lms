@@ -38,15 +38,18 @@ public class EnrollmentPolicy {
         return true;
     }
 
-    public PriceType getPriceType() {
-        return priceType;
+
+    public boolean isCapacityFull(int enrolledStudentCount) {
+        if (priceType == PriceType.FREE) {
+            return false;
+        }
+        return maxEnrollment <= enrolledStudentCount;
     }
 
-    public int getMaxEnrollment() {
-        return maxEnrollment;
-    }
-
-    public int getFee() {
-        return fee;
+    public boolean isPaymentCorrect(int payment) {
+        if (priceType == PriceType.FREE) {
+            return true;
+        }
+        return payment == fee;
     }
 }
