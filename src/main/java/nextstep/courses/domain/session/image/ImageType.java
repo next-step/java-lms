@@ -12,7 +12,7 @@ public enum ImageType {
     JPG("jpg"),
     JPEG("jpeg"),
     PNG("png"),
-    SVN("svn");
+    SVG("svg");
 
     private static final Map<String, ImageType> imageTypes = Stream.of(values())
             .collect(Collectors.toUnmodifiableMap(imageType -> imageType.typeName, Function.identity()));
