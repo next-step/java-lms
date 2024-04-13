@@ -16,8 +16,8 @@ public class JdbcLearnerRepository {
     }
 
     public void save(LearnerDto learnerDto) {
-        String sql = "insert into session_learner (session_id, user_id) values(?, ?)";
-        jdbcTemplate.update(sql, learnerDto.getSessionId(), learnerDto.getUserId());
+        String sql = "insert into session_learner (session_id, user_id, is_accepted) values(?, ?, ?)";
+        jdbcTemplate.update(sql, learnerDto.getSessionId(), learnerDto.getUserId(), learnerDto.isAccepted());
     }
 
     public boolean exists(LearnerDto learnerDto) {
@@ -26,5 +26,10 @@ public class JdbcLearnerRepository {
         return EXIST.equals(jdbcTemplate.queryForObject(sql, Integer.class,
             learnerDto.getSessionId(), learnerDto.getUserId()
         ));
+    }
+
+    public void update(Long sessionId, Long userId, boolean isAccepted) {
+        String sql = "update session_learner set is_accepted = ? where session_id = ? and user_id = ?";
+        jdbcTemplate.update(sql, sessionId, userId, isAccepted);
     }
 }

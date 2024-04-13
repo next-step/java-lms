@@ -36,6 +36,7 @@ create table cover_image (
 create table session_learner (
     session_id bigint not null,
     user_id bigint not null,
+    is_accepted boolean not null,
     primary key(session_id, user_id)
 );
 

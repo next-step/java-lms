@@ -61,4 +61,20 @@ class JdbcLearnerRepositoryTest {
         learnerRepository.save(learnerDto);
         assertThat(learnerRepository.exists(learnerDto)).isTrue();
     }
+
+    @Test
+    @DisplayName("update는 isAccepted를 변경한다")
+    void update() {
+        // given
+        LearnerDto learnerDto = new LearnerDto(1L, 1L, false);
+        learnerRepository.save(learnerDto);
+
+        // when
+        learnerRepository.update(learnerDto.getSessionId(), learnerDto.getUserId(), true);
+
+        // then
+        String sql = "select is_accepted from session_learner where session_id = ? and user_id = ?";
+        boolean isAccepted = jdbcTemplate.queryForObject(sql, Boolean.class, learnerDto.getSessionId(), learnerDto.getUserId());
+        assertThat(isAccepted).isTrue();
+    }
 }
