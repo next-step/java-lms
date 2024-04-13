@@ -13,13 +13,6 @@ public class SessionImage {
         this.id = id;
     }
 
-    public SessionImage(String path, int width, int height, int fileSize) {
-        this.sessionImageSize = new SessionImageSize(width, height, fileSize);
-        this.sessionImageType = SessionImageType.findByFilePath(path);
-        this.path = path;
-        this.id = null;
-    }
-
     public Long getId() {
         return id;
     }
