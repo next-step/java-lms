@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.coverImage;
+package nextstep.courses.domain.session;
 
 import static nextstep.courses.ExceptionMessage.INVALID_COVER_IMAGE;
 

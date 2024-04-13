@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.coverImage;
+package nextstep.courses.domain.session;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
