@@ -9,20 +9,19 @@ public class ChargedSession extends Session {
   private Integer maxSize;
   private Long tuition;
 
-  public ChargedSession(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
-                        final Integer maxSize, final Long tuition) {
-    this(0L, courseId, startDate, endDate, images, status, maxSize, tuition, List.of());
+  public ChargedSession(Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                        RecruitStatus recruitStatus, final Integer maxSize, final Long tuition) {
+    this(0L, courseId, startDate, endDate, images, openStatus, recruitStatus, maxSize, tuition, List.of());
   }
 
-
-  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
-                        final Integer maxSize, final Long tuition) {
-    this(id, courseId, startDate, endDate, images, status, maxSize, tuition, List.of());
+  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                        RecruitStatus recruitStatus, final Integer maxSize, final Long tuition) {
+    this(id, courseId, startDate, endDate, images, openStatus, recruitStatus, maxSize, tuition, List.of());
   }
 
-  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, SessionStatus status,
-                        final Integer maxSize, final Long tuition, final List<NsUser> students) {
-    super(id, courseId, startDate, endDate, images, status, students);
+  public ChargedSession(Long id, Long courseId, LocalDate startDate, LocalDate endDate, List<SessionImage> images, OpenStatus openStatus,
+                        RecruitStatus recruitStatus, final Integer maxSize, final Long tuition, final List<NsUser> students) {
+    super(id, courseId, startDate, endDate, images, openStatus, recruitStatus, students);
     this.maxSize = maxSize;
     this.tuition = tuition;
   }

@@ -1,8 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.ChargedSession;
-import nextstep.courses.domain.SessionImage;
-import nextstep.courses.domain.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,10 +29,10 @@ public class ChargedSessionTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "PREPARING", "CLOSED" })
-  void 모집중이지_않음(SessionStatus status) {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), status,
-            5, 10000L, List.of());
+  @ValueSource(strings = { "CLOSED" })
+  void 모집중이지_않음(RecruitStatus recruitStatus) {
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
+            OpenStatus.CLOSED, recruitStatus, 5, 10000L, List.of());
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("수강생 모집중인 강의가 아닙니다.");
@@ -43,8 +40,8 @@ public class ChargedSessionTest {
 
   @Test
   void 최대_수강인원_초과() {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
-            3, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
+            OpenStatus.OPEN, RecruitStatus.OPEN, 3, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("최대 수강인원을 초과하였습니다.");
@@ -53,8 +50,8 @@ public class ChargedSessionTest {
   @ParameterizedTest
   @ValueSource(longs = { 5000L, 15000L })
   void 결제_정보_일치하지_않음(Long input) {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
-            5, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
+            OpenStatus.OPEN, RecruitStatus.OPEN,5, 10000L, List.of(SANGJIGI, CJIGI, PYTHONJIGI));
     JAVAJIGI.addPayment(new Payment("TEST_PAYMENT", 1L, 1L, input));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
@@ -63,8 +60,8 @@ public class ChargedSessionTest {
 
   @Test
   void 정상_수강_신청() {
-    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN,
-            3, 10000L, List.of(SANGJIGI));
+    ChargedSession session = new ChargedSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
+            OpenStatus.OPEN, RecruitStatus.OPEN,3, 10000L, List.of(SANGJIGI));
     JAVAJIGI.addPayment(new Payment("TEST_PAYMENT", 1L, 1L, 10000L));
     session.addStudent(JAVAJIGI);
     assertThat(session.numberOfStudents()).isEqualTo(2);

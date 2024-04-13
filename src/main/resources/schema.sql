@@ -56,7 +56,8 @@ create table session (
     start_date timestamp not null,
     end_date timestamp not  null,
     image_id bigint,
-    status varchar(15) not null,
+    open_status varchar(15) not null,
+    recruit_status varchar(15) not null,
     session_type varchar(20) not null,
     max_size int,
     tuition bigint

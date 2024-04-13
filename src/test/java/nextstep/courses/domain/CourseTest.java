@@ -27,9 +27,9 @@ public class CourseTest {
             "TEST-1기",
             "title1",
             List.of(
-                    new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of()),
-                    new FreeSession(2L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of()),
-                    new FreeSession(3L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), SessionStatus.OPEN, List.of())
+                    new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), OpenStatus.OPEN, RecruitStatus.OPEN, List.of()),
+                    new FreeSession(2L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), OpenStatus.OPEN, RecruitStatus.OPEN, List.of()),
+                    new FreeSession(3L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE), OpenStatus.OPEN, RecruitStatus.OPEN, List.of())
             ),
             1L,
             now,

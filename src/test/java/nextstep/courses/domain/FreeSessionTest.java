@@ -23,10 +23,10 @@ public class FreeSessionTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "PREPARING", "CLOSED" })
-  void 모집중이지_않은_경우_수강신청(SessionStatus status) {
+  @ValueSource(strings = { "CLOSED" })
+  void 모집중이지_않은_경우_수강신청(RecruitStatus recruitStatus) {
     FreeSession session = new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L), List.of(IMAGE),
-            status, List.of(JAVAJIGI));
+            OpenStatus.CLOSED, recruitStatus, List.of(JAVAJIGI));
     assertThatThrownBy(() -> session.addStudent(JAVAJIGI))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("수강생 모집중인 강의가 아닙니다.");
@@ -35,7 +35,7 @@ public class FreeSessionTest {
   @Test
   void 정상_수강신청() {
     FreeSession session = new FreeSession(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1L),
-            List.of(IMAGE), SessionStatus.OPEN, List.of());
+            List.of(IMAGE), OpenStatus.OPEN, RecruitStatus.OPEN, List.of());
     session.addStudent(JAVAJIGI);
 
     assertThat(session.numberOfStudents()).isEqualTo(1);
