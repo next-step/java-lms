@@ -6,6 +6,14 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class DeleteHistory {
+    public static DeleteHistory createQuestion(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.QUESTION, contentId, deletedBy, createdDate);
+    }
+
+    public static DeleteHistory createAnswer(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.ANSWER, contentId, deletedBy, createdDate);
+    }
+
     private Long id;
 
     private ContentType contentType;
