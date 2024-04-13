@@ -9,7 +9,7 @@ public interface CoverService {
 
     Cover findBySessionId(long sessionId);
 
-    DeleteHistory delete(Cover cover, NsUser requestUser);
+    DeleteHistory delete(long coverId, NsUser requestUser);
 
     Long save(Cover cover);
 }

@@ -60,7 +60,6 @@ create table session (
     enrolled bigint,
     price bigint,
     tutor_id varchar(255),
-    cover_id bigint,
     session_name varchar(255),
     deleted boolean,
     created_at timestamp,

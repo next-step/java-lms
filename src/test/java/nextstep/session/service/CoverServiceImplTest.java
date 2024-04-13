@@ -1,5 +1,6 @@
 package nextstep.session.service;
 
+import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.domain.Cover;
@@ -7,7 +8,6 @@ import nextstep.session.domain.CoverRepository;
 import nextstep.session.domain.ImageFilePath;
 import nextstep.session.domain.Resolution;
 import nextstep.users.domain.NsUserTest;
-import nextstep.users.infrastructure.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +30,7 @@ class CoverServiceImplTest {
     private CoverServiceImpl coverService;
 
     private long sessionId;
+    private long coverId;
     private Cover cover;
 
     @BeforeEach
@@ -37,23 +38,27 @@ class CoverServiceImplTest {
         Resolution resolution = new Resolution(300, 200);
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         sessionId = 3L;
+        coverId = 4L;
 
-        cover = new Cover(sessionId, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId());
+        cover = new Cover(coverId, sessionId, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), new BaseEntity());
     }
 
     @DisplayName("생성자와 삭제 요청자가 동일하다면, 삭제할 수 있다.")
     @Test
     void userMatchDelete() {
-        when(coverRepository.updateDeleteStatus(cover.getId(), true)).thenReturn(1);
+        when(coverRepository.findById(coverId)).thenReturn(cover);
+        when(coverRepository.updateDeleteStatus(coverId, true)).thenReturn(1);
 
-        DeleteHistory deleteHistory = coverService.delete(cover, NsUserTest.JAVAJIGI);
+        DeleteHistory deleteHistory = coverService.delete(coverId, NsUserTest.JAVAJIGI);
         assertThat(cover.toVO().isDeleted()).isTrue();
     }
 
     @DisplayName("생성자와 삭제 요청자가 동일하지 않다면, 삭제할 수 없다.")
     @Test
     void userNotMatchDelete() {
-        assertThatThrownBy(() -> coverService.delete(cover, NsUserTest.SANJIGI))
+        when(coverRepository.findById(coverId)).thenReturn(cover);
+
+        assertThatThrownBy(() -> coverService.delete(coverId, NsUserTest.SANJIGI))
                 .isInstanceOf(CoverException.class);
     }
 }

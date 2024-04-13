@@ -2,7 +2,6 @@ package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
-import nextstep.courses.domain.Course;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
@@ -13,28 +12,28 @@ import java.time.LocalDateTime;
 public class FreeSession implements Session {
 
     public static final int FREE_PRICE = 0;
+    private final long id;
     private Duration duration;
     private Cover cover;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
-    private final Course course;
+    private final long courseId;
     private final Capacity capacity;
     private final Price price;
-    private final long id;
     private final Tutor tutor;
     private final Students students;
     private final BaseEntity baseEntity;
 
     public FreeSession(
             long id, Duration duration, Cover cover, String sessionName,
-            Course course, Tutor tutor
+            long courseId, Tutor tutor
     ) {
         this.id = id;
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
-        this.course = course;
+        this.courseId = courseId;
         this.capacity = Capacity.create(Integer.MAX_VALUE);
         this.price = new Price(FREE_PRICE);
         this.tutor = tutor;
@@ -44,14 +43,14 @@ public class FreeSession implements Session {
 
     public FreeSession(
             long id, Duration duration, Cover cover, SessionStatus sessionStatus, String sessionName,
-            Course course, Tutor tutor, Students students, BaseEntity baseEntity
+            long courseId, Tutor tutor, Students students, BaseEntity baseEntity
     ) {
         this.id = id;
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
-        this.course = course;
+        this.courseId = courseId;
         this.capacity = Capacity.create(Integer.MAX_VALUE);
         this.price = new Price(FREE_PRICE);
         this.tutor = tutor;
@@ -99,7 +98,7 @@ public class FreeSession implements Session {
                 this.duration.getStartDate(),
                 this.duration.getEndDate(),
                 this.sessionStatus.getSessionStatus().name(),
-                this.course.getId(),
+                this.courseId,
                 this.capacity.getMaxCapacity(),
                 this.capacity.getEnrolled(),
                 this.price.getPrice(),
@@ -110,6 +109,11 @@ public class FreeSession implements Session {
                 this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
         );
+    }
+
+    @Override
+    public Cover getCover() {
+        return this.cover;
     }
 
     @Override

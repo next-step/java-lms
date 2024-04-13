@@ -19,16 +19,18 @@ class PaidSessionTest {
 
     @BeforeEach
     void setUp() {
+        Duration duration = new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         Resolution resolution = new Resolution(300, 200);
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
+        Cover cover = new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId());
         Course course = new Course("Course1", 1L, 3);
 
         session = new PaidSession(
                 1L,
-                new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
+                duration,
+                cover,
                 "얼른 배우자 객체지향",
-                course,
+                course.getId(),
                 2,
                 100_000L,
                 new Tutor(NsUserTest.JAVAJIGI)

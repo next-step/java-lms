@@ -1,9 +1,7 @@
 package nextstep.session.infrastructure;
 
-import nextstep.common.domain.BaseEntity;
 import nextstep.courses.domain.Course;
 import nextstep.session.domain.*;
-import nextstep.session.dto.SessionVO;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -21,38 +19,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JdbcTest
 class JdbcSessionRepositoryTest {
 
+    private final long sessionId = 3L;
+    private final long coverId = 4L;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private SessionRepository sessionRepository;
+    private CoverRepository coverRepository;
     private Resolution resolution;
     private ImageFilePath imageFilePath;
     private Course course;
     private Session freeSession;
     private Session paidSession;
+    private Cover cover;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        coverRepository = new JdbcCoverRepository(jdbcTemplate);
 
         resolution = new Resolution(300, 200);
         imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         course = new Course("Course1", 1L, 3);
+        cover = new Cover(sessionId, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId());
 
         freeSession = new FreeSession(
-                1L,
+                sessionId,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
+                cover,
                 "얼른 배우자 객체지향",
-                course,
+                course.getId(),
                 new Tutor(NsUserTest.JAVAJIGI)
         );
 
         paidSession = new PaidSession(
-                1L,
+                sessionId,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
+                cover,
                 "얼른 배우자 객체지향",
-                course,
+                course.getId(),
                 100,
                 1_000_000L,
                 new Tutor(NsUserTest.JAVAJIGI)
@@ -64,10 +69,11 @@ class JdbcSessionRepositoryTest {
     void saveAndFindForFreeSession() {
         // when
         long savedId = sessionRepository.save(freeSession);
-        SessionVO sessionVO = sessionRepository.findById(savedId);
+
+        Session session = sessionRepository.findById(savedId);
 
         // then
-        assertThat(sessionVO.getId())
+        assertThat(session.toVO().getId())
                 .isEqualTo(savedId);
     }
 
@@ -76,10 +82,10 @@ class JdbcSessionRepositoryTest {
     void saveAndFindForPaidSession() {
         // when
         long savedId = sessionRepository.save(paidSession);
-        SessionVO sessionVO = sessionRepository.findById(savedId);
+        Session session = sessionRepository.findById(savedId);
 
         // then
-        assertThat(sessionVO.getId())
+        assertThat(session.toVO().getId())
                 .isEqualTo(savedId);
     }
 
@@ -93,12 +99,12 @@ class JdbcSessionRepositoryTest {
         SessionUpdateBasicPropertiesVO updateDto =
                 new SessionUpdateBasicPropertiesVO(null, null, changeSessionName);
         int updateCount = sessionRepository.updateSessionBasicProperties(savedId, updateDto);
-        SessionVO updatedSessionVO = sessionRepository.findById(savedId);
+        Session session = sessionRepository.findById(savedId);
 
         // then
         assertThat(updateCount)
                 .isEqualTo(1);
-        assertThat(updatedSessionVO.getSessionName())
+        assertThat(session.toVO().getSessionName())
                 .isEqualTo(changeSessionName);
     }
 
@@ -114,20 +120,5 @@ class JdbcSessionRepositoryTest {
         // then
         Assertions.assertThatThrownBy(() -> sessionRepository.updateSessionBasicProperties(savedId, updateDto))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("커버 이미지를 변경할 수 있다.")
-    @Test
-    void canChangeCover() {
-        // when
-        long savedId = sessionRepository.save(freeSession);
-
-        Cover newCover = new Cover(100L, resolution, imageFilePath, 100_000L, NsUserTest.JAVAJIGI.getUserId());
-
-        int updateCount = sessionRepository.updateCover(savedId, newCover);
-
-        // then
-        assertThat(updateCount)
-                .isEqualTo(1);
     }
 }

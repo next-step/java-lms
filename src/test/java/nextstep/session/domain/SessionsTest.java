@@ -24,7 +24,7 @@ class SessionsTest {
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
                 new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
                 "얼른 배우자 객체지향",
-                course,
+                course.getId(),
                 new Tutor(NsUserTest.JAVAJIGI)
         );
     }

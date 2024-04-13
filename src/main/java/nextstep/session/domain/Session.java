@@ -20,4 +20,6 @@ public interface Session {
     DeleteHistory delete(NsUser requestUser);
 
     SessionVO toVO();
+
+    Cover getCover();
 }

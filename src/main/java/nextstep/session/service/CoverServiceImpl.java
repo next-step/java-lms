@@ -27,7 +27,9 @@ public class CoverServiceImpl implements CoverService {
     }
 
     @Override
-    public DeleteHistory delete(Cover cover, NsUser requestUser) {
+    public DeleteHistory delete(long coverId, NsUser requestUser) {
+        Cover cover = findById(coverId);
+
         cover.delete(requestUser);
         int updateResult = coverRepository.updateDeleteStatus(cover.getId(), true);
         validateUpdateResult(updateResult);
