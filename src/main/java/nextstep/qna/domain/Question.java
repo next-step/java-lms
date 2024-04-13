@@ -87,7 +87,7 @@ public class Question {
     }
 
     private DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public boolean isOwner(User loginUser) {

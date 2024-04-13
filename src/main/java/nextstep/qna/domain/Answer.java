@@ -66,7 +66,7 @@ public class Answer {
     }
 
     public DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.ANSWER, getId(), getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
     public boolean isOwner(User writer) {
