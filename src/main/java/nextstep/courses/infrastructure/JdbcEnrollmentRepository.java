@@ -19,12 +19,13 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public int save(Enrollment enrollment) {
-        String sql = "insert into course (id, session_id, user_id, created_at, updated_at) values(?, ?, ?, ?, ?)";
+        String sql = "insert into enrollment (id, session_id, user_id, status, created_at, updated_at) values(?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 enrollment.getId(),
                 enrollment.getSessionId(),
                 enrollment.getUserId(),
+                enrollment.getEnrollmentStatus().toString(),
                 enrollment.getCreatedAt(),
                 enrollment.getUpdatedAt()
         );
@@ -32,7 +33,7 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
 
     @Override
     public Enrollment findById(Long id) {
-        String sql = "select id, session_id, user_id, status, created_at, updated_at from course where id = ?";
+        String sql = "select id, session_id, user_id, status, created_at, updated_at from enrollment where id = ?";
 
         RowMapper<Enrollment> rowMapper = (rs, rowNum) -> new Enrollment(
                 rs.getLong(1),
