@@ -25,6 +25,10 @@ public class SessionPrice {
         }
     }
 
+    public long getValue() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "Price{" +

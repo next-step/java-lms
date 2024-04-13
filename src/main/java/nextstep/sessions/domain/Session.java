@@ -30,6 +30,12 @@ public class Session {
 
     public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
                    final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+        this(null, maxEnrollment, sessionStatus, price, startedAt, endAt, course);
+    }
+
+    public Session(final Long id, final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+        this.id = id;
         this.maxEnrollment = maxEnrollment;
         this.sessionStatus = sessionStatus;
         this.sessionPrice = new SessionPrice(price);
@@ -69,5 +75,29 @@ public class Session {
 
     public List<Enrollment> getEnrollments() {
         return enrollments;
+    }
+
+    public int getMaxEnrollment() {
+        return maxEnrollment;
+    }
+
+    public String getSessionStatus() {
+        return sessionStatus.name();
+    }
+
+    public long getSessionPrice() {
+        return sessionPrice.getValue();
+    }
+
+    public LocalDateTime getSessionStartDate() {
+        return sessionPeriod.getStartedAt();
+    }
+
+    public LocalDateTime getSessionEndDate() {
+        return sessionPeriod.getEndAt();
+    }
+
+    public Long getCourse() {
+        return course.getId();
     }
 }
