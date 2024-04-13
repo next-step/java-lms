@@ -9,30 +9,34 @@ public class Session {
 
     private final Long id;
     private final String title;
+    private final Long courseId;
     private final SessionSchedule sessionSchedule;
     private final SessionCoverImage coverImage;
     private final SessionStatus sessionStatus;
     private final EnrollmentPolicy enrollmentPolicy;
     private final List<Student> students;
 
-    public static Session createFreeSession(Long id, String title, SessionSchedule sessionSchedule,
+    public static Session createFreeSession(Long id, Long courseId, String title,
+        SessionSchedule sessionSchedule,
         SessionCoverImage coverImage, SessionStatus sessionStatus)
         throws InvalidEnrollmentPolicyException {
-        return new Session(id, title, sessionSchedule, coverImage, sessionStatus,
+        return new Session(id, courseId, title, sessionSchedule, coverImage, sessionStatus,
             EnrollmentPolicy.createFreeSession());
     }
 
-    public static Session createPaidSession(Long id, String title, SessionSchedule sessionSchedule,
+    public static Session createPaidSession(Long id, Long courseId, String title,
+        SessionSchedule sessionSchedule,
         SessionCoverImage coverImage, SessionStatus sessionStatus, int maxEnrollment, int fee)
         throws InvalidEnrollmentPolicyException {
-        return new Session(id, title, sessionSchedule, coverImage, sessionStatus,
+        return new Session(id, courseId, title, sessionSchedule, coverImage, sessionStatus,
             EnrollmentPolicy.createPaidSession(maxEnrollment, fee));
     }
 
-    private Session(Long id, String title, SessionSchedule sessionSchedule,
+    private Session(Long id, Long courseId, String title, SessionSchedule sessionSchedule,
         SessionCoverImage coverImage,
         SessionStatus sessionStatus, EnrollmentPolicy enrollmentPolicy) {
         this.id = id;
+        this.courseId = courseId;
         this.title = title;
         this.sessionSchedule = sessionSchedule;
         this.coverImage = coverImage;

@@ -25,7 +25,7 @@ class SessionTest {
 
     @Test
     public void 강의_생성() throws InvalidEnrollmentPolicyException {
-        Session session = Session.createPaidSession(1L, "객체지향강의", sessionSchedule, coverImage,
+        Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 500, 10000);
         assertThat(session.enrolledStudentCount()).isEqualTo(0);
 
@@ -35,7 +35,7 @@ class SessionTest {
     public void 강의_신청()
         throws CannotEnrollException, InvalidEnrollmentPolicyException {
         Student student = new Student(1L, "박소민");
-        Session session = Session.createPaidSession(1L, "객체지향강의", sessionSchedule, coverImage,
+        Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 500, 50000);
         assertThat(session.enrolledStudentCount()).isEqualTo(0);
 
@@ -48,7 +48,7 @@ class SessionTest {
     @Test
     public void 모집중인_강의만_신청_가능() throws InvalidEnrollmentPolicyException {
         Student student = new Student(1L, "박소민");
-        Session session = Session.createPaidSession(1L, "객체지향강의", sessionSchedule, coverImage,
+        Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.PREPARING, 100, 50000);
         assertThatThrownBy(() ->
             session.enroll(student, 50000)).isInstanceOf(CannotEnrollException.class)
@@ -58,7 +58,7 @@ class SessionTest {
     @Test
     public void 유료강의의_경우_수강료와_지불금액이_일치해야_신청_가능() throws InvalidEnrollmentPolicyException {
         Student student = new Student(1L, "박소민");
-        Session session = Session.createPaidSession(1L, "객체지향강의", sessionSchedule, coverImage,
+        Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 100, 50000);
         assertThatThrownBy(() ->
             session.enroll(student, 20000)).isInstanceOf(CannotEnrollException.class)
