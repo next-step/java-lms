@@ -17,7 +17,7 @@ public class CourseTest {
     @DisplayName("과정(Course)에 강의(Session)를 추가한다.")
     @Test
     void test011() {
-        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         course.addSession(session);
         assertThat(course.isIncludeSession(session)).isTrue();
@@ -26,7 +26,7 @@ public class CourseTest {
     @DisplayName("과정(Course)에 이미 추가된 강의(Session)를 또 추가하면 예외가 발생한다.")
     @Test
     void test01() {
-        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         course.addSession(session);
         assertThatThrownBy(() -> course.addSession(session))
@@ -37,7 +37,7 @@ public class CourseTest {
     @DisplayName("수강 신청한다.")
     @Test
     void test03() {
-        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1L, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
         course.addSession(session);

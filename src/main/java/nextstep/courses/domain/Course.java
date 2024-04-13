@@ -11,7 +11,7 @@ public class Course {
 
     private Long id;
     private String title;
-    private int cohort; // 기수 (1기, 2기, ...)
+    private Long cohort; // 기수 (1기, 2기, ...)
     private Long creatorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -21,10 +21,10 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, 0, creatorId, LocalDateTime.now(), null);
+        this(0L, title, 0L, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, int cohort, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long cohort, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.cohort = cohort;
@@ -35,6 +35,10 @@ public class Course {
 
     public String getTitle() {
         return title;
+    }
+
+    public Long getCohort() {
+        return cohort;
     }
 
     public Long getCreatorId() {
