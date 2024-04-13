@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +18,7 @@ public class CourseTest {
     @Test
     void test011() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
+        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         course.addSession(session);
         assertThat(course.isIncludeSession(session)).isTrue();
     }
@@ -26,7 +27,7 @@ public class CourseTest {
     @Test
     void test01() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
+        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         course.addSession(session);
         assertThatThrownBy(() -> course.addSession(session))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -37,7 +38,7 @@ public class CourseTest {
     @Test
     void test03() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
-        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
+        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.FREE);
         session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
         course.addSession(session);
         Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);

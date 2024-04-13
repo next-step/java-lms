@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +33,7 @@ public class SessionRepositoryTest {
     @DisplayName("CRUD 테스트")
     @Test
     void crud() {
-        Session session = new PaidSession(0L, 10L, 10_000L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.PAID);
+        Session session = new PaidSession(0L, 10L, 10_000L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), List.of(SessionCoverImageTest.CI), SessionType.PAID);
         int count = sessionRepository.save(session);
         assertThat(count).isEqualTo(1);
         Session savedSession = sessionRepository.findById(0L);

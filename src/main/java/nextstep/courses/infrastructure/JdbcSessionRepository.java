@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -55,7 +56,7 @@ public class JdbcSessionRepository implements SessionRepository {
                             rs.getLong(1),
                             toLocalDateTime(rs.getTimestamp(3)),
                             toLocalDateTime(rs.getTimestamp(4)),
-                            coverImage,
+                            List.of(coverImage),
                             Enum.valueOf(SessionType.class, rs.getString(7))
                     );
                 }
@@ -66,7 +67,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong(6),
                         toLocalDateTime(rs.getTimestamp(3)),
                         toLocalDateTime(rs.getTimestamp(4)),
-                        coverImage,
+                        List.of(coverImage),
                         Enum.valueOf(SessionType.class, rs.getString(7))
                 );
             };
