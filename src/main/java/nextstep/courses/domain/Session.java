@@ -68,7 +68,14 @@ public abstract class Session {
     }
 
     public void enroll(NsUser user, Payment payment) {
+        validateRecruiting();
         this.students.add(user);
+    }
+
+    protected void validateRecruiting() {
+        if (this.recruitmentStatus.isSame(RecruitmentStatus.NOT_RECRUITING)) {
+            throw new IllegalStateException("현재 모집 중인 강의가 아닙니다.");
+        }
     }
 
     public long getMaximumNumberOfStudent() {

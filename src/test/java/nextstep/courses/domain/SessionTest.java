@@ -17,18 +17,28 @@ public class SessionTest {
     @Test
     void test01() {
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
-        session.changeStatus(SessionStatus.RECRUITING);
-        assertThat(session.isStatus(SessionStatus.RECRUITING)).isTrue();
+        session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
+        assertThat(session.isRecruitmentStatus(RecruitmentStatus.RECRUITING)).isTrue();
     }
 
     @DisplayName("전체 수강생을 확인한다.")
     @Test
     void test02() {
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
-        session.changeStatus(SessionStatus.RECRUITING);
+        session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
         Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
         session.enroll(NsUserTest.JAVAJIGI, payment);
         assertThat(session.totalStudents()).containsExactlyInAnyOrder(NsUserTest.JAVAJIGI);
+    }
+
+    @DisplayName("현재 모집 중인 강의가 아닌 강의에 수강신청할 경우 예외가 발생한다.")
+    @Test
+    void test03() {
+        Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
+        Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
+        assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, payment))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("현재 모집 중인 강의가 아닙니다.");
     }
 
     @Nested
@@ -38,7 +48,7 @@ public class SessionTest {
         @Test
         void test03() {
             FreeSession session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
-            session.changeStatus(SessionStatus.RECRUITING);
+            session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
             assertThatCode(() -> {
                 for (int i = 0; i < 10_000; i++) {
                     NsUser user = new NsUser((long) i, String.valueOf(i), "password", "name", "test@email.com");
@@ -56,7 +66,7 @@ public class SessionTest {
         @Test
         void test04() {
             Session session = new PaidSession(0L, 1, 10_000L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.PAID);
-            session.changeStatus(SessionStatus.RECRUITING);
+            session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
             assertThatThrownBy(() -> {
                 Payment payment1 = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 10_000L);
                 session.enroll(NsUserTest.JAVAJIGI, payment1);
@@ -71,7 +81,7 @@ public class SessionTest {
         @Test
         void test05() {
             Session session = new PaidSession(0L, 1, 9_000L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.PAID);
-            session.changeStatus(SessionStatus.RECRUITING);
+            session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
             Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 10_000L);
             assertThatThrownBy(() -> session.enroll(NsUserTest.JAVAJIGI, payment))
                     .isInstanceOf(IllegalArgumentException.class)

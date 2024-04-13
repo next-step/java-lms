@@ -14,6 +14,7 @@ public class PaidSession extends Session {
 
     @Override
     public void enroll(NsUser user, Payment payment) {
+        validateRecruiting();
         validateSameAmount(payment);
         validateLessEqualThenMaximumNumber();
         students.add(user);

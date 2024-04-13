@@ -38,6 +38,7 @@ public class CourseTest {
     void test03() {
         Course course = new Course(0L, TDD_클린코드_WITH_JAVA, 1, 0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         Session session = new FreeSession(0L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), SessionCoverImageTest.CI, SessionType.FREE);
+        session.changeRecruitmentStatus(RecruitmentStatus.RECRUITING);
         course.addSession(session);
         Payment payment = new Payment(0L, NsUserTest.JAVAJIGI.getId(), 0L);
         assertThatCode(() -> course.register(NsUserTest.JAVAJIGI, session, payment))
