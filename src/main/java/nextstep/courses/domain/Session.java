@@ -35,20 +35,12 @@ public abstract class Session {
         this.type = type;
     }
 
-    public void changeStatus(SessionStatus status) {
-        this.status = status;
-    }
-
     public void changeProgressStatus(ProgressStatus progressStatus) {
         this.progressStatus = progressStatus;
     }
 
     public void changeRecruitmentStatus(RecruitmentStatus recruitmentStatus) {
         this.recruitmentStatus = recruitmentStatus;
-    }
-
-    public boolean isStatus(SessionStatus status) {
-        return this.status.isSame(status);
     }
 
     public boolean isProgressStatus(ProgressStatus progressStatus) {
