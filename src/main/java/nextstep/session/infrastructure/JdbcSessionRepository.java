@@ -25,33 +25,6 @@ public class JdbcSessionRepository implements SessionRepository {
     public static final String START_DATE_FIELD = "start_date";
     public static final String END_DATE_FIELD = "end_date";
     public static final String QUESTION_CONDITION = " = ?, ";
-    public static final String INSERT_SESSION_QUERY = "insert into session (start_date, end_date, session_status, course_id, max_capacity, enrolled, price, tutor_id, session_name, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    public static final String FIND_BY_SESSION_ID_QUERY =
-            "select s.id as sessionId, " +
-                    "s.start_date as startDate, " +
-                    "s.end_date as endDate, " +
-                    "s.session_status as sessionStatus, " +
-                    "s.course_id as courseId, " +
-                    "s.max_capacity as maxCapacity, " +
-                    "s.enrolled as enrolled, " +
-                    "s.price as price, " +
-                    "s.tutor_id as tutorId, " +
-                    "s.session_name as sessionName, " +
-                    "s.deleted as sessionDeleted, " +
-                    "s.created_at as sessionCreatedAt, " +
-                    "s.last_modified_at as sessionLastModifiedAt " +
-                    "from session s " +
-                    "where s.id = ?";
-
-    public static final String STUDENTS_FIND_QUERY =
-            "select id as id, " +
-                    "session_id as sessionId, " +
-                    "ns_user_id as userId, " +
-                    "deleted as deleted, " +
-                    "created_at as createdAt, " +
-                    "last_modified_at as lastModifiedAt " +
-                    "from student " +
-                    "where session_id = ? and deleted = false";
 
     private JdbcOperations jdbcTemplate;
 
@@ -65,11 +38,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public long save(Session session) {
+        String insertSessionQuery = "insert into session (start_date, end_date, session_status, course_id, max_capacity, enrolled, price, tutor_id, session_name, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         SessionVO sessionVO = session.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(INSERT_SESSION_QUERY, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(insertSessionQuery, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, DbTimestampUtils.toTimestamp(sessionVO.getStartDate()));
             ps.setTimestamp(2, DbTimestampUtils.toTimestamp(sessionVO.getEndDate()));
             ps.setString(3, sessionVO.getSessionStatus());
@@ -115,6 +90,23 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findById(long sessionId) {
+        String findBySessionIdQuery =
+                "select s.id as sessionId, " +
+                        "s.start_date as startDate, " +
+                        "s.end_date as endDate, " +
+                        "s.session_status as sessionStatus, " +
+                        "s.course_id as courseId, " +
+                        "s.max_capacity as maxCapacity, " +
+                        "s.enrolled as enrolled, " +
+                        "s.price as price, " +
+                        "s.tutor_id as tutorId, " +
+                        "s.session_name as sessionName, " +
+                        "s.deleted as sessionDeleted, " +
+                        "s.created_at as sessionCreatedAt, " +
+                        "s.last_modified_at as sessionLastModifiedAt " +
+                        "from session s " +
+                        "where s.id = ?";
+
         RowMapper<Session> rowMapper = (rs, rowNum) -> {
             Cover cover = findCover(rs.getLong("sessionId"));
 
@@ -164,7 +156,7 @@ public class JdbcSessionRepository implements SessionRepository {
             );
         };
 
-        return jdbcTemplate.queryForObject(FIND_BY_SESSION_ID_QUERY, rowMapper, sessionId);
+        return jdbcTemplate.queryForObject(findBySessionIdQuery, rowMapper, sessionId);
     }
 
     private Cover findCover(long sessionId) {
@@ -199,6 +191,16 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private Students findStudentsBySessionId(long sessionId) {
+        String studentsFindQuery =
+                "select id as id, " +
+                        "session_id as sessionId, " +
+                        "ns_user_id as userId, " +
+                        "deleted as deleted, " +
+                        "created_at as createdAt, " +
+                        "last_modified_at as lastModifiedAt " +
+                        "from student " +
+                        "where session_id = ? and deleted = false";
+
         RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
                 rs.getLong("id"),
                 rs.getLong("sessionId"),
@@ -207,7 +209,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt")));
 
-        return new Students(jdbcTemplate.query(STUDENTS_FIND_QUERY, new Object[]{sessionId}, rowMapper));
+        return new Students(jdbcTemplate.query(studentsFindQuery, new Object[]{sessionId}, rowMapper));
     }
 
     @Override

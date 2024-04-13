@@ -19,41 +19,6 @@ import java.util.Objects;
 @Repository("coverRepository")
 public class JdbcCoverRepository implements CoverRepository {
 
-    public static final String COVER_INSERT_QUERY = "insert into cover (session_id, width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    public static final String COVER_FIND_BY_ID_QUERY =
-            "select id as id, " +
-                    "session_id as sessionId, " +
-                    "width as width, " +
-                    "height as height, " +
-                    "file_path as filePath, " +
-                    "file_name as fileName, " +
-                    "file_extension as fileExtension, " +
-                    "byte_size as byteSize, " +
-                    "writer_id as writerId, " +
-                    "deleted as deleted, " +
-                    "created_at as createdAt, " +
-                    "last_modified_at as lastModifiedAt " +
-                    "from cover " +
-                    "where id = ?";
-
-    public static final String COVER_FIND_BY_SESSION_ID_QUERY =
-            "select id as id, " +
-                    "session_id as sessionId, " +
-                    "width as width, " +
-                    "height as height, " +
-                    "file_path as filePath, " +
-                    "file_name as fileName, " +
-                    "file_extension as fileExtension, " +
-                    "byte_size as byteSize, " +
-                    "writer_id as writerId, " +
-                    "deleted as deleted, " +
-                    "created_at as createdAt, " +
-                    "last_modified_at as lastModifiedAt " +
-            "from cover " +
-            "where session_id = ?";
-    public static final String UPDATE_BY_COVER_ID_QUERY = "UPDATE cover SET deleted = ? WHERE id = ?";
-
     private JdbcOperations jdbcTemplate;
 
     public JdbcCoverRepository(JdbcOperations jdbcTemplate) {
@@ -62,10 +27,12 @@ public class JdbcCoverRepository implements CoverRepository {
 
     @Override
     public long save(Cover cover) {
+        String coverInsertQeury = "insert into cover (session_id, width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         CoverVO coverVO = cover.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(COVER_INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(coverInsertQeury, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, coverVO.getSessionId());
             ps.setInt(2, coverVO.getWidth());
             ps.setInt(3, coverVO.getHeight());
@@ -85,12 +52,44 @@ public class JdbcCoverRepository implements CoverRepository {
 
     @Override
     public Cover findById(long coverID) {
-        return getCover(coverID, COVER_FIND_BY_ID_QUERY);
+        String coverFindByIdQuery =
+                "select id as id, " +
+                        "session_id as sessionId, " +
+                        "width as width, " +
+                        "height as height, " +
+                        "file_path as filePath, " +
+                        "file_name as fileName, " +
+                        "file_extension as fileExtension, " +
+                        "byte_size as byteSize, " +
+                        "writer_id as writerId, " +
+                        "deleted as deleted, " +
+                        "created_at as createdAt, " +
+                        "last_modified_at as lastModifiedAt " +
+                        "from cover " +
+                        "where id = ?";
+
+        return getCover(coverID, coverFindByIdQuery);
     }
 
     @Override
     public Cover findBySessionId(long sessionId) {
-        return getCover(sessionId, COVER_FIND_BY_SESSION_ID_QUERY);
+        String coverFindBySessionIdQuery =
+                "select id as id, " +
+                        "session_id as sessionId, " +
+                        "width as width, " +
+                        "height as height, " +
+                        "file_path as filePath, " +
+                        "file_name as fileName, " +
+                        "file_extension as fileExtension, " +
+                        "byte_size as byteSize, " +
+                        "writer_id as writerId, " +
+                        "deleted as deleted, " +
+                        "created_at as createdAt, " +
+                        "last_modified_at as lastModifiedAt " +
+                        "from cover " +
+                        "where session_id = ?";
+
+        return getCover(sessionId, coverFindBySessionIdQuery);
     }
 
     private Cover getCover(long sessionId, String coverFindBySessionIdQuery) {
@@ -109,6 +108,7 @@ public class JdbcCoverRepository implements CoverRepository {
 
     @Override
     public int updateDeleteStatus(long coverId, boolean deleteStatus) {
-        return jdbcTemplate.update(UPDATE_BY_COVER_ID_QUERY, deleteStatus, coverId);
+        String updateByCoverIdQuery = "UPDATE cover SET deleted = ? WHERE id = ?";
+        return jdbcTemplate.update(updateByCoverIdQuery, deleteStatus, coverId);
     }
 }
