@@ -6,10 +6,15 @@ import java.util.List;
 
 public class DeleteHistories {
 
-    private final List<DeleteHistory> deleteHistories;
+    private final List<DeleteHistory> deleteHistories = new ArrayList<>();
 
-    public DeleteHistories() {
-        this.deleteHistories = new ArrayList<>();
+    private DeleteHistories(Question question) {
+        addQuestionDeleteHistory(question);
+    }
+
+    public static DeleteHistories from(Question question) {
+
+        return new DeleteHistories(question);
     }
 
     public void addQuestionDeleteHistory(Question question) {

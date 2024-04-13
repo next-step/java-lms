@@ -10,10 +10,8 @@ public class DeleteHistoriesTest {
     @Test
     @DisplayName("삭제된 Question의 삭제 히스토리를 만든다.")
     void addQuestionDeleteHistory() {
-        DeleteHistories deleteHistories = new DeleteHistories();
         Question question = QuestionTest.Q1;
-
-        deleteHistories.addQuestionDeleteHistory(question);
+        DeleteHistories deleteHistories = DeleteHistories.from(question);
 
         assertThat(deleteHistories.getDeleteHistories()).hasSize(1);
     }
