@@ -1,6 +1,5 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
@@ -28,6 +27,10 @@ public class AnswerDetails {
 
     public NsUser getWriter() {
         return writer;
+    }
+
+    public boolean isOwner(NsUser writer) {
+        return this.writer.equals(writer);
     }
 
     public String getContents() {

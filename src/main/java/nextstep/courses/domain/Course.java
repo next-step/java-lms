@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.users.domain.NsUser;
+
 import java.time.LocalDateTime;
 
 public class Course {
@@ -12,6 +14,8 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Sessions sessions;
 
     public Course() {
     }
@@ -38,6 +42,10 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void enroll(Long userId, Long sessionId) {
+        sessions.enroll(userId, sessionId);
     }
 
     @Override
