@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.InvalidSessionException;
@@ -23,7 +24,7 @@ class SessionTest {
             .isThrownBy(
                 () ->  new Session(
                     FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-                    SAMPLE_COVER_IMAGE,
+                    List.of(SAMPLE_COVER_IMAGE),
                     FIXED_DATE_TIME
                 )
             );
@@ -35,7 +36,7 @@ class SessionTest {
         assertThatThrownBy(
             () ->  new Session(
                 FIXED_DATE_TIME.plusDays(1), FIXED_DATE_TIME,
-                SAMPLE_COVER_IMAGE,
+                List.of(SAMPLE_COVER_IMAGE),
                 FIXED_DATE_TIME
             )
         ).isInstanceOf(InvalidSessionException.class);
@@ -47,7 +48,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.PREPARE, true,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.PREPARE, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -66,7 +67,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.PREPARE, false,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.PREPARE, false,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;
@@ -82,7 +83,7 @@ class SessionTest {
         // given
         Session session = new Session(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true,
             FIXED_DATE_TIME
         );
         NsUser loginUser = NsUserTest.JAVAJIGI;

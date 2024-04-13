@@ -1,11 +1,13 @@
 package nextstep.courses.infrastructure;
 
 import static nextstep.courses.domain.SessionCoverImageTest.SAMPLE_COVER_IMAGE;
+import static nextstep.courses.domain.SessionCoverImageTest.SAMPLE_COVER_IMAGE2;
 import static nextstep.qna.domain.TestFixtures.FIXED_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import nextstep.courses.domain.PaidSession;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionStatus;
@@ -33,15 +35,15 @@ class JdbcSessionRepositoryTest {
     @Test
     @DisplayName("Session이 성공적으로 저장된다")
     void save_session() {
-        Session session = new Session(FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1), SAMPLE_COVER_IMAGE, FIXED_DATE_TIME);
+        Session session = new Session(FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1), List.of(SAMPLE_COVER_IMAGE, SAMPLE_COVER_IMAGE2), FIXED_DATE_TIME);
 
         sessionRepository.save(session);
         Session savedSession = sessionRepository.findById(session.getId());
 
         assertThat(savedSession.getStartDate()).isEqualTo(session.getStartDate());
         assertThat(savedSession.getEndDate()).isEqualTo(session.getEndDate());
-        assertThat(savedSession.getCoverImageId()).isEqualTo(session.getCoverImageId());
         assertThat(savedSession.getCreatedAt()).isEqualTo(session.getCreatedAt());
+        assertThat(savedSession.getCoverImages()).containsAll(session.getCoverImages());
     }
 
     @Test
@@ -49,7 +51,7 @@ class JdbcSessionRepositoryTest {
     void save_paid_session() {
         PaidSession paidSession = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
+            List.of(SAMPLE_COVER_IMAGE, SAMPLE_COVER_IMAGE2), SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
 
@@ -58,11 +60,11 @@ class JdbcSessionRepositoryTest {
 
         assertThat(savedSession.getStartDate()).isEqualTo(paidSession.getStartDate());
         assertThat(savedSession.getEndDate()).isEqualTo(paidSession.getEndDate());
-        assertThat(savedSession.getCoverImageId()).isEqualTo(paidSession.getCoverImageId());
         assertThat(savedSession.getStatusName()).isEqualTo(paidSession.getStatusName());
         assertThat(savedSession.getPrice()).isEqualTo(paidSession.getPrice());
         assertThat(savedSession.getCapacity()).isEqualTo(paidSession.getCapacity());
         assertThat(savedSession.getCreatedAt()).isEqualTo(paidSession.getCreatedAt());
+        assertThat(savedSession.getCoverImages()).containsAll(paidSession.getCoverImages());
     }
 
     @Test
@@ -71,7 +73,7 @@ class JdbcSessionRepositoryTest {
         assertThatThrownBy(() -> sessionRepository.findById(0L))
             .isInstanceOf(EmptyResultDataAccessException.class);
 
-        Session session = new Session(FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1), SAMPLE_COVER_IMAGE, FIXED_DATE_TIME);
+        Session session = new Session(FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1), List.of(SAMPLE_COVER_IMAGE, SAMPLE_COVER_IMAGE2), FIXED_DATE_TIME);
         sessionRepository.save(session);
 
         assertThatNoException()

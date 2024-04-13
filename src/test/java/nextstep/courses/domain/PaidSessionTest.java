@@ -4,6 +4,7 @@ import static nextstep.courses.domain.SessionCoverImageTest.SAMPLE_COVER_IMAGE;
 import static nextstep.qna.domain.TestFixtures.FIXED_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -19,7 +20,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser oldLearner = NsUserTest.JAVAJIGI;
@@ -37,7 +38,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
 
@@ -52,7 +53,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser learner = NsUserTest.JAVAJIGI;
@@ -68,7 +69,7 @@ class PaidSessionTest {
         // given
         PaidSession session = new PaidSession(
             0L, FIXED_DATE_TIME, FIXED_DATE_TIME.plusDays(1),
-            SAMPLE_COVER_IMAGE, SessionStatus.RECRUIT, true, 800_000L, 1,
+            List.of(SAMPLE_COVER_IMAGE), SessionStatus.RECRUIT, true, 800_000L, 1,
             FIXED_DATE_TIME
         );
         NsUser learner = NsUserTest.JAVAJIGI;

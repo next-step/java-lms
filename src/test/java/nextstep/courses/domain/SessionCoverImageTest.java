@@ -20,6 +20,9 @@ public class SessionCoverImageTest {
     public static SessionCoverImage SAMPLE_COVER_IMAGE = new SessionCoverImage(
         MAX_BYTE_SIZE, ALLOWED_EXT, MIN_WIDTH, MIN_HEIGHT, "sample"
     );
+    public static SessionCoverImage SAMPLE_COVER_IMAGE2 = new SessionCoverImage(
+        2L, MAX_BYTE_SIZE, ALLOWED_EXT, MIN_WIDTH, MIN_HEIGHT, "sample2"
+    );
 
     @Test
     @DisplayName("커버 이미지가 유효하면 성공적으로 생성된다")

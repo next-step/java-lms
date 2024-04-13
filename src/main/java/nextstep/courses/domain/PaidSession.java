@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import nextstep.courses.CanNotJoinSessionException;
 import nextstep.courses.infrastructure.dto.LearnerDto;
@@ -19,9 +20,23 @@ public class PaidSession extends Session {
         this.capacity = capacity;
     }
 
+    public PaidSession(LocalDateTime startDate, LocalDateTime endDate,
+        List<SessionCoverImage> coverImages, Long price, Integer capacity, LocalDateTime createdAt) {
+        super(startDate, endDate, coverImages, createdAt);
+        this.price = price;
+        this.capacity = capacity;
+    }
+
     public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(id, startDate, endDate, coverImage, status, isRecruiting, createdAt);
+        SessionCoverImage coverImages, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
+        super(id, startDate, endDate, coverImages, status, isRecruiting, createdAt);
+        this.price = price;
+        this.capacity = capacity;
+    }
+
+    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
+        List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
+        super(id, startDate, endDate, coverImages, status, isRecruiting, createdAt);
         this.price = price;
         this.capacity = capacity;
     }
@@ -30,6 +45,14 @@ public class PaidSession extends Session {
         SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
         LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
         super(id, startDate, endDate, coverImage, status, isRecruiting, learners, createdAt, updatedAt);
+        this.price = price;
+        this.capacity = capacity;
+    }
+
+    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
+        List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
+        LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
+        super(id, startDate, endDate, coverImages, status, isRecruiting, learners, createdAt, updatedAt);
         this.price = price;
         this.capacity = capacity;
     }

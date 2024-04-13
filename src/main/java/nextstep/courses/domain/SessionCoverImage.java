@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import java.util.Objects;
 import java.util.Set;
 import nextstep.courses.InvalidCoverImageException;
 
@@ -21,6 +22,9 @@ public class SessionCoverImage {
     private int height;
     private String url;
 
+    protected SessionCoverImage() {
+    }
+
     public SessionCoverImage(Long fileByteSize, String ext, int width, int height, String url) {
         this(0L, fileByteSize, ext, width, height, url);
     }
@@ -40,6 +44,7 @@ public class SessionCoverImage {
         this.height = height;
         this.url = url;
     }
+
     private void validateFileSize(long fileByteSize) {
         if (fileByteSize > MAX_BYTE_SIZE) {
             throw new InvalidCoverImageException("강의 커버 이미지 파일 용량이 너무 큽니다");
@@ -93,5 +98,23 @@ public class SessionCoverImage {
 
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SessionCoverImage that = (SessionCoverImage) o;
+        return width == that.width && height == that.height && Objects.equals(id, that.id) && Objects.equals(fileByteSize,
+            that.fileByteSize) && Objects.equals(ext, that.ext) && Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fileByteSize, ext, width, height, url);
     }
 }
