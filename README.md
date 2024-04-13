@@ -7,3 +7,12 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+## step1 기능 목록
+* Question
+    * [ ] 삭제 가능한지 검증
+    * [ ] 상태값 변경
+* Answers: List<Answer>를 관리하는 일급 컬렉션
+    * [ ] 삭제 메시지를 각각의 Answer에게 전달
+* Answer
+    * [ ] 삭제 가능한지 검증
+    * [ ] 상태값 변경
