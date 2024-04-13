@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswerTest {
-    public static final Answer answerOfJAVAJIGI = new Answer(JAVAJIGI, QUESTION, "Answers Contents");
-    public static final Answer answerOfSANJIGI = new Answer(SANJIGI, QUESTION, "Answers Contents");
+    public static final Answer ANSWER_OF_JAVAJIGI = new Answer(JAVAJIGI, QUESTION, "Answers Contents");
+    public static final Answer ANSWER_OF_SANJIGI = new Answer(SANJIGI, QUESTION, "Answers Contents");
 
     @Nested
     @DisplayName("deleteByUser() 테스트")
@@ -36,7 +36,7 @@ public class AnswerTest {
         void testSuccessCase() throws CannotDeleteException {
             NsUser user = JAVAJIGI;
             Answer answer = new Answer(JAVAJIGI, QUESTION, "Answers Contents");
-            DeleteHistory expectedDeleteHistory = DeleteHistory.answerDeleteHistory(answer.getId(), answer.getWriter());
+            DeleteHistory expectedDeleteHistory = DeleteHistory.answerOf(answer.getId(), answer.getWriter());
 
             DeleteHistory deleteHistory = answer.deleteByUser(user);
 

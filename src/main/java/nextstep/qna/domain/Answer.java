@@ -67,7 +67,7 @@ public class Answer {
     }
 
     private DeleteHistory deleteHistoryOfAnswer() {
-        return DeleteHistory.answerDeleteHistory(id, writer);
+        return DeleteHistory.answerOf(id, writer);
     }
 
     public boolean isOwner(NsUser user) {

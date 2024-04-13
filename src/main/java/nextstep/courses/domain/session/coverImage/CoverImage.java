@@ -9,18 +9,18 @@ public class CoverImage {
 
     private final String name;
     private final double capacity;
-    private final CoverImageWidthHeight coverImageWidthHeight;
+    private final Dimensions dimensions;
     private final ImageType imageType;
 
     public CoverImage(String name, double capacity, double width, double height, ImageType imageType) {
-        this(name, capacity, new CoverImageWidthHeight(width, height), imageType);
+        this(name, capacity, new Dimensions(width, height), imageType);
     }
 
-    public CoverImage(String name, double capacity, CoverImageWidthHeight coverImageWidthHeight, ImageType imageType) {
+    public CoverImage(String name, double capacity, Dimensions dimensions, ImageType imageType) {
         validateCoverImageInput(capacity);
         this.name = name;
         this.capacity = capacity;
-        this.coverImageWidthHeight = coverImageWidthHeight;
+        this.dimensions = dimensions;
         this.imageType = imageType;
     }
 

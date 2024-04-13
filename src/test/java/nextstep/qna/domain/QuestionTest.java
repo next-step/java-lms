@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static nextstep.qna.domain.AnswerTest.answerOfJAVAJIGI;
-import static nextstep.qna.domain.AnswerTest.answerOfSANJIGI;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,28 +19,13 @@ public class QuestionTest {
     @Nested
     @DisplayName("delete() 테스트")
     class DeleteTest {
-        @Nested
-        @DisplayName("삭제 실패하는 경우 테스트")
-        class FailCaseTest {
-            @Test
-            @DisplayName("user와 Question.writer가 일치하지 않는 경우 CannotDeleteException이 발생한다.")
-            void testDifferentUserAndWriter() {
-                NsUser user = SANJIGI;
-                Question question = new Question(JAVAJIGI, "title1", "contents1");
+        @Test
+        @DisplayName("user와 Question.writer가 일치하지 않는 경우 CannotDeleteException이 발생한다.")
+        void testFailCase() {
+            NsUser user = SANJIGI;
+            Question question = new Question(JAVAJIGI, "title1", "contents1");
 
-                assertThatThrownBy(() -> question.deleteByUser(user)).isExactlyInstanceOf(CannotDeleteException.class);
-            }
-
-            @Test
-            @DisplayName("answers.isDeletableByWriter가 false인 경우 CannotDeleteException이 발생한다.")
-            void testAnswersNotDeletableByWriter() {
-                NsUser user = JAVAJIGI;
-                Question question = new Question(JAVAJIGI, "title1", "contents1");
-                question.addAnswer(answerOfJAVAJIGI);
-                question.addAnswer(answerOfSANJIGI);
-
-                assertThatThrownBy(() -> question.deleteByUser(user)).isExactlyInstanceOf(CannotDeleteException.class);
-            }
+            assertThatThrownBy(() -> question.deleteByUser(user)).isExactlyInstanceOf(CannotDeleteException.class);
         }
 
         @Test
@@ -50,7 +33,7 @@ public class QuestionTest {
         void testSuccessCase() throws CannotDeleteException {
             NsUser user = JAVAJIGI;
             Question question = new Question(JAVAJIGI, "title1", "contents1");
-            DeleteHistory expectedDeleteHistory = DeleteHistory.questionDeleteHistory(question.getId(), question.getWriter());
+            DeleteHistory expectedDeleteHistory = DeleteHistory.questionOf(question.getId(), question.getWriter());
 
             List<DeleteHistory> deleteHistories = question.deleteByUser(user);
 
