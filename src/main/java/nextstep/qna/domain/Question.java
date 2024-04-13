@@ -11,9 +11,7 @@ public class Question {
     public static final String QUESTION_DELETE_ERROR_MESSAGE = "질문을 삭제할 권한이 없습니다.";
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionContent questionContent;
 
     private User writer;
 
@@ -35,8 +33,7 @@ public class Question {
     public Question(Long id, User writer, String title, String contents) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionContent = new QuestionContent(title, contents);
     }
 
     public Long getId() {
@@ -86,6 +83,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + getId() + ", title=" + questionContent.getTitle() + ", contents="
+                + questionContent.getContents() + ", writer=" + writer + "]";
     }
 }
