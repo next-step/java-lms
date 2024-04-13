@@ -6,8 +6,8 @@ import nextstep.payments.domain.Payment;
 
 public class PaidSessionEnrollment extends ConcreteSessionEnrollment {
 
-    public PaidSessionEnrollment(Long id, Long sessionId, SessionStatus status, int capacity, long fee) {
-        super(id, sessionId, status, capacity, fee);
+    public PaidSessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
+        super(sessionId, status, capacity, fee);
     }
 
     @Override

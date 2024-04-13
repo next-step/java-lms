@@ -6,8 +6,8 @@ import nextstep.payments.exception.PaymentAmountExistException;
 
 public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
 
-    public FreeSessionEnrollment(Long id, Long sessionId, SessionStatus status) {
-        super(id, sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);
+    public FreeSessionEnrollment(Long sessionId, SessionStatus status) {
+        super(sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
     @Override

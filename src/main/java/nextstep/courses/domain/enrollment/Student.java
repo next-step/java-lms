@@ -4,7 +4,6 @@ import nextstep.users.domain.NsUser;
 
 public class Student {
 
-    private Long id;
     private Long sessionId;
     private Long nsUserId;
 
