@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RelatedAnswers {
 
@@ -13,20 +14,19 @@ public class RelatedAnswers {
     public RelatedAnswers() {
     }
 
-    public RelatedAnswers(List<Answer> answers) {
-        this.answers.addAll(answers);
-    }
-
     public void add(Answer answer) {
         this.answers.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+    public void deleteAll(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : answers) {
             answer.delete(loginUser);
-            deleteHistories.add(answer.toDeleteHistory());
         }
-        return deleteHistories;
+    }
+
+    public List<DeleteHistory> toDeleteHistories() {
+        return answers.stream()
+                .map(Answer::toDeleteHistory)
+                .collect(Collectors.toList());
     }
 }

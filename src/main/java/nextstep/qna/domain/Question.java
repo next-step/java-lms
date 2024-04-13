@@ -4,6 +4,7 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,24 +44,6 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
@@ -78,26 +61,28 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> deleteHistories = this.relatedAnswers.deleteAll(loginUser);
-
+    public void deleteAll(NsUser loginUser) throws CannotDeleteException {
         this.delete(loginUser);
-        deleteHistories.add(this.toDeleteHistory());
-        return deleteHistories;
+        relatedAnswers.deleteAll(loginUser);
     }
 
-
-    public void delete(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isOwner(loginUser) ) {
+    private void delete(NsUser loginUser) throws CannotDeleteException {
+        if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
         this.deleted = true;
     }
 
-    public DeleteHistory toDeleteHistory(){
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer);
+    public List<DeleteHistory> toDeleteHistories() {
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(this.toDeleteHistory());
+        deleteHistories.addAll(relatedAnswers.toDeleteHistories());
+        return deleteHistories;
     }
 
+    private DeleteHistory toDeleteHistory() {
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -114,6 +99,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
 }
