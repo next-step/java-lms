@@ -25,7 +25,6 @@ class PaidSessionTest {
         NsUser oldLearner = NsUserTest.JAVAJIGI;
         session.join(oldLearner, new Payment(session.getId(), oldLearner.getId(), session.getPrice(), FIXED_DATE_TIME));
 
-
         // when, then
         NsUser newLearner = NsUserTest.SANJIGI;
         assertThatThrownBy(() -> session.join(newLearner, new Payment(session.getId(),newLearner .getId(), session.getPrice(), FIXED_DATE_TIME)))

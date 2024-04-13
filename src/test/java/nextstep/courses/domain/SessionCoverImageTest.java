@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import static nextstep.courses.domain.SessionCoverImage.ALLOWED_EXTS;
 import static nextstep.courses.domain.SessionCoverImage.HEIGHT_RATIO;
 import static nextstep.courses.domain.SessionCoverImage.MAX_BYTE_SIZE;
 import static nextstep.courses.domain.SessionCoverImage.MIN_HEIGHT;
@@ -15,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class SessionCoverImageTest {
+public class SessionCoverImageTest {
 
     public static String ALLOWED_EXT = "png";
     public static SessionCoverImage SAMPLE_COVER_IMAGE = new SessionCoverImage(

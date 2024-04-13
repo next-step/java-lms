@@ -12,6 +12,7 @@ import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionCoverImage;
 import nextstep.courses.domain.SessionStatus;
 import nextstep.users.domain.NsUser;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,20 +31,30 @@ public class JdbcSessionRepository {
             save((PaidSession) session);
             return;
         }
-        String sql = "INSERT INTO session (course_id, start_date, end_date, cover_image_id, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, , ?, ?)";
-        jdbcTemplate.update(sql, session.getId(), session.getStartDate(), session.getEndDate(), session.getCoverImageId(),
+        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sessionSql, session.getId(), session.getStartDate(), session.getEndDate(), session.getCoverImageId(),
             session.getStatusName(), session.getCreatedAt(), session.getUpdatedAt());
+
+        SessionCoverImage coverImage = session.getCoverImage();
+        String coverImageSql = "INSERT INTO cover_image (id, file_byte_size, ext, width, height, url) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(coverImageSql, coverImage.getId(), coverImage.getFileByteSize(), coverImage.getExt(),
+            coverImage.getWidth(), coverImage.getHeight(), coverImage.getUrl());
     }
 
     public void save(PaidSession paidSession) {
-        String sql = "INSERT INTO session (course_id, start_date, end_date, cover_image_id, status, price, capacity, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, paidSession.getId(), paidSession.getStartDate(), paidSession.getEndDate(), paidSession.getCoverImageId(),
+        String sessionSql = "INSERT INTO session (id, start_date, end_date, cover_image_id, status, price, capacity, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sessionSql, paidSession.getId(), paidSession.getStartDate(), paidSession.getEndDate(), paidSession.getCoverImageId(),
             paidSession.getStatusName(), paidSession.getPrice(), paidSession.getCapacity(), paidSession.getCreatedAt(), paidSession.getUpdatedAt());
+
+        SessionCoverImage coverImage = paidSession.getCoverImage();
+        String coverImageSql = "INSERT INTO cover_image (id, file_byte_size, ext, width, height, url) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(coverImageSql, coverImage.getId(), coverImage.getFileByteSize(), coverImage.getExt(),
+            coverImage.getWidth(), coverImage.getHeight(), coverImage.getUrl());
     }
 
     public Session findById(Long id) {
         String sql = "SELECT s.*, "
-            + "ci.id image_id, ci.file_byte_size, ci.ext, ci.width, ci.height, ci.url "
+            + "ci.id as image_id, ci.file_byte_size, ci.ext, ci.width, ci.height, ci.url "
             + "FROM session s "
             + "JOIN cover_image ci "
             + "ON s.cover_image_id = ci.id "
@@ -77,7 +88,7 @@ public class JdbcSessionRepository {
 
         private Set<NsUser> loadLearners(Long sessionId) {
             String sql = "SELECT u.* FROM ns_user u JOIN session_learner sl ON u.id = sl.user_id WHERE sl.session_id = ?";
-            return new HashSet<>(jdbcTemplate.query(sql, new NsUserRowMapper(), sessionId));
+            return new HashSet<>(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(NsUser.class), sessionId));
         }
     }
 

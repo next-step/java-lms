@@ -102,4 +102,8 @@ public class Session {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public SessionCoverImage getCoverImage() {
+        return coverImage;
+    }
 }

@@ -74,4 +74,24 @@ public class SessionCoverImage {
     public Long getId() {
         return id;
     }
+
+    public Long getFileByteSize() {
+        return fileByteSize;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }
