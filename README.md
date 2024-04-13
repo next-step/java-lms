@@ -19,7 +19,7 @@
 
 ## step2 기능 목록
 ## Todo
-- [ ] SessionStatus Enum 생성
+- [x] SessionStatus Enum 생성
   - READY, RECRUITING, END
 - [ ] FreeSession 수강 신청
   - status가 모집 중이 아닌 경우 IllegalStateException
