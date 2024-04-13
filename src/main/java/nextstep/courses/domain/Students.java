@@ -9,6 +9,7 @@ public class Students {
     public Students(Integer maxStudents, SessionType type) {
         validateMaxStudents(maxStudents, type);
         this.maxStudents = maxStudents;
+        this.currentStudents = 0;
     }
 
     private void validateMaxStudents(Integer maxStudents, SessionType type) {

@@ -16,4 +16,12 @@ class StudentsTest {
         assertDoesNotThrow(() -> new Students(null, SessionType.FREE));
     }
 
+    @Test
+    @DisplayName("수강 인원이 수강 가능 인원을 초과하면 에러가 발생한다.")
+    void enroll_Students_test() {
+        Students students = new Students(1, SessionType.PAID);
+        students.enroll();
+        assertThrows(IllegalArgumentException.class, students::enroll);
+    }
+
 }
