@@ -31,7 +31,7 @@
   - 정상 완료되면, 현재 수강인원 increase 1
 - [x] ImageType Enum 생성
   - GIF, JPG, JPEG, PNG, SVG
-- [ ] CoverImageInfo 클래스 생성
+- [x] CoverImageInfo 클래스 생성
   - 생성자(크기, 타입, 너비, 높이)
     - 이미지 크기 1 초과인 경우 IlleaglArgumentException
     - 이미지 타입이 ImageType에 없는 경우 IlleaglArgumentException
