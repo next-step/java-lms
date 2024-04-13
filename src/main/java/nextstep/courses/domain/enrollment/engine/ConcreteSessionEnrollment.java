@@ -32,7 +32,7 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     @Override
     public void enroll(NsUser nsUser, Payment payment) {
         satisfyEnrollment(payment);
-        students.add(Student.from(nsUser));
+        students.add(Student.from(sessionId, nsUser));
     }
 
     @Override
