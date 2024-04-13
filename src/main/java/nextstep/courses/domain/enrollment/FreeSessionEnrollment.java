@@ -1,10 +1,10 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.enrollment.engine.ConcreteSessionEnrollment;
+import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
 
-public class FreeSessionEnrollment extends ConcreteSessionEnrollment {
+public class FreeSessionEnrollment extends SessionEnrollment {
 
     public FreeSessionEnrollment(Long sessionId, SessionStatus status) {
         super(sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);

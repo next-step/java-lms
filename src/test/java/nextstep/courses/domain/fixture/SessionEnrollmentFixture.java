@@ -9,7 +9,7 @@ import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 
 public class SessionEnrollmentFixture {
 
-    public static FreeSessionEnrollment freeSessionEnrollment() {
+    public static SessionEnrollment freeSessionEnrollment() {
         return new FreeSessionEnrollment(SESSION_ID, SessionStatus.RECRUITING);
     }
 
@@ -17,7 +17,7 @@ public class SessionEnrollmentFixture {
         return new FreeSessionEnrollment(SESSION_ID, status);
     }
 
-    public static SessionEnrollment costSessionEnrollment(SessionStatus status, int capacity, long fee) {
+    public static SessionEnrollment paidSessionEnrollment(SessionStatus status, int capacity, long fee) {
         return new PaidSessionEnrollment(SESSION_ID, status, capacity, fee);
     }
 
