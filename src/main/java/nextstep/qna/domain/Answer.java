@@ -81,7 +81,7 @@ public class Answer {
         if (this == o) return true;
         if (!(o instanceof Answer)) return false;
         Answer answer = (Answer) o;
-        return deleted == answer.deleted && Objects.equals(id, answer.id) && Objects.equals(writer, answer.writer) && Objects.equals(question, answer.question) && Objects.equals(contents, answer.contents) && Objects.equals(createdDate, answer.createdDate) && Objects.equals(updatedDate, answer.updatedDate);
+        return Objects.equals(id, answer.id);
     }
 
     @Override

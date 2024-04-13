@@ -141,7 +141,7 @@ public class NsUser {
         if (this == o) return true;
         if (!(o instanceof NsUser)) return false;
         NsUser nsUser = (NsUser) o;
-        return Objects.equals(id, nsUser.id) && Objects.equals(userId, nsUser.userId) && Objects.equals(password, nsUser.password) && Objects.equals(name, nsUser.name) && Objects.equals(email, nsUser.email) && Objects.equals(createdAt, nsUser.createdAt) && Objects.equals(updatedAt, nsUser.updatedAt);
+        return Objects.equals(id, nsUser.id);
     }
 
     @Override
