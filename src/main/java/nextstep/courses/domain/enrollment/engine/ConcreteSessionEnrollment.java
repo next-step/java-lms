@@ -3,7 +3,7 @@ package nextstep.courses.domain.enrollment.engine;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.enrollment.SessionStatus;
-import nextstep.courses.domain.enrollment.Student;
+import nextstep.courses.domain.enrollment.SessionStudent;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
@@ -17,7 +17,7 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     protected final SessionStatus status;
     protected final SessionCapacity capacity;
     protected final SessionFee fee;
-    protected final List<Student> students;
+    protected final List<SessionStudent> students;
 
     protected ConcreteSessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
         this.sessionId = sessionId;
@@ -37,7 +37,7 @@ public abstract class ConcreteSessionEnrollment implements SessionEnrollment {
     @Override
     public void enroll(NsUser nsUser, Payment payment) {
         satisfyEnrollment(payment);
-        students.add(Student.from(sessionId, nsUser));
+        students.add(SessionStudent.from(sessionId, nsUser));
     }
 
     @Override

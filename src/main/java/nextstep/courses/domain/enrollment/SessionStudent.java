@@ -2,16 +2,16 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.users.domain.NsUser;
 
-public class Student {
+public class SessionStudent {
 
     private Long sessionId;
     private Long nsUserId;
 
-    public static Student from(Long sessionId, NsUser nsUser) {
-        return new Student(sessionId, nsUser.getId());
+    public static SessionStudent from(Long sessionId, NsUser nsUser) {
+        return new SessionStudent(sessionId, nsUser.getId());
     }
 
-    public Student(Long sessionId, Long nsUserId) {
+    public SessionStudent(Long sessionId, Long nsUserId) {
         this.sessionId = sessionId;
         this.nsUserId = nsUserId;
     }
