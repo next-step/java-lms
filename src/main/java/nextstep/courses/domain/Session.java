@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class Session {
 
     protected long id;
+    protected long courseId;
     protected long amount = 0;
     protected long maximumNumberOfStudent;
     protected SessionCoverImage coverImage;
@@ -23,15 +24,17 @@ public abstract class Session {
     protected SessionType type;
 
     protected Session(long id,
+                      long courseId,
                       long maximumNumberOfStudent,
                       LocalDateTime startedAt,
                       LocalDateTime endedAt,
                       List<SessionCoverImage> coverImages,
                       SessionType type) {
-        this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
+        this(id, courseId, 0, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
     }
 
     protected Session(long id,
+                      long courseId,
                       long amount,
                       long maximumNumberOfStudent,
                       LocalDateTime startedAt,
@@ -39,6 +42,7 @@ public abstract class Session {
                       List<SessionCoverImage> coverImages,
                       SessionType type) {
         this.id = id;
+        this.courseId = courseId;
         this.amount = amount;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
@@ -68,10 +72,6 @@ public abstract class Session {
         return new ArrayList<>(this.students);
     }
 
-    public long getId() {
-        return this.id;
-    }
-
     public void enroll(NsUser user, Payment payment) {
         validateRecruiting();
         this.students.add(user);
@@ -81,6 +81,14 @@ public abstract class Session {
         if (this.recruitmentStatus.isSame(RecruitmentStatus.NOT_RECRUITING)) {
             throw new IllegalStateException("현재 모집 중인 강의가 아닙니다.");
         }
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public long getCourseId() {
+        return courseId;
     }
 
     public long getMaximumNumberOfStudent() {
@@ -101,6 +109,14 @@ public abstract class Session {
 
     public SessionStatus getStatus() {
         return status;
+    }
+
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 
     public long getAmount() {

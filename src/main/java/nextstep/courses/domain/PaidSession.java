@@ -9,13 +9,23 @@ import java.util.List;
 public class PaidSession extends Session {
 
     public PaidSession(long id,
+                       long courseId,
+                       long maximumNumberOfStudent,
+                       long amount,
+                       List<SessionCoverImage> coverImages,
+                       SessionType type) {
+        this(id, courseId, maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1), coverImages, type);
+    }
+
+    public PaidSession(long id,
+                       long courseId,
                        long maximumNumberOfStudent,
                        long amount,
                        LocalDateTime startedAt,
                        LocalDateTime endedAt,
                        List<SessionCoverImage> coverImages,
                        SessionType type) {
-        super(id, amount, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
+        super(id, courseId, amount, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
     }
 
     @Override

@@ -20,8 +20,8 @@ public class JdbcCourseRepository implements CourseRepository {
 
     @Override
     public int save(Course course) {
-        String sql = "insert into course (title, cohort, creator_id, created_at) values(?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCohort(), course.getCreatorId(), course.getCreatedAt());
+        String sql = "insert into course (id, title, cohort, creator_id, created_at) values(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, course.getId(), course.getTitle(), course.getCohort(), course.getCreatorId(), course.getCreatedAt());
     }
 
     @Override
