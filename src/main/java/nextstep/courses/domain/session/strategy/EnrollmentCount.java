@@ -2,7 +2,7 @@ package nextstep.courses.domain.session.strategy;
 
 import java.util.Objects;
 
-public class EnrollmentCount {
+public class EnrollmentCount implements Comparable<EnrollmentCount> {
 
     static final int MINIMUM_ENROLLMENT_COUNT = 0;
 
@@ -36,5 +36,10 @@ public class EnrollmentCount {
     @Override
     public int hashCode() {
         return Objects.hash(this.value);
+    }
+
+    @Override
+    public int compareTo(final EnrollmentCount otherEnrollmentCount) {
+        return Integer.compare(this.value, otherEnrollmentCount.value);
     }
 }
