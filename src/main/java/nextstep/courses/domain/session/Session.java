@@ -44,8 +44,8 @@ public abstract class Session {
         if (!canEnrollStatus()) {
             throw new IllegalArgumentException("강의는 현재 모집하고 있지 않습니다.");
         }
-        if (period.isStart(date)) {
-            throw new IllegalArgumentException("강의가 시작되어 수강신청을 할 수 없습ㄴ디ㅏ.");
+        if (period.isEnd(date)) {
+            throw new IllegalArgumentException("강의가 종료되어 수강신청을 할 수 없습니다.");
         }
         assertCanEnroll();
         nsUsers.add(nsUser);
