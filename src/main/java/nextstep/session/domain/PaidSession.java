@@ -15,6 +15,7 @@ public class PaidSession implements Session {
     private final long id;
     private Duration duration;
     private Cover cover;
+    private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
     private final long courseId;
@@ -48,6 +49,23 @@ public class PaidSession implements Session {
         this.id = id;
         this.duration = duration;
         this.cover = cover;
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.courseId = courseId;
+        this.capacity = Capacity.create(maxCapacity, enrolled);
+        this.price = new Price(price);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
+    }
+
+    public PaidSession(
+            long id, Duration duration, Covers covers, SessionStatus sessionStatus, String sessionName, long courseId,
+            int maxCapacity, int enrolled, Long price, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.covers = covers;
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -138,6 +156,11 @@ public class PaidSession implements Session {
     @Override
     public Cover getCover() {
         return this.cover;
+    }
+
+    @Override
+    public Covers getCovers() {
+        return this.covers;
     }
 
     @Override

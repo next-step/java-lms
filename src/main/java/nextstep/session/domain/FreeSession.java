@@ -16,6 +16,7 @@ public class FreeSession implements Session {
     private final long id;
     private Duration duration;
     private Cover cover;
+    private Covers covers;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
     private final long courseId;
@@ -49,6 +50,23 @@ public class FreeSession implements Session {
         this.id = id;
         this.duration = duration;
         this.cover = cover;
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.courseId = courseId;
+        this.capacity = Capacity.create(Integer.MAX_VALUE);
+        this.price = new Price(FREE_PRICE);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
+    }
+
+    public FreeSession(
+            long id, Duration duration, Covers covers, SessionStatus sessionStatus, String sessionName,
+            long courseId, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
+        this.covers = covers;
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.courseId = courseId;
@@ -119,6 +137,11 @@ public class FreeSession implements Session {
     @Override
     public Cover getCover() {
         return this.cover;
+    }
+
+    @Override
+    public Covers getCovers() {
+        return this.covers;
     }
 
     @Override

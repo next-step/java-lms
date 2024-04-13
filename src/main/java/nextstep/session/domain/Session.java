@@ -28,5 +28,7 @@ public interface Session {
 
     Cover getCover();
 
+    Covers getCovers();
+
     Students getStudents();
 }

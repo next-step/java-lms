@@ -168,4 +168,22 @@ class JdbcSessionRepositoryTest {
         // then
         assertThat(sessionChangedCover.toVO().getCoverId()).isNotEqualTo(oldCoverId);
     }
+
+    @DisplayName("커버를 추가할 수 있다.")
+    @Test
+    void addMultipleCovers() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Cover newCover = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
+        Cover newCover2 = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
+
+        // when
+        sessionRepository.addCover(savedId, newCover);
+        sessionRepository.addCover(savedId, newCover2);
+        Session session = sessionRepository.findById2(savedId);
+
+        // then
+        assertThat(session.getCovers().size())
+                .isEqualTo(3);
+    }
 }
