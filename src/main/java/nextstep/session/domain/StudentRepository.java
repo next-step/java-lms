@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StudentRepository {
 
-    List<StudentVO> findBySessionId(long sessionId);
+    List<Student> findBySessionId(long sessionId);
 
     long save(Student student);
 

@@ -37,7 +37,7 @@ class JdbcStudentRepositoryTest {
 
         // when
         Long savedId = studentRepository.save(student);
-        List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
+        List<Student> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(savedStudent.size())
@@ -55,7 +55,7 @@ class JdbcStudentRepositoryTest {
         // when
         Long savedId1 = studentRepository.save(student1);
         Long savedId2 = studentRepository.save(student2);
-        List<StudentVO> savedStudent = studentRepository.findBySessionId(sessionId);
+        List<Student> savedStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(savedStudent.size())
@@ -72,7 +72,7 @@ class JdbcStudentRepositoryTest {
         // when
         Long savedId = studentRepository.save(student);
         int resultCount = studentRepository.updateDeleteStatus(sessionId, student.toVO().getUserId(), true);
-        List<StudentVO> findStudent = studentRepository.findBySessionId(sessionId);
+        List<Student> findStudent = studentRepository.findBySessionId(sessionId);
 
         // then
         assertThat(resultCount)

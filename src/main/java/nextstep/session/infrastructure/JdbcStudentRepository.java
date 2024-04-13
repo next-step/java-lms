@@ -17,6 +17,17 @@ import java.util.List;
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
 
+    public static final String STUDENTS_INSERT_QUERY = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
+    public static final String STUDENTS_FIND_QUERY =
+            "select id as id, " +
+                    "session_id as sessionId, " +
+                    "ns_user_id as userId, " +
+                    "deleted as deleted, " +
+                    "created_at as createdAt, " +
+                    "last_modified_at as lastModifiedAt " +
+            "from student " +
+            "where session_id = ? and deleted = false";
+
     private JdbcOperations jdbcTemplate;
 
     public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
@@ -24,25 +35,23 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public List<StudentVO> findBySessionId(long sessionId) {
-        String sql = "select id, session_id, ns_user_id, deleted, created_at, last_modified_at from student where session_id = ? and deleted = false";
-        RowMapper<StudentVO> rowMapper = (rs, rowNum) -> new StudentVO(
-                rs.getLong(1),
-                rs.getLong(2),
-                rs.getString(3),
-                rs.getBoolean(4),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp(5)),
-                DbTimestampUtils.toLocalDateTime(rs.getTimestamp(6)));
-        return jdbcTemplate.query(sql, new Object[]{sessionId}, rowMapper);
+    public List<Student> findBySessionId(long sessionId) {
+        RowMapper<Student> rowMapper = (rs, rowNum) -> new Student(
+                rs.getLong("id"),
+                rs.getLong("sessionId"),
+                rs.getString("userId"),
+                rs.getBoolean("deleted"),
+                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
+                DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt")));
+        return jdbcTemplate.query(STUDENTS_FIND_QUERY, new Object[]{sessionId}, rowMapper);
     }
 
     @Override
     public long save(Student student) {
-        String sql = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
         StudentVO studentVO = student.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(STUDENTS_INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, studentVO.getSessionId());
             ps.setString(2, studentVO.getUserId());
             ps.setBoolean(3, studentVO.isDeleted());

@@ -34,6 +34,10 @@ public class Student {
         this(id, sessionId, nsUser.getUserId(), baseEntity);
     }
 
+    public Student(Long id, Long sessionId, String userId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+        this(id, sessionId, userId, new BaseEntity(deleted, createdAt, lastModifiedAt));
+    }
+
     public Student(Long id, Long sessionId, String userId, BaseEntity baseEntity) {
         this.id = id;
         this.sessionId = sessionId;

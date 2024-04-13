@@ -30,17 +30,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Students findBySessionId(long sessionId) {
-        List<StudentVO> studentsDto = studentRepository.findBySessionId(sessionId);
-        List<Student> students = studentsDto.stream()
-                .map(studentVO ->
-                        new Student(
-                                studentVO.getId(),
-                                studentVO.getSessionId(),
-                                studentVO.getUserId(),
-                                new BaseEntity(studentVO.isDeleted(), studentVO.getCreatedAt(), studentVO.getLastModifiedAt())
-                        )
-                ).collect(Collectors.toList());
-
+        List<Student> students = studentRepository.findBySessionId(sessionId);
         return new Students(students);
     }
 
