@@ -15,16 +15,16 @@ public class Cover {
     private final Resolution resolution;
     private final ImageFilePath imageFilePath;
     private final long byteSize;
-    private final NsUser writer;
+    private final String writerId;
     private final BaseEntity baseEntity;
 
-    public Cover(Resolution resolution, ImageFilePath imageFilePath, long byteSize, NsUser writer) {
-        this(0L, resolution, imageFilePath, byteSize, writer, LocalDateTime.now(), LocalDateTime.now());
+    public Cover(Resolution resolution, ImageFilePath imageFilePath, long byteSize, String writerId) {
+        this(0L, resolution, imageFilePath, byteSize, writerId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Cover(
             long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
-            NsUser writer, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         validate(byteSize);
 
@@ -32,13 +32,13 @@ public class Cover {
         this.resolution = resolution;
         this.imageFilePath = imageFilePath;
         this.byteSize = byteSize;
-        this.writer = writer;
+        this.writerId = writerId;
         this.baseEntity = new BaseEntity(createdAt, lastModifiedAt);
     }
 
     public Cover(
             long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
-            NsUser writer, BaseEntity baseEntity
+            String writerId, BaseEntity baseEntity
     ) {
         validate(byteSize);
 
@@ -46,7 +46,7 @@ public class Cover {
         this.resolution = resolution;
         this.imageFilePath = imageFilePath;
         this.byteSize = byteSize;
-        this.writer = writer;
+        this.writerId = writerId;
         this.baseEntity = baseEntity;
     }
 
@@ -60,7 +60,7 @@ public class Cover {
         return new CoverVO(
                 this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
-                this.baseEntity.isDeleted(), this.writer.getUserId(), this.baseEntity.getCreatedAt(),
+                this.baseEntity.isDeleted(), this.writerId, this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
         );
     }
@@ -72,7 +72,11 @@ public class Cover {
     }
 
     private void validateWriter(NsUser requestUser) {
-        if (!this.writer.matchUser(requestUser)) {
+        if (requestUser == null) {
+            throw new CoverException("요청 사용자가 존재하지 않습니다.");
+        }
+
+        if (!writerId.equals(requestUser.getUserId())) {
             throw new CoverException("삭제 요청자와 작성자가 일치하지 않습니다.");
         }
     }

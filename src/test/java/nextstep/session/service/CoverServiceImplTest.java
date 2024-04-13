@@ -1,7 +1,6 @@
 package nextstep.session.service;
 
 import nextstep.common.domain.DeleteHistory;
-import nextstep.courses.domain.Course;
 import nextstep.exception.CoverException;
 import nextstep.session.domain.Cover;
 import nextstep.session.domain.CoverRepository;
@@ -43,7 +42,7 @@ class CoverServiceImplTest {
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
         LocalDateTime now = LocalDateTime.now();
 
-        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI, now, now);
+        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), now, now);
     }
 
     @DisplayName("생성자와 삭제 요청자가 동일하다면, 삭제할 수 있다.")

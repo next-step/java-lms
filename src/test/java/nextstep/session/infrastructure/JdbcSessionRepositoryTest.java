@@ -41,7 +41,7 @@ class JdbcSessionRepositoryTest {
         freeSession = new FreeSession(
                 1L,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI),
+                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
                 "얼른 배우자 객체지향",
                 course,
                 new Tutor(NsUserTest.JAVAJIGI)
@@ -50,7 +50,7 @@ class JdbcSessionRepositoryTest {
         paidSession = new PaidSession(
                 1L,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI),
+                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
                 "얼른 배우자 객체지향",
                 course,
                 100,
@@ -122,7 +122,7 @@ class JdbcSessionRepositoryTest {
         // when
         long savedId = sessionRepository.save(freeSession);
 
-        Cover newCover = new Cover(100L, resolution, imageFilePath, 100_000L, NsUserTest.JAVAJIGI, new BaseEntity());
+        Cover newCover = new Cover(100L, resolution, imageFilePath, 100_000L, NsUserTest.JAVAJIGI.getUserId(), new BaseEntity());
 
         int updateCount = sessionRepository.updateCover(savedId, newCover);
 

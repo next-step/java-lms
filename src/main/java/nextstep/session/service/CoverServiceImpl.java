@@ -6,7 +6,6 @@ import nextstep.exception.CoverException;
 import nextstep.session.domain.*;
 import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUser;
-import nextstep.users.infrastructure.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,20 +18,16 @@ public class CoverServiceImpl implements CoverService {
     @Resource(name = "coverRepository")
     private CoverRepository coverRepository;
 
-    @Resource(name = "userService")
-    private UserService userService;
-
     @Override
     public Cover findById(Long coverId) {
         CoverVO coverVO = coverRepository.findById(coverId);
-        NsUser nsUser = userService.findByUserId(coverVO.getWriterId());
 
         return new Cover(
                 coverVO.getId(),
                 new Resolution(coverVO.getWidth(), coverVO.getHeight()),
                 new ImageFilePath(coverVO.getFilePath(), coverVO.getFileName(), coverVO.getFileExtension()),
                 coverVO.getByteSize(),
-                nsUser,
+                coverVO.getWriterId(),
                 new BaseEntity(coverVO.isDeleted(), coverVO.getCreatedAt(), coverVO.getLastModifiedAt())
         );
     }

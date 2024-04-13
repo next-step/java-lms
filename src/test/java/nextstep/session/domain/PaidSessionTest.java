@@ -1,11 +1,9 @@
 package nextstep.session.domain;
 
 import nextstep.courses.domain.Course;
-import nextstep.exception.SessionException;
 import nextstep.exception.StudentsException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +26,7 @@ class PaidSessionTest {
         session = new PaidSession(
                 1L,
                 new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI),
+                new Cover(resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
                 "얼른 배우자 객체지향",
                 course,
                 2,

@@ -35,7 +35,7 @@ class JdbcCoverRepositoryTest {
                 new Resolution(300, 200),
                 new ImageFilePath("/home", "test", "jpg"),
                 1_234_567L,
-                NsUserTest.JAVAJIGI
+                NsUserTest.JAVAJIGI.getUserId()
         );
 
         Long savedId = coverRepository.save(cover);
@@ -53,7 +53,7 @@ class JdbcCoverRepositoryTest {
                 new Resolution(300, 200),
                 new ImageFilePath("/home", "test", "jpg"),
                 1_234_567L,
-                NsUserTest.JAVAJIGI
+                NsUserTest.JAVAJIGI.getUserId()
         );
 
         // when
