@@ -6,15 +6,17 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Session {
 
     protected long id;
     protected long courseId;
     protected List<Long> coverImageIds;
+    protected List<NsUser> students = new ArrayList<>();
+    protected List<Enrollment> enrollments = new ArrayList<>();
     protected long amount = 0;
     protected long maximumNumberOfStudent;
-    protected List<NsUser> students = new ArrayList<>();
     protected LocalDateTime startedAt;
     protected LocalDateTime endedAt;
     protected SessionStatus status = SessionStatus.PREPARING;
@@ -73,12 +75,20 @@ public abstract class Session {
     public void enroll(NsUser user, Payment payment) {
         validateRecruiting();
         this.students.add(user);
+        this.enrollments.add(new Enrollment(user.getId(), this.id));
     }
 
     protected void validateRecruiting() {
         if (this.recruitmentStatus.isSame(RecruitmentStatus.NOT_RECRUITING)) {
             throw new IllegalStateException("현재 모집 중인 강의가 아닙니다.");
         }
+    }
+
+    public void approveEnrollment(NsUser user) {
+        this.enrollments.stream()
+                .filter(enrollment -> Objects.equals(enrollment.getUserId(), user.getId()))
+                .findFirst()
+                .ifPresent(enrollment -> enrollment.changeEnrollmentStatus(EnrollmentStatus.APPROVED));
     }
 
     public long getId() {

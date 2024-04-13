@@ -1,11 +1,8 @@
 package nextstep.users.domain;
 
-import nextstep.payments.domain.Payment;
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class NsUser {
@@ -19,7 +16,6 @@ public class NsUser {
     private String email;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Payment> payments = new ArrayList<>();
 
     public NsUser() {
     }
