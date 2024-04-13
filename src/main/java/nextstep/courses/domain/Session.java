@@ -26,28 +26,9 @@ public abstract class Session {
                       long maximumNumberOfStudent,
                       LocalDateTime startedAt,
                       LocalDateTime endedAt,
-                      SessionCoverImage coverImage,
-                      SessionType type) {
-        this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
-    }
-
-    protected Session(long id,
-                      long maximumNumberOfStudent,
-                      LocalDateTime startedAt,
-                      LocalDateTime endedAt,
                       List<SessionCoverImage> coverImages,
                       SessionType type) {
         this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
-    }
-
-    protected Session(long id,
-                      long amount,
-                      long maximumNumberOfStudent,
-                      LocalDateTime startedAt,
-                      LocalDateTime endedAt,
-                      SessionCoverImage coverImage,
-                      SessionType type) {
-        this(id, amount, maximumNumberOfStudent, startedAt, endedAt, List.of(coverImage), type);
     }
 
     protected Session(long id,

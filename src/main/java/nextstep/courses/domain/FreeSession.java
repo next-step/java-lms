@@ -10,14 +10,6 @@ public class FreeSession extends Session {
     public FreeSession(long id,
                        LocalDateTime startedAt,
                        LocalDateTime endedAt,
-                       SessionCoverImage coverImage,
-                       SessionType type) {
-        super(id, MAXIMUM_NUMBER, startedAt, endedAt, coverImage, type);
-    }
-
-    public FreeSession(long id,
-                       LocalDateTime startedAt,
-                       LocalDateTime endedAt,
                        List<SessionCoverImage> coverImages,
                        SessionType type) {
         super(id, MAXIMUM_NUMBER, startedAt, endedAt, coverImages, type);

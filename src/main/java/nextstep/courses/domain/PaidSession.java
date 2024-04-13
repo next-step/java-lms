@@ -8,15 +8,6 @@ import java.util.List;
 
 public class PaidSession extends Session {
 
-    public PaidSession(long id, long maximumNumberOfStudent,
-                       long amount,
-                       LocalDateTime startedAt,
-                       LocalDateTime endedAt,
-                       SessionCoverImage coverImage,
-                       SessionType type) {
-        this(id, amount, maximumNumberOfStudent, startedAt, endedAt, List.of(coverImage), type);
-    }
-
     public PaidSession(long id,
                        long maximumNumberOfStudent,
                        long amount,
