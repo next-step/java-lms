@@ -11,5 +11,7 @@ public enum SessionStatus {
         this.description = description;
     }
 
-
+    public boolean isSessionRecruiting() {
+        return this == RECRUITING;
+    }
 }
