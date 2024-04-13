@@ -2,7 +2,6 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.session.coverImage.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -21,16 +20,21 @@ public class Session {
     private Period periodOfSession;
     private Course course;
     private EnrolledUsers enrolledUsers = new EnrolledUsers();
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private final LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
 
-    public Session(Long id, String title, String description, CoverImage coverImage, SessionType sessionType, Period periodOfSession) {
+    public Session(String title, String description, CoverImage coverImage, SessionType sessionType, Period periodOfSession, Course course) {
+        this(null, title, description, coverImage, sessionType, periodOfSession, course);
+    }
+
+    public Session(Long id, String title, String description, CoverImage coverImage, SessionType sessionType, Period periodOfSession, Course course) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.coverImage = coverImage;
         this.sessionType = sessionType;
         this.periodOfSession = periodOfSession;
+        this.course = course;
     }
 
     public void enroll(NsUser user, Payment payment) {
@@ -56,5 +60,9 @@ public class Session {
 
     public void updateStatusAs(SessionStatus sessionStatus) {
         this.sessionStatus = sessionStatus;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
