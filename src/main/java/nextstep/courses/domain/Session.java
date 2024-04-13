@@ -13,6 +13,7 @@ public abstract class Session {
     protected long amount = 0;
     protected long maximumNumberOfStudent;
     protected SessionCoverImage coverImage;
+    protected List<SessionCoverImage> coverImages;
     protected List<NsUser> students = new ArrayList<>();
     protected LocalDateTime startedAt;
     protected LocalDateTime endedAt;
@@ -21,17 +22,48 @@ public abstract class Session {
     protected RecruitmentStatus recruitmentStatus = RecruitmentStatus.NOT_RECRUITING;
     protected SessionType type;
 
-    protected Session(long id, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
+    protected Session(long id,
+                      long maximumNumberOfStudent,
+                      LocalDateTime startedAt,
+                      LocalDateTime endedAt,
+                      SessionCoverImage coverImage,
+                      SessionType type) {
         this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
     }
 
-    protected Session(long id, long amount, long maximumNumberOfStudent, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
+    protected Session(long id,
+                      long maximumNumberOfStudent,
+                      LocalDateTime startedAt,
+                      LocalDateTime endedAt,
+                      List<SessionCoverImage> coverImages,
+                      SessionType type) {
+        this(id, 0, maximumNumberOfStudent, startedAt, endedAt, coverImages, type);
+    }
+
+    protected Session(long id,
+                      long amount,
+                      long maximumNumberOfStudent,
+                      LocalDateTime startedAt,
+                      LocalDateTime endedAt,
+                      SessionCoverImage coverImage,
+                      SessionType type) {
+        this(id, amount, maximumNumberOfStudent, startedAt, endedAt, List.of(coverImage), type);
+    }
+
+    protected Session(long id,
+                      long amount,
+                      long maximumNumberOfStudent,
+                      LocalDateTime startedAt,
+                      LocalDateTime endedAt,
+                      List<SessionCoverImage> coverImages,
+                      SessionType type) {
         this.id = id;
         this.amount = amount;
         this.maximumNumberOfStudent = maximumNumberOfStudent;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
+        this.coverImage = coverImages.get(0);
         this.type = type;
     }
 
