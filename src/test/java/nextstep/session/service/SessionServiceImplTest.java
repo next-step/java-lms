@@ -99,7 +99,7 @@ class SessionServiceImplTest {
         when(coverService.findById(sessionVO.getCoverId())).thenReturn(cover);
         when(courseService.findById(sessionVO.getCourseId())).thenReturn(course);
         when(studentService.findBySessionId(3L)).thenReturn(new Students(List.of(student)));
-        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
+//        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
 
         // When
         Session session = sessionService.findById(3L);
@@ -136,7 +136,7 @@ class SessionServiceImplTest {
         when(coverService.findById(sessionVO.getCoverId())).thenReturn(cover);
         when(courseService.findById(sessionVO.getCourseId())).thenReturn(course);
         when(studentService.findBySessionId(3L)).thenReturn(new Students(List.of(student)));
-        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
+//        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
 
         // When
         Session session = sessionService.findById(3L);
@@ -172,16 +172,16 @@ class SessionServiceImplTest {
         );
 
         Students students = new Students(List.of(student));
-        DeleteHistory deleteHistory = DeleteHistory.createStudent(student.getUserId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
+//        DeleteHistory deleteHistory = DeleteHistory.createStudent(student.getUserId(), NsUserTest.JAVAJIGI, LocalDateTime.now());
 
         // sessionService.findById
         when(sessionRepository.findById(sessionId)).thenReturn(sessionVO);
         when(coverService.findById(sessionVO.getCoverId())).thenReturn(cover);
         when(courseService.findById(sessionVO.getCourseId())).thenReturn(course);
         when(studentService.findBySessionId(sessionId)).thenReturn(students);
-        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
-        when(studentService.deleteAll(students, NsUserTest.JAVAJIGI))
-                .thenReturn(new DeleteHistoryTargets(List.of(deleteHistory)));
+//        when(userService.findByUserId("JAVAJIGI")).thenReturn(student.getUser());
+//        when(studentService.deleteAll(students, NsUserTest.JAVAJIGI))
+//                .thenReturn(new DeleteHistoryTargets(List.of(deleteHistory)));
         when(coverService.delete(cover, NsUserTest.JAVAJIGI))
                 .thenReturn(DeleteHistory.createCover(cover.getId(), NsUserTest.JAVAJIGI, LocalDateTime.now()));
 

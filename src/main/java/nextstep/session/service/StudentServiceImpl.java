@@ -32,12 +32,12 @@ public class StudentServiceImpl implements StudentService {
     public Students findBySessionId(long sessionId) {
         List<StudentVO> studentsDto = studentRepository.findBySessionId(sessionId);
         List<Student> students = studentsDto.stream()
-                .map(studentDto ->
+                .map(studentVO ->
                         new Student(
-                                studentDto.getId(),
-                                studentDto.getSessionId(),
-                                userService.findByUserId(studentDto.getUserId()),
-                                new BaseEntity(studentDto.isDeleted(), studentDto.getCreatedAt(), studentDto.getLastModifiedAt())
+                                studentVO.getId(),
+                                studentVO.getSessionId(),
+                                studentVO.getUserId(),
+                                new BaseEntity(studentVO.isDeleted(), studentVO.getCreatedAt(), studentVO.getLastModifiedAt())
                         )
                 ).collect(Collectors.toList());
 

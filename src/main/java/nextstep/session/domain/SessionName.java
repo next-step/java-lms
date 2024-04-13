@@ -8,10 +8,6 @@ public class SessionName {
         this.sessionName = sessionName;
     }
 
-    public SessionName editSessionName(String sessionName) {
-        return new SessionName(sessionName);
-    }
-
     public String getSessionName() {
         return sessionName;
     }

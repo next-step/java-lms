@@ -26,14 +26,7 @@ public class Cover {
             long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
             String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
-        validate(byteSize);
-
-        this.id = id;
-        this.resolution = resolution;
-        this.imageFilePath = imageFilePath;
-        this.byteSize = byteSize;
-        this.writerId = writerId;
-        this.baseEntity = new BaseEntity(createdAt, lastModifiedAt);
+        this(id, resolution, imageFilePath, byteSize, writerId, new BaseEntity(createdAt, lastModifiedAt));
     }
 
     public Cover(
@@ -60,7 +53,7 @@ public class Cover {
         return new CoverVO(
                 this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
-                this.baseEntity.isDeleted(), this.writerId, this.baseEntity.getCreatedAt(),
+                this.writerId, this.baseEntity.isDeleted(), this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()
         );
     }

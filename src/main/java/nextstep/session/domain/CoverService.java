@@ -1,7 +1,6 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.DeleteHistory;
-import nextstep.session.domain.Cover;
 import nextstep.users.domain.NsUser;
 
 public interface CoverService {

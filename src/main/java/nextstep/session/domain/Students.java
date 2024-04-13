@@ -60,7 +60,7 @@ public class Students {
 
         for (Student student : this.students) {
             student.delete();
-            deleteHistories.add(DeleteHistory.createStudent(student.getUserId(), requestUser, LocalDateTime.now()));
+            deleteHistories.add(DeleteHistory.createStudent(student.getId(), requestUser, LocalDateTime.now()));
         }
 
         return new DeleteHistoryTargets(deleteHistories);

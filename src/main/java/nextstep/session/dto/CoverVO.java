@@ -18,7 +18,7 @@ public class CoverVO {
 
     public CoverVO(
             long id, int width, int height, String filePath, String fileName, String fileExtension,
-            long byteSize, boolean deleted, String writerId, LocalDateTime createdAt, LocalDateTime lastModifiedAt
+            long byteSize, String writerId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this.id = id;
         this.width = width;
@@ -27,8 +27,8 @@ public class CoverVO {
         this.fileName = fileName;
         this.fileExtension = fileExtension;
         this.byteSize = byteSize;
-        this.deleted = deleted;
         this.writerId = writerId;
+        this.deleted = deleted;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
     }

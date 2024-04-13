@@ -13,13 +13,20 @@ public class Capacity {
         return new Capacity(maxCapacity);
     }
 
-    public Capacity(int maxCapacity, int enrolled) {
+    public static Capacity create(int maxCapacity, int enrolled) {
+        return new Capacity(maxCapacity, enrolled);
+    }
+
+    private Capacity(int maxCapacity, int enrolled) {
+        validateMaxCapacity(maxCapacity);
+
         this.maxCapacity = maxCapacity;
         this.enrolled = enrolled;
     }
 
     private Capacity(int maxCapacity) {
         validateMaxCapacity(maxCapacity);
+
         this.maxCapacity = maxCapacity;
     }
 

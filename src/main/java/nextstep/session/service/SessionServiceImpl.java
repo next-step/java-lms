@@ -107,7 +107,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Session apply(long sessionId, Payment payment, Student student) {
         Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUser());
+        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUserId());
 
         studentService.save(studentWithSession);
 
@@ -119,7 +119,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Session deleteStudent(long sessionId, Student student, NsUser requestUser) {
         Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUser());
+        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUserId());
 
         DeleteHistory deleteHistory = studentService.delete(requestUser, studentWithSession);
         deleteHistoryService.saveAll(List.of(deleteHistory));

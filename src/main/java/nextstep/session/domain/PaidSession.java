@@ -51,7 +51,7 @@ public class PaidSession implements Session {
         this.sessionStatus = sessionStatus;
         this.sessionName = new SessionName(sessionName);
         this.course = course;
-        this.capacity = new Capacity(maxCapacity, enrolled);
+        this.capacity = Capacity.create(maxCapacity, enrolled);
         this.price = new Price(price);
         this.tutor = tutor;
         this.students = students;

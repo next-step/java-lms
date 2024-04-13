@@ -48,7 +48,7 @@ public class JdbcCoverRepository implements CoverRepository {
 
     @Override
     public CoverVO findById(long coverId) {
-        String sql = "select id, width, height, file_path, file_name, file_extension, byte_size, deleted, writer_id, created_at, last_modified_at from cover where id = ?";
+        String sql = "select id, width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at from cover where id = ?";
         RowMapper<CoverVO> rowMapper = (rs, rowNum) -> new CoverVO(
                 rs.getLong(1),
                 rs.getInt(2),
@@ -57,8 +57,8 @@ public class JdbcCoverRepository implements CoverRepository {
                 rs.getString(5),
                 rs.getString(6),
                 rs.getLong(7),
-                rs.getBoolean(8),
-                rs.getString(9),
+                rs.getString(8),
+                rs.getBoolean(9),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(10)),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp(11)));
         return jdbcTemplate.queryForObject(sql, rowMapper, coverId);
