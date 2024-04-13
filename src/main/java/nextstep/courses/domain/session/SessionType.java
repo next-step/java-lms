@@ -11,14 +11,10 @@ public class SessionType {
     protected int maxNumberOfEnrollment;
     protected long fee;
 
-    private SessionType(int maxNumberOfEnrollment, long fee) {
+    public SessionType(int maxNumberOfEnrollment, long fee) {
         validateSessionTypeInput(maxNumberOfEnrollment, fee);
         this.maxNumberOfEnrollment = maxNumberOfEnrollment;
         this.fee = fee;
-    }
-
-    public static SessionType paidSessionType(int maxNumberOfEnrollment, long fee) {
-        return new SessionType(maxNumberOfEnrollment, fee);
     }
 
     public static SessionType freeSessionType() {
@@ -49,5 +45,13 @@ public class SessionType {
         }
 
         return payment.isSameAmount(fee);
+    }
+
+    public int getMaxNumberOfEnrollment() {
+        return maxNumberOfEnrollment;
+    }
+
+    public long getFee() {
+        return fee;
     }
 }
