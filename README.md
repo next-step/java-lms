@@ -16,3 +16,26 @@
 * Answer
     * [ ] 삭제 가능한지 검증
     * [ ] 상태값 변경
+
+## step2 기능 목록
+## Todo
+- [ ] SessionStatus Enum 생성
+  - READY, RECRUITING, END
+- [ ] FreeSession 수강 신청
+  - status가 모집 중이 아닌 경우 IllegalStateException
+  - 정상 완료되면, 현재 수강인원 increase 1
+- [ ] PaySession 수강 신청
+  - status가 모집 중이 아닌 경우 IllegalStateException
+  - payment의 결제금액이 수강료가 일치하지 않는 경우 IllegalArgumentException
+  - 최대 수강인원 <= 현재 수강인원인 경우 IllegalStateException
+  - 정상 완료되면, 현재 수강인원 increase 1
+- ImageType Enum 생성
+  - GIF, JPG, JPEG, PNG, SVG
+- [ ] CoverImageInfo 클래스 생성
+  - 생성자(크기, 타입, 너비, 높이)
+    - 이미지 크기 1 초과인 경우 IlleaglArgumentException
+    - 이미지 타입이 ImageType에 없는 경우 IlleaglArgumentException
+    - width >= 300 && height >= 200 && width / heigth == 3/2아 아닌 경우 IlleaglArgumentException
+- [ ] Session 추상클래스 생성
+  - 생성자(강의 시작일, 강의 종료일, 커버 이미지 정보)
+- [ ] 서비스 레이어에서 수강신청 로직 구현
