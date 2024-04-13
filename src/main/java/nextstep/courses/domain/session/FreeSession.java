@@ -5,6 +5,7 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Users;
 
 public class FreeSession extends Session {
+    public static final Long FREE_FEE = 0L;
 
     public FreeSession(Long sessionId, SessionPeriod sessionPeriod,
                        CoverImage coverImage, SessionStatusEnum sessionStatus, Users users) {
@@ -14,9 +15,17 @@ public class FreeSession extends Session {
     @Override
     public void enrollStudent(NsUser user) {
         if (!this.isSessionOpened()) {
-            throw new IllegalArgumentException(SESSION_IS_NOT_OPENED);
+            throw new IllegalArgumentException(SESSION_NOT_OPENED);
+        }
+
+        if (isPaymentAmountMatching(user)) {
+            throw new IllegalArgumentException(ENROLLMENT_ALREADY_DONE);
         }
 
         this.users.add(user);
+    }
+
+    private boolean isPaymentAmountMatching(NsUser user) {
+        return user.hasPaidForSession(getSessionId(), FREE_FEE);
     }
 }

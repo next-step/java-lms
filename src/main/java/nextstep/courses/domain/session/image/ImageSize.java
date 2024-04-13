@@ -5,9 +5,9 @@ public class ImageSize {
     public static final int VALID_HEIGHT = 200;
     public static final int VALID_WIDTH_RATIO = 3;
     public static final int VALID_HEIGHT_RATIO = 2;
-    public static final String INVALID_WIDTH = "이미지의 가로 길이는 300 pixel 이상부터 가능합니다.";
-    public static final String INVALID_HEIGHT = "이미지의 세로 길이는 200 pixel 이상부터 가능합니다.";
-    public static final String INVALID_IMAGE_RATIO = "이미지의 가로, 세로 비율은 3:2가 되어야 합니다.";
+    public static final String INVALID_WIDTH = String.format("이미지의 가로 길이는 %d pixel 이상부터 가능합니다.", VALID_WIDTH);
+    public static final String INVALID_HEIGHT = String.format("이미지의 세로 길이는 %d pixel 이상부터 가능합니다.", VALID_HEIGHT);
+    public static final String INVALID_IMAGE_RATIO = String.format("이미지의 가로, 세로 비율은 %d:%d가 되어야 합니다.", VALID_WIDTH_RATIO, VALID_HEIGHT_RATIO);
 
     private int width;
     private int height;

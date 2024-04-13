@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static nextstep.courses.domain.session.PaidSession.OVER_MAX_ENROLLMENTS;
 import static nextstep.courses.domain.session.PaidSession.PAYMENT_IS_NOT_MATCHING;
-import static nextstep.courses.domain.session.Session.SESSION_IS_NOT_OPENED;
+import static nextstep.courses.domain.session.Session.SESSION_NOT_OPENED;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +36,7 @@ class PaidSessionTest {
         assertEquals(paidSession.users.getNumberOfUsers(), 1);
     }
 
-    @ParameterizedTest(name = "유료 수강 신청 불가능 - 신청 가능 기간이 아님")
+    @ParameterizedTest(name = "유료 수강 신청 불가능 - 강의 상태가 모집중이 아님")
     @ValueSource(strings = { "PENDING", "CLOSED" })
     void testPaidSession_isClosed_ShouldThrowException(SessionStatusEnum sessionStatus) {
         // given
@@ -47,7 +47,7 @@ class PaidSessionTest {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {
             paidSession.enrollStudent(user);
-        }).withMessageContaining(SESSION_IS_NOT_OPENED);
+        }).withMessageContaining(SESSION_NOT_OPENED);
     }
 
     @Test

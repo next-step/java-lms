@@ -5,7 +5,8 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.Users;
 
 public abstract class Session {
-    public static final String SESSION_IS_NOT_OPENED = "강의 신청 가능 기한이 아닙니다.";
+    public static final String SESSION_NOT_OPENED = "강의 신청 가능 기한이 아닙니다.";
+    public static final String ENROLLMENT_ALREADY_DONE = "이미 수강신청이 완료된 강의 입니다.";
 
     private final Long sessionId;
     private final SessionPeriod sessionPeriod;

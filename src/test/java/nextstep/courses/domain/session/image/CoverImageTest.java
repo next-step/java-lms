@@ -72,7 +72,7 @@ class CoverImageTest {
 
 
     @Test
-    @DisplayName("커버 이미지 객체 생성 실패 - 유효하지 이미지 사이즈 사이즈 비율")
+    @DisplayName("커버 이미지 객체 생성 실패 - 유효하지 않은 이미지 사이즈 사이즈 비율")
     void testCoverImage_invalidImageSizeRatio_ShouldThrowException() {
         // when, then
         assertThatIllegalArgumentException().isThrownBy(() -> {

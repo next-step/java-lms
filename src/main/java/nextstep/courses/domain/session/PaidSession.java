@@ -19,9 +19,16 @@ public class PaidSession extends Session {
         this.fee = fee;
     }
 
+    @Override
     public void enrollStudent(NsUser user) {
+        assertAllConditions(user);
+
+        this.users.add(user);
+    }
+
+    private void assertAllConditions(NsUser user) {
         if (!this.isSessionOpened()) {
-            throw new IllegalArgumentException(SESSION_IS_NOT_OPENED);
+            throw new IllegalArgumentException(SESSION_NOT_OPENED);
         }
 
         if (isEnrollmentFull()) {
