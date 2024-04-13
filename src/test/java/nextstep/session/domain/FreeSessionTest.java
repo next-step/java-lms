@@ -1,5 +1,6 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.courses.domain.Course;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -108,5 +109,20 @@ class FreeSessionTest {
         // then
         assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isFalse();
+    }
+
+    @DisplayName("세션을 삭제하면, 속한 커버와 학생들도 삭제된다.")
+    @Test
+    void delete() {
+        // given
+        session.toNextSessionStatus();
+        session.apply(new Student(NsUserTest.JAVAJIGI), new Payment(), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.toPreviousSessionStatus();
+        DeleteHistoryTargets deleteHistoryTargets = session.delete(NsUserTest.JAVAJIGI);
+
+        // then
+        assertThat(deleteHistoryTargets.asList()).hasSize(3);
     }
 }

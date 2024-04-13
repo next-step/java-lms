@@ -1,6 +1,5 @@
 package nextstep.session.service;
 
-import nextstep.common.domain.DeleteHistory;
 import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.common.service.DeleteHistoryService;
 import nextstep.payments.domain.Payment;
@@ -20,18 +19,11 @@ public class SessionServiceImpl implements SessionService {
     @Resource(name = "sessionRepository")
     private SessionRepository sessionRepository;
 
-    @Resource(name = "coverService")
-    private CoverService coverService;
-
-    @Resource(name = "studentService")
-    private StudentService studentService;
-
     @Resource(name = "deleteHistoryService")
     private DeleteHistoryService deleteHistoryService;
 
     @Override
     public long save(Session session) {
-        coverService.save(session.getCover());
         return sessionRepository.save(session);
     }
 
@@ -47,47 +39,34 @@ public class SessionServiceImpl implements SessionService {
 
     @Transactional
     @Override
-    public long updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser) {
-        Cover beforeCover = coverService.findById(oldCoverId);
-
-        coverService.delete(beforeCover.getId(), requestUser);
-        return coverService.save(newCover);
+    public void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser) {
+        sessionRepository.updateCover(sessionId, oldCoverId, newCover);
     }
 
     @Override
     public Session apply(long sessionId, Payment payment, Student student) {
         Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUserId());
 
-        studentService.save(studentWithSession);
-
-        targetSession.apply(studentWithSession, payment, LocalDateTime.now());
+        targetSession.apply(student, payment, LocalDateTime.now());
+        sessionRepository.apply(sessionId, student);
 
         return findById(sessionId);
     }
 
     @Override
     public Session deleteStudent(long sessionId, Student student, NsUser requestUser) {
-        Session targetSession = findById(sessionId);
-        Student studentWithSession = new Student(targetSession.toVO().getId(), student.getUserId());
-
-        DeleteHistory deleteHistory = studentService.delete(requestUser, studentWithSession);
-        deleteHistoryService.saveAll(List.of(deleteHistory));
+        sessionRepository.unapply(sessionId, student);
+        deleteHistoryService.saveAll(List.of(student.delete(requestUser)));
 
         return findById(sessionId);
     }
 
     @Override
     public void delete(long sessionId, NsUser requestUser) {
-        DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
         Session targetSession = findById(sessionId);
-        deleteHistoryTargets.addFirst(targetSession.delete(requestUser));
+        DeleteHistoryTargets deleteHistoryTargets = targetSession.delete(requestUser);
 
-        deleteHistoryTargets.addFirst(coverService.delete(targetSession.toVO().getCoverId(), requestUser));
-
-        Students targetStudents = studentService.findBySessionId(sessionId);
-        deleteHistoryTargets.add(studentService.deleteAll(targetStudents, requestUser));
-
+        sessionRepository.delete(sessionId);
         deleteHistoryService.saveAll(deleteHistoryTargets.asList());
     }
 }

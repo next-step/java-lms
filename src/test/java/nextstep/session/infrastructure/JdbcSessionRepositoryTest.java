@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,12 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JdbcSessionRepositoryTest {
 
     private final long sessionId = 3L;
-    private final long coverId = 4L;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private SessionRepository sessionRepository;
-    private CoverRepository coverRepository;
     private Resolution resolution;
     private ImageFilePath imageFilePath;
     private Course course;
@@ -36,7 +35,6 @@ class JdbcSessionRepositoryTest {
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        coverRepository = new JdbcCoverRepository(jdbcTemplate);
 
         resolution = new Resolution(300, 200);
         imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
@@ -120,5 +118,54 @@ class JdbcSessionRepositoryTest {
         // then
         Assertions.assertThatThrownBy(() -> sessionRepository.updateSessionBasicProperties(savedId, updateDto))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("학생을 등록할 수 있다.")
+    @Test
+    void applyStudent() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student = new Student(savedId, NsUserTest.JAVAJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student);
+        Session foundSession = sessionRepository.findById(savedId);
+        Optional<Student> optionalStudent = foundSession.getStudents().findStudent(student);
+
+        // then
+        assertThat(optionalStudent).isPresent();
+    }
+
+    @DisplayName("학생의 등록을 취소할 수 있다.")
+    @Test
+    void unapplyStudent() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student = new Student(savedId, NsUserTest.JAVAJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student);
+        sessionRepository.unapply(savedId, student);
+        Session foundSession = sessionRepository.findById(savedId);
+        Optional<Student> optionalStudent = foundSession.getStudents().findStudent(student);
+
+        // then
+        assertThat(optionalStudent).isNotPresent();
+    }
+
+    @DisplayName("커버 이미지를 변경할 수 있다.")
+    @Test
+    void changeCover() {
+        // when
+        long savedId = sessionRepository.save(freeSession);
+        Session session = sessionRepository.findById(savedId);
+        long oldCoverId = session.toVO().getCoverId();
+
+        Cover newCover = new Cover(savedId, resolution, imageFilePath, 500, NsUserTest.JAVAJIGI.getUserId());
+        sessionRepository.updateCover(savedId, oldCoverId, newCover);
+        Session sessionChangedCover = sessionRepository.findById(savedId);
+
+        // then
+        assertThat(sessionChangedCover.toVO().getCoverId()).isNotEqualTo(oldCoverId);
     }
 }

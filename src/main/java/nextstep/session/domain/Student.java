@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
 import nextstep.session.dto.StudentVO;
 import nextstep.users.domain.NsUser;
 
@@ -68,7 +69,8 @@ public class Student {
         );
     }
 
-    public void delete() {
+    public DeleteHistory delete(NsUser requestUser) {
         this.baseEntity.delete(LocalDateTime.now());
+        return DeleteHistory.createStudent(this.id, requestUser, LocalDateTime.now());
     }
 }

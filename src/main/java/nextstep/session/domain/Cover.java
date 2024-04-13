@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUser;
@@ -60,10 +61,13 @@ public class Cover {
         );
     }
 
-    public void delete(NsUser requestUser) {
+    public DeleteHistory delete(NsUser requestUser) {
         validateWriter(requestUser);
 
-        this.baseEntity.delete(LocalDateTime.now());
+        LocalDateTime deleteTime = LocalDateTime.now();
+
+        this.baseEntity.delete(deleteTime);
+        return DeleteHistory.createCover(this.id, requestUser, deleteTime);
     }
 
     private void validateWriter(NsUser requestUser) {

@@ -6,7 +6,15 @@ public interface SessionRepository {
 
     long save(Session session);
 
+    long apply(long sessionId, Student student);
+
+    long unapply(long sessionId, Student student);
+
     Session findById(long sessionId);
 
     int updateSessionBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateBasicPropertiesVO);
+
+    void updateCover(long sessionId, long oldCoverId, Cover newCover);
+
+    void delete(long sessionId);
 }

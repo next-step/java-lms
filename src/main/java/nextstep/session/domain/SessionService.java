@@ -12,7 +12,7 @@ public interface SessionService {
 
     int updateBasicProperties(long sessionId, SessionUpdateBasicPropertiesVO sessionUpdateDto);
 
-    long updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser);
+    void updateCover(long sessionId, long oldCoverId, Cover newCover, NsUser requestUser);
 
     Session apply(long sessionId, Payment payment, Student student);
 

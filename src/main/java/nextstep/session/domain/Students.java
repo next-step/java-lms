@@ -59,8 +59,7 @@ public class Students {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
         for (Student student : this.students) {
-            student.delete();
-            deleteHistories.add(DeleteHistory.createStudent(student.getId(), requestUser, LocalDateTime.now()));
+            deleteHistories.add(student.delete(requestUser));
         }
 
         return new DeleteHistoryTargets(deleteHistories);

@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
@@ -67,12 +68,6 @@ public class PaidSession implements Session {
         this.sessionStatus = this.sessionStatus.toPreviousStatus();
     }
 
-    private void validateReadyStatus() {
-        if (!this.sessionStatus.onReady()) {
-            throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
-        }
-    }
-
     @Override
     public boolean isEnrollAvailable(LocalDateTime applyDate) {
         return this.sessionStatus.canEnroll() &&
@@ -112,11 +107,16 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public DeleteHistory delete(NsUser requestUser) {
+    public DeleteHistoryTargets delete(NsUser requestUser) {
         validateCanDeleteForSessionStatus();
-        this.baseEntity.delete(LocalDateTime.now());
+        DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
 
-        return DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now());
+        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.students.deleteAll(requestUser));
+
+        this.baseEntity.delete(LocalDateTime.now());
+        deleteHistoryTargets.addFirst(DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now()));
+        return deleteHistoryTargets;
     }
 
     private void validateCanDeleteForSessionStatus() {
@@ -128,5 +128,10 @@ public class PaidSession implements Session {
     @Override
     public Cover getCover() {
         return this.cover;
+    }
+
+    @Override
+    public Students getStudents() {
+        return this.students;
     }
 }

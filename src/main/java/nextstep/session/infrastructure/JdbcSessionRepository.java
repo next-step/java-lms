@@ -5,6 +5,7 @@ import nextstep.session.domain.*;
 import nextstep.session.dto.CoverVO;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
 import nextstep.session.dto.SessionVO;
+import nextstep.session.dto.StudentVO;
 import nextstep.session.type.SessionStatusType;
 import nextstep.utils.DbTimestampUtils;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -62,12 +63,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
         long sessionKey = Objects.requireNonNull(keyHolder.getKey()).longValue();
 
-        save(session.getCover(), sessionKey);
+        saveCover(session.getCover(), sessionKey);
 
         return sessionKey;
     }
 
-    public void save(Cover cover, long sessionId) {
+    private void saveCover(Cover cover, long sessionId) {
         String sql = "insert into cover (session_id, width, height, file_path, file_name, file_extension, byte_size, writer_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         CoverVO coverVO = cover.toVO();
@@ -174,7 +175,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         "created_at as createdAt, " +
                         "last_modified_at as lastModifiedAt " +
                         "from cover " +
-                        "where session_id = ?";
+                        "where session_id = ? and deleted = false";
 
         RowMapper<Cover> rowMapper = (rs, rowNum) -> new Cover(
                 rs.getLong("id"),
@@ -261,5 +262,51 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private void deleteLastComma(StringBuilder sql) {
         sql.delete(sql.length() - 2, sql.length());
+    }
+
+    @Override
+    public long apply(long sessionId, Student student) {
+        String insertSessionQuery = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
+
+        StudentVO studentVO = student.toVO();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(insertSessionQuery, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, studentVO.getSessionId());
+            ps.setString(2, studentVO.getUserId());
+            ps.setBoolean(3, studentVO.isDeleted());
+            ps.setTimestamp(4, DbTimestampUtils.toTimestamp(studentVO.getCreatedAt()));
+            ps.setTimestamp(5, DbTimestampUtils.toTimestamp(studentVO.getLastModifiedAt()));
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public long unapply(long sessionId, Student student) {
+        String updateCoverSql = "update student set deleted = true where ns_user_id = ? and session_id = ?";
+        return jdbcTemplate.update(updateCoverSql, student.getUserId(), sessionId);
+    }
+
+    @Override
+    public void updateCover(long sessionId, long oldCoverId, Cover newCover) {
+        String updateCoverSql = "update cover set deleted = true where id = ?";
+        jdbcTemplate.update(updateCoverSql, oldCoverId);
+
+        saveCover(newCover, sessionId);
+    }
+
+    @Override
+    public void delete(long sessionId) {
+        String updateDeleteStatusSessionSql = "update session set deleted = true where id = ?";
+        jdbcTemplate.update(updateDeleteStatusSessionSql, sessionId);
+
+        String updateDeleteStatusCoverSql = "update cover set deleted = true where session_id = ?";
+        jdbcTemplate.update(updateDeleteStatusCoverSql, sessionId);
+
+        String updateDeleteStatusStudentSql = "update student set deleted = true where session_id = ?";
+        jdbcTemplate.update(updateDeleteStatusStudentSql, sessionId);
     }
 }

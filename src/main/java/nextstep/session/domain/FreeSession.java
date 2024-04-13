@@ -2,6 +2,7 @@ package nextstep.session.domain;
 
 import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
@@ -117,11 +118,21 @@ public class FreeSession implements Session {
     }
 
     @Override
-    public DeleteHistory delete(NsUser requestUser) {
-        validateCanDeleteForSessionStatus();
-        this.baseEntity.delete(LocalDateTime.now());
+    public Students getStudents() {
+        return this.students;
+    }
 
-        return DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now());
+    @Override
+    public DeleteHistoryTargets delete(NsUser requestUser) {
+        validateCanDeleteForSessionStatus();
+        DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
+
+        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.students.deleteAll(requestUser));
+
+        this.baseEntity.delete(LocalDateTime.now());
+        deleteHistoryTargets.addFirst(DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now()));
+        return deleteHistoryTargets;
     }
 
     private void validateCanDeleteForSessionStatus() {

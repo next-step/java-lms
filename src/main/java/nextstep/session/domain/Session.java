@@ -1,6 +1,7 @@
 package nextstep.session.domain;
 
 import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.payments.domain.Payment;
 import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
@@ -17,9 +18,11 @@ public interface Session {
 
     boolean apply(Student student, Payment payment, LocalDateTime applyDate);
 
-    DeleteHistory delete(NsUser requestUser);
+    DeleteHistoryTargets delete(NsUser requestUser);
 
     SessionVO toVO();
 
     Cover getCover();
+
+    Students getStudents();
 }

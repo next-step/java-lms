@@ -22,4 +22,17 @@ class StudentTest {
         assertThat(student1.matchUser(student3))
                 .isFalse();
     }
+
+    @DisplayName("신청을 삭제 시 삭제 상태가 변한다.")
+    @Test
+    void changeDeleteStatusWhenUnapply() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+
+        // when
+        student.delete(NsUserTest.SANJIGI);
+
+        // then
+        assertThat(student.toVO().isDeleted()).isTrue();
+    }
 }
