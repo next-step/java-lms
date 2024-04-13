@@ -25,4 +25,12 @@ public class Dimensions {
     private boolean isValidWidthHeight(double width, double height) {
         return width >= MIN_WIDTH && height >= MIN_HEIGHT && (width / height == RATIO_OF_WIDTH_HEIGHT);
     }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
 }
