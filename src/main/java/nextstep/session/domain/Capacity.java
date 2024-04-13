@@ -17,17 +17,15 @@ public class Capacity {
         return new Capacity(maxCapacity, enrolled);
     }
 
+    private Capacity(int maxCapacity) {
+        this(maxCapacity, NO_CAPACITY);
+    }
+
     private Capacity(int maxCapacity, int enrolled) {
         validateMaxCapacity(maxCapacity);
 
         this.maxCapacity = maxCapacity;
         this.enrolled = enrolled;
-    }
-
-    private Capacity(int maxCapacity) {
-        validateMaxCapacity(maxCapacity);
-
-        this.maxCapacity = maxCapacity;
     }
 
     private void validateMaxCapacity(int maxCapacity) {

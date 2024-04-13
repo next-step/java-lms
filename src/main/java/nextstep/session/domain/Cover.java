@@ -12,30 +12,32 @@ public class Cover {
     public static final int SIZE_UNIT = 1024;
     public static final int MAXIMUM_MEGABYTE_SIZE = 1;
     private final long id;
+    private final long sessionId;
     private final Resolution resolution;
     private final ImageFilePath imageFilePath;
     private final long byteSize;
     private final String writerId;
     private final BaseEntity baseEntity;
 
-    public Cover(Resolution resolution, ImageFilePath imageFilePath, long byteSize, String writerId) {
-        this(0L, resolution, imageFilePath, byteSize, writerId, false, LocalDateTime.now(), LocalDateTime.now());
+    public Cover(long sessionId, Resolution resolution, ImageFilePath imageFilePath, long byteSize, String writerId) {
+        this(0L, sessionId, resolution, imageFilePath, byteSize, writerId, false, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Cover(
-            long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
+            long id, long sessionId, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
             String writerId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
-        this(id, resolution, imageFilePath, byteSize, writerId, new BaseEntity(deleted, createdAt, lastModifiedAt));
+        this(id, sessionId, resolution, imageFilePath, byteSize, writerId, new BaseEntity(deleted, createdAt, lastModifiedAt));
     }
 
     public Cover(
-            long id, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
+            long id, long sessionId, Resolution resolution, ImageFilePath imageFilePath, long byteSize,
             String writerId, BaseEntity baseEntity
     ) {
         validate(byteSize);
 
         this.id = id;
+        this.sessionId = sessionId;
         this.resolution = resolution;
         this.imageFilePath = imageFilePath;
         this.byteSize = byteSize;
@@ -51,7 +53,7 @@ public class Cover {
 
     public CoverVO toVO() {
         return new CoverVO(
-                this.id, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
+                this.id, this.sessionId, this.resolution.getWidth(), this.resolution.getHeight(), this.imageFilePath.getFilePath(),
                 this.imageFilePath.getFileName(), this.imageFilePath.getExtension(), this.byteSize,
                 this.writerId, this.baseEntity.isDeleted(), this.baseEntity.getCreatedAt(),
                 this.baseEntity.getLastModifiedAt()

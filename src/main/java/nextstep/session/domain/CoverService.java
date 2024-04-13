@@ -5,7 +5,9 @@ import nextstep.users.domain.NsUser;
 
 public interface CoverService {
 
-    Cover findById(Long coverId);
+    Cover findById(long coverId);
+
+    Cover findBySessionId(long sessionId);
 
     DeleteHistory delete(Cover cover, NsUser requestUser);
 

@@ -16,7 +16,7 @@ class CoverTest {
         ImageFilePath imageFilePath = new ImageFilePath("/home", "temp", "jpg");
 
         // then
-        assertThatThrownBy(() -> new Cover(resolution, imageFilePath, 10000000, NsUserTest.JAVAJIGI.getUserId()))
+        assertThatThrownBy(() -> new Cover(0L, resolution, imageFilePath, 10000000, NsUserTest.JAVAJIGI.getUserId()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

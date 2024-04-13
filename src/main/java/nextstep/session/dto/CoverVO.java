@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class CoverVO {
 
     private final long id;
+    private final long sessionId;
     private final int width;
     private final int height;
     private final String filePath;
@@ -17,10 +18,11 @@ public class CoverVO {
     private final LocalDateTime lastModifiedAt;
 
     public CoverVO(
-            long id, int width, int height, String filePath, String fileName, String fileExtension,
+            long id, long sessionId, int width, int height, String filePath, String fileName, String fileExtension,
             long byteSize, String writerId, boolean deleted, LocalDateTime createdAt, LocalDateTime lastModifiedAt
     ) {
         this.id = id;
+        this.sessionId = sessionId;
         this.width = width;
         this.height = height;
         this.filePath = filePath;
@@ -35,6 +37,10 @@ public class CoverVO {
 
     public long getId() {
         return id;
+    }
+
+    public long getSessionId() {
+        return sessionId;
     }
 
     public int getWidth() {

@@ -1,10 +1,8 @@
 package nextstep.session.service;
 
-import nextstep.common.domain.BaseEntity;
 import nextstep.common.domain.DeleteHistory;
 import nextstep.exception.CoverException;
 import nextstep.session.domain.*;
-import nextstep.session.dto.CoverVO;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +17,13 @@ public class CoverServiceImpl implements CoverService {
     private CoverRepository coverRepository;
 
     @Override
-    public Cover findById(Long coverId) {
+    public Cover findById(long coverId) {
         return coverRepository.findById(coverId);
+    }
+
+    @Override
+    public Cover findBySessionId(long sessionId) {
+        return coverRepository.findBySessionId(sessionId);
     }
 
     @Override

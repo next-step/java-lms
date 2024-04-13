@@ -16,8 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -28,21 +26,19 @@ class CoverServiceImplTest {
     @Mock
     private CoverRepository coverRepository;
 
-    @Mock
-    private UserService userService;
-
     @InjectMocks
     private CoverServiceImpl coverService;
 
+    private long sessionId;
     private Cover cover;
 
     @BeforeEach
     void setUp() {
         Resolution resolution = new Resolution(300, 200);
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
-        LocalDateTime now = LocalDateTime.now();
+        sessionId = 3L;
 
-        cover = new Cover(3L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId(), false, now, now);
+        cover = new Cover(sessionId, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId());
     }
 
     @DisplayName("생성자와 삭제 요청자가 동일하다면, 삭제할 수 있다.")

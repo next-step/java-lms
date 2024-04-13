@@ -41,7 +41,7 @@ class CapacityTest {
         capacity.enroll();
 
         // then
-        assertThatThrownBy(() -> capacity.enroll())
+        assertThatThrownBy(capacity::enroll)
                 .isInstanceOf(CapacityException.class);
     }
 
