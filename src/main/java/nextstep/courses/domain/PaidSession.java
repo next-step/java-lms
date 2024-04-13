@@ -13,38 +13,9 @@ public class PaidSession extends Session {
     private Long price;
     private Integer capacity;
 
-    public PaidSession(LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(startDate, endDate, coverImage, createdAt);
-        this.price = price;
-        this.capacity = capacity;
-    }
-
-    public PaidSession(LocalDateTime startDate, LocalDateTime endDate,
-        List<SessionCoverImage> coverImages, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(startDate, endDate, coverImages, createdAt);
-        this.price = price;
-        this.capacity = capacity;
-    }
-
-    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImages, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
-        super(id, startDate, endDate, coverImages, status, isRecruiting, createdAt);
-        this.price = price;
-        this.capacity = capacity;
-    }
-
     public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
         List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, Long price, Integer capacity, LocalDateTime createdAt) {
         super(id, startDate, endDate, coverImages, status, isRecruiting, createdAt);
-        this.price = price;
-        this.capacity = capacity;
-    }
-
-    public PaidSession(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
-        LocalDateTime createdAt, LocalDateTime updatedAt, Long price, Integer capacity) {
-        super(id, startDate, endDate, coverImage, status, isRecruiting, learners, createdAt, updatedAt);
         this.price = price;
         this.capacity = capacity;
     }

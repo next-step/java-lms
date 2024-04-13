@@ -15,7 +15,6 @@ public class Session {
     protected Long id;
     protected LocalDateTime startDate;
     protected LocalDateTime endDate;
-    protected SessionCoverImage coverImage;
     protected List<SessionCoverImage> coverImages = new ArrayList<>();
     protected SessionStatus status = SessionStatus.PREPARE;
     protected Set<NsUser> learners = new HashSet<>();
@@ -23,39 +22,14 @@ public class Session {
     protected LocalDateTime updatedAt;
     protected boolean isRecruiting;
 
-    public Session(LocalDateTime startDate, LocalDateTime endDate, SessionCoverImage coverImage,
-        LocalDateTime createdAt) {
-        this(0L, startDate, endDate, coverImage, SessionStatus.PREPARE, true, createdAt);
-    }
-
     public Session(LocalDateTime startDate, LocalDateTime endDate, List<SessionCoverImage> coverImages,
         LocalDateTime createdAt) {
         this(0L, startDate, endDate, coverImages, SessionStatus.PREPARE, true, createdAt);
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, LocalDateTime createdAt) {
-        this(id, startDate, endDate, coverImage, status, isRecruiting, new HashSet<>(), createdAt, null);
-    }
-
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
         List<SessionCoverImage> coverImages, SessionStatus status, boolean isRecruiting, LocalDateTime createdAt) {
         this(id, startDate, endDate, coverImages, status, isRecruiting, new HashSet<>(), createdAt, null);
-    }
-
-    public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
-        SessionCoverImage coverImage, SessionStatus status, boolean isRecruiting, Set<NsUser> learners,
-        LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        validateDate(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.coverImage = coverImage;
-        this.status = status;
-        this.isRecruiting = isRecruiting;
-        this.learners = learners;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Session(Long id, LocalDateTime startDate, LocalDateTime endDate,
@@ -114,20 +88,12 @@ public class Session {
         return endDate;
     }
 
-    public Long getCoverImageId() {
-        return coverImage.getId();
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public SessionCoverImage getCoverImage() {
-        return coverImage;
     }
 
     public boolean isRecruiting() {
