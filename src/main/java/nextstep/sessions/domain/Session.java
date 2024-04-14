@@ -5,7 +5,6 @@ import nextstep.users.domain.NsUser;
 import nextstep.utils.BaseEntity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Session extends BaseEntity {
 

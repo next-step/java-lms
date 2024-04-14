@@ -1,25 +1,17 @@
 package nextstep.sessions.domain;
 
-import nextstep.payments.domain.Payment;
-import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static nextstep.sessions.domain.SessionStatus.RECRUITING;
 import static nextstep.sessions.domain.SessionType.PAID;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SessionTest {
 
-    private List<NsUser> listeners;
     private Session tddCleanCodeJava;
 
     @BeforeEach
