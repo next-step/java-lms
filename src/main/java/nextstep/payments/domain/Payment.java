@@ -26,4 +26,12 @@ public class Payment {
         this.amount = amount;
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isPossibleToTakeSession(long price) {
+        return amount == price;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
 }
