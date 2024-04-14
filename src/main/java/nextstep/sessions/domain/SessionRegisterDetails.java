@@ -9,7 +9,7 @@ public class SessionRegisterDetails {
 
     private final CountOfStudent countOfStudent;
 
-    private final long price;
+    private final Price price;
 
     private final SessionStatus sessionStatus;
 
@@ -31,7 +31,11 @@ public class SessionRegisterDetails {
                                   SessionStatus sessionStatus,
                                   List<NsUser> listeners
     ) {
-        this.countOfStudent = new CountOfStudent(currentCountOfStudents, maxOfStudents, sessionType);
+        this(new CountOfStudent(currentCountOfStudents, maxOfStudents, sessionType), new Price(price), sessionStatus, listeners);
+    }
+
+    public SessionRegisterDetails(CountOfStudent countOfStudent, Price price, SessionStatus sessionStatus, List<NsUser> listeners) {
+        this.countOfStudent = countOfStudent;
         this.price = price;
         this.sessionStatus = sessionStatus;
         this.listeners = listeners;
@@ -49,7 +53,7 @@ public class SessionRegisterDetails {
     }
 
     public boolean isNotSamePrice(long amount) {
-        return this.price != amount;
+        return price.isNotSamePrice(amount);
     }
 
     public boolean isContainsListener(NsUser listener) {

@@ -61,4 +61,5 @@ public class SessionRegisterDetailsTest {
 
         assertThat(details.isContainsListener(NsUserTest.JAVAJIGI)).isTrue();
     }
+
 }
