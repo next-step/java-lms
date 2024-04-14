@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@DisplayName("도메인 객체 ImageRate 테스트")
 class ImageRateTest {
     @DisplayName("이미지 비율 검증")
     @Test
@@ -18,7 +19,7 @@ class ImageRateTest {
     @Test
     void 이미지_최저_픽셀_검증() {
         assertThatExceptionOfType(IllegalArgumentException.class)
-            .isThrownBy(() -> new ImageRate(300, 100))
+            .isThrownBy(() -> new ImageRate(30, 20))
             .withMessage("이미지 width가 300px 보다 작습니다");
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@DisplayName("도메인 객체 ImageSize 테스트")
 class ImageSizeTest {
     @DisplayName("이미지 1MB 초과 검증")
     @Test
