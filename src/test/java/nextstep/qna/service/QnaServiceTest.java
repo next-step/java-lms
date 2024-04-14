@@ -87,4 +87,12 @@ public class QnaServiceTest {
                 new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         verify(deleteHistoryService).saveAll(deleteHistories);
     }
+
+    @Test
+    void delete_no_answer() throws CannotDeleteException {
+        Question question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
+        question.deleteAll(NsUserTest.JAVAJIGI);
+
+        assertThat(question.isDeleted()).isTrue();
+    }
 }
