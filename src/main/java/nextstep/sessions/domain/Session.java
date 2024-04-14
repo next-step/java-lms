@@ -79,6 +79,10 @@ public class Session {
         enrollments.add(enrollment);
     }
 
+    public boolean isEnd() {
+        return sessionProgressStatus.isEnd();
+    }
+
     public List<Enrollment> getEnrollments() {
         return enrollments;
     }

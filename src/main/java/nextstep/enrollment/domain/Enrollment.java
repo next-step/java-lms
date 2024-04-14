@@ -29,6 +29,7 @@ public class Enrollment {
         validateAttendeeNumber();
         validateRecruitingStatus();
         validateAlreadyEnroll();
+        validateEndProgress();
     }
 
     private void validateAttendeeNumber() {
@@ -46,6 +47,12 @@ public class Enrollment {
     private void validateAlreadyEnroll() {
         if (session.canEnroll(this)) {
             throw new IllegalArgumentException("이미 수강 신청한 사용자입니다.");
+        }
+    }
+
+    private void validateEndProgress() {
+        if (session.isEnd()) {
+            throw new IllegalArgumentException("종료된 강의입니다.");
         }
     }
 
