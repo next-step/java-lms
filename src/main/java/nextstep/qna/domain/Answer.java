@@ -72,13 +72,11 @@ public class Answer {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
-	public DeleteHistory delete(NsUser user, LocalDateTime now) throws CannotDeleteException {
-        validateUser(user);
-        this.deleted = true;
-        return new DeleteHistory(ANSWER, id, writer, now);
-	}
-
-    private void validateUser(NsUser user)  throws CannotDeleteException{
+    public DeleteHistory delete() {
+        deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+    void validateDeletable(NsUser user)  throws CannotDeleteException{
         if(!isOwner(user)){
             throw new CannotDeleteException(NO_AUTHORITY_TO_DELETE_ANSWER.message());
         }

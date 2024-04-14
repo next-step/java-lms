@@ -14,33 +14,24 @@ import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 
 public class AnswerTest {
-    @Nested
-    @DisplayName("deleteByUser() 테스트")
-    class DeleteByUserTest {
+	@Nested
+	@DisplayName("deleteByUser() 테스트")
+	class DeleteByUserTest {
 
-        @Test
-        @DisplayName("질문자와 답변자가 다른경우 답변을 삭제할 수 없다.")
-        void testFailCase() {
-            NsUser user = NsUserTest.SANJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
-            LocalDateTime now = LocalDateTime.now();
+		public final Answer A1 = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+		public final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
-            assertThatThrownBy(() -> answer.delete(user, now))
-                .isExactlyInstanceOf(CannotDeleteException.class)
-                .hasMessage(NO_AUTHORITY_TO_DELETE_ANSWER.message());
-        }
-        @Test
-        @DisplayName("질문자와 답변자가 같아서 답변을 삭제할 수 있다.")
-        void testSuccessCase() throws CannotDeleteException {
-            NsUser user = NsUserTest.JAVAJIGI;
-            Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents");
-            LocalDateTime now = LocalDateTime.now();
-            DeleteHistory expectedDeleteHistory = new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now());
+		@Test
+		@DisplayName("Answer가 본인이 작성하지 않으면 삭제할 수 없다.")
+		void isNotMyAnswer() {
+			assertThatThrownBy(() -> A1.validateDeletable(NsUserTest.SANJIGI)).isInstanceOf(
+				CannotDeleteException.class);
+		}
 
-            DeleteHistory deleteHistory = answer.delete(user, now);
-
-            assertThat(answer.isDeleted()).isTrue();
-            assertThat(deleteHistory).isEqualTo(expectedDeleteHistory);
-        }
-    }
+		@Test
+		@DisplayName("본인이 작성한 답변은 삭제할 수 있다.")
+		void isMyAnswer() {
+			assertThatNoException().isThrownBy(() -> A1.validateDeletable(NsUserTest.JAVAJIGI));
+		}
+	}
 }

@@ -3,6 +3,7 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
@@ -10,12 +11,20 @@ import nextstep.users.domain.NsUser;
 public class Answers {
 	private List<Answer> answers = new ArrayList<>();
 
-	public List<DeleteHistory> deleteAll(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
-		List<DeleteHistory> deleteHistories = new ArrayList<>();
+	public Answers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
 		for (Answer answer : answers) {
-			deleteHistories.add(answer.delete(loginUser, now));
+			answer.validateDeletable(loginUser);
 		}
-		return deleteHistories;
+	}
+
+	public List<DeleteHistory> delete() {
+		return answers.stream()
+			.map(Answer::delete)
+			.collect(Collectors.toList());
 	}
 
 	public void add(Answer answer) {
