@@ -1,15 +1,18 @@
 package nextstep.courses.infrastructure;
 
+import static nextstep.courses.domain.SelectionStatus.ACCEPTED;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image;
 import nextstep.courses.domain.ImageType;
 import nextstep.courses.domain.Images;
+import nextstep.courses.domain.SelectedStudents;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionPayType;
@@ -72,4 +75,23 @@ public class SessionRepositoryTest {
 
     assertThatNoException().isThrownBy(() -> sessionRepository.saveStudents(sessionByDb));
   }
+
+  @Test
+  @DisplayName("수업에 참여하는 학생을 선발한다.")
+void updateStudentSelect() {
+    Session savedSession = sessionRepository.save(session);
+    Session sessionByDb = sessionRepository.findById(savedSession.getId());
+
+    sessionByDb.openRegister();
+    sessionByDb.addStudent(JAVAJIGI, new Payment(20L, savedSession.getId(), 1L, 10000L));
+    sessionRepository.saveStudents(sessionByDb);
+
+    sessionRepository.updateStudentSelect(savedSession.getId(), new SelectedStudents(Map.of(
+        ACCEPTED, List.of(JAVAJIGI))));
+
+    SessionStudent acceptedStudents = sessionRepository.findAcceptedStudentsById(
+        savedSession.getId());
+    assertThat(acceptedStudents.getIds()).isEqualTo(List.of(JAVAJIGI.getId()));
+  }
+
 }

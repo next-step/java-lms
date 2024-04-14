@@ -1,7 +1,9 @@
 package nextstep.courses.service;
 
+import nextstep.courses.domain.SelectedStudents;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionRepository;
+import nextstep.courses.domain.SessionStudent;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;
@@ -29,5 +31,20 @@ public class SessionService {
 
         session.addStudent(student, payment);
         sessionRepository.saveStudents(session);
+    }
+
+    public void acceptStudent(NsUser teacher, Long sessionId, SelectedStudents students){
+        checkTeacher(teacher);
+        sessionRepository.updateStudentSelect(sessionId, students);
+    }
+
+    public SessionStudent getAcceptedStudents(Long sessionId){
+        return sessionRepository.findAcceptedStudentsById(sessionId);
+    }
+
+    private  void checkTeacher(NsUser teacher) {
+        if (!teacher.isTeacher()){
+            throw new IllegalArgumentException("강사만 학생을 수락할 수 있습니다.");
+        }
     }
 }
