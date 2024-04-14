@@ -17,4 +17,8 @@ public interface SessionRepository {
     void delete(long sessionId);
 
     long addCover(long sessionId, Cover cover);
+
+    void approveStudent(long sessionId, Student student);
+
+    void denyStudent(long sessionId, Student student);
 }

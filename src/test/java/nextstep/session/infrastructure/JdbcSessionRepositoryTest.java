@@ -3,6 +3,7 @@ package nextstep.session.infrastructure;
 import nextstep.courses.domain.Course;
 import nextstep.session.domain.*;
 import nextstep.session.dto.SessionUpdateBasicPropertiesVO;
+import nextstep.session.type.SessionApprovedType;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -169,5 +170,47 @@ class JdbcSessionRepositoryTest {
         // then
         assertThat(session.getCovers().size())
                 .isEqualTo(3);
+    }
+
+    @DisplayName("학생을 승인상태로 변경할 수 있다.")
+    @Test
+    void changeStudentApproved() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student1 = new Student(savedId, NsUserTest.JAVAJIGI);
+        Student student2 = new Student(savedId, NsUserTest.SANJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student1);
+        sessionRepository.apply(savedId, student2);
+        sessionRepository.approveStudent(savedId, student1);
+
+        Session session = sessionRepository.findById(savedId);
+        Student student = session.getStudents().findStudent(student1).get();
+
+        // then
+        assertThat(student.toVO().getApproved())
+                .isEqualTo(SessionApprovedType.APPROVED.toString());
+    }
+
+    @DisplayName("학생을 취소상태로 변경할 수 있다.")
+    @Test
+    void changeStudentDeny() {
+        // given
+        long savedId = sessionRepository.save(freeSession);
+        Student student1 = new Student(savedId, NsUserTest.JAVAJIGI);
+        Student student2 = new Student(savedId, NsUserTest.SANJIGI);
+
+        // when
+        sessionRepository.apply(savedId, student1);
+        sessionRepository.apply(savedId, student2);
+        sessionRepository.denyStudent(savedId, student1);
+
+        Session session = sessionRepository.findById(savedId);
+        Student student = session.getStudents().findStudent(student1).get();
+
+        // then
+        assertThat(student.toVO().getApproved())
+                .isEqualTo(SessionApprovedType.CANCELED.toString());
     }
 }

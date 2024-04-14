@@ -205,6 +205,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 "select id as id, " +
                         "session_id as sessionId, " +
                         "ns_user_id as userId, " +
+                        "session_approved as approved, " +
                         "deleted as deleted, " +
                         "created_at as createdAt, " +
                         "last_modified_at as lastModifiedAt " +
@@ -216,6 +217,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong("sessionId"),
                 rs.getString("userId"),
                 rs.getBoolean("deleted"),
+                rs.getString("approved"),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp("createdAt")),
                 DbTimestampUtils.toLocalDateTime(rs.getTimestamp("lastModifiedAt")));
 
@@ -275,7 +277,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public long apply(long sessionId, Student student) {
-        String insertSessionQuery = "insert into student (session_id, ns_user_id, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?)";
+        String insertSessionQuery = "insert into student (session_id, ns_user_id, session_approved, deleted, created_at, last_modified_at) values(?, ?, ?, ?, ?, ?)";
 
         StudentVO studentVO = student.toVO();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -284,9 +286,10 @@ public class JdbcSessionRepository implements SessionRepository {
             PreparedStatement ps = con.prepareStatement(insertSessionQuery, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, studentVO.getSessionId());
             ps.setString(2, studentVO.getUserId());
-            ps.setBoolean(3, studentVO.isDeleted());
-            ps.setTimestamp(4, DbTimestampUtils.toTimestamp(studentVO.getCreatedAt()));
-            ps.setTimestamp(5, DbTimestampUtils.toTimestamp(studentVO.getLastModifiedAt()));
+            ps.setString(3, studentVO.getApproved());
+            ps.setBoolean(4, studentVO.isDeleted());
+            ps.setTimestamp(5, DbTimestampUtils.toTimestamp(studentVO.getCreatedAt()));
+            ps.setTimestamp(6, DbTimestampUtils.toTimestamp(studentVO.getLastModifiedAt()));
             return ps;
         }, keyHolder);
 
@@ -314,5 +317,17 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public long addCover(long sessionId, Cover cover) {
         return saveCover(cover, sessionId);
+    }
+
+    @Override
+    public void approveStudent(long sessionId, Student student) {
+        String updateStudentSql = "update student set session_approved = 'APPROVED' where ns_user_id = ? and session_id = ?";
+        jdbcTemplate.update(updateStudentSql, student.getUserId(), sessionId);
+    }
+
+    @Override
+    public void denyStudent(long sessionId, Student student) {
+        String updateStudentSql = "update student set session_approved = 'CANCELED' where ns_user_id = ? and session_id = ?";
+        jdbcTemplate.update(updateStudentSql, student.getUserId(), sessionId);
     }
 }
