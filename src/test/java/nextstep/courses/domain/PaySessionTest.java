@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nextstep.courses.domain.PaySession;
 import nextstep.payments.domain.Payment;
 
 public class PaySessionTest {
