@@ -30,6 +30,10 @@ public class NsUser {
     public NsUser() {
     }
 
+    public NsUser(Long id, String userId, String name, String email, UserAuthorization authorization) {
+        this(id, userId, null, name, email, authorization, LocalDateTime.now(), null);
+    }
+
     public NsUser(Long id, String userId, String password, String name, String email) {
         this(id, userId, password, name, email, STUDENT,  LocalDateTime.now(), null);
     }

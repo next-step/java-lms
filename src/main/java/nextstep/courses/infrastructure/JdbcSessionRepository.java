@@ -9,12 +9,15 @@ import nextstep.courses.domain.Image;
 import nextstep.courses.domain.Image.Dimension;
 import nextstep.courses.domain.ImageType;
 import nextstep.courses.domain.Images;
+import nextstep.courses.domain.SelectedStudents;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionPayType;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionState;
 import nextstep.courses.domain.SessionStudent;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserAuthorization;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -135,6 +138,21 @@ public class JdbcSessionRepository implements SessionRepository {
     public void saveStudents(Session session) {
         String sql = "insert into study_student (session_id, student_id, created_at) values(?, ?, ?)";
         session.getStudentsId().forEach(studentId -> jdbcTemplate.update(sql, session.getId(), studentId, Timestamp.valueOf(LocalDateTime.now())));
+    }
+
+    @Override
+    public void updateStudentSelect(Long sessionId, SelectedStudents students) {
+        String sql = "update study_student set selection_status = ? where session_id = ? and student_id = ?";
+        students.getAcceptedStudents().forEach(student -> jdbcTemplate.update(sql, "ACCEPTED", sessionId, student.getId()));
+        students.getRejectedStudents().forEach(student -> jdbcTemplate.update(sql, "REJECTED", sessionId, student.getId()));
+    }
+
+    @Override
+    public SessionStudent findAcceptedStudentsById(Long sessionId) {
+        String sql = "select u.id, u.user_id, u.name, u.email, u.`authorization` from study_student as s join ns_user as u on s.student_id = u.id where s.session_id = ? and s.selection_status =  'ACCEPTED'";
+        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4),
+            UserAuthorization.valueOf(rs.getString(5)));
+       return new SessionStudent(jdbcTemplate.query(sql, rowMapper, sessionId));
     }
 
     private LocalDate toLocalDate(Timestamp timestamp) {

@@ -17,6 +17,10 @@ public class SessionStudent {
     this.students = new ArrayList<>();
   }
 
+  public SessionStudent(List<NsUser> students) {
+    this.students = students;
+  }
+
   public  boolean canAcceptNewStudent() {
     return size() < maxStudent;
   }
