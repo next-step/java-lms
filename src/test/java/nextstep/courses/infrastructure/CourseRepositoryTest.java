@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,16 +25,14 @@ public class CourseRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     private CourseRepository courseRepository;
-    private FreeSessionRepository freeSessionRepository;
-    private PaySessionRepository paySessionRepository;
+    private SessionRepository sessionRepository;
 
     private Long courseId = 1L;
 
     @BeforeEach
     void setUp() {
-        freeSessionRepository = new JdbcFreeSessionRepository(jdbcTemplate);
-        paySessionRepository = new JdbcPaySessionRepository(jdbcTemplate);
-        courseRepository = new JdbcCourseRepository(jdbcTemplate, freeSessionRepository, paySessionRepository);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test

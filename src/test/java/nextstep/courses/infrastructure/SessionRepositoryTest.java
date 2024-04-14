@@ -33,12 +33,12 @@ public class SessionRepositoryTest {
     private Set<NsUser> students = Set.of(NsUserTest.JAVAJIGI, NsUserTest.SANJIGI);
     private SessionImage sessionImage = SessionImageTest.S1;
 
-    private Long courseId = 1L;
+    private Long courseId = 3L;
 
     @BeforeEach
     void setUp() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        courseRepository = new JdbcCourseRepository(jdbcTemplate);
+        courseRepository = new JdbcCourseRepository(jdbcTemplate, sessionRepository);
     }
 
     @Test
