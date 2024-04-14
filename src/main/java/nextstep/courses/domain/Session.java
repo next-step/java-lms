@@ -26,6 +26,10 @@ public class Session extends BaseTimeEntity{
         this(LocalDateTime.now(), LocalDateTime.now(), coverImage, enrollmentManager, sessionPeriod, null, null);
     }
 
+    public Session(LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, Long fee, Integer count, String status, LocalDate startDate, LocalDate endDate, Long courseId, Long id) {
+        this(createdAt, updatedAt, coverImage, new EnrollmentManager(fee, count, status), new SessionPeriod(startDate, endDate), courseId, id);
+    }
+
     private Session(LocalDateTime createdAt, LocalDateTime updatedAt, CoverImage coverImage, EnrollmentManager enrollmentManager, SessionPeriod sessionPeriod, Long courseId, Long id) {
         super(createdAt, updatedAt);
         this.id = id;

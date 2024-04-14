@@ -41,8 +41,12 @@ public class JdbcSessionRepository implements SessionRepository {
         RowMapper<Session> rowMapper = (rs, rowNum) -> new Session(
                 toLocalDateTime(rs.getTimestamp(8)),
                 toLocalDateTime(rs.getTimestamp(9)),
-                new EnrollmentManager(rs.getLong(2), rs.getInt(3), rs.getString(4)),
-                new SessionPeriod(toLocalDate(rs.getTimestamp(6)), toLocalDate(rs.getTimestamp(7))),
+                null,
+                rs.getLong(2),
+                rs.getInt(3),
+                rs.getString(4),
+                toLocalDate(rs.getTimestamp(6)),
+                toLocalDate(rs.getTimestamp(7)),
                 rs.getLong(5),
                 rs.getLong(1)
                 );
