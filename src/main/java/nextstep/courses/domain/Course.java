@@ -6,15 +6,11 @@ import java.util.List;
 
 public class Course {
     private final List<Session> sessions = new ArrayList<>();
-    private Long id;
-    private String title;
-    private Long creatorId;
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Course() {
-    }
+    private final Long id;
+    private final String title;
+    private final Long creatorId;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
