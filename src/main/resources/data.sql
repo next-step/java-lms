@@ -12,6 +12,9 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO course (id, title, creator_id, created_at) VALUES (0, 'TDD, 클린 코드 with Java', 1, CURRENT_TIMESTAMP());
 
 INSERT INTO image (id, size, type, width, height, created_at) VALUES (10, 100, 'jpg', 300, 200, CURRENT_TIMESTAMP());
+INSERT INTO image (id, size, type, width, height, created_at) VALUES (11, 200, 'png', 300, 200, CURRENT_TIMESTAMP());
 INSERT INTO session (id, course_id, image_id, start_date, end_date, pay_type, state, max_student, fee, created_at) VALUES (5, 0, 10, '2025-04-11 00:00:00', '2025-05-11 00:00:00', 'PAID', 'PREPARING',  1000, 10000, CURRENT_TIMESTAMP());
+INSERT INTO session_image (id, session_id, image_id, created_at) VALUES (10, 5, 10, CURRENT_TIMESTAMP());
+INSERT INTO session_image (id, session_id, image_id, created_at) VALUES (11, 5, 11, CURRENT_TIMESTAMP());
 
 INSERT INTO payment (id, amount, session_id, user_id, created_at) VALUES (20, 10000, 5, 1, CURRENT_TIMESTAMP());
