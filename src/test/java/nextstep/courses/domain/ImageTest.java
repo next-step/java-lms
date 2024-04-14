@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 public class ImageTest {
     @Test
     @DisplayName("image 용량을 확인한다.")
@@ -22,6 +20,7 @@ public class ImageTest {
             new Image(1048576, ImageType.GIF, 200, 200);
         });
     }
+
     @Test
     @DisplayName("image height 크기를 확인한다.")
     void check_image_height_size_valid() {
@@ -29,6 +28,7 @@ public class ImageTest {
             new Image(1048576, ImageType.GIF, 300, 100);
         });
     }
+
     @Test
     @DisplayName("image width height 비율을 확인한다.")
     void check_image_width_height_size_valid() {

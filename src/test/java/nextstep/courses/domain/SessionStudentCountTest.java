@@ -9,7 +9,7 @@ public class SessionStudentCountTest {
     @DisplayName("초기 학생수 확인.")
     void check_student_count() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SessionStudentCount(6,5);
+            new SessionStudentCount(6, 5);
         });
     }
 

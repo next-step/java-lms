@@ -12,7 +12,7 @@ public class Session {
     private Image image;
     private Long fee;
 
-    public Session(SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Image image, SessionStudentCount sessionStudentCount, Long fee){
+    public Session(SessionTime sessionTime, SessionType sessionType, SessionStatus sessionStatus, Image image, SessionStudentCount sessionStudentCount, Long fee) {
         this.sessionStatus = sessionStatus;
         this.sessionTime = sessionTime;
         this.sessionType = sessionType;
@@ -33,6 +33,7 @@ public class Session {
     private void validateMaxStudentsNumber() {
         this.sessionStudentCount.validateStudentCount();
     }
+
     private void validatePayment(Payment payment) {
         if (!payment.match(this.fee)) {
             throw new IllegalArgumentException("금액이 맞지 않습니다.");

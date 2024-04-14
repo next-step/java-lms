@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 public class SessionTimeTest {
     @Test
     @DisplayName("강의 날짜의 유효성 확인.")

@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.util.ArrayList;
 import java.util.List;
 

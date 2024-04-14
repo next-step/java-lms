@@ -11,6 +11,6 @@ public enum ImageType {
     ETC;
 
     public static boolean isValid(ImageType type) {
-        return List.of(GIF,JPG,JPEG,PNG,SVG).contains(type);
+        return List.of(GIF, JPG, JPEG, PNG, SVG).contains(type);
     }
 }
