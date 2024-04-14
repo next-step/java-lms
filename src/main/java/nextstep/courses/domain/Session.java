@@ -5,6 +5,9 @@ import java.util.*;
 public class Session {
 
     private final JoinUsers joinUsers;
+    private final Image coverImage;
+    private final SessionStatus status;
+    private final Period period;
 
     public Session() {
         this(new ArrayList<>());
@@ -12,10 +15,20 @@ public class Session {
 
     public Session(List<JoinUser> joinUsers) {
         this.joinUsers = new JoinUsers(joinUsers);
+        this.coverImage = new Image();
+        this.status = SessionStatus.RECRUITING;
+        this.period = new Period();
     }
 
     public void join(JoinUser joinUser) {
+        validRecruiting();
         joinUsers.add(joinUser);
+    }
+
+    private void validRecruiting() {
+        if (!status.isRecruiting()) {
+            throw new IllegalStateException("강의가 모집중이 아닙니다");
+        }
     }
 
     @Override
