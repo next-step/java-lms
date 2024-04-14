@@ -12,23 +12,44 @@ public abstract class Session {
     private final SessionPeriod sessionPeriod;
     private final CoverImage coverImage;
     private final SessionStatusEnum sessionStatus;
-    protected final Users users;
+    protected int maxEnrollments = 0;
+    protected Long fee = 0L;
+    protected final Users users = new Users();
 
     protected Session(Long sessionId, SessionPeriod sessionPeriod,
-                   CoverImage coverImage, SessionStatusEnum sessionStatus, Users users) {
+                   CoverImage coverImage, SessionStatusEnum sessionStatus) {
         this.sessionId = sessionId;
         this.sessionPeriod = sessionPeriod;
         this.coverImage = coverImage;
         this.sessionStatus = sessionStatus;
-        this.users = users;
     }
 
     protected boolean isSessionOpened() {
         return sessionStatus.isSessionOpened();
     }
 
-    protected Long getSessionId() {
+    public Long getSessionId() {
         return sessionId;
+    }
+
+    public SessionPeriod getSessionPeriod() {
+        return sessionPeriod;
+    }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public SessionStatusEnum getSessionStatus() {
+        return sessionStatus;
+    }
+
+    public int getMaxEnrollments() {
+        return maxEnrollments;
+    }
+
+    public Long getFee() {
+        return fee;
     }
 
     public abstract void enrollStudent(NsUser user);

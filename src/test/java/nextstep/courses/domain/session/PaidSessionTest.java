@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -100,10 +99,9 @@ class PaidSessionTest {
                 LocalDateTime.of(2024,4,1,0,0,0));
         CoverImage coverImage = CoverImage.of("jpg", 1024, 300,200);
         SessionStatusEnum sessionStatus = sessionStatusEnum;
-        Users users = new Users();
 
         return new PaidSession(sessionId, sessionPeriod, coverImage,
-                sessionStatus, users, maxEnrollments, fee);
+                sessionStatus, maxEnrollments, fee);
     }
 
 }

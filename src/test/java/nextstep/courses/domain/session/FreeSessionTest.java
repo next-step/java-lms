@@ -68,8 +68,7 @@ class FreeSessionTest {
                 LocalDateTime.of(2024,4,1,0,0,0));
         CoverImage coverImage = CoverImage.of("jpg", 1024, 300,200);
         SessionStatusEnum sessionStatus = sessionStatusEnum;
-        Users users = new Users();
-        return new FreeSession(sessionId, sessionPeriod, coverImage, sessionStatus, users);
+        return new FreeSession(sessionId, sessionPeriod, coverImage, sessionStatus);
     }
 
 }
