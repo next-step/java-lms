@@ -97,4 +97,4 @@
 - [x] SessionDetails의 인원수를 관리하는 변수들을 클래스로 도출하라
 - [x] `SessionType#isCapacityExceeded`를 Functional Interface를 통해 람다식으로 변경하라
 - [x] `SessionDetailsTest#always`에 assert를 활용하라 
-- [ ] `ImageTest#widthException`을 프로덕션 코드에 맞게 변경하라 - ImageSize
+- [x] `ImageTest#widthException`을 프로덕션 코드에 맞게 변경하라 - ImageSize

@@ -7,10 +7,6 @@ public class Image {
     private final ImageType imageType;
     private final ImageSize size;
 
-    public Image(int capacity, ImageType imageType, int width, int height) {
-        this(capacity, imageType, new ImageSize(width, height));
-    }
-
     public Image(int capacity, ImageType imageType, ImageSize size) {
         validateCapacity(capacity);
         this.capacity = capacity;
