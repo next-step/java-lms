@@ -66,9 +66,9 @@
     - [x] 유료 강의 비용과 결제 금액이 동일한지 판단
 
 ## 2. 프로그래밍 요구 사항
-- [x] DB 테이블 설계 없이 도메인 모델부터 구현
-- [x] 도메인 모델은 TDD로 구현
-- [x] 단, Service 클래스는 단위 테스트 필요 X
+- [x] 도메인 모델을 DB 테이블과 매핑하고 데이터를 저장
+- [x] CRUD 쿼리와 코드 구현에 집중하기 보다, 테이블을 설개하고 맵핑하는데 집중
+  - [x] Payment 테이블 맵핑을 고려하지 않아도 됨
 
 ## 3. 코드 구조
 - [x] Course
@@ -80,6 +80,8 @@
     - [x] SessionStatusEnum
     - [x] SessionPeriod
     - [x] Users
+- [x] JdbcSessionRepository
+- [x] SessionRepository
 
 ## 4. 테스트 코드
 - [x] CourseTest
@@ -104,3 +106,6 @@
   - [x] 강의 수강 신청은 강의 상태가 모집중일 때만 가능
 - [x] SessionPeriodTest
   - [x] 강의 종료 시간이 시작 시간보다 앞설 수 없음
+- [x] SessionRepositoryText
+  - [x] 무료강의를 저장하고 정상적으로 읽어옴
+  - [x] 유료강의를 읽어오고 정상적으로 읽어옴
