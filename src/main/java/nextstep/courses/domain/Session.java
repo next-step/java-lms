@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -14,7 +15,6 @@ public abstract class Session {
     private final SessionImage sessionImage;
     private SessionStatus sessionStatus;
     private final Set<NsUser> students = new HashSet<>();
-
     private final SessionDate sessionDate;
 
     public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
@@ -24,13 +24,24 @@ public abstract class Session {
         this.sessionDate = sessionDate;
     }
 
-    public final Payment enrollmentUser(NsUser user) {
-
-        assertRecruit(user);
+    public final void enrollmentUser(NsUser user, Payment payment) {
+        assertRecruit();
+        assertNotDuplicateStudents(user);
+        assertSatisfiedCondition(user, payment);
 
         students.add(user);
+    }
 
-        return payResult(user);
+    private void assertNotDuplicateStudents(NsUser user) {
+        if (students.contains(user)) {
+            throw new NotRecruitException();
+        }
+    }
+
+    private void assertRecruit() {
+        if (!sessionStatus.isRecruit()) {
+            throw new NotRecruitException();
+        }
     }
 
     public Set<NsUser> getStudents() {
@@ -53,9 +64,8 @@ public abstract class Session {
         return sessionDate;
     }
 
-    abstract protected void assertRecruit(NsUser user);
 
-    abstract protected Payment payResult(NsUser user);
+    abstract protected void assertSatisfiedCondition(NsUser user, Payment payment);
 
     @Override
     public boolean equals(Object o) {

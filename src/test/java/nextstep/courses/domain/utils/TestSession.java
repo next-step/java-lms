@@ -13,12 +13,7 @@ public class TestSession extends Session {
     }
 
     @Override
-    protected void assertRecruit(NsUser user) {
+    protected void assertSatisfiedCondition(NsUser user, Payment payment) {
 
-    }
-
-    @Override
-    protected Payment payResult(NsUser user) {
-        return null;
     }
 }

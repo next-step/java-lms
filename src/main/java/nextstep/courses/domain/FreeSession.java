@@ -10,14 +10,6 @@ public class FreeSession extends Session {
     }
 
     @Override
-    protected void assertRecruit(NsUser user) {
-        if (!getSessionStatus().isRecruit() || getStudents().contains(user)) {
-            throw new NotRecruitException();
-        }
-    }
-
-    @Override
-    protected Payment payResult(NsUser user) {
-        return new Payment(null, getId(), user.getId(), 0L);
+    protected void assertSatisfiedCondition(NsUser user, Payment payment) {
     }
 }

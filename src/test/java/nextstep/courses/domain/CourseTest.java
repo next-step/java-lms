@@ -15,10 +15,10 @@ public class CourseTest {
     @DisplayName("과정 생성 테스트")
     void testCourse() {
         Course course = new Course("test", 1L);
-        course.addSession(TestSessionFactory.of(sessionId1));
-        course.addSession(TestSessionFactory.of(sessionId2));
+        course.addSession(TestSessionFactory.recruitStatusSession(sessionId1));
+        course.addSession(TestSessionFactory.recruitStatusSession(sessionId2));
 
         Sessions sessions = course.getSessions();
-        assertThat(sessions.getSessions()).hasSize(2).containsExactly(TestSessionFactory.of(sessionId1), TestSessionFactory.of(sessionId2));
+        assertThat(sessions.getSessions()).hasSize(2).containsExactly(TestSessionFactory.recruitStatusSession(sessionId1), TestSessionFactory.recruitStatusSession(sessionId2));
     }
 }

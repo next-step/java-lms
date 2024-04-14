@@ -13,7 +13,7 @@ public class SessionImageSizeTest {
 
     private final int validWidth = 300;
     private final int validHeight = 200;
-    private final int validSize = 1;
+    private final int validSize = 1024*1024;
 
     @Test
     @DisplayName("이미지 사이즈 생성 테스트")
@@ -41,7 +41,7 @@ public class SessionImageSizeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 2, 3})
+    @ValueSource(ints = {-1, 1 + 1024 * 1024, 3 + 1024 * 1024})
     @DisplayName("이미지 사이즈가 1MB 초과하거나 0보다 작은 경우 에러 발생")
     void testInvalidSize(int size) {
         assertThatIllegalArgumentException().isThrownBy(() -> new SessionImageSize(validWidth, validHeight, size));

@@ -7,7 +7,7 @@ import nextstep.users.domain.NsUser;
 
 public class PaySession extends Session {
 
-    private int maximumStudents;
+    private final int maximumStudents;
     private final long amount;
 
     public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, int maximumStudents, long amount) {
@@ -15,11 +15,6 @@ public class PaySession extends Session {
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;
-        this.maximumStudents = maximumStudents;
-    }
-
-    public void changeMaximumStudents(int maximumStudents) {
-        assertValidMaximumStudents(maximumStudents);
         this.maximumStudents = maximumStudents;
     }
 
@@ -40,22 +35,21 @@ public class PaySession extends Session {
     }
 
     @Override
-    public void assertRecruit(NsUser user) {
-        if (!getSessionStatus().isRecruit() || getStudents().size() == maximumStudents) {
+    public void assertSatisfiedCondition(NsUser user, Payment payment) {
+        if (getStudents().size() == maximumStudents) {
             throw new NotRecruitException();
         }
 
-        if (getStudents().contains(user)) {
+        if (payment.getSessionId() == null || !payment.getSessionId().equals(getId())) {
             throw new NotRecruitException();
         }
 
-        if (user.getChargePoint() < amount) {
+        if (payment.getNsUserId() == null || !payment.getNsUserId().equals(user.getId())) {
+            throw new NotRecruitException();
+        }
+
+        if (payment.getAmount() == null || payment.getAmount() < amount) {
             throw new LackPointException();
         }
-    }
-
-    @Override
-    public Payment payResult(NsUser user) {
-        return new Payment(null, getId(), user.getId(), amount);
     }
 }
