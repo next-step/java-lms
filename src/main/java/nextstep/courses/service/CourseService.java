@@ -2,12 +2,11 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.Generation;
-import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -79,8 +78,8 @@ public class CourseService {
 
     Optional<Session> freeSession = course.getSessions().stream().filter(it -> it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
     Optional<Session> notFreeSession = course.getSessions().stream().filter(it -> !it.isFree() && it.checkRegisterPossibleStatus()).findFirst();
-    Enrollment.register(1L, user1, course.getId(), Map.of(freeSession.get(), 0));
-    Enrollment.register(2L, user2, course.getId(), Map.of(notFreeSession.get(), notFreeSession.get().getSessionAmount()));
-    Enrollment.register(3L, user3, course.getId(), Map.of(notFreeSession.get(), notFreeSession.get().getSessionAmount()));
+
+    freeSession.get().enroll(user1);
+    notFreeSession.get().enroll(List.of(user2, user3));
   }
 }

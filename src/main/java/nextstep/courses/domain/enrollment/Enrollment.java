@@ -2,11 +2,7 @@ package nextstep.courses.domain.enrollment;
 
 import nextstep.courses.domain.BaseTime;
 import nextstep.courses.domain.session.Session;
-import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Enrollment extends BaseTime {
 
@@ -15,60 +11,16 @@ public class Enrollment extends BaseTime {
 
   private Long id;
   private NsUser user;
-  private Long courseId;
-  private Map<Session, Payment> registeredSessionInfo;
-  private String registerFailReason;
 
-  private Enrollment(Long id, NsUser user, Long courseId, Map<Session, Payment> registeredSessionInfo, String registerFailReason) {
+  private Enrollment(Long id, NsUser user) {
     this.id = id;
     this.user = user;
-    this.courseId = courseId;
-    this.registeredSessionInfo = registeredSessionInfo;
-    this.registerFailReason = registerFailReason;
   }
 
-  public static Enrollment register(Long id, NsUser user, Long courseId, Map<Session, Integer> registerRequestInfo) {
-    valid(registerRequestInfo);
-
-    StringBuilder registerFailReason = new StringBuilder();
-    Map<Session, Payment> registeredSessionInfo = new HashMap<>();
-
-    for (Session session : registerRequestInfo.keySet()) {
-      String failReason = checkSessionRegisterPossible(session);
-      if (failReason != null) {
-        registerFailReason.append(failReason);
-        continue;
-      }
-      registeredSessionInfo.put(session, new Payment("1", session.getId(), user.getId(), session.getSessionAmount()));
-    }
-
-    return new Enrollment(id, user, courseId, registeredSessionInfo, registerFailReason.toString());
-  }
-
-  private static void valid(Map<Session, Integer> registeredSessionInfo) {
-    registeredSessionInfo.entrySet().forEach(Enrollment::validateSessionAmount);
-  }
-
-  private static void validateSessionAmount(Map.Entry<Session, Integer> entry) {
-    Session session = entry.getKey();
-    Integer payAmount = entry.getValue();
-
-    if (!session.checkRegisterPossibleStatus()) {
-      throw new IllegalArgumentException(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, session.getId(), session.getSessionStatus()));
-    }
-
-    if (!session.checkPayAmount(payAmount)) {
-      throw new IllegalArgumentException(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, payAmount, session.getSessionAmount()));
-    }
-  }
-
-  private static String checkSessionRegisterPossible(Session session) {
-    try {
-      session.addStudentCount();
-    } catch (Exception e) {
-      return e.getMessage();
-    }
-    return null;
+  public static Enrollment register(Long id, NsUser user, Session session) {
+    validSessionStatus(session);
+    validSessionRegisterPossible(session);
+    return new Enrollment(id, user);
   }
 
   public Long getId() {
@@ -79,11 +31,18 @@ public class Enrollment extends BaseTime {
     return user;
   }
 
-  public Long getCourseId() {
-    return courseId;
+  private static void validSessionStatus(Session session) {
+    if (!session.checkRegisterPossibleStatus()) {
+      throw new IllegalArgumentException(String.format(REGISTER_IS_ONLY_POSSIBLE_IN_PROGRESS_STATUS, session.getId(), session.getSessionStatus()));
+    }
+
+    // 결제가 완료되었다고 판단하고, 유료강의 수강 신청 로직 작성하기
+//    if (!session.checkPayAmount(payAmount)) {
+//      throw new IllegalArgumentException(String.format(SESSION_AMOUNT_IS_NOT_CORRECT, payAmount, session.getSessionAmount()));
+//    }
   }
 
-  public String getRegisterFailReason() {
-    return registerFailReason;
+  private static void validSessionRegisterPossible(Session session) {
+    session.addStudentCount();
   }
 }

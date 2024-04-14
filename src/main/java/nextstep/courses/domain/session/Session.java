@@ -1,7 +1,10 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.BaseTime;
+import nextstep.courses.domain.enrollment.Enrollments;
+import nextstep.users.domain.NsUser;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Session extends BaseTime {
@@ -9,12 +12,25 @@ public class Session extends BaseTime {
   private SessionPeriod sessionPeriod;
   private SessionInfo sessionInfo;
   private CoverImage coverImage;
+  private Enrollments enrollments;
 
-  public Session(Long id, SessionPeriod sessionPeriod, SessionInfo sessionInfo, CoverImage coverImage) {
+  public Session(Long id,
+                 SessionPeriod sessionPeriod,
+                 SessionInfo sessionInfo,
+                 CoverImage coverImage) {
     this.id = id;
     this.sessionPeriod = sessionPeriod;
     this.sessionInfo = sessionInfo;
     this.coverImage = coverImage;
+  }
+
+  public Enrollments enroll(NsUser user) {
+    this.enrollments = Enrollments.register(this, user);
+    return this.enrollments;
+  }
+
+  public void enroll(List<NsUser> users) {
+    this.enrollments = Enrollments.register(this, users);
   }
 
   public Long getId() {
