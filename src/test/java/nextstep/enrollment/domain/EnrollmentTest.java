@@ -1,5 +1,6 @@
 package nextstep.enrollment.domain;
 
+import static nextstep.sessions.domain.SessionProgressStatus.END;
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
@@ -92,5 +93,19 @@ class EnrollmentTest {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Enrollment(session, new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net")).enroll(SESSION_PRICE))
                 .withMessage("이미 수강 신청한 사용자입니다.");
+    }
+    
+    @Test
+    void 강의_진행_상태가_END이면_수강_신청에_실패한다() {
+        // given
+        final Session session = new Session(2, RECRUITING, END, SESSION_PRICE, LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2), course);
+
+        // when
+        final Enrollment enrollment = new Enrollment(session, NsUserTest.JAVAJIGI);
+
+        // then
+        assertThatIllegalArgumentException().isThrownBy(() -> enrollment.enroll(SESSION_PRICE))
+                .withMessage("종료된 강의입니다.");
     }
 }
