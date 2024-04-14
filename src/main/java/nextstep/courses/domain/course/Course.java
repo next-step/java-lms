@@ -1,26 +1,26 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.course;
 
 import java.time.LocalDateTime;
 
 public class Course {
-    private Long id;
 
-    private String title;
+    private final Long id;
+    private final String title;
+    private final Long creatorId;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
-    private Long creatorId;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Course() {
-    }
-
-    public Course(String title, Long creatorId) {
+    public Course(final String title, final Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(
+            final Long id,
+            final String title,
+            final Long creatorId,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.title = title;
         this.creatorId = creatorId;
