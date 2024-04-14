@@ -30,15 +30,8 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),
-                toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(4)),
+                LocalDateMappingUtil.toLocalDateTime(rs.getTimestamp(5)));
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
-    }
-
-    private LocalDateTime toLocalDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        return timestamp.toLocalDateTime();
     }
 }
