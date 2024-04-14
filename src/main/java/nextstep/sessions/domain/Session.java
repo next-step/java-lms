@@ -14,8 +14,6 @@ public class Session extends BaseEntity {
 
     private SessionDetails sessionDetails;
 
-    //private List<NsUser> listeners;
-
     public Session(long id, String sessionName, SessionDetails sessionDetails) {
         this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionDetails);
     }
