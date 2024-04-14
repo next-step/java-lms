@@ -17,3 +17,10 @@
 - QnaService의 비지니스 로직을 도메인 모델로 이동하는 리팩터링을 진행할 때 TDD로 구현한다.
 - QnaService의 deleteQuestion() 메서드에 대한 단위 테스트는 src/test/java 폴더 nextstep.qna.service.QnaServiceTest이다.
 - 도메인 모델로 로직을 이동한 후에도 QnaServiceTest의 모든 테스트는 통과해야 한다.
+  
+# 객체의 상태 데이터를 꺼내지(get)말고 메시지를 보낸다.
+- 규칙 8: 일급 콜렉션을 쓴다.
+- Question의 List를 일급 콜렉션으로 구현해 본다.
+- 규칙 7: 3개 이상의 인스턴스 변수를 가진 클래스를 쓰지 않는다.
+- 인스턴스 변수의 수를 줄이기 위해 도전한다.
+- 도메인 모델에 setter 메서드 추가하지 않는다.
