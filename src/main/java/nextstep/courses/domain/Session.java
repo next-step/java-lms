@@ -3,12 +3,13 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 import nextstep.courses.domain.enums.SessionStatus;
+import nextstep.payments.domain.Payment;
 
-public class Session {
+abstract public class Session {
 	private final LocalDateTime startDate;
 	private final LocalDateTime endDate;
-	private final SessionStatus sessionStatus;
-	private int numberOfStudents;
+	protected SessionStatus sessionStatus;
+	protected int numberOfStudents;
 	private CoverImageInfo coverImageInfo;
 
 	public Session(LocalDateTime startDate, LocalDateTime endDate) {
@@ -16,5 +17,15 @@ public class Session {
 		this.endDate = endDate;
 		this.sessionStatus = SessionStatus.READY;
 		this.numberOfStudents = 0;
+	}
+
+	abstract public void enroll(Payment payment);
+
+	public void startSession() {
+		sessionStatus = SessionStatus.RECRUITING;
+	}
+
+	public boolean hasNumberOfStudents(int targetCount) {
+		return numberOfStudents == targetCount;
 	}
 }

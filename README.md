@@ -21,7 +21,7 @@
 ## Todo
 - [x] SessionStatus Enum 생성
   - READY, RECRUITING, END
-- [ ] FreeSession 수강 신청
+- [x] FreeSession 수강 신청
   - status가 모집 중이 아닌 경우 IllegalStateException
   - 정상 완료되면, 현재 수강인원 increase 1
 - [ ] PaySession 수강 신청
