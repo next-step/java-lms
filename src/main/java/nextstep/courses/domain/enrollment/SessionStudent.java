@@ -4,6 +4,7 @@ import nextstep.users.domain.NsUser;
 
 public class SessionStudent {
 
+    private Long id;
     private Long sessionId;
     private Long nsUserId;
 
@@ -16,4 +17,11 @@ public class SessionStudent {
         this.nsUserId = nsUserId;
     }
 
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public Long getNsUserId() {
+        return nsUserId;
+    }
 }

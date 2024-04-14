@@ -1,7 +1,5 @@
 package nextstep.courses.domain;
 
-import java.util.Arrays;
-
 public enum SessionType {
 
     FREE("FREE"),
@@ -13,13 +11,7 @@ public enum SessionType {
         this.type = type;
     }
 
-    public boolean contains(String type) {
-        return Arrays.stream(values())
-                .map(SessionType::getType)
-                .anyMatch(sessionType -> sessionType.equals(type));
-    }
-
-    private String getType() {
+    public String get() {
         return type;
     }
 

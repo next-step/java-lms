@@ -19,4 +19,8 @@ public class ImageFileSize {
         }
     }
 
+    public long get() {
+        return size;
+    }
+
 }

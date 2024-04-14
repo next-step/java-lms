@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.infrastructure.entity;
 
 import java.time.LocalDateTime;
 
@@ -16,5 +16,17 @@ public class BaseEntity {
     public BaseEntity(LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public BaseEntity(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

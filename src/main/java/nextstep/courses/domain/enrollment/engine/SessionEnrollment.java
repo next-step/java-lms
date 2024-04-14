@@ -52,10 +52,16 @@ public abstract class SessionEnrollment implements SessionEnroll {
         }
     }
 
-    void satisfyStatus();
+    public SessionStatus getStatus() {
+        return status;
+    }
 
-    void satisfyCapacity();
+    public SessionCapacity getCapacity() {
+        return capacity;
+    }
 
-    void satisfyFee(Payment payment);
+    public SessionFee getFee() {
+        return fee;
+    }
 
 }

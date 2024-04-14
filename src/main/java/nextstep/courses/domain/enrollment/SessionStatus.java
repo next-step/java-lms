@@ -4,14 +4,17 @@ import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 
 public enum SessionStatus {
 
-    PREPARING(false),
-    RECRUITING(true),
-    FINISHED(false)
+    PREPARING("진행중", false),
+    RECRUITING("모집중", true),
+    FINISHED("종료", false)
     ;
+
+    private final String status;
 
     private final boolean canEnroll;
 
-    SessionStatus(boolean canEnroll) {
+    SessionStatus(String status, boolean canEnroll) {
+        this.status = status;
         this.canEnroll = canEnroll;
     }
 
@@ -19,6 +22,10 @@ public enum SessionStatus {
         if (!this.canEnroll) {
             throw new SessionStatusCannotEnrollmentException(this);
         }
+    }
+
+    public String get() {
+        return status;
     }
 
 }
