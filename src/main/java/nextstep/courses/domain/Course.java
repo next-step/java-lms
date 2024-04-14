@@ -9,12 +9,11 @@ public class Course {
 
     private Long creatorId;
 
+    private Sessions sessions;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    public Course() {
-    }
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
