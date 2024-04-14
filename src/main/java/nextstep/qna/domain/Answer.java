@@ -1,15 +1,17 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
-import nextstep.users.domain.NsUser;
+import nextstep.users.domain.User;
 
 import java.time.LocalDateTime;
 
 public class Answer {
+    public static final String ANSWER_DELETE_ERROR_MESSAGE = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
     private Long id;
 
-    private NsUser writer;
+    private User writer;
 
     private Question question;
 
@@ -24,17 +26,17 @@ public class Answer {
     public Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
+    public Answer(User writer, Question question, String contents) {
         this(null, writer, question, contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
+    public Answer(Long id, User writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -47,25 +49,29 @@ public class Answer {
         return id;
     }
 
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public boolean isOwner(NsUser writer) {
+    public DeleteHistory delete(User loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException(ANSWER_DELETE_ERROR_MESSAGE);
+        }
+        this.deleted = true;
+        return toDeleteHistory();
+    }
+
+    public boolean isOwner(User writer) {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
+    private DeleteHistory toDeleteHistory() {
+        return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
-    public String getContents() {
-        return contents;
+
+    public User getWriter() {
+        return writer;
     }
 
     public void toQuestion(Question question) {
