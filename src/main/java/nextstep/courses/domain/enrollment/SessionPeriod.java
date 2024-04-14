@@ -6,14 +6,12 @@ import java.time.LocalDateTime;
 
 public class SessionPeriod {
 
-    private final Long id;
     private final Long sessionId;
     private final LocalDateTime startAt;
     private final LocalDateTime endAt;
 
-    public SessionPeriod(Long id, Long sessionId, LocalDateTime startAt, LocalDateTime endAt) {
+    public SessionPeriod(Long sessionId, LocalDateTime startAt, LocalDateTime endAt) {
         validateDuration(startAt, endAt);
-        this.id = id;
         this.sessionId = sessionId;
         this.startAt = startAt;
         this.endAt = endAt;
@@ -29,4 +27,11 @@ public class SessionPeriod {
         return startAt.isBefore(endAt);
     }
 
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }

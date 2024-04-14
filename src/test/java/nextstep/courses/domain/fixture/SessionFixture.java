@@ -8,11 +8,12 @@ import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.enrollment.SessionStatus;
 
 import static nextstep.courses.domain.fixture.IdFixture.COURSE_ID;
+import static nextstep.courses.domain.fixture.SessionPeriodFixture.*;
 
 public class SessionFixture {
 
     public static Session session(SessionType type) {
-        return SessionFactory.get(COURSE_ID, type, SessionStatus.RECRUITING, SessionCapacity.INFINITY, SessionFee.FREE);
+        return SessionFactory.get(COURSE_ID, type, period(), SessionStatus.RECRUITING, SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
 }

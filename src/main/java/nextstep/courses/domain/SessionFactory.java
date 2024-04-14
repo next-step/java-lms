@@ -1,9 +1,6 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enrollment.FreeSessionEnrollment;
-import nextstep.courses.domain.enrollment.PaidSessionEnrollment;
-import nextstep.courses.domain.enrollment.SessionStatus;
-import nextstep.courses.domain.enrollment.SessionStudent;
+import nextstep.courses.domain.enrollment.*;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.exception.SessionEnrollmentNotMatchException;
@@ -13,28 +10,28 @@ import java.util.List;
 
 public class SessionFactory {
 
-    public static Session get(Long courseId, SessionType type, SessionStatus status, int capacity, long fee) {
+    public static Session get(Long courseId, SessionType type, SessionPeriod period, SessionStatus status, int capacity, long fee) {
         if (SessionType.FREE == type) {
-            return new Session(courseId, type, new FreeSessionEnrollment(status));
+            return new Session(courseId, type, period, new FreeSessionEnrollment(status));
         }
 
         if (SessionType.PAID == type) {
-            return new Session(courseId, type, new PaidSessionEnrollment(status, capacity, fee));
+            return new Session(courseId, type, period, new PaidSessionEnrollment(status, capacity, fee));
         }
 
         throw new SessionEnrollmentNotMatchException(type);
     }
 
-    public static Session get(Long sessionId, Long courseId, String typeString, String statusString, int capacity, long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public static Session get(Long sessionId, Long courseId, String typeString, LocalDateTime startAt, LocalDateTime endAt, String statusString, int capacity, long fee, LocalDateTime createdAt, LocalDateTime updatedAt) {
         SessionType type = SessionType.convert(typeString);
         SessionStatus status = SessionStatus.convert(statusString);
 
         if (SessionType.FREE == type) {
-            return new Session(sessionId, courseId, type, new FreeSessionEnrollment(status), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(sessionId, startAt, endAt), new FreeSessionEnrollment(status), createdAt, updatedAt);
         }
 
         if (SessionType.PAID == type) {
-            return new Session(sessionId, courseId, type, new PaidSessionEnrollment(status, capacity, fee), createdAt, updatedAt);
+            return new Session(sessionId, courseId, type, new SessionPeriod(sessionId, startAt, endAt), new PaidSessionEnrollment(status, capacity, fee), createdAt, updatedAt);
         }
 
         throw new SessionEnrollmentNotMatchException(type);
@@ -42,12 +39,12 @@ public class SessionFactory {
 
     public static Session get(Session session, List<SessionStudent> students) {
         SessionEnrollment enrollment = assembleEnrollmentStudents(session, students);
-        return new Session(session.getId(), session.getCourseId(), session.getType(), enrollment, session.getCreatedAt(), session.getUpdatedAt());
+        return new Session(session.getId(), session.getCourseId(), session.getType(), session.getPeriod(), enrollment, session.getCreatedAt(), session.getUpdatedAt());
     }
 
     public static Session get(Session session, SessionCoverImage coverImage, List<SessionStudent> students) {
         SessionEnrollment enrollment = assembleEnrollmentStudents(session, students);
-        return new Session(session.getId(), session.getCourseId(), session.getType(), coverImage, enrollment, session.getCreatedAt(), session.getUpdatedAt());
+        return new Session(session.getId(), session.getCourseId(), session.getType(), session.getPeriod(), coverImage, enrollment, session.getCreatedAt(), session.getUpdatedAt());
     }
 
     private static SessionEnrollment assembleEnrollmentStudents(Session session, List<SessionStudent> students) {
