@@ -30,6 +30,14 @@ public class SessionTest {
     }
 
     @Test
+    @DisplayName("강의가 끝나면  수강신청이 불가능한지 확인")
+    void cannotRegisterAfterSessionEnd(){
+        Session endSession = Session.defaultOf(3L, course, LocalDate.of(2023, 4, 28), LocalDate.of(2023, 4, 29), new Image(10, ImageType.JPG, 300, 200), SessionPayType.FREE, 0, 3000L);
+        Payment payment = new Payment("1", 1L, 1L, 3000L);
+        assertThatThrownBy(() -> endSession.addStudent(NsUserTest.JAVAJIGI, payment)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없는지 확인")
     void limitStudentCapacity(){
         paidSession.openRegister();

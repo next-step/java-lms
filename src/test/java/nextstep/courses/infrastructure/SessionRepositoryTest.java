@@ -9,7 +9,7 @@ import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image;
 import nextstep.courses.domain.ImageType;
 import nextstep.courses.domain.Session;
-import nextstep.courses.domain.Session.SessionDuration;
+import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionPayType;
 import nextstep.courses.domain.SessionRepository;
 import nextstep.courses.domain.SessionState;

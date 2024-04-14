@@ -69,11 +69,11 @@ public class Session extends BaseEntity {
     }
 
     public LocalDate getStartDate(){
-        return this.duration.startDate;
+        return this.duration.getStartDate();
     }
 
     public LocalDate getEndDate(){
-        return this.duration.endDate;
+        return this.duration.getEndDate();
     }
 
     public String getPayType(){
@@ -113,7 +113,7 @@ public class Session extends BaseEntity {
     }
 
     private void checkRegisterableState() {
-        if(!state.isRecruiting()){
+        if(!state.isRecruiting() || !duration.isRecruitingNow()){
             throw new IllegalArgumentException("현재 모집 중이 아닙니다.");
         }
     }
@@ -125,21 +125,4 @@ public class Session extends BaseEntity {
         }
     }
 
-    public static class SessionDuration {
-        private LocalDate startDate;
-        private LocalDate endDate;
-
-        public SessionDuration(LocalDate startDate, LocalDate endDate) {
-            validateSessionDate(startDate, endDate);
-            this.startDate = startDate;
-            this.endDate = endDate;
-        }
-
-        private void validateSessionDate(LocalDate startDate, LocalDate endDate){
-            if(startDate.isAfter(endDate)){
-                throw new IllegalArgumentException("시작일보다 종료일이 먼저올 수 없습니다.");
-            }
-        }
-
-    }
 }
