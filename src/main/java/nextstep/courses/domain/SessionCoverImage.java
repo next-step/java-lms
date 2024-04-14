@@ -6,15 +6,19 @@ public class SessionCoverImage {
     public static final int MIN_WIDTH = 300;
     public static final int MIN_HEIGHT = 200;
 
+    private final Long id;
+    private final Long sessionId;
     private final int sizeOfBytes;
     private final ImageType type;
     private final int width;
     private final int height;
 
-    public SessionCoverImage(int sizeOfBytes, ImageType type, int width, int height) {
+    public SessionCoverImage(Long id, Long sessionId, int sizeOfBytes, ImageType type, int width, int height) {
         validateLessEqualThen1MB(sizeOfBytes);
         validateWidthAndHeight(width, height);
         validateRatioThreeToTwo(width, height);
+        this.id = id;
+        this.sessionId = sessionId;
         this.sizeOfBytes = sizeOfBytes;
         this.type = type;
         this.width = width;
@@ -37,6 +41,14 @@ public class SessionCoverImage {
         if (sizeOfBytes > MAX_SIZE) {
             throw new IllegalArgumentException("이미지 용량은 1MB 이하여야 합니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public int getSizeOfBytes() {

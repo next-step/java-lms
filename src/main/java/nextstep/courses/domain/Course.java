@@ -11,7 +11,7 @@ public class Course {
 
     private Long id;
     private String title;
-    private int cohort; // 기수 (1기, 2기, ...)
+    private Long cohort; // 기수 (1기, 2기, ...)
     private Long creatorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -21,28 +21,20 @@ public class Course {
     }
 
     public Course(String title, Long creatorId) {
-        this(0L, title, 0, creatorId, LocalDateTime.now(), null);
+        this(0L, title, 0L, creatorId);
     }
 
-    public Course(Long id, String title, int cohort, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long cohort, Long creatorId) {
+        this(id, title, cohort, creatorId, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Course(Long id, String title, Long cohort, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.cohort = cohort;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public void addSession(Session session) {
@@ -69,6 +61,26 @@ public class Course {
         if (!sessions.contains(session)) {
             throw new IllegalArgumentException("과정에 포함되지 않은 강의입니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Long getCohort() {
+        return cohort;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override

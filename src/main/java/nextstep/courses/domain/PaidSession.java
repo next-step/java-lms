@@ -4,19 +4,51 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaidSession extends Session {
 
-    public PaidSession(long id, long maximumNumberOfStudent, long amount, LocalDateTime startedAt, LocalDateTime endedAt, SessionCoverImage coverImage, SessionType type) {
-        super(id, amount, maximumNumberOfStudent, startedAt, endedAt, coverImage, type);
+    public PaidSession(long id,
+                       long courseId,
+                       long maximumNumberOfStudent,
+                       long amount) {
+        this(id, courseId, new ArrayList<>(), maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       List<Long> coverImageIds,
+                       long maximumNumberOfStudent,
+                       long amount) {
+        this(id, courseId, coverImageIds, maximumNumberOfStudent, amount, LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       long maximumNumberOfStudent,
+                       long amount,
+                       LocalDateTime startedAt,
+                       LocalDateTime endedAt) {
+        this(id, courseId, new ArrayList<>(), amount, maximumNumberOfStudent, startedAt, endedAt);
+    }
+
+    public PaidSession(long id,
+                       long courseId,
+                       List<Long> coverImageIds,
+                       long maximumNumberOfStudent,
+                       long amount,
+                       LocalDateTime startedAt,
+                       LocalDateTime endedAt) {
+        super(id, courseId, coverImageIds, amount, maximumNumberOfStudent, startedAt, endedAt, SessionType.PAID);
     }
 
     @Override
     public void enroll(NsUser user, Payment payment) {
+        validateRecruiting();
         validateSameAmount(payment);
         validateLessEqualThenMaximumNumber();
-        students.add(user);
+        this.enrollments.add(new Enrollment(this.id, user.getId()));
     }
 
     private void validateSameAmount(Payment payment) {
@@ -26,7 +58,7 @@ public class PaidSession extends Session {
     }
 
     private void validateLessEqualThenMaximumNumber() {
-        if (students.size() >= maximumNumberOfStudent) {
+        if (enrollments.size() >= maximumNumberOfStudent) {
             throw new IllegalArgumentException("최대 수강인원을 초과하였습니다.");
         }
     }
