@@ -50,35 +50,4 @@ class DurationTest {
         assertThatThrownBy(() -> new Duration(startDate, endDate))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
-    @DisplayName("시작일자를 변경하면, 새로운 객체를 반환한다.")
-    @Test
-    void changeStartDate() {
-        // given
-        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(5);
-        Duration duration = new Duration(startDate, endDate);
-
-        // when
-        duration = duration.changeStartDate(LocalDateTime.now().plusDays(4));
-
-        // then
-        assertThat(duration.isAvailable(LocalDateTime.now().plusDays(3))).isFalse();
-
-    }
-
-    @DisplayName("종료일자를 변경하면, 새로운 객체를 반환한다.")
-    @Test
-    void changeEndDate() {
-        // given
-        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(5);
-        Duration duration = new Duration(startDate, endDate);
-
-        // when
-        duration = duration.changeEndDate(LocalDateTime.now().plusDays(2));
-
-        // then
-        assertThat(duration.isAvailable(LocalDateTime.now().plusDays(3))).isFalse();
-    }
 }

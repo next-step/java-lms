@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.common.domain.DeleteHistory;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;

@@ -11,7 +11,7 @@ class ImageExtensionTypeTest {
     @Test
     void getExtension() {
         // then
-        assertThat(ImageExtensionType.JPG.getExtension())
+        assertThat(ImageExtensionType.JPG.getExtensionWithDot())
                 .isEqualTo(".jpg");
     }
 }

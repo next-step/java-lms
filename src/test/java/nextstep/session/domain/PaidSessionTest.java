@@ -1,11 +1,10 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.courses.domain.Course;
-import nextstep.exception.SessionException;
 import nextstep.exception.StudentsException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,18 +20,20 @@ class PaidSessionTest {
 
     @BeforeEach
     void setUp() {
+        Duration duration = new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3));
         Resolution resolution = new Resolution(300, 200);
         ImageFilePath imageFilePath = new ImageFilePath("/home", "mapa", "jpg");
+        Cover cover = new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId());
         Course course = new Course("Course1", 1L, 3);
 
         session = new PaidSession(
-                new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000),
+                1L,
+                duration,
+                cover,
                 "얼른 배우자 객체지향",
-                course,
+                course.getId(),
                 2,
                 100_000L,
-                1L,
                 new Tutor(NsUserTest.JAVAJIGI)
         );
     }
@@ -72,11 +73,13 @@ class PaidSessionTest {
     void cannotEnrollWithoutCountOfStudentsCondition() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student1 = new Student(NsUserTest.SANJIGI);
+        Student student2 = new Student(NsUserTest.JAVAJIGI);
 
         // when
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
-        session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student1, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student2, payment, LocalDateTime.now().plusDays(1));
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(1)))
@@ -88,12 +91,14 @@ class PaidSessionTest {
     void enrollNotAvailableWithNotOnEnroll() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student1 = new Student(NsUserTest.SANJIGI);
+        Student student2 = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student1, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student2, payment, LocalDateTime.now().plusDays(1));
 
         // then
         assertThat(session.isEnrollAvailable(LocalDateTime.now().plusDays(8)))
@@ -105,13 +110,14 @@ class PaidSessionTest {
     void cannotApplySameStudentTwice() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
-        session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1));
+        session.apply(student, payment, LocalDateTime.now().plusDays(1));
 
         // then
-        Assertions.assertThatThrownBy(() -> session.apply(NsUserTest.SANJIGI, payment, LocalDateTime.now().plusDays(1)))
+        assertThatThrownBy(() -> session.apply(student, payment, LocalDateTime.now().plusDays(1)))
                 .isInstanceOf(StudentsException.class);
     }
 
@@ -120,12 +126,13 @@ class PaidSessionTest {
     void erollAvailable() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
+        assertThat(session.apply(student, payment, LocalDateTime.now().plusDays(2)))
                 .isTrue();
     }
 
@@ -134,72 +141,28 @@ class PaidSessionTest {
     void onEnrollNotInDurationIsUnavailable() {
         // given
         Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
+        Student student = new Student(NsUserTest.SANJIGI);
 
         // when
         session.toNextSessionStatus();
 
         // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now()))
+        assertThat(session.apply(student, payment, LocalDateTime.now()))
                 .isFalse();
     }
 
-    @DisplayName("수강신청 기간이여도 모집중이 아니라면, 수강신청이 불가능하다.")
+    @DisplayName("세션을 삭제하면, 속한 커버와 학생들도 삭제된다.")
     @Test
-    void inDurationAndNotOnEnrollIsUnavailable() {
-        // given
-        Payment payment = new Payment("NORMAL", 1L, 1L, 100_000L);
-
-        // then
-        assertThat(session.apply(NsUserTest.JAVAJIGI, payment, LocalDateTime.now().plusDays(2)))
-                .isFalse();
-    }
-
-    @DisplayName("준비중 상태가 아니면, 시작 일자는 변경할 수 없다.")
-    @Test
-    void cannotChangeStartDateIfNotOnReady() {
+    void delete() {
         // given
         session.toNextSessionStatus();
+        session.apply(new Student(NsUserTest.JAVAJIGI), new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.toPreviousSessionStatus();
+        DeleteHistoryTargets deleteHistoryTargets = session.delete(NsUserTest.JAVAJIGI);
 
         // then
-        assertThatThrownBy(() -> session.changeStartDate(LocalDateTime.now().plusDays(3)))
-                .isInstanceOf(SessionException.class);
-    }
-
-    @DisplayName("준비중 상태가 아니면, 종료 일자는 변경할 수 없다.")
-    @Test
-    void cannotChangeEndDateIfNotOnReady() {
-        // given
-        session.toNextSessionStatus();
-
-        // then
-        assertThatThrownBy(() -> session.changeEndDate(LocalDateTime.now().plusDays(3)))
-                .isInstanceOf(SessionException.class);
-    }
-
-    @DisplayName("준비중 상태가 아니면, 커버는 변경할 수 없다.")
-    @Test
-    void cannotChangeCoverIfNotOnReady() {
-        // given
-        session.toNextSessionStatus();
-        Cover newCover = new Cover(
-                new Resolution(600, 400),
-                new ImageFilePath("C:/", "image", "jpg"),
-                1_000_000L
-        );
-
-        // then
-        assertThatThrownBy(() -> session.changeCover(newCover))
-                .isInstanceOf(SessionException.class);
-    }
-
-    @DisplayName("준비중 상태가 아니면, 세션 이름은 변경할 수 없다.")
-    @Test
-    void cannotChangeSessionNameDateIfNotOnReady() {
-        // given
-        session.toNextSessionStatus();
-
-        // then
-        assertThatThrownBy(() -> session.editSessionName("새로운 세션 이름"))
-                .isInstanceOf(SessionException.class);
+        assertThat(deleteHistoryTargets.asList()).hasSize(3);
     }
 }

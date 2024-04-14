@@ -25,7 +25,7 @@
 
 # 현재 기능 사항
 - `questionId`로 질문을 조회한다.
-    - 없다면 `NotFoundException`을 던진다.
+  - 없다면 `NotFoundException`을 던진다.
 - 조회한 `question`의 작성자와 `longinUser`를 비교하여 작성자가 아니라면 `CannotDeleteException`을 던진다.
 
 - 조회한 `question`에서 `answer` 목록을 가져온다.
@@ -49,7 +49,7 @@
 
 # 수강 신청
 - 도메인 역할 도표
-![도메인 역할 도표](./images/image004.png)
+  ![도메인 역할 도표](./images/image004.png)
 
 - [x] ImageExtensionType
 - [x] FilePathInformation
@@ -74,3 +74,76 @@
 - [x] Course
 - [ ] SessionService
 - [ ] CourseService
+
+# 수강신청 DB 매핑
+- 목적 : CRUD 기능 구현
+### Service의 책임 Flow
+![책임 Flow](./images/image005.png)
+
+### Table 설계
+![테이블 셜계(맵핑)](./images/image006.png)
+
+### 구현 기능
+- [x] 이전 과제 코드리뷰 - `Session` 검증 메서드 이름 명확화
+- [x] `DeleteHistory`를 `common` 패키지로 이관
+- [x] `common`에 `BaseEntity` 클래스 구현
+  - 삭제 상태
+  - 생성 일자
+  - 수정 일자
+- [x] `Student` 객체 구성
+- [x] `Cover` 책임 인터페이스 구현
+- [x] `Students` 책임 인터페이스 구현
+- [x] `Session` - `save` 구현
+  - 협력 객체로 `Cover`만을 넣은 `Session`을 생성한다.
+- [x] `Session` - `findById(Long sessionId)` 구현
+  - 조회한 결과로 아래를 판단한다.
+    - `cover_id`가 존재할 경우, `Cover`의 `findById`로 메시지를 보내 조회하여 매핑한다.
+    - `Students`에서 `session_id`로 `findAllStudentsBySessionId`로 메시지를 보내 전체 학생을 가져와 매핑한다.
+    - 가격에 따라 `FreeSession`, `PaidSession`을 구분하여 매핑한다.
+    - `Session` 객체를 반환한다.
+- [x] `Session` - `Session updateBasicProperties(Session session)` 구현
+  - `startDate`에 대해 변경한다.
+  - `endDate`에 대해 변경한다.
+  - `sessionName`에 대해 변역한다.
+  - 변경분에 대해 저장한다.
+  - 저장한 `Session` 객체를 반환한다.
+- [x] `Session` - `Session updateCover(Long sessionId, Cover cover)` 구현
+  - `sessionId`를 통해 `Session` 객체를 조회한다.
+  - 기존의 `Cover`에게 `delete` 메시지를 보낸다.
+  - `Cover`에게 `save` 메시지를 보내 생성한다.
+  - 현재 `Session`의 `Cover`를 변경한다.
+  - 현재 `Session`을 변경 저장한다.
+- [x] `Session` - `addStudent(Long sessionId, Student student)` 구현
+  - `sessionId`를 통해 `Session` 객체를 조회한다.
+  - 조회한 `Session` 객체의 `Students`에 `student`를 추가한다.
+  - `StudentsService`에게 `save` 메시지를 보낸다.
+- [x] `Session` - `deleteStudent(Long sessionId, Student student)` 구현
+  - `sessionId`를 통해 `Session` 객체를 조회한다.
+  - 조회한 `Session` 객체의 `Students`에 `student`를 제거한다.
+  - `StudentsService`에게 `delete` 메시지를 보낸다.
+- [x] `Session` - `delete(Long sessionId)` 구현
+  - `sessionId`를 통해 `Session` 객체를 조회한다.
+  - 삭제할 수 있는지 검증한다.
+  - `Sesssion`객체가 가지고 있는 `Cover`에 삭제 메시지를 보낸다.
+  - `Students`에 삭제 메시지를 보낸다.
+  - `Session`의 상태를 삭제로 변경한다.
+  - `DeleteHistories`를 저장한다.
+- [x] `Cover` - `findById(Long coverId)` 구현
+  - 파라미터의 `coverId`로 조회한다.
+  - 조회된 `Cover` 객체를 반환한다.
+- [x] `Cover` - `save(Cover cover)` 구현
+  - 파라미터의 `Cover`를 저장한다.
+  - 저장한 Id값을 반환한다.
+- [x] `Cover` - `delete(Long coverId)` 구현
+  - 삭제상태를 변경한다.
+  - `DeleteHistory`를 반환한다.
+- [x] `Student` - `findAllStudentsBySessionId(Long sessionId)` 구현
+  - `sessionId`를 통해 삭제상태가 아닌 학생들을 모두 조회한다.
+  - `Student` 객체에 담아 반환한다.
+- [x] `Student` - `save(Long sessionId, Student studet)` 구현
+  - `sessionId`를 기준으로, `Student`를 저장한다.
+  - 저장한 `student`의 Id를 반환한다.
+- [x] `Student` - `delete(Long sessionId, Student studetn)` 구현
+  - `Student`를 조회한다.
+  - 해당 `Student`의 상태를 삭제로 변경한다.
+  - `DeleteHistory`를 반환한다.

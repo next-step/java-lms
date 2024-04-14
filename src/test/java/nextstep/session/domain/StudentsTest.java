@@ -15,13 +15,14 @@ class StudentsTest {
     void addStudent() {
         // given
         Students students = new Students();
-        NsUser enrollStudent = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        NsUser nsUser = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        Student enrollStudent = new Student(nsUser);
 
         // when
         students.add(enrollStudent);
 
         // then
-        assertThat(students.findStudent(enrollStudent).isPresent()).isTrue();
+        assertThat(students.findStudent(enrollStudent)).isPresent();
     }
 
     @DisplayName("학생을 뺄 수 있다.")
@@ -29,14 +30,15 @@ class StudentsTest {
     void deleteStudent() {
         // given
         Students students = new Students();
-        NsUser enrollStudent = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        NsUser nsUser = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        Student enrollStudent = new Student(nsUser);
         students.add(enrollStudent);
 
         // when
         students.remove(enrollStudent);
 
         // then
-        assertThat(students.findStudent(enrollStudent).isPresent()).isFalse();
+        assertThat(students.findStudent(enrollStudent)).isNotPresent();
     }
 
     @DisplayName("학생은 중복 신청할 수 없다.")
@@ -44,7 +46,8 @@ class StudentsTest {
     void throwStudentsExceptionForDuplicateEnroll() {
         // given
         Students students = new Students();
-        NsUser enrollStudent = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        NsUser nsUser = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        Student enrollStudent = new Student(nsUser);
 
         // when
         students.add(enrollStudent);
@@ -59,12 +62,14 @@ class StudentsTest {
     void throwStudentsExceptionRemoveNotEnrolled() {
         // given
         Students students = new Students();
-        NsUser enrollStudent = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
-        NsUser anotherStudent = new NsUser(2L, "student2", "456", "student2", "student2@naver.com");
+        NsUser nsUser = new NsUser(1L, "student1", "123", "student1", "student1@naver.com");
+        NsUser anothreNsUser = new NsUser(2L, "student2", "456", "student2", "student2@naver.com");
+        Student enrollStudent = new Student(nsUser);
+        Student anotherEnrolNsUser = new Student(anothreNsUser);
         students.add(enrollStudent);
 
         // then
-        assertThatThrownBy(() -> students.remove(anotherStudent))
+        assertThatThrownBy(() -> students.remove(anotherEnrolNsUser))
                 .isInstanceOf(StudentsException.class);
     }
 }

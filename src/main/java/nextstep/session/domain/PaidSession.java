@@ -1,66 +1,61 @@
 package nextstep.session.domain;
 
-import nextstep.courses.domain.Course;
+import nextstep.common.domain.BaseEntity;
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.exception.SessionException;
 import nextstep.payments.domain.Payment;
+import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
 public class PaidSession implements Session {
 
+    private final long id;
     private Duration duration;
     private Cover cover;
     private SessionStatus sessionStatus;
     private SessionName sessionName;
-    private final Course course;
+    private final long courseId;
     private final Capacity capacity;
     private final Price price;
-    private final Long sessionId;
     private final Tutor tutor;
     private final Students students;
+    private final BaseEntity baseEntity;
 
     public PaidSession(
-            Duration duration, Cover cover, String sessionName, Course course,
-            int capacity, Long price, Long sessionId, Tutor tutor
+            long id, Duration duration, Cover cover, String sessionName, long courseId,
+            int capacity, Long price, Tutor tutor
     ) {
+        this.id = id;
         this.duration = duration;
         this.cover = cover;
         this.sessionStatus = SessionStatus.create();
         this.sessionName = new SessionName(sessionName);
-        this.course = course;
+        this.courseId = courseId;
         this.capacity = Capacity.create(capacity);
         this.price = new Price(price);
-        this.sessionId = sessionId;
         this.tutor = tutor;
         this.students = new Students();
+        this.baseEntity = new BaseEntity();
     }
 
-    @Override
-    public void changeStartDate(LocalDateTime startDate) {
-        validate();
-
-        this.duration = duration.changeStartDate(startDate);
-    }
-
-    private void validate() {
-        if (!this.sessionStatus.onReady()) {
-            throw new SessionException("강의가 준비중인 상태가 아닙니다. 변경 불가능합니다.");
-        }
-    }
-
-    @Override
-    public void changeEndDate(LocalDateTime endDate) {
-        validate();
-
-        this.duration = duration.changeEndDate(endDate);
-    }
-
-    @Override
-    public void changeCover(Cover cover) {
-        validate();
-
+    public PaidSession(
+            long id, Duration duration, Cover cover, SessionStatus sessionStatus, String sessionName, long courseId,
+            int maxCapacity, int enrolled, Long price, Tutor tutor, Students students, BaseEntity baseEntity
+    ) {
+        this.id = id;
+        this.duration = duration;
         this.cover = cover;
+        this.sessionStatus = sessionStatus;
+        this.sessionName = new SessionName(sessionName);
+        this.courseId = courseId;
+        this.capacity = Capacity.create(maxCapacity, enrolled);
+        this.price = new Price(price);
+        this.tutor = tutor;
+        this.students = students;
+        this.baseEntity = baseEntity;
     }
 
     @Override
@@ -74,13 +69,6 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public void editSessionName(String sessionName) {
-        validate();
-
-        this.sessionName = this.sessionName.editSessionName(sessionName);
-    }
-
-    @Override
     public boolean isEnrollAvailable(LocalDateTime applyDate) {
         return this.sessionStatus.canEnroll() &&
                 this.duration.isAvailable(applyDate) &&
@@ -88,7 +76,7 @@ public class PaidSession implements Session {
     }
 
     @Override
-    public boolean apply(NsUser student, Payment payment, LocalDateTime applyDate) {
+    public boolean apply(Student student, Payment payment, LocalDateTime applyDate) {
         if (isEnrollAvailable(applyDate) && this.price.isFullyPaid(payment)) {
             this.students.add(student);
             this.capacity.enroll();
@@ -96,5 +84,54 @@ public class PaidSession implements Session {
         }
 
         return false;
+    }
+
+    @Override
+    public SessionVO toVO() {
+        return new SessionVO(
+                this.id,
+                this.duration.getStartDate(),
+                this.duration.getEndDate(),
+                this.sessionStatus.getSessionStatus().name(),
+                this.courseId,
+                this.capacity.getMaxCapacity(),
+                this.capacity.getEnrolled(),
+                this.price.getPrice(),
+                this.tutor.getTutorId(),
+                this.cover.getId(),
+                this.sessionName.getSessionName(),
+                this.baseEntity.isDeleted(),
+                this.baseEntity.getCreatedAt(),
+                this.baseEntity.getLastModifiedAt()
+        );
+    }
+
+    @Override
+    public DeleteHistoryTargets delete(NsUser requestUser) {
+        validateCanDeleteForSessionStatus();
+        DeleteHistoryTargets deleteHistoryTargets = new DeleteHistoryTargets();
+
+        deleteHistoryTargets.addFirst(this.cover.delete(requestUser));
+        deleteHistoryTargets.add(this.students.deleteAll(requestUser));
+
+        this.baseEntity.delete(LocalDateTime.now());
+        deleteHistoryTargets.addFirst(DeleteHistory.createSession(this.id, requestUser, LocalDateTime.now()));
+        return deleteHistoryTargets;
+    }
+
+    private void validateCanDeleteForSessionStatus() {
+        if (!this.sessionStatus.onReady()) {
+            throw new SessionException("준비 상태에서만 세션을 삭제할 수 있습니다.");
+        }
+    }
+
+    @Override
+    public Cover getCover() {
+        return this.cover;
+    }
+
+    @Override
+    public Students getStudents() {
+        return this.students;
     }
 }

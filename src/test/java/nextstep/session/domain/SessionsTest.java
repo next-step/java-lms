@@ -20,11 +20,11 @@ class SessionsTest {
         Course course = new Course("Course1", 1L, 3);
 
         session = new FreeSession(
-                new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
-                new Cover(resolution, imageFilePath, 10000),
-                "얼른 배우자 객체지향",
-                course,
                 1L,
+                new Duration(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(3)),
+                new Cover(1L, resolution, imageFilePath, 10000, NsUserTest.JAVAJIGI.getUserId()),
+                "얼른 배우자 객체지향",
+                course.getId(),
                 new Tutor(NsUserTest.JAVAJIGI)
         );
     }

@@ -1,5 +1,7 @@
 package nextstep.qna.domain;
 
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 

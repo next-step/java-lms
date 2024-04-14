@@ -1,5 +1,7 @@
-package nextstep.qna.domain;
+package nextstep.common.domain;
 
+import nextstep.common.dto.DeleteHistoryDto;
+import nextstep.qna.domain.ContentType;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -22,6 +24,18 @@ public class DeleteHistory {
 
     public static DeleteHistory createAnswer(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
         return new DeleteHistory(ContentType.ANSWER, contentId, deletedBy, createdDate);
+    }
+
+    public static DeleteHistory createCover(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.COVER, contentId, deletedBy, createdDate);
+    }
+
+    public static DeleteHistory createStudent(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.STUDENT, contentId, deletedBy, createdDate);
+    }
+
+    public static DeleteHistory createSession(Long contentId, NsUser deletedBy, LocalDateTime createdDate) {
+        return new DeleteHistory(ContentType.SESSION, contentId, deletedBy, createdDate);
     }
 
     private DeleteHistory() {
@@ -54,5 +68,15 @@ public class DeleteHistory {
     public String toString() {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
+    }
+
+    public DeleteHistoryDto toVO() {
+        return new DeleteHistoryDto(
+                this.id,
+                this.contentId,
+                this.contentType.name(),
+                this.createdDate,
+                this.deletedBy.getId()
+        );
     }
 }

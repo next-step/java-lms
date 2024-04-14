@@ -16,8 +16,12 @@ public enum ImageExtensionType {
         this.extension = extension;
     }
 
-    public String getExtension() {
+    public String getExtensionWithDot() {
         return "." + this.extension;
+    }
+
+    public String getExtension() {
+        return this.extension;
     }
 
     public static ImageExtensionType of(String extension) {

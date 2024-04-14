@@ -1,25 +1,28 @@
 package nextstep.session.domain;
 
+import nextstep.common.domain.DeleteHistory;
+import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.payments.domain.Payment;
+import nextstep.session.dto.SessionVO;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
 public interface Session {
 
-    void changeStartDate(LocalDateTime startDate);
-
-    void changeEndDate(LocalDateTime endDate);
-
-    void changeCover(Cover cover);
-
     void toNextSessionStatus();
 
     void toPreviousSessionStatus();
 
-    void editSessionName(String sessionName);
-
     boolean isEnrollAvailable(LocalDateTime applyDate);
 
-    boolean apply(NsUser student, Payment payment, LocalDateTime applyDate);
+    boolean apply(Student student, Payment payment, LocalDateTime applyDate);
+
+    DeleteHistoryTargets delete(NsUser requestUser);
+
+    SessionVO toVO();
+
+    Cover getCover();
+
+    Students getStudents();
 }
