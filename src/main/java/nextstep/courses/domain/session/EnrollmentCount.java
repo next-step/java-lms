@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.strategy;
+package nextstep.courses.domain.session;
 
 import java.util.Objects;
 
@@ -22,6 +22,14 @@ public class EnrollmentCount {
 
     public boolean isLessThan(final EnrollmentCount otherEnrollmentCount) {
         return this.value < otherEnrollmentCount.value;
+    }
+
+    public EnrollmentCount increase() {
+        return new EnrollmentCount(this.value + 1);
+    }
+
+    public EnrollmentCount copyOf() {
+        return new EnrollmentCount(this.value);
     }
 
     @Override
