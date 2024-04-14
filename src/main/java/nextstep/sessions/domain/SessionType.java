@@ -4,13 +4,13 @@ public enum SessionType {
     FREE {
         @Override
         public boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents) {
-            return true;
+            return false;
         }
     },
     PAID {
         @Override
         public boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents) {
-            return currentCountOfStudents < maxOfStudents;
+            return currentCountOfStudents > maxOfStudents;
         }
     };
 

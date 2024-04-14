@@ -26,18 +26,18 @@ public class SessionRegisterDetailsTest {
         int currentCountOfStudents = 40;
         int maxOfStudents = 40;
 
-        SessionRegisterDetails details = new SessionRegisterDetails(currentCountOfStudents, maxOfStudents, 30000, PAID, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(currentCountOfStudents, maxOfStudents, 30000L, PAID, RECRUITING);
 
         assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format("이 강의의 현재 수강 신청 인원: (%s)명, 최대 수강 인원: (%s)명이므로 현재 마감이 된 상태입니다.", currentCountOfStudents, maxOfStudents));
+                .hasMessage(String.format("이 강의의 현재 수강 신청 인원: (%s)명, 최대 수강 인원: (%s)명이므로 현재 마감이 된 상태입니다.", currentCountOfStudents + 1, maxOfStudents));
     }
 
     @DisplayName("강의가 모집중이 아닐때 수강신청을 하면 예외를 반환한다")
     @Test
     void statusIsNotRecruiting() {
         SessionStatus end = END;
-        SessionRegisterDetails details = new SessionRegisterDetails(39, 40, 30000, PAID, end);
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 40, 30000, PAID, end);
 
         assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -47,8 +47,17 @@ public class SessionRegisterDetailsTest {
     @DisplayName("강의의 가격과 결제한 금액이 같지 않은지 검증한다")
     @Test
     void isSameAmount() {
-        SessionRegisterDetails details = new SessionRegisterDetails(40, 0, 30000, PAID, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 50, 30000, PAID, RECRUITING);
 
         assertThat(details.isNotSamePrice(20000)).isTrue();
+    }
+
+    @DisplayName("강의 수강자(listener)가 수강자 목록에 포함되어 있는지 검증한다")
+    @Test
+    void isContainsListener() {
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 50, 30000, PAID, RECRUITING);
+        details.register(NsUserTest.JAVAJIGI, 30000L);
+
+        assertThat(details.isContainsListener(NsUserTest.JAVAJIGI)).isTrue();
     }
 }
