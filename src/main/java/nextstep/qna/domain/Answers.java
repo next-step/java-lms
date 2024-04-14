@@ -2,6 +2,7 @@ package nextstep.qna.domain;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import nextstep.users.domain.NsUser;
 
@@ -27,10 +28,8 @@ public class Answers {
     }
 
     public List<DeleteHistory> getDeleteHistory() {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        for (Answer answer : answers) {
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        return deleteHistories;
+        return answers.stream()
+            .map(DeleteHistory::ofAnswer)
+            .collect(Collectors.toList());
     }
 }
