@@ -4,40 +4,33 @@ import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public abstract class Session {
 
     private final Long id;
-    private final List<SessionImage> sessionImage;
-    private RecruitStatus recruitStatus;
-    private SessionProgressStatus sessionProgressStatus;
+    private final SessionImage sessionImage;
+    private SessionStatus sessionStatus;
     private final Set<NsUser> students;
-    private final Set<NsUser> approveStudents;
     private final SessionDate sessionDate;
 
-
-    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate) {
-        this(id, sessionImage, recruitStatus, sessionDate, new HashSet<>());
-    }
-
-    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate) {
-        this(id, sessionImage, recruitStatus, sessionProgressStatus, sessionDate, new HashSet<>(), new HashSet<>());
-    }
-
-    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionDate sessionDate, Set<NsUser> students) {
-        this(id, sessionImage, recruitStatus, SessionProgressStatus.PREPARE, sessionDate, students, new HashSet<>());
-    }
-
-    public Session(Long id, List<SessionImage> sessionImage, RecruitStatus recruitStatus, SessionProgressStatus sessionProgressStatus, SessionDate sessionDate, Set<NsUser> students, Set<NsUser> approveStudents) {
+    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
         this.id = id;
         this.sessionImage = sessionImage;
-        this.recruitStatus = recruitStatus;
-        this.sessionProgressStatus = sessionProgressStatus;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.students = new HashSet<>();
+    }
+
+    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students) {
+        this.id = id;
+        this.sessionImage = sessionImage;
+        this.sessionStatus = sessionStatus;
         this.sessionDate = sessionDate;
         this.students = students;
-        this.approveStudents = approveStudents;
-
     }
 
     public final void enrollmentUser(NsUser user, Payment payment) {
@@ -48,16 +41,6 @@ public abstract class Session {
         students.add(user);
     }
 
-
-    public final void removeNotApproveUser() {
-        students.removeIf(student -> !approveStudents.contains(student));
-    }
-
-    public final void addApproveStudent(NsUser nsUser) {
-        approveStudents.add(nsUser);
-    }
-
-
     private void assertNotDuplicateStudents(NsUser user) {
         if (students.contains(user)) {
             throw new NotRecruitException();
@@ -65,9 +48,7 @@ public abstract class Session {
     }
 
     private void assertRecruit() {
-
-        if (!recruitStatus.isRecruit()) {
-
+        if (!sessionStatus.isRecruit()) {
             throw new NotRecruitException();
         }
     }
@@ -76,32 +57,20 @@ public abstract class Session {
         return new HashSet<>(students);
     }
 
-    public Set<NsUser> getApproveStudents() {
-        return new HashSet<>(approveStudents);
-    }
-
     public Long getId() {
         return id;
     }
 
-    public List<SessionImage> getSessionImage() {
+    public SessionImage getSessionImage() {
         return sessionImage;
     }
 
-    public RecruitStatus getRecruitStatus() {
-        return recruitStatus;
-    }
-
-    public SessionProgressStatus getSessionProgressStatus() {
-        return sessionProgressStatus;
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
 
     public SessionDate getSessionDate() {
         return sessionDate;
-    }
-
-    public void changeProgressStatus(SessionProgressStatus sessionProgressStatus) {
-        this.sessionProgressStatus = sessionProgressStatus;
     }
 
 

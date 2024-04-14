@@ -21,4 +21,8 @@ public class TestSessionFactory {
     static public Session recruitSession(Long id, List<SessionImage> sessionImages) {
         return new TestSession(id, sessionImages, RecruitStatus.RECRUIT, SessionDateTest.of());
     }
+
+    static public Session recruitStatusSession2(Long id) {
+        return new TestSession2(id, SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of());
+    }
 }

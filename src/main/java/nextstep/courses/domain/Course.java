@@ -44,6 +44,14 @@ public class Course {
         return id;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public void addSession(Session session) {
         sessions.addSession(session);
     }
