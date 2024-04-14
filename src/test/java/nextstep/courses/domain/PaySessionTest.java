@@ -1,4 +1,4 @@
-package nextstep.courses;
+package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -18,10 +18,11 @@ public class PaySessionTest {
 
 	private Payment payment;
 	private PaySession paySession;
+
 	@BeforeEach
 	void setUp() {
 		payment = new Payment("1", 123L, 1L, 0L);
-		paySession = new PaySession(LocalDateTime.now(), LocalDateTime.now(), 2000L, 2);
+		paySession = PaySession.of(SessionDate.of(LocalDateTime.now(), LocalDateTime.now()), 2000L, 2);
 	}
 
 	@Test

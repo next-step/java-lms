@@ -6,15 +6,13 @@ import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
 
 abstract public class Session {
-	protected final LocalDateTime startDate;
-	protected final LocalDateTime endDate;
+	protected final SessionDate sessionDate;
 	protected SessionStatus sessionStatus;
 	protected int numberOfStudents;
 	protected CoverImageInfo coverImageInfo;
 
-	public Session(LocalDateTime startDate, LocalDateTime endDate) {
-		this.startDate = startDate;
-		this.endDate = endDate;
+	public Session(SessionDate sessionDate, CoverImageInfo coverImageInfo) {
+		this.sessionDate = sessionDate;
 		this.sessionStatus = SessionStatus.READY;
 		this.numberOfStudents = 0;
 	}
