@@ -2,7 +2,7 @@ package nextstep.courses.domain.session.strategy;
 
 import java.util.Objects;
 
-public class EnrollmentCount implements Comparable<EnrollmentCount> {
+public class EnrollmentCount {
 
     static final int MINIMUM_ENROLLMENT_COUNT = 0;
 
@@ -18,6 +18,10 @@ public class EnrollmentCount implements Comparable<EnrollmentCount> {
         if (value < MINIMUM_ENROLLMENT_COUNT) {
             throw new IllegalArgumentException("수강 신청 인원 수는 0명 미만일 수 없습니다. 인원 수: " + value);
         }
+    }
+
+    public boolean isLessThan(final EnrollmentCount otherEnrollmentCount) {
+        return this.value < otherEnrollmentCount.value;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class EnrollmentCount implements Comparable<EnrollmentCount> {
     }
 
     @Override
-    public int compareTo(final EnrollmentCount otherEnrollmentCount) {
-        return Integer.compare(this.value, otherEnrollmentCount.value);
+    public String toString() {
+        return String.valueOf(this.value);
     }
 }

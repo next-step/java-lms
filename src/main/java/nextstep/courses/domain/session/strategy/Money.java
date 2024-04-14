@@ -20,6 +20,10 @@ public class Money {
         }
     }
 
+    public boolean isLessThan(final Money otherMoney) {
+        return this.value < otherMoney.value;
+    }
+
     @Override
     public boolean equals(final Object otherMoney) {
         if (this == otherMoney) {
@@ -36,5 +40,10 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(this.value);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.value);
     }
 }
