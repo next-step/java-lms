@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDate;
+import java.util.List;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.Image;
 import nextstep.courses.domain.ImageType;
+import nextstep.courses.domain.Images;
 import nextstep.courses.domain.Session;
 import nextstep.courses.domain.SessionDuration;
 import nextstep.courses.domain.SessionPayType;
@@ -44,6 +46,19 @@ public class SessionRepositoryTest {
     Session savedSession = sessionRepository.save(session);
     Session sessionByDb = sessionRepository.findById(savedSession.getId());
     assertThat(savedSession.getId()).isEqualTo(sessionByDb.getId());
+  }
+
+  @Test
+  @DisplayName("Session에 여러개의 커버 이미지를 등록한다.")
+  void saveSessionWithMultipleImages() {
+    Images images = new Images(
+        List.of(new Image(100, ImageType.JPG, 300, 200), new Image(300, ImageType.SVG, 300, 200)));
+    Session sessionTwoImages = new Session(new Course("TDD, 클린 코드 with Java", 1L),  new SessionDuration(
+        LocalDate.of(2025,4,11), LocalDate.of(2025,5,12)), images, SessionPayType.FREE, SessionState.PREPARING, 0, 0L, new SessionStudent());
+
+    Session savedSession = sessionRepository.save(sessionTwoImages);
+    Session sessionByDb = sessionRepository.findById(savedSession.getId());
+    assertThat(sessionByDb.getImages().getImages().size()).isEqualTo(2);
   }
 
   @Test

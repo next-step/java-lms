@@ -12,37 +12,43 @@ import static nextstep.courses.domain.SessionState.RECRUITING;
 public class Session extends BaseEntity {
     private Course course;
     private SessionDuration duration;
-    private Image coverImage;
+    private Images coverImages;
     private SessionPayType payType;
     private SessionState state;
     private Long fee;
     private SessionStudent students;
 
     public static Session defaultOf(Long id, Course course, LocalDate startDate, LocalDate endDate, Image coverImage, SessionPayType sessionPayType, Integer maxStudent, Long sessionFee) {
-        return new Session(id, course, new SessionDuration(startDate, endDate), coverImage, sessionPayType, PREPARING, maxStudent, sessionFee, new SessionStudent(maxStudent));
+        return new Session(id, course, new SessionDuration(startDate, endDate), new Images(coverImage), sessionPayType, PREPARING, maxStudent, sessionFee, new SessionStudent(maxStudent));
     }
 
     public Session(Course course, SessionDuration duration, Image coverImage,
         SessionPayType payType, SessionState state, Integer maxStudent, Long fee,
         SessionStudent students) {
+        this(course, duration, new Images(coverImage), payType, state, maxStudent, fee, students);
+    }
+
+    public Session(Course course, SessionDuration duration, Images coverImages,
+        SessionPayType payType, SessionState state, Integer maxStudent, Long fee,
+        SessionStudent students) {
         validatePayType(payType, maxStudent, fee);
         this.course = course;
         this.duration = duration;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.payType = payType;
         this.state = state;
         this.fee = fee;
         this.students = students;
     }
 
-    public Session(Long id, Course course, SessionDuration duration, Image coverImage,
+    public Session(Long id, Course course, SessionDuration duration, Images coverImages,
                    SessionPayType payType, SessionState state, Integer maxStudent, Long fee,
                    SessionStudent students) {
         validatePayType(payType, maxStudent, fee);
         this.id = id;
         this.course = course;
         this.duration = duration;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.payType = payType;
         this.state = state;
         this.fee = fee;
@@ -64,8 +70,8 @@ public class Session extends BaseEntity {
         return this.course.id;
     }
 
-    public Image getImage(){
-        return this.coverImage;
+    public Images getImages(){
+        return this.coverImages;
     }
 
     public LocalDate getStartDate(){
