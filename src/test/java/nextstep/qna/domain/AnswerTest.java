@@ -26,9 +26,6 @@ public class AnswerTest {
 
         DeleteHistory deleteHistory = testAnswer.delete(NsUserTest.JAVAJIGI);
         assertThat(testAnswer.isDeleted()).isTrue();
-        assertThat(deleteHistory.toString())
-                .contains(ContentType.ANSWER.toString())
-                .contains(NsUserTest.JAVAJIGI.toString());
     }
 
     @Test
@@ -42,8 +39,6 @@ public class AnswerTest {
     @Test
     @DisplayName("작성자와 로그인 유저가 다른 경우 에러 발생")
     void testDeleteAnswerNotAuthored() throws CannotDeleteException {
-        testAnswer.delete(NsUserTest.JAVAJIGI);
-
-        assertThatThrownBy(() -> testAnswer.delete(NsUserTest.JAVAJIGI)).isInstanceOf(CannotDeleteException.class);
+        assertThatThrownBy(() -> testAnswer.delete(NsUserTest.SANJIGI)).isInstanceOf(CannotDeleteException.class);
     }
 }

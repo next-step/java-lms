@@ -22,6 +22,26 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
+    private int chargePoint = 0;
+
+    public void chargePoint(int chargePoint) {
+        this.chargePoint += chargePoint;
+    }
+
+    public void minusPoint(int chargePoint) {
+        String errorMessage = "가지고 있는 포인트보다 많습니다.";
+
+        if (this.chargePoint < chargePoint) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        this.chargePoint -= chargePoint;
+    }
+
+    public int getChargePoint() {
+        return chargePoint;
+    }
+
     public NsUser() {
     }
 

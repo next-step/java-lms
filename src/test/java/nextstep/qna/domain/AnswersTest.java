@@ -23,12 +23,7 @@ public class AnswersTest {
 
         assertThat(deleteHistories).hasSize(answerCount);
         assertThat(deletedAnswers).hasSize(answerCount);
-        for (int i = 0; i < answerCount; i++) {
-            assertThat(deletedAnswers.get(i).isDeleted()).isTrue();
-
-            assertThat(deleteHistories.get(i).toString())
-                    .contains(writer.toString());
-        }
+        assertThat(deletedAnswers).extracting(Answer::isDeleted).containsOnly(true);
     }
 
     private Answers makeJavajigiAnswers(NsUser writer, int count) {

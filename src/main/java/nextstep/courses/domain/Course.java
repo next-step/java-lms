@@ -9,6 +9,8 @@ public class Course {
 
     private Long creatorId;
 
+    private final Sessions sessions = new Sessions();
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -26,6 +28,14 @@ public class Course {
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void addSession(Session session) {
+        sessions.addSession(session);
+    }
+
+    public Sessions getSessions() {
+        return sessions;
     }
 
     public String getTitle() {

@@ -69,9 +69,10 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
-        List<DeleteHistory> histories = new ArrayList<>();
         assertSameUser(loginUser);
         assertNotDelete();
+
+        List<DeleteHistory> histories = new ArrayList<>();
 
         histories.add(DeleteHistoryFactory.deleteHistoryForQuestion(loginUser, this));
         this.deleted = true;
@@ -90,6 +91,7 @@ public class Question {
 
     private void assertNotDelete() throws CannotDeleteException {
         String errorMessage = "이미 삭제된 질문입니다.";
+
         if (isDeleted()) {
             throw new CannotDeleteException(errorMessage);
         }
