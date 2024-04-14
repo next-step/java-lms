@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PaySessionTest {
-
+    public static PaySession P1 = new PaySession(1L, SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of(), 5, 1000);
     private final int maximumStudents = 5;
     private final long amount = 1000;
     private final Long sessionId = 1L;

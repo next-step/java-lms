@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FreeSessionTest {
 
+    public static FreeSession F1 = new FreeSession(1L, SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of());
     private final NsUser student = NsUserTest.JAVAJIGI;
     private final Long sessionId = 1L;
 
