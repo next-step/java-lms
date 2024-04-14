@@ -1,9 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.domain.SessionType;
-import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.courses.exception.SessionStatusInvalidException;
-import nextstep.courses.exception.SessionTypeInvalidException;
 
 import java.util.Arrays;
 
@@ -23,10 +20,8 @@ public enum SessionStatus {
         this.canEnroll = canEnroll;
     }
 
-    public void canEnroll() {
-        if (!this.canEnroll) {
-            throw new SessionStatusCannotEnrollmentException(this);
-        }
+    public boolean cannotEnroll() {
+        return !canEnroll;
     }
 
     public static SessionStatus convert(String status) {

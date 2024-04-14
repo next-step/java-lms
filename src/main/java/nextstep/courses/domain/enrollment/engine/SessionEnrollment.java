@@ -5,6 +5,7 @@ import nextstep.courses.domain.enrollment.SessionFee;
 import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.SessionStudent;
 import nextstep.courses.exception.SessionCapacityExceedException;
+import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
@@ -65,7 +66,9 @@ public abstract class SessionEnrollment implements SessionEnroll {
 
     @Override
     public void satisfyStatus() {
-        status.canEnroll();
+        if (status.cannotEnroll()) {
+            throw new SessionStatusCannotEnrollmentException(status);
+        }
     }
 
     @Override

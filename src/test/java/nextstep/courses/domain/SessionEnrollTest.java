@@ -3,17 +3,19 @@ package nextstep.courses.domain;
 import nextstep.courses.domain.enrollment.engine.SessionEnroll;
 import nextstep.courses.exception.SessionCapacityExceedException;
 import nextstep.courses.exception.SessionFeeMismatchException;
+import nextstep.courses.exception.SessionStatusCannotEnrollmentException;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
 import nextstep.users.domain.NsUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static nextstep.courses.domain.enrollment.SessionStatus.FINISHED;
 import static nextstep.courses.domain.enrollment.SessionStatus.RECRUITING;
 import static nextstep.courses.domain.fixture.NsUserFixture.nsUser;
 import static nextstep.courses.domain.fixture.PaymentFixture.payment;
-import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.paidSessionEnrollment;
 import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.freeSessionEnrollment;
+import static nextstep.courses.domain.fixture.SessionEnrollmentFixture.paidSessionEnrollment;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -48,6 +50,15 @@ public class SessionEnrollTest {
         Payment payment = payment(800_000L);
 
         assertThatNoException().isThrownBy(() -> enrollment.satisfyEnrollment(payment));
+    }
+
+    @Test
+    @DisplayName("[실패] 강의 신청 시 수강신청 가능한 상태가 아니라면 SessionCapacityExceedException 예외가 발생한다.")
+    void 강의_신청_수강신청_불가능() {
+        SessionEnroll enrollment = freeSessionEnrollment(FINISHED);
+
+        assertThatExceptionOfType(SessionStatusCannotEnrollmentException.class)
+                .isThrownBy(enrollment::satisfyStatus);
     }
 
     @Test
