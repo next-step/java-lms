@@ -45,20 +45,29 @@ public class Session {
     }
 
     public void enroll(final Payment payment) {
+        validateSessionStatusIsOpen();
+        validateEqualSessionFeeAndPaymentAmount(payment.amount());
+        validateSessionCurrentEnrollmentCountIsLessThanLimit();
+
+        this.currentEnrollmentCount = currentEnrollmentCount.increase();
+    }
+
+    private void validateSessionStatusIsOpen() {
         if (this.status != OPEN) {
             throw new IllegalStateException("모집 중인 강의에만 수강 신청할 수 있습니다. 현재 상태: " + this.status);
         }
+    }
 
-        final Money paymentAmount = payment.amount();
+    private void validateEqualSessionFeeAndPaymentAmount(final Money paymentAmount) {
         if (!sessionStrategy.isPaymentSufficient(paymentAmount)) {
             throw new IllegalArgumentException("결제 금액과 수강료가 일치하지 않습니다. 결제 금액: " + paymentAmount);
         }
+    }
 
+    private void validateSessionCurrentEnrollmentCountIsLessThanLimit() {
         if (!sessionStrategy.canEnrollMoreStudents(this.currentEnrollmentCount)) {
             throw new IllegalStateException("현재 수강 인원이 가득차서 더이상 수강 신청할 수 없습니다. 현재 인원: " + this.currentEnrollmentCount);
         }
-
-        this.currentEnrollmentCount = currentEnrollmentCount.increase();
     }
 
     @Override
