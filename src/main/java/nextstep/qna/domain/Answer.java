@@ -48,8 +48,11 @@ public class Answer {
         return id;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+        if (!this.writer.equals(loginUser))
+            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+        this.deleted = true;
+        return new DeleteHistory(ContentType.ANSWER, new DeleteUserInformation(this));
     }
 
     public boolean isDeleted() {
@@ -61,11 +64,6 @@ public class Answer {
 //            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
 //        return true;
 //    }
-
-    public void isOwner(NsUser writer) throws CannotDeleteException {
-        if (!this.writer.equals(writer))
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-    }
 
     public NsUser getWriter() {
         return writer;
