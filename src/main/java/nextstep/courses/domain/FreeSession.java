@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import nextstep.courses.domain.enums.SessionStatus;
 import nextstep.payments.domain.Payment;
 
 public class FreeSession extends Session {
@@ -22,7 +21,7 @@ public class FreeSession extends Session {
 
 	@Override
 	public void enroll(Payment payment) {
-		if(sessionStatus == SessionStatus.READY){
+		if (sessionStatus.isStatusNotRecruiting()) {
 			numberOfStudents++;
 			return;
 		}

@@ -34,8 +34,10 @@ public class FreeSessionTest {
 	@Test
 	@DisplayName("수강 신청 시 status가 모집 중이면 정상 신청, 현재 수강인원 1 증가")
 	void enrolment() {
+		//when
 		freeSession.enroll(payment);
 
+		//then
 		assertThat(freeSession.hasNumberOfStudents(1)).isTrue();
 	}
 }

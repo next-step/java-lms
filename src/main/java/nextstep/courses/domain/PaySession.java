@@ -11,7 +11,7 @@ public class PaySession extends Session {
 	private final Long price;
 	private final int maxNumberOfStudents;
 
-	public PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
+	public static PaySession of(SessionDate sessionDate, Long price, int maxNumberOfStudents, CoverImageInfo coverImageInfo) {
 		return new PaySession(sessionDate, price, maxNumberOfStudents, coverImageInfo);
 	}
 
@@ -27,7 +27,12 @@ public class PaySession extends Session {
 
 	@Override
 	public void enroll(Payment payment) {
-		if (sessionStatus != SessionStatus.READY) {
+		validateEnrollable(payment);
+		numberOfStudents++;
+	}
+
+	private void validateEnrollable(Payment payment) {
+		if (sessionStatus.isStatusNotRecruiting()) {
 			throw new IllegalStateException(SESSION_NOT_RECRUITING);
 		}
 
@@ -38,7 +43,5 @@ public class PaySession extends Session {
 		if (numberOfStudents >= maxNumberOfStudents) {
 			throw new IllegalArgumentException(NUMBER_OF_STUDENTS_IS_FULL);
 		}
-
-		numberOfStudents++;
 	}
 }
