@@ -1,5 +1,8 @@
 package nextstep.users.domain;
 
+import static nextstep.users.domain.UserAuthorization.STUDENT;
+import static nextstep.users.domain.UserAuthorization.TEACHER;
+
 import nextstep.qna.UnAuthorizedException;
 
 import java.time.LocalDateTime;
@@ -18,6 +21,8 @@ public class NsUser {
 
     private String email;
 
+    private UserAuthorization authorization;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -26,7 +31,7 @@ public class NsUser {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email) {
-        this(id, userId, password, name, email, LocalDateTime.now(), null);
+        this(id, userId, password, name, email, STUDENT,  LocalDateTime.now(), null);
     }
 
     public NsUser(Long id, String userId, String password, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -35,6 +40,18 @@ public class NsUser {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.authorization = STUDENT;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public NsUser(Long id, String userId, String password, String name, String email, UserAuthorization authorization, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.authorization = authorization;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -115,6 +132,10 @@ public class NsUser {
 
     public boolean isGuestUser() {
         return false;
+    }
+
+    public boolean isTeacher() {
+        return authorization == TEACHER;
     }
 
     private static class GuestNsUser extends NsUser {
