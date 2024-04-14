@@ -1,16 +1,17 @@
 package nextstep.sessions.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import nextstep.users.domain.NsUser;
-import nextstep.users.domain.NsUsers;
+import nextstep.courses.domain.Course;
+import nextstep.enrollment.domain.Enrollment;
 
 public class Session {
 
     private Long id;
 
-    private int maxNumber;
+    private int maxEnrollment;
 
     private SessionStatus sessionStatus;
 
@@ -18,61 +19,89 @@ public class Session {
 
     private SessionPeriod sessionPeriod;
 
-    private NsUsers attendees = new NsUsers();
+    private Course course;
 
-    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime endAt) {
-        this(maxNumber, sessionStatus, price, LocalDateTime.now(), endAt);
+    private List<Enrollment> enrollments = new ArrayList<>();
+
+    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+                   final LocalDateTime endAt, final Course course) {
+        this(maxEnrollment, sessionStatus, price, LocalDateTime.now(), endAt, course);
     }
 
-    public Session(final int maxNumber, final SessionStatus sessionStatus, final long price, final LocalDateTime startedAt, final LocalDateTime endAt) {
-        this.maxNumber = maxNumber;
+    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+        this(null, maxEnrollment, sessionStatus, price, startedAt, endAt, course);
+    }
+
+    public Session(final Long id, final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+                   final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
+        this.id = id;
+        this.maxEnrollment = maxEnrollment;
         this.sessionStatus = sessionStatus;
         this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
+        this.course = course;
     }
 
-    public void enroll(final NsUser user, final long price) {
-        validate(user, price);
-        attendees.add(user);
+    public static Session free(final SessionStatus sessionStatus, final Course course) {
+        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course);
     }
 
-    public static Session free(final SessionStatus sessionStatus) {
-        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX);
+    public boolean isFull() {
+        return enrollments.size() == maxEnrollment;
     }
 
-    private void validate(final NsUser user, final long price) {
-        validateNonFreeSession();
+    public boolean isNotRecruiting() {
+        return sessionStatus.isNotRecruiting();
+    }
+
+    public void validatePriceEquality(final long price) {
         sessionPrice.validatePriceEquality(price);
-        validateAttendeeNumber();
-        validateRecruitingStatus();
-        validateAlreadyEnroll(user);
     }
 
-    private void validateNonFreeSession() {
+    public void validateNonFreeSession() {
         if (sessionPrice.isNotFree()) {
             sessionPeriod.validateStartedAt();
         }
     }
 
-    private void validateAttendeeNumber() {
-        if (attendees.hasExceededMaxCapacity(maxNumber)) {
-            throw new IllegalArgumentException("수강 인원이 초과되었습니다.");
-        }
+    public boolean canEnroll(final Enrollment enrollment) {
+        return enrollments.contains(enrollment);
     }
 
-    private void validateRecruitingStatus() {
-        if (sessionStatus.isNotRecruiting()) {
-            throw new IllegalArgumentException("모집중인 강의가 아닙니다.");
-        }
+    public void addEnrollment(final Enrollment enrollment) {
+        enrollments.add(enrollment);
     }
 
-    private void validateAlreadyEnroll(final NsUser user) {
-        if (attendees.contains(user)) {
-            throw new IllegalArgumentException("이미 수강 신청한 사용자입니다.");
-        }
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
     }
 
-    public List<NsUser> getAttendees() {
-        return attendees.getUsers();
+    public Long getId() {
+        return id;
+    }
+
+    public int getMaxEnrollment() {
+        return maxEnrollment;
+    }
+
+    public String getSessionStatus() {
+        return sessionStatus.name();
+    }
+
+    public long getSessionPrice() {
+        return sessionPrice.getValue();
+    }
+
+    public LocalDateTime getSessionStartDate() {
+        return sessionPeriod.getStartedAt();
+    }
+
+    public LocalDateTime getSessionEndDate() {
+        return sessionPeriod.getEndAt();
+    }
+
+    public Long getCourse() {
+        return course.getId();
     }
 }

@@ -10,3 +10,13 @@
   - [x] 이미지 크기가 1MB를 초과하는 경우 업로드 불가
   - [x] 이미지 타입은 gif, jpg(jpeg 포함), png, svg만 허용
   - [x] 이미지의 width는 300픽셀, height는 200픽셀 이상이어야 하며, width와 height의 비율은 3:2여야 함
+
+# DB 설계
+
+- [x] 도메인 모델 DB 테이블과 매핑
+
+# 리팩토링
+
+- [x] 추가한 도메인들에 대한 저장 로직을 각각의 Repository를 생성하여 처리
+  - [x] Enrollment
+  - [x] Session

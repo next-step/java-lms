@@ -47,4 +47,20 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
+
+    public String getContentType() {
+        return contentType.name();
+    }
+
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public Long getDeletedBy() {
+        return deletedBy.getId();
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
 }
