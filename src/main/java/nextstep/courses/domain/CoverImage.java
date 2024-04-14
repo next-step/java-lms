@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class CoverImage extends BaseTimeEntity{
+public class CoverImage extends BaseTimeEntity {
 
     private final ImageCapacity capacity;
     private final ImageType type;
@@ -10,7 +10,7 @@ public class CoverImage extends BaseTimeEntity{
     private final Long sessionId;
     private final Long id;
 
-    public CoverImage(Long capacity, String type, Long width, Long hegith , Long sessionId, Long id){
+    public CoverImage(Long capacity, String type, Long width, Long hegith, Long sessionId, Long id) {
         this(LocalDateTime.now(), LocalDateTime.now(), capacity, type, width, hegith, sessionId, id);
     }
 

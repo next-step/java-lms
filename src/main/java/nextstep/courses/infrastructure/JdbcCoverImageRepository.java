@@ -44,7 +44,7 @@ public class JdbcCoverImageRepository implements CoverImageRepository {
                 rs.getLong(5),
                 rs.getLong(6),
                 rs.getLong(1)
-                );
+        );
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, coverImageId));
     }
 }

@@ -5,7 +5,7 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Session extends BaseTimeEntity{
+public class Session extends BaseTimeEntity {
 
     private final CoverImage coverImage;
     private final EnrollmentManager enrollmentManager;

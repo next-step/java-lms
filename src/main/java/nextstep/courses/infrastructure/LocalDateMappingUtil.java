@@ -13,7 +13,7 @@ public class LocalDateMappingUtil {
         return timestamp.toLocalDateTime();
     }
 
-    public static LocalDate toLocalDate(Timestamp timestamp){
+    public static LocalDate toLocalDate(Timestamp timestamp) {
         if (timestamp == null) {
             return null;
         }

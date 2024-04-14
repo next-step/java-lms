@@ -26,7 +26,7 @@ class SessionRepositoryTest {
     private SessionRepository sessionRepository;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         sessionRepository = new JdbcSessionRepository(jdbcTemplate);
     }
 

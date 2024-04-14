@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 session.getSessionPeriod().getEndDate(),
                 session.getCreatedAt(),
                 session.getUpdatedAt()
-                );
+        );
     }
 
     @Override
@@ -46,7 +47,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 LocalDateMappingUtil.toLocalDate(rs.getTimestamp(7)),
                 rs.getLong(5),
                 rs.getLong(1)
-                );
+        );
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, sessionId));
     }
 }

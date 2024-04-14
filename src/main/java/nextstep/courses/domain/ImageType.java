@@ -15,7 +15,7 @@ public enum ImageType {
     SVG("svg");
 
     private static final Map<String, ImageType> map = Arrays.stream(values())
-            .collect(Collectors.toMap(imageType -> imageType.type , Function.identity()));
+            .collect(Collectors.toMap(imageType -> imageType.type, Function.identity()));
     private final String type;
 
     ImageType(String type) {
@@ -25,7 +25,9 @@ public enum ImageType {
     public static ImageType getImageType(String type) {
         type = type.toLowerCase();
         return Optional.ofNullable(map.get(type))
-                .orElseThrow(() -> {throw new IllegalArgumentException("지원하지않는 이미지 타입입니다.");});
+                .orElseThrow(() -> {
+                    throw new IllegalArgumentException("지원하지않는 이미지 타입입니다.");
+                });
     }
 
     public String getType() {
