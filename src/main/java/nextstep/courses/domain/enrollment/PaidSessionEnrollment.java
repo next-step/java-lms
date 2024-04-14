@@ -8,16 +8,12 @@ import java.util.List;
 
 public class PaidSessionEnrollment extends SessionEnrollment {
 
-    public PaidSessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
-        super(enrollment, students);
+    public PaidSessionEnrollment(Long sessionId, SessionEnrollment enrollment, List<SessionStudent> students) {
+        super(sessionId, enrollment, students);
     }
 
     public PaidSessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
         super(sessionId, status, capacity, fee);
-    }
-
-    public PaidSessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
-        super(sessionId, status, capacity, fee, students);
     }
 
     public PaidSessionEnrollment(SessionStatus status, int capacity, long fee) {

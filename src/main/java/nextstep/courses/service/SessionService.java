@@ -1,6 +1,7 @@
 package nextstep.courses.service;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.enrollment.SessionStudent;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.engine.SessionRepository;
@@ -33,18 +34,14 @@ public class SessionService {
     }
 
     public void enroll(Long sessionId, NsUser user) {
-        Session session = findSession(sessionId);
+        Session findSession = sessionRepository.findById(sessionId);
+        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
+        Session session = SessionFactory.get(findSession, findStudents);
 
         Payment payment = paymentService.payment(sessionId, user.getId(), session.getEnrollment().getFee());
         SessionStudent student = session.enroll(user, payment);
 
         sessionStudentRepository.save(student);
-    }
-
-    private Session findSession(Long sessionId) {
-        List<SessionStudent> findStudents = sessionStudentRepository.findAllBySessionId(sessionId);
-        Session findSession = sessionRepository.findById(sessionId);
-        return new Session(findSession, findStudents);
     }
 
 }

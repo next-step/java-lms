@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.Session;
+import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.infrastructure.engine.SessionRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
@@ -39,7 +40,7 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     private RowMapper<Session> sessionEntityRowMapper() {
-        return (rs, rowNum) -> new Session(
+        return (rs, rowNum) -> SessionFactory.get(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),

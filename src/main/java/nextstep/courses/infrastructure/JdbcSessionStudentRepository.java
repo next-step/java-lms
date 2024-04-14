@@ -5,11 +5,13 @@ import nextstep.courses.infrastructure.engine.SessionStudentRepository;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static java.time.LocalTime.now;
 
+@Repository("sessionStudentRepository")
 public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
     private JdbcOperations jdbcTemplate;
