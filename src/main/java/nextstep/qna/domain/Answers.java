@@ -10,6 +10,10 @@ public class Answers {
 
     private List<Answer> answers;
 
+    public Answers() {
+        this(new ArrayList<>());
+    }
+
     public Answers(List<Answer> answers) {
         this.answers = answers;
     }
@@ -31,5 +35,22 @@ public class Answers {
         return answers.stream()
             .map(DeleteHistory::ofAnswer)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Answers answers1 = (Answers) o;
+        return Objects.equals(answers, answers1.answers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(answers);
     }
 }
