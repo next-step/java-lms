@@ -1,12 +1,14 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.enrollment.SessionStudent;
 import nextstep.courses.infrastructure.engine.SessionStudentRepository;
-import nextstep.courses.infrastructure.entity.SessionStudentEntity;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
+
+import static java.time.LocalTime.now;
 
 public class JdbcSessionStudentRepository implements SessionStudentRepository {
 
@@ -17,15 +19,14 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
     }
 
     @Override
-    public int save(SessionStudentEntity entity) {
-        String sql = "insert into session_student (session_id, ns_user_id, created_at, updated_at) " +
-                "values (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, entity.getSessionId(), entity.getNsUserId(),
-                entity.getCreatedAt(), entity.getUpdatedAt());
+    public int save(SessionStudent student) {
+        String sql = "insert into session_student (session_id, ns_user_id, created_at) " +
+                "values (?, ?, ?)";
+        return jdbcTemplate.update(sql, student.getSessionId(), student.getNsUserId(), now());
     }
 
     @Override
-    public List<SessionStudentEntity> findAllBySessionId(Long sessionId) {
+    public List<SessionStudent> findAllBySessionId(Long sessionId) {
         String sql = "select id, session_id, ns_user_id, created_at, updated_at " +
                 "from session_student " +
                 "where session_id = ?";
@@ -33,8 +34,8 @@ public class JdbcSessionStudentRepository implements SessionStudentRepository {
         return jdbcTemplate.query(sql, studentEntityMapper(), sessionId);
     }
 
-    private RowMapper<SessionStudentEntity> studentEntityMapper() {
-        return (rs, rowNum) -> new SessionStudentEntity(
+    private RowMapper<SessionStudent> studentEntityMapper() {
+        return (rs, rowNum) -> new SessionStudent(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),

@@ -1,11 +1,13 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.image.SessionCoverImage;
 import nextstep.courses.infrastructure.engine.SessionCoverImageRepository;
-import nextstep.courses.infrastructure.entity.SessionCoverImageEntity;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import static java.time.LocalTime.now;
 
 @Repository("sessionCoverImageRepository")
 public class JdbcSessionCoverImageRepository implements SessionCoverImageRepository {
@@ -17,28 +19,27 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
     }
 
     @Override
-    public int save(SessionCoverImageEntity entity) {
-        String sql = "insert into session_cover_image (session_id, size, width, height, extension, created_at, updated_at) " +
-                "values (?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, entity.getSessionId(),
-                entity.getSize(),
-                entity.getWidth(),
-                entity.getHeight(),
-                entity.getExtension(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt());
+    public int save(SessionCoverImage coverImage) {
+        String sql = "insert into session_cover_image (session_id, size, width, height, extension, created_at) " +
+                "values (?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, coverImage.getSessionId(),
+                coverImage.getFileSize().get(),
+                coverImage.getSize().getWidth(),
+                coverImage.getSize().getHeight(),
+                coverImage.getExtension().get(),
+                now());
     }
 
     @Override
-    public SessionCoverImageEntity findById(Long id) {
+    public SessionCoverImage findById(Long id) {
         String sql = "select id, session_id, size, width, height, extension, created_at, updated_at " +
                 "from session_cover_image " +
                 "where id = ?";
         return jdbcTemplate.queryForObject(sql, coverImageRowMapper(), id);
     }
 
-    private RowMapper<SessionCoverImageEntity> coverImageRowMapper() {
-        return (rs, rowNum) -> new SessionCoverImageEntity(
+    private RowMapper<SessionCoverImage> coverImageRowMapper() {
+        return (rs, rowNum) -> new SessionCoverImage(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getLong(3),

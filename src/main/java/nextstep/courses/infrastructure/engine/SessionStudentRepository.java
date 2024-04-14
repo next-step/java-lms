@@ -1,13 +1,13 @@
 package nextstep.courses.infrastructure.engine;
 
-import nextstep.courses.infrastructure.entity.SessionStudentEntity;
+import nextstep.courses.domain.enrollment.SessionStudent;
 
 import java.util.List;
 
 public interface SessionStudentRepository {
 
-    int save(SessionStudentEntity entity);
+    int save(SessionStudent student);
 
-    List<SessionStudentEntity> findAllBySessionId(Long sessionId);
+    List<SessionStudent> findAllBySessionId(Long sessionId);
 
 }

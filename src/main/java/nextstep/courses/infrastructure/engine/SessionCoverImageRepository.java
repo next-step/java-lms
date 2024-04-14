@@ -1,11 +1,11 @@
 package nextstep.courses.infrastructure.engine;
 
-import nextstep.courses.infrastructure.entity.SessionCoverImageEntity;
+import nextstep.courses.domain.image.SessionCoverImage;
 
 public interface SessionCoverImageRepository {
 
-    int save(SessionCoverImageEntity entity);
+    int save(SessionCoverImage coverImage);
 
-    SessionCoverImageEntity findById(Long id);
+    SessionCoverImage findById(Long id);
 
 }

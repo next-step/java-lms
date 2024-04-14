@@ -1,11 +1,14 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.Session;
+import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.courses.infrastructure.engine.SessionRepository;
-import nextstep.courses.infrastructure.entity.SessionEntity;
 import nextstep.courses.infrastructure.util.LocalDateTimeConverter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import static java.time.LocalTime.now;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -17,25 +20,26 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public int save(SessionEntity entity) {
-        String sql = "insert into session (course_id, type, status, capacity, fee, created_at, updated_at) " +
-                     "values (?, ?, ?, ?, ?, ?, ?)";
+    public int save(Session session) {
+        String sql = "insert into session (course_id, type, status, capacity, fee, created_at) " +
+                     "values (?, ?, ?, ?, ?, ?)";
 
-        return jdbcTemplate.update(sql, entity.getCourseId(), entity.getType(),
-                entity.getStatus(), entity.getCapacity(), entity.getFee(),
-                entity.getCreatedAt(), entity.getUpdatedAt());
+        SessionEnrollment enrollment = session.getEnrollment();
+        return jdbcTemplate.update(sql, session.getCourseId(), session.getType().get(),
+                enrollment.getStatus().get(), enrollment.getCapacity().get(), enrollment.getFee().get(),
+                now());
     }
 
     @Override
-    public SessionEntity findById(Long id) {
+    public Session findById(Long id) {
         String sql = "select id, course_id, type, status, capacity, fee, created_at, updated_at " +
                      "from session " +
                      "where id = ?";
         return jdbcTemplate.queryForObject(sql, sessionEntityRowMapper(), id);
     }
 
-    private RowMapper<SessionEntity> sessionEntityRowMapper() {
-        return (rs, rowNum) -> new SessionEntity(
+    private RowMapper<Session> sessionEntityRowMapper() {
+        return (rs, rowNum) -> new Session(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getString(3),
