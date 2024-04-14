@@ -12,10 +12,10 @@ public class Session extends BaseEntity {
 
     private Image image;
 
-    private SessionDetails sessionDetails;
+    private SessionRegisterDetails sessionRegisterDetails;
 
-    public Session(long id, String sessionName, SessionDetails sessionDetails) {
-        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionDetails);
+    public Session(long id, String sessionName, SessionRegisterDetails sessionRegisterDetails) {
+        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionRegisterDetails);
     }
 
     public Session(long id,
@@ -23,20 +23,20 @@ public class Session extends BaseEntity {
                    LocalDateTime endedAt,
                    String sessionName,
                    Image image,
-                   SessionDetails sessionDetails
+                   SessionRegisterDetails sessionRegisterDetails
     ) {
         super(id, startedAt, endedAt);
         this.sessionName = sessionName;
         this.image = image;
-        this.sessionDetails = sessionDetails;
+        this.sessionRegisterDetails = sessionRegisterDetails;
     }
 
     public void register(NsUser listener, Long amount) {
-        sessionDetails.register(listener, amount);
+        sessionRegisterDetails.register(listener, amount);
     }
 
     public boolean isContainListener(NsUser listener) {
-        return sessionDetails.isContainsListener(listener);
+        return sessionRegisterDetails.isContainsListener(listener);
     }
 
 }

@@ -16,7 +16,7 @@ public class SessionTest {
 
     @BeforeEach
     void setUp() {
-        SessionDetails details = new SessionDetails(40, 50, 30000L, PAID, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 50, 30000L, PAID, RECRUITING);
         tddCleanCodeJava = new Session(1L, "tdd, 클린코드 java", details);
     }
 

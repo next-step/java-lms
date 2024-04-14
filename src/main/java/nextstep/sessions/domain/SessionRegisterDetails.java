@@ -5,7 +5,7 @@ import nextstep.users.domain.NsUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SessionDetails {
+public class SessionRegisterDetails {
 
     private int currentCountOfStudents;
 
@@ -19,21 +19,21 @@ public class SessionDetails {
 
     private List<NsUser> listeners;
 
-    public SessionDetails(int currentCountOfStudents,
-                          int maxOfStudents,
-                          long price,
-                          SessionType sessionType,
-                          SessionStatus sessionStatus
+    public SessionRegisterDetails(int currentCountOfStudents,
+                                  int maxOfStudents,
+                                  long price,
+                                  SessionType sessionType,
+                                  SessionStatus sessionStatus
     ) {
         this(currentCountOfStudents, maxOfStudents, price, sessionType, sessionStatus, new ArrayList<>());
     }
 
-    public SessionDetails(int currentCountOfStudents,
-                          int maxOfStudents,
-                          long price,
-                          SessionType sessionType,
-                          SessionStatus sessionStatus,
-                          List<NsUser> listeners
+    public SessionRegisterDetails(int currentCountOfStudents,
+                                  int maxOfStudents,
+                                  long price,
+                                  SessionType sessionType,
+                                  SessionStatus sessionStatus,
+                                  List<NsUser> listeners
     ) {
         this.currentCountOfStudents = currentCountOfStudents;
         this.maxOfStudents = maxOfStudents;

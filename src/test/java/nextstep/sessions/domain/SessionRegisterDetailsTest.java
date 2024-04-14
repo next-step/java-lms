@@ -11,12 +11,12 @@ import static nextstep.sessions.domain.SessionType.PAID;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SessionDetailsTest {
+public class SessionRegisterDetailsTest {
 
     @DisplayName("무료강의는 수강신청을 언제든 할 수 있다.(조건X)")
     @Test
     void always() {
-        SessionDetails details = new SessionDetails(40, 0, 30000, FREE, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 0, 30000, FREE, RECRUITING);
         details.register(NsUserTest.JAVAJIGI, 30000L);
     }
 
@@ -26,7 +26,7 @@ public class SessionDetailsTest {
         int currentCountOfStudents = 40;
         int maxOfStudents = 40;
 
-        SessionDetails details = new SessionDetails(currentCountOfStudents, maxOfStudents, 30000, PAID, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(currentCountOfStudents, maxOfStudents, 30000, PAID, RECRUITING);
 
         assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -37,7 +37,7 @@ public class SessionDetailsTest {
     @Test
     void statusIsNotRecruiting() {
         SessionStatus end = END;
-        SessionDetails details = new SessionDetails(39, 40, 30000, PAID, end);
+        SessionRegisterDetails details = new SessionRegisterDetails(39, 40, 30000, PAID, end);
 
         assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -47,7 +47,7 @@ public class SessionDetailsTest {
     @DisplayName("강의의 가격과 결제한 금액이 같지 않은지 검증한다")
     @Test
     void isSameAmount() {
-        SessionDetails details = new SessionDetails(40, 0, 30000, PAID, RECRUITING);
+        SessionRegisterDetails details = new SessionRegisterDetails(40, 0, 30000, PAID, RECRUITING);
 
         assertThat(details.isNotSamePrice(20000)).isTrue();
     }
