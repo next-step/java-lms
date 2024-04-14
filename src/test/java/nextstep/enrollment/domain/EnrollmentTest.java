@@ -1,5 +1,6 @@
 package nextstep.enrollment.domain;
 
+import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -7,12 +8,10 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 import nextstep.courses.domain.Course;
 import nextstep.sessions.domain.Session;
-import nextstep.sessions.domain.SessionStatus;
+import nextstep.sessions.domain.SessionRecruitingStatus;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 
@@ -26,7 +25,7 @@ class EnrollmentTest {
     @BeforeEach
     void setUp() {
         course = new Course("TDD, 클린 코드 with Java", 1L);
-        session = new Session(2, SessionStatus.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1),
+        session = new Session(2, SessionRecruitingStatus.RECRUITING, SESSION_PRICE, LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2), course);
     }
 
@@ -40,10 +39,9 @@ class EnrollmentTest {
         ).withMessage("수강 인원이 초과되었습니다.");
     }
 
-    @ParameterizedTest
-    @EnumSource(value = SessionStatus.class, names = {"PREPARING", "END"})
-    void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다(final SessionStatus sessionStatus) {
-        final Session session = new Session(5, sessionStatus, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), course);
+    @Test
+    void 모집중이_아닌_강의인_경우_수강_신청을_하면_실패한다() {
+        final Session session = new Session(5, NON_RECRUITING, 100000L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), course);
 
         assertThatIllegalArgumentException().isThrownBy(() -> new Enrollment(session, NsUserTest.JAVAJIGI).enroll(100000L))
                 .withMessage("모집중인 강의가 아닙니다.");
@@ -51,7 +49,7 @@ class EnrollmentTest {
 
     @Test
     void 시작일이_지난_강의를_수강_신청을_하면_실패한다() {
-        final Session session = new Session(5, SessionStatus.RECRUITING, 100000L, LocalDateTime.now().plusDays(1), course);
+        final Session session = new Session(5, SessionRecruitingStatus.RECRUITING, 100000L, LocalDateTime.now().plusDays(1), course);
 
         assertThatIllegalArgumentException().isThrownBy(() -> new Enrollment(session, NsUserTest.JAVAJIGI).enroll(100000L))
                 .withMessage("시작일이 지난 강의는 수강 신청할 수 없습니다.");
@@ -66,7 +64,7 @@ class EnrollmentTest {
     @Test
     void 무료_강의_수강_신청한다() {
         // given
-        final Session freeSession = Session.free(SessionStatus.RECRUITING, course);
+        final Session freeSession = Session.free(SessionRecruitingStatus.RECRUITING, course);
 
         // when
         new Enrollment(freeSession, NsUserTest.JAVAJIGI).enroll(0L);

@@ -13,7 +13,7 @@ public class Session {
 
     private int maxEnrollment;
 
-    private SessionStatus sessionStatus;
+    private SessionRecruitingStatus sessionRecruitingStatus;
 
     private SessionPrice sessionPrice;
 
@@ -23,28 +23,28 @@ public class Session {
 
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+    public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus, final long price,
                    final LocalDateTime endAt, final Course course) {
-        this(maxEnrollment, sessionStatus, price, LocalDateTime.now(), endAt, course);
+        this(maxEnrollment, sessionRecruitingStatus, price, LocalDateTime.now(), endAt, course);
     }
 
-    public Session(final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+    public Session(final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus, final long price,
                    final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
-        this(null, maxEnrollment, sessionStatus, price, startedAt, endAt, course);
+        this(null, maxEnrollment, sessionRecruitingStatus, price, startedAt, endAt, course);
     }
 
-    public Session(final Long id, final int maxEnrollment, final SessionStatus sessionStatus, final long price,
+    public Session(final Long id, final int maxEnrollment, final SessionRecruitingStatus sessionRecruitingStatus, final long price,
                    final LocalDateTime startedAt, final LocalDateTime endAt, final Course course) {
         this.id = id;
         this.maxEnrollment = maxEnrollment;
-        this.sessionStatus = sessionStatus;
+        this.sessionRecruitingStatus = sessionRecruitingStatus;
         this.sessionPrice = new SessionPrice(price);
         this.sessionPeriod = new SessionPeriod(startedAt, endAt);
         this.course = course;
     }
 
-    public static Session free(final SessionStatus sessionStatus, final Course course) {
-        return new Session(Integer.MAX_VALUE, sessionStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course);
+    public static Session free(final SessionRecruitingStatus sessionRecruitingStatus, final Course course) {
+        return new Session(Integer.MAX_VALUE, sessionRecruitingStatus, 0L, LocalDateTime.now(), LocalDateTime.MAX, course);
     }
 
     public boolean isFull() {
@@ -52,7 +52,7 @@ public class Session {
     }
 
     public boolean isNotRecruiting() {
-        return sessionStatus.isNotRecruiting();
+        return sessionRecruitingStatus.isNotRecruiting();
     }
 
     public void validatePriceEquality(final long price) {
@@ -86,7 +86,7 @@ public class Session {
     }
 
     public String getSessionStatus() {
-        return sessionStatus.name();
+        return sessionRecruitingStatus.name();
     }
 
     public long getSessionPrice() {

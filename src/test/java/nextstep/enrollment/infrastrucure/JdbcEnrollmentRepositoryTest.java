@@ -1,6 +1,6 @@
 package nextstep.enrollment.infrastrucure;
 
-import static nextstep.sessions.domain.SessionStatus.RECRUITING;
+import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;

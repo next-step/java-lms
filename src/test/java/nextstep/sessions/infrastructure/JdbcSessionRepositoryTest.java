@@ -1,6 +1,6 @@
 package nextstep.sessions.infrastructure;
 
-import static nextstep.sessions.domain.SessionStatus.PREPARING;
+import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
@@ -32,7 +32,7 @@ class JdbcSessionRepositoryTest {
     void 강의를_저장한다() {
         // given
         final Course course = new Course(1L, "TDD, 클린 코드 with Java", 1L, LocalDateTime.now(), null);
-        final Session session = new Session(50, PREPARING, 800_000, LocalDateTime.now().plusDays(1),
+        final Session session = new Session(50, NON_RECRUITING, 800_000, LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusMonths(1), course);
 
         // when
