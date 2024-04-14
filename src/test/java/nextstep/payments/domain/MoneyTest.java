@@ -1,6 +1,6 @@
-package nextstep.courses.domain.session.strategy;
+package nextstep.payments.domain;
 
-import static nextstep.courses.domain.session.strategy.Money.MINIMUM_MONEY;
+import static nextstep.payments.domain.Money.MINIMUM_MONEY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 

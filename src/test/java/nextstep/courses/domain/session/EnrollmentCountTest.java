@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.strategy;
+package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

@@ -39,12 +39,11 @@ public class CoverImage {
         return Objects.equals(id, that.id) &&
                 type == that.type &&
                 Objects.equals(size, that.size) &&
-                Objects.equals(dimensions, that.dimensions) &&
-                Objects.equals(sessionId, that.sessionId);
+                Objects.equals(dimensions, that.dimensions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.type, this.size, this.dimensions, this.sessionId);
+        return Objects.hash(this.id, this.type, this.size, this.dimensions);
     }
 }

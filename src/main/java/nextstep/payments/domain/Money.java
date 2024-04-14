@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session.strategy;
+package nextstep.payments.domain;
 
 import java.util.Objects;
 
@@ -22,6 +22,10 @@ public class Money {
 
     public boolean isLessThan(final Money otherMoney) {
         return this.value < otherMoney.value;
+    }
+
+    public Money copyOf() {
+        return new Money(this.value);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package nextstep.courses.domain.session.strategy;
 
+import nextstep.courses.domain.session.EnrollmentCount;
+import nextstep.payments.domain.Money;
+
 public class PaidSessionStrategy implements SessionStrategy {
 
     private static final Money PAID_SESSION_MINIMUM_MONEY = new Money(1);
@@ -29,7 +32,12 @@ public class PaidSessionStrategy implements SessionStrategy {
     }
 
     @Override
-    public boolean canEnroll(final Money payment, final EnrollmentCount currentEnrollmentCount) {
-        return payment.equals(fee) && currentEnrollmentCount.isLessThan(enrollmentLimit);
+    public boolean isPaymentSufficient(final Money paymentAmount) {
+        return paymentAmount.equals(fee);
+    }
+
+    @Override
+    public boolean canEnrollMoreStudents(final EnrollmentCount currentEnrollmentCount) {
+        return currentEnrollmentCount.isLessThan(enrollmentLimit);
     }
 }
