@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -23,11 +24,8 @@ public enum ImageType {
 
     public static ImageType getImageType(String type) {
         type = type.toLowerCase();
-        ImageType imageType = map.get(type);
-        if (imageType == null) {
-            throw new IllegalArgumentException("지원하지않는 이미지 타입입니다.");
-        }
-        return imageType;
+        return Optional.ofNullable(map.get(type))
+                .orElseThrow(() -> {throw new IllegalArgumentException("지원하지않는 이미지 타입입니다.");});
     }
 
     public String getType() {
