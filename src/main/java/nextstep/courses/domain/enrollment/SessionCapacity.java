@@ -1,6 +1,6 @@
 package nextstep.courses.domain.enrollment;
 
-import nextstep.courses.exception.SessionCapacityExceedException;
+import nextstep.courses.exception.SessionCapacityInvalidException;
 
 public class SessionCapacity {
 
@@ -23,7 +23,7 @@ public class SessionCapacity {
 
     private void validate(int capacity) {
         if (capacity < MIN_CAPACITY) {
-            throw new SessionCapacityExceedException(capacity);
+            throw new SessionCapacityInvalidException(capacity);
         }
     }
 
