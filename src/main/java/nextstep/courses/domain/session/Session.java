@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.BaseTime;
 import nextstep.courses.domain.enrollment.Enrollments;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.util.List;
@@ -75,6 +76,10 @@ public class Session extends BaseTime {
 
   public boolean isFree() {
     return sessionInfo.getIsFree();
+  }
+
+  public Payment getPaymentInfo(NsUser user) {
+    return enrollments.getPaymentInfo(this, user);
   }
 
   @Override

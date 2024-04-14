@@ -1,10 +1,10 @@
 package nextstep.courses;
 
-import nextstep.courses.service.CourseService;
+import nextstep.courses.service.PrintExampleService;
 
 public class CourseApplication {
   public static void main(String[] args) {
-    CourseService courseService = new CourseService();
-    courseService.start();
+    PrintExampleService printExampleService = new PrintExampleService();
+    printExampleService.start();
   }
 }
