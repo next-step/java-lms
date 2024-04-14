@@ -30,6 +30,14 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public void addSession(Session session) {
         sessions.addSession(session);
     }

@@ -5,6 +5,8 @@ import nextstep.courses.domain.exception.NotRecruitException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.Set;
+
 public class PaySession extends Session {
 
     private final int maximumStudents;
@@ -12,6 +14,14 @@ public class PaySession extends Session {
 
     public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, int maximumStudents, long amount) {
         super(id, sessionImage, sessionStatus, sessionDate);
+        assertValidMaximumStudents(maximumStudents);
+        assertValidAmount(amount);
+        this.amount = amount;
+        this.maximumStudents = maximumStudents;
+    }
+
+    public PaySession(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students, int maximumStudents, long amount) {
+        super(id, sessionImage, sessionStatus, sessionDate, students);
         assertValidMaximumStudents(maximumStudents);
         assertValidAmount(amount);
         this.amount = amount;
@@ -32,6 +42,14 @@ public class PaySession extends Session {
         if (amount <= 0) {
             throw new IllegalArgumentException(errorMessage);
         }
+    }
+
+    public int getMaximumStudents() {
+        return maximumStudents;
+    }
+
+    public long getAmount() {
+        return amount;
     }
 
     @Override

@@ -14,4 +14,8 @@ public class TestSessionFactory {
     static public Session makeSession(Long id, SessionStatus sessionStatus) {
         return new TestSession(id, SessionImageTest.S1, sessionStatus, SessionDateTest.of());
     }
+
+    static public Session recruitStatusSession2(Long id) {
+        return new TestSession2(id, SessionImageTest.S1, SessionStatus.RECRUIT, SessionDateTest.of());
+    }
 }

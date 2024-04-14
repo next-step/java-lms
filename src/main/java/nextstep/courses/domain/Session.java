@@ -14,7 +14,7 @@ public abstract class Session {
     private final Long id;
     private final SessionImage sessionImage;
     private SessionStatus sessionStatus;
-    private final Set<NsUser> students = new HashSet<>();
+    private final Set<NsUser> students;
     private final SessionDate sessionDate;
 
     public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate) {
@@ -22,6 +22,15 @@ public abstract class Session {
         this.sessionImage = sessionImage;
         this.sessionStatus = sessionStatus;
         this.sessionDate = sessionDate;
+        this.students = new HashSet<>();
+    }
+
+    public Session(Long id, SessionImage sessionImage, SessionStatus sessionStatus, SessionDate sessionDate, Set<NsUser> students) {
+        this.id = id;
+        this.sessionImage = sessionImage;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.students = students;
     }
 
     public final void enrollmentUser(NsUser user, Payment payment) {
@@ -81,6 +90,6 @@ public abstract class Session {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, this.getClass());
     }
 }
