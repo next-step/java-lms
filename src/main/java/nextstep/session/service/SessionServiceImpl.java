@@ -65,11 +65,17 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void approveStudent(long sessionId, Student student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.approveStudent(student);
+
         sessionRepository.approveStudent(sessionId, student);
     }
 
     @Override
     public void denyStudent(long sessionId, Student student) {
+        Session session = sessionRepository.findById(sessionId);
+        session.denyStudent(student);
+
         sessionRepository.denyStudent(sessionId, student);
     }
 }

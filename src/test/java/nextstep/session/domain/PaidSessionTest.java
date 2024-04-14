@@ -169,4 +169,60 @@ class PaidSessionTest {
         // then
         assertThat(deleteHistoryTargets.asList()).hasSize(3);
     }
+
+    @DisplayName("존재하는 학생에 대해 승인할 수 있다.")
+    @Test
+    void canApproveExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+        session.apply(student, new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.approveStudent(student);
+
+        // then
+        assertThat(session.getStudents().findStudent(student).get().toVO().getApproved())
+                .isEqualTo("APPROVED");
+    }
+
+    @DisplayName("존재하지 않는 학생에 대해 승인할 수 없다.")
+    @Test
+    void cannotApproveNotEixst() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+
+        // then
+        assertThatThrownBy(() -> session.approveStudent(student))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("존재하는 학생에 대해 거절할 수 있다.")
+    @Test
+    void canDenyExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+        session.apply(student, new Payment("A", 1L, 1L, 100_000L), LocalDateTime.now().plusDays(2));
+
+        // when
+        session.denyStudent(student);
+
+        // then
+        assertThat(session.getStudents().findStudent(student).get().toVO().getApproved())
+                .isEqualTo("CANCELED");
+    }
+
+    @DisplayName("존재하지 않는 학생에 대해 거절할 수 없다.")
+    @Test
+    void cannotDenyNotExist() {
+        // given
+        Student student = new Student(NsUserTest.JAVAJIGI);
+        session.changeEnroll();
+
+        // then
+        assertThatThrownBy(() -> session.denyStudent(student))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

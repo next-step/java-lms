@@ -161,4 +161,23 @@ public class FreeSession implements Session {
             throw new SessionException("준비 상태에서만 세션을 삭제할 수 있습니다.");
         }
     }
+
+    @Override
+    public void approveStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .approve();
+    }
+
+    @Override
+    public void denyStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .deny();
+    }
+
+    @Override
+    public void addCover(Cover cover) {
+        this.covers.add(cover);
+    }
 }

@@ -3,6 +3,7 @@ package nextstep.session.domain;
 import nextstep.common.domain.DeleteHistoryTargets;
 import nextstep.users.domain.NsUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Covers {
@@ -11,6 +12,10 @@ public class Covers {
 
     public Covers(List<Cover> covers) {
         this.covers = covers;
+    }
+
+    public Covers() {
+        this.covers = new ArrayList<>();
     }
 
     public int size() {
@@ -27,5 +32,9 @@ public class Covers {
 
     public List<Cover> asList() {
         return List.copyOf(this.covers);
+    }
+
+    public void add(Cover cover) {
+        this.covers.add(cover);
     }
 }

@@ -161,4 +161,23 @@ public class PaidSession implements Session {
     public Students getStudents() {
         return this.students;
     }
+
+    @Override
+    public void approveStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .approve();
+    }
+
+    @Override
+    public void denyStudent(Student student) {
+        students.findStudent(student)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."))
+                .deny();
+    }
+
+    @Override
+    public void addCover(Cover cover) {
+        this.covers.add(cover);
+    }
 }

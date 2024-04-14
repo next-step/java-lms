@@ -28,4 +28,10 @@ public interface Session {
     Covers getCovers();
 
     Students getStudents();
+
+    void approveStudent(Student student);
+
+    void denyStudent(Student student);
+
+    void addCover(Cover cover);
 }

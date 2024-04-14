@@ -14,7 +14,7 @@ public class Student {
     private final Long id;
     private final Long sessionId;
     private final String userId;
-    private final SessionApprovedType approved;
+    private SessionApprovedType approved;
     private final BaseEntity baseEntity;
 
     public Student(NsUser nsUser) {
@@ -76,5 +76,21 @@ public class Student {
     public DeleteHistory delete(NsUser requestUser) {
         this.baseEntity.delete(LocalDateTime.now());
         return DeleteHistory.createStudent(this.id, requestUser, LocalDateTime.now());
+    }
+
+    public void approve() {
+        if (this.approved.equals(SessionApprovedType.APPROVED)) {
+            throw new IllegalArgumentException("이미 승인 상태입니다.");
+        }
+
+        this.approved = SessionApprovedType.APPROVED;
+    }
+
+    public void deny() {
+        if (this.approved.equals(SessionApprovedType.CANCELED)) {
+            throw new IllegalArgumentException("이미 거절 상태입니다.");
+        }
+
+        this.approved = SessionApprovedType.CANCELED;
     }
 }
