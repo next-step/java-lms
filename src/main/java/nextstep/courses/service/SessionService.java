@@ -28,7 +28,7 @@ public class SessionService {
         this.paymentService = paymentService;
     }
 
-    public void save(Session session) {
+    public void establish(Session session) {
         sessionRepository.save(session);
         sessionCoverImageRepository.save(session.getCoverImage());
     }
