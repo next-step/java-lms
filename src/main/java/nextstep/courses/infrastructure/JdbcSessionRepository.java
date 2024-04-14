@@ -32,7 +32,13 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session save(Session session) {
-        Image image = session.getImage();
+        Long imageId = insertImage(session.getImage());
+        Long sessionId = insertSession(session, imageId);
+        session.setId(sessionId);
+        return session;
+    }
+
+    private Long insertImage(Image image) {
         String imageSql = "insert into image (size, type, width, height, created_at) values(?, ?, ?, ?, ?)";
         KeyHolder imageKeyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -44,13 +50,16 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         }, imageKeyHolder);
+        return imageKeyHolder.getKey().longValue();
+    }
 
+    private Long insertSession(Session session, Long imageId) {
         String sql = "insert into session (course_id, image_id, start_date, end_date, pay_type, state, fee, created_at) values(?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setLong(1, session.getCourseId());
-            ps.setLong(2, imageKeyHolder.getKey().longValue());
+            ps.setLong(2, imageId);
             ps.setTimestamp(3, Timestamp.valueOf(session.getStartDate().atStartOfDay()));
             ps.setTimestamp(4, Timestamp.valueOf(session.getEndDate().atStartOfDay()));
             ps.setString(5, session.getPayType());
@@ -59,9 +68,7 @@ public class JdbcSessionRepository implements SessionRepository {
             ps.setTimestamp(8, Timestamp.valueOf(session.getCreatedAt()));
             return ps;
         }, keyHolder);
-        long key = keyHolder.getKey().longValue();
-        session.setId(key);
-        return session;
+        return keyHolder.getKey().longValue();
     }
 
     @Override

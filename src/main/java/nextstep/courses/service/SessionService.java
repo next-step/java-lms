@@ -25,7 +25,7 @@ public class SessionService {
 
     public void registerStudent(NsUser student, Long sessionId){
         Session session = sessionRepository.findById(sessionId);
-        Payment payment = paymentService.payment(session.getId(), student.getId());
+        Payment payment = paymentService.findPayment(session.getId(), student.getId());
 
         session.addStudent(student, payment);
         sessionRepository.saveStudents(session);

@@ -11,7 +11,7 @@ public class PaymentService {
     @Resource(name = "paymentRepository")
     private PaymentRepository paymentRepository;
 
-    public Payment payment(Long sessionId, Long userId) {
+    public Payment findPayment(Long sessionId, Long userId) {
        return paymentRepository.findBySessionAndUser(sessionId, userId);
     }
 }
