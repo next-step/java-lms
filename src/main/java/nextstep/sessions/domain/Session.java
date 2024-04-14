@@ -15,10 +15,10 @@ public class Session extends BaseEntity {
 
     private SessionDetails sessionDetails;
 
-    private List<NsUser> listeners;
+    //private List<NsUser> listeners;
 
-    public Session(long id, String sessionName, SessionDetails sessionDetails, List<NsUser> listeners) {
-        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionDetails, listeners);
+    public Session(long id, String sessionName, SessionDetails sessionDetails) {
+        this(id, LocalDateTime.now(), LocalDateTime.now(), sessionName, null, sessionDetails);
     }
 
     public Session(long id,
@@ -26,21 +26,20 @@ public class Session extends BaseEntity {
                    LocalDateTime endedAt,
                    String sessionName,
                    Image image,
-                   SessionDetails sessionDetails,
-                   List<NsUser> listeners
+                   SessionDetails sessionDetails
     ) {
         super(id, startedAt, endedAt);
         this.sessionName = sessionName;
         this.image = image;
         this.sessionDetails = sessionDetails;
-        this.listeners = listeners;
     }
 
     public void register(NsUser listener, Long amount) {
-        if (sessionDetails.isNotSamePrice(amount)) {
-            throw new IllegalArgumentException("결제한 금액이 강의의 가격과 일치하지 않습니다.");
-        }
-        listeners.add(listener);
+        sessionDetails.register(listener, amount);
+    }
+
+    public boolean isContainListener(NsUser listener) {
+        return sessionDetails.isContainsListener(listener);
     }
 
 }

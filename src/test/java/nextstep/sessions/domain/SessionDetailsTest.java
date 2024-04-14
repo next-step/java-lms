@@ -1,5 +1,6 @@
 package nextstep.sessions.domain;
 
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ public class SessionDetailsTest {
     @Test
     void always() {
         SessionDetails details = new SessionDetails(40, 0, 30000, FREE, RECRUITING);
-        details.register();
+        details.register(NsUserTest.JAVAJIGI, 30000L);
     }
 
     @DisplayName("유료강의는 수강신청을 했을 때, 최대 수강 인원을 초과하면 예외를 반환한다")
@@ -27,7 +28,7 @@ public class SessionDetailsTest {
 
         SessionDetails details = new SessionDetails(currentCountOfStudents, maxOfStudents, 30000, PAID, RECRUITING);
 
-        assertThatThrownBy(details::register)
+        assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("이 강의의 현재 수강 신청 인원: (%s)명, 최대 수강 인원: (%s)명이므로 현재 마감이 된 상태입니다.", currentCountOfStudents, maxOfStudents));
     }
@@ -38,7 +39,7 @@ public class SessionDetailsTest {
         SessionStatus end = END;
         SessionDetails details = new SessionDetails(39, 40, 30000, PAID, end);
 
-        assertThatThrownBy(details::register)
+        assertThatThrownBy(() -> details.register(NsUserTest.JAVAJIGI, 30000L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("현재 강의는 (%s)인 상태입니다.", end));
     }

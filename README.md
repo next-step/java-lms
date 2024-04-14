@@ -90,3 +90,11 @@
 - [x] 반복되는 것은 하나로 만든다
 - [x] (가독성 증가 측면에서)인자를 나타낼 때 변수로 선언한 후 인자를 나타내라
 
+### 두번째 피드백 사항
+- [x] SessionTest의 getter메서드를 리팩터링하라
+- [ ] listers 변수를 SessionDetails로 이동하라 
+- [ ] SessionDetails의 네이밍을 역할에 맞게끔 변경하라
+- [ ] SessionDetails의 인원수를 관리하는 변수들을 클래스로 도출하라
+- [ ] `SessionType#isCapacityExceeded`를 Functional Interface를 통해 람다식으로 변경하라
+- [ ] `SessionDetailsTest#always`에 assert를 활용하라 
+- [ ] `ImageTest#widthException`을 프로덕션 코드에 맞게 변경하라 - ImageSize
