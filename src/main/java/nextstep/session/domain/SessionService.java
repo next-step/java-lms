@@ -17,4 +17,8 @@ public interface SessionService {
     Session deleteStudent(long sessionId, Student student, NsUser requestUser);
 
     void delete(long sessionId, NsUser requestUser);
+
+    void approveStudent(long sessionId, Student student);
+
+    void denyStudent(long sessionId, Student student);
 }

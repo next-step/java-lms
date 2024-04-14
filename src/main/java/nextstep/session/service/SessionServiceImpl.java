@@ -62,4 +62,14 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.delete(sessionId);
         deleteHistoryService.saveAll(deleteHistoryTargets.asList());
     }
+
+    @Override
+    public void approveStudent(long sessionId, Student student) {
+        sessionRepository.approveStudent(sessionId, student);
+    }
+
+    @Override
+    public void denyStudent(long sessionId, Student student) {
+        sessionRepository.denyStudent(sessionId, student);
+    }
 }
