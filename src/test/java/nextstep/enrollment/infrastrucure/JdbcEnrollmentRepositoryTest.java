@@ -1,5 +1,6 @@
 package nextstep.enrollment.infrastrucure;
 
+import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +33,7 @@ class JdbcEnrollmentRepositoryTest {
     @Test
     void 등록을_저장한다() {
         // given
-        final Session session = new Session(1L, 30, RECRUITING, 800_000, LocalDateTime.now().plusDays(1),
+        final Session session = new Session(1L, 30, RECRUITING, PREPARING, 800_000, LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusMonths(1), null);
         final Enrollment enrollment = new Enrollment(session, NsUserTest.SANJIGI);
 
