@@ -18,6 +18,7 @@ public class SessionRegisterDetailsTest {
     void always() {
         SessionRegisterDetails details = new SessionRegisterDetails(40, 0, 30000, FREE, RECRUITING);
         details.register(NsUserTest.JAVAJIGI, 30000L);
+        assert details.isContainsListener(NsUserTest.JAVAJIGI);
     }
 
     @DisplayName("유료강의는 수강신청을 했을 때, 최대 수강 인원을 초과하면 예외를 반환한다")
