@@ -36,7 +36,7 @@ public enum ImageExtension {
 
     }
 
-    public String value() {
+    public String get() {
         return value;
     }
 

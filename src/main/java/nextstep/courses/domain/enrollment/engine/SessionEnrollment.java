@@ -19,6 +19,22 @@ public abstract class SessionEnrollment implements SessionEnroll {
     protected final SessionFee fee;
     protected final List<SessionStudent> students;
 
+    protected SessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
+        this.sessionId = enrollment.sessionId;
+        this.status = enrollment.status;
+        this.capacity = enrollment.capacity;
+        this.fee = enrollment.fee;
+        this.students = students;
+    }
+
+    protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee, List<SessionStudent> students) {
+        this.sessionId = sessionId;
+        this.status = status;
+        this.capacity = new SessionCapacity(sessionId, capacity);
+        this.fee = new SessionFee(sessionId, fee);
+        this.students = students;
+    }
+
     protected SessionEnrollment(Long sessionId, SessionStatus status, int capacity, long fee) {
         this.sessionId = sessionId;
         this.status = status;
@@ -35,9 +51,13 @@ public abstract class SessionEnrollment implements SessionEnroll {
     }
 
     @Override
-    public void enroll(NsUser nsUser, Payment payment) {
+    public SessionStudent enroll(NsUser nsUser, Payment payment) {
         satisfyEnrollment(payment);
-        students.add(SessionStudent.from(sessionId, nsUser));
+
+        SessionStudent student = SessionStudent.from(sessionId, nsUser);
+        students.add(student);
+
+        return student;
     }
 
     @Override
@@ -50,6 +70,10 @@ public abstract class SessionEnrollment implements SessionEnroll {
         if (capacity.noCapacity(students.size())) {
             throw new SessionCapacityExceedException(capacity.get(), students.size());
         }
+    }
+
+    public Long getSessionId() {
+        return sessionId;
     }
 
     public SessionStatus getStatus() {

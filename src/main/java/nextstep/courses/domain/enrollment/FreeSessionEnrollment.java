@@ -4,7 +4,13 @@ import nextstep.courses.domain.enrollment.engine.SessionEnrollment;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.exception.PaymentAmountExistException;
 
+import java.util.List;
+
 public class FreeSessionEnrollment extends SessionEnrollment {
+
+    public FreeSessionEnrollment(SessionEnrollment enrollment, List<SessionStudent> students) {
+        super(enrollment, students);
+    }
 
     public FreeSessionEnrollment(Long sessionId, SessionStatus status) {
         super(sessionId, status, SessionCapacity.INFINITY, SessionFee.FREE);

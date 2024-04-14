@@ -1,9 +1,13 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.exception.SessionTypeInvalidException;
+
+import java.util.Arrays;
+
 public enum SessionType {
 
-    FREE("FREE"),
-    PAID("PAID");
+    FREE("무료"),
+    PAID("유료");
 
     private final String type;
 
@@ -13,6 +17,13 @@ public enum SessionType {
 
     public String get() {
         return type;
+    }
+
+    public static SessionType convert(String type) {
+        return Arrays.stream(values())
+                .filter(sessionType -> sessionType.type.equals(type))
+                .findAny()
+                .orElseThrow(() -> new SessionTypeInvalidException(type));
     }
 
 }
