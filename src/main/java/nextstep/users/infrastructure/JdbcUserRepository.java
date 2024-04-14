@@ -12,8 +12,18 @@ import java.util.Optional;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRepository {
-    private static String SELECT_SQL = "SELECT id, user_id, password, name, email, created_at, updated_at FROM ns_user WHERE user_id = ?";
+    private static String SELECT_BY_USER_ID_SQL = "SELECT id, user_id, password, name, email, created_at, updated_at FROM ns_user WHERE user_id = ?";
+    private static String SELECT_BY_ID_SQL = "SELECT id, user_id, password, name, email, created_at, updated_at FROM ns_user WHERE id = ?";
     private JdbcOperations jdbcTemplate;
+
+    private final RowMapper<NsUser> userRowMapper = (rs, rowNum) -> new NsUser(
+            rs.getLong("id"),
+            rs.getString("user_id"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email"),
+            toLocalDateTime(rs.getTimestamp(6)),
+            toLocalDateTime(rs.getTimestamp(7)));
 
     public JdbcUserRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -21,15 +31,13 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<NsUser> findByUserId(String userId) {
-        RowMapper<NsUser> rowMapper = (rs, rowNum) -> new NsUser(
-                rs.getLong("id"),
-                rs.getString("user_id"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email"),
-                toLocalDateTime(rs.getTimestamp(6)),
-                toLocalDateTime(rs.getTimestamp(7)));
-        return Optional.of(jdbcTemplate.queryForObject(SELECT_SQL, rowMapper, userId));
+        return Optional.of(jdbcTemplate.queryForObject(SELECT_BY_USER_ID_SQL, userRowMapper, userId));
+    }
+
+    @Override
+    public Optional<NsUser> findById(Long id) {
+
+        return Optional.of(jdbcTemplate.queryForObject(SELECT_BY_ID_SQL, userRowMapper, id));
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

@@ -75,4 +75,17 @@ public class SessionImage {
   public Long getSessionId() {
     return this.sessionId;
   }
+
+  @Override
+  public String toString() {
+    return "SessionImage{" +
+            "id=" + id +
+            ", width=" + width +
+            ", height=" + height +
+            ", extension=" + extension +
+            ", fileSize=" + fileSize +
+            ", fileName='" + fileName + '\'' +
+            ", sessionId=" + sessionId +
+            '}';
+  }
 }

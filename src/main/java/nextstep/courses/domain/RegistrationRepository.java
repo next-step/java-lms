@@ -7,6 +7,8 @@ public interface RegistrationRepository {
 
   Registration findById(Long id);
 
+  Registration findByUserIdAndSessionId(Long userId, Long sessionId);
+
   List<Registration> findByUserId(Long userId);
 
   List<Registration> findBySessionId(Long sessionId);

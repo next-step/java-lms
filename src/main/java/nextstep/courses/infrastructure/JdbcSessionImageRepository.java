@@ -28,8 +28,9 @@ public class JdbcSessionImageRepository implements SessionImageRepository {
           rs.getLong("session_id")
   );
 
-  public JdbcSessionImageRepository(JdbcTemplate jdbcTemplate, SimpleJdbcInsert simpleJdbcInsert) {
+  public JdbcSessionImageRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
+    SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
     this.simpleJdbcInsert = simpleJdbcInsert
             .withTableName("session_image")
             .usingGeneratedKeyColumns("id");

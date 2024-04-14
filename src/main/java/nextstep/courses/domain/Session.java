@@ -82,6 +82,10 @@ public abstract class Session {
     return this.students.contains(student);
   }
 
+  public Long getId() {
+    return this.id;
+  }
+
   public Long getCourseId() {
     return this.courseId;
   }
@@ -108,5 +112,12 @@ public abstract class Session {
 
   public List<SessionImage> images() {
     return this.images;
+  }
+
+  @Override
+  public String toString() {
+    return "Session{" +
+            "id=" + id +
+            '}';
   }
 }
