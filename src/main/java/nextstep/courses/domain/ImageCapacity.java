@@ -14,4 +14,8 @@ public class ImageCapacity {
             throw new IllegalArgumentException("이미지 용량 크기는 1MB 이하여야 합니다.");
         }
     }
+
+    public Long getCapacity() {
+        return capacity;
+    }
 }

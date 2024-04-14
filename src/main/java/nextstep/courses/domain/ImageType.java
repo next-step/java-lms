@@ -34,4 +34,8 @@ public enum ImageType {
         }
         return imageType;
     }
+
+    public String getType() {
+        return type;
+    }
 }

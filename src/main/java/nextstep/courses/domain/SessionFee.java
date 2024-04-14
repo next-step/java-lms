@@ -19,4 +19,8 @@ public class SessionFee {
     public boolean isFree() {
         return fee == 0L;
     }
+
+    public Long getFee() {
+        return fee;
+    }
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 @Repository
 public interface SessionRepository {
     Optional<Session> findById(Long sessionId);
+    int save(Session session);
 }

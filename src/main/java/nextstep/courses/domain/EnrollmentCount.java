@@ -37,4 +37,8 @@ public class EnrollmentCount {
     public int hashCode() {
         return Objects.hash(count);
     }
+
+    public int getCount() {
+        return count;
+    }
 }

@@ -14,4 +14,16 @@ public class CoverImage extends BaseTimeEntity{
         this.type = type;
         this.dimension = dimension;
     }
+
+    public ImageCapacity getCapacity() {
+        return capacity;
+    }
+
+    public ImageType getType() {
+        return type;
+    }
+
+    public ImageDimension getDimension() {
+        return dimension;
+    }
 }

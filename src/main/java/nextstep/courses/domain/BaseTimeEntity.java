@@ -11,4 +11,12 @@ public class BaseTimeEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

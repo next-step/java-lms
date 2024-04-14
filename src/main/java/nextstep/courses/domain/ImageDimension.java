@@ -35,4 +35,12 @@ public class ImageDimension {
         }
         throw new IllegalArgumentException("width와 height의 비율은 3:2여야 합니다");
     }
+
+    public Long getWidth() {
+        return width;
+    }
+
+    public Long getHeight() {
+        return height;
+    }
 }
