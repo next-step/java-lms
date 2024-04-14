@@ -49,24 +49,20 @@ public class Question {
         answers.add(answer);
     }
 
-    public void delete(User loginUser) throws CannotDeleteException {
+    public List<DeleteHistory> delete(User loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException(QUESTION_DELETE_ERROR_MESSAGE);
         }
         this.deleted = true;
-        answers.deleteAnswers(loginUser);
-    }
 
-    public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(toDeleteHistory());
-
-        answers.toDeleteHistories(deleteHistories);
+        deleteHistories.addAll(answers.deleteAnswers(loginUser));
         return deleteHistories;
     }
 
     private DeleteHistory toDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, id, getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
     public boolean isOwner(User loginUser) {
