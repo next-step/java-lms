@@ -1,19 +1,17 @@
 package nextstep.sessions.domain;
 
 public enum SessionType {
-    FREE {
-        @Override
-        public boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents) {
-            return false;
-        }
-    },
-    PAID {
-        @Override
-        public boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents) {
-            return currentCountOfStudents > maxOfStudents;
-        }
-    };
+    FREE ((currentCountOfStudents, maxOfStudents) -> false),
+    PAID ((currentCountOfStudents, maxOfStudents) -> currentCountOfStudents > maxOfStudents);
 
-    public abstract boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents);
+    private final CapacityExceededCheck capacityExceededCheck;
+
+    SessionType(CapacityExceededCheck capacityExceededCheck) {
+        this.capacityExceededCheck = capacityExceededCheck;
+    }
+
+    public boolean isCapacityExceeded(int currentCountOfStudents, int maxOfStudents) {
+        return capacityExceededCheck.check(currentCountOfStudents, maxOfStudents);
+    }
 
 }
