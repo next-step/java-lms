@@ -13,8 +13,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
+    private Sessions sessions = new Sessions();
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
@@ -38,6 +37,14 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public int sessionCount() {
+        return sessions.sessionCount();
     }
 
     @Override
