@@ -14,9 +14,8 @@ public class Answers {
         this.answers = new ArrayList<>();
     }
 
-    public Answers(Answer... answers) {
-        this();
-        add(answers);
+    public Answers(List<Answer> answers) {
+        this.answers = answers;
     }
 
     public void add(Answer answer) {
@@ -34,8 +33,10 @@ public class Answers {
                 .allMatch(answer -> answer.isOwner(loginUser));
     }
 
-    public void allDeleted() {
-        answers.forEach(answer -> answer.deleted());
+    public void allDeleted(NsUser loginUser) throws CannotDeleteException {
+        for (Answer answer : answers) {
+            answer.delete(loginUser);
+        }
     }
 
     public List<Answer> getAnswers() {
@@ -47,7 +48,7 @@ public class Answers {
             throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
         }
 
-        allDeleted();
+        allDeleted(loginUser);
 
         return new DeleteHistories(this);
     }

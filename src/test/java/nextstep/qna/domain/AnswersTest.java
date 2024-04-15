@@ -13,15 +13,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AnswersTest {
 
-    public static final Answers CAN_DELETED_ANSWERS = new Answers(AnswerTest.A1, AnswerTest.A1);
-    public static final Answers NOT_DELETED_ANSWERS = new Answers(AnswerTest.A1, AnswerTest.A2);
+    public static final Answers CAN_DELETED_ANSWERS = new Answers(List.of(AnswerTest.A1, AnswerTest.A1));
+    public static final Answers NOT_DELETED_ANSWERS = new Answers(List.of(AnswerTest.A1, AnswerTest.A2));
 
     @Test
     @DisplayName("질문들을 전체 삭제 하여 전체 isDeleted 값은 True")
-    void Answers_전체_삭제_확인() {
+    void Answers_전체_삭제_확인() throws CannotDeleteException {
         Answers answers = CAN_DELETED_ANSWERS;
 
-        answers.allDeleted();
+        answers.allDeleted(NsUserTest.JAVAJIGI);
         List<Answer> answersList = answers.getAnswers();
         assertThat(answersList).allMatch(Answer::isDeleted);
     }

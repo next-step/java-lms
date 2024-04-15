@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,9 @@ public class AnswerTest {
 
     @Test
     @DisplayName("답변 삭제 후 isDeleted 반환값은 True")
-    void Answer_삭제() {
-        A1.deleted();
+    void Answer_삭제() throws CannotDeleteException {
+        assertThat(A1.isDeleted()).isEqualTo(false);
+        A1.delete(NsUserTest.JAVAJIGI);
         assertThat(A1.isDeleted()).isEqualTo(true);
     }
 }

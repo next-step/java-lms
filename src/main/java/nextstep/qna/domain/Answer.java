@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import nextstep.qna.CannotDeleteException;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -36,6 +37,13 @@ public class Answer extends Post {
 
     public void toQuestion(Question question) {
         this.question = question;
+    }
+
+    public void delete(NsUser loginUser) throws CannotDeleteException {
+        if (!this.writer.equals(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
+        this.deleted = true;
     }
 
     @Override

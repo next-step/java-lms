@@ -15,6 +15,10 @@ public class Post {
     public Post() {
     }
 
+    public Post(Long id, NsUser writer, String contents) {
+        this(id, writer, contents, false, LocalDateTime.now(), null);
+    }
+
     public Post(Long id, NsUser writer, String contents, boolean deleted, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.writer = writer;
@@ -26,10 +30,6 @@ public class Post {
 
     public Long getId() {
         return id;
-    }
-
-    public void deleted() {
-        this.deleted = true;
     }
 
     public boolean isDeleted() {

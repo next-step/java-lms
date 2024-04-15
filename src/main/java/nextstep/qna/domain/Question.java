@@ -64,7 +64,7 @@ public class Question extends Post {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
-        deleted();
+        this.deleted = true;
 
         DeleteHistories deleteHistories = new DeleteHistories(this);
         deleteHistories.add(answers.delete(loginUser));
