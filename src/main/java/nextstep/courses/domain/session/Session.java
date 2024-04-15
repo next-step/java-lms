@@ -22,55 +22,22 @@ public class Session {
     private SessionStatus sessionStatus;
     private SessionGatheringStatus sessionGatheringStatus;
     private Period periodOfSession;
-    private CoverImage coverImage;
     private CoverImages coverImages;
     private Course course;
     private EnrolledUsers enrolledUsers = new EnrolledUsers();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Session(String title, String description, SessionType sessionType, Period periodOfSession, CoverImage coverImage, Course course) {
-        this(null, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
-    }
-
     public Session(String title, String description, SessionType sessionType, Period periodOfSession, CoverImages coverImages, Course course) {
         this(null, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImages, course, LocalDateTime.now(), null);
-    }
-
-    public Session(Long id, String title, String description, SessionType sessionType, Period periodOfSession, CoverImage coverImage, Course course) {
-        this(id, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImage, course, LocalDateTime.now(), null);
     }
 
     public Session(Long id, String title, String description, SessionType sessionType, Period periodOfSession, CoverImages coverImages, Course course) {
         this(id, title, description, sessionType, PREPARING, NON_GATHERING, periodOfSession, coverImages, course, LocalDateTime.now(), null);
     }
 
-    public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, CoverImage coverImage, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
-        this.sessionGatheringStatus = sessionGatheringStatus;
-        this.periodOfSession = periodOfSession;
-        this.coverImage = coverImage;
-        this.course = course;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.sessionType = sessionType;
-        this.sessionStatus = sessionStatus;
-        this.sessionGatheringStatus = sessionGatheringStatus;
-        this.periodOfSession = periodOfSession;
-        this.coverImages = null;
-        this.course = course;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this(id, title, description, sessionType, sessionStatus, sessionGatheringStatus, periodOfSession, null, course, updatedAt, createdAt);
     }
 
     public Session(Long id, String title, String description, SessionType sessionType, SessionStatus sessionStatus, SessionGatheringStatus sessionGatheringStatus, Period periodOfSession, CoverImages coverImages, Course course, LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -168,14 +135,6 @@ public class Session {
 
     public LocalDateTime getEndedAt() {
         return periodOfSession.getEndedAt();
-    }
-
-    public CoverImage getCoverImage() {
-        return coverImage;
-    }
-
-    public Long getIdOfCoverImage() {
-        return coverImage.getId();
     }
 
     public List<CoverImage> getCoverImages() {
