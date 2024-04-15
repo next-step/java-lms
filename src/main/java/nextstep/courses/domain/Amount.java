@@ -14,9 +14,6 @@ public class Amount {
         return this.value == 0;
     }
 
-    public boolean isOver(Amount compare) {
-        return this.value >= compare.value;
-    }
 
     public boolean isSmaller(Amount count) {
         return this.value >= count.value;
