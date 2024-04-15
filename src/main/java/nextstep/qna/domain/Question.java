@@ -86,7 +86,7 @@ public class Question {
         return answers;
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException{
+    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         throwsCannotDeleteExceptionIfCannotDelete(loginUser);
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
@@ -98,7 +98,7 @@ public class Question {
         return deleteHistories;
     }
 
-    private void throwsCannotDeleteExceptionIfCannotDelete(NsUser loginUser) throws CannotDeleteException{
+    private void throwsCannotDeleteExceptionIfCannotDelete(NsUser loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
