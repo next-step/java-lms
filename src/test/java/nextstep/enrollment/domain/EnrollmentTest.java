@@ -2,11 +2,13 @@ package nextstep.enrollment.domain;
 
 import static nextstep.enrollment.domain.EnrollmentStatus.APPROVED;
 import static nextstep.enrollment.domain.EnrollmentStatus.REGISTERED;
+import static nextstep.enrollment.domain.EnrollmentStatus.REJECTED;
 import static nextstep.sessions.domain.SessionProgressStatus.END;
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
+import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static nextstep.users.domain.NsUserType.WOOTECAM;
 import static nextstep.users.domain.NsUserType.WOOTECO;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -130,6 +132,19 @@ class EnrollmentTest {
 
         // then
         assertThat(enrollment.getStatus()).isEqualTo(APPROVED);
+    }
+
+    @Test
+    void 선발되지_않은_인원은_수강_취소한다() {
+        // given
+        final Enrollment enrollment = new Enrollment(session, SANJIGI);
+        enrollment.enroll(SESSION_PRICE);
+
+        // when
+        enrollment.cancelBy(JAVAJIGI);
+
+        // then
+        assertThat(enrollment.getStatus()).isEqualTo(REJECTED);
     }
 
     private void enrollAndApprove(final NsUser attendee) {
