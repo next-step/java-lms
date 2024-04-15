@@ -5,15 +5,15 @@ import nextstep.courses.domain.SessionFactory;
 import nextstep.courses.domain.SessionType;
 import nextstep.courses.domain.enrollment.SessionCapacity;
 import nextstep.courses.domain.enrollment.SessionFee;
-import nextstep.courses.domain.enrollment.SessionStatus;
 
 import static nextstep.courses.domain.fixture.IdFixture.COURSE_ID;
-import static nextstep.courses.domain.fixture.SessionPeriodFixture.*;
+import static nextstep.courses.domain.fixture.SessionPeriodFixture.period;
+import static nextstep.courses.domain.fixture.SessionStatusFixture.status;
 
 public class SessionFixture {
 
     public static Session session(SessionType type) {
-        return SessionFactory.get(COURSE_ID, type, period(), SessionStatus.RECRUITING, SessionCapacity.INFINITY, SessionFee.FREE);
+        return SessionFactory.get(COURSE_ID, type, period(), status(), SessionCapacity.INFINITY, SessionFee.FREE);
     }
 
 }
