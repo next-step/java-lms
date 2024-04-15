@@ -39,7 +39,7 @@ public class PaidSession extends Session {
         return new LearnerDto(learner.getId(), id);
     }
 
-    private void validateJoinable(NsUser learner, Payment payment) {
+    protected void validateJoinable(NsUser learner, Payment payment) {
         super.validateJoinable(learner);
         validateCapacity();
         validatePayment(learner, payment);
