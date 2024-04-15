@@ -101,6 +101,15 @@ validate도 마찬가지
   - [X] 인터페이스 구현
 - [X] Session 리포지토리
   - [X] 인터페이스 작성
-  - [X] 인터페이스 구현
-- [ ] 서비스 레이어에서 수강신청 로직 구현 (?)
-- [ ] 테스트 시 저장한 데이터가 롤백이 안돼서 테스트 격리가 안됨. 
+  - [X] 인터페이스 구현 
+- [ ] STEP3 피드백 반영
+  - [X] Session의 생성자에서 SessionStatus null처리 대신 생성자 분리로 수정
+  - [ ] 빌더패턴을 점진적으로 제거하고 각 매개변수를 클래스 분리로 구현
+- [ ] 선발 인원을 관리하기 위해 Session과 NsUser를 매핑하는 Selection 매핑 클래스 구현
+  - nsUser (NsUser) - 선발된 유저
+  - session (Session) - 선발된 세션
+  - hasPaid (boolean) - 유저 결제완료 여부
+- [ ] Payment에서 nsUser가 해당 Session에 선발되지 않았을 경우 예외처리
+- [ ] Session의 coverImageInfo를 List로 리팩터링
+- [ ] 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리해야 한다.
+  - 진행 상태와 무관하게 모집 상태로만 수강신청 가능유무 판단
