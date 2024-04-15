@@ -1,6 +1,9 @@
 package nextstep.courses.domain.fixture;
 
+import nextstep.courses.domain.image.ImageExtension;
 import nextstep.courses.domain.image.SessionCoverImage;
+
+import java.util.List;
 
 import static nextstep.courses.domain.fixture.IdFixture.SESSION_ID;
 import static nextstep.courses.domain.image.ImageFileSize.MAX_FILE_SIZE;
@@ -23,8 +26,24 @@ public class SessionCoverImageFixture {
         return new SessionCoverImage(SESSION_ID, MAX_FILE_SIZE, MIN_WIDTH, MIN_HEIGHT, extension);
     }
 
+    public static SessionCoverImage coverImage(ImageExtension extension) {
+        return new SessionCoverImage(SESSION_ID, MAX_FILE_SIZE, MIN_WIDTH, MIN_HEIGHT, extension.get());
+    }
+
+    public static SessionCoverImage coverImage(Long sessionId, ImageExtension extension) {
+        return new SessionCoverImage(sessionId, MAX_FILE_SIZE, MIN_WIDTH, MIN_HEIGHT, extension.get());
+    }
+
     public static SessionCoverImage coverImage() {
         return new SessionCoverImage(SESSION_ID, MAX_FILE_SIZE, MIN_WIDTH, MIN_HEIGHT, EXTENSION);
+    }
+
+    public static List<SessionCoverImage> coverImages() {
+        return List.of(coverImage());
+    }
+
+    public static List<SessionCoverImage> coverImages(SessionCoverImage... coverImages) {
+        return List.of(coverImages);
     }
 
 }
