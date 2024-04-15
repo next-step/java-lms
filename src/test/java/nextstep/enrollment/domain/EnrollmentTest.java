@@ -4,6 +4,8 @@ import static nextstep.sessions.domain.SessionProgressStatus.END;
 import static nextstep.sessions.domain.SessionProgressStatus.PREPARING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.NON_RECRUITING;
 import static nextstep.sessions.domain.SessionRecruitingStatus.RECRUITING;
+import static nextstep.users.domain.NsUserType.WOOTECAM;
+import static nextstep.users.domain.NsUserType.WOOTECO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
@@ -37,7 +39,7 @@ class EnrollmentTest {
         new Enrollment(session, NsUserTest.SANJIGI).enroll(SESSION_PRICE);
 
         assertThatIllegalArgumentException().isThrownBy(
-                () -> new Enrollment(session, new NsUser(3L, "lee", "password", "name", "lee@slipp.net")).enroll(SESSION_PRICE)
+                () -> new Enrollment(session, new NsUser(3L, "lee", "password", "name", "lee@slipp.net", WOOTECO)).enroll(SESSION_PRICE)
         ).withMessage("수강 인원이 초과되었습니다.");
     }
 
@@ -91,7 +93,7 @@ class EnrollmentTest {
         new Enrollment(session, NsUserTest.JAVAJIGI).enroll(SESSION_PRICE);
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> new Enrollment(session, new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net")).enroll(SESSION_PRICE))
+                .isThrownBy(() -> new Enrollment(session, new NsUser(1L, "javajigi", "password", "name", "javajigi@slipp.net", WOOTECAM)).enroll(SESSION_PRICE))
                 .withMessage("이미 수강 신청한 사용자입니다.");
     }
     
