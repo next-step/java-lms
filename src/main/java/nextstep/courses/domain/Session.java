@@ -12,6 +12,10 @@ public class Session {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
+    public Session() {
+        this(true, 0, 0, SessionStatus.READY);
+    }
+
     public Session(boolean isFree, int maxCount, int tuition) {
         this(isFree, maxCount, tuition, SessionStatus.READY);
     }
