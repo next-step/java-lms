@@ -32,6 +32,11 @@ public class CoverImageInfo {
 		this.height = height;
 	}
 
+	public CoverImageInfo(Long id, Long size, String imageTypeStr, Long width, Long height) {
+		this(size, imageTypeStr, width, height);
+		this.id = id;
+	}
+
 	private ImageType validationImageType(String imageTypeStr) {
 		Optional<ImageType> imageType = ImageType.findByType(imageTypeStr);
 		return imageType.orElseThrow(() -> new IllegalArgumentException(IMAGE_TYPE_INVALID_MESSAGE));
@@ -59,6 +64,9 @@ public class CoverImageInfo {
 		}
 	}
 
+	public void setId() {
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;
