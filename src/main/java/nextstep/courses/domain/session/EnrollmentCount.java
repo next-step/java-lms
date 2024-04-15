@@ -20,16 +20,16 @@ public class EnrollmentCount {
         }
     }
 
+    public int value() {
+        return this.value;
+    }
+
     public boolean isLessThan(final EnrollmentCount otherEnrollmentCount) {
         return this.value < otherEnrollmentCount.value;
     }
 
     public EnrollmentCount increase() {
         return new EnrollmentCount(this.value + 1);
-    }
-
-    public EnrollmentCount copyOf() {
-        return new EnrollmentCount(this.value);
     }
 
     @Override

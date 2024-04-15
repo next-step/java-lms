@@ -8,12 +8,12 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
+import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.image.Dimensions;
 import nextstep.courses.domain.session.image.Height;
@@ -41,6 +41,14 @@ class SessionTest {
             1L
     );
 
+    private final Course course = new Course(
+            1L,
+            "backend",
+            1L,
+            LocalDateTime.of(2024, 1, 1, 0, 0),
+            LocalDateTime.of(2024, 1, 1, 0, 0)
+    );
+
     @Test
     @DisplayName("새로운 강의를 생성한다.")
     void Session() {
@@ -51,8 +59,8 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new FreeSessionStrategy(),
-                new EnrollmentCount(0),
-                1L
+                this.course,
+                new EnrollmentCount(0)
         );
         final Session expectedSession = new Session(
                 1L,
@@ -61,8 +69,8 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new FreeSessionStrategy(),
-                new EnrollmentCount(0),
-                1L
+                this.course,
+                new EnrollmentCount(0)
         );
 
         assertThat(actualSession).isEqualTo(expectedSession);
@@ -78,14 +86,14 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new PaidSessionStrategy(new Money(10000), new EnrollmentCount(10)),
-                new EnrollmentCount(0),
-                1L
+                this.course,
+                new EnrollmentCount(0)
         );
 
         session.enroll(new Payment(10000));
 
         assertThat(session.currentEnrollmentCount())
-                .isEqualTo(new EnrollmentCount(1));
+                .isEqualTo(1);
     }
 
     @Test
@@ -98,8 +106,8 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new FreeSessionStrategy(),
-                new EnrollmentCount(0),
-                1L
+                this.course,
+                new EnrollmentCount(0)
         );
 
         assertThatIllegalStateException()
@@ -116,8 +124,8 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new PaidSessionStrategy(new Money(10000), new EnrollmentCount(10)),
-                new EnrollmentCount(10),
-                1L
+                this.course,
+                new EnrollmentCount(10)
         );
 
         assertThatIllegalStateException()
@@ -134,8 +142,8 @@ class SessionTest {
                 this.schedule,
                 this.coverImage,
                 new PaidSessionStrategy(new Money(10000), new EnrollmentCount(10)),
-                new EnrollmentCount(0),
-                1L
+                this.course,
+                new EnrollmentCount(0)
         );
 
         assertThatIllegalArgumentException()

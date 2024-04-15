@@ -4,6 +4,7 @@ import static nextstep.courses.domain.session.SessionStatus.OPEN;
 
 import java.util.Objects;
 
+import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.strategy.SessionStrategy;
 import nextstep.payments.domain.Money;
@@ -17,7 +18,7 @@ public class Session {
     private final Schedule schedule;
     private final CoverImage coverImage;
     private final SessionStrategy sessionStrategy;
-    private final Long courseId;
+    private final Course course;
     private EnrollmentCount currentEnrollmentCount;
 
     public Session(
@@ -27,8 +28,8 @@ public class Session {
             final Schedule schedule,
             final CoverImage coverImage,
             final SessionStrategy sessionStrategy,
-            final EnrollmentCount currentEnrollmentCount,
-            final Long courseId
+            final Course course,
+            final EnrollmentCount currentEnrollmentCount
     ) {
         this.sessionId = sessionId;
         this.name = name;
@@ -36,12 +37,12 @@ public class Session {
         this.schedule = schedule;
         this.coverImage = coverImage;
         this.sessionStrategy = sessionStrategy;
+        this.course = course;
         this.currentEnrollmentCount = currentEnrollmentCount;
-        this.courseId = courseId;
     }
 
-    public EnrollmentCount currentEnrollmentCount() {
-        return this.currentEnrollmentCount.copyOf();
+    public int currentEnrollmentCount() {
+        return this.currentEnrollmentCount.value();
     }
 
     public void enroll(final Payment payment) {
@@ -86,11 +87,11 @@ public class Session {
                 Objects.equals(this.name, that.name) &&
                 this.status == that.status &&
                 Objects.equals(this.schedule, that.schedule) &&
-                Objects.equals(this.courseId, that.courseId);
+                Objects.equals(this.course, that.course);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.sessionId, this.name, this.status, this.schedule, this.courseId);
+        return Objects.hash(this.sessionId, this.name, this.status, this.schedule, this.course);
     }
 }
