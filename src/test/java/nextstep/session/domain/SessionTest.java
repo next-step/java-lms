@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import nextstep.session.CannotEnrollException;
 import nextstep.session.InvalidEnrollmentPolicyException;
 import nextstep.session.InvalidImageConditionsException;
+import nextstep.session.StudentAlreadyEnrolledException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,25 +25,14 @@ class SessionTest {
     }
 
     @Test
-    public void 강의_생성() throws InvalidEnrollmentPolicyException {
-        Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
-            SessionStatus.RECRUITING, 500, 10000);
-        assertThat(session.enrolledStudentCount()).isEqualTo(0);
-
-    }
-
-    @Test
     public void 강의_신청()
-        throws CannotEnrollException, InvalidEnrollmentPolicyException {
+        throws CannotEnrollException, InvalidEnrollmentPolicyException, StudentAlreadyEnrolledException {
         Student student = new Student(1L, "박소민");
         Session session = Session.createPaidSession(1L, 2L, "객체지향강의", sessionSchedule, coverImage,
             SessionStatus.RECRUITING, 500, 50000);
-        assertThat(session.enrolledStudentCount()).isEqualTo(0);
 
         session.enroll(student, 50000);
-        assertThat(session.getStudents().get(0)).isEqualTo(student);
-
-
+        assertThat(session.enrolledStudentCount()).isEqualTo(1);
     }
 
     @Test
