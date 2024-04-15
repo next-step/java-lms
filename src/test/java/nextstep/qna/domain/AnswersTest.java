@@ -14,7 +14,7 @@ public class AnswersTest {
 
     @Test
     @DisplayName("Answers 삭제 성공 테스트")
-    public void deleteAnswersSuccessTest() throws Exception {
+    void deleteAnswersSuccessTest() throws Exception {
         Answer answer = AnswerTest.A1;
         Answers answers = new Answers(List.of(answer));
 
@@ -25,8 +25,8 @@ public class AnswersTest {
     }
 
     @Test
-    @DisplayName("Answers 삭제 실패 테스트")
-    public void deleteAnswersFailTest() {
+    @DisplayName("Answers 삭제 실패 테스트 - 다른 사람이 쓴 답변")
+    void deleteAnswersFailForOtherUserAnswerTest() {
         Answers answers = new Answers(List.of(AnswerTest.A2));
 
         assertThatThrownBy(() -> {

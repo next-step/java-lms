@@ -8,6 +8,7 @@
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
 
+step1
 * refactor/delete-question
   * refactored QnAService deleteQuestion
     * refactored Question, Answer
@@ -15,3 +16,13 @@
     * generated unit TestCodes
   * modified gradle.properties enable ./gradlew clean build 
     * add gradle option to enable access to unnamed module
+
+step2
+* refactor/feedback-step1
+  * refactored codes based on feedback from step 1
+* feature/session
+  * implement domain model of session
+    * test codes are also implemented
+* feature/session-service
+  * implement session service
+    * test codes are also implemented
