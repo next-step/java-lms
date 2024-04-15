@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.session.FreeSession;
 import nextstep.courses.domain.session.Period;
 import nextstep.courses.domain.session.Session;
@@ -25,7 +26,7 @@ class SessionTest {
         Image image = new Image(1000, 200, 300, "test.jpg");
         List<NsUser> nsUsers = List.of(new NsUser());
 
-        session = new FreeSession("축구교실", new Course(), period, image, NsUsers.from(nsUsers));
+        session = new FreeSession("축구교실", new Course(), period, List.of(image), NsUsers.from(nsUsers));
     }
 
     @DisplayName("수강 신청은 모집중인 상태에서만 가능하다.")

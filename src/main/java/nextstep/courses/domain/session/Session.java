@@ -1,7 +1,8 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
+import nextstep.courses.domain.image.Image;
+import nextstep.courses.domain.image.Images;
 import nextstep.courses.domain.session.type.SessionType;
 import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.payments.domain.Payment;
@@ -16,21 +17,21 @@ public abstract class Session {
     protected final String title;
     private final Course course;
     private final Period period;
-    private final Image image;
+    private final Images images;
     private final SessionStatus status;
     private final SessionType type;
     protected final NsUsers nsUsers;
 
-    public Session(Course course, String title, Period period, Image image, NsUsers users, SessionType type) {
-        this(0L, title, course, period, image, SessionStatus.READY, users, type);
+    public Session(Course course, String title, Period period, List<Image> images, NsUsers users, SessionType type) {
+        this(0L, title, course, period, images, SessionStatus.READY, users, type);
     }
 
-    public Session(Long id, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, SessionType type) {
+    public Session(Long id, String title, Course course, Period period, List<Image> images, SessionStatus status, NsUsers nsUsers, SessionType type) {
         this.id = id;
         this.title = title;
         this.course = course;
         this.period = period;
-        this.image = image;
+        this.images = Images.from(images);
         this.status = status;
         this.nsUsers = nsUsers;
         this.type = type;
@@ -78,5 +79,9 @@ public abstract class Session {
 
     public void addNsUser(List<NsUser> nsUsers) {
         this.nsUsers.addAll(nsUsers);
+    }
+
+    public void addImages(List<Image> images) {
+        this.images.addAll(images);
     }
 }

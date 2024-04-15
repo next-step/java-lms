@@ -1,12 +1,11 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.session.PaidSession;
 import nextstep.courses.domain.session.Period;
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class PaidSessionTest {
     @BeforeEach
     void setUp() {
         LocalDate startDate = LocalDate.of(2024, 1, 20);
-        LocalDate endDate = LocalDate.of(2024, 3, 20);
+        LocalDate endDate = LocalDate.of(2099, 3, 20);
         period = new Period(startDate, endDate);
         image = new Image(1000, 200, 300, "test.jpg");
         List<NsUser> userList = new ArrayList<>();
@@ -36,7 +35,7 @@ class PaidSessionTest {
         userList.add(new NsUser());
         nsUsers = NsUsers.from(userList);
 
-        session = new PaidSession(new Course(), "축구교실", period, image, nsUsers, 3, 5000L);
+        session = new PaidSession(new Course(), "축구교실", period, List.of(image), nsUsers, 3, 5000L);
     }
 
     @DisplayName("유료강의는 정해진 인원수를 넘으면 신청할 수 없다.")
@@ -48,14 +47,14 @@ class PaidSessionTest {
     @DisplayName("유료강의는 모집중 기간일 때 만 신청할 수 있다.")
     @Test
     void enrollOnlyRecruiting() {
-        PaidSession readySession = new PaidSession(1L, "축구교실", new Course(), period, image, SessionStatus.READY, nsUsers, 5, 5000L);
+        PaidSession readySession = new PaidSession(1L, "축구교실", new Course(), period, List.of(image), SessionStatus.READY, nsUsers, 5, 5000L);
         assertThatThrownBy(() -> readySession.enroll(new NsUser(1L), LocalDate.now()));
 
-        PaidSession paidSession = new PaidSession(1L, "축구교실", new Course(), period, image, SessionStatus.RECRUITING, nsUsers, 5, 5000L);
+        PaidSession paidSession = new PaidSession(1L, "축구교실", new Course(), period, List.of(image), SessionStatus.RECRUITING, nsUsers, 5, 5000L);
         assertThatCode(() -> paidSession.enroll(new NsUser(1L), LocalDate.now()))
                 .doesNotThrowAnyException();
 
-        PaidSession closedSession = new PaidSession(1L, "축구교실", new Course(), period, image, SessionStatus.CLOSED, nsUsers, 5, 5000L);
+        PaidSession closedSession = new PaidSession(1L, "축구교실", new Course(), period, List.of(image), SessionStatus.CLOSED, nsUsers, 5, 5000L);
         assertThatThrownBy(() -> closedSession.enroll(new NsUser(1L), LocalDate.now()));
     }
 

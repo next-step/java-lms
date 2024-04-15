@@ -1,25 +1,27 @@
 package nextstep.courses.domain.session;
 
 import nextstep.courses.domain.Course;
-import nextstep.courses.domain.Image;
+import nextstep.courses.domain.image.Image;
 import nextstep.courses.domain.session.type.SessionType;
 import nextstep.courses.domain.session.type.SessionStatus;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUsers;
 
+import java.util.List;
+
 public class PaidSession extends Session {
     private final int maxSize;
     private final long amount;
 
-    public PaidSession(Course course, String title, Period period, Image image, NsUsers users, int maxSize, long amount) {
-        super(course, title, period, image, users, SessionType.PAID);
+    public PaidSession(Course course, String title, Period period, List<Image> images, NsUsers users, int maxSize, long amount) {
+        super(course, title, period, images, users, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }
 
-    public PaidSession(Long idx, String title, Course course, Period period, Image image, SessionStatus status, NsUsers nsUsers, int maxSize, long amount) {
-        super(idx, title, course, period, image, status, nsUsers, SessionType.PAID);
+    public PaidSession(Long idx, String title, Course course, Period period, List<Image> images, SessionStatus status, NsUsers nsUsers, int maxSize, long amount) {
+        super(idx, title, course, period, images, status, nsUsers, SessionType.PAID);
         this.maxSize = maxSize;
         this.amount = amount;
     }

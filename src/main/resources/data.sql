@@ -10,18 +10,16 @@ VALUES (1, 1, '국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이�
 
 INSERT INTO session (id, course_id, title, type, status, start_date,
                      end_date,
-                     image_size,
-                     image_height,
-                     image_width,
-                     image_name,
-                     image_extension,
                      max_size,
                      amount,
                      creator_id,
                      created_at,
                      updated_at)
-VALUES (1, 1, '프로그래밍', 'FREE', 'READY', CURRENT_TIMESTAMP(), '2099-12-31', 1000, 200, 300, '강의사진', 'jpg', 0, 0, 1,
+VALUES (1, 1, '프로그래밍', 'FREE', 'READY', CURRENT_TIMESTAMP(), '2099-12-31', 20, 5000, 1,
         CURRENT_TIMESTAMP(), null);
+
+INSERT INTO image(id, session_id, size, height, width, name, extension, created_at, updated_at)
+VALUES (1, 1, 1000, 200, 300, '강의사진', 'jpg', now(), null);
 --
 INSERT INTO session_users (id, session_id, user_id, creator_id, created_at)
 VALUES (1, 1, 1, 1, CURRENT_TIMESTAMP());
