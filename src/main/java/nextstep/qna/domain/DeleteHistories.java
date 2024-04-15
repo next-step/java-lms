@@ -18,7 +18,6 @@ public class DeleteHistories {
 
     private void procesRelated(List<Answer> answers) {
         for (Answer answer : answers) {
-            answer.setDeleted(true);
             deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
         }
     }

@@ -97,8 +97,23 @@ public class Question {
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
         validateAuthority(loginUser);
         validateWriter(loginUser);
+        validateUnAnswered();
+
         this.deleted = true;
+
+        for (Answer answer : answers) {
+            if (answer.isOwner(loginUser)) {
+                answer.delete();
+            }
+        }
+
         return createHistories(id);
+    }
+
+    private void validateUnAnswered() {
+        if (!answers.isEmpty()) {
+            throw new IllegalStateException("답변이 존재하는 경우 삭제할 수 없습니다.");
+        }
     }
 
     private void validateWriter(NsUser loginUser) throws CannotDeleteException {
