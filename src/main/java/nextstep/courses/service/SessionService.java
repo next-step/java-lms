@@ -30,4 +30,8 @@ public class SessionService {
     public void acceptLearner(Session session, NsUser learner) {
         learnerRepository.accept(session.getId(), learner.getId());
     }
+
+    public void declineLearner(Session session, NsUser learner) {
+        learnerRepository.decline(session.getId(), learner.getId());
+    }
 }

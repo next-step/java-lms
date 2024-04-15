@@ -64,7 +64,7 @@ class JdbcLearnerRepositoryTest {
     }
 
     @Test
-    @DisplayName("aceept하면 수강신청 상태를 ACCEPTED로 바꾼다")
+    @DisplayName("aceept는 수강신청 상태를 ACCEPTED로 바꾼다")
     void accept() {
         // given
         LearnerDto learnerDto = new LearnerDto(1L, 1L, ApplyStatus.PENDING);
@@ -77,5 +77,21 @@ class JdbcLearnerRepositoryTest {
         String sql = "select apply_status from session_learner where session_id = ? and user_id = ?";
         ApplyStatus applyStatus = jdbcTemplate.queryForObject(sql, ApplyStatus.class, learnerDto.getSessionId(), learnerDto.getUserId());
         assertThat(applyStatus).isEqualTo(ApplyStatus.ACCEPTED);
+    }
+
+    @Test
+    @DisplayName("decline는 수강신청 상태를 DECLINED로 바꾼다")
+    void decline() {
+        // given
+        LearnerDto learnerDto = new LearnerDto(1L, 1L, ApplyStatus.PENDING);
+        learnerRepository.save(learnerDto);
+
+        // when
+        learnerRepository.decline(learnerDto.getSessionId(), learnerDto.getUserId());
+
+        // then
+        String sql = "select apply_status from session_learner where session_id = ? and user_id = ?";
+        ApplyStatus applyStatus = jdbcTemplate.queryForObject(sql, ApplyStatus.class, learnerDto.getSessionId(), learnerDto.getUserId());
+        assertThat(applyStatus).isEqualTo(ApplyStatus.DECLINED);
     }
 }

@@ -33,6 +33,10 @@ public class JdbcLearnerRepository {
         update(sessionId, userId, ApplyStatus.ACCEPTED);
     }
 
+    public void decline(Long sessionId, Long userId) {
+        update(sessionId, userId, ApplyStatus.DECLINED);
+    }
+
     private void update(Long sessionId, Long userId, ApplyStatus applyStatus) {
         String sql = "update session_learner set apply_status = ? where session_id = ? and user_id = ?";
         jdbcTemplate.update(sql, applyStatus.name(), sessionId, userId);
