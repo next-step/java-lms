@@ -87,6 +87,18 @@ public class Question {
     }
 
     public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException{
+        throwsCannotDeleteExceptionIfCannotDelete(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        this.setDeleted(true);
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, getWriter(), LocalDateTime.now()));
+
+        deleteHistories.addAll(Answer.delete(answers));
+
+        return deleteHistories;
+    }
+
+    private void throwsCannotDeleteExceptionIfCannotDelete(NsUser loginUser) throws CannotDeleteException{
         if (!this.isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
@@ -97,15 +109,6 @@ public class Question {
                 throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
             }
         }
-
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-        this.setDeleted(true);
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, getWriter(), LocalDateTime.now()));
-        for (Answer answer : answers) {
-            answer.setDeleted(true);
-            deleteHistories.add(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), LocalDateTime.now()));
-        }
-        return deleteHistories;
     }
 
     @Override
