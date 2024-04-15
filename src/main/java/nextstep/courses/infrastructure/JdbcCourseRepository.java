@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("courseRepository")
 public class JdbcCourseRepository implements CourseRepository {
@@ -31,7 +32,8 @@ public class JdbcCourseRepository implements CourseRepository {
                 rs.getString(2),
                 rs.getLong(3),
                 toLocalDateTime(rs.getTimestamp(4)),
-                toLocalDateTime(rs.getTimestamp(5)));
+                toLocalDateTime(rs.getTimestamp(5)),
+                List.of());
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
