@@ -14,14 +14,14 @@ class NsUserTypeTest {
         assertThat(NsUserType.COACH.isCoach()).isTrue();
     }
 
-    @Test
-    void 선발된_인원이_아니면_true를_반환한다() {
-        assertThat(NsUserType.USER.isNotSelected()).isTrue();
-    }
-
     @ParameterizedTest
     @EnumSource(mode = Mode.INCLUDE, names = {"WOOTECO", "WOOTECAM"})
     void 선발된_인원이면_false를_반환한다(final NsUserType nsUserType) {
-        assertThat(nsUserType.isNotSelected()).isFalse();
+        assertThat(nsUserType.isSelected()).isTrue();
+    }
+
+    @Test
+    void 선발된_인원이_아니면_false를_반환한다() {
+        assertThat(NsUserType.USER.isSelected()).isFalse();
     }
 }
