@@ -38,9 +38,6 @@ public class JdbcCourseRepository implements CourseRepository {
             return ps;
         }, keyHolder);
 
-//        int result = jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt(), keyHolder);
-
-
         course.getSessions().getSessions().forEach(session ->
                 sessionRepository.saveSession(session, (long) keyHolder.getKey())
         );
