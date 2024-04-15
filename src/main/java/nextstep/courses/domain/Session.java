@@ -41,7 +41,7 @@ public class Session {
     }
 
     private void validateRecruiting() {
-        if (!SessionStatus.isRecruiting(sessionStatus)) {
+        if (SessionStatus.isNotRecruiting(sessionStatus)) {
             throw new IllegalArgumentException("현재 모집 중인 강의가 아닙니다.");
         }
     }

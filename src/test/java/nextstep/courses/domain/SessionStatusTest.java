@@ -10,7 +10,7 @@ public class SessionStatusTest {
     @Test
     @DisplayName("강의가 모집중인지 확인한다.")
     void check_session_status_recruiting() {
-        assertThat(SessionStatus.isRecruiting(SessionStatus.RECRUITING)).isTrue();
+        assertThat(SessionStatus.isNotRecruiting(SessionStatus.RECRUITING)).isFalse();
     }
 
 }
