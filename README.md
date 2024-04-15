@@ -112,7 +112,7 @@ validate도 마찬가지
   - hasPaid (boolean) - 유저 결제완료 여부
 - [X] 선발 인원을 저장, 선발 여부 확인을 위한 SelectionRepository 구현
 - [ ] Session의 coverImageInfo를 List로 리팩터링
-  - [ ] Session N:M coverImageInfo 를 위해 매핑 클래스 생성
+  - [X] Session N:M coverImageInfo 를 위해 매핑 클래스 생성
     - SessionCoverImageInfo
       - id (Long)
       - sessionId (Long)
