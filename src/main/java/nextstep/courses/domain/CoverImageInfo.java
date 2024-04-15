@@ -17,6 +17,7 @@ public class CoverImageInfo {
 	private static final Long WIDTH_RATE = 3L;
 	private static final Long HEIGHT_RATE = 2L;
 
+	private Long id;
 	private final Long size;
 	private final ImageType imageType;
 	private final Long width;
@@ -56,5 +57,68 @@ public class CoverImageInfo {
 		if (size > MAX_IMAGE_SIZE) {
 			throw new IllegalArgumentException(IMAGE_SIZE_OVER_MESSAGE);
 		}
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public ImageType getImageType() {
+		return imageType;
+	}
+
+	public Long getWidth() {
+		return width;
+	}
+
+	public Long getHeight() {
+		return height;
+	}
+
+	public static CoverImageInfoBuilder builder() {
+		return new CoverImageInfoBuilder();
+	}
+
+	public static class CoverImageInfoBuilder {
+		private Long id;
+		private Long size;
+		private String imageType;
+		private Long width;
+		private Long height;
+
+		public CoverImageInfoBuilder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public CoverImageInfoBuilder size(Long size) {
+			this.size = size;
+			return this;
+		}
+
+		public CoverImageInfoBuilder imageType(String imageTypeStr) {
+			this.imageType = imageTypeStr;
+			return this;
+		}
+
+		public CoverImageInfoBuilder width(Long width) {
+			this.width = width;
+			return this;
+		}
+
+		public CoverImageInfoBuilder height(Long height) {
+			this.height = height;
+			return this;
+		}
+
+		public CoverImageInfo build() {
+			return new CoverImageInfo(size, imageType, width, height);
+		}
+
 	}
 }
