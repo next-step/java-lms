@@ -10,14 +10,14 @@ public class Enrollment {
     public static final String ENROLLMENT_ERROR_MESSAGE = "수강 신청 상태가 아닙니다.";
     private final SessionStatus sessionStatus;
     private final int capacity;
-    private final List<User> students;
+    private final Students students;
 
     public Enrollment(SessionStatus sessionStatus, int capacity) {
-        this(sessionStatus, capacity, new ArrayList<>());
+        this(sessionStatus, capacity, new Students());
     }
 
-    public Enrollment(SessionStatus sessionStatus, int capacity, List<User> students) {
-        if (capacity < students.size()){
+    public Enrollment(SessionStatus sessionStatus, int capacity, Students students) {
+        if (students.isOversize(capacity)){
             throw new IllegalArgumentException(MAX_CAPACITY_ERROR_MESSAGE);
         }
         this.sessionStatus = sessionStatus;
@@ -30,13 +30,9 @@ public class Enrollment {
             throw new IllegalArgumentException(ENROLLMENT_ERROR_MESSAGE);
         }
 
-        if (isFullCapacity()) {
+        if (students.isFull(capacity)) {
             throw new IllegalArgumentException(MAX_CAPACITY_ERROR_MESSAGE);
         }
-        students.add(student);
-    }
-
-    private boolean isFullCapacity() {
-        return students.size() == capacity;
+        students.enroll(student);
     }
 }

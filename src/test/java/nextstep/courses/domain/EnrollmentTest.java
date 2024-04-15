@@ -32,4 +32,14 @@ class EnrollmentTest {
             enrollment.enroll(UserTest.SANJIGI);
         });
     }
+
+    @DisplayName("수강인원 중복 테스트")
+    @Test
+    void duplication_student_test() {
+        Enrollment enrollment = new Enrollment(SessionStatus.ENROLLING, 3);
+        assertThatIllegalArgumentException().isThrownBy(() -> {
+            enrollment.enroll(UserTest.JAVAJIGI);
+            enrollment.enroll(UserTest.JAVAJIGI);
+        });
+    }
 }
