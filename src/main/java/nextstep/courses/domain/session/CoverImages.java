@@ -1,5 +1,7 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.coverImage.CoverImage;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -1,6 +1,10 @@
 package nextstep.courses.infrastructure;
 
-import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.coverImage.CoverImage;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionGatheringStatus;
+import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.SessionStatus;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static nextstep.courses.domain.course.CourseTest.COURSE;
-import static nextstep.courses.domain.session.ImageType.PNG;
+import static nextstep.courses.domain.coverImage.ImageType.PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
 import static nextstep.courses.domain.session.SessionTypeTest.PAID_SESSION_TYPE;
 import static nextstep.users.domain.NsUserTest.ZIPJIGI;

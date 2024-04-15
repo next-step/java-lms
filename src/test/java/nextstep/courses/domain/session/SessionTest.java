@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static nextstep.courses.domain.course.CourseTest.COURSE;
-import static nextstep.courses.domain.session.CoverImageTest.COVER_IMAGE_PNG;
+import static nextstep.courses.domain.coverImage.CoverImageTest.COVER_IMAGE_PNG;
 import static nextstep.courses.domain.session.PeriodTest.PERIOD_OF_SESSION;
 import static nextstep.courses.domain.session.SessionGatheringStatus.GATHERING;
 import static nextstep.courses.domain.session.SessionTypeTest.FREE_SESSION_TYPE;

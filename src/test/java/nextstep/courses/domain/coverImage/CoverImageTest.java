@@ -1,11 +1,11 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.coverImage;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.ImageType.GIF;
-import static nextstep.courses.domain.session.ImageType.PNG;
+import static nextstep.courses.domain.coverImage.ImageType.GIF;
+import static nextstep.courses.domain.coverImage.ImageType.PNG;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -2,6 +2,7 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotEnrollException;
 import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.coverImage.CoverImage;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 

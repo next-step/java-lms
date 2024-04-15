@@ -1,6 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.coverImage.CoverImage;
+import nextstep.courses.domain.coverImage.Dimensions;
+import nextstep.courses.domain.coverImage.ImageType;
 import nextstep.courses.domain.session.*;
 import nextstep.users.domain.NsUser;
 import org.springframework.dao.EmptyResultDataAccessException;
